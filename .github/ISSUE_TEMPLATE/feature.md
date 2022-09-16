@@ -2,7 +2,7 @@
 name: Feature request / user story
 about: Suggest an idea from the perspective of a user
 title: ''
-labels: enhancement
+labels: ["dev", "story"]
 assignees: ''
 
 ---
