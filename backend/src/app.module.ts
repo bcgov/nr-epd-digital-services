@@ -5,6 +5,8 @@ import { ConfigModule } from "@nestjs/config";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { UsersModule } from "./users/users.module";
+import {  WinstonModule} from 'nest-winston';
+import {Logger} from './common/logger';
 
 console.log("Var check - POSTGRESQL_HOST", process.env.POSTGRESQL_HOST);
 console.log("Var check - POSTGRESQL_DATABASE", process.env.POSTGRESQL_DATABASE);
@@ -17,6 +19,7 @@ if (process.env.POSTGRESQL_PASSWORD != null ){
 
 @Module({
   imports: [
+    WinstonModule.forRoot(Logger.WinstonLogger()),
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: "postgres",
