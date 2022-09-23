@@ -18,6 +18,19 @@ export const fetchUsers = createAsyncThunk("fetchUsers", async () => {
   return response.data;
 });
 
+export const addNewUser = createAsyncThunk("addNewUser", async (newUser) => {
+  console.log(newUser)
+  const response = axios.post(API+USERS,newUser)
+  consoleLog("response addnewuser",response)
+  return response.data
+})
+
+export const deleteUser = createAsyncThunk("deleteUser", async (userId) =>{
+  console.log(userId)
+  const response = axios.delete(API+USERS+userId)
+  consoleLog(`response deleteUser ${userId} `, response)
+})
+
 const usersSlice = createSlice({
   name: "users",
   initialState,
@@ -26,11 +39,12 @@ const usersSlice = createSlice({
       reducer(state, action) {
         state.users.push(action.payload);
       },
-      prepare(name) {
+      prepare(name,email) {
         return {
           payload: {
             id: new Date().getTime(),
             name,
+            email,
           },
         };
       },
@@ -54,7 +68,13 @@ const usersSlice = createSlice({
       .addCase(fetchUsers.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
-      });
+      })
+
+      .addCase(addNewUser.fulfilled, (state,action) =>{
+        state.status = "succeeded"
+        consoleLog("Payload at addnewuser",action.payload)
+        state.users.push(action.payload)
+      })
   },
 });
 
