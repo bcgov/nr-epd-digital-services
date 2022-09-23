@@ -5,6 +5,8 @@ import {getAllUsers, addUser, deleteUser} from './utilities/api/users';
 
 
 
+import UsersList from './app/features/users/UsersList';
+import AddUserForm from './app/features/users/AddUserForm';
 
 function App() {
   const [hello,setHello] = useState(null)
@@ -58,6 +60,8 @@ function App() {
       
       <hr/>
       <button onClick={addDefaultUser}>Add A Default User?</button>
+     <UsersList></UsersList>
+     <AddUserForm></AddUserForm>
     </div>
   );
 }
