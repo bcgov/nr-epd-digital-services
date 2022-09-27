@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { act } from "react-dom/test-utils";
-import { consoleLog } from "../../helpers/utility";
+import { consoleLog,generateRequestId ,getAxiosInstance} from "../../helpers/utility";
 import { API , USERS } from "../../helpers/endpoints";
 
 const initialState = {
@@ -11,23 +11,19 @@ const initialState = {
 };
 
 export const fetchUsers = createAsyncThunk("fetchUsers", async () => {
-  axios.defaults.headers.get["Access-Control-Allow-Origin"] = "*";
-
-  const response = await axios.get(API+USERS);
+  const response = await getAxiosInstance().get(API+USERS);
   consoleLog("response", response);
   return response.data;
 });
 
 export const addNewUser = createAsyncThunk("addNewUser", async (newUser) => {
-  console.log(newUser)
-  const response = axios.post(API+USERS,newUser)
+  const response = getAxiosInstance().post(API+USERS,newUser)
   consoleLog("response addnewuser",response)
   return response.data
 })
 
 export const deleteUser = createAsyncThunk("deleteUser", async (userId) =>{
-  console.log(userId)
-  const response = axios.delete(API+USERS+userId)
+  const response = getAxiosInstance().delete(API+USERS+userId)
   consoleLog(`response deleteUser ${userId} `, response)
 })
 

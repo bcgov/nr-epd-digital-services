@@ -12,6 +12,7 @@ export class AppController {
 
   @Get()
   getHello(): string {
+
     this.logger.log('Calling getHello()', AppController.name);
     this.logger.log('Calling getHello()', AppController.name);
     this.logger.debug('Calling getHello()', AppController.name);
