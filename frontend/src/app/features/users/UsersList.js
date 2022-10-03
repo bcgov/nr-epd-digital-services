@@ -6,6 +6,7 @@ import {
   fetchUsers,
 } from "./UsersSlice";
 import { useEffect } from "react";
+import { NavLink   } from "react-router-dom";  
 
 import React from "react";
 
@@ -29,11 +30,11 @@ const UsersList = () => {
   const renderedUsers = users.map((user) => {
     if(user){
       return (
-        <article key={user.id}>
-          <h3>{user.name}</h3>
-          <h3>{user.id}</h3>
-          <h3>{user.email}</h3>
-        </article>
+        <tr key={user.id}>
+          <td>{user.name}</td>
+          <td>{user.id}</td>
+          <td>{user.email}</td>
+        </tr>
       );
     }else{
 
@@ -43,8 +44,27 @@ const UsersList = () => {
 
   return (
     <section>
+        <NavLink  to="/">Dashboard</NavLink >
       <h2>Users</h2>
+      <table className="table">
+      <thead>
+        <tr>
+          <th>
+            Name
+          </th>
+          <th>
+            ID
+          </th>
+          <th>
+            Email
+          </th>
+          </tr>
+          </thead>
+          <tbody>
       {renderedUsers}
+      </tbody>
+      </table>
+    
     </section>
   );
 };

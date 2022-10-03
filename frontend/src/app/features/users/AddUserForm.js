@@ -3,10 +3,12 @@ import { useDispatch } from "react-redux";
 import { addNewUser } from "./UsersSlice";
 import React from "react";
 import { consoleLog } from "../../helpers/utility";
+import { useNavigate , NavLink  } from "react-router-dom";
 
 const AddUserForm = () => {
   const [name, setName] =  useState("");
   const [email, setEmail] = useState("");
+  const navigate  = useNavigate();
 
   const [addRequestStatus, setAddRequestStatus] = useState("idle")
 
@@ -22,11 +24,13 @@ const AddUserForm = () => {
       dispatch(addNewUser({name,email})).unwrap();
       setName("")
       setEmail("")
+      navigate("/users")     
     }
   };
 
   return (
     <section>
+        <NavLink  to="/">Dashboard</NavLink > 
       <h2>Add New User</h2>
       <form>
         <label htmlFor="userName">User Name:</label>
