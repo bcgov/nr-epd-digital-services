@@ -1,19 +1,32 @@
-import {configureStore, combineReducers} from "@reduxjs/toolkit";
+import {configureStore} from "@reduxjs/toolkit";
 import usersReducer from './features/users/UsersSlice';
-import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import applicationReducer from "./features/applications/ApplicationSlice";
+import { consoleLog } from "./helpers/utility";
+import { loadFromLocalStorage, saveToLocalStorage } from "./helpers/sessionManager";
 
-const persistConfig = {
-    key: 'root',
-    storage,
-  }
+const persistedStore = loadFromLocalStorage();
 
-  const reducers = combineReducers({
-    users: usersReducer,
-  });
+const initialState = { users :{}, applications: persistedStore}
 
-  const persistedReducer = persistReducer(persistConfig, reducers);
+consoleLog('persistedStore',persistedStore)
 
-export const store = configureStore({
-    reducer: persistedReducer
+export const store = configureStore({reducer:{
+  users: usersReducer,
+  applications:applicationReducer
+},initialState})
+
+store.subscribe(()=>
+{
+  consoleLog('Store Modified', store.getState())
+
+  const {applications} = store.getState();
+
+
+  saveToLocalStorage(applications);
 })
+
+
+
+
+
+
