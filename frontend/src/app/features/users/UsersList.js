@@ -30,13 +30,14 @@ const UsersList = () => {
     if(user){
       return (
         <article key={user.id}>
-          <h3>{user.name}</h3>
-          <h3>{user.id}</h3>
-          <h3>{user.email}</h3>
+          <h1>Name: {user.name}</h1>
+          <p>User ID: {user.id}</p>
+          <p>Email: {user.email}</p>
         </article>
       );
     }else{
 
+      
     }
     
   });
