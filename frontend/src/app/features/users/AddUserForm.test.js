@@ -2,8 +2,11 @@ import {Provider} from 'react-redux'
 import  {store}  from "../../Store";
 import { fireEvent, render, screen } from "@testing-library/react";
 import AddUserForm from './AddUserForm';
+import {
+    BrowserRouter as Router
+  } from "react-router-dom";
 
-const wrapper = <Provider store={store}><AddUserForm></AddUserForm></Provider>
+const wrapper = <Provider store={store}><Router><AddUserForm/></Router></Provider>
 
 const setup = () => {
     const utils = render(wrapper)
