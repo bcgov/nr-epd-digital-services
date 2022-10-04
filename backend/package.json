@@ -117,7 +117,10 @@
       "jest-badges"
     ],
     "testEnvironment": "node",
-    "testResultsProcessor": "jest-sonar-reporter"
+    "testResultsProcessor": "jest-sonar-reporter",
+    "setupFiles": [
+      "<rootDir>/test/setEnvVars.js"
+    ]
   },
   "lint-staged": {
     "*.{js,ts}": "./node_modules/.bin/eslint --cache --fix"

@@ -9,19 +9,11 @@ import {  WinstonModule} from 'nest-winston';
 import {Logger} from './logging/logger';
 import { AppLoggerMiddleware } from "./logging/loggerMiddleware";
 
-console.log("Var check - POSTGRESQL_HOST", process.env.POSTGRESQL_HOST);
-console.log("Var check - POSTGRESQL_DATABASE", process.env.POSTGRESQL_DATABASE);
-console.log("Var check - POSTGRESQL_USER", process.env.POSTGRESQL_USER);
-if (process.env.POSTGRESQL_PASSWORD != null ){
-  console.log("Var check - POSTGRESQL_PASSWORD present");
-} else {
-  console.log("Var check - POSTGRESQL_PASSWORD not present");
-}
-
 @Module({
   imports: [
-    ConfigModule.forRoot(),
     WinstonModule.forRoot(Logger.WinstonLogger()),
+    ConfigModule.forRoot(),
+   
     
     TypeOrmModule.forRoot({
       type: "postgres",
