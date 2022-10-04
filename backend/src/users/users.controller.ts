@@ -17,7 +17,7 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 import { WINSTON_MODULE_NEST_PROVIDER } from "nest-winston";
 import { request } from "http";
 import { Request } from 'express';
-import { Helper } from "src/common/helpers";
+import { Helper } from "../common/helpers"
 import { REQUEST } from '@nestjs/core';
 
 @ApiTags("users")

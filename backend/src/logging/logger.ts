@@ -18,14 +18,14 @@ export class Logger
                 ),
               }),
               new winston.transports.DailyRotateFile ({
-                filename: 'application-%DATE%.log',
-                dirname: `./logs`,
-                level: 'info',
-                handleExceptions: true,            
-                json: false,
-                zippedArchive: true,
-                maxSize: '20m',
-                maxFiles: '14d'        
+                filename: process.env.LOGGER_FILE_NAME ,
+                dirname: process.env.LOGGER_DIR_NAME,
+                level: process.env.LOGGER_LEVEL,
+                handleExceptions: process.env.LOGGER_HANDLE_EXCEPTIONS=="true"?true:false,            
+                json: process.env.LOGGER_JSON=="true"?true:false,
+                zippedArchive: process.env.LOGGER_ZIP_ARCHIVE=="true"?true:false,
+                maxSize: process.env.LOGGER_MAX_SIZE,
+                maxFiles: process.env.LOGGER_MAX_FILES        
             })
             ],
           }
