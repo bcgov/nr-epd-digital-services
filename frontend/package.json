@@ -53,6 +53,7 @@
     ]
   },
   "devDependencies": {
+    "react-test-renderer": "^18.2.0",
     "@testing-library/jest-dom": "^5.16.5"
   }
 }
