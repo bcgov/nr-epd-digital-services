@@ -1,6 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from "@nestjs/swagger";
 
-export class Base
-{
-   // Add base dto properties here 
+export class Base {
+  // Add base dto properties here
 }
