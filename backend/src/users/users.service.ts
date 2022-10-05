@@ -24,8 +24,8 @@ export class UsersService {
   }
 
   async findOne(id: number): Promise<Users> {
-    FindOptionsUtils
-    return this.usersRepository.findOneOrFail({where: {id: id}})
+    FindOptionsUtils;
+    return this.usersRepository.findOneOrFail({ where: { id: id } });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<Users> {
