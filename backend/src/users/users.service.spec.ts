@@ -79,7 +79,7 @@ describe("UserService", () => {
     it("should get a single user", () => {
       const repoSpy = jest.spyOn(repo, "findOneOrFail");
       expect(service.findOne(1)).resolves.toEqual(oneUser);
-      expect(repoSpy).toBeCalledWith(1);
+      expect(repoSpy).toBeCalledWith({ where: { id: 1 } });
     });
   });
 
