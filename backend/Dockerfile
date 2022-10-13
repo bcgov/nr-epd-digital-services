@@ -31,7 +31,7 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 
 #ss-20-Error:permission denied, mkdir 'logs/'fix
-RUN mkdir -p && chmod -R 777 /logs/
+RUN mkdir -p && chmod -R 777 /app/logs/
 
 
 # Expose port - mostly a convention, for readability
