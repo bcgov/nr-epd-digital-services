@@ -92,7 +92,7 @@ jobs:
     uses: ./.github/workflows/_deploy.yml
     strategy:
       matrix:
-        component: [backend, database, frontend]
+        component: [database, backend, frontend]
         include:
           - component: database
             overwrite: false
