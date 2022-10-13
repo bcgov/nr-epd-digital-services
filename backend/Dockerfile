@@ -24,15 +24,13 @@ COPY --from=builder /usr/lib64/libssl.so.1.1 /usr/lib64/
 COPY --from=builder /usr/lib64/libstdc++.so.6 /usr/lib64/
 COPY --from=builder /usr/lib64/libgcc_s.so.1 /usr/lib64/
 COPY --from=builder /usr/lib64/libbrotlicommon.so.1 /usr/lib64/
-
-# Copy over app
-WORKDIR /app
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 
 #ss-20-Error:permission denied, mkdir 'logs/'fix
-RUN mkdir -p && chmod -R 777 /app/logs/
-
+RUN mkdir -p /app/logs/
+RUN set -x \
+    && chmod -R 777 /app/logs/
 
 # Expose port - mostly a convention, for readability
 EXPOSE 3000
