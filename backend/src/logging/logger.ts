@@ -14,8 +14,8 @@ export class Logger {
             winston.format.timestamp(),
             nestWinstonModuleUtilities.format.nestLike()
           ),
-        }),
-        new winston.transports.DailyRotateFile({
+        })//,
+        /*new winston.transports.DailyRotateFile({
           filename: process.env.LOGGER_FILE_NAME,
           dirname: process.env.LOGGER_DIR_NAME,
           level: process.env.LOGGER_LEVEL,
@@ -26,7 +26,7 @@ export class Logger {
             process.env.LOGGER_ZIP_ARCHIVE == "true" ? true : false,
           maxSize: process.env.LOGGER_MAX_SIZE,
           maxFiles: process.env.LOGGER_MAX_FILES,
-        }),
+        }),*/
       ],
     };
   }
