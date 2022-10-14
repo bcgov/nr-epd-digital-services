@@ -1,22 +1,37 @@
-import React from 'react'
-import { render } from '@testing-library/react'
-import { configureStore } from '@reduxjs/toolkit'
+
+import { store } from '../../app/Store'
 import { Provider } from 'react-redux'
+import {
+    BrowserRouter as Router
+  } from "react-router-dom";
 
-import UsersSlice, {userReducer} from '../../app/features/users/UsersSlice'
+// import {configureStore} from "@reduxjs/toolkit";
+// import {usersReducer} from '../../app/features/users/UsersSlice'
+// import {applicationReducer} from '../../app/features/applications/ApplicationSlice'
 
-export function renderWithProviders(
-    ui,
-    {
-        preloadedState = {},
-        store = configureStore({reducer: {user: UsersSlice}, preloadedState}),
-        ...renderOptions
-    } = {}
-){
-    function Wrapper({children}) {
-        return <Provider store={store}>{children}</Provider>
-    }
 
-    return {store, ...render(ui, {wrapper: Wrapper, ...renderOptions})}
+const TestWrapper = ({children}) =>{
+
+    // if(initialState){
+    //     const testStore = configureStore({reducer:{
+    //         users: usersReducer,
+    //         applications:applicationReducer
+    //       },initialState})
+    //     return(
+    //         <Provider store={testStore}>
+    //             <Router>
+    //             </Router>
+    //         </Provider>
+    //     )
+    // }
+    
+        return(
+            <Provider store={store}>
+                <Router>
+                    {children}
+                </Router>
+            </Provider>
+        )
 }
 
+export default TestWrapper

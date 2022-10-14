@@ -1,12 +1,8 @@
-import {Provider} from 'react-redux'
-import  {store}  from "../../Store";
-import { fireEvent, render, screen } from "@testing-library/react";
-import AddUserForm from './AddUserForm';
-import {
-    BrowserRouter as Router
-  } from "react-router-dom";
 
-const wrapper = <Provider store={store}><Router><AddUserForm/></Router></Provider>
+import { fireEvent, render} from "@testing-library/react";
+import AddUserForm from './AddUserForm';
+import TestWrapper from '../../../utilities/test/TestUtils';
+const wrapper = <TestWrapper><AddUserForm></AddUserForm></TestWrapper>
 
 const setup = () => {
     const utils = render(wrapper)
