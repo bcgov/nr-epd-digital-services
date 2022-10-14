@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { act } from "react-dom/test-utils";
-import { consoleLog,generateRequestId ,getAxiosInstance} from "../../helpers/utility";
+import { consoleLog ,getAxiosInstance} from "../../helpers/utility";
 import { API , USERS } from "../../helpers/endpoints";
 
 const initialState = {
