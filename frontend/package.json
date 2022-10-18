@@ -25,6 +25,7 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^9.0.8",
     "redux-persist": "^6.0.0",
+    "serve": "^14.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -53,7 +54,7 @@
     ]
   },
   "devDependencies": {
-    "react-test-renderer": "^18.2.0",
-    "@testing-library/jest-dom": "^5.16.5"
+    "@testing-library/jest-dom": "^5.16.5",
+    "react-test-renderer": "^18.2.0"
   }
 }
