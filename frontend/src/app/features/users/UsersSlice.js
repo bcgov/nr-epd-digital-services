@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { consoleLog ,getAxiosInstance} from "../../helpers/utility";
-import { API , USERS } from "../../helpers/endpoints";
+import { API , USERS, GRAPHQL } from "../../helpers/endpoints";
+import { FETCH_USERS, ADD_USER } from "../../helpers/requests/UserRequests";
+import {print} from 'graphql'
 
 const initialState = {
   users: [],
@@ -9,19 +11,40 @@ const initialState = {
 };
 
 export const fetchUsers = createAsyncThunk("fetchUsers", async () => {
-  const response = await getAxiosInstance().get(API+USERS);
-  consoleLog("response", response);
-  return response.data;
-});
+  console.log(FETCH_USERS)
+  const request = await getAxiosInstance().post(GRAPHQL,{
+    query:print(FETCH_USERS)})
+  console.log(request)
+  return request.data.data
+})
+// export const fetchUsers = createAsyncThunk("fetchUsers", async () => {
+//   const response = await getAxiosInstance().get(API+USERS);
+//   consoleLog("response", response);
+//   return response.data;
+// });
 
 export const addNewUser = createAsyncThunk("addNewUser", async (newUser) => {
-  const response = getAxiosInstance().post(API+USERS,newUser)
-  consoleLog("response addnewuser",response)
-  return response.data
+  const request = await getAxiosInstance().post(GRAPHQL, {
+    query:print(ADD_USER),
+    variables: {
+      user:{
+        name:newUser.name,
+        email:newUser.email
+      }
+    }
+  })
+  return request.data.data
 })
 
+// export const addNewUser = createAsyncThunk("addNewUser", async (newUser) => {
+//   console.log("Adding New User" + newUser)
+//   const response = getAxiosInstance().post(API+USERS,newUser)
+//   consoleLog("response addnewuser",response)
+//   return response.data
+// })
+
 export const deleteUser = createAsyncThunk("deleteUser", async (userId) =>{
-  const response = getAxiosInstance().delete(API+USERS+userId)
+  const response = getAxiosInstance().delete(API+USERS+"/"+userId)
   consoleLog(`response deleteUser ${userId} `, response)
 })
 
@@ -51,8 +74,8 @@ const usersSlice = createSlice({
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.status = "succeeded";
-        consoleLog(action.payload.data);
-        const loadedUsers = action.payload.slice();
+        consoleLog("action payload data",action);
+        const loadedUsers = action.payload.findUsers.slice();
         consoleLog("loadedUsers", loadedUsers);
 
         state.users = loadedUsers;
@@ -68,6 +91,11 @@ const usersSlice = createSlice({
         state.status = "succeeded"
         consoleLog("Payload at addnewuser",action.payload)
         state.users.push(action.payload)
+      })
+
+      .addCase(deleteUser.fulfilled, (state,action) =>{
+        state.status = "succeeded"
+        consoleLog("payload at deleteuser", action.payload)
       })
   },
 });

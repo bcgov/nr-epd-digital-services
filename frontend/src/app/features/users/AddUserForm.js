@@ -6,8 +6,8 @@ import { consoleLog } from "../../helpers/utility";
 import { useNavigate , NavLink  } from "react-router-dom";
 
 const AddUserForm = () => {
-  const [name, setName] =  useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] =  useState("GraphQLTest");
+  const [email, setEmail] = useState("graph@q.l");
   const navigate  = useNavigate();
 
   const [addRequestStatus, setAddRequestStatus] = useState("idle")
@@ -19,12 +19,11 @@ const AddUserForm = () => {
 
   const onSaveClicked = () => {
     if (name!="" && email!="") {
-      consoleLog("Name&Email",name+email)
       setAddRequestStatus('pending')
       dispatch(addNewUser({name,email})).unwrap();
       setName("")
       setEmail("")
-      navigate("/users")     
+      navigate("/users")
     }
   };
 

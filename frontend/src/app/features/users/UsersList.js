@@ -3,15 +3,18 @@ import {
   selectAllUsers,
   getAllUsersError,
   getAllUsersStatus,
+  deleteUser,
   fetchUsers,
 } from "./UsersSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavLink   } from "react-router-dom";  
 
 import React from "react";
 
 const UsersList = () => {
-    
+  
+  const [userDeleted, setUserDeleted] = useState(false)
+
   const dispatch = useDispatch();
 
   const users = useSelector(selectAllUsers);
@@ -20,12 +23,22 @@ const UsersList = () => {
 
   const fetchError = useSelector(getAllUsersError);
 
+  const onDelete = (id) =>{
+    
+    dispatch(deleteUser(id))
+    console.log("Deleting user : "+ id)
+    setUserDeleted(true)
+
+  }
+
   useEffect(() => {
-    if(fetchStatus=='idle')
+    if(fetchStatus=='idle'||userDeleted)
     {
-    dispatch(fetchUsers());
+      console.log("Fetching Users")
+      dispatch(fetchUsers());
+      setUserDeleted(false)
     }
-  }, [fetchStatus,dispatch]);
+  }, [fetchStatus,dispatch,userDeleted]);
 
   const renderedUsers = users.map((user) => {
     if(user){
@@ -34,11 +47,11 @@ const UsersList = () => {
           <td>{user.name}</td>
           <td>{user.id}</td>
           <td>{user.email}</td>
+          <td><button onClick = {() => onDelete(user.id)}>Delete User</button></td>
         </tr>
       );
     }else{
 
-      
     }
     
   });
@@ -58,6 +71,9 @@ const UsersList = () => {
           </th>
           <th>
             Email
+          </th>
+          <th>
+            Delete
           </th>
           </tr>
           </thead>
