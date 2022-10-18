@@ -1,6 +1,4 @@
 import './App.css';
-import UsersList from './app/features/users/UsersList';
-import AddUserForm from './app/features/users/AddUserForm';
 import Header from './app/components/common/Header'
 import Footer from './app/components/common/Footer';
 import {
@@ -13,9 +11,9 @@ function App() {
   return (
     <div  className="container-fluid p-0">
       <Header></Header>
-      <Router >
-        <AppRoutes/>
-      </Router>
+        <Router >
+          <AppRoutes/>
+        </Router>   
       <Footer></Footer>
     </div>
   );

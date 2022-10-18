@@ -17,7 +17,9 @@ export const getAxiosInstance = () => {
         baseURL: API,
         timeout: 1000,
         headers: {'requestID': generateRequestId(),
-        'Access-Control-Allow-Origin':'*' }
+        'Access-Control-Allow-Origin':'*',
+        'Content-Type':'application/json'
+    }
       });
 
       return instance;
