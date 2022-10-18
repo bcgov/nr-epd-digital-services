@@ -1,0 +1,44 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateApplicationInput } from './dto/create-application.input';
+import { UpdateApplicationInput } from './dto/update-application.input';
+import { Application } from './entities/application.entity';
+
+@Injectable()
+export class ApplicationService {
+
+  constructor(@InjectRepository(Application) 
+  private applicationRepo:Repository<Application>){
+
+  }
+
+  async create(createApplicationInput: CreateApplicationInput) {
+
+    const newApp = this.applicationRepo.create(createApplicationInput);  
+     await this.applicationRepo.save(newApp);
+     return newApp;
+  }
+
+  async findAll() {
+    return  await this.applicationRepo.find();
+  }
+
+  findOne(id: number) {
+    return `This action returns a #${id} application`;
+  }
+
+  update(id: number, updateApplicationInput: UpdateApplicationInput) {
+    return `This action updates a #${id} application`;
+  }
+
+  remove(id: number) {
+    return `This action removes a #${id} application`;
+  }
+
+  async forUser(id:number):Promise <Application[]>{
+   return await this.applicationRepo.find({ where:{
+    userId:id
+   }})
+  }
+}
