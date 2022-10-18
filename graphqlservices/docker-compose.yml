@@ -1,0 +1,117 @@
+version: "3.8"
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  database:
+    container_name: gqldb
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: admin
+    hostname: gldatabase
+    image: postgres:12
+    restart: always
+    volumes:
+      - /gqlpgdata
+    networks:
+      - app-tier 
+    
+  users:
+    networks:
+      - app-tier 
+    container_name: users
+    entrypoint:
+      - "sh"
+      - "-c"
+      - "npm i && npm run start"
+    environment:
+      NODE_ENV: development
+      POSTGRESQL_HOST: gldatabase
+      POSTGRESQL_USER: admin
+      POSTGRESQL_PASSWORD: admin
+      POSTGRESQL_DATABASE: admin
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    hostname: users
+    image: node:14
+    links:
+      - database
+    ports:
+      - "3005:3005"
+    expose:
+      - 3005 
+    volumes:
+      - ./users:/app:z
+      - /app/node_modules
+    working_dir: "/app"
+  applications:
+    networks:
+      - app-tier 
+    container_name: applications
+    entrypoint:
+      - "sh"
+      - "-c"
+      - "npm i && npm run start"
+    environment:
+      NODE_ENV: development
+      POSTGRESQL_HOST: gldatabase
+      POSTGRESQL_USER: admin
+      POSTGRESQL_PASSWORD: admin
+      POSTGRESQL_DATABASE: admin
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    hostname: applications
+    image: node:14
+    links:
+      - database
+    ports:
+      - "3006:3006"
+    expose:
+      - 3006 
+    volumes:
+      - ./applications:/app:z
+      - /app/node_modules
+    working_dir: "/app"
+  graphqlgateway:
+    networks:
+      - app-tier 
+    container_name: graphqlgateway
+    entrypoint:
+      - "sh"
+      - "-c"
+      - "npm i && npm run start"
+    environment:
+      NODE_ENV: development
+      POSTGRESQL_HOST: database
+      POSTGRESQL_USER: admin
+      POSTGRESQL_PASSWORD: admin
+      POSTGRESQL_DATABASE: admin
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3010"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    hostname: graphqlgateway
+    image: node:14
+    links:
+      - database
+    ports:
+      - "3010:3010"
+    depends_on:
+      - "users"
+      - "applications"
+    volumes:
+      - ./gateway:/app:z
+      - /app/node_modules
+    working_dir: "/app"
