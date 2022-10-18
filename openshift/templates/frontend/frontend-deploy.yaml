@@ -66,17 +66,17 @@ objects:
               valueFrom:
                 secretKeyRef:
                   name: "${DB_SECRETS}"
-                  key: app-db-username
+                  key: database-user
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: "${DB_SECRETS}"
-                  key: app-db-password
+                  key: database-password
             - name: DATABASE_NAME
               valueFrom:
                 secretKeyRef:
                   name: "${DB_SECRETS}"
-                  key: app-db-name
+                  key: database-name
             - name: DATABASE_HOST
               value: "${DATABASE_HOST}"
   
