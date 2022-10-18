@@ -83,10 +83,10 @@ objects:
           # command:
           #   - gunicorn
           #   - '-b'
-          #   - :5000
+          #   - :3000
           #   - selfservice_api:create_app()
           ports:
-          - containerPort: 5000
+          - containerPort: 3000
             protocol: TCP
           # envFrom:
           # - configMapRef:
@@ -98,16 +98,16 @@ objects:
             limits:
               cpu: "150m"
               memory: "500Mi"
-          readinessProbe:
-            httpGet:
-              path: /api/readyz
-              port: 5000
-              scheme: HTTP
-            initialDelaySeconds: 60
-            timeoutSeconds: 3
-            periodSeconds: 60
-            successThreshold: 1
-            failureThreshold: 3          
+          # readinessProbe:
+          #   httpGet:
+          #     path: /api/readyz
+          #     port: 3000
+          #     scheme: HTTP
+          #   initialDelaySeconds: 60
+          #   timeoutSeconds: 3
+          #   periodSeconds: 60
+          #   successThreshold: 1
+          #   failureThreshold: 3          
           terminationMessagePath: "/dev/termination-log"
           terminationMessagePolicy: File
           imagePullPolicy: Always
@@ -127,10 +127,10 @@ objects:
       template: "${API_NAME}-deploy"
   spec:
     ports:
-    - name: 5000-tcp
+    - name: 3000-tcp
       protocol: TCP
-      port: 5000
-      targetPort: 5000
+      port: 3000
+      targetPort: 3000
     selector:
       deploymentconfig: "${API_NAME}"
     type: ClusterIP
@@ -151,7 +151,7 @@ objects:
       name: "${API_NAME}"
       weight: 100
     port:
-      targetPort: 5000-tcp
+      targetPort: 3000-tcp
     tls:
       termination: edge
     wildcardPolicy: None
