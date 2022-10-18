@@ -19,9 +19,11 @@ import { request } from "http";
 import { Request } from "express";
 import { Helper } from "../common/helpers";
 import { REQUEST } from "@nestjs/core";
+import { Resource, RoleMatchingMode, Roles } from  "nest-keycloak-connect";
 
 @ApiTags("users")
 @Controller("users")
+@Resource('backend')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
@@ -39,6 +41,7 @@ export class UsersController {
   }
 
   @Get()
+  @Roles({roles:['adminbackend'],mode: RoleMatchingMode.ANY})
   findAll(@Req() request: Request) {
     //this.logger.log("requestID",Helper.getUniqueRequestID(request));
     return this.usersService.findAll();

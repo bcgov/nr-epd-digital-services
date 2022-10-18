@@ -12,9 +12,19 @@ import { GraphQLModule } from "@nestjs/graphql";
 import { join } from "path";
 import { ApolloDriver } from "@nestjs/apollo";
 import { ApplicationsModule } from './applications/applications.module';
+import { AuthGuard, KeycloakConnectModule, ResourceGuard, RoleGuard } from "nest-keycloak-connect";
+import { APP_GUARD } from "@nestjs/core";
 
 @Module({
   imports: [
+    KeycloakConnectModule.register({
+      authServerUrl:  process.env.KEYCLOCK_AUTH_SERVER ||'https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth',
+      realm: process.env.KEYCLOCK_REALM || 'epd-dev',
+      clientId: process.env.KEYCLOCK_CLIENT_ID ||'backend',
+      secret: process.env.KEYCLOCK_CLIENT_SECRET || '06777f04-8056-4318-b59c-3f1057555af3',
+      
+      // Secret key of the client taken from keycloak server
+    }),
     WinstonModule.forRoot(Logger.WinstonLogger()),
     ConfigModule.forRoot(),
 
@@ -41,7 +51,34 @@ import { ApplicationsModule } from './applications/applications.module';
     ApplicationsModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,
+  // This adds a global level authentication guard,
+    // you can also have it scoped
+    // if you like.
+    //
+    // Will return a 401 unauthorized when it is unable to
+    // verify the JWT token or Bearer header is missing.
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    // This adds a global level resource guard, which is permissive.
+    // Only controllers annotated with @Resource and 
+    // methods with @Scopes
+    // are handled by this guard.
+    {
+      provide: APP_GUARD,
+      useClass: ResourceGuard,
+    },
+    // New in 1.1.0
+    // This adds a global level role guard, which is permissive.
+    // Used by `@Roles` decorator with the 
+    // optional `@AllowAnyRole` decorator for allowing any
+    // specified role passed.
+    {
+      provide: APP_GUARD,
+      useClass: RoleGuard,
+    },],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer): void {
