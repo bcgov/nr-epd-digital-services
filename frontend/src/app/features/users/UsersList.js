@@ -32,7 +32,7 @@ const UsersList = () => {
   }
 
   useEffect(() => {
-    if(fetchStatus=='idle'||userDeleted)
+    if(fetchStatus==='idle'||userDeleted)
     {
       console.log("Fetching Users")
       dispatch(fetchUsers());
@@ -50,10 +50,7 @@ const UsersList = () => {
           <td><button onClick = {() => onDelete(user.id)}>Delete User</button></td>
         </tr>
       );
-    }else{
-
     }
-    
   });
 
   return (
@@ -77,9 +74,9 @@ const UsersList = () => {
           </th>
           </tr>
           </thead>
-          <tbody>
-      {renderedUsers}
-      </tbody>
+        <tbody>
+          {renderedUsers}
+        </tbody>
       </table>
     
     </section>
