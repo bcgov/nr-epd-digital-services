@@ -83,58 +83,58 @@ jobs:
   #           -Dsonar.sources=backend,frontend
   #           -Dsonar.tests=backend/test,frontend/test
 
-  deploys:
-    name: Deploys
-    needs:
-      - builds
-    # If any of the prerequs created a build, then deploy
-    if: contains(needs.*.outputs.build, 'true')
-    uses: ./.github/workflows/_deploy.yml
-    strategy:
-      matrix:
-        component: [database, backend, frontend]
-        include:
-          - component: database
-            overwrite: false
-            template_file: .github/openshift/deploy.database.yml
-            template_vars: -p ZONE=${{ github.event.number }}
-          - component: backend
-            overwrite: true
-            template_file: .github/openshift/deploy.backend.yml
-            template_vars: -p ZONE=${{ github.event.number }} -p PROMOTE=${{ github.repository }}:${{ github.event.number }}-backend
-          - component: frontend
-            overwrite: true
-            template_file: .github/openshift/deploy.frontend.yml
-            template_vars: -p ZONE=${{ github.event.number }} -p PROMOTE=${{ github.repository }}:${{ github.event.number }}-frontend
-    secrets:
-      oc_namespace: ${{ secrets.OC_NAMESPACE }}
-      oc_server: ${{ secrets.OC_SERVER }}
-      oc_token: ${{ secrets.OC_TOKEN }}
-    with:
-      component: ${{ matrix.component }}
-      overwrite: ${{ matrix.overwrite }}
-      template_file: ${{ matrix.template_file }}
-      template_vars: ${{ matrix.template_vars }}
+  # deploys:
+  #   name: Deploys
+  #   needs:
+  #     - builds
+  #   # If any of the prerequs created a build, then deploy
+  #   if: contains(needs.*.outputs.build, 'true')
+  #   uses: ./.github/workflows/_deploy.yml
+  #   strategy:
+  #     matrix:
+  #       component: [backend, database, frontend]
+  #       include:
+  #         - component: database
+  #           overwrite: false
+  #           template_file: .github/openshift/deploy.database.yml
+  #           template_vars: -p ZONE=${{ github.event.number }}
+  #         - component: backend
+  #           overwrite: true
+  #           template_file: .github/openshift/deploy.backend.yml
+  #           template_vars: -p ZONE=${{ github.event.number }} -p PROMOTE=${{ github.repository }}:${{ github.event.number }}-backend
+  #         - component: frontend
+  #           overwrite: true
+  #           template_file: .github/openshift/deploy.frontend.yml
+  #           template_vars: -p ZONE=${{ github.event.number }} -p PROMOTE=${{ github.repository }}:${{ github.event.number }}-frontend
+  #   secrets:
+  #     oc_namespace: ${{ secrets.OC_NAMESPACE }}
+  #     oc_server: ${{ secrets.OC_SERVER }}
+  #     oc_token: ${{ secrets.OC_TOKEN }}
+  #   with:
+  #     component: ${{ matrix.component }}
+  #     overwrite: ${{ matrix.overwrite }}
+  #     template_file: ${{ matrix.template_file }}
+  #     template_vars: ${{ matrix.template_vars }}
 
-  post-deploy:
-    name: Post-deploy
-    needs:
-      - deploys
-    env:
-      DOMAIN: apps.silver.devops.gov.bc.ca
-      NAME: gfp
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Comment with links
-        uses: mshick/add-pr-comment@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          allow-repeats: false
-          message: |
-            DEV deployments have completed successfully!
-            [Backend](https://${{ env.NAME }}-${{ github.event.number }}-backend.${{ env.DOMAIN }}/) available
-            [Frontend](https://${{ env.NAME }}-${{ github.event.number }}-frontend.${{ env.DOMAIN }}/) available
+  # post-deploy:
+  #   name: Post-deploy
+  #   needs:
+  #     - deploys
+  #   env:
+  #     DOMAIN: apps.silver.devops.gov.bc.ca
+  #     NAME: gfp
+  #   runs-on: ubuntu-22.04
+  #   steps:
+  #     - name: Comment with links
+  #       uses: mshick/add-pr-comment@v1
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         allow-repeats: false
+  #         message: |
+  #           DEV deployments have completed successfully!
+  #           [Backend](https://${{ env.NAME }}-${{ github.event.number }}-backend.${{ env.DOMAIN }}/) available
+  #           [Frontend](https://${{ env.NAME }}-${{ github.event.number }}-frontend.${{ env.DOMAIN }}/) available
 
   # # Uncomment to view GitHub context object
   # # https://docs.github.com/en/actions/learn-github-actions/contexts
