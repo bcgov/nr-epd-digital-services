@@ -1,7 +1,7 @@
 import { ObjectType,Field ,Int } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { application } from "express";
-import { Application } from "src/applications/entities/application.entity";
+import { Application } from "../../applications/entities/application.entity"
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 
 @ObjectType()

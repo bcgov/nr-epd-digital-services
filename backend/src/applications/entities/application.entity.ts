@@ -1,6 +1,6 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { ApiProperty } from "@nestjs/swagger";
-import { Users } from 'src/users/entities/users.entity';
+import { Users } from '../../users/entities/users.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 
 @ObjectType()
