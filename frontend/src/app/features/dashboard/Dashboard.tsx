@@ -6,16 +6,16 @@ import { getLastVisitedURL } from '../applications/ApplicationSlice';
 
 const Dashboard = () => {
   
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   
-  const lastVisitedURL = useSelector(getLastVisitedURL);
+  // const lastVisitedURL = useSelector(getLastVisitedURL);
 
-  useEffect(()=>{
-    if(lastVisitedURL!=''&&lastVisitedURL!=undefined)
-    {
-        navigate("/"+lastVisitedURL)
-    }
-  },[lastVisitedURL])
+  // useEffect(()=>{
+  //   if(lastVisitedURL!=''&&lastVisitedURL!=undefined)
+  //   {
+  //       navigate("/"+lastVisitedURL)
+  //   }
+  // },[lastVisitedURL])
  
   return (
     <div>
