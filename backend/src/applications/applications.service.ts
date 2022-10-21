@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Users } from '../../src/users/entities/users.entity';
-import { UsersService } from '../../src/users/users.service';
+
+
 import { FindOptionsUtils, Repository } from "typeorm";
 import { CreateApplicationInput } from './dto/create-application.input';
 import { UpdateApplicationInput } from './dto/update-application.input';
 import { Application } from './entities/application.entity';
+import { Users } from 'src/users/entities/users.entity';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class ApplicationsService {
