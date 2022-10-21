@@ -15,6 +15,12 @@ basic description of the task, is it focuse on research with users or the busine
 - what is the finishing point or end state of this task?
 - [ ] what is the output of this task?
 
+**UX Definition of Done**
+- [ ] Links or SVGs of icons
+- [ ] (Low-fi) designs or instructions on how to handle mobile viewports (responsiveness).
+- [ ] Approval from team / PO
+- [ ] Hi-fidelity design (and prototype?)
+
 **SME/User Contact**
 (may want to use a persona to fill this in)
 
