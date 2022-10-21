@@ -3,7 +3,8 @@ import { ApplicationsService } from './applications.service';
 import { Application } from './entities/application.entity';
 import { CreateApplicationInput } from './dto/create-application.input';
 import { UpdateApplicationInput } from './dto/update-application.input';
-import { Users } from '../../src/users/entities/users.entity';
+import { Users } from 'src/users/entities/users.entity';
+
 
 @Resolver(() => Application)
 export class ApplicationsResolver {
