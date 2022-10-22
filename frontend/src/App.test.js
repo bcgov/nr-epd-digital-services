@@ -3,7 +3,7 @@ import App from './App';
 import { Provider } from 'react-redux';
 import {store} from './app/Store'
 
-it('renders user list link', () => {
+it('renders user list', () => {
   render(    
     <Provider store={store}>
       <App />
@@ -13,7 +13,7 @@ it('renders user list link', () => {
 
 });
 
-test('renders add new user form link', () =>{
+test('renders add new user form', () =>{
   render(    
     <Provider store={store}>
       <App />

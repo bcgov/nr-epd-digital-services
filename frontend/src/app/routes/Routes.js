@@ -2,7 +2,7 @@ import React from "react";
 import Dashboard from "../features/dashboard/Dashboard";
 import UsersList from "../features/users/UsersList";
 import AddUserForm from "../features/users/AddUserForm";
-import { Routes , Route } from 'react-router-dom';
+import { Routes , Route , Navigate  } from 'react-router-dom';
 
 const AppRoutes = () => {
   return (

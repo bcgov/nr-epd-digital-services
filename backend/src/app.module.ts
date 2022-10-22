@@ -8,10 +8,6 @@ import { UsersModule } from "./users/users.module";
 import { WinstonModule } from "nest-winston";
 import { Logger } from "./logging/logger";
 import { AppLoggerMiddleware } from "./logging/loggerMiddleware";
-import { GraphQLModule } from "@nestjs/graphql";
-import { join } from "path";
-import { ApolloDriver } from "@nestjs/apollo";
-import { ApplicationsModule } from './applications/applications.module';
 
 @Module({
   imports: [
@@ -31,14 +27,6 @@ import { ApplicationsModule } from './applications/applications.module';
       synchronize: process.env.POSTGRESQL_SYNC == "false" ? false : true, // This changes the DB schema to match changes to entities, which we might not want.
     }),
     UsersModule,
-    GraphQLModule.forRoot(
-      {
-        driver: ApolloDriver,
-        autoSchemaFile: join(process.cwd(),'src/graphql-schema.gql'),
-
-      }
-    ),
-    ApplicationsModule
   ],
   controllers: [AppController],
   providers: [AppService],
