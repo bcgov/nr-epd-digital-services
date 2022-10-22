@@ -20,7 +20,9 @@ export class UsersService {
   }
 
   async findAll(): Promise<Users[]> {
-    return this.usersRepository.find();
+    return this.usersRepository.find({
+      relations:["applications"]
+    });
   }
 
   async findOne(id: number): Promise<Users> {
@@ -41,4 +43,7 @@ export class UsersService {
       return { deleted: false, message: err.message };
     }
   }
+
+
+   
 }
