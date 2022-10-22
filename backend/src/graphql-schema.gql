@@ -1,0 +1,46 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Application {
+  id: Int!
+  name: String!
+  user: Users!
+  userId: Int!
+}
+
+type Users {
+  id: Int!
+  name: String!
+  email: String!
+  applications: [Application!]
+}
+
+type Query {
+  findUsers: [Users!]!
+  applications: [Application!]!
+  application(id: Int!): Application!
+}
+
+type Mutation {
+  createUser(user: CreateUserDto!): Users!
+  createApplication(createApplicationInput: CreateApplicationInput!): Application!
+  updateApplication(updateApplicationInput: UpdateApplicationInput!): Application!
+  removeApplication(id: Int!): Application!
+}
+
+input CreateUserDto {
+  name: String!
+  email: String!
+}
+
+input CreateApplicationInput {
+  name: String!
+  userId: Int!
+}
+
+input UpdateApplicationInput {
+  name: String
+  userId: Int
+  id: Int!
+}
