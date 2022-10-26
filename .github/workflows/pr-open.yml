@@ -57,7 +57,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: backend/coverage
-          key: coverage-backend-${{ github.run_number }}
+          key: coverage-backend-${{ github }}
           restore-keys: |
             coverage-backend-
 
@@ -65,7 +65,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: frontend/coverage
-          key: coverage-frontend-${{ github.run_number }}
+          key: coverage-frontend-${{ github.event }}
           restore-keys: |
             coverage-frontend-
 
