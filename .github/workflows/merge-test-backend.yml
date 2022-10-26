@@ -1,34 +1,34 @@
-name: Deploy Frontend to Dev
+name: Deploy backend to Test
 
 on:
   push:
     branches:
-      - dev
+      - main
     paths:
-      - "frontend/**"
+      - "backend/**"
   workflow_dispatch:
     inputs:
       environment:
         description: "Environment (dev/test/prod)"
         required: true
-        default: "dev"
+        default: "test"
 
 defaults:
   run:
     shell: bash
-    working-directory: ./frontend
+    working-directory: ./backend
 
 env:
-  APP_NAME: "frontend"
-  TAG_NAME: "dev"
+  APP_NAME: "backend"
+  TAG_NAME: "test"
 
 jobs:
-  frontend-cd-by-push:
+  backend-cd-by-push:
     runs-on: ubuntu-20.04
 
     if: github.event_name == 'push' && github.repository == 'bcgov/nr-epd-digital-services'
     environment:
-      name: "dev"
+      name: "test"
 
     steps:
       - uses: actions/checkout@v2
@@ -43,20 +43,20 @@ jobs:
         run: |
           oc project ${{ secrets.OC_NAMESPACE_NAMEPLATE }}-tools
 
-      - name: Build from dev branch
+      - name: Build from main branch
         shell: bash
         run: |
-          oc patch bc/frontend-build -p '{"spec":{"source":{"git":{"ref":"dev"}}}}'
+          oc patch bc/backend-build -p '{"spec":{"source":{"git":{"ref":"main"}}}}'
 
       - name: Start Build Openshift
         shell: bash
         run: |
-          oc start-build frontend-dev-build --wait
+          oc start-build backend-test-build --wait
 
-      - name: Tag+Deploy for DEV
+      - name: Tag+Deploy for Test
         shell: bash
         run: |
-          oc tag frontend:latest frontend:dev
+          oc tag backend:latest backend:test
 
       # - name: Watch new rollout (trigger by image change in Openshift)
       #   shell: bash
