@@ -19,11 +19,12 @@ on:
         type: string
         required: false
         default: ${{ github.repository }}
-        description: Optional, specify a repo to clone
+        description: Optional, specify a repo to clone and build from
       triggers:
         type: string
-        required: true
-        description: Build triggers in a bash array, e.g. ('./backend/', './frontend/)
+        required: false
+        default: "('.')"
+        description: Optional, specify paths to conditionally trigger a build, e.g. ('./backend/', './frontend/)
     secrets:
       gh_token:
         required: true
@@ -45,15 +46,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          repository: ${{ inputs.repository }}
+          # Check out source repo
+          repository: ${{ github.repository }}
 
       # Check triggers to see if a build is required
       # Returns jobs.check.outputs.build as a boolean (true/false)
       - name: Check and process modified files
         id: check
         run: |
-          set -x
-
           # Fetch default branch to diff against
           git fetch origin ${{ env.default_branch }}:refs/remotes/origin/master
 
@@ -61,15 +61,15 @@ jobs:
           TRIGGERS=${{ inputs.triggers }}
           while read -r check
           do
-              for t in "${TRIGGERS[@]}"; do
-                  if [[ "${check}" =~ "${t}" ]]
-                  then
-                      # Output build=true for next steps
-                      echo "::set-output name=build::true"
-                      echo -e "${t}\n --> ${check}\n"
-                      exit 0
-                  fi
-              done
+            for t in "${TRIGGERS[@]}"; do
+              if [[ "${check}" =~ "${t}" ]]
+              then
+                  # Output build=true for next steps
+                  echo "::set-output name=build::true"
+                  echo -e "${t}\n --> ${check}\n"
+                  exit 0
+              fi
+            done
           done < <(git diff origin/${{ env.default_branch }} --name-only)
 
           # Check that fallback tag exists, otherwise build
@@ -98,6 +98,11 @@ jobs:
           tags: ${{ inputs.img_build }}
 
       # If a build is required, then create a new image
+      - uses: actions/checkout@v3
+        with:
+          # Check out build repo
+          repository: ${{ inputs.repository }}
+
       - name: Set up Docker Buildx
         if: steps.check.outputs.build == 'true'
         uses: docker/setup-buildx-action@v2

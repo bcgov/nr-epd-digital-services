@@ -1,13 +1,12 @@
-name: Continuous Integration And Deployment On Push to DEV
+name: Manual Deployment to PROD From Main.
+#This workflow will just tag docker image from test to the tag number and deploy it to PROD.
 
 on:
-  workflow_dispatch: # TODO this is there for testing purposes, once the pipelines are all done, remove this
-  push:
-    branches:
-      - 'dev'
-    paths:
-      - 'backend/**'
-      - 'frontend/**'
+  workflow_dispatch:
+    inputs:
+      RELEASE_VERSION:
+        required: true
+        description: The Tag release to PROD.
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -16,7 +15,7 @@ concurrency:
 jobs:
   builds:
     name: Builds
-    environment: dev
+    environment: prod
     uses: ./.github/workflows/_build.yml
     strategy:
       matrix:
@@ -30,8 +29,8 @@ jobs:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
       component: ${{ matrix.component }}
-      img_build: "dev" # ask the team dev or latest
-      img_fallback: dev
+      img_build: "test"
+      img_fallback: "test"
       triggers: ${{ matrix.triggers }}
 
   tests:
