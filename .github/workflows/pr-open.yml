@@ -83,7 +83,7 @@ jobs:
             -Dsonar.project.monorepo.enabled=true
             -Dsonar.projectKey=${{ github.event.repository.name }}
             -Dsonar.sources=backend/src,frontend/src
-            -Dsonar.tests=backend/test
+            -Dsonar.tests=backend/test/*
             
  
   # deploys:
