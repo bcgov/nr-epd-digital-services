@@ -1,6 +1,7 @@
 name: Continuous Integration On Push and Pull Request to DEV
 
 on:
+  workflow_dispatch: # TODO this is there for testing purposes, once the pipelines are all done, remove this
   push:
     branches:
       - 'feature/**'
