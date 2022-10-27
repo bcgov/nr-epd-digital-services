@@ -63,7 +63,7 @@ GraphQLModule.forRoot<ApolloGatewayDriverConfig>({
     // ... Apollo server options
     cors: true,
 
-    context: handleAuth
+    //context: handleAuth
   }
   ,
  

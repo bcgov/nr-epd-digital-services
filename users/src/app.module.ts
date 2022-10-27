@@ -11,14 +11,14 @@ import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
-    KeycloakConnectModule.register({
-      authServerUrl: 'https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth',
-      realm: 'epd-dev',
-      clientId: 'backend',
-      secret: '06777f04-8056-4318-b59c-3f1057555af3',
+    // KeycloakConnectModule.register({
+    //   authServerUrl: 'https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth',
+    //   realm: 'epd-dev',
+    //   clientId: 'backend',
+    //   secret: '06777f04-8056-4318-b59c-3f1057555af3',
       
-      // Secret key of the client taken from keycloak server
-    }),
+    //   // Secret key of the client taken from keycloak server
+    // }),
     UsersModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -50,18 +50,18 @@ import { APP_GUARD } from '@nestjs/core';
   ],
   controllers: [AppController],
   providers: [AppService,
-    {
-      provide: APP_GUARD,     
-      useClass: AuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: ResourceGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RoleGuard,
-    }
+    // {
+    //   provide: APP_GUARD,     
+    //   useClass: AuthGuard,
+    // },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: ResourceGuard,
+    // },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: RoleGuard,
+    // }
   ],
 
 })
