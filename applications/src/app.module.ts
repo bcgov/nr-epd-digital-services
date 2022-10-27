@@ -15,14 +15,14 @@ import { UsersResolver } from './application/users.resolver';
 
 @Module({
   imports: [
-    KeycloakConnectModule.register({
-      authServerUrl: 'https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth',
-      realm: 'epd-dev',
-      clientId: 'applicationapi',
-      secret: 'cNrfJNtuyCije5Em5I0oIJA1oFV9IsxQ',
-      policyEnforcement: PolicyEnforcementMode.PERMISSIVE,
-      // Secret key of the client taken from keycloak server
-    }),
+    // KeycloakConnectModule.register({
+    //   authServerUrl: 'https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth',
+    //   realm: 'epd-dev',
+    //   clientId: 'applicationapi',
+    //   secret: 'cNrfJNtuyCije5Em5I0oIJA1oFV9IsxQ',
+    //   policyEnforcement: PolicyEnforcementMode.PERMISSIVE,
+    //   // Secret key of the client taken from keycloak server
+    // }),
         ApplicationModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -48,17 +48,18 @@ import { UsersResolver } from './application/users.resolver';
 
   controllers: [AppController],
   providers: [AppService,
-    {
-      provide: APP_GUARD,     
-      useClass: AuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: ResourceGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RoleGuard,
-    }],
+    // {
+    //   provide: APP_GUARD,     
+    //   useClass: AuthGuard,
+    // },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: ResourceGuard,
+    // },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: RoleGuard,
+    // }
+  ],
 })
 export class AppModule {}
