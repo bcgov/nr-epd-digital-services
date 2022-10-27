@@ -33,7 +33,7 @@ export const addNewUser = createAsyncThunk(
       variables: {
         user: {
           name: newUser.name,
-          email: newUser.email,
+          // email: newUser.email,
         },
       },
     });
@@ -106,7 +106,7 @@ const usersSlice = createSlice({
       .addCase(fetchUsers.fulfilled, (state, action) => {
         const newState = { ...state };
         newState.fetchStatus =  RequestStatus.success;
-        const loadedUsers = action.payload.findUsers.slice();       
+        const loadedUsers = action.payload.users.slice();       
         newState.users = loadedUsers;
         return newState;
       })

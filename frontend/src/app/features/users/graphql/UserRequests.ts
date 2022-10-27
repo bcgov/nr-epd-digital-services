@@ -1,17 +1,16 @@
 import gql from 'graphql-tag'
 export const FETCH_USERS = gql`
   query{
-    findUsers{
+    users{
       name
-      id
-      email
+      id      
     }
   }`
 
 
 export const ADD_USER = gql`
-  mutation createUser($user:CreateUserDto!){
-    createUser(user:$user){
+  mutation createUser($user:CreateUserInput!){
+    createUser(createUserInput:$user){
       id
     }
   }`
