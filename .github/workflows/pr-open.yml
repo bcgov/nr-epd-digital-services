@@ -10,37 +10,37 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  builds:
-    name: Builds
-    uses: ./.github/workflows/_build.yml
-    strategy:
-      matrix:
-        component: [backend, frontend]
-        include:
-          - component: backend
-            triggers: ('backend/')
-          - component: frontend
-            triggers: ('frontend/')
-    secrets:
-      gh_token: ${{ secrets.GITHUB_TOKEN }}
-    with:
-      component: ${{ matrix.component }}
-      img_build: ${{ github.event.number }}
-      img_fallback: prod
-      triggers: ${{ matrix.triggers }}
+  # builds:
+  #   name: Builds
+  #   uses: ./.github/workflows/_build.yml
+  #   strategy:
+  #     matrix:
+  #       component: [backend, frontend]
+  #       include:
+  #         - component: backend
+  #           triggers: ('backend/')
+  #         - component: frontend
+  #           triggers: ('frontend/')
+  #   secrets:
+  #     gh_token: ${{ secrets.GITHUB_TOKEN }}
+  #   with:
+  #     component: ${{ matrix.component }}
+  #     img_build: ${{ github.event.number }}
+  #     img_fallback: prod
+  #     triggers: ${{ matrix.triggers }}
 
-  tests:
-    name: Unit Tests
-    uses: ./.github/workflows/_code-cov.yml
-    strategy:
-      matrix:
-        component: [backend, frontend]
-    secrets:
-      gh_token: ${{ secrets.GITHUB_TOKEN }}
-    with:
-      component: ${{ matrix.component }}
-      lcov_file: ${{ matrix.component }}/coverage/lcov.info
-      test_cmd: npm run test:cov
+  # tests:
+  #   name: Unit Tests
+  #   uses: ./.github/workflows/_code-cov.yml
+  #   strategy:
+  #     matrix:
+  #       component: [backend, frontend]
+  #   secrets:
+  #     gh_token: ${{ secrets.GITHUB_TOKEN }}
+  #   with:
+  #     component: ${{ matrix.component }}
+  #     lcov_file: ${{ matrix.component }}/coverage/lcov.info
+  #     test_cmd: npm run test:cov
 
   sonarcloud:
     name: Static Analysis
