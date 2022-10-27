@@ -8,30 +8,36 @@ import { FetchUsersArgs } from './dto/fetch-users-args.dto';
 
 @Injectable()
 export class ApplicationService {
-
-  constructor(@InjectRepository(Application) 
-  private applicationRepo:Repository<Application>){
-
-  }
+  constructor(
+    @InjectRepository(Application)
+    private applicationRepo: Repository<Application>,
+  ) {}
 
   async create(createApplicationInput: CreateApplicationInput) {
-
-    const newApp = this.applicationRepo.create(createApplicationInput);  
-     await this.applicationRepo.save(newApp);
-     return newApp;
+    const newApp = this.applicationRepo.create(createApplicationInput);
+    await this.applicationRepo.save(newApp);
+    return newApp;
   }
 
   async findAll() {
-    return  await this.applicationRepo.find();
+    return await this.applicationRepo.find();
   }
 
-  async findAllWithFilter(args:FetchUsersArgs) {
-    return  await this.applicationRepo.find({
-      skip:args.skip,
-      take:args.take,
-      where:{     
-      name: Like(`%${args.nameLike}%`)
-     }}    );
+  async findAllWithFilter(args: FetchUsersArgs) {
+    if (args.nameLike == '') {
+      return await this.applicationRepo.find({
+        skip: args.skip,
+        take: args.take,
+      });
+    } else {
+      return await this.applicationRepo.find({
+        skip: args.skip,
+        take: args.take,
+        where: {
+          name: Like(`%${args.nameLike}%`),
+        },
+      });
+    }
   }
 
   findOne(id: number) {
@@ -46,13 +52,24 @@ export class ApplicationService {
     return `This action removes a #${id} application`;
   }
 
-  async forUser(args:FetchUsersArgs ,id:number):Promise <Application[]>{
-   return await this.applicationRepo.find({
-    skip:args.skip,
-    take:args.take,
-    where:{
-    userId:id,
-    name: Like(`%${args.nameLike}%`)
-   }})
+  async forUser(args: FetchUsersArgs, id: number): Promise<Application[]> {
+    if (args.nameLike == '') {
+      return await this.applicationRepo.find({
+        skip: args.skip,
+        take: args.take,
+        where: {
+          userId: id,
+        },
+      });
+    } else {
+      return await this.applicationRepo.find({
+        skip: args.skip,
+        take: args.take,
+        where: {
+          userId: id,
+          name: Like(`%${args.nameLike}%`),
+        },
+      });
+    }
   }
 }
