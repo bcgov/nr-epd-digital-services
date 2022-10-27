@@ -83,7 +83,7 @@ jobs:
             -Dsonar.project.monorepo.enabled=true
             -Dsonar.projectKey=${{ github.event.repository.name }}
             -Dsonar.sources=backend,frontend
-            -Dsonar.tests=nr-epd-digital-services/backend/src/users/*.spec.ts
+            -Dsonar.tests=backend/src/users/*.spec.ts
 
   # deploys:
   #   name: Deploys
