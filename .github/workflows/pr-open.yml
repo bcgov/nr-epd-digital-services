@@ -82,7 +82,7 @@ jobs:
             -Dsonar.cobertura.reportPaths=backend/coverage/cobertura-coverage.xml,frontend/coverage/cobertura-coverage.xml
             -Dsonar.project.monorepo.enabled=true
             -Dsonar.projectKey=${{ github.event.repository.name }}
-            -Dsonar.sources=backend,frontend
+            -Dsonar.sources=backend/src,frontend/src
             -Dsonar.tests=backend/test
             
  
