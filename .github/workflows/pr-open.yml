@@ -76,14 +76,14 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.exclusions=backend/src/*.spec.**,backend/src/**/*.spec.**
+            -Dsonar.exclusions=**/src/*.spec.ts,**/src/**/*.spec.ts
             -Dsonar.organization=bcgov-sonarcloud
             -Dsonar.javascript.lcov.reportPaths=backend/coverage/lcov.info,frontend/coverage/lcov.info
             -Dsonar.cobertura.reportPaths=backend/coverage/cobertura-coverage.xml,frontend/coverage/cobertura-coverage.xml
             -Dsonar.project.monorepo.enabled=true
             -Dsonar.projectKey=${{ github.event.repository.name }}
             -Dsonar.sources=backend/src/,frontend/src/
-            -Dsonar.tests=backend/src/*.spec.**,backend/src/**/*.spec.**
+            -Dsonar.tests=**/src/*.spec.ts,**/src/**/*.spec.ts
            
  
   # deploys:
