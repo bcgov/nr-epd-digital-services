@@ -60,15 +60,15 @@ jobs:
           - component: database
             overwrite: false
             template_file: .github/openshift/deploy.database.yml
-            template_vars: -p ZONE=${{ github.event.number }}
+            template_vars: -p DB_PVC_SIZE=100Mi
           - component: backend
             overwrite: true
             template_file: .github/openshift/deploy.backend.yml
-            template_vars: -p ZONE=${{ github.event.number }} -p PROMOTE=${{ github.repository }}:${{ github.event.number }}-backend
+            template_vars: -p PROMOTE=${{ github.repository }}/backend -p CONTAINER_PORT=3000
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
-            template_vars: -p ZONE=${{ github.event.number }} -p PROMOTE=${{ github.repository }}:${{ github.event.number }}-frontend
+            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=3000
     secrets:
       oc_namespace: ${{ secrets.OC_NAMESPACE }}
       oc_server: ${{ secrets.OC_SERVER }}
