@@ -128,6 +128,10 @@ objects:
                 initialDelaySeconds: 60
                 periodSeconds: 30
                 timeoutSeconds: 5
+        volumes:
+          - name: tls-certs
+            secret:
+              secretName: "${NAME}-${COMPONENT}-cert"
   - apiVersion: v1
     kind: Service
     metadata:
@@ -159,3 +163,20 @@ objects:
       tls:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
+  - apiVersion: autoscaling/v2beta1
+    kind: HorizontalPodAutoscaler
+    metadata:
+      name: "${NAME}-${COMPONENT}"
+    spec:
+      scaleTargetRef:
+        apiVersion: apps.openshift.io/v1
+        kind: DeploymentConfig
+        name: "${NAME}-${COMPONENT}"
+        subresource: scale
+      minReplicas: ${MIN_REPLICAS}
+      maxReplicas: ${MAX_REPLICAS}
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            targetAverageUtilization: 100
