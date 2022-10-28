@@ -65,7 +65,7 @@ jobs:
               if [[ "${check}" =~ "${t}" ]]
               then
                   # Output build=true for next steps
-                  echo "::set-output name=build::true"
+                  echo "build=true" >> $GITHUB_OUTPUT
                   echo -e "${t}\n --> ${check}\n"
                   exit 0
               fi
@@ -78,13 +78,13 @@ jobs:
           if [ $(curl -ILso /dev/null -w "%{http_code}" -H "Authorization: Bearer ${TOKEN}" "${URL}") -ne 200 ]
           then
               # Output build=true for next steps
-              echo "::set-output name=build::true"
+              echo "build=true" >> $GITHUB_OUTPUT
               echo -e "\nBuilding image, since no fallback is available!"
               exit 0
           fi
 
           # If at this point, no build is required
-          echo "::set-output name=build::false"
+          echo "build=false" >> $GITHUB_OUTPUT
           echo "Container build not required"
 
       # If a build is not required, reuse a previous image

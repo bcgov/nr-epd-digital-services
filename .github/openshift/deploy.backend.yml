@@ -38,7 +38,30 @@ parameters:
   - name: CONTAINER_PORT
     description: The port on which the application will be accessible
     required: true
+  - name: REGISTRY
+    description: Container registry to import from (internal is image-registry.openshift-image-registry.svc:5000)
+    value: ghcr.io
+  -
+    name: PROMOTE
+    description: Image (namespace/name:tag) to promote/import
+    value: bcgov/greenfield-pipeline:prod-frontend
 objects:
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      labels:
+        app: ${NAME}-${COMPONENT}
+      name: ${NAME}-${COMPONENT}
+    spec:
+      lookupPolicy:
+        local: false
+      tags:
+        - name: ${IMAGE_TAG}
+          from:
+            kind: DockerImage
+            name: ${REGISTRY}/${PROMOTE}
+          referencePolicy:
+            type: Local
   - apiVersion: v1
     kind: DeploymentConfig
     metadata:
