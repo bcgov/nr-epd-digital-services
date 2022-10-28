@@ -16,7 +16,6 @@ concurrency:
 jobs:
   builds:
     name: Builds
-    environment: tools
     uses: ./.github/workflows/_build.yml
     strategy:
       matrix:
@@ -30,7 +29,7 @@ jobs:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
       component: ${{ matrix.component }}
-      img_build: "tools" # ask the team dev or latest
+      img_build: "tools" 
       img_fallback: tools
       triggers: ${{ matrix.triggers }}
 
@@ -75,6 +74,7 @@ jobs:
       oc_server: ${{ secrets.OC_SERVER }}
       oc_token: ${{ secrets.OC_TOKEN }}
     with:
+      environment: tools
       component: ${{ matrix.component }}
       overwrite: ${{ matrix.overwrite }}
       template_file: ${{ matrix.template_file }}
