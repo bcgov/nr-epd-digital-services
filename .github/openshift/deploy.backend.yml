@@ -31,20 +31,19 @@ parameters:
     value: 150Mi
   - name: MIN_REPLICAS
     description: The minimum amount of replicas
-    required: true
+    value: 1
   - name: MAX_REPLICAS
     description: The maximum amount of replicas
-    required: true
+    value: 3
   - name: CONTAINER_PORT
     description: The port on which the application will be accessible
     required: true
   - name: REGISTRY
     description: Container registry to import from (internal is image-registry.openshift-image-registry.svc:5000)
     value: ghcr.io
-  -
-    name: PROMOTE
+  - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
-    value: bcgov/greenfield-pipeline:prod-frontend
+    value: bcgov/nr-epd-digital-services/backend:latest
 objects:
   - apiVersion: v1
     kind: ImageStream
@@ -91,7 +90,7 @@ objects:
             deploymentconfig: ${NAME}-${COMPONENT}
         spec:
           containers:
-            - image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/${NAME}-${COMPONENT}:${IMAGE_TAG}
+            - image: ${NAME}-${COMPONENT}:${IMAGE_TAG}
               imagePullPolicy: Always
               volumeMounts:
                 - name: tls-certs
