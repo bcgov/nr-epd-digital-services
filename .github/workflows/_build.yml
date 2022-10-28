@@ -55,7 +55,7 @@ jobs:
         id: check
         run: |
           # Fetch default branch to diff against
-          git fetch origin ${{ env.default_branch }}:refs/remotes/origin/master
+          git fetch origin ${{ env.default_branch }}:refs/remotes/origin/main
 
           # Trigger build if diff matches any triggers
           TRIGGERS=${{ inputs.triggers }}
