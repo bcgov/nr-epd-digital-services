@@ -150,7 +150,7 @@ objects:
       name: ${NAME}-${COMPONENT}
     spec:
       ports:
-        - name: ${{CONTAINER_PORT}}-tcp
+        - name: ${CONTAINER_PORT}-tcp
           protocol: TCP
           port: 80
           targetPort: ${{CONTAINER_PORT}}
