@@ -65,11 +65,11 @@ jobs:
           - component: backend
             overwrite: true
             template_file: .github/openshift/deploy.backend.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend -p CONTAINER_PORT=3000
+            template_vars: -p PROMOTE=${{ github.repository }}/backend:tools -p CONTAINER_PORT=3000
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=3000
+            template_vars: -p PROMOTE=${{ github.repository }}/frontend:tools -p CONTAINER_PORT=3000
     secrets:
       oc_namespace: ${{ secrets.OC_NAMESPACE }}
       oc_server: ${{ secrets.OC_SERVER }}
