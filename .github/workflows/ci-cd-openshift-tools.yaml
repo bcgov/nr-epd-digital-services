@@ -29,9 +29,10 @@ jobs:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
       component: ${{ matrix.component }}
-      img_build: "tools" 
+      img_build: "tools"
       img_fallback: tools
       triggers: ${{ matrix.triggers }}
+      force_build: "true"
 
   tests:
     name: Unit Tests
