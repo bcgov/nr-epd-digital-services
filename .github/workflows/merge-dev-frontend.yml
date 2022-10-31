@@ -51,7 +51,7 @@ jobs:
       - name: Start Build Openshift
         shell: bash
         run: |
-          oc start-build frontend-dev-build --wait
+          oc start-build frontend-build --wait
 
       - name: Tag+Deploy for DEV
         shell: bash
