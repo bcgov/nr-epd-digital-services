@@ -43,7 +43,7 @@ parameters:
     value: ghcr.io
   - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
-    value: bcgov/nr-epd-digital-services/frontend:latest
+    value: bcgov/nr-epd-digital-services/frontend
   - name: ENV
     description: The Environment on which it is deployed
     required: true
@@ -61,7 +61,7 @@ objects:
         - name: ${IMAGE_TAG}
           from:
             kind: DockerImage
-            name: ${REGISTRY}/${PROMOTE}
+            name: ${REGISTRY}/${PROMOTE}:${IMAGE_TAG}
           referencePolicy:
             type: Local
   - apiVersion: v1
