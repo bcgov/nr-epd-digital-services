@@ -35,5 +35,5 @@ RUN set -x \
 # Expose port - mostly a convention, for readability
 EXPOSE 3000
 
-# Start up command
-ENTRYPOINT ["node", "dist/main"]
+# Start up command, with max heap size as 50Megs
+ENTRYPOINT ["node", "--max-old-space-size=50","dist/main"]

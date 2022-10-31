@@ -1,4 +1,4 @@
-name: Code Coverage
+name: Deploy
 
 on:
   workflow_call:
@@ -7,10 +7,20 @@ on:
         type: string
         required: true
         description: Component (e.g. backend, frontend), also used as path
+      environment:
+        type: string
+        required: false
+        default: ""
+        description: GitHub environment containing required secrets
       overwrite:
         type: string
         required: true
         description: Replace existing objects/artifacts?
+      repository:
+        type: string
+        default: ${{ github.repository }}
+        required: false
+        description: Optionally, specify a different repo to clone
       template_file:
         type: string
         required: true
@@ -34,8 +44,11 @@ jobs:
   deploy:
     name: ${{ inputs.component }}
     runs-on: ubuntu-22.04
+    environment: ${{ inputs.environment }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          repository: ${{ inputs.repository }}
 
       - name: Deploy
         run: |
@@ -80,3 +93,4 @@ jobs:
               exit 1
           fi
           echo -e "Deployment successful!"
+          [ -z "${URL}"] || echo "URL: ${URL}"
