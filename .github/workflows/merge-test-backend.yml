@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - "backend/**"
-      - ".github\workflows\merge-test-backend.yml"
+      - ".github/workflows/merge-test-backend.yml"
   workflow_dispatch:
     inputs:
       environment:
