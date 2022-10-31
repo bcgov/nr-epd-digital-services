@@ -101,7 +101,7 @@ objects:
                 - name: BACKEND_URL
                   value: https://${NAME}-backend.${DOMAIN}
               ports:
-                - containerPort: ${CONTAINER_PORT}
+                - containerPort: ${{CONTAINER_PORT}}
                   protocol: TCP
               resources:
                 requests:
@@ -112,7 +112,7 @@ objects:
                   memory: ${MEMORY_LIMIT}
               readinessProbe:
                 tcpSocket:
-                  port: ${CONTAINER_PORT}
+                  port: ${{CONTAINER_PORT}}
                 initialDelaySeconds: 10
                 periodSeconds: 10
                 timeoutSeconds: 5
@@ -123,7 +123,7 @@ objects:
                 failureThreshold: 3
                 httpGet:
                   path: /
-                  port: ${CONTAINER_PORT}
+                  port: ${{CONTAINER_PORT}}
                   scheme: HTTP
                 initialDelaySeconds: 60
                 periodSeconds: 30
@@ -140,10 +140,10 @@ objects:
       name: ${NAME}-${COMPONENT}
     spec:
       ports:
-        - name: ${CONTAINER_PORT}-tcp
+        - name: ${{CONTAINER_PORT}}-tcp
           protocol: TCP
           port: 80
-          targetPort: ${CONTAINER_PORT}
+          targetPort: ${{CONTAINER_PORT}}
       selector:
         deploymentconfig: ${NAME}-${COMPONENT}
   - apiVersion: route.openshift.io/v1
@@ -155,7 +155,7 @@ objects:
     spec:
       host: ${NAME}-${COMPONENT}.${DOMAIN}
       port:
-        targetPort: ${CONTAINER_PORT}-tcp
+        targetPort: ${{CONTAINER_PORT}}-tcp
       to:
         kind: Service
         name: ${NAME}-${COMPONENT}
@@ -173,8 +173,8 @@ objects:
         kind: DeploymentConfig
         name: "${NAME}-${COMPONENT}"
         subresource: scale
-      minReplicas: ${MIN_REPLICAS}
-      maxReplicas: ${MAX_REPLICAS}
+      minReplicas: ${{MIN_REPLICAS}}
+      maxReplicas: ${{MAX_REPLICAS}}
       metrics:
         - type: Resource
           resource:
