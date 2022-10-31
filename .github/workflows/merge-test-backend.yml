@@ -3,7 +3,8 @@ name: Deploy backend to Test env
 on:
   push:
     branches:
-      - main
+     # - main
+      - ss-20
     paths:
       - "backend/**"
       - ".github/workflows/merge-test-backend.yml"

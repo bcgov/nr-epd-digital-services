@@ -3,7 +3,8 @@ name: Deploy Frontend to Test env
 on:
   push:
     branches:
-      - main
+    #  - main
+       - ss-20
     paths:
       - "frontend/**"
       - ".github/workflows/merge-test-frontend.yml"
