@@ -150,7 +150,7 @@ objects:
     spec:
       host: ${NAME}-${COMPONENT}-${ENV}.${DOMAIN}
       port:
-        targetPort: ${{CONTAINER_PORT}}-tcp
+        targetPort: ${CONTAINER_PORT}-tcp
       to:
         kind: Service
         name: ${NAME}-${COMPONENT}
