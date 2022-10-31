@@ -44,6 +44,9 @@ parameters:
   - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
     value: bcgov/nr-epd-digital-services/frontend:latest
+  - name: ENV
+    description: The Environment on which it is deployed
+    required: true
 objects:
   - apiVersion: v1
     kind: ImageStream
@@ -99,7 +102,7 @@ objects:
               name: ${NAME}-${COMPONENT}
               env:
                 - name: BACKEND_URL
-                  value: https://${NAME}-backend.${DOMAIN}
+                  value: https://${NAME}-backend-${ENV}.${DOMAIN}
               ports:
                 - containerPort: ${{CONTAINER_PORT}}
                   protocol: TCP
@@ -153,7 +156,7 @@ objects:
         app: ${NAME}-${COMPONENT}
       name: ${NAME}-${COMPONENT}
     spec:
-      host: ${NAME}-${COMPONENT}.${DOMAIN}
+      host: ${NAME}-${COMPONENT}-${ENV}.${DOMAIN}
       port:
         targetPort: ${{CONTAINER_PORT}}-tcp
       to:

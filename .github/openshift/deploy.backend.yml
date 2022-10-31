@@ -7,8 +7,8 @@ metadata:
     tags: "epd"
     iconClass: icon-js
 labels:
-  app: ${NAME}-${ZONE}
-  app.kubernetes.io/part-of: ${NAME}-${ZONE}
+  app: ${NAME}-${COMPONENT}
+  app.kubernetes.io/part-of: ${NAME}-${COMPONENT}
 parameters:
   - name: NAME
     description: Module name
@@ -44,6 +44,9 @@ parameters:
   - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
     value: bcgov/nr-epd-digital-services/backend:latest
+  - name: ENV
+    description: The Environment on which it is deployed
+    required: true
 objects:
   - apiVersion: v1
     kind: ImageStream
@@ -95,21 +98,21 @@ objects:
               name: ${NAME}-${COMPONENT}
               env:
                 - name: POSTGRESQL_HOST
-                  value: ${NAME}-${ZONE}-database
+                  value: ${NAME}-database
                 - name: POSTGRESQL_DATABASE
                   valueFrom:
                     secretKeyRef:
-                      name: ${NAME}-${ZONE}-database
+                      name: ${NAME}-database
                       key: database-name
                 - name: POSTGRESQL_PASSWORD
                   valueFrom:
                     secretKeyRef:
-                      name: ${NAME}-${ZONE}-database
+                      name: ${NAME}-database
                       key: database-password
                 - name: POSTGRESQL_USER
                   valueFrom:
                     secretKeyRef:
-                      name: ${NAME}-${ZONE}-database
+                      name: ${NAME}-database
                       key: database-user
               ports:
                 - containerPort: ${{CONTAINER_PORT}}
@@ -160,7 +163,7 @@ objects:
         app: ${NAME}-${COMPONENT}
       name: ${NAME}-${COMPONENT}
     spec:
-      host: ${NAME}-${COMPONENT}.${DOMAIN}
+      host: ${NAME}-${COMPONENT}-${ENV}.${DOMAIN}
       port:
         targetPort: ${{CONTAINER_PORT}}-tcp
       to:
