@@ -53,11 +53,11 @@ jobs:
           - component: backend
             overwrite: true
             template_file: .github/openshift/deploy.backend.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend -p CONTAINER_PORT=3000 -p ENV=test -p IMAGE_TAG=test
+            template_vars: -p PROMOTE=${{ github.repository }}/backend -p CONTAINER_PORT=3000 -p ENV=test -p IMAGE_TAG=test -p MIN_REPLICAS=3 -p MAX_REPLICAS=5
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=3000 -p ENV=test -p IMAGE_TAG=test
+            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=3000 -p ENV=test -p IMAGE_TAG=test -p MIN_REPLICAS=3 -p MAX_REPLICAS=5
     secrets:
       oc_namespace: ${{ secrets.OC_NAMESPACE }}
       oc_server: ${{ secrets.OC_SERVER }}
