@@ -1,4 +1,4 @@
-name: Deploy Frontend to Test
+name: Deploy Frontend to Test env
 
 on:
   push:
@@ -51,7 +51,7 @@ jobs:
       - name: Start Build Openshift
         shell: bash
         run: |
-          oc start-build frontend-test-build --wait
+          oc start-build frontend-build --wait
 
       - name: Tag+Deploy for TEST
         shell: bash

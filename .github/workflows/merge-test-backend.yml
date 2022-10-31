@@ -1,4 +1,4 @@
-name: Deploy backend to Test
+name: Deploy backend to Test env
 
 on:
   push:
@@ -51,7 +51,7 @@ jobs:
       - name: Start Build Openshift
         shell: bash
         run: |
-          oc start-build backend-test-build --wait
+          oc start-build backend-build --wait
 
       - name: Tag+Deploy for Test
         shell: bash
