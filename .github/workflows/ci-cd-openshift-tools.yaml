@@ -32,7 +32,6 @@ jobs:
       img_build: "tools"
       img_fallback: tools
       triggers: ${{ matrix.triggers }}
-      force_build: "true"
 
   tests:
     name: Unit Tests

@@ -95,10 +95,6 @@ objects:
           containers:
             - image: ${NAME}-${COMPONENT}:${IMAGE_TAG}
               imagePullPolicy: Always
-              volumeMounts:
-                - name: tls-certs
-                  mountPath: "/etc/tls-certs"
-                  readOnly: true
               name: ${NAME}-${COMPONENT}
               env:
                 - name: BACKEND_URL
@@ -131,10 +127,6 @@ objects:
                 initialDelaySeconds: 60
                 periodSeconds: 30
                 timeoutSeconds: 5
-        volumes:
-          - name: tls-certs
-            secret:
-              secretName: "${NAME}-${COMPONENT}-cert"
   - apiVersion: v1
     kind: Service
     metadata:
