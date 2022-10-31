@@ -31,10 +31,10 @@ parameters:
     value: "150Mi"
   - name: MIN_REPLICAS
     description: The minimum amount of replicas
-    value: 1
+    value: "1"
   - name: MAX_REPLICAS
     description: The maximum amount of replicas
-    value: 3
+    value: "3"
   - name: CONTAINER_PORT
     description: The port on which the application will be accessible
     required: true
@@ -163,7 +163,7 @@ objects:
       tls:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
-  - apiVersion: autoscaling/v2beta1
+  - apiVersion: autoscaling/v2
     kind: HorizontalPodAutoscaler
     metadata:
       name: "${NAME}-${COMPONENT}"
@@ -172,11 +172,12 @@ objects:
         apiVersion: apps.openshift.io/v1
         kind: DeploymentConfig
         name: "${NAME}-${COMPONENT}"
-        subresource: scale
       minReplicas: ${{MIN_REPLICAS}}
       maxReplicas: ${{MAX_REPLICAS}}
       metrics:
         - type: Resource
           resource:
             name: cpu
-            targetAverageUtilization: 100
+            target:
+              type: Utilization
+              averageUtilization: 100
