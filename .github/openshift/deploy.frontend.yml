@@ -78,7 +78,7 @@ objects:
           imageChangeParams:
             automatic: true
             containerNames:
-              - ${NAME}
+              - ${NAME}-${COMPONENT}
             from:
               kind: ImageStreamTag
               name: ${NAME}-${COMPONENT}:${IMAGE_TAG}
