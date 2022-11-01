@@ -5,6 +5,7 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { Resource, RoleMatchingMode, Roles } from 'nest-keycloak-connect';
 import { request } from 'http';
+import { FormData } from './dto/form-data';
 // import { Application } from './entities/application.entity';
 
 @Resolver(() => User)
@@ -24,6 +25,13 @@ export class UsersResolver {
   @Query(() => [User], { name: 'users' })
   findAll() {
     return this.usersService.findAll();
+  }
+
+  @Mutation(() => String)
+  submitForm(@Args('data') data:FormData)
+  {
+      console.log(data)
+      return "submited";
   }
 
   
