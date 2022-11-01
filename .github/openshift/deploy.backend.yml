@@ -7,12 +7,12 @@ metadata:
     tags: "epd"
     iconClass: icon-js
 labels:
-  app: ${NAME}-${ZONE}
-  app.kubernetes.io/part-of: ${NAME}-${ZONE}
+  app: ${NAME}-${COMPONENT}
+  app.kubernetes.io/part-of: ${NAME}-${COMPONENT}
 parameters:
   - name: NAME
     description: Module name
-    value: EPD
+    value: epd
   - name: COMPONENT
     description: Component name
     value: backend
@@ -22,19 +22,19 @@ parameters:
   - name: DOMAIN
     value: apps.silver.devops.gov.bc.ca
   - name: CPU_REQUEST
-    value: 25m
+    value: "25m"
   - name: MEMORY_REQUEST
-    value: 50Mi
+    value: "50Mi"
   - name: CPU_LIMIT
-    value: 75m
+    value: "75m"
   - name: MEMORY_LIMIT
-    value: 150Mi
+    value: "150Mi"
   - name: MIN_REPLICAS
     description: The minimum amount of replicas
-    value: 1
+    value: "1"
   - name: MAX_REPLICAS
     description: The maximum amount of replicas
-    value: 3
+    value: "3"
   - name: CONTAINER_PORT
     description: The port on which the application will be accessible
     required: true
@@ -43,7 +43,10 @@ parameters:
     value: ghcr.io
   - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
-    value: bcgov/nr-epd-digital-services/backend:latest
+    value: bcgov/nr-epd-digital-services/backend
+  - name: ENV
+    description: The Environment on which it is deployed
+    required: true
 objects:
   - apiVersion: v1
     kind: ImageStream
@@ -58,7 +61,7 @@ objects:
         - name: ${IMAGE_TAG}
           from:
             kind: DockerImage
-            name: ${REGISTRY}/${PROMOTE}
+            name: ${REGISTRY}/${PROMOTE}:${IMAGE_TAG}
           referencePolicy:
             type: Local
   - apiVersion: v1
@@ -92,31 +95,27 @@ objects:
           containers:
             - image: ${NAME}-${COMPONENT}:${IMAGE_TAG}
               imagePullPolicy: Always
-              volumeMounts:
-                - name: tls-certs
-                  mountPath: "/etc/tls-certs"
-                  readOnly: true
               name: ${NAME}-${COMPONENT}
               env:
                 - name: POSTGRESQL_HOST
-                  value: ${NAME}-${ZONE}-database
+                  value: ${NAME}-database
                 - name: POSTGRESQL_DATABASE
                   valueFrom:
                     secretKeyRef:
-                      name: ${NAME}-${ZONE}-database
+                      name: ${NAME}-database
                       key: database-name
                 - name: POSTGRESQL_PASSWORD
                   valueFrom:
                     secretKeyRef:
-                      name: ${NAME}-${ZONE}-database
+                      name: ${NAME}-database
                       key: database-password
                 - name: POSTGRESQL_USER
                   valueFrom:
                     secretKeyRef:
-                      name: ${NAME}-${ZONE}-database
+                      name: ${NAME}-database
                       key: database-user
               ports:
-                - containerPort: ${CONTAINER_PORT}
+                - containerPort: ${{CONTAINER_PORT}}
                   protocol: TCP
               resources:
                 requests:
@@ -127,7 +126,7 @@ objects:
                   memory: ${MEMORY_LIMIT}
               readinessProbe:
                 tcpSocket:
-                  port: ${CONTAINER_PORT}
+                  port: ${{CONTAINER_PORT}}
                 initialDelaySeconds: 10
                 periodSeconds: 10
                 timeoutSeconds: 5
@@ -138,15 +137,11 @@ objects:
                 failureThreshold: 3
                 httpGet:
                   path: /
-                  port: ${CONTAINER_PORT}
+                  port: ${{CONTAINER_PORT}}
                   scheme: HTTP
                 initialDelaySeconds: 60
                 periodSeconds: 30
                 timeoutSeconds: 5
-        volumes:
-          - name: tls-certs
-            secret:
-              secretName: "${NAME}-${COMPONENT}-cert"
   - apiVersion: v1
     kind: Service
     metadata:
@@ -158,7 +153,7 @@ objects:
         - name: ${CONTAINER_PORT}-tcp
           protocol: TCP
           port: 80
-          targetPort: ${CONTAINER_PORT}
+          targetPort: ${{CONTAINER_PORT}}
       selector:
         deploymentconfig: ${NAME}-${COMPONENT}
   - apiVersion: route.openshift.io/v1
@@ -168,7 +163,7 @@ objects:
         app: ${NAME}-${COMPONENT}
       name: ${NAME}-${COMPONENT}
     spec:
-      host: ${NAME}-${COMPONENT}.${DOMAIN}
+      host: ${NAME}-${COMPONENT}-${ENV}.${DOMAIN}
       port:
         targetPort: ${CONTAINER_PORT}-tcp
       to:
@@ -178,7 +173,7 @@ objects:
       tls:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
-  - apiVersion: autoscaling/v2beta1
+  - apiVersion: autoscaling/v2
     kind: HorizontalPodAutoscaler
     metadata:
       name: "${NAME}-${COMPONENT}"
@@ -187,11 +182,12 @@ objects:
         apiVersion: apps.openshift.io/v1
         kind: DeploymentConfig
         name: "${NAME}-${COMPONENT}"
-        subresource: scale
-      minReplicas: ${MIN_REPLICAS}
-      maxReplicas: ${MAX_REPLICAS}
+      minReplicas: ${{MIN_REPLICAS}}
+      maxReplicas: ${{MAX_REPLICAS}}
       metrics:
         - type: Resource
           resource:
             name: cpu
-            targetAverageUtilization: 100
+            target:
+              type: Utilization
+              averageUtilization: 100

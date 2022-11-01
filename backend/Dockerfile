@@ -9,28 +9,17 @@ RUN npm ci --only=prod  && \
     npm run build
 
 # Deployment container
-FROM registry.access.redhat.com/ubi8/ubi-micro
-
-# Set node to production 
+FROM node:lts-alpine
+WORKDIR /app
+# Set node to production
 ENV NODE_ENV production
-
-# Node packages and dependencies
-COPY --from=builder /usr/bin/node /usr/bin/
-COPY --from=builder /usr/lib64/libz.so.1 /usr/lib64/
-COPY --from=builder /usr/lib64/libbrotlidec.so.1 /usr/lib64/
-COPY --from=builder /usr/lib64/libbrotlienc.so.1 /usr/lib64/
-COPY --from=builder /usr/lib64/libcrypto.so.1.1 /usr/lib64/
-COPY --from=builder /usr/lib64/libssl.so.1.1 /usr/lib64/
-COPY --from=builder /usr/lib64/libstdc++.so.6 /usr/lib64/
-COPY --from=builder /usr/lib64/libgcc_s.so.1 /usr/lib64/
-COPY --from=builder /usr/lib64/libbrotlicommon.so.1 /usr/lib64/
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 
 #ss-20-Error:permission denied, mkdir 'logs/'fix
 RUN mkdir -p /app/logs/
 RUN set -x \
-    && chmod -R 777 /app/logs/
+    && chmod -R 777 /app
 
 # Expose port - mostly a convention, for readability
 EXPOSE 3000
