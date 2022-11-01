@@ -15,6 +15,10 @@ on:
         type: string
         required: true
         description: Where to pull default images from, e.g. prod, test
+      force_build:
+        type: string
+        required: false
+        default: "false"
       repository:
         type: string
         required: false
@@ -54,6 +58,13 @@ jobs:
       - name: Check and process modified files
         id: check
         run: |
+          FORCE_BUILD=${{ inputs.force_build }}
+          if [[ $FORCE_BUILD == "true" ]]
+          then
+                  # Output build=true for next steps
+                  echo "build=true" >> $GITHUB_OUTPUT
+                  exit 0
+          fi
           # Fetch default branch to diff against
           git fetch origin ${{ env.default_branch }}:refs/remotes/origin/main
 
