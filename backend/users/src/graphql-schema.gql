@@ -34,12 +34,18 @@ type Query {
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
+  submitForm(data: FormData!): String!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
 }
 
 input CreateUserInput {
   name: String!
+}
+
+input FormData {
+  id: String!
+  data: String!
 }
 
 input UpdateUserInput {
