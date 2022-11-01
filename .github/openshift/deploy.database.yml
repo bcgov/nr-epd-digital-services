@@ -3,22 +3,19 @@ kind: Template
 metadata:
   name: ${NAME}
   annotations:
-    description: "Greenfield Template"
-    tags: "gfp"
+    description: "EPD Digital Services"
+    tags: "EPD"
     iconClass: icon-js
 labels:
-  app: ${NAME}-${ZONE}
-  app.kubernetes.io/part-of: ${NAME}-${ZONE}
+  app: ${NAME}-${COMPONENT}
+  app.kubernetes.io/part-of: ${NAME}-${COMPONENT}
 parameters:
   - name: NAME
     description: Product name
-    value: gfp
+    value: epd
   - name: COMPONENT
     description: Component name
     value: database
-  - name: ZONE
-    description: Deployment zone, e.g. pr-### or prod
-    required: true
   - name: IMAGE_TAG
     description: Image tag to use
     value: latest
@@ -30,7 +27,7 @@ parameters:
     displayName: Database Volume Capacity
     name: DB_PVC_SIZE
     required: true
-    value: 1Gi
+    value: "200Mi"
   - name: REGISTRY
     value: image-registry.openshift-image-registry.svc:5000
   - name: PROMOTE
@@ -40,19 +37,19 @@ objects:
   - apiVersion: v1
     kind: Secret
     metadata:
-      name: ${NAME}-${ZONE}-${COMPONENT}
+      name: ${NAME}-${COMPONENT}
       labels:
-        app: ${NAME}-${ZONE}
+        app: ${NAME}-${COMPONENT}
     stringData:
-      database-name: ${NAME}
+      database-name: epd
       database-password: ${DB_PASSWORD}
-      database-user: ${NAME}
+      database-user: epd
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
-      name: ${NAME}-${ZONE}-${COMPONENT}
+      name: ${NAME}-${COMPONENT}
       labels:
-        app: ${NAME}-${ZONE}
+        app: ${NAME}
     spec:
       accessModes:
         - ReadWriteOnce
@@ -63,9 +60,9 @@ objects:
   - kind: ImageStream
     apiVersion: v1
     metadata:
-      name: ${NAME}-${ZONE}-${COMPONENT}
+      name: ${NAME}-${COMPONENT}
       labels:
-        app: ${NAME}-${ZONE}
+        app: ${NAME}
     spec:
       lookupPolicy:
         local: false
@@ -79,9 +76,9 @@ objects:
   - kind: DeploymentConfig
     apiVersion: v1
     metadata:
-      name: ${NAME}-${ZONE}-${COMPONENT}
+      name: ${NAME}-${COMPONENT}
       labels:
-        app: ${NAME}-${ZONE}
+        app: ${NAME}
     spec:
       replicas: 1
       triggers:
@@ -93,9 +90,9 @@ objects:
           - ${NAME}
           from:
             kind: ImageStreamTag
-            name: ${NAME}-${ZONE}-${COMPONENT}:${IMAGE_TAG}
+            name: ${NAME}-${COMPONENT}:${IMAGE_TAG}
       selector:
-        deploymentconfig: ${NAME}-${ZONE}-${COMPONENT}
+        deploymentconfig: ${NAME}-${COMPONENT}
       strategy:
         type: Recreate
         recreateParams:
@@ -103,18 +100,18 @@ objects:
         activeDeadlineSeconds: 21600
       template:
         metadata:
-          name: ${NAME}-${ZONE}-${COMPONENT}
+          name: ${NAME}-${COMPONENT}
           labels:
-            app: ${NAME}-${ZONE}
-            deploymentconfig: ${NAME}-${ZONE}-${COMPONENT}
+            app: ${NAME}
+            deploymentconfig: ${NAME}-${COMPONENT}
         spec:
           volumes:
-            - name: ${NAME}-${ZONE}-${COMPONENT}
+            - name: ${NAME}-${COMPONENT}
               persistentVolumeClaim:
-                claimName: ${NAME}-${ZONE}-${COMPONENT}
+                claimName: ${NAME}-${COMPONENT}
           containers:
             - name: ${NAME}
-              image: ${NAME}-${ZONE}-${COMPONENT}:${IMAGE_TAG}
+              image: ${NAME}-${COMPONENT}:${IMAGE_TAG}
               ports:
                 - containerPort: 5432
                   protocol: TCP
@@ -148,34 +145,21 @@ objects:
                 - name: POSTGRESQL_DATABASE
                   valueFrom:
                     secretKeyRef:
-                      name: ${NAME}-${ZONE}-${COMPONENT}
+                      name: ${NAME}-${COMPONENT}
                       key: database-name
                 - name: POSTGRESQL_PASSWORD
                   valueFrom:
                     secretKeyRef:
-                      name: ${NAME}-${ZONE}-${COMPONENT}
+                      name: ${NAME}-${COMPONENT}
                       key: database-password
                 - name: POSTGRESQL_USER
                   valueFrom:
                     secretKeyRef:
-                      name: ${NAME}-${ZONE}-${COMPONENT}
+                      name: ${NAME}-${COMPONENT}
                       key: database-user
               volumeMounts:
-                - name: ${NAME}-${ZONE}-${COMPONENT}
+                - name: ${NAME}-${COMPONENT}
                   mountPath: "/var/lib/pgsql/data"
-              livenessProbe:
-                initialDelaySeconds: 30
-                tcpSocket:
-                  port: 5432
-                timeoutSeconds: 1
-              readinessProbe:
-                exec:
-                  command:
-                    - /bin/bash
-                    - -c
-                    - pg_isready -h localhost -p 5432
-                initialDelaySeconds: 20
-                timeoutSeconds: 15
               terminationMessagePath: "/dev/termination-log"
               terminationMessagePolicy: File
               imagePullPolicy: Always
@@ -187,8 +171,8 @@ objects:
     kind: Service
     metadata:
       labels:
-        app: ${NAME}-${ZONE}
-      name: ${NAME}-${ZONE}-${COMPONENT}
+        app: ${NAME}
+      name: ${NAME}-${COMPONENT}
     spec:
       ports:
         - name: postgresql
@@ -197,6 +181,6 @@ objects:
           protocol: TCP
           targetPort: 5432
       selector:
-        deploymentconfig: ${NAME}-${ZONE}-${COMPONENT}
+        deploymentconfig: ${NAME}-${COMPONENT}
       sessionAffinity: None
       type: ClusterIP

@@ -1,0 +1,82 @@
+name: Continuous Integration And Deployment On Push to DEV
+
+on:
+  workflow_dispatch: # TODO this is there for testing purposes, once the pipelines are all done, remove this
+  push:
+    branches:
+      - 'dev'
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  builds:
+    name: Builds
+    environment: dev
+    uses: ./.github/workflows/_build.yml
+    strategy:
+      matrix:
+        component: [ backend, frontend ]
+        include:
+          - component: backend
+            triggers: ('backend/')
+          - component: frontend
+            triggers: ('frontend/')
+    secrets:
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      component: ${{ matrix.component }}
+      img_build: "dev" # ask the team dev or latest
+      img_fallback: dev
+      triggers: ${{ matrix.triggers }}
+
+  tests:
+    name: Unit Tests
+    uses: ./.github/workflows/_code-cov.yml
+    strategy:
+      matrix:
+        component: [backend, frontend]
+    secrets:
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      component: ${{ matrix.component }}
+      lcov_file: ${{ matrix.component }}/coverage/lcov.info
+      test_cmd: npm run test:cov
+
+  deploys:
+    name: Deploys
+    needs:
+      - builds
+    # If any of the previous created a build, then deploy
+    if: contains(needs.*.outputs.build, 'true')
+    uses: ./.github/workflows/_deploy.yml
+    strategy:
+      matrix:
+        component: [backend, database, frontend]
+        include:
+          - component: database
+            overwrite: false
+            template_file: .github/openshift/deploy.database.yml
+            template_vars: -p DB_PVC_SIZE=200Mi
+          - component: backend
+            overwrite: true
+            template_file: .github/openshift/deploy.backend.yml
+            template_vars: -p PROMOTE=${{ github.repository }}/backend -p CONTAINER_PORT=3000 -p ENV=dev -p IMAGE_TAG=dev
+          - component: frontend
+            overwrite: true
+            template_file: .github/openshift/deploy.frontend.yml
+            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=3000 -p ENV=dev -p IMAGE_TAG=dev
+    secrets:
+      oc_namespace: ${{ secrets.OC_NAMESPACE }}
+      oc_server: ${{ secrets.OC_SERVER }}
+      oc_token: ${{ secrets.OC_TOKEN }}
+    with:
+      environment: dev
+      component: ${{ matrix.component }}
+      overwrite: ${{ matrix.overwrite }}
+      template_file: ${{ matrix.template_file }}
+      template_vars: ${{ matrix.template_vars }}
