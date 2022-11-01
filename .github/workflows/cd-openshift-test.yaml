@@ -31,21 +31,9 @@ jobs:
     with:
       component: ${{ matrix.component }}
       img_build: "test"
-      img_fallback: "test"
+      img_fallback: "dev" # Tag dev or latest image to test
       triggers: ${{ matrix.triggers }}
 
-  tests:
-    name: Unit Tests
-    uses: ./.github/workflows/_code-cov.yml
-    strategy:
-      matrix:
-        component: [backend, frontend]
-    secrets:
-      gh_token: ${{ secrets.GITHUB_TOKEN }}
-    with:
-      component: ${{ matrix.component }}
-      lcov_file: ${{ matrix.component }}/coverage/lcov.info
-      test_cmd: npm run test:cov
 
   deploys:
     name: Deploys
@@ -61,20 +49,21 @@ jobs:
           - component: database
             overwrite: false
             template_file: .github/openshift/deploy.database.yml
-            template_vars: -p ZONE=${{ github.event.number }}
+            template_vars: -p DB_PVC_SIZE=400Mi
           - component: backend
             overwrite: true
             template_file: .github/openshift/deploy.backend.yml
-            template_vars: -p ZONE=${{ github.event.number }} -p PROMOTE=${{ github.repository }}:${{ github.event.number }}-backend
+            template_vars: -p PROMOTE=${{ github.repository }}/backend -p CONTAINER_PORT=3000 -p ENV=test -p IMAGE_TAG=test -p MIN_REPLICAS=3 -p MAX_REPLICAS=5
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
-            template_vars: -p ZONE=${{ github.event.number }} -p PROMOTE=${{ github.repository }}:${{ github.event.number }}-frontend
+            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=3000 -p ENV=test -p IMAGE_TAG=test -p MIN_REPLICAS=3 -p MAX_REPLICAS=5
     secrets:
       oc_namespace: ${{ secrets.OC_NAMESPACE }}
       oc_server: ${{ secrets.OC_SERVER }}
       oc_token: ${{ secrets.OC_TOKEN }}
     with:
+      environment: test
       component: ${{ matrix.component }}
       overwrite: ${{ matrix.overwrite }}
       template_file: ${{ matrix.template_file }}

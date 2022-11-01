@@ -29,22 +29,10 @@ jobs:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
       component: ${{ matrix.component }}
-      img_build: "test"
-      img_fallback: "test"
+      img_build: ${{ inputs.RELEASE_VERSION }}
+      img_fallback: "test" # The test image will be tagged with prod release version as in input.
       triggers: ${{ matrix.triggers }}
 
-  tests:
-    name: Unit Tests
-    uses: ./.github/workflows/_code-cov.yml
-    strategy:
-      matrix:
-        component: [backend, frontend]
-    secrets:
-      gh_token: ${{ secrets.GITHUB_TOKEN }}
-    with:
-      component: ${{ matrix.component }}
-      lcov_file: ${{ matrix.component }}/coverage/lcov.info
-      test_cmd: npm run test:cov
 
   deploys:
     name: Deploys
@@ -60,21 +48,31 @@ jobs:
           - component: database
             overwrite: false
             template_file: .github/openshift/deploy.database.yml
-            template_vars: -p ZONE=${{ github.event.number }}
+            template_vars: -p DB_PVC_SIZE=500Mi
           - component: backend
             overwrite: true
             template_file: .github/openshift/deploy.backend.yml
-            template_vars: -p ZONE=${{ github.event.number }} -p PROMOTE=${{ github.repository }}:${{ github.event.number }}-backend
+            template_vars: -p PROMOTE=${{ github.repository }}/backend -p CONTAINER_PORT=3000 -p ENV=prod -p IMAGE_TAG=${{ inputs.RELEASE_VERSION }} -p MIN_REPLICAS=3 -p MAX_REPLICAS=7
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
-            template_vars: -p ZONE=${{ github.event.number }} -p PROMOTE=${{ github.repository }}:${{ github.event.number }}-frontend
+            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=3000 -p ENV=prod -p IMAGE_TAG=${{ inputs.RELEASE_VERSION }} -p MIN_REPLICAS=3 -p MAX_REPLICAS=7
     secrets:
       oc_namespace: ${{ secrets.OC_NAMESPACE }}
       oc_server: ${{ secrets.OC_SERVER }}
       oc_token: ${{ secrets.OC_TOKEN }}
     with:
+      environment: prod
       component: ${{ matrix.component }}
       overwrite: ${{ matrix.overwrite }}
       template_file: ${{ matrix.template_file }}
       template_vars: ${{ matrix.template_vars }}
+  tag:
+    name: Create The Production Release Tag
+    environment: prod
+    steps:
+      - uses: rickstaa/action-create-tag@v1
+        name: Create Release Tag in Git
+        with:
+          tag: "release/${{ inputs.RELEASE_VERSION }}"
+          message: "Release version ${{ inputs.RELEASE_VERSION }}"
