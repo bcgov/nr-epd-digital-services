@@ -18,7 +18,7 @@ jobs:
         component: [backend, frontend]
         include:
           - component: backend
-            triggers: ('backend/')
+            triggers: [backend/applications, backend/gateway, backend/users]
           - component: frontend
             triggers: ('frontend/')
     secrets:
