@@ -5,6 +5,7 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 
+
 @Injectable()
 export class UsersService {
 
@@ -32,8 +33,11 @@ export class UsersService {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    //typeorm's custom repository .delete function intakes a value for query and returns a DeleteResult object
+    const delResult =  await this.usersRepository.delete({id})
+    //delResult = DeleteResult :{raw:[], affected:int} raw is the raw sql result, affected is # deleted rows    
+    return (delResult.affected>=0)
   }
 
   // forAuthor(id:number){

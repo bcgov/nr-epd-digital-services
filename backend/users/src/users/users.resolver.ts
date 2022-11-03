@@ -43,7 +43,9 @@ export class UsersResolver {
 
   @Mutation(() => User)
   removeUser(@Args('id', { type: () => Int }) id: number) {
-    return this.usersService.remove(id);
+    const hasBeenDeleted = this.usersService.remove(id)
+    console.log(`user # ${id} has been deleted? ${hasBeenDeleted}`)
+    return hasBeenDeleted;
   }
 
   @ResolveReference()
