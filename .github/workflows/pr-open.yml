@@ -17,10 +17,15 @@ jobs:
       matrix:
         component: [backend, frontend]
         include:
-          - component: backend
-            triggers: [backend/applications, backend/gateway, backend/users]
+          - component: backend/applications
+            triggers: ('backend/applications/')
+          - component: backend/gateway
+            triggers: ('backend/gateway/')
+          - component: backend/users
+            triggers:  ('backend/users/')
           - component: frontend
             triggers: ('frontend/')
+
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
