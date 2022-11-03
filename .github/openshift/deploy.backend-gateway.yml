@@ -3,7 +3,7 @@ kind: Template
 metadata:
   name: ${NAME}
   annotations:
-    description: "EPD backend"
+    description: "EPD backend-gateway"
     tags: "epd"
     iconClass: icon-js
 labels:
@@ -15,7 +15,7 @@ parameters:
     value: epd
   - name: COMPONENT
     description: Component name
-    value: backend
+    value: backend/gateway
   - name: IMAGE_TAG
     description: Image tag to use
     value: latest
@@ -43,7 +43,7 @@ parameters:
     value: ghcr.io
   - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
-    value: bcgov/nr-epd-digital-services/backend
+    value: bcgov/nr-epd-digital-services/backend/gateway
   - name: ENV
     description: The Environment on which it is deployed
     required: true
