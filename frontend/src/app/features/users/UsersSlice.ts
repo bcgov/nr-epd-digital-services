@@ -15,7 +15,7 @@ export const fetchUsers = createAsyncThunk("fetchUsers", async () => {
     query: print(FETCH_USERS),
   });
   console.log(request);
-  return request.data.data;
+  return request.data;
 });
 
 
@@ -37,7 +37,7 @@ export const addNewUser = createAsyncThunk(
         },
       },
     });
-    return request.data.data;
+    return request.data;
   }
 );
 
@@ -104,13 +104,22 @@ const usersSlice = createSlice({
         return newState;
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
+        console.log("action res",action)
         const newState = { ...state };
         newState.fetchStatus =  RequestStatus.success;
-        const loadedUsers = action.payload.users.slice();       
+        if( action.payload.data !== null){      
+        const loadedUsers = action.payload.data.users.slice();       
         newState.users = loadedUsers;
+        }
+        else if(action.payload.errors.length > 0)
+        {
+          const errorMessage =  action.payload.errors[0].message;
+          newState.error = errorMessage;
+        }
         return newState;
       })
       .addCase(fetchUsers.rejected, (state, action) => {
+        console.log("action",action)
         const newState = { ...state };
         newState.fetchStatus =  RequestStatus.failed
         newState.error = action.error.message!;        
