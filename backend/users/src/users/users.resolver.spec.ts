@@ -26,9 +26,9 @@ describe('UsersResolver', () => {
             return Promise.resolve({name:"test",id:1})
           }),
           save: jest.fn(()=>{
-           
           })
-        }},UsersResolver, UsersService],
+        }}
+        ,UsersResolver, UsersService],
     }).compile();
 
     resolver = module.get<UsersResolver>(UsersResolver);
