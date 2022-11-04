@@ -18,17 +18,25 @@ const Header = () => {
         auth.isAuthenticated ? (
           <React.Fragment>
             <span>Welcome {auth.user?.profile.name}</span>
-            <button className="btn btn-success" onClick={() => {console.log( auth); auth.signoutRedirect()}  }>Log Out</button>
+            <button className="btn btn-success" onClick={() => {
+               auth.removeUser().then(()=>{
+               window.location.href = process.env.REACT_APP_AUTH_LOGOUT_REDIRECT_URI?process.env.REACT_APP_AUTH_LOGOUT_REDIRECT_URI:"";
+              })
+              }}>Log Out</button>
           </React.Fragment>
         )
         :
         (
           <React.Fragment>
-              <button  className="btn btn-warning" onClick={() => void auth.signinRedirect()}>Log in</button>
+              {/* <button  className="btn btn-warning" onClick={() => void auth.signinRedirect()}>LogIn</button> */}
 
               <button  className="btn btn-success" onClick={() => void auth.signinRedirect({extraQueryParams:{
                 'kc_idp_hint':'oidc'
-              }})}>Log in with IDIR</button>
+              }})}>LogIn with IDIR</button>
+
+<button  className="btn btn-info" onClick={() => void auth.signinRedirect({extraQueryParams:{
+                'kc_idp_hint':'bceid'
+              }})}>LogIn with BCEID</button>
           </React.Fragment>
         )
       }
