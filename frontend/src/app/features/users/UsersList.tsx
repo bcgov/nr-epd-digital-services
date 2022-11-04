@@ -7,24 +7,19 @@ import {
   getUserAddedStatus,
   deleteUser,
   fetchUsers,
+  updateUser,
   resetDeleteStatus,
   resetAddedStatus,
 } from "./UsersSlice";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-
-import React from "react";
 import { AppDispatch } from "../../Store";
 import { User } from "./dto/User";
-import { consoleLog } from "../../helpers/utility";
 import { RequestStatus } from "../../helpers/requests/status";
 import { updateLastVisitURL } from "../applications/ApplicationSlice";
 
 
 const UsersList = () => {
-
-  
-  const [userDeleted, setUserDeleted] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -32,7 +27,7 @@ const UsersList = () => {
 
   const fetchStatus = useSelector(getAllUsersFetchStatus);
 
-  const delteStatus = useSelector(getUserDeleteStatus);
+  const deleteStatus = useSelector(getUserDeleteStatus);
 
   const addedStatus = useSelector(getUserAddedStatus);
 
@@ -42,8 +37,12 @@ const UsersList = () => {
     dispatch(deleteUser(id));
   };
 
+  const onUpdateName = (name: string, id: number) =>{
+    dispatch(updateUser({id:id, name:name}))
+  }
+
   useEffect(() => {
-    if (fetchStatus !== RequestStatus.loading && delteStatus === RequestStatus.success) {
+    if (fetchStatus !== RequestStatus.loading && deleteStatus === RequestStatus.success) {
       dispatch(fetchUsers());
       dispatch(resetDeleteStatus({}));
     }
@@ -52,7 +51,7 @@ const UsersList = () => {
       dispatch(fetchUsers());
       dispatch(resetAddedStatus({ payload: {} }));
     }
-  }, [fetchStatus, delteStatus, addedStatus]);
+  }, [fetchStatus, deleteStatus, addedStatus]);
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -65,9 +64,11 @@ const UsersList = () => {
         <tr key={user.id}>
           <td>{user.name}</td>
           <td>{user.id}</td>
-          <td>{user.email}</td>
           <td>
             <button onClick={() => onDelete(user.id)}>Delete User</button>
+          </td>
+          <td>
+            <button onClick={ () => onUpdateName(user.name+user.id,user.id) }>Update Name:</button>
           </td>
         </tr>
       );
@@ -83,8 +84,8 @@ const UsersList = () => {
           <tr>
             <th>Name</th>
             <th>ID</th>
-            <th>Email</th>
             <th>Delete</th>
+            <th>Update Name with ID</th>
           </tr>
         </thead>
         <tbody>{renderedUsers}</tbody>
