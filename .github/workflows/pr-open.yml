@@ -88,8 +88,8 @@ jobs:
             -Dsonar.project.monorepo.enabled=true
             -Dsonar.projectKey=${{ github.event.repository.name }}
             -Dsonar.sources=backend/applications/src/,backend/gateway/src/,backend/users/src/,frontend/src/
-            -Dsonar.tests=backend/applications/src/,backend/gateway/src/,backend/users/src/**/
-         #   -Dsonar.test.inclusions=backend/applications/src/*.spec.ts,backend/gateway/src/*.spec.ts,backend/users/src/*.spec.ts,backend/applications/src/**/*.spec.ts,backend/gateway/src/**/*.spec.ts,backend/users/src/**/*.spec.ts
+            -Dsonar.tests=backend/applications/src/,backend/gateway/src/,backend/users/src/
+            -Dsonar.test.inclusions=backend/applications/src/*.spec.ts,backend/gateway/src/*.spec.ts,backend/users/src/*.spec.ts,backend/applications/src/**/*.spec.ts,backend/gateway/src/**/*.spec.ts,backend/users/src/**/*.spec.ts
            
  
   # deploys:
