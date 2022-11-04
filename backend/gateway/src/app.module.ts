@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ReportsModule } from './reports/reports.module';
 import { TypeOrmModule } from '@nestjs/typeorm/dist';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
