@@ -1,7 +1,5 @@
-import { Module } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { CreateUserInput } from './dto/create-user.input';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
@@ -34,6 +32,9 @@ describe('UsersService', () => {
           delete: jest.fn((id)=>{
             //return service.remove(id)
             return Promise.resolve(true)
+          }),
+          update: jest.fn((id,userUpdate) =>{
+            return Promise.resolve(userUpdate)
           })
         } ,
       }, UsersService],
@@ -68,11 +69,14 @@ describe('UsersService', () => {
   })
 
   it('Should delete a user', async ()=>{
-
     const removeUser = await service.remove(1)
     expect(removeUser)
+  })
 
-
+  it('Should update a user', async () =>{
+    const updateUser = {name:"Test1",id:2}
+    const result = await service.update(updateUser.id,updateUser)
+    expect(result).toEqual(updateUser)
   })
 
 });
