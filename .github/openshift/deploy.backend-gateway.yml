@@ -4,7 +4,7 @@ metadata:
   name: ${NAME}
   annotations:
     description: "EPD backend-gateway"
-    tags: "epd"
+    tags: "epd-backend"
     iconClass: icon-js
 labels:
   app: ${NAME}-${COMPONENT}
@@ -15,7 +15,7 @@ parameters:
     value: epd
   - name: COMPONENT
     description: Component name
-    value: backend/gateway
+    value: backend-gateway
   - name: IMAGE_TAG
     description: Image tag to use
     value: latest
