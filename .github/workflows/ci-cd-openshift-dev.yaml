@@ -5,10 +5,11 @@ on:
   push:
     branches:
       - 'dev'
+      - 'fix/ss-20-ac'
     paths:
       - 'backend/**'
       - 'frontend/**'
-      - '.github/workflows/ci-cd-openshift-dev.yaml'
+      - '.github/workflows/ci-cd-openshift-dev.yaml' # Only for dev / testing purposes
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -38,25 +39,27 @@ jobs:
       img_fallback: dev
       triggers: ${{ matrix.triggers }}
 
-  tests:
-    name: Unit Tests
-    uses: ./.github/workflows/_code-cov.yml
-    strategy:
-      matrix:
-        component: [backend/applications, backend/gateway, backend/users, frontend]
-    secrets:
-      gh_token: ${{ secrets.GITHUB_TOKEN }}
-    with:
-      component: ${{ matrix.component }}
-      lcov_file: ${{ matrix.component }}/coverage/lcov.info
-      test_cmd: npm run test:cov
+  # TODO - REIMPLMENET BEFORE MERGING, JUST TESTING WITHOUT THESE TO VERIFY DEPLOYS
+  # tests:
+  #   name: Unit Tests
+  #   uses: ./.github/workflows/_code-cov.yml
+  #   strategy:
+  #     matrix:
+  #       component: [backend/applications, backend/gateway, backend/users, frontend]
+  #   secrets:
+  #     gh_token: ${{ secrets.GITHUB_TOKEN }}
+  #   with:
+  #     component: ${{ matrix.component }}
+  #     lcov_file: ${{ matrix.component }}/coverage/lcov.info
+  #     test_cmd: npm run test:cov
 
   deploys:
     name: Deploys
     needs:
       - builds
     # If any of the previous created a build, then deploy
-    if: contains(needs.*.outputs.build, 'true')
+    # TODO - RE-ENABLE IF COMMAND BELOW, DISABLED DURING EXPERIMENTAL DEV
+    # if: contains(needs.*.outputs.build, 'true')
     uses: ./.github/workflows/_deploy.yml
     strategy:
       matrix:
@@ -69,19 +72,19 @@ jobs:
           - component: backend/applications
             overwrite: true
             template_file: .github/openshift/deploy.backend-applications.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=3000 -p ENV=dev -p IMAGE_TAG=dev
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=3010 -p ENV=dev -p IMAGE_TAG=dev
           - component: backend/gateway
             overwrite: true
             template_file: .github/openshift/deploy.backend-gateway.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/gateway -p CONTAINER_PORT=3000 -p ENV=dev -p IMAGE_TAG=dev
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/gateway -p CONTAINER_PORT=3010 -p ENV=dev -p IMAGE_TAG=dev
           - component: backend/users
             overwrite: true
             template_file: .github/openshift/deploy.backend-users.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/users -p CONTAINER_PORT=3000 -p ENV=dev -p IMAGE_TAG=dev  
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/users -p CONTAINER_PORT=3005 -p ENV=dev -p IMAGE_TAG=dev  
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=3000 -p ENV=dev -p IMAGE_TAG=dev
+            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=3001 -p ENV=dev -p IMAGE_TAG=dev
     secrets:
       oc_namespace: ${{ secrets.OC_NAMESPACE }}
       oc_server: ${{ secrets.OC_SERVER }}
