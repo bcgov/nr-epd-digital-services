@@ -58,6 +58,7 @@ jobs:
     needs:
       - builds
     # If any of the previous created a build, then deploy
+    # TODO - RE-ENABLE IF COMMAND BELOW, DISABLED DURING EXPERIMENTAL DEV
     # if: contains(needs.*.outputs.build, 'true')
     uses: ./.github/workflows/_deploy.yml
     strategy:
@@ -71,19 +72,19 @@ jobs:
           - component: backend/applications
             overwrite: true
             template_file: .github/openshift/deploy.backend-applications.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=3000 -p ENV=dev -p IMAGE_TAG=dev
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=3010 -p ENV=dev -p IMAGE_TAG=dev
           - component: backend/gateway
             overwrite: true
             template_file: .github/openshift/deploy.backend-gateway.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/gateway -p CONTAINER_PORT=3000 -p ENV=dev -p IMAGE_TAG=dev
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/gateway -p CONTAINER_PORT=3010 -p ENV=dev -p IMAGE_TAG=dev
           - component: backend/users
             overwrite: true
             template_file: .github/openshift/deploy.backend-users.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/users -p CONTAINER_PORT=3000 -p ENV=dev -p IMAGE_TAG=dev  
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/users -p CONTAINER_PORT=3005 -p ENV=dev -p IMAGE_TAG=dev  
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=3000 -p ENV=dev -p IMAGE_TAG=dev
+            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=3001 -p ENV=dev -p IMAGE_TAG=dev
     secrets:
       oc_namespace: ${{ secrets.OC_NAMESPACE }}
       oc_server: ${{ secrets.OC_SERVER }}
