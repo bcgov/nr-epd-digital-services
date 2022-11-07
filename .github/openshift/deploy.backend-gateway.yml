@@ -113,7 +113,11 @@ objects:
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-database
-                      key: database-user
+                      key: database-user 
+                - name: USER_URL
+                  value: http://${NAME}-backend-users/graphql
+                - name: APPLICATION_URL
+                  value: http://${NAME}-backend-applications/graphql
               ports:
                 - containerPort: ${{CONTAINER_PORT}}
                   protocol: TCP
