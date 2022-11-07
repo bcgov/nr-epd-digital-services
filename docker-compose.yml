@@ -1,8 +1,13 @@
 ---
 version: "3.8"
+networks:
+  app-tier:
+    driver: bridge
 
 services:
   database:
+    networks:
+      - app-tier 
     container_name: database
     environment:
       POSTGRES_USER: default
@@ -13,9 +18,10 @@ services:
     restart: always
     volumes:
       - /pgdata
-
-  backend:
-    container_name: backend
+  users:
+    networks:
+      - app-tier 
+    container_name: users
     entrypoint:
       - "sh"
       - "-c"
@@ -27,21 +33,117 @@ services:
       POSTGRESQL_PASSWORD: default
       POSTGRESQL_DATABASE: default
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      test: ["CMD", "curl", "-f", "http://localhost:3005"]
       interval: 1m30s
       timeout: 10s
       retries: 3
       start_period: 40s
-    hostname: backend
+    hostname: users
     image: node:14
     links:
       - database
     ports:
-      - "3001:3000"
+      - "3005:3005"
+    expose:
+      - 3005 
     volumes:
-      - ./backend:/app:z
+      - ./backend/users:/app:z
       - /app/node_modules
     working_dir: "/app"
+  applications:
+    networks:
+      - app-tier 
+    container_name: applications
+    entrypoint:
+      - "sh"
+      - "-c"
+      - "npm i && npm run start"
+    environment:
+      NODE_ENV: development
+      POSTGRESQL_HOST: database
+      POSTGRESQL_USER: default
+      POSTGRESQL_PASSWORD: default
+      POSTGRESQL_DATABASE: default
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3006"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    hostname: applications
+    image: node:14
+    links:
+      - database
+    ports:
+      - "3006:3006"
+    expose:
+      - 3006 
+    volumes:
+      - ./backend/applications:/app:z
+      - /app/node_modules
+    working_dir: "/app"
+  graphqlgateway:
+    networks:
+      - app-tier 
+    container_name: graphqlgateway
+    entrypoint:
+      - "sh"
+      - "-c"
+      - "npm i && npm run start"
+    environment:
+      NODE_ENV: development
+      POSTGRESQL_HOST: database
+      POSTGRESQL_USER: default
+      POSTGRESQL_PASSWORD: default
+      POSTGRESQL_DATABASE: default
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3010"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    hostname: graphqlgateway
+    image: node:14
+    links:
+      - database
+    ports:
+      - "3010:3010"
+    depends_on:
+      - "users"
+      - "applications"
+    volumes:
+      - ./backend/gateway:/app:z
+      - /app/node_modules
+    working_dir: "/app"
+
+  # backend:
+  #   container_name: backend
+  #   entrypoint:
+  #     - "sh"
+  #     - "-c"
+  #     - "npm i && npm run start"
+  #   environment:
+  #     NODE_ENV: development
+  #     POSTGRESQL_HOST: database
+  #     POSTGRESQL_USER: default
+  #     POSTGRESQL_PASSWORD: default
+  #     POSTGRESQL_DATABASE: default
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:3000"]
+  #     interval: 1m30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 40s
+  #   hostname: backend
+  #   image: node:14
+  #   links:
+  #     - database
+  #   ports:
+  #     - "3001:3000"
+  #   volumes:
+  #     - ./backend:/app:z
+  #     - /app/node_modules
+  #   working_dir: "/app"
 
   frontend:
     container_name: frontend
@@ -62,7 +164,7 @@ services:
     hostname: frontend
     image: node:14
     links:
-      - backend
+      - graphqlgateway
     ports:
       - "3000:3000"
       - "35729:35729"
