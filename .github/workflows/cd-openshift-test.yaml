@@ -16,7 +16,6 @@ concurrency:
 jobs:
   builds:
     name: Builds
-    environment: test
     uses: ./.github/workflows/_build.yml
     strategy:
       matrix:

@@ -15,7 +15,6 @@ concurrency:
 jobs:
   builds:
     name: Builds
-    environment: prod
     uses: ./.github/workflows/_build.yml
     strategy:
       matrix:
@@ -81,6 +80,7 @@ jobs:
       template_vars: ${{ matrix.template_vars }}
   tag:
     name: Create The Production Release Tag
+    runs-on: ubuntu-22.04
     environment: prod
     steps:
       - uses: rickstaa/action-create-tag@v1
