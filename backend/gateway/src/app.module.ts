@@ -68,8 +68,11 @@ GraphQLModule.forRoot<ApolloGatewayDriverConfig>({
     buildService: ({ url }) => new RequestHandler({ url }),
     supergraphSdl: new IntrospectAndCompose({
       subgraphs: [
-        { name: 'users', url: 'http://users:3005/graphql' },
-        { name: 'applications', url: 'http://applications:3006/graphql' },
+        // { name: 'users', url: 'http://users:3005/graphql' },
+        // { name: 'applications', url: 'http://applications:3006/graphql' },
+
+        { name: 'users', url: process.env.USER_URL },
+        { name: 'applications', url: process.env.APPLICATION_URL },
       ],
     }),
   },})],
