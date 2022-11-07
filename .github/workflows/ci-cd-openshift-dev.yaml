@@ -60,7 +60,7 @@ jobs:
     uses: ./.github/workflows/_deploy.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/gateway, backend/users, database, frontend]
+       component: [backend/applications, backend/gateway, backend/users, database, frontend]
         include:
           - component: database
             overwrite: false
@@ -82,7 +82,7 @@ jobs:
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
             template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=3000 -p ENV=dev -p IMAGE_TAG=dev
-    secrets:
+   secrets:
       oc_namespace: ${{ secrets.OC_NAMESPACE }}
       oc_server: ${{ secrets.OC_SERVER }}
       oc_token: ${{ secrets.OC_TOKEN }}

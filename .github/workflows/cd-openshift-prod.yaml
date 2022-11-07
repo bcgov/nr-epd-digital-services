@@ -53,7 +53,7 @@ jobs:
             overwrite: false
             template_file: .github/openshift/deploy.database.yml
             template_vars: -p DB_PVC_SIZE=500Mi
-          - component: backend/applications
+           - component: backend/applications
             overwrite: true
             template_file: .github/openshift/deploy.backend-applications.yml
             template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=3000 -p ENV=prod -p IMAGE_TAG=prod
@@ -81,6 +81,7 @@ jobs:
       template_vars: ${{ matrix.template_vars }}
   tag:
     name: Create The Production Release Tag
+    runs-on: ubuntu-22.04
     environment: prod
     steps:
       - uses: rickstaa/action-create-tag@v1
