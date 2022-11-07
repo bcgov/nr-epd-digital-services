@@ -9,6 +9,7 @@ on:
     paths:
       - 'backend/**'
       - 'frontend/**'
+      - '.github/workflows/ci-cd-openshift-dev.yaml' # Only for dev / testing purposes
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
