@@ -34,6 +34,7 @@ export const addNewUser = createAsyncThunk(
         user: {
           name: newUser.name,
           // email: newUser.email,
+          // email: newUser.email,
         },
       },
     });
