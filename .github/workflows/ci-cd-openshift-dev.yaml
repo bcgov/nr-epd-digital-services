@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - 'dev'
+      - 'fix/ss-20-ac'
     paths:
       - 'backend/**'
       - 'frontend/**'
