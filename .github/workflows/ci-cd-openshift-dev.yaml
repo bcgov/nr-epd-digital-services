@@ -69,7 +69,7 @@ jobs:
     strategy:
       matrix:
         # component: [backend/applications, backend/gateway, backend/users, database, frontend]
-        component: [backend/applications, backend/gateway, backend/users, database, frontend]
+        component: [backend/applications, database, frontend]
         include:
           - component: database
             overwrite: false
