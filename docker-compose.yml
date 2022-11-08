@@ -111,9 +111,9 @@ services:
     depends_on:
       - "users"
       - "applications"
-    # volumes:
-    #   - ./backend/gateway:/app:z
-    #   - /app/node_modules
+    volumes:
+      - ./backend/gateway:/app:z
+      - /app/node_modules
     working_dir: "/app"
 
   # backend:
@@ -168,7 +168,7 @@ services:
     ports:
       - "3000:3000"
       - "35729:35729"
-    # volumes:
-    #   - ./frontend:/app:z
-    #   - /app/node_modules
+    volumes:
+      - ./frontend:/app:z
+      - /app/node_modules
     working_dir: "/app"
