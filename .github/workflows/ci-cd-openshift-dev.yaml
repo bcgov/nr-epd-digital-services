@@ -73,7 +73,7 @@ jobs:
           - component: backend/applications
             overwrite: true
             template_file: .github/openshift/deploy.backend-applications.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=3010 -p ENV=dev -p IMAGE_TAG=dev
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=3006 -p ENV=dev -p IMAGE_TAG=dev
           - component: backend/gateway
             overwrite: true
             template_file: .github/openshift/deploy.backend-gateway.yml
