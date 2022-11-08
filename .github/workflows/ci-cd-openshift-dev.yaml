@@ -54,6 +54,7 @@ jobs:
   #     component: ${{ matrix.component }}
   #     lcov_file: ${{ matrix.component }}/coverage/lcov.info
   #     test_cmd: npm run test:cov
+  
 
   deploys:
     name: Deploys
