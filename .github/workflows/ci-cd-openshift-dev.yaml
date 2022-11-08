@@ -23,19 +23,21 @@ jobs:
     strategy:
       matrix:
         # component: [backend/applications, backend/gateway, backend/users, frontend]
-        component: [backend/applications, frontend]
+        # include:
+        #   - component: backend/applications
+        #     triggers: ('backend/applications/')
+        #   - component: backend/gateway
+        #     triggers: ('backend/gateway/')
+        #   - component: backend/users
+        #     triggers:  ('backend/users/')
+        #   - component: frontend
+        #     triggers: ('frontend/')
+       component: [backend/applications, frontend]
         include:
           - component: backend/applications
-             triggers: ('backend/applications/')
+            triggers: ('backend/applications/')
           - component: frontend
-             triggers: ('frontend/')
-          # - component: backend/applications
-          #   triggers: ('backend/applications/')
-          # - component: backend/gateway
-          #   triggers: ('backend/gateway/')
-          # - component: backend/users
-          #   triggers:  ('backend/users/')
-         
+            triggers: ('frontend/')
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
@@ -45,7 +47,6 @@ jobs:
       triggers: ${{ matrix.triggers }}
 
   # TODO - REIMPLMENET BEFORE MERGING, JUST TESTING WITHOUT THESE TO VERIFY DEPLOYS
-  
   # tests:
   #   name: Unit Tests
   #   uses: ./.github/workflows/_code-cov.yml
