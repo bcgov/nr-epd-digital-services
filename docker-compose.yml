@@ -46,10 +46,10 @@ services:
       - "3005:3005"
     expose:
       - 3005 
-    # volumes:
-    #   - ./backend/users:/app:z
-    #   - /app/node_modules
-    # working_dir: "/app"
+    volumes:
+      - ./backend/users:/app:z
+      - /app/node_modules
+    working_dir: "/app"
   applications:
     networks:
       - app-tier 
@@ -78,10 +78,10 @@ services:
       - "3006:3006"
     expose:
       - 3006 
-    # volumes:
-    #   - ./backend/applications:/app:z
-    #   - /app/node_modules
-    # working_dir: "/app"
+    volumes:
+      - ./backend/applications:/app:z
+      - /app/node_modules
+    working_dir: "/app"
   graphqlgateway:
     networks:
       - app-tier 
@@ -111,10 +111,10 @@ services:
     depends_on:
       - "users"
       - "applications"
-    # volumes:
-    #   - ./backend/gateway:/app:z
-    #   - /app/node_modules
-    # working_dir: "/app"
+    volumes:
+      - ./backend/gateway:/app:z
+      - /app/node_modules
+    working_dir: "/app"
 
   # backend:
   #   container_name: backend
