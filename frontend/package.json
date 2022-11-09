@@ -28,7 +28,7 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^9.0.8",
     "redux-persist": "^6.0.0",
-    "serve": "^14.0.1",
+    "serve": "^14.1.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
