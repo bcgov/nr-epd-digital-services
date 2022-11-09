@@ -60,7 +60,24 @@ GraphQLModule.forRoot<ApolloGatewayDriverConfig>({
     // ... Apollo server options
     cors: true,
 
-    context: handleAuth
+    context: handleAuth,
+
+    formatResponse(response, requestContext) {   
+
+      for(var key in response.data)
+      {
+        if(response.data[key].httpStatusCode!=null && response.data[key].httpStatusCode!=undefined)
+        {
+          requestContext.response.http.status =response.data[key].httpStatusCode;
+        }
+      }
+
+      
+      //requestContext.response.http.headers.append("code","201");
+
+ 
+      return response;
+    },
   }
   ,
  

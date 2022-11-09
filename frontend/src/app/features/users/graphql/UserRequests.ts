@@ -1,9 +1,10 @@
 import gql from 'graphql-tag'
 export const FETCH_USERS = gql`
   query{
-    users{
-      name
-      id      
+    users{      
+      data{
+        name
+      }
     }
   }`
 
