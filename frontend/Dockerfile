@@ -13,11 +13,11 @@ COPY . .
 # ==== BUILD =====
 # Install dependencies (npm ci makes sure the exact versions in the lockfile gets installed)
 # RUN npm install 
-RUN npm ci
+# RUN npm ci
 
 RUN npm run build
 
 EXPOSE 3001
 
 # Start the app
-CMD [ "npx", "serve", "build" ]
+CMD [ "npx", "run", "start" ]
