@@ -109,7 +109,7 @@ const usersSlice = createSlice({
         const newState = { ...state };
         newState.fetchStatus =  RequestStatus.success;
         if( action.payload.data !== null){      
-        const loadedUsers = action.payload.data.users.slice();       
+        const loadedUsers = action.payload.data.users.data.slice();       
         newState.users = loadedUsers;
         }
         else if(action.payload.errors.length > 0)
