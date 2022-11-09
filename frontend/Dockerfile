@@ -6,7 +6,7 @@ RUN dnf module install -y nodejs:14
 WORKDIR /app
 
 COPY ./package*.json ./
-RUN npm ci
+# RUN npm ci
 
 # Copy app files
 COPY . .
