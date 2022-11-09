@@ -40,7 +40,7 @@ jobs:
       img_build: "dev" # ask the team dev or latest
       img_fallback: dev
       triggers: ${{ matrix.triggers }}
-      
+
    
   # TODO - REIMPLMENET BEFORE MERGING, JUST TESTING WITHOUT THESE TO VERIFY DEPLOYS
   # tests:
@@ -88,6 +88,7 @@ jobs:
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
             template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=3001 -p ENV=dev -p IMAGE_TAG=dev
+    
     secrets:
       oc_namespace: ${{ secrets.OC_NAMESPACE }}
       oc_server: ${{ secrets.OC_SERVER }}
