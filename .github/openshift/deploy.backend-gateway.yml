@@ -92,6 +92,19 @@ objects:
             app: ${NAME}-${COMPONENT}
             deploymentconfig: ${NAME}-${COMPONENT}
         spec:
+          initContainers:
+            - name: wait-for-graphql
+            # is this image going to work?
+              image: busybox:1.28 
+              args:
+              - /bin/bash
+              - -c
+              - >
+                set -x;
+                while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://epd-backend-applications/:)" != "200" ]]; do 
+                  echo '.'
+                  sleep 15;
+                done  
           containers:
             - image: ${NAME}-${COMPONENT}:${IMAGE_TAG}
               imagePullPolicy: Always
