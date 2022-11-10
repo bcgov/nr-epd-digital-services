@@ -6,7 +6,7 @@ on:
     branches:
       - 'main'
       - 'fix/ss-20-ac'
-      - 'fix/ci-cd-ss20'
+      - 'fix/ci-cd-ss20' #test
       
     paths:
       - 'backend/**'
