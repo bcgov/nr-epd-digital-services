@@ -97,7 +97,7 @@ objects:
             # is this image going to work?
               image: busybox:1.28 
               args:
-              - /bin/bash
+              - /bin/sh
               - -c
               - >
                 set -x;
