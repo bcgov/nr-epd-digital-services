@@ -1,13 +1,17 @@
-name: Continuous Deployment to TEST On push to Main
+name: Continuous Integration And Deployment On Push to test
 
 on:
   workflow_dispatch: # TODO this is there for testing purposes, once the pipelines are all done, remove this
   push:
     branches:
       - 'main'
+      - 'fix/ss-20-ac'
+      - 'fix/ci-cd-ss20'
     paths:
       - 'backend/**'
       - 'frontend/**'
+      - '.github/workflows/cd-openshift-test.yaml' # Only for test / testing purposes
+      - '.github/openshift' # Only for test / testing purposes
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -33,17 +37,31 @@ jobs:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
       component: ${{ matrix.component }}
-      img_build: "test"
-      img_fallback: "test" # Tag test or latest image to test
+      img_build: "test" # ask the team test or latest
+      img_fallback: test
       triggers: ${{ matrix.triggers }}
-
+   
+  # TODO - REIMPLMENET BEFORE MERGING, JUST TESTING WITHOUT THESE TO VERIFY DEPLOYS
+  tests:
+    name: Unit Tests
+    uses: ./.github/workflows/_code-cov.yml
+    strategy:
+      matrix:
+        component: [backend/applications, backend/gateway, backend/users, frontend]
+    secrets:
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      component: ${{ matrix.component }}
+      lcov_file: ${{ matrix.component }}/coverage/lcov.info
+      test_cmd: npm run test:cov
 
   deploys:
     name: Deploys
     needs:
       - builds
     # If any of the previous created a build, then deploy
-    if: contains(needs.*.outputs.build, 'true')
+    # TODO - RE-ENABLE IF COMMAND BELOW, DISABLED DURING EXPERIMENTAL test
+    # if: contains(needs.*.outputs.build, 'true')
     uses: ./.github/workflows/_deploy.yml
     strategy:
       matrix:
@@ -52,23 +70,25 @@ jobs:
           - component: database
             overwrite: false
             template_file: .github/openshift/deploy.database.yml
-            template_vars: -p DB_PVC_SIZE=400Mi
+            template_vars: -p DB_PVC_SIZE=200Mi
           - component: backend/applications
             overwrite: true
             template_file: .github/openshift/deploy.backend-applications.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=3000 -p ENV=test -p IMAGE_TAG=test
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=3006 -p ENV=test -p IMAGE_TAG=test
           - component: backend/gateway
             overwrite: true
             template_file: .github/openshift/deploy.backend-gateway.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/gateway -p CONTAINER_PORT=3000 -p ENV=test -p IMAGE_TAG=test
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/gateway -p CONTAINER_PORT=3010 -p ENV=test -p IMAGE_TAG=test
           - component: backend/users
             overwrite: true
             template_file: .github/openshift/deploy.backend-users.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/users -p CONTAINER_PORT=3000 -p ENV=test -p IMAGE_TAG=test  
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/users -p CONTAINER_PORT=3005 -p ENV=test -p IMAGE_TAG=test  
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=3000 -p ENV=test -p IMAGE_TAG=test -p MIN_REPLICAS=3 -p MAX_REPLICAS=5
+            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=3000 -p ENV=test -p IMAGE_TAG=test    
+    
+    
     secrets:
       oc_namespace: ${{ secrets.OC_NAMESPACE }}
       oc_server: ${{ secrets.OC_SERVER }}
