@@ -49,7 +49,7 @@ describe('UsersService', () => {
   it('should return atleast a user', async ()=>{
     const users=  await service.findAll();
     console.log(users)
-    expect(users.length).toBeGreaterThan(0);
+    expect(users.data.length).toBeGreaterThan(0);
   })
 
   it('should return a user', async ()=>{
