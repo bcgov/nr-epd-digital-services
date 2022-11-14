@@ -146,8 +146,8 @@ objects:
                   port: ${{CONTAINER_PORT}}
                 initialDelaySeconds: 10
                 periodSeconds: 10
-                timeoutSeconds: 30
-                failureThreshold: 30
+                timeoutSeconds: 5
+                failureThreshold: 1
                 successThreshold: 1
               livenessProbe:
                 successThreshold: 1
