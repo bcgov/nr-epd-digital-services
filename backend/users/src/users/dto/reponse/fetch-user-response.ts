@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql'
-import { User } from 'src/users/entities/user.entity'
+import { User } from '../../entities/user.entity'
 import { BaseHttpResponse } from './base-http-response'
 
 
