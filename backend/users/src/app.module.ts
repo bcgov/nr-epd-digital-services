@@ -44,7 +44,7 @@ import { APP_GUARD } from '@nestjs/core';
         origin: true,
     },
     context:({req})=>{
-      console.log('req at user '+ new Date(),req)
+      //console.log('req at user '+ new Date(),req)
     }
     }),
   ],
