@@ -86,10 +86,9 @@ jobs:
           )
 
           # If URL exists and is usable (e.g. at least a hostname), then test it
-          if [ ! -z "${URL%/*}" ] && [ $(curl -ILso /dev/null -w "%{http_code}" "${URL}") || $(curl -ILso /test/null -w "%{http_code}" "${URL}") -ne 200 ] || $(curl -ILso /prod/null -w "%{http_code}" "${URL}") -ne 200 ]
+          if [ ! -z "${URL%/*}" ] && [ $(curl -ILso /dev/null -w "%{http_code}" "${URL}") || $(curl -ILso /test/null -w "%{http_code}" "${URL}") || $(curl -ILso /test/null -w "%{http_code}" "${URL}")  -ne 200 ] 
           then
-              # HTTP_CODE=$(curl -ILso /dev/null -w "%{http_code}" "${URL}")
-              HTTP_CODE=${URL}
+              HTTP_CODE=$(curl -ILso /dev/null -w "%{http_code}" "${URL}")
               echo -e "Failure!  \n\tStatus = ${HTTP_CODE}  \n\tURL: ${URL}\n"
               exit 1
           fi
