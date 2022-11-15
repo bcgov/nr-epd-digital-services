@@ -124,18 +124,10 @@ objects:
                 limits:
                   cpu: ${CPU_LIMIT}
                   memory: ${MEMORY_LIMIT}
-              # readinessProbe:
-              #   tcpSocket:
-              #     port: ${{CONTAINER_PORT}}
-              #   initialDelaySeconds: 10
-              #   periodSeconds: 10
-              #   timeoutSeconds: 5
-              #   failureThreshold: 30
-              #   successThreshold: 1
               readinessProbe:
                 tcpSocket:
                   port: ${{CONTAINER_PORT}}
-                initialDelaySeconds: 60
+                initialDelaySeconds: 30
                 periodSeconds: 10
                 timeoutSeconds: 5
                 failureThreshold: 30
