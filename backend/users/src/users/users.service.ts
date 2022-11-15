@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { throwIfEmpty } from 'rxjs';
 import { FindOptionsUtils, Repository } from 'typeorm';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
@@ -30,14 +31,17 @@ export class UsersService {
   }
 
   update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+    const result = this.usersRepository.update(id,updateUserInput)
+    console.log(result)
+    return result
   }
 
   async remove(id: number) {
     //typeorm's custom repository .delete function intakes a value for query and returns a DeleteResult object
     const delResult =  await this.usersRepository.delete({id})
+    console.log(delResult)
     //delResult = DeleteResult :{raw:[], affected:int} raw is the raw sql result, affected is # deleted rows    
-    return (delResult.affected>=0)
+    return (delResult.affected>0)
   }
 
   // forAuthor(id:number){
