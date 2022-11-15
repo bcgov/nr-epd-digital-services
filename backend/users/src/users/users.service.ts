@@ -2,9 +2,12 @@ import { ConsoleLogger, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsUtils, Repository } from 'typeorm';
 import { CreateUserInput } from './dto/create-user.input';
+import { FetchUserResponse } from './dto/reponse/fetch-user-response';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 import {validate} from 'class-validator'
+
+
 
 
 @Injectable()
@@ -21,8 +24,19 @@ export class UsersService {
     await this.usersRepository.save(newUser);    return newUser;
   }
 
+
+
   async findAll() {
-    return  await this.usersRepository.find();
+
+    const findUsersResponse = new FetchUserResponse();
+
+    findUsersResponse.httpStatusCode = 401;
+
+    findUsersResponse.data = await this.usersRepository.find();
+
+    return findUsersResponse;  
+
+  
   }
 
   async findOne(id: number): Promise<User> {

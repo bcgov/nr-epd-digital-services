@@ -4,6 +4,10 @@ RUN dnf module install -y nodejs:14
 
 # Set the working directory to /app inside the container
 WORKDIR /app
+
+COPY ./package*.json ./
+RUN npm ci
+
 # Copy app files
 COPY . .
 # ==== BUILD =====
@@ -13,9 +17,7 @@ RUN npm ci
 
 RUN npm run build
 
-ENV NODE_ENV production
-
-EXPOSE 3000
+EXPOSE 3001
 
 # Start the app
 CMD [ "npx", "serve", "build" ]
