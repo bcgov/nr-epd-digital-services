@@ -16,6 +16,21 @@ export const ADD_USER = gql`
     }
   }`
 
+
+export const DELETE_USER = gql`
+  mutation removeUser($userId:Int!){
+    removeUser(id:$userId){
+      id
+    }
+  }`
+
+export const UPDATE_USER = gql`
+  mutation updateUser($updateUser:UpdateUserInput!){
+    updateUser(updateUserInput:$updateUser){
+      name
+    }
+  }`
+
 // mutation{
 // 	createUser(user:{
 //     name:"Ryan"
