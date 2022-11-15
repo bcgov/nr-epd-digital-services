@@ -30,22 +30,28 @@ export class UsersResolver {
   @Mutation(() => String)
   submitForm(@Args('data') data:FormData)
   {
-      console.log(data)
-      return "submited";
+      //console.log(data)
+      return "submitted";
   }
-
-  
 
   @Mutation(() => User)
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.usersService.update(updateUserInput.id, updateUserInput);
+    console.log(updateUserInput)
+    const response = this.usersService.update(updateUserInput.id, updateUserInput);
+    response.then((res) =>{
+      return res.affected ? updateUserInput : {"error":"Not Updated"}
+    })
+    //return 
   }
 
   @Mutation(() => User)
   removeUser(@Args('id', { type: () => Int }) id: number) {
-    const hasBeenDeleted = this.usersService.remove(id)
-    console.log(`user # ${id} has been deleted? ${hasBeenDeleted}`)
-    return hasBeenDeleted;
+    const response = this.usersService.remove(id)
+    response.then((hasBeenDeleted)=>{
+      console.log("Has the entry been deleted? "+hasBeenDeleted)
+      //return hasBeenDeleted ? {id:id} : {error:"not deleted"}
+    })
+    return response ?  {id:id} : {error:"not deleted"};
   }
 
   @ResolveReference()
