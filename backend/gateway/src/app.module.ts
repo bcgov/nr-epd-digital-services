@@ -1,13 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm/dist';
+
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
+import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { IntrospectAndCompose } from '@apollo/gateway';
-import { AuthGuard, KeycloakConnectModule, ResourceGuard, RoleGuard } from 'nest-keycloak-connect';
-import { APP_GUARD } from '@nestjs/core';
 import { RequestHandler } from './RequestHandler';
 
 
