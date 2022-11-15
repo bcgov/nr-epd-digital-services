@@ -156,7 +156,7 @@ objects:
                   path: /
                   port: ${{CONTAINER_PORT}}
                   scheme: HTTP
-                initialDelaySeconds: 60
+                initialDelaySeconds: 90
                 periodSeconds: 30
                 timeoutSeconds: 5
   - apiVersion: v1
