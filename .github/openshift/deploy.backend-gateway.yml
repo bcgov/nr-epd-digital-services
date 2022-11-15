@@ -144,7 +144,7 @@ objects:
               readinessProbe:
                 tcpSocket:
                   port: ${{CONTAINER_PORT}}
-                initialDelaySeconds: 60
+                initialDelaySeconds: 40
                 periodSeconds: 10
                 timeoutSeconds: 5
                 failureThreshold: 30
