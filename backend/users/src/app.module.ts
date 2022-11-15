@@ -12,10 +12,10 @@ import { APP_GUARD } from '@nestjs/core';
 @Module({
   imports: [
     KeycloakConnectModule.register({
-      authServerUrl: 'https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth',
-      realm: 'epd-dev',
-      clientId: 'backend',
-      secret: '06777f04-8056-4318-b59c-3f1057555af3',
+      authServerUrl:   process.env.KEYCLOCK_AUTH_URL?process.env.KEYCLOCK_AUTH_URL:'ADD YOUR AUTH SERVER URL',
+      realm: process.env.KEYCLOCK_REALM? process.env.KEYCLOCK_REALM:'epd-dev',
+      clientId: process.env.KEYCLOCK_CLIENT_ID?process.env.KEYCLOCK_CLIENTID:'backend',
+      secret: process.env.KEYCLOCK_SECRET?process.env.KEYCLOCK_SECRET:'ADD YOUR SECRET',
       
       // Secret key of the client taken from keycloak server
     }),
