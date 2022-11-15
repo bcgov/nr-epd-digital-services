@@ -145,7 +145,7 @@ objects:
                 tcpSocket:
                   port: ${{CONTAINER_PORT}}
                 initialDelaySeconds: 60
-                periodSeconds: 30
+                periodSeconds: 10
                 timeoutSeconds: 5
                 failureThreshold: 30
                 successThreshold: 1
