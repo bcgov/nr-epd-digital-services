@@ -27,8 +27,13 @@ type User {
   name: String!
 }
 
+type FetchUserResponse {
+  httpStatusCode: Int!
+  data: [User!]!
+}
+
 type Query {
-  users: [User!]!
+  users: FetchUserResponse!
   user(id: Int!): User!
 }
 

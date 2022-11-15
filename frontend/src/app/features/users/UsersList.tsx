@@ -53,6 +53,14 @@ const UsersList = () => {
     }
   }, [fetchStatus, deleteStatus, addedStatus]);
 
+  useEffect(()=>{
+    console.log('fetchError',fetchError)
+    if(fetchError!== null && fetchError!==""){
+      alert(fetchError)
+    }
+
+  },[fetchError])
+
   useEffect(() => {
     dispatch(fetchUsers());
     dispatch(updateLastVisitURL('users'))
