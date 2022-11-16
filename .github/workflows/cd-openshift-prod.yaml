@@ -42,7 +42,7 @@ jobs:
     needs:
       - builds
     # If any of the previous created a build, then deploy
-    if: contains(needs.*.outputs.build, 'true')
+  #  if: contains(needs.*.outputs.build, 'true')
     uses: ./.github/workflows/_deploy.yml
     strategy:
       matrix:
