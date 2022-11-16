@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addNewUser, resetAddedStatus } from "./UsersSlice";
+import { addNewUser } from "./UsersSlice";
 import React from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import { AppDispatch } from "../../Store";
@@ -17,14 +17,11 @@ const AddUserForm = () => {
 
   const onNameChanged = (event: React.ChangeEvent<HTMLInputElement>) =>
     setName(event.target.value);
-  const onEmailChanged = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setEmail(event.target.value);
 
   const onSaveClicked = () => {
     if (name !== "" && email !== "") {
       const tempUser = new User();
       tempUser.name = name;
-      tempUser.email = email;
       //setAddRequestStatus('pending')
       dispatch(addNewUser(tempUser)).unwrap();
       setName("");
@@ -47,13 +44,6 @@ const AddUserForm = () => {
           onChange={onNameChanged}
         ></input>
         <label htmlFor="email">Email:</label>
-        <input
-          type="text"
-          name="email"
-          id="email"
-          value={email}
-          onChange={onEmailChanged}
-        ></input>
         <button type="button" onClick={onSaveClicked}>
           Save User
         </button>

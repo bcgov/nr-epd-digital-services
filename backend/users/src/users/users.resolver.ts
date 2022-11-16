@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveReference, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveReference, ResolveField, Parent, ObjectType, Field } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
@@ -6,7 +6,8 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { Resource, RoleMatchingMode, Roles } from 'nest-keycloak-connect';
 import { request } from 'http';
 import { FormData } from './dto/form-data';
-// import { Application } from './entities/application.entity';
+import { FetchUserResponse } from './dto/reponse/fetch-user-response';
+// import { Application } from './entities/application.entity';'
 
 @Resolver(() => User)
 @Resource('backend')
@@ -22,7 +23,7 @@ export class UsersResolver {
   }
 
   @Roles({roles:['adminbackend'],mode: RoleMatchingMode.ANY})
-  @Query(() => [User], { name: 'users' })
+  @Query(() => FetchUserResponse, { name: 'users' })
   findAll() {
     return this.usersService.findAll();
   }
@@ -30,22 +31,28 @@ export class UsersResolver {
   @Mutation(() => String)
   submitForm(@Args('data') data:FormData)
   {
-      console.log(data)
-      return "submited";
+      //console.log(data)
+      return "submitted";
   }
-
-  
 
   @Mutation(() => User)
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.usersService.update(updateUserInput.id, updateUserInput);
+    console.log(updateUserInput)
+    const response = this.usersService.update(updateUserInput.id, updateUserInput);
+    response.then((res) =>{
+      return res.affected ? updateUserInput : {"error":"Not Updated"}
+    })
+    //return 
   }
 
   @Mutation(() => User)
   removeUser(@Args('id', { type: () => Int }) id: number) {
-    const hasBeenDeleted = this.usersService.remove(id)
-    console.log(`user # ${id} has been deleted? ${hasBeenDeleted}`)
-    return hasBeenDeleted;
+    const response = this.usersService.remove(id)
+    response.then((hasBeenDeleted)=>{
+      console.log("Has the entry been deleted? "+hasBeenDeleted)
+      //return hasBeenDeleted ? {id:id} : {error:"not deleted"}
+    })
+    return response ?  {id:id} : {error:"not deleted"};
   }
 
   @ResolveReference()
