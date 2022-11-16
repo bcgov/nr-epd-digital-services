@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { ConsoleLogger, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { throwIfEmpty } from 'rxjs';
 import { FindOptionsUtils, Repository } from 'typeorm';
 import { CreateUserInput } from './dto/create-user.input';
 import { FetchUserResponse } from './dto/reponse/fetch-user-response';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
+import {validate} from 'class-validator'
 
 
 
@@ -19,7 +19,7 @@ export class UsersService {
   ) {}
 
   async create(createUserInput: CreateUserInput) {
-   
+    console.log("CreateUserInput")
     const newUser = this.usersRepository.create(createUserInput);
     await this.usersRepository.save(newUser);    return newUser;
   }
