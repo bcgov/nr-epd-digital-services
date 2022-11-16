@@ -55,6 +55,7 @@ jobs:
           - component: backend/applications
             overwrite: true
             template_file: .github/openshift/deploy.backend-applications.yml
+<<<<<<< HEAD
             template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=3006 -p ENV=prod -p IMAGE_TAG=${{ inputs.RELEASE_VERSION }}
           - component: backend/gateway
             overwrite: true
@@ -64,6 +65,17 @@ jobs:
             overwrite: true
             template_file: .github/openshift/deploy.backend-users.yml
             template_vars: -p PROMOTE=${{ github.repository }}/backend/users -p CONTAINER_PORT=3005 -p ENV=prod -p IMAGE_TAG=${{ inputs.RELEASE_VERSION }}  
+=======
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=3006 -p ENV=prod -p IMAGE_TAG=prod
+          - component: backend/gateway
+            overwrite: true
+            template_file: .github/openshift/deploy.backend-gateway.yml
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/gateway -p CONTAINER_PORT=3010 -p ENV=prod -p IMAGE_TAG=prod
+          - component: backend/users
+            overwrite: true
+            template_file: .github/openshift/deploy.backend-users.yml
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/users -p CONTAINER_PORT=3005 -p ENV=prod -p IMAGE_TAG=prod  
+>>>>>>> dev
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
