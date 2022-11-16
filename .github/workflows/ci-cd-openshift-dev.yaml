@@ -5,14 +5,11 @@ on:
   push:
     branches:
       - 'dev'
-      - 'fix/ss-20-ac'
-      - 'fix/ci-cd-ss20' #test
+      
     paths:
       - 'backend/**'
       - 'frontend/**'
-      - '.github/workflows/ci-cd-openshift-dev.yaml' # Only for dev / testing purposes
-      - '.github/openshift' # Only for dev / testing purposes
-
+      
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
