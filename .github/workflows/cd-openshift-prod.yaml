@@ -81,10 +81,28 @@ jobs:
   tag:
     name: Create The Production Release Tag
     runs-on: ubuntu-22.04
-    environment: prod
     steps:
-      - uses: actions/create-release@latest
-        name: Create Release Tag in Git
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag: "release/${{ inputs.RELEASE_VERSION }}"
-          message: "Release version ${{ inputs.RELEASE_VERSION }}"
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
+          prerelease: false
+    # environment: prod
+    # steps:
+    #   - uses: actions/create-release@latest
+    #     name: Create Release Tag in Git
+    #     with:
+    #       tag: "release/${{ inputs.RELEASE_VERSION }}"
+    #       message: "Release version ${{ inputs.RELEASE_VERSION }}"
+
