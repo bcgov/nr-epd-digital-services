@@ -83,8 +83,8 @@ jobs:
     runs-on: ubuntu-22.04
     environment: prod
     steps:
-      - uses: rymndhng/release-on-push-action@master
+      - uses: rickstaa/action-create-tag@v1
         name: Create Release Tag in Git
         with:
-          tag: "release/${{ inputs.RELEASE_VERSION }}"
+          tag: "${{ inputs.RELEASE_VERSION }}"
           message: "Release version ${{ inputs.RELEASE_VERSION }}"
