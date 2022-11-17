@@ -7,9 +7,7 @@ on:
       RELEASE_VERSION:
         required: true
         description: The Tag release to PROD.
-      tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
-
+      
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
