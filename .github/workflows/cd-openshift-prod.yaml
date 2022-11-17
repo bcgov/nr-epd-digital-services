@@ -7,6 +7,8 @@ on:
       RELEASE_VERSION:
         required: true
         description: The Tag release to PROD.
+      tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -81,10 +83,11 @@ jobs:
   tag:
     name: Create The Production Release Tag
     runs-on: ubuntu-22.04
+    environment: prod
     steps:
       - name: Checkout code
         uses: actions/checkout@master
-      - name: Create Release
+      - name: Create Release Tag in Git
         id: create_release
         uses: actions/create-release@latest
         env:
