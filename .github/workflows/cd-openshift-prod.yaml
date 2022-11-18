@@ -6,7 +6,7 @@ on:
     inputs:
       RELEASE_VERSION:
         required: true
-        description: The Tag release to PROD.
+        description: The Tag release to PROD. #test
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
