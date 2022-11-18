@@ -78,32 +78,13 @@ jobs:
       overwrite: ${{ matrix.overwrite }}
       template_file: ${{ matrix.template_file }}
       template_vars: ${{ matrix.template_vars }}
- jobs:
-  build:
+  tag:
     name: Create The Production Release Tag
     runs-on: ubuntu-22.04
-    #environment: prod
-     steps:
-      - name: Checkout code
-        uses: actions/checkout@master
-      - name: Create Release Tag in Git
-        id: create_release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+    environment: prod
+    steps:
+      - uses: rickstaa/action-create-tag@v1
+        name: Create Release Tag in Git
         with:
-          tag_name: release/${{ inputs.RELEASE_VERSION }}
-          release_name:  Release version ${{ inputs.RELEASE_VERSION }}
-          # body: |
-          #   Changes in this Release
-          #   - First Change
-          #   - Second Change
-          draft: false
-          prerelease: false
-   
-    # steps:
-    #   - uses: rickstaa/action-create-tag@v1
-    #     name: Create Release Tag in Git
-    #     with:
-    #       tag: "release/${{ inputs.RELEASE_VERSION }}"
-    #       message: "Release version ${{ inputs.RELEASE_VERSION }}"
+          tag: "release/${{ inputs.RELEASE_VERSION }}"
+          message: "Release version ${{ inputs.RELEASE_VERSION }}"
