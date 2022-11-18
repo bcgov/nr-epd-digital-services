@@ -7,7 +7,7 @@ on:
       RELEASE_VERSION:
         required: true
         description: The Tag release to PROD.
-      
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -82,7 +82,7 @@ jobs:
     name: Create The Production Release Tag
     runs-on: ubuntu-22.04
     environment: prod
-    steps:
+     steps:
       - name: Checkout code
         uses: actions/checkout@master
       - name: Create Release Tag in Git
@@ -99,11 +99,10 @@ jobs:
           #   - Second Change
           draft: false
           prerelease: false
-    # environment: prod
+   
     # steps:
-    #   - uses: actions/create-release@latest
+    #   - uses: rickstaa/action-create-tag@v1
     #     name: Create Release Tag in Git
     #     with:
     #       tag: "release/${{ inputs.RELEASE_VERSION }}"
     #       message: "Release version ${{ inputs.RELEASE_VERSION }}"
-
