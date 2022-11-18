@@ -127,7 +127,7 @@ objects:
               readinessProbe:
                 tcpSocket:
                   port: ${{CONTAINER_PORT}}
-                  path: /graphql
+                  path: /graphql?query=%7B__typename%7D
                 initialDelaySeconds: 60
                 periodSeconds: 30
                 timeoutSeconds: 5
