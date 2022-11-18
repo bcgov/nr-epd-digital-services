@@ -20,7 +20,9 @@ parameters:
     description: Image tag to use
     value: latest
   - name: DOMAIN
-    value: apps.silver.devops.gov.bc.ca/graphql
+    value: apps.silver.devops.gov.bc.ca
+  - name: URL
+    value: graphql
   - name: CPU_REQUEST
     value: "25m"
   - name: MEMORY_REQUEST
