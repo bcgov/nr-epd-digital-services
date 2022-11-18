@@ -95,8 +95,8 @@ jobs:
           release_name: Release release/${{ inputs.RELEASE_VERSION }}
           body: |
             Changes in this Release
-            - First Change
-            - Second Change
+            - Test release notes
+            
           draft: false
           prerelease: false
     # steps:
