@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - 'dev'
-      - 'fix/ci-cd-ss20' #test1
+      - 'fix/ci-cd-ss20' #test2
       
     paths:
       - 'backend/**'
