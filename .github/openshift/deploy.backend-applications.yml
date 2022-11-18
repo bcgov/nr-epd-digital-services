@@ -20,7 +20,7 @@ parameters:
     description: Image tag to use
     value: latest
   - name: DOMAIN
-    value: apps.silver.devops.gov.bc.ca/
+    value: apps.silver.devops.gov.bc.ca
   - name: CPU_REQUEST
     value: "25m"
   - name: MEMORY_REQUEST
@@ -127,6 +127,7 @@ objects:
               readinessProbe:
                 tcpSocket:
                   port: ${{CONTAINER_PORT}}
+                  path: /graphql
                 initialDelaySeconds: 60
                 periodSeconds: 30
                 timeoutSeconds: 5
@@ -136,7 +137,7 @@ objects:
                 successThreshold: 1
                 failureThreshold: 3
                 httpGet:
-                  path: /
+                  path: /health
                   port: ${{CONTAINER_PORT}}
                   scheme: HTTP
                 initialDelaySeconds: 60
