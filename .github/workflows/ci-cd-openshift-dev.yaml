@@ -5,10 +5,12 @@ on:
   push:
     branches:
       - 'dev'
+      - ' fix/ci-cd-ss20'
       
     paths:
       - 'backend/**'
       - 'frontend/**'
+      - '.github/workflows/ci-cd-openshift-dev.yaml'
       
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
