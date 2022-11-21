@@ -14,13 +14,15 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLDivEleme
 
 const authOptions: UserManagerSettings = getClientSettings();
 
+console.log(authOptions)
+
 root.render(
   <React.StrictMode>
     
-     <AuthProvider {...authOptions}>
-     <Provider store={store}>
-    <App />
-    </Provider> 
+    <AuthProvider {...authOptions}>
+      <Provider store={store}>
+        <App />
+      </Provider> 
     </AuthProvider> 
   </React.StrictMode>
 );
