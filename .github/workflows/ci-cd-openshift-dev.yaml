@@ -37,7 +37,7 @@ jobs:
     with:
       component: ${{ matrix.component }}
       img_build: "ss-frontend-build" # ask the team dev or latest
-      img_fallback: ss-frontend-build
+      img_fallback: dev
       triggers: ${{ matrix.triggers }}
    
   # TODO - REIMPLMENET BEFORE MERGING, JUST TESTING WITHOUT THESE TO VERIFY DEPLOYS
@@ -93,7 +93,7 @@ jobs:
       oc_server: ${{ secrets.OC_SERVER }}
       oc_token: ${{ secrets.OC_TOKEN }}
     with:
-      environment: ss-frontend-build
+      environment: dev
       component: ${{ matrix.component }}
       overwrite: ${{ matrix.overwrite }}
       template_file: ${{ matrix.template_file }}
