@@ -37,7 +37,7 @@ jobs:
     with:
       component: ${{ matrix.component }}
       img_build: "ss-frontend-build" # ask the team dev or latest
-      img_fallback: dev
+      img_fallback: ss-frontend-build
       triggers: ${{ matrix.triggers }}
    
   # TODO - REIMPLMENET BEFORE MERGING, JUST TESTING WITHOUT THESE TO VERIFY DEPLOYS
