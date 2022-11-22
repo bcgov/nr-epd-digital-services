@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - 'dev'
-      - 'fix/ci-cd-ss20' #test1
+      - 'ss-frontend-build' #test1
       
     paths:
       - 'backend/**'
@@ -36,8 +36,8 @@ jobs:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
       component: ${{ matrix.component }}
-      img_build: "dev" # ask the team dev or latest
-      img_fallback: dev
+      img_build: "ss-frontend-build" # ask the team dev or latest
+      img_fallback: ss-frontend-build
       triggers: ${{ matrix.triggers }}
    
   # TODO - REIMPLMENET BEFORE MERGING, JUST TESTING WITHOUT THESE TO VERIFY DEPLOYS
@@ -85,7 +85,7 @@ jobs:
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=3000 -p ENV=dev -p IMAGE_TAG=dev    
+            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=3000 -p ENV=dev -p IMAGE_TAG=ss-frontend-build    
     
     
     secrets:
@@ -93,7 +93,7 @@ jobs:
       oc_server: ${{ secrets.OC_SERVER }}
       oc_token: ${{ secrets.OC_TOKEN }}
     with:
-      environment: fix/ci-cd-ss20
+      environment: ss-frontend-build
       component: ${{ matrix.component }}
       overwrite: ${{ matrix.overwrite }}
       template_file: ${{ matrix.template_file }}
