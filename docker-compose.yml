@@ -104,8 +104,8 @@ services:
       POSTGRESQL_USER: default
       POSTGRESQL_PASSWORD: default
       POSTGRESQL_DATABASE: default
-      USERS_MICROSERVICE_ENDPOINT: http://epd-backend-users:3005/graphql
-      APPLICATION_MICROSERVICE_ENDPOINT: http://epd-backend-applications:3006/graphql
+      USERS_MICROSERVICE_ENDPOINT: http://epd-backend-users/graphql
+      APPLICATION_MICROSERVICE_ENDPOINT: http://epd-backend-users-applications/graphql
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3010"]
       interval: 1m30s
