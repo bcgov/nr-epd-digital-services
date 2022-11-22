@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateUserInput } from './dto/create-user.input';
-import { User } from './entities/user.entity';
+import { ExternalUsers } from './entities/user.entity';
 import { UsersService } from './users.service';
 import { NAME_LENGTH_MAX} from '../../test/constants'
 import {validate} from 'class-validator'
@@ -16,15 +16,43 @@ describe('UsersService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [ {
-        provide: getRepositoryToken(User),
+        provide: getRepositoryToken(ExternalUsers),
         //useClass: Repository,
         useValue:  {
           find : jest.fn(()=>{
-            return Promise.resolve([{name:"test",id:1}])
+            return Promise.resolve([{firstName:"test",id:1,userId:"",
+            lastName:"",
+            addressLine:"",
+            city:"",
+            province:"",
+            country:"",
+            postalCode:"",
+            email:"",
+            phoneNumber:"",
+            organization:"",
+            userTypeId:0,
+            userWorkTypeId:0,
+            organizationTypeId:0,
+            isGstExempt:false,
+            isBillingContact:true}])
           })
           ,
           findOneOrFail: jest.fn((id)=>{
-            return Promise.resolve({name:"test",id:1})
+            return Promise.resolve({firstName:"test",id:1,userId:"",
+            lastName:"",
+            addressLine:"",
+            city:"",
+            province:"",
+            country:"",
+            postalCode:"",
+            email:"",
+            phoneNumber:"",
+            organization:"",
+            userTypeId:0,
+            userWorkTypeId:0,
+            organizationTypeId:0,
+            isGstExempt:false,
+            isBillingContact:true})
           })
           ,
           create: jest.fn(async (user)=>{
@@ -62,17 +90,32 @@ describe('UsersService', () => {
 
   it('should return a user', async ()=>{
     const user=  await service.findOne(2);  
-    expect(user.name).toEqual("test");
+    expect(user.firstName).toEqual("test");
   })
 
   it('should create and return a user', async ()=>{
 
     const input: CreateUserInput = {
-      name:"test"
+      firstName:"test",
+      userId:"",
+      lastName:"",
+      addressLine:"",
+      city:"",
+      province:"",
+      country:"",
+      postalCode:"",
+      email:"",
+      phoneNumber:"",
+      organization:"",
+      userTypeId:0,
+      userWorkTypeId:0,
+      organizationTypeId:0,
+      isGstExempt:false,
+      isBillingContact:true
     }
 
     const user=  await service.create(input);  
-    expect(user.name).toEqual("test");
+    expect(user.firstName).toEqual("test");
   })
 
   it('Should delete a user', async ()=>{
@@ -89,7 +132,22 @@ describe('UsersService', () => {
   it('Should not allow for a user name longer than 256 chars', async () =>{
 
     const input: CreateUserInput = {
-      name: NAME_LENGTH_MAX
+      firstName: NAME_LENGTH_MAX,
+      userId:"",
+      lastName:"",
+      addressLine:"",
+      city:"",
+      province:"",
+      country:"",
+      postalCode:"",
+      email:"",
+      phoneNumber:"",
+      organization:"",
+      userTypeId:0,
+      userWorkTypeId:0,
+      organizationTypeId:0,
+      isGstExempt:false,
+      isBillingContact:true
     }
     const createUser = plainToInstance(CreateUserInput,input)
     const error = await service.create(createUser);  
@@ -100,7 +158,22 @@ describe('UsersService', () => {
   it('Should not allow for an empty user name', async () =>{
 
     const input: CreateUserInput = {
-      name: ""
+      firstName: "",
+      userId:"",
+      lastName:"",
+      addressLine:"",
+      city:"",
+      province:"",
+      country:"",
+      postalCode:"",
+      email:"",
+      phoneNumber:"",
+      organization:"",
+      userTypeId:0,
+      userWorkTypeId:0,
+      organizationTypeId:0,
+      isGstExempt:false,
+      isBillingContact:true
     }
     const createUser = plainToInstance(CreateUserInput,input)
     const error = await service.create(createUser);

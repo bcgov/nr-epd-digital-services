@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Args, Int, ResolveReference, ResolveField, Parent, ObjectType, Field } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import { User } from './entities/user.entity';
+import { ExternalUsers } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { Resource, RoleMatchingMode, Roles } from 'nest-keycloak-connect';
@@ -9,13 +9,13 @@ import { FormData } from './dto/form-data';
 import { FetchUserResponse } from './dto/reponse/fetch-user-response';
 // import { Application } from './entities/application.entity';'
 
-@Resolver(() => User)
+@Resolver(() => ExternalUsers)
 @Resource('backend')
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
   @Roles({roles:['adminbackend'],mode: RoleMatchingMode.ANY})
-  @Mutation(() => User)
+  @Mutation(() => ExternalUsers)
   createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
     request
     return this.usersService.create(createUserInput);
@@ -35,7 +35,7 @@ export class UsersResolver {
       return "submitted";
   }
 
-  @Mutation(() => User)
+  @Mutation(() => ExternalUsers)
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     console.log(updateUserInput)
     const response = this.usersService.update(updateUserInput.id, updateUserInput);
@@ -45,7 +45,7 @@ export class UsersResolver {
     //return 
   }
 
-  @Mutation(() => User)
+  @Mutation(() => ExternalUsers)
   removeUser(@Args('id', { type: () => Int }) id: number) {
     const response = this.usersService.remove(id)
     response.then((hasBeenDeleted)=>{
@@ -61,7 +61,7 @@ export class UsersResolver {
     return this.usersService.findOne(idVal);
   }
 
-  @Query(() => User, { name: 'user' })
+  @Query(() => ExternalUsers, { name: 'user' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.usersService.findOne(id);
   }

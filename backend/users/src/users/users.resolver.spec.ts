@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateUserInput } from './dto/create-user.input';
 import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
+import { ExternalUsers } from './entities/user.entity';
 import { UsersResolver } from './users.resolver';
 import { UsersService } from './users.service';
 
@@ -12,7 +12,7 @@ describe('UsersResolver', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [{
-        provide: getRepositoryToken(User),
+        provide: getRepositoryToken(ExternalUsers),
         useValue:  {
           find : jest.fn(()=>{
             return Promise.resolve([{name:"test",id:1}])
@@ -46,17 +46,32 @@ describe('UsersResolver', () => {
 
   it('should return a user', async ()=>{
     const user=  await resolver.findOne(2);  
-    expect(user.name).toEqual("test");
+    expect(user.firstName).toEqual("test");
   })
 
   it('should create and return a user', async ()=>{
 
     const input: CreateUserInput = {
-      name:"test"
+      firstName:"test",
+      lastName:"",
+      addressLine:"",
+      city:"",
+      province:"",
+      country:"",
+      postalCode:"",
+      email:"",
+      phoneNumber:"",
+      organization:"",
+      userTypeId:0,
+      userWorkTypeId:0,
+      organizationTypeId:0,
+      isGstExempt:false,
+      isBillingContact:true,
+      userId:""
     }
 
     const user=  await resolver.createUser(input);  
-    expect(user.name).toEqual("test");
+    expect(user.firstName).toEqual("test");
   })
 
 
