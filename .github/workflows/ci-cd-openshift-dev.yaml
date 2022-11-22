@@ -93,7 +93,7 @@ jobs:
       oc_server: ${{ secrets.OC_SERVER }}
       oc_token: ${{ secrets.OC_TOKEN }}
     with:
-      environment: dev
+      environment: ss-frontend-build
       component: ${{ matrix.component }}
       overwrite: ${{ matrix.overwrite }}
       template_file: ${{ matrix.template_file }}
