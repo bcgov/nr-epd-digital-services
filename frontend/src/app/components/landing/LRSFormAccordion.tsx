@@ -2,17 +2,13 @@ import { ReactJSXElement } from '@emotion/react/types/jsx-namespace'
 import {Accordion} from 'react-bootstrap'
 
 
-export interface Forms extends Array<Form>{
-    
-}
-
-export type Form = {
+export type LRSForm = {
     name:string,
     copy:string,
     url:string
 }
 
-export const LRSFormAccordion = (forms:Forms):ReactJSXElement =>{
+export const LRSFormAccordion = (forms:Array<LRSForm>):ReactJSXElement =>{
     return(    
         <Accordion>
             {forms.map((form,key) => (
@@ -22,14 +18,18 @@ export const LRSFormAccordion = (forms:Forms):ReactJSXElement =>{
     )
 }
 
-const AccordionItem  = (form:Form,key:string):ReactJSXElement =>{
+const AccordionItem  = (form:LRSForm,key:string):ReactJSXElement =>{
     return(
         <Accordion.Item eventKey={key} >
             <Accordion.Header>
                 {form.name}
             </Accordion.Header>
             <Accordion.Body>
-                {form.copy}
+                <p>
+                    {form.copy}
+                    <br/>
+                    <a href={form.url}> Please Click Here for the form </a>
+                </p>    
             </Accordion.Body>
         </Accordion.Item>
     )
