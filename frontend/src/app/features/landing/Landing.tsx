@@ -1,12 +1,13 @@
-import React from "react"
-import { LRSFormAccordion } from "../../components/buttons/LRSFormAccordion"
+import { LRSFormAccordion } from "../../components/landing/LRSFormAccordion"
 import {Container, Row} from 'react-bootstrap'
 import jsonforms from "./forms.json"
-import {Form} from "../../components/buttons/LRSFormAccordion"
+import { FormFactory } from "../../helpers/factory/FormFactory"
 
 
 const Landing = () =>{
-    
+    var forms = FormFactory(jsonforms.forms)
+    console.log( jsonforms)
+    //var forms: Array<Form> = jsonforms.forms
     return(
         <Container>
             <Row className="text-center">
@@ -14,7 +15,7 @@ const Landing = () =>{
             <p>Please log in to start</p>
             </Row>
             <Row>
-                <LRSFormAccordion forms={jsonforms as Array<Form>}></LRSFormAccordion>
+                {LRSFormAccordion(forms)}
             </Row>
             
         </Container>
