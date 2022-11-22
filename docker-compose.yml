@@ -6,6 +6,7 @@ networks:
 
 services:
   database:
+    user: postgres
     networks:
       - app-tier 
     container_name: database
@@ -16,6 +17,11 @@ services:
     hostname: database
     image: postgres:12
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - /pgdata
   users:
@@ -29,6 +35,9 @@ services:
       - database
     ports:
       - "3005:3005"
+    depends_on:
+      database:
+        condition: service_healthy
     expose:
       - 3005 
     volumes:
@@ -65,6 +74,9 @@ services:
       start_period: 40s
     hostname: applications
     image: node:14
+    depends_on:
+      database:
+        condition: service_healthy
     links:
       - database
     ports:
@@ -75,7 +87,7 @@ services:
       - ./backend/applications:/app:z
       - /app/node_modules
     working_dir: "/app"
-  graphqlgateway:
+  graphqlgateway:    
     networks:
       - app-tier 
     container_name: graphqlgateway
