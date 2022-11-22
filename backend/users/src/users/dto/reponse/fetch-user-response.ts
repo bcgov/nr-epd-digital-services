@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql'
-import { User } from '../../entities/user.entity'
+import { ExternalUsers } from '../../entities/user.entity'
 import { BaseHttpResponse } from './base-http-response'
 
 
@@ -7,6 +7,6 @@ import { BaseHttpResponse } from './base-http-response'
 export class FetchUserResponse extends BaseHttpResponse
 {
 
-    @Field(()=>[User])
-    data:User[]
+    @Field(()=>[ExternalUsers])
+    data:ExternalUsers[]
 }

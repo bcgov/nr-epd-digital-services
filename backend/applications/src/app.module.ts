@@ -10,7 +10,7 @@ import { AppService } from './app.service';
 import { ApplicationModule } from './application/application.module';
 import { ApplicationResolver } from './application/application.resolver';
 import { ApplicationService } from './application/application.service';
-import { User } from './application/entities/user.entity';
+import { ExternalUsers } from './application/entities/user.entity';
 import { UsersResolver } from './application/users.resolver';
 
 @Module({
@@ -42,7 +42,7 @@ import { UsersResolver } from './application/users.resolver';
       driver: ApolloFederationDriver,
       autoSchemaFile: join(process.cwd(), 'src/graphql-schema.gql'),
       buildSchemaOptions: {
-        orphanedTypes: [User],
+        orphanedTypes: [ExternalUsers],
       },
       cors:true
     }),

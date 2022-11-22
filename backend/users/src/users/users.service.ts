@@ -4,7 +4,7 @@ import { FindOptionsUtils, Repository } from 'typeorm';
 import { CreateUserInput } from './dto/create-user.input';
 import { FetchUserResponse } from './dto/reponse/fetch-user-response';
 import { UpdateUserInput } from './dto/update-user.input';
-import { User } from './entities/user.entity';
+import { ExternalUsers } from './entities/user.entity';
 import {validate} from 'class-validator'
 
 
@@ -14,8 +14,8 @@ import {validate} from 'class-validator'
 export class UsersService {
 
   constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>
+    @InjectRepository(ExternalUsers)
+    private usersRepository: Repository<ExternalUsers>
   ) {}
 
   async create(createUserInput: CreateUserInput) {
@@ -39,7 +39,7 @@ export class UsersService {
   
   }
 
-  async findOne(id: number): Promise<User> {
+  async findOne(id: number): Promise<ExternalUsers> {
     FindOptionsUtils;
     return this.usersRepository.findOneOrFail({ where: { id: id } });
   }

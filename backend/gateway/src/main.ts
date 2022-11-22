@@ -7,7 +7,7 @@ async function bootstrap() {
   waitOn({
     resources: ['http://users:3005'],
     interval: 100,
-    timeout: 120000,
+    timeout: 180000,
     validateStatus: function (status) {
       console.log('status', status);
       return status == 401;
