@@ -5,9 +5,11 @@ on:
   push:
     branches:
       - 'dev'
+      - 'ss-frontend-build'
     paths:
       - 'backend/**'
       - 'frontend/**'
+      - '.github/workflows/ci-cd-openshift-tools.yaml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -68,15 +70,15 @@ jobs:
           - component: backend/applications
             overwrite: true
             template_file: .github/openshift/deploy.backend-applications.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=3000 -p ENV=tools -p IMAGE_TAG=tools
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=3006 -p ENV=tools -p IMAGE_TAG=tools
           - component: backend/gateway
             overwrite: true
             template_file: .github/openshift/deploy.backend-gateway.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/gateway -p CONTAINER_PORT=3000 -p ENV=tools -p IMAGE_TAG=tools
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/gateway -p CONTAINER_PORT=3010 -p ENV=tools -p IMAGE_TAG=tools
           - component: backend/users
             overwrite: true
             template_file: .github/openshift/deploy.backend-users.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/users -p CONTAINER_PORT=3000 -p ENV=tools -p IMAGE_TAG=tools
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/users -p CONTAINER_PORT=3005 -p ENV=tools -p IMAGE_TAG=tools
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
