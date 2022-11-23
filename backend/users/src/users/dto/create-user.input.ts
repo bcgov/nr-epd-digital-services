@@ -1,87 +1,82 @@
 import { InputType, Field, Int } from '@nestjs/graphql';
-import {Length, IsNotEmpty} from 'class-validator'
+import { Length, IsNotEmpty } from 'class-validator';
 
 @InputType({})
 export class CreateUserInput {
-
   // @Field()
   // id:number;
 
   @Field()
-  @Length(1,50)
+  @Length(1, 50)
   userId: string;
 
   @Field()
-  @Length(1,66)
+  @Length(1, 66)
   @IsNotEmpty()
-  firstName:string;
+  firstName: string;
 
   @Field()
-  @Length(1,66)
+  @Length(1, 66)
   @IsNotEmpty()
-  lastName:string
-
+  lastName: string;
 
   @Field()
-  @Length(1,200)
+  @Length(1, 200)
   @IsNotEmpty()
-  addressLine:string
+  addressLine: string;
 
   @Field()
-  @Length(1,50)
+  @Length(1, 50)
   @IsNotEmpty()
-  city:string
+  city: string;
 
   @Field()
-  @Length(1,50)
+  @Length(1, 50)
   @IsNotEmpty()
-  province:string
+  province: string;
 
   @Field()
-  @Length(1,50)
+  @Length(1, 50)
   @IsNotEmpty()
-  country:string
+  country: string;
 
   @Field()
-  @Length(1,20)
+  @Length(1, 20)
   @IsNotEmpty()
-  postalCode:string
+  postalCode: string;
 
   @Field()
-  @Length(1,320)
+  @Length(1, 320)
   @IsNotEmpty()
-  email:string
+  email: string;
 
   @Field()
-  @Length(1,40)
+  @Length(1, 40)
   @IsNotEmpty()
-  phoneNumber:string
+  phoneNumber: string;
 
-  
   @Field()
-  @Length(1,250)
+  @Length(1, 250)
   @IsNotEmpty()
-  organization:string
+  organization: string;
 
-  @Field(()=>Int)
+  @Field(() => Int)
   @IsNotEmpty()
-  userTypeId:number;
+  userTypeId: number;
 
-
-  @Field(()=>Int)
+  @Field(() => Int)
   @IsNotEmpty()
-  organizationTypeId:number;
+  organizationTypeId: number;
 
-  @Field(()=>Int)
+  @Field(() => Int)
   @IsNotEmpty()
-  userWorkTypeId:number;
+  userWorkTypeId: number;
 
-  @Field(()=>Boolean)
+  @Field(() => Boolean)
   @IsNotEmpty()
-  isGstExempt:boolean;
+  isGstExempt: boolean;
 
-  @Field(()=>Boolean)
+  @Field(() => Boolean)
   @IsNotEmpty()
-  isBillingContact:boolean;
-
+  isBillingContact: boolean;
 }

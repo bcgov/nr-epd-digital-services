@@ -1,4 +1,15 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveReference, ResolveField, Parent, ObjectType, Field } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveReference,
+  ResolveField,
+  Parent,
+  ObjectType,
+  Field,
+} from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { ExternalUsers } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
@@ -14,50 +25,51 @@ import { FetchUserResponse } from './dto/reponse/fetch-user-response';
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  @Roles({roles:['adminbackend'],mode: RoleMatchingMode.ANY})
+  @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
   @Mutation(() => ExternalUsers)
   createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    request
+    request;
     return this.usersService.create(createUserInput);
-
   }
 
-  @Roles({roles:['adminbackend'],mode: RoleMatchingMode.ANY})
+  @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
   @Query(() => FetchUserResponse, { name: 'users' })
   findAll() {
     return this.usersService.findAll();
   }
 
   @Mutation(() => String)
-  submitForm(@Args('data') data:FormData)
-  {
-      //console.log(data)
-      return "submitted";
+  submitForm(@Args('data') data: FormData) {
+    //console.log(data)
+    return 'submitted';
   }
 
   @Mutation(() => ExternalUsers)
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    console.log(updateUserInput)
-    const response = this.usersService.update(updateUserInput.id, updateUserInput);
-    response.then((res) =>{
-      return res.affected ? updateUserInput : {"error":"Not Updated"}
-    })
-    //return 
+    console.log(updateUserInput);
+    const response = this.usersService.update(
+      updateUserInput.id,
+      updateUserInput,
+    );
+    response.then((res) => {
+      return res.affected ? updateUserInput : { error: 'Not Updated' };
+    });
+    //return
   }
 
   @Mutation(() => ExternalUsers)
   removeUser(@Args('id', { type: () => Int }) id: number) {
-    const response = this.usersService.remove(id)
-    response.then((hasBeenDeleted)=>{
-      console.log("Has the entry been deleted? "+hasBeenDeleted)
+    const response = this.usersService.remove(id);
+    response.then((hasBeenDeleted) => {
+      console.log('Has the entry been deleted? ' + hasBeenDeleted);
       //return hasBeenDeleted ? {id:id} : {error:"not deleted"}
-    })
-    return response ?  {id:id} : {error:"not deleted"};
+    });
+    return response ? { id: id } : { error: 'not deleted' };
   }
 
   @ResolveReference()
   resolveReference(reference: { __typename: string; id: number }) {
-    const idVal:number = reference.id;
+    const idVal: number = reference.id;
     return this.usersService.findOne(idVal);
   }
 
@@ -66,12 +78,8 @@ export class UsersResolver {
     return this.usersService.findOne(id);
   }
 
-
   // @ResolveField((of) => [Application])
   // public applications(@Parent() user: User) {
   //   return  { __typename: 'Application', id: user.id}
   // }
-
-
-  
 }
