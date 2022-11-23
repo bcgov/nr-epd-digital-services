@@ -12,10 +12,8 @@ export class AppController {
   }
 
   @Post()
-  CreateUser(@Body() input):boolean
-  {
-    console.log("input",input);
+  CreateUser(@Body() input): boolean {
+    console.log('input', input);
     return true;
   }
-
 }
