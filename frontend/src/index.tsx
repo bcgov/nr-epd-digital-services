@@ -13,12 +13,8 @@ import { getClientSettings } from './app/auth/UserManagerSetting';
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLDivElement);
 
 const authOptions: UserManagerSettings = getClientSettings();
-
-console.log(authOptions)
-
 root.render(
   <React.StrictMode>
-    
     <AuthProvider {...authOptions}>
       <Provider store={store}>
         <App />

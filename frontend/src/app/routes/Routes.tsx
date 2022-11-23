@@ -9,6 +9,7 @@ import ProtectedRoute from "./ProtectedRoute";
 const AppRoutes = () => {
   return (
     <Routes>
+        {/* <Route path="/dashboard" element={<ProtectedRoute auth={auth} element={<Dashboard/>}/>}/> */}
         <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard/>}/>}/>
         <Route path="/" element={<Landing/>}></Route>
         <Route path="/users" element={<UsersList />}></Route>
