@@ -39,18 +39,18 @@ export class UsersService {
   
   }
 
-  async findOne(id: number): Promise<ExternalUsers> {
+  async findOne(id: string): Promise<ExternalUsers> {
     FindOptionsUtils;
     return this.usersRepository.findOneOrFail({ where: { id: id } });
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
+  update(id: string, updateUserInput: UpdateUserInput) {
     const result = this.usersRepository.update(id,updateUserInput)
     console.log(result)
     return result
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     //typeorm's custom repository .delete function intakes a value for query and returns a DeleteResult object
     const delResult =  await this.usersRepository.delete({id})
     console.log(delResult)

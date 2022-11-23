@@ -23,7 +23,7 @@ directive @inaccessible on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUM
 directive @override(from: String!) on FIELD_DEFINITION
 
 type ExternalUsers {
-  id: Int!
+  id: String!
   firstName: String!
   lastName: String!
   addressLine: String!
@@ -99,7 +99,7 @@ input UpdateUserInput {
   userWorkTypeId: Int
   isGstExempt: Boolean
   isBillingContact: Boolean
-  id: Int!
+  id: String!
 }
 
 scalar link__Import

@@ -20,7 +20,7 @@ export class Application {
   user:ExternalUsers
 
   @Column({nullable:true})
-  @Field((type)=>Int)
-  userId:number;
+  @Field()
+  userId:string;
 
 }

@@ -5,9 +5,9 @@ import { Application } from './application.entity';
 @Directive('@extends')
 @Directive('@key(fields: "id")')
 export class ExternalUsers {
-  @Field((type) => Int)
+@Field()
   @Directive('@external')
-  id: number;
+  id: string;
 
   @Field((type) => [Application])
   applications?: Application[];
