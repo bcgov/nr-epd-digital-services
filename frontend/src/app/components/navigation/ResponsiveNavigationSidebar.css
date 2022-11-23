@@ -1,0 +1,27 @@
+#dropdown-toggle::after{
+    display:none
+}
+
+#dropdown-toggle{
+    text-align: left;
+}
+
+
+#dropdown-menu{
+    width: 100%;
+} 
+
+#toggle-icon{
+    margin-top: 4px !important;
+    float:right;
+    vertical-align: middle;
+}
+
+#nav-panel {
+    font-family: 'BC Sans';
+    font-style: normal;
+    color: #1A5A96;
+    text-decoration-line: underline;
+    font-family: ‘BCSans’, ‘Noto Sans’, Verdana, Arial, sans-serif; 
+    border: #F2F2F2,1px;
+}
