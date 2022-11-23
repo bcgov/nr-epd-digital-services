@@ -60,8 +60,8 @@ GraphQLModule.forRoot<ApolloGatewayDriverConfig>({
     buildService: ({ url }) => new RequestHandler({ url }),
     supergraphSdl: new IntrospectAndCompose({
       subgraphs: [
-        { name: 'users', url:  process.env.USERS_MICROSERVICE_ENDPOINT? process.env.USERS_MICROSERVICE_ENDPOINT : 'https://epd-backend-users-tools.apps.silver.devops.gov.bc.ca/graphql' },
-        { name: 'applications', url: process.env.APPLICATION_MICROSERVICE_ENDPOINT? process.env.APPLICATION_MICROSERVICE_ENDPOINT : 'https://epd-backend-applications-tools.apps.silver.devops.gov.bc.ca/graphql' },
+        { name: 'users', url:  process.env.USERS_MICROSERVICE_ENDPOINT? process.env.USERS_MICROSERVICE_ENDPOINT : 'http://epd-backend-users/graphql' },
+        { name: 'applications', url: process.env.APPLICATION_MICROSERVICE_ENDPOINT? process.env.APPLICATION_MICROSERVICE_ENDPOINT : 'http://epd-backend-users-applications/graphql' },
       ],
     }),
   },})],
