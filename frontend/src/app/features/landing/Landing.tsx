@@ -22,10 +22,10 @@ const Landing = () =>{
                 </Col>
             </Row>
              <Row className="responsive lrs nav"> {/* TODO: Break this into separate component with BCGOV CSS */}
-                <Col sm="12" md="2">
+                <Col sm="12" md="3">
                     <ResponsiveNavigationSidebar/>
                 </Col>
-                <Col sm="12" md="10">
+                <Col sm="12" md="9">
                     <h3>Sample LRS Forms</h3>
                     {LRSFormAccordion(forms)}
                 </Col>
