@@ -128,9 +128,9 @@ objects:
                       name: ${NAME}-database
                       key: database-user 
                 - name: USER_URL
-                  value: http://${NAME}-backend-users.${DOMAIN}/graphql
+                  value: http://${NAME}-backend-users-${ENV}.${DOMAIN}/graphql
                 - name: APPLICATION_URL
-                  value: http://${NAME}-backend-applications.${DOMAIN}/graphql
+                  value: http://${NAME}-backend-applications-${ENV}.${DOMAIN}/graphql
               ports:
                 - containerPort: ${{CONTAINER_PORT}}
                   protocol: TCP
