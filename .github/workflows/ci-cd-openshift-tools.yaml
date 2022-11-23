@@ -5,7 +5,7 @@ on:
   push:
     branches:
       #- 'dev'
-      - 'ss-frontend-build' #test1
+      - 'ss-frontend-build' #test2
     paths:
       - 'backend/**'
       - 'frontend/**'
@@ -78,7 +78,7 @@ jobs:
           - component: backend/users
             overwrite: true
             template_file: .github/openshift/deploy.backend-users.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/users -p CONTAINER_PORT=3005 -p ENV=tools -p IMAGE_TAG=tools
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/users -p CONTAINER_PORT=3005 -p -p ENV=tools -p IMAGE_TAG=tools
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml

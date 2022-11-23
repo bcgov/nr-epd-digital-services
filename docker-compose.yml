@@ -104,8 +104,8 @@ services:
       POSTGRESQL_USER: default
       POSTGRESQL_PASSWORD: default
       POSTGRESQL_DATABASE: default
-      USERS_MICROSERVICE_ENDPOINT: http://epd-backend-users/graphql
-      APPLICATION_MICROSERVICE_ENDPOINT: http://epd-backend-users-applications/graphql
+      USERS_MICROSERVICE_ENDPOINT: https://epd-backend-users-tools.apps.silver.devops.gov.bc.ca/graphql
+      APPLICATION_MICROSERVICE_ENDPOINT: https://epd-backend-applications-tools.apps.silver.devops.gov.bc.ca/graphql
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3010"]
       interval: 1m30s
