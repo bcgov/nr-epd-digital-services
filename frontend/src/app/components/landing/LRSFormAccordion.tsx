@@ -22,7 +22,7 @@ const AccordionItem  = (form:LRSForm,key:string):ReactJSXElement =>{
     return(
         <Accordion.Item eventKey={key} >
             <Accordion.Header>
-                {form.name}
+                <h4>{form.name}</h4>
             </Accordion.Header>
             <Accordion.Body>
                 <p>
