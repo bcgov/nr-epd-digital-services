@@ -129,7 +129,7 @@ objects:
                   path: /graphql/health
                   port: ${{CONTAINER_PORT}}
                   scheme: HTTP
-                initialDelaySeconds: 60
+                initialDelaySeconds: 120
                 periodSeconds: 30
                 timeoutSeconds: 5
                 failureThreshold: 30
@@ -141,7 +141,7 @@ objects:
                   path: /graphql/health
                   port: ${{CONTAINER_PORT}}
                   scheme: HTTP
-                initialDelaySeconds: 60
+                initialDelaySeconds: 120
                 periodSeconds: 30
                 timeoutSeconds: 5
   - apiVersion: v1
