@@ -1,5 +1,8 @@
 import { ObjectType, Field, Int, Directive } from '@nestjs/graphql';
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { OrganizationType } from './organizationType.entity';
+import { Region } from './region.entity';
+
 // import { Application } from './application.entity';
 
 @ObjectType()
@@ -7,10 +10,10 @@ import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 @Entity({name:'external_user'})
 export class ExternalUsers {
 
-  @Field(()=>Int)
+  @Field()
   @Index('IDX_externaluser_id')
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
-  id:number;
+  id:string;
 
 
   @Index('IDX_externaluser_user_id')
@@ -55,21 +58,12 @@ export class ExternalUsers {
   phoneNumber:string;
 
   @Field()
+  @Column({ length: 250, name: 'industry',  nullable: true })
+  industry:string;
+
+  @Field()
   @Column({ length: 250, name: 'organization',  nullable: true })
   organization:string;
-
-  @Field(()=>Int)
-  @Column({name: 'user_type' , default: 0 })
-  userTypeId:number;
-
-  @Field(()=>Int)
-  @Column({name: 'organization_type', default: 0 })
-  organizationTypeId:number;
-
-  @Field(()=>Int)
-  @Column({name: 'user_identity', default: 0 })
-  userWorkTypeId:number;
-
 
   @Field(()=>Boolean)
   @Column({name: 'is_gst_exempt' , default: false })
@@ -81,5 +75,24 @@ export class ExternalUsers {
 
   // @Field((type) => [Application])
   // applications?: Application[];
+
+
+  @Column({ length: 10, name: 'user_work_status',  nullable: false })
+  userWorkStatus:string;
+
+  @Column({ length: 25, name: 'user_fn_status',  nullable: false })
+  userFNStatus:string;
+
+  @Field(()=>OrganizationType)
+  @OneToOne(type => OrganizationType) @JoinColumn()
+  organizationType?:OrganizationType
+
+  @Field(()=>Region)
+  @OneToOne(type => Region) @JoinColumn()
+  region?:Region
+
+  @Field(()=>Boolean)
+  @Column()
+  isProfileVerified: Boolean;
 
 }

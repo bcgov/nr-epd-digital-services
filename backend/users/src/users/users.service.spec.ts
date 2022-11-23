@@ -89,7 +89,7 @@ describe('UsersService', () => {
   })
 
   it('should return a user', async ()=>{
-    const user=  await service.findOne(2);  
+    const user=  await service.findOne("2");  
     expect(user.firstName).toEqual("test");
   })
 
@@ -119,12 +119,12 @@ describe('UsersService', () => {
   })
 
   it('Should delete a user', async ()=>{
-    const removeUser = await service.remove(1)
+    const removeUser = await service.remove("1")
     expect(removeUser)
   })
 
   it('Should update a user', async () =>{
-    const updateUser = {name:"Test1",id:2}
+    const updateUser = {name:"Test1",id:"2"}
     const result = await service.update(updateUser.id,updateUser)
     expect(result).toEqual(updateUser)
   })

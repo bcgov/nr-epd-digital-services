@@ -52,7 +52,7 @@ export class ApplicationService {
     return `This action removes a #${id} application`;
   }
 
-  async forUser(args: FetchUsersArgs, id: number): Promise<Application[]> {
+  async forUser(args: FetchUsersArgs, id: string): Promise<Application[]> {
     if (args.nameLike == '') {
       return await this.applicationRepo.find({
         skip: args.skip,

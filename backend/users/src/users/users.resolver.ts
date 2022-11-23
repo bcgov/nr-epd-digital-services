@@ -46,7 +46,7 @@ export class UsersResolver {
   }
 
   @Mutation(() => ExternalUsers)
-  removeUser(@Args('id', { type: () => Int }) id: number) {
+  removeUser(@Args('id', { type: () => Int }) id: string) {
     const response = this.usersService.remove(id)
     response.then((hasBeenDeleted)=>{
       console.log("Has the entry been deleted? "+hasBeenDeleted)
@@ -56,13 +56,13 @@ export class UsersResolver {
   }
 
   @ResolveReference()
-  resolveReference(reference: { __typename: string; id: number }) {
-    const idVal:number = reference.id;
+  resolveReference(reference: { __typename: string; id: string }) {
+    const idVal:string = reference.id;
     return this.usersService.findOne(idVal);
   }
 
   @Query(() => ExternalUsers, { name: 'user' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(@Args('id', { type: () => Int }) id: string) {
     return this.usersService.findOne(id);
   }
 

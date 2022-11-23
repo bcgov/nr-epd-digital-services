@@ -23,7 +23,7 @@ directive @inaccessible on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUM
 directive @override(from: String!) on FIELD_DEFINITION
 
 type ExternalUsers {
-  id: Int!
+  id: String!
   applications(skip: Int = 0, take: Int = 25, nameLike: String!): [Application!]!
 }
 
@@ -31,7 +31,7 @@ type Application {
   id: ID!
   name: String
   user: ExternalUsers!
-  userId: Int!
+  userId: String!
 }
 
 type Query {

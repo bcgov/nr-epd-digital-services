@@ -7,6 +7,6 @@ export class CreateApplicationInput {
   name:string;
 
   @Field(()=>Int)
-  userId:number;
+  userId:string;
 
 }
