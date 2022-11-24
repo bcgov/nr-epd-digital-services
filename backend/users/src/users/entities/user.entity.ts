@@ -7,7 +7,7 @@ import { Region } from './region.entity';
 
 @ObjectType()
 @Directive('@key(fields: "id")')
-@Entity({name:'external_user'})
+@Entity({ name: 'external_user' })
 export class ExternalUsers {
 
   @Field()
@@ -17,45 +17,50 @@ export class ExternalUsers {
 
 
   @Index('IDX_externaluser_user_id')
-  @Column({ unique: true, length: 50, name: 'user_id', nullable: true, default: null })
+  @Column({
+    unique: true,
+    length: 50,
+    name: 'user_id',
+    nullable: true,
+    default: null,
+  })
   userId: string;
-
 
   @Field()
   @Column({ length: 64, name: 'first_name' })
-  firstName:string;
+  firstName: string;
 
   @Field()
   @Column({ length: 64, name: 'last_name' })
-  lastName:string;
+  lastName: string;
 
   @Field()
   @Column({ length: 200, name: 'address_line' })
-  addressLine:string;
+  addressLine: string;
 
   @Field()
   @Column({ length: 50, name: 'city' })
-  city:string;
+  city: string;
 
   @Field()
   @Column({ length: 50, name: 'province' })
-  province:string;
+  province: string;
 
   @Field()
   @Column({ length: 50, name: 'country' })
-  country:string;
+  country: string;
 
   @Field()
   @Column({ length: 20, name: 'postal_code' })
-  postalCode:string;
+  postalCode: string;
 
   @Field()
   @Column({ length: 320, name: 'email' })
-  email:string;
+  email: string;
 
   @Field()
   @Column({ length: 40, name: 'phoneNumber' })
-  phoneNumber:string;
+  phoneNumber: string;
 
   @Field()
   @Column({ length: 250, name: 'industry',  nullable: true })
@@ -83,12 +88,22 @@ export class ExternalUsers {
   @Column({ length: 25, name: 'user_fn_status',  nullable: false })
   userFNStatus:string;
 
-  @Field(()=>OrganizationType)
+
+  @Column({nullable:true})
+  @Field(()=>Int)
+  organizationTypeId?:number;
+
+
+  @Column({nullable:true})
+  @Field(()=>Int)
+  regionId?:number;
+
   @OneToOne(type => OrganizationType) @JoinColumn()
+  @Field(()=>OrganizationType)
   organizationType?:OrganizationType
 
-  @Field(()=>Region)
   @OneToOne(type => Region) @JoinColumn()
+  @Field(()=>Region)
   region?:Region
 
   @Field(()=>Boolean)

@@ -1,48 +1,63 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveReference, ResolveField, Parent, ObjectType, Field } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveReference,
+  ResolveField,
+  Parent,
+  ObjectType,
+  Field,
+} from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { ExternalUsers } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { Resource, RoleMatchingMode, Roles } from 'nest-keycloak-connect';
+import { Resource, RoleMatchingMode, Roles, Unprotected } from 'nest-keycloak-connect';
 import { request } from 'http';
 import { FormData } from './dto/form-data';
 import { FetchUserResponse } from './dto/reponse/fetch-user-response';
+import { Region } from './entities/region.entity';
+import { RegionService } from './region.service';
 // import { Application } from './entities/application.entity';'
 
 @Resolver(() => ExternalUsers)
 @Resource('backend')
+//@Unprotected()
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService, private readonly regionService:RegionService) {}
 
-  @Roles({roles:['adminbackend'],mode: RoleMatchingMode.ANY})
+  @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
   @Mutation(() => ExternalUsers)
   createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    request
+    request;
     return this.usersService.create(createUserInput);
-
   }
 
-  @Roles({roles:['adminbackend'],mode: RoleMatchingMode.ANY})
+  @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
   @Query(() => FetchUserResponse, { name: 'users' })
   findAll() {
     return this.usersService.findAll();
   }
 
   @Mutation(() => String)
-  submitForm(@Args('data') data:FormData)
-  {
-      //console.log(data)
-      return "submitted";
+  submitForm(@Args('data') data: FormData) {
+    //console.log(data)
+    return 'submitted';
   }
 
   @Mutation(() => ExternalUsers)
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    console.log(updateUserInput)
-    const response = this.usersService.update(updateUserInput.id, updateUserInput);
-    response.then((res) =>{
-      return res.affected ? updateUserInput : {"error":"Not Updated"}
-    })
-    //return 
+    console.log(updateUserInput);
+    const response = this.usersService.update(
+      updateUserInput.id,
+      updateUserInput,
+    );
+    response.then((res) => {
+      return res.affected ? updateUserInput : { error: 'Not Updated' };
+    });
+    //return
   }
 
   @Mutation(() => ExternalUsers)
@@ -51,27 +66,33 @@ export class UsersResolver {
     response.then((hasBeenDeleted)=>{
       console.log("Has the entry been deleted? "+hasBeenDeleted)
       //return hasBeenDeleted ? {id:id} : {error:"not deleted"}
-    })
-    return response ?  {id:id} : {error:"not deleted"};
+    });
+    return response ? { id: id } : { error: 'not deleted' };
   }
 
-  @ResolveReference()
-  resolveReference(reference: { __typename: string; id: string }) {
-    const idVal:string = reference.id;
-    return this.usersService.findOne(idVal);
-  }
+  // @ResolveReference()
+  // resolveReference(reference: { __typename: string; id: string }) {
+  //   const idVal:string = reference.id;
+  //   return this.usersService.findOne(idVal);
+  // }
 
-  @Query(() => ExternalUsers, { name: 'user' })
-  findOne(@Args('id', { type: () => Int }) id: string) {
-    return this.usersService.findOne(id);
-  }
+  // @Query(() => ExternalUsers, { name: 'user' })
+  // findOne(@Args('id', { type: () => Int }) id: string) {
+  //   return this.usersService.findOne(id);
+  // }
 
+  // @ResolveField(()=>Region)
+  // user(@Parent() externalUsers:ExternalUsers){
+  //  return this.regionService.findOne(externalUsers.region.id);
+  // }
+
+  // @Query(() => Region, { name: 'region' })
+  // findOne(@Args('id', { type: () => Int }) id: number) {
+  //   return this.regionService.findOne(id);
+  // }
 
   // @ResolveField((of) => [Application])
   // public applications(@Parent() user: User) {
   //   return  { __typename: 'Application', id: user.id}
   // }
-
-
-  
 }
