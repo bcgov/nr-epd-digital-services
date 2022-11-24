@@ -10,7 +10,7 @@ async function bootstrap() {
     timeout: 180000,
     validateStatus: function (status) {
       console.log('status', status);
-      return status == 401;
+      return status == 200;
     },
   })
     .then(async () => {

@@ -5,38 +5,40 @@ import { CreateUserInput } from './dto/create-user.input';
 import { FetchUserResponse } from './dto/reponse/fetch-user-response';
 import { UpdateUserInput } from './dto/update-user.input';
 import { ExternalUsers } from './entities/user.entity';
-import {validate} from 'class-validator'
-
-
-
+import { validate } from 'class-validator';
+import { Region } from './entities/region.entity';
+import { OrganizationType } from './entities/organizationType.entity';
 
 @Injectable()
 export class UsersService {
-
   constructor(
     @InjectRepository(ExternalUsers)
-    private usersRepository: Repository<ExternalUsers>
+    private usersRepository: Repository<ExternalUsers>,
   ) {}
 
   async create(createUserInput: CreateUserInput) {
-    console.log("CreateUserInput")
+    console.log('CreateUserInput');
+
+    
+    // user.region = new Region();
+    // user.organizationType = new OrganizationType();
+   
+    
     const newUser = this.usersRepository.create(createUserInput);
-    await this.usersRepository.save(newUser);    return newUser;
+    await this.usersRepository.save(newUser);
+    return newUser;
   }
 
-
-
   async findAll() {
-
     const findUsersResponse = new FetchUserResponse();
 
-    findUsersResponse.httpStatusCode = 401;
+    findUsersResponse.httpStatusCode = 200;
 
-    findUsersResponse.data = await this.usersRepository.find();
+    findUsersResponse.data = await this.usersRepository.find({ relations:['region','organizationType']});
 
-    return findUsersResponse;  
+    console.log("data",findUsersResponse.data)
 
-  
+    return findUsersResponse;
   }
 
   async findOne(id: string): Promise<ExternalUsers> {
@@ -52,10 +54,10 @@ export class UsersService {
 
   async remove(id: string) {
     //typeorm's custom repository .delete function intakes a value for query and returns a DeleteResult object
-    const delResult =  await this.usersRepository.delete({id})
-    console.log(delResult)
-    //delResult = DeleteResult :{raw:[], affected:int} raw is the raw sql result, affected is # deleted rows    
-    return (delResult.affected>0)
+    const delResult = await this.usersRepository.delete({ id });
+    console.log(delResult);
+    //delResult = DeleteResult :{raw:[], affected:int} raw is the raw sql result, affected is # deleted rows
+    return delResult.affected > 0;
   }
 
   // forAuthor(id:number){

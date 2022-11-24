@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, Index, PrimaryColumn } from "typeorm";
+import { Column, Entity, Index, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 
 @ObjectType()
@@ -8,7 +8,7 @@ export class OrganizationType{
 
     @Field(()=>Int)
     @Index('IDX_organization_type_id')
-    @PrimaryColumn()    
+    @PrimaryGeneratedColumn('increment')    
     id:number;
 
 

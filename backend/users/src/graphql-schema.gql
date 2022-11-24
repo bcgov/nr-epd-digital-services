@@ -22,6 +22,16 @@ directive @inaccessible on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUM
 
 directive @override(from: String!) on FIELD_DEFINITION
 
+type OrganizationType {
+  id: Int!
+  name: String!
+}
+
+type Region {
+  id: Int!
+  name: String!
+}
+
 type ExternalUsers {
   id: String!
   firstName: String!
@@ -33,12 +43,15 @@ type ExternalUsers {
   postalCode: String!
   email: String!
   phoneNumber: String!
+  industry: String!
   organization: String!
-  userTypeId: Int!
-  organizationTypeId: Int!
-  userWorkTypeId: Int!
   isGstExempt: Boolean!
   isBillingContact: Boolean!
+  organizationTypeId: Int!
+  regionId: Int!
+  organizationType: OrganizationType!
+  region: Region!
+  isProfileVerified: Boolean!
 }
 
 type FetchUserResponse {
@@ -46,9 +59,21 @@ type FetchUserResponse {
   data: [ExternalUsers!]!
 }
 
+type FetchRegionResponse {
+  httpStatusCode: Int!
+  data: [Region!]!
+}
+
+type FetchOrganizationTypeResponse {
+  httpStatusCode: Int!
+  data: [OrganizationType!]!
+}
+
 type Query {
   users: FetchUserResponse!
-  user(id: Int!): ExternalUsers!
+  regions: FetchRegionResponse!
+  region(id: Int!): Region!
+  orgnizationTypes: FetchOrganizationTypeResponse!
 }
 
 type Mutation {
@@ -70,11 +95,14 @@ input CreateUserInput {
   email: String!
   phoneNumber: String!
   organization: String!
-  userTypeId: Int!
-  organizationTypeId: Int!
-  userWorkTypeId: Int!
+  userWorkStatus: String!
+  userFNStatus: String!
   isGstExempt: Boolean!
   isBillingContact: Boolean!
+  isProfileVerified: Boolean!
+  industry: String!
+  regionId: Int!
+  organizationTypeId: Int!
 }
 
 input FormData {
@@ -94,11 +122,14 @@ input UpdateUserInput {
   email: String
   phoneNumber: String
   organization: String
-  userTypeId: Int
-  organizationTypeId: Int
-  userWorkTypeId: Int
+  userWorkStatus: String
+  userFNStatus: String
   isGstExempt: Boolean
   isBillingContact: Boolean
+  isProfileVerified: Boolean
+  industry: String
+  regionId: Int
+  organizationTypeId: Int
   id: String!
 }
 
