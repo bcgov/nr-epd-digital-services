@@ -19,11 +19,9 @@ export class UsersService {
   async create(createUserInput: CreateUserInput) {
     console.log('CreateUserInput');
 
-    
     // user.region = new Region();
     // user.organizationType = new OrganizationType();
-   
-    
+
     const newUser = this.usersRepository.create(createUserInput);
     await this.usersRepository.save(newUser);
     return newUser;
@@ -34,9 +32,11 @@ export class UsersService {
 
     findUsersResponse.httpStatusCode = 200;
 
-    findUsersResponse.data = await this.usersRepository.find({ relations:['region','organizationType']});
+    findUsersResponse.data = await this.usersRepository.find({
+      relations: ['region', 'organizationType'],
+    });
 
-    console.log("data",findUsersResponse.data)
+    console.log('data', findUsersResponse.data);
 
     return findUsersResponse;
   }
@@ -47,9 +47,9 @@ export class UsersService {
   }
 
   update(id: string, updateUserInput: UpdateUserInput) {
-    const result = this.usersRepository.update(id,updateUserInput)
-    console.log(result)
-    return result
+    const result = this.usersRepository.update(id, updateUserInput);
+    console.log(result);
+    return result;
   }
 
   async remove(id: string) {

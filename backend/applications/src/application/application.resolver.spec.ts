@@ -11,21 +11,22 @@ describe('ApplicationResolver', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [{
-        useValue: {
-          find : jest.fn(()=>{
-            return Promise.resolve([{name:"test",id:1}])
-          }),
-          create: jest.fn(()=>{
-            return Promise.resolve({name:"app",id:1})
-          }),
-          save: jest.fn(()=>{
-          
-          })
+      providers: [
+        {
+          useValue: {
+            find: jest.fn(() => {
+              return Promise.resolve([{ name: 'test', id: 1 }]);
+            }),
+            create: jest.fn(() => {
+              return Promise.resolve({ name: 'app', id: 1 });
+            }),
+            save: jest.fn(() => {}),
+          },
+          provide: getRepositoryToken(Application),
         },
-        provide: getRepositoryToken(Application),
-    
-      },ApplicationResolver, ApplicationService],
+        ApplicationResolver,
+        ApplicationService,
+      ],
     }).compile();
 
     resolver = module.get<ApplicationResolver>(ApplicationResolver);
@@ -35,40 +36,32 @@ describe('ApplicationResolver', () => {
     expect(resolver).toBeDefined();
   });
 
-
   it('should return application', async () => {
-    
     const applications = await resolver.findAll();
 
     expect(applications.length).toBeGreaterThan(0);
-    
   });
 
   it('should return application when filtering by params', async () => {
+    const args: FetchUsersArgs = {
+      skip: 0,
+      take: 0,
+      nameLike: '',
+    };
 
-    const args:FetchUsersArgs = {
-      skip:0,
-      take:0,
-      nameLike:""
-    }
-    
     const applications = await resolver.filterWithApplicationName(args);
 
     expect(applications.length).toBeGreaterThan(0);
-    
   });
 
   it('should create and return application', async () => {
+    const input: CreateApplicationInput = {
+      name: 'app',
+      userId: 1,
+    };
 
-   const input:CreateApplicationInput = {
-    name:"app",
-    userId:1
-   }
-    
-    const applications = await resolver.createApplication(input)
+    const applications = await resolver.createApplication(input);
 
-    expect(applications.name).toBe("app");
-    
+    expect(applications.name).toBe('app');
   });
-
 });

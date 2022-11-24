@@ -1,9 +1,19 @@
-import { ApolloDriver, ApolloFederationDriver, ApolloFederationDriverConfig } from '@nestjs/apollo';
+import {
+  ApolloDriver,
+  ApolloFederationDriver,
+  ApolloFederationDriverConfig,
+} from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { GraphQLModule, GraphQLFederationFactory } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthGuard, KeycloakConnectModule, PolicyEnforcementMode, ResourceGuard, RoleGuard } from 'nest-keycloak-connect';
+import {
+  AuthGuard,
+  KeycloakConnectModule,
+  PolicyEnforcementMode,
+  ResourceGuard,
+  RoleGuard,
+} from 'nest-keycloak-connect';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -16,14 +26,22 @@ import { UsersResolver } from './application/users.resolver';
 @Module({
   imports: [
     KeycloakConnectModule.register({
-      authServerUrl:   process.env.KEYCLOCK_AUTH_URL?process.env.KEYCLOCK_AUTH_URL:'ADD YOUR AUTH SERVER URL',
-      realm:  process.env.KEYCLOCK_REALM? process.env.KEYCLOCK_REALM:'epd-dev',
-      clientId:  process.env.KEYCLOCK_CLIENT_ID?process.env.KEYCLOCK_CLIENTID:'backend',
-      secret:  process.env.KEYCLOCK_SECRET?process.env.KEYCLOCK_SECRET:'ADD YOUR SECRET',
+      authServerUrl: process.env.KEYCLOCK_AUTH_URL
+        ? process.env.KEYCLOCK_AUTH_URL
+        : 'ADD YOUR AUTH SERVER URL',
+      realm: process.env.KEYCLOCK_REALM
+        ? process.env.KEYCLOCK_REALM
+        : 'epd-dev',
+      clientId: process.env.KEYCLOCK_CLIENT_ID
+        ? process.env.KEYCLOCK_CLIENTID
+        : 'backend',
+      secret: process.env.KEYCLOCK_SECRET
+        ? process.env.KEYCLOCK_SECRET
+        : 'ADD YOUR SECRET',
       policyEnforcement: PolicyEnforcementMode.PERMISSIVE,
       // Secret key of the client taken from keycloak server
     }),
-        ApplicationModule,
+    ApplicationModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRESQL_HOST || 'gldatabase',
@@ -34,24 +52,25 @@ import { UsersResolver } from './application/users.resolver';
       // entities: [User],
       autoLoadEntities:
         process.env.POSTGRESQL_AUTOLOAD_ENTITIES == 'false' ? false : true, // Auto load all entities regiestered by typeorm forFeature method.
-      synchronize: process.env.POSTGRESQL_SYNC == 'false' ? false : true, 
+      synchronize: process.env.POSTGRESQL_SYNC == 'false' ? false : true,
       // This changes the DB schema to match changes to entities, which we might not want.
-      logging:true
+      logging: true,
     }),
-    GraphQLModule.forRoot<ApolloFederationDriverConfig> ({
+    GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: join(process.cwd(), 'src/graphql-schema.gql'),
       buildSchemaOptions: {
         orphanedTypes: [ExternalUsers],
       },
-      cors:true
+      cors: true,
     }),
   ],
 
   controllers: [AppController],
-  providers: [AppService,
+  providers: [
+    AppService,
     {
-      provide: APP_GUARD,     
+      provide: APP_GUARD,
       useClass: AuthGuard,
     },
     {
@@ -61,7 +80,7 @@ import { UsersResolver } from './application/users.resolver';
     {
       provide: APP_GUARD,
       useClass: RoleGuard,
-    }
+    },
   ],
 })
 export class AppModule {}

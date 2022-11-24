@@ -6,21 +6,18 @@ import { ExternalUsers } from './user.entity';
 @Directive('@key(fields: "id")')
 @Entity()
 export class Application {
-
-  @Field(()=>ID)
+  @Field(() => ID)
   @PrimaryGeneratedColumn()
-  id:number;
+  id: number;
 
+  @Field({ nullable: true })
+  @Column({ name: 'name', nullable: true })
+  name: string;
 
-  @Field({nullable:true})
-  @Column({name:"name",nullable:true})
-  name:string;
+  @Field(() => ExternalUsers)
+  user: ExternalUsers;
 
-  @Field(()=>ExternalUsers)
-  user:ExternalUsers
-
-  @Column({nullable:true})
+  @Column({ nullable: true })
   @Field()
-  userId:string;
-
+  userId: string;
 }

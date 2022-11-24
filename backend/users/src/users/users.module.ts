@@ -11,7 +11,16 @@ import { OrganizationTypeService } from './organizationType.service';
 import { OrganizationTypeResolver } from './organizationType.resolver';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ExternalUsers,Region,OrganizationType])],
-  providers: [UsersResolver, UsersService,RegionResolver,RegionService,OrganizationTypeResolver,OrganizationTypeService]
+  imports: [
+    TypeOrmModule.forFeature([ExternalUsers, Region, OrganizationType]),
+  ],
+  providers: [
+    UsersResolver,
+    UsersService,
+    RegionResolver,
+    RegionService,
+    OrganizationTypeResolver,
+    OrganizationTypeService,
+  ],
 })
 export class UsersModule {}

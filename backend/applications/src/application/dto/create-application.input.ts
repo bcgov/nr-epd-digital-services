@@ -2,11 +2,9 @@ import { InputType, Int, Field } from '@nestjs/graphql';
 
 @InputType()
 export class CreateApplicationInput {
-  
   @Field()
-  name:string;
+  name: string;
 
-  @Field(()=>Int)
-  userId:string;
-
+  @Field(() => Int)
+  userId: string;
 }

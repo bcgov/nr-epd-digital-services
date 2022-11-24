@@ -95,10 +95,10 @@ describe('UsersService', () => {
     expect(users.data.length).toBeGreaterThan(0);
   });
 
-  it('should return a user', async ()=>{
-    const user=  await service.findOne("2");  
-    expect(user.firstName).toEqual("test");
-  })
+  it('should return a user', async () => {
+    const user = await service.findOne('2');
+    expect(user.firstName).toEqual('test');
+  });
 
   it('should create and return a user', async () => {
     const input: CreateUserInput = {
@@ -112,31 +112,31 @@ describe('UsersService', () => {
       postalCode: '',
       email: '',
       phoneNumber: '',
-      organization: '',  
+      organization: '',
       organizationTypeId: 1,
       isGstExempt: false,
       isBillingContact: true,
-      userWorkStatus:"",
-      isProfileVerified:false,
-      userFNStatus:"",
-      industry:"",
-      regionId:1
+      userWorkStatus: '',
+      isProfileVerified: false,
+      userFNStatus: '',
+      industry: '',
+      regionId: 1,
     };
 
     const user = await service.create(input);
     expect(user.firstName).toEqual('test');
   });
 
-  it('Should delete a user', async ()=>{
-    const removeUser = await service.remove("1")
-    expect(removeUser)
-  })
+  it('Should delete a user', async () => {
+    const removeUser = await service.remove('1');
+    expect(removeUser);
+  });
 
-  it('Should update a user', async () =>{
-    const updateUser = {name:"Test1",id:"2"}
-    const result = await service.update(updateUser.id,updateUser)
-    expect(result).toEqual(updateUser)
-  })
+  it('Should update a user', async () => {
+    const updateUser = { name: 'Test1', id: '2' };
+    const result = await service.update(updateUser.id, updateUser);
+    expect(result).toEqual(updateUser);
+  });
 
   it('Should not allow for a user name longer than 256 chars', async () => {
     const input: CreateUserInput = {
@@ -150,15 +150,15 @@ describe('UsersService', () => {
       postalCode: '',
       email: '',
       phoneNumber: '',
-      organization: '',  
+      organization: '',
       organizationTypeId: 1,
       isGstExempt: false,
       isBillingContact: true,
-      userWorkStatus:"",
-      isProfileVerified:false,
-      userFNStatus:"",
-      industry:"",
-      regionId:1
+      userWorkStatus: '',
+      isProfileVerified: false,
+      userFNStatus: '',
+      industry: '',
+      regionId: 1,
     };
     const createUser = plainToInstance(CreateUserInput, input);
     const error = await service.create(createUser);
@@ -177,15 +177,15 @@ describe('UsersService', () => {
       postalCode: '',
       email: '',
       phoneNumber: '',
-      organization: '',  
+      organization: '',
       organizationTypeId: 1,
       isGstExempt: false,
       isBillingContact: true,
-      userWorkStatus:"",
-      isProfileVerified:false,
-      userFNStatus:"",
-      industry:"",
-      regionId:1
+      userWorkStatus: '',
+      isProfileVerified: false,
+      userFNStatus: '',
+      industry: '',
+      regionId: 1,
     };
     const createUser = plainToInstance(CreateUserInput, input);
     const error = await service.create(createUser);

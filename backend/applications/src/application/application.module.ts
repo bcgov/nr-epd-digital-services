@@ -6,7 +6,7 @@ import { Application } from './entities/application.entity';
 import { UsersResolver } from './users.resolver';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Application])],
-  providers: [ApplicationResolver, ApplicationService,UsersResolver]
+  imports: [TypeOrmModule.forFeature([Application])],
+  providers: [ApplicationResolver, ApplicationService, UsersResolver],
 })
 export class ApplicationModule {}
