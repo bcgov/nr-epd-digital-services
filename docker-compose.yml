@@ -101,6 +101,7 @@ services:
       POSTGRESQL_USER: default
       POSTGRESQL_PASSWORD: default
       POSTGRESQL_DATABASE: default
+      USERS_MICROSERVICE: http://users:3005
       USERS_MICROSERVICE_ENDPOINT: http://users:3005/graphql
       APPLICATION_MICROSERVICE_ENDPOINT: http://applications:3006/graphql
     healthcheck:

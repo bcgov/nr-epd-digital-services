@@ -61,16 +61,13 @@ export class CreateUserInput {
   @IsNotEmpty()
   organization: string;
 
- 
   @Field()
   @Length(1, 10)
-  userWorkStatus:string;
+  userWorkStatus: string;
 
   @Field()
   @Length(1, 25)
-  userFNStatus:string;
-
- 
+  userFNStatus: string;
 
   @Field(() => Boolean)
   @IsNotEmpty()
@@ -80,17 +77,17 @@ export class CreateUserInput {
   @IsNotEmpty()
   isBillingContact: boolean;
 
-  @Field(()=>Boolean)
+  @Field(() => Boolean)
   @IsNotEmpty()
   isProfileVerified: Boolean;
 
   @Field()
   @Length(1, 250)
-  industry:string;
+  industry: string;
 
-  @Field(()=>Int)
-  regionId:number;
+  @Field(() => Int)
+  regionId: number;
 
-  @Field(()=>Int)
-  organizationTypeId:number;
+  @Field(() => Int)
+  organizationTypeId: number;
 }

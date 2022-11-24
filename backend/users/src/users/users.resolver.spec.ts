@@ -47,7 +47,7 @@ describe('UsersResolver', () => {
   });
 
   it('should return a user', async () => {
-    const user = await resolver.findOne(2);
+    const user = await resolver.findOne("2");
     expect(user.firstName).toEqual('test');
   });
 
@@ -63,12 +63,15 @@ describe('UsersResolver', () => {
       email: '',
       phoneNumber: '',
       organization: '',
-      userTypeId: 0,
-      userWorkTypeId: 0,
+      userFNStatus:"",
+      userWorkStatus: "",
       organizationTypeId: 0,
       isGstExempt: false,
       isBillingContact: true,
       userId: '',
+      isProfileVerified:false,
+      industry:"",
+      regionId:0
     };
 
     const user = await resolver.createUser(input);

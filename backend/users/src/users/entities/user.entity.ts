@@ -1,5 +1,12 @@
 import { ObjectType, Field, Int, Directive } from '@nestjs/graphql';
-import { Column, Entity, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { OrganizationType } from './organizationType.entity';
 import { Region } from './region.entity';
 
@@ -9,12 +16,10 @@ import { Region } from './region.entity';
 @Directive('@key(fields: "id")')
 @Entity({ name: 'external_user' })
 export class ExternalUsers {
-
   @Field()
   @Index('IDX_externaluser_id')
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
-  id:string;
-
+  id: string;
 
   @Index('IDX_externaluser_user_id')
   @Column({
@@ -63,51 +68,49 @@ export class ExternalUsers {
   phoneNumber: string;
 
   @Field()
-  @Column({ length: 250, name: 'industry',  nullable: true })
-  industry:string;
+  @Column({ length: 250, name: 'industry', nullable: true })
+  industry: string;
 
   @Field()
-  @Column({ length: 250, name: 'organization',  nullable: true })
-  organization:string;
+  @Column({ length: 250, name: 'organization', nullable: true })
+  organization: string;
 
-  @Field(()=>Boolean)
-  @Column({name: 'is_gst_exempt' , default: false })
-  isGstExempt:boolean;
+  @Field(() => Boolean)
+  @Column({ name: 'is_gst_exempt', default: false })
+  isGstExempt: boolean;
 
-  @Field(()=>Boolean)
-  @Column({name: 'is_billing_contact' ,  default: true })
-  isBillingContact:boolean;
+  @Field(() => Boolean)
+  @Column({ name: 'is_billing_contact', default: true })
+  isBillingContact: boolean;
 
   // @Field((type) => [Application])
   // applications?: Application[];
 
+  @Column({ length: 10, name: 'user_work_status', nullable: false })
+  userWorkStatus: string;
 
-  @Column({ length: 10, name: 'user_work_status',  nullable: false })
-  userWorkStatus:string;
+  @Column({ length: 25, name: 'user_fn_status', nullable: false })
+  userFNStatus: string;
 
-  @Column({ length: 25, name: 'user_fn_status',  nullable: false })
-  userFNStatus:string;
+  @Column({ nullable: true })
+  @Field(() => Int)
+  organizationTypeId?: number;
 
+  @Column({ nullable: true })
+  @Field(() => Int)
+  regionId?: number;
 
-  @Column({nullable:true})
-  @Field(()=>Int)
-  organizationTypeId?:number;
+  @OneToOne((type) => OrganizationType)
+  @JoinColumn()
+  @Field(() => OrganizationType)
+  organizationType?: OrganizationType;
 
+  @OneToOne((type) => Region)
+  @JoinColumn()
+  @Field(() => Region)
+  region?: Region;
 
-  @Column({nullable:true})
-  @Field(()=>Int)
-  regionId?:number;
-
-  @OneToOne(type => OrganizationType) @JoinColumn()
-  @Field(()=>OrganizationType)
-  organizationType?:OrganizationType
-
-  @OneToOne(type => Region) @JoinColumn()
-  @Field(()=>Region)
-  region?:Region
-
-  @Field(()=>Boolean)
+  @Field(() => Boolean)
   @Column()
   isProfileVerified: Boolean;
-
 }

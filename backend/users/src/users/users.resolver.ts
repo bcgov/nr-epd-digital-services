@@ -14,7 +14,12 @@ import { UsersService } from './users.service';
 import { ExternalUsers } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { Resource, RoleMatchingMode, Roles, Unprotected } from 'nest-keycloak-connect';
+import {
+  Resource,
+  RoleMatchingMode,
+  Roles,
+  Unprotected,
+} from 'nest-keycloak-connect';
 import { request } from 'http';
 import { FormData } from './dto/form-data';
 import { FetchUserResponse } from './dto/reponse/fetch-user-response';
@@ -26,7 +31,10 @@ import { RegionService } from './region.service';
 @Resource('backend')
 //@Unprotected()
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService, private readonly regionService:RegionService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly regionService: RegionService,
+  ) {}
 
   @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
   @Mutation(() => ExternalUsers)
@@ -62,24 +70,24 @@ export class UsersResolver {
 
   @Mutation(() => ExternalUsers)
   removeUser(@Args('id', { type: () => Int }) id: string) {
-    const response = this.usersService.remove(id)
-    response.then((hasBeenDeleted)=>{
-      console.log("Has the entry been deleted? "+hasBeenDeleted)
+    const response = this.usersService.remove(id);
+    response.then((hasBeenDeleted) => {
+      console.log('Has the entry been deleted? ' + hasBeenDeleted);
       //return hasBeenDeleted ? {id:id} : {error:"not deleted"}
     });
     return response ? { id: id } : { error: 'not deleted' };
   }
 
-  // @ResolveReference()
-  // resolveReference(reference: { __typename: string; id: string }) {
-  //   const idVal:string = reference.id;
-  //   return this.usersService.findOne(idVal);
-  // }
+  @ResolveReference()
+  resolveReference(reference: { __typename: string; id: string }) {
+    const idVal:string = reference.id;
+    return this.usersService.findOne(idVal);
+  }
 
-  // @Query(() => ExternalUsers, { name: 'user' })
-  // findOne(@Args('id', { type: () => Int }) id: string) {
-  //   return this.usersService.findOne(id);
-  // }
+  @Query(() => ExternalUsers, { name: 'user' })
+  findOne(@Args('id', { type: () => Int }) id: string) {
+    return this.usersService.findOne(id);
+  }
 
   // @ResolveField(()=>Region)
   // user(@Parent() externalUsers:ExternalUsers){

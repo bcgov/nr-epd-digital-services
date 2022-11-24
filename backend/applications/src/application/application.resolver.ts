@@ -1,4 +1,13 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveReference, ResolveField, Parent } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveReference,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { ApplicationService } from './application.service';
 import { Application } from './entities/application.entity';
 import { CreateApplicationInput } from './dto/create-application.input';
@@ -14,31 +23,32 @@ export class ApplicationResolver {
   constructor(private readonly applicationService: ApplicationService) {}
 
   @Mutation(() => Application)
-  @Roles({roles:['applicationadmin'],mode: RoleMatchingMode.ANY})
-  createApplication(@Args('createApplicationInput') createApplicationInput: CreateApplicationInput) {
-
+  @Roles({ roles: ['applicationadmin'], mode: RoleMatchingMode.ANY })
+  createApplication(
+    @Args('createApplicationInput')
+    createApplicationInput: CreateApplicationInput,
+  ) {
     // this.resolveReference({_typename:"User",id:createApplicationInput.userId});
 
     return this.applicationService.create(createApplicationInput);
   }
 
-  @Roles({roles:['applicationadmin'],mode: RoleMatchingMode.ANY})
+  @Roles({ roles: ['applicationadmin'], mode: RoleMatchingMode.ANY })
   @Query(() => [Application], { name: 'application' })
   findAll() {
     return this.applicationService.findAll();
   }
 
-
-  @Roles({roles:['applicationadmin'],mode: RoleMatchingMode.ANY})
+  @Roles({ roles: ['applicationadmin'], mode: RoleMatchingMode.ANY })
   @Query(() => [Application], { name: 'FilterWithApplicationName' })
-  filterWithApplicationName(@Args() args:FetchUsersArgs): Promise<Application[]> {
+  filterWithApplicationName(
+    @Args() args: FetchUsersArgs,
+  ): Promise<Application[]> {
     return this.applicationService.findAllWithFilter(args);
   }
 
-
   @Query(() => [Application], { name: 'applications' })
-  getAll()
-  {
+  getAll() {
     return this.applicationService.findAll();
   }
 
@@ -48,8 +58,14 @@ export class ApplicationResolver {
   }
 
   @Mutation(() => Application)
-  updateApplication(@Args('updateApplicationInput') updateApplicationInput: UpdateApplicationInput) {
-    return this.applicationService.update(updateApplicationInput.id, updateApplicationInput);
+  updateApplication(
+    @Args('updateApplicationInput')
+    updateApplicationInput: UpdateApplicationInput,
+  ) {
+    return this.applicationService.update(
+      updateApplicationInput.id,
+      updateApplicationInput,
+    );
   }
 
   @Mutation(() => Application)
@@ -58,15 +74,12 @@ export class ApplicationResolver {
   }
 
   @ResolveReference()
-  resolveReference(ref:{_typename:string, id:number}){
+  resolveReference(ref: { _typename: string; id: number }) {
     return this.applicationService.findOne(ref.id);
   }
 
-  @ResolveField((of)=>ExternalUsers)
-  user(@Parent() application:Application) {
-    return { __typename: 'User', id: application.userId}
+  @ResolveField((of) => ExternalUsers)
+  user(@Parent() application: Application) {
+    return { __typename: 'User', id: application.userId };
   }
-
-  
-
 }
