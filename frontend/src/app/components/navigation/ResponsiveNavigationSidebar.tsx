@@ -22,11 +22,11 @@ export const ResponsiveNavigationSidebar = () => {
             </Row>
             <Row  className="d-none d-sm-none d-md-block">
                 <Nav id="nav-panel" className="flex-column">
-                    <Nav.Link>Responsive Nav</Nav.Link>
-                    <Nav.Link>Link 123</Nav.Link>
-                    <Nav.Link>Link 123</Nav.Link>
-                    <Nav.Link>Link 123</Nav.Link>
-                    <Nav.Link>Link 123</Nav.Link>
+                    <Nav.Link id="nav-link">Responsive Nav</Nav.Link>
+                    <Nav.Link id="nav-link">Link 123</Nav.Link>
+                    <Nav.Link id="nav-link">Link 123</Nav.Link>
+                    <Nav.Link id="nav-link">Link 123</Nav.Link>
+                    <Nav.Link id="nav-link">Link 123</Nav.Link>
                 </Nav>
             </Row>
         </>

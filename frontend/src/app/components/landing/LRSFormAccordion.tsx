@@ -1,6 +1,9 @@
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace'
 import {Accordion} from 'react-bootstrap'
 
+import './LRSFormAccordion.css'
+
+
 
 export type LRSForm = {
     name:string,
@@ -10,7 +13,7 @@ export type LRSForm = {
 
 export const LRSFormAccordion = (forms:Array<LRSForm>):ReactJSXElement =>{
     return(    
-        <Accordion>
+        <Accordion >
             {forms.map((form,key) => (
                 AccordionItem(form,key.toString())
             ))}
@@ -20,11 +23,11 @@ export const LRSFormAccordion = (forms:Array<LRSForm>):ReactJSXElement =>{
 
 const AccordionItem  = (form:LRSForm,key:string):ReactJSXElement =>{
     return(
-        <Accordion.Item eventKey={key} >
-            <Accordion.Header>
-                <h4>{form.name}</h4>
+        <Accordion.Item id='accordion-item' className=' my-4 border'  eventKey={key} >
+            <Accordion.Header id="accordion-item-header" className='accordion-item-header'>
+                {form.name}
             </Accordion.Header>
-            <Accordion.Body>
+            <Accordion.Body id="accordion-item-body">
                 <p>
                     {form.copy}
                     <br/>
