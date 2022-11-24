@@ -1,0 +1,16 @@
+#accordion-item{
+
+}
+
+#accordion-item-header button{
+    font-family: 'BCSans', 'Noto Sans', Verdana, Arial, sans-serif;
+    color: #38598A;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 21.6px;
+    line-height: 29px;
+}
+
+#accordion-item-header button{
+    background-color: #F2F2F2
+}

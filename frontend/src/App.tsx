@@ -5,6 +5,7 @@ import {
   BrowserRouter as Router
 } from "react-router-dom";
 import AppRoutes from './app/routes/Routes';
+import '@bcgov/bc-sans/css/BCSans.css'
 
 function App() {
   return (
