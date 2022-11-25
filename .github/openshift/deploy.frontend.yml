@@ -47,7 +47,7 @@ parameters:
   - name: ENV
     description: The Environment on which it is deployed
     required: true
-    objects:
+objects:
   # ConfigMap created by sakthi for testing - DONOT push
   - apiVersion: v1
     kind: ConfigMap

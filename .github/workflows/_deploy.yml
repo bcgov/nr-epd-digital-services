@@ -39,7 +39,7 @@ on:
       oc_token:
         required: true
         description: OpenShift access token
-      
+
 jobs:
   deploy:
     name: ${{ inputs.component }}
