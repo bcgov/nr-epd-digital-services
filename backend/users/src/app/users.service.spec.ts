@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateUserInput } from './dto/createUserInput';
-import { ExternalUsers } from './entities/user.entity';
+import { ExternalUsers } from './entities/externalUsers';
 import { UsersService } from './users.service';
 import { NAME_LENGTH_MAX } from '../../test/constants';
 import { validate } from 'class-validator';
@@ -113,14 +113,14 @@ describe('UsersService', () => {
       email: '',
       phoneNumber: '',
       organization: '',
-      organizationTypeId: 1,
+      organizationTypeId: 'c3a7b200-b95f-4a8a-97e3-e11aa0e6576d',
       isGstExempt: false,
       isBillingContact: true,
       userWorkStatus: '',
       isProfileVerified: false,
       userFNStatus: '',
       industry: '',
-      regionId: 1,
+      regionId: '1a949f26-ed82-4123-81be-0ac8af66813e',
     };
 
     const user = await service.create(input);
@@ -151,14 +151,14 @@ describe('UsersService', () => {
       email: '',
       phoneNumber: '',
       organization: '',
-      organizationTypeId: 1,
+      organizationTypeId: 'c3a7b200-b95f-4a8a-97e3-e11aa0e6576d',
       isGstExempt: false,
       isBillingContact: true,
       userWorkStatus: '',
       isProfileVerified: false,
       userFNStatus: '',
       industry: '',
-      regionId: 1,
+      regionId: '1a949f26-ed82-4123-81be-0ac8af66813e',
     };
     const createUser = plainToInstance(CreateUserInput, input);
     const error = await service.create(createUser);
@@ -178,14 +178,14 @@ describe('UsersService', () => {
       email: '',
       phoneNumber: '',
       organization: '',
-      organizationTypeId: 1,
+      organizationTypeId: 'c3a7b200-b95f-4a8a-97e3-e11aa0e6576d',
       isGstExempt: false,
       isBillingContact: true,
       userWorkStatus: '',
       isProfileVerified: false,
       userFNStatus: '',
       industry: '',
-      regionId: 1,
+      regionId: '1a949f26-ed82-4123-81be-0ac8af66813e',
     };
     const createUser = plainToInstance(CreateUserInput, input);
     const error = await service.create(createUser);

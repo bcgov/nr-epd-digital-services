@@ -4,7 +4,7 @@ import { FindOptionsUtils, Repository } from 'typeorm';
 import { CreateUserInput } from './dto/createUserInput';
 import { FetchUserResponse } from './dto/reponse/fetchUserResponse';
 import { UpdateUserInput } from './dto/updateUserInput';
-import { ExternalUsers } from './entities/user.entity';
+import { ExternalUsers } from './entities/externalUsers';
 
 @Injectable()
 export class UsersService {
@@ -15,9 +15,6 @@ export class UsersService {
 
   async create(createUserInput: CreateUserInput) {
     console.log('CreateUserInput');
-
-    // user.region = new Region();
-    // user.organizationType = new OrganizationType();
 
     const newUser = this.usersRepository.create(createUserInput);
     await this.usersRepository.save(newUser);
@@ -60,8 +57,4 @@ export class UsersService {
     //delResult = DeleteResult :{raw:[], affected:int} raw is the raw sql result, affected is # deleted rows
     return delResult.affected > 0;
   }
-
-  // forAuthor(id:number){
-  //   return this.usersRepository.find({where:{}})
-  // }
 }

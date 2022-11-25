@@ -7,14 +7,13 @@ import {
   ResolveReference,
 } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import { ExternalUsers } from './entities/user.entity';
+import { ExternalUsers } from './entities/externalUsers';
 import { CreateUserInput } from './dto/createUserInput';
 import { UpdateUserInput } from './dto/updateUserInput';
 import { Resource, RoleMatchingMode, Roles } from 'nest-keycloak-connect';
 import { request } from 'http';
 import { FetchUserResponse } from './dto/reponse/fetchUserResponse';
 import { RegionService } from './region.service';
-// import { Application } from './entities/application.entity';'
 
 @Resolver(() => ExternalUsers)
 @Resource('backend')
@@ -48,7 +47,6 @@ export class UsersResolver {
     response.then((res) => {
       return res.affected ? updateUserInput : { error: 'Not Updated' };
     });
-    //return
   }
 
   @Mutation(() => ExternalUsers)
@@ -56,7 +54,6 @@ export class UsersResolver {
     const response = this.usersService.remove(id);
     response.then((hasBeenDeleted) => {
       console.log('Has the entry been deleted? ' + hasBeenDeleted);
-      //return hasBeenDeleted ? {id:id} : {error:"not deleted"}
     });
     return response ? { id: id } : { error: 'not deleted' };
   }
@@ -71,19 +68,4 @@ export class UsersResolver {
   findOne(@Args('id', { type: () => Int }) id: string) {
     return this.usersService.findOne(id);
   }
-
-  // @ResolveField(()=>Region)
-  // user(@Parent() externalUsers:ExternalUsers){
-  //  return this.regionService.findOne(externalUsers.region.id);
-  // }
-
-  // @Query(() => Region, { name: 'region' })
-  // findOne(@Args('id', { type: () => Int }) id: number) {
-  //   return this.regionService.findOne(id);
-  // }
-
-  // @ResolveField((of) => [Application])
-  // public applications(@Parent() user: User) {
-  //   return  { __typename: 'Application', id: user.id}
-  // }
 }

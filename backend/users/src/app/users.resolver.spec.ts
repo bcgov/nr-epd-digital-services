@@ -2,7 +2,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateUserInput } from './dto/createUserInput';
-import { ExternalUsers } from './entities/user.entity';
+import { ExternalUsers } from './entities/externalUsers';
 import { UsersResolver } from './users.resolver';
 import { UsersService } from './users.service';
 
@@ -64,13 +64,13 @@ describe('UsersResolver', () => {
       organization: '',
       userFNStatus: '',
       userWorkStatus: '',
-      organizationTypeId: 0,
+      organizationTypeId: 'c3a7b200-b95f-4a8a-97e3-e11aa0e6576d',
       isGstExempt: false,
       isBillingContact: true,
       userId: '',
       isProfileVerified: false,
       industry: '',
-      regionId: 0,
+      regionId: '1a949f26-ed82-4123-81be-0ac8af66813e',
     };
 
     const user = await resolver.createUser(input);

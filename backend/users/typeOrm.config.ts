@@ -19,5 +19,5 @@ export default new DataSource({
   synchronize: false,
   logging: true,
   entities: ['src/app/entities/**/*.{js,ts}'],
-  migrations: ['migrations/**/*.ts'],
+  migrations: ['src/migrations/**/*.ts'],
 });
