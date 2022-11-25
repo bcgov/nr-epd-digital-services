@@ -48,6 +48,27 @@ parameters:
     description: The Environment on which it is deployed
     required: true
 objects:
+  # ConfigMap created by sakthi for testing - DONOT push
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: ${NAME}-config
+    data:
+      config.js: |-
+        // runtime-config.js vars
+          window["_env_"] =  {
+            "NODE_ENV": "production",
+            "REACT_APP_AUTH_AUTHORITY": "${REACT_APP_AUTH_AUTHORITY}",
+            "REACT_APP_AUTH_CLIENT_ID": "${REACT_APP_AUTH_CLIENT_ID}",
+            "REACT_APP_AUTH_CLIENT_SECRET": "${REACT_APP_AUTH_CLIENT_SECRET}",
+            "REACT_APP_AUTH_REDIRECT_URI": "REACT_APP_AUTH_REDIRECT_URI",            
+            "REACT_APP_AUTH_LOGOUT_REDIRECT_URI": "${REACT_APP_AUTH_LOGOUT_REDIRECT_URI}",
+            "REACT_APP_AUTH_RESPONSE_TYPE": "${REACT_APP_AUTH_RESPONSE_TYPE}",
+            "REACT_APP_AUTH_SCOPE": "${REACT_APP_AUTH_SCOPE}",
+            "REACT_APP_SOCKETIO_RECONNECTION_DELAY": "${REACT_APP_SOCKETIO_RECONNECTION_DELAY}",            
+            "REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS": "${REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS}",
+            "REACT_APP_AUTH_LOAD_USER_INFO": "$REACT_APP_AUTH_LOAD_USER_INFO}",  
+          }
   - apiVersion: v1
     kind: ImageStream
     metadata:
@@ -127,6 +148,15 @@ objects:
                 initialDelaySeconds: 60
                 periodSeconds: 30
                 timeoutSeconds: 5
+              #Added for configMap mount  
+              volumeMounts:
+                - name: configmap-${NAME}
+                  readOnly: true
+                  mountPath: "/frontend/public"
+              volumes:
+                - name: configmap-${NAME}
+                configMap:
+                  name: configmap-${NAME}  
   - apiVersion: v1
     kind: Service
     metadata:

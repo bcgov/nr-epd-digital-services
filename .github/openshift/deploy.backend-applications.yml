@@ -132,9 +132,11 @@ objects:
               #   timeoutSeconds: 5
               #   failureThreshold: 3
               #   successThreshold: 1
+              #   terminationMessagePath: /dev/termination-log
               # livenessProbe:
               #   successThreshold: 1
               #   failureThreshold: 3
+              #   
               #   httpGet:
               #     path: /
               #     port: ${{CONTAINER_PORT}}
