@@ -89,7 +89,6 @@ jobs:
       oc_namespace: ${{ secrets.OC_NAMESPACE }}
       oc_server: ${{ secrets.OC_SERVER }}
       oc_token: ${{ secrets.OC_TOKEN }}
-      REACT_APP_NODE_ENV: ${{ secrets.REACT_APP_NODE_ENV }}
       REACT_APP_AUTH_AUTHORITY: ${{ secrets.REACT_APP_AUTH_AUTHORITY }}
       REACT_APP_AUTH_CLIENT_ID: ${{ secrets.REACT_APP_AUTH_CLIENT_ID }}
       REACT_APP_AUTH_CLIENT_SECRET: ${{ secrets.REACT_APP_AUTH_CLIENT_SECRET }}
