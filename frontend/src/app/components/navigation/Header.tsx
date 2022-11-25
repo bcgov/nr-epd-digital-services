@@ -1,8 +1,10 @@
 import React from "react";
-import "./Header.css";
 import logo from "../../../app/images/logos/logo-banner.png";
 import { useAuth } from "react-oidc-context";
 import LoginDropdown from "../login/LoginDropdown";
+
+import "./Header.css";
+
 
 const Header = () => {
   const auth = useAuth();
@@ -14,7 +16,8 @@ const Header = () => {
         </a>
         <h1>Land Remediation Services</h1>
       </div>
-      <div className="other">&nbsp;
+      
+      <div id="authentication-button">
       {
         auth.isAuthenticated ? (
           <React.Fragment>
@@ -28,12 +31,10 @@ const Header = () => {
         )
         :
         (
-          <>{LoginDropdown("Log In")}</>
+          <>{LoginDropdown("Log In",100)}</>
         )
       }
-    
-     
-      </div>
+      </div>    
     </header>
   );
 };

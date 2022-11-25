@@ -29,10 +29,16 @@ header {
   
   header .other {
     display: flex;
-    flex-grow: 1;
+    flex-grow: 1; 
     /* border-style: dotted;
     border-width: 1px;
     border-color: lightgrey; */
+  }
+
+  #authentication-button{
+    display:flex;
+    width: 100px;
+    align-self: flex-end;
   }
   
   /*
@@ -41,10 +47,17 @@ header {
     size: phone, tablet, full.
   */
   
-  @media screen and (min-width: 600px) and (max-width: 899px) {
+  @media screen and (max-width:599px){
+    header h1{
+      display: none;
+    }
+  }
+
+  @media screen and (min-width: 525px) and (max-width: 899px) {
     header h1 {
-      font-size: calc(7px + 2.2vw);
+      font-size: calc(7px + 2vw);
       visibility: visible;
+      display: flex;
     }
   }
   
@@ -52,5 +65,6 @@ header {
     header h1 {
       font-size: 2.0em;
       visibility: visible;
+      display: flex;
     }
   }
