@@ -2,6 +2,7 @@ import React from "react";
 import "./Header.css";
 import logo from "../../../app/images/logos/logo-banner.png";
 import { useAuth } from "react-oidc-context";
+import LoginDropdown from "../login/LoginDropdown";
 
 const Header = () => {
   const auth = useAuth();
@@ -9,9 +10,9 @@ const Header = () => {
     <header className="navbar ">
       <div className="banner">
         <a href="https://gov.bc.ca">
-          <img src={logo} alt="Team ADA " />
+          <img src={logo} alt="BC Government Logo" />
         </a>
-        <h1>Team ADA</h1>
+        <h1>Land Remediation Services</h1>
       </div>
       <div className="other">&nbsp;
       {
@@ -27,7 +28,7 @@ const Header = () => {
         )
         :
         (
-          <></>
+          <>{LoginDropdown("Log In")}</>
         )
       }
     

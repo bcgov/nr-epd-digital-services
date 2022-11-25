@@ -3,7 +3,8 @@
     color: #38598A;
     font-style: normal;
     font-weight: 700;
-    font-size: 21.6px;
-    line-height: 29px;
     background-color: #F2F2F2
+}
+#accordion-item button::after{
+    caret-color: red
 }

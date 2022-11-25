@@ -11,11 +11,11 @@ const Landing = () =>{
     return(
         <Container fluid className="landing-container" id="landing-container">
             <LoginPanel/>
-            <Row id="responsive-lrs-nav">
-                <Col sm="12" md="3">
+            <Row id="responsive-lrs-nav" className="">
+                <Col className="col-12 col-md-3" >
                     <ResponsiveNavigationSidebar/>
                 </Col>
-                <Col sm="12" md="9">
+                <Col className="col-12 col-md-7">
                     <h1>Sample LRS Forms</h1>
                     {LRSFormAccordion(forms)}
                 </Col>
