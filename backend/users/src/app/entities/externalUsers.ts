@@ -96,10 +96,12 @@ export class ExternalUsers {
 
   @ManyToOne(() => OrganizationTypes, (org) => org.mapping)
   @JoinColumn({ name: 'organization_type_id' })
+  @Field()
   organizationType: OrganizationTypes;
 
   @ManyToOne(() => Regions, (region) => region.mapping)
   @JoinColumn({ name: 'region_id' })
+  @Field()
   region: Regions;
 
   @Field(() => Boolean)
