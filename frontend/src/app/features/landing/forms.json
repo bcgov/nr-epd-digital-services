@@ -2,8 +2,8 @@
     "forms":
     [
         {
-            "name":"LRS Form Sample",
-            "copy":"This is a sample lrs form, please use this for lrs things",
+            "name":"First LRS Form Sample",
+            "copy":"This is the first sample lrs form, please use this for lrs things",
             "url":"https://chefs.nrs.gov.bc.ca/app/form/submit?f=f003bc9e-0296-4a55-aa43-d8adaf0a022d"
         },
         {
