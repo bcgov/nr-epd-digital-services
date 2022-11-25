@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { OrganizationType } from 'src/app/entities/organizationType';
+import { OrganizationType } from '../../entities/organizationType';
 import { BaseHttpResponse } from './baseHttpResponse';
 
 /**

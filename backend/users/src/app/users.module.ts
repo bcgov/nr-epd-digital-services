@@ -14,9 +14,7 @@ import { OrganizationTypeResolver } from './resolvers/organizationType.resolver'
  * Module for wrapping all functionalities in user microserivce
  */
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([ExternalUser, Region, OrganizationType]),
-  ],
+  imports: [TypeOrmModule.forFeature([ExternalUser, Region, OrganizationType])],
   providers: [
     ExternalUserResolver,
     ExternalUserService,

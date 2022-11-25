@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Region } from 'src/app/entities/region';
+import { Region } from '../../entities/region';
 
 import { BaseHttpResponse } from './baseHttpResponse';
 
