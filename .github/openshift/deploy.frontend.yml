@@ -55,7 +55,7 @@ objects:
       name: ${NAME}-config
     data:
       config.js: |-
-        // runtime-config.js vars
+         // runtime-config.js vars
           window["_env_"] =  {
             "REACT_APP_NODE_ENV": "production",
             "REACT_APP_AUTH_AUTHORITY": "${REACT_APP_AUTH_AUTHORITY}",
@@ -68,7 +68,7 @@ objects:
             "REACT_APP_BACKEND_API": "${REACT_APP_BACKEND_API}",            
             "REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS": "${REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS}",
             "REACT_APP_AUTH_LOAD_USER_INFO": "${REACT_APP_AUTH_LOAD_USER_INFO}",  
-            "REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT": $"{REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT}"
+            "REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT": "${REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT}"
           }
   - apiVersion: v1
     kind: ImageStream
