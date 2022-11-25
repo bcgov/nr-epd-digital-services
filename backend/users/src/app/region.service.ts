@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsUtils, Repository } from 'typeorm';
-import { FetchRegionResponse } from './dto/reponse/fetch-region-response';
+import { FetchRegionResponse } from './dto/reponse/fetchRegionResponse';
 import { Region } from './entities/region.entity';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class RegionService {
     return response;
   }
 
-  async findOne(id: number): Promise<Region> {
+  async findOne(id: string): Promise<Region> {
     FindOptionsUtils;
     return this.repository.findOneOrFail({ where: { id: id } });
   }

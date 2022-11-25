@@ -4,6 +4,7 @@ import {
   Entity,
   Index,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -17,7 +18,6 @@ import { Region } from './region.entity';
 @Entity({ name: 'external_user' })
 export class ExternalUsers {
   @Field()
-  @Index('IDX_externaluser_id')
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
   id: string;
 
@@ -93,24 +93,24 @@ export class ExternalUsers {
   userFNStatus: string;
 
   @Column({ nullable: true })
-  @Field(() => Int)
-  organizationTypeId?: number;
+  @Field()
+  organizationTypeId?: string;
 
   @Column({ nullable: true })
-  @Field(() => Int)
-  regionId?: number;
+  @Field()
+  regionId?: string;
 
-  @OneToOne((type) => OrganizationType)
+  @ManyToOne(() => OrganizationType)
   @JoinColumn()
   @Field(() => OrganizationType)
   organizationType?: OrganizationType;
 
-  @OneToOne((type) => Region)
+  @ManyToOne(() => Region)
   @JoinColumn()
   @Field(() => Region)
   region?: Region;
 
   @Field(() => Boolean)
   @Column()
-  isProfileVerified: Boolean;
+  isProfileVerified: boolean;
 }

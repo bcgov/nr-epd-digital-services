@@ -12,7 +12,6 @@ import { ApplicationService } from './application.service';
 import { Application } from './entities/application.entity';
 import { CreateApplicationInput } from './dto/create-application.input';
 import { UpdateApplicationInput } from './dto/update-application.input';
-import { application } from 'express';
 import { ExternalUsers } from './entities/user.entity';
 import { Resource, RoleMatchingMode, Roles } from 'nest-keycloak-connect';
 import { FetchUsersArgs } from './dto/fetch-users-args.dto';
@@ -62,10 +61,7 @@ export class ApplicationResolver {
     @Args('updateApplicationInput')
     updateApplicationInput: UpdateApplicationInput,
   ) {
-    return this.applicationService.update(
-      updateApplicationInput.id,
-      updateApplicationInput,
-    );
+    return this.applicationService.update(updateApplicationInput.id);
   }
 
   @Mutation(() => Application)
@@ -78,7 +74,7 @@ export class ApplicationResolver {
     return this.applicationService.findOne(ref.id);
   }
 
-  @ResolveField((of) => ExternalUsers)
+  @ResolveField(() => ExternalUsers)
   user(@Parent() application: Application) {
     return { __typename: 'User', id: application.userId };
   }

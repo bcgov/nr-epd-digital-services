@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { CreateUserInput } from './dto/create-user.input';
+import { CreateUserInput } from './dto/createUserInput';
 import { ExternalUsers } from './entities/user.entity';
 import { UsersService } from './users.service';
 import { NAME_LENGTH_MAX } from '../../test/constants';
@@ -40,7 +40,7 @@ describe('UsersService', () => {
                 },
               ]);
             }),
-            findOneOrFail: jest.fn((id) => {
+            findOneOrFail: jest.fn(() => {
               return Promise.resolve({
                 firstName: 'test',
                 id: 1,
@@ -68,8 +68,8 @@ describe('UsersService', () => {
               }
               return Promise.resolve(user);
             }),
-            save: jest.fn(() => {}),
-            delete: jest.fn((id) => {
+            save: jest.fn(),
+            delete: jest.fn(() => {
               //return service.remove(id)
               return Promise.resolve(true);
             }),

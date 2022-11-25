@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
 import { IntrospectAndCompose } from '@apollo/gateway';
 import { RequestHandler } from './RequestHandler';
 
@@ -35,7 +34,7 @@ const handleAuth = ({ req }) => {
         context: handleAuth,
 
         formatResponse(response, requestContext) {
-          for (var key in response.data) {
+          for (const key in response.data) {
             if (
               response.data[key].httpStatusCode != null &&
               response.data[key].httpStatusCode != undefined

@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int, Directive, ID } from '@nestjs/graphql';
+import { ObjectType, Field, Directive, ID } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { ExternalUsers } from './user.entity';
 

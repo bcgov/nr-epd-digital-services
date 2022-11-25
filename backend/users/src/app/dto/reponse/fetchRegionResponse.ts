@@ -1,7 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Region } from 'src/users/entities/region.entity';
+import { Region } from 'src/app/entities/region.entity';
 
-import { BaseHttpResponse } from './base-http-response';
+import { BaseHttpResponse } from './baseHttpResponse';
 
 @ObjectType()
 export class FetchRegionResponse extends BaseHttpResponse {

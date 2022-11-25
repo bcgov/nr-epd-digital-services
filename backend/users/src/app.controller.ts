@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { Unprotected } from 'nest-keycloak-connect';
 import { AppService } from './app.service';
-import { CreateUserInput } from './users/dto/create-user.input';
 
 @Controller()
 @Unprotected()

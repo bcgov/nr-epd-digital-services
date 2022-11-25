@@ -1,11 +1,6 @@
-import { Args, Int, Query, Resolver, ResolveReference } from '@nestjs/graphql';
-import {
-  Resource,
-  RoleMatchingMode,
-  Roles,
-  Unprotected,
-} from 'nest-keycloak-connect';
-import { FetchRegionResponse } from './dto/reponse/fetch-region-response';
+import { Args, Int, Query, Resolver } from '@nestjs/graphql';
+import { Resource, RoleMatchingMode, Roles } from 'nest-keycloak-connect';
+import { FetchRegionResponse } from './dto/reponse/fetchRegionResponse';
 
 import { Region } from './entities/region.entity';
 import { RegionService } from './region.service';
@@ -28,7 +23,7 @@ export class RegionResolver {
 
   @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
   @Query(() => Region, { name: 'region' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(@Args('id', { type: () => Int }) id: string) {
     return this.regionServiceLayer.findOne(id);
   }
 }

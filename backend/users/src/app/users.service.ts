@@ -1,13 +1,10 @@
-import { ConsoleLogger, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsUtils, Repository } from 'typeorm';
-import { CreateUserInput } from './dto/create-user.input';
-import { FetchUserResponse } from './dto/reponse/fetch-user-response';
-import { UpdateUserInput } from './dto/update-user.input';
+import { CreateUserInput } from './dto/createUserInput';
+import { FetchUserResponse } from './dto/reponse/fetchUserResponse';
+import { UpdateUserInput } from './dto/updateUserInput';
 import { ExternalUsers } from './entities/user.entity';
-import { validate } from 'class-validator';
-import { Region } from './entities/region.entity';
-import { OrganizationType } from './entities/organizationType.entity';
 
 @Injectable()
 export class UsersService {
@@ -24,7 +21,11 @@ export class UsersService {
 
     const newUser = this.usersRepository.create(createUserInput);
     await this.usersRepository.save(newUser);
-    return newUser;
+
+    return await this.usersRepository.findOne({
+      relations: ['region', 'organizationType'],
+      where: { id: newUser.id },
+    });
   }
 
   async findAll() {
