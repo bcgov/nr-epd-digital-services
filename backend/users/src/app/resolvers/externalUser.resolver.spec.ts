@@ -5,28 +5,42 @@ import { CreateUserInput } from '../dto/createUserInput';
 import { ExternalUser } from '../entities/externalUser';
 import { ExternalUserResolver } from './externalUser.resolver';
 import { ExternalUserService } from '../services/externalUser.service';
+import { RegionService } from '../services/region.service';
+import { Region } from '../entities/region';
 
-describe('UsersResolver', () => {
+describe('ExternalUsersResolver', () => {
   let resolver: ExternalUserResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
+          provide: getRepositoryToken(Region),
+          useValue: {
+            find: jest.fn(() => {
+              return { id: '123', region_name: 'victoria' };
+            }),
+          },
+        },
+        {
           provide: getRepositoryToken(ExternalUser),
           useValue: {
             find: jest.fn(() => {
-              return Promise.resolve([{ name: 'test', id: 1 }]);
+              return Promise.resolve([{ firstName: 'test', id: 1 }]);
             }),
             findOneOrFail: jest.fn(() => {
-              return Promise.resolve({ name: 'test', id: 1 });
+              return Promise.resolve({ firstName: 'test', id: 1 });
             }),
             create: jest.fn(() => {
-              return Promise.resolve({ name: 'test', id: 1 });
+              return Promise.resolve({ firstName: 'test', id: 1 });
             }),
             save: jest.fn(() => {}),
+            findOne: jest.fn(() => {
+              return Promise.resolve({ firstName: 'test', id: 1 });
+            }),
           },
         },
+        RegionService,
         ExternalUserResolver,
         ExternalUserService,
       ],
@@ -35,7 +49,7 @@ describe('UsersResolver', () => {
     resolver = module.get<ExternalUserResolver>(ExternalUserResolver);
   });
 
-  it('should be defined', () => {
+  it('should be defined in external user resolver', () => {
     expect(resolver).toBeDefined();
   });
 
