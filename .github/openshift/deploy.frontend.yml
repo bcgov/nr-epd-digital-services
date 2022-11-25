@@ -99,6 +99,8 @@ objects:
               env:
                 - name: BACKEND_URL
                   value: https://${NAME}-backend-${ENV}.${DOMAIN}
+                - name: REACT_APP_AUTH_REDIRECT_URI
+                  value: https://${NAME}-frontend-${ENV}.${DOMAIN}
               ports:
                 - containerPort: ${{CONTAINER_PORT}}
                   protocol: TCP

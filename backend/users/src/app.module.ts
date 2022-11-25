@@ -51,10 +51,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       // This changes the DB schema to match changes to entities, which we might not want.
     }),
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
-      driver: ApolloFederationDriver,
-
-      autoSchemaFile: join(process.cwd(), 'src/graphql-schema.gql'),
-
+      driver: ApolloFederationDriver,    
+      // TODO - Experiment with using old files for localhsot if need be, and true for prod
+      autoSchemaFile: true,
       cors: {
         credentials: true,
         origin: true,

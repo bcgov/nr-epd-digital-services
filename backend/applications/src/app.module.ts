@@ -54,7 +54,9 @@ import { ExternalUser } from './app/entities/user.entity';
     }),
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
-      autoSchemaFile: join(process.cwd(), 'src/graphql-schema.gql'),
+      // autoSchemaFile: join(process.cwd(), 'src/graphql-schema.gql'),
+      // TODO - Experiment with using old files for localhsot if need be, and true for prod
+      autoSchemaFile: true,
       buildSchemaOptions: {
         orphanedTypes: [ExternalUser],
       },
