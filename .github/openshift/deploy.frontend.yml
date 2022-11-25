@@ -153,10 +153,10 @@ objects:
                 - name: ${NAME}-configmap
                   readOnly: true
                   mountPath: "/public/"
-              volumes
-                 - name: ${NAME}-configmap
-                   configMap:
-                     name: ${NAME}-configmap 
+              volumes:
+                - name: ${NAME}-configmap
+                  configMap:
+                    name: ${NAME}-configmap 
   - apiVersion: v1
     kind: Service
     metadata:
