@@ -39,41 +39,7 @@ on:
       oc_token:
         required: true
         description: OpenShift access token
-      REACT_APP_AUTH_AUTHORITY: 
-        description: The Environment on which it is deployed
-        required: true
-      REACT_APP_AUTH_CLIENT_ID: 
-        description: The Environment on which it is deployed
-        required: true
-      REACT_APP_AUTH_CLIENT_SECRET: 
-        description: The Environment on which it is deployed
-        required: true
-      REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS: 
-        description: The Environment on which it is deployed
-        required: true
-      REACT_APP_AUTH_LOAD_USER_INFO: 
-        description: The Environment on which it is deployed
-        required: true
-      REACT_APP_AUTH_LOGOUT_REDIRECT_URI: 
-        description: The Environment on which it is deployed
-        required: true
-      REACT_APP_AUTH_REDIRECT_URI: 
-        description: The Environment on which it is deployed
-        required: true
-      REACT_APP_AUTH_RESPONSE_TYPE: 
-        description: The Environment on which it is deployed
-        required: true
-      REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT: 
-        description: The Environment on which it is deployed
-        required: true
-      REACT_APP_AUTH_SCOPE: 
-        description: The Environment on which it is deployed
-        required: true
-      REACT_APP_BACKEND_API: 
-        description: The Environment on which it is deployed
-        required: true
-  
-
+      
 jobs:
   deploy:
     name: ${{ inputs.component }}

@@ -1,23 +1,13 @@
-# RedHat UBI 8 with nodejs 14
-FROM registry.access.redhat.com/ubi8/ubi as builder
-RUN dnf module install -y nodejs:14
-
-# Set the working directory to /app inside the container
+FROM node:14 as build-stage
 WORKDIR /app
-
 COPY ./package*.json ./
-RUN npm ci
-
-# Copy app files
+RUN npm install
 COPY . .
-# ==== BUILD =====
-# Install dependencies (npm ci makes sure the exact versions in the lockfile gets installed)
-# RUN npm install 
-RUN npm ci
-
 RUN npm run build
 
-EXPOSE 3000
-
-# Start the app
-CMD [ "npx", "serve", "build" ]
+FROM nginx:1.23.2 as production-stage
+#COPY nginx.conf /etc/nginx/nginx.conf
+RUN mkdir /app
+COPY --from=build-stage /app/dist /app
+EXPOSE 3000:3000
+CMD ["nginx", "-g", "daemon off;"]
