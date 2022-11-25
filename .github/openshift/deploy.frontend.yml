@@ -150,13 +150,13 @@ objects:
                 timeoutSeconds: 5
               #Added for configMap mount  
               volumeMounts:
-                - name: ${NAME}-configmap
+                - name: ${NAME}-config
                   readOnly: true
                   mountPath: "/public/"
               volumes:
-                - name: ${NAME}-configmap
+                - name: ${NAME}-config
                   configMap:
-                    name: ${NAME}-configmap 
+                    name: ${NAME}-config
   - apiVersion: v1
     kind: Service
     metadata:
