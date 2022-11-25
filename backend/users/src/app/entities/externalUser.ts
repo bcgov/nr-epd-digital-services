@@ -7,13 +7,16 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { OrganizationTypes } from './organizationTypes';
-import { Regions } from './regions';
+import { OrganizationType } from './organizationType';
+import { Region } from './region';
 
+/**
+ * Entity Class For External Users
+ */
 @ObjectType()
 @Directive('@key(fields: "id")')
 @Entity({ name: 'external_user' })
-export class ExternalUsers {
+export class ExternalUser {
   @Field()
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
   id: string;
@@ -94,15 +97,15 @@ export class ExternalUsers {
   @Field()
   regionId?: string;
 
-  @ManyToOne(() => OrganizationTypes, (org) => org.mapping)
+  @ManyToOne(() => OrganizationType, (org) => org.mapping)
   @JoinColumn({ name: 'organization_type_id' })
   @Field()
-  organizationType: OrganizationTypes;
+  organizationType: OrganizationType;
 
-  @ManyToOne(() => Regions, (region) => region.mapping)
+  @ManyToOne(() => Region, (region) => region.mapping)
   @JoinColumn({ name: 'region_id' })
   @Field()
-  region: Regions;
+  region: Region;
 
   @Field(() => Boolean)
   @Column()

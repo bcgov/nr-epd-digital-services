@@ -24,15 +24,15 @@ directive @override(from: String!) on FIELD_DEFINITION
 
 type OrganizationType {
   id: String!
-  name: String!
+  org_name: String!
 }
 
 type Region {
   id: String!
-  name: String!
+  region_name: String!
 }
 
-type ExternalUsers {
+type ExternalUser {
   id: String!
   firstName: String!
   lastName: String!
@@ -56,7 +56,7 @@ type ExternalUsers {
 
 type FetchUserResponse {
   httpStatusCode: Int!
-  data: [ExternalUsers!]!
+  data: [ExternalUser!]!
 }
 
 type FetchRegionResponse {
@@ -71,16 +71,16 @@ type FetchOrganizationTypeResponse {
 
 type Query {
   users: FetchUserResponse!
-  user(id: Int!): ExternalUsers!
+  user(id: Int!): ExternalUser!
   regions: FetchRegionResponse!
   region(id: Int!): Region!
   orgnizationTypes: FetchOrganizationTypeResponse!
 }
 
 type Mutation {
-  createUser(createUserInput: CreateUserInput!): ExternalUsers!
-  updateUser(updateUserInput: UpdateUserInput!): ExternalUsers!
-  removeUser(id: Int!): ExternalUsers!
+  createUser(createUserInput: CreateUserInput!): ExternalUser!
+  updateUser(updateUserInput: UpdateUserInput!): ExternalUser!
+  removeUser(id: Int!): ExternalUser!
 }
 
 input CreateUserInput {

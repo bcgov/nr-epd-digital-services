@@ -1,9 +1,12 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { OrganizationTypes } from 'src/app/entities/organizationTypes';
+import { OrganizationType } from 'src/app/entities/organizationType';
 import { BaseHttpResponse } from './baseHttpResponse';
 
+/**
+ * Class for returing orgnization type response from graphql services
+ */
 @ObjectType()
 export class FetchOrganizationTypeResponse extends BaseHttpResponse {
-  @Field(() => [OrganizationTypes])
-  data: OrganizationTypes[];
+  @Field(() => [OrganizationType])
+  data: OrganizationType[];
 }

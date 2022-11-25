@@ -1,22 +1,25 @@
 import { Module } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { UsersResolver } from './users.resolver';
+import { ExternalUserService } from './services/externalUser.service';
+import { ExternalUserResolver } from './resolvers/externalUser.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ExternalUsers } from './entities/externalUsers';
-import { Regions } from './entities/regions';
-import { OrganizationTypes } from './entities/organizationTypes';
-import { RegionResolver } from './region.resolver';
-import { RegionService } from './region.service';
-import { OrganizationTypeService } from './organizationType.service';
-import { OrganizationTypeResolver } from './organizationType.resolver';
+import { ExternalUser } from './entities/externalUser';
+import { Region } from './entities/region';
+import { OrganizationType } from './entities/organizationType';
+import { RegionResolver } from './resolvers/region.resolver';
+import { RegionService } from './services/region.service';
+import { OrganizationTypeService } from './services/organizationType.service';
+import { OrganizationTypeResolver } from './resolvers/organizationType.resolver';
 
+/**
+ * Module for wrapping all functionalities in user microserivce
+ */
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ExternalUsers, Regions, OrganizationTypes]),
+    TypeOrmModule.forFeature([ExternalUser, Region, OrganizationType]),
   ],
   providers: [
-    UsersResolver,
-    UsersService,
+    ExternalUserResolver,
+    ExternalUserService,
     RegionResolver,
     RegionService,
     OrganizationTypeResolver,

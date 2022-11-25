@@ -1,6 +1,6 @@
 import { ObjectType, Field, Directive, ID } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { ExternalUsers } from './user.entity';
+import { ExternalUser } from './user.entity';
 
 @ObjectType()
 @Directive('@key(fields: "id")')
@@ -14,8 +14,8 @@ export class Application {
   @Column({ name: 'name', nullable: true })
   name: string;
 
-  @Field(() => ExternalUsers)
-  user: ExternalUsers;
+  @Field(() => ExternalUser)
+  user: ExternalUser;
 
   @Column({ nullable: true })
   @Field()

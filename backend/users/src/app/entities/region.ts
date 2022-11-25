@@ -1,10 +1,13 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { ExternalUsers } from './externalUsers';
+import { ExternalUser } from './externalUser';
 
+/**
+ * Entity Class For Region
+ */
 @ObjectType()
 @Entity({ name: 'region' })
-export class Regions {
+export class Region {
   @Field()
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
   id: string;
@@ -13,6 +16,6 @@ export class Regions {
   @Column({ length: 50, name: 'region_name' })
   region_name: string;
 
-  @OneToMany(() => ExternalUsers, (mapping) => mapping.region)
-  mapping: ExternalUsers[];
+  @OneToMany(() => ExternalUser, (mapping) => mapping.region)
+  mapping: ExternalUser[];
 }

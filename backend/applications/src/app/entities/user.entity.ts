@@ -4,7 +4,7 @@ import { Application } from './application.entity';
 @ObjectType()
 @Directive('@extends')
 @Directive('@key(fields: "id")')
-export class ExternalUsers {
+export class ExternalUser {
   @Field()
   @Directive('@external')
   id: string;

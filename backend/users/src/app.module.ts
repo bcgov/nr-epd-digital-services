@@ -18,6 +18,9 @@ import {
 import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
+/**
+ * Application Module Wrapping All Functionality For User Micro Service
+ */
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),

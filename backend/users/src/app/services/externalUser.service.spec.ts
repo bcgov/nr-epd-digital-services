@@ -1,20 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { CreateUserInput } from './dto/createUserInput';
-import { ExternalUsers } from './entities/externalUsers';
-import { UsersService } from './users.service';
-import { NAME_LENGTH_MAX } from '../../test/constants';
+import { CreateUserInput } from '../dto/createUserInput';
+import { ExternalUser } from '../entities/externalUser';
+import { ExternalUserService } from './externalUser.service';
+import { NAME_LENGTH_MAX } from '../../../test/constants';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 
 describe('UsersService', () => {
-  let service: UsersService;
+  let service: ExternalUserService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
-          provide: getRepositoryToken(ExternalUsers),
+          provide: getRepositoryToken(ExternalUser),
           //useClass: Repository,
           useValue: {
             find: jest.fn(() => {
@@ -78,11 +78,11 @@ describe('UsersService', () => {
             }),
           },
         },
-        UsersService,
+        ExternalUserService,
       ],
     }).compile();
 
-    service = module.get<UsersService>(UsersService);
+    service = module.get<ExternalUserService>(ExternalUserService);
   });
 
   it('should be defined', () => {

@@ -1,10 +1,13 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { ExternalUsers } from './externalUsers';
+import { ExternalUser } from './externalUser';
 
+/**
+ * Entity Class For Organization Types
+ */
 @ObjectType()
 @Entity({ name: 'organization_type' })
-export class OrganizationTypes {
+export class OrganizationType {
   @Field()
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
   id: string;
@@ -13,6 +16,6 @@ export class OrganizationTypes {
   @Column({ length: 50, name: 'org_name' })
   org_name: string;
 
-  @OneToMany(() => ExternalUsers, (mapping) => mapping.organizationType)
-  mapping: ExternalUsers[];
+  @OneToMany(() => ExternalUser, (mapping) => mapping.organizationType)
+  mapping: ExternalUser[];
 }

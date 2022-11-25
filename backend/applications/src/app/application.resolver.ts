@@ -12,7 +12,7 @@ import { ApplicationService } from './application.service';
 import { Application } from './entities/application.entity';
 import { CreateApplicationInput } from './dto/create-application.input';
 import { UpdateApplicationInput } from './dto/update-application.input';
-import { ExternalUsers } from './entities/user.entity';
+import { ExternalUser } from './entities/user.entity';
 import { Resource, RoleMatchingMode, Roles } from 'nest-keycloak-connect';
 import { FetchUsersArgs } from './dto/fetch-users-args.dto';
 
@@ -74,7 +74,7 @@ export class ApplicationResolver {
     return this.applicationService.findOne(ref.id);
   }
 
-  @ResolveField(() => ExternalUsers)
+  @ResolveField(() => ExternalUser)
   user(@Parent() application: Application) {
     return { __typename: 'User', id: application.userId };
   }
