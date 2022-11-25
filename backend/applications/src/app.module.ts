@@ -1,11 +1,10 @@
 import {
-  ApolloDriver,
   ApolloFederationDriver,
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
-import { GraphQLModule, GraphQLFederationFactory } from '@nestjs/graphql';
+import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   AuthGuard,
@@ -17,11 +16,8 @@ import {
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ApplicationModule } from './application/application.module';
-import { ApplicationResolver } from './application/application.resolver';
-import { ApplicationService } from './application/application.service';
-import { ExternalUsers } from './application/entities/user.entity';
-import { UsersResolver } from './application/users.resolver';
+import { ApplicationModule } from './app/application.module';
+import { ExternalUsers } from './app/entities/user.entity';
 
 @Module({
   imports: [

@@ -1,4 +1,4 @@
-import { Directive, ObjectType, Field, ID, Int } from '@nestjs/graphql';
+import { Directive, ObjectType, Field } from '@nestjs/graphql';
 import { Application } from './application.entity';
 
 @ObjectType()
@@ -9,6 +9,6 @@ export class ExternalUsers {
   @Directive('@external')
   id: string;
 
-  @Field((type) => [Application])
+  @Field(() => [Application])
   applications?: Application[];
 }

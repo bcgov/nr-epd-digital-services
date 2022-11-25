@@ -5,25 +5,14 @@ import {
   Args,
   Int,
   ResolveReference,
-  ResolveField,
-  Parent,
-  ObjectType,
-  Field,
 } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { ExternalUsers } from './entities/user.entity';
-import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
-import {
-  Resource,
-  RoleMatchingMode,
-  Roles,
-  Unprotected,
-} from 'nest-keycloak-connect';
+import { CreateUserInput } from './dto/createUserInput';
+import { UpdateUserInput } from './dto/updateUserInput';
+import { Resource, RoleMatchingMode, Roles } from 'nest-keycloak-connect';
 import { request } from 'http';
-import { FormData } from './dto/form-data';
-import { FetchUserResponse } from './dto/reponse/fetch-user-response';
-import { Region } from './entities/region.entity';
+import { FetchUserResponse } from './dto/reponse/fetchUserResponse';
 import { RegionService } from './region.service';
 // import { Application } from './entities/application.entity';'
 
@@ -47,12 +36,6 @@ export class UsersResolver {
   @Query(() => FetchUserResponse, { name: 'users' })
   findAll() {
     return this.usersService.findAll();
-  }
-
-  @Mutation(() => String)
-  submitForm(@Args('data') data: FormData) {
-    //console.log(data)
-    return 'submitted';
   }
 
   @Mutation(() => ExternalUsers)
@@ -80,7 +63,7 @@ export class UsersResolver {
 
   @ResolveReference()
   resolveReference(reference: { __typename: string; id: string }) {
-    const idVal:string = reference.id;
+    const idVal: string = reference.id;
     return this.usersService.findOne(idVal);
   }
 

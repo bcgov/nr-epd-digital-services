@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsUtils, Like, Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreateApplicationInput } from './dto/create-application.input';
 import { UpdateApplicationInput } from './dto/update-application.input';
 import { Application } from './entities/application.entity';
@@ -44,7 +44,7 @@ export class ApplicationService {
     return `This action returns a #${id} application`;
   }
 
-  update(id: number, updateApplicationInput: UpdateApplicationInput) {
+  update(id: number) {
     return `This action updates a #${id} application`;
   }
 

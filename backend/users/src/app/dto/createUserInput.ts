@@ -1,6 +1,5 @@
 import { InputType, Field, Int } from '@nestjs/graphql';
 import { Length, IsNotEmpty } from 'class-validator';
-import { Region } from '../entities/region.entity';
 
 @InputType({})
 export class CreateUserInput {
@@ -79,15 +78,15 @@ export class CreateUserInput {
 
   @Field(() => Boolean)
   @IsNotEmpty()
-  isProfileVerified: Boolean;
+  isProfileVerified: boolean;
 
   @Field()
   @Length(1, 250)
   industry: string;
 
-  @Field(() => Int)
-  regionId: number;
+  @Field()
+  regionId: string;
 
-  @Field(() => Int)
-  organizationTypeId: number;
+  @Field()
+  organizationTypeId: string;
 }

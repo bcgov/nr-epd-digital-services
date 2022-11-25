@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { OrganizationType } from 'src/users/entities/organizationType.entity';
-import { BaseHttpResponse } from './base-http-response';
+import { OrganizationType } from 'src/app/entities/organizationType.entity';
+import { BaseHttpResponse } from './baseHttpResponse';
 
 @ObjectType()
 export class FetchOrganizationTypeResponse extends BaseHttpResponse {

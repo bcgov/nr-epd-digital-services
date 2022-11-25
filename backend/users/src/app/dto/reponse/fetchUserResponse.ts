@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { ExternalUsers } from '../../entities/user.entity';
-import { BaseHttpResponse } from './base-http-response';
+import { BaseHttpResponse } from './baseHttpResponse';
 
 @ObjectType()
 export class FetchUserResponse extends BaseHttpResponse {

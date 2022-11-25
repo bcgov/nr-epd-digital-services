@@ -1,14 +1,13 @@
 import {
-  ApolloDriver,
   ApolloFederationDriver,
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
-import { Inject, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
+import { UsersModule } from './app/users.module';
 import { join } from 'path';
 import {
   AuthGuard,
@@ -17,7 +16,6 @@ import {
   RoleGuard,
 } from 'nest-keycloak-connect';
 import { APP_GUARD } from '@nestjs/core';
-import * as dotenv from 'dotenv';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
@@ -58,7 +56,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         credentials: true,
         origin: true,
       },
-      context: ({ req }) => {
+      context: () => {
         //console.log('req at user '+ new Date(),req)
       },
     }),

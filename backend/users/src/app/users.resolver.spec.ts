@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { CreateUserInput } from './dto/create-user.input';
-import { Repository } from 'typeorm';
+import { CreateUserInput } from './dto/createUserInput';
 import { ExternalUsers } from './entities/user.entity';
 import { UsersResolver } from './users.resolver';
 import { UsersService } from './users.service';
@@ -19,7 +18,7 @@ describe('UsersResolver', () => {
             find: jest.fn(() => {
               return Promise.resolve([{ name: 'test', id: 1 }]);
             }),
-            findOneOrFail: jest.fn((id) => {
+            findOneOrFail: jest.fn(() => {
               return Promise.resolve({ name: 'test', id: 1 });
             }),
             create: jest.fn(() => {
@@ -47,7 +46,7 @@ describe('UsersResolver', () => {
   });
 
   it('should return a user', async () => {
-    const user = await resolver.findOne("2");
+    const user = await resolver.findOne('2');
     expect(user.firstName).toEqual('test');
   });
 
@@ -63,15 +62,15 @@ describe('UsersResolver', () => {
       email: '',
       phoneNumber: '',
       organization: '',
-      userFNStatus:"",
-      userWorkStatus: "",
+      userFNStatus: '',
+      userWorkStatus: '',
       organizationTypeId: 0,
       isGstExempt: false,
       isBillingContact: true,
       userId: '',
-      isProfileVerified:false,
-      industry:"",
-      regionId:0
+      isProfileVerified: false,
+      industry: '',
+      regionId: 0,
     };
 
     const user = await resolver.createUser(input);

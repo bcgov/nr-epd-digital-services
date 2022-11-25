@@ -1,6 +1,4 @@
 import { RemoteGraphQLDataSource } from '@apollo/gateway';
-import type { GraphQLRequest } from 'apollo-server-core';
-import type express from 'express';
 
 export class RequestHandler extends RemoteGraphQLDataSource {
   // async willSendRequest({request,context}) {
