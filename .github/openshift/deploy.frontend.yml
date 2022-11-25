@@ -57,17 +57,18 @@ objects:
       config.js: |-
         // runtime-config.js vars
           window["_env_"] =  {
-            "NODE_ENV": "production",
+            "REACT_APP_NODE_ENV": "production",
             "REACT_APP_AUTH_AUTHORITY": "${REACT_APP_AUTH_AUTHORITY}",
             "REACT_APP_AUTH_CLIENT_ID": "${REACT_APP_AUTH_CLIENT_ID}",
             "REACT_APP_AUTH_CLIENT_SECRET": "${REACT_APP_AUTH_CLIENT_SECRET}",
-            "REACT_APP_AUTH_REDIRECT_URI": "REACT_APP_AUTH_REDIRECT_URI",            
+            "REACT_APP_AUTH_REDIRECT_URI": "${REACT_APP_AUTH_REDIRECT_URI}",            
             "REACT_APP_AUTH_LOGOUT_REDIRECT_URI": "${REACT_APP_AUTH_LOGOUT_REDIRECT_URI}",
             "REACT_APP_AUTH_RESPONSE_TYPE": "${REACT_APP_AUTH_RESPONSE_TYPE}",
             "REACT_APP_AUTH_SCOPE": "${REACT_APP_AUTH_SCOPE}",
-            "REACT_APP_SOCKETIO_RECONNECTION_DELAY": "${REACT_APP_SOCKETIO_RECONNECTION_DELAY}",            
+            "REACT_APP_BACKEND_API": "${REACT_APP_BACKEND_API}",            
             "REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS": "${REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS}",
-            "REACT_APP_AUTH_LOAD_USER_INFO": "$REACT_APP_AUTH_LOAD_USER_INFO}",  
+            "REACT_APP_AUTH_LOAD_USER_INFO": "${REACT_APP_AUTH_LOAD_USER_INFO}",  
+            "REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT": $"{REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT}"
           }
   - apiVersion: v1
     kind: ImageStream
