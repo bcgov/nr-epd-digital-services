@@ -20,8 +20,8 @@ export const ResponsiveNavigationSidebar = () => {
                     
                 </Dropdown>
             </Row>
-            <Row  className="d-none d-sm-none d-md-block">
-                <Nav id="nav-panel" className="flex-column">
+            <Row id="nav-panel-row" className="d-none d-sm-none d-md-block border mt-2">
+                <Nav id="nav-panel" className="flex-column mt-2">
                     <Nav.Link id="nav-link">Responsive Nav</Nav.Link>
                     <Nav.Link id="nav-link">Link 123</Nav.Link>
                     <Nav.Link id="nav-link">Link 123</Nav.Link>

@@ -1,4 +1,4 @@
-import { AuthContextProps, useAuth } from "react-oidc-context";
+import { useAuth } from "react-oidc-context";
 import { Navigate} from "react-router";
 
 
