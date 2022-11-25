@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { CreateUserInput } from './dto/createUserInput';
-import { ExternalUsers } from './entities/externalUsers';
-import { UsersResolver } from './users.resolver';
-import { UsersService } from './users.service';
+import { CreateUserInput } from '../dto/createUserInput';
+import { ExternalUser } from '../entities/externalUser';
+import { ExternalUserResolver } from './externalUser.resolver';
+import { ExternalUserService } from '../services/externalUser.service';
 
 describe('UsersResolver', () => {
-  let resolver: UsersResolver;
+  let resolver: ExternalUserResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
-          provide: getRepositoryToken(ExternalUsers),
+          provide: getRepositoryToken(ExternalUser),
           useValue: {
             find: jest.fn(() => {
               return Promise.resolve([{ name: 'test', id: 1 }]);
@@ -27,12 +27,12 @@ describe('UsersResolver', () => {
             save: jest.fn(() => {}),
           },
         },
-        UsersResolver,
-        UsersService,
+        ExternalUserResolver,
+        ExternalUserService,
       ],
     }).compile();
 
-    resolver = module.get<UsersResolver>(UsersResolver);
+    resolver = module.get<ExternalUserResolver>(ExternalUserResolver);
   });
 
   it('should be defined', () => {

@@ -1,11 +1,11 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { Length, IsNotEmpty } from 'class-validator';
 
+/**
+ *  Create input DTO for External User
+ */
 @InputType({})
 export class CreateUserInput {
-  // @Field()
-  // id:number;
-
   @Field()
   @Length(1, 50)
   userId: string;

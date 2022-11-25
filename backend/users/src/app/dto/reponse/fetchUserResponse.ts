@@ -1,9 +1,12 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { ExternalUsers } from '../../entities/externalUsers';
+import { ExternalUser } from '../../entities/externalUser';
 import { BaseHttpResponse } from './baseHttpResponse';
 
+/**
+ * Class for returing external user response from graphql services
+ */
 @ObjectType()
 export class FetchUserResponse extends BaseHttpResponse {
-  @Field(() => [ExternalUsers])
-  data: ExternalUsers[];
+  @Field(() => [ExternalUser])
+  data: ExternalUser[];
 }

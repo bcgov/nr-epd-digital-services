@@ -1,10 +1,13 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Regions } from 'src/app/entities/regions';
+import { Region } from 'src/app/entities/region';
 
 import { BaseHttpResponse } from './baseHttpResponse';
 
+/**
+ * Class for returing fetch region response from graphql services
+ */
 @ObjectType()
 export class FetchRegionResponse extends BaseHttpResponse {
-  @Field(() => [Regions])
-  data: Regions[];
+  @Field(() => [Region])
+  data: Region[];
 }

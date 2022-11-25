@@ -17,7 +17,7 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ApplicationModule } from './app/application.module';
-import { ExternalUsers } from './app/entities/user.entity';
+import { ExternalUser } from './app/entities/user.entity';
 
 @Module({
   imports: [
@@ -56,7 +56,7 @@ import { ExternalUsers } from './app/entities/user.entity';
       driver: ApolloFederationDriver,
       autoSchemaFile: join(process.cwd(), 'src/graphql-schema.gql'),
       buildSchemaOptions: {
-        orphanedTypes: [ExternalUsers],
+        orphanedTypes: [ExternalUser],
       },
       cors: true,
     }),
