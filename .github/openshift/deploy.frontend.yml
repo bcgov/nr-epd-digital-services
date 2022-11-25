@@ -80,6 +80,9 @@ parameters:
   - name: REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT
     description: The Environment on which it is deployed
     required: true
+  - name: REACT_APP_AUTH_SCOPE
+    description: The Environment on which it is deployed
+    required: true
 objects:
   # ConfigMap created by sakthi for testing - DONOT push
   - apiVersion: v1
