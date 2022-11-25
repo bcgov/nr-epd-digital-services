@@ -1,17 +1,14 @@
-import { ObjectType, Field, Int, Directive } from '@nestjs/graphql';
+import { ObjectType, Field, Directive } from '@nestjs/graphql';
 import {
   Column,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { OrganizationType } from './organizationType.entity';
-import { Region } from './region.entity';
-
-// import { Application } from './application.entity';
+import { OrganizationTypes } from './organizationTypes';
+import { Regions } from './regions';
 
 @ObjectType()
 @Directive('@key(fields: "id")')
@@ -83,32 +80,27 @@ export class ExternalUsers {
   @Column({ name: 'is_billing_contact', default: true })
   isBillingContact: boolean;
 
-  // @Field((type) => [Application])
-  // applications?: Application[];
-
   @Column({ length: 10, name: 'user_work_status', nullable: false })
   userWorkStatus: string;
 
   @Column({ length: 25, name: 'user_fn_status', nullable: false })
   userFNStatus: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'organization_type_id', nullable: true })
   @Field()
   organizationTypeId?: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'region_id', nullable: true })
   @Field()
   regionId?: string;
 
-  @ManyToOne(() => OrganizationType)
-  @JoinColumn()
-  @Field(() => OrganizationType)
-  organizationType?: OrganizationType;
+  @ManyToOne(() => OrganizationTypes, (org) => org.mapping)
+  @JoinColumn({ name: 'organization_type_id' })
+  organizationType: OrganizationTypes;
 
-  @ManyToOne(() => Region)
-  @JoinColumn()
-  @Field(() => Region)
-  region?: Region;
+  @ManyToOne(() => Regions, (region) => region.mapping)
+  @JoinColumn({ name: 'region_id' })
+  region: Regions;
 
   @Field(() => Boolean)
   @Column()
