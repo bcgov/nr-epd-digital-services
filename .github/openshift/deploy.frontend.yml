@@ -152,8 +152,8 @@ objects:
               volumeMounts:
                 - name: ${NAME}-configmap
                   readOnly: true
-                  mountPath: "/frontend/public"
-              volumes:
+                  mountPath: "/public/"
+              volumes
                  - name: ${NAME}-configmap
                    configMap:
                      name: ${NAME}-configmap 
