@@ -12,11 +12,12 @@ export type LRSForm = {
 }
 
 export const LRSFormAccordion = (forms:Array<LRSForm>):ReactJSXElement =>{
+    const accordionItems = forms.map((form,key) => (
+        AccordionItem(form,key.toString())
+    ))
     return(    
         <Accordion >
-            {forms.map((form,key) => (
-                AccordionItem(form,key.toString())
-            ))}
+            {accordionItems}
         </Accordion>
     )
 }
