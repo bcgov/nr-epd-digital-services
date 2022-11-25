@@ -55,7 +55,7 @@ objects:
       name: ${NAME}-config
     data:
       config.js: |-
-         // runtime-config.js vars
+        // runtime-config.js vars
           window["_env_"] =  {
             "REACT_APP_NODE_ENV": "production",
             "REACT_APP_AUTH_AUTHORITY": "${REACT_APP_AUTH_AUTHORITY}",
