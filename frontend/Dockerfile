@@ -11,7 +11,7 @@ FROM nginx:1.23.2 as production-stage
 RUN mkdir /app
 #COPY --from=build-stage /app/dist /app
 # Configure NGINX
-RUN cp -r ./dist/. /usr/share/nginx/html
+
 COPY ./openshift/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./openshift/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 
