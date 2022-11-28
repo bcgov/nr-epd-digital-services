@@ -5,7 +5,7 @@ on:
   push:
     branches:
       #- 'dev'
-      - 'ss-frontend-build' #test1
+      - 'ss-frontend-build' #test2
     paths:
       - 'backend/**'
       - 'frontend/**'
