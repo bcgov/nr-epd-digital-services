@@ -17,7 +17,7 @@ RUN npm ci
 
 RUN npm run build
 
-EXPOSE 3001
+EXPOSE 3000
 
 # Start the app
 CMD [ "npx", "serve", "build" ]

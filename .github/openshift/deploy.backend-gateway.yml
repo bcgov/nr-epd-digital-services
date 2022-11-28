@@ -92,6 +92,19 @@ objects:
             app: ${NAME}-${COMPONENT}
             deploymentconfig: ${NAME}-${COMPONENT}
         spec:
+          # initContainers:
+          #   - name: wait-for-graphql
+          #   # is this image going to work?
+          #     image: busybox:1.28 
+          #     args:
+          #     - /bin/sh
+          #     - -c
+          #     - >
+          #       set -x;
+          #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://epd-backend-applications/:)" != "200" ]]; do 
+          #         echo '.'
+          #         sleep 15;
+          #       done  
           containers:
             - image: ${NAME}-${COMPONENT}:${IMAGE_TAG}
               imagePullPolicy: Always
@@ -113,7 +126,11 @@ objects:
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-database
-                      key: database-user
+                      key: database-user 
+                - name: USER_URL
+                  value: http://${NAME}-backend-users/graphql
+                - name: APPLICATION_URL
+                  value: http://${NAME}-backend-applications/graphql
               ports:
                 - containerPort: ${{CONTAINER_PORT}}
                   protocol: TCP
@@ -127,10 +144,10 @@ objects:
               readinessProbe:
                 tcpSocket:
                   port: ${{CONTAINER_PORT}}
-                initialDelaySeconds: 10
-                periodSeconds: 10
+                initialDelaySeconds: 90
+                periodSeconds: 30
                 timeoutSeconds: 5
-                failureThreshold: 30
+                failureThreshold: 3
                 successThreshold: 1
               livenessProbe:
                 successThreshold: 1
@@ -139,7 +156,7 @@ objects:
                   path: /
                   port: ${{CONTAINER_PORT}}
                   scheme: HTTP
-                initialDelaySeconds: 60
+                initialDelaySeconds: 90
                 periodSeconds: 30
                 timeoutSeconds: 5
   - apiVersion: v1
