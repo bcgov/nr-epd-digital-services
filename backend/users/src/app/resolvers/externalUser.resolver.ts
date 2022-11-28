@@ -33,8 +33,7 @@ export class ExternalUserResolver {
    */
   @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
   @Mutation(() => ExternalUser)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    request;
+  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {   
     return this.usersService.create(createUserInput);
   }
 

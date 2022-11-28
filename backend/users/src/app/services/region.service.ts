@@ -34,7 +34,6 @@ export class RegionService {
    * @returns Region sepcifc region
    */
   async findOne(id: string): Promise<Region> {
-    FindOptionsUtils;
     return this.repository.findOneOrFail({ where: { id: id } });
   }
 }

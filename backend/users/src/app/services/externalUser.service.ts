@@ -57,7 +57,6 @@ export class ExternalUserService {
    * @returns External User
    */
   async findOne(id: string): Promise<ExternalUser> {
-    FindOptionsUtils;
     return this.usersRepository.findOneOrFail({
       relations: ['region', 'organizationType'],
       where: { id: id },

@@ -8,7 +8,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './app/users.module';
-import { join } from 'path';
 import {
   AuthGuard,
   KeycloakConnectModule,
@@ -51,7 +50,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       // This changes the DB schema to match changes to entities, which we might not want.
     }),
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
-      driver: ApolloFederationDriver,    
+      driver: ApolloFederationDriver,
       // TODO - Experiment with using old files for localhsot if need be, and true for prod
       autoSchemaFile: true,
       cors: {
