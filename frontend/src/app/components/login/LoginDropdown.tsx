@@ -19,7 +19,7 @@ export const LoginDropdown = (title:string,width_override?:number) =>{
                 </Dropdown.Item>
                 <Dropdown.Divider/>
                 <Dropdown.Item as="button" id="login-button-idir" onClick={() => void auth.signinRedirect(
-                            {extraQueryParams:{'kc_idp_hint':'oidc'}})}>
+                            {extraQueryParams:{'kc_idp_hint':'idir'}})}>
                         IDIR
                 </Dropdown.Item>
             </Dropdown.Menu>
