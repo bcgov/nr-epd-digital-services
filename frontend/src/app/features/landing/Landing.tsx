@@ -8,6 +8,7 @@ import { LoginPanel } from "./LoginPanel"
 
 const Landing = () =>{
     const forms = FormFactory(jsonforms.forms)
+    console.log(process.env)
     return(
         <Container fluid className="landing-container" id="landing-container">
             <LoginPanel/>
