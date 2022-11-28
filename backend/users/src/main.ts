@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import {ValidationPipe} from '@nestjs/common'
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalPipes(new ValidationPipe());
   //const whitelist = ['submit.digital.gov.bc.ca']
   app.enableCors({
     // origin:function (origin, callback) {
@@ -14,10 +14,10 @@ async function bootstrap() {
     //     callback(new Error('Not allowed by CORS'))
     //   }
     // } ,
-    origin:true,
+    origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
-});
+  });
   await app.listen(3005);
 }
 bootstrap();
