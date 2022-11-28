@@ -1,8 +1,5 @@
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { getLastVisitedURL } from '../applications/ApplicationSlice';
-
+import { useAuth } from 'react-oidc-context';
+import { Link} from 'react-router-dom';
 
 const Dashboard = () => {
   
@@ -17,7 +14,10 @@ const Dashboard = () => {
   //   }
   // },[lastVisitedURL])
  
+  const auth = useAuth();
+  console.log(auth.user?.profile)
   return (
+
     <div>
         <ul>
             <li>
@@ -27,6 +27,8 @@ const Dashboard = () => {
                 <Link to="/users/add"> Add New User </Link>
             </li>
         </ul>
+        { auth.isLoading ? <div>Loading User</div> : <div>{auth.user?.profile.email}</div>}
+        <p></p>
     </div>
   )
 }
