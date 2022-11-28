@@ -22,40 +22,110 @@ directive @inaccessible on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUM
 
 directive @override(from: String!) on FIELD_DEFINITION
 
-type User {
-  id: Int!
-  name: String!
+type OrganizationType {
+  id: String!
+  org_name: String!
+}
+
+type Region {
+  id: String!
+  region_name: String!
+}
+
+type ExternalUser {
+  id: String!
+  firstName: String!
+  lastName: String!
+  addressLine: String!
+  city: String!
+  province: String!
+  country: String!
+  postalCode: String!
+  email: String!
+  phoneNumber: String!
+  industry: String!
+  organization: String!
+  isGstExempt: Boolean!
+  isBillingContact: Boolean!
+  organizationTypeId: String!
+  regionId: String!
+  organizationType: OrganizationType!
+  region: Region!
+  isProfileVerified: Boolean!
 }
 
 type FetchUserResponse {
   httpStatusCode: Int!
-  data: [User!]!
+  data: [ExternalUser!]!
+}
+
+type FetchRegionResponse {
+  httpStatusCode: Int!
+  data: [Region!]!
+}
+
+type FetchOrganizationTypeResponse {
+  httpStatusCode: Int!
+  data: [OrganizationType!]!
 }
 
 type Query {
   users: FetchUserResponse!
-  user(id: Int!): User!
+  user(id: Int!): ExternalUser!
+  regions: FetchRegionResponse!
+  region(id: Int!): Region!
+  orgnizationTypes: FetchOrganizationTypeResponse!
 }
 
 type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
-  submitForm(data: FormData!): String!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
+  createUser(createUserInput: CreateUserInput!): ExternalUser!
+  updateUser(updateUserInput: UpdateUserInput!): ExternalUser!
+  removeUser(id: Int!): ExternalUser!
 }
 
 input CreateUserInput {
-  name: String!
-}
-
-input FormData {
-  id: String!
-  data: String!
+  userId: String!
+  firstName: String!
+  lastName: String!
+  addressLine: String!
+  city: String!
+  province: String!
+  country: String!
+  postalCode: String!
+  email: String!
+  phoneNumber: String!
+  organization: String!
+  userWorkStatus: String!
+  userFNStatus: String!
+  isGstExempt: Boolean!
+  isBillingContact: Boolean!
+  isProfileVerified: Boolean!
+  industry: String!
+  regionId: String!
+  organizationTypeId: String!
 }
 
 input UpdateUserInput {
-  name: String
-  id: Int!
+  userId: String
+  firstName: String
+  lastName: String
+  addressLine: String
+  city: String
+  province: String
+  country: String
+  postalCode: String
+  email: String
+  phoneNumber: String
+  organization: String
+  userWorkStatus: String
+  userFNStatus: String
+  isGstExempt: Boolean
+  isBillingContact: Boolean
+  isProfileVerified: Boolean
+  industry: String
+  regionId: String
+  organizationTypeId: String
+  id: String!
 }
 
 scalar link__Import
