@@ -48,6 +48,28 @@ parameters:
     description: The Environment on which it is deployed
     required: true
 objects:
+  # ConfigMap created by sakthi for testing - DONOT push
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: ${NAME}-config
+    data:
+      config.js: |-
+        // runtime-config.js vars
+          window["_env_"] =  {
+            "REACT_APP_NODE_ENV": "production",
+            "REACT_APP_AUTH_AUTHORITY": "${REACT_APP_AUTH_AUTHORITY}",
+            "REACT_APP_AUTH_CLIENT_ID": "${REACT_APP_AUTH_CLIENT_ID}",
+            "REACT_APP_AUTH_CLIENT_SECRET": "${REACT_APP_AUTH_CLIENT_SECRET}",
+            "REACT_APP_AUTH_REDIRECT_URI": "${REACT_APP_AUTH_REDIRECT_URI}",            
+            "REACT_APP_AUTH_LOGOUT_REDIRECT_URI": "${REACT_APP_AUTH_LOGOUT_REDIRECT_URI}",
+            "REACT_APP_AUTH_RESPONSE_TYPE": "${REACT_APP_AUTH_RESPONSE_TYPE}",
+            "REACT_APP_AUTH_SCOPE": "${REACT_APP_AUTH_SCOPE}",
+            "REACT_APP_BACKEND_API": "${REACT_APP_BACKEND_API}",            
+            "REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS": "${REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS}",
+            "REACT_APP_AUTH_LOAD_USER_INFO": "${REACT_APP_AUTH_LOAD_USER_INFO}",  
+            "REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT": "${REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT}"
+          }
   - apiVersion: v1
     kind: ImageStream
     metadata:
@@ -97,8 +119,6 @@ objects:
               imagePullPolicy: Always
               name: ${NAME}-${COMPONENT}
               env:
-                - name: BACKEND_URL
-                  value: https://${NAME}-backend-${ENV}.${DOMAIN}
                 - name: REACT_APP_AUTH_REDIRECT_URI
                   value: https://${NAME}-frontend-${ENV}.${DOMAIN}
               ports:
@@ -129,6 +149,15 @@ objects:
                 initialDelaySeconds: 60
                 periodSeconds: 30
                 timeoutSeconds: 5
+              #Added for configMap mount  
+              volumeMounts:
+                - name: ${NAME}-config
+                  #readOnly: true
+                  mountPath: /app/config
+          volumes:
+            - name: ${NAME}-config
+              configMap:
+                name: ${NAME}-config
   - apiVersion: v1
     kind: Service
     metadata:
