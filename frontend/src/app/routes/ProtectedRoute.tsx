@@ -3,11 +3,8 @@ import { Navigate} from "react-router";
 
 
 export type ProtectedRouteProps = {
-    element: JSX.Element,
-    //auth: AuthContextProps
-    
+    element: JSX.Element,    
 }
-//function ProtectedRoute({element, auth}: ProtectedRouteProps) {
 
 function ProtectedRoute({element}: ProtectedRouteProps) {
     const auth = useAuth()
