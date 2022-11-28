@@ -9,9 +9,9 @@ jest.mock('react-oidc-context', () => ({
 }))
 
 
-it('renders user list link', () => {
+it('renders log in panel', () => {
   (useAuth as jest.Mock).mockReturnValue(
-    {isAuthenticated: true}
+    {isAuthenticated: false}
   )
   render(
     //<AuthProvider>
@@ -20,12 +20,12 @@ it('renders user list link', () => {
       </Provider>
     //</AuthProvider>
       );
-  const userlist = screen.getByText(/List of Users/i);
-  expect(userlist).toBeInTheDocument();
+  const loginPanel = screen.getByText(/Log In to my LRS Account/i);
+  expect(loginPanel).toBeInTheDocument();
 
 });
 
-test('renders add new user form link', () =>{
+test('Renders LRS Form Accordion', () =>{
   (useAuth as jest.Mock).mockReturnValue(
     {isAuthenticated: true}
   )
@@ -36,7 +36,7 @@ test('renders add new user form link', () =>{
       </Provider>
     //</AuthProvider>
     );
-  const userform = screen.getByText(/Add New User/i)
-  expect(userform).toBeInTheDocument()
+  const formAccordion = screen.getByText(/This is the first sample lrs form, please use this for lrs things/i)
+  expect(formAccordion).toBeInTheDocument()
 })
 
