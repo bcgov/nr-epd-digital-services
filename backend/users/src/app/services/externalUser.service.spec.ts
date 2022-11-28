@@ -108,7 +108,7 @@ describe('UsersService', () => {
             save: jest.fn(),
             delete: jest.fn(() => {
               //return service.remove(id)
-              return Promise.resolve(true);
+              return Promise.resolve({ affected: 1 });
             }),
             update: jest.fn((id, userUpdate) => {
               return Promise.resolve(userUpdate);
@@ -169,7 +169,7 @@ describe('UsersService', () => {
 
   it('Should delete a user', async () => {
     const removeUser = await service.remove('1');
-    expect(removeUser);
+    expect(removeUser).toBe(true);
   });
 
   it('Should update a user', async () => {
