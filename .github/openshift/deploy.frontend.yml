@@ -119,8 +119,8 @@ objects:
               imagePullPolicy: Always
               name: ${NAME}-${COMPONENT}
               env:
-                - name: REACT_APP_AUTH_REDIRECT_URI
-                  value: https://${NAME}-frontend-${ENV}.${DOMAIN}
+                - name: BACKEND_URL
+                  value: https://${NAME}-backend-${ENV}.${DOMAIN}
               ports:
                 - containerPort: ${{CONTAINER_PORT}}
                   protocol: TCP
@@ -149,15 +149,6 @@ objects:
                 initialDelaySeconds: 60
                 periodSeconds: 30
                 timeoutSeconds: 5
-              #Added for configMap mount  
-              volumeMounts:
-                - name: ${NAME}-config
-                 # readOnly: true
-                  mountPath: /app/config
-          volumes:
-            - name: ${NAME}-config
-              configMap:
-                name: ${NAME}-config
   - apiVersion: v1
     kind: Service
     metadata:

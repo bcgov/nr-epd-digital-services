@@ -1,21 +1,21 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { Unprotected } from 'nest-keycloak-connect';
 import { AppService } from './app.service';
-import { CreateUserInput } from './users/dto/create-user.input';
 
+/**
+ * Unprotected Sample Controller For Health Check
+ */
 @Controller()
+@Unprotected()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  /**
+   * GET Method
+   * @returns Hello World
+   */
   @Get()
   getHello(): string {
     return this.appService.getHello();
   }
-
-  @Post()
-  CreateUser(@Body() input):boolean
-  {
-    console.log("input",input);
-    return true;
-  }
-
 }
