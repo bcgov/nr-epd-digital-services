@@ -53,7 +53,7 @@ header {
     }
   }
 
-  @media screen and (min-width: 525px) and (max-width: 899px) {
+  @media screen and (min-width: 600px) and (max-width: 899px) {
     header h1 {
       font-size: calc(7px + 2vw);
       visibility: visible;
