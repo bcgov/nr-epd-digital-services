@@ -1,0 +1,10 @@
+#accordion-item-header button{
+    font-family: 'BCSans', 'Noto Sans', Verdana, Arial, sans-serif;
+    color: #38598A;
+    font-style: normal;
+    font-weight: 700;
+    background-color: #F2F2F2
+}
+#accordion-item button::after{
+    caret-color: red
+}
