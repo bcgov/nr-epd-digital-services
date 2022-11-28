@@ -6,7 +6,7 @@ RUN npm install
 COPY . .
 RUN npm run build 
 
-FROM nginx:1.23.2 as production-stage
+FROM nginx:alpine as production-stage
 #COPY nginx.conf /etc/nginx/nginx.conf
 RUN mkdir /app
 
