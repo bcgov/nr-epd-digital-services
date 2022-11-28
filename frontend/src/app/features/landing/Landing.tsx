@@ -3,7 +3,6 @@ import {Container, Row, Col} from 'react-bootstrap'
 import jsonforms from "./forms.json"
 import { FormFactory } from "../../helpers/factory/FormFactory"
 import { ResponsiveNavigationSidebar } from "../../components/navigation/ResponsiveNavigationSidebar"
-import { useAuth } from "react-oidc-context"
 import { LoginPanel } from "./LoginPanel"
 
 const Landing = () =>{

@@ -1,5 +1,4 @@
 import { Row, Col, Button } from "react-bootstrap";
-import { useAuth } from "react-oidc-context";
 import LoginDropdown from "../../components/login/LoginDropdown";
 
 import "./LoginPanel.css"

@@ -13,12 +13,12 @@ export const LoginDropdown = (title:string,width_override?:number) =>{
             <Dropdown.Menu id="login-selector-dropdown-menu">
                 <Dropdown.Header>Select Login Method</Dropdown.Header>
                 <Dropdown.Item as="button" id="login-button-bceid" className="dropdown-item"
-                        onClick={() => void auth.signinRedirect(
+                        onClick={() => auth.signinRedirect(
                                 {extraQueryParams:{'kc_idp_hint':'bceid'}})}>
                         BCEID
                 </Dropdown.Item>
                 <Dropdown.Divider/>
-                <Dropdown.Item as="button" id="login-button-idir" onClick={() => void auth.signinRedirect(
+                <Dropdown.Item as="button" id="login-button-idir" onClick={() => auth.signinRedirect(
                             {extraQueryParams:{'kc_idp_hint':'idir'}})}>
                         IDIR
                 </Dropdown.Item>
