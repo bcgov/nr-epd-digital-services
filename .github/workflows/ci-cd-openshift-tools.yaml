@@ -82,7 +82,7 @@ jobs:
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=3000 -p ENV=tools -p IMAGE_TAG=tools
+            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=8080 -p ENV=tools -p IMAGE_TAG=tools
     secrets:
       oc_namespace: ${{ secrets.OC_NAMESPACE }}
       oc_server: ${{ secrets.OC_SERVER }}
