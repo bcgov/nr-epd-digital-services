@@ -1,5 +1,6 @@
 #login-panel{
     background-color: #E3E8EE;
+    height: 250px;
 }
 
 #login-selector-dropdown{
@@ -35,4 +36,10 @@
     border-color: #405c8c;
     color:#FFFFFF;
 
+}
+
+
+.login-btn-lh
+{
+    line-height: 2 !important;
 }

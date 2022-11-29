@@ -15,8 +15,14 @@ const Landing = () =>{
                     <ResponsiveNavigationSidebar/>
                 </Col>
                 <Col className="col-12 col-md-7">
-                    <h1>Sample LRS Forms</h1>
+                    <Row>
+                    <p className="h1">Sample Site Remediation Forms</p>
+                    </Row>  
+                    <Row>
                     {LRSFormAccordion(forms)}
+                    </Row>
+                  
+                
                 </Col>
             </Row>
         </Container>
