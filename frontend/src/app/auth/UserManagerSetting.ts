@@ -28,7 +28,6 @@ export function getClientSettings(): UserManagerSettings {
       filterProtocolClaims: process.env.REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS==='true'? true:false,
       loadUserInfo: process.env.REACT_APP_AUTH_LOAD_USER_INFO==='true'? true:false,
       revokeTokensOnSignout:process.env.REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT==='true'? true:false,
-      
     };
   }
   

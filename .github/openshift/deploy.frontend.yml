@@ -152,7 +152,7 @@ objects:
               #Added for configMap mount  
               volumeMounts:
                 - name: ${NAME}-config
-                 # readOnly: true
+                  #readOnly: true
                   mountPath: /app/config
           volumes:
             - name: ${NAME}-config

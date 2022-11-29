@@ -22,16 +22,16 @@ directive @inaccessible on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUM
 
 directive @override(from: String!) on FIELD_DEFINITION
 
-type User {
-  id: Int!
+type ExternalUser {
+  id: String!
   applications(skip: Int = 0, take: Int = 25, nameLike: String!): [Application!]!
 }
 
 type Application {
   id: ID!
   name: String
-  user: User!
-  userId: Int!
+  user: ExternalUser!
+  userId: String!
 }
 
 type Query {
