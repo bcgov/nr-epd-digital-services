@@ -10,9 +10,9 @@ import '@bcgov/bc-sans/css/BCSans.css'
 function App() {
   return (
     <div  className="container-fluid p-0">
-      <Header/>
       <Router >
-          <AppRoutes/>
+        <Header/>
+        <AppRoutes/>
       </Router>   
       <Footer/> 
     </div>

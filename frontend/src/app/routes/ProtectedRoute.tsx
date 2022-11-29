@@ -8,8 +8,8 @@ export type ProtectedRouteProps = {
 
 function ProtectedRoute({element}: ProtectedRouteProps) {
     const auth = useAuth()
-    console.log(element.type)
         if(auth.isLoading){
+            console.log("Loading")
             return <div>loading</div>
         }
         if(auth.isAuthenticated){
