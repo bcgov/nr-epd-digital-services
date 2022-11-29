@@ -9,6 +9,8 @@ on:
       - 'backend/**'
       - 'frontend/**'
       - '.github/workflows/ci-cd-openshift-tools.yaml'
+      - '.github/workflows/_deploy.yml'
+      - '.github/workflows/_build.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
