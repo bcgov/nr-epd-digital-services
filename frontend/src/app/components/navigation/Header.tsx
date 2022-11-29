@@ -26,7 +26,9 @@ const Header = () => {
               {auth.user?.profile.name}
             </Dropdown.Toggle>
             <Dropdown.Menu>
-            
+            <Dropdown.Item tag={Button} onClick={()=>{navigate("/dashboard")}} >  
+                  Dashboard
+            </Dropdown.Item>
             <Dropdown.Item tag={Button} onClick={()=>{navigate("/userprofile")}} >  
                   Profile
             </Dropdown.Item>

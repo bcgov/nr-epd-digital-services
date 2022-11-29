@@ -32,7 +32,7 @@ const AddUserForm = () => {
 
   return (
     <section>
-      <NavLink to="/">Dashboard</NavLink>
+      <NavLink to="/dashboard">Dashboard</NavLink>
       <h2>Add New User</h2>
       <form>
         <label htmlFor="userName">User Name:</label>
