@@ -85,7 +85,7 @@ const UsersList = () => {
 
   return (
     <section>
-      <NavLink to="/">Dashboard</NavLink>
+      <NavLink to="/dashboard">Dashboard</NavLink>
       <h2>Users</h2>
       <table className="table">
         <thead>
