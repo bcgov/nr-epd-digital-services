@@ -4,7 +4,7 @@ on:
   workflow_dispatch: # TODO this is there for testing purposes, once the pipelines are all done, remove this
   push:
     branches:
-      - 'ss-frontend' #test1
+      - 'ss-frontend' #test2
     paths:
       - 'backend/**'
       - 'frontend/**'
