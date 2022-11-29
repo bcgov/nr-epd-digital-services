@@ -1,14 +1,14 @@
 import logo from "../../../app/images/logos/logo-banner.png";
 import { useAuth } from "react-oidc-context";
 import LoginDropdown from "../login/LoginDropdown";
-
-import { Dropdown } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Button, Dropdown } from "react-bootstrap";
+import { useNavigate} from "react-router";
 
 import "./Header.css";
 
 const Header = () => {
   const auth = useAuth();
+  const navigate = useNavigate();
   return (
     <header className="navbar fixed-top">
       <div className="banner">
@@ -26,10 +26,13 @@ const Header = () => {
               {auth.user?.profile.name}
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item>
-                <a href="/userprofile">Profile</a>
-                
-              </Dropdown.Item>
+            <Dropdown.Item tag={Button} onClick={()=>{navigate("/dashboard")}} >  
+                  Dashboard
+            </Dropdown.Item>
+            <Dropdown.Item tag={Button} onClick={()=>{navigate("/userprofile")}} >  
+                  Profile
+            </Dropdown.Item>
+              
               <Dropdown.Item as="button" onClick={() => {
                     auth.removeUser().then(()=>{
                       window.location.href = process.env.REACT_APP_AUTH_LOGOUT_REDIRECT_URI?process.env.REACT_APP_AUTH_LOGOUT_REDIRECT_URI:"";})

@@ -27,7 +27,7 @@ const Dashboard = () => {
                 <Link to="/users/add"> Add New User </Link>
             </li>
         </ul>
-        { auth.isLoading ? <div>Loading User</div> : <div>{auth.user?.profile.email}</div>}
+        {auth.isLoading ? <div>Loading User</div> : <div>{auth.user?.profile.email}</div>}
         <p></p>
     </div>
   )
