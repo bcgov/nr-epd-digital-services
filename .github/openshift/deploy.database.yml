@@ -23,6 +23,10 @@ parameters:
     from: "[a-zA-Z0-9]{16}"
     generate: expression
     name: DB_PASSWORD
+  - description: Password for the admin PostgreSQL connection user.
+    from: "[a-zA-Z0-9]{16}"
+    generate: expression
+    name: DB_ADMIN_PASSWORD
   - description: Volume space available for data, e.g. 512Mi, 2Gi.
     displayName: Database Volume Capacity
     name: DB_PVC_SIZE
@@ -44,6 +48,7 @@ objects:
       database-name: epd
       database-password: ${DB_PASSWORD}
       database-user: epd
+      database-admin-password: ${DB_ADMIN_PASSWORD}
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
@@ -157,6 +162,11 @@ objects:
                     secretKeyRef:
                       name: ${NAME}-${COMPONENT}
                       key: database-user
+                - name: POSTGRESQL_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-${COMPONENT}
+                      key: database-admin-password
               volumeMounts:
                 - name: ${NAME}-${COMPONENT}
                   mountPath: "/var/lib/pgsql/data"
