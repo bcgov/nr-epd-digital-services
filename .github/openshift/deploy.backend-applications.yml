@@ -165,7 +165,7 @@ objects:
         app: ${NAME}-${COMPONENT}
       name: ${NAME}-${COMPONENT}
     spec:
-      host: ${NAME}-${COMPONENT}-${ENV}.${DOMAIN}/graphql
+      host: ${NAME}-${COMPONENT}-${ENV}.${DOMAIN}
       port:
         targetPort: ${CONTAINER_PORT}-tcp
       to:
