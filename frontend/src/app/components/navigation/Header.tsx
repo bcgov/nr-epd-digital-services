@@ -10,7 +10,7 @@ import "./Header.css";
 const Header = () => {
   const auth = useAuth();
   return (
-    <header className="navbar">
+    <header className="navbar fixed-top">
       <div className="banner">
         <a href="https://gov.bc.ca">
           <img src={logo} alt="BC Government Logo" />

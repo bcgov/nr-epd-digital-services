@@ -6,8 +6,8 @@ export const LoginDropdown = (title:string,width_override?:number) =>{
     const auth = useAuth();
     
     return(
-        <Dropdown id="login-selector-dropdown" >
-            <Dropdown.Toggle id="login-selector-dropdown-toggle" style={{width:width_override}}>
+        <Dropdown id="login-selector-dropdown"  >
+            <Dropdown.Toggle id="login-selector-dropdown-toggle" className="login-btn-lh" style={{width:width_override}}>
                 {title}
             </Dropdown.Toggle>
             <Dropdown.Menu id="login-selector-dropdown-menu">

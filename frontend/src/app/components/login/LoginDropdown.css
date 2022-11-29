@@ -15,3 +15,8 @@
 #login-selector-dropdown-toggle::after{
     margin-left: .5rem;
 }
+
+.login-btn-lh
+{
+    line-height: 2 !important;
+}
