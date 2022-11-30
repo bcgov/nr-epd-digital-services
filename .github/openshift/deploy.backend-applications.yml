@@ -129,7 +129,7 @@ objects:
                   path: /
                   port: ${{CONTAINER_PORT}}
                   scheme: HTTP
-                initialDelaySeconds: 90
+                initialDelaySeconds: 120
                 periodSeconds: 30
                 timeoutSeconds: 5
                 failureThreshold: 30
