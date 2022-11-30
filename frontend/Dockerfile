@@ -1,23 +1,32 @@
-# RedHat UBI 8 with nodejs 14
-FROM registry.access.redhat.com/ubi8/ubi as builder
-RUN dnf module install -y nodejs:14
+# "build-stage", based on Node.js, to build and compile the frontend
+# pull official base image
+FROM node:14-alpine as build-stage
 
-# Set the working directory to /app inside the container
+# set working directory
 WORKDIR /app
 
-COPY ./package*.json ./
-RUN npm ci
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /app/node_modules/.bin:$PATH
 
-# Copy app files
-COPY . .
-# ==== BUILD =====
-# Install dependencies (npm ci makes sure the exact versions in the lockfile gets installed)
-# RUN npm install 
-RUN npm ci
+# install app dependencies
+COPY package.json ./
+COPY package-lock.json ./
+
+RUN npm install --silent
+RUN npm install react-scripts@3.4.1 -g --silent
+
+# create and set user permissions to app folder
+RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
+
+# add app files
+COPY . ./
 
 RUN npm run build
 
-EXPOSE 3000
-
-# Start the app
-CMD [ "npx", "serve", "build" ]
+# Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
+FROM nginx:1.17 as production-stage
+RUN mkdir /app
+COPY --from=build-stage /app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/nginx.conf
+#EXPOSE 3000
+CMD ["nginx", "-g", "daemon off;"]
