@@ -2,18 +2,6 @@ import { useAuth } from 'react-oidc-context';
 import { Link} from 'react-router-dom';
 
 const Dashboard = () => {
-  
-  // const navigate = useNavigate();
-  
-  // const lastVisitedURL = useSelector(getLastVisitedURL);
-
-  // useEffect(()=>{
-  //   if(lastVisitedURL!=''&&lastVisitedURL!=undefined)
-  //   {
-  //       navigate("/"+lastVisitedURL)
-  //   }
-  // },[lastVisitedURL])
- 
   const auth = useAuth();
   console.log(auth.user?.profile)
   return (

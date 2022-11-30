@@ -3,12 +3,12 @@ import {Container, Row, Col} from 'react-bootstrap'
 import jsonforms from "./forms.json"
 import { FormFactory } from "../../helpers/factory/FormFactory"
 import  {ResponsiveNavigationSidebar}  from "../../components/navigation/ResponsiveNavigationSidebar"
-import { LoginPanel } from "./LoginPanel"
+import { LoginPanel } from "../../components/landing/LoginPanel"
 
 const Landing = () =>{
     const forms = FormFactory(jsonforms.forms)
     return(
-        <Container fluid className="landing-container" id="landing-container">
+        <Container fluid className="landing-container mt-3" id="landing-container">
             <LoginPanel/>
             <Row id="responsive-lrs-nav" className="">
                 <Col className="col-12 col-md-3" >
@@ -21,8 +21,6 @@ const Landing = () =>{
                     <Row>
                     {LRSFormAccordion(forms)}
                     </Row>
-                  
-                
                 </Col>
             </Row>
         </Container>
