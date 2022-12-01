@@ -1,10 +1,8 @@
-/* #login-panel{
+#login-panel{
     background-color: #E3E8EE;
+    height: 250px;
 }
 
-#login-selector-dropdown{
-    /* width: 100%; */
-}
 #login-selector-dropdown-toggle{
     width: 250px;
     color: white;
@@ -41,4 +39,4 @@
 .login-btn-lh
 {
     line-height: 2 !important;
-} */
+}
