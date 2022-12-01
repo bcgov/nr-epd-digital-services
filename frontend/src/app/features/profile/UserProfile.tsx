@@ -1,7 +1,7 @@
-import React, { useState } from "react"
+import { useEffect } from "react"
 import { Button, Col, Container, Form, Row } from "react-bootstrap"
 import { useAuth } from "react-oidc-context"
-import {Controller, useForm} from 'react-hook-form'
+import {useForm} from 'react-hook-form'
 
 import "./UserProfile.css"
 
@@ -26,10 +26,16 @@ type FormData = {
 
 
 export const UserProfile = () =>{
-	const {register,setValue, control, watch, handleSubmit, formState:{errors}} = useForm<FormData>();
+	const {register, watch, handleSubmit, formState:{errors}} = useForm<FormData>();
 	const onSubmit = handleSubmit(data => console.log(data))
     const auth = useAuth()
 
+	useEffect( () =>{
+		const subscription = watch((value,{name,type}) => {
+			console.log(value,name,type)
+		})
+		return () => subscription.unsubscribe();
+	},[watch])
 	handleSubmit( (data) => {
 		console.log(data)
 	})
@@ -47,11 +53,11 @@ export const UserProfile = () =>{
 						<Row className="w-100">
 							<Form.Group className="mb-2 col-xs-12 col-sm-6" controlId="formFirstName">
 								<Form.Label>First Name</Form.Label>
-								<Form.Control {...register("firstName")} type="text" aria-placeholder="Add name here" placeholder="Add name here"/>
+								<Form.Control {...register("firstName")} type="text" aria-placeholder="First Name" placeholder="First Name"/>
 							</Form.Group>
 							<Form.Group className="mb-2 col-xs-12 col-sm-6" controlId="formFamilyName">
 								<Form.Label>Last Name</Form.Label>
-								<Form.Control {...register("lastName")} type="text" aria-placeholder="Add Family Name here" placeholder="Add Family Name Here"/>
+								<Form.Control {...register("lastName")} type="text" aria-placeholder="Last Name" placeholder="Add Family Name Here"/>
 							</Form.Group>
 						</Row>
 						<Row>
@@ -169,8 +175,60 @@ export const UserProfile = () =>{
 								<Form.Check {...register("fnStatus")} name="fnStatus" type="radio" label="None"/>
 							</div>
 						</Row>
+
+						<Row className="pt-4">
+							<Col id="form-header" className="my-1">
+								<h5>Section 3 - Billing Details</h5>
+							</Col>
+						</Row>
 						<Row>
-							<Col>
+							<Form.Group className="mb-2 col-xs-12 col-sm-6" controlId="formBillingAddress">
+								<Form.Label>Billing Address</Form.Label>
+								<Form.Control type="text" aria-placeholder="Billing Address" placeholder="Billing Address"/>
+							</Form.Group>
+							<Form.Group className="mb-2 col-xs-12 col-sm-6" controlId="formBillingCity">
+								<Form.Label>City</Form.Label>
+								<Form.Control type="text" aria-placeholder="City" placeholder="City"/>
+							</Form.Group>
+						</Row>
+						<Row>
+							<Form.Group className="mb-2 col-xs-12 col-sm-4" controlId="formBillingProvince">
+								<Form.Label>Province</Form.Label>
+								<Form.Control  type="text" aria-placeholder="Province" placeholder="Province"/>
+							</Form.Group>
+							<Form.Group className="mb-2 col-xs-12 col-sm-4" controlId="formBillingCountry">
+								<Form.Label>Country</Form.Label>
+								<Form.Control type="text" aria-placeholder="Country" placeholder="Country"/>
+							</Form.Group>
+							<Form.Group className="mb-2 col-xs-12 col-sm-4" controlId="formBillingPostalCode">
+								<Form.Label>Postal Code</Form.Label>
+								<Form.Control type="text" aria-placeholder="Postal Code" placeholder="Postal Code"/>
+							</Form.Group>
+						</Row>
+						<Row className="w-100">
+							<Form.Group className="mb-2 col-sm-6" controlId="formBillingName">
+								<Form.Label>Name on Card</Form.Label>
+								<Form.Control type="text" aria-placeholder="Add name here" placeholder="Add name here"/>
+							</Form.Group>
+						</Row>
+						<Row>
+							<Form.Group className="mb-2 col-xs-12 col-6">
+								<Form.Label>Card Number</Form.Label>
+								<Form.Control type="text" aria-placeholder="Card Number" placeholder="Card Number"/>
+							</Form.Group>
+						</Row>
+						<Row>
+							<Form.Group className="mb-2 col-xs-12 col-3">
+								<Form.Label>Expiration</Form.Label>
+								<Form.Control type="text" aria-placeholder="Expiry Date" placeholder="MM/YY"/>
+							</Form.Group>
+							<Form.Group className="mb-2 col-xs-12 col-3">
+								<Form.Label>CVV</Form.Label>
+								<Form.Control type="text" aria-placeholder="CVV" placeholder="CVV"/>
+							</Form.Group>
+						</Row>
+						<Row >
+							<Col className="text-end mb-3">
 								<Button type="submit">Save Profile</Button>
 							</Col>
 						</Row>
