@@ -24,6 +24,7 @@ services:
       retries: 5
     volumes:
       - /pgdata
+
   users:
     networks:
       - app-tier 
@@ -48,6 +49,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
   applications:
     networks:
       - app-tier 
@@ -87,6 +89,7 @@ services:
       - ./backend/applications:/app:z
       - /app/node_modules
     working_dir: "/app"
+
   graphqlgateway:    
     networks:
       - app-tier 
@@ -123,6 +126,7 @@ services:
       - ./backend/gateway:/app:z
       - /app/node_modules
     working_dir: "/app"
+
   frontend:
     container_name: frontend
     entrypoint:
@@ -150,3 +154,12 @@ services:
       - ./frontend:/app:z
       - /app/node_modules
     working_dir: "/app"
+
+  userapi_doc:
+        container_name: userapi_doc
+        build:
+            context: ./backend/documentation/users
+            dockerfile: ./Dockerfile
+        restart: always
+        ports:
+            - "3001:3001"

@@ -11,7 +11,7 @@ import { OrganizationType } from '../entities/organizationType';
 export class OrganizationTypeService {
   constructor(
     @InjectRepository(OrganizationType)
-    private repository: Repository<OrganizationType>,
+    private organizationTypeRepository: Repository<OrganizationType>,
   ) {}
 
   /**
@@ -23,7 +23,7 @@ export class OrganizationTypeService {
 
     response.httpStatusCode = 200;
 
-    response.data = await this.repository.find();
+    response.data = await this.organizationTypeRepository.find();
 
     return response;
   }
