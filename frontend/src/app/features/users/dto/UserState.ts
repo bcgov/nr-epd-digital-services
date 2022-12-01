@@ -3,7 +3,8 @@ import { User } from "./User"
 
 export class UserState 
 {
-    users: User[] = []
+    users: User[] = [];
+    isProfileVerified:boolean | null = null;
     error:string = '';
     fetchStatus:string =  RequestStatus.idle;
     deleteStatus:string =  RequestStatus.idle;

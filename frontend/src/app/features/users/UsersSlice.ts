@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getAxiosInstance } from "../../helpers/utility";
 import { GRAPHQL } from "../../helpers/endpoints";
-import { FETCH_USERS, ADD_USER, DELETE_USER, UPDATE_USER } from "./graphql/UserRequests";
+import { FETCH_USERS, ADD_USER, DELETE_USER, UPDATE_USER, FETCH_USER_PROFILE_VERIFY } from "./graphql/UserRequests";
 import { print } from "graphql";
 import { User } from "./dto/User";
 import { UserState } from "./dto/UserState";
 import {RequestStatus} from '../../helpers/requests/status'
+import { Console } from "console";
 
 
 const initialState: UserState = new UserState();
@@ -17,6 +18,22 @@ export const fetchUsers = createAsyncThunk("fetchUsers", async () => {
   });
   console.log(request);
   return request.data;
+});
+
+
+
+export const fetchUserProfileVerification = createAsyncThunk("fetchUserProfileVerification", async (userId:String) => {
+  //console.log(FETCH_USERS);
+  const request = await getAxiosInstance().post(GRAPHQL, {
+    query: print(FETCH_USER_PROFILE_VERIFY),
+    variables: {
+      userId:userId,
+    },
+  });
+  console.log(request);
+  return request.data;
+
+  
 });
 
 
@@ -122,6 +139,25 @@ const usersSlice = createSlice({
   },
   extraReducers(builder) {
     builder
+      .addCase(fetchUserProfileVerification.fulfilled,(state,action)=>{
+        console.log("fetchUserProfileVerification fulfilled",state,action)
+        const newState = { ...state };
+        newState.isProfileVerified = action.payload.data.user.profileVerified;
+        console.log(newState)
+        return newState;
+      })
+      .addCase(fetchUserProfileVerification.pending,(state,action)=>{
+        const newState = { ...state };
+        console.log("fetchUserProfileVerification pending",state,action)
+        console.log(action)
+        return newState;
+      })
+      .addCase(fetchUserProfileVerification.rejected,(state,action)=>{
+        const newState = { ...state };
+        console.log("fetchUserProfileVerification rejected",state,action)
+        console.log(action)
+        return newState;
+      })
       .addCase(fetchUsers.pending, (state, action) => {
         const newState = { ...state };
         newState.fetchStatus =  RequestStatus.loading;
@@ -167,7 +203,7 @@ export const getAllUsersFetchStatus = (state: any) => state.users.fetchStatus;
 export const getUserDeleteStatus = (state: any) => state.users.deleteStatus;
 export const getUserAddedStatus = (state: any) => state.users.addedStatus;
 export const getAllUsersError = (state: any) => state.users.error;
-
+export const isProfileVerified = (state: any) => state.users.isProfileVerified;
 export const { userAdded,resetDeleteStatus,resetAddedStatus } = usersSlice.actions;
 
 export default usersSlice.reducer;

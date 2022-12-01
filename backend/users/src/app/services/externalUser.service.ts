@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsUtils, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateUserInput } from '../dto/createUserInput';
+import { FetchSingleUserResponse } from '../dto/reponse/fetchExternalSingleUserResponse';
 import { FetchUserResponse } from '../dto/reponse/fetchUserResponse';
 import { UpdateUserInput } from '../dto/updateUserInput';
 import { ExternalUser } from '../entities/externalUser';
@@ -56,11 +57,20 @@ export class ExternalUserService {
    * @param id External User Id
    * @returns External User
    */
-  async findOne(id: string): Promise<ExternalUser> {
-    return this.usersRepository.findOneOrFail({
+  async findOne(id: string): Promise<FetchSingleUserResponse> {
+    const findUsersResponse = new FetchSingleUserResponse();
+
+    findUsersResponse.httpStatusCode = 200;
+    findUsersResponse.data = await this.usersRepository.findOne({
       relations: ['region', 'organizationType'],
-      where: { id: id },
+      where: { userId: id },
     });
+
+    findUsersResponse.profileVerified = findUsersResponse.data
+      ? findUsersResponse.data.isProfileVerified
+      : false;
+
+    return findUsersResponse;
   }
 
   /**
