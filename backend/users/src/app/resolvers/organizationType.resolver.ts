@@ -10,15 +10,17 @@ import { OrganizationTypeService } from '../services/organizationType.service';
 @Resolver(() => OrganizationType)
 @Resource('backend')
 export class OrganizationTypeResolver {
-  constructor(private readonly serviceLayer: OrganizationTypeService) {}
+  constructor(
+    private readonly organizationTypeService: OrganizationTypeService,
+  ) {}
 
   /**
    * Query Method To Find All Orgnization Types
    * @returns All Orgnization Types
    */
   @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
-  @Query(() => FetchOrganizationTypeResponse, { name: 'orgnizationTypes' })
+  @Query(() => FetchOrganizationTypeResponse, { name: 'organizationTypes' })
   findAll() {
-    return this.serviceLayer.findAll();
+    return this.organizationTypeService.findAll();
   }
 }

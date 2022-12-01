@@ -1,3 +1,12 @@
+#!/bin/sh
+if [ ! "$POSTGRESQL_HOST" ];
+then
+   echo 'Sourcing from .env'
+   . ./.env
+else
+    echo 'Environment variables set...'
+fi
+
 # create database taftdb
 psql "user=$POSTGRES_ADMIN_USERNAME password=$POSTGRES_ADMIN_PASSWORD host=$POSTGRESQL_HOST port=$POSTGRESQL_PORT" -c "CREATE DATABASE $POSTGRES_DATABASE OWNER $POSTGRES_ADMIN_USERNAME;"
 
