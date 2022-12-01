@@ -22,6 +22,7 @@ export class ExternalUser {
   id: string;
 
   @Index('IDX_externaluser_user_id')
+  @Field()
   @Column({
     unique: true,
     length: 50,

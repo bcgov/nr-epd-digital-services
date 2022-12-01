@@ -8,6 +8,14 @@ export const FETCH_USERS = gql`
     }
   }`
 
+  export const FETCH_USER_PROFILE_VERIFY: any = gql`
+  query user($userId: String!){ 
+      user(userId: $userId) {
+        profileVerified
+    }
+  }
+`;
+
 
 export const ADD_USER = gql`
   mutation createUser($user:CreateUserInput!){

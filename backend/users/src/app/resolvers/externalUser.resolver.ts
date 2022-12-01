@@ -14,6 +14,7 @@ import { Resource, RoleMatchingMode, Roles } from 'nest-keycloak-connect';
 import { request } from 'http';
 import { FetchUserResponse } from '../dto/reponse/fetchUserResponse';
 import { RegionService } from '../services/region.service';
+import { FetchSingleUserResponse } from '../dto/reponse/fetchExternalSingleUserResponse';
 
 /**
  * Resolver for External User
@@ -33,7 +34,7 @@ export class ExternalUserResolver {
    */
   @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
   @Mutation(() => ExternalUser)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {   
+  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
     return this.usersService.create(createUserInput);
   }
 
@@ -93,8 +94,8 @@ export class ExternalUserResolver {
    * @param id For Specific External User
    * @returns Specific External User
    */
-  @Query(() => ExternalUser, { name: 'user' })
-  findOne(@Args('id', { type: () => Int }) id: string) {
+  @Query(() => FetchSingleUserResponse, { name: 'user' })
+  findOne(@Args('userId', { type: () => String }) id: string) {
     return this.usersService.findOne(id);
   }
 }

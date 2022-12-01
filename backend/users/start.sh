@@ -1,5 +1,4 @@
 #!/bin/sh
-
 #Make sure you change line endings to LF
 
 if [ ! "$POSTGRESQL_HOST" ];
