@@ -126,7 +126,7 @@ objects:
                   memory: ${MEMORY_LIMIT}
               readinessProbe:
                 tcpSocket:
-                  path: /graphql/health
+                  path: /
                   port: ${{CONTAINER_PORT}}
                 initialDelaySeconds: 60
                 periodSeconds: 30
@@ -137,7 +137,7 @@ objects:
                 successThreshold: 1
                 failureThreshold: 3
                 httpGet:
-                  path: /graphql/health
+                  path: /
                   port: ${{CONTAINER_PORT}}
                   scheme: HTTP
                 initialDelaySeconds: 60
