@@ -1,6 +1,6 @@
 # RedHat UBI 8 with nodejs 14
-#FROM node:14.5.0-alpine
-FROM artifacts.developer.gov.bc.ca/docker-remote/node:14.17.1-alpine
+FROM node:14.5.0-alpine
+#FROM artifacts.developer.gov.bc.ca/docker-remote/node:14.17.1-alpine
 
 # Install packages, build and keep only prod packages
 WORKDIR /app
