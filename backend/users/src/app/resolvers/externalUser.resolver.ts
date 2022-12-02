@@ -11,9 +11,7 @@ import { ExternalUser } from '../entities/externalUser';
 import { CreateUserInput } from '../dto/createUserInput';
 import { UpdateUserInput } from '../dto/updateUserInput';
 import { Resource, RoleMatchingMode, Roles } from 'nest-keycloak-connect';
-import { request } from 'http';
 import { FetchUserResponse } from '../dto/reponse/fetchUserResponse';
-import { RegionService } from '../services/region.service';
 
 /**
  * Resolver for External User
@@ -21,10 +19,7 @@ import { RegionService } from '../services/region.service';
 @Resolver(() => ExternalUser)
 @Resource('backend')
 export class ExternalUserResolver {
-  constructor(
-    private readonly usersService: ExternalUserService,
-    private readonly regionService: RegionService,
-  ) {}
+  constructor(private readonly externalUserService: ExternalUserService) {}
 
   /**
    * Mutation For Creating New External User
@@ -33,8 +28,8 @@ export class ExternalUserResolver {
    */
   @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
   @Mutation(() => ExternalUser)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {   
-    return this.usersService.create(createUserInput);
+  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
+    return this.externalUserService.create(createUserInput);
   }
 
   /**
@@ -44,7 +39,7 @@ export class ExternalUserResolver {
   @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
   @Query(() => FetchUserResponse, { name: 'users' })
   findAll() {
-    return this.usersService.findAll();
+    return this.externalUserService.findAll();
   }
 
   /**
@@ -54,7 +49,7 @@ export class ExternalUserResolver {
   @Mutation(() => ExternalUser)
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     console.log(updateUserInput);
-    const response = this.usersService.update(
+    const response = this.externalUserService.update(
       updateUserInput.id,
       updateUserInput,
     );
@@ -70,7 +65,7 @@ export class ExternalUserResolver {
    */
   @Mutation(() => ExternalUser)
   removeUser(@Args('id', { type: () => Int }) id: string) {
-    const response = this.usersService.remove(id);
+    const response = this.externalUserService.remove(id);
     response.then((hasBeenDeleted) => {
       console.log('Has the entry been deleted? ' + hasBeenDeleted);
     });
@@ -85,7 +80,7 @@ export class ExternalUserResolver {
   @ResolveReference()
   resolveReference(reference: { __typename: string; id: string }) {
     const idVal: string = reference.id;
-    return this.usersService.findOne(idVal);
+    return this.externalUserService.findOne(idVal);
   }
 
   /**
@@ -95,6 +90,6 @@ export class ExternalUserResolver {
    */
   @Query(() => ExternalUser, { name: 'user' })
   findOne(@Args('id', { type: () => Int }) id: string) {
-    return this.usersService.findOne(id);
+    return this.externalUserService.findOne(id);
   }
 }
