@@ -99,22 +99,25 @@ objects:
               name: ${NAME}-${COMPONENT}
               env:
                 - name: POSTGRESQL_HOST
-                  value: ${NAME}-database
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRESQL_HOST
                 - name: POSTGRESQL_DATABASE
                   valueFrom:
-                    secretKeyRef:
+                    configMapKeyRef:
                       name: ${NAME}-database
-                      key: database-name
+                      key: POSTGRES_DATABASE
                 - name: POSTGRESQL_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-database
-                      key: database-password
+                      key: POSTGRES_DB_PASSWORD
                 - name: POSTGRESQL_USER
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-database
-                      key: database-user 
+                      key: POSTGRES_DB_USERNAME
                 - name: USER_URL
                   value: http://${NAME}-backend-users/graphql
                 - name: APPLICATION_URL
@@ -129,24 +132,24 @@ objects:
                 limits:
                   cpu: ${CPU_LIMIT}
                   memory: ${MEMORY_LIMIT}
-              # readinessProbe:
-              #   tcpSocket:
-              #     port: ${{CONTAINER_PORT}}
-              #   initialDelaySeconds: 120
-              #   periodSeconds: 30
-              #   timeoutSeconds: 5
-              #   failureThreshold: 3
-              #   successThreshold: 1
-              # livenessProbe:
-              #   successThreshold: 1
-              #   failureThreshold: 3
-              #   httpGet:
-              #     path: /
-              #     port: ${{CONTAINER_PORT}}
-              #     scheme: HTTP
-              #   initialDelaySeconds: 120
-              #   periodSeconds: 30
-              #   timeoutSeconds: 5
+              readinessProbe:
+                tcpSocket:
+                  port: ${{CONTAINER_PORT}}
+                initialDelaySeconds: 120
+                periodSeconds: 30
+                timeoutSeconds: 5
+                failureThreshold: 3
+                successThreshold: 1
+              livenessProbe:
+                successThreshold: 1
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: ${{CONTAINER_PORT}}
+                  scheme: HTTP
+                initialDelaySeconds: 120
+                periodSeconds: 30
+                timeoutSeconds: 5
           # initContainers:
           #   - name: wait-for-graphql
           #   # is this image going to work?
