@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+
 export const FETCH_USERS = gql`
   query{
     users{      
@@ -8,7 +9,7 @@ export const FETCH_USERS = gql`
     }
   }`
 
-  export const FETCH_USER_PROFILE_VERIFY: any = gql`
+export const FETCH_USER_PROFILE_VERIFY = gql`
   query user($userId: String!){ 
       user(userId: $userId) {
         profileVerified
@@ -39,11 +40,3 @@ export const UPDATE_USER = gql`
     }
   }`
 
-// mutation{
-// 	createUser(user:{
-//     name:"Ryan"
-//     email:"Email.com"
-//   }){
-//     id
-//   }
-// }

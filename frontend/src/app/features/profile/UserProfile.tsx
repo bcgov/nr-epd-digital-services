@@ -4,6 +4,9 @@ import { useAuth } from "react-oidc-context"
 import {useForm} from 'react-hook-form'
 
 import "./UserProfile.css"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchRegions, getProfileFetchStatus, getRegions } from "./ProfileSlice"
+import { AppDispatch } from "../../Store"
 
 
 type FormData = {
@@ -25,10 +28,26 @@ type FormData = {
 }
 
 
+//TODO: Update dropdown for region to match api, update organization type for api
+
 export const UserProfile = () =>{
 	const {register, watch, handleSubmit, formState:{errors}} = useForm<FormData>();
 	const onSubmit = handleSubmit(data => console.log(data))
     const auth = useAuth()
+	const dispatch = useDispatch<AppDispatch>()
+
+	const regions = useSelector(getRegions)
+	const profileFetchStatus = useSelector(getProfileFetchStatus)
+
+
+	useEffect(() =>{
+		dispatch(fetchRegions())
+		console.log(regions)
+	},[])
+
+	useEffect(() =>{
+	},[profileFetchStatus]) 
+	
 
 	useEffect( () =>{
 		const subscription = watch((value,{name,type}) => {
@@ -36,12 +55,15 @@ export const UserProfile = () =>{
 		})
 		return () => subscription.unsubscribe();
 	},[watch])
+
+
 	handleSubmit( (data) => {
 		console.log(data)
 	})
 	
     return (
         <Container fluid className="g-4 pt-5 mt-4">
+			<p>{regions}</p>
 			<Row>
 				<Col className="mx-md-5" >
 					<Form onSubmit={onSubmit}>
@@ -53,7 +75,7 @@ export const UserProfile = () =>{
 						<Row className="w-100">
 							<Form.Group className="mb-2 col-xs-12 col-sm-6" controlId="formFirstName">
 								<Form.Label>First Name</Form.Label>
-								<Form.Control {...register("firstName")} type="text" aria-placeholder="First Name" placeholder="First Name"/>
+								<Form.Control {...register("firstName")}  type="text" aria-placeholder="First Name" placeholder="First Name"/>
 							</Form.Group>
 							<Form.Group className="mb-2 col-xs-12 col-sm-6" controlId="formFamilyName">
 								<Form.Label>Last Name</Form.Label>
@@ -206,7 +228,7 @@ export const UserProfile = () =>{
 							</Form.Group>
 						</Row>
 						<Row className="w-100">
-							<Form.Group className="mb-2 col-sm-6" controlId="formBillingName">
+							<Form.Group className="mb-2 col-xs-12 col-sm-6" controlId="formBillingName">
 								<Form.Label>Name on Card</Form.Label>
 								<Form.Control type="text" aria-placeholder="Add name here" placeholder="Add name here"/>
 							</Form.Group>

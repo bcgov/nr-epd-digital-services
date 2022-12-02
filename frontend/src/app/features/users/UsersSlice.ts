@@ -6,7 +6,6 @@ import { print } from "graphql";
 import { User } from "./dto/User";
 import { UserState } from "./dto/UserState";
 import {RequestStatus} from '../../helpers/requests/status'
-import { Console } from "console";
 
 
 const initialState: UserState = new UserState();
@@ -20,10 +19,7 @@ export const fetchUsers = createAsyncThunk("fetchUsers", async () => {
   return request.data;
 });
 
-
-
 export const fetchUserProfileVerification = createAsyncThunk("fetchUserProfileVerification", async (userId:String) => {
-  //console.log(FETCH_USERS);
   const request = await getAxiosInstance().post(GRAPHQL, {
     query: print(FETCH_USER_PROFILE_VERIFY),
     variables: {
@@ -35,13 +31,6 @@ export const fetchUserProfileVerification = createAsyncThunk("fetchUserProfileVe
 
   
 });
-
-
-// export const fetchUsers = createAsyncThunk("fetchUsers", async () => {
-//   const response = await getAxiosInstance().get(API+USERS);
-//   consoleLog("response", response);
-//   return response.data;
-// });
 
 export const addNewUser = createAsyncThunk(
   "addNewUser",
@@ -57,22 +46,6 @@ export const addNewUser = createAsyncThunk(
     return request.data;
   }
 );
-
-// export const addNewUser = createAsyncThunk("addNewUser", async (newUser) => {
-//   console.log("Adding New User" + newUser)
-//   const response = getAxiosInstance().post(API+USERS,newUser)
-//   consoleLog("response addnewuser",response)
-//   return response.data
-// })
-
-// export const deleteUser = createAsyncThunk(
-//   "deleteUser",
-//   async (userId: number) => {
-//     const response = getAxiosInstance().delete(API + USERS + "/" + userId);
-//     return (await response).data;
-//     //consoleLog(`response deleteUser ${userId} `, );
-//   }
-// );
 
 export const deleteUser = createAsyncThunk(
   "deleteUser", 
@@ -140,8 +113,8 @@ const usersSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchUserProfileVerification.fulfilled,(state,action)=>{
-        console.log("fetchUserProfileVerification fulfilled",state,action)
         const newState = { ...state };
+        console.log("fetchUserProfileVerification fulfilled",state,action)
         newState.isProfileVerified = action.payload.data.user.profileVerified;
         console.log(newState)
         return newState;
