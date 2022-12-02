@@ -92,19 +92,7 @@ objects:
             app: ${NAME}-${COMPONENT}
             deploymentconfig: ${NAME}-${COMPONENT}
         spec:
-          # initContainers:
-          #   - name: wait-for-graphql
-          #   # is this image going to work?
-          #     image: busybox:1.28 
-          #     args:
-          #     - /bin/sh
-          #     - -c
-          #     - >
-          #       set -x;
-          #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://epd-backend-applications/:)" != "200" ]]; do 
-          #         echo '.'
-          #         sleep 15;
-          #       done  
+          
           containers:
             - image: ${NAME}-${COMPONENT}:${IMAGE_TAG}
               imagePullPolicy: Always
@@ -141,24 +129,37 @@ objects:
                 limits:
                   cpu: ${CPU_LIMIT}
                   memory: ${MEMORY_LIMIT}
-              readinessProbe:
-                tcpSocket:
-                  port: ${{CONTAINER_PORT}}
-                initialDelaySeconds: 90
-                periodSeconds: 30
-                timeoutSeconds: 5
-                failureThreshold: 3
-                successThreshold: 1
-              livenessProbe:
-                successThreshold: 1
-                failureThreshold: 3
-                httpGet:
-                  path: /
-                  port: ${{CONTAINER_PORT}}
-                  scheme: HTTP
-                initialDelaySeconds: 90
-                periodSeconds: 30
-                timeoutSeconds: 5
+              # readinessProbe:
+              #   tcpSocket:
+              #     port: ${{CONTAINER_PORT}}
+              #   initialDelaySeconds: 120
+              #   periodSeconds: 30
+              #   timeoutSeconds: 5
+              #   failureThreshold: 3
+              #   successThreshold: 1
+              # livenessProbe:
+              #   successThreshold: 1
+              #   failureThreshold: 3
+              #   httpGet:
+              #     path: /
+              #     port: ${{CONTAINER_PORT}}
+              #     scheme: HTTP
+              #   initialDelaySeconds: 120
+              #   periodSeconds: 30
+              #   timeoutSeconds: 5
+          # initContainers:
+          #   - name: wait-for-graphql
+          #   # is this image going to work?
+          #     image: busybox:1.28 
+          #     args:
+          #     - /bin/sh
+          #     - -c
+          #     - >
+          #       set -x;
+          #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://epd-backend-applications/:)" != "200" ]]; do 
+          #         echo '.'
+          #         sleep 15;
+          #       done  
   - apiVersion: v1
     kind: Service
     metadata:

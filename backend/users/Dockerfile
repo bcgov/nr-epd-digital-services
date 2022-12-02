@@ -19,6 +19,9 @@ COPY . .
 RUN set -x \
         && chmod -R 777 /app/
 
+RUN set -x \
+        && chmod -R 777 /app/
+
 RUN apk add postgresql-client
 
 # Creates a "dist" folder with the production build
