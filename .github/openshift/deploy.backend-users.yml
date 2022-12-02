@@ -22,13 +22,13 @@ parameters:
   - name: DOMAIN
     value: apps.silver.devops.gov.bc.ca
   - name: CPU_REQUEST
-    value: "25m"
+    value: "0.2"
   - name: MEMORY_REQUEST
-    value: "50Mi"
+    value: "256Mi"
   - name: CPU_LIMIT
-    value: "75m"
+    value: "0.5"
   - name: MEMORY_LIMIT
-    value: "150Mi"
+    value: "1Gi"
   - name: MIN_REPLICAS
     description: The minimum amount of replicas
     value: "1"
@@ -102,21 +102,21 @@ objects:
                     configMapKeyRef:
                       name: ${NAME}-database
                       key: POSTGRESQL_HOST
-                - name: POSTGRESQL_DATABASE
+                - name: POSTGRESQL_PORT
                   valueFrom:
-                    secretKeyRef:
+                    configMapKeyRef:
                       name: ${NAME}-database
-                      key: database-name
-                - name: POSTGRESQL_PASSWORD
+                      key: POSTGRESQL_PORT
+                - name: POSTGRES_DATABASE
                   valueFrom:
-                    secretKeyRef:
+                    configMapKeyRef:
                       name: ${NAME}-database
-                      key: database-password
-                - name: POSTGRESQL_USER
+                      key: POSTGRES_DATABASE
+                - name: POSTGRES_DB_SCHEMA
                   valueFrom:
-                    secretKeyRef:
+                    configMapKeyRef:
                       name: ${NAME}-database
-                      key: database-user
+                      key: POSTGRES_DB_SCHEMA
                 - name: POSTGRES_ADMIN_USERNAME
                   valueFrom:
                     secretKeyRef:
@@ -147,21 +147,6 @@ objects:
                     secretKeyRef:
                       name: keycloak
                       key: KEYCLOCK_SECRET
-                - name: POSTGRESQL_PORT
-                  valueFrom:
-                    configMapKeyRef:
-                      name: ${NAME}-database
-                      key: POSTGRESQL_PORT
-                - name: POSTGRES_DATABASE
-                  valueFrom:
-                    configMapKeyRef:
-                      name: ${NAME}-database
-                      key: POSTGRES_DATABASE
-                - name: POSTGRES_DB_SCHEMA
-                  valueFrom:
-                    configMapKeyRef:
-                      name: ${NAME}-database
-                      key: POSTGRES_DB_SCHEMA
                 - name: KEYCLOCK_AUTH_URL
                   valueFrom:
                     configMapKeyRef:
@@ -172,7 +157,6 @@ objects:
                     configMapKeyRef:
                       name: keycloak-config
                       key: KEYCLOCK_REALM
-                  
               ports:
                 - containerPort: ${{CONTAINER_PORT}}
                   protocol: TCP
