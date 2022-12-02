@@ -20,13 +20,7 @@ COPY . .
 RUN set -x \
         && chmod -R 777 /app/
 
-RUN set -x \
-        && chmod -R 777 /app/
-
 RUN apk add postgresql-client
-
-# Creates a "dist" folder with the production build
-RUN npm run prebuild
 
 # Expose port - mostly a convention, for readability
 EXPOSE 3005
