@@ -98,7 +98,10 @@ objects:
               name: ${NAME}-${COMPONENT}
               env:
                 - name: POSTGRESQL_HOST
-                  value: ${NAME}-database
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRESQL_HOST
                 - name: POSTGRESQL_DATABASE
                   valueFrom:
                     secretKeyRef:
