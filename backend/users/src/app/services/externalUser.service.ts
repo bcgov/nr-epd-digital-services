@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsUtils, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateUserInput } from '../dto/createUserInput';
 import { FetchUserResponse } from '../dto/reponse/fetchUserResponse';
 import { UpdateUserInput } from '../dto/updateUserInput';
@@ -13,7 +13,7 @@ import { ExternalUser } from '../entities/externalUser';
 export class ExternalUserService {
   constructor(
     @InjectRepository(ExternalUser)
-    private usersRepository: Repository<ExternalUser>,
+    private externalUserRepository: Repository<ExternalUser>,
   ) {}
 
   /**
@@ -24,10 +24,10 @@ export class ExternalUserService {
   async create(createUserInput: CreateUserInput) {
     console.log('CreateUserInput');
 
-    const newUser = this.usersRepository.create(createUserInput);
-    await this.usersRepository.save(newUser);
+    const newUser = this.externalUserRepository.create(createUserInput);
+    await this.externalUserRepository.save(newUser);
 
-    return await this.usersRepository.findOne({
+    return await this.externalUserRepository.findOne({
       relations: ['region', 'organizationType'],
       where: { id: newUser.id },
     });
@@ -42,7 +42,7 @@ export class ExternalUserService {
 
     findUsersResponse.httpStatusCode = 200;
 
-    findUsersResponse.data = await this.usersRepository.find({
+    findUsersResponse.data = await this.externalUserRepository.find({
       relations: ['region', 'organizationType'],
     });
 
@@ -57,7 +57,7 @@ export class ExternalUserService {
    * @returns External User
    */
   async findOne(id: string): Promise<ExternalUser> {
-    return this.usersRepository.findOneOrFail({
+    return this.externalUserRepository.findOneOrFail({
       relations: ['region', 'organizationType'],
       where: { id: id },
     });
@@ -70,7 +70,7 @@ export class ExternalUserService {
    * @returns Updated External User DTO
    */
   update(id: string, updateUserInput: UpdateUserInput) {
-    const result = this.usersRepository.update(id, updateUserInput);
+    const result = this.externalUserRepository.update(id, updateUserInput);
     console.log(result);
     return result;
   }
@@ -81,7 +81,7 @@ export class ExternalUserService {
    * @returns true or false
    */
   async remove(id: string) {
-    const delResult = await this.usersRepository.delete({ id });
+    const delResult = await this.externalUserRepository.delete({ id });
     console.log(delResult);
     return delResult.affected > 0;
   }
