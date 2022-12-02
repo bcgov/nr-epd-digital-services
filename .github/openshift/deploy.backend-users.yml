@@ -28,7 +28,7 @@ parameters:
   - name: CPU_LIMIT
     value: "0.5"
   - name: MEMORY_LIMIT
-    value: "2Gi"
+    value: "1Gi"
   - name: MIN_REPLICAS
     description: The minimum amount of replicas
     value: "1"
