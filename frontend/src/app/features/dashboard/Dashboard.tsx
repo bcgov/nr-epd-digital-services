@@ -23,7 +23,7 @@ const Dashboard = () => {
   // },[lastVisitedURL])
  
   const auth = useAuth();
- 
+  console.log(auth.user?.access_token)
 
   useEffect(()=>{
     if(auth.user?.profile)
