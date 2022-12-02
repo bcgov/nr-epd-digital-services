@@ -119,11 +119,11 @@ objects:
                       name: ${NAME}-database
                       key: POSTGRES_DB_USERNAME
                 - name: USERS_MICROSERVICE
-                  value: http://${NAME}-backend-users.${DOMAIN}/graphql
+                  value: http://${NAME}-backend-users-${ENV}.${DOMAIN}/graphql
                 - name: USERS_MICROSERVICE_ENDPOINT
-                  value: http://${NAME}-backend-users.${DOMAIN}
+                  value: http://${NAME}-backend-users-${ENV}.${DOMAIN}
                 - name: APPLICATION_MICROSERVICE_ENDPOINT
-                  value: http://${NAME}-backend-applications.${DOMAIN}
+                  value: http://${NAME}-backend-applications-${ENV}.${DOMAIN}
               ports:
                 - containerPort: ${{CONTAINER_PORT}}
                   protocol: TCP

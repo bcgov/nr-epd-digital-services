@@ -1,4 +1,4 @@
-oapiVersion: template.openshift.io/v1
+apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: ${NAME}
@@ -24,11 +24,11 @@ parameters:
   - name: CPU_REQUEST
     value: "0.2"
   - name: MEMORY_REQUEST
-    value: "256Mi"
+    value: "512Mi"
   - name: CPU_LIMIT
     value: "0.5"
   - name: MEMORY_LIMIT
-    value: "1Gi"
+    value: "2Gi"
   - name: MIN_REPLICAS
     description: The minimum amount of replicas
     value: "1"
