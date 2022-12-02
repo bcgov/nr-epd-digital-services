@@ -118,10 +118,12 @@ objects:
                     secretKeyRef:
                       name: ${NAME}-database
                       key: POSTGRES_DB_USERNAME
-                - name: USER_URL
-                  value: http://${NAME}-backend-users/graphql
-                - name: APPLICATION_URL
-                  value: http://${NAME}-backend-applications/graphql
+                - name: USERS_MICROSERVICE
+                  value: http://${NAME}-backend-users-${ENV}.${DOMAIN}/graphql
+                - name: USERS_MICROSERVICE_ENDPOINT
+                  value: http://${NAME}-backend-users-${ENV}.${DOMAIN}
+                - name: APPLICATION_MICROSERVICE_ENDPOINT
+                  value: http://${NAME}-backend-applications-${ENV}.${DOMAIN}
               ports:
                 - containerPort: ${{CONTAINER_PORT}}
                   protocol: TCP
