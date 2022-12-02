@@ -5,7 +5,7 @@ sh initDB.sh
 npm run typeorm:run-migrations
 
 # run the prebuild
-npm run prebuild
+npm run build
 
 # start the API 
-npm start
+npm run start:prod
