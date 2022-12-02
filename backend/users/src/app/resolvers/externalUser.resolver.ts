@@ -15,6 +15,7 @@ import { request } from 'http';
 import { FetchUserResponse } from '../dto/reponse/fetchUserResponse';
 import { RegionService } from '../services/region.service';
 import { FetchSingleUserResponse } from '../dto/reponse/fetchExternalSingleUserResponse';
+import { UpdateExternalUserResponse } from '../dto/reponse/updateExternalUserResponse';
 
 /**
  * Resolver for External User
@@ -52,16 +53,23 @@ export class ExternalUserResolver {
    * Mutation for Updating External Users
    * @param updateUserInput input DTO for updating external users
    */
-  @Mutation(() => ExternalUser)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
+  @Mutation(() => UpdateExternalUserResponse)
+  async updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
+    const result = new UpdateExternalUserResponse();
     console.log(updateUserInput);
-    const response = this.usersService.update(
+    const response = await this.usersService.update(
       updateUserInput.id,
       updateUserInput,
     );
-    response.then((res) => {
-      return res.affected ? updateUserInput : { error: 'Not Updated' };
-    });
+    result.httpStatusCode = 200;
+    console.log('update response', response);
+    if (response.affected > 0) {
+      result.recordUpdated = true;
+    } else {
+      result.recordUpdated = false;
+    }
+    console.log('updated result', result);
+    return result;
   }
 
   /**
