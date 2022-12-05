@@ -26,7 +26,7 @@ export class ExternalUserService {
     console.log('CreateUserInput');
 
     const newUser = this.usersRepository.create(createUserInput);
-
+    await this.usersRepository.save(newUser);
     return await this.usersRepository.findOne({
       relations: ['region', 'organizationType'],
       where: { id: newUser.id },

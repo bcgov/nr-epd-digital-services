@@ -6,38 +6,66 @@ import {useForm} from 'react-hook-form'
 import "./UserProfile.css"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchRegions, getProfileFetchStatus, getRegions } from "./ProfileSlice"
+import { addNewExternalUser, getUserAddedStatus } from "../users/UsersSlice"
 import { AppDispatch } from "../../Store"
+import { ExternalUser } from "../users/dto/ExternalUser"
+import { RequestStatus } from "../../helpers/requests/status"
+import { useNavigate } from "react-router-dom"
 
 
-type FormData = {
-	firstName:string;
-	lastName:string;
-	organization:string;
-	streetAddress:string;
-	city: string;
-	province: string;
-	country: string;
-	postalCode:string;
-	phoneNumber:number;
-	email:string;
-	region:string;
-	industry:string;
-	csapOrQp: boolean;
-	representing:string;
-	fnStatus:string;
-}
+
+
+// type FormData = {
+// 	userId:string | undefined;
+// 	firstName:string;
+// 	lastName:string;
+// 	organization:string;
+// 	addressLine:string;
+// 	city: string;
+// 	province: string;
+// 	country: string;
+// 	postalCode:string;
+// 	phoneNumber:number;
+// 	email:string;
+// 	regionId:string;
+// 	industry:string;
+// 	userWorkStatus: boolean;
+// 	organizationTypeId:string;
+// 	userFNStatus:string;
+// 	isBillingContact:boolean;
+// 	isProfileVerified:boolean
+// }
 
 
 //TODO: Update dropdown for region to match api, update organization type for api
 
 export const UserProfile = () =>{
-	const {register, watch, handleSubmit, formState:{errors}} = useForm<FormData>();
-	const onSubmit = handleSubmit(data => console.log(data))
+	const {register, watch, handleSubmit, formState:{errors}} = useForm<ExternalUser>();
+
+	const addedStatus = useSelector(getUserAddedStatus);
+	
+	const onSubmit = handleSubmit((data:ExternalUser) => {
+		data.userId = auth.user?.profile.sub;
+		data.isProfileVerified = true;
+		console.log("data",data)
+		if(data.isBillingContactST==="true")
+		{
+			data.isBillingContact = true;
+		}
+		else
+		{
+			data.isBillingContact = false;
+		}
+		data.isGstExempt = false;
+		dispatch(addNewExternalUser(data))
+	})
     const auth = useAuth()
 	const dispatch = useDispatch<AppDispatch>()
 
 	const regions = useSelector(getRegions)
 	const profileFetchStatus = useSelector(getProfileFetchStatus)
+
+	const navigate = useNavigate();
 
 
 	useEffect(() =>{
@@ -49,17 +77,28 @@ export const UserProfile = () =>{
 	},[profileFetchStatus]) 
 	
 
-	useEffect( () =>{
-		const subscription = watch((value,{name,type}) => {
-			console.log(value,name,type)
-		})
-		return () => subscription.unsubscribe();
-	},[watch])
+	useEffect(() => {
+
+		if(addedStatus===RequestStatus.success)
+		{
+			console.log("user added ");
+			navigate("/dashboard")
+		}
+
+		console.log("user add status ",addedStatus);
+		
+	  }, [addedStatus]);
+	
+
+	// useEffect( () =>{
+	// 	const subscription = watch((value,{name,type}) => {
+	// 		console.log(value,name,type)
+	// 	})
+	// 	return () => subscription.unsubscribe();
+	// },[watch])
 
 
-	handleSubmit( (data) => {
-		console.log(data)
-	})
+	
 	
     return (
         <Container fluid className="g-4 pt-5 mt-4">
@@ -81,17 +120,11 @@ export const UserProfile = () =>{
 								<Form.Label>Last Name</Form.Label>
 								<Form.Control {...register("lastName")} type="text" aria-placeholder="Last Name" placeholder="Add Family Name Here"/>
 							</Form.Group>
-						</Row>
+						</Row>						
 						<Row>
-							<Form.Group className="mb-2 col-xs-12 col-sm-12" controlId="formOrganization">
-								<Form.Label>Organization, if applicable</Form.Label>
-								<Form.Control {...register("organization")} type="text" aria-placeholder="Organization" placeholder="Organization"/>
-							</Form.Group>
-						</Row>
-						<Row>
-							<Form.Group className="mb-2 col-xs-12 col-sm-6" controlId="formStreetAddress">
+							<Form.Group className="mb-2 col-xs-12 col-sm-6" controlId="formaddressLine">
 								<Form.Label>Street Address</Form.Label>
-								<Form.Control {...register("streetAddress")} type="text" aria-placeholder="Street Address" placeholder="Street Address"/>
+								<Form.Control {...register("addressLine")} type="text" aria-placeholder="Street Address" placeholder="Street Address"/>
 							</Form.Group>
 							<Form.Group className="mb-2 col-xs-12 col-sm-6" controlId="formCity">
 								<Form.Label>City</Form.Label>
@@ -130,8 +163,8 @@ export const UserProfile = () =>{
 						<Row>
 							<Form.Group className="mb-2 col-xs-12 col-sm-4" controlId="formRegion">
 								<Form.Label>Region</Form.Label>
-								<Form.Select {...register("region")} aria-label="Choose Region">
-									<option value="Alberni–Clayoquot">Alberni–Clayoquot</option>
+								<Form.Select {...register("regionId")} aria-label="Choose Region">
+									<option value="9f7df7e5-3af5-4aa8-be35-34180ff3e798">Alberni–Clayoquot</option>
 									<option value="Capital">Capital</option>
 									<option value="Cariboo">Cariboo</option>
 									<option value="Central Coast">Central Coast</option>
@@ -168,33 +201,34 @@ export const UserProfile = () =>{
 							</Form.Group>
 							<Form.Group className="mb-2 col-xs-12 col-sm-4" controlId="formOrganization">
 								<Form.Label>Organization</Form.Label>
-								<Form.Control {...register("organization")} type="text" placeholder="Organization" aria-placeholder="Organization"/>
+								<Form.Control {...register("organization")} type="text" placeholder="organization" aria-placeholder="Organization"/>
 							</Form.Group>
 						</Row>
 						<Row>
 							<Form.Group className="mb-2">
-								<Form.Label>Are you a CSAP or QP?</Form.Label>
-								<Form.Check value="true" type="radio" label="Yes" {...register("csapOrQp")}/>
-								<Form.Check value="false" type="radio" label="No" {...register("csapOrQp")}/>
+								<Form.Label>Are you a CSAP or QP or Public user ?</Form.Label>
+								<Form.Check value="csap"  type="radio" label="CSAP" {...register("userWorkStatus")}/>
+								<Form.Check value="qp"  type="radio" label="QP" {...register("userWorkStatus")}/>
+								<Form.Check value="public"   type="radio" label="Public" {...register("userWorkStatus")}/>
 							</Form.Group>
 								
 						</Row>
 						<Row>
 							<div key="radio" className="mb-3">
 								<Form.Label>Are you representing one of the following?</Form.Label>
-								<Form.Check {...register("representing")} name="representing" type="radio" label="Financial Institution"/>
-								<Form.Check {...register("representing")} name="representing" type="radio" label="Real Estate Organization"/>
-								<Form.Check {...register("representing")} name="representing" type="radio" label="Municipality"/>
-								<Form.Check {...register("representing")} name="representing" type="radio" label="None"/>
+								<Form.Check {...register("organizationTypeId")} name="organizationTypeId" value="3e724dbc-e0af-4a18-aa22-4ea666df9955" type="radio" label="Financial Institution"/>
+								<Form.Check {...register("organizationTypeId")} name="organizationTypeId" type="radio" label="Real Estate Organization"/>
+								<Form.Check {...register("organizationTypeId")} name="organizationTypeId" type="radio" label="Municipality"/>
+								<Form.Check {...register("organizationTypeId")} name="organizationTypeId" type="radio" label="None"/>
 							</div>
 						</Row>
 						<Row>
 							<div key="radio" className="mb-3">
 								<Form.Label>Do you identify as the following?</Form.Label>
-								<Form.Check {...register("fnStatus")} name="fnStatus" type="radio" label="First Nations"/>
-								<Form.Check {...register("fnStatus")} name="fnStatus" type="radio" label="Inuit"/>
-								<Form.Check {...register("fnStatus")} name="fnStatus" type="radio" label="Metis"/>
-								<Form.Check {...register("fnStatus")} name="fnStatus" type="radio" label="None"/>
+								<Form.Check {...register("userFNStatus")} name="userFNStatus" value="FN"  type="radio" label="First Nations"/>
+								<Form.Check {...register("userFNStatus")} name="userFNStatus" value="IN" type="radio" label="Inuit"/>
+								<Form.Check {...register("userFNStatus")} name="userFNStatus" value="MT" type="radio" label="Metis"/>
+								<Form.Check {...register("userFNStatus")} name="userFNStatus" value="NO" type="radio" label="None"/>
 							</div>
 						</Row>
 
@@ -204,6 +238,13 @@ export const UserProfile = () =>{
 							</Col>
 						</Row>
 						<Row>
+						<div key="radio" className="mb-3">
+								<Form.Label>Is Billing contact info same ?</Form.Label>
+								<Form.Check value="true" {...register("isBillingContactST")} name="isBillingContactST" type="radio" label="Yes"/>
+								<Form.Check value="false" {...register("isBillingContactST")} name="isBillingContactST" type="radio" label="No"/>							
+							</div>
+						</Row>
+						{/* <Row>
 							<Form.Group className="mb-2 col-xs-12 col-sm-6" controlId="formBillingAddress">
 								<Form.Label>Billing Address</Form.Label>
 								<Form.Control type="text" aria-placeholder="Billing Address" placeholder="Billing Address"/>
@@ -248,7 +289,7 @@ export const UserProfile = () =>{
 								<Form.Label>CVV</Form.Label>
 								<Form.Control type="text" aria-placeholder="CVV" placeholder="CVV"/>
 							</Form.Group>
-						</Row>
+						</Row> */}
 						<Row >
 							<Col className="text-end mb-3">
 								<Button type="submit">Save Profile</Button>

@@ -77,13 +77,10 @@ export class ExternalUserResolver {
    * @param id Input Id For Remove External User
    * @returns deleted record
    */
-  @Mutation(() => ExternalUser)
-  removeUser(@Args('id', { type: () => Int }) id: string) {
-    const response = this.usersService.remove(id);
-    response.then((hasBeenDeleted) => {
-      console.log('Has the entry been deleted? ' + hasBeenDeleted);
-    });
-    return response ? { id: id } : { error: 'not deleted' };
+  @Mutation(() => Boolean)
+  async removeUser(@Args('id') id: string) {
+    const response = await this.usersService.remove(id);
+    return response;
   }
 
   /**
