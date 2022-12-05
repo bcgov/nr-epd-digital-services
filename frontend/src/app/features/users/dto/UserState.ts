@@ -9,4 +9,5 @@ export class UserState
     fetchStatus:string =  RequestStatus.idle;
     deleteStatus:string =  RequestStatus.idle;
     addedStatus:string =  RequestStatus.idle;
+    
 }
