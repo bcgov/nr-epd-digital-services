@@ -165,7 +165,7 @@ export const UserProfile = () =>{
 								<Form.Label>Region</Form.Label>
 								<Form.Select {...register("regionId")} aria-label="Choose Region">
 									<option value="9f7df7e5-3af5-4aa8-be35-34180ff3e798">Alberni–Clayoquot</option>
-									<option value="Capital">Capital</option>
+									{/* <option value="Capital">Capital</option>
 									<option value="Cariboo">Cariboo</option>
 									<option value="Central Coast">Central Coast</option>
 									<option value="Central Kootenay">Central Kootenay</option>
@@ -192,7 +192,7 @@ export const UserProfile = () =>{
 									<option value="Stikine Region">Stikine Region</option>
 									<option value="Strathcona">Strathcona</option>
 									<option value="Sunshine Coast">Sunshine Coast</option>
-									<option value="Thompson Nicola">Thompson Nicola</option>
+									<option value="Thompson Nicola">Thompson Nicola</option> */}
 								</Form.Select>
 							</Form.Group>
 							<Form.Group className="mb-2 col-xs-12 col-sm-4" controlId="formIndustry">
