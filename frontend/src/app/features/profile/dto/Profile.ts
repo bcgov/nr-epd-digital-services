@@ -10,7 +10,7 @@ class Organization {
     }
 }
 
-class Region {
+export class Region {
     httpStatusCode:number = 0;
     data:{
         id:string,

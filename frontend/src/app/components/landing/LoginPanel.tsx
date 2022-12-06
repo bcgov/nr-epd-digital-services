@@ -12,7 +12,7 @@ export const LoginPanel = () =>{
                 {LoginDropdown(loginDropdownTitle)}
             </Col>
             <Col id="lrs-signup-panel" className="mt-auto mb-2 col-xs-12  col-md-6 text-center text-sm-start">
-                <Button id="lrs-signup-button" href="/signuplanding" className="login-btn-lh">
+                <Button id="lrs-signup-button" href="/signup" className="login-btn-lh">
                     Sign Up</Button>
             </Col>        
         </Row>       

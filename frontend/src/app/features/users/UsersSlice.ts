@@ -199,8 +199,18 @@ const usersSlice = createSlice({
       })
       .addCase(addNewExternalUser.fulfilled, (state, action) => {
         const newState = { ...state };
-        newState.addedStatus = RequestStatus.success
-        newState.isProfileVerified = true;
+        console.log(action.payload);
+        if(action.payload.errors?.length > 1)
+        {
+          newState.addedStatus = RequestStatus.failed;
+        }
+        else
+        {
+          newState.addedStatus = RequestStatus.success;
+          newState.isProfileVerified = true;
+        }
+       
+       
         return newState;    
       })
       .addCase(deleteUser.fulfilled, (state, action) => {
