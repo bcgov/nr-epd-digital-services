@@ -1,39 +1,29 @@
 # RedHat UBI 8 with nodejs 14
 FROM node:14.5.0-alpine
-
+#FROM artifacts.developer.gov.bc.ca/docker-remote/node:14.17.1-alpine
 
 # Install packages, build and keep only prod packages
 WORKDIR /app
-COPY . ./
 
-RUN apk add postgresql-client
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY package*.json ./
 
-#RUN ./initDB.sh
+# Set NODE_ENV environment variable
+#ENV NODE_ENV production
 
-# --only=prod
+# Install app dependencies using the `npm ci` command instead of `npm install`
 RUN npm ci
 
- 
-    # npm run build
+# Bundle app source
+COPY . .
 
-# Deployment container
-# FROM node:lts-alpine
-# WORKDIR /app
-# Set node to production
-# ENV NODE_ENV production
-# COPY --from=builder /app/node_modules ./node_modules
-# COPY --from=builder /app/dist ./dist
+RUN set -x \
+        && chmod -R 777 /app/
 
-#ss-20-Error:permission denied, mkdir 'logs/'fix
-# RUN mkdir -p /app/logs/
-# RUN set -x \
-#     && chmod -Rv  777  /app/logs/
+RUN apk add postgresql-client
 
 # Expose port - mostly a convention, for readability
 EXPOSE 3005
 
-
-
-# Start up command, with max heap size as 50Megs
-#ENTRYPOINT ["sh", "-c","npm i && npm run start"]
+# Start up command
 ENTRYPOINT [ "sh", "start.sh" ]

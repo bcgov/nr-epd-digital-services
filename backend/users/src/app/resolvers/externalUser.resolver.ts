@@ -11,9 +11,7 @@ import { ExternalUser } from '../entities/externalUser';
 import { CreateUserInput } from '../dto/createUserInput';
 import { UpdateUserInput } from '../dto/updateUserInput';
 import { Resource, RoleMatchingMode, Roles } from 'nest-keycloak-connect';
-import { request } from 'http';
 import { FetchUserResponse } from '../dto/reponse/fetchUserResponse';
-import { RegionService } from '../services/region.service';
 import { FetchSingleUserResponse } from '../dto/reponse/fetchExternalSingleUserResponse';
 import { UpdateExternalUserResponse } from '../dto/reponse/updateExternalUserResponse';
 
@@ -23,10 +21,7 @@ import { UpdateExternalUserResponse } from '../dto/reponse/updateExternalUserRes
 @Resolver(() => ExternalUser)
 @Resource('backend')
 export class ExternalUserResolver {
-  constructor(
-    private readonly usersService: ExternalUserService,
-    private readonly regionService: RegionService,
-  ) {}
+  constructor(private readonly externalUserService: ExternalUserService) {}
 
   /**
    * Mutation For Creating New External User
@@ -36,7 +31,7 @@ export class ExternalUserResolver {
   @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
   @Mutation(() => ExternalUser)
   createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.usersService.create(createUserInput);
+    return this.externalUserService.create(createUserInput);
   }
 
   /**
@@ -46,7 +41,7 @@ export class ExternalUserResolver {
   @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
   @Query(() => FetchUserResponse, { name: 'users' })
   findAll() {
-    return this.usersService.findAll();
+    return this.externalUserService.findAll();
   }
 
   /**
@@ -57,7 +52,7 @@ export class ExternalUserResolver {
   async updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     const result = new UpdateExternalUserResponse();
     console.log(updateUserInput);
-    const response = await this.usersService.update(
+    const response = await this.externalUserService.update(
       updateUserInput.id,
       updateUserInput,
     );
@@ -79,7 +74,7 @@ export class ExternalUserResolver {
    */
   @Mutation(() => Boolean)
   async removeUser(@Args('id') id: string) {
-    const response = await this.usersService.remove(id);
+    const response = await this.externalUserService.remove(id);
     return response;
   }
 
@@ -91,7 +86,7 @@ export class ExternalUserResolver {
   @ResolveReference()
   resolveReference(reference: { __typename: string; id: string }) {
     const idVal: string = reference.id;
-    return this.usersService.findOne(idVal);
+    return this.externalUserService.findOne(idVal);
   }
 
   /**
@@ -101,6 +96,6 @@ export class ExternalUserResolver {
    */
   @Query(() => FetchSingleUserResponse, { name: 'user' })
   findOne(@Args('userId', { type: () => String }) id: string) {
-    return this.usersService.findOne(id);
+    return this.externalUserService.findOne(id);
   }
 }

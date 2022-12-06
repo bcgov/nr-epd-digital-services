@@ -92,45 +92,38 @@ objects:
             app: ${NAME}-${COMPONENT}
             deploymentconfig: ${NAME}-${COMPONENT}
         spec:
-          # initContainers:
-          #   - name: wait-for-graphql
-          #   # is this image going to work?
-          #     image: busybox:1.28 
-          #     args:
-          #     - /bin/sh
-          #     - -c
-          #     - >
-          #       set -x;
-          #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://epd-backend-applications/:)" != "200" ]]; do 
-          #         echo '.'
-          #         sleep 15;
-          #       done  
+          
           containers:
             - image: ${NAME}-${COMPONENT}:${IMAGE_TAG}
               imagePullPolicy: Always
               name: ${NAME}-${COMPONENT}
               env:
                 - name: POSTGRESQL_HOST
-                  value: ${NAME}-database
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRESQL_HOST
                 - name: POSTGRESQL_DATABASE
                   valueFrom:
-                    secretKeyRef:
+                    configMapKeyRef:
                       name: ${NAME}-database
-                      key: database-name
+                      key: POSTGRES_DATABASE
                 - name: POSTGRESQL_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-database
-                      key: database-password
+                      key: POSTGRES_DB_PASSWORD
                 - name: POSTGRESQL_USER
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-database
-                      key: database-user 
-                - name: USER_URL
-                  value: http://${NAME}-backend-users/graphql
-                - name: APPLICATION_URL
-                  value: http://${NAME}-backend-applications/graphql
+                      key: POSTGRES_DB_USERNAME
+                - name: USERS_MICROSERVICE
+                  value: http://${NAME}-backend-users-${ENV}.${DOMAIN}
+                - name: USERS_MICROSERVICE_ENDPOINT
+                  value: http://${NAME}-backend-users-${ENV}.${DOMAIN}/graphql
+                - name: APPLICATION_MICROSERVICE_ENDPOINT
+                  value: http://${NAME}-backend-applications-${ENV}.${DOMAIN}/graphql
               ports:
                 - containerPort: ${{CONTAINER_PORT}}
                   protocol: TCP
@@ -144,7 +137,7 @@ objects:
               readinessProbe:
                 tcpSocket:
                   port: ${{CONTAINER_PORT}}
-                initialDelaySeconds: 90
+                initialDelaySeconds: 120
                 periodSeconds: 30
                 timeoutSeconds: 5
                 failureThreshold: 3
@@ -156,9 +149,22 @@ objects:
                   path: /
                   port: ${{CONTAINER_PORT}}
                   scheme: HTTP
-                initialDelaySeconds: 90
+                initialDelaySeconds: 120
                 periodSeconds: 30
                 timeoutSeconds: 5
+          # initContainers:
+          #   - name: wait-for-graphql
+          #   # is this image going to work?
+          #     image: busybox:1.28 
+          #     args:
+          #     - /bin/sh
+          #     - -c
+          #     - >
+          #       set -x;
+          #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://epd-backend-applications/:)" != "200" ]]; do 
+          #         echo '.'
+          #         sleep 15;
+          #       done  
   - apiVersion: v1
     kind: Service
     metadata:

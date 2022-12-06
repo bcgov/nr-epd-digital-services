@@ -9,7 +9,6 @@ then
    . ./.env
 else
     echo 'Environment variables set...'
-	mv .env env_bkup
 fi
 
 # create database taftdb

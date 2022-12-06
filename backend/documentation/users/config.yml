@@ -1,0 +1,19 @@
+spectaql:  
+  displayAllServers: true
+
+introspection:
+  url: http://localhost:3005/graphql
+
+info:
+  title: Users GraphQL API Reference
+  description: Describes all APIs for the Users Microservice
+  contact:
+    name: 
+    url: 
+    email: 
+  license:
+    name:
+    url: 
+servers:
+  - url: https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
+    description: Development
