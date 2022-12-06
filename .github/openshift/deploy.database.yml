@@ -22,12 +22,16 @@ parameters:
   - description: Password for the PostgreSQL connection user.
     from: "[a-zA-Z0-9]{16}"
     generate: expression
-    name: DB_PASSWORD
+    name: POSTGRES_DB_PASSWORD
+  - description: Password for the PostgreSQL Admin connection user.
+    from: "[a-zA-Z0-9]{16}"
+    generate: expression
+    name: POSTGRES_ADMIN_PASSWORD
   - description: Volume space available for data, e.g. 512Mi, 2Gi.
     displayName: Database Volume Capacity
     name: DB_PVC_SIZE
     required: true
-    value: "200Mi"
+    value: "512Mi"
   - name: REGISTRY
     value: image-registry.openshift-image-registry.svc:5000
   - name: PROMOTE
@@ -41,9 +45,20 @@ objects:
       labels:
         app: ${NAME}-${COMPONENT}
     stringData:
-      database-name: epd
-      database-password: ${DB_PASSWORD}
-      database-user: epd
+      POSTGRES_DB_USERNAME: epdusers
+      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
+      POSTGRES_ADMIN_USERNAME: postgres
+      POSTGRES_ADMIN_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
+  - kind: ConfigMap 
+    apiVersion: v1 
+    metadata:
+      name: ${NAME}-${COMPONENT}
+    data:
+      # Configuration values can be set as key-value properties
+      POSTGRESQL_HOST: epd-database
+      POSTGRESQL_PORT: "5432"
+      POSTGRES_DATABASE: epd_dev
+      POSTGRES_DB_SCHEMA: epd_users
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
@@ -144,19 +159,24 @@ objects:
               env:
                 - name: POSTGRESQL_DATABASE
                   valueFrom:
-                    secretKeyRef:
+                    configMapKeyRef:
                       name: ${NAME}-${COMPONENT}
-                      key: database-name
+                      key: POSTGRES_DATABASE
                 - name: POSTGRESQL_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-${COMPONENT}
-                      key: database-password
+                      key: POSTGRES_DB_PASSWORD
                 - name: POSTGRESQL_USER
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-${COMPONENT}
-                      key: database-user
+                      key: POSTGRES_DB_USERNAME
+                - name: POSTGRESQL_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-${COMPONENT}
+                      key: POSTGRES_ADMIN_PASSWORD
               volumeMounts:
                 - name: ${NAME}-${COMPONENT}
                   mountPath: "/var/lib/pgsql/data"
