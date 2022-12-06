@@ -26,9 +26,9 @@ const Dashboard = () => {
   console.log(auth.user?.access_token)
 
   useEffect(()=>{
-    if(auth.user?.profile)
+    if(auth.user?.profile && auth.user?.profile.identity_provider==="bceid")
     {
-      console.log("invoking action",auth.user.profile.sub)
+      console.log("invoking action",auth.user.profile)
       dispatch(fetchUserProfileVerification(auth.user.profile.sub));
     }
   },[])
@@ -38,7 +38,7 @@ const Dashboard = () => {
 
     console.log('isProfileVerified value at ' + new Date().getMinutes() + '--'+new Date().getSeconds(),userIsProfileVerifiedValue)
 
-    if(userIsProfileVerifiedValue===false)
+    if(userIsProfileVerifiedValue===false && auth.user?.profile.identity_provider==="bceid")
     {
       navigate("/userprofile")
     }
