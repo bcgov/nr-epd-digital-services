@@ -22,13 +22,13 @@ parameters:
   - name: DOMAIN
     value: apps.silver.devops.gov.bc.ca
   - name: CPU_REQUEST
-    value: "25m"
+    value: "0.25"
   - name: MEMORY_REQUEST
-    value: "50Mi"
+    value: "512Mi"
   - name: CPU_LIMIT
-    value: "75m"
+    value: "0.5"
   - name: MEMORY_LIMIT
-    value: "150Mi"
+    value: "1Gi"
   - name: MIN_REPLICAS
     description: The minimum amount of replicas
     value: "1"
@@ -98,22 +98,65 @@ objects:
               name: ${NAME}-${COMPONENT}
               env:
                 - name: POSTGRESQL_HOST
-                  value: ${NAME}-database
-                - name: POSTGRESQL_DATABASE
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRESQL_HOST
+                - name: POSTGRESQL_PORT
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRESQL_PORT
+                - name: POSTGRES_DATABASE
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRES_DATABASE
+                - name: POSTGRES_DB_SCHEMA
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRES_DB_SCHEMA
+                - name: POSTGRES_ADMIN_USERNAME
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-database
-                      key: database-name
-                - name: POSTGRESQL_PASSWORD
+                      key: POSTGRES_ADMIN_USERNAME
+                - name: POSTGRES_ADMIN_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-database
-                      key: database-password
-                - name: POSTGRESQL_USER
+                      key: POSTGRES_ADMIN_PASSWORD
+                - name: POSTGRES_DB_USERNAME
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-database
-                      key: database-user
+                      key: POSTGRES_DB_USERNAME
+                - name: POSTGRES_DB_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRES_DB_PASSWORD
+                - name: KEYCLOCK_CLIENT_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: keycloak
+                      key: KEYCLOCK_CLIENT_ID
+                - name: KEYCLOCK_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      name: keycloak
+                      key: KEYCLOCK_SECRET
+                - name: KEYCLOCK_AUTH_URL
+                  valueFrom:
+                    configMapKeyRef:
+                      name: keycloak-config
+                      key: KEYCLOCK_AUTH_URL
+                - name: KEYCLOCK_REALM
+                  valueFrom:
+                    configMapKeyRef:
+                      name: keycloak-config
+                      key: KEYCLOCK_REALM
               ports:
                 - containerPort: ${{CONTAINER_PORT}}
                   protocol: TCP
@@ -124,25 +167,25 @@ objects:
                 limits:
                   cpu: ${CPU_LIMIT}
                   memory: ${MEMORY_LIMIT}
-              # readinessProbe:
-              #   tcpSocket:
-              #     path: /graphql/health
-              #     port: ${{CONTAINER_PORT}}
-              #   initialDelaySeconds: 60
-              #   periodSeconds: 30
-              #   timeoutSeconds: 5
-              #   failureThreshold: 30
-              #   successThreshold: 1
-              # livenessProbe:
-              #   successThreshold: 1
-              #   failureThreshold: 3
-              #   httpGet:
-              #     path: /graphql/health
-              #     port: ${{CONTAINER_PORT}}
-              #     scheme: HTTP
-              #   initialDelaySeconds: 60
-              #   periodSeconds: 30
-              #   timeoutSeconds: 5
+              readinessProbe:
+                tcpSocket:
+                  path: /
+                  port: ${{CONTAINER_PORT}}
+                initialDelaySeconds: 120
+                periodSeconds: 30
+                timeoutSeconds: 5
+                failureThreshold: 30
+                successThreshold: 1
+              livenessProbe:
+                successThreshold: 1
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: ${{CONTAINER_PORT}}
+                  scheme: HTTP
+                initialDelaySeconds: 120
+                periodSeconds: 30
+                timeoutSeconds: 5
   - apiVersion: v1
     kind: Service
     metadata:
