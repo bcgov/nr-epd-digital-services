@@ -23,11 +23,18 @@ export class ExternalUserService {
    * @returns created user
    */
   async create(createUserInput: CreateUserInput) {
-    console.log('CreateUserInput');
+    console.log('CreateUserInput - 1 ');
+    const newUser = await this.externalUserRepository.create(createUserInput);
 
-    const newUser = this.externalUserRepository.create(createUserInput);
+    console.log('CreateUserInput - 2 ');
+    //await this.externalUserRepository.save(newUser);
+    console.log('newUser', newUser);
+
+    console.log('CreateUserInput - 3 ');
+
     await this.externalUserRepository.save(newUser);
 
+    console.log('CreateUserInput - 4 ', newUser);
     return await this.externalUserRepository.findOne({
       relations: ['region', 'organizationType'],
       where: { id: newUser.id },

@@ -148,9 +148,11 @@ const usersSlice = createSlice({
     builder
       .addCase(fetchUserProfileVerification.fulfilled,(state,action)=>{
         const newState = { ...state };
+        console.log("fetchUserProfileVerification fulfilled newState",newState)
         // console.log("fetchUserProfileVerification fulfilled",state,action)
          newState.isProfileVerified = action.payload.data.user.profileVerified;
-        console.log("fetchUserProfileVerification.fulfilled")
+         newState.externalUser = action.payload.data.user.data;
+        console.log("fetchUserProfileVerification.fulfilled newState",newState)
         return newState;
       })
       .addCase(fetchUserProfileVerification.pending,(state,action)=>{
@@ -227,6 +229,7 @@ export const getUserDeleteStatus = (state: any) => state.users.deleteStatus;
 export const getUserAddedStatus = (state: any) => state.users.addedStatus;
 export const getAllUsersError = (state: any) => state.users.error;
 export const isProfileVerified = (state: any) => state.users.isProfileVerified;
+export const getExternalUser = (state: any) => state.users.externalUser;
 export const { userAdded,resetDeleteStatus,resetAddedStatus } = usersSlice.actions;
 
 export default usersSlice.reducer;

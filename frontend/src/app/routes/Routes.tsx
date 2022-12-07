@@ -6,7 +6,7 @@ import Landing from "../features/landing/Landing"
 import { Routes , Route } from 'react-router-dom';
 import ProtectedRoute from "./ProtectedRoute";
 import { SignUp } from "../features/signup/signup";
-import { UserProfile } from "../features/profile/UserProfile";
+import { UserProfile } from "../features/users/UserProfile";
 
 const AppRoutes = () => {
   return (

@@ -24,7 +24,7 @@ export const LRSFormAccordion = (forms:Array<LRSForm>):ReactJSXElement =>{
 
 const AccordionItem  = (form:LRSForm,key:string):ReactJSXElement =>{
     return(
-        <Accordion.Item id='accordion-item' className=' my-4 border'  eventKey={key} >
+        <Accordion.Item id='accordion-item' className=' my-4 border'  eventKey={key} key={key} >
             <Accordion.Header id="accordion-item-header" className='accordion-item-header'>
                 {form.name}
             </Accordion.Header>

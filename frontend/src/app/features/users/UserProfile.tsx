@@ -6,16 +6,17 @@ import { useForm } from "react-hook-form";
 import "./UserProfile.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchRegions,
-  getProfileFetchStatus,
+  fetchLookupData,
+   getProfileFetchStatus,
   getRegions,
-} from "./ProfileSlice";
-import { addNewExternalUser, getUserAddedStatus } from "../users/UsersSlice";
+  getOrganizations
+} from "../common/CommonDataSlice";
+import { addNewExternalUser, getUserAddedStatus,getExternalUser } from "./UsersSlice";
 import { AppDispatch } from "../../Store";
-import { ExternalUser } from "../users/dto/ExternalUser";
+import { ExternalUser } from "./dto/ExternalUser";
 import { RequestStatus } from "../../helpers/requests/status";
 import { useNavigate } from "react-router-dom";
-import { Region } from "./dto/Profile";
+import { Region } from "../common/dto/LookUpValues";
 
 // type FormData = {
 // 	userId:string | undefined;
@@ -66,31 +67,30 @@ export const UserProfile = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const regions = useSelector(getRegions);
-  const profileFetchStatus = useSelector(getProfileFetchStatus);
+
+  const organizationTypes = useSelector(getOrganizations)
+  const lookupDataFetchStatus = useSelector(getProfileFetchStatus);
+
+  const savedExternalUser = useSelector(getExternalUser);
+
+  console.log("savedExternalUser",savedExternalUser["userFNStatus"]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-	console.log("dispatching fetchRegions")
-    dispatch(fetchRegions());
-	console.log("current profile status",profileFetchStatus)
+    console.log("dispatching fetchLookupData");
+    dispatch(fetchLookupData());
+    console.log("current profile status", lookupDataFetchStatus);
   }, []);
 
   useEffect(() => {
-	console.log("current profile status",profileFetchStatus)
-    // if (profileFetchStatus === RequestStatus.success) {
-    //   console.log(regions);
-	//   const regionOptions = regions.data.map((x:any)=>{
-	// 	 return <option value={x.id} >{x.region_name}</option>
-	//   })
-	//   console.log("regionOptions",regionOptions)
-    // }
-  }, [regions,profileFetchStatus]);
+    console.log("regions", regions);
+  }, [regions]);
 
   useEffect(() => {
     if (addedStatus === RequestStatus.success) {
       console.log("user added ");
-      	navigate("/dashboard");
+      navigate("/dashboard");
     }
 
     console.log("user add status ", addedStatus);
@@ -103,9 +103,29 @@ export const UserProfile = () => {
   // 	return () => subscription.unsubscribe();
   // },[watch])
 
+  const getPropertyValue = ( propertyName:string) =>{
+    if(savedExternalUser!=null)
+    {
+      return savedExternalUser[propertyName];
+    }
+  }
+
+  const isSelected = ( propertyName:string, boxValue:string) =>{
+    if(savedExternalUser!=null)
+    {
+      let savedValue = savedExternalUser[propertyName];
+      if(propertyName==="isBillingContact")
+      {
+        console.log("isBillingContact",savedValue)
+        savedValue = savedValue+"";
+      }
+      return savedValue===boxValue;
+    }
+  }
+
   return (
     <Container fluid className="g-4 pt-5 mt-4">
-      <p>{regions}</p>
+      {/* <p>{regions}</p> */}
       <Row>
         <Col className="mx-md-5">
           <Form onSubmit={onSubmit}>
@@ -125,8 +145,9 @@ export const UserProfile = () => {
                   type="text"
                   aria-placeholder="First Name"
                   placeholder="First Name"
-				  required
-                />				
+                  required
+                  value={getPropertyValue("firstName")}
+                />
               </Form.Group>
               <Form.Group
                 className="mb-2 col-xs-12 col-sm-6"
@@ -138,7 +159,8 @@ export const UserProfile = () => {
                   type="text"
                   aria-placeholder="Last Name"
                   placeholder="Add Family Name Here"
-				  required
+                  required
+                  value={getPropertyValue("lastName")}
                 />
               </Form.Group>
             </Row>
@@ -153,7 +175,8 @@ export const UserProfile = () => {
                   type="text"
                   aria-placeholder="Street Address"
                   placeholder="Street Address"
-				  required
+                  required
+                  value={getPropertyValue("addressLine")}
                 />
               </Form.Group>
               <Form.Group
@@ -166,7 +189,8 @@ export const UserProfile = () => {
                   type="text"
                   aria-placeholder="City"
                   placeholder="City"
-				  required
+                  required
+                  value={getPropertyValue("city")}
                 />
               </Form.Group>
             </Row>
@@ -181,7 +205,8 @@ export const UserProfile = () => {
                   type="text"
                   aria-placeholder="Province"
                   placeholder="Province"
-				  required
+                  required
+                  value={getPropertyValue("province")}
                 />
               </Form.Group>
               <Form.Group
@@ -194,7 +219,8 @@ export const UserProfile = () => {
                   type="text"
                   aria-placeholder="Country"
                   placeholder="Country"
-				  required
+                  required
+                  value={getPropertyValue("country")}
                 />
               </Form.Group>
               <Form.Group
@@ -207,7 +233,8 @@ export const UserProfile = () => {
                   type="text"
                   aria-placeholder="Postal Code"
                   placeholder="Postal Code"
-				  required
+                  required
+                  value={getPropertyValue("postalCode")}
                 />
               </Form.Group>
             </Row>
@@ -222,7 +249,8 @@ export const UserProfile = () => {
                   type="text"
                   placeholder="Phone Number"
                   aria-placeholder="Phone Number"
-				  required
+                  required
+                  value={getPropertyValue("phoneNumber")}
                 />
               </Form.Group>
               <Form.Group
@@ -235,7 +263,8 @@ export const UserProfile = () => {
                   type="email"
                   placeholder="Email"
                   aria-placeholder="Email"
-				  required
+                  required
+                  value={getPropertyValue("email")}
                 />
               </Form.Group>
             </Row>
@@ -252,39 +281,13 @@ export const UserProfile = () => {
                 <Form.Label>Region</Form.Label>
                 <Form.Select
                   {...register("regionId")}
-                  aria-label="Choose Region"  required
+                  aria-label="Choose Region"
+                  required
+                  value={getPropertyValue("regionId")}
                 >
-                  <option value="9f7df7e5-3af5-4aa8-be35-34180ff3e798">
-                    Alberni–Clayoquot
-                  </option>
-                  {/* <option value="Capital">Capital</option>
-									<option value="Cariboo">Cariboo</option>
-									<option value="Central Coast">Central Coast</option>
-									<option value="Central Kootenay">Central Kootenay</option>
-									<option value="Central Okanagan">Central Okanagan</option>
-									<option value="Columbia-Shuswap">Columbia-Shuswap</option>
-									<option value="Comox Valley">Comox Valley</option>
-									<option value="Cowichan Valley">Cowichan Valley</option>
-									<option value="East Kootenay">East Kootenay</option>
-									<option value="Fraser Valley">Fraser Valley</option>
-									<option value="Fraser-Fort George">Fraser-Fort George</option>
-									<option value="Kitimat-Stikine">Kitimat-Stikine</option>
-									<option value="Kootenay Boundary">Kootenay Boundary</option>
-									<option value="Metro Vancouver">Metro Vancouver</option>
-									<option value="Mount Waddington">Mount Waddington</option>
-									<option value="Nanaimo">Nanaimo</option>
-									<option value="Nechako">Nechako</option>
-									<option value="North Coast">North Coast</option>
-									<option value="North Okanagan">North Okanagan</option>
-									<option value="Northern Rockies">Northern Rockies</option>
-									<option value="Okanagan-Similkameen">Okanagan-Similkameen</option>
-									<option value="Peace River">Peace River</option>
-									<option value="qathet">qathet</option>
-									<option value="Squamish-Lillooet">Squamish-Lillooet</option>
-									<option value="Stikine Region">Stikine Region</option>
-									<option value="Strathcona">Strathcona</option>
-									<option value="Sunshine Coast">Sunshine Coast</option>
-									<option value="Thompson Nicola">Thompson Nicola</option> */}
+                  {regions.map((_region:any)=>{
+                     return <option key={_region.id} value={_region.id}>{_region.region_name}</option>
+                  })}
                 </Form.Select>
               </Form.Group>
               <Form.Group
@@ -292,11 +295,13 @@ export const UserProfile = () => {
                 controlId="formIndustry"
               >
                 <Form.Label>Industry</Form.Label>
-                <Form.Control required
+                <Form.Control
+                  required
                   {...register("industry")}
                   type="text"
                   placeholder="Industry"
                   aria-placeholder="Industry"
+                  value={getPropertyValue("industry")}
                 />
               </Form.Group>
               <Form.Group
@@ -304,34 +309,42 @@ export const UserProfile = () => {
                 controlId="formOrganization"
               >
                 <Form.Label>Organization</Form.Label>
-                <Form.Control required
+                <Form.Control
+                  required
                   {...register("organization")}
                   type="text"
                   placeholder="organization"
                   aria-placeholder="Organization"
+                  value={getPropertyValue("organization")}
                 />
               </Form.Group>
             </Row>
             <Row>
               <Form.Group className="mb-2">
                 <Form.Label>Are you a CSAP or QP or Public user ?</Form.Label>
-                <Form.Check  required
+                <Form.Check
+                  required
                   value="csap"
                   type="radio"
                   label="CSAP"
-                  {...register("userWorkStatus")}
+                  {...register("userWorkStatus")}  
+                  checked = {isSelected("userWorkStatus","csap")}               
                 />
-                <Form.Check required
+                <Form.Check
+                  required
                   value="qp"
                   type="radio"
                   label="QP"
                   {...register("userWorkStatus")}
+                  checked = {isSelected("userWorkStatus","qp")}   
                 />
-                <Form.Check required
+                <Form.Check
+                  required
                   value="public"
                   type="radio"
                   label="Public"
                   {...register("userWorkStatus")}
+                  checked = {isSelected("userWorkStatus","public")}   
                 />
               </Form.Group>
             </Row>
@@ -340,63 +353,58 @@ export const UserProfile = () => {
                 <Form.Label>
                   Are you representing one of the following?
                 </Form.Label>
-                <Form.Check required
+                {organizationTypes.map((type:any)=>{
+                  return (
+                  <Form.Check key={type.id}
+                  required
                   {...register("organizationTypeId")}
                   name="organizationTypeId"
-                  value="3e724dbc-e0af-4a18-aa22-4ea666df9955"
+                  value={type.id}
                   type="radio"
-                  label="Financial Institution"
-                />
-                <Form.Check required
-                  {...register("organizationTypeId")}
-                  name="organizationTypeId"
-                  type="radio"
-                  label="Real Estate Organization"
-                />
-                <Form.Check required
-                  {...register("organizationTypeId")}
-                  name="organizationTypeId"
-                  type="radio"
-                  label="Municipality"
-                />
-                <Form.Check required
-                  {...register("organizationTypeId")}
-                  name="organizationTypeId"
-                  type="radio"
-                  label="None"
-                />
+                  label={type.org_name} 
+                  checked = {isSelected("organizationTypeId",type.id)}
+                />)
+                })}
               </div>
             </Row>
             <Row>
               <div key="radio" className="mb-3">
                 <Form.Label>Do you identify as the following?</Form.Label>
-                <Form.Check required
+                <Form.Check
+                  required
                   {...register("userFNStatus")}
                   name="userFNStatus"
                   value="FN"
                   type="radio"
                   label="First Nations"
+                  checked = {isSelected("userFNStatus","FN")}
                 />
-                <Form.Check required
+                <Form.Check
+                  required
                   {...register("userFNStatus")}
                   name="userFNStatus"
                   value="IN"
                   type="radio"
                   label="Inuit"
+                  checked = {isSelected("userFNStatus","IN")}
                 />
-                <Form.Check required
+                <Form.Check
+                  required
                   {...register("userFNStatus")}
                   name="userFNStatus"
                   value="MT"
                   type="radio"
                   label="Metis"
+                  checked = {isSelected("userFNStatus","MT")}
                 />
-                <Form.Check required
+                <Form.Check
+                  required
                   {...register("userFNStatus")}
                   name="userFNStatus"
                   value="NO"
                   type="radio"
                   label="None"
+                  checked = {isSelected("userFNStatus","NO")}
                 />
               </div>
             </Row>
@@ -409,19 +417,23 @@ export const UserProfile = () => {
             <Row>
               <div key="radio" className="mb-3">
                 <Form.Label>Is Billing contact info same ?</Form.Label>
-                <Form.Check required
+                <Form.Check
+                  required
                   value="true"
                   {...register("isBillingContactST")}
                   name="isBillingContactST"
                   type="radio"
                   label="Yes"
+                  checked = {isSelected("isBillingContact","true")}
                 />
-                <Form.Check required
+                <Form.Check
+                  required
                   value="false"
                   {...register("isBillingContactST")}
                   name="isBillingContactST"
                   type="radio"
                   label="No"
+                  checked = {isSelected("isBillingContact","false")}
                 />
               </div>
             </Row>

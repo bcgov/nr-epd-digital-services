@@ -26,7 +26,7 @@ const Dashboard = () => {
   console.log(auth.user?.access_token)
 
   useEffect(()=>{
-    if(auth.user?.profile && auth.user?.profile.identity_provider==="bceid")
+    if(auth.user?.profile && auth.user?.profile.identity_provider==="bceid" && userIsProfileVerifiedValue !== true )
     {
       console.log("invoking action",auth.user.profile)
       dispatch(fetchUserProfileVerification(auth.user.profile.sub));
