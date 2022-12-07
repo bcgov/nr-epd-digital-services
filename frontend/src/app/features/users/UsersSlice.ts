@@ -105,6 +105,20 @@ export const updateUser = createAsyncThunk(
     return request
   })
 
+
+ export const updateExternalUser = createAsyncThunk(
+    "updateExternalUser",
+    async (user:ExternalUser) => {
+      const request = await getAxiosInstance().post(GRAPHQL, {
+        query: print(UPDATE_USER),
+        variables:{
+          updateUser: user
+        }
+      })
+      return request.data
+    })  
+
+
 const usersSlice = createSlice({
   name: "users",
   initialState,
@@ -152,6 +166,8 @@ const usersSlice = createSlice({
         // console.log("fetchUserProfileVerification fulfilled",state,action)
          newState.isProfileVerified = action.payload.data.user.profileVerified;
          newState.externalUser = action.payload.data.user.data;
+         if(newState.externalUser)
+         newState.externalUser.isBillingContactST = newState.externalUser.isBillingContact.toString();
         console.log("fetchUserProfileVerification.fulfilled newState",newState)
         return newState;
       })
@@ -219,7 +235,25 @@ const usersSlice = createSlice({
         const newState = { ...state };
         // newState.deleteStatus = RequestStatus.success
         return newState;          
-      });
+      })
+      .addCase(updateExternalUser.fulfilled, (state,action)=> {
+        const newState = { ...state };
+        newState.updateStatus = RequestStatus.success;
+        // newState.deleteStatus = RequestStatus.success
+        return newState;  
+      })
+      .addCase(updateExternalUser.pending, (state,action)=> {
+        const newState = { ...state };
+        newState.updateStatus = RequestStatus.loading;
+        // newState.deleteStatus = RequestStatus.success
+        return newState;  
+      })
+      .addCase(updateExternalUser.rejected, (state,action)=> {
+        const newState = { ...state };
+        newState.updateStatus = RequestStatus.failed;
+        // newState.deleteStatus = RequestStatus.success
+        return newState;  
+      })
   },
 });
 
