@@ -7,6 +7,7 @@ import "./Header.css";
 
 
 const Header = () => {
+  const authRedirectUri = ((window as any)._env_ && (window as any)._env_.REACT_APP_AUTH_LOGOUT_REDIRECT_URI ) || process.env.REACT_APP_AUTH_LOGOUT_REDIRECT_URI || 'http://localhost:3000/'
   const auth = useAuth();
   return (
     <header className="navbar ">
@@ -24,7 +25,7 @@ const Header = () => {
             <span>Welcome {auth.user?.profile.name}</span>
             <button className="btn btn-success" onClick={() => {
               auth.removeUser().then(()=>{
-              window.location.href = process.env.REACT_APP_AUTH_LOGOUT_REDIRECT_URI?process.env.REACT_APP_AUTH_LOGOUT_REDIRECT_URI:"";
+              window.location.href = authRedirectUri
               })
               }}>Log Out</button>
           </React.Fragment>
