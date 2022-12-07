@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useAuth } from "react-oidc-context";
 import { useForm } from "react-hook-form";
@@ -48,6 +48,17 @@ import { Region } from "../common/dto/LookUpValues";
 export const UserProfile = () => {
 
   const savedExternalUser = useSelector(getExternalUser);
+
+  const [selectedRegionId, setSelectedRegionId] = useState('');
+
+ useEffect(()=>{
+  setSelectedRegionId(savedExternalUser.regionId)
+ },[savedExternalUser])
+
+
+  const handleRegionSelectChange = (event:any) => {
+    setSelectedRegionId(event.target.value)
+  }
 
   const {
     register,
@@ -308,7 +319,8 @@ export const UserProfile = () => {
                   {...register("regionId")}
                   aria-label="Choose Region"
                   required
-                  defaultValue={getPropertyValue("regionId")}
+                  value={selectedRegionId}
+                  onChange={(e)=>{handleRegionSelectChange(e)}}
                   // value={getPropertyValue("regionId")}
                 >
                   {regionSelector}
