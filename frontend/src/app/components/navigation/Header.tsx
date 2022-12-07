@@ -8,6 +8,7 @@ import "./Header.css";
 
 const Header = () => {
   const auth = useAuth();
+  console.log("is bceid user?",auth.user?.profile.identity_provider==="bceid")
   const navigate = useNavigate();
   return (
     <header className="navbar fixed-top">
@@ -16,9 +17,7 @@ const Header = () => {
           <img src={logo} alt="BC Government Logo" />
         </a>
         <h1>Land Remediation Services</h1>
-      </div>
-      
-      
+      </div>    
       {
         auth.isAuthenticated ? (
           <Dropdown>
@@ -26,12 +25,16 @@ const Header = () => {
               {auth.user?.profile.name}
             </Dropdown.Toggle>
             <Dropdown.Menu>
+
+            {auth.user?.profile.identity_provider==="bceid" && //Only BCEID/Public Users should be able to edit their profile
+              <Dropdown.Item tag={Button} onClick={()=>{navigate("/userprofile")}} >  
+                Profile
+              </Dropdown.Item>
+            }
             <Dropdown.Item tag={Button} onClick={()=>{navigate("/dashboard")}} >  
                   Dashboard
             </Dropdown.Item>
-            <Dropdown.Item tag={Button} onClick={()=>{navigate("/userprofile")}} >  
-                  Profile
-            </Dropdown.Item>
+
               
               <Dropdown.Item as="button" onClick={() => {
                     auth.removeUser().then(()=>{

@@ -73,7 +73,6 @@ export const UserProfile = () => {
 
   const savedExternalUser = useSelector(getExternalUser);
 
-  console.log("savedExternalUser",savedExternalUser["userFNStatus"]);
 
   const navigate = useNavigate();
 
@@ -82,6 +81,10 @@ export const UserProfile = () => {
     dispatch(fetchLookupData());
     console.log("current profile status", lookupDataFetchStatus);
   }, []);
+
+  useEffect(() => {
+    console.log(organizationTypes)
+  },[organizationTypes])
 
   useEffect(() => {
     console.log("regions", regions);
@@ -286,7 +289,7 @@ export const UserProfile = () => {
                   value={getPropertyValue("regionId")}
                 >
                   {regions.map((_region:any)=>{
-                     return <option key={_region.id} value={_region.id}>{_region.region_name}</option>
+                    return <option key={_region.id} value={_region.id}>{_region.region_name}</option>
                   })}
                 </Form.Select>
               </Form.Group>
@@ -313,7 +316,7 @@ export const UserProfile = () => {
                   required
                   {...register("organization")}
                   type="text"
-                  placeholder="organization"
+                  placeholder="Organization"
                   aria-placeholder="Organization"
                   value={getPropertyValue("organization")}
                 />
@@ -416,7 +419,7 @@ export const UserProfile = () => {
             </Row>
             <Row>
               <div key="radio" className="mb-3">
-                <Form.Label>Is Billing contact info same ?</Form.Label>
+                <Form.Label>Is Billing contact info the same?</Form.Label>
                 <Form.Check
                   required
                   value="true"
