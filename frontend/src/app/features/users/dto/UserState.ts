@@ -11,4 +11,5 @@ export class UserState
     deleteStatus:string =  RequestStatus.idle;
     addedStatus:string =  RequestStatus.idle;
     externalUser: ExternalUser | null = null;
+    updateStatus:string  = RequestStatus.idle;
 }

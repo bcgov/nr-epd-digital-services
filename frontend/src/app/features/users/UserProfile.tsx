@@ -11,7 +11,7 @@ import {
   getRegions,
   getOrganizations
 } from "../common/CommonDataSlice";
-import { addNewExternalUser, getUserAddedStatus,getExternalUser } from "./UsersSlice";
+import { addNewExternalUser, getUserAddedStatus,getExternalUser, updateExternalUser } from "./UsersSlice";
 import { AppDispatch } from "../../Store";
 import { ExternalUser } from "./dto/ExternalUser";
 import { RequestStatus } from "../../helpers/requests/status";
@@ -41,13 +41,22 @@ import { Region } from "../common/dto/LookUpValues";
 
 //TODO: Update dropdown for region to match api, update organization type for api
 
+
+
+
+
 export const UserProfile = () => {
+
+  const savedExternalUser = useSelector(getExternalUser);
+
   const {
     register,
     watch,
     handleSubmit,
     formState: { errors },
-  } = useForm<ExternalUser>();
+  } = useForm<ExternalUser>({
+    defaultValues : savedExternalUser
+  });
 
   const addedStatus = useSelector(getUserAddedStatus);
 
@@ -61,7 +70,22 @@ export const UserProfile = () => {
       data.isBillingContact = false;
     }
     data.isGstExempt = false;
-    dispatch(addNewExternalUser(data));
+
+    if(savedExternalUser!=null && savedExternalUser.id !== undefined  && savedExternalUser.id !== '' )
+    {
+      // update user profile 
+      console.log("update user profile",data);
+
+      delete data['isBillingContactST'];
+
+      dispatch(updateExternalUser(data))
+    }
+    else
+    {
+      dispatch(addNewExternalUser(data));
+    }
+
+ 
   });
   const auth = useAuth();
   const dispatch = useDispatch<AppDispatch>();
@@ -71,7 +95,7 @@ export const UserProfile = () => {
   const organizationTypes = useSelector(getOrganizations)
   const lookupDataFetchStatus = useSelector(getProfileFetchStatus);
 
-  const savedExternalUser = useSelector(getExternalUser);
+ 
 
   console.log("savedExternalUser",savedExternalUser["userFNStatus"]);
 
@@ -113,12 +137,7 @@ export const UserProfile = () => {
   const isSelected = ( propertyName:string, boxValue:string) =>{
     if(savedExternalUser!=null)
     {
-      let savedValue = savedExternalUser[propertyName];
-      if(propertyName==="isBillingContact")
-      {
-        console.log("isBillingContact",savedValue)
-        savedValue = savedValue+"";
-      }
+      let savedValue = savedExternalUser[propertyName];      
       return savedValue===boxValue;
     }
   }
@@ -146,7 +165,7 @@ export const UserProfile = () => {
                   aria-placeholder="First Name"
                   placeholder="First Name"
                   required
-                  value={getPropertyValue("firstName")}
+                  // value={getPropertyValue("firstName")}
                 />
               </Form.Group>
               <Form.Group
@@ -160,7 +179,7 @@ export const UserProfile = () => {
                   aria-placeholder="Last Name"
                   placeholder="Add Family Name Here"
                   required
-                  value={getPropertyValue("lastName")}
+                  // value={getPropertyValue("lastName")}
                 />
               </Form.Group>
             </Row>
@@ -176,7 +195,7 @@ export const UserProfile = () => {
                   aria-placeholder="Street Address"
                   placeholder="Street Address"
                   required
-                  value={getPropertyValue("addressLine")}
+                  // value={getPropertyValue("addressLine")}
                 />
               </Form.Group>
               <Form.Group
@@ -190,7 +209,7 @@ export const UserProfile = () => {
                   aria-placeholder="City"
                   placeholder="City"
                   required
-                  value={getPropertyValue("city")}
+                  // value={getPropertyValue("city")}
                 />
               </Form.Group>
             </Row>
@@ -206,7 +225,7 @@ export const UserProfile = () => {
                   aria-placeholder="Province"
                   placeholder="Province"
                   required
-                  value={getPropertyValue("province")}
+                  // value={getPropertyValue("province")}
                 />
               </Form.Group>
               <Form.Group
@@ -220,7 +239,7 @@ export const UserProfile = () => {
                   aria-placeholder="Country"
                   placeholder="Country"
                   required
-                  value={getPropertyValue("country")}
+                  // value={getPropertyValue("country")}
                 />
               </Form.Group>
               <Form.Group
@@ -234,7 +253,7 @@ export const UserProfile = () => {
                   aria-placeholder="Postal Code"
                   placeholder="Postal Code"
                   required
-                  value={getPropertyValue("postalCode")}
+                  // value={getPropertyValue("postalCode")}
                 />
               </Form.Group>
             </Row>
@@ -250,7 +269,7 @@ export const UserProfile = () => {
                   placeholder="Phone Number"
                   aria-placeholder="Phone Number"
                   required
-                  value={getPropertyValue("phoneNumber")}
+                  // value={getPropertyValue("phoneNumber")}
                 />
               </Form.Group>
               <Form.Group
@@ -264,7 +283,7 @@ export const UserProfile = () => {
                   placeholder="Email"
                   aria-placeholder="Email"
                   required
-                  value={getPropertyValue("email")}
+                  // value={getPropertyValue("email")}
                 />
               </Form.Group>
             </Row>
@@ -283,10 +302,13 @@ export const UserProfile = () => {
                   {...register("regionId")}
                   aria-label="Choose Region"
                   required
-                  value={getPropertyValue("regionId")}
+                  
+                  // value={getPropertyValue("regionId")}
+
+                
                 >
                   {regions.map((_region:any)=>{
-                     return <option key={_region.id} value={_region.id}>{_region.region_name}</option>
+                     return <option selected={isSelected("regionId",_region.id)} key={_region.id} value={_region.id}>{_region.region_name}</option>
                   })}
                 </Form.Select>
               </Form.Group>
@@ -301,7 +323,7 @@ export const UserProfile = () => {
                   type="text"
                   placeholder="Industry"
                   aria-placeholder="Industry"
-                  value={getPropertyValue("industry")}
+                  // value={getPropertyValue("industry")}
                 />
               </Form.Group>
               <Form.Group
@@ -315,7 +337,7 @@ export const UserProfile = () => {
                   type="text"
                   placeholder="organization"
                   aria-placeholder="Organization"
-                  value={getPropertyValue("organization")}
+                  // value={getPropertyValue("organization")}
                 />
               </Form.Group>
             </Row>
@@ -328,7 +350,7 @@ export const UserProfile = () => {
                   type="radio"
                   label="CSAP"
                   {...register("userWorkStatus")}  
-                  checked = {isSelected("userWorkStatus","csap")}               
+                  // checked = {isSelected("userWorkStatus","csap")}               
                 />
                 <Form.Check
                   required
@@ -336,7 +358,7 @@ export const UserProfile = () => {
                   type="radio"
                   label="QP"
                   {...register("userWorkStatus")}
-                  checked = {isSelected("userWorkStatus","qp")}   
+                  // checked = {isSelected("userWorkStatus","qp")}   
                 />
                 <Form.Check
                   required
@@ -344,7 +366,7 @@ export const UserProfile = () => {
                   type="radio"
                   label="Public"
                   {...register("userWorkStatus")}
-                  checked = {isSelected("userWorkStatus","public")}   
+                  // checked = {isSelected("userWorkStatus","public")}   
                 />
               </Form.Group>
             </Row>
@@ -362,7 +384,7 @@ export const UserProfile = () => {
                   value={type.id}
                   type="radio"
                   label={type.org_name} 
-                  checked = {isSelected("organizationTypeId",type.id)}
+                  // checked = {isSelected("organizationTypeId",type.id)}
                 />)
                 })}
               </div>
@@ -377,7 +399,7 @@ export const UserProfile = () => {
                   value="FN"
                   type="radio"
                   label="First Nations"
-                  checked = {isSelected("userFNStatus","FN")}
+                  // checked = {isSelected("userFNStatus","FN")}
                 />
                 <Form.Check
                   required
@@ -386,7 +408,7 @@ export const UserProfile = () => {
                   value="IN"
                   type="radio"
                   label="Inuit"
-                  checked = {isSelected("userFNStatus","IN")}
+                  // checked = {isSelected("userFNStatus","IN")}
                 />
                 <Form.Check
                   required
@@ -395,7 +417,7 @@ export const UserProfile = () => {
                   value="MT"
                   type="radio"
                   label="Metis"
-                  checked = {isSelected("userFNStatus","MT")}
+                  // checked = {isSelected("userFNStatus","MT")}
                 />
                 <Form.Check
                   required
@@ -404,7 +426,7 @@ export const UserProfile = () => {
                   value="NO"
                   type="radio"
                   label="None"
-                  checked = {isSelected("userFNStatus","NO")}
+                  // checked = {isSelected("userFNStatus","NO")}
                 />
               </div>
             </Row>
@@ -424,7 +446,7 @@ export const UserProfile = () => {
                   name="isBillingContactST"
                   type="radio"
                   label="Yes"
-                  checked = {isSelected("isBillingContact","true")}
+                  // checked = {isSelected("isBillingContact","true")}
                 />
                 <Form.Check
                   required
@@ -433,7 +455,7 @@ export const UserProfile = () => {
                   name="isBillingContactST"
                   type="radio"
                   label="No"
-                  checked = {isSelected("isBillingContact","false")}
+                  // checked = {isSelected("isBillingContact","false")}
                 />
               </div>
             </Row>
