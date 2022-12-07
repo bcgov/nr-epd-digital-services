@@ -40,7 +40,6 @@ export const FETCH_USER_PROFILE_VERIFY = gql`
   }
 `;
 
-
 export const ADD_USER = gql`
   mutation createUser($user:CreateUserInput!){
     createUser(createUserInput:$user){
@@ -59,7 +58,8 @@ export const DELETE_USER = gql`
 export const UPDATE_USER = gql`
   mutation updateUser($updateUser:UpdateUserInput!){
     updateUser(updateUserInput:$updateUser){
-      name
+      httpStatusCode
+      recordUpdated
     }
   }`
 
