@@ -91,11 +91,14 @@ export const UserProfile = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const regions = useSelector(getRegions);
+  const regionSelector = regions.map((_region:any)=>{
+    if(_region.id)
+    return <option key={_region.id} value={_region.id}>{_region.region_name}</option>
+  })
 
   const organizationTypes = useSelector(getOrganizations)
   const lookupDataFetchStatus = useSelector(getProfileFetchStatus);
 
-  const savedExternalUser = useSelector(getExternalUser);
 
 
   const navigate = useNavigate();
@@ -305,14 +308,10 @@ export const UserProfile = () => {
                   {...register("regionId")}
                   aria-label="Choose Region"
                   required
-                  
+                  defaultValue={getPropertyValue("regionId")}
                   // value={getPropertyValue("regionId")}
-
-                
                 >
-                  {regions.map((_region:any)=>{
-                     return <option selected={isSelected("regionId",_region.id)} key={_region.id} value={_region.id}>{_region.region_name}</option>
-                  })}
+                  {regionSelector}
                 </Form.Select>
               </Form.Group>
               <Form.Group
