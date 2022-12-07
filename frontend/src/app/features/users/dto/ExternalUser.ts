@@ -1,6 +1,6 @@
 
 export class ExternalUser {
-    userId: String | undefined = '';
+    userId?: String | undefined = '';
     firstName: String = '';
     lastName: String = '';
     addressLine: String = '';
@@ -19,5 +19,5 @@ export class ExternalUser {
     industry: String = '';
     regionId: String = '';
     organizationTypeId: String = '';
-    isBillingContactST:string = ''
+    isBillingContactST?:string = ''
 }
