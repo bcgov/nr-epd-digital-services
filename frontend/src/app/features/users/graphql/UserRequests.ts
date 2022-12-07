@@ -13,6 +13,29 @@ export const FETCH_USER_PROFILE_VERIFY = gql`
   query user($userId: String!){ 
       user(userId: $userId) {
         profileVerified
+        data
+        {
+          id
+          userId
+          firstName
+          lastName
+          addressLine
+          city
+          province
+          country
+          postalCode
+          email
+          phoneNumber
+          organization
+          userWorkStatus
+          userFNStatus
+          isGstExempt
+          isBillingContact
+          isProfileVerified
+          industry
+          regionId
+          organizationTypeId
+        }
     }
   }
 `;

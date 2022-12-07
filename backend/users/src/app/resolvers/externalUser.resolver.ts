@@ -30,8 +30,9 @@ export class ExternalUserResolver {
    */
   @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
   @Mutation(() => ExternalUser)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.externalUserService.create(createUserInput);
+  async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
+    const createResult = await this.externalUserService.create(createUserInput);
+    return createResult;
   }
 
   /**

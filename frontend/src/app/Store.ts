@@ -7,12 +7,16 @@ import {
   saveToLocalStorage,
 } from "./helpers/sessionManager";
 import { UserState } from "./features/users/dto/UserState";
+import commonDataReducer from "./features/common/CommonDataSlice";
+import { CommonData } from "./features/common/dto/CommonData";
 
 const persistedStore: any = loadFromLocalStorage();
 
 const emptyUserState: UserState = new UserState();
 
-const initialState = { users: emptyUserState, applications: persistedStore };
+const commonData: CommonData = new CommonData();
+
+///const initialState = { users: emptyUserState, applications: persistedStore , commonData:commonData };
 
 consoleLog("persistedStore", persistedStore);
 
@@ -20,8 +24,10 @@ export const store = configureStore({
   reducer: {
     users: usersReducer,
     applications: applicationReducer,
+    commonData: commonDataReducer,
   },
-  preloadedState: initialState,
+
+  // ,preloadedState: initialState,
 });
 
 store.subscribe(() => {

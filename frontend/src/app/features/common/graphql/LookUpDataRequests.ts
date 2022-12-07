@@ -1,13 +1,20 @@
 import gql from 'graphql-tag'
 
-export const FETCH_ORGANIZATIONS = gql`
+export const FETCH_LOOKUPDATA = gql`
     query{
-        orgnizationTypes{
-            data{
-                id
-                org_name
-            }
+        organizationTypes{
+        data
+        {
+        id
+        org_name
         }
+    }
+        regions{
+        data{
+        region_name
+        id
+        }
+    }
     }
 `
 
