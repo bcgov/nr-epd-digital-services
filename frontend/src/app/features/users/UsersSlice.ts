@@ -17,11 +17,10 @@ import { ExternalUser } from "./dto/ExternalUser";
 const initialState: UserState = new UserState();
 
 export const fetchUsers = createAsyncThunk("fetchUsers", async () => {
-  //console.log(FETCH_USERS);
   const request = await getAxiosInstance().post(GRAPHQL, {
     query: print(FETCH_USERS),
   });
-  console.log(request);
+
   return request.data;
 });
 
@@ -34,7 +33,7 @@ export const fetchUserProfileVerification = createAsyncThunk(
         userId: userId,
       },
     });
-    console.log(request);
+
     return request.data;
   }
 );
@@ -127,6 +126,16 @@ const usersSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
+    resetUpdateStatus: (state, action) => {
+      const newState = {
+        ...state,
+      };
+
+      newState.updateStatus = RequestStatus.idle;
+      newState.fetchStatus = RequestStatus.idle;
+
+      return newState;
+    },
     resetAddedStatus: (state, action) => {
       const newState = {
         ...state,
@@ -165,32 +174,26 @@ const usersSlice = createSlice({
     builder
       .addCase(fetchUserProfileVerification.fulfilled, (state, action) => {
         const newState = { ...state };
-        console.log(
-          "fetchUserProfileVerification fulfilled newState",
-          newState
-        );
-        // console.log("fetchUserProfileVerification fulfilled",state,action)
         newState.isProfileVerified = action.payload.data.user.profileVerified;
         newState.externalUser = action.payload.data.user.data;
-        if (newState.externalUser)
+        if (newState.externalUser) {
           newState.externalUser.isBillingContactST =
             newState.externalUser.isBillingContact.toString();
-        console.log(
-          "fetchUserProfileVerification.fulfilled newState",
-          newState
-        );
+
+          newState.externalUser.isGstExemptST =
+            newState.externalUser.isGstExempt.toString();
+        }
+
         return newState;
       })
       .addCase(fetchUserProfileVerification.pending, (state, action) => {
         const newState = { ...state };
-        // console.log("fetchUserProfileVerification pending",state,action)
-        // console.log(action)
+
         return newState;
       })
       .addCase(fetchUserProfileVerification.rejected, (state, action) => {
         const newState = { ...state };
-        // console.log("fetchUserProfileVerification rejected",state,action)
-        // console.log(action)
+
         return newState;
       })
       .addCase(fetchUsers.pending, (state, action) => {
@@ -199,35 +202,21 @@ const usersSlice = createSlice({
         return newState;
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
-        console.log("action res", action);
         const newState = { ...state };
         newState.fetchStatus = RequestStatus.success;
-        // if( action.payload.data !== null){
-        // const loadedUsers = action.payload.data.users.data.slice();
-        // newState.users = loadedUsers;
-        // }
-        // else if(action.payload.errors.length > 0)
-        // {
-        //   const errorMessage =  action.payload.errors[0].message;
-        //   newState.error = errorMessage;
-        // }
         return newState;
       })
       .addCase(fetchUsers.rejected, (state, action) => {
-        console.log("action", action);
         const newState = { ...state };
-        // newState.fetchStatus =  RequestStatus.failed
-        // newState.error = action.error.message!;
         return newState;
       })
       .addCase(addNewUser.fulfilled, (state, action) => {
         const newState = { ...state };
-        // newState.addedStatus = RequestStatus.success
         return newState;
       })
       .addCase(addNewExternalUser.fulfilled, (state, action) => {
         const newState = { ...state };
-        console.log(action.payload);
+
         if (action.payload.errors?.length > 1) {
           newState.addedStatus = RequestStatus.failed;
         } else {
@@ -239,25 +228,21 @@ const usersSlice = createSlice({
       })
       .addCase(deleteUser.fulfilled, (state, action) => {
         const newState = { ...state };
-        // newState.deleteStatus = RequestStatus.success
         return newState;
       })
       .addCase(updateExternalUser.fulfilled, (state, action) => {
         const newState = { ...state };
         newState.updateStatus = RequestStatus.success;
-        // newState.deleteStatus = RequestStatus.success
         return newState;
       })
       .addCase(updateExternalUser.pending, (state, action) => {
         const newState = { ...state };
         newState.updateStatus = RequestStatus.loading;
-        // newState.deleteStatus = RequestStatus.success
         return newState;
       })
       .addCase(updateExternalUser.rejected, (state, action) => {
         const newState = { ...state };
         newState.updateStatus = RequestStatus.failed;
-        // newState.deleteStatus = RequestStatus.success
         return newState;
       });
   },
@@ -271,7 +256,11 @@ export const getUserUpdateStatus = (state: any) => state.users.updateStatus;
 export const getAllUsersError = (state: any) => state.users.error;
 export const isProfileVerified = (state: any) => state.users.isProfileVerified;
 export const getExternalUser = (state: any) => state.users.externalUser;
-export const { userAdded, resetDeleteStatus, resetAddedStatus } =
-  usersSlice.actions;
+export const {
+  userAdded,
+  resetDeleteStatus,
+  resetAddedStatus,
+  resetUpdateStatus,
+} = usersSlice.actions;
 
 export default usersSlice.reducer;
