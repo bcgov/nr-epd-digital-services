@@ -19,6 +19,7 @@ import {
   getUserUpdateStatus,
   fetchUserProfileVerification,
   resetAddedStatus,
+  isProfileVerified,
 } from "./UsersSlice";
 import { AppDispatch } from "../../Store";
 import { ExternalUser } from "./dto/ExternalUser";
@@ -27,19 +28,87 @@ import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 
 export const UserProfile = () => {
+  const navigate = useNavigate();
   const userAuth = useAuth();
 
   const updateUserStatus = useSelector(getUserUpdateStatus);
+  //const savedExternalUser = useSelector(getExternalUser);
+  const addedStatus = useSelector(getUserAddedStatus);
+  const lookupDataFetchStatus = useSelector(getProfileFetchStatus);
+  const organizationTypes = useSelector(getOrganizations);
+  const regions = useSelector(getRegions);
+  const savedExternalUser = useSelector(getExternalUser);
+  const userIsProfileVerifiedValue = useSelector(isProfileVerified);
 
+
+  const [selectedRegionId, setSelectedRegionId] = useState("");
+  const [initEmail, setInitEmail] = useState("")
+  const [initFirstName, setInitFirstName] = useState("")
+  const [initLastName, setInitLastName]= useState("")
+
+  const auth = useAuth();
+  const dispatch = useDispatch<AppDispatch>();
+
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue
+  } = useForm<ExternalUser>({
+    defaultValues: savedExternalUser,
+  });
+
+  //retrieves lookup data on mount
+  useEffect(() => {
+    console.log("dispatching fetchLookupData");
+    dispatch(fetchLookupData());
+    console.log("current profile status", lookupDataFetchStatus);
+    //dispatch(getExternalUser)
+    console.log("savedExternalUser",savedExternalUser)
+    if(auth.user)
+    {
+      dispatch(fetchUserProfileVerification(auth.user.profile.sub));
+    }
+  }, []);
+
+  //set initial firstname, lastname, and email 
+  useEffect(() => {
+    if(!userIsProfileVerifiedValue && auth.user){
+      setValue("firstName", (auth.user.profile.given_name as string) )
+      setValue("lastName", (auth.user.profile.family_name as string))
+      setValue("email", (auth.user.profile.email as string))
+        // {lastName: auth.user.profile.family_name },
+      //  {email: auth.user.profile.email}
+      // ]);
+    }  
+
+  },[userIsProfileVerifiedValue])
+
+  //Handling toast appearance for new user creation
+  useEffect(() => {
+    if (addedStatus === RequestStatus.success) {
+      toast("Profile saved successfully",{
+        type: "success",
+      });
+      dispatch(resetAddedStatus(""))
+      navigate("/dashboard");
+    }
+    else if ( addedStatus === RequestStatus.failed)
+    {
+      toast("Failed save profile",{
+        type: "error",
+      });
+    }
+
+    console.log("user add status ", addedStatus);
+  }, [addedStatus]);
+  
+  //Handling toast appearance for user updating
   useEffect(() => {
     if (updateUserStatus === RequestStatus.success) 
     {
-        // toast("Profile updated successfully",{
-        //   type: "success",
-        // });
-
        toast.success("Profile updated successfully")
-
       if (userAuth.user)
         dispatch(fetchUserProfileVerification(userAuth.user.profile.sub));
     }
@@ -51,36 +120,17 @@ export const UserProfile = () => {
     console.log("updateUserStatus at profile page", updateUserStatus);
   }, [updateUserStatus]);
 
-  const savedExternalUser = useSelector(getExternalUser);
-
-  const [selectedRegionId, setSelectedRegionId] = useState("");
-
+  //Selects correct region from select object on user update
   useEffect(() => {
-
     if(savedExternalUser)
     {
       setSelectedRegionId(savedExternalUser.regionId);
     }
-    else
-    {
-   
-    }
-    
   }, [savedExternalUser]);
 
   const handleRegionSelectChange = (event: any) => {
     setSelectedRegionId(event.target.value);
   };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ExternalUser>({
-    defaultValues: savedExternalUser,
-  });
-
-  const addedStatus = useSelector(getUserAddedStatus);
 
   const onSubmit = handleSubmit((data: ExternalUser) => {
     data.userId = auth.user?.profile.sub;
@@ -108,10 +158,7 @@ export const UserProfile = () => {
       dispatch(addNewExternalUser(data));
     }
   });
-  const auth = useAuth();
-  const dispatch = useDispatch<AppDispatch>();
 
-  const regions = useSelector(getRegions);
   const regionSelector = regions.map((_region: any) => {
     if (_region.id)
       return (
@@ -120,58 +167,6 @@ export const UserProfile = () => {
         </option>
       );
   });
-
-  const organizationTypes = useSelector(getOrganizations);
-  const lookupDataFetchStatus = useSelector(getProfileFetchStatus);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log("dispatching fetchLookupData");
-    dispatch(fetchLookupData());
-    console.log("current profile status", lookupDataFetchStatus);
-  }, []);
-
-  useEffect(() => {
-    console.log(organizationTypes);
-  }, [organizationTypes]);
-
-  useEffect(() => {
-    console.log("regions", regions);
-  }, [regions]);
-
-  useEffect(() => {
-    if (addedStatus === RequestStatus.success) {
-      toast("Profile saved successfully",{
-        type: "success",
-      });
-      dispatch(resetAddedStatus(""))
-      navigate("/dashboard");
-    }
-    else if ( addedStatus === RequestStatus.failed)
-    {
-      toast("Failed save profile",{
-        type: "error",
-      });
-    }
-
-    console.log("user add status ", addedStatus);
-  }, [addedStatus]);
-
-
-
-  const getPropertyValue = (propertyName: string) => {
-    if (savedExternalUser != null) {
-      return savedExternalUser[propertyName];
-    }
-  };
-
-  const isSelected = (propertyName: string, boxValue: string) => {
-    if (savedExternalUser != null) {
-      let savedValue = savedExternalUser[propertyName];
-      return savedValue === boxValue;
-    }
-  };
 
   return (
     <Container fluid className="g-4 pt-5 mt-4">
