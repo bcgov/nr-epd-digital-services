@@ -7,58 +7,70 @@ import "./UserProfile.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchLookupData,
-   getProfileFetchStatus,
+  getProfileFetchStatus,
   getRegions,
-  getOrganizations
+  getOrganizations,
 } from "../common/CommonDataSlice";
-import { addNewExternalUser, getUserAddedStatus,getExternalUser, updateExternalUser } from "./UsersSlice";
+import {
+  addNewExternalUser,
+  getUserAddedStatus,
+  getExternalUser,
+  updateExternalUser,
+  getUserUpdateStatus,
+  fetchUserProfileVerification,
+  resetAddedStatus,
+} from "./UsersSlice";
 import { AppDispatch } from "../../Store";
 import { ExternalUser } from "./dto/ExternalUser";
 import { RequestStatus } from "../../helpers/requests/status";
 import { useNavigate } from "react-router-dom";
-import { Region } from "../common/dto/LookUpValues";
-
-// type FormData = {
-// 	userId:string | undefined;
-// 	firstName:string;
-// 	lastName:string;
-// 	organization:string;
-// 	addressLine:string;
-// 	city: string;
-// 	province: string;
-// 	country: string;
-// 	postalCode:string;
-// 	phoneNumber:number;
-// 	email:string;
-// 	regionId:string;
-// 	industry:string;
-// 	userWorkStatus: boolean;
-// 	organizationTypeId:string;
-// 	userFNStatus:string;
-// 	isBillingContact:boolean;
-// 	isProfileVerified:boolean
-// }
-
-//TODO: Update dropdown for region to match api, update organization type for api
-
-
-
-
+import { toast } from 'react-toastify';
 
 export const UserProfile = () => {
+  const userAuth = useAuth();
+
+  const updateUserStatus = useSelector(getUserUpdateStatus);
+
+  useEffect(() => {
+    if (updateUserStatus === RequestStatus.success) 
+    {
+        // toast("Profile updated successfully",{
+        //   type: "success",
+        // });
+
+       toast.success("Profile updated successfully")
+
+      if (userAuth.user)
+        dispatch(fetchUserProfileVerification(userAuth.user.profile.sub));
+    }
+    else if ( updateUserStatus === RequestStatus.failed)
+    {
+       toast.error("Failed to update the profile. Please try again")
+    }
+
+    console.log("updateUserStatus at profile page", updateUserStatus);
+  }, [updateUserStatus]);
 
   const savedExternalUser = useSelector(getExternalUser);
 
-  const [selectedRegionId, setSelectedRegionId] = useState('');
+  const [selectedRegionId, setSelectedRegionId] = useState("");
 
- useEffect(()=>{
-  setSelectedRegionId(savedExternalUser.regionId)
- },[savedExternalUser])
+  useEffect(() => {
 
+    if(savedExternalUser)
+    {
+      setSelectedRegionId(savedExternalUser.regionId);
+    }
+    else
+    {
+   
+    }
+    
+  }, [savedExternalUser]);
 
-  const handleRegionSelectChange = (event:any) => {
-    setSelectedRegionId(event.target.value)
-  }
+  const handleRegionSelectChange = (event: any) => {
+    setSelectedRegionId(event.target.value);
+  };
 
   const {
     register,
@@ -66,7 +78,7 @@ export const UserProfile = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<ExternalUser>({
-    defaultValues : savedExternalUser
+    defaultValues: savedExternalUser,
   });
 
   const addedStatus = useSelector(getUserAddedStatus);
@@ -82,35 +94,36 @@ export const UserProfile = () => {
     }
     data.isGstExempt = false;
 
-    if(savedExternalUser!=null && savedExternalUser.id !== undefined  && savedExternalUser.id !== '' )
-    {
-      // update user profile 
-      console.log("update user profile",data);
+    if (
+      savedExternalUser != null &&
+      savedExternalUser.id !== undefined &&
+      savedExternalUser.id !== ""
+    ) {
+      // update user profile
+      console.log("update user profile", data);
 
-      delete data['isBillingContactST'];
+      delete data["isBillingContactST"];
 
-      dispatch(updateExternalUser(data))
-    }
-    else
-    {
+      dispatch(updateExternalUser(data));
+    } else {
       dispatch(addNewExternalUser(data));
     }
-
- 
   });
   const auth = useAuth();
   const dispatch = useDispatch<AppDispatch>();
 
   const regions = useSelector(getRegions);
-  const regionSelector = regions.map((_region:any)=>{
-    if(_region.id)
-    return <option key={_region.id} value={_region.id}>{_region.region_name}</option>
-  })
+  const regionSelector = regions.map((_region: any) => {
+    if (_region.id)
+      return (
+        <option key={_region.id} value={_region.id}>
+          {_region.region_name}
+        </option>
+      );
+  });
 
-  const organizationTypes = useSelector(getOrganizations)
+  const organizationTypes = useSelector(getOrganizations);
   const lookupDataFetchStatus = useSelector(getProfileFetchStatus);
-
-
 
   const navigate = useNavigate();
 
@@ -121,8 +134,8 @@ export const UserProfile = () => {
   }, []);
 
   useEffect(() => {
-    console.log(organizationTypes)
-  },[organizationTypes])
+    console.log(organizationTypes);
+  }, [organizationTypes]);
 
   useEffect(() => {
     console.log("regions", regions);
@@ -130,38 +143,40 @@ export const UserProfile = () => {
 
   useEffect(() => {
     if (addedStatus === RequestStatus.success) {
-      console.log("user added ");
+      toast("Profile saved successfully",{
+        type: "success",
+      });
+      dispatch(resetAddedStatus(""))
       navigate("/dashboard");
+    }
+    else if ( addedStatus === RequestStatus.failed)
+    {
+      toast("Failed save profile",{
+        type: "error",
+      });
     }
 
     console.log("user add status ", addedStatus);
   }, [addedStatus]);
 
-  // useEffect( () =>{
-  // 	const subscription = watch((value,{name,type}) => {
-  // 		console.log(value,name,type)
-  // 	})
-  // 	return () => subscription.unsubscribe();
-  // },[watch])
 
-  const getPropertyValue = ( propertyName:string) =>{
-    if(savedExternalUser!=null)
-    {
+
+  const getPropertyValue = (propertyName: string) => {
+    if (savedExternalUser != null) {
       return savedExternalUser[propertyName];
     }
-  }
+  };
 
-  const isSelected = ( propertyName:string, boxValue:string) =>{
-    if(savedExternalUser!=null)
-    {
-      let savedValue = savedExternalUser[propertyName];      
-      return savedValue===boxValue;
+  const isSelected = (propertyName: string, boxValue: string) => {
+    if (savedExternalUser != null) {
+      let savedValue = savedExternalUser[propertyName];
+      return savedValue === boxValue;
     }
-  }
+  };
 
   return (
     <Container fluid className="g-4 pt-5 mt-4">
-      {/* <p>{regions}</p> */}
+    
       <Row>
         <Col className="mx-md-5">
           <Form onSubmit={onSubmit}>
@@ -170,7 +185,7 @@ export const UserProfile = () => {
                 <h5>Section 1 - Profile Information</h5>
               </Col>
             </Row>
-            <Row className="w-100">
+            <Row>
               <Form.Group
                 className="mb-2 col-xs-12 col-sm-6"
                 controlId="formFirstName"
@@ -182,7 +197,7 @@ export const UserProfile = () => {
                   aria-placeholder="First Name"
                   placeholder="First Name"
                   required
-                  // value={getPropertyValue("firstName")}
+               
                 />
               </Form.Group>
               <Form.Group
@@ -196,7 +211,7 @@ export const UserProfile = () => {
                   aria-placeholder="Last Name"
                   placeholder="Add Family Name Here"
                   required
-                  // value={getPropertyValue("lastName")}
+                
                 />
               </Form.Group>
             </Row>
@@ -212,7 +227,7 @@ export const UserProfile = () => {
                   aria-placeholder="Street Address"
                   placeholder="Street Address"
                   required
-                  // value={getPropertyValue("addressLine")}
+                
                 />
               </Form.Group>
               <Form.Group
@@ -226,7 +241,7 @@ export const UserProfile = () => {
                   aria-placeholder="City"
                   placeholder="City"
                   required
-                  // value={getPropertyValue("city")}
+                 
                 />
               </Form.Group>
             </Row>
@@ -242,7 +257,7 @@ export const UserProfile = () => {
                   aria-placeholder="Province"
                   placeholder="Province"
                   required
-                  // value={getPropertyValue("province")}
+               
                 />
               </Form.Group>
               <Form.Group
@@ -256,7 +271,7 @@ export const UserProfile = () => {
                   aria-placeholder="Country"
                   placeholder="Country"
                   required
-                  // value={getPropertyValue("country")}
+                
                 />
               </Form.Group>
               <Form.Group
@@ -270,7 +285,7 @@ export const UserProfile = () => {
                   aria-placeholder="Postal Code"
                   placeholder="Postal Code"
                   required
-                  // value={getPropertyValue("postalCode")}
+                 
                 />
               </Form.Group>
             </Row>
@@ -286,7 +301,7 @@ export const UserProfile = () => {
                   placeholder="Phone Number"
                   aria-placeholder="Phone Number"
                   required
-                  // value={getPropertyValue("phoneNumber")}
+                 
                 />
               </Form.Group>
               <Form.Group
@@ -300,7 +315,7 @@ export const UserProfile = () => {
                   placeholder="Email"
                   aria-placeholder="Email"
                   required
-                  // value={getPropertyValue("email")}
+                 
                 />
               </Form.Group>
             </Row>
@@ -320,8 +335,10 @@ export const UserProfile = () => {
                   aria-label="Choose Region"
                   required
                   value={selectedRegionId}
-                  onChange={(e)=>{handleRegionSelectChange(e)}}
-                  // value={getPropertyValue("regionId")}
+                  onChange={(e) => {
+                    handleRegionSelectChange(e);
+                  }}
+                 
                 >
                   {regionSelector}
                 </Form.Select>
@@ -337,7 +354,7 @@ export const UserProfile = () => {
                   type="text"
                   placeholder="Industry"
                   aria-placeholder="Industry"
-                  // value={getPropertyValue("industry")}
+                  
                 />
               </Form.Group>
               <Form.Group
@@ -351,7 +368,7 @@ export const UserProfile = () => {
                   type="text"
                   placeholder="Organization"
                   aria-placeholder="Organization"
-                  // value={getPropertyValue("organization")}
+                
                 />
               </Form.Group>
             </Row>
@@ -363,8 +380,8 @@ export const UserProfile = () => {
                   value="csap"
                   type="radio"
                   label="CSAP"
-                  {...register("userWorkStatus")}  
-                  // checked = {isSelected("userWorkStatus","csap")}               
+                  {...register("userWorkStatus")}
+                 
                 />
                 <Form.Check
                   required
@@ -372,7 +389,7 @@ export const UserProfile = () => {
                   type="radio"
                   label="QP"
                   {...register("userWorkStatus")}
-                  // checked = {isSelected("userWorkStatus","qp")}   
+                
                 />
                 <Form.Check
                   required
@@ -380,7 +397,7 @@ export const UserProfile = () => {
                   type="radio"
                   label="Public"
                   {...register("userWorkStatus")}
-                  // checked = {isSelected("userWorkStatus","public")}   
+                
                 />
               </Form.Group>
             </Row>
@@ -389,17 +406,19 @@ export const UserProfile = () => {
                 <Form.Label>
                   Are you representing one of the following?
                 </Form.Label>
-                {organizationTypes.map((type:any)=>{
+                {organizationTypes.map((type: any) => {
                   return (
-                  <Form.Check key={type.id}
-                  required
-                  {...register("organizationTypeId")}
-                  name="organizationTypeId"
-                  value={type.id}
-                  type="radio"
-                  label={type.org_name} 
-                  // checked = {isSelected("organizationTypeId",type.id)}
-                />)
+                    <Form.Check
+                      key={type.id}
+                      required
+                      {...register("organizationTypeId")}
+                      name="organizationTypeId"
+                      value={type.id}
+                      type="radio"
+                      label={type.org_name}
+                    
+                    />
+                  );
                 })}
               </div>
             </Row>
@@ -413,7 +432,7 @@ export const UserProfile = () => {
                   value="FN"
                   type="radio"
                   label="First Nations"
-                  // checked = {isSelected("userFNStatus","FN")}
+                
                 />
                 <Form.Check
                   required
@@ -422,7 +441,7 @@ export const UserProfile = () => {
                   value="IN"
                   type="radio"
                   label="Inuit"
-                  // checked = {isSelected("userFNStatus","IN")}
+                
                 />
                 <Form.Check
                   required
@@ -431,7 +450,7 @@ export const UserProfile = () => {
                   value="MT"
                   type="radio"
                   label="Metis"
-                  // checked = {isSelected("userFNStatus","MT")}
+                 
                 />
                 <Form.Check
                   required
@@ -440,7 +459,7 @@ export const UserProfile = () => {
                   value="NO"
                   type="radio"
                   label="None"
-                  // checked = {isSelected("userFNStatus","NO")}
+                 
                 />
               </div>
             </Row>

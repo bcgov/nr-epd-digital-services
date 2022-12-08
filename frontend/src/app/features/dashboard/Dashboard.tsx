@@ -4,8 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate} from 'react-router-dom';
 import { AppDispatch } from '../../Store';
 import { fetchUserProfileVerification, isProfileVerified } from '../users/UsersSlice';
+import {  toast } from 'react-toastify';
 
 const Dashboard = () => {
+
+ 
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -26,7 +29,7 @@ const Dashboard = () => {
   console.log(auth.user?.access_token)
 
   useEffect(()=>{
-    if(auth.user?.profile && auth.user?.profile.identity_provider==="bceid" && userIsProfileVerifiedValue !== true )
+    if(auth.user?.profile && auth.user?.profile.identity_provider==="bceid" )
     {
       console.log("invoking action",auth.user.profile)
       dispatch(fetchUserProfileVerification(auth.user.profile.sub));
@@ -40,7 +43,7 @@ const Dashboard = () => {
 
     if(userIsProfileVerifiedValue===false && auth.user?.profile.identity_provider==="bceid")
     {
-      navigate("/userprofile")
+      navigate("/profile")
     }
 
   },[userIsProfileVerifiedValue])
@@ -49,17 +52,17 @@ const Dashboard = () => {
 
   return (
 
-    <div>
-        <ul>
-            <li>
-                <Link to="/users"> List of Users </Link>
-            </li>
-            <li>
-                <Link to="/users/add"> Add New User </Link>
-            </li>
-        </ul>
-        {auth.isLoading ? <div>Loading User</div> : <div>{auth.user?.profile.email}</div>}
-        <p></p>
+    <div className='container-fluid'>
+      <div className='row'>
+        <div className='col-12 '>       
+        {auth.isLoading ? <div>Loading User</div> :
+        auth.user?.profile.identity_provider==="bceid"? <h1>External User Dashboard</h1> : <h1> Internal User Dashboard</h1>
+
+        }
+        </div>
+      </div>
+       
+   
     </div>
   )
 }

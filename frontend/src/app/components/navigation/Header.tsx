@@ -27,7 +27,7 @@ const Header = () => {
             <Dropdown.Menu>
 
             {auth.user?.profile.identity_provider==="bceid" && //Only BCEID/Public Users should be able to edit their profile
-              <Dropdown.Item tag={Button} onClick={()=>{navigate("/userprofile")}} >  
+              <Dropdown.Item tag={Button} onClick={()=>{navigate("/profile")}} >  
                 Profile
               </Dropdown.Item>
             }
@@ -49,7 +49,7 @@ const Header = () => {
         :
         (
           //Unauthenticated Users are shown login button
-          <div id="authentication-button">{LoginDropdown("Log In",100)}</div>
+          <div id="authentication-button" className="mr-4">{LoginDropdown("Log In",0)}</div>
         )
       }
     </header>

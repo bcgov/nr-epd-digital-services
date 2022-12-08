@@ -7,7 +7,7 @@ export const LoginDropdown = (title:string,width_override?:number) =>{
     
     return(
         <Dropdown id="login-selector-dropdown"  >
-            <Dropdown.Toggle id="login-selector-dropdown-toggle" className="login-btn-lh" style={{width:width_override}}>
+            <Dropdown.Toggle id="login-selector-dropdown-toggle" className="login-btn-lh">
                 {title}
             </Dropdown.Toggle>
             <Dropdown.Menu id="login-selector-dropdown-menu">
