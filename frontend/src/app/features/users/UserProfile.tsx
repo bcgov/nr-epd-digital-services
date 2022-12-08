@@ -82,7 +82,7 @@ export const UserProfile = () => {
       dispatch(resetAddedStatus(""));
       navigate("/dashboard");
     } else if (addedStatus === RequestStatus.failed) {
-      toast("Failed save profile", {
+      toast("Failed to save profile", {
         type: "error",
       });
     }
@@ -118,6 +118,12 @@ export const UserProfile = () => {
   };
 
   const onSubmit = handleSubmit((data: ExternalUser) => {
+
+    if(data.regionId=="")
+    {
+      toast.error("Please select region id");
+      return;
+    }
  
     data.userId = userAuth.user?.profile.sub;
     data.isProfileVerified = true;
@@ -135,6 +141,8 @@ export const UserProfile = () => {
       data.isGstExempt = false;
     }
     //data.isGstExempt = false;
+
+    //data.regionId = selectedRegionId
 
     delete data["isBillingContactST"];
     delete data["isGstExemptST"];
@@ -338,6 +346,7 @@ export const UserProfile = () => {
                     handleRegionSelectChange(e);
                   }}
                 >
+                  <option value=""> Select Region</option>
                   {regionSelector}
                 </Form.Select>
               </Form.Group>
