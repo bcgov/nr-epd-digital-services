@@ -168,7 +168,7 @@ objects:
                 periodSeconds: 30
                 timeoutSeconds: 5
           # initContainers:
-          #   - name: wait-for-graphql
+          #   - name: epd-backend-applications
           #   # is this image going to work?
           #     image: busybox:1.28 
           #     args:
@@ -180,6 +180,13 @@ objects:
           #         echo '.'
           #         sleep 15;
           #       done  
+          initContainers:
+            - name: init-${NAME}-backend-applications
+              image: image-registry.openshift-image-registry.svc:5000/e38158-dev/epd-backend-applications:dev
+              command: ['sh', '-c', 'until getent hosts applications api; do echo waiting for applications; sleep 2; done;']
+            - name: init-${NAME}-backend-users
+              image: image-registry.openshift-image-registry.svc:5000/e38158-dev/epd-backend-users:dev
+              command: ['sh', '-c', 'until getent hosts users; do echo waiting for users; sleep 2; done;']
   - apiVersion: v1
     kind: Service
     metadata:
