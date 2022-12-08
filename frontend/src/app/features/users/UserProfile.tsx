@@ -7,7 +7,7 @@ import "./UserProfile.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchLookupData,
-   getProfileFetchStatus,
+  getProfileFetchStatus,
   getRegions,
   getOrganizations
 } from "../common/CommonDataSlice";
@@ -16,9 +16,7 @@ import { AppDispatch } from "../../Store";
 import { ExternalUser } from "./dto/ExternalUser";
 import { RequestStatus } from "../../helpers/requests/status";
 import { useNavigate } from "react-router-dom";
-import { Region } from "../common/dto/LookUpValues";
 
-// type FormData = {
 // 	userId:string | undefined;
 // 	firstName:string;
 // 	lastName:string;
@@ -41,17 +39,12 @@ import { Region } from "../common/dto/LookUpValues";
 
 //TODO: Update dropdown for region to match api, update organization type for api
 
-
-
-
-
 export const UserProfile = () => {
 
   const savedExternalUser = useSelector(getExternalUser);
 
   const {
     register,
-    watch,
     handleSubmit,
     formState: { errors },
   } = useForm<ExternalUser>({
@@ -126,12 +119,6 @@ export const UserProfile = () => {
     console.log("user add status ", addedStatus);
   }, [addedStatus]);
 
-  // useEffect( () =>{
-  // 	const subscription = watch((value,{name,type}) => {
-  // 		console.log(value,name,type)
-  // 	})
-  // 	return () => subscription.unsubscribe();
-  // },[watch])
 
   const getPropertyValue = ( propertyName:string) =>{
     if(savedExternalUser!=null)
@@ -159,7 +146,7 @@ export const UserProfile = () => {
                 <h5>Section 1 - Profile Information</h5>
               </Col>
             </Row>
-            <Row className="w-100">
+            <Row>
               <Form.Group
                 className="mb-2 col-xs-12 col-sm-6"
                 controlId="formFirstName"
@@ -185,6 +172,7 @@ export const UserProfile = () => {
                   aria-placeholder="Last Name"
                   placeholder="Add Family Name Here"
                   required
+                  autoComplete=""
                   // value={getPropertyValue("lastName")}
                 />
               </Form.Group>
@@ -196,6 +184,7 @@ export const UserProfile = () => {
               >
                 <Form.Label>Street Address</Form.Label>
                 <Form.Control
+                  id="geocodeField"
                   {...register("addressLine")}
                   type="text"
                   aria-placeholder="Street Address"
@@ -308,7 +297,7 @@ export const UserProfile = () => {
                   {...register("regionId")}
                   aria-label="Choose Region"
                   required
-                  defaultValue={getPropertyValue("regionId")}
+                  defaultValue={savedExternalUser?.regionId}
                   // value={getPropertyValue("regionId")}
                 >
                   {regionSelector}
@@ -509,7 +498,8 @@ export const UserProfile = () => {
 						</Row> */}
             <Row>
               <Col className="text-end mb-3">
-                <Button type="submit">Save Profile</Button>
+                { savedExternalUser && <Button id="back-profile-btn" onClick={()=>{navigate("/dashboard")}}>Back</Button>}
+                <Button id="save-profile-btn" type="submit">Save Profile</Button>
               </Col>
             </Row>
           </Form>

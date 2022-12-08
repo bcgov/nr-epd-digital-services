@@ -21,7 +21,7 @@ const Header = () => {
       {
         auth.isAuthenticated ? (
           <Dropdown>
-            <Dropdown.Toggle>
+            <Dropdown.Toggle id="logged-in-toggle">
               {auth.user?.profile.name}
             </Dropdown.Toggle>
             <Dropdown.Menu>
