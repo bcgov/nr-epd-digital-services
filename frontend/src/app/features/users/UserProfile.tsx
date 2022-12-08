@@ -19,58 +19,33 @@ import {
   getUserUpdateStatus,
   fetchUserProfileVerification,
   resetAddedStatus,
+  resetUpdateStatus
 } from "./UsersSlice";
 import { AppDispatch } from "../../Store";
 import { ExternalUser } from "./dto/ExternalUser";
 import { RequestStatus } from "../../helpers/requests/status";
 import { useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 export const UserProfile = () => {
+
+  //Hooks
   const userAuth = useAuth();
 
+  const dispatch = useDispatch<AppDispatch>();
+  
+  const navigate = useNavigate();  
+
+  //redux state selectors
   const updateUserStatus = useSelector(getUserUpdateStatus);
-
-  useEffect(() => {
-    if (updateUserStatus === RequestStatus.success) 
-    {
-        // toast("Profile updated successfully",{
-        //   type: "success",
-        // });
-
-       toast.success("Profile updated successfully")
-
-      if (userAuth.user)
-        dispatch(fetchUserProfileVerification(userAuth.user.profile.sub));
-    }
-    else if ( updateUserStatus === RequestStatus.failed)
-    {
-       toast.error("Failed to update the profile. Please try again")
-    }
-
-    console.log("updateUserStatus at profile page", updateUserStatus);
-  }, [updateUserStatus]);
-
   const savedExternalUser = useSelector(getExternalUser);
+  const addedStatus = useSelector(getUserAddedStatus);
+  const organizationTypes = useSelector(getOrganizations); 
+  const regions = useSelector(getRegions);
 
+
+  //  page state management
   const [selectedRegionId, setSelectedRegionId] = useState("");
-
-  useEffect(() => {
-
-    if(savedExternalUser)
-    {
-      setSelectedRegionId(savedExternalUser.regionId);
-    }
-    else
-    {
-   
-    }
-    
-  }, [savedExternalUser]);
-
-  const handleRegionSelectChange = (event: any) => {
-    setSelectedRegionId(event.target.value);
-  };
 
   const {
     register,
@@ -80,38 +55,105 @@ export const UserProfile = () => {
     defaultValues: savedExternalUser,
   });
 
-  const addedStatus = useSelector(getUserAddedStatus);
+
+  // Handles logic after update is done
+  useEffect(() => {
+    if (updateUserStatus === RequestStatus.success) {
+      // toast("Profile updated successfully",{
+      //   type: "success",
+      // });
+      dispatch(resetUpdateStatus(""));
+      toast.success("Profile updated successfully");
+      if (userAuth.user)
+        dispatch(fetchUserProfileVerification(userAuth.user.profile.sub));
+    } else if (updateUserStatus === RequestStatus.failed) {
+      toast.error("Failed to update the profile. Please try again");
+    }
+  }, [updateUserStatus]);
+
+
+
+   /** Handling Logic after Profile Add State */
+   useEffect(() => {
+    if (addedStatus === RequestStatus.success) {
+      toast("Profile saved successfully", {
+        type: "success",
+      });
+      dispatch(resetAddedStatus(""));
+      navigate("/dashboard");
+    } else if (addedStatus === RequestStatus.failed) {
+      toast("Failed save profile", {
+        type: "error",
+      });
+    }
+
+   
+  }, [addedStatus]);
+
+
+
+
+// Handling setting regionId from Saved User
+  useEffect(() => {
+    if (savedExternalUser) {
+      setSelectedRegionId(savedExternalUser.regionId);
+    } else {
+    }
+  }, [savedExternalUser]);
+
+  useEffect(() => {  
+    dispatch(fetchLookupData());   
+  }, []);
+
+
+    
+
+
+
+
+// User Events 
+
+  const handleRegionSelectChange = (event: any) => {
+    setSelectedRegionId(event.target.value);
+  };
 
   const onSubmit = handleSubmit((data: ExternalUser) => {
-    data.userId = auth.user?.profile.sub;
+ 
+    data.userId = userAuth.user?.profile.sub;
     data.isProfileVerified = true;
-    console.log("data", data);
+  
+
     if (data.isBillingContactST === "true") {
       data.isBillingContact = true;
     } else {
       data.isBillingContact = false;
     }
-    data.isGstExempt = false;
 
+    if (data.isGstExemptST === "true") {
+      data.isGstExempt = true;
+    } else {
+      data.isGstExempt = false;
+    }
+    //data.isGstExempt = false;
+
+    delete data["isBillingContactST"];
+    delete data["isGstExemptST"];
     if (
       savedExternalUser != null &&
       savedExternalUser.id !== undefined &&
       savedExternalUser.id !== ""
     ) {
       // update user profile
-      console.log("update user profile", data);
-
-      delete data["isBillingContactST"];
+   
 
       dispatch(updateExternalUser(data));
     } else {
       dispatch(addNewExternalUser(data));
     }
   });
-  const auth = useAuth();
-  const dispatch = useDispatch<AppDispatch>();
 
-  const regions = useSelector(getRegions);
+
+// Regions DropDown Builder
   const regionSelector = regions.map((_region: any) => {
     if (_region.id)
       return (
@@ -121,43 +163,11 @@ export const UserProfile = () => {
       );
   });
 
-  const organizationTypes = useSelector(getOrganizations);
-  const lookupDataFetchStatus = useSelector(getProfileFetchStatus);
+ 
 
-  const navigate = useNavigate();
+ 
 
-  useEffect(() => {
-    console.log("dispatching fetchLookupData");
-    dispatch(fetchLookupData());
-    console.log("current profile status", lookupDataFetchStatus);
-  }, []);
-
-  useEffect(() => {
-    console.log(organizationTypes);
-  }, [organizationTypes]);
-
-  useEffect(() => {
-    console.log("regions", regions);
-  }, [regions]);
-
-  useEffect(() => {
-    if (addedStatus === RequestStatus.success) {
-      toast("Profile saved successfully",{
-        type: "success",
-      });
-      dispatch(resetAddedStatus(""))
-      navigate("/dashboard");
-    }
-    else if ( addedStatus === RequestStatus.failed)
-    {
-      toast("Failed save profile",{
-        type: "error",
-      });
-    }
-
-    console.log("user add status ", addedStatus);
-  }, [addedStatus]);
-
+  
 
 
   const getPropertyValue = (propertyName: string) => {
@@ -175,13 +185,12 @@ export const UserProfile = () => {
 
   return (
     <Container fluid className="g-4 pt-5 mt-4">
-    
       <Row>
         <Col className="mx-md-5">
           <Form onSubmit={onSubmit}>
             <Row className="pt-4">
               <Col id="form-header" className="my-1">
-                <h5>Section 1 - Profile Information</h5>
+                <p className="h4">Section 1 - Profile Information</p>
               </Col>
             </Row>
             <Row>
@@ -196,7 +205,6 @@ export const UserProfile = () => {
                   aria-placeholder="First Name"
                   placeholder="First Name"
                   required
-               
                 />
               </Form.Group>
               <Form.Group
@@ -210,7 +218,6 @@ export const UserProfile = () => {
                   aria-placeholder="Last Name"
                   placeholder="Add Family Name Here"
                   required
-                
                 />
               </Form.Group>
             </Row>
@@ -220,14 +227,12 @@ export const UserProfile = () => {
                 controlId="formaddressLine"
               >
                 <Form.Label>Street Address</Form.Label>
-                <Form.Control
-                  id="geocodeField"
+                <Form.Control                 
                   {...register("addressLine")}
                   type="text"
                   aria-placeholder="Street Address"
                   placeholder="Street Address"
                   required
-                
                 />
               </Form.Group>
               <Form.Group
@@ -241,7 +246,6 @@ export const UserProfile = () => {
                   aria-placeholder="City"
                   placeholder="City"
                   required
-                 
                 />
               </Form.Group>
             </Row>
@@ -257,7 +261,6 @@ export const UserProfile = () => {
                   aria-placeholder="Province"
                   placeholder="Province"
                   required
-               
                 />
               </Form.Group>
               <Form.Group
@@ -271,7 +274,6 @@ export const UserProfile = () => {
                   aria-placeholder="Country"
                   placeholder="Country"
                   required
-                
                 />
               </Form.Group>
               <Form.Group
@@ -285,7 +287,6 @@ export const UserProfile = () => {
                   aria-placeholder="Postal Code"
                   placeholder="Postal Code"
                   required
-                 
                 />
               </Form.Group>
             </Row>
@@ -301,7 +302,6 @@ export const UserProfile = () => {
                   placeholder="Phone Number"
                   aria-placeholder="Phone Number"
                   required
-                 
                 />
               </Form.Group>
               <Form.Group
@@ -315,13 +315,12 @@ export const UserProfile = () => {
                   placeholder="Email"
                   aria-placeholder="Email"
                   required
-                 
                 />
               </Form.Group>
             </Row>
             <Row className="pt-4">
               <Col id="form-header" className="my-1">
-                <h5>Section 2 - Additional Information</h5>
+                <p className="h4">Section 2 - Additional Information</p>
               </Col>
             </Row>
             <Row>
@@ -338,7 +337,6 @@ export const UserProfile = () => {
                   onChange={(e) => {
                     handleRegionSelectChange(e);
                   }}
-                 
                 >
                   {regionSelector}
                 </Form.Select>
@@ -354,7 +352,6 @@ export const UserProfile = () => {
                   type="text"
                   placeholder="Industry"
                   aria-placeholder="Industry"
-                  
                 />
               </Form.Group>
               <Form.Group
@@ -368,7 +365,6 @@ export const UserProfile = () => {
                   type="text"
                   placeholder="Organization"
                   aria-placeholder="Organization"
-                
                 />
               </Form.Group>
             </Row>
@@ -381,7 +377,6 @@ export const UserProfile = () => {
                   type="radio"
                   label="CSAP"
                   {...register("userWorkStatus")}
-                 
                 />
                 <Form.Check
                   required
@@ -389,7 +384,6 @@ export const UserProfile = () => {
                   type="radio"
                   label="QP"
                   {...register("userWorkStatus")}
-                
                 />
                 <Form.Check
                   required
@@ -397,7 +391,6 @@ export const UserProfile = () => {
                   type="radio"
                   label="Public"
                   {...register("userWorkStatus")}
-                
                 />
               </Form.Group>
             </Row>
@@ -416,7 +409,6 @@ export const UserProfile = () => {
                       value={type.id}
                       type="radio"
                       label={type.org_name}
-                    
                     />
                   );
                 })}
@@ -432,7 +424,6 @@ export const UserProfile = () => {
                   value="FN"
                   type="radio"
                   label="First Nations"
-                
                 />
                 <Form.Check
                   required
@@ -441,7 +432,6 @@ export const UserProfile = () => {
                   value="IN"
                   type="radio"
                   label="Inuit"
-                
                 />
                 <Form.Check
                   required
@@ -450,7 +440,6 @@ export const UserProfile = () => {
                   value="MT"
                   type="radio"
                   label="Metis"
-                 
                 />
                 <Form.Check
                   required
@@ -459,12 +448,34 @@ export const UserProfile = () => {
                   value="NO"
                   type="radio"
                   label="None"
-                 
+                />
+              </div>
+            </Row>
+            <Row>
+              <div key="radio" className="mb-3">
+                <Form.Label>GST Exempt?</Form.Label>
+                <Form.Check
+                  required
+                  value="true"
+                  {...register("isGstExemptST")}
+                  name="isGstExemptST"
+                  type="radio"
+                  label="Yes"
+                  // checked = {isSelected("isBillingContact","true")}
+                />
+                <Form.Check
+                  required
+                  value="false"
+                  {...register("isGstExemptST")}
+                  name="isGstExemptST"
+                  type="radio"
+                  label="No"
+                  // checked = {isSelected("isBillingContact","false")}
                 />
               </div>
             </Row>
 
-            <Row className="pt-4">
+            {/* <Row className="pt-4">
               <Col id="form-header" className="my-1">
                 <h5>Section 3 - Billing Details</h5>
               </Col>
@@ -491,7 +502,7 @@ export const UserProfile = () => {
                   // checked = {isSelected("isBillingContact","false")}
                 />
               </div>
-            </Row>
+            </Row> */}
             {/* <Row>
 							<Form.Group className="mb-2 col-xs-12 col-sm-6" controlId="formBillingAddress">
 								<Form.Label>Billing Address</Form.Label>
@@ -540,8 +551,19 @@ export const UserProfile = () => {
 						</Row> */}
             <Row>
               <Col className="text-end mb-3">
-                { savedExternalUser && <Button id="back-profile-btn" onClick={()=>{navigate("/dashboard")}}>Back</Button>}
-                <Button id="save-profile-btn" type="submit">Save Profile</Button>
+                {savedExternalUser && (
+                  <Button
+                    id="back-profile-btn"
+                    onClick={() => {
+                      navigate("/dashboard");
+                    }}
+                  >
+                    Back
+                  </Button>
+                )}
+                <Button id="save-profile-btn" type="submit">
+                  Save Profile
+                </Button>
               </Col>
             </Row>
           </Form>

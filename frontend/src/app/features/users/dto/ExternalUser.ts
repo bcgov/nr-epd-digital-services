@@ -20,4 +20,5 @@ export class ExternalUser {
     regionId: String = '';
     organizationTypeId: String = '';
     isBillingContactST?:string = ''
+    isGstExemptST?:string = '';
 }
