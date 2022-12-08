@@ -74,7 +74,6 @@ export const UserProfile = () => {
 
   const {
     register,
-    watch,
     handleSubmit,
     formState: { errors },
   } = useForm<ExternalUser>({
@@ -222,6 +221,7 @@ export const UserProfile = () => {
               >
                 <Form.Label>Street Address</Form.Label>
                 <Form.Control
+                  id="geocodeField"
                   {...register("addressLine")}
                   type="text"
                   aria-placeholder="Street Address"
@@ -540,7 +540,8 @@ export const UserProfile = () => {
 						</Row> */}
             <Row>
               <Col className="text-end mb-3">
-                <Button type="submit">Save Profile</Button>
+                { savedExternalUser && <Button id="back-profile-btn" onClick={()=>{navigate("/dashboard")}}>Back</Button>}
+                <Button id="save-profile-btn" type="submit">Save Profile</Button>
               </Col>
             </Row>
           </Form>
