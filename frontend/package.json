@@ -40,7 +40,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "test:cov": "npm test -- --coverage"
+    "test:cov": "npm test -- --coverage"  
   },
   "eslintConfig": {
     "extends": [

@@ -6,6 +6,8 @@ import {
 } from "react-router-dom";
 import AppRoutes from './app/routes/Routes';
 import '@bcgov/bc-sans/css/BCSans.css'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -14,6 +16,7 @@ function App() {
         <Header/>
         <AppRoutes/>
       </Router>   
+      <ToastContainer />
       <Footer/> 
     </div>
   );
