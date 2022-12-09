@@ -6,8 +6,7 @@ import { useForm } from "react-hook-form";
 import "./UserProfile.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchLookupData,
-  getProfileFetchStatus,
+    fetchLookupData,
   getRegions,
   getOrganizations,
 } from "../common/CommonDataSlice";
@@ -20,6 +19,7 @@ import {
   fetchUserProfileVerification,
   resetAddedStatus,
   resetUpdateStatus,
+  isProfileVerified
 } from "./UsersSlice";
 import { AppDispatch } from "../../Store";
 import { ExternalUser } from "./dto/ExternalUser";
@@ -41,6 +41,7 @@ export const UserProfile = () => {
   const addedStatus = useSelector(getUserAddedStatus);
   const organizationTypes = useSelector(getOrganizations);
   const regions = useSelector(getRegions);
+  const userIsProfileVerifiedValue = useSelector(isProfileVerified)
 
   //  page state management
   const [selectedRegionId, setSelectedRegionId] = useState("");
@@ -48,15 +49,27 @@ export const UserProfile = () => {
   const {
     register,
     handleSubmit,
+    setValue,
+    setError,
     formState: { errors },
     getFieldState,
-    setError,
-    getValues,
-    setValue,
+    getValues,  
     clearErrors,
   } = useForm<ExternalUser>({
+    shouldUseNativeValidation:true,
     defaultValues: savedExternalUser,
   });
+  
+  //Loads default values from authorized user
+  useEffect(() => {
+    if(!userIsProfileVerifiedValue && userAuth.user){
+      setValue("firstName", (userAuth.user.profile.given_name as string) )
+      setValue("lastName", (userAuth.user.profile.family_name as string))
+      setValue("email", (userAuth.user.profile.email as string))
+    }
+    },[userIsProfileVerifiedValue]
+  )  
+
 
   // Handles logic after update is done
   useEffect(() => {
@@ -73,8 +86,10 @@ export const UserProfile = () => {
     }
   }, [updateUserStatus]);
 
-  /** Handling Logic after Profile Add State */
-  useEffect(() => {
+
+  
+   /** Handling Logic after Profile Add State */
+   useEffect(() => {
     if (addedStatus === RequestStatus.success) {
       toast("Profile saved successfully", {
         type: "success",
@@ -154,7 +169,6 @@ export const UserProfile = () => {
         </option>
       );
   });
-
   const getPropertyValue = (propertyName: string) => {
     if (savedExternalUser != null) {
       return savedExternalUser[propertyName];
@@ -466,7 +480,10 @@ export const UserProfile = () => {
               >
                 <Form.Label>Phone Number</Form.Label>
                 <Form.Control
-                  {...register("phoneNumber")}
+                  {...register("phoneNumber",{pattern:{
+                      value:/^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g,
+                      message: "Enter a valid phone number",}}
+                      )}
                   type="text"
                   placeholder="Phone Number"
                   aria-placeholder="Phone Number"
@@ -487,12 +504,15 @@ export const UserProfile = () => {
               >
                 <Form.Label>Email</Form.Label>
                 <Form.Control
-                  {...register("email")}
+                  {...register("email", {
+                    pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+                  })}
                   type="email"
                   placeholder="Email"
                   aria-placeholder="Email"
                   required
                   aria-invalid={errors.email ? "true" : "false"}
+                  isInvalid={errors?.email?.types===null}
                 />
                 <p className="errorMessage">
                   {" "}
