@@ -19,7 +19,7 @@ import {
   getUserUpdateStatus,
   fetchUserProfileVerification,
   resetAddedStatus,
-  resetUpdateStatus
+  resetUpdateStatus,
 } from "./UsersSlice";
 import { AppDispatch } from "../../Store";
 import { ExternalUser } from "./dto/ExternalUser";
@@ -28,21 +28,19 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export const UserProfile = () => {
-
   //Hooks
   const userAuth = useAuth();
 
   const dispatch = useDispatch<AppDispatch>();
-  
-  const navigate = useNavigate();  
+
+  const navigate = useNavigate();
 
   //redux state selectors
   const updateUserStatus = useSelector(getUserUpdateStatus);
   const savedExternalUser = useSelector(getExternalUser);
   const addedStatus = useSelector(getUserAddedStatus);
-  const organizationTypes = useSelector(getOrganizations); 
+  const organizationTypes = useSelector(getOrganizations);
   const regions = useSelector(getRegions);
-
 
   //  page state management
   const [selectedRegionId, setSelectedRegionId] = useState("");
@@ -51,10 +49,14 @@ export const UserProfile = () => {
     register,
     handleSubmit,
     formState: { errors },
+    getFieldState,
+    setError,
+    getValues,
+    setValue,
+    clearErrors,
   } = useForm<ExternalUser>({
     defaultValues: savedExternalUser,
   });
-
 
   // Handles logic after update is done
   useEffect(() => {
@@ -71,10 +73,8 @@ export const UserProfile = () => {
     }
   }, [updateUserStatus]);
 
-
-
-   /** Handling Logic after Profile Add State */
-   useEffect(() => {
+  /** Handling Logic after Profile Add State */
+  useEffect(() => {
     if (addedStatus === RequestStatus.success) {
       toast("Profile saved successfully", {
         type: "success",
@@ -86,14 +86,9 @@ export const UserProfile = () => {
         type: "error",
       });
     }
-
-   
   }, [addedStatus]);
 
-
-
-
-// Handling setting regionId from Saved User
+  // Handling setting regionId from Saved User
   useEffect(() => {
     if (savedExternalUser) {
       setSelectedRegionId(savedExternalUser.regionId);
@@ -101,33 +96,24 @@ export const UserProfile = () => {
     }
   }, [savedExternalUser]);
 
-  useEffect(() => {  
-    dispatch(fetchLookupData());   
+  useEffect(() => {
+    dispatch(fetchLookupData());
   }, []);
 
-
-    
-
-
-
-
-// User Events 
+  // User Events
 
   const handleRegionSelectChange = (event: any) => {
     setSelectedRegionId(event.target.value);
   };
 
   const onSubmit = handleSubmit((data: ExternalUser) => {
-
-    if(data.regionId=="")
-    {
+    if (data.regionId == "") {
       toast.error("Please select region id");
       return;
     }
- 
+
     data.userId = userAuth.user?.profile.sub;
     data.isProfileVerified = true;
-  
 
     if (data.isBillingContactST === "true") {
       data.isBillingContact = true;
@@ -152,7 +138,6 @@ export const UserProfile = () => {
       savedExternalUser.id !== ""
     ) {
       // update user profile
-   
 
       dispatch(updateExternalUser(data));
     } else {
@@ -160,8 +145,7 @@ export const UserProfile = () => {
     }
   });
 
-
-// Regions DropDown Builder
+  // Regions DropDown Builder
   const regionSelector = regions.map((_region: any) => {
     if (_region.id)
       return (
@@ -170,13 +154,6 @@ export const UserProfile = () => {
         </option>
       );
   });
-
- 
-
- 
-
-  
-
 
   const getPropertyValue = (propertyName: string) => {
     if (savedExternalUser != null) {
@@ -189,6 +166,139 @@ export const UserProfile = () => {
       let savedValue = savedExternalUser[propertyName];
       return savedValue === boxValue;
     }
+  };
+
+  const IsCheckValid = (event: any) => {
+    ///setError('firstName', { type: 'required'});
+
+    //console.log(event,formState)
+    // if(formState.isValid)
+    // {
+    //   toast.warn("Please fill all the mandatory values")
+    // }
+
+    let values: any = getValues();
+    for (const property in values) {
+      if (typeof values[property] === "string" && values[property] === "") {
+        switch (property) {
+          case "firstName":
+            setError("firstName", { type: "required" });
+            break;
+          case "lastName":
+            setError("lastName", { type: "required" });
+            break;
+          case "addressLine":
+            setError("addressLine", { type: "required" });
+            break;
+          case "city":
+            setError("city", { type: "required" });
+            break;
+          case "province":
+            setError("province", { type: "required" });
+            break;
+          case "country":
+            setError("country", { type: "required" });
+            break;
+          case "postalCode":
+            setError("postalCode", { type: "required" });
+            break;
+          case "phoneNumber":
+            setError("phoneNumber", { type: "required" });
+            break;
+          case "email":
+            setError("email", { type: "required" });
+            break;
+          case "regionId":
+            setError("regionId", { type: "required" });
+            break;
+          case "industry":
+            setError("industry", { type: "required" });
+            break;
+          case "organization":
+            setError("organization", { type: "required" });
+            break;
+          case "userWorkStatus":
+            setError("userWorkStatus", { type: "required" });
+            break;
+          case "organizationTypeId":
+            setError("organizationTypeId", { type: "required" });
+            break;
+          case "userFNStatus":
+            setError("userFNStatus", { type: "required" });
+            break;
+          case "isGstExemptST":
+            setError("isGstExemptST", { type: "required" });
+            break;
+        }
+      }
+        else if(typeof values[property] === "string" && values[property] === "")
+        {
+     
+          switch (property) {
+            case "firstName":
+              clearErrors("firstName")
+              break;
+            case "lastName":
+              clearErrors("lastName")
+              break;
+            case "addressLine":
+              clearErrors("addressLine")
+              break;
+            case "city":
+              clearErrors("city")
+              break;
+            case "province":
+              clearErrors("province")
+              break;
+            case "country":
+              clearErrors("country")
+              break;
+            case "postalCode":
+              clearErrors("postalCode")
+              break;
+            case "phoneNumber":
+              clearErrors("phoneNumber")
+              break;
+            case "email":
+              clearErrors("email")
+              break;
+            case "regionId":
+              clearErrors("regionId")
+              break;
+            case "industry":
+              clearErrors("industry")
+              break;
+            case "organization":
+              clearErrors("organization")
+              break;
+            case "userWorkStatus":
+              clearErrors("userWorkStatus")
+              break;
+            case "organizationTypeId":
+              clearErrors("organizationTypeId")
+              break;
+            case "userFNStatus":
+              clearErrors("userFNStatus")
+              break;
+            case "isGstExemptST":
+              clearErrors("isGstExemptST")
+              break;
+        }
+
+        // if(property==="lastName")
+        // setError("lastName", { type: 'required'})
+
+        // if(property==="addressLine")
+        // setError("addressLine", { type: 'required'})
+
+        // if(property==="city")
+        // setError("city", { type: 'required'})
+      }
+    }
+  
+
+    //setError("firstName", { type: "focus" }, { shouldFocus: true })
+    //setError("firstName",{message:"Please fill this", type:"required" }, {shouldFocus:true})
   };
 
   return (
@@ -208,12 +318,19 @@ export const UserProfile = () => {
               >
                 <Form.Label>First Name</Form.Label>
                 <Form.Control
-                  {...register("firstName")}
+                  {...register("firstName", { required: true })}
+                  aria-invalid={errors.firstName ? "true" : "false"}
                   type="text"
                   aria-placeholder="First Name"
                   placeholder="First Name"
                   required
                 />
+                <p className="errorMessage">
+                  {" "}
+                  {errors.firstName && errors.firstName.type === "required" && (
+                    <span>First name is required</span>
+                  )}
+                </p>
               </Form.Group>
               <Form.Group
                 className="mb-2 col-xs-12 col-sm-6"
@@ -225,8 +342,15 @@ export const UserProfile = () => {
                   type="text"
                   aria-placeholder="Last Name"
                   placeholder="Add Family Name Here"
+                  aria-invalid={errors.lastName ? "true" : "false"}
                   required
                 />
+                <p className="errorMessage">
+                  {" "}
+                  {errors.lastName && errors.lastName.type === "required" && (
+                    <span>Last name is required</span>
+                  )}
+                </p>
               </Form.Group>
             </Row>
             <Row>
@@ -235,13 +359,21 @@ export const UserProfile = () => {
                 controlId="formaddressLine"
               >
                 <Form.Label>Street Address</Form.Label>
-                <Form.Control                 
+                <Form.Control
                   {...register("addressLine")}
                   type="text"
                   aria-placeholder="Street Address"
                   placeholder="Street Address"
+                  aria-invalid={errors.addressLine ? "true" : "false"}
                   required
                 />
+                <p className="errorMessage">
+                  {" "}
+                  {errors.addressLine &&
+                    errors.addressLine.type === "required" && (
+                      <span>Street address is required</span>
+                    )}
+                </p>
               </Form.Group>
               <Form.Group
                 className="mb-2 col-xs-12 col-sm-6"
@@ -254,7 +386,14 @@ export const UserProfile = () => {
                   aria-placeholder="City"
                   placeholder="City"
                   required
+                  aria-invalid={errors.city ? "true" : "false"}
                 />
+                <p className="errorMessage">
+                  {" "}
+                  {errors.city && errors.city.type === "required" && (
+                    <span>City is required</span>
+                  )}
+                </p>
               </Form.Group>
             </Row>
             <Row>
@@ -268,8 +407,15 @@ export const UserProfile = () => {
                   type="text"
                   aria-placeholder="Province"
                   placeholder="Province"
+                  aria-invalid={errors.province ? "true" : "false"}
                   required
                 />
+                <p className="errorMessage">
+                  {" "}
+                  {errors.province && errors.province.type === "required" && (
+                    <span>Province is required</span>
+                  )}
+                </p>
               </Form.Group>
               <Form.Group
                 className="mb-2 col-xs-12 col-sm-4"
@@ -282,7 +428,14 @@ export const UserProfile = () => {
                   aria-placeholder="Country"
                   placeholder="Country"
                   required
+                  aria-invalid={errors.country ? "true" : "false"}
                 />
+                <p className="errorMessage">
+                  {" "}
+                  {errors.country && errors.country.type === "required" && (
+                    <span>Country is required</span>
+                  )}
+                </p>
               </Form.Group>
               <Form.Group
                 className="mb-2 col-xs-12 col-sm-4"
@@ -295,7 +448,15 @@ export const UserProfile = () => {
                   aria-placeholder="Postal Code"
                   placeholder="Postal Code"
                   required
+                  aria-invalid={errors.postalCode ? "true" : "false"}
                 />
+                <p className="errorMessage">
+                  {" "}
+                  {errors.postalCode &&
+                    errors.postalCode.type === "required" && (
+                      <span>Postal Code is required</span>
+                    )}
+                </p>
               </Form.Group>
             </Row>
             <Row>
@@ -310,7 +471,15 @@ export const UserProfile = () => {
                   placeholder="Phone Number"
                   aria-placeholder="Phone Number"
                   required
+                  aria-invalid={errors.phoneNumber ? "true" : "false"}
                 />
+                <p className="errorMessage">
+                  {" "}
+                  {errors.phoneNumber &&
+                    errors.phoneNumber.type === "required" && (
+                      <span>Phone Number is required</span>
+                    )}
+                </p>
               </Form.Group>
               <Form.Group
                 className="mb-2 col-xs-12 col-sm-6"
@@ -323,7 +492,14 @@ export const UserProfile = () => {
                   placeholder="Email"
                   aria-placeholder="Email"
                   required
+                  aria-invalid={errors.email ? "true" : "false"}
                 />
+                <p className="errorMessage">
+                  {" "}
+                  {errors.email && errors.email.type === "required" && (
+                    <span>Email is required</span>
+                  )}
+                </p>
               </Form.Group>
             </Row>
             <Row className="pt-4">
@@ -342,14 +518,23 @@ export const UserProfile = () => {
                   aria-label="Choose Region"
                   required
                   value={selectedRegionId}
+                  aria-invalid={errors.regionId ? "true" : "false"}
                   onChange={(e) => {
                     handleRegionSelectChange(e);
                   }}
                 >
                   <option value=""> Select Region</option>
+
                   {regionSelector}
                 </Form.Select>
+                <p className="errorMessage">
+                  {" "}
+                  {errors.regionId && errors.regionId.type === "required" && (
+                    <span>Region is required</span>
+                  )}
+                </p>
               </Form.Group>
+
               <Form.Group
                 className="mb-2 col-xs-12 col-sm-4"
                 controlId="formIndustry"
@@ -361,7 +546,14 @@ export const UserProfile = () => {
                   type="text"
                   placeholder="Industry"
                   aria-placeholder="Industry"
+                  aria-invalid={errors.industry ? "true" : "false"}
                 />
+                <p className="errorMessage">
+                  {" "}
+                  {errors.industry && errors.industry.type === "required" && (
+                    <span>Industry is required</span>
+                  )}
+                </p>
               </Form.Group>
               <Form.Group
                 className="mb-2 col-xs-12 col-sm-4"
@@ -374,7 +566,15 @@ export const UserProfile = () => {
                   type="text"
                   placeholder="Organization"
                   aria-placeholder="Organization"
+                  aria-invalid={errors.organization ? "true" : "false"}
                 />
+                <p className="errorMessage">
+                  {" "}
+                  {errors.organization &&
+                    errors.organization.type === "required" && (
+                      <span>Organization is required</span>
+                    )}
+                </p>
               </Form.Group>
             </Row>
             <Row>
@@ -386,12 +586,14 @@ export const UserProfile = () => {
                   type="radio"
                   label="CSAP"
                   {...register("userWorkStatus")}
+                  aria-invalid={errors.userWorkStatus ? "true" : "false"}
                 />
                 <Form.Check
                   required
                   value="qp"
                   type="radio"
                   label="QP"
+                  aria-invalid={errors.userWorkStatus ? "true" : "false"}
                   {...register("userWorkStatus")}
                 />
                 <Form.Check
@@ -400,7 +602,15 @@ export const UserProfile = () => {
                   type="radio"
                   label="Public"
                   {...register("userWorkStatus")}
+                  aria-invalid={errors.userWorkStatus ? "true" : "false"}
                 />
+                <p className="errorMessage">
+                  {" "}
+                  {errors.userWorkStatus &&
+                    errors.userWorkStatus.type === "required" && (
+                      <span>Work Status is required</span>
+                    )}
+                </p>
               </Form.Group>
             </Row>
             <Row>
@@ -418,9 +628,19 @@ export const UserProfile = () => {
                       value={type.id}
                       type="radio"
                       label={type.org_name}
+                      aria-invalid={
+                        errors.organizationTypeId ? "true" : "false"
+                      }
                     />
                   );
                 })}
+                <p className="errorMessage">
+                  {" "}
+                  {errors.organizationTypeId &&
+                    errors.organizationTypeId.type === "required" && (
+                      <span>Organization Type is required</span>
+                    )}
+                </p>
               </div>
             </Row>
             <Row>
@@ -433,6 +653,7 @@ export const UserProfile = () => {
                   value="FN"
                   type="radio"
                   label="First Nations"
+                  aria-invalid={errors.userFNStatus ? "true" : "false"}
                 />
                 <Form.Check
                   required
@@ -441,6 +662,7 @@ export const UserProfile = () => {
                   value="IN"
                   type="radio"
                   label="Inuit"
+                  aria-invalid={errors.userFNStatus ? "true" : "false"}
                 />
                 <Form.Check
                   required
@@ -449,6 +671,7 @@ export const UserProfile = () => {
                   value="MT"
                   type="radio"
                   label="Metis"
+                  aria-invalid={errors.userFNStatus ? "true" : "false"}
                 />
                 <Form.Check
                   required
@@ -457,7 +680,15 @@ export const UserProfile = () => {
                   value="NO"
                   type="radio"
                   label="None"
+                  aria-invalid={errors.userFNStatus ? "true" : "false"}
                 />
+                <p className="errorMessage">
+                  {" "}
+                  {errors.userFNStatus &&
+                    errors.userFNStatus.type === "required" && (
+                      <span>User First Nation Status is required</span>
+                    )}
+                </p>
               </div>
             </Row>
             <Row>
@@ -481,6 +712,13 @@ export const UserProfile = () => {
                   label="No"
                   // checked = {isSelected("isBillingContact","false")}
                 />
+                <p className="errorMessage">
+                  {" "}
+                  {errors.isGstExemptST &&
+                    errors.isGstExemptST.type === "required" && (
+                      <span>Gst Exempt is required</span>
+                    )}
+                </p>
               </div>
             </Row>
 
@@ -570,7 +808,11 @@ export const UserProfile = () => {
                     Back
                   </Button>
                 )}
-                <Button id="save-profile-btn" type="submit">
+                <Button
+                  id="save-profile-btn"
+                  type="submit"
+                  onClick={(e) => IsCheckValid(e)}
+                >
                   Save Profile
                 </Button>
               </Col>
