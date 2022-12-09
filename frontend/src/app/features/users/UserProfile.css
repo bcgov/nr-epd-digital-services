@@ -16,3 +16,14 @@
     border-color: #036;
     margin-right: 10px;
 }
+
+.errorMessage
+{
+    color:red
+}
+
+
+.form-control[aria-invalid='true']
+{
+    border-color: red;
+}
