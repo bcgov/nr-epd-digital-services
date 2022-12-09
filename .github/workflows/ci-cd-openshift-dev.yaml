@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - 'dev'
+      - 'ss-frontend-configmap'
                  
     paths:
       - 'backend/**'
