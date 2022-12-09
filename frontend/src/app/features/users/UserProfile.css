@@ -16,3 +16,7 @@
     border-color: #036;
     margin-right: 10px;
 }
+
+Form.Control:invalid{
+    border-color: red;
+}

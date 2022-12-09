@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import "./UserProfile.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchLookupData,
+    fetchLookupData,
   getProfileFetchStatus,
   getRegions,
   getOrganizations,
@@ -19,7 +19,8 @@ import {
   getUserUpdateStatus,
   fetchUserProfileVerification,
   resetAddedStatus,
-  resetUpdateStatus
+  resetUpdateStatus,
+  isProfileVerified
 } from "./UsersSlice";
 import { AppDispatch } from "../../Store";
 import { ExternalUser } from "./dto/ExternalUser";
@@ -42,6 +43,7 @@ export const UserProfile = () => {
   const addedStatus = useSelector(getUserAddedStatus);
   const organizationTypes = useSelector(getOrganizations); 
   const regions = useSelector(getRegions);
+  const userIsProfileVerifiedValue = useSelector(isProfileVerified)
 
 
   //  page state management
@@ -50,10 +52,23 @@ export const UserProfile = () => {
   const {
     register,
     handleSubmit,
+    setValue,
+    setError,
     formState: { errors },
   } = useForm<ExternalUser>({
+    shouldUseNativeValidation:true,
     defaultValues: savedExternalUser,
   });
+  
+  //Loads default values from authorized user
+  useEffect(() => {
+    if(!userIsProfileVerifiedValue && userAuth.user){
+      setValue("firstName", (userAuth.user.profile.given_name as string) )
+      setValue("lastName", (userAuth.user.profile.family_name as string))
+      setValue("email", (userAuth.user.profile.email as string))
+    }
+    },[userIsProfileVerifiedValue]
+  )  
 
 
   // Handles logic after update is done
@@ -72,7 +87,7 @@ export const UserProfile = () => {
   }, [updateUserStatus]);
 
 
-
+  
    /** Handling Logic after Profile Add State */
    useEffect(() => {
     if (addedStatus === RequestStatus.success) {
@@ -100,15 +115,24 @@ export const UserProfile = () => {
     } else {
     }
   }, [savedExternalUser]);
-
   useEffect(() => {  
     dispatch(fetchLookupData());   
   }, []);
 
+  useEffect(()=>{
+    setError("phoneNumber",{
+      types:{
+        pattern: "Please enter a valid phone number"
+      }
+    })
+    setError("email",{
+      types:{
+        pattern:"Please enter a valid email"
+      }
+    })
+    console.log("errors",errors)
 
-    
-
-
+  },[setError,errors])
 
 
 // User Events 
@@ -117,8 +141,7 @@ export const UserProfile = () => {
     setSelectedRegionId(event.target.value);
   };
 
-  const onSubmit = handleSubmit((data: ExternalUser) => {
- 
+  const onSubmit = handleSubmit((data: ExternalUser, event) => {
     data.userId = userAuth.user?.profile.sub;
     data.isProfileVerified = true;
   
@@ -162,26 +185,6 @@ export const UserProfile = () => {
         </option>
       );
   });
-
- 
-
- 
-
-  
-
-
-  const getPropertyValue = (propertyName: string) => {
-    if (savedExternalUser != null) {
-      return savedExternalUser[propertyName];
-    }
-  };
-
-  const isSelected = (propertyName: string, boxValue: string) => {
-    if (savedExternalUser != null) {
-      let savedValue = savedExternalUser[propertyName];
-      return savedValue === boxValue;
-    }
-  };
 
   return (
     <Container fluid className="g-4 pt-5 mt-4">
@@ -297,7 +300,10 @@ export const UserProfile = () => {
               >
                 <Form.Label>Phone Number</Form.Label>
                 <Form.Control
-                  {...register("phoneNumber")}
+                  {...register("phoneNumber",{pattern:{
+                      value:/^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g,
+                      message: "Enter a valid phone number",}}
+                      )}
                   type="text"
                   placeholder="Phone Number"
                   aria-placeholder="Phone Number"
@@ -310,7 +316,9 @@ export const UserProfile = () => {
               >
                 <Form.Label>Email</Form.Label>
                 <Form.Control
-                  {...register("email")}
+                  {...register("email", {
+                    pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+                  })}
                   type="email"
                   placeholder="Email"
                   aria-placeholder="Email"
