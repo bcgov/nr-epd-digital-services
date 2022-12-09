@@ -217,7 +217,9 @@ const usersSlice = createSlice({
       .addCase(addNewExternalUser.fulfilled, (state, action) => {
         const newState = { ...state };
 
-        if (action.payload.errors?.length > 1) {
+        console.log("action.payload",action.payload)
+
+        if (action.payload.errors?.length > 0) {
           newState.addedStatus = RequestStatus.failed;
         } else {
           newState.addedStatus = RequestStatus.success;

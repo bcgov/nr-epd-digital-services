@@ -97,7 +97,7 @@ export const UserProfile = () => {
       dispatch(resetAddedStatus(""));
       navigate("/dashboard");
     } else if (addedStatus === RequestStatus.failed) {
-      toast("Failed save profile", {
+      toast("Failed to save profile", {
         type: "error",
       });
     }
@@ -141,7 +141,14 @@ export const UserProfile = () => {
     setSelectedRegionId(event.target.value);
   };
 
-  const onSubmit = handleSubmit((data: ExternalUser, event) => {
+  const onSubmit = handleSubmit((data: ExternalUser) => {
+
+    if(data.regionId=="")
+    {
+      toast.error("Please select region id");
+      return;
+    }
+ 
     data.userId = userAuth.user?.profile.sub;
     data.isProfileVerified = true;
   
@@ -158,6 +165,8 @@ export const UserProfile = () => {
       data.isGstExempt = false;
     }
     //data.isGstExempt = false;
+
+    //data.regionId = selectedRegionId
 
     delete data["isBillingContactST"];
     delete data["isGstExemptST"];
@@ -185,6 +194,26 @@ export const UserProfile = () => {
         </option>
       );
   });
+
+ 
+
+ 
+
+  
+
+
+  const getPropertyValue = (propertyName: string) => {
+    if (savedExternalUser != null) {
+      return savedExternalUser[propertyName];
+    }
+  };
+
+  const isSelected = (propertyName: string, boxValue: string) => {
+    if (savedExternalUser != null) {
+      let savedValue = savedExternalUser[propertyName];
+      return savedValue === boxValue;
+    }
+  };
 
   return (
     <Container fluid className="g-4 pt-5 mt-4">
@@ -346,6 +375,7 @@ export const UserProfile = () => {
                     handleRegionSelectChange(e);
                   }}
                 >
+                  <option value=""> Select Region</option>
                   {regionSelector}
                 </Form.Select>
               </Form.Group>
