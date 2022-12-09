@@ -7,7 +7,6 @@ import "./UserProfile.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
     fetchLookupData,
-  getProfileFetchStatus,
   getRegions,
   getOrganizations,
 } from "../common/CommonDataSlice";
@@ -102,11 +101,10 @@ export const UserProfile = () => {
       });
     }
 
+  
+
    
   }, [addedStatus]);
-
-
-
 
 // Handling setting regionId from Saved User
   useEffect(() => {
@@ -120,16 +118,16 @@ export const UserProfile = () => {
   }, []);
 
   useEffect(()=>{
-    setError("phoneNumber",{
-      types:{
-        pattern: "Please enter a valid phone number"
-      }
-    })
-    setError("email",{
-      types:{
-        pattern:"Please enter a valid email"
-      }
-    })
+  //   setError("phoneNumber",{
+  //     types:{
+  //       pattern: "Please enter a valid phone number"
+  //     }
+  //   })
+  //   setError("email",{
+  //     types:{
+  //       pattern:"Please enter a valid email"
+  //     }
+  //   })
     console.log("errors",errors)
 
   },[setError,errors])
@@ -194,13 +192,6 @@ export const UserProfile = () => {
         </option>
       );
   });
-
- 
-
- 
-
-  
-
 
   const getPropertyValue = (propertyName: string) => {
     if (savedExternalUser != null) {
@@ -352,6 +343,7 @@ export const UserProfile = () => {
                   placeholder="Email"
                   aria-placeholder="Email"
                   required
+                  isInvalid={errors?.email?.types===null}
                 />
               </Form.Group>
             </Row>
