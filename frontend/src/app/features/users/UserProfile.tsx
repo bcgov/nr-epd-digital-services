@@ -186,9 +186,12 @@ export const UserProfile = () => {
     console.log(errors)
     let values: any = getValues();
     for (const property in values) {
-      // if (values["email"].length>0){
-      //   setError("email",{type:"pattern",message:"Please enter a valid email"})
-      // }
+      if (values["email"].length>0){
+        setError("email",{type:"pattern",message:"Please enter a valid email"})
+      }
+      if(values["phoneNumber"].length>0){
+        setError("phoneNumber",{type:"pattern",message:"Please enter a valid phone number"})
+      }
       if (typeof values[property] === "string" && values[property] === "") {
         switch (property) {
           case "firstName":
@@ -494,7 +497,7 @@ export const UserProfile = () => {
                     )
                     ||
                     errors.phoneNumber.type==="pattern" &&(
-                      <span>Please enter a valid Number</span>
+                      <span>Please enter a valid number</span>
                     )
                     :
                     <></>
