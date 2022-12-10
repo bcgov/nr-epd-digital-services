@@ -182,15 +182,36 @@ export const UserProfile = () => {
     }
   };
 
+  const isEmailValid = (value:string) =>{
+    return /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i.test(value)
+  }
+
+  const isPhoneNumberValid = (value:string) =>{
+    return /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g.test(value)
+  }
+
+  const isPostalCodeValid = (value:string) =>{
+    return /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i.test(value)
+  }
+
   const IsCheckValid = (event: any) => {
     console.log(errors)
     let values: any = getValues();
     for (const property in values) {
-      if (values["email"].length>0){
+      if (values["email"].length>0 && isEmailValid(values["email"]) ){
+        clearErrors("email")
+      }else{
         setError("email",{type:"pattern",message:"Please enter a valid email"})
       }
-      if(values["phoneNumber"].length>0){
+      if(values["phoneNumber"].length>0 && isPhoneNumberValid(values["phoneNumber"])){
+        clearErrors("phoneNumber")
+      }else{
         setError("phoneNumber",{type:"pattern",message:"Please enter a valid phone number"})
+      }
+      if(values["postalCode"].length>0 && isPostalCodeValid(values["postalCode"])){
+        clearErrors("postalCode")
+      }else{
+        setError("postalCode",{type:"pattern", message:"Please enter a valid Postal Code"})
       }
       if (typeof values[property] === "string" && values[property] === "") {
         switch (property) {
@@ -464,10 +485,17 @@ export const UserProfile = () => {
                 />
                 <p className="errorMessage">
                   {" "}
-                  {errors.postalCode &&
+                  {errors.postalCode ?
                     errors.postalCode.type === "required" && (
                       <span>Postal Code is required</span>
-                    )}
+                    )
+                    ||
+                    errors.postalCode.type === "pattern" &&(
+                      <span>{errors.postalCode.message}</span>
+                    )
+                    :
+                    <></>
+                  }
                 </p>
               </Form.Group>
             </Row>
@@ -478,17 +506,12 @@ export const UserProfile = () => {
               >
                 <Form.Label>Phone Number</Form.Label>
                 <Form.Control
-                  {...register("phoneNumber"
-                      ,{pattern:{
-                        value:/^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g,
-                        message: "Enter a valid phone number",}}
-                      )}
+                  {...register("phoneNumber")}
                   type="text"
                   placeholder="Phone Number"
                   aria-placeholder="Phone Number"
                   required
                   aria-invalid={errors.phoneNumber ? "true" : "false"}
-                  isInvalid={errors.phoneNumber ? true : false}
                 />
                 <p className="errorMessage">
                   {errors.phoneNumber ? 
@@ -497,7 +520,7 @@ export const UserProfile = () => {
                     )
                     ||
                     errors.phoneNumber.type==="pattern" &&(
-                      <span>Please enter a valid number</span>
+                      <span>{errors.phoneNumber.message}</span>
                     )
                     :
                     <></>
@@ -510,13 +533,7 @@ export const UserProfile = () => {
               >
                 <Form.Label>Email</Form.Label>
                 <Form.Control
-                  {...register("email", {pattern:
-                      {
-                        value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-                        message: "Please enter a valid email"
-                      } 
-                    }
-                  )}
+                  {...register("email")}
                   type="email"
                   placeholder="Email"
                   aria-placeholder="Email"
