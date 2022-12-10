@@ -183,7 +183,7 @@ export const UserProfile = () => {
   };
 
   const isEmailValid = (value:string) =>{
-    return /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i.test(value)
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/.test(value)
   }
 
   const isPhoneNumberValid = (value:string) =>{
@@ -200,12 +200,16 @@ export const UserProfile = () => {
     for (const property in values) {
       if (values["email"].length>0 && isEmailValid(values["email"]) ){
         clearErrors("email")
+        console.log("email valid")
       }else{
+        console.log("email invalid")
         setError("email",{type:"pattern",message:"Please enter a valid email"})
       }
       if(values["phoneNumber"].length>0 && isPhoneNumberValid(values["phoneNumber"])){
+        console.log("phone valid")
         clearErrors("phoneNumber")
       }else{
+        console.log("phone invalid")
         setError("phoneNumber",{type:"pattern",message:"Please enter a valid phone number"})
       }
       if(values["postalCode"].length>0 && isPostalCodeValid(values["postalCode"])){
@@ -476,7 +480,7 @@ export const UserProfile = () => {
               >
                 <Form.Label>Postal Code</Form.Label>
                 <Form.Control
-                  {...register("postalCode")}
+                  {...register("postalCode", {pattern:/^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i})}
                   type="text"
                   aria-placeholder="Postal Code"
                   placeholder="Postal Code"
@@ -506,12 +510,13 @@ export const UserProfile = () => {
               >
                 <Form.Label>Phone Number</Form.Label>
                 <Form.Control
-                  {...register("phoneNumber")}
+                  {...register("phoneNumber", {pattern: /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g} )}
                   type="text"
                   placeholder="Phone Number"
                   aria-placeholder="Phone Number"
                   required
                   aria-invalid={errors.phoneNumber ? "true" : "false"}
+                  isInvalid={errors?.email?.types===null}
                 />
                 <p className="errorMessage">
                   {errors.phoneNumber ? 
@@ -533,7 +538,8 @@ export const UserProfile = () => {
               >
                 <Form.Label>Email</Form.Label>
                 <Form.Control
-                  {...register("email")}
+                  {...register("email", {pattern:/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/
+                  })}
                   type="email"
                   placeholder="Email"
                   aria-placeholder="Email"
@@ -549,7 +555,7 @@ export const UserProfile = () => {
                       )
                       ||
                       errors.email.type === "pattern"&&(
-                        <span>Please enter a valid email</span>
+                        <span>{errors.email.message}</span>
                       )
                       :
                       <></>
