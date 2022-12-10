@@ -183,16 +183,12 @@ export const UserProfile = () => {
   };
 
   const IsCheckValid = (event: any) => {
-    ///setError('firstName', { type: 'required'});
-
-    //console.log(event,formState)
-    // if(formState.isValid)
-    // {
-    //   toast.warn("Please fill all the mandatory values")
-    // }
-
+    console.log(errors)
     let values: any = getValues();
     for (const property in values) {
+      // if (values["email"].length>0){
+      //   setError("email",{type:"pattern",message:"Please enter a valid email"})
+      // }
       if (typeof values[property] === "string" && values[property] === "") {
         switch (property) {
           case "firstName":
@@ -245,58 +241,57 @@ export const UserProfile = () => {
             break;
         }
       }
-        else if(typeof values[property] === "string" && values[property] === "")
-        {
-     
-          switch (property) {
-            case "firstName":
-              clearErrors("firstName")
-              break;
-            case "lastName":
-              clearErrors("lastName")
-              break;
-            case "addressLine":
-              clearErrors("addressLine")
-              break;
-            case "city":
-              clearErrors("city")
-              break;
-            case "province":
-              clearErrors("province")
-              break;
-            case "country":
-              clearErrors("country")
-              break;
-            case "postalCode":
-              clearErrors("postalCode")
-              break;
-            case "phoneNumber":
-              clearErrors("phoneNumber")
-              break;
-            case "email":
-              clearErrors("email")
-              break;
-            case "regionId":
-              clearErrors("regionId")
-              break;
-            case "industry":
-              clearErrors("industry")
-              break;
-            case "organization":
-              clearErrors("organization")
-              break;
-            case "userWorkStatus":
-              clearErrors("userWorkStatus")
-              break;
-            case "organizationTypeId":
-              clearErrors("organizationTypeId")
-              break;
-            case "userFNStatus":
-              clearErrors("userFNStatus")
-              break;
-            case "isGstExemptST":
-              clearErrors("isGstExemptST")
-              break;
+      else if(typeof values[property] === "string" && values[property] === "")
+      {
+        switch (property) {
+          case "firstName":
+            clearErrors("firstName")
+            break;
+          case "lastName":
+            clearErrors("lastName")
+            break;
+          case "addressLine":
+            clearErrors("addressLine")
+            break;
+          case "city":
+            clearErrors("city")
+            break;
+          case "province":
+            clearErrors("province")
+            break;
+          case "country":
+            clearErrors("country")
+            break;
+          case "postalCode":
+            clearErrors("postalCode")
+            break;
+          case "phoneNumber":
+            clearErrors("phoneNumber")
+            break;
+          case "email":
+            clearErrors("email")
+            break;
+          case "regionId":
+            clearErrors("regionId")
+            break;
+          case "industry":
+            clearErrors("industry")
+            break;
+          case "organization":
+            clearErrors("organization")
+            break;
+          case "userWorkStatus":
+            clearErrors("userWorkStatus")
+            break;
+          case "organizationTypeId":
+            clearErrors("organizationTypeId")
+            break;
+          case "userFNStatus":
+            clearErrors("userFNStatus")
+            break;
+          case "isGstExemptST":
+            clearErrors("isGstExemptST")
+            break;
         }
 
         // if(property==="lastName")
@@ -480,22 +475,30 @@ export const UserProfile = () => {
               >
                 <Form.Label>Phone Number</Form.Label>
                 <Form.Control
-                  {...register("phoneNumber",{pattern:{
-                      value:/^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g,
-                      message: "Enter a valid phone number",}}
+                  {...register("phoneNumber"
+                      ,{pattern:{
+                        value:/^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g,
+                        message: "Enter a valid phone number",}}
                       )}
                   type="text"
                   placeholder="Phone Number"
                   aria-placeholder="Phone Number"
                   required
                   aria-invalid={errors.phoneNumber ? "true" : "false"}
+                  isInvalid={errors.phoneNumber ? true : false}
                 />
                 <p className="errorMessage">
-                  {" "}
-                  {errors.phoneNumber &&
+                  {errors.phoneNumber ? 
                     errors.phoneNumber.type === "required" && (
                       <span>Phone Number is required</span>
-                    )}
+                    )
+                    ||
+                    errors.phoneNumber.type==="pattern" &&(
+                      <span>Please enter a valid Number</span>
+                    )
+                    :
+                    <></>
+                  }
                 </p>
               </Form.Group>
               <Form.Group
@@ -504,9 +507,13 @@ export const UserProfile = () => {
               >
                 <Form.Label>Email</Form.Label>
                 <Form.Control
-                  {...register("email", {
-                    pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-                  })}
+                  {...register("email", {pattern:
+                      {
+                        value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                        message: "Please enter a valid email"
+                      } 
+                    }
+                  )}
                   type="email"
                   placeholder="Email"
                   aria-placeholder="Email"
@@ -516,9 +523,17 @@ export const UserProfile = () => {
                 />
                 <p className="errorMessage">
                   {" "}
-                  {errors.email && errors.email.type === "required" && (
-                    <span>Email is required</span>
-                  )}
+                  {errors.email ? 
+                      errors.email.type === "required" &&(
+                      <span>Email is required</span>
+                      )
+                      ||
+                      errors.email.type === "pattern"&&(
+                        <span>Please enter a valid email</span>
+                      )
+                      :
+                      <></>
+                  }
                 </p>
               </Form.Group>
             </Row>
