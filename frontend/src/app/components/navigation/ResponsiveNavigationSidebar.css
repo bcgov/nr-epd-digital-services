@@ -37,3 +37,8 @@
     padding-bottom: 50%;
 
 }
+
+.navPanelBoxShadow
+{
+    box-shadow: 1px 1px 1px 1px #eee;
+}

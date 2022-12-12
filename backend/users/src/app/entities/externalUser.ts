@@ -22,6 +22,7 @@ export class ExternalUser {
   id: string;
 
   @Index('IDX_externaluser_user_id')
+  @Field()
   @Column({
     unique: true,
     length: 50,
@@ -83,9 +84,11 @@ export class ExternalUser {
   @Column({ name: 'is_billing_contact', default: true })
   isBillingContact: boolean;
 
+  @Field()
   @Column({ length: 10, name: 'user_work_status', nullable: false })
   userWorkStatus: string;
 
+  @Field()
   @Column({ length: 25, name: 'user_fn_status', nullable: false })
   userFNStatus: string;
 

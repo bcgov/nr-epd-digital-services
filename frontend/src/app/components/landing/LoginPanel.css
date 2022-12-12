@@ -1,23 +1,8 @@
 #login-panel{
     background-color: #E3E8EE;
+    height: 250px;
 }
 
-#login-selector-dropdown{
-    /* width: 100%; */
-}
-#login-selector-dropdown-toggle{
-    width: 250px;
-    color: white;
-    background-color: #003366;
-    border-color: #003366;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 22px;
-    }
-#login-selector-dropdown-menu{
-    width: 250px;
-}
 
 #lrs-signup-button{
     background-color: #FFFFFF;
@@ -35,4 +20,10 @@
     border-color: #405c8c;
     color:#FFFFFF;
 
+}
+
+
+.login-btn-lh
+{
+    line-height: 2 !important;
 }

@@ -12,6 +12,8 @@ import { CreateUserInput } from '../dto/createUserInput';
 import { UpdateUserInput } from '../dto/updateUserInput';
 import { Resource, RoleMatchingMode, Roles } from 'nest-keycloak-connect';
 import { FetchUserResponse } from '../dto/reponse/fetchUserResponse';
+import { FetchSingleUserResponse } from '../dto/reponse/fetchExternalSingleUserResponse';
+import { UpdateExternalUserResponse } from '../dto/reponse/updateExternalUserResponse';
 
 /**
  * Resolver for External User
@@ -28,8 +30,9 @@ export class ExternalUserResolver {
    */
   @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
   @Mutation(() => ExternalUser)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.externalUserService.create(createUserInput);
+  async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
+    const createResult = await this.externalUserService.create(createUserInput);
+    return createResult;
   }
 
   /**
@@ -46,16 +49,23 @@ export class ExternalUserResolver {
    * Mutation for Updating External Users
    * @param updateUserInput input DTO for updating external users
    */
-  @Mutation(() => ExternalUser)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
+  @Mutation(() => UpdateExternalUserResponse)
+  async updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
+    const result = new UpdateExternalUserResponse();
     console.log(updateUserInput);
-    const response = this.externalUserService.update(
+    const response = await this.externalUserService.update(
       updateUserInput.id,
       updateUserInput,
     );
-    response.then((res) => {
-      return res.affected ? updateUserInput : { error: 'Not Updated' };
-    });
+    result.httpStatusCode = 200;
+    console.log('update response', response);
+    if (response.affected > 0) {
+      result.recordUpdated = true;
+    } else {
+      result.recordUpdated = false;
+    }
+    console.log('updated result', result);
+    return result;
   }
 
   /**
@@ -63,13 +73,10 @@ export class ExternalUserResolver {
    * @param id Input Id For Remove External User
    * @returns deleted record
    */
-  @Mutation(() => ExternalUser)
-  removeUser(@Args('id', { type: () => Int }) id: string) {
-    const response = this.externalUserService.remove(id);
-    response.then((hasBeenDeleted) => {
-      console.log('Has the entry been deleted? ' + hasBeenDeleted);
-    });
-    return response ? { id: id } : { error: 'not deleted' };
+  @Mutation(() => Boolean)
+  async removeUser(@Args('id') id: string) {
+    const response = await this.externalUserService.remove(id);
+    return response;
   }
 
   /**
@@ -88,8 +95,8 @@ export class ExternalUserResolver {
    * @param id For Specific External User
    * @returns Specific External User
    */
-  @Query(() => ExternalUser, { name: 'user' })
-  findOne(@Args('id', { type: () => Int }) id: string) {
+  @Query(() => FetchSingleUserResponse, { name: 'user' })
+  findOne(@Args('userId', { type: () => String }) id: string) {
     return this.externalUserService.findOne(id);
   }
 }
