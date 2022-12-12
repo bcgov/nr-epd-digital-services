@@ -1,23 +1,26 @@
-import { LRSFormAccordion } from "../../components/landing/LRSFormAccordion"
+import  {LRSFormAccordion} from "../../components/landing/LRSFormAccordion"
 import {Container, Row, Col} from 'react-bootstrap'
 import jsonforms from "./forms.json"
 import { FormFactory } from "../../helpers/factory/FormFactory"
-import { ResponsiveNavigationSidebar } from "../../components/navigation/ResponsiveNavigationSidebar"
-import { LoginPanel } from "./LoginPanel"
+import  {ResponsiveNavigationSidebar}  from "../../components/navigation/ResponsiveNavigationSidebar"
+import { LoginPanel } from "../../components/landing/LoginPanel"
 
 const Landing = () =>{
     const forms = FormFactory(jsonforms.forms)
-    console.log(process.env)
     return(
-        <Container fluid className="landing-container" id="landing-container">
+        <Container fluid className="landing-container mt-3" id="landing-container">
             <LoginPanel/>
             <Row id="responsive-lrs-nav" className="">
                 <Col className="col-12 col-md-3" >
                     <ResponsiveNavigationSidebar/>
                 </Col>
                 <Col className="col-12 col-md-7">
-                    <h1>Sample LRS Forms</h1>
+                    <Row>
+                    <p className="h1">Sample Site Remediation Forms</p>
+                    </Row>  
+                    <Row>
                     {LRSFormAccordion(forms)}
+                    </Row>
                 </Col>
             </Row>
         </Container>
