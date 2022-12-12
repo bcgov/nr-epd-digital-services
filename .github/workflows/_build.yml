@@ -18,7 +18,7 @@ on:
       force_build:
         type: string
         required: false
-        default: "true"
+        default: "false"
       repository:
         type: string
         required: false
