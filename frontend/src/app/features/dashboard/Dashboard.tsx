@@ -49,13 +49,13 @@ const Dashboard = () => {
   return (
     <div className="container-fluid dashboard-content">
       <div className="row">
-        <div className="col-12 ">
+        <div className="col-12">
           {auth.isLoading ? (
             <div>Loading User</div>
           ) : auth.user?.profile.identity_provider === "bceid" ? (
-            <h1>External User Dashboard</h1>
+            <h3>External User Dashboard</h3>
           ) : (
-            <h1> Internal User Dashboard</h1>
+            <h3> Internal User Dashboard</h3>
           )}
         </div>
       </div>
