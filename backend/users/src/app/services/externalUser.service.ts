@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserInput } from '../dto/createUserInput';
+import { FetchSingleUserResponse } from '../dto/reponse/fetchExternalSingleUserResponse';
 import { FetchUserResponse } from '../dto/reponse/fetchUserResponse';
 import { UpdateUserInput } from '../dto/updateUserInput';
 import { ExternalUser } from '../entities/externalUser';
@@ -22,11 +23,18 @@ export class ExternalUserService {
    * @returns created user
    */
   async create(createUserInput: CreateUserInput) {
-    console.log('CreateUserInput');
+    console.log('CreateUserInput - 1 ');
+    const newUser = await this.externalUserRepository.create(createUserInput);
 
-    const newUser = this.externalUserRepository.create(createUserInput);
+    console.log('CreateUserInput - 2 ');
+    //await this.externalUserRepository.save(newUser);
+    console.log('newUser', newUser);
+
+    console.log('CreateUserInput - 3 ');
+
     await this.externalUserRepository.save(newUser);
 
+    console.log('CreateUserInput - 4 ', newUser);
     return await this.externalUserRepository.findOne({
       relations: ['region', 'organizationType'],
       where: { id: newUser.id },
@@ -56,11 +64,20 @@ export class ExternalUserService {
    * @param id External User Id
    * @returns External User
    */
-  async findOne(id: string): Promise<ExternalUser> {
-    return this.externalUserRepository.findOneOrFail({
+  async findOne(id: string): Promise<FetchSingleUserResponse> {
+    const findUsersResponse = new FetchSingleUserResponse();
+
+    findUsersResponse.httpStatusCode = 200;
+    findUsersResponse.data = await this.externalUserRepository.findOne({
       relations: ['region', 'organizationType'],
-      where: { id: id },
+      where: { userId: id },
     });
+
+    findUsersResponse.profileVerified = findUsersResponse.data
+      ? findUsersResponse.data.isProfileVerified
+      : false;
+
+    return findUsersResponse;
   }
 
   /**
