@@ -122,10 +122,14 @@ export const UserProfile = () => {
   };
 
   const onSubmit = handleSubmit((data: ExternalUser) => {
-    if (data.regionId == "") {
+    if (data.regionId === "") {
       toast.error("Please select region id");
       return;
     }
+
+    console.log("errors at submit", errors)
+
+
 
     data.userId = userAuth.user?.profile.sub;
     data.isProfileVerified = true;
@@ -195,29 +199,45 @@ export const UserProfile = () => {
   }
 
   const IsCheckValid = (event: any) => {
-    console.log(errors)
+    console.log("before ", errors)
     let values: any = getValues();
+    let returnVal:boolean = true;
+
+    if (!(values["email"].length>0 && isEmailValid(values["email"])))
+    {       
+      setError("email",{type:"pattern",message:"Please enter a valid email"})
+      returnVal= false;
+    }
+    else
+    {
+      clearErrors("email")
+    }
+
+
+    if(!(values["phoneNumber"].length>0 && isPhoneNumberValid(values["phoneNumber"]))){       
+      setError("phoneNumber",{type:"pattern",message:"Please enter a valid phone number"})
+      returnVal = false;
+    }
+    else
+    {
+      clearErrors("phoneNumber")
+    }
+
+    if(!(values["postalCode"].length>0 && isPostalCodeValid(values["postalCode"]))){
+      setError("postalCode",{type:"pattern", message:"Please enter a valid Postal Code"})
+      returnVal = false;
+    }
+    else
+    {
+      clearErrors("postalCode")
+      
+    }
+
     for (const property in values) {
-      if (values["email"].length>0 && isEmailValid(values["email"]) ){
-        clearErrors("email")
-        console.log("email valid")
-      }else{
-        console.log("email invalid")
-        setError("email",{type:"pattern",message:"Please enter a valid email"})
-      }
-      if(values["phoneNumber"].length>0 && isPhoneNumberValid(values["phoneNumber"])){
-        console.log("phone valid")
-        clearErrors("phoneNumber")
-      }else{
-        console.log("phone invalid")
-        setError("phoneNumber",{type:"pattern",message:"Please enter a valid phone number"})
-      }
-      if(values["postalCode"].length>0 && isPostalCodeValid(values["postalCode"])){
-        clearErrors("postalCode")
-      }else{
-        setError("postalCode",{type:"pattern", message:"Please enter a valid Postal Code"})
-      }
-      if (typeof values[property] === "string" && values[property] === "") {
+      console.log("property "+ property, errors)
+    
+      if ((typeof values[property] === "string" && values[property] === "") || values[property]=== null) {
+        returnVal = false;
         switch (property) {
           case "firstName":
             setError("firstName", { type: "required" });
@@ -269,7 +289,7 @@ export const UserProfile = () => {
             break;
         }
       }
-      else if(typeof values[property] === "string" && values[property] === "")
+      else if(typeof values[property] === "string" && values[property] !== "")
       {
         switch (property) {
           case "firstName":
@@ -291,12 +311,15 @@ export const UserProfile = () => {
             clearErrors("country")
             break;
           case "postalCode":
+            if(errors["postalCode"]?.type==="required")
             clearErrors("postalCode")
             break;
-          case "phoneNumber":
+          case "phoneNumber":     
+          if(errors["phoneNumber"]?.type==="required")      
             clearErrors("phoneNumber")
             break;
           case "email":
+            if(errors["email"]?.type==="required")    
             clearErrors("email")
             break;
           case "regionId":
@@ -333,7 +356,8 @@ export const UserProfile = () => {
       }
     }
   
-
+    console.log("after ", errors)
+    return returnVal;
     //setError("firstName", { type: "focus" }, { shouldFocus: true })
     //setError("firstName",{message:"Please fill this", type:"required" }, {shouldFocus:true})
   };
@@ -355,12 +379,13 @@ export const UserProfile = () => {
               >
                 <Form.Label>First Name</Form.Label>
                 <Form.Control
-                  {...register("firstName", { required: true })}
+                  {...register("firstName", { required: true ,minLength:1 , maxLength:64 })}
                   aria-invalid={errors.firstName ? "true" : "false"}
                   type="text"
                   aria-placeholder="First Name"
                   placeholder="First Name"
                   required
+                  
                 />
                 <p className="errorMessage">
                   {" "}
@@ -375,7 +400,7 @@ export const UserProfile = () => {
               >
                 <Form.Label>Last Name</Form.Label>
                 <Form.Control
-                  {...register("lastName")}
+                  {...register("lastName",{ required: true ,minLength:1 , maxLength:64 })}
                   type="text"
                   aria-placeholder="Last Name"
                   placeholder="Add Family Name Here"
@@ -397,7 +422,7 @@ export const UserProfile = () => {
               >
                 <Form.Label>Street Address</Form.Label>
                 <Form.Control
-                  {...register("addressLine")}
+                  {...register("addressLine",{ required: true ,minLength:1 , maxLength:200 })}
                   type="text"
                   aria-placeholder="Street Address"
                   placeholder="Street Address"
@@ -418,7 +443,7 @@ export const UserProfile = () => {
               >
                 <Form.Label>City</Form.Label>
                 <Form.Control
-                  {...register("city")}
+                  {...register("city",{ required: true ,minLength:1 , maxLength:50 })}
                   type="text"
                   aria-placeholder="City"
                   placeholder="City"
@@ -440,7 +465,7 @@ export const UserProfile = () => {
               >
                 <Form.Label>Province</Form.Label>
                 <Form.Control
-                  {...register("province")}
+                  {...register("province",{ required: true ,minLength:1 , maxLength:50 })}
                   type="text"
                   aria-placeholder="Province"
                   placeholder="Province"
@@ -460,7 +485,7 @@ export const UserProfile = () => {
               >
                 <Form.Label>Country</Form.Label>
                 <Form.Control
-                  {...register("country")}
+                  {...register("country",{ required: true ,minLength:1 , maxLength:50 })}
                   type="text"
                   aria-placeholder="Country"
                   placeholder="Country"
@@ -480,12 +505,13 @@ export const UserProfile = () => {
               >
                 <Form.Label>Postal Code</Form.Label>
                 <Form.Control
-                  {...register("postalCode", {pattern:/^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i})}
+                  {...register("postalCode", {required: true ,minLength:1 , maxLength:20,pattern:/^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i})}
                   type="text"
                   aria-placeholder="Postal Code"
                   placeholder="Postal Code"
                   required
                   aria-invalid={errors.postalCode ? "true" : "false"}
+                  onChange={(event) => setValue("postalCode",event.target.value.toUpperCase())}
                 />
                 <p className="errorMessage">
                   {" "}
@@ -495,7 +521,7 @@ export const UserProfile = () => {
                     )
                     ||
                     errors.postalCode.type === "pattern" &&(
-                      <span>{errors.postalCode.message}</span>
+                      <span>{errors.postalCode.message + ",Example: A1A 1A1"}</span>
                     )
                     :
                     <></>
@@ -510,7 +536,7 @@ export const UserProfile = () => {
               >
                 <Form.Label>Phone Number</Form.Label>
                 <Form.Control
-                  {...register("phoneNumber", {pattern: /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g} )}
+                  {...register("phoneNumber", {required: true ,minLength:1 , maxLength:40,pattern: /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g} )}
                   type="text"
                   placeholder="Phone Number"
                   aria-placeholder="Phone Number"
@@ -538,7 +564,7 @@ export const UserProfile = () => {
               >
                 <Form.Label>Email</Form.Label>
                 <Form.Control
-                  {...register("email", {pattern:/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/
+                  {...register("email", {required: true ,minLength:1 , maxLength:320,pattern:/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/
                   })}
                   type="email"
                   placeholder="Email"
@@ -601,13 +627,13 @@ export const UserProfile = () => {
                 controlId="formIndustry"
               >
                 <Form.Label>Industry</Form.Label>
-                <Form.Control
-                  required
-                  {...register("industry")}
+                <Form.Control                
+                  {...register("industry",{required: true ,minLength:1 , maxLength:250})}
                   type="text"
                   placeholder="Industry"
                   aria-placeholder="Industry"
                   aria-invalid={errors.industry ? "true" : "false"}
+                  required
                 />
                 <p className="errorMessage">
                   {" "}
@@ -621,13 +647,13 @@ export const UserProfile = () => {
                 controlId="formOrganization"
               >
                 <Form.Label>Organization</Form.Label>
-                <Form.Control
-                  required
-                  {...register("organization")}
+                <Form.Control                
+                  {...register("organization",{required: true ,minLength:1 , maxLength:250})}
                   type="text"
                   placeholder="Organization"
                   aria-placeholder="Organization"
                   aria-invalid={errors.organization ? "true" : "false"}
+                  required
                 />
                 <p className="errorMessage">
                   {" "}
@@ -641,29 +667,29 @@ export const UserProfile = () => {
             <Row>
               <Form.Group className="mb-2">
                 <Form.Label>Are you a CSAP or QP or Public user ?</Form.Label>
-                <Form.Check
-                  required
+                <Form.Check  
+                 {...register("userWorkStatus")}               
                   value="csap"
                   type="radio"
-                  label="CSAP"
-                  {...register("userWorkStatus")}
+                  label="CSAP"                 
                   aria-invalid={errors.userWorkStatus ? "true" : "false"}
-                />
-                <Form.Check
                   required
+                />
+                <Form.Check  
+                  {...register("userWorkStatus")}               
                   value="qp"
                   type="radio"
                   label="QP"
-                  aria-invalid={errors.userWorkStatus ? "true" : "false"}
-                  {...register("userWorkStatus")}
-                />
-                <Form.Check
+                  aria-invalid={errors.userWorkStatus ? "true" : "false"}                
                   required
+                />
+                <Form.Check     
+                  {...register("userWorkStatus")}             
                   value="public"
                   type="radio"
-                  label="Public"
-                  {...register("userWorkStatus")}
+                  label="Public"                
                   aria-invalid={errors.userWorkStatus ? "true" : "false"}
+                  required
                 />
                 <p className="errorMessage">
                   {" "}
@@ -682,9 +708,9 @@ export const UserProfile = () => {
                 {organizationTypes.map((type: any) => {
                   return (
                     <Form.Check
+                    {...register("organizationTypeId")}
                       key={type.id}
-                      required
-                      {...register("organizationTypeId")}
+                      required                     
                       name="organizationTypeId"
                       value={type.id}
                       type="radio"
@@ -708,8 +734,8 @@ export const UserProfile = () => {
               <div key="radio" className="mb-3">
                 <Form.Label>Do you identify as the following?</Form.Label>
                 <Form.Check
-                  required
-                  {...register("userFNStatus")}
+                 {...register("userFNStatus")}
+                  required                 
                   name="userFNStatus"
                   value="FN"
                   type="radio"
@@ -717,8 +743,8 @@ export const UserProfile = () => {
                   aria-invalid={errors.userFNStatus ? "true" : "false"}
                 />
                 <Form.Check
-                  required
                   {...register("userFNStatus")}
+                  required                
                   name="userFNStatus"
                   value="IN"
                   type="radio"
@@ -726,8 +752,8 @@ export const UserProfile = () => {
                   aria-invalid={errors.userFNStatus ? "true" : "false"}
                 />
                 <Form.Check
-                  required
                   {...register("userFNStatus")}
+                  required               
                   name="userFNStatus"
                   value="MT"
                   type="radio"
@@ -735,8 +761,8 @@ export const UserProfile = () => {
                   aria-invalid={errors.userFNStatus ? "true" : "false"}
                 />
                 <Form.Check
-                  required
-                  {...register("userFNStatus")}
+                 {...register("userFNStatus")}
+                  required                 
                   name="userFNStatus"
                   value="NO"
                   type="radio"
@@ -756,18 +782,18 @@ export const UserProfile = () => {
               <div key="radio" className="mb-3">
                 <Form.Label>GST Exempt?</Form.Label>
                 <Form.Check
+                 {...register("isGstExemptST")}
                   required
-                  value="true"
-                  {...register("isGstExemptST")}
+                  value="true"                 
                   name="isGstExemptST"
                   type="radio"
                   label="Yes"
                   // checked = {isSelected("isBillingContact","true")}
                 />
                 <Form.Check
+                 {...register("isGstExemptST")}
                   required
-                  value="false"
-                  {...register("isGstExemptST")}
+                  value="false"                 
                   name="isGstExemptST"
                   type="radio"
                   label="No"
