@@ -60,7 +60,7 @@ jobs:
       - builds
     # If any of the previous created a build, then deploy
     # TODO - RE-ENABLE IF COMMAND BELOW, DISABLED DURING EXPERIMENTAL DEV
-   # if: contains(needs.*.outputs.build, 'true')
+  if: contains(needs.*.outputs.build, 'true')
     uses: ./.github/workflows/_deploy.yml
     strategy:
       matrix:
