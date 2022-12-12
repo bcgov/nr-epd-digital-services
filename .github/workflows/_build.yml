@@ -39,7 +39,7 @@ on:
         value: ${{ jobs.build.outputs.build }}
 
 env:
-  default_branch: ${{ github.event.repository.default_branch }}
+  default_branch: ${{ github.event.repository.ss_79 }}
 
 jobs:
   build:

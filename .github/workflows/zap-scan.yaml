@@ -3,12 +3,11 @@ name: Zap Scanning
 on:
   push:
     branches:
-      - 'dev'         
+      - dev
     paths:
       - 'backend/**'
       - 'frontend/**'
-         
- workflow_dispatch:
+  workflow_dispatch:
     inputs:
       environment:
         type: choice
@@ -19,6 +18,7 @@ on:
         - dev
         - test
         - prod
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
