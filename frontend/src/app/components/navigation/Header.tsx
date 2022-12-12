@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import "./Header.css";
 
 const Header = () => {
+  const authRedirectUri = ((window as any)._env_ && (window as any)._env_.REACT_APP_AUTH_LOGOUT_REDIRECT_URI ) || process.env.REACT_APP_AUTH_LOGOUT_REDIRECT_URI || 'http://localhost:3000/'
   const auth = useAuth();
   const navigate = useNavigate();
   return (

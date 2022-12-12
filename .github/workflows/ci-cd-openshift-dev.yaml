@@ -5,10 +5,12 @@ on:
   push:
     branches:
       - 'dev'
+     # - 'ss-frontend-configmap'
                  
     paths:
       - 'backend/**'
       - 'frontend/**'
+      - '.github/workflows/ci-cd-openshift-dev.yaml'
       
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -58,7 +60,7 @@ jobs:
       - builds
     # If any of the previous created a build, then deploy
     # TODO - RE-ENABLE IF COMMAND BELOW, DISABLED DURING EXPERIMENTAL DEV
-    # if: contains(needs.*.outputs.build, 'true')
+   # if: contains(needs.*.outputs.build, 'true')
     uses: ./.github/workflows/_deploy.yml
     strategy:
       matrix:
