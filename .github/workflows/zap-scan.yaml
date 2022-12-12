@@ -3,8 +3,7 @@ name: Zap Scanning
 on:
   push:
     branches:
-      - 'dev'
-                 
+      - 'dev'         
     paths:
       - 'backend/**'
       - 'frontend/**'
