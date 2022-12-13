@@ -1,0 +1,49 @@
+name: Zap Scanning
+
+on:
+  push:
+    branches:
+      - dev
+      - ss-79
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: Target environment to deploy latest changes
+        default: "dev"
+        required: true
+        options:
+        - dev
+        - test
+        - prod
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  zap_scan_web:
+    runs-on: ubuntu-latest
+    name: Scan the EPD Frontend application
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-full-scan@v0.4.0
+        with:
+          allow_issue_writing: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue_title: 'ZAP Scan Report'
+          target: 'https://epd-frontend-dev.apps.silver.devops.gov.bc.ca/'
+
+  zap_scan_notify:
+    runs-on: ubuntu-latest
+    name: Scan the backend application
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-api-scan@v0.2.0
+        with:
+          allow_issue_writing: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue_title: 'ZAP Scan Report'
+          target: 'https://epd-backend-gateway-dev.apps.silver.devops.gov.bc.ca/'
