@@ -47,10 +47,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
           target: 'https://epd-backend-applications-dev.apps.silver.devops.gov.bc.ca/graphql'
-          
+
   zap_scan_gateway:
     runs-on: ubuntu-latest
-    name: Scan the backend application
+    name: Scan the backend gateway
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.2.0
@@ -60,9 +60,9 @@ jobs:
           issue_title: 'ZAP Scan Report'
           target: 'https://epd-backend-gateway-dev.apps.silver.devops.gov.bc.ca/'
 
-  zap_scan_gateway:
+  zap_scan_users:
     runs-on: ubuntu-latest
-    name: Scan the backend application
+    name: Scan the backend users
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.2.0
