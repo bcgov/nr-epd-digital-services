@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev
+      - ss-79
     paths:
       - 'backend/**'
       - 'frontend/**'
@@ -23,116 +24,26 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  builds:
-    name: Builds
-    uses: ./.github/workflows/_build.yml
-    strategy:
-      matrix:
-        component: [backend/applications, backend/gateway, backend/users, frontend]
-        include:
-          - component: backend/applications
-            triggers: ('backend/applications/')
-          - component: backend/gateway
-            triggers: ('backend/gateway/')
-          - component: backend/users
-            triggers:  ('backend/users/')
-          - component: frontend
-            triggers: ('frontend/')
-    secrets:
-      gh_token: ${{ secrets.GITHUB_TOKEN }}
-    with:
-      component: ${{ matrix.component }}
-      img_build: "dev" # ask the team dev or latest
-      img_fallback: dev
-      triggers: ${{ matrix.triggers }}
-   
-  # TODO - REIMPLMENET BEFORE MERGING, JUST TESTING WITHOUT THESE TO VERIFY DEPLOYS
-  tests:
-    name: Unit Tests
-    uses: ./.github/workflows/_code-cov.yml
-    strategy:
-      matrix:
-        component: [backend/applications, backend/gateway, backend/users, frontend]
-    secrets:
-      gh_token: ${{ secrets.GITHUB_TOKEN }}
-    with:
-      component: ${{ matrix.component }}
-      lcov_file: ${{ matrix.component }}/coverage/lcov.info
-      test_cmd: npm run test:cov
-
-  deploys:
-    name: Deploys
-    needs:
-      - builds
-    # If any of the previous created a build, then deploy
-    # TODO - RE-ENABLE IF COMMAND BELOW, DISABLED DURING EXPERIMENTAL DEV
-    if: contains(needs.*.outputs.build, 'true')
-    uses: ./.github/workflows/_deploy.yml
-    strategy:
-      matrix:
-        component: [backend/applications, backend/gateway, backend/users, database, frontend]
-        include:
-          - component: database
-            overwrite: false
-            template_file: .github/openshift/deploy.database.yml
-            template_vars: -p DB_PVC_SIZE=200Mi
-          - component: backend/applications
-            overwrite: true
-            template_file: .github/openshift/deploy.backend-applications.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=3006 -p ENV=dev -p IMAGE_TAG=dev
-          - component: backend/gateway
-            overwrite: true
-            template_file: .github/openshift/deploy.backend-gateway.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/gateway -p CONTAINER_PORT=3010 -p ENV=dev -p IMAGE_TAG=dev
-          - component: backend/users
-            overwrite: true
-            template_file: .github/openshift/deploy.backend-users.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/users -p CONTAINER_PORT=3005 -p ENV=dev -p IMAGE_TAG=dev  
-          - component: frontend
-            overwrite: true
-            template_file: .github/openshift/deploy.frontend.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=8080 -p ENV=dev -p IMAGE_TAG=dev    
-    
-    
-    secrets:
-      oc_namespace: ${{ secrets.OC_NAMESPACE }}
-      oc_server: ${{ secrets.OC_SERVER }}
-      oc_token: ${{ secrets.OC_TOKEN }}
-    with:
-      environment: dev
-      component: ${{ matrix.component }}
-      overwrite: ${{ matrix.overwrite }}
-      template_file: ${{ matrix.template_file }}
-      template_vars: ${{ matrix.template_vars }}
-
- # zap-backend/applications:
-    name: Backend Pen Tests
-    needs:
-      - Deploys
-    runs-on: ubuntu-22.04
+  zap_scan_web:
+    runs-on: ubuntu-latest
+    name: Scan the EPD Frontend application
     steps:
-      - uses: actions/checkout@v3
-
-      - name: ZAP Scan
-        uses: zaproxy/action-full-scan@v0.3.0
-        with:
-          target: https://epd-backend-applications-dev.apps.silver.devops.gov.bc.ca/
-          cmd_options: "-a"
-          allow_issue_writing: false
-          fail_action: false
-
-  #zap-frontend:
-    name: Frontend Pen Tests
-    needs:
-      - Deploys
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v3
-
       - name: ZAP Scan
         uses: zaproxy/action-full-scan@v0.4.0
         with:
-          target: https://epd-frontend-dev.apps.silver.devops.gov.bc.ca/
-          cmd_options: "-a"
           allow_issue_writing: false
-          fail_action: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue_title: 'ZAP Scan Report'
+          target: 'https://epd-frontend-dev.apps.silver.devops.gov.bc.ca/'
+
+  zap_scan_notify:
+    runs-on: ubuntu-latest
+    name: Scan the backend application
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-api-scan@v0.2.0
+        with:
+          allow_issue_writing: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue_title: 'ZAP Scan Report'
+          target: 'https://epd-backend-gateway-dev.apps.silver.devops.gov.bc.ca/'
