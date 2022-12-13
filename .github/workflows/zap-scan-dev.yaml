@@ -104,8 +104,8 @@ jobs:
       overwrite: ${{ matrix.overwrite }}
       template_file: ${{ matrix.template_file }}
       template_vars: ${{ matrix.template_vars }}
-      
- zap-backend:
+
+ # zap-backend/applications:
     name: Backend Pen Tests
     needs:
       - Deploys
@@ -116,12 +116,12 @@ jobs:
       - name: ZAP Scan
         uses: zaproxy/action-full-scan@v0.3.0
         with:
-          target: https://${{ env.NAME }}-test-backend.apps.silver.devops.gov.bc.ca/
+          target: https://epd-backend-applications-dev.apps.silver.devops.gov.bc.ca/
           cmd_options: "-a"
           allow_issue_writing: false
           fail_action: false
 
-  zap-frontend:
+  #zap-frontend:
     name: Frontend Pen Tests
     needs:
       - Deploys
@@ -132,7 +132,7 @@ jobs:
       - name: ZAP Scan
         uses: zaproxy/action-full-scan@v0.4.0
         with:
-          target: https://${{ env.NAME }}-test-frontend.apps.silver.devops.gov.bc.ca/
+          target: https://epd-frontend-dev.apps.silver.devops.gov.bc.ca/
           cmd_options: "-a"
           allow_issue_writing: false
           fail_action: false
