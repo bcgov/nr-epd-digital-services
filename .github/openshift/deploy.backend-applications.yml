@@ -76,7 +76,7 @@ objects:
         - type: ConfigChange
         - type: ImageChange
           imageChangeParams:
-            automatic: false
+            automatic: true
             containerNames:
               - ${NAME}-${COMPONENT}
             from:

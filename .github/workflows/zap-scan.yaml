@@ -18,11 +18,10 @@ on:
         - dev
         - test
         - prod
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-  
+
 jobs:
   builds:
     name: Builds
@@ -48,18 +47,18 @@ jobs:
       triggers: ${{ matrix.triggers }}
    
   # TODO - REIMPLMENET BEFORE MERGING, JUST TESTING WITHOUT THESE TO VERIFY DEPLOYS
-  # tests:
-  #   name: Unit Tests
-  #   uses: ./.github/workflows/_code-cov.yml
-  #   strategy:
-  #     matrix:
-  #       component: [backend/applications, backend/gateway, backend/users, frontend]
-  #   secrets:
-  #     gh_token: ${{ secrets.GITHUB_TOKEN }}
-  #   with:
-  #     component: ${{ matrix.component }}
-  #     lcov_file: ${{ matrix.component }}/coverage/lcov.info
-  #     test_cmd: npm run test:cov
+  tests:
+    name: Unit Tests
+    uses: ./.github/workflows/_code-cov.yml
+    strategy:
+      matrix:
+        component: [backend/applications, backend/gateway, backend/users, frontend]
+    secrets:
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      component: ${{ matrix.component }}
+      lcov_file: ${{ matrix.component }}/coverage/lcov.info
+      test_cmd: npm run test:cov
 
   deploys:
     name: Deploys
@@ -67,7 +66,7 @@ jobs:
       - builds
     # If any of the previous created a build, then deploy
     # TODO - RE-ENABLE IF COMMAND BELOW, DISABLED DURING EXPERIMENTAL DEV
-   # if: contains(needs.*.outputs.build, 'true')
+    if: contains(needs.*.outputs.build, 'true')
     uses: ./.github/workflows/_deploy.yml
     strategy:
       matrix:
@@ -105,9 +104,8 @@ jobs:
       overwrite: ${{ matrix.overwrite }}
       template_file: ${{ matrix.template_file }}
       template_vars: ${{ matrix.template_vars }}
-        
-
-  zap-backend:
+      
+ zap-backend:
     name: Backend Pen Tests
     needs:
       - Deploys
