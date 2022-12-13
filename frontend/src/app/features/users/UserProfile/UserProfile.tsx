@@ -9,7 +9,7 @@ import {
     fetchLookupData,
   getRegions,
   getOrganizations,
-} from "../common/CommonDataSlice";
+} from "../../common/CommonDataSlice";
 import {
   addNewExternalUser,
   getUserAddedStatus,
@@ -20,10 +20,10 @@ import {
   resetAddedStatus,
   resetUpdateStatus,
   isProfileVerified
-} from "./UsersSlice";
-import { AppDispatch } from "../../Store";
-import { ExternalUser } from "./dto/ExternalUser";
-import { RequestStatus } from "../../helpers/requests/status";
+} from "../UsersSlice";
+import { AppDispatch } from "../../../Store";
+import { ExternalUser } from "../dto/ExternalUser";
+import { RequestStatus } from "../../../helpers/requests/status";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -52,7 +52,6 @@ export const UserProfile = () => {
     setValue,
     setError,
     formState: { errors },
-    getFieldState,
     getValues,  
     clearErrors,
   } = useForm<ExternalUser>({
@@ -366,7 +365,7 @@ export const UserProfile = () => {
     <Container fluid className="g-4 pt-5 mt-4">
       <Row>
         <Col className="mx-md-5">
-          <Form onSubmit={onSubmit}>
+          <Form name="userform" onSubmit={onSubmit}>
             <Row className="pt-4">
               <Col id="form-header" className="my-1">
                 <p className="h4">Section 1 - Profile Information</p>
@@ -446,6 +445,7 @@ export const UserProfile = () => {
                   {...register("city",{ required: true ,minLength:1 , maxLength:50 })}
                   type="text"
                   aria-placeholder="City"
+                  aria-label="City"
                   placeholder="City"
                   required
                   aria-invalid={errors.city ? "true" : "false"}

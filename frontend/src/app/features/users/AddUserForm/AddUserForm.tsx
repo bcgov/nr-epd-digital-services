@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addNewUser } from "./UsersSlice";
+import { addNewUser } from "../UsersSlice";
 import React from "react";
 import { useNavigate, NavLink } from "react-router-dom";
-import { AppDispatch } from "../../Store";
-import { User } from "./dto/User";
+import { AppDispatch } from "../../../Store";
+import { User } from "../dto/User";
 
 const AddUserForm = () => {
   const [name, setName] = useState("GraphQLTest");

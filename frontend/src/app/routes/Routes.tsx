@@ -1,12 +1,11 @@
-import React from "react";
 import Dashboard from "../features/dashboard/Dashboard";
-import UsersList from "../features/users/UsersList";
-import AddUserForm from "../features/users/AddUserForm";
+import UsersList from "../features/users/UsersList/UsersList";
+import AddUserForm from "../features/users/AddUserForm/AddUserForm";
 import Landing from "../features/landing/Landing"
 import { Routes , Route } from 'react-router-dom';
 import ProtectedRoute from "./ProtectedRoute";
 import { SignUp } from "../features/signup/signup";
-import { UserProfile } from "../features/users/UserProfile";
+import { UserProfile } from "../features/users/UserProfile/UserProfile";
 
 const AppRoutes = () => {
   return (

@@ -10,7 +10,7 @@ jest.mock('react-oidc-context', () => ({
 }))
 
 
-it('Renders list of users link', () => {
+it('The dummy page renders', () => {
   (useAuth as jest.Mock).mockReturnValue(
     {isAuthenticated: true}
   )
@@ -23,24 +23,7 @@ it('Renders list of users link', () => {
       </Provider>
     //</AuthProvider>
       );
-  const userListLink = screen.getByText(/List of Users/i);
+  const userListLink = screen.getByText(/User Dashboard/i);
   expect(userListLink).toBeInTheDocument();
 
 });
-
-test('Renders add new user link', () =>{
-  (useAuth as jest.Mock).mockReturnValue(
-    {isAuthenticated: true}
-  )
-  render(    
-    //<AuthProvider>
-      <Provider store={store}>
-        <MemoryRouter>
-            <Dashboard />   
-        </MemoryRouter>    
-      </Provider>
-    //</AuthProvider>
-    );
-  const addUserLink = screen.getByText(/Add New User/i)
-  expect(addUserLink).toBeInTheDocument()
-})

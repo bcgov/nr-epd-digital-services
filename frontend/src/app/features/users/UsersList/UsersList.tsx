@@ -10,13 +10,13 @@ import {
   updateUser,
   resetDeleteStatus,
   resetAddedStatus,
-} from "./UsersSlice";
+} from "../UsersSlice";
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { AppDispatch } from "../../Store";
-import { User } from "./dto/User";
-import { RequestStatus } from "../../helpers/requests/status";
-import { updateLastVisitURL } from "../applications/ApplicationSlice";
+import { AppDispatch } from "../../../Store";
+import { User } from "../dto/User";
+import { RequestStatus } from "../../../helpers/requests/status";
+import { updateLastVisitURL } from "../../applications/ApplicationSlice";
 
 
 const UsersList = () => {
