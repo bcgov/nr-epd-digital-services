@@ -51,10 +51,7 @@ const Header = () => {
               as="button"
               onClick={() => {
                 auth.removeUser().then(() => {
-                  window.location.href = process.env
-                    .REACT_APP_AUTH_LOGOUT_REDIRECT_URI
-                    ? process.env.REACT_APP_AUTH_LOGOUT_REDIRECT_URI
-                    : "";
+                  window.location.href = authRedirectUri
                 });
               }}
             >
