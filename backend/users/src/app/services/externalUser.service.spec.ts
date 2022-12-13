@@ -135,7 +135,7 @@ describe('UsersService', () => {
 
   it('should return a user', async () => {
     const user = await service.findOne('2');
-    expect(user.firstName).toEqual('test');
+    expect(user.data?.firstName).toEqual('test');
   });
 
   it('should create and return a user', async () => {
