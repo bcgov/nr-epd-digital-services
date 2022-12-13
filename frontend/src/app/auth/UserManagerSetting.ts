@@ -4,7 +4,6 @@ export function getClientSettings(): UserManagerSettings {
     return {
       authority: process.env.REACT_APP_AUTH_AUTHORITY || ((window as any)._env_ && (window as any)._env_.REACT_APP_AUTH_AUTHORITY) || "",
       client_id: process.env.REACT_APP_AUTH_CLIENT_ID || ((window as any)._env_ && (window as any)._env_.REACT_APP_AUTH_CLIENT_ID) || "",
-      client_secret: process.env.REACT_APP_AUTH_CLIENT_SECRET || ((window as any)._env_ && (window as any)._env_.REACT_APP_AUTH_CLIENT_SECRET) || "",
       redirect_uri: process.env.REACT_APP_AUTH_REDIRECT_URI || ((window as any)._env_ && (window as any)._env_.REACT_APP_AUTH_REDIRECT_URI) || "",
       post_logout_redirect_uri: process.env.REACT_APP_AUTH_LOGOUT_REDIRECT_URI || ((window as any)._env_ && (window as any)._env_.REACT_APP_AUTH_LOGOUT_REDIRECT_URI) || "",
       response_type: process.env.REACT_APP_AUTH_RESPONSE_TYPE || ((window as any)._env_ && (window as any)._env_.REACT_APP_AUTH_RESPONSE_TYPE) || "",
