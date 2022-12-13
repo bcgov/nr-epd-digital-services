@@ -1,14 +1,11 @@
-name: Zap Scanning
+name: Zap Scanning for Dev 
 
-on:
+  on:
   push:
     branches:
       - dev
       - ss-79
-    paths:
-      - 'backend/**'
-      - 'frontend/**'
-      
+    
   workflow_dispatch:
     inputs:
       environment:
@@ -18,8 +15,8 @@ on:
         required: true
         options:
         - dev
-        - test
-        - prod
+        #- test
+        #- prod
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -27,7 +24,7 @@ concurrency:
 jobs:
   zap_scan_web:
     runs-on: ubuntu-latest
-    name: Scan the EPD Frontend application
+    name: Scan the epd-Frontend 
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-full-scan@v0.4.0
@@ -39,7 +36,7 @@ jobs:
 
   zap_scan_applications:
     runs-on: ubuntu-latest
-    name: Scan the backend application
+    name: Scan the epd-backend-application
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.2.0
@@ -51,7 +48,7 @@ jobs:
 
   zap_scan_gateway:
     runs-on: ubuntu-latest
-    name: Scan the backend gateway
+    name: Scan the epd-backend-gateway
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.2.0
@@ -63,7 +60,7 @@ jobs:
 
   zap_scan_users:
     runs-on: ubuntu-latest
-    name: Scan the backend users
+    name: Scan the epd-backend-users
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.2.0
