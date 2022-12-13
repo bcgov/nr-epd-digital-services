@@ -61,7 +61,7 @@ describe('ExternalUsersResolver', () => {
 
   it('should return a user', async () => {
     const user = await resolver.findOne('2');
-    expect(user.firstName).toEqual('test');
+    expect(user.data?.firstName).toEqual('test');
   });
 
   it('should create and return a user', async () => {
