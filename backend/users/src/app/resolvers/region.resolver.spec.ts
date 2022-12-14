@@ -44,13 +44,11 @@ describe('RegionResolver', () => {
 
   it('Atleast return a region -- findAll', async () => {
     const regions = await resolver.findAll();
-    console.log(regions);
     expect(regions.data[0].id).toBe('123');
   });
 
   it('Atleast return a region -- findOne', async () => {
     const regions = await resolver.findOne('123');
-    console.log(regions);
     expect(regions.id).toBe('123');
   });
 });
