@@ -15,19 +15,4 @@ export class UsersResolver {
   ): Promise<Application[]> {
     return this.applicationService.forUser(args, user.id);
   }
-
-  // @Query(() => [User], { name: 'users' })
-  // findAllWithAppName(@Args() args: FetchUsersArgs,@Parent() user: User):Promise<Application[]> {
-  //   console.log("args",args);
-  //   console.log("user",user);
-  //   return this.applicationService.forUser(user.id);
-  // }
-
-  // @Query(()=>[Application],{name:"GetAppForUsers"})
-  // findAllWithAppName(@Args() args: FetchUsersArgs,@Parent() user: User):Promise<Application[]>
-  // {
-  //   console.log("args",args);
-  //   console.log("user",user);
-  //   return this.applicationService.findAll();
-  // }
 }

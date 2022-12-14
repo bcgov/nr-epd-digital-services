@@ -8,8 +8,6 @@ import { IntrospectAndCompose } from '@apollo/gateway';
 import { RequestHandler } from './RequestHandler';
 
 const handleAuth = ({ req }) => {
-  // console.log('at server ', new Date(), req)
-
   try {
     if (req.headers.authorization) {
       // const token = getToken(req.headers.authorization);

@@ -52,19 +52,16 @@ export class ExternalUserResolver {
   @Mutation(() => UpdateExternalUserResponse)
   async updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     const result = new UpdateExternalUserResponse();
-    console.log(updateUserInput);
     const response = await this.externalUserService.update(
       updateUserInput.id,
       updateUserInput,
     );
     result.httpStatusCode = 200;
-    console.log('update response', response);
     if (response.affected > 0) {
       result.recordUpdated = true;
     } else {
       result.recordUpdated = false;
     }
-    console.log('updated result', result);
     return result;
   }
 
