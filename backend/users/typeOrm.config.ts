@@ -3,11 +3,6 @@ import { DataSource } from 'typeorm';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
 
-console.log(
-  'process.env.POSTGRES_DB_PASSWORD',
-  process.env.POSTGRES_DB_PASSWORD,
-);
-
 export default new DataSource({
   type: 'postgres',
   host: process.env.POSTGRESQL_HOST,

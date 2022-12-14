@@ -32,7 +32,6 @@ describe('OrganizationTypeResolver', () => {
 
   it('Atleast return a region -- findAll', async () => {
     const regions = await resolver.findAll();
-    console.log(regions);
     expect(regions.data[0].id).toBe('123');
   });
 });

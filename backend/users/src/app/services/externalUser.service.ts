@@ -23,18 +23,10 @@ export class ExternalUserService {
    * @returns created user
    */
   async create(createUserInput: CreateUserInput) {
-    console.log('CreateUserInput - 1 ');
     const newUser = await this.externalUserRepository.create(createUserInput);
-
-    console.log('CreateUserInput - 2 ');
-    //await this.externalUserRepository.save(newUser);
-    console.log('newUser', newUser);
-
-    console.log('CreateUserInput - 3 ');
 
     await this.externalUserRepository.save(newUser);
 
-    console.log('CreateUserInput - 4 ', newUser);
     return await this.externalUserRepository.findOne({
       relations: ['region', 'organizationType'],
       where: { id: newUser.id },
@@ -53,8 +45,6 @@ export class ExternalUserService {
     findUsersResponse.data = await this.externalUserRepository.find({
       relations: ['region', 'organizationType'],
     });
-
-    console.log('data', findUsersResponse.data);
 
     return findUsersResponse;
   }
@@ -88,7 +78,6 @@ export class ExternalUserService {
    */
   update(id: string, updateUserInput: UpdateUserInput) {
     const result = this.externalUserRepository.update(id, updateUserInput);
-    console.log(result);
     return result;
   }
 
@@ -99,7 +88,6 @@ export class ExternalUserService {
    */
   async remove(id: string) {
     const delResult = await this.externalUserRepository.delete({ id });
-    console.log(delResult);
     return delResult.affected > 0;
   }
 }
