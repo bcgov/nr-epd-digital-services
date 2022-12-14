@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - dev
-      - ss-79
+      - ss-79 #testing purpose
     
   workflow_dispatch:
     inputs:
@@ -22,7 +22,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  zap_scan_web:
+  zap_scan_frontend:
     runs-on: ubuntu-latest
     name: Scan the epd-Frontend 
     steps:
