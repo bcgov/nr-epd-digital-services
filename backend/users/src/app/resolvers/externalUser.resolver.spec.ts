@@ -55,7 +55,6 @@ describe('ExternalUsersResolver', () => {
 
   it('should return atleast a user', async () => {
     const users = await resolver.findAll();
-    console.log(users);
     expect(users.data.length).toBeGreaterThan(0);
   });
 
