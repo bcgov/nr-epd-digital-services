@@ -13,10 +13,10 @@ on:
         description: Target environment to deploy latest changes
         default: "dev"
         required: true
-        options:
-        - dev
-        #- test
-        #- prod
+        # options:
+        # - dev
+        # - test
+        # - prod
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -36,7 +36,7 @@ jobs:
 
   zap_scan_applications:
     runs-on: ubuntu-latest
-    name: Scan the epd-backend-application
+    name: Scan the epd-backend-applications
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.2.0
