@@ -97,9 +97,7 @@ describe('UsersService', () => {
               });
             }),
             create: jest.fn(async (user) => {
-              console.log('user for creation', user);
               const errors = await validate(user);
-              console.log('user for creation errors', errors);
               if (errors.length > 0) {
                 return Promise.resolve(errors);
               }
@@ -129,7 +127,6 @@ describe('UsersService', () => {
 
   it('should return atleast a user', async () => {
     const users = await service.findAll();
-    console.log(users);
     expect(users.data.length).toBeGreaterThan(0);
   });
 
@@ -162,7 +159,6 @@ describe('UsersService', () => {
     };
 
     const user = await service.create(input);
-    console.log('user received', user);
 
     expect(user[0].firstName).toEqual('test');
   });
