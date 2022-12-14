@@ -61,7 +61,7 @@ objects:
         // runtime-config.js vars
           window["_env_"] =  {
             "REACT_APP_NODE_ENV": "production",
-            "REACT_APP_AUTH_AUTHORITY": "https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth/realms/epd-dev/"",
+            "REACT_APP_AUTH_AUTHORITY": "https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth/realms/epd-dev/",
             "REACT_APP_AUTH_CLIENT_ID": "${REACT_APP_AUTH_CLIENT_ID}",
             "REACT_APP_AUTH_REDIRECT_URI": "https://epd-frontend-dev.apps.silver.devops.gov.bc.ca/dashboard",            
             "REACT_APP_AUTH_LOGOUT_REDIRECT_URI": "https://logontest7.gov.bc.ca/clp-cgi/logoff.cgi?retnow=1&returl=https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth/realms/epd-dev/protocol/openid-connect/logout?post_logout_redirect_uri=https://epd-frontend-dev.apps.silver.devops.gov.bc.ca",
