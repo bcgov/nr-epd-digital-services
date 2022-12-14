@@ -1,6 +1,6 @@
 name: Zap Scanning for Dev 
 
-  on:
+on:
   push:
     branches:
       - dev
