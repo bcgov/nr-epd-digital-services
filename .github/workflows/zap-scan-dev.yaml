@@ -1,4 +1,4 @@
-name: Zap Scanning for Dev 
+name: Zap Scanning
 
 on:
   push:
