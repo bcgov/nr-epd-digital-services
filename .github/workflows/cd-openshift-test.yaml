@@ -5,10 +5,12 @@ on:
   push:
     branches:
       - 'main'
+      - 'ss-79'
             
     paths:
       - 'backend/**'
       - 'frontend/**'
+      - '.github/workflows/cd-openshift-test.yaml'
      
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
