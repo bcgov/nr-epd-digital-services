@@ -73,10 +73,7 @@ export const UserProfile = () => {
 
   // Handles logic after update is done
   useEffect(() => {
-    if (updateUserStatus === RequestStatus.success) {
-      // toast("Profile updated successfully",{
-      //   type: "success",
-      // });
+    if (updateUserStatus === RequestStatus.success) {    
       dispatch(resetUpdateStatus(""));
       toast.success("Profile updated successfully");
       if (userAuth.user)
@@ -127,10 +124,6 @@ export const UserProfile = () => {
       return;
     }
 
-    console.log("errors at submit", errors)
-
-
-
     data.userId = userAuth.user?.profile.sub;
     data.isProfileVerified = true;
 
@@ -145,10 +138,7 @@ export const UserProfile = () => {
     } else {
       data.isGstExempt = false;
     }
-    //data.isGstExempt = false;
-
-    //data.regionId = selectedRegionId
-
+ 
     delete data["isBillingContactST"];
     delete data["isGstExemptST"];
     if (
@@ -156,8 +146,6 @@ export const UserProfile = () => {
       savedExternalUser.id !== undefined &&
       savedExternalUser.id !== ""
     ) {
-      // update user profile
-
       dispatch(updateExternalUser(data));
     } else {
       dispatch(addNewExternalUser(data));
@@ -199,7 +187,6 @@ export const UserProfile = () => {
   }
 
   const IsCheckValid = (event: any) => {
-    console.log("before ", errors)
     let values: any = getValues();
     let returnVal:boolean = true;
 
@@ -233,8 +220,7 @@ export const UserProfile = () => {
       
     }
 
-    for (const property in values) {
-      console.log("property "+ property, errors)
+    for (const property in values) {     
     
       if ((typeof values[property] === "string" && values[property] === "") || values[property]=== null) {
         returnVal = false;
@@ -344,29 +330,18 @@ export const UserProfile = () => {
             clearErrors("isGstExemptST")
             break;
         }
-
-        // if(property==="lastName")
-        // setError("lastName", { type: 'required'})
-
-        // if(property==="addressLine")
-        // setError("addressLine", { type: 'required'})
-
-        // if(property==="city")
-        // setError("city", { type: 'required'})
       }
     }
   
-    console.log("after ", errors)
-    return returnVal;
-    //setError("firstName", { type: "focus" }, { shouldFocus: true })
-    //setError("firstName",{message:"Please fill this", type:"required" }, {shouldFocus:true})
+    //console.log("after ", errors)
+    return returnVal;   
   };
 
   return (
     <Container fluid className="g-4 pt-5 mt-4">
       <Row>
         <Col className="mx-md-5">
-          <Form onSubmit={onSubmit}>
+          <Form onSubmit={onSubmit} aria-label="form" name="form">
             <Row className="pt-4">
               <Col id="form-header" className="my-1">
                 <p className="h4">Section 1 - Profile Information</p>
@@ -385,7 +360,6 @@ export const UserProfile = () => {
                   aria-placeholder="First Name"
                   placeholder="First Name"
                   required
-                  
                 />
                 <p className="errorMessage">
                   {" "}
@@ -786,18 +760,19 @@ export const UserProfile = () => {
                   required
                   value="true"                 
                   name="isGstExemptST"
+                  title="isGstExemptST"
                   type="radio"
-                  label="Yes"
-                  // checked = {isSelected("isBillingContact","true")}
+                  label="Yes"           
                 />
                 <Form.Check
                  {...register("isGstExemptST")}
                   required
                   value="false"                 
                   name="isGstExemptST"
+                  title="isGstExemptST"
                   type="radio"
                   label="No"
-                  // checked = {isSelected("isBillingContact","false")}
+            
                 />
                 <p className="errorMessage">
                   {" "}
@@ -808,81 +783,6 @@ export const UserProfile = () => {
                 </p>
               </div>
             </Row>
-
-            {/* <Row className="pt-4">
-              <Col id="form-header" className="my-1">
-                <h5>Section 3 - Billing Details</h5>
-              </Col>
-            </Row>
-            <Row>
-              <div key="radio" className="mb-3">
-                <Form.Label>Is Billing contact info the same?</Form.Label>
-                <Form.Check
-                  required
-                  value="true"
-                  {...register("isBillingContactST")}
-                  name="isBillingContactST"
-                  type="radio"
-                  label="Yes"
-                  // checked = {isSelected("isBillingContact","true")}
-                />
-                <Form.Check
-                  required
-                  value="false"
-                  {...register("isBillingContactST")}
-                  name="isBillingContactST"
-                  type="radio"
-                  label="No"
-                  // checked = {isSelected("isBillingContact","false")}
-                />
-              </div>
-            </Row> */}
-            {/* <Row>
-							<Form.Group className="mb-2 col-xs-12 col-sm-6" controlId="formBillingAddress">
-								<Form.Label>Billing Address</Form.Label>
-								<Form.Control type="text" aria-placeholder="Billing Address" placeholder="Billing Address"/>
-							</Form.Group>
-							<Form.Group className="mb-2 col-xs-12 col-sm-6" controlId="formBillingCity">
-								<Form.Label>City</Form.Label>
-								<Form.Control type="text" aria-placeholder="City" placeholder="City"/>
-							</Form.Group>
-						</Row>
-						<Row>
-							<Form.Group className="mb-2 col-xs-12 col-sm-4" controlId="formBillingProvince">
-								<Form.Label>Province</Form.Label>
-								<Form.Control  type="text" aria-placeholder="Province" placeholder="Province"/>
-							</Form.Group>
-							<Form.Group className="mb-2 col-xs-12 col-sm-4" controlId="formBillingCountry">
-								<Form.Label>Country</Form.Label>
-								<Form.Control type="text" aria-placeholder="Country" placeholder="Country"/>
-							</Form.Group>
-							<Form.Group className="mb-2 col-xs-12 col-sm-4" controlId="formBillingPostalCode">
-								<Form.Label>Postal Code</Form.Label>
-								<Form.Control type="text" aria-placeholder="Postal Code" placeholder="Postal Code"/>
-							</Form.Group>
-						</Row>
-						<Row className="w-100">
-							<Form.Group className="mb-2 col-xs-12 col-sm-6" controlId="formBillingName">
-								<Form.Label>Name on Card</Form.Label>
-								<Form.Control type="text" aria-placeholder="Add name here" placeholder="Add name here"/>
-							</Form.Group>
-						</Row>
-						<Row>
-							<Form.Group className="mb-2 col-xs-12 col-6">
-								<Form.Label>Card Number</Form.Label>
-								<Form.Control type="text" aria-placeholder="Card Number" placeholder="Card Number"/>
-							</Form.Group>
-						</Row>
-						<Row>
-							<Form.Group className="mb-2 col-xs-12 col-3">
-								<Form.Label>Expiration</Form.Label>
-								<Form.Control type="text" aria-placeholder="Expiry Date" placeholder="MM/YY"/>
-							</Form.Group>
-							<Form.Group className="mb-2 col-xs-12 col-3">
-								<Form.Label>CVV</Form.Label>
-								<Form.Control type="text" aria-placeholder="CVV" placeholder="CVV"/>
-							</Form.Group>
-						</Row> */}
             <Row>
               <Col className="text-end mb-3">
                 {savedExternalUser && (
