@@ -1,0 +1,28 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Report {
+  id: Int!
+  name: String!
+}
+
+type Query {
+  reports: [Report!]!
+  report(id: Int!): Report!
+}
+
+type Mutation {
+  createReport(createReportInput: CreateReportInput!): Report!
+  updateReport(updateReportInput: UpdateReportInput!): Report!
+  removeReport(id: Int!): Report!
+}
+
+input CreateReportInput {
+  name: String!
+}
+
+input UpdateReportInput {
+  name: String
+  id: Int!
+}

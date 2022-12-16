@@ -3,44 +3,81 @@ kind: Template
 metadata:
   name: ${NAME}
   annotations:
-    description: "Greenfield Template"
-    tags: "gfp"
+    description: "EPD Digital Services"
+    tags: "EPD"
     iconClass: icon-js
 labels:
-  app: ${NAME}-${ZONE}
-  app.kubernetes.io/part-of: ${NAME}-${ZONE}
+  app: ${NAME}-${COMPONENT}
+  app.kubernetes.io/part-of: ${NAME}-${COMPONENT}
 parameters:
   - name: NAME
     description: Module name
-    value: gfp
+    value: epd
   - name: COMPONENT
     description: Component name
     value: frontend
-  - name: ZONE
-    description: Deployment zone, e.g. pr-### or prod
-    required: true
   - name: IMAGE_TAG
     description: Image tag to use
     value: latest
   - name: DOMAIN
     value: apps.silver.devops.gov.bc.ca
   - name: CPU_REQUEST
-    value: 100m
+    value: "25m"
   - name: MEMORY_REQUEST
-    value: 0.5Gi
+    value: "50Mi"
+  - name: CPU_LIMIT
+    value: "75m"
+  - name: MEMORY_LIMIT
+    value: "150Mi"
+  - name: MIN_REPLICAS
+    description: The minimum amount of replicas
+    value: "1"
+  - name: MAX_REPLICAS
+    description: The maximum amount of replicas
+    value: "3"
+  - name: CONTAINER_PORT
+    description: The port on which the application will be accessible
+    required: true
   - name: REGISTRY
     description: Container registry to import from (internal is image-registry.openshift-image-registry.svc:5000)
     value: ghcr.io
   - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
-    value: bcgov/greenfield-pipeline:prod-frontend
+    value: bcgov/nr-epd-digital-services/frontend
+  - name: ENV
+    description: The Environment on which it is deployed
+    required: true
+  - name: REACT_APP_AUTH_CLIENT_ID
+    description: "The keycloak client id"
+    value: epd-web
 objects:
+  # ConfigMap created by sakthi for testing - DONOT push
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: ${NAME}-config
+    data:
+      config.js: |-
+        // runtime-config.js vars
+          window["_env_"] =  {
+            "REACT_APP_NODE_ENV": "production",
+            "REACT_APP_AUTH_AUTHORITY": "https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth/realms/epd-dev/",
+            "REACT_APP_AUTH_CLIENT_ID": "${REACT_APP_AUTH_CLIENT_ID}",
+            "REACT_APP_AUTH_REDIRECT_URI": "https://epd-frontend-dev.apps.silver.devops.gov.bc.ca/dashboard",            
+            "REACT_APP_AUTH_LOGOUT_REDIRECT_URI": "https://logontest7.gov.bc.ca/clp-cgi/logoff.cgi?retnow=1&returl=https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth/realms/epd-dev/protocol/openid-connect/logout?post_logout_redirect_uri=https://epd-frontend-dev.apps.silver.devops.gov.bc.ca",
+            "REACT_APP_AUTH_RESPONSE_TYPE": "code",
+            "REACT_APP_AUTH_SCOPE": "openid profile",
+            "REACT_APP_BACKEND_API": "https://epd-backend-gateway-dev.apps.silver.devops.gov.bc.ca",            
+            "REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS": "true",
+            "REACT_APP_AUTH_LOAD_USER_INFO": "true",  
+            "REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT": "true"
+          }
   - apiVersion: v1
     kind: ImageStream
     metadata:
       labels:
-        app: ${NAME}-${ZONE}
-      name: ${NAME}-${ZONE}-${COMPONENT}
+        app: ${NAME}-${COMPONENT}
+      name: ${NAME}-${COMPONENT}
     spec:
       lookupPolicy:
         local: false
@@ -48,15 +85,15 @@ objects:
         - name: ${IMAGE_TAG}
           from:
             kind: DockerImage
-            name: ${REGISTRY}/${PROMOTE}
+            name: ${REGISTRY}/${PROMOTE}:${IMAGE_TAG}
           referencePolicy:
             type: Local
   - apiVersion: v1
     kind: DeploymentConfig
     metadata:
       labels:
-        app: ${NAME}-${ZONE}
-      name: ${NAME}-${ZONE}-${COMPONENT}
+        app: ${NAME}-${COMPONENT}
+      name: ${NAME}-${COMPONENT}
     spec:
       replicas: 1
       triggers:
@@ -65,80 +102,110 @@ objects:
           imageChangeParams:
             automatic: true
             containerNames:
-              - ${NAME}
+              - ${NAME}-${COMPONENT}
             from:
               kind: ImageStreamTag
-              name: ${NAME}-${ZONE}-${COMPONENT}:${IMAGE_TAG}
+              name: ${NAME}-${COMPONENT}:${IMAGE_TAG}
       selector:
-        deploymentconfig: ${NAME}-${ZONE}-${COMPONENT}
+        deploymentconfig: ${NAME}-${COMPONENT}
       strategy:
         type: Rolling
       template:
         metadata:
           labels:
-            app: ${NAME}-${ZONE}
-            deploymentconfig: ${NAME}-${ZONE}-${COMPONENT}
+            app: ${NAME}-${COMPONENT}
+            deploymentconfig: ${NAME}-${COMPONENT}
         spec:
           containers:
-            - image: ${NAME}-${ZONE}-${COMPONENT}:${IMAGE_TAG}
+            - image: ${NAME}-${COMPONENT}:${IMAGE_TAG}
               imagePullPolicy: Always
-              name: ${NAME}
+              name: ${NAME}-${COMPONENT}
               env:
-                - name: BACKEND_URL
-                  value: https://${NAME}-${ZONE}-backend.${DOMAIN}
+                - name: REACT_APP_AUTH_REDIRECT_URI
+                  value: https://${NAME}-frontend-${ENV}.${DOMAIN}
               ports:
-                - containerPort: 3000
+                - containerPort: ${{CONTAINER_PORT}}
                   protocol: TCP
               resources:
                 requests:
                   cpu: ${CPU_REQUEST}
                   memory: ${MEMORY_REQUEST}
+                limits:
+                  cpu: ${CPU_LIMIT}
+                  memory: ${MEMORY_LIMIT}
               readinessProbe:
-                httpGet:
-                  path: /
-                  port: 3000
-                  scheme: HTTP
-                initialDelaySeconds: 15
-                periodSeconds: 30
-                timeoutSeconds: 1
+                tcpSocket:
+                  port: ${{CONTAINER_PORT}}
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                timeoutSeconds: 5
+                failureThreshold: 30
+                successThreshold: 1
               livenessProbe:
                 successThreshold: 1
                 failureThreshold: 3
                 httpGet:
                   path: /
-                  port: 3000
+                  port: ${{CONTAINER_PORT}}
                   scheme: HTTP
-                initialDelaySeconds: 15
+                initialDelaySeconds: 60
                 periodSeconds: 30
                 timeoutSeconds: 5
+              #Added for configMap mount  
+              volumeMounts:
+                - name: ${NAME}-config
+                  #readOnly: true
+                  mountPath: /usr/share/nginx/html/config/
+          volumes:
+            - name: ${NAME}-config
+              configMap:
+                name: ${NAME}-config
   - apiVersion: v1
     kind: Service
     metadata:
       labels:
-        app: ${NAME}-${ZONE}
-      name: ${NAME}-${ZONE}-${COMPONENT}
+        app: ${NAME}-${COMPONENT}
+      name: ${NAME}-${COMPONENT}
     spec:
       ports:
-        - name: 3000-tcp
+        - name: ${CONTAINER_PORT}-tcp
           protocol: TCP
           port: 80
-          targetPort: 3000
+          targetPort: ${{CONTAINER_PORT}}
       selector:
-        deploymentconfig: ${NAME}-${ZONE}-${COMPONENT}
+        deploymentconfig: ${NAME}-${COMPONENT}
   - apiVersion: route.openshift.io/v1
     kind: Route
     metadata:
       labels:
-        app: ${NAME}-${ZONE}
-      name: ${NAME}-${ZONE}-${COMPONENT}
+        app: ${NAME}-${COMPONENT}
+      name: ${NAME}-${COMPONENT}
     spec:
-      host: ${NAME}-${ZONE}-${COMPONENT}.${DOMAIN}
+      host: ${NAME}-${COMPONENT}-${ENV}.${DOMAIN}
       port:
-        targetPort: 3000-tcp
+        targetPort: ${CONTAINER_PORT}-tcp
       to:
         kind: Service
-        name: ${NAME}-${ZONE}-${COMPONENT}
+        name: ${NAME}-${COMPONENT}
         weight: 100
       tls:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
+  - apiVersion: autoscaling/v2
+    kind: HorizontalPodAutoscaler
+    metadata:
+      name: "${NAME}-${COMPONENT}"
+    spec:
+      scaleTargetRef:
+        apiVersion: apps.openshift.io/v1
+        kind: DeploymentConfig
+        name: "${NAME}-${COMPONENT}"
+      minReplicas: ${{MIN_REPLICAS}}
+      maxReplicas: ${{MAX_REPLICAS}}
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 100

@@ -1,21 +1,99 @@
 ---
 version: "3.8"
+networks:
+  app-tier:
+    driver: bridge
 
 services:
   database:
+    user: postgres
+    networks:
+      - app-tier 
     container_name: database
     environment:
-      POSTGRES_USER: default
-      POSTGRES_PASSWORD: default
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: default
     hostname: database
     image: postgres:12
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - /pgdata
 
-  backend:
-    container_name: backend
+  users:
+    networks:
+      - app-tier 
+    build:
+      context: backend/users
+    container_name: users
+    hostname: users   
+    links:
+      - database
+    ports:
+      - "3005:3005"
+    depends_on:
+      database:
+        condition: service_healthy
+    expose:
+      - 3005 
+    volumes:
+      - ./backend/users:/app:z
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3005"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  applications:
+    networks:
+      - app-tier 
+    container_name: applications
+    entrypoint:
+      - "sh"
+      - "-c"
+      - "npm i && npm run start"
+    environment:
+      NODE_ENV: development
+      POSTGRESQL_HOST: database
+      POSTGRESQL_USER: postgres
+      POSTGRESQL_PASSWORD: postgres
+      POSTGRESQL_DATABASE: default
+      KEYCLOCK_AUTH_URL: https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth
+      KEYCLOCK_REALM: epd-dev
+      KEYCLOCK_CLIENT_ID: applicationapi
+      KEYCLOCK_SECRET: xyz
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3006"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    hostname: applications
+    image: node:14
+    depends_on:
+      database:
+        condition: service_healthy
+    links:
+      - database
+    ports:
+      - "3006:3006"
+    expose:
+      - 3006 
+    volumes:
+      - ./backend/applications:/app:z
+      - /app/node_modules
+    working_dir: "/app"
+
+  graphqlgateway:    
+    networks:
+      - app-tier 
+    container_name: graphqlgateway
     entrypoint:
       - "sh"
       - "-c"
@@ -26,20 +104,26 @@ services:
       POSTGRESQL_USER: default
       POSTGRESQL_PASSWORD: default
       POSTGRESQL_DATABASE: default
+      USERS_MICROSERVICE: http://users:3005
+      USERS_MICROSERVICE_ENDPOINT: http://users:3005/graphql
+      APPLICATION_MICROSERVICE_ENDPOINT: http://applications:3006/graphql
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      test: ["CMD", "curl", "-f", "http://localhost:3010"]
       interval: 1m30s
       timeout: 10s
       retries: 3
       start_period: 40s
-    hostname: backend
+    hostname: graphqlgateway
     image: node:14
     links:
       - database
     ports:
-      - "3001:3000"
+      - "3010:3010"
+    depends_on:
+      - "users"
+      - "applications"
     volumes:
-      - ./backend:/app:z
+      - ./backend/gateway:/app:z
       - /app/node_modules
     working_dir: "/app"
 
@@ -62,7 +146,7 @@ services:
     hostname: frontend
     image: node:14
     links:
-      - backend
+      - graphqlgateway
     ports:
       - "3000:3000"
       - "35729:35729"
@@ -70,3 +154,12 @@ services:
       - ./frontend:/app:z
       - /app/node_modules
     working_dir: "/app"
+
+  userapi_doc:
+        container_name: userapi_doc
+        build:
+            context: ./backend/documentation/users
+            dockerfile: ./Dockerfile
+        restart: always
+        ports:
+            - "3001:3001"

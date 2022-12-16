@@ -1,13 +1,22 @@
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { getLastVisitedURL } from '../applications/ApplicationSlice';
-
+import { useEffect } from "react";
+import { useAuth } from "react-oidc-context";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { AppDispatch } from "../../Store";
+import {
+  fetchUserProfileVerification,
+  isProfileVerified,
+} from "../users/UsersSlice";
+import { toast } from "react-toastify";
+import "./Dashboard.css";
 
 const Dashboard = () => {
-  
-  // const navigate = useNavigate();
-  
+  const dispatch = useDispatch<AppDispatch>();
+
+  const userIsProfileVerifiedValue = useSelector(isProfileVerified);
+
+  const navigate = useNavigate();
+
   // const lastVisitedURL = useSelector(getLastVisitedURL);
 
   // useEffect(()=>{
@@ -16,19 +25,42 @@ const Dashboard = () => {
   //       navigate("/"+lastVisitedURL)
   //   }
   // },[lastVisitedURL])
- 
-  return (
-    <div>
-        <ul>
-            <li>
-                <Link to="/users"> List of Users </Link>
-            </li>
-            <li>
-                <Link to="/users/add"> Add New User </Link>
-            </li>
-        </ul>
-    </div>
-  )
-}
 
-export default Dashboard
+  const auth = useAuth();
+
+  useEffect(() => {
+    if (
+      auth.user?.profile &&
+      auth.user?.profile.identity_provider === "bceid"
+    ) {
+      dispatch(fetchUserProfileVerification(auth.user.profile.sub));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (
+      userIsProfileVerifiedValue === false &&
+      auth.user?.profile.identity_provider === "bceid"
+    ) {
+      navigate("/profile");
+    }
+  }, [userIsProfileVerifiedValue]);
+
+  return (
+    <div className="container-fluid dashboard-content">
+      <div className="row">
+        <div className="col-12">
+          {auth.isLoading ? (
+            <div>Loading User</div>
+          ) : auth.user?.profile.identity_provider === "bceid" ? (
+            <h3>External User Dashboard</h3>
+          ) : (
+            <h3> Internal User Dashboard</h3>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;

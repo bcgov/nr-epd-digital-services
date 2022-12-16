@@ -26,6 +26,10 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
+      - name: Add Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
 
       - name: Get npm cache directory
         id: npm-cache-dir
@@ -60,4 +64,4 @@ jobs:
           title: ${{ inputs.component }} coverage report
           delete-old-comments: true
           github-token: ${{ secrets.gh_token }}
-          lcov-file: ./${{ inputs.lcov_file }}
+          lcov-file: /${{ inputs.lcov_file }}

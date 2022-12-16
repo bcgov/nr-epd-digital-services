@@ -1,0 +1,79 @@
+name: Continuous Integration On Push and Pull Request to DEV
+
+on:
+  workflow_dispatch: # TODO this is there for testing purposes, once the pipelines are all done, remove this
+  push:
+    branches:
+      - 'feature/**'
+      - 'Feature/**'
+      - 'feat/**'
+      - 'Feat/**'
+      - 'fix/*'
+      - 'Fix/*'
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+      - '.github/workflows/ci-cd-openshift-dev.yaml' # Only for dev / testing purposes
+  pull_request:
+    branches: [ dev ]
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: Unit Tests
+    uses: ./.github/workflows/_code-cov.yml
+    strategy:
+      matrix:
+        component: [backend/applications, backend/gateway, backend/users, frontend]
+    secrets:
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      component: ${{ matrix.component }}
+      lcov_file: ${{ matrix.component }}/coverage/lcov.info
+      test_cmd: npm run test:cov
+  sonarcloud:
+    name: Static Analysis
+    needs:
+      - tests
+    runs-on: ubuntu-22.04
+    steps:
+      # Disable shallow clone for SonarCloud analysis
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get backend coverage from cache
+        uses: actions/cache@v3
+        with:
+          path: backend/coverage
+          key: coverage-backend-${{ github.run_number }}
+          restore-keys: |
+            coverage-backend-
+      - name: Get frontend coverage from cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/coverage
+          key: coverage-frontend-${{ github.run_number }}
+          restore-keys: |
+            coverage-frontend-
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.exclusions=backend/applications/src/*.spec.ts,backend/gateway/src/*.spec.ts,backend/users/src/*.spec.ts,backend/applications/src/**/*.spec.ts,backend/gateway/src/**/*.spec.ts,backend/users/src/**/*.spec.ts
+            -Dsonar.organization=bcgov-sonarcloud
+            -Dsonar.javascript.lcov.reportPaths=backend/coverage/lcov.info,frontend/coverage/lcov.info
+            -Dsonar.cobertura.reportPaths=backend/coverage/cobertura-coverage.xml,frontend/coverage/cobertura-coverage.xml
+            -Dsonar.project.monorepo.enabled=true
+            -Dsonar.projectKey=${{ github.event.repository.name }}
+            -Dsonar.sources=backend/applications/src/,backend/gateway/src/,backend/users/src/,frontend/src/
+            -Dsonar.tests=backend/applications/src/,backend/gateway/src/,backend/users/src/
+            -Dsonar.test.inclusions=backend/applications/src/*.spec.ts,backend/gateway/src/*.spec.ts,backend/users/src/*.spec.ts,backend/applications/src/**/*.spec.ts,backend/gateway/src/**/*.spec.ts,backend/users/src/**/*.spec.ts

@@ -1,0 +1,131 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @key(fields: String!, resolvable: Boolean = true) repeatable on OBJECT | INTERFACE
+
+directive @extends on OBJECT | INTERFACE
+
+directive @external on OBJECT | FIELD_DEFINITION
+
+directive @requires(fields: String!) on FIELD_DEFINITION
+
+directive @provides(fields: String!) on FIELD_DEFINITION
+
+directive @shareable on FIELD_DEFINITION | OBJECT
+
+directive @link(url: String!, import: [link__Import]) on SCHEMA
+
+directive @tag(name: String!) repeatable on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUMENT_DEFINITION | SCALAR | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
+
+directive @inaccessible on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUMENT_DEFINITION | SCALAR | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
+
+directive @override(from: String!) on FIELD_DEFINITION
+
+type OrganizationType {
+  id: String!
+  org_name: String!
+}
+
+type Region {
+  id: String!
+  region_name: String!
+}
+
+type ExternalUser {
+  id: String!
+  firstName: String!
+  lastName: String!
+  addressLine: String!
+  city: String!
+  province: String!
+  country: String!
+  postalCode: String!
+  email: String!
+  phoneNumber: String!
+  industry: String!
+  organization: String!
+  isGstExempt: Boolean!
+  isBillingContact: Boolean!
+  organizationTypeId: String!
+  regionId: String!
+  organizationType: OrganizationType!
+  region: Region!
+  isProfileVerified: Boolean!
+}
+
+type FetchUserResponse {
+  httpStatusCode: Int!
+  data: [ExternalUser!]!
+}
+
+type FetchRegionResponse {
+  httpStatusCode: Int!
+  data: [Region!]!
+}
+
+type FetchOrganizationTypeResponse {
+  httpStatusCode: Int!
+  data: [OrganizationType!]!
+}
+
+type Query {
+  users: FetchUserResponse!
+  user(id: Int!): ExternalUser!
+  regions: FetchRegionResponse!
+  region(id: Int!): Region!
+  orgnizationTypes: FetchOrganizationTypeResponse!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): ExternalUser!
+  updateUser(updateUserInput: UpdateUserInput!): ExternalUser!
+  removeUser(id: Int!): ExternalUser!
+}
+
+input CreateUserInput {
+  userId: String!
+  firstName: String!
+  lastName: String!
+  addressLine: String!
+  city: String!
+  province: String!
+  country: String!
+  postalCode: String!
+  email: String!
+  phoneNumber: String!
+  organization: String!
+  userWorkStatus: String!
+  userFNStatus: String!
+  isGstExempt: Boolean!
+  isBillingContact: Boolean!
+  isProfileVerified: Boolean!
+  industry: String!
+  regionId: String!
+  organizationTypeId: String!
+}
+
+input UpdateUserInput {
+  userId: String
+  firstName: String
+  lastName: String
+  addressLine: String
+  city: String
+  province: String
+  country: String
+  postalCode: String
+  email: String
+  phoneNumber: String
+  organization: String
+  userWorkStatus: String
+  userFNStatus: String
+  isGstExempt: Boolean
+  isBillingContact: Boolean
+  isProfileVerified: Boolean
+  industry: String
+  regionId: String
+  organizationTypeId: String
+  id: String!
+}
+
+scalar link__Import

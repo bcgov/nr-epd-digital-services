@@ -6,13 +6,20 @@ import reportWebVitals from './reportWebVitals';
 import { store } from './app/Store';
 import { Provider } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {AuthProvider} from "react-oidc-context";
+import { UserManagerSettings } from 'oidc-client-ts';
+import { getClientSettings } from './app/auth/UserManagerSetting';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLDivElement);
+
+const authOptions: UserManagerSettings = getClientSettings();
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-    <App />
-    </Provider>  
+    <AuthProvider {...authOptions}>
+      <Provider store={store}>
+        <App />
+      </Provider> 
+    </AuthProvider> 
   </React.StrictMode>
 );
 

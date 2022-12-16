@@ -1,0 +1,29 @@
+#form-header{
+    background: #F7F7F7;
+    border: 1px solid #D6D6D6;
+    padding-top: 5px;
+    border-radius: 6px 6px 0px 0px;
+}
+
+#save-profile-btn{
+    background-color: #036;
+    border-color: #036;
+}
+
+#back-profile-btn{
+    background-color: white;
+    color: #036;
+    border-color: #036;
+    margin-right: 10px;
+}
+
+.errorMessage
+{
+    color:red
+}
+
+
+.form-control[aria-invalid='true']
+{
+    border-color: red;
+}
