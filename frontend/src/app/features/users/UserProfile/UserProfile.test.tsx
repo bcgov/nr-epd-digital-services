@@ -2,9 +2,6 @@ import { UserProfile } from "./UserProfile";
 import {render,screen} from "@testing-library/react"
 import TestWrapper from "../../../../utilities/test/TestUtils";
 import { useAuth } from "react-oidc-context";
-import { store } from "../../../Store";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 
 jest.mock('react-oidc-context', () =>({
@@ -29,11 +26,6 @@ const newExternalUserSetup =() =>{
         <TestWrapper>
             <UserProfile/>
         </TestWrapper>
-        // <Provider store={store}>
-        //     <MemoryRouter>
-        //         <UserProfile/>
-        //     </MemoryRouter>
-        // </Provider>
     )
 }  
 
@@ -57,6 +49,5 @@ test('Prevents submission with incomplete entries',async () => {
     newExternalUserSetup()
     const saveButton = screen.getByText(/Save Profile/i)
     userEvent.click(saveButton)
-    //console.log(screen.getByRole('paragraph',{name:''}))
     expect(screen.getByPlaceholderText(/City/i)).toBeInvalid()
 })
