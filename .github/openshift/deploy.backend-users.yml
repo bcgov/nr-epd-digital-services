@@ -186,6 +186,11 @@ objects:
                 initialDelaySeconds: 120
                 periodSeconds: 30
                 timeoutSeconds: 5
+          initContainers:
+            - name: init-${NAME}-backend-users-typeorm-migrations
+              image: image-registry.openshift-image-registry.svc:5000/${NAME}-${COMPONENT}:${IMAGE_TAG}
+              command: ['sh', '-c', 'initContainer.sh']
+            
   - apiVersion: v1
     kind: Service
     metadata:
