@@ -23,7 +23,7 @@ RUN set -x \
 RUN apk add postgresql-client
 
 # Expose port - mostly a convention, for readability
-EXPOSE 3005
+EXPOSE 4005
 
 # Start up command
 ENTRYPOINT [ "sh", "start.sh" ]
