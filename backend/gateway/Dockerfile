@@ -25,7 +25,7 @@ COPY --from=builder /app/dist ./dist
 #     && chmod -Rv  777  /app/logs/
 
 # Expose port - mostly a convention, for readability
-EXPOSE 3010
+EXPOSE 4010
 
 # Start up command, with max heap size as 50Megs
 ENTRYPOINT ["node", "--max-old-space-size=50","dist/main"]
