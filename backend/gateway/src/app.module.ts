@@ -55,13 +55,13 @@ const handleAuth = ({ req }) => {
               name: 'users',
               url: process.env.USERS_MICROSERVICE_ENDPOINT
                 ? process.env.USERS_MICROSERVICE_ENDPOINT
-                : 'http://users:3005/graphql',
+                : 'http://users:4005/graphql',
             },
             {
               name: 'applications',
               url: process.env.APPLICATION_MICROSERVICE_ENDPOINT
                 ? process.env.APPLICATION_MICROSERVICE_ENDPOINT
-                : 'http://applications:3006/graphql',
+                : 'http://applications:4006/graphql',
             },
           ],
         }),
