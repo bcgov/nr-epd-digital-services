@@ -19,7 +19,7 @@ import { UpdateExternalUserResponse } from '../dto/reponse/updateExternalUserRes
  * Resolver for External User
  */
 @Resolver(() => ExternalUser)
-@Resource('backend')
+@Resource('user-service')
 export class ExternalUserResolver {
   constructor(private readonly externalUserService: ExternalUserService) {}
 
@@ -28,7 +28,7 @@ export class ExternalUserResolver {
    * @param createUserInput input dto for creating new users
    * @returns ExternalUsers created user
    */
-  @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
+  @Roles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
   @Mutation(() => ExternalUser)
   async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
     const createResult = await this.externalUserService.create(createUserInput);
@@ -39,7 +39,7 @@ export class ExternalUserResolver {
    * Query For Fetching All Users
    * @returns All External User
    */
-  @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
+  @Roles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
   @Query(() => FetchUserResponse, { name: 'users' })
   findAll() {
     return this.externalUserService.findAll();

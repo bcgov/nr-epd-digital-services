@@ -8,7 +8,7 @@ import { OrganizationTypeService } from '../services/organizationType.service';
  * GraphQL Resolver for Organization Types
  */
 @Resolver(() => OrganizationType)
-@Resource('backend')
+@Resource('user-service')
 export class OrganizationTypeResolver {
   constructor(
     private readonly organizationTypeService: OrganizationTypeService,
@@ -18,7 +18,7 @@ export class OrganizationTypeResolver {
    * Query Method To Find All Orgnization Types
    * @returns All Orgnization Types
    */
-  @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
+  @Roles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
   @Query(() => FetchOrganizationTypeResponse, { name: 'organizationTypes' })
   findAll() {
     return this.organizationTypeService.findAll();
