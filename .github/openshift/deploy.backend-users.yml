@@ -190,7 +190,30 @@ objects:
             - name: init-${NAME}-backend-users-typeorm-migrations
               image: image-registry.openshift-image-registry.svc:5000/${NAME}-${COMPONENT}:${IMAGE_TAG}
               command: ['sh', '-c', 'initContainer.sh']
-            
+            - name: epd-api-db-migration
+              image: "image-registry.openshift-image-registry.svc:5000/${NAME}-migration:${IMAGE_TAG}"
+              env:
+                - name: FLYWAY_URL
+                  value: "jdbc:postgresql://${COMPONENT}-postgres:5432/${COMPONENT}"
+                - name: FLYWAY_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: "${COMPONENT}-secret"
+                      key: database-user
+                - name: FLYWAY_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: "${COMPONENT}-secret"
+                      key: database-password
+                - name: FLYWAY_BASELINE_ON_MIGRATE
+                  value: "true"
+              resources:
+                limits:
+                  cpu: 100m
+                  memory: 150Mi
+                requests:
+                  cpu: 50m
+                  memory: 50Mi
   - apiVersion: v1
     kind: Service
     metadata:
