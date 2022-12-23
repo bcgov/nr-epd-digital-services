@@ -10,7 +10,7 @@ async function bootstrap() {
     resources: [
       process.env.USERS_MICROSERVICE
         ? process.env.USERS_MICROSERVICE
-        : 'http://users:3005',
+        : 'http://users:4005',
     ],
     interval: 100,
     timeout: 180000,
@@ -20,7 +20,7 @@ async function bootstrap() {
   })
     .then(async () => {
       const app = await NestFactory.create(AppModule);
-      await app.listen(3010);
+      await app.listen(4010);
       //just for time being added a delayed start
     })
     .catch((error) => {
