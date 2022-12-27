@@ -35,16 +35,16 @@ services:
     links:
       - database
     ports:
-      - "3005:3005"
+      - "4005:4005"
     depends_on:
       database:
         condition: service_healthy
     expose:
-      - 3005 
+      - 4005 
     volumes:
       - ./backend/users:/app:z
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3005"]
+      test: ["CMD", "curl", "-f", "http://localhost:4005"]
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -69,7 +69,7 @@ services:
       KEYCLOCK_CLIENT_ID: applicationapi
       KEYCLOCK_SECRET: xyz
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3006"]
+      test: ["CMD", "curl", "-f", "http://localhost:4006"]
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -82,9 +82,9 @@ services:
     links:
       - database
     ports:
-      - "3006:3006"
+      - "4006:4006"
     expose:
-      - 3006 
+      - 4006 
     volumes:
       - ./backend/applications:/app:z
       - /app/node_modules
@@ -104,11 +104,11 @@ services:
       POSTGRESQL_USER: default
       POSTGRESQL_PASSWORD: default
       POSTGRESQL_DATABASE: default
-      USERS_MICROSERVICE: http://users:3005
-      USERS_MICROSERVICE_ENDPOINT: http://users:3005/graphql
-      APPLICATION_MICROSERVICE_ENDPOINT: http://applications:3006/graphql
+      USERS_MICROSERVICE: http://users:4005
+      USERS_MICROSERVICE_ENDPOINT: http://users:4005/graphql
+      APPLICATION_MICROSERVICE_ENDPOINT: http://applications:4006/graphql
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3010"]
+      test: ["CMD", "curl", "-f", "http://localhost:4010"]
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -118,7 +118,7 @@ services:
     links:
       - database
     ports:
-      - "3010:3010"
+      - "4010:4010"
     depends_on:
       - "users"
       - "applications"
@@ -148,7 +148,7 @@ services:
     links:
       - graphqlgateway
     ports:
-      - "3000:3000"
+      - "4000:4000"
       - "35729:35729"
     volumes:
       - ./frontend:/app:z
@@ -162,4 +162,4 @@ services:
             dockerfile: ./Dockerfile
         restart: always
         ports:
-            - "3001:3001"
+            - "4001:4001"

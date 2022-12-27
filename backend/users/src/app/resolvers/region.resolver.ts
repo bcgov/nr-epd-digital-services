@@ -8,14 +8,14 @@ import { RegionService } from '../services/region.service';
  * Resolver for Region
  */
 @Resolver(() => Region)
-@Resource('backend')
+@Resource('user-service')
 export class RegionResolver {
   constructor(private readonly regionService: RegionService) {}
 
   /**
    * Find All For Regions
    */
-  @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
+  @Roles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
   @Query(() => FetchRegionResponse, { name: 'regions' })
   findAll() {
     return this.regionService.findAll();
@@ -26,7 +26,7 @@ export class RegionResolver {
    * @param id region id
    * @returns Specific Region
    */
-  @Roles({ roles: ['adminbackend'], mode: RoleMatchingMode.ANY })
+  @Roles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
   @Query(() => Region, { name: 'region' })
   findOne(@Args('id', { type: () => Int }) id: string) {
     return this.regionService.findOne(id);

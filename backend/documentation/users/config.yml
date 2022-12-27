@@ -2,7 +2,7 @@ spectaql:
   displayAllServers: true
 
 introspection:
-  url: http://localhost:3005/graphql
+  url: http://localhost:4005/graphql
 
 info:
   title: Users GraphQL API Reference
