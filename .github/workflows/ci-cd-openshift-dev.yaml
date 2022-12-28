@@ -73,19 +73,19 @@ jobs:
           - component: backend/applications
             overwrite: true
             template_file: .github/openshift/deploy.backend-applications.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=4006 -p ENV=dev -p IMAGE_TAG=dev -p MIN_REPLICAS=1 -p MAX_REPLICAS=3
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=4006 -p ENV=dev -p IMAGE_TAG=dev -p MIN_REPLICAS=1 -p MAX_REPLICAS=2
           - component: backend/gateway
             overwrite: true
             template_file: .github/openshift/deploy.backend-gateway.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/gateway -p CONTAINER_PORT=4010 -p ENV=dev -p IMAGE_TAG=dev -p MIN_REPLICAS=1 -p MAX_REPLICAS=3
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/gateway -p CONTAINER_PORT=4010 -p ENV=dev -p IMAGE_TAG=dev -p MIN_REPLICAS=1 -p MAX_REPLICAS=2
           - component: backend/users
             overwrite: true
             template_file: .github/openshift/deploy.backend-users.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/users -p CONTAINER_PORT=4005 -p ENV=dev -p IMAGE_TAG=dev -p MIN_REPLICAS=1 -p MAX_REPLICAS=3
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/users -p CONTAINER_PORT=4005 -p ENV=dev -p IMAGE_TAG=dev -p MIN_REPLICAS=1 -p MAX_REPLICAS=2
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=8080 -p ENV=dev -p IMAGE_TAG=dev -p MIN_REPLICAS=1 -p MAX_REPLICAS=3 
+            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=8080 -p ENV=dev -p IMAGE_TAG=dev -p MIN_REPLICAS=1 -p MAX_REPLICAS=2
     
     
     secrets:

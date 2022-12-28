@@ -22,11 +22,11 @@ parameters:
   - name: DOMAIN
     value: apps.silver.devops.gov.bc.ca
   - name: CPU_REQUEST
-    value: "128m"
+    value: "250m"
   - name: MEMORY_REQUEST
     value: "256Mi"
   - name: CPU_LIMIT
-    value: "250m"
+    value: "550m"
   - name: MEMORY_LIMIT
     value: "512Mi"
   - name: MIN_REPLICAS
