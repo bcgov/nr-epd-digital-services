@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - 'dev'
-      - 'ss-highavailability' #test2
+      - 'ss-highavailability' #test
                  
     paths:
       - 'backend/**'
