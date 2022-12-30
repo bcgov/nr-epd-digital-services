@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - 'dev'
-      - 'ss-189' #test2
+      - 'ss-189' #test1
                  
     paths:
       - 'backend/**'
