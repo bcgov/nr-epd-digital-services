@@ -136,8 +136,8 @@ jobs:
           tags: ghcr.io/${{ github.repository }}/${{ inputs.component }}:${{ inputs.img_build }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          if: inputs.component == 'backend/users-migration'
-          file: ./backend/users/Dockerfile-migrations-openshift
+          # if: inputs.component == 'backend/users-migration'
+          # file: ./backend/users/Dockerfile-migrations-openshift
 
       # - name: Build and push Migration image
       #   if: steps.check.outputs.build == 'true' && inputs.component == 'backend/users'
