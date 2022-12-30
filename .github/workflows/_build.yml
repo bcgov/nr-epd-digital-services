@@ -136,14 +136,16 @@ jobs:
           tags: ghcr.io/${{ github.repository }}/${{ inputs.component }}:${{ inputs.img_build }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      - name: Build and push Migration image
-        if: steps.check.outputs.build == 'true' && inputs.component == 'backend/users'
-        uses: docker/build-push-action@v3.1.1
-        with:
-          context: ./${{ inputs.component }}-migration/
-          push: true
-          tags: ghcr.io/${{ github.repository }}/backend/users:${{ inputs.img_build }}-migration
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          if: inputs.component == 'backend/users-migration'
           file: ./backend/users/Dockerfile-migrations-openshift
+
+      # - name: Build and push Migration image
+      #   if: steps.check.outputs.build == 'true' && inputs.component == 'backend/users'
+      #   uses: docker/build-push-action@v3.1.1
+      #   with:
+      #     context: ./${{ inputs.component }}-migration/
+      #     push: true
+      #     tags: ghcr.io/${{ github.repository }}/backend/users:${{ inputs.img_build }}-migration
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
+          
