@@ -141,7 +141,7 @@ jobs:
         if: steps.check.outputs.build == 'true' && inputs.component == 'backend/users'
         uses: docker/build-push-action@v3.1.1
         with:
-          context: ./${{ inputs.component }}/
+          context: ./${{ inputs.component }}-migration/
           push: true
           tags: ghcr.io/${{ github.repository }}/backend/users:${{ inputs.img_build }}-migration
           cache-from: type=gha
