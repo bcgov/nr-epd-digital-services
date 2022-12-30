@@ -135,15 +135,3 @@ jobs:
           tags: ghcr.io/${{ github.repository }}/${{ inputs.component }}:${{ inputs.img_build }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      
-       name: Build and push Migration image
-       if: steps.check.outputs.build == 'true'
-       uses: docker/build-push-action@v3.1.1
-       with:
-          context: .
-          push: true
-          tags: ghcr.io/${{ github.repository }}/${{ inputs.component }}:${{ inputs.img_build }}-migration:latest"
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          file: |
-            .backend/users/Dockerfile-migrations-openshift
