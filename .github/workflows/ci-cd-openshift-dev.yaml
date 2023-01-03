@@ -22,10 +22,8 @@ jobs:
     uses: ./.github/workflows/_build.yml
     strategy:
       matrix:
-        component: [backend/users/src/migrations, backend/applications, backend/gateway, backend/users, frontend]
+        component: [backend/applications, backend/gateway, backend/users, frontend]
         include:
-          - component: backend/users/src/migrations
-            triggers:  ('backend/users/src/migrations/')
           - component: backend/applications
             triggers: ('backend/applications/')
           - component: backend/gateway
