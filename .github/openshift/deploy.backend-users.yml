@@ -190,8 +190,9 @@ objects:
             # - name: init-${NAME}-backend-users-typeorm-migrations
             #   image: image-registry.openshift-image-registry.svc:5000/${NAME}-${COMPONENT}:${IMAGE_TAG}
             #   command: ['sh', '-c', 'initContainer.sh']
+            #  ${NAME}-${COMPONENT}:${IMAGE_TAG}
             - name: epd-db-migration
-              image: "image-registry.openshift-image-registry.svc:5000/backend/users:${IMAGE_TAG}-migration:"
+              image: "image-registry.openshift-image-registry.svc:5000/${NAME}-${COMPONENT}:${IMAGE_TAG}-migration:"
               env:
                 - name: Typeorm-migration
                   value: "jdbc:postgresql://${COMPONENT}-postgres:5432/${COMPONENT}"
