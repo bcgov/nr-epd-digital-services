@@ -3,7 +3,7 @@ FROM node:14.5.0-alpine
 #FROM artifacts.developer.gov.bc.ca/docker-remote/node:14.17.1-alpine
 
 # Install packages, build and keep only prod packages
-WORKDIR /app
+WORKDIR /
 
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
