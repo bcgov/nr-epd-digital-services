@@ -14,7 +14,7 @@ WORKDIR /app
 # Install app dependencies using the `npm ci` command instead of `npm install`
 
 
-RUN npm run build
+RUN npm build
 
 RUN npm ci
 # Bundle app source
