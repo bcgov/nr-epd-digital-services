@@ -6,19 +6,19 @@ FROM node:14.5.0-alpine
 WORKDIR /app
 
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
-# COPY package*.json ./
+COPY package*.json ./
 
 # # Set NODE_ENV environment variable
-# #ENV NODE_ENV production
+ENV NODE_ENV production
 
 # # Install app dependencies using the `npm ci` command instead of `npm install`
-# RUN npm ci
+RUN npm ci
 
 # # Bundle app source
-# COPY . .
+COPY . .
 
-# RUN set -x \
-#         && chmod -R 777 /app/
+RUN set -x \
+         && chmod -R 777 /app/
 
 # RUN apk add postgresql-client
 
