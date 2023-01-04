@@ -14,6 +14,8 @@ ENV NODE_ENV production
 # # Install app dependencies using the `npm ci` command instead of `npm install`
 # RUN npm ci
 
+RUN npm run build
+
 # # Bundle app source
 COPY . .
 
