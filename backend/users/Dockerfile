@@ -17,7 +17,7 @@ ENV NODE_ENV production
 # # Bundle app source
 COPY . .
 
-RUN set -x \
+#RUN set -x \
          && chmod -R 777 /app/
 
 # RUN apk add postgresql-client
