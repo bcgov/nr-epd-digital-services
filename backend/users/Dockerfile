@@ -15,9 +15,13 @@ COPY package*.json ./
 RUN npm ci
 
 # Bundle app source
-COPY . .
+COPY . ./
 
-RUN npm run-script build
+RUN ls
+
+RUN npm run build
+
+RUN ls
 
 RUN set -x \
         && chmod -R 777 /app/
