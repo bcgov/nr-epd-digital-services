@@ -14,10 +14,10 @@ COPY package*.json ./
 # Install app dependencies using the `npm ci` command instead of `npm install`
 RUN npm ci
 
-RUN npm run-script build
-
 # Bundle app source
 COPY . .
+
+RUN npm run-script build
 
 RUN set -x \
         && chmod -R 777 /app/
