@@ -152,7 +152,7 @@ objects:
               readinessProbe:
                 tcpSocket:
                   port: ${{CONTAINER_PORT}}
-                initialDelaySeconds: 60
+                initialDelaySeconds: 30
                 periodSeconds: 30
                 timeoutSeconds: 5
                 failureThreshold: 3
@@ -164,7 +164,7 @@ objects:
                   path: /
                   port: ${{CONTAINER_PORT}}
                   scheme: HTTP
-                initialDelaySeconds: 60
+                initialDelaySeconds: 30
                 periodSeconds: 30
                 timeoutSeconds: 5
           # initContainers:
