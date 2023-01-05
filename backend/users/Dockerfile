@@ -26,4 +26,5 @@ RUN set -x \
 EXPOSE 4005
 
 # Start up command
+
 ENTRYPOINT [ "sh", "start.sh" ]
