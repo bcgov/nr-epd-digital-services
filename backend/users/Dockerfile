@@ -15,7 +15,7 @@ COPY package*.json ./
 RUN npm ci
 
 # Bundle app source
-COPY . ./
+COPY . .
 
 RUN npm run build
 
