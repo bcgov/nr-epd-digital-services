@@ -190,7 +190,7 @@ objects:
                 tcpSocket:
                   path: /
                   port: ${{CONTAINER_PORT}}
-                initialDelaySeconds: 180
+                initialDelaySeconds: 60
                 periodSeconds: 30
                 timeoutSeconds: 5
                 failureThreshold: 30
@@ -202,7 +202,7 @@ objects:
                   path: /
                   port: ${{CONTAINER_PORT}}
                   scheme: HTTP
-                initialDelaySeconds: 180
+                initialDelaySeconds: 60
                 periodSeconds: 30
                 timeoutSeconds: 5
           initContainers:

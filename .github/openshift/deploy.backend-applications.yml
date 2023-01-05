@@ -132,7 +132,7 @@ objects:
                   path: /
                   port: ${{CONTAINER_PORT}}
                   scheme: HTTP
-                initialDelaySeconds: 120
+                initialDelaySeconds: 60
                 periodSeconds: 30
                 timeoutSeconds: 5
                 failureThreshold: 30
@@ -144,7 +144,7 @@ objects:
                   path: /
                   port: ${{CONTAINER_PORT}}
                   scheme: HTTP
-                initialDelaySeconds: 120
+                initialDelaySeconds: 60
                 periodSeconds: 30
                 timeoutSeconds: 5
   - apiVersion: v1
