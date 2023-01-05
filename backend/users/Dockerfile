@@ -17,15 +17,10 @@ RUN npm ci
 # Bundle app source
 COPY . ./
 
-RUN ls
-
 RUN npm run build
-
-RUN ls
 
 RUN set -x \
         && chmod -R 777 /app/
-
 
 # Expose port - mostly a convention, for readability
 EXPOSE 4005
