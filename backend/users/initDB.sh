@@ -1,4 +1,14 @@
+#!/bin/sh
 
+#Make sure you change line endings to LF
+
+if [ ! "$POSTGRESQL_HOST" ];
+then
+   echo 'Sourcing from .env'
+   . ./.env
+else
+    echo 'Environment variables set...'
+fi
 
 
 # create database taftdb
