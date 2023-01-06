@@ -22,13 +22,13 @@ parameters:
   - name: DOMAIN
     value: apps.silver.devops.gov.bc.ca
   - name: CPU_REQUEST
-    value: "25m"
+    value: "125m"
   - name: MEMORY_REQUEST
-    value: "50Mi"
-  - name: CPU_LIMIT
-    value: "75m"
-  - name: MEMORY_LIMIT
     value: "150Mi"
+  - name: CPU_LIMIT
+    value: "275m"
+  - name: MEMORY_LIMIT
+    value: "450Mi"
   - name: MIN_REPLICAS
     description: The minimum amount of replicas
     value: "1"
@@ -132,7 +132,7 @@ objects:
                   path: /
                   port: ${{CONTAINER_PORT}}
                   scheme: HTTP
-                initialDelaySeconds: 120
+                initialDelaySeconds: 10
                 periodSeconds: 30
                 timeoutSeconds: 5
                 failureThreshold: 30
@@ -144,7 +144,7 @@ objects:
                   path: /
                   port: ${{CONTAINER_PORT}}
                   scheme: HTTP
-                initialDelaySeconds: 120
+                initialDelaySeconds: 10
                 periodSeconds: 30
                 timeoutSeconds: 5
   - apiVersion: v1

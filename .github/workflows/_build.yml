@@ -1,3 +1,4 @@
+#test
 name: Build Image
 
 on:
@@ -135,3 +136,17 @@ jobs:
           tags: ghcr.io/${{ github.repository }}/${{ inputs.component }}:${{ inputs.img_build }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          # if: inputs.component == 'backend/users-migration'
+          # file: ./backend/users/Dockerfile-migrations-openshift
+
+      - name: Build and push Migration image
+        if: steps.check.outputs.build == 'true' && inputs.component == 'backend/users'
+        uses: docker/build-push-action@v3.1.1
+        with:
+          context: ./${{ inputs.component }}/
+          push: true
+          tags: ghcr.io/${{ github.repository }}/backend/users-migration:${{ inputs.img_build }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          file: ./backend/users/Dockerfile-migrations-openshift
+          
