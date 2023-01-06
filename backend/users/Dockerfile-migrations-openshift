@@ -1,4 +1,3 @@
-# RedHat UBI 8 with nodejs 14
 FROM node:14.5.0-alpine
 #FROM artifacts.developer.gov.bc.ca/docker-remote/node:14.17.1-alpine
 
@@ -14,17 +13,14 @@ COPY package*.json ./
 # Install app dependencies using the `npm ci` command instead of `npm install`
 RUN npm ci
 
-# Bundle app source
-COPY . ./
+#RUN npm build
 
-RUN npm run build
+# Bundle app source
+COPY . .
 
 RUN set -x \
         && chmod -R 777 /app/
 
-# Expose port - mostly a convention, for readability
-EXPOSE 4005
+RUN apk add postgresql-client
 
-# Start up command
-
-ENTRYPOINT [ "sh", "start.sh" ]
+ENTRYPOINT [ "sh", "initDB.sh" ]
