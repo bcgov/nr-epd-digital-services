@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - dev
-      - ss-79 #testing purpose
+     # - ss-79 #testing purpose
     
   workflow_dispatch:
     inputs:
