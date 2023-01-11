@@ -35,6 +35,8 @@ const Dashboard = () => {
     ) {
       dispatch(fetchUserProfileVerification(auth.user.profile.sub));
     }
+
+    console.log("REACT_APP_AUTH_LOAD_USER_INFO",process.env)
   }, []);
 
   useEffect(() => {
@@ -46,6 +48,14 @@ const Dashboard = () => {
     }
   }, [userIsProfileVerifiedValue]);
 
+
+  const handleFormsflowWebRedirection = () => {
+    const formsFlowWebURL = process.env.REACT_APP_FORMSFLOW_WEB_URL || ((window as any)._env_ && (window as any)._env_.REACT_APP_FORMSFLOW_WEB_URL) || "";
+
+    window.location = formsFlowWebURL;
+
+  }
+
   return (
     <div className="container-fluid dashboard-content">
       <div className="row">
@@ -53,9 +63,20 @@ const Dashboard = () => {
           {auth.isLoading ? (
             <div>Loading User</div>
           ) : auth.user?.profile.identity_provider === "bceid" ? (
+          
+            <div>
             <h3>External User Dashboard</h3>
+            <div>
+            <input type="button" className="btn btn-success" value="View/Submit Application" onClick={()=>handleFormsflowWebRedirection()}></input>
+          </div>
+          </div> 
           ) : (
-            <h3> Internal User Dashboard</h3>
+           <div>
+              <h3> Internal User Dashboard</h3>
+              <div>
+              {/* <input type="button" value="Submit Application" onClick={()=>handleFormsflowWebRedirection()}></input> */}
+            </div>
+            </div>        
           )}
         </div>
       </div>
