@@ -65,7 +65,7 @@ services:
       POSTGRESQL_PASSWORD: postgres
       POSTGRESQL_DATABASE: default
       KEYCLOCK_AUTH_URL: https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth
-      KEYCLOCK_REALM: epd-dev
+      KEYCLOCK_REALM: forms-flow-ai
       KEYCLOCK_CLIENT_ID: applicationapi
       KEYCLOCK_SECRET: xyz
     healthcheck:
