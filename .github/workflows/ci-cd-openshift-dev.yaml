@@ -83,7 +83,7 @@ jobs:
           - component: backend/legacy
             overwrite: true
             template_file: .github/openshift/deploy.backend-legacy.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/legacy -p CONTAINER_PORT=7777 -p ENV=dev -p IMAGE_TAG=dev
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/legacy -p CONTAINER_PORT=4011 -p ENV=dev -p IMAGE_TAG=dev
           - component: backend/users
             overwrite: true
             template_file: .github/openshift/deploy.backend-users.yml
