@@ -36,7 +36,7 @@ parameters:
     value: image-registry.openshift-image-registry.svc:5000
   - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
-    value: openshift/postgresql:12
+    value: openshift/postgis/postgis:15-3.3
 objects:
   - apiVersion: v1
     kind: Secret
