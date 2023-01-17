@@ -33,10 +33,11 @@ parameters:
     required: true
     value: "512Mi"
   - name: REGISTRY
-    value: image-registry.openshift-image-registry.svc:5000
+    value: registry.connect.redhat.com
   - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
-    value: postgis/postgis:13-master
+    value: crunchydata/crunchy-postgres-gis
+    #postgis/postgis:15-3.3
 objects:
   - apiVersion: v1
     kind: Secret
