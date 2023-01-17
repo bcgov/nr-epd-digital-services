@@ -19,7 +19,7 @@ export class AppService {
         connection.close();
       })
       .catch(function (err) {
-        console.log(connection);
+        console.log(err);
         throw new Error(err);
       });
     return 'Successfully connected to Oracle Database';
