@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - 'main'
-      - 'ss-79' #test1
+      #- 'ss-225' #test1
             
     paths:
       - 'backend/**'
@@ -22,12 +22,14 @@ jobs:
     uses: ./.github/workflows/_build.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/gateway, backend/users, frontend]
+        component: [backend/applications, backend/gateway, backend/legacy, backend/users, frontend]
         include:
           - component: backend/applications
             triggers: ('backend/applications/')
           - component: backend/gateway
             triggers: ('backend/gateway/')
+          - component: backend/legacy
+            triggers: ('backend/legacy/')
           - component: backend/users
             triggers:  ('backend/users/')
           - component: frontend
@@ -46,7 +48,7 @@ jobs:
     uses: ./.github/workflows/_code-cov.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/gateway, backend/users, frontend]
+        component: [backend/applications, backend/gateway, backend/legacy, backend/users, frontend]
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
@@ -64,7 +66,7 @@ jobs:
     uses: ./.github/workflows/_deploy.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/gateway, backend/users, database, frontend]
+        component: [backend/applications, backend/gateway, backend/legacy, backend/users, database, frontend]
         include:
           - component: database
             overwrite: false
@@ -73,19 +75,23 @@ jobs:
           - component: backend/applications
             overwrite: true
             template_file: .github/openshift/deploy.backend-applications.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=4006 -p ENV=test -p IMAGE_TAG=test -p MIN_REPLICAS=1 -p MAX_REPLICAS=2
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=4006 -p ENV=test -p IMAGE_TAG=test 
           - component: backend/gateway
             overwrite: true
             template_file: .github/openshift/deploy.backend-gateway.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/gateway -p CONTAINER_PORT=4010 -p ENV=test -p IMAGE_TAG=test -p MIN_REPLICAS=1 -p MAX_REPLICAS=2
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/gateway -p CONTAINER_PORT=4010 -p ENV=test -p IMAGE_TAG=test 
+          - component: backend/legacy
+            overwrite: true
+            template_file: .github/openshift/deploy.backend-legacy.yml
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/legacy -p CONTAINER_PORT=4011 -p ENV=test -p IMAGE_TAG=test
           - component: backend/users
             overwrite: true
             template_file: .github/openshift/deploy.backend-users.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/users -p CONTAINER_PORT=4005 -p ENV=test -p IMAGE_TAG=test -p MIN_REPLICAS=1 -p MAX_REPLICAS=2
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/users -p CONTAINER_PORT=4005 -p ENV=test -p IMAGE_TAG=test 
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=8080 -p ENV=test -p IMAGE_TAG=test -p MIN_REPLICAS=1 -p MAX_REPLICAS=2
+            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=8080 -p ENV=test -p IMAGE_TAG=test 
     
     
     secrets:
