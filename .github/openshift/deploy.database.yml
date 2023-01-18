@@ -33,7 +33,7 @@ parameters:
     required: true
     value: "512Mi"
   - name: REGISTRY
-    value: registry.connect.redhat.com/
+    value: registry.connect.redhat.com
   - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
     value: crunchydata/crunchy-postgres-gis
