@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - 'main'
-      #- 'ss-225' #test1
+      - 'ss-deploytotest' #test1
             
     paths:
       - 'backend/**'
