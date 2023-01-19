@@ -15,12 +15,14 @@ jobs:
     uses: ./.github/workflows/_build.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/gateway, backend/users, frontend]
+        component: [backend/applications, backend/gateway, backend/legacy, backend/users, frontend]
         include:
           - component: backend/applications
             triggers: ('backend/applications/')
           - component: backend/gateway
             triggers: ('backend/gateway/')
+          - component: backend/legacy
+            triggers: ('backend/legacy/')
           - component: backend/users
             triggers:  ('backend/users/')
           - component: frontend
@@ -39,7 +41,7 @@ jobs:
     uses: ./.github/workflows/_code-cov.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/gateway, backend/users, frontend]
+        component: [backend/applications, backend/gateway, backend/legacy, backend/users, frontend]
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
@@ -81,7 +83,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.exclusions=backend/applications/src/*.spec.ts,backend/gateway/src/*.spec.ts,backend/users/src/*.spec.ts,backend/applications/src/**/*.spec.ts,backend/gateway/src/**/*.spec.ts,backend/users/src/**/*.spec.ts
+            -Dsonar.exclusions=backend/applications/src/*.spec.ts,backend/gateway/src/*.spec.ts,backend/legacy/src/*.spec.ts,backend/users/src/*.spec.ts,backend/applications/src/**/*.spec.ts,backend/gateway/src/**/*.spec.ts,backend/legacy/src/**/*.spec.ts,backend/users/src/**/*.spec.ts
             -Dsonar.organization=bcgov-sonarcloud
             -Dsonar.javascript.lcov.reportPaths=backend/coverage/lcov.info,frontend/coverage/lcov.info
             -Dsonar.cobertura.reportPaths=backend/coverage/cobertura-coverage.xml,frontend/coverage/cobertura-coverage.xml
@@ -89,7 +91,7 @@ jobs:
             -Dsonar.projectKey=${{ github.event.repository.name }}
             -Dsonar.sources=backend/applications/src/,backend/gateway/src/,backend/users/src/,frontend/src/
             -Dsonar.tests=backend/applications/src/,backend/gateway/src/,backend/users/src/
-            -Dsonar.test.inclusions=backend/applications/src/*.spec.ts,backend/gateway/src/*.spec.ts,backend/users/src/*.spec.ts,backend/applications/src/**/*.spec.ts,backend/gateway/src/**/*.spec.ts,backend/users/src/**/*.spec.ts
+            -Dsonar.test.inclusions=backend/applications/src/*.spec.ts,backend/gateway/src/*.spec.ts,backend/legacy/src/*.spec.ts,backend/users/src/*.spec.ts,backend/applications/src/**/*.spec.ts,backend/gateway/src/**/*.spec.ts,backend/legacy/src/**/*.spec.ts,backend/users/src/**/*.spec.ts
            
  
   # deploys:
