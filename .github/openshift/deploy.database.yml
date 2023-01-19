@@ -205,6 +205,16 @@ objects:
                     secretKeyRef:
                       name: ${NAME}-${COMPONENT}
                       key: POSTGRES_ADMIN_PASSWORD
+                - name: USERS_MICROSERVICE_ENDPOINT
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: USERS_MICROSERVICE_ENDPOINT
+                - name: APPLICATION_MICROSERVICE_ENDPOINT
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: APPLICATION_MICROSERVICE_ENDPOINT
               volumeMounts:
                 - name: ${NAME}-${COMPONENT}
                   mountPath: "/var/lib/pgsql/data"
