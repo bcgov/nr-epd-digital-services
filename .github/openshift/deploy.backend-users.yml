@@ -211,7 +211,7 @@ objects:
             #   command: ['sh', '-c', 'initContainer.sh']
             #  ${NAME}-${COMPONENT}:${IMAGE_TAG}
             - name: epd-db-migration
-              image: "image-registry.openshift-image-registry.svc:5000/e38158-dev/${NAME}-${COMPONENT}-migration:${IMAGE_TAG}"
+              image: "image-registry.openshift-image-registry.svc:5000/e38158-${ENV}/${NAME}-${COMPONENT}-migration:${IMAGE_TAG}"
               env:
                 - name: Typeorm-migration
                   value: "jdbc:postgresql://${COMPONENT}-postgres:5432/${COMPONENT}"
