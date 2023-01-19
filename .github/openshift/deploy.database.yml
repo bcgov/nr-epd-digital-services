@@ -60,6 +60,8 @@ objects:
       POSTGRESQL_PORT: "5432"
       POSTGRES_DATABASE: epd_dev
       POSTGRES_DB_SCHEMA: epd_users
+      MODE: postgres
+      PG_MODE: primary
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
@@ -158,22 +160,47 @@ objects:
                 periodSeconds: 15
                 timeoutSeconds: 1
               env:
-                - name: POSTGRESQL_DATABASE
+                - name: MODE
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-${COMPONENT}
+                      key: MODE
+                - name: PG_DATABASE
                   valueFrom:
                     configMapKeyRef:
                       name: ${NAME}-${COMPONENT}
                       key: POSTGRES_DATABASE
-                - name: POSTGRESQL_PASSWORD
+                - name: PG_PRIMARY_PORT
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-${COMPONENT}
+                      key: POSTGRESQL_PORT
+                - name: PG_MODE
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-${COMPONENT}
+                      key: PG_MODE
+                - name: PG_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-${COMPONENT}
                       key: POSTGRES_DB_PASSWORD
-                - name: POSTGRESQL_USER
+                - name: PG_USER
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-${COMPONENT}
                       key: POSTGRES_DB_USERNAME
-                - name: POSTGRESQL_ADMIN_PASSWORD
+                - name: PG_PRIMARY_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-${COMPONENT}
+                      key: POSTGRES_DB_USERNAME
+                - name: PG_PRIMARY_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-${COMPONENT}
+                      key: POSTGRES_DB_PASSWORD
+                - name: PG_ROOT_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-${COMPONENT}
