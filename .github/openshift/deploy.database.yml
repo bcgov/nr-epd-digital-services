@@ -128,8 +128,6 @@ objects:
           containers:
             - name: ${NAME}
               image: ${NAME}-${COMPONENT}:${IMAGE_TAG}
-              volumes:
-                - pg-replica2-vol:/pgdata
               ports:
                 - containerPort: 5432
                   protocol: TCP
