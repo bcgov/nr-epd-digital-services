@@ -141,7 +141,7 @@ objects:
                     - '-c'
                     - >-
                       psql -q -d
-                      $POSTGRESQL_DATABASE -c 'SELECT 1'
+                      $PG_DATABASE -c 'SELECT 1'
                 failureThreshold: 5
                 initialDelaySeconds: 30
                 periodSeconds: 15
@@ -154,7 +154,7 @@ objects:
                     - '-c'
                     - >-
                       psql -q -d
-                      $POSTGRESQL_DATABASE -c 'SELECT 1'
+                      $PG_DATABASE -c 'SELECT 1'
                 failureThreshold: 5
                 initialDelaySeconds: 30
                 periodSeconds: 15
@@ -217,7 +217,8 @@ objects:
                       key: APPLICATION_MICROSERVICE_ENDPOINT
               volumeMounts:
                 - name: ${NAME}-${COMPONENT}
-                  mountPath: "/pgdata"
+                  #mountPath: "/var/lib/pgdata/data"
+                   mountPath:"/pgdata"
               terminationMessagePath: "/dev/termination-log"
               terminationMessagePolicy: File
               imagePullPolicy: Always
