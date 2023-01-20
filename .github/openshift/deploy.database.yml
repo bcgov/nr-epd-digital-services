@@ -217,7 +217,7 @@ objects:
                       key: APPLICATION_MICROSERVICE_ENDPOINT
               volumeMounts:
                 - name: ${NAME}-${COMPONENT}
-                  mountPath: "/var/lib/pgsql/data"
+                  mountPath: "/pgdata"
               terminationMessagePath: "/dev/termination-log"
               terminationMessagePolicy: File
               imagePullPolicy: Always
