@@ -28,6 +28,7 @@
     "redux-mock-store": "^1.5.4"
   },
   "dependencies": {
+    "@bcgov/bc-sans": "^1.0.1",
     "@bpmn-io/properties-panel": "^0.17.0",
     "@formio/contrib": "^1.1.0",
     "@material-ui/core": "^4.11.4",
@@ -42,7 +43,6 @@
     "browserslist": "^4.16.6",
     "camunda-bpmn-moddle": "^6.1.2",
     "camunda-dmn-moddle": "^1.1.0",
-    "chefs-custom-components": "^1.0.1",
     "connected-react-router": "^6.9.1",
     "create-react-class": "^15.7.0",
     "crypto-js": "^4.0.0",
