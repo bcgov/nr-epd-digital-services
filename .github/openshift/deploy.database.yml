@@ -184,22 +184,22 @@ objects:
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-${COMPONENT}
-                      key: POSTGRES_DB_PASSWORD
+                      key: POSTGRES_ADMIN_PASSWORD
                 - name: PG_USER
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-${COMPONENT}
-                      key: POSTGRES_DB_USERNAME
+                      key: POSTGRES_ADMIN_USERNAME
                 - name: PG_PRIMARY_USER
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-${COMPONENT}
-                      key: POSTGRES_DB_USERNAME
+                      key: POSTGRES_ADMIN_USERNAME
                 - name: PG_PRIMARY_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-${COMPONENT}
-                      key: POSTGRES_DB_PASSWORD
+                      key: POSTGRES_ADMIN_PASSWORD
                 - name: PG_ROOT_PASSWORD
                   valueFrom:
                     secretKeyRef:
