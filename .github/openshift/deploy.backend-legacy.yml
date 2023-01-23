@@ -3,7 +3,7 @@ kind: Template
 metadata:
   name: ${NAME}
   annotations:
-    description: "EPD backend-applications"
+    description: "EPD backend-legacy"
     tags: "epd-backend"
     iconClass: icon-js
 labels:
@@ -15,7 +15,7 @@ parameters:
     value: epd
   - name: COMPONENT
     description: Component name
-    value: backend-applications
+    value: backend-legacy
   - name: IMAGE_TAG
     description: Image tag to use
     value: latest
@@ -43,7 +43,7 @@ parameters:
     value: ghcr.io
   - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
-    value: bcgov/nr-epd-digital-services/backend/applications
+    value: bcgov/nr-epd-digital-services/backend/legacy
   - name: ENV
     description: The Environment on which it is deployed
     required: true
@@ -97,26 +97,21 @@ objects:
               imagePullPolicy: Always
               name: ${NAME}-${COMPONENT}
               env:
-                - name: POSTGRESQL_HOST
-                  valueFrom:
-                    configMapKeyRef:
-                      name: ${NAME}-database
-                      key: POSTGRESQL_HOST
-                - name: POSTGRESQL_DATABASE
-                  valueFrom:
-                    configMapKeyRef:
-                      name: ${NAME}-database
-                      key: POSTGRES_DATABASE
-                - name: POSTGRESQL_PASSWORD
+                - name: ORACLE_CONN_STRING
                   valueFrom:
                     secretKeyRef:
-                      name: ${NAME}-database
-                      key: POSTGRES_DB_PASSWORD
-                - name: POSTGRESQL_USER
+                      name: ${NAME}-oracle-db
+                      key: ORACLE_CONN_STRING
+                - name: ORACLE_PASSWORD
                   valueFrom:
                     secretKeyRef:
-                      name: ${NAME}-database
-                      key: POSTGRES_DB_USERNAME
+                      name: ${NAME}-oracle-db
+                      key: ORACLE_PASSWORD
+                - name: ORACLE_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-oracle-db
+                      key: ORACLE_USER
               ports:
                 - containerPort: ${{CONTAINER_PORT}}
                   protocol: TCP
@@ -127,26 +122,26 @@ objects:
                 limits:
                   cpu: ${CPU_LIMIT}
                   memory: ${MEMORY_LIMIT}
-              readinessProbe:
-                tcpSocket:
-                  path: /
-                  port: ${{CONTAINER_PORT}}
-                  scheme: HTTP
-                initialDelaySeconds: 10
-                periodSeconds: 30
-                timeoutSeconds: 5
-                failureThreshold: 30
-                successThreshold: 1
-              livenessProbe:
-                successThreshold: 1
-                failureThreshold: 3
-                httpGet:
-                  path: /
-                  port: ${{CONTAINER_PORT}}
-                  scheme: HTTP
-                initialDelaySeconds: 10
-                periodSeconds: 30
-                timeoutSeconds: 5
+              # readinessProbe:
+              #   tcpSocket:
+              #     path: /
+              #     port: ${{CONTAINER_PORT}}
+              #     scheme: HTTP
+              #   initialDelaySeconds: 10
+              #   periodSeconds: 30
+              #   timeoutSeconds: 5
+              #   failureThreshold: 30
+              #   successThreshold: 1
+              # livenessProbe:
+              #   successThreshold: 1
+              #   failureThreshold: 3
+              #   httpGet:
+              #     path: /
+              #     port: ${{CONTAINER_PORT}}
+              #     scheme: HTTP
+              #   initialDelaySeconds: 10
+              #   periodSeconds: 30
+              #   timeoutSeconds: 5
   - apiVersion: v1
     kind: Service
     metadata:
