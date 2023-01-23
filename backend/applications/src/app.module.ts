@@ -48,7 +48,7 @@ import { ExternalUser } from './app/entities/user.entity';
       // entities: [User],
       autoLoadEntities:
         process.env.POSTGRESQL_AUTOLOAD_ENTITIES == 'false' ? false : true, // Auto load all entities regiestered by typeorm forFeature method.
-      synchronize: process.env.POSTGRESQL_SYNC == 'false' ? false : true,
+      synchronize: process.env.POSTGRESQL_SYNC == 'false',
       // This changes the DB schema to match changes to entities, which we might not want.
       logging: true,
     }),
