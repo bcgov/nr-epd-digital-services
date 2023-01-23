@@ -8,11 +8,12 @@ import { AppConfig } from "./config";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import "./styles.scss";
+import "./styles-bc.scss";
 import "./resourceBundles/i18n.js";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { featureFlags } from "./featureToogle";
 import { FlagsProvider } from "flagged";
-import BCGovFormioComponents from "chefs-custom-components";
+import '@bcgov/bc-sans/css/BCSans.css';
 
 //import BCGovFormioComponents2 from "./formcomponents/dist/bcgov-formio-components.js";
 
@@ -77,7 +78,6 @@ const history = StoreService.history;
 
 Formio.setProjectUrl(AppConfig.projectUrl);
 Formio.setBaseUrl(AppConfig.apiUrl);
-Formio.use(BCGovFormioComponents);
 
 //Formio.use(B);
 //Components.setComponent(B.components);

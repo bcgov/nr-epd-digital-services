@@ -172,7 +172,6 @@ export const ApplicationList = React.memo(() => {
   if (!DRAFT_ENABLED) {
     headOptions.pop();
   }
-  console.log(getReactDashboardURL());
   return (
     <ToolkitProvider
       bootstrap4
@@ -191,7 +190,7 @@ export const ApplicationList = React.memo(() => {
         <div className="container" role="definition">
           <Head items={headOptions} page="Applications" />
           <br />
-          <Button onClick={() =>{ window.location = getReactDashboardURL();}}>
+          <Button className="" onClick={() =>{ window.location = getReactDashboardURL();}}>
                       Return To Dashboard</Button>
           <div>
           {applicationCount > 0 || filtermode ? <BootstrapTable

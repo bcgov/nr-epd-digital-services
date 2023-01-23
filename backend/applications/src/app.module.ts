@@ -27,7 +27,7 @@ import { ExternalUser } from './app/entities/user.entity';
         : 'ADD YOUR AUTH SERVER URL',
       realm: process.env.KEYCLOCK_REALM
         ? process.env.KEYCLOCK_REALM
-        : 'epd-dev',
+        : 'forms-flow-ai',
       clientId: process.env.KEYCLOCK_CLIENT_ID
         ? process.env.KEYCLOCK_CLIENTID
         : 'backend',
