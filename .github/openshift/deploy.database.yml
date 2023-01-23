@@ -134,13 +134,31 @@ objects:
                 - containerPort: 5432
                   protocol: TCP
               readinessProbe:
-                tcpSocket:
-                  port: 5432      
-                initialDelaySeconds: 10
-                periodSeconds: 30
-                timeoutSeconds: 5
-                failureThreshold: 30
-                successThreshold: 1
+                exec:
+                  command:
+                    - /
+                    - bash
+                    - '-c'
+                    - >-
+                      psql -q -d
+                      $PG_DATABASE -c 'SELECT 1'
+                failureThreshold: 5
+                initialDelaySeconds: 30
+                periodSeconds: 15
+                timeoutSeconds: 1
+              livenessProbe:
+                exec:
+                  command:
+                    - /
+                    - bash
+                    - '-c'
+                    - >-
+                      psql -q -d
+                      $PG_DATABASE -c 'SELECT 1'
+                failureThreshold: 5
+                initialDelaySeconds: 30
+                periodSeconds: 15
+                timeoutSeconds: 1
               env:
                 - name: MODE
                   valueFrom:
