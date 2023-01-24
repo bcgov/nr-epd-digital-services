@@ -10,7 +10,7 @@ jest.mock('react-oidc-context', () => ({
 }))
 
 
-it('Renders Internal User Dashboard', () => {
+it('Renders Reviewer Dashboard', () => {
   (useAuth as jest.Mock).mockReturnValue(
     {isAuthenticated: true}
   )
@@ -23,7 +23,7 @@ it('Renders Internal User Dashboard', () => {
       </Provider>
     //</AuthProvider>
       );
-  const userListLink = screen.getByText(/Internal User Dashboard/i);
+  const userListLink = screen.getByText(/Reviewer/i);
   expect(userListLink).toBeInTheDocument();
 
 });
@@ -41,6 +41,7 @@ test('Renders External User Dashboard', () =>{
       </Provider>
     //</AuthProvider>
     );
-  const addUserLink = screen.getByText(/Internal User Dashboard/i)
+    console.log("screen",screen)
+  const addUserLink = screen.getByText(/Reviewer Dashboard/i)
   expect(addUserLink).toBeInTheDocument()
 })

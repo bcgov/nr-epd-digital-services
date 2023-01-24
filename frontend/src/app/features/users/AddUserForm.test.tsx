@@ -9,9 +9,9 @@ const wrapper = <TestWrapper><AddUserForm></AddUserForm></TestWrapper>
 
 const setup = () => {
     const utils = render(wrapper)
-    const userNameInput = utils.getByLabelText("User Name:")
+    const userNameInput = screen.getByLabelText("User Name:")
     // const emailInput = utils.getByLabelText('Email:')
-    const saveButton = utils.getByText("Save User")
+    const saveButton = screen.getByText("Save User")
     return {userNameInput, saveButton,utils}
 }
 
@@ -23,6 +23,6 @@ test('Form Submits Correctly', () =>{
     fireEvent.change(userNameInput, {target: {value: testUsername}})
     fireEvent.click(saveButton)
     // expect(emailInput).toBeEmpty()
-    expect(userNameInput).toBeEmpty()
+    expect(userNameInput).toBeEmptyDOMElement()
     console.log(store)
 })
