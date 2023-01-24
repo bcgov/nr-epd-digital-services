@@ -217,6 +217,11 @@ objects:
                     configMapKeyRef:
                       name: ${NAME}-database
                       key: APPLICATION_MICROSERVICE_ENDPOINT
+                - name: PGHOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-${COMPONENT}
+                      key: PGHOST
               volumeMounts:
                 - name: ${NAME}-${COMPONENT}
                   mountPath: "/pgdata"
