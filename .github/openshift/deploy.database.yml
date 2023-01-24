@@ -31,7 +31,7 @@ parameters:
     displayName: Database Volume Capacity
     name: DB_PVC_SIZE
     required: true
-    value: "1Gi"
+    value: "512Mi"
   - name: REGISTRY
     value: registry.connect.redhat.com
   - name: PROMOTE
@@ -136,7 +136,7 @@ objects:
               readinessProbe:
                 exec:
                   command:
-                    - /
+                    - /usr/bin/env
                     - bash
                     - '-c'
                     - >-
@@ -149,7 +149,7 @@ objects:
               livenessProbe:
                 exec:
                   command:
-                    - /
+                    - /usr/bin/env
                     - bash
                     - '-c'
                     - >-
