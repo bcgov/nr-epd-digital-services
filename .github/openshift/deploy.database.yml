@@ -133,12 +133,12 @@ objects:
               readinessProbe:
                 exec:
                   command:
-                    - /usr/bin/env
-                    - bash
-                    - '-c'
-                    - >-
-                      psql -q -d
-                      $POSTGRESQL_DATABASE -c 'SELECT 1'
+                    - /opt/crunchy/bin/postgres/readiness.sh
+                    # - bash
+                    # - '-c'
+                    # - >-
+                    #   psql -q -d
+                    #   $POSTGRESQL_DATABASE -c 'SELECT 1'
                 failureThreshold: 5
                 initialDelaySeconds: 30
                 periodSeconds: 15
@@ -146,12 +146,12 @@ objects:
               livenessProbe:
                 exec:
                   command:
-                    - /usr/bin/env
-                    - bash
-                    - '-c'
-                    - >-
-                      psql -q -d
-                      $POSTGRESQL_DATABASE -c 'SELECT 1'
+                    - /opt/crunchy/bin/postgres/liveness.sh
+                    # - bash
+                    # - '-c'
+                    # - >-
+                    #   psql -q -d
+                    #   $POSTGRESQL_DATABASE -c 'SELECT 1'
                 failureThreshold: 5
                 initialDelaySeconds: 30
                 periodSeconds: 15
