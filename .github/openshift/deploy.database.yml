@@ -136,20 +136,29 @@ objects:
               readinessProbe:
                 exec:
                   command:
-                    - /opt/crunchy/bin/postgres/readiness.sh
-                initialDelaySeconds: 25
+                    - /usr/bin/env
+                    - bash
+                    - '-c'
+                    - >-
+                      psql -q -d
+                      $POSTGRESQL_DATABASE -c 'SELECT 1'
+                failureThreshold: 5
+                initialDelaySeconds: 30
+                periodSeconds: 15
                 timeoutSeconds: 1
-                periodSeconds: 10
-                successThreshold: 1
-                failureThreshold: 3
               livenessProbe:
-                tcpSocket:
-                  port: 5432
-                initialDelaySeconds: 25
+                exec:
+                  command:
+                    - /usr/bin/env
+                    - bash
+                    - '-c'
+                    - >-
+                      psql -q -d
+                      $POSTGRESQL_DATABASE -c 'SELECT 1'
+                failureThreshold: 5
+                initialDelaySeconds: 30
+                periodSeconds: 15
                 timeoutSeconds: 1
-                periodSeconds: 10
-                successThreshold: 1
-                failureThreshold: 3
               env:
                 - name: MODE
                   valueFrom:
