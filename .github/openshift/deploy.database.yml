@@ -33,11 +33,10 @@ parameters:
     required: true
     value: "512Mi"
   - name: REGISTRY
-    value: registry.connect.redhat.com
+    value: image-registry.openshift-image-registry.svc:5000
   - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
-    value: crunchydata/crunchy-postgres-gis:latest
-    #postgis/postgis:15-3.3
+    value: openshift/postgresql:12
 objects:
   - apiVersion: v1
     kind: Secret
@@ -60,8 +59,6 @@ objects:
       POSTGRESQL_PORT: "5432"
       POSTGRES_DATABASE: epd_dev
       POSTGRES_DB_SCHEMA: epd_users
-      MODE: postgres
-      PG_MODE: primary
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
@@ -141,7 +138,7 @@ objects:
                     - '-c'
                     - >-
                       psql -q -d
-                      $PG_DATABASE -c 'SELECT 1'
+                      $POSTGRESQL_DATABASE -c 'SELECT 1'
                 failureThreshold: 5
                 initialDelaySeconds: 30
                 periodSeconds: 15
@@ -154,75 +151,35 @@ objects:
                     - '-c'
                     - >-
                       psql -q -d
-                      $PG_DATABASE -c 'SELECT 1'
+                      $POSTGRESQL_DATABASE -c 'SELECT 1'
                 failureThreshold: 5
                 initialDelaySeconds: 30
                 periodSeconds: 15
                 timeoutSeconds: 1
               env:
-                - name: MODE
-                  valueFrom:
-                    configMapKeyRef:
-                      name: ${NAME}-${COMPONENT}
-                      key: MODE
-                - name: PG_DATABASE
+                - name: POSTGRESQL_DATABASE
                   valueFrom:
                     configMapKeyRef:
                       name: ${NAME}-${COMPONENT}
                       key: POSTGRES_DATABASE
-                - name: PG_PRIMARY_PORT
+                - name: POSTGRESQL_PASSWORD
                   valueFrom:
-                    configMapKeyRef:
+                    secretKeyRef:
                       name: ${NAME}-${COMPONENT}
-                      key: POSTGRESQL_PORT
-                - name: PG_MODE
+                      key: POSTGRES_DB_PASSWORD
+                - name: POSTGRESQL_USER
                   valueFrom:
-                    configMapKeyRef:
+                    secretKeyRef:
                       name: ${NAME}-${COMPONENT}
-                      key: PG_MODE
-                - name: PGHOST
-                  valueFrom:
-                    configMapKeyRef:
-                      name: ${NAME}-${COMPONENT}
-                      key: POSTGRESQL_HOST
-                - name: PG_PASSWORD
+                      key: POSTGRES_DB_USERNAME
+                - name: POSTGRESQL_ADMIN_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-${COMPONENT}
                       key: POSTGRES_ADMIN_PASSWORD
-                - name: PG_USER
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${NAME}-${COMPONENT}
-                      key: POSTGRES_ADMIN_USERNAME
-                - name: PG_PRIMARY_USER
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${NAME}-${COMPONENT}
-                      key: POSTGRES_ADMIN_USERNAME
-                - name: PG_PRIMARY_PASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${NAME}-${COMPONENT}
-                      key: POSTGRES_ADMIN_PASSWORD
-                - name: PG_ROOT_PASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${NAME}-${COMPONENT}
-                      key: POSTGRES_ADMIN_PASSWORD
-                - name: USERS_MICROSERVICE_ENDPOINT
-                  valueFrom:
-                    configMapKeyRef:
-                      name: ${NAME}-database
-                      key: USERS_MICROSERVICE_ENDPOINT
-                - name: APPLICATION_MICROSERVICE_ENDPOINT
-                  valueFrom:
-                    configMapKeyRef:
-                      name: ${NAME}-database
-                      key: APPLICATION_MICROSERVICE_ENDPOINT
               volumeMounts:
                 - name: ${NAME}-${COMPONENT}
-                  mountPath: "/pgdata"
+                  mountPath: "/var/lib/pgsql/data"
               terminationMessagePath: "/dev/termination-log"
               terminationMessagePolicy: File
               imagePullPolicy: Always
