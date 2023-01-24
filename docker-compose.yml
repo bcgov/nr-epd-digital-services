@@ -15,7 +15,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: default
     hostname: database
-    image: postgres:12
+    image: postgis/postgis:15-3.3
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
@@ -30,6 +30,7 @@ services:
       - app-tier 
     build:
       context: backend/users
+      dockerfile: ./local.Dockerfile
     container_name: users
     hostname: users   
     links:
