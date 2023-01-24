@@ -134,8 +134,9 @@ objects:
                 - containerPort: 5432
                   protocol: TCP
               readinessProbe:
-                tcpSocket:
-                  port: 5432
+                exec:
+                  command:
+                    - /opt/crunchy/bin/postgres/readiness.sh
                 initialDelaySeconds: 25
                 timeoutSeconds: 1
                 periodSeconds: 10
