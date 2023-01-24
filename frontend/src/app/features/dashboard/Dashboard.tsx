@@ -9,6 +9,9 @@ import {
 } from "../users/UsersSlice";
 import { toast } from "react-toastify";
 import "./Dashboard.css";
+import { SdmDashboard } from "./sdmDashboard/SdmDashboard";
+import { ReviewerDashoard } from "./reviewerDashboard/ReviewerDashoard";
+import { getSDMUserRole } from "../../helpers/envManager";
 
 const Dashboard = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -56,6 +59,16 @@ const Dashboard = () => {
 
   }
 
+
+  const validUserRole = (rolename:string)=>{
+    const realmRoles:string[] = auth.user?.profile.realmroles as string[];
+    if(realmRoles!=null && realmRoles.length > 0 )
+    {
+      return realmRoles.includes(rolename);
+    }
+    return false;
+  }
+
   return (
     <div className="container-fluid dashboard-content">
       <div className="row">
@@ -71,12 +84,11 @@ const Dashboard = () => {
           </div>
           </div> 
           ) : (
-           <div>
-              <h3> Internal User Dashboard</h3>
-              <div>
-              {/* <input type="button" value="Submit Application" onClick={()=>handleFormsflowWebRedirection()}></input> */}
-            </div>
-            </div>        
+
+           validUserRole(getSDMUserRole())? (<SdmDashboard></SdmDashboard>):(
+              <ReviewerDashoard></ReviewerDashoard>
+           )
+                
           )}
         </div>
       </div>
