@@ -130,53 +130,93 @@ objects:
               ports:
                 - containerPort: 5432
                   protocol: TCP
-              readinessProbe:
-                exec:
-                  command:
-                    - /usr/bin/env
-                    - bash
-                    - '-c'
-                    - >-
-                      psql -q -d
-                      $POSTGRESQL_DATABASE -c 'SELECT 1'
-                failureThreshold: 5
-                initialDelaySeconds: 30
-                periodSeconds: 15
-                timeoutSeconds: 1
-              livenessProbe:
-                exec:
-                  command:
-                    - /usr/bin/env
-                    - bash
-                    - '-c'
-                    - >-
-                      psql -q -d
-                      $POSTGRESQL_DATABASE -c 'SELECT 1'
-                failureThreshold: 5
-                initialDelaySeconds: 30
-                periodSeconds: 15
-                timeoutSeconds: 1
+              # readinessProbe:
+              #   exec:
+              #     command:
+              #       - /usr/bin/env
+              #       - bash
+              #       - '-c'
+              #       - >-
+              #         psql -q -d
+              #         $POSTGRESQL_DATABASE -c 'SELECT 1'
+              #   failureThreshold: 5
+              #   initialDelaySeconds: 30
+              #   periodSeconds: 15
+              #   timeoutSeconds: 1
+              # livenessProbe:
+              #   exec:
+              #     command:
+              #       - /usr/bin/env
+              #       - bash
+              #       - '-c'
+              #       - >-
+              #         psql -q -d
+              #         $POSTGRESQL_DATABASE -c 'SELECT 1'
+              #   failureThreshold: 5
+              #   initialDelaySeconds: 30
+              #   periodSeconds: 15
+              #   timeoutSeconds: 1
               env:
-                - name: POSTGRESQL_DATABASE
+                - name: MODE
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-${COMPONENT}
+                      key: MODE
+                - name: PG_DATABASE
                   valueFrom:
                     configMapKeyRef:
                       name: ${NAME}-${COMPONENT}
                       key: POSTGRES_DATABASE
-                - name: POSTGRESQL_PASSWORD
+                - name: PG_PRIMARY_PORT
                   valueFrom:
-                    secretKeyRef:
+                    configMapKeyRef:
                       name: ${NAME}-${COMPONENT}
-                      key: POSTGRES_DB_PASSWORD
-                - name: POSTGRESQL_USER
+                      key: POSTGRESQL_PORT
+                - name: PG_MODE
                   valueFrom:
-                    secretKeyRef:
+                    configMapKeyRef:
                       name: ${NAME}-${COMPONENT}
-                      key: POSTGRES_DB_USERNAME
-                - name: POSTGRESQL_ADMIN_PASSWORD
+                      key: PG_MODE
+                - name: PGHOST
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-${COMPONENT}
+                      key: POSTGRESQL_HOST
+                - name: PG_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-${COMPONENT}
                       key: POSTGRES_ADMIN_PASSWORD
+                - name: PG_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-${COMPONENT}
+                      key: POSTGRES_ADMIN_USERNAME
+                - name: PG_PRIMARY_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-${COMPONENT}
+                      key: POSTGRES_ADMIN_USERNAME
+                - name: PG_PRIMARY_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-${COMPONENT}
+                      key: POSTGRES_ADMIN_PASSWORD
+                - name: PG_ROOT_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-${COMPONENT}
+                      key: POSTGRES_ADMIN_PASSWORD
+                - name: USERS_MICROSERVICE_ENDPOINT
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: USERS_MICROSERVICE_ENDPOINT
+                - name: APPLICATION_MICROSERVICE_ENDPOINT
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: APPLICATION_MICROSERVICE_ENDPOINT
               volumeMounts:
                 - name: ${NAME}-${COMPONENT}
                   mountPath: "/pgdata"
