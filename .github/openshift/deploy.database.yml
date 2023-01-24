@@ -141,6 +141,9 @@ objects:
                 periodSeconds: 10
                 successThreshold: 1
                 failureThreshold: 3
+                exec:
+                  command:
+                    - /opt/crunchy/bin/postgres/readiness.sh
               livenessProbe:
                 tcpSocket:
                   port: 5432
@@ -149,6 +152,9 @@ objects:
                 periodSeconds: 10
                 successThreshold: 1
                 failureThreshold: 3
+                exec:
+                  command:
+                    - /opt/crunchy/bin/postgres/liveness.sh
               env:
                 - name: MODE
                   valueFrom:
@@ -170,6 +176,11 @@ objects:
                     configMapKeyRef:
                       name: ${NAME}-${COMPONENT}
                       key: PG_MODE
+                - name: PGHOST
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-${COMPONENT}
+                      key: PGHOST
                 - name: PG_PASSWORD
                   valueFrom:
                     secretKeyRef:
