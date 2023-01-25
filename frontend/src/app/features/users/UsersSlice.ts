@@ -14,7 +14,16 @@ import { UserState } from "./dto/UserState";
 import { RequestStatus } from "../../helpers/requests/status";
 import { ExternalUser } from "./dto/ExternalUser";
 
-const initialState: UserState = new UserState();
+const initialState: UserState = {
+  users:[],
+  isProfileVerified:null,
+  error:'',
+  fetchStatus: 'idle',
+  deleteStatus: 'idle',
+  addedStatus: 'idle',
+  externalUser: null,
+  updateStatus: 'idle'
+};
 
 export const fetchUsers = createAsyncThunk("fetchUsers", async () => {
   const request = await getAxiosInstance().post(GRAPHQL, {
