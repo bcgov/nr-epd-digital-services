@@ -1,15 +1,16 @@
 import { Controller, Get, Post } from '@nestjs/common';
 import { Req } from '@nestjs/common/decorators';
-import { Unprotected } from 'nest-keycloak-connect';
+import { Resource, Unprotected } from 'nest-keycloak-connect';
 import { AppService } from './app.service';
 import { Request } from 'express';
 
 @Controller()
-@Unprotected()
+@Resource('user-service')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
+  @Unprotected()
   getHello(): string {
     return this.appService.getHello();
   }
@@ -17,6 +18,6 @@ export class AppController {
   @Post()
   printFormSubmission(@Req() request: Request) {
     console.log('Request from forms api');
-    console.log(request.headers);
+    console.log(request.body);
   }
 }
