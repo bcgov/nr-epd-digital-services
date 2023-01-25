@@ -1,0 +1,9 @@
+---
+apiVersion: v2
+name: forms-flow-idm
+version: v2.1.2
+dependencies:
+  - name: keycloak
+    version: 9.8.0
+    repository: "https://charts.bitnami.com/bitnami"
+icon: "https://raw.githubusercontent.com/AOT-Technologies/forms-flow-ai/develop/.images/logo.png"
