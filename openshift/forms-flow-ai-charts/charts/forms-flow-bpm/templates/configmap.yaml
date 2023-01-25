@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+data:
+  APP_SECURITY_ORIGIN: "*"
+  CAMUNDA_ANALYTICS_DATABASE_SERVICE_NAME: "{{ .Values.camunda.analytics.database }}"
+  CAMUNDA_APP_ROOT_LOG_FLAG: "{{ .Values.camunda.logLevel }}"
+  CAMUNDA_AUTHORIZATION_FLAG: "{{ .Values.camunda.auth.enabled }}"
+  CAMUNDA_AUTHORIZATION_REVOKE_CHECK_FLAG: "{{ .Values.camunda.auth.revokeCheck }}"
+  CAMUNDA_DATABASE_NAME: "{{.Values.camunda.database.name}}"
+  CAMUNDA_DATABASE_PORT: "{{.Values.camunda.database.port}}"
+  CAMUNDA_FORMBUILDER_PIPELINE_USERNAME: "{{ .Values.camunda.formBuilder.username }}"
+  CAMUNDA_HIKARI_CONN_TIMEOUT: "{{ .Values.camunda.hikari.timeout.connection }}"
+  CAMUNDA_HIKARI_IDLE_TIMEOUT: "{{ .Values.camunda.hikari.timeout.idle }}"
+  CAMUNDA_HIKARI_VALID_TIMEOUT: "{{ .Values.camunda.hikari.timeout.valid }}"
+  CAMUNDA_HIKARI_MAX_POOLSIZE: "{{ .Values.camunda.hikari.poolsize.max }}"
+  CAMUNDA_JDBC_DRIVER: "{{ .Values.camunda.jdbc.driver }}"
+  CAMUNDA_JDBC_URL: "{{ tpl .Values.camunda.jdbc.url .}}"
+  CAMUNDA_JDBC_USER: "{{ .Values.camunda.jdbc.username}}"
+  WAIT_FOR: " {{ .Values.waitFor }}"  
+  WEBSOCKET_MESSAGE_TYPE: "{{ .Values.camunda.websocket.messageType }}"
+  WEBSOCKET_SECURITY_ORIGIN: {{ ternary  (.Values.camunda.websocket.securityOrigin | quote) (randAlphaNum 6 | quote) (kindIs "string" .Values.camunda.websocket.securityOrigin) }}
+  BPM_BASE_URL: "https://{{tpl .Values.ingress.hostname .}}"
+kind: ConfigMap
+metadata:
+  labels:
+    app: {{ .Chart.Name }}
+  name: {{ .Chart.Name }}
+---
+apiVersion: v1
+data:
+  mail-config.properties: |
+    # send mails via SMTP
+    mail.transport.protocol=smtp
+    mail.smtp.auth=true
+    mail.smtp.host={{.Values.mail.smtp.server}}
+    mail.smtp.port={{.Values.mail.smtp.port}}
+    mail.smtp.ssl.enable={{.Values.mail.smtp.ssl.enable}}
+    mail.smtp.socketFactory.port=465
+    mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory
+    # poll mails via IMAPS
+    #mail.store.protocol=imaps
+    # mail.imaps.host=imap.gmail.com
+    mail.imaps.port=993
+    mail.imaps.timeout=1000
+    # additional config
+    #mail.poll.folder=INBOX
+    mail.sender={{.Values.mail.from}}
+    mail.sender.alias=DoNotReply
+    mail.attachment.download=true
+    mail.attachment.path=attachments
+    # credentials
+    mail.user={{.Values.mail.user}}
+    mail.password={{.Values.mail.password}}
+
+kind: ConfigMap
+metadata:
+  labels:
+    app: {{ .Chart.Name }}-mail-config
+  name: {{ .Chart.Name }}-mail-config

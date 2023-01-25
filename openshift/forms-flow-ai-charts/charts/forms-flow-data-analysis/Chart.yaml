@@ -1,0 +1,6 @@
+---
+apiVersion: v2
+name: forms-flow-data-analysis
+tags: forms-flow-data-analysis
+version: v2.1.1
+icon: "https://raw.githubusercontent.com/AOT-Technologies/forms-flow-ai/develop/.images/logo.png"

@@ -1,0 +1,53 @@
+Domain: #<DEFINE_ME>
+
+database:
+  username: postgres 
+  password: postgres
+  servicename: forms-flow-ai-postgresql
+  port: 5432
+  url: "postgresql://{{.Values.database.username}}:{{.Values.database.password}}@{{.Values.database.servicename}}:{{.Values.database.port}}/{{.Chart.Name}}"
+
+
+ingress: 
+  enabled: true # create an ingress for this component
+  hostname: "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}"
+  port: 5000
+
+redis-exporter:
+  exporter:
+    image:  
+      registry: docker.io
+      repository: oliver006/redis_exporter
+      tag: v1.14.0-alpine
+  redis:
+    image:  
+      registry: docker.io
+      repository: redis
+      tag: 7.0-rc3-alpine
+  persistentVolumeClaim:
+    size: 2Gi  
+    storageClass: ""
+  resources:
+    limits:
+      cpu: 60m
+      memory: 512Mi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+redash:
+  image:
+    registry: docker.io #registry to use
+    repository: formsflow/redash # repoisitory for redash image  
+    tag: 10.1.2 # tag of image being used
+  database:
+    password: postgres # admin password
+    url: "postgresql://postgres:postgres@forms-flow-analytics-postgresql:5432/postgres" # redash database url - i.e forms-flow-analytics-postgresql
+
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 2Gi
+  requests:
+    cpu: 180m
+    memory: 1Gi

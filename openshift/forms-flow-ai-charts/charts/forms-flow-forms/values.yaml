@@ -1,0 +1,24 @@
+Domain: #<DEFINE_ME>
+admin:
+  email: "me@defineme.com"
+  password: "admin"
+formsflow:
+  configmap: forms-flow-ai #integration env vars
+  secret: forms-flow-ai # integration env vars secret
+image:
+  registry: docker.io
+  repository: formsflow/forms-flow-forms
+  tag: v5.0.1 #The image tag to pull from
+
+ingress: 
+  enabled: true # create an ingress for this component 
+  hostname: "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}"
+  port: 3001
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 1Gi
+  requests:
+    cpu: 100m
+    memory: 512Mi
