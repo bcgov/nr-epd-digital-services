@@ -1,0 +1,65 @@
+Domain: #<DEFINE_ME>
+camunda:
+  analytics:
+    database: forms-flow-analytics
+  auth:
+    enabled: true
+    revokeCheck: auto
+  database:
+    name: forms-flow-bpm
+    port: 5432
+  historyLevel: auto
+  securityOrigin: '*'
+  logLevel: INFO
+  formBuilder:
+    password: demo # CAMUNDA_FORMBUILDER_PIPELINE_PASSWORD
+    username: demo # CAMUNDA_FORMBUILDER_PIPELINE_USERNAME
+  hikari:
+    timeout:
+      connection: 30000 #CAMUNDA_HIKARI_CONNECTION_TIMEOUT
+      idle: 600000 #CAMUNDA_HIKARI_IDLE_TIMEOUT
+      valid: 5000 #CAMUNDA_HIKARI_VALID_TIMEOUT
+    poolsize:
+      max: 10 #CAMUNDA_HIKARI_MAX_POOLSIZE
+  jdbc:
+    driver: org.postgresql.Driver
+    username: postgres
+    password: postgres
+    url: "jdbc:postgresql://${CAMUNDA_DATABASE_SERVICE_NAME}:${CAMUNDA_DATABASE_PORT}/${CAMUNDA_DATABASE_NAME}"
+  websocket:
+    messageType: TASK_EVENT #WEBSOCKET_MESSAGE_TYPE
+    securityOrigin:   #WEBSOCKET_SECURITY_ORIGIN
+
+image:
+  registry: docker.io
+  repository: formsflow/forms-flow-bpm
+  tag: v5.0.1 #The image tag to pull from
+
+formsflow:
+  configmap: forms-flow-ai # name of formsflow.ai configmap
+  secret: forms-flow-ai #name of formsflow.ai secret 
+
+ingress: 
+  enabled: true # create an ingress for this component
+  hostname: "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}"
+  port: 8080
+mail:
+  from: "<DEFINE_ME>"
+  password: "<DEFINE_ME>"
+  user: "<DEFINE_ME>"
+  smtp:
+    auth: true
+    port: 5432
+    server: "<DEFINE_ME>"
+    ssl:
+      enable: false
+
+resources:
+  limits:
+    cpu: 600m
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+waitFor: "${CAMUNDA_DATABASE_SERVICE_NAME}:${CAMUNDA_DATABASE_PORT}"

@@ -1,0 +1,26 @@
+---
+global:
+  Domain:  #<DEFINE_ME>
+
+forms-flow-admin:
+  Domain: "{{.Values.global.Domain}}"
+forms-flow-ai:
+  Domain: "{{.Values.global.Domain}}"
+forms-flow-analytics:
+  Domain: "{{.Values.global.Domain}}"
+forms-flow-api:
+  Domain: "{{.Values.global.Domain}}"
+forms-flow-bpm:
+  Domain: "{{.Values.global.Domain}}"
+forms-flow-data-analysis:
+  Domain: "{{.Values.global.Domain}}"
+forms-flow-documents-api:
+  Domain: "{{.Values.global.Domain}}"
+forms-flow-forms:
+  Domain: "{{.Values.global.Domain}}"
+forms-flow-idm:
+  keycloak:
+    ingress:
+      hostname: "forms-flow-idm-{{.Release.Namespace}}.{{tpl (.Values.global.Domain) .}}"
+forms-flow-web:
+  Domain: "{{.Values.global.Domain}}"

@@ -1,0 +1,26 @@
+---
+Domain: #<DEFINE_ME>
+analytics:
+  configmap: forms-flow-analytics # name of formsflow analytics configmap
+  secret: forms-flow-analytics #name of formsflow analytics secret 
+formsflow:
+  configmap: forms-flow-ai # name of formsflow.ai configmap
+  secret: forms-flow-ai #name of formsflow.ai secret
+ingress: 
+  enabled: true # create an ingress for this component 
+  hostname: "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}"
+  port: 8080
+resources:
+  limits:
+    cpu: 600m
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+image:
+  registry: docker.io
+  repository: formsflow/forms-flow-web
+  tag: v5.0.1
+config_path: /usr/share/nginx/html/config/
+webclient: "{{.Chart.Name}}"
+webname: formsflow

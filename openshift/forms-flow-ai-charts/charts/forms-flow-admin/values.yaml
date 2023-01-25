@@ -1,0 +1,29 @@
+---
+Domain: #<DEFINE ME>
+postgresql:
+  url: "postgresql://postgres:postgres@forms-flow-ai-postgresql:5432/{{.Chart.Name}}"
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 1Gi
+  requests:
+    cpu: 250m
+    memory: 512Mi
+
+formsflow:
+  configmap: forms-flow-ai # name of formsflow.ai configmap
+  secret: forms-flow-ai #name of formsflow.ai secret
+  analytics: forms-flow-analytics #name of analytics component 
+  
+
+ingress: 
+  enabled: true # create an ingress for this component 
+  hostname: "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}"
+  port: 5000
+  path: /
+
+image:
+  registry: docker.io
+  repository: formsflow/forms-flow-ai-admin
+  tag: v5.0.1 #The image tag to pull from

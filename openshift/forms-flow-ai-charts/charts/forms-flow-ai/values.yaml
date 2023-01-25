@@ -1,0 +1,94 @@
+---
+Domain: #<DEFINE_ME>
+
+forms-flow-bpm:
+  clientid: "forms-flow-bpm"
+  clientsecret: "*************"
+
+forms-flow-forms:
+  admin:
+    email: "me@defineme.com"
+    password: "admin"
+
+forms-flow-idm:
+  keycloak:
+    ingress:
+      hostname: epd-keycloak-test.apps.silver.devops.gov.bc.ca
+  realm: forms-flow-ai
+
+forms-flow-web:
+  clientid: user-service
+
+mongodb:
+  arbiter: 
+    enabled: false
+    containerSecurityContext:
+      enabled: false
+    podSecurityContext:
+      enabled: false
+  auth:
+    databases: 
+      - formsflow 
+    passwords:
+      - mongodb
+    usernames:
+      - mongodb
+  containerSecurityContext:
+    enabled: false
+  enabled: true
+  fullnameOverride: "forms-flow-ai-mongodb"
+  service:
+    nameOverride: "forms-flow-ai-mongodb"
+    port: 27017
+  replicaSetName: "forms-flow-ai-mongodb"
+  podSecurityContext:
+    enabled: false
+  useStatefulSet : false
+  architecture: standalone
+  persistence:
+    size: 4Gi
+ 
+postgresql:
+  auth:
+    database: forms-flow-ai
+    postgresPassword: postgres # password for the "postgres" admin user
+  enabled: true #extra struct var for installation logic
+  image:
+    registry: docker.io
+    repository: bitnami/postgresql
+    tag: 14.2.0-debian-10-r57
+  fullnameOverride: "forms-flow-ai-postgresql"
+  primary:
+    initdb:
+      user: postgres
+      password: postgres
+      scripts:
+        0001_create_databases.sql: |
+          CREATE DATABASE "forms-flow-admin";
+          CREATE DATABASE "forms-flow-analytics";
+          CREATE DATABASE "forms-flow-api";
+          CREATE DATABASE "forms-flow-bpm";
+    containerSecurityContext:
+      enabled: false
+    persistence:
+      storageClass: ""
+      size: 8Gi
+    podSecurityContext:
+      enabled: false
+    service:
+      ports:
+        postgresql: 5432  # PostgreSQL service port
+    shmVolume:
+      chmod:
+        enabled: false
+  volumePermissions:
+    containerSecurityContext:
+      runAsUser: "auto"
+
+websocket_encrypt_key: "FormsFlow.AI"
+insight_api_key: ""
+redis_host: ""
+redis_port: ""
+redis_pass_code: ""
+draft_enabled: "false"
+export_pdf_enabled: "false"

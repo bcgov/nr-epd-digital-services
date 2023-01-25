@@ -1,0 +1,36 @@
+---
+apiVersion: v2
+name: forms-flow-all-in-one
+dependencies:
+  - name: forms-flow-admin
+    repository: https://aot-technologies.github.io/forms-flow-ai-charts
+    version: v2.1.1
+  - name: forms-flow-ai
+    repository: https://aot-technologies.github.io/forms-flow-ai-charts
+    version: v2.1.4
+  - name: forms-flow-analytics
+    repository: https://aot-technologies.github.io/forms-flow-ai-charts
+    version: v2.1.1
+  - name: forms-flow-api
+    repository: https://aot-technologies.github.io/forms-flow-ai-charts
+    version: v2.1.2
+  - name: forms-flow-bpm
+    repository: https://aot-technologies.github.io/forms-flow-ai-charts
+    version: v2.1.1
+  - name: forms-flow-data-analysis
+    repository: https://aot-technologies.github.io/forms-flow-ai-charts
+    version: v2.1.1
+  - name: forms-flow-documents-api
+    repository: https://aot-technologies.github.io/forms-flow-ai-charts
+    version: v2.1.1
+  - name: forms-flow-forms
+    repository: https://aot-technologies.github.io/forms-flow-ai-charts
+    version: v2.1.1
+  - name: forms-flow-idm
+    repository: https://aot-technologies.github.io/forms-flow-ai-charts
+    version: v2.1.2
+  - name: forms-flow-web
+    repository: https://aot-technologies.github.io/forms-flow-ai-charts
+    version: v2.1.1
+version: v1.0.0
+icon: "https://raw.githubusercontent.com/AOT-Technologies/forms-flow-ai/develop/.images/logo.png"
