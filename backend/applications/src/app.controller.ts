@@ -19,5 +19,6 @@ export class AppController {
   printFormSubmission(@Req() request: Request) {
     console.log('Request from forms api');
     console.log(request.body);
+    return request.body;
   }
 }
