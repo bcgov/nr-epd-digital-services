@@ -28,6 +28,7 @@
     "@nestjs/platform-express": "^9.2.1",
     "oracledb": "^5.5.0",
     "reflect-metadata": "^0.1.13",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "jest": "28.1.3"
   }
 }
