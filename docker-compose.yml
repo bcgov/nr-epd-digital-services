@@ -66,8 +66,8 @@ services:
       POSTGRESQL_DATABASE: default
       KEYCLOCK_AUTH_URL: https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth
       KEYCLOCK_REALM: forms-flow-ai
-      KEYCLOCK_CLIENT_ID: applicationapi
-      KEYCLOCK_SECRET: xyz
+      KEYCLOCK_CLIENT_ID: application-service
+      KEYCLOCK_SECRET: adbb221e-6ec9-4bd9-a8ef-62ba76a11d31
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:4006"]
       interval: 1m30s
