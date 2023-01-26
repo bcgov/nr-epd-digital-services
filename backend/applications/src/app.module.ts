@@ -6,6 +6,7 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import {
   AuthGuard,
   KeycloakConnectModule,
@@ -13,7 +14,6 @@ import {
   ResourceGuard,
   RoleGuard,
 } from 'nest-keycloak-connect';
-import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ApplicationModule } from './app/application.module';
@@ -21,20 +21,16 @@ import { ExternalUser } from './app/entities/user.entity';
 
 @Module({
   imports: [
-    KeycloakConnectModule.register({
-      authServerUrl: process.env.KEYCLOCK_AUTH_URL
-        ? process.env.KEYCLOCK_AUTH_URL
-        : 'ADD YOUR AUTH SERVER URL',
-      realm: process.env.KEYCLOCK_REALM
-        ? process.env.KEYCLOCK_REALM
-        : 'forms-flow-ai',
-      clientId: process.env.KEYCLOCK_CLIENT_ID
-        ? process.env.KEYCLOCK_CLIENTID
-        : 'backend',
-      secret: process.env.KEYCLOCK_SECRET
-        ? process.env.KEYCLOCK_SECRET
-        : 'ADD YOUR SECRET',
-      policyEnforcement: PolicyEnforcementMode.PERMISSIVE,
+    ConfigModule.forRoot({ isGlobal: true }),
+    KeycloakConnectModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: () => ({
+        authServerUrl: process.env.KEYCLOCK_AUTH_URL,
+        realm: process.env.KEYCLOCK_REALM,
+        clientId: process.env.KEYCLOCK_CLIENT_ID,
+        secret: process.env.KEYCLOCK_SECRET,
+        policyEnforcement: PolicyEnforcementMode.PERMISSIVE,
+      }),
       // Secret key of the client taken from keycloak server
     }),
     ApplicationModule,
@@ -48,7 +44,7 @@ import { ExternalUser } from './app/entities/user.entity';
       // entities: [User],
       autoLoadEntities:
         process.env.POSTGRESQL_AUTOLOAD_ENTITIES == 'false' ? false : true, // Auto load all entities regiestered by typeorm forFeature method.
-      synchronize: process.env.POSTGRESQL_SYNC == 'false' ? false : true,
+      synchronize: false,
       // This changes the DB schema to match changes to entities, which we might not want.
       logging: true,
     }),
