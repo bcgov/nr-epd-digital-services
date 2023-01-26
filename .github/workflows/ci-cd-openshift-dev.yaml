@@ -5,9 +5,7 @@ on:
   push:
     branches:
       - 'dev'
-      #- 'ss-225' #test1
-      - 'ss-RemovingUTforlegacy'
-                 
+                       
     paths:
       - 'backend/**'
       - 'frontend/**'
