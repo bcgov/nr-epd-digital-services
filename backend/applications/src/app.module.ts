@@ -24,10 +24,10 @@ import { ExternalUser } from './app/entities/user.entity';
     ConfigModule.forRoot({ isGlobal: true }),
     KeycloakConnectModule.registerAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        authServerUrl: config.get('KEYCLOCK_AUTH_URL'),
-        realm: config.get('KEYCLOCK_REALM'),
-        clientId: config.get('KEYCLOCK_CLIENT_ID'),
+      useFactory: () => ({
+        authServerUrl: process.env.KEYCLOCK_AUTH_URL,
+        realm: process.env.KEYCLOCK_REALM,
+        clientId: process.env.KEYCLOCK_CLIENT_ID,
         secret: process.env.KEYCLOCK_SECRET,
         policyEnforcement: PolicyEnforcementMode.PERMISSIVE,
       }),
