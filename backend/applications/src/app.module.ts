@@ -28,7 +28,7 @@ import { ExternalUser } from './app/entities/user.entity';
         authServerUrl: config.get('KEYCLOCK_AUTH_URL'),
         realm: config.get('KEYCLOCK_REALM'),
         clientId: config.get('KEYCLOCK_CLIENT_ID'),
-        secret: config.get('KEYCLOCK_SECRET'),
+        secret: process.env.KEYCLOCK_SECRET,
         policyEnforcement: PolicyEnforcementMode.PERMISSIVE,
       }),
       // Secret key of the client taken from keycloak server
@@ -44,7 +44,7 @@ import { ExternalUser } from './app/entities/user.entity';
       // entities: [User],
       autoLoadEntities:
         process.env.POSTGRESQL_AUTOLOAD_ENTITIES == 'false' ? false : true, // Auto load all entities regiestered by typeorm forFeature method.
-      synchronize: process.env.POSTGRESQL_SYNC == 'false' ? false : true,
+      synchronize: false,
       // This changes the DB schema to match changes to entities, which we might not want.
       logging: true,
     }),
