@@ -1,18 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { ApplicationService } from './application.service';
-import { CreateApplicationInput } from './dto/create-application.input';
-import { FetchUsersArgs } from './dto/fetch-users-args.dto';
-import { Application } from './entities/application.entity';
+import { ApplicationResolver } from './application.resolver';
+import { ApplicationService } from '../services/application.service';
+import { CreateApplicationInput } from '../dto/create-application.input';
+import { FetchUsersArgs } from '../dto/fetch-users-args.dto';
+import { Application } from '../entities/application.entity';
 
-describe('ApplicationService', () => {
-  let service: ApplicationService;
+describe('ApplicationResolver', () => {
+  let resolver: ApplicationResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
-          provide: getRepositoryToken(Application),
           useValue: {
             find: jest.fn(() => {
               return Promise.resolve([{ name: 'test', id: 1 }]);
@@ -22,20 +22,22 @@ describe('ApplicationService', () => {
             }),
             save: jest.fn(),
           },
+          provide: getRepositoryToken(Application),
         },
+        ApplicationResolver,
         ApplicationService,
       ],
     }).compile();
 
-    service = module.get<ApplicationService>(ApplicationService);
+    resolver = module.get<ApplicationResolver>(ApplicationResolver);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(resolver).toBeDefined();
   });
 
   it('should return application', async () => {
-    const applications = await service.findAll();
+    const applications = await resolver.findAll();
 
     expect(applications.length).toBeGreaterThan(0);
   });
@@ -47,19 +49,7 @@ describe('ApplicationService', () => {
       nameLike: '',
     };
 
-    const applications = await service.findAllWithFilter(args);
-
-    expect(applications.length).toBeGreaterThan(0);
-  });
-
-  it('should return application when filtering by user id', async () => {
-    const args: FetchUsersArgs = {
-      skip: 0,
-      take: 0,
-      nameLike: '',
-    };
-
-    const applications = await service.forUser(args, '1');
+    const applications = await resolver.filterWithApplicationName(args);
 
     expect(applications.length).toBeGreaterThan(0);
   });
@@ -70,7 +60,7 @@ describe('ApplicationService', () => {
       userId: '1',
     };
 
-    const applications = await service.create(input);
+    const applications = await resolver.createApplication(input);
 
     expect(applications.name).toBe('app');
   });

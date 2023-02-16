@@ -8,16 +8,16 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
-import { ApplicationService } from './application.service';
-import { Application } from './entities/application.entity';
-import { CreateApplicationInput } from './dto/create-application.input';
-import { UpdateApplicationInput } from './dto/update-application.input';
-import { ExternalUser } from './entities/user.entity';
+import { ApplicationService } from '../services/application.service';
+import { Application } from '../entities/application.entity';
+import { CreateApplicationInput } from '../dto/create-application.input';
+import { UpdateApplicationInput } from '../dto/update-application.input';
+import { ExternalUser } from '../entities/user.entity';
 import { Resource, RoleMatchingMode, Roles } from 'nest-keycloak-connect';
-import { FetchUsersArgs } from './dto/fetch-users-args.dto';
+import { FetchUsersArgs } from '../dto/fetch-users-args.dto';
 
 @Resolver(() => Application)
-@Resource('applicationapi')
+@Resource('application-service')
 export class ApplicationResolver {
   constructor(private readonly applicationService: ApplicationService) {}
 
