@@ -4,7 +4,6 @@ import {useAuth} from "react-oidc-context";
 import {store} from '../../../Store'
 import Dashboard from '../Dashboard'
 import { MemoryRouter } from 'react-router-dom';
-import { getSDMUserRole } from '../../../helpers/envManager';
 
 jest.mock('react-oidc-context', () => ({
   useAuth: jest.fn(),
@@ -28,7 +27,6 @@ describe('testing sdm dashboards', ()=>{
       }
     )
     
-    console.log("Sdm user role? " + getSDMUserRole())
     render(
       //<AuthProvider>
         <Provider store={store}>
