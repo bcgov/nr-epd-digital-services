@@ -40,7 +40,7 @@ export class FormController {
   ): Promise<SubmissionResponse> {
     console.log(content);
     console.log('formId 2' + formId);
-    const savedSubmission = await this.formService.create(formId, content);
+    const savedSubmission = await this.formService.create(formId, content.data);
     const submissionResponse: SubmissionResponse =
       this.transformResult(savedSubmission);
     return submissionResponse;
