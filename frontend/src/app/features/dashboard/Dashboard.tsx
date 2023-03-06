@@ -58,7 +58,8 @@ const Dashboard = () => {
     window.location = formsFlowWebURL;
 
   }
-
+  //Automatically redirect to formsflow dashboard, don't render dashboard prototype
+  handleFormsflowWebRedirection()
 
   const validUserRole = (rolename:string)=>{
     const realmRoles:string[] = auth.user?.profile.realmroles as string[];
@@ -85,7 +86,7 @@ const Dashboard = () => {
           </div> 
           ) : (
 
-           validUserRole(getSDMUserRole())? (<SdmDashboard></SdmDashboard>):(
+           validUserRole(getSDMUserRole()) ? (<SdmDashboard></SdmDashboard>):(
               <ReviewerDashoard></ReviewerDashoard>
            )
                 
