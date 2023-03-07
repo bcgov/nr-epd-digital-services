@@ -19,5 +19,4 @@ test('Form Submits Correctly', () =>{
     fireEvent.change(userNameInput, {target: {value: testUsername}})
     fireEvent.click(saveButton)
     expect(userNameInput).toBeEmptyDOMElement()
-    console.log(store)
 })
