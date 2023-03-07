@@ -18,7 +18,7 @@ const commonData: CommonData = new CommonData();
 
 ///const initialState = { users: emptyUserState, applications: persistedStore , commonData:commonData };
 
-consoleLog("persistedStore", persistedStore);
+//consoleLog("persistedStore", persistedStore);
 
 export const store = configureStore({
   reducer: {
@@ -31,7 +31,7 @@ export const store = configureStore({
 });
 
 store.subscribe(() => {
-  consoleLog("Store Modified", store.getState());
+  //consoleLog("Store Modified", store.getState());
 
   const { applications } = store.getState();
 

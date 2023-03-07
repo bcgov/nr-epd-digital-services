@@ -7,7 +7,6 @@ import {
   fetchUserProfileVerification,
   isProfileVerified,
 } from "../users/UsersSlice";
-import { toast } from "react-toastify";
 import "./Dashboard.css";
 import { SdmDashboard } from "./sdmDashboard/SdmDashboard";
 import { ReviewerDashoard } from "./reviewerDashboard/ReviewerDashoard";
@@ -38,8 +37,6 @@ const Dashboard = () => {
     ) {
       dispatch(fetchUserProfileVerification(auth.user.profile.sub));
     }
-
-    console.log("REACT_APP_AUTH_LOAD_USER_INFO",process.env)
   }, []);
 
   useEffect(() => {
