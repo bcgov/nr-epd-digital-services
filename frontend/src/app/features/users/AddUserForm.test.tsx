@@ -2,8 +2,12 @@
 import { fireEvent, render, screen} from "@testing-library/react";
 import AddUserForm from './AddUserForm';
 import TestWrapper from '../../../utilities/test/TestUtils';
+import { saveToLocalStorage } from "../../helpers/sessionManager";
 
 const wrapper = <TestWrapper><AddUserForm></AddUserForm></TestWrapper>
+
+saveToLocalStorage as jest.Mock
+
 
 const setup = () => {
     const utils = render(wrapper)
