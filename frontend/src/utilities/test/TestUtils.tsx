@@ -5,6 +5,7 @@ import {
     BrowserRouter as Router
   } from "react-router-dom";
 import { ReactComponentElement, ReactHTMLElement } from 'react';
+import { saveToLocalStorage } from '../../app/helpers/sessionManager';
 
 // import {configureStore} from "@reduxjs/toolkit";
 // import {usersReducer} from '../../app/features/users/UsersSlice'
@@ -12,6 +13,7 @@ import { ReactComponentElement, ReactHTMLElement } from 'react';
 
 
 const TestWrapper = ({children}:any) =>{
+    saveToLocalStorage as jest.Mock
 
     // if(initialState){
     //     const testStore = configureStore({reducer:{
