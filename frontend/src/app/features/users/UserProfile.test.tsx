@@ -6,13 +6,18 @@ import { UserProfile } from "./UserProfile";
 import { useAuth } from "react-oidc-context";
 import userEvent from "@testing-library/user-event";
 import TestWrapper from "../../../utilities/test/TestUtils";
+import { saveToLocalStorage } from "../../helpers/sessionManager";
 
 jest.mock("react-oidc-context", () => ({
   useAuth: jest.fn(),
 }));
 
-jest.setMock("../../Store",store.subscribe)
-
+jest.mock('../../helpers/sessionManager', () =>{
+  return {
+    loadFromLocalStorage: jest.fn(),
+    saveToLocalStorage: jest.fn()
+  }
+})
 
 const defaultSetting = () => {
   (useAuth as jest.Mock).mockReturnValue({ isAuthenticated: true });
