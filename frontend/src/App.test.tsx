@@ -3,12 +3,10 @@ import App from './App';
 import { Provider } from 'react-redux';
 import {useAuth} from "react-oidc-context";
 import {store} from './app/Store'
-import { saveToLocalStorage } from './app/helpers/sessionManager';
 
 jest.mock('react-oidc-context', () => ({
   useAuth: jest.fn(),
 }))
-saveToLocalStorage as jest.Mock
 
 
 
