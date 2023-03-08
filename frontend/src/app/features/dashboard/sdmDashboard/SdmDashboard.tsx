@@ -1,4 +1,3 @@
-import React from 'react';
 import './SdmDashboard.css'
 
 export const SdmDashboard = () => {

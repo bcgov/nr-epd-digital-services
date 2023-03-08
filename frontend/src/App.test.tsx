@@ -9,6 +9,7 @@ jest.mock('react-oidc-context', () => ({
 }))
 
 
+
 it('renders log in panel', () => {
   (useAuth as jest.Mock).mockReturnValue(
     {isAuthenticated: false}
