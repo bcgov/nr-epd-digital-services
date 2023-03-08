@@ -7,7 +7,7 @@ This is a dockerfile deploy for our customized forms-flow-web.  The high level s
 
 TODO: Update yaml `image` field to avoid having to do step #2 manually.
 
-# Build in Tools
+## Build in Tools
 
 ```bash
 # make sure in tools
@@ -22,4 +22,8 @@ Instead of pulling images from local namespace pushed from GHCR, we pull from to
 Update `image:` field with has to build from #1.
 
 May also wish to update `ImageChange` trigger
+
+## Manually Triggering a Build
+
+Just tag the build from tools to `dev` or `test`.  Will be creating CI/CD tasks for this and github action in near future.
 
