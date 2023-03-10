@@ -125,7 +125,7 @@ const userLogout = () => {
   clearInterval(refreshInterval);
   console.log("process.env.REACT_APP_CUSTOM_LOGOUT_URL",process.env.REACT_APP_CUSTOM_LOGOUT_URL || (window._env_ && (window._env_.REACT_APP_CUSTOM_LOGOUT_URL) || ""));
   KeycloakData.logout({
-    redirectUri: process.env.REACT_APP_CUSTOM_LOGOUT_URL || (window._env_ && (window._env_.REACT_APP_CUSTOM_LOGOUT_URL) || "")
+    redirectUri: process.env.REACT_APP_CUSTOM_LOGOUT_URL || (window._env_ && (window._env_.REACT_APP_CUSTOM_LOGOUT_URL)) || ""
 
   });
   //doLogout();
