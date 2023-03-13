@@ -8,7 +8,7 @@ WORKDIR /forms-flow-web/app
 # expect a build-time variable
 ARG FORMFLOW_SOURCE_REPO_BRANCH
 # use the value to set the ENV var default
-ENV FORMFLOW_SOURCE_REPO_BRANCH master
+ENV FORMFLOW_SOURCE_REPO_BRANCH patch/v5.1.1
 # expect a build-time variable
 ARG FORMFLOW_SOURCE_REPO_URL
 # use the value to set the ENV var default
