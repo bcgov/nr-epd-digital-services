@@ -54,7 +54,6 @@ const UsersList = () => {
   }, [fetchStatus, deleteStatus, addedStatus]);
 
   useEffect(()=>{
-    console.log('fetchError',fetchError)
     if(fetchError!== null && fetchError!==""){
       alert(fetchError)
     }
