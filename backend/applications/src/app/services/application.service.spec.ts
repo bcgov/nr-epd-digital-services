@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ApplicationService } from './application.service';
-import { CreateApplicationInput } from '../dto/createApplication.input';
-import { FetchUsersArgs } from '../dto/fetchUserArgs.dto';
+import { CreateApplicationInput } from '../dto/create-application.input';
+import { FetchUsersArgs } from '../dto/fetch-users-args.dto';
 import { Application } from '../entities/application.entity';
 
 describe('ApplicationService', () => {

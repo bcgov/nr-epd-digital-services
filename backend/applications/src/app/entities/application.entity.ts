@@ -1,5 +1,6 @@
 import { ObjectType, Field, Directive, ID } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ExternalUser } from './user.entity';
 
 @ObjectType()
 @Directive('@key(fields: "id")')
@@ -13,17 +14,10 @@ export class Application {
   @Column({ name: 'name', nullable: true })
   name: string;
 
-  @Column({ name: 'created_by', length: 50 })
+  @Field(() => ExternalUser)
+  user: ExternalUser;
+
+  @Column({ nullable: true })
   @Field()
-  createdBy: string;
-
-  @Column({ name: 'created_date', type: 'date', default: () => 'CURRENT_DATE' })
-  createdDate?: Date;
-
-  @Column({ name: 'modified_by', length: 50 })
-  @Field()
-  modifiedBy: string;
-
-  @Column({ name: 'modifed_date', type: 'date', default: () => 'CURRENT_DATE' })
-  modifiedDate?: Date;
+  userId: string;
 }

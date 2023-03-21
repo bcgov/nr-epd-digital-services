@@ -17,7 +17,7 @@ export class FormService {
    */
   async create(formId: string, jsonData: string): Promise<Form> {
     const entity = new Form();
-    entity.formData = jsonData;
+    entity.data = jsonData;
     entity.formId = formId;
     return await this.formRepository.save(entity);
   }
@@ -49,7 +49,7 @@ export class FormService {
     const entity = await this.formRepository.findOne({
       where: { formId: formId, id: submissionId },
     });
-    entity.formData = formContent;
+    entity.data = formContent;
     const updateResult = await this.formRepository.update(entity.id, entity);
     return updateResult;
   }
