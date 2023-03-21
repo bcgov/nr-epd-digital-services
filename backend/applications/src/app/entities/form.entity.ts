@@ -8,15 +8,15 @@ export class Form {
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
   id: string;
 
-  @Column('jsonb', { name: 'form_data' })
-  formData: string;
+  @Column('jsonb', { name: 'data' })
+  data: string;
 
-  @Column({ name: 'form_id' })
+  @Column({ name: 'formId' })
   formId: string;
 
-  @Column({ name: 'created_date', type: 'date', default: () => 'CURRENT_DATE' })
+  @Column({ type: 'date', default: () => 'CURRENT_DATE' })
   createdDate?: Date;
 
-  @Column({ name: 'modifed_date', type: 'date', default: () => 'CURRENT_DATE' })
+  @Column({ type: 'date', default: () => 'CURRENT_DATE' })
   modifiedDate?: Date;
 }

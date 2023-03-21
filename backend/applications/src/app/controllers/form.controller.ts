@@ -55,7 +55,7 @@ export class FormController {
     const submissionResponse: SubmissionResponse = new SubmissionResponse();
     submissionResponse._id = savedSubmission.id;
     submissionResponse.form = savedSubmission.formId;
-    submissionResponse.data = savedSubmission.formData;
+    submissionResponse.data = savedSubmission.data;
     submissionResponse.created = savedSubmission.createdDate;
     submissionResponse.modified = savedSubmission.modifiedDate;
     return submissionResponse;
