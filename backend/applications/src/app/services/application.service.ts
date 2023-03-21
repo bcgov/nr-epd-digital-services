@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
-import { CreateApplicationInput } from '../dto/create-application.input';
-import { UpdateApplicationInput } from '../dto/update-application.input';
+import { CreateApplicationInput } from '../dto/createApplication.input';
 import { Application } from '../entities/application.entity';
-import { FetchUsersArgs } from '../dto/fetch-users-args.dto';
+import { FetchUsersArgs } from '../dto/fetchUserArgs.dto';
 
 @Injectable()
 export class ApplicationService {
@@ -58,7 +57,7 @@ export class ApplicationService {
         skip: args.skip,
         take: args.take,
         where: {
-          userId: id,
+          createdBy: id,
         },
       });
     } else {
@@ -66,7 +65,7 @@ export class ApplicationService {
         skip: args.skip,
         take: args.take,
         where: {
-          userId: id,
+          createdBy: id,
           name: Like(`%${args.nameLike}%`),
         },
       });

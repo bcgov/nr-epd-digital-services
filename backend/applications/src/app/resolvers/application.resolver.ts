@@ -10,11 +10,10 @@ import {
 } from '@nestjs/graphql';
 import { ApplicationService } from '../services/application.service';
 import { Application } from '../entities/application.entity';
-import { CreateApplicationInput } from '../dto/create-application.input';
-import { UpdateApplicationInput } from '../dto/update-application.input';
-import { ExternalUser } from '../entities/user.entity';
+import { CreateApplicationInput } from '../dto/createApplication.input';
+import { UpdateApplicationInput } from '../dto/updateApplication.input';
 import { Resource, RoleMatchingMode, Roles } from 'nest-keycloak-connect';
-import { FetchUsersArgs } from '../dto/fetch-users-args.dto';
+import { FetchUsersArgs } from '../dto/fetchUserArgs.dto';
 
 @Resolver(() => Application)
 @Resource('application-service')
@@ -72,10 +71,5 @@ export class ApplicationResolver {
   @ResolveReference()
   resolveReference(ref: { _typename: string; id: number }) {
     return this.applicationService.findOne(ref.id);
-  }
-
-  @ResolveField(() => ExternalUser)
-  user(@Parent() application: Application) {
-    return { __typename: 'User', id: application.userId };
   }
 }
