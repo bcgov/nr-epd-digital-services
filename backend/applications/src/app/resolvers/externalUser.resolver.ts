@@ -1,11 +1,11 @@
 import { Args, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { ApplicationService } from '../services/application.service';
 import { Application } from '../entities/application.entity';
-import { FetchUsersArgs } from '../dto/fetch-users-args.dto';
-import { ExternalUser } from '../entities/user.entity';
+import { FetchUsersArgs } from '../dto/fetctUsersArgs.dto';
+import { ExternalUser } from '../entities/externalUser.entity';
 
 @Resolver(() => ExternalUser)
-export class UsersResolver {
+export class ExternalUserResolver {
   constructor(private readonly applicationService: ApplicationService) {}
 
   @ResolveField(() => [Application])

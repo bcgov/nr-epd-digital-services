@@ -3,7 +3,7 @@ import { ApplicationService } from './services/application.service';
 import { ApplicationResolver } from './resolvers/application.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Application } from './entities/application.entity';
-import { UsersResolver } from './resolvers/users.resolver';
+import { ExternalUserResolver } from './resolvers/externalUser.resolver';
 import { FormController } from './controllers/form.controller';
 import { FormService } from './services/form.service';
 import { Form } from './entities/form.entity';
@@ -13,7 +13,7 @@ import { Form } from './entities/form.entity';
   providers: [
     ApplicationResolver,
     ApplicationService,
-    UsersResolver,
+    ExternalUserResolver,
     FormService,
   ],
   controllers: [FormController],
