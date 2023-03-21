@@ -17,7 +17,6 @@ import {
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ApplicationModule } from './app/application.module';
-import { ExternalUser } from './app/entities/user.entity';
 
 @Module({
   imports: [
@@ -67,9 +66,6 @@ import { ExternalUser } from './app/entities/user.entity';
       // autoSchemaFile: join(process.cwd(), 'src/graphql-schema.gql'),
       // TODO - Experiment with using old files for localhsot if need be, and true for prod
       autoSchemaFile: true,
-      buildSchemaOptions: {
-        orphanedTypes: [ExternalUser],
-      },
       cors: true,
     }),
   ],

@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ApplicationResolver } from './application.resolver';
 import { ApplicationService } from '../services/application.service';
-import { CreateApplicationInput } from '../dto/create-application.input';
-import { FetchUsersArgs } from '../dto/fetch-users-args.dto';
+import { CreateApplicationInput } from '../dto/createApplication.input';
+import { FetchUsersArgs } from '../dto/fetchUserArgs.dto';
 import { Application } from '../entities/application.entity';
 
 describe('ApplicationResolver', () => {
