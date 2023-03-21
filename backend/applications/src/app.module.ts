@@ -17,7 +17,7 @@ import {
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ApplicationModule } from './app/application.module';
-import { ExternalUser } from './app/entities/user.entity';
+import { ExternalUser } from './app/entities/externalUser.entity';
 
 @Module({
   imports: [
