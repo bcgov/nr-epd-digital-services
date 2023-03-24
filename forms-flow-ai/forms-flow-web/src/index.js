@@ -14,6 +14,7 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { featureFlags } from "./featureToogle";
 import { FlagsProvider } from "flagged";
 import '@bcgov/bc-sans/css/BCSans.css';
+import CustomComponents from "./customFormioComponents";
 
 //import BCGovFormioComponents2 from "./formcomponents/dist/bcgov-formio-components.js";
 
@@ -27,6 +28,7 @@ if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === "object") {
       typeof value == "function" ? () => {} : null;
   }
 }
+Formio.use(CustomComponents);
 
 //  import("react-formio")
 //  .then((x) => {
