@@ -6,7 +6,7 @@ on:
     branches:
       - 'main'
       - 'ss-initforapps' #test
-      #- 'dev'
+      #- 'dev'1
             
     paths:
       - 'backend/**'
