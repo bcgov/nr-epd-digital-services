@@ -186,36 +186,56 @@ objects:
                 initialDelaySeconds: 10
                 periodSeconds: 30
                 timeoutSeconds: 5
-        initContainers:
+          initContainers:
             # - name: init-${NAME}-backend-users-typeorm-migrations
             #   image: image-registry.openshift-image-registry.svc:5000/${NAME}-${COMPONENT}:${IMAGE_TAG}
             #   command: ['sh', '-c', 'initContainer.sh']
             #  ${NAME}-${COMPONENT}:${IMAGE_TAG}
-            - name: epd-db-migration-applications
+            - name: epd-db-migration
               image: "image-registry.openshift-image-registry.svc:5000/e38158-${ENV}/${NAME}-${COMPONENT}-migration:${IMAGE_TAG}"
               env:
-                - name: Typeorm-migration-applications
+                - name: Typeorm-migration
                   value: "jdbc:postgresql://${COMPONENT}-postgres:5432/${COMPONENT}"
                 - name: POSTGRESQL_HOST
                   valueFrom:
                     configMapKeyRef:
                       name: ${NAME}-database
                       key: POSTGRESQL_HOST
-                - name: POSTGRESQL_DATABASE
+                - name: POSTGRESQL_PORT
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRESQL_PORT
+                - name: POSTGRES_DATABASE
                   valueFrom:
                     configMapKeyRef:
                       name: ${NAME}-database
                       key: POSTGRES_DATABASE
-                - name: POSTGRESQL_PASSWORD
+                - name: POSTGRES_DB_SCHEMA
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRES_DB_SCHEMA
+                - name: POSTGRES_ADMIN_USERNAME
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-database
-                      key: POSTGRES_DB_PASSWORD
-                - name: POSTGRESQL_USER
+                      key: POSTGRES_ADMIN_USERNAME
+                - name: POSTGRES_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRES_ADMIN_PASSWORD
+                - name: POSTGRES_DB_USERNAME
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}-database
                       key: POSTGRES_DB_USERNAME
+                - name: POSTGRES_DB_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRES_DB_PASSWORD
                 - name: KEYCLOCK_AUTH_URL
                   valueFrom:
                     configMapKeyRef:
@@ -242,7 +262,7 @@ objects:
                   memory: 150Mi
                 requests:
                   cpu: 50m
-                  memory: 50Mi
+                  memory: 50Mi        
   - apiVersion: v1
     kind: Service
     metadata:
