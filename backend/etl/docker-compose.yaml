@@ -1,0 +1,63 @@
+version: '2'
+services:
+  zookeeper:
+    image: quay.io/debezium/zookeeper:${DEBEZIUM_VERSION}
+    ports:
+     - 2181:2181
+     - 2888:2888
+     - 3888:3888
+  kafka:
+    image: quay.io/debezium/kafka:${DEBEZIUM_VERSION}
+    ports:
+     - 9092:9092
+    links:
+     - zookeeper
+    environment:
+     - ZOOKEEPER_CONNECT=zookeeper:2181
+  postgres:
+    image: quay.io/debezium/postgres:9.6
+    ports:
+     - "5432:5432"
+    environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=postgres
+     - POSTGRES_DB=epd
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.0.1
+    ports:
+     - 8181:8181
+     - 8081:8081
+    environment:
+     - SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS=kafka:9092
+     - SCHEMA_REGISTRY_HOST_NAME=schema-registry
+     - SCHEMA_REGISTRY_LISTENERS=http://schema-registry:8081
+     - SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_METHODS=GET,POST,PUT,OPTIONS
+     - SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN=*
+    links:
+     - zookeeper
+  schema-registry-ui:
+    image: landoop/schema-registry-ui
+    ports:
+     - 8000:8000
+    environment:
+     - SCHEMAREGISTRY_URL=http://schema-registry:8081
+     - PROXY=true
+    links:
+     - schema-registry
+  connect:
+    build:
+      context: debezium-jdbc
+      args:
+        DEBEZIUM_VERSION: ${DEBEZIUM_VERSION}
+        ORACLE_VERSION: ${ORACLE_JDBC8_VERSION}
+        KAFKA_JDBC_VERSION: ${KAFKA_JDBC_VERSION}
+    ports:
+     - 8083:8083
+    links:
+     - kafka
+     - postgres
+    environment:
+     - BOOTSTRAP_SERVERS=kafka:9092
+     - GROUP_ID=epd_group
+     - CONFIG_STORAGE_TOPIC=epd_connect_configs
+     - OFFSET_STORAGE_TOPIC=epd_connect_offsets
