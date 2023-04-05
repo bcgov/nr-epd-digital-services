@@ -16,7 +16,7 @@ insert into public.epd_user values (1, 'Scott', 'Tiger', 'scott.tiger@xyz.com', 
 
 # Register postgresql connector
 ```
-curl -H "Content-Type: application/json" -d @register-postgres-connector.json http://localhost:8083/connectors/ 
+curl -H "Content-Type: application/json" -d @register-postgres-source-connector.json http://localhost:8083/connectors/ 
 
 ```
 
