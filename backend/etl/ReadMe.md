@@ -24,6 +24,7 @@ localhost:8083/connectors/ -d '{
   "name": "epd-connector",  
   "config": {  
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "tasks.max": "1",
     "database.hostname": "etl-postgres-1",  
     "database.port": "5432",
     "database.user": "postgres",
@@ -31,8 +32,11 @@ localhost:8083/connectors/ -d '{
     "database.dbname": "postgres",
     "database.server.id": "184054",      
     "database.server.name": "dbserver1",
-    "table.include.list": "public.epd_user",
-    "tasks.max": "1"
+    "table.whitelist": "public.*",
+    "transforms": "unwrap",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "false",
+    "include.schema.changes": "false"
   }
 }'
 ```
@@ -45,20 +49,18 @@ localhost:8083/connectors/ -d '{
     "name": "jdbc-sink",
     "config": {
         "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
-        "tasks.max": "1",
+        "tasks.max": "1",   
+        "topics": "dbserver1.public.epd_user",
         "connection.url": "jdbc:oracle:thin:@//172.18.215.225:1521/XEPDB1",
         "connection.user": "epduser",
         "connection.password": "epdpass",
         "auto.create": "false",
-        "auto.evolve":true,
-        "table.name.format" : "epd_user",       
-        "topics": "dbserver1.public.epd_user",
-        "transforms": "unwrap",
-        "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
-        "insert.mode": "upsert",
+        "auto.evolve":false,
+        "table.name.format" : "epd_user", 
         "delete.enabled": "true",        
         "pk.fields": "user_id",
-        "pk.mode": "record_key"
+        "pk.mode": "record_key",
+        "insert.mode": "upsert"
     }
 }'
 ```
@@ -69,10 +71,13 @@ docker-compose -f docker-compose-1.7.yaml exec kafka /kafka/bin/kafka-console-co
      --bootstrap-server kafka:9092 \
      --from-beginning \
      --property print.key=true \
-     --topic dbserver1.public.epd_user```
+     --topic dbserver1.public.epd_user
+```
 
 
 # Delete connectors
-```curl -X DELETE localhost:8083/connectors/<connector-name>```      
+```
+curl -X DELETE localhost:8083/connectors/<connector-name>
+```      
 
 

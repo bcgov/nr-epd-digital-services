@@ -2,19 +2,17 @@
     "name": "jdbc-sink",
     "config": {
         "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
-        "tasks.max": "1",
+        "tasks.max": "1",   
+        "topics": "dbserver1.public.epd_user",
         "connection.url": "jdbc:oracle:thin:@//172.18.215.225:1521/XEPDB1",
         "connection.user": "epduser",
         "connection.password": "epdpass",
         "auto.create": "false",
-        "auto.evolve":true,
-        "table.name.format" : "epd_user",       
-        "topics": "dbserver1.public.epd_user",
-        "transforms": "unwrap",
-        "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
-        "insert.mode": "upsert",
+        "auto.evolve":false,
+        "table.name.format" : "epd_user", 
         "delete.enabled": "true",        
         "pk.fields": "user_id",
-        "pk.mode": "record_key"
+        "pk.mode": "record_key",
+        "insert.mode": "upsert"
     }
 }

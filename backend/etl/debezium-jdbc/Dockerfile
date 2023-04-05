@@ -1,6 +1,5 @@
 ARG DEBEZIUM_VERSION
 
-#FROM quay.io/debezium/connect:$DEBEZIUM_VERSION
 FROM debezium/connect:$DEBEZIUM_VERSION
 
 ARG ORACLE_JDBC_VERSION
@@ -11,10 +10,7 @@ ARG KAFKA_JDBC_VERSION
 # These should point to the driver version to be used
 ENV MAVEN_DEP_DESTINATION=$KAFKA_HOME/libs \
     ORACLE_JDBC_REPO="com/oracle/database/jdbc" \
-    ORACLE_JDBC_GROUP="ojdbc8" 
-    #\
-    #ORACLE_JDBC_VERSION=$ORACLE_JDBC_VERSION \
-    #ORACLE_JDBC_MD5=$ORACLE_JDBC_MD5
+    ORACLE_JDBC_GROUP="ojdbc8"
 
 RUN docker-maven-download central "$ORACLE_JDBC_REPO" "$ORACLE_JDBC_GROUP" "$ORACLE_JDBC_VERSION" "$ORACLE_JDBC_MD5"    
 
