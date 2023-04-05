@@ -2,6 +2,7 @@
   "name": "epd-connector",  
   "config": {  
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "tasks.max": "1",
     "database.hostname": "etl-postgres-1",  
     "database.port": "5432",
     "database.user": "postgres",
@@ -9,7 +10,10 @@
     "database.dbname": "postgres",
     "database.server.id": "184054",      
     "database.server.name": "dbserver1",
-    "table.include.list": "public.epd_user",
-    "tasks.max": "1"
+    "table.whitelist": "public.*",
+    "transforms": "unwrap",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "false",
+    "include.schema.changes": "false"
   }
 }
