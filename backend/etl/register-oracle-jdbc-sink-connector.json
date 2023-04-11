@@ -8,11 +8,12 @@
         "connection.user": "epduser",
         "connection.password": "epdpass",
         "auto.create": "false",
-        "auto.evolve":false,
-        "table.name.format" : "epd_user", 
+        "auto.evolve":false,        
+        "table.name.format" : "EPD_USER", 
         "delete.enabled": "true",        
         "pk.fields": "user_id",
         "pk.mode": "record_key",
-        "insert.mode": "upsert"
+        "insert.mode": "upsert", 
+        "quote.sql.identifiers": "never"
     }
 }
