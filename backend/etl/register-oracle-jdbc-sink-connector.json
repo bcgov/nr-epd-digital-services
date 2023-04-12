@@ -14,6 +14,13 @@
         "pk.fields": "user_id",
         "pk.mode": "record_key",
         "insert.mode": "upsert", 
-        "quote.sql.identifiers": "never"
+        "quote.sql.identifiers": "never",
+        "transforms":"ConvertCreatedTimestamp,ConvertUpdatedTimestamp",
+        "transforms.ConvertCreatedTimestamp.type":"org.apache.kafka.connect.transforms.TimestampConverter$Value",        
+        "transforms.ConvertCreatedTimestamp.target.type":"Timestamp",
+        "transforms.ConvertCreatedTimestamp.field": "datetime_created",
+        "transforms.ConvertUpdatedTimestamp.type":"org.apache.kafka.connect.transforms.TimestampConverter$Value",        
+        "transforms.ConvertUpdatedTimestamp.target.type":"Timestamp",
+        "transforms.ConvertUpdatedTimestamp.field": "datetime_updated"
     }
 }
