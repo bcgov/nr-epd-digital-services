@@ -14,6 +14,7 @@
     "transforms": "unwrap",
     "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
     "transforms.unwrap.drop.tombstones": "false",
-    "include.schema.changes": "false"
+    "include.schema.changes": "false",
+    "time.precision.mode":"connect"
   }
 }
