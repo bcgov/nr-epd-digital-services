@@ -5,6 +5,8 @@ metadata:
   annotations:
     description: "EPD Digital Services"
     tags: "EPD"
+    description: "EPD Digital Services"
+    tags: "EPD"
     iconClass: icon-js
 labels:
   app: ${NAME}-${COMPONENT}

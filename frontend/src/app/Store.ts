@@ -9,6 +9,8 @@ import {
 import { UserState } from "./features/users/dto/UserState";
 import commonDataReducer from "./features/common/CommonDataSlice";
 import { CommonData } from "./features/common/dto/CommonData";
+import commonDataReducer from "./features/common/CommonDataSlice";
+import { CommonData } from "./features/common/dto/CommonData";
 
 const persistedStore: any = loadFromLocalStorage();
 

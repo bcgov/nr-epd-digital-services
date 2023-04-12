@@ -3,9 +3,15 @@ version: "3.8"
 networks:
   app-tier:
     driver: bridge
+networks:
+  app-tier:
+    driver: bridge
 
 services:
   database:
+    user: postgres
+    networks:
+      - app-tier 
     user: postgres
     networks:
       - app-tier 
