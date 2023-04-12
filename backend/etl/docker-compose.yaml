@@ -22,6 +22,8 @@ services:
      - POSTGRES_USER=postgres
      - POSTGRES_PASSWORD=postgres
      - POSTGRES_DB=postgres
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   connect:
     image: debezium/connect-with-oracle-jdbc:${DEBEZIUM_VERSION}
     build:
