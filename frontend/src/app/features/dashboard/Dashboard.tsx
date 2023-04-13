@@ -19,6 +19,12 @@ const Dashboard = () => {
 
   const navigate = useNavigate();
 
+  const dispatch = useDispatch<AppDispatch>();
+
+  const userIsProfileVerifiedValue = useSelector(isProfileVerified);
+
+  const navigate = useNavigate();
+
   // const lastVisitedURL = useSelector(getLastVisitedURL);
 
   // useEffect(()=>{

@@ -8,6 +8,7 @@ import {
   deleteUser,
   fetchUsers,
   updateUser,
+  updateUser,
   resetDeleteStatus,
   resetAddedStatus,
 } from "./UsersSlice";

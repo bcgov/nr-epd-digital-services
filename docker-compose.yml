@@ -3,9 +3,15 @@ version: "3.8"
 networks:
   app-tier:
     driver: bridge
+networks:
+  app-tier:
+    driver: bridge
 
 services:
   database:
+    user: postgres
+    networks:
+      - app-tier 
     user: postgres
     networks:
       - app-tier 
@@ -13,10 +19,17 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: default
     hostname: database
     image: postgis/postgis:15-3.3
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
@@ -102,6 +115,7 @@ services:
       retries: 3
       start_period: 40s
     hostname: graphqlgateway
+    hostname: graphqlgateway
     image: node:14
     links:
       - database
@@ -111,6 +125,7 @@ services:
       - "users"
       - "applications"
     volumes:
+      - ./backend/gateway:/app:z
       - ./backend/gateway:/app:z
       - /app/node_modules
     working_dir: "/app"
@@ -134,6 +149,7 @@ services:
     hostname: frontend
     image: node:14
     links:
+      - graphqlgateway
       - graphqlgateway
     ports:
       - "4000:3000"

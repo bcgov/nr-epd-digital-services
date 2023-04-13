@@ -9,11 +9,16 @@ import {
 import { UserState } from "./features/users/dto/UserState";
 import commonDataReducer from "./features/common/CommonDataSlice";
 import { CommonData } from "./features/common/dto/CommonData";
+import commonDataReducer from "./features/common/CommonDataSlice";
+import { CommonData } from "./features/common/dto/CommonData";
 
 const persistedStore: any = loadFromLocalStorage();
 
 const emptyUserState: UserState = new UserState();
 
+const commonData: CommonData = new CommonData();
+
+///const initialState = { users: emptyUserState, applications: persistedStore , commonData:commonData };
 const commonData: CommonData = new CommonData();
 
 ///const initialState = { users: emptyUserState, applications: persistedStore , commonData:commonData };
