@@ -1,18 +1,5 @@
-# Create sample data in postgresql
+# Create sample data in postgresql using init.sql
 
-CREATE TABLE public.epd_user (
-    user_id int,
-    first_name varchar(20),
-    last_name varchar(20),
-    email varchar(50),
-    dept_id int,
-    datetime_created timestamp,
-    datetime_updated timestamp,
-    primary key(user_id)
-);
-
-ALTER TABLE public.epd_user replica identity FULL;
-insert into public.epd_user values (1, 'Scott', 'Tiger', 'scott.tiger@xyz.com', 1, now(), now());
 
 # Register postgresql connector
 ```

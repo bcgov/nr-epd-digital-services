@@ -1,5 +1,12 @@
 ARG DEBEZIUM_VERSION
 
+FROM maven:3.8.6-jdk-11 AS builder
+WORKDIR /app/
+COPY ./ ./
+RUN mvn clean install
+
+
+
 FROM debezium/connect:$DEBEZIUM_VERSION
 
 ARG ORACLE_JDBC_VERSION
@@ -20,5 +27,7 @@ RUN mkdir $KAFKA_CONNECT_JDBC_DIR
 
 RUN cd $KAFKA_CONNECT_JDBC_DIR && \
     curl -sO https://packages.confluent.io/maven/io/confluent/kafka-connect-jdbc/$KAFKA_JDBC_VERSION/kafka-connect-jdbc-$KAFKA_JDBC_VERSION.jar
+
+COPY --from=builder /app/target/*.jar $KAFKA_CONNECT_JDBC_DIR/
 
 USER kafka    
