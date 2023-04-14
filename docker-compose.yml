@@ -82,10 +82,8 @@ services:
     networks:
       - app-tier 
     container_name: graphqlgateway
-    entrypoint:
-      - "sh"
-      - "-c"
-      - "npm i && npm run start"
+    build:
+      context: backend/gateway
     environment:
       NODE_ENV: development
       POSTGRESQL_HOST: database
