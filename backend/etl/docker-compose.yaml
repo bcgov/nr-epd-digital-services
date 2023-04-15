@@ -14,8 +14,10 @@ services:
      - zookeeper
     environment:
      - ZOOKEEPER_CONNECT=zookeeper:2181
-  postgres:
-    image: debezium/postgres:9.6
+  postgis:
+    image: postgres/postgis-debezium:15
+    build:
+      context: debezium-postgis/15-3.3
     ports:
      - "5432:5432"
     environment:
@@ -37,7 +39,7 @@ services:
      - 8083:8083
     links:
      - kafka
-     - postgres
+     - postgis
     environment:
      - BOOTSTRAP_SERVERS=kafka:9092
      - GROUP_ID=1

@@ -16,7 +16,7 @@ curl -H "Content-Type: application/json" -d @register-oracle-jdbc-sink-connector
 
 # Test with a kafka console consumer.
 ```
-docker-compose -f docker-compose-1.7.yaml exec kafka /kafka/bin/kafka-console-consumer.sh \
+docker-compose -f docker-compose.yaml exec kafka /kafka/bin/kafka-console-consumer.sh \
      --bootstrap-server kafka:9092 \
      --from-beginning \
      --property print.key=true \
