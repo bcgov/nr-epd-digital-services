@@ -15,6 +15,9 @@ import { featureFlags } from "./featureToogle";
 import { FlagsProvider } from "flagged";
 import '@bcgov/bc-sans/css/BCSans.css';
 
+import components from "./custom-components";
+
+import { Components } from "react-formio";
 //import BCGovFormioComponents2 from "./formcomponents/dist/bcgov-formio-components.js";
 
 
@@ -81,7 +84,7 @@ Formio.setBaseUrl(AppConfig.apiUrl);
 
 //Formio.use(B);
 //Components.setComponent(B.components);
-//Components.setComponents(B.components);
+Components.setComponents(components);
 
 //Set custom formio elements - Code splitted
 // import("formsflow-formio-custom-elements/dist/customformio-ex").then(
