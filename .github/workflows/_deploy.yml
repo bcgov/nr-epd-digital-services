@@ -75,7 +75,7 @@ jobs:
           fi
 
           # Follow any active rollouts (see deploymentconfigs)
-          oc rollout status dc/${DC} -w
+          # oc rollout status dc/${DC} -w
 
       - name: Deployment Verification
         run: |
