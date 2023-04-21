@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - 'dev'
-      - 'ss-duplicatebuildtest'
+      - 'ss-duplicatebuildtest' #test
                        
     paths:
       - 'backend/**'
