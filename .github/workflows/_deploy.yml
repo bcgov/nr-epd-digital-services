@@ -57,7 +57,7 @@ jobs:
           oc project ${{ secrets.oc_namespace }}
 
           # Process template, consuming variables/parameters
-          TEMPLATE=$(oc process -f ${{ inputs.template_file }} ${{ inputs.template_vars }} --local)
+          # TEMPLATE=$(oc process -f ${{ inputs.template_file }} ${{ inputs.template_vars }} --local)
 
           # ImageStream and DeploymentConfig names
           IS=$(jq -rn "${TEMPLATE} | .items[] | select(.kind==\"ImageStream\") | .metadata.name")
