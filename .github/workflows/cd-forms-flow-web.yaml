@@ -1,4 +1,4 @@
-name: formsflow.ai Web CD
+name: forms-flow-web Custom
 
 on:
   push:
