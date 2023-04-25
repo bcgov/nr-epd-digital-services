@@ -5,7 +5,6 @@ on:
     branches:
       - dev
       - main
-      - dev-ac-ffcustombuild
     paths:
       - "forms-flow-ai/forms-flow-web"
       - ".github/workflows/cd-forms-flow-web.yaml"
@@ -29,12 +28,6 @@ jobs:
         # make sure to update the TOOLS_NAME once all the environment for forms-flow-ai-web is ready
         run: |
           if [ '${{ github.ref_name }}' == 'dev' ]; then
-            echo "For ${{ github.ref_name }} branch"
-            echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
-            echo "TAG_NAME="dev"" >> $GITHUB_ENV
-            echo "BRANCH_NAME="dev"" >> $GITHUB_ENV
-            echo "ENV_NAME="dev"" >> $GITHUB_ENV
-          elif [ '${{ github.ref_name }}' == 'dev-ac-ffcustombuild' ]; then
             echo "For ${{ github.ref_name }} branch"
             echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
             echo "TAG_NAME="dev"" >> $GITHUB_ENV
