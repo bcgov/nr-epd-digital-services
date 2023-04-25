@@ -34,7 +34,7 @@ jobs:
             echo "TAG_NAME="dev"" >> $GITHUB_ENV
             echo "BRANCH_NAME="dev"" >> $GITHUB_ENV
             echo "ENV_NAME="dev"" >> $GITHUB_ENV
-          if [ '${{ github.ref_name }}' == 'dev-ac-ffcustombuild' ]; then
+          elif [ '${{ github.ref_name }}' == 'dev-ac-ffcustombuild' ]; then
             echo "For ${{ github.ref_name }} branch"
             echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
             echo "TAG_NAME="dev"" >> $GITHUB_ENV
