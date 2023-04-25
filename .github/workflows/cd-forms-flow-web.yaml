@@ -70,7 +70,7 @@ jobs:
       - name: Start Build Openshift
         shell: bash
         run: |
-          oc start-build ${{ env.APP_NAME }} --wait
+          oc start-build ${{ env.APP_NAME }}-build --wait
 
 
       - name: Tag+Deploy for ${{ env.TAG_NAME }}
