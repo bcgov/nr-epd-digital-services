@@ -4,9 +4,10 @@ on:
   push:
     branches:
       - dev
-      - main-
+      - main
     paths:
       - "forms-flow-ai/forms-flow-web"
+      - ".github/workflows/cd-forms-flow-web.yaml"
 
 defaults:
   run:
@@ -26,13 +27,13 @@ jobs:
         id: set-variable
         # make sure to update the TOOLS_NAME once all the environment for forms-flow-ai-web is ready
         run: |
-          if [ ${{ github.ref_name }} == 'dev' ]; then
+          if [ '${{ github.ref_name }}' == 'dev' ]; then
             echo "For ${{ github.ref_name }} branch"
             echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
             echo "TAG_NAME="dev"" >> $GITHUB_ENV
             echo "BRANCH_NAME="dev"" >> $GITHUB_ENV
             echo "ENV_NAME="dev"" >> $GITHUB_ENV
-          elif [ ${{ github.ref_name }} == 'main' ]; then
+          elif [ '${{ github.ref_name }}' == 'main' ]; then
             echo "For ${{ github.ref_name }} branch"
             echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
             echo "TAG_NAME="test"" >> $GITHUB_ENV
@@ -62,7 +63,7 @@ jobs:
       - name: Start Build Openshift
         shell: bash
         run: |
-          oc start-build ${{ env.APP_NAME }} --wait
+          oc start-build ${{ env.APP_NAME }}-build --wait
 
 
       - name: Tag+Deploy for ${{ env.TAG_NAME }}
