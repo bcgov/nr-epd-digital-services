@@ -1,6 +1,12 @@
 name: forms-flow-web Custom
 
 on:
+  workflow_dispatch:
+    inputs:
+      START_BUILD:
+        required: true
+        type: boolean
+        description: This value is ignored, just to trigger dispatch.
   push:
     branches:
       - dev
