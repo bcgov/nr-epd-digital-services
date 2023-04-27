@@ -1,3 +1,5 @@
+#Make sure you change line endings to LF
+
 # create DB dependencies - database, schema
 sh initDB.sh
 
