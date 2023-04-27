@@ -7,16 +7,16 @@ COPY . ./
 RUN npm ci
 # RUN npm run build
 # --only=prod
-# RUN npm ci --only=prod  
-    #&& npm run build
+ RUN npm ci --only=prod  
+    && npm run build
 
 # Deployment container
-# FROM node:lts-alpine
-# WORKDIR /app
+ FROM node:lts-alpine
+ WORKDIR /app
 # # Set node to production
-# ENV NODE_ENV production
-# COPY --from=builder /app/node_modules ./node_modules
-# COPY --from=builder /app/dist ./dist
+ ENV NODE_ENV production
+ COPY --from=builder /app/node_modules ./node_modules
+ COPY --from=builder /app/dist ./dist
 
 #ss-20-Error:permission denied, mkdir 'logs/'fix
 # RUN mkdir -p /app/logs/
@@ -27,6 +27,6 @@ RUN npm ci
 EXPOSE 4010
 
 # Start up command, with max heap size as 50Megs
-# ENTRYPOINT ["node", "--max-old-space-size=50","dist/main"]
+ENTRYPOINT ["node", "--max-old-space-size=50","dist/main"]
 
-CMD [ "npm","start" ] 
+#CMD [ "npm","start" ] 
