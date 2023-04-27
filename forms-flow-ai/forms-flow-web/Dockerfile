@@ -73,6 +73,8 @@ RUN apk update && apk upgrade && \
 RUN git clone -b ${FORMFLOW_SOURCE_REPO_BRANCH} ${FORMFLOW_SOURCE_REPO_URL} /tmp/forms-flow-ai/
 RUN cp -r /tmp/forms-flow-ai/forms-flow-web/. /forms-flow-web/app
 
+# Temporary debug line, remove in future
+RUN echo "Debug of git branch - ${FORMFLOW_SOURCE_REPO_BRANCH} ${FORMFLOW_SOURCE_REPO_URL}"
 
 # install and cache app dependencies
 
