@@ -12,6 +12,8 @@ FROM debezium/connect:$DEBEZIUM_VERSION
 ARG ORACLE_JDBC_VERSION
 ARG ORACLE_JDBC_MD5
 ARG KAFKA_JDBC_VERSION
+ARG ORACLE_DB_HOST
+ARG ORACLE_DB_PORT
 
 # Fetch and deploy Oracle JDBC driver
 # These should point to the driver version to be used
@@ -29,5 +31,14 @@ RUN cd $KAFKA_CONNECT_JDBC_DIR && \
     curl -sO https://packages.confluent.io/maven/io/confluent/kafka-connect-jdbc/$KAFKA_JDBC_VERSION/kafka-connect-jdbc-$KAFKA_JDBC_VERSION.jar
 
 COPY --from=builder /app/target/*.jar $KAFKA_CONNECT_JDBC_DIR/
+COPY InstallCert.class .
+COPY "InstallCert\$SavingTrustManager.class" .
+
+RUN java InstallCert --quiet "${ORACLE_DB_HOST}:${ORACLE_DB_PORT}"
+RUN keytool -exportcert -alias "$ORACLE_DB_HOST-1" -keystore jssecacerts -storepass changeit -file oracle.cer
+
+USER root
+
+RUN keytool -importcert -alias orakey -noprompt -keystore /etc/pki/java/cacerts -storepass changeit -file oracle.cer
 
 USER kafka    
