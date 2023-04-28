@@ -11,7 +11,7 @@ const applicationSlice = createSlice({
   initialState,
   reducers: { 
       updateLastVisitURL : (state,action)=>{
-        console.log(action.payload)
+        //console.log(action.payload)
       const newState = {...state}
       newState.lastVisitedURL = action.payload
       return newState;
@@ -21,7 +21,7 @@ const applicationSlice = createSlice({
 
 
 export const getLastVisitedURL = (state: any) => {
-  console.log(state.applications.lastVisitedURL)
+  //console.log(state.applications.lastVisitedURL)
  return state.applications.lastVisitedURL;
 } 
 

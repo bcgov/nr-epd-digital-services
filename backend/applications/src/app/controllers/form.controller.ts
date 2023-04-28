@@ -5,7 +5,8 @@ import { Form } from '../entities/form.entity';
 import { FormService } from '../services/form.service';
 
 @Controller('form')
-@Resource('application-service')
+//@Resource('application-service')
+@Unprotected()
 export class FormController {
   constructor(private formService: FormService) {}
 
@@ -40,7 +41,7 @@ export class FormController {
   ): Promise<SubmissionResponse> {
     console.log(content);
     console.log('formId 2' + formId);
-    const savedSubmission = await this.formService.create(formId, content);
+    const savedSubmission = await this.formService.create(formId, content.data);
     const submissionResponse: SubmissionResponse =
       this.transformResult(savedSubmission);
     return submissionResponse;
@@ -52,10 +53,11 @@ export class FormController {
    * @returns saved form in formflow expected format
    */
   transformResult(savedSubmission: Form) {
+    console.log(savedSubmission);
     const submissionResponse: SubmissionResponse = new SubmissionResponse();
     submissionResponse._id = savedSubmission.id;
     submissionResponse.form = savedSubmission.formId;
-    submissionResponse.data = savedSubmission.data;
+    submissionResponse.data = savedSubmission.formData;
     submissionResponse.created = savedSubmission.createdDate;
     submissionResponse.modified = savedSubmission.modifiedDate;
     return submissionResponse;
@@ -73,7 +75,8 @@ export class FormController {
     @Param('submissionId') submissionId,
     @Body() content,
   ): Promise<any> {
-    return await this.formService.update(submissionId, formId, content);
+    console.log('Update Called,', content.data);
+    return await this.formService.update(submissionId, formId, content.data);
   }
 
   /**
@@ -88,6 +91,13 @@ export class FormController {
     @Param('submissionId') submissionId,
     @Body() content,
   ) {
-    return await this.formService.update(submissionId, formId, content);
+    console.log('Partial Update Called,', content.data);
+    //const toUpdateContent = JSON.parse(content.data);
+    //let i=0;
+    return await this.formService.partialUpdate(
+      submissionId,
+      formId,
+      content.data,
+    );
   }
 }

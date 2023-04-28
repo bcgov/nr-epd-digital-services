@@ -15,7 +15,12 @@ export const LoginDropdown = (title:string,width_override?:number) =>{
                 <Dropdown.Item as="button" id="login-button-bceid" className="dropdown-item"
                         onClick={() => auth.signinRedirect(
                                 {extraQueryParams:{'kc_idp_hint':'bceid'}})}>
-                        BCeID
+                        Basic/Business BCeID
+                </Dropdown.Item>
+                <Dropdown.Item as="button" id="login-button-bceid" className="dropdown-item"
+                        onClick={() => auth.signinRedirect(
+                                {extraQueryParams:{'kc_idp_hint':'bcsc'}})}>
+                        BC Services Card
                 </Dropdown.Item>
                 <Dropdown.Divider/>
                 <Dropdown.Item as="button" id="login-button-idir" onClick={() => auth.signinRedirect(

@@ -6,12 +6,20 @@ import { UserProfile } from "./UserProfile";
 import { useAuth } from "react-oidc-context";
 import userEvent from "@testing-library/user-event";
 import TestWrapper from "../../../utilities/test/TestUtils";
+import { saveToLocalStorage } from "../../helpers/sessionManager";
 
 jest.mock("react-oidc-context", () => ({
   useAuth: jest.fn(),
 }));
 
-const defultSetting = () => {
+jest.mock('../../helpers/sessionManager', () =>{
+  return {
+    loadFromLocalStorage: jest.fn(),
+    saveToLocalStorage: jest.fn()
+  }
+})
+
+const defaultSetting = () => {
   (useAuth as jest.Mock).mockReturnValue({ isAuthenticated: true });
   render(
     <Provider store={store}>
@@ -51,13 +59,13 @@ const mandatoryCheckFieldTest = async (placeHolder: string, requiredText: string
   };
 
 test("Display Profile Information", () => {
-  defultSetting();
+  defaultSetting();
   const userListLink = screen.getByText(/Section 1 - Profile Information/i);
   expect(userListLink).toBeInTheDocument();
 });
 
 test("Display Input Field Validations", () => {
-  defultSetting();
+  defaultSetting();
   const saveBtn = screen.getByText(/Save Profile/i);
   fireEvent.click(saveBtn);
   const firstNameRequired = screen.getByText(/First name is required/i);
@@ -65,47 +73,47 @@ test("Display Input Field Validations", () => {
 });
 
 test("Do not display first name field validations", () => {
-  defultSetting();
+  defaultSetting();
   mandatoryFieldTest("First Name", "First name is required");
 });
 
 test("Do not display last name field validations", () => {
-  defultSetting();
+  defaultSetting();
   mandatoryFieldTest("Add Family Name Here", "Last name is required");
 });
 
 test("Do not display Street Address field validations", () => {
-  defultSetting();
+  defaultSetting();
   mandatoryFieldTest("Street Address", "Street Address is required");
 });
 
 test("Do not display City field validations", () => {
-  defultSetting();
+  defaultSetting();
   mandatoryFieldTest("City", "City is required");
 });
 
 test("Do not display Province field validations", () => {
-  defultSetting();
+  defaultSetting();
   mandatoryFieldTest("Province", "Province is required");
 });
 
 test("Do not display Country field validations", () => {
-  defultSetting();
+  defaultSetting();
   mandatoryFieldTest("Country", "Country is required");
 });
 
 test("Do not display Industry field validations", () => {
-  defultSetting();
+  defaultSetting();
   mandatoryFieldTest("Industry", "Industry is required");
 });
 
 test("Do not display Organization field validations", () => {
-  defultSetting();
+  defaultSetting();
   mandatoryFieldTest("Organization", "Organization is required");
 });
 
 test("Do display GST Exempt field validations", () => {
-    defultSetting();
+    defaultSetting();
     mandatoryCheckFieldTest("isGstExemptST", "Gst Exempt is required");
   });
 
