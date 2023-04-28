@@ -11,12 +11,13 @@ RUN npm ci
     #&& npm run build
 
 # Deployment container
- FROM node:lts-alpine
- WORKDIR /app
-# # Set node to production
- ENV NODE_ENV production
- COPY --from=builder /app/node_modules ./node_modules
- COPY --from=builder /app/dist ./dist
+FROM node:lts-alpine
+WORKDIR /app
+# Set node to production
+ENV NODE_ENV production
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+ 
 
 #ss-20-Error:permission denied, mkdir 'logs/'fix
 # RUN mkdir -p /app/logs/
