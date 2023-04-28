@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - 'main'
-      - 'ss-OStestenv' #test2
+      - 'ss-OStestenv' #test
       #- 'dev'1
             
     paths:

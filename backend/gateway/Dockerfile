@@ -5,9 +5,9 @@ FROM node:14.5.0-alpine
 WORKDIR /app
 COPY . ./
 RUN npm ci
-# RUN npm run build
+RUN npm run build
 # --only=prod
- #RUN npm ci --only=prod  
+RUN npm ci --only=prod  
     #&& npm run build
 
 # Deployment container
