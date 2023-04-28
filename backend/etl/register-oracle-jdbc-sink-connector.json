@@ -8,8 +8,6 @@
         "connection.user": "epduser",
         "connection.password": "epdpass",
         "security.protocol":"SSL",
-        "ssl.truststore.location": "/kafka/jssecacerts",
-        "ssl.truststore.password": "changeit",
         "ssl.enabled.protocols": "TLSv1.2,TLSv1.1",
         "ssl.truststore.type": "JKS",
         "auto.create": "false",
