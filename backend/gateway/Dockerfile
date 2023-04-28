@@ -5,10 +5,10 @@ RUN dnf module install -y nodejs:14
 # Install packages, build and keep only prod packages
 WORKDIR /app
 COPY . ./
-RUN npm ci
+RUN npm ci --only=prod 
 RUN npm run build
 # --only=prod
-RUN npm ci --only=prod  
+#RUN npm ci --only=prod  
     #&& npm run build
 
 # Deployment container
