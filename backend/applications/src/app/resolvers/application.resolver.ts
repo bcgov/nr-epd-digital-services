@@ -10,11 +10,11 @@ import {
 } from '@nestjs/graphql';
 import { ApplicationService } from '../services/application.service';
 import { Application } from '../entities/application.entity';
-import { CreateApplicationInput } from '../dto/create-application.input';
-import { UpdateApplicationInput } from '../dto/update-application.input';
-import { ExternalUser } from '../entities/user.entity';
+import { CreateApplicationInput } from '../dto/createApplication.input';
+import { UpdateApplicationInput } from '../dto/updateApplication.input';
+import { ExternalUser } from '../entities/externalUser.entity';
 import { Resource, RoleMatchingMode, Roles } from 'nest-keycloak-connect';
-import { FetchUsersArgs } from '../dto/fetch-users-args.dto';
+import { FetchUsersArgs } from '../dto/fetctUsersArgs.dto';
 
 @Resolver(() => Application)
 @Resource('application-service')

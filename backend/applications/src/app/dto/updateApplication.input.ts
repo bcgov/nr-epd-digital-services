@@ -1,4 +1,4 @@
-import { CreateApplicationInput } from './create-application.input';
+import { CreateApplicationInput } from './createApplication.input';
 import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
 
 @InputType()

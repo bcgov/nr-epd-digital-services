@@ -17,7 +17,7 @@ import {
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ApplicationModule } from './app/application.module';
-import { ExternalUser } from './app/entities/user.entity';
+import { ExternalUser } from './app/entities/externalUser.entity';
 
 @Module({
   imports: [
@@ -40,7 +40,7 @@ import { ExternalUser } from './app/entities/user.entity';
         type: 'postgres',
         host: config.get('POSTGRESQL_HOST') || 'gldatabase',
         port: parseInt(config.get('POSTGRESQL_PORT')) || 5432,
-        database: config.get('POSTGRES_DATABASE') || 'xyz',
+        database: config.get('POSTGRES_DATABASE') || 'epd_dev',
         username: config.get('POSTGRES_DB_USERNAME') || 'xyzuser',
         password: config.get('POSTGRES_DB_PASSWORD') || 'xyzuser',
         autoLoadEntities: true, // Auto load all entities regiestered by typeorm forFeature method.

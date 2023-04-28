@@ -41,7 +41,7 @@ test('Renders External User Dashboard', () =>{
       </Provider>
     //</AuthProvider>
     );
-    console.log("screen",screen)
+    //console.log("screen",screen)
   const addUserLink = screen.getByText(/Reviewer Dashboard/i)
   expect(addUserLink).toBeInTheDocument()
 })
