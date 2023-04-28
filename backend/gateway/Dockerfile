@@ -7,8 +7,8 @@ COPY . ./
 RUN npm ci
 # RUN npm run build
 # --only=prod
- RUN npm ci --only=prod  
-    && npm run build
+ #RUN npm ci --only=prod  
+    #&& npm run build
 
 # Deployment container
  FROM node:lts-alpine
