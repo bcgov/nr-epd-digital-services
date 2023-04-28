@@ -5,7 +5,8 @@ import { Form } from '../entities/form.entity';
 import { FormService } from '../services/form.service';
 
 @Controller('form')
-@Resource('application-service')
+//@Resource('application-service')
+@Unprotected()
 export class FormController {
   constructor(private formService: FormService) {}
 
@@ -52,6 +53,7 @@ export class FormController {
    * @returns saved form in formflow expected format
    */
   transformResult(savedSubmission: Form) {
+    console.log(savedSubmission);
     const submissionResponse: SubmissionResponse = new SubmissionResponse();
     submissionResponse._id = savedSubmission.id;
     submissionResponse.form = savedSubmission.formId;
@@ -73,7 +75,8 @@ export class FormController {
     @Param('submissionId') submissionId,
     @Body() content,
   ): Promise<any> {
-    return await this.formService.update(submissionId, formId, content);
+    console.log('Update Called,', content.data);
+    return await this.formService.update(submissionId, formId, content.data);
   }
 
   /**
@@ -88,6 +91,13 @@ export class FormController {
     @Param('submissionId') submissionId,
     @Body() content,
   ) {
-    return await this.formService.update(submissionId, formId, content);
+    console.log('Partial Update Called,', content.data);
+    //const toUpdateContent = JSON.parse(content.data);
+    //let i=0;
+    return await this.formService.partialUpdate(
+      submissionId,
+      formId,
+      content.data,
+    );
   }
 }
