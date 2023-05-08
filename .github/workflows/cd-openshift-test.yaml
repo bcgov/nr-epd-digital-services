@@ -5,8 +5,7 @@ on:
   push:
     branches:
       - 'main'
-      - 'ss-dbimageissue' #test1
-      #- 'dev'1
+     #- 'dev'1
             
     paths:
       - 'backend/**'
