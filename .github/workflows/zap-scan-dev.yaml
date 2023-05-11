@@ -7,17 +7,7 @@ on:
       - main
       - ss108-zapscanning
      # - ss-79 #testing purpose
-    
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'The environment to deploy to'
-        required: true
-        default: 'dev'
-        options:
-          - 'dev'
-          - 'test'
-          - 'prod'
+  
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
