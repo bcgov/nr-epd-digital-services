@@ -37,7 +37,7 @@ jobs:
     name: Scan the epd-backend-applications
     steps:
       - name: Set Target URL
-        run: echo "::set-env name=TARGET_URL::https://epd-backend-applications-${{ secrets.CLUSTER_NAME }}"
+        run: echo "TARGET_URL=https://epd-backend-applications-${{inputs.environment}}.${{ secrets.CLUSTER_NAME }}"
 
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.2.0
