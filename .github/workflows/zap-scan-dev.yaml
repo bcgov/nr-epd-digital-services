@@ -30,7 +30,7 @@ jobs:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
-          target: 'https://epd-frontend-${{inputs.environment}}.apps.silver.devops.gov.bc.ca/'
+          target: 'https://epd-frontend-${{inputs.environment}}.${{secrets.CLUSTER_URL}}'
 
   zap_scan_applications:
     runs-on: ubuntu-latest
