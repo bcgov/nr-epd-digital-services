@@ -14,7 +14,8 @@ on:
         type: choice
         options:
           - 'dev'
-          
+secrets:
+      cluster_url: ${{ secrets.CLUSTER_URL }}         
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -29,7 +30,6 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          cluster_url: ${{ secrets.CLUSTER_URL }}
           issue_title: 'ZAP Scan Report'
           target: 'https://epd-frontend-${{inputs.environment}}.${{secrets.CLUSTER_URL}}'
 
@@ -42,7 +42,6 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          cluster_url: ${{ secrets.CLUSTER_URL }}
           issue_title: 'ZAP Scan Report'
           target: 'https://epd-backend-applications-${{inputs.environment}}.${{secrets.CLUSTER_URL}}'
 
@@ -55,7 +54,6 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          cluster_url: ${{ secrets.CLUSTER_URL }}
           issue_title: 'ZAP Scan Report'
           target: 'https://epd-backend-gateway-${{inputs.environment}}.${{secrets.CLUSTER_URL}}'
 
