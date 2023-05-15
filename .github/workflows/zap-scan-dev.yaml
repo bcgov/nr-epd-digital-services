@@ -14,8 +14,7 @@ on:
         type: choice
         options:
           - 'dev'
-secrets:
-      cluster_url: ${{ secrets.CLUSTER_URL }}         
+       
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -145,7 +144,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
           target: 'https://forms-flow-web-e38158-dev.apps.silver.devops.gov.bc.ca/'
-  
+    secrets:
+      cluster_url: ${{ secrets.CLUSTER_URL }}
+    with:
+      environment: dev
   
 
    
