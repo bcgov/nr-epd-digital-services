@@ -11,6 +11,7 @@ on:
         description: 'The environment to deploy to'
         required: true
         default: 'dev'
+        type: choice
         options:
           - 'dev'
           
