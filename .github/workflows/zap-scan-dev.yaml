@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev
+      - main
          
   workflow_dispatch:
     inputs:
@@ -14,6 +15,8 @@ on:
         type: choice
         options:
           - 'dev'
+          - 'test'
+          - 'prod'
           
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -23,6 +26,7 @@ jobs:
   zap_scan_frontend:
     runs-on: ubuntu-latest
     name: Scan the epd-Frontend 
+    if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-full-scan@v0.4.0
@@ -30,7 +34,25 @@ jobs:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
-          target: 'https://epd-frontend-${{inputs.environment}}.${{ secrets.CLUSTER_URL }}'
+          target: ${{ secrets.ZAP_DEV_EPD_FRONTEND_URL }}
+    elseif: ${{ github.event.inputs.environment == 'test' }}
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-full-scan@v0.4.0
+        with:
+          allow_issue_writing: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue_title: 'ZAP Scan Report'
+          target: ${{ secrets.ZAP_DEV_EPD_FRONTEND_URL }}
+    elseif: ${{ github.event.inputs.environment == 'prod' }}
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-full-scan@v0.4.0
+        with:
+          allow_issue_writing: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue_title: 'ZAP Scan Report'
+          target: ${{ secrets.ZAP_DEV_EPD_FRONTEND_URL }}      
 
   zap_scan_applications:
     runs-on: ubuntu-latest
@@ -54,7 +76,7 @@ jobs:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
-          target: 'https://epd-backend-gateway-${{inputs.environment}}.${{ secrets.CLUSTER_URL }}'
+          target: ${{ secrets.ZAP_DEV_EPD_GATEWAY_URL }}
 
   zap_scan_users:
     runs-on: ubuntu-latest
@@ -66,7 +88,7 @@ jobs:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
-          target: 'https://epd-backend-users-${{inputs.environment}}.${{secrets.CLUSTER_URL}}'
+          target: ${{ secrets.ZAP_DEV_EPD_USERS_URL }}
   zap_scan_forms-flow-analytics:
     runs-on: ubuntu-latest
     name: Scan the forms-flow-analytics
@@ -77,7 +99,7 @@ jobs:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
-          target: 'https://forms-flow-analytics-e38158-dev.apps.silver.devops.gov.bc.ca/'
+          target: ${{ secrets.ZAP_DEV_FORMSFLOW_ANALYTICS_URL }}
   zap_scan_forms-flow-api:
     runs-on: ubuntu-latest
     name: Scan the forms-flow-api
@@ -88,7 +110,7 @@ jobs:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
-          target: 'https://forms-flow-api-e38158-dev.apps.silver.devops.gov.bc.ca/'
+          target: ${{ secrets.ZAP_DEV_FORMSFLOW_API_URL }}
   zap_scan_forms-flow-bpm:
     runs-on: ubuntu-latest
     name: Scan the forms-flow-bpm
@@ -99,7 +121,7 @@ jobs:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
-          target: 'https://forms-flow-bpm-e38158-dev.apps.silver.devops.gov.bc.ca/camunda'
+          target: ${{ secrets.ZAP_DEV_FORMSFLOW_BPM_URL }}
   zap_scan_forms-flow-data-analysis:
     runs-on: ubuntu-latest
     name: Scan the forms-flow-data-analysis
@@ -110,7 +132,7 @@ jobs:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
-          target: 'https://forms-flow-data-analysis-e38158-dev.apps.silver.devops.gov.bc.ca/'
+          target: ${{ secrets.ZAP_DEV_FORMSFLOW_DATA_ANALYSIS_URL }}
   zap_scan_forms-flow-documents:
     runs-on: ubuntu-latest
     name: Scan the forms-flow-documents
@@ -121,7 +143,7 @@ jobs:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
-          target: 'https://forms-flow-documents-api-e38158-dev.apps.silver.devops.gov.bc.ca/'
+          target: ${{ secrets.ZAP_DEV_FORMSFLOW_DOCUMENTS_URL }}
   zap_scan_forms-flow-forms:
     runs-on: ubuntu-latest
     name: Scan the forms-flow-forms
@@ -132,7 +154,7 @@ jobs:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
-          target: 'https://forms-flow-forms-e38158-dev.apps.silver.devops.gov.bc.ca/'
+          target: ${{ secrets.ZAP_DEV_FORMSFLOW_FORMS_URL }}
   zap_scan_forms-flow-web:
     runs-on: ubuntu-latest
     name: Scan the forms-flow-web
@@ -143,7 +165,7 @@ jobs:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
-          target: 'https://forms-flow-web-e38158-dev.apps.silver.devops.gov.bc.ca/'
+          target: ${{ secrets.ZAP_DEV_FORMSFLOW_WEB_URL }}
   
   
 
