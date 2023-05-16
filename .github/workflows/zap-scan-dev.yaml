@@ -25,7 +25,7 @@ concurrency:
 jobs:
   zap_scan_frontend:
     runs-on: ubuntu-latest
-    name: Scan the epd-Frontend 
+    name: Scan the epd-Frontend-dev
     if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
@@ -38,7 +38,8 @@ jobs:
 
   zap_scan_applications:
     runs-on: ubuntu-latest
-    name: Scan the epd-backend-applications
+    name: Scan the epd-backend-applications-dev
+    if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.2.0
@@ -50,7 +51,8 @@ jobs:
 
   zap_scan_gateway:
     runs-on: ubuntu-latest
-    name: Scan the epd-backend-gateway
+    name: Scan the epd-backend-gateway-dev
+    if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.2.0
@@ -62,7 +64,8 @@ jobs:
 
   zap_scan_users:
     runs-on: ubuntu-latest
-    name: Scan the epd-backend-users
+    name: Scan the epd-backend-users-dev
+    if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.2.0
@@ -73,7 +76,8 @@ jobs:
           target: ${{ secrets.ZAP_DEV_EPD_USERS_URL }}
   zap_scan_forms-flow-analytics:
     runs-on: ubuntu-latest
-    name: Scan the forms-flow-analytics
+    name: Scan the forms-flow-analytics-dev
+    if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.2.0
@@ -84,7 +88,8 @@ jobs:
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_ANALYTICS_URL }}
   zap_scan_forms-flow-api:
     runs-on: ubuntu-latest
-    name: Scan the forms-flow-api
+    name: Scan the forms-flow-api-dev
+    if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.2.0
@@ -95,7 +100,8 @@ jobs:
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_API_URL }}
   zap_scan_forms-flow-bpm:
     runs-on: ubuntu-latest
-    name: Scan the forms-flow-bpm
+    name: Scan the forms-flow-bpm-dev
+    if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.2.0
@@ -106,7 +112,8 @@ jobs:
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_BPM_URL }}
   zap_scan_forms-flow-data-analysis:
     runs-on: ubuntu-latest
-    name: Scan the forms-flow-data-analysis
+    name: Scan the forms-flow-data-analysis-dev
+    if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.2.0
@@ -117,7 +124,8 @@ jobs:
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_DATA_ANALYSIS_URL }}
   zap_scan_forms-flow-documents:
     runs-on: ubuntu-latest
-    name: Scan the forms-flow-documents
+    name: Scan the forms-flow-documents-dev
+    if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.2.0
@@ -128,7 +136,8 @@ jobs:
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_DOCUMENTS_URL }}
   zap_scan_forms-flow-forms:
     runs-on: ubuntu-latest
-    name: Scan the forms-flow-forms
+    name: Scan the forms-flow-forms-dev
+    if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.2.0
@@ -139,7 +148,8 @@ jobs:
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_FORMS_URL }}
   zap_scan_forms-flow-web:
     runs-on: ubuntu-latest
-    name: Scan the forms-flow-web
+    name: Scan the forms-flow-web-dev
+    if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.2.0
