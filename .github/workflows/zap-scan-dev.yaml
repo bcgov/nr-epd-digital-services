@@ -23,7 +23,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  zap_scan_frontend:
+  zap_scan_frontend_dev:
     runs-on: ubuntu-latest
     name: Scan the epd-Frontend-dev
     if: ${{ github.event.inputs.environment == 'dev' }}
@@ -36,7 +36,7 @@ jobs:
           issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_EPD_FRONTEND_URL }}
 
-  zap_scan_applications:
+  zap_scan_applications_dev:
     runs-on: ubuntu-latest
     name: Scan the epd-backend-applications-dev
     if: ${{ github.event.inputs.environment == 'dev' }}
@@ -49,7 +49,7 @@ jobs:
           issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_EPD_APPLICATIONS_URL }}
 
-  zap_scan_gateway:
+  zap_scan_gateway_dev:
     runs-on: ubuntu-latest
     name: Scan the epd-backend-gateway-dev
     if: ${{ github.event.inputs.environment == 'dev' }}
@@ -62,7 +62,7 @@ jobs:
           issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_EPD_GATEWAY_URL }}
 
-  zap_scan_users:
+  zap_scan_users_dev:
     runs-on: ubuntu-latest
     name: Scan the epd-backend-users-dev
     if: ${{ github.event.inputs.environment == 'dev' }}
@@ -74,7 +74,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_EPD_USERS_URL }}
-  zap_scan_forms-flow-analytics:
+  zap_scan_forms-flow-analytics_dev:
     runs-on: ubuntu-latest
     name: Scan the forms-flow-analytics-dev
     if: ${{ github.event.inputs.environment == 'dev' }}
@@ -86,7 +86,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_ANALYTICS_URL }}
-  zap_scan_forms-flow-api:
+  zap_scan_forms-flow-api_dev:
     runs-on: ubuntu-latest
     name: Scan the forms-flow-api-dev
     if: ${{ github.event.inputs.environment == 'dev' }}
@@ -98,7 +98,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_API_URL }}
-  zap_scan_forms-flow-bpm:
+  zap_scan_forms-flow-bpm_dev:
     runs-on: ubuntu-latest
     name: Scan the forms-flow-bpm-dev
     if: ${{ github.event.inputs.environment == 'dev' }}
@@ -110,7 +110,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_BPM_URL }}
-  zap_scan_forms-flow-data-analysis:
+  zap_scan_forms-flow-data-analysis_dev:
     runs-on: ubuntu-latest
     name: Scan the forms-flow-data-analysis-dev
     if: ${{ github.event.inputs.environment == 'dev' }}
@@ -122,7 +122,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_DATA_ANALYSIS_URL }}
-  zap_scan_forms-flow-documents:
+  zap_scan_forms-flow-documents_dev:
     runs-on: ubuntu-latest
     name: Scan the forms-flow-documents-dev
     if: ${{ github.event.inputs.environment == 'dev' }}
@@ -134,7 +134,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_DOCUMENTS_URL }}
-  zap_scan_forms-flow-forms:
+  zap_scan_forms-flow-forms_dev:
     runs-on: ubuntu-latest
     name: Scan the forms-flow-forms-dev
     if: ${{ github.event.inputs.environment == 'dev' }}
@@ -146,7 +146,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_FORMS_URL }}
-  zap_scan_forms-flow-web:
+  zap_scan_forms-flow-web_dev:
     runs-on: ubuntu-latest
     name: Scan the forms-flow-web-dev
     if: ${{ github.event.inputs.environment == 'dev' }}
@@ -293,7 +293,141 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_TEST_FORMSFLOW_WEB_URL }}
-  
+  zap_scan_frontend_prod:
+    runs-on: ubuntu-latest
+    name: Scan the epd-Frontend-prod
+    if: ${{ github.event.inputs.environment == 'prod' }}
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-full-scan@v0.4.0
+        with:
+          allow_issue_writing: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue_title: 'ZAP Scan Report'
+          target: ${{ secrets.ZAP_PROD_EPD_FRONTEND_URL }}
+
+  zap_scan_applications_prod:
+    runs-on: ubuntu-latest
+    name: Scan the epd-backend-applications-prod
+    if: ${{ github.event.inputs.environment == 'prod' }}
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-api-scan@v0.2.0
+        with:
+          allow_issue_writing: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue_title: 'ZAP Scan Report'
+          target: ${{ secrets.ZAP_PROD_EPD_APPLICATIONS_URL }}
+
+  zap_scan_gateway_prod:
+    runs-on: ubuntu-latest
+    name: Scan the epd-backend-gateway-prod
+    if: ${{ github.event.inputs.environment == 'prod' }}
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-api-scan@v0.2.0
+        with:
+          allow_issue_writing: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue_title: 'ZAP Scan Report'
+          target: ${{ secrets.ZAP_PROD_EPD_GATEWAY_URL }}
+
+  zap_scan_users_prod:
+    runs-on: ubuntu-latest
+    name: Scan the epd-backend-users-prod
+    if: ${{ github.event.inputs.environment == 'prod' }}
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-api-scan@v0.2.0
+        with:
+          allow_issue_writing: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue_title: 'ZAP Scan Report'
+          target: ${{ secrets.ZAP_PROD_EPD_USERS_URL }}
+  zap_scan_forms-flow-analytics_prod:
+    runs-on: ubuntu-latest
+    name: Scan the forms-flow-analytics-prod
+    if: ${{ github.event.inputs.environment == 'prod' }}
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-api-scan@v0.2.0
+        with:
+          allow_issue_writing: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue_title: 'ZAP Scan Report'
+          target: ${{ secrets.ZAP_PROD_FORMSFLOW_ANALYTICS_URL }}
+  zap_scan_forms-flow-api_prod:
+    runs-on: ubuntu-latest
+    name: Scan the forms-flow-api-prod
+    if: ${{ github.event.inputs.environment == 'prod' }}
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-api-scan@v0.2.0
+        with:
+          allow_issue_writing: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue_title: 'ZAP Scan Report'
+          target: ${{ secrets.ZAP_PROD_FORMSFLOW_API_URL }}
+  zap_scan_forms-flow-bpm_prod:
+    runs-on: ubuntu-latest
+    name: Scan the forms-flow-bpm-prod
+    if: ${{ github.event.inputs.environment == 'prod' }}
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-api-scan@v0.2.0
+        with:
+          allow_issue_writing: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue_title: 'ZAP Scan Report'
+          target: ${{ secrets.ZAP_PROD_FORMSFLOW_BPM_URL }}
+  zap_scan_forms-flow-data-analysis_prod:
+    runs-on: ubuntu-latest
+    name: Scan the forms-flow-data-analysis-prod
+    if: ${{ github.event.inputs.environment == 'prod' }}
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-api-scan@v0.2.0
+        with:
+          allow_issue_writing: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue_title: 'ZAP Scan Report'
+          target: ${{ secrets.ZAP_PROD_FORMSFLOW_DATA_ANALYSIS_URL }}
+  zap_scan_forms-flow-documents_prod:
+    runs-on: ubuntu-latest
+    name: Scan the forms-flow-documents-prod
+    if: ${{ github.event.inputs.environment == 'prod' }}
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-api-scan@v0.2.0
+        with:
+          allow_issue_writing: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue_title: 'ZAP Scan Report'
+          target: ${{ secrets.ZAP_PROD_FORMSFLOW_DOCUMENTS_URL }}
+  zap_scan_forms-flow-forms_prod:
+    runs-on: ubuntu-latest
+    name: Scan the forms-flow-forms-prod
+    if: ${{ github.event.inputs.environment == 'prod' }}
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-api-scan@v0.2.0
+        with:
+          allow_issue_writing: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue_title: 'ZAP Scan Report'
+          target: ${{ secrets.ZAP_PROD_FORMSFLOW_FORMS_URL }}
+  zap_scan_forms-flow-web_prod:
+    runs-on: ubuntu-latest
+    name: Scan the forms-flow-web-prod
+    if: ${{ github.event.inputs.environment == 'prod' }}
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-api-scan@v0.2.0
+        with:
+          allow_issue_writing: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue_title: 'ZAP Scan Report'
+          target: ${{ secrets.ZAP_PROD_FORMSFLOW_WEB_URL }}
   
 
    
