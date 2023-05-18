@@ -1,0 +1,15 @@
+    # KEYCLOAK_SERVER: 'https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca',
+    # KEYCLOAK_REALM: 'forms-flow-ai',
+    # KEYCLOAK_CLIENTID: 'epd-web',
+    # KEYCLOAK_SECRET: 'cNrfJNtuyCije5Em5I0oIJA1oFV9IsxQ',
+
+KEYCLOCK_SECRET="7b0c4078-6ea9-4d54-9af3-08715e198a1b"
+KEYCLOCK_AUTH_URL="https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth"
+KEYCLOCK_REALM="forms-flow-ai"
+KEYCLOCK_CLIENT_ID="application-service"
+
+NODE_ENV="development"
+POSTGRESQL_HOST="database"
+POSTGRESQL_USER="postgres"
+POSTGRESQL_PASSWORD="postgres"
+POSTGRESQL_DATABASE="default"
