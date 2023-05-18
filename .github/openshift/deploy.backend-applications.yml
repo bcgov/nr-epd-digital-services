@@ -46,7 +46,7 @@ parameters:
     value: bcgov/nr-epd-digital-services/backend/applications
   - name: INIT_IMAGE
     description: Image (namespace/name:tag) to promote/import
-    value: bcgov/nr-epd-digital-services/backend/applicationsmigration
+    value: bcgov/nr-epd-digital-services/backend/applications-migration
   - name: ENV
     description: The Environment on which it is deployed
     required: true
@@ -71,8 +71,8 @@ objects:
     kind: ImageStream
     metadata:
       labels:
-        app: ${NAME}-${COMPONENT}migration
-      name: ${NAME}-${COMPONENT}migration
+        app: ${NAME}-${COMPONENT}-migration
+      name: ${NAME}-${COMPONENT}-migration
     spec:
       lookupPolicy:
         local: false
@@ -197,7 +197,7 @@ objects:
             #   command: ['sh', '-c', 'initContainer.sh']
             #  ${NAME}-${COMPONENT}:${IMAGE_TAG}
             - name: epd-db-migration-applications
-              image: "image-registry.openshift-image-registry.svc:5000/e38158-${ENV}/${NAME}-${COMPONENT}migration:${IMAGE_TAG}"
+              image: "image-registry.openshift-image-registry.svc:5000/e38158-${ENV}/${NAME}-${COMPONENT}-migration:${IMAGE_TAG}"
               env:
                 - name: Typeorm-migration-applications
                   value: "jdbc:postgresql://${COMPONENT}-postgres:5432/${COMPONENT}"
