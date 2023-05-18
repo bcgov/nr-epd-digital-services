@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - 'main'
-      - 'ss-107'
+      - 'ss-107' #test
      #- 'dev'1
             
     paths:

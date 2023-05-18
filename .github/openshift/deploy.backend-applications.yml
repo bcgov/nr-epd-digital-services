@@ -46,7 +46,7 @@ parameters:
     value: bcgov/nr-epd-digital-services/backend/applications
   - name: INIT_IMAGE
     description: Image (namespace/name:tag) to promote/import
-    value: bcgov/nr-epd-digital-services/backend/applications-migration
+    value: bcgov/nr-epd-digital-services/backend/applicationsmigration
   - name: ENV
     description: The Environment on which it is deployed
     required: true
@@ -71,8 +71,8 @@ objects:
     kind: ImageStream
     metadata:
       labels:
-        app: ${NAME}-${COMPONENT}-migration
-      name: ${NAME}-${COMPONENT}-migration
+        app: ${NAME}-${COMPONENT}migration
+      name: ${NAME}-${COMPONENT}migration
     spec:
       lookupPolicy:
         local: false
