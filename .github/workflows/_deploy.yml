@@ -66,7 +66,7 @@ jobs:
           # Clean previous images
           IS_NAME=${IS}
           echo "Deleting ImageStream: ${IS_NAME}"
-          oc delete is/${IS_NAME} || true
+          oc delete is/${IS_NAMES[0]} is/${IS_NAMES[1]} || true
 
           # Apply (overwrites) or create (does not overwrite) using processed template
           if [ "${{ inputs.overwrite }}" == "true" ]; then
