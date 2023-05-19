@@ -5,8 +5,7 @@ on:
   push:
     branches:
       - 'main'
-      #- 'ss-initforapps' #test
-      #- 'dev'1
+     #- 'dev'1
             
     paths:
       - 'backend/**'
