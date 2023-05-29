@@ -52,7 +52,7 @@ const Dashboard = () => {
   const handleFormsflowWebRedirection = () => {
     const formsFlowWebURL = process.env.REACT_APP_FORMSFLOW_WEB_URL || ((window as any)._env_ && (window as any)._env_.REACT_APP_FORMSFLOW_WEB_URL) || "";
 
-    window.location = formsFlowWebURL;
+    window.location.assign(formsFlowWebURL);
 
   }
   //Automatically redirect to formsflow dashboard, don't render dashboard prototype
