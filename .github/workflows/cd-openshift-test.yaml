@@ -4,8 +4,7 @@ on:
   workflow_dispatch: # TODO this is there for testing purposes, once the pipelines are all done, remove this
   push:
     branches:
-      - 'main'
-      - 'ss-107-HA'
+      - 'main' 
      #- 'dev'1
             
     paths:
