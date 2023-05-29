@@ -64,7 +64,7 @@ jobs:
           DC=$(jq -rn "${TEMPLATE} | .items[] | select(.kind==\"DeploymentConfig\") | .metadata.name")
 
           # Clean previous images
-          oc delete is/${IS} --all || true && echo ${IS}
+          oc delete is/${IS1} ${IS2} || true && echo ${IS}
 
           # Apply (overwrites) or create (does not overwrite) using processed template
           if [ "${{ inputs.overwrite }}" == "true" ]; then

@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - 'main' 
-      - 'ss-113-imagestreamIssue'
+      - 'ss-113-imagestreamIssue' #test1
      #- 'dev'1
             
     paths:
