@@ -64,7 +64,10 @@ jobs:
           DC=$(jq -rn "${TEMPLATE} | .items[] | select(.kind==\"DeploymentConfig\") | .metadata.name")
 
           # Clean previous images
-          oc delete is/${IS1} --all || true && echo ${IS}
+          # Loop through the ImageStream names and delete each one
+          for IS in $IS_LIST; do
+            oc delete is/"$IS" || true
+          done
 
           # Apply (overwrites) or create (does not overwrite) using processed template
           if [ "${{ inputs.overwrite }}" == "true" ]; then
