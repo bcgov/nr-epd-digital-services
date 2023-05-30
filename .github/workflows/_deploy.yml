@@ -60,7 +60,7 @@ jobs:
           TEMPLATE=$(oc process -f ${{ inputs.template_file }} ${{ inputs.template_vars }} --local)
 
           # ImageStream and DeploymentConfig names
-          IS=$(jq -rn "${TEMPLATE} | .items[] | select(.kind==\"ImageStream\") | .metadata.name")
+          IS_LIST=$(jq -rn "${TEMPLATE} | .items[] | select(.kind==\"ImageStream\") | .metadata.name")
           DC=$(jq -rn "${TEMPLATE} | .items[] | select(.kind==\"DeploymentConfig\") | .metadata.name")
 
           # Clean previous images
