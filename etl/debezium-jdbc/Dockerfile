@@ -7,7 +7,8 @@ RUN mvn clean install
 
 
 
-FROM debezium/connect:$DEBEZIUM_VERSION
+# FROM debezium/connect:$DEBEZIUM_VERSION
+FROM debezium/connect:1.9
 # FROM artifcatory.gov.bc.ca/debezium/connect:$DEBEZIUM_VERSION
 
 ARG ORACLE_JDBC_VERSION
