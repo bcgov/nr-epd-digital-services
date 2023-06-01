@@ -19,14 +19,6 @@ oc process -f TODO.yaml | oc apply -f - --dry-run=client
 
 ```
 
-Setup Order:
-
-1. tools env: Building + Tagging
-    - BuildConfig, imagestream, etc.
-2. dev env: Deploys and Service accounts
-    - DeploymentConfigs
-    - Databases, PVCs
-    - Service account
 
 
 ### Service Account Setup
@@ -48,11 +40,21 @@ oc policy add-role-to-user system:image-puller \
 
 oc policy add-role-to-user view system:serviceaccount:NAMESPACE-tools:github-actions-sa
 
+
+oc policy add-role-to-user system:image-puller system:serviceaccount:e38158-dev:postgresql --namespace=e38158-tools
+oc policy add-role-to-user system:image-puller system:serviceaccount:e38158-dev:default --namespace=e38158-tools
+
+oc policy add-role-to-group view system:serviceaccounts:deployer -n e38158-tools
+oc policy add-role-to-group view system:serviceaccounts:e38158-test -n e38158-toolsz
+
 ```
 
 ### Dev Setup
 
 Setup the DeploymentConfig in dev
+
+1. Deploy all built images.
+2. For stuff like postgres, just deploy via web ui catalogue? Patroni?
 
 ```bash
 oc project ****-dev
@@ -68,6 +70,8 @@ Run the same "dev" steps, but change all references of "dev" to "test" (and then
 ## CI/CD Setup
 
 - GitHub Actions (ref FOI)
+    - implement branch deploy strategy?
+    - workflow_dispatch for prod? can discuss, open to alternative
 - Can potentially use existing login secrets for service
     - If so, grant permissions from service account in existing
     - Otherwise, separate service account
