@@ -112,8 +112,8 @@ objects:
             deploymentconfig: ${NAME}-${COMPONENT}
         spec:
           containers:
-            # - image: ${NAME}-${COMPONENT}:${IMAGE_TAG}
-            #   imagePullPolicy: Always
+            - image: " "
+              imagePullPolicy: IfNotPresent
               name: ${NAME}-${COMPONENT}
               env:
                 - name: POSTGRESQL_HOST
