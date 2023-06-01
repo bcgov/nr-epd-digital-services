@@ -1,0 +1,110 @@
+---
+kind: Template
+apiVersion: v1
+metadata:
+  name: "${API_NAME}-build-template"
+  creationTimestamp: 
+objects:
+- kind: ImageStream
+  apiVersion: v1
+  metadata:
+    name: "${API_NAME}"
+- kind: BuildConfig
+  apiVersion: v1
+  metadata:
+    name: "${API_NAME}-build-${TAG}"
+    labels:
+      app: "${API_NAME}-build-${TAG}"
+  spec:
+    runPolicy: Serial
+    source:
+      type: Git
+      git:
+        uri: "${GIT_REPO_URL}"
+        ref: "${GIT_REF}"
+      contextDir: "${SOURCE_CONTEXT_DIR}"
+    strategy:
+      type: Docker
+      dockerStrategy:
+        dockerfilePath: "${DOCKER_FILE_PATH}"
+        env:
+        - name: "DEBEZIUM_VERSION"
+          value: "${DEBEZIUM_VERSION}"
+        - name: ORACLE_JDBC_VERSION
+          value: ${ORACLE_JDBC_VERSION}
+        - name: ORACLE_JDBC_MD5
+          value: ${ORACLE_JDBC_MD5}
+        - name: KAFKA_JDBC_VERSION
+          value: ${KAFKA_JDBC_VERSION}
+
+        # TODO - SPLIT TO DIFF BUILDCONFIGS FOR DEV/TEST/PROD
+        # CAUSE DIFFERENT HOST IS HARDCODED AT BUILDTIME
+        - name: ORACLE_DB_HOST
+          value: ${ORACLE_DB_HOST}
+        - name: ORACLE_DB_PORT
+          value: ${ORACLE_DB_PORT}
+    output:
+      to:
+        kind: ImageStreamTag
+        name: "${API_NAME}:latest"
+parameters:
+- name: API_NAME
+  displayName: Name
+  description: The name assigned to all of the resources defined in this template.
+  required: true
+  value: debezium-jdbc
+- name: GIT_REPO_URL
+  displayName: Git Repo URL
+  description: The URL to your GIT repo.
+  required: true
+  value: https://github.com/bcgov/nr-epd-digital-services
+- name: GIT_REF
+  displayName: Git Reference
+  description: The git reference or branch.
+  required: true
+  value: dev-ac-97
+- name: SOURCE_CONTEXT_DIR
+  displayName: Source Context Directory
+  description: The source context directory.
+  required: false
+  value: etl/debezium-jdbc
+- name: DOCKER_FILE_PATH
+  displayName: Docker File Path
+  description: The path to the docker file defining the build.
+  required: false
+  value: "Dockerfile"
+- name: TAG
+  displayName: Git Reference
+  description: The git reference or branch.
+  required: true
+  value: dev
+- name: DEBEZIUM_VERSION
+  displayName: Debezium version
+  description: The debezium version in the build
+  required: true
+  value: changeme
+- name: ORACLE_DB_PORT
+  displayName: Debezium version
+  description: The debezium version in the build
+  required: true
+  value: changeme
+- name: ORACLE_JDBC_VERSION
+  displayName: Debezium version
+  description: The debezium version in the build
+  required: true
+  value: changeme
+- name: ORACLE_JDBC_MD5
+  displayName: Debezium version
+  description: The debezium version in the build
+  required: true
+  value: changeme
+- name: KAFKA_JDBC_VERSION
+  displayName: Debezium version
+  description: The debezium version in the build
+  required: true
+  value: changeme
+- name: ORACLE_DB_HOST
+  displayName: Debezium version
+  description: The debezium version in the build
+  required: true
+  value: changeme

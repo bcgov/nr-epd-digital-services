@@ -15,7 +15,9 @@ Setup the BuildConfigs, imagestream.
 
 ```bash
 # Note: Remove --dry-run=client when you want to run it.
-oc process -f TODO.yaml | oc apply -f - --dry-run=client
+# oc process -f openshift/templates/legacy-etl/debezium-jdbc-buildconfig.yaml | oc apply -f - --dry-run=client
+oc process -f openshift/templates/legacy-etl/debezium-jdbc/debezium-jdbc-buildconfig.yaml -o yaml --param-file=openshift/templates/legacy-etl/debezium-jdbc/dev.env | oc apply -f - --dry-run=client
+
 
 ```
 
@@ -76,3 +78,9 @@ Run the same "dev" steps, but change all references of "dev" to "test" (and then
     - If so, grant permissions from service account in existing
     - Otherwise, separate service account
     - https://github.com/redhat-actions/oc-login/wiki/Using-a-Service-Account-for-GitHub-Actions
+
+
+
+### ADAM TODO
+
+- split 

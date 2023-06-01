@@ -1,3 +1,5 @@
+ARG DEBEZIUM_VERSION
+
 FROM maven:3.8.6-jdk-11 AS builder
 WORKDIR /app/
 COPY ./ ./
@@ -5,7 +7,7 @@ RUN mvn clean install
 
 
 
-FROM debezium/connect:1.9
+FROM debezium/connect:$DEBEZIUM_VERSION
 # FROM artifcatory.gov.bc.ca/debezium/connect:$DEBEZIUM_VERSION
 
 ARG ORACLE_JDBC_VERSION
