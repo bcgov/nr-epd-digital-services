@@ -113,7 +113,7 @@ objects:
         spec:
           containers:
             - image: " "
-              imagePullPolicy: IfNotPresent
+              imagePullPolicy: Always
               name: ${NAME}-${COMPONENT}
               env:
                 - name: POSTGRESQL_HOST
