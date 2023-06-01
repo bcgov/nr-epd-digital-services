@@ -112,7 +112,7 @@ objects:
             deploymentconfig: ${NAME}-${COMPONENT}
         spec:
           containers:
-            - image: ${NAME}-${COMPONENT}:${IMAGE_TAG}
+            - image: " "
               imagePullPolicy: Always
               name: ${NAME}-${COMPONENT}
               env:
