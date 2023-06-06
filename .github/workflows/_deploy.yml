@@ -58,6 +58,7 @@ jobs:
 
           # Process template, consuming variables/parameters
           TEMPLATE=$(oc process -f ${{ inputs.template_file }} ${{ inputs.template_vars }} --local)
+          echo ${inputs.template_file} 
 
           # ImageStream and DeploymentConfig names
           IS_LIST=$(jq -rn "${TEMPLATE} | .items[] | select(.kind==\"ImageStream\") | .metadata.name")
