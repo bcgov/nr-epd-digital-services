@@ -9,8 +9,15 @@ jest.mock('react-oidc-context', () => ({
   useAuth: jest.fn(),
 }))
 
+beforeEach(() =>{
+  Object.defineProperty(window, 'location', {
+    value: {
+      assign: jest.fn()
+    }
+  })
+})
 
-it('Renders Reviewer Dashboard', () => {
+it('Renders Reviewer Dashboard', () => {  
   (useAuth as jest.Mock).mockReturnValue(
     {isAuthenticated: true}
   )

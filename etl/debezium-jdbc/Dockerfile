@@ -27,10 +27,11 @@ RUN docker-maven-download central "$ORACLE_JDBC_REPO" "$ORACLE_JDBC_GROUP" "$ORA
 ENV KAFKA_CONNECT_JDBC_DIR=$KAFKA_CONNECT_PLUGINS_DIR/kafka-connect-jdbc
 RUN mkdir $KAFKA_CONNECT_JDBC_DIR
 
-RUN cd $KAFKA_CONNECT_JDBC_DIR && \
-    curl -sO https://packages.confluent.io/maven/io/confluent/kafka-connect-jdbc/$KAFKA_JDBC_VERSION/kafka-connect-jdbc-$KAFKA_JDBC_VERSION.jar
+#RUN cd $KAFKA_CONNECT_JDBC_DIR && \
+    #curl -sO https://packages.confluent.io/maven/io/confluent/kafka-connect-jdbc/$KAFKA_JDBC_VERSION/kafka-connect-jdbc-$KAFKA_JDBC_VERSION.jar
 
 COPY --from=builder /app/target/*.jar $KAFKA_CONNECT_JDBC_DIR/
+COPY --from=builder /app/lib/*.jar $KAFKA_CONNECT_JDBC_DIR/
 COPY InstallCert.class .
 COPY "InstallCert\$SavingTrustManager.class" .
 

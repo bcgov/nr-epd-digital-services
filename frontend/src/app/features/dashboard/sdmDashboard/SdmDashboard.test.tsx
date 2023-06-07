@@ -9,6 +9,14 @@ jest.mock('react-oidc-context', () => ({
   useAuth: jest.fn(),
 }))
 
+beforeEach(() =>{
+  Object.defineProperty(window, 'location', {
+    value: {
+      assign: jest.fn()
+    }
+  })
+})
+
 describe('testing sdm dashboards', ()=>{
   const env = process.env
   beforeEach(()=>{

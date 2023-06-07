@@ -57,13 +57,16 @@ docker-compose -f docker-compose.yaml exec kafka /kafka/bin/kafka-console-consum
      --bootstrap-server kafka:9092 \
      --from-beginning \
      --property print.key=true \
-     --topic dbserver1.public.epd_user
+     --topic dbserver1.public.sites
 ```
 
 
 # Delete connectors
 ```
 curl -X DELETE localhost:8083/connectors/<connector-name>
+
+curl -X DELETE localhost:8083/connectors/oracle-jdbc-sink-connector
+curl -X DELETE localhost:8083/connectors/postgres-source-connector
 ```      
 
 
