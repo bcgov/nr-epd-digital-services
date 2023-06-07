@@ -1,0 +1,36 @@
+name: Continuous Integration And Deployment On Push to Tools
+#This is only for testing purpose and will be deleted in future.
+on:
+  workflow_dispatch: # TODO this is there for testing purposes, once the pipelines are all done, remove this
+  push:
+    branches:
+    #  - 'dev
+       - 'etl-debezium-poc' #test
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+      - '.github/workflows/ci-cd-debezium-tools.yaml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  builds:
+    name: Builds
+    uses: ./.github/workflows/_build.yml
+    strategy:
+      matrix:
+        component: [ backend/etl/debezium-jdbc ]
+        include:
+          - component: backend/etl/debezium-jdbc 
+            triggers: ('backend/etl/debezium-jdbc/')
+         - component: backend/etl/debezium-postgis/15-3.3 
+            triggers: ('backend/etl/debezium-postgis/15-3.3/')
+    secrets:
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      component: ${{ matrix.component }}
+      img_build: "tools"
+      img_fallback: tools
+      triggers: ${{ matrix.triggers }}

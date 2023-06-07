@@ -60,11 +60,14 @@ jobs:
           TEMPLATE=$(oc process -f ${{ inputs.template_file }} ${{ inputs.template_vars }} --local)
 
           # ImageStream and DeploymentConfig names
-          IS=$(jq -rn "${TEMPLATE} | .items[] | select(.kind==\"ImageStream\") | .metadata.name")
+          IS_LIST=$(jq -rn "${TEMPLATE} | .items[] | select(.kind==\"ImageStream\") | .metadata.name")
           DC=$(jq -rn "${TEMPLATE} | .items[] | select(.kind==\"DeploymentConfig\") | .metadata.name")
 
           # Clean previous images
-          oc delete is/${IS} || true
+          # Loop through the ImageStream names and delete each one
+          for IS in $IS_LIST; do
+            oc delete is/"$IS" || true
+          done
 
           # Apply (overwrites) or create (does not overwrite) using processed template
           if [ "${{ inputs.overwrite }}" == "true" ]; then
