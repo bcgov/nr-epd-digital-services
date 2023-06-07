@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - 'dev'
+      - 'ss-deployIssue_newbranch'
                        
     paths:
       - 'backend/**'
