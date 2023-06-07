@@ -93,9 +93,9 @@ objects:
       replicas: 1
       triggers:
         - type: ConfigChange
-        # - type: ImageChange
-        #   imageChangeParams:
-        #     automatic: true
+        - type: ImageChange
+          imageChangeParams:
+            automatic: true
             containerNames:
               - ${NAME}-${COMPONENT}
             from:
