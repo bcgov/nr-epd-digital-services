@@ -15,11 +15,9 @@ it('renders log in panel', () => {
     {isAuthenticated: false}
   )
   render(
-    //<AuthProvider>
       <Provider store={store}>
         <App />
       </Provider>
-    //</AuthProvider>
       );
   const loginPanel = screen.getByText(/Log In to my LRS Account/i);
   expect(loginPanel).toBeInTheDocument();
@@ -31,11 +29,9 @@ test('Renders LRS Form Accordion', () =>{
     {isAuthenticated: true}
   )
   render(    
-    //<AuthProvider>
       <Provider store={store}>
         <App />
       </Provider>
-    //</AuthProvider>
     );
   const formAccordion = screen.getByText(/This is the first sample lrs form, please use this for lrs things/i)
   expect(formAccordion).toBeInTheDocument()
