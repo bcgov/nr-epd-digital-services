@@ -9,6 +9,13 @@ jest.mock('react-oidc-context', () => ({
   useAuth: jest.fn(),
 }))
 
+beforeEach(() =>{
+  Object.defineProperty(window, 'location', {
+    value: {
+      assign: jest.fn()
+    }
+  })
+})
 
 it('Renders SDM Dashboard', () => {
   (useAuth as jest.Mock).mockReturnValue(
