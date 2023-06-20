@@ -1,0 +1,33 @@
+{
+    "name": "oracle-jdbc-sink-connector",
+    "config": {
+        "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+        "tasks.max": "1",   
+        "topics.regex": "dbserver1.public.(.*)",
+        "connection.url": "jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCPS)(PORT=1543)(HOST=nrcdb01.bcgov))(CONNECT_DATA=(SERVICE_NAME=SD57387.NRS.BCGOV))(SECURITY=(ssl_server_cert_dn=\"CN=nrcdb01.bcgov\")))",
+        "connection.user": "JAITHOMA",
+        "connection.password": "jaithoma#1020",
+        "dialect.name": "OracleDatabaseDialect",
+        "security.protocol":"SSL",
+        "ssl.enabled.protocols": "TLSv1.2,TLSv1.1",
+        "ssl.truststore.type": "JKS",
+        "auto.create": "false",
+        "auto.evolve":false,        
+        "table.name.format" : "SIS.${topic}", 
+        "delete.enabled": "true",
+        "pk.mode": "record_key",
+        "insert.mode": "upsert", 
+        "quote.sql.identifiers": "never",
+        "transforms":"route,ConvertCreatedTimestamp,ConvertUpdatedTimestamp,topicCase",
+        "transforms.route.type": "org.apache.kafka.connect.transforms.RegexRouter",
+        "transforms.route.regex": "([^.]+)\\.([^.]+)\\.([^.]+)",
+        "transforms.route.replacement": "$3",
+        "transforms.ConvertCreatedTimestamp.type":"org.apache.kafka.connect.transforms.TimestampConverter$Value",        
+        "transforms.ConvertCreatedTimestamp.target.type":"Timestamp",
+        "transforms.ConvertCreatedTimestamp.field": "datetime_created",
+        "transforms.ConvertUpdatedTimestamp.type":"org.apache.kafka.connect.transforms.TimestampConverter$Value",        
+        "transforms.ConvertUpdatedTimestamp.target.type":"Timestamp",
+        "transforms.ConvertUpdatedTimestamp.field": "datetime_updated",
+        "transforms.topicCase.type": "ca.bc.gov.epd.kafka.connect.transform.ToUpperCase"
+    }
+}

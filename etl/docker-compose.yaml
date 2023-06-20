@@ -1,0 +1,52 @@
+version: '2'
+services:
+  zookeeper:
+    image: debezium/zookeeper:${DEBEZIUM_VERSION}
+    ports:
+     - 2181:2181
+     - 2888:2888
+     - 3888:3888
+  kafka:
+    image: debezium/kafka:${DEBEZIUM_VERSION}
+    ports:
+     - 9092:9092
+    links:
+     - zookeeper
+    environment:
+     - ZOOKEEPER_CONNECT=zookeeper:2181
+  postgis:
+    image: postgres/postgis-debezium:15
+    build:
+      context: debezium-postgis/15-3.3
+    ports:
+     - "5432:5432"
+    environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=postgres
+     - POSTGRES_DB=postgres
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  connect:
+    image: debezium/connect-with-oracle-jdbc:${DEBEZIUM_VERSION}
+    build:
+      context: debezium-jdbc
+      args:
+        DEBEZIUM_VERSION: ${DEBEZIUM_VERSION}
+        ORACLE_JDBC_VERSION: ${ORACLE_JDBC_VERSION}
+        ORACLE_JDBC_MD5: ${ORACLE_JDBC_MD5}
+        KAFKA_JDBC_VERSION: ${KAFKA_JDBC_VERSION}
+        ORACLE_DB_HOST: ${ORACLE_DB_HOST}
+        ORACLE_DB_PORT: ${ORACLE_DB_PORT}
+    ports:
+     - 8083:8083
+    links:
+     - kafka
+     - postgis
+    environment:
+     - BOOTSTRAP_SERVERS=kafka:9092
+     - GROUP_ID=1
+     - CONFIG_STORAGE_TOPIC=epd_connect_configs
+     - OFFSET_STORAGE_TOPIC=epd_connect_offsets
+     - STATUS_STORAGE_TOPIC=epd_connect_statuses
+     - KAFKA_DEBUG=true
+     - DEBUG_SUSPEND_FLAG=n

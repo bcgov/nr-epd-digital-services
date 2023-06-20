@@ -72,7 +72,7 @@ objects:
             "REACT_APP_AUTH_LOAD_USER_INFO": "true",  
             "REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT": "true",
             "REACT_APP_FORMSFLOW_WEB_URL": "https://forms-flow-web-e38158-dev.apps.silver.devops.gov.bc.ca/",
-            "REACT_APP_CUSTOM_MAP_URL": "http://localhost:4000/map"
+            "REACT_APP_CUSTOM_MAP_URL": "https://epd-frontend-dev.apps.silver.devops.gov.bc.ca/map"
           }
   - apiVersion: v1
     kind: ImageStream
@@ -119,7 +119,7 @@ objects:
             deploymentconfig: ${NAME}-${COMPONENT}
         spec:
           containers:
-            - image: ${NAME}-${COMPONENT}:${IMAGE_TAG}
+            - image: " "
               imagePullPolicy: Always
               name: ${NAME}-${COMPONENT}
               env:
