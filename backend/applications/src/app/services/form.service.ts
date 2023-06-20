@@ -34,6 +34,112 @@ export class FormService {
     });
   }
 
+  buildUpdateString = (pathText, newValue) => {
+    const returnString =
+      'jsonb_set("form_data"::jsonb,' + pathText + ',' + newValue + ')';
+    console.log(returnString);
+    return returnString;
+  };
+
+  processContent = async (
+    partialUpdateObject,
+    parentObjectNames,
+    formId,
+    submissionId,
+  ) => {
+    console.log('partialUpdateObject', partialUpdateObject);
+    console.log('parentObjectNames', parentObjectNames);
+
+    for (const property in partialUpdateObject) {
+      if (typeof partialUpdateObject[property] === 'object') {
+        this.processContent(
+          partialUpdateObject[property],
+          parentObjectNames == ''
+            ? property
+            : parentObjectNames + ',' + property,
+          formId,
+          submissionId,
+        );
+      } else if (typeof partialUpdateObject[property] !== 'object') {
+        let objectName = parentObjectNames;
+        if (objectName != '') {
+          objectName += ',' + property;
+        } else {
+          objectName = property;
+        }
+        console.log('objectName', objectName);
+        console.log('objectName value', partialUpdateObject[property]);
+
+        const pathText = "'{" + objectName + "}'";
+
+        const newValue = '\'"' + partialUpdateObject[property] + '"\'';
+
+        console.log(pathText, newValue);
+
+        await this.formRepository
+          .createQueryBuilder()
+          .update(Form)
+          .set({
+            formData: () => this.buildUpdateString(pathText, newValue),
+          })
+          .where('formId =  :formId and id = :submissionId', {
+            formId: formId,
+            submissionId: submissionId,
+          })
+          .execute();
+      }
+    }
+  };
+
+  /**
+   * updates form content
+   * @param submissionId submission Id
+   * @param formId form Id
+   * @param formContent form Content
+   * @returns updated form data
+   */
+  async partialUpdate(
+    submissionId: string,
+    formId: string,
+    formContent: string,
+  ): Promise<UpdateResult> {
+    // const entity = await this.formRepository.findOne({
+    //   where: { formId: formId, id: submissionId },
+    // });
+
+    const partialUpdateObject = formContent;
+
+    this.processContent(partialUpdateObject, '', formId, submissionId);
+
+    // const pathText = '{applicationId}';
+    // const newValue = '"100"';
+
+    //UPDATE epd_applications.form SET "form_data" =jsonb_set("form_data"::jsonb, '{data,applicationId}', '"205"') WHERE "id" = '955cc8e4-6fc2-4b36-bcf7-d86de57bb1f8'
+
+    //UPDATE epd_applications.form SET "form_data" =jsonb_set("form_data"::jsonb, '{data,applicationId}', '"205"') WHERE "id" = '955cc8e4-6fc2-4b36-bcf7-d86de57bb1f8'
+
+    //entity.formData = formContent;
+    // const updateResult = await this.formRepository
+    //   .createQueryBuilder()
+    //   .update(Form)
+    //   .set({
+    //     formData: () =>
+    //       'jsonb_set("form_data"::jsonb, \'{data,applicationId}\', \'"20005"\')',
+    //   })
+    //   .where('formId =  :formId and id = :submissionId', {
+    //     formId: formId,
+    //     submissionId: submissionId,
+    //   })
+    //   .execute();
+
+    const updateResult: UpdateResult = {
+      raw: [],
+      generatedMaps: [],
+      affected: 1,
+    };
+    return updateResult;
+  }
+
   /**
    * updates form content
    * @param submissionId submission Id

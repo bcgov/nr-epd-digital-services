@@ -1,0 +1,20 @@
+{
+  "name": "postgres-source-connector",  
+  "config": {  
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "tasks.max": "1",
+    "database.hostname": "etl-postgis-1",  
+    "database.port": "5432",
+    "database.user": "postgres",
+    "database.password": "postgres",
+    "database.dbname": "postgres",
+    "database.server.id": "184054",      
+    "database.server.name": "dbserver1",
+    "table.whitelist": "public.*",
+    "transforms": "unwrap",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "false",
+    "include.schema.changes": "false",
+    "time.precision.mode":"connect"
+  }
+}
