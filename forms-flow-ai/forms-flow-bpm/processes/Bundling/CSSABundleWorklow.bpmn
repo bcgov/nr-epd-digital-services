@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_17ytju0" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.12.0">
-  <bpmn:collaboration id="Collaboration_01drroj">
+  <bpmn:collaboration id="Collaboration_14e80c3">
     <bpmn:participant id="Participant_1tv1lnj" name="CSSA Bundle Worklow" processRef="cssa-bundle-workflow" />
   </bpmn:collaboration>
   <bpmn:process id="cssa-bundle-workflow" name="CSSA Bundle Worklow" isExecutable="true" camunda:versionTag="1">
@@ -58,6 +58,9 @@ execution.setVariable('typeOfReview',typeOfReview);
 var clientEmail = execution.getVariable('simpleemail');
 system.out.println ("clientEmail "+clientEmail);
 execution.setVariable('clientEmail',clientEmail);
+var siteRiskClassification = execution.getVariable('siteRiskClassification');
+system.out.println ("siteRiskClassification "+siteRiskClassification );
+execution.setVariable('siteRiskClassification',siteRiskClassification);
 
 var professionalradio = execution.getVariable('Professionalradio');
 var owneroperatorradioGroup = execution.getVariable('owneroperatorradioGroup');
@@ -147,6 +150,13 @@ execution.setVariable('userIdForSharing',userIdForSharing);</bpmn:script>
       <bpmn:outgoing>Flow_0wr0mei</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_1quswsc" name="Yes" sourceRef="Gateway_08cgufe" targetRef="Activity_08ykdar">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">var system = java.lang.System;
+execution.setVariable('isSentFromSociety',false);
+system.out.println ("isSentFromSociety "+ execution.getVariable('isSentFromSociety'));</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${typeOfReview== 'directToMinistryApplication'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_142lsgk" name="No" sourceRef="Gateway_08cgufe" targetRef="Activity_1uc1xs1">
@@ -163,7 +173,11 @@ execution.setVariable('userIdForSharing',userIdForSharing);</bpmn:script>
     <bpmn:sequenceFlow id="Flow_0kfjdmp" name="Accepted" sourceRef="Gateway_04o747e" targetRef="Activity_1ao3zkj">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0bz8atu" sourceRef="Activity_08ykdar" targetRef="Gateway_0oobb3z" />
+    <bpmn:sequenceFlow id="Flow_0bz8atu" sourceRef="Activity_08ykdar" targetRef="Gateway_0oobb3z">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="take" />
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0b418rv" sourceRef="Activity_1uc1xs1" targetRef="Gateway_04o747e" />
     <bpmn:exclusiveGateway id="Gateway_15p5urd" name="Action Taken">
       <bpmn:incoming>Flow_0d8ruax</bpmn:incoming>
@@ -211,6 +225,9 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
     </bpmn:userTask>
     <bpmn:userTask id="Activity_08ykdar" name="Validate Bundle" camunda:candidateGroups="formsflow/formsflow-reviewer/cssa-team">
       <bpmn:extensionElements>
+        <camunda:taskListener event="create">
+          <camunda:script scriptFormat="javascript">task.execution.setVariable('isCssaTeam',false);</camunda:script>
+        </camunda:taskListener>
         <camunda:taskListener event="complete">
           <camunda:script scriptFormat="javascript">task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
 task.execution.setVariable('deleteReason', "completed");</camunda:script>
@@ -220,9 +237,6 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
           <camunda:field name="fields">
             <camunda:expression>["applicationId", "applicationStatus"]</camunda:expression>
           </camunda:field>
-        </camunda:taskListener>
-        <camunda:taskListener event="create">
-          <camunda:script scriptFormat="javascript">task.execution.setVariable('isCssaTeam',false);</camunda:script>
         </camunda:taskListener>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1quswsc</bpmn:incoming>
@@ -291,7 +305,11 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
       <bpmn:extensionElements>
         <camunda:taskListener event="complete">
           <camunda:script scriptFormat="javascript">task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
-task.execution.setVariable('deleteReason', "completed");</camunda:script>
+task.execution.setVariable('deleteReason', "completed");
+
+var system = java.lang.System;
+task.execution.setVariable('isSentFromSociety',true);
+system.out.println ("isSentFromSociety "+ task.execution.getVariable('isSentFromSociety'));</camunda:script>
         </camunda:taskListener>
         <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="complete" />
         <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="complete">
@@ -363,28 +381,28 @@ execution.setVariable("applicationStatus", "Rejected");
   <bpmn:message id="Message_1ngb2eg" name="application_resubmitted" />
   <bpmn:message id="Message_0lm44we" name="application_resubmitted" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_01drroj">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_14e80c3">
       <bpmndi:BPMNShape id="Participant_1tv1lnj_di" bpmnElement="Participant_1tv1lnj" isHorizontal="true">
-        <dc:Bounds x="160" y="80" width="1060" height="1800" />
+        <dc:Bounds x="160" y="80" width="1728" height="1800" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_0t984kw_di" bpmnElement="Lane_0t984kw" isHorizontal="true">
-        <dc:Bounds x="190" y="80" width="1030" height="390" />
+        <dc:Bounds x="190" y="80" width="1698" height="390" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_0bf59ja_di" bpmnElement="Lane_0bf59ja" isHorizontal="true">
-        <dc:Bounds x="190" y="470" width="1030" height="290" />
+        <dc:Bounds x="190" y="470" width="1698" height="290" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_1eegye4_di" bpmnElement="Lane_1eegye4" isHorizontal="true">
-        <dc:Bounds x="190" y="1060" width="1030" height="300" />
+        <dc:Bounds x="190" y="1060" width="1698" height="300" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_1i2r1qv_di" bpmnElement="Lane_1i2r1qv" isHorizontal="true">
-        <dc:Bounds x="190" y="760" width="1030" height="300" />
+        <dc:Bounds x="190" y="760" width="1698" height="300" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_0kmo9n9_di" bpmnElement="Lane_0kmo9n9" isHorizontal="true">
-        <dc:Bounds x="190" y="1360" width="1030" height="520" />
+        <dc:Bounds x="190" y="1360" width="1698" height="520" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_11v8of2" bpmnElement="StartEvent_1">
