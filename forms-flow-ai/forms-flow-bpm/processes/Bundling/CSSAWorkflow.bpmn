@@ -196,7 +196,8 @@ system.out.println ("isSentFromSociety "+execution.getVariable('isSentFromSociet
     <bpmn:sequenceFlow id="Flow_0gs43q1" name="Rejected" sourceRef="Gateway_1qw997s" targetRef="Event_1t7witx">
       <bpmn:extensionElements>
         <camunda:executionListener event="take">
-          <camunda:script scriptFormat="javascript">execution.setVariable('cssaStatus', execution.getVariable('action'));</camunda:script>
+          <camunda:script scriptFormat="javascript">execution.setVariable('cssaFormUrl', execution.getVariable('formUrl'));
+execution.setVariable('cssaStatus', execution.getVariable('action'));</camunda:script>
         </camunda:executionListener>
       </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected'}</bpmn:conditionExpression>
@@ -245,14 +246,14 @@ execution.setVariable('requestType', 'CSSA');</camunda:script>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_14e80c3">
       <bpmndi:BPMNShape id="Participant_1569q03_di" bpmnElement="Participant_1569q03" isHorizontal="true">
-        <dc:Bounds x="160" y="80" width="770" height="928" />
+        <dc:Bounds x="160" y="80" width="770" height="960" />
         <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_00mefnp_di" bpmnElement="Lane_00mefnp" isHorizontal="true">
+        <dc:Bounds x="190" y="650" width="740" height="390" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_1h4fynz_di" bpmnElement="Lane_1h4fynz" isHorizontal="true">
         <dc:Bounds x="190" y="80" width="740" height="570" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_00mefnp_di" bpmnElement="Lane_00mefnp" isHorizontal="true">
-        <dc:Bounds x="190" y="650" width="740" height="358" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1q6m3z0_di" bpmnElement="Activity_1d5shlh">
         <dc:Bounds x="330" y="690" width="100" height="80" />

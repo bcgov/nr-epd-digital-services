@@ -10,6 +10,7 @@
         <bpmn:flowNodeRef>Activity_0vkc1zi</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1mo5nko</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_1o5uudb</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0p4hm8r</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Event_0sdygwc</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_1i2r1qv" name="Society">
@@ -113,7 +114,7 @@ execution.setVariable('userIdForSharing',userIdForSharing);</bpmn:script>
       </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0qbjx6e" name="Rejected" sourceRef="Gateway_0oobb3z" targetRef="Event_0sdygwc">
+    <bpmn:sequenceFlow id="Flow_0qbjx6e" name="Rejected" sourceRef="Gateway_0oobb3z" targetRef="Activity_0p4hm8r">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1stifo9" name="Resubmitted" sourceRef="Activity_1v5ffpw" targetRef="Activity_1ozfgid">
@@ -156,10 +157,14 @@ execution.setVariable('userIdForSharing',userIdForSharing);</bpmn:script>
 execution.setVariable('isSentFromSociety',false);
 system.out.println ("isSentFromSociety "+ execution.getVariable('isSentFromSociety'));</camunda:script>
         </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="take" />
       </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${typeOfReview== 'directToMinistryApplication'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_142lsgk" name="No" sourceRef="Gateway_08cgufe" targetRef="Activity_1uc1xs1">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="take" />
+      </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${typeOfReview!= 'directToMinistryApplication'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_12uv3km" name="Returned" sourceRef="Gateway_04o747e" targetRef="Activity_1v5ffpw">
@@ -171,12 +176,13 @@ system.out.println ("isSentFromSociety "+ execution.getVariable('isSentFromSocie
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0kfjdmp" name="Accepted" sourceRef="Gateway_04o747e" targetRef="Activity_1ao3zkj">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0bz8atu" sourceRef="Activity_08ykdar" targetRef="Gateway_0oobb3z">
       <bpmn:extensionElements>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="take" />
       </bpmn:extensionElements>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0bz8atu" sourceRef="Activity_08ykdar" targetRef="Gateway_0oobb3z">
+      <bpmn:extensionElements />
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0b418rv" sourceRef="Activity_1uc1xs1" targetRef="Gateway_04o747e" />
     <bpmn:exclusiveGateway id="Gateway_15p5urd" name="Action Taken">
@@ -187,6 +193,9 @@ system.out.println ("isSentFromSociety "+ execution.getVariable('isSentFromSocie
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_0d8ruax" sourceRef="Activity_1ao3zkj" targetRef="Gateway_15p5urd" />
     <bpmn:sequenceFlow id="Flow_0gb2oz2" name="Accepted" sourceRef="Gateway_15p5urd" targetRef="Activity_08ykdar">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="take" />
+      </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0qw9o9a" name="Returned" sourceRef="Gateway_15p5urd" targetRef="Activity_1v5ffpw">
@@ -350,7 +359,7 @@ system.out.println ("isSentFromSociety "+ task.execution.getVariable('isSentFrom
     <bpmn:sequenceFlow id="Flow_0nv59tm" name="SRCR Status" sourceRef="Activity_1mo5nko" targetRef="Gateway_1o5uudb">
       <bpmn:extensionElements />
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0xt0zzz" name="Approved/Rejected" sourceRef="Gateway_1o5uudb" targetRef="Event_0sdygwc">
+    <bpmn:sequenceFlow id="Flow_0xt0zzz" name="Approved/Rejected" sourceRef="Gateway_1o5uudb" targetRef="Activity_0p4hm8r">
       <bpmn:extensionElements>
         <camunda:executionListener event="take">
           <camunda:script scriptFormat="javascript">execution.setVariable('formUrl', execution.getVariable('cssaFormUrl'));</camunda:script>
@@ -373,36 +382,46 @@ execution.setVariable("applicationStatus", "Rejected");
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
       </bpmn:extensionElements>
     </bpmn:sequenceFlow>
-    <bpmn:endEvent id="Event_0sdygwc" name="End">
-      <bpmn:incoming>Flow_0qbjx6e</bpmn:incoming>
+    <bpmn:callActivity id="Activity_0p4hm8r" name="Send Email Notifications" calledElement="common-email-workflow">
+      <bpmn:extensionElements>
+        <camunda:in businessKey="#{execution.processBusinessKey}" />
+        <camunda:in variables="all" />
+        <camunda:out variables="all" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_0xt0zzz</bpmn:incoming>
+      <bpmn:incoming>Flow_0qbjx6e</bpmn:incoming>
+      <bpmn:outgoing>Flow_0izwlc1</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:endEvent id="Event_0sdygwc" name="End">
+      <bpmn:incoming>Flow_0izwlc1</bpmn:incoming>
     </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0izwlc1" sourceRef="Activity_0p4hm8r" targetRef="Event_0sdygwc" />
   </bpmn:process>
   <bpmn:message id="Message_1ngb2eg" name="application_resubmitted" />
   <bpmn:message id="Message_0lm44we" name="application_resubmitted" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_14e80c3">
       <bpmndi:BPMNShape id="Participant_1tv1lnj_di" bpmnElement="Participant_1tv1lnj" isHorizontal="true">
-        <dc:Bounds x="160" y="80" width="1728" height="1800" />
+        <dc:Bounds x="160" y="80" width="1160" height="1860" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_0t984kw_di" bpmnElement="Lane_0t984kw" isHorizontal="true">
-        <dc:Bounds x="190" y="80" width="1698" height="390" />
+        <dc:Bounds x="190" y="80" width="1130" height="390" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_0bf59ja_di" bpmnElement="Lane_0bf59ja" isHorizontal="true">
-        <dc:Bounds x="190" y="470" width="1698" height="290" />
+        <dc:Bounds x="190" y="470" width="1130" height="290" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_1eegye4_di" bpmnElement="Lane_1eegye4" isHorizontal="true">
-        <dc:Bounds x="190" y="1060" width="1698" height="300" />
+        <dc:Bounds x="190" y="1060" width="1130" height="300" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_1i2r1qv_di" bpmnElement="Lane_1i2r1qv" isHorizontal="true">
-        <dc:Bounds x="190" y="760" width="1698" height="300" />
+        <dc:Bounds x="190" y="760" width="1130" height="300" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_0kmo9n9_di" bpmnElement="Lane_0kmo9n9" isHorizontal="true">
-        <dc:Bounds x="190" y="1360" width="1698" height="520" />
+        <dc:Bounds x="190" y="1360" width="1130" height="580" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_11v8of2" bpmnElement="StartEvent_1">
@@ -480,10 +499,14 @@ execution.setVariable("applicationStatus", "Rejected");
           <dc:Bounds x="764" y="1611" width="72" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1gyq5e4_di" bpmnElement="Activity_0p4hm8r">
+        <dc:Bounds x="750" y="1780" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0sdygwc_di" bpmnElement="Event_0sdygwc">
-        <dc:Bounds x="782" y="1762" width="36" height="36" />
+        <dc:Bounds x="1062" y="1802" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="790" y="1808" width="20" height="14" />
+          <dc:Bounds x="1070" y="1848" width="20" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_0c2a61u" bpmnElement="Flow_0drs8s9">
@@ -512,8 +535,8 @@ execution.setVariable("applicationStatus", "Rejected");
       <bpmndi:BPMNEdge id="Flow_0qbjx6e_di" bpmnElement="Flow_0qbjx6e">
         <di:waypoint x="765" y="1280" />
         <di:waypoint x="340" y="1280" />
-        <di:waypoint x="340" y="1780" />
-        <di:waypoint x="782" y="1780" />
+        <di:waypoint x="340" y="1820" />
+        <di:waypoint x="750" y="1820" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="618" y="1263" width="44" height="14" />
         </bpmndi:BPMNLabel>
@@ -655,10 +678,14 @@ execution.setVariable("applicationStatus", "Rejected");
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0xt0zzz_di" bpmnElement="Flow_0xt0zzz">
         <di:waypoint x="800" y="1685" />
-        <di:waypoint x="800" y="1762" />
+        <di:waypoint x="800" y="1780" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="819" y="1721" width="82" height="27" />
+          <dc:Bounds x="699" y="1716" width="82" height="27" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0izwlc1_di" bpmnElement="Flow_0izwlc1">
+        <di:waypoint x="850" y="1820" />
+        <di:waypoint x="1062" y="1820" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

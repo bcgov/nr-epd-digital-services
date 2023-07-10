@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_08oxgyg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.11.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_08oxgyg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.12.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
   <bpmn:process id="common-email-workflow" name="CommonEmailWorkflow" isExecutable="true" camunda:historyTimeToLive="300">
     <bpmn:startEvent id="Event_0kew5uc" name="Start">
       <bpmn:outgoing>Flow_15fflso</bpmn:outgoing>
@@ -65,7 +65,7 @@ system.out.println ("token: "+token);</bpmn:script>
   "from": "NOREPLYEPD@gov.bc.ca",
   "priority": "normal",
   "subject": "EPD Application Update",
-  "to": ["jaise.thomas@aot-technologies.com"],
+  "to": [],
   "tag": "",
   "attachments": []
 }
@@ -86,10 +86,10 @@ JSON.stringify(p)</camunda:script>
       <bpmn:outgoing>Flow_093urcj</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:endEvent id="Event_1jy96yb" name="End">
-      <bpmn:incoming>Flow_093urcj</bpmn:incoming>
+      <bpmn:incoming>Flow_1lr16lw</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0cog7s9" sourceRef="Activity_0nm63gf" targetRef="Activity_04ks0sg" />
-    <bpmn:sequenceFlow id="Flow_093urcj" sourceRef="Activity_1w8sq4d" targetRef="Event_1jy96yb" />
+    <bpmn:sequenceFlow id="Flow_093urcj" sourceRef="Activity_1w8sq4d" targetRef="Activity_1cy9bql" />
     <bpmn:task id="Activity_1uz4epi" name="Generate Email Body (TODO)">
       <bpmn:incoming>Flow_0w1xi39</bpmn:incoming>
       <bpmn:outgoing>Flow_0jqov5w</bpmn:outgoing>
@@ -97,6 +97,13 @@ JSON.stringify(p)</camunda:script>
     <bpmn:sequenceFlow id="Flow_0w1xi39" sourceRef="Activity_04ks0sg" targetRef="Activity_1uz4epi" />
     <bpmn:sequenceFlow id="Flow_0jqov5w" sourceRef="Activity_1uz4epi" targetRef="Activity_1w8sq4d" />
     <bpmn:sequenceFlow id="Flow_15fflso" sourceRef="Event_0kew5uc" targetRef="Activity_0nm63gf" />
+    <bpmn:sequenceFlow id="Flow_1lr16lw" sourceRef="Activity_1cy9bql" targetRef="Event_1jy96yb" />
+    <bpmn:scriptTask id="Activity_1cy9bql" name="Print Result" scriptFormat="javascript">
+      <bpmn:incoming>Flow_093urcj</bpmn:incoming>
+      <bpmn:outgoing>Flow_1lr16lw</bpmn:outgoing>
+      <bpmn:script>var system = java.lang.System;
+system.out.println ("result: "+result);</bpmn:script>
+    </bpmn:scriptTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="common-email-workflow">
@@ -115,14 +122,18 @@ JSON.stringify(p)</camunda:script>
       <bpmndi:BPMNShape id="Activity_0pegmhv_di" bpmnElement="Activity_1w8sq4d">
         <dc:Bounds x="710" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1jy96yb_di" bpmnElement="Event_1jy96yb">
-        <dc:Bounds x="852" y="102" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="862" y="145" width="20" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1uz4epi_di" bpmnElement="Activity_1uz4epi">
         <dc:Bounds x="550" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1jy96yb_di" bpmnElement="Event_1jy96yb">
+        <dc:Bounds x="1052" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1062" y="145" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_13xdoy5_di" bpmnElement="Activity_1cy9bql">
+        <dc:Bounds x="880" y="80" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0cog7s9_di" bpmnElement="Flow_0cog7s9">
@@ -131,7 +142,7 @@ JSON.stringify(p)</camunda:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_093urcj_di" bpmnElement="Flow_093urcj">
         <di:waypoint x="810" y="120" />
-        <di:waypoint x="852" y="120" />
+        <di:waypoint x="880" y="120" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0w1xi39_di" bpmnElement="Flow_0w1xi39">
         <di:waypoint x="515" y="120" />
@@ -144,6 +155,10 @@ JSON.stringify(p)</camunda:script>
       <bpmndi:BPMNEdge id="Flow_15fflso_di" bpmnElement="Flow_15fflso">
         <di:waypoint x="218" y="120" />
         <di:waypoint x="270" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1lr16lw_di" bpmnElement="Flow_1lr16lw">
+        <di:waypoint x="980" y="120" />
+        <di:waypoint x="1052" y="120" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
