@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Map from "../../../../node_modules/map-test-2703/dist/Map";
+import Map from "../../../../node_modules/react-parcelmap-bc/dist/Map";
 
 export default React.memo(() => {
   const [data, setData] = useState();
