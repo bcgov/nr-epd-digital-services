@@ -250,7 +250,8 @@ task.execution.setVariable('srcrStatus', task.execution.getVariable('action'));<
     <bpmn:sequenceFlow id="Flow_0zzhoui" name="Rejected" sourceRef="Gateway_0wyokmr" targetRef="Event_1t7witx">
       <bpmn:extensionElements>
         <camunda:executionListener event="take">
-          <camunda:script scriptFormat="javascript">execution.setVariable('srcrStatus', execution.getVariable('action'));</camunda:script>
+          <camunda:script scriptFormat="javascript">execution.setVariable('srcrFormUrl', execution.getVariable('formUrl'));
+execution.setVariable('srcrStatus', execution.getVariable('action'));</camunda:script>
         </camunda:executionListener>
       </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected'}</bpmn:conditionExpression>
@@ -306,7 +307,8 @@ task.execution.setVariable('srcrStatus', task.execution.getVariable('action'));<
     <bpmn:sequenceFlow id="Flow_0gs43q1" name="Rejected" sourceRef="Gateway_1qw997s" targetRef="Event_1t7witx">
       <bpmn:extensionElements>
         <camunda:executionListener event="take">
-          <camunda:script scriptFormat="javascript">execution.setVariable('srcrStatus', execution.getVariable('action'));</camunda:script>
+          <camunda:script scriptFormat="javascript">execution.setVariable('srcrFormUrl', execution.getVariable('formUrl'));
+execution.setVariable('srcrStatus', execution.getVariable('action'));</camunda:script>
         </camunda:executionListener>
       </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected' }</bpmn:conditionExpression>
@@ -364,15 +366,15 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
         <dc:Bounds x="160" y="80" width="790" height="1620" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_1h4fynz_di" bpmnElement="Lane_1h4fynz" isHorizontal="true">
-        <dc:Bounds x="190" y="80" width="760" height="680" />
+      <bpmndi:BPMNShape id="Lane_12sj0z8_di" bpmnElement="Lane_12sj0z8" isHorizontal="true">
+        <dc:Bounds x="190" y="760" width="760" height="420" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_00mefnp_di" bpmnElement="Lane_00mefnp" isHorizontal="true">
         <dc:Bounds x="190" y="1180" width="760" height="520" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_12sj0z8_di" bpmnElement="Lane_12sj0z8" isHorizontal="true">
-        <dc:Bounds x="190" y="760" width="760" height="420" />
+      <bpmndi:BPMNShape id="Lane_1h4fynz_di" bpmnElement="Lane_1h4fynz" isHorizontal="true">
+        <dc:Bounds x="190" y="80" width="760" height="680" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_0jf8rqn" bpmnElement="Activity_15cbea9">
