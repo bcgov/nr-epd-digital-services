@@ -124,7 +124,7 @@ execution.setVariable('userIdForSharing',userIdForSharing);</bpmn:script>
         </camunda:executionListener>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
           <camunda:field name="fields">
-            <camunda:expression>["applicationId", "applicationStatus"]</camunda:expression>
+            <camunda:expression>["applicationId", "applicationStatus", "cssaStatus", "srcrStatus"]</camunda:expression>
           </camunda:field>
         </camunda:executionListener>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
@@ -135,7 +135,7 @@ execution.setVariable('userIdForSharing',userIdForSharing);</bpmn:script>
         <camunda:executionListener expression="${execution.setVariable(&#34;applicationStatus&#34;,&#34;New&#34;)}" event="take" />
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
           <camunda:field name="fields">
-            <camunda:expression>["applicationId", "applicationStatus"]</camunda:expression>
+            <camunda:expression>["applicationId", "applicationStatus", "cssaStatus", "srcrStatus"]</camunda:expression>
           </camunda:field>
         </camunda:executionListener>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
@@ -220,7 +220,7 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
         <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="complete" />
         <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="complete">
           <camunda:field name="fields">
-            <camunda:expression>["applicationId", "applicationStatus"]</camunda:expression>
+            <camunda:expression>["applicationId", "applicationStatus", "cssaStatus", "srcrStatus"]</camunda:expression>
           </camunda:field>
         </camunda:taskListener>
         <camunda:taskListener event="create">
@@ -244,7 +244,7 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
         <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="complete" />
         <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="complete">
           <camunda:field name="fields">
-            <camunda:expression>["applicationId", "applicationStatus"]</camunda:expression>
+            <camunda:expression>["applicationId", "applicationStatus", "cssaStatus", "srcrStatus"]</camunda:expression>
           </camunda:field>
         </camunda:taskListener>
       </bpmn:extensionElements>
@@ -300,7 +300,7 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="start" />
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="start">
           <camunda:field name="fields">
-            <camunda:expression>["applicationId", "applicationStatus"]</camunda:expression>
+            <camunda:expression>["applicationId", "applicationStatus", "cssaStatus", "cssaStatus", "srcrStatus"]</camunda:expression>
           </camunda:field>
         </camunda:executionListener>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="start" />
@@ -323,7 +323,7 @@ system.out.println ("isSentFromSociety "+ task.execution.getVariable('isSentFrom
         <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="complete" />
         <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="complete">
           <camunda:field name="fields">
-            <camunda:expression>["applicationId", "applicationStatus"]</camunda:expression>
+            <camunda:expression>["applicationId", "applicationStatus", "cssaStatus", "srcrStatus"]</camunda:expression>
           </camunda:field>
         </camunda:taskListener>
         <camunda:taskListener event="create">
