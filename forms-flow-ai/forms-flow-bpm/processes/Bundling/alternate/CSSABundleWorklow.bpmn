@@ -146,7 +146,7 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
         <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="complete" />
         <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="complete">
           <camunda:field name="fields">
-            <camunda:expression>["applicationId", "applicationStatus", "cssaStatus", "srcrStatus"]</camunda:expression>
+            <camunda:expression>["applicationId", "applicationStatus"]</camunda:expression>
           </camunda:field>
         </camunda:taskListener>
       </bpmn:extensionElements>
@@ -259,9 +259,9 @@ system.out.println ("Sent to SDM");</bpmn:script>
           <camunda:taskListener event="complete">
             <camunda:script scriptFormat="javascript">task.execution.setVariable('requestStatus', task.execution.getVariable('action'));
 task.execution.setVariable('requestType', 'CSSA');
-task.execution.setVariable('deleteReason', "completed");
 task.execution.setVariable('cssaStatus', task.execution.getVariable('action'));
-task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));</camunda:script>
+task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
+task.execution.setVariable('deleteReason', "completed");</camunda:script>
           </camunda:taskListener>
           <camunda:properties>
             <camunda:property name="formName" value="cssaBundleForm" />
@@ -278,7 +278,7 @@ task.execution.setVariable('applicationStatus', task.execution.getVariable('acti
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="start" />
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="start">
             <camunda:field name="fields">
-              <camunda:expression>["applicationId", "applicationStatus", "cssaStatus"]</camunda:expression>
+              <camunda:expression>["applicationId", "applicationStatus"]</camunda:expression>
             </camunda:field>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="start" />
@@ -313,9 +313,9 @@ task.execution.setVariableLocal('variable1',"cssa");</camunda:script>
           <camunda:taskListener event="complete">
             <camunda:script scriptFormat="javascript">task.execution.setVariable('requestStatus', task.execution.getVariable('action'));
 task.execution.setVariable('requestType', 'CSSA');
-task.execution.setVariable('deleteReason', "completed");
 task.execution.setVariable('cssaStatus', task.execution.getVariable('action'));
-task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));</camunda:script>
+task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
+task.execution.setVariable('deleteReason', "completed");</camunda:script>
           </camunda:taskListener>
           <camunda:properties>
             <camunda:property name="formName" value="cssaBundleForm" />
@@ -338,7 +338,7 @@ task.execution.setVariable('applicationStatus', task.execution.getVariable('acti
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="start" />
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="start">
             <camunda:field name="fields">
-              <camunda:expression>["applicationId", "applicationStatus", "cssaStatus"]</camunda:expression>
+              <camunda:expression>["applicationId", "applicationStatus"]</camunda:expression>
             </camunda:field>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="start" />
@@ -388,6 +388,11 @@ execution.setVariable('requestStatus', "Resubmitted");</camunda:script>
       <bpmn:sequenceFlow id="Flow_130v3rp" sourceRef="Activity_0ufkuud" targetRef="Activity_1gz28jq" />
       <bpmn:sequenceFlow id="Flow_04rzv3x" sourceRef="Activity_1gz28jq" targetRef="Gateway_15xl0xr">
         <bpmn:extensionElements>
+          <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+            <camunda:field name="fields">
+              <camunda:expression>["applicationId", "applicationStatus", "cssaStatus"]</camunda:expression>
+            </camunda:field>
+          </camunda:executionListener>
           <camunda:executionListener event="take">
             <camunda:script scriptFormat="javascript">execution.setVariable('cssaFormUrl', execution.getVariable('formUrl'));</camunda:script>
           </camunda:executionListener>
@@ -410,16 +415,8 @@ execution.setVariable('requestStatus', "Resubmitted");</camunda:script>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_07enxwq" name="Approved/Rejected" sourceRef="Gateway_15xl0xr" targetRef="Event_129m2pb">
         <bpmn:extensionElements>
-          <camunda:executionListener event="take">
-            <camunda:script scriptFormat="javascript">execution.setVariable('cssaStatus', execution.getVariable('action'));</camunda:script>
-          </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.CombineSubmissionBundleListener" event="take" />
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.RequestStateListener" event="take" />
-          <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
-            <camunda:field name="fields">
-              <camunda:expression>["applicationId", "applicationStatus", "srcrStatus"]</camunda:expression>
-            </camunda:field>
-          </camunda:executionListener>
         </bpmn:extensionElements>
         <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected' or action == 'Approved' }</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
@@ -437,6 +434,11 @@ execution.setVariable('cssaStatus', execution.getVariable('action'));</camunda:s
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_13zl1nd" sourceRef="Activity_1lysqui" targetRef="Gateway_11ub1p6">
         <bpmn:extensionElements>
+          <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+            <camunda:field name="fields">
+              <camunda:expression>["applicationId", "applicationStatus", "cssaStatus"]</camunda:expression>
+            </camunda:field>
+          </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.CombineSubmissionBundleListener" event="take" />
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.RequestStateListener" event="take" />
         </bpmn:extensionElements>
@@ -702,6 +704,11 @@ execution.setVariable('requestStatus', "Resubmitted");</camunda:script>
       <bpmn:sequenceFlow id="Flow_0cdvwnp" sourceRef="Activity_15cbea9" targetRef="Activity_1voobmv" />
       <bpmn:sequenceFlow id="Flow_1ccbyzk" sourceRef="Activity_1voobmv" targetRef="Gateway_0wyokmr">
         <bpmn:extensionElements>
+          <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+            <camunda:field name="fields">
+              <camunda:expression>["applicationId", "applicationStatus", "srcrStatus"]</camunda:expression>
+            </camunda:field>
+          </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.CombineSubmissionBundleListener" event="take" />
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.RequestStateListener" event="take" />
         </bpmn:extensionElements>
@@ -751,6 +758,11 @@ execution.setVariable('requestStatus', "Resubmitted");</camunda:script>
       <bpmn:sequenceFlow id="Flow_0qaeplv" sourceRef="Activity_15ke6f4" targetRef="Activity_026ojgg" />
       <bpmn:sequenceFlow id="Flow_0mtd57d" sourceRef="Activity_026ojgg" targetRef="Gateway_137ft2z">
         <bpmn:extensionElements>
+          <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+            <camunda:field name="fields">
+              <camunda:expression>["applicationId", "applicationStatus", "srcrStatus"]</camunda:expression>
+            </camunda:field>
+          </camunda:executionListener>
           <camunda:executionListener event="take">
             <camunda:script scriptFormat="javascript">execution.setVariable('srcrFormUrl', execution.getVariable('formUrl'));</camunda:script>
           </camunda:executionListener>
@@ -758,16 +770,8 @@ execution.setVariable('requestStatus', "Resubmitted");</camunda:script>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_0k5l8nk" name="Approved/Rejected" sourceRef="Gateway_137ft2z" targetRef="Event_00asrt1">
         <bpmn:extensionElements>
-          <camunda:executionListener event="take">
-            <camunda:script scriptFormat="javascript">execution.setVariable('srcrStatus', execution.getVariable('action'));</camunda:script>
-          </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.CombineSubmissionBundleListener" event="take" />
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.RequestStateListener" event="take" />
-          <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
-            <camunda:field name="fields">
-              <camunda:expression>["applicationId", "applicationStatus", "srcrStatus"]</camunda:expression>
-            </camunda:field>
-          </camunda:executionListener>
         </bpmn:extensionElements>
         <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Approved' or action == 'Rejected' }</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
@@ -821,6 +825,11 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_0h34vew" sourceRef="Activity_0idq8ua" targetRef="Gateway_102i3iq">
         <bpmn:extensionElements>
+          <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+            <camunda:field name="fields">
+              <camunda:expression>["applicationId", "applicationStatus", "srcrStatus"]</camunda:expression>
+            </camunda:field>
+          </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.CombineSubmissionBundleListener" event="take" />
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.RequestStateListener" event="take" />
         </bpmn:extensionElements>
