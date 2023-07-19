@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_1h338s2" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.11.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_1h338s2" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.11.0">
   <decision id="decide-email-template" name="email-template">
     <decisionTable id="decisionTable_1">
       <input id="input_1" label="category">
@@ -12,7 +12,6 @@
       <output id="OutputClause_0c48jer" label="cc" name="cc" typeRef="string" />
       <output id="OutputClause_1ux6lei" label="bcc" name="bcc" typeRef="string" />
       <output id="OutputClause_0h396nn" label="subject" name="subject" typeRef="string" />
-      <output id="OutputClause_1eheosq" label="body" name="body" typeRef="string" biodi:width="192" />
       <output id="OutputClause_1o2aisg" label="file" name="file" typeRef="string" />
       <output id="OutputClause_02o2otj" label="support" name="support" typeRef="string" />
       <rule id="DecisionRule_1wmujno">
@@ -34,18 +33,8 @@
         <outputEntry id="LiteralExpression_1modk4k">
           <text>"SIR Application Rejected"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_00d4hs3" expressionLanguage="juel">
-          <text>"Hello " + ${name}  + ", &lt;br&gt;&lt;br&gt;
-      
-We have reviewed your Site Information Request. Unfortunately your application has been rejected by the site information officer. &lt;br&gt;&lt;br&gt;
-
-Application Number : " + ${applicationId}  + "&lt;br&gt;&lt;br&gt;
-  
-Best Regards&lt;br&gt;
-Environmental Protection Division"</text>
-        </outputEntry>
         <outputEntry id="LiteralExpression_18eytpn">
-          <text></text>
+          <text>"templates/sir_application_rejected.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0q4faet">
           <text>"epd-support@gov.bc.ca"</text>
