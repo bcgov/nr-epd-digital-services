@@ -426,7 +426,7 @@ execution.setVariable('requestStatus', "Resubmitted");</camunda:script>
       <bpmn:sequenceFlow id="Flow_0yy721o" name="Rejected" sourceRef="Gateway_11ub1p6" targetRef="Event_129m2pb">
         <bpmn:extensionElements>
           <camunda:executionListener event="take">
-            <camunda:script scriptFormat="javascript">execution.setVariable('cssaFormUrl', execution.getVariable('formUrl'));</camunda:script>
+            <camunda:script scriptFormat="javascript">execution.setVariable('bundleUrl', execution.getVariable('formUrl'));</camunda:script>
           </camunda:executionListener>
         </bpmn:extensionElements>
         <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected'}</bpmn:conditionExpression>
@@ -440,6 +440,9 @@ execution.setVariable('requestStatus', "Resubmitted");</camunda:script>
             <camunda:field name="fields">
               <camunda:expression>["applicationId", "applicationStatus", "cssaStatus"]</camunda:expression>
             </camunda:field>
+          </camunda:executionListener>
+          <camunda:executionListener event="take">
+            <camunda:script scriptFormat="javascript">execution.setVariable('cssaFormUrl', execution.getVariable('formUrl'));</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.CombineSubmissionBundleListener" event="take" />
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.RequestStateListener" event="take" />
@@ -711,6 +714,9 @@ execution.setVariable('requestStatus', "Resubmitted");</camunda:script>
               <camunda:expression>["applicationId", "applicationStatus", "srcrStatus"]</camunda:expression>
             </camunda:field>
           </camunda:executionListener>
+          <camunda:executionListener event="take">
+            <camunda:script scriptFormat="javascript">execution.setVariable('srcrFormUrl', execution.getVariable('formUrl'));</camunda:script>
+          </camunda:executionListener>          
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.CombineSubmissionBundleListener" event="take" />
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.RequestStateListener" event="take" />
         </bpmn:extensionElements>
@@ -718,7 +724,7 @@ execution.setVariable('requestStatus', "Resubmitted");</camunda:script>
       <bpmn:sequenceFlow id="Flow_0zzhoui" name="Rejected" sourceRef="Gateway_0wyokmr" targetRef="Event_00asrt1">
         <bpmn:extensionElements>
           <camunda:executionListener event="take">
-            <camunda:script scriptFormat="javascript">execution.setVariable('srcrFormUrl', execution.getVariable('formUrl'));</camunda:script>
+            <camunda:script scriptFormat="javascript">execution.setVariable('bundleUrl', execution.getVariable('formUrl'));</camunda:script>
           </camunda:executionListener>
         </bpmn:extensionElements>
         <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected'}</bpmn:conditionExpression>
@@ -790,7 +796,7 @@ execution.setVariable('requestStatus', "Resubmitted");</camunda:script>
       <bpmn:sequenceFlow id="Flow_14snpj2" name="Rejected" sourceRef="Gateway_102i3iq" targetRef="Event_00asrt1">
         <bpmn:extensionElements>
           <camunda:executionListener event="take">
-            <camunda:script scriptFormat="javascript">execution.setVariable('srcrFormUrl', execution.getVariable('formUrl'));</camunda:script>
+            <camunda:script scriptFormat="javascript">execution.setVariable('bundleUrl', execution.getVariable('formUrl'));</camunda:script>
           </camunda:executionListener>
         </bpmn:extensionElements>
         <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected' }</bpmn:conditionExpression>
@@ -832,6 +838,9 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
             <camunda:field name="fields">
               <camunda:expression>["applicationId", "applicationStatus", "srcrStatus"]</camunda:expression>
             </camunda:field>
+          </camunda:executionListener>
+          <camunda:executionListener event="take">
+            <camunda:script scriptFormat="javascript">execution.setVariable('srcrFormUrl', execution.getVariable('formUrl'));</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.CombineSubmissionBundleListener" event="take" />
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.RequestStateListener" event="take" />
