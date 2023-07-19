@@ -5,5 +5,5 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3014:8080"
+      - "3004:8080"
     tty: true
