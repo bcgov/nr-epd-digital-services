@@ -26,6 +26,7 @@ ARG REACT_APP_EXPORT_PDF_ENABLED
 ARG REACT_APP_DOCUMENT_SERVICE_URL
 ARG REACT_APP_CUSTOM_LOGOUT_URL
 ARG REACT_APP_CUSTOM_MAP_URL
+ARG SSH_PRIVATE_KEY
 
 ENV NODE_ENV ${NODE_ENV}
 ENV REACT_APP_API_SERVER_URL ${REACT_APP_API_SERVER_URL}
@@ -56,17 +57,30 @@ ENV PATH /forms-flow-web/app/node_modules/.bin:$PATH
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
 
+RUN mkdir -p /root/.ssh
+RUN chmod 0700 /root/.ssh
 
- COPY id_rsa_ff_ee2 /root/.ssh/id_rsa_ff_ee2
+#RUN echo ${SSH_PRIVATE_KEY} | base64 --decode
+#RUN mkdir -p /root/.ssh/id_rsa_ff_ee
 
- COPY id_rsa_ff_ee2.pub /root/.ssh/id_rsa_ff_ee2.pub
+#RUN  echo  ${SSH_PRIVATE_KEY} | base64 | tr -d \\n > /root/.ssh/id_rsa_ff_ee
 
- RUN chmod 600 /root/.ssh/id_rsa_ff_ee2
- RUN chmod 600 /root/.ssh/id_rsa_ff_ee2.pub 
+#RUN echo ${SSH_PRIVATE_KEY} > /root/.ssh/id_rsa_ff_ee
+#
+# RUN mv /root/.ssh/id_rsa_ff_ee.txt /root/.ssh/id_rsa_ff_ee
 
-RUN mkdir -p /root/.ssh && ssh-keyscan github.com >> /root/.ssh/known_hosts
+COPY id_rsa_ff_ee /root/.ssh/id_rsa_ff_ee
+COPY id_rsa_ff_ee.pub /root/.ssh/id_rsa_ff_ee.pub
 
-RUN GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ff_ee2 -o IdentitiesOnly=yes' git clone git@github.com:AOT-Technologies/forms-flow-ai-ee.git /tmp/forms-flow-ai/
+RUN cat /root/.ssh/id_rsa_ff_ee | xargs echo -e
+
+RUN chmod 600 /root/.ssh/id_rsa_ff_ee
+RUN chmod 600 /root/.ssh/id_rsa_ff_ee.pub 
+
+RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
+
+RUN GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ff_ee -o IdentitiesOnly=yes' git clone git@github.com:AOT-Technologies/forms-flow-ai-ee.git /tmp/forms-flow-ai/
+#RUN git clone git@github.com:AOT-Technologies/forms-flow-ai-ee.git /tmp/forms-flow-ai/ --config core.sshCommand="ssh -i ${SSH_PRIVATE_KEY}"
 
 RUN cp -r /tmp/forms-flow-ai/forms-flow-web/. /forms-flow-web/app
 
