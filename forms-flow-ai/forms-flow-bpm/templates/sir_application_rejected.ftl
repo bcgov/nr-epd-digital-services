@@ -15,7 +15,7 @@
                 <img style="width: 151px;" src="https://taft.fin.gov.bc.ca/img/BCID_H_rgb_pos_150.png">
             </td>
             <td>
-                <span id="sir_notification" style="overflow: visible;line-height: 30px;text-align: left;font-style: normal;font-weight: bold;font-size: 20px;color: rgba(0, 51, 102, 1);letter-spacing: -0.2px;vertical-align: middle;">Tobacco and Fuel Tax Exemption System</span>
+                <span id="sir_notification" style="overflow: visible;line-height: 30px;text-align: left;font-style: normal;font-weight: bold;font-size: 20px;color: rgba(0, 51, 102, 1);letter-spacing: -0.2px;vertical-align: middle;">Site Remediation System</span>
             </td>
         </tr>
     </table>
@@ -35,7 +35,7 @@
         <tr>
             <td>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                  Hello ${firstName},
+                  Hello ${name},
                 </p>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
                     We have reviewed your Site Information Request. Unfortunately your application has been rejected by the site information officer.
