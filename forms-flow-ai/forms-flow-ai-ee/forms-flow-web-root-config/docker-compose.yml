@@ -43,6 +43,8 @@ services:
       - REACT_APP_ENABLE_DASHBOARDS_MODULE=${ENABLE_DASHBOARDS_MODULE:-true}
       - REACT_APP_ENABLE_PROCESSES_MODULE=${ENABLE_PROCESSES_MODULE:-true}
       - REACT_APP_ENABLE_APPLICATIONS_MODULE=${ENABLE_APPLICATIONS_MODULE:-true}
+      - REACT_APP_CUSTOM_MAP_URL=${EPD_CUSTOM_MAP_URL:-http://localhost:4000/map}
+      - REACT_APP_CUSTOM_LOGOUT_URL=${EPD_IDP_LOGOUT_URL:-https://logontest7.gov.bc.ca/clp-cgi/logoff.cgi?retnow=1&returl=https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/protocol/openid-connect/logout?post_logout_redirect_uri=http://localhost:4000}
     ports:
       - "3000:8080"
     tty: true

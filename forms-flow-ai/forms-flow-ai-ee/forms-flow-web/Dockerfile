@@ -46,6 +46,15 @@ RUN GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ff_ee -o IdentitiesOnly=yes' git clone
 
 RUN cp -r /tmp/forms-flow-ai/forms-flow-web/. /forms-flow-web/app
 
+# Customizations
+ARG CUSTOM_SRC_DIR=src
+COPY ./  /tmp/${CUSTOM_SRC_DIR}/
+RUN cp -R /tmp/${CUSTOM_SRC_DIR}/* /forms-flow-web/app/ && rm -Rf /tmp/${CUSTOM_SRC_DIR}
+
+ARG CUSTOM_SRC_DIR=public
+COPY ./  /tmp/${CUSTOM_SRC_DIR}/
+RUN cp -R /tmp/${CUSTOM_SRC_DIR}/* /forms-flow-web/app/ && rm -Rf /tmp/${CUSTOM_SRC_DIR}/
+
 
 # Build the application
 RUN npm run build
