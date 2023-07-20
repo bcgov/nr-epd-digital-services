@@ -14,7 +14,7 @@ RUN apk update && apk upgrade && \
 # install and cache app dependencies
 
 
-RUN git clone https://github.com/AOT-Technologies/forms-flow-ai-micro-front-ends.git /tmp/forms-flow-ai/
+RUN git clone https://github.com/AOT-Technologies/forms-flow-ai-micro-front-ends.git -b epd-micro-ff-ee-5.2.0 /tmp/forms-flow-ai/
 RUN cp -r /tmp/forms-flow-ai/forms-flow-nav/. /forms-flow-nav/app 
 
 COPY package-lock.json /forms-flow-nav/app/package-lock.json
