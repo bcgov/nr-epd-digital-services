@@ -77,18 +77,27 @@ export default class Maps extends ReactComponent {
       componentName,
       newValue
     ) => {
-      currentInstance.Formio.forms[formId].everyComponent(
-        (componentInstance) => {
-          if (componentInstance.key === componentName) {
-            componentInstance.setValue(newValue);
-          }         
-        }
-      );
+
+      for(let i in currentInstance.Formio.forms)
+      {
+          if(currentInstance.Formio.forms[i].components.length > 0)
+          {
+            currentInstance.Formio.forms[i].everyComponent(
+              (componentInstance) => {
+                if (componentInstance.key === componentName) {
+                  componentInstance.setValue(newValue);
+                }         
+              }
+            );
+          }
+      }
+
+      
     };
 
     ReactDOM.render(   
       <a
-        href="#"
+        href="javascript:void(0)"
         onClick={() => {
           console.log(this);
 
@@ -183,6 +192,8 @@ export default class Maps extends ReactComponent {
           window.addEventListener("message", myListener, { once: true });
 
           console.log("adding listner end");
+
+          return false;
         }}
       >
         Show Map
