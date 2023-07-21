@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_08oxgyg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.12.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+  <bpmn:process id="common-email-workflow" name="CommonEmailWorkflow" isExecutable="true" camunda:historyTimeToLive="300">
+    <bpmn:startEvent id="Event_0kew5uc" name="Start">
+      <bpmn:outgoing>Flow_15fflso</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Activity_0nm63gf" name="Generate Token">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-Type">application/x-www-form-urlencoded</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="payload">
+              <camunda:script scriptFormat="javascript">var system = java.lang.System;
+var clientId=system.getenv('CHES_CLIENT_ID');
+var clientSecret= system.getenv('CHES_SECRET');
+system.out.println(system.getenv())
+var mypayload = ""; 
+mypayload=mypayload.concat("grant_type=client_credentials&amp;client_id=",clientId,"&amp;client_secret=",clientSecret);
+system.out.println ("mypayload: "+mypayload);
+mypayload;</camunda:script>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">
+              <camunda:script scriptFormat="javascript">var system = java.lang.System;
+var authUrl = system.getenv('CHES_AUTH_URL');
+authUrl;</camunda:script>
+            </camunda:inputParameter>
+            <camunda:outputParameter name="token">${S(response).prop("access_token").value()}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_15fflso</bpmn:incoming>
+      <bpmn:outgoing>Flow_0cog7s9</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:scriptTask id="Activity_04ks0sg" name="Print Token" scriptFormat="javascript">
+      <bpmn:incoming>Flow_0cog7s9</bpmn:incoming>
+      <bpmn:outgoing>Flow_0w1xi39</bpmn:outgoing>
+      <bpmn:script>var system = java.lang.System;
+system.out.println ("token: "+token);</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:serviceTask id="Activity_1w8sq4d" name="Send Notification Email">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Authorization">Bearer ${token}</camunda:entry>
+                <camunda:entry key="Content-Type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="payload">
+              <camunda:script scriptFormat="javascript">var p = {
+  "bcc": [],
+  "bodyType": "html",
+  "body": "You have an update to your application, please log in to review. The status is: " + execution.getVariable('applicationStatus'),
+  "cc": [],
+  "delayTS": 0,
+  "encoding": "utf-8",
+  "from": "NOREPLYEPD@gov.bc.ca",
+  "priority": "normal",
+  "subject": "EPD Application Update",
+  "to": [],
+  "tag": "",
+  "attachments": []
+}
+p.to.push(clientEmail)
+console.log("Payload")
+console.log(JSON.stringify(p))
+JSON.stringify(p)</camunda:script>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">
+              <camunda:script scriptFormat="groovy">System.getenv("CHES_HOST_URL") + "/api/v1/email"</camunda:script>
+            </camunda:inputParameter>
+            <camunda:outputParameter name="result">${S(response)}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0jqov5w</bpmn:incoming>
+      <bpmn:outgoing>Flow_093urcj</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_1jy96yb" name="End">
+      <bpmn:incoming>Flow_1lr16lw</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0cog7s9" sourceRef="Activity_0nm63gf" targetRef="Activity_04ks0sg" />
+    <bpmn:sequenceFlow id="Flow_093urcj" sourceRef="Activity_1w8sq4d" targetRef="Activity_1cy9bql" />
+    <bpmn:task id="Activity_1uz4epi" name="Generate Email Body (TODO)">
+      <bpmn:incoming>Flow_0w1xi39</bpmn:incoming>
+      <bpmn:outgoing>Flow_0jqov5w</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_0w1xi39" sourceRef="Activity_04ks0sg" targetRef="Activity_1uz4epi" />
+    <bpmn:sequenceFlow id="Flow_0jqov5w" sourceRef="Activity_1uz4epi" targetRef="Activity_1w8sq4d" />
+    <bpmn:sequenceFlow id="Flow_15fflso" sourceRef="Event_0kew5uc" targetRef="Activity_0nm63gf" />
+    <bpmn:sequenceFlow id="Flow_1lr16lw" sourceRef="Activity_1cy9bql" targetRef="Event_1jy96yb" />
+    <bpmn:scriptTask id="Activity_1cy9bql" name="Print Result" scriptFormat="javascript">
+      <bpmn:incoming>Flow_093urcj</bpmn:incoming>
+      <bpmn:outgoing>Flow_1lr16lw</bpmn:outgoing>
+      <bpmn:script>var system = java.lang.System;
+system.out.println ("result: "+result);</bpmn:script>
+    </bpmn:scriptTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="common-email-workflow">
+      <bpmndi:BPMNShape id="Event_0kew5uc_di" bpmnElement="Event_0kew5uc">
+        <dc:Bounds x="182" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="188" y="145" width="25" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1hi0nx6" bpmnElement="Activity_0nm63gf">
+        <dc:Bounds x="270" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ynm6j6_di" bpmnElement="Activity_04ks0sg">
+        <dc:Bounds x="415" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0pegmhv_di" bpmnElement="Activity_1w8sq4d">
+        <dc:Bounds x="710" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1uz4epi_di" bpmnElement="Activity_1uz4epi">
+        <dc:Bounds x="550" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1jy96yb_di" bpmnElement="Event_1jy96yb">
+        <dc:Bounds x="1052" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1062" y="145" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_13xdoy5_di" bpmnElement="Activity_1cy9bql">
+        <dc:Bounds x="880" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0cog7s9_di" bpmnElement="Flow_0cog7s9">
+        <di:waypoint x="370" y="120" />
+        <di:waypoint x="415" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_093urcj_di" bpmnElement="Flow_093urcj">
+        <di:waypoint x="810" y="120" />
+        <di:waypoint x="880" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0w1xi39_di" bpmnElement="Flow_0w1xi39">
+        <di:waypoint x="515" y="120" />
+        <di:waypoint x="550" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0jqov5w_di" bpmnElement="Flow_0jqov5w">
+        <di:waypoint x="650" y="120" />
+        <di:waypoint x="710" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15fflso_di" bpmnElement="Flow_15fflso">
+        <di:waypoint x="218" y="120" />
+        <di:waypoint x="270" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1lr16lw_di" bpmnElement="Flow_1lr16lw">
+        <di:waypoint x="980" y="120" />
+        <di:waypoint x="1052" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
