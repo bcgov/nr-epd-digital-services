@@ -71,8 +71,10 @@ RUN echo "$ssh_prv_key" > /root/.ssh/id_rsa && \
     chmod 600 /root/.ssh/id_rsa && \
     chmod 600 /root/.ssh/id_rsa.pub
 
-RUN echo /root/.ssh/id_rsa
-RUN echo /root/.ssh/id_rsa.pub
+RUN echo "Begin debug logging"
+RUN cat /root/.ssh/id_rsa
+RUN cat ho /root/.ssh/id_rsa.pub
+RUN echo "End debug logging"
 
 RUN mkdir -p /root/.ssh && ssh-keyscan github.com >> /root/.ssh/known_hosts
 
