@@ -26,6 +26,8 @@ ARG REACT_APP_EXPORT_PDF_ENABLED
 ARG REACT_APP_DOCUMENT_SERVICE_URL
 ARG REACT_APP_CUSTOM_LOGOUT_URL
 ARG REACT_APP_CUSTOM_MAP_URL
+ARG ssh_prv_key
+ARG ssh_pub_key
 
 ENV NODE_ENV ${NODE_ENV}
 ENV REACT_APP_API_SERVER_URL ${REACT_APP_API_SERVER_URL}
@@ -57,15 +59,30 @@ RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
 
 
- COPY id_rsa_ff_ee2 /root/.ssh/id_rsa_ff_ee2
+#  COPY id_rsa_ff_ee2 /root/.ssh/id_rsa_ff_ee2
 
- COPY id_rsa_ff_ee2.pub /root/.ssh/id_rsa_ff_ee2.pub
+#  COPY id_rsa_ff_ee2.pub /root/.ssh/id_rsa_ff_ee2.pub
 
- RUN chmod 600 /root/.ssh/id_rsa_ff_ee2
- RUN chmod 600 /root/.ssh/id_rsa_ff_ee2.pub 
+#  RUN chmod 600 /root/.ssh/id_rsa_ff_ee2
+#  RUN chmod 600 /root/.ssh/id_rsa_ff_ee2.pub 
+
+   # Authorize SSH Host
+RUN mkdir -p /root/.ssh && \
+    chmod 0700 /root/.ssh && \
+    echo "    IdentityFile ~/.ssh/id_rsa" >> /etc/ssh/ssh_config
+
+# Add the keys and set permissions
+RUN echo "$ssh_prv_key" > /root/.ssh/id_rsa && \
+    echo "$ssh_pub_key" > /root/.ssh/id_rsa.pub && \
+    chmod 600 /root/.ssh/id_rsa && \
+    chmod 600 /root/.ssh/id_rsa.pub
+
+
 
 RUN mkdir -p /root/.ssh && ssh-keyscan github.com >> /root/.ssh/known_hosts
 
+
+## ARC TODO: GET THIS FILE AS AN ENV VAR SOMEHOW
 RUN GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ff_ee2 -o IdentitiesOnly=yes' git clone git@github.com:AOT-Technologies/forms-flow-ai-ee.git /tmp/forms-flow-ai/
 
 RUN cp -r /tmp/forms-flow-ai/forms-flow-web/. /forms-flow-web/app
