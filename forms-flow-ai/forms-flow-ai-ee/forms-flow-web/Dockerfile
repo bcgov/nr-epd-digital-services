@@ -59,12 +59,6 @@ RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
 
 
-#  COPY id_rsa_ff_ee2 /root/.ssh/id_rsa_ff_ee2
-
-#  COPY id_rsa_ff_ee2.pub /root/.ssh/id_rsa_ff_ee2.pub
-
-#  RUN chmod 600 /root/.ssh/id_rsa_ff_ee2
-#  RUN chmod 600 /root/.ssh/id_rsa_ff_ee2.pub 
 
    # Authorize SSH Host
 RUN mkdir -p /root/.ssh && \
@@ -82,8 +76,7 @@ RUN echo "$ssh_prv_key" > /root/.ssh/id_rsa && \
 RUN mkdir -p /root/.ssh && ssh-keyscan github.com >> /root/.ssh/known_hosts
 
 
-## ARC TODO: GET THIS FILE AS AN ENV VAR SOMEHOW
-RUN GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ff_ee2 -o IdentitiesOnly=yes' git clone git@github.com:AOT-Technologies/forms-flow-ai-ee.git /tmp/forms-flow-ai/
+RUN git clone git@github.com:AOT-Technologies/forms-flow-ai-ee.git /tmp/forms-flow-ai/
 
 RUN cp -r /tmp/forms-flow-ai/forms-flow-web/. /forms-flow-web/app
 
