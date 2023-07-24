@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1rb8wsa" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.12.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
+  <bpmn:collaboration id="Collaboration_14e80c3">
+    <bpmn:participant id="Participant_1569q03" name="CSSA Workflow " processRef="cssa-workflow" />
+  </bpmn:collaboration>
+  <bpmn:process id="cssa-workflow" name="CSSA Workflow" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_0mph3xb">
+      <bpmn:lane id="Lane_1h4fynz" name="Caseworker">
+        <bpmn:flowNodeRef>Activity_04r8f23</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1qw997s</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_00tohfy</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1ff78ds</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_1qm6l82</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1omb0e4</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_00mefnp" name="SDM">
+        <bpmn:flowNodeRef>Activity_1d5shlh</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0bgk1vx</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0wpacz7</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1n0lr9l</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_1t7witx</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:scriptTask id="Activity_1d5shlh" name="Debug Log" scriptFormat="javascript">
+      <bpmn:incoming>Flow_1j1io38</bpmn:incoming>
+      <bpmn:incoming>Flow_0si4iok</bpmn:incoming>
+      <bpmn:incoming>Flow_01wog1m</bpmn:incoming>
+      <bpmn:outgoing>Flow_1736w99</bpmn:outgoing>
+      <bpmn:script>var system = java.lang.System;
+system.out.println ("Sent to SDM");</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:userTask id="Activity_0bgk1vx" name="SDM Updates Form" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
+      <bpmn:extensionElements>
+        <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
+          <camunda:field name="copyDataIndicator">
+            <camunda:expression>Y</camunda:expression>
+          </camunda:field>
+          <camunda:field name="fields">
+            <camunda:expression>["pid","applicationId","process_pid","task_id"]</camunda:expression>
+          </camunda:field>
+        </camunda:taskListener>
+        <camunda:taskListener event="create">
+          <camunda:script scriptFormat="javascript">task.execution.setVariable('task_id',task.getId());</camunda:script>
+        </camunda:taskListener>
+        <camunda:taskListener event="complete">
+          <camunda:script scriptFormat="javascript">task.execution.setVariable('requestStatus', task.execution.getVariable('action'));
+task.execution.setVariable('requestType', 'CSSA');
+task.execution.setVariable('deleteReason', "completed");
+task.execution.setVariable('cssaStatus', task.execution.getVariable('action'));</camunda:script>
+        </camunda:taskListener>
+        <camunda:properties>
+          <camunda:property name="formName" value="cssaBundleForm" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1736w99</bpmn:incoming>
+      <bpmn:outgoing>Flow_0z2zmpk</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:receiveTask id="Activity_0wpacz7" name="Application Resubmitted" messageRef="Message_0lm44we">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="start">
+          <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', "Resubmit");</camunda:script>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="start" />
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="start">
+          <camunda:field name="fields">
+            <camunda:expression>["applicationId", "applicationStatus", "cssaStatus"]</camunda:expression>
+          </camunda:field>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="start" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0ntmq91</bpmn:incoming>
+      <bpmn:outgoing>Flow_0si4iok</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:exclusiveGateway id="Gateway_1n0lr9l" name="Action Taken">
+      <bpmn:incoming>Flow_0z2zmpk</bpmn:incoming>
+      <bpmn:outgoing>Flow_03rkwes</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0s6kwqx</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0ntmq91</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_1t7witx" name="End Flow">
+      <bpmn:incoming>Flow_03rkwes</bpmn:incoming>
+      <bpmn:incoming>Flow_0gs43q1</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Activity_04r8f23" name="Caseworker Updates Form" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
+      <bpmn:extensionElements>
+        <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
+          <camunda:field name="copyDataIndicator">
+            <camunda:expression>Y</camunda:expression>
+          </camunda:field>
+          <camunda:field name="fields">
+            <camunda:expression>["pid","applicationId","process_pid","task_id"]</camunda:expression>
+          </camunda:field>
+        </camunda:taskListener>
+        <camunda:taskListener event="create">
+          <camunda:script scriptFormat="javascript">task.execution.setVariable('task_id',task.getId());
+task.execution.setVariableLocal('variable1',"cssa");</camunda:script>
+        </camunda:taskListener>
+        <camunda:taskListener event="complete">
+          <camunda:script scriptFormat="javascript">task.execution.setVariable('requestStatus', task.execution.getVariable('action'));
+task.execution.setVariable('requestType', 'CSSA');
+task.execution.setVariable('deleteReason', "completed");
+task.execution.setVariable('cssaStatus', task.execution.getVariable('action'));</camunda:script>
+        </camunda:taskListener>
+        <camunda:properties>
+          <camunda:property name="formName" value="cssaBundleForm" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1motvr5</bpmn:incoming>
+      <bpmn:outgoing>Flow_1nept3o</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_1qw997s" name="Action Taken">
+      <bpmn:incoming>Flow_1nept3o</bpmn:incoming>
+      <bpmn:outgoing>Flow_1j1io38</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0gs43q1</bpmn:outgoing>
+      <bpmn:outgoing>Flow_06fbd3v</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:receiveTask id="Activity_00tohfy" name="Application Resubmitted" messageRef="Message_0lm44we">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="start">
+          <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', "Resubmit");</camunda:script>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="start" />
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="start">
+          <camunda:field name="fields">
+            <camunda:expression>["applicationId", "applicationStatus", "cssaStatus"]</camunda:expression>
+          </camunda:field>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="start" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_06fbd3v</bpmn:incoming>
+      <bpmn:outgoing>Flow_11w6mij</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:scriptTask id="Activity_1ff78ds" name="Debug Log" scriptFormat="javascript">
+      <bpmn:incoming>Flow_0duzfvj</bpmn:incoming>
+      <bpmn:incoming>Flow_0s6kwqx</bpmn:incoming>
+      <bpmn:incoming>Flow_11w6mij</bpmn:incoming>
+      <bpmn:outgoing>Flow_12yep0a</bpmn:outgoing>
+      <bpmn:script>var system = java.lang.System;
+system.out.println ("Begin CSSA Flow - Sent To Caseworker");
+execution.setVariable('isCaseworker',false);
+system.out.println ("isSentFromSociety "+execution.getVariable('isSentFromSociety'));</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:startEvent id="Event_1qm6l82" name="Start CSSA Flow">
+      <bpmn:outgoing>Flow_0duzfvj</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:exclusiveGateway id="Gateway_1omb0e4" name="Is Sent From Society">
+      <bpmn:incoming>Flow_12yep0a</bpmn:incoming>
+      <bpmn:outgoing>Flow_1motvr5</bpmn:outgoing>
+      <bpmn:outgoing>Flow_01wog1m</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1j1io38" name="Accepted" sourceRef="Gateway_1qw997s" targetRef="Activity_1d5shlh">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0si4iok" sourceRef="Activity_0wpacz7" targetRef="Activity_1d5shlh">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+          <camunda:field name="fields">
+            <camunda:expression>["applicationId", "applicationStatus", "cssaStatus"]</camunda:expression>
+          </camunda:field>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', "Resubmitted");</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_01wog1m" name="Yes" sourceRef="Gateway_1omb0e4" targetRef="Activity_1d5shlh">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isSentFromSociety == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1736w99" sourceRef="Activity_1d5shlh" targetRef="Activity_0bgk1vx">
+      <bpmn:extensionElements />
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0z2zmpk" sourceRef="Activity_0bgk1vx" targetRef="Gateway_1n0lr9l">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('cssaFormUrl', execution.getVariable('formUrl'));</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0ntmq91" name="Returned" sourceRef="Gateway_1n0lr9l" targetRef="Activity_0wpacz7">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0s6kwqx" name="Recheck" sourceRef="Gateway_1n0lr9l" targetRef="Activity_1ff78ds">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Recheck'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_03rkwes" name="Approved/Rejected" sourceRef="Gateway_1n0lr9l" targetRef="Event_1t7witx">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('cssaStatus', execution.getVariable('action'));</camunda:script>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.CombineSubmissionBundleListener" event="take" />
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.RequestStateListener" event="take" />
+      </bpmn:extensionElements>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected' or action == 'Approved' }</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0gs43q1" name="Rejected" sourceRef="Gateway_1qw997s" targetRef="Event_1t7witx">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('cssaFormUrl', execution.getVariable('formUrl'));
+execution.setVariable('cssaStatus', execution.getVariable('action'));</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1motvr5" name="No" sourceRef="Gateway_1omb0e4" targetRef="Activity_04r8f23">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isSentFromSociety == false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1nept3o" sourceRef="Activity_04r8f23" targetRef="Gateway_1qw997s">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.CombineSubmissionBundleListener" event="take" />
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.RequestStateListener" event="take" />
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_06fbd3v" name="Returned" sourceRef="Gateway_1qw997s" targetRef="Activity_00tohfy">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_11w6mij" sourceRef="Activity_00tohfy" targetRef="Activity_1ff78ds">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+          <camunda:field name="fields">
+            <camunda:expression>["applicationId", "applicationStatus", "cssaStatus"]</camunda:expression>
+          </camunda:field>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', "Resubmitted");</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0duzfvj" sourceRef="Event_1qm6l82" targetRef="Activity_1ff78ds">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('requestStatus', 'New');
+execution.setVariable('requestType', 'CSSA');</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_12yep0a" sourceRef="Activity_1ff78ds" targetRef="Gateway_1omb0e4">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.RequestStateListener" event="take" />
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmn:message id="Message_1ngb2eg" name="application_resubmitted" />
+  <bpmn:message id="Message_0lm44we" name="application_resubmitted" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_14e80c3">
+      <bpmndi:BPMNShape id="Participant_1569q03_di" bpmnElement="Participant_1569q03" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="770" height="960" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_00mefnp_di" bpmnElement="Lane_00mefnp" isHorizontal="true">
+        <dc:Bounds x="190" y="650" width="740" height="390" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1h4fynz_di" bpmnElement="Lane_1h4fynz" isHorizontal="true">
+        <dc:Bounds x="190" y="80" width="740" height="570" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1q6m3z0_di" bpmnElement="Activity_1d5shlh">
+        <dc:Bounds x="330" y="690" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1rh8czo_di" bpmnElement="Activity_0bgk1vx">
+        <dc:Bounds x="330" y="830" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_07fq0tg" bpmnElement="Activity_0wpacz7">
+        <dc:Bounds x="510" y="690" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1n0lr9l_di" bpmnElement="Gateway_1n0lr9l" isMarkerVisible="true">
+        <dc:Bounds x="535" y="845" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="483" y="843" width="63" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1t7witx_di" bpmnElement="Event_1t7witx">
+        <dc:Bounds x="542" y="952" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="536" y="998" width="47" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1wag1gh_di" bpmnElement="Activity_04r8f23">
+        <dc:Bounds x="330" y="390" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1qw997s_di" bpmnElement="Gateway_1qw997s" isMarkerVisible="true">
+        <dc:Bounds x="355" y="535" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="298" y="523" width="63" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_00tohfy_di" bpmnElement="Activity_00tohfy">
+        <dc:Bounds x="510" y="520" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_03sa1cp_di" bpmnElement="Activity_1ff78ds">
+        <dc:Bounds x="330" y="160" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1qm6l82_di" bpmnElement="Event_1qm6l82">
+        <dc:Bounds x="242" y="182" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="208" y="163" width="83" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1omb0e4_di" bpmnElement="Gateway_1omb0e4" isMarkerVisible="true">
+        <dc:Bounds x="355" y="275" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="418" y="290" width="64" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1j1io38_di" bpmnElement="Flow_1j1io38">
+        <di:waypoint x="380" y="585" />
+        <di:waypoint x="380" y="690" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="387" y="613" width="46" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0si4iok_di" bpmnElement="Flow_0si4iok">
+        <di:waypoint x="510" y="730" />
+        <di:waypoint x="430" y="730" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01wog1m_di" bpmnElement="Flow_01wog1m">
+        <di:waypoint x="355" y="300" />
+        <di:waypoint x="240" y="300" />
+        <di:waypoint x="240" y="730" />
+        <di:waypoint x="330" y="730" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="291" y="283" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1736w99_di" bpmnElement="Flow_1736w99">
+        <di:waypoint x="380" y="770" />
+        <di:waypoint x="380" y="830" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0z2zmpk_di" bpmnElement="Flow_0z2zmpk">
+        <di:waypoint x="430" y="870" />
+        <di:waypoint x="535" y="870" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ntmq91_di" bpmnElement="Flow_0ntmq91">
+        <di:waypoint x="560" y="845" />
+        <di:waypoint x="560" y="770" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="567" y="793" width="46" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0s6kwqx_di" bpmnElement="Flow_0s6kwqx">
+        <di:waypoint x="585" y="870" />
+        <di:waypoint x="830" y="870" />
+        <di:waypoint x="830" y="200" />
+        <di:waypoint x="430" y="200" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="648" y="853" width="44" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03rkwes_di" bpmnElement="Flow_03rkwes">
+        <di:waypoint x="560" y="895" />
+        <di:waypoint x="560" y="952" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="565" y="906" width="82" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0gs43q1_di" bpmnElement="Flow_0gs43q1">
+        <di:waypoint x="355" y="560" />
+        <di:waypoint x="270" y="560" />
+        <di:waypoint x="270" y="970" />
+        <di:waypoint x="542" y="970" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="293" y="563" width="44" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1motvr5_di" bpmnElement="Flow_1motvr5">
+        <di:waypoint x="380" y="325" />
+        <di:waypoint x="380" y="390" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="388" y="355" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nept3o_di" bpmnElement="Flow_1nept3o">
+        <di:waypoint x="380" y="470" />
+        <di:waypoint x="380" y="535" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_06fbd3v_di" bpmnElement="Flow_06fbd3v">
+        <di:waypoint x="405" y="560" />
+        <di:waypoint x="510" y="560" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="435" y="563" width="46" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11w6mij_di" bpmnElement="Flow_11w6mij">
+        <di:waypoint x="560" y="520" />
+        <di:waypoint x="560" y="200" />
+        <di:waypoint x="430" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0duzfvj_di" bpmnElement="Flow_0duzfvj">
+        <di:waypoint x="278" y="200" />
+        <di:waypoint x="330" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12yep0a_di" bpmnElement="Flow_12yep0a">
+        <di:waypoint x="380" y="240" />
+        <di:waypoint x="380" y="275" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
