@@ -17,7 +17,12 @@ docker build -t ff-ee-web --build-arg ssh_prv_key="$(cat /Users/adamcoard/Dev/nr
 
 # DEBUG ONLY REMOVE
 docker build -t ff-ee-web --build-arg ssh_prv_key="$(cat /Users/adamcoard/Dev/nr-epd-digital-services/notes/id_rsa_epd_newlines)" --build-arg ssh_pub_key="$(cat /Users/adamcoard/Dev/nr-epd-digital-services/notes/id_rsa_epd.pub)" .
+
+## Run command
+docker run --name ff-ee-web -p 8080:8080 ff-ee-web
 ```
+
+
 
 ## Upload SSH Key to OpenShift
 
