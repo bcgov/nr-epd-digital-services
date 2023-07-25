@@ -100,7 +100,7 @@ parameters:
   displayName: Git Reference
   description: The git reference or branch.
   required: true
-  value: dev-docker-ee
+  value: dev
 - name: SOURCE_CONTEXT_DIR
   displayName: Source Context Directory
   description: The source context directory.
