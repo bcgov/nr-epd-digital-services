@@ -11,6 +11,7 @@ resources:
 formsflow:
   configmap: forms-flow-ai # name of formsflow.ai configmap
   secret: forms-flow-ai #name of formsflow.ai secret
+  auth: forms-flow-ai-auth
 ingress: 
   enabled: true # create an ingress for this component 
   hostname: "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}"
@@ -18,5 +19,5 @@ ingress:
 image:
   registry: docker.io
   repository: formsflow/forms-flow-data-analysis-api
-  tag: v5.0.1 #The image tag to pull from
+  tag: v5.2.0 #The image tag to pull from
 

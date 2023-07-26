@@ -1,9 +1,16 @@
 ---
 Domain: #<DEFINE_ME>
-
+formsflowdb:
+  postgresql:
+    fullnameOverride: forms-flow-ai-postgresql-ha-pgpool
+    enabled: true
+    database: postgres
+  service:
+    ports:
+      postgresql: 5432
 forms-flow-bpm:
   clientid: "forms-flow-bpm"
-  clientsecret: "*************"
+  clientsecret: "786001d6-68a8-4519-903c-bc5b5a870d68"
 
 forms-flow-forms:
   admin:
@@ -13,19 +20,24 @@ forms-flow-forms:
 forms-flow-idm:
   keycloak:
     ingress:
-      hostname: epd-keycloak-test.apps.silver.devops.gov.bc.ca
+      hostname: forms-flow-idm-{{.Release.Namespace}}.{{tpl (.Values.Domain) .}}
   realm: forms-flow-ai
 
 forms-flow-web:
-  clientid: user-service
+  clientid: forms-flow-web
+
+forms-flow-auth:
+  imagesecret: "ewogICJhdXRocyI6IHsKICAgICJkb2NrZXIuaW8iOiB7CiAgICAgICJ1c2VybmFtZSI6ICJ0ZXN0YWNjb3VudCIsCiAgICAgICJwYXNzd29yZCI6ICJ0ZXN0X2FjY291bnRfc2FtcGxlX2RvY2tlcmFjY291bnQiLAogICAgICAiYXV0aCI6ICJhR1ZzYkc4Z2QyOXliR1E9IgogICAgfQogIH0sCiAgImFsZyI6ICJIUzI1NiIKfQ=="
+
 
 mongodb:
-  arbiter: 
-    enabled: false
-    containerSecurityContext:
-      enabled: false
-    podSecurityContext:
-      enabled: false
+  image:
+    tag: 4.2.21-debian-10-r8
+  enabled: true
+  fullnameOverride: "forms-flow-ai-mongodb"
+  clusterDomain: cluster.local
+  architecture: replicaset
+  useStatefulSet: true
   auth:
     databases: 
       - formsflow 
@@ -33,57 +45,62 @@ mongodb:
       - mongodb
     usernames:
       - mongodb
-  containerSecurityContext:
-    enabled: false
-  enabled: true
-  fullnameOverride: "forms-flow-ai-mongodb"
-  service:
-    nameOverride: "forms-flow-ai-mongodb"
-    port: 27017
-  replicaSetName: "forms-flow-ai-mongodb"
+    enabled: true
+    rootUser: root
+    rootPassword: "aot123"
+    replicaSetKey: "aot123"
+  initdbScripts:
+     init-mongo.js: |
+           use admin
+           db.createUser({
+              user: 'mongodb',
+              pwd: 'mongodb',
+              roles: [
+                {
+                   role: 'readWrite',
+                   db: 'formsflow',
+                },
+              ],
+           });
+  replicaSetName: rs0
+  replicaSetHostnames: true
+  directoryPerDB: false
+  replicaCount: 2
   podSecurityContext:
     enabled: false
-  useStatefulSet : false
-  architecture: standalone
+    fsGroup: 1001
+  containerSecurityContext:
+    enabled: false
+    runAsUser: 1001
+    runAsNonRoot: true
+  containerPorts:
+    mongodb: 27017
+  service:
+    nameOverride: "forms-flow-ai-mongodb"
+    type: ClusterIP
+    portName: mongodb
+    ports:
+      mongodb: 27017
   persistence:
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
     size: 4Gi
- 
-postgresql:
-  auth:
-    database: forms-flow-ai
-    postgresPassword: postgres # password for the "postgres" admin user
-  enabled: true #extra struct var for installation logic
-  image:
-    registry: docker.io
-    repository: bitnami/postgresql
-    tag: 14.2.0-debian-10-r57
-  fullnameOverride: "forms-flow-ai-postgresql"
-  primary:
-    initdb:
-      user: postgres
-      password: postgres
-      scripts:
-        0001_create_databases.sql: |
-          CREATE DATABASE "forms-flow-admin";
-          CREATE DATABASE "forms-flow-analytics";
-          CREATE DATABASE "forms-flow-api";
-          CREATE DATABASE "forms-flow-bpm";
-    containerSecurityContext:
-      enabled: false
-    persistence:
-      storageClass: ""
-      size: 8Gi
+    mountPath: /bitnami/mongodb
+  serviceAccount:
+    create: true
+  livenessProbe:
+    enabled: false
+  readinessProbe:
+    enabled: false
+  arbiter:
+    enabled: false
     podSecurityContext:
-      enabled: false
-    service:
-      ports:
-        postgresql: 5432  # PostgreSQL service port
-    shmVolume:
-      chmod:
-        enabled: false
-  volumePermissions:
+    enabled: false
+    fsGroup: 1001
     containerSecurityContext:
-      runAsUser: "auto"
+    enabled: false
+    runAsUser: 1001
 
 websocket_encrypt_key: "FormsFlow.AI"
 insight_api_key: ""
@@ -92,3 +109,100 @@ redis_port: ""
 redis_pass_code: ""
 draft_enabled: "false"
 export_pdf_enabled: "false"
+
+postgresql-ha:
+  postgresql:
+    image:
+      registry: docker.io
+      repository: bitnami/postgresql-repmgr
+      tag: 15.1.0-debian-11-r0
+    replicaCount: 2
+    containerPorts:
+      postgresql: 5432
+    podSecurityContext:
+      enabled: false
+      fsGroup: 1001
+    containerSecurityContext:
+      enabled: false
+      runAsUser: 1001
+      runAsNonRoot: true
+      readOnlyRootFilesystem: false
+
+    livenessProbe:
+      enabled: false
+    readinessProbe:
+      enabled: false
+    username: postgres
+    password: "postgres"
+    database: "forms-flow-ai"
+    postgresPassword: "postgres"
+
+    repmgrUsername: repmgr
+    repmgrPassword: "repmgr"
+    repmgrDatabase: repmgr
+    repmgrLogLevel: NOTICE
+    repmgrConnectTimeout: 5
+    repmgrReconnectAttempts: 2
+    repmgrReconnectInterval: 3
+    repmgrFenceOldPrimary: false
+    repmgrChildNodesCheckInterval: 5
+    repmgrChildNodesConnectedMinCount: 1
+    repmgrChildNodesDisconnectTimeout: 30
+    initdbScripts:
+      init_script.sql: |
+            CREATE DATABASE "forms-flow-admin";
+            CREATE DATABASE "forms-flow-analytics";
+            CREATE DATABASE "forms-flow-api";
+            CREATE DATABASE "forms-flow-bpm";
+            GRANT ALL PRIVILEGES ON DATABASE "forms-flow-admin" to postgres;
+            GRANT ALL PRIVILEGES ON DATABASE "forms-flow-analytics" to postgres;
+            GRANT ALL PRIVILEGES ON DATABASE "forms-flow-api" to postgres;
+            GRANT ALL PRIVILEGES ON DATABASE "forms-flow-bpm" to postgres;
+            set transaction read write;
+            GRANT CONNECT ON DATABASE "forms-flow-idm" to postgres;
+            alter database "forms-flow-bpm" set default_transaction_read_only = off;
+            alter database "forms-flow-api" set default_transaction_read_only = off;
+            alter database "forms-flow-analytics" set default_transaction_read_only = off;
+            alter database "forms-flow-admin" set default_transaction_read_only = off;
+  pgpool:
+    image:
+      registry: docker.io
+      repository: bitnami/pgpool
+      tag: 4.3.3-debian-11-r28
+      digest: ""
+      pullPolicy: IfNotPresent
+    replicaCount: 1
+    podSecurityContext:
+      enabled: false
+      fsGroup: 1001
+    containerSecurityContext:
+      enabled: false
+      runAsUser: 1001
+      runAsNonRoot: true
+      readOnlyRootFilesystem: false
+    livenessProbe:
+      enabled: false
+    readinessProbe:
+      enabled: false
+    containerPorts:
+      postgresql: 5432
+    adminUsername: admin
+    adminPassword: "admin"
+    service:
+      type: ClusterIP
+      ports:
+        metrics: 9187
+  persistence:
+    enabled: true
+    storageClass: ""
+    mountPath: /bitnami/postgresql
+    accessModes:
+      - ReadWriteOnce
+    size: 4Gi
+  service:
+    type: ClusterIP
+    ports:
+      postgresql: 5432
+    portName: postgresql
+    nodePorts:
+      postgresql: ""

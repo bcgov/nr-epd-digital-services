@@ -6,21 +6,32 @@ analytics:
 formsflow:
   configmap: forms-flow-ai # name of formsflow.ai configmap
   secret: forms-flow-ai #name of formsflow.ai secret
-ingress: 
+  auth: forms-flow-ai-auth
+web:
+  base_custom_url: ""
+  custom_theme_url: ""
+ingress:
+  ingressClassName: ""
+  annotations:
+
   enabled: true # create an ingress for this component 
   hostname: "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}"
   port: 8080
+  tls: true
+  selfSigned: false
+  extraTls:
+   - {}
 resources:
   limits:
-    cpu: 600m
+    cpu: 400m
     memory: 1Gi
   requests:
-    cpu: 500m
+    cpu: 300m
     memory: 512Mi
 image:
   registry: docker.io
   repository: formsflow/forms-flow-web
-  tag: v5.0.1
+  tag: 5.2.0-beta
 config_path: /usr/share/nginx/html/config/
 webclient: "{{.Chart.Name}}"
 webname: formsflow
