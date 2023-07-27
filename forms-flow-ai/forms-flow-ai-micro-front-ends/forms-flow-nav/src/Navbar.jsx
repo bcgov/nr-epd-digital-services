@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import {
   CLIENT,
   STAFF_REVIEWER,
+  CLIENT_REVIEWER,
   APPLICATION_NAME,
   STAFF_DESIGNER,
   MULTITENANCY_ENABLED,
@@ -287,7 +288,7 @@ const NavBar = React.memo(({ props }) => {
                     : null}
 
                   {getUserRolePermission(userRoles, STAFF_REVIEWER)
-                    ? ENABLE_DASHBOARDS_MODULE && (
+                    ? ENABLE_DASHBOARDS_MODULE && !getUserRolePermission(userRoles,CLIENT_REVIEWER) && (
                         <Nav.Link
                           as={Link}
                           to={`${baseUrl}metrics`}
