@@ -1,0 +1,11 @@
+services:
+  forms-flow-nav:
+    container_name: forms-flow-nav
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - REACT_APP_CUSTOM_LOGOUT_URL=${EPD_IDP_LOGOUT_URL}
+    ports:
+      - "3005:8080"
+    tty: true

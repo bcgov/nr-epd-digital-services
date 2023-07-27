@@ -1,3 +1,5 @@
+id_rsa_ff_ee
+
 # Logs
 logs
 *.log
@@ -118,3 +120,6 @@ backend/etl/debezium-jdbc/.settings/org.eclipse.core.resources.prefs
 backend/etl/debezium-jdbc/.project
 backend/etl/debezium-jdbc/.classpath
 backend/etl/debezium-jdbc/target/
+
+
+notes/
