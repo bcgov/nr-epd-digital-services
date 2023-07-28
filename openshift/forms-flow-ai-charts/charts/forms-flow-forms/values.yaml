@@ -9,7 +9,7 @@ formsflow:
 image:
   registry: docker.io
   repository: formsflow/forms-flow-forms
-  tag: v5.2.0-alpha #The image tag to pull from
+  tag: v5.2.0 #The image tag to pull from
   secret: ""
 ingress:
   ingressClassName: ""

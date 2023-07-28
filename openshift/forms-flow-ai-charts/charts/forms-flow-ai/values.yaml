@@ -10,7 +10,7 @@ formsflowdb:
       postgresql: 5432
 forms-flow-bpm:
   clientid: "forms-flow-bpm"
-  clientsecret: "786001d6-68a8-4519-903c-bc5b5a870d68"
+  clientsecret: "**--changeme--**"
 
 forms-flow-forms:
   admin:
