@@ -20,7 +20,7 @@ const Header = () => {
         <a href="https://gov.bc.ca">
           <img src={logo} alt="BC Government Logo" />
         </a>
-        <h1>Land Remediation Services</h1>
+        <h1>Site Remediation Services</h1>
       </div>
       {auth.isAuthenticated ? (
         <Dropdown>
