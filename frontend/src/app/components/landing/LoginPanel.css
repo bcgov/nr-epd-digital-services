@@ -3,6 +3,12 @@
     height: 250px;
 }
 
+#idir-login-panel {
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    margin-top: 46px; /* button-height */
+}
 
 #lrs-signup-button{
     background-color: #FFFFFF;
