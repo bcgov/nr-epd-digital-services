@@ -25,7 +25,7 @@ const Landing = () =>{
             </Row> */}
 
             <Row>
-                <Col className="col-12 col-sm-6 offset-sm-3">
+                <Col className="col-12 col-sm-6 offset-sm-3 small">
                     <p>Collection Notice for Environmental Protection Platform:</p>
                     <p>Your personal information is collected under 26(c) of the Freedom of Information and Protection of Privacy Act for the purpose of accessing services of the Environmental Protection Division. If you have any questions about the collection of your information, please contact Site Remediation Services at <a href="mailto:site@gov.bc.ca">site@gov.bc.ca</a>.</p>
                     <p>Collection Notice for Site Remediation Forms:</p>
