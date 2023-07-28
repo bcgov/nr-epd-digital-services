@@ -10,7 +10,7 @@ const Landing = () =>{
     return(
         <Container fluid className="landing-container mt-3" id="landing-container">
             <LoginPanel/>
-            <Row id="responsive-lrs-nav" className="">
+            {/* <Row id="responsive-lrs-nav" className="">
                 <Col className="col-12 col-md-3" >
                     <ResponsiveNavigationSidebar/>
                 </Col>
@@ -22,7 +22,39 @@ const Landing = () =>{
                     {LRSFormAccordion(forms)}
                     </Row>
                 </Col>
+            </Row> */}
+
+            <Row>
+                <Col className="col-12 col-sm-6 offset-sm-3">
+                    <p>Welcome to the new Site Remediation Services (SRS) web app.</p>
+
+                    <p>You can now easily submit applications for site remediation services and track the status of your application.</p>
+
+                    <p>Use the Site Remediation Services (SRS) web app to complete an application for:</p>
+
+                    <ul>
+                        <li>Contaminated Site Services Application (CSSA)</li>
+                        <li>Site Disclosure Statement</li>
+                        <li>Site Risk Classification Report</li>
+                    </ul>
+
+                    <p>These, as well as all other forms can be completed using the Site Remediation Forms</p>
+
+                    <p>Site remediation forms - Province of British Columbia</p>
+
+                    <p>Forms for site remediation procedures for land, air and water in B.C.</p>
+                </Col>
+
+                
+                <Col className="col-12 col-sm-6 offset-sm-3 small">
+                    <hr />
+                    <p>Collection Notice for Environmental Protection Platform:</p>
+                    <p>Your personal information is collected under 26(c) of the Freedom of Information and Protection of Privacy Act for the purpose of accessing services of the Environmental Protection Division. If you have any questions about the collection of your information, please contact Site Remediation Services at <a href="mailto:site@gov.bc.ca">site@gov.bc.ca</a>.</p>
+                    <p>Collection Notice for Site Remediation Forms:</p>
+                    <p>Your personal information is collected under 26(c) of the Freedom of Information and Protection of Privacy Act for the purpose of receiving site remediation services. If you have any questions about the collection of your information, please contact Site Remediation Services at <a href="mailto:site@gov.bc.ca">site@gov.bc.ca</a></p>        
+                </Col>
             </Row>
+
         </Container>
         )
 }
