@@ -22,11 +22,11 @@ export const LoginDropdown = (title:string,width_override?:number) =>{
                                 {extraQueryParams:{'kc_idp_hint':'bcsc'}})}>
                         BC Services Card
                 </Dropdown.Item>
-                <Dropdown.Divider/>
+                {/* <Dropdown.Divider/>
                 <Dropdown.Item as="button" id="login-button-idir" onClick={() => auth.signinRedirect(
                             {extraQueryParams:{'kc_idp_hint':'idir'}})}>
                         IDIR
-                </Dropdown.Item>
+                </Dropdown.Item> */}
             </Dropdown.Menu>
         </Dropdown>
     )
