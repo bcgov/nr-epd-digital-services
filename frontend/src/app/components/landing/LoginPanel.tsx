@@ -5,7 +5,7 @@ import "./LoginPanel.css"
 
 
 export const LoginPanel = () =>{
-    const loginDropdownTitle = "Log in to my LRS Account";
+    const loginDropdownTitle = "Login to my account";
     return(
         <Row  className="login-panel py-5 mb-3 " id="login-panel">
             <Col id="idir-login-panel" className="mt-auto mb-2 text-center">
