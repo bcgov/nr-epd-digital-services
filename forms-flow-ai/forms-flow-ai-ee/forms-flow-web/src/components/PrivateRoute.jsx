@@ -230,7 +230,13 @@ const PrivateRoute = React.memo((props) => {
       {isAuth ? (
         <Suspense fallback={<Loading />}>
           <Switch>
-            {ENABLE_FORMS_MODULE && (
+            {ENABLE_FORMS_MODULE && userRoles.includes(CLIENT_REVIEWER) && (
+              <Route
+                path={[`${BASE_ROUTE}form`, `${BASE_ROUTE}bundle`]}
+                component={Form}
+              />
+            )}
+             {ENABLE_FORMS_MODULE && !userRoles.includes(STAFF_REVIEWER) && (
               <Route
                 path={[`${BASE_ROUTE}form`, `${BASE_ROUTE}bundle`]}
                 component={Form}
