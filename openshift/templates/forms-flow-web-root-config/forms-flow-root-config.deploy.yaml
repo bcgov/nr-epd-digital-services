@@ -345,9 +345,9 @@ parameters:
   displayName: Environment TAG name
   description: The TAG name for this environment, e.g., dev, test, prod
   required: true
-  value: dev
+  value: prod
 - name: IMAGE_STREAM_NAME_FULL
   displayName: Full image stream name (eg "frontend:dev")
   description: Includes ImageStream name and tag
   required: true
-  value: forms-flow-web-root-config:dev
+  value: forms-flow-web-root-config:prod

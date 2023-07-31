@@ -4,9 +4,9 @@ kind: ConfigMap
 metadata:
   name: {{ .Chart.Name }}
 data:
-  DATABASE_NAME: {{ ternary (tpl .Values.postgresql.auth.database .) "<DEFINE_ME>" .Values.postgresql.enabled | quote }}
-  DATABASE_PORT: {{ ternary .Values.postgresql.primary.service.ports.postgresql "<DEFINE_ME>" .Values.postgresql.enabled | quote }}
-  DATABASE_SERVICE_NAME: {{ ternary (tpl .Values.postgresql.fullnameOverride .) "<DEFINE_ME>" .Values.postgresql.enabled | quote }}
+  DATABASE_NAME: {{ ternary (tpl .Values.formsflowdb.postgresql.database .) "<DEFINE_ME>" .Values.formsflowdb.postgresql.enabled | quote }}
+  DATABASE_PORT: {{ ternary .Values.formsflowdb.service.ports.postgresql "<DEFINE_ME>" .Values.formsflowdb.postgresql.enabled | quote }}
+  DATABASE_SERVICE_NAME: {{ ternary (tpl .Values.formsflowdb.postgresql.fullnameOverride .) "<DEFINE_ME>" .Values.formsflowdb.postgresql.enabled | quote }}
   BPM_API_URL: https://forms-flow-bpm-{{.Release.Namespace}}.{{tpl (.Values.Domain) .}}/camunda
   KEYCLOAK_JWT_OIDC_ALGORITHMS: "RS256"
   KEYCLOAK_JWT_OIDC_CACHING_ENABLED: "True"
@@ -20,9 +20,9 @@ data:
   FORMIO_URL: https://forms-flow-forms-{{.Release.Namespace}}.{{tpl (.Values.Domain) .}}
   FORMIO_DOMAIN: https://forms-flow-forms-{{.Release.Namespace}}.{{tpl (.Values.Domain) .}}
   WEB_API_URL: https://forms-flow-api-{{.Release.Namespace}}.{{tpl (.Values.Domain) .}}
-  MONGODB_URI:  {{ ternary (tpl "mongodb://{{ .Values.mongodb.auth.usernames | first }}:{{ .Values.mongodb.auth.passwords | first }}@{{ .Values.mongodb.service.nameOverride }}:{{ .Values.mongodb.service.port }}/{{ .Values.mongodb.auth.databases | first }}" .) "<DEFINE_ME>" .Values.mongodb.enabled | quote }} 
+  MONGODB_URI:  {{ ternary (tpl "mongodb://{{ .Values.mongodb.auth.usernames | first }}:{{ .Values.mongodb.auth.passwords | first }}@{{ .Values.mongodb.service.nameOverride }}:{{ .Values.mongodb.service.ports.mongodb }}/{{ .Values.mongodb.auth.databases | first }}" .) "<DEFINE_ME>" .Values.mongodb.enabled | quote }} 
   {{- if .Values.mongodb.enabled }} 
-  NODE_CONFIG: '{"mongo":"mongodb://{{ .Values.mongodb.auth.usernames | first }}:{{ .Values.mongodb.auth.passwords | first }}@{{ .Values.mongodb.service.nameOverride }}:{{ .Values.mongodb.service.port }}/{{ .Values.mongodb.auth.databases | first }}"}'
+  NODE_CONFIG: '{"mongo":"mongodb://{{ .Values.mongodb.auth.usernames | first }}:{{ .Values.mongodb.auth.passwords | first }}@{{ .Values.mongodb.service.nameOverride }}:{{ .Values.mongodb.service.ports.mongodb }}/{{ .Values.mongodb.auth.databases | first }}"}'
   {{- else }}
   NODE_CONFIG: "<DEFINE_ME>"
   {{- end }}
@@ -31,7 +31,7 @@ data:
   FORMSFLOW_ADMIN_BASE: https://forms-flow-admin-{{.Release.Namespace}}.{{tpl (.Values.Domain) .}}/api
   MODEL_ID: "Seethal/sentiment_analysis_generic_dataset"
   INSIGHT_API_URL: https://forms-flow-analytics-{{.Release.Namespace}}.{{tpl (.Values.Domain) .}}
-  KEYCLOAK_ENABLE_CLIENT_AUTH: "True"
+  KEYCLOAK_ENABLE_CLIENT_AUTH: "false"
   MULTI_TENANCY_ENABLED: "False"
   DATA_ANALYSIS_URL:  https://forms-flow-data-analysis-{{.Release.Namespace}}.{{tpl (.Values.Domain) .}}
   NODE_ENV: "production"
@@ -44,5 +44,5 @@ data:
   REDIS_HOST: "{{.Values.redis_host}}"
   REDIS_PORT: "{{.Values.redis_port}}"
   REDIS_ENABLED: "false"
-
+  CHROME_DRIVER_PATH: "/usr/local/bin/chromedriver"
 

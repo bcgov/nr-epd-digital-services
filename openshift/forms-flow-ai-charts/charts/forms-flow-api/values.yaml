@@ -4,20 +4,29 @@ database:
   url: "postgresql://postgres:postgres@forms-flow-ai-postgresql:5432/{{.Chart.Name}}"
 resources:
   limits:
-    cpu: 600m
+    cpu: 300m
     memory: 1Gi
   requests:
-    cpu: 500m
+    cpu: 200m
     memory: 512Mi
 formsflow:
   configmap: forms-flow-ai # name of formsflow.ai configmap
   secret: forms-flow-ai #name of formsflow.ai secret
-  analytics: forms-flow-analytics #name of forms-flow-analytics component 
-ingress: 
+  analytics: forms-flow-analytics #name of forms-flow-analytics component
+  auth: forms-flow-ai-auth 
+ingress:
+  ingressClassName: ""
+  annotations:
+ 
   enabled: true # create an ingress for this component
   hostname: "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}"
   port: 5000
+  tls: true
+  selfSigned: false
+  extraTls:
+    - {}
 image:
   registry: docker.io
   repository: formsflow/forms-flow-webapi
-  tag: v5.0.1 #The image tag to pull from
+  tag: v5.2.0-epd #The image tag to pull from
+  
