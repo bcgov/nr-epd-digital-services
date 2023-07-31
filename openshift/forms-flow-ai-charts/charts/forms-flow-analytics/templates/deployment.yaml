@@ -50,6 +50,8 @@ spec:
             cpu: "{{ .Values.resources.requests.cpu }}"
             memory: "{{ .Values.resources.requests.memory }}"
       restartPolicy: Always
+      imagePullSecrets:
+      - name: "{{ .Values.formsflow.auth}}"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -89,6 +91,8 @@ spec:
             cpu: "{{ .Values.resources.requests.cpu }}"
             memory: "{{ .Values.resources.requests.memory }}"
       restartPolicy: Always
+      imagePullSecrets:
+      - name: "{{ .Values.formsflow.auth}}"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -128,6 +132,8 @@ spec:
             cpu: "{{ .Values.resources.requests.cpu }}"
             memory: "{{ .Values.resources.requests.memory }}"
       restartPolicy: Always
+      imagePullSecrets:
+      - name: "{{ .Values.formsflow.auth}}"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -164,6 +170,8 @@ spec:
             cpu: "{{ .Values.resources.requests.cpu }}"
             memory: "{{ .Values.resources.requests.memory }}"
       restartPolicy: Always
+      imagePullSecrets:
+      - name: "{{ .Values.formsflow.auth}}"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -205,3 +213,5 @@ spec:
             cpu: "{{ .Values.resources.requests.cpu }}"
             memory: "{{ .Values.resources.requests.memory }}"
       restartPolicy: Always
+      imagePullSecrets:
+      - name: "{{ .Values.formsflow.auth}}"
