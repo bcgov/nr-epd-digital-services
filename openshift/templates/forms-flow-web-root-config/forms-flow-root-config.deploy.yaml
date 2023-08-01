@@ -81,7 +81,7 @@ objects:
             - name: BPM_API_URL
               value: "https://forms-flow-bpm-e38158-dev.apps.silver.devops.gov.bc.ca/camunda"
             - name: APPLICATION_NAME
-              value: "formsflow.ai"
+              value: "EPP"
             - name: ENABLE_APPLICATION_ACCESS_PERMISSION_CHECK
               value: "false"
             - name: CUSTOM_SUBMISSION_URL

@@ -23,4 +23,4 @@ image:
   tag: v5.0.1
 config_path: /usr/share/nginx/html/config/
 webclient: "{{.Chart.Name}}"
-webname: formsflow
+webname: EPP
