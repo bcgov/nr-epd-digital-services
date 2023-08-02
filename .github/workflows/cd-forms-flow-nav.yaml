@@ -47,7 +47,10 @@ jobs:
             echo "BRANCH_NAME="main"" >> $GITHUB_ENV
             echo "ENV_NAME="test"" >> $GITHUB_ENV
           else
-            echo "For ${{ github.ref_name }} branch"
+            echo "For ${{ github.ref_name }} branch, defaulting to dev values"
+            echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
+            echo "TAG_NAME="dev"" >> $GITHUB_ENV
+            echo "BRANCH_NAME="dev"" >> $GITHUB_ENV
           fi
         shell: bash
 
@@ -71,7 +74,6 @@ jobs:
         shell: bash
         run: |
           oc start-build ${{ env.APP_NAME }}-build --wait
-
 
       - name: Tag+Deploy for ${{ env.TAG_NAME }}
         shell: bash
