@@ -24,7 +24,7 @@ env:
   APP_NAME: "forms-flow-web-ee"
 
 jobs:
-  forms-flow-ai-web-cd-by-push:
+  forms-flow-ai-web-ee-cd-by-push:
     runs-on: ubuntu-20.04
 
     if: github.repository == 'bcgov/nr-epd-digital-services'
@@ -59,7 +59,7 @@ jobs:
       - name: Tools project
         shell: bash
         run: |
-          oc project ${{ env.TOOLS_NAME }}-tools
+          oc project ${{ secret.OC_NAMESPACE_NAMEPLATE }}-tools
 
       # Build from either dev or main branch as appropriate
       - name: Build from ${{ env.BRANCH_NAME }} branch
