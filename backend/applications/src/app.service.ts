@@ -7,7 +7,7 @@ export class AppService {
     return 'Hello World!';
   }
   confirmFormSubmission(formRequest: Request): any {
-    console.log('testing form submit');
+   
     return formRequest;
   }
 }
