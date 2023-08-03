@@ -282,6 +282,14 @@ data:
               "clientRole": true,
               
               "attributes": {}
+            },
+            {
+              "name": "formsflow-analytics",
+              "description": "",
+              "composite": false,
+              "clientRole": true,
+              
+              "attributes": {}
             }
           ],
           "security-admin-console": [],
@@ -601,7 +609,7 @@ data:
         "requiredActions" : [ ],
         "realmRoles" : [ "uma_authorization", "offline_access" ],
         "clientRoles" : {
-          "realm-management" : [ "query-users", "query-groups", "view-users" ],
+          "realm-management" : [ "query-users", "query-groups", "view-users", "view-clients" ],
           "account" : [ "view-profile", "manage-account" ]
         },
         "notBefore" : 0,

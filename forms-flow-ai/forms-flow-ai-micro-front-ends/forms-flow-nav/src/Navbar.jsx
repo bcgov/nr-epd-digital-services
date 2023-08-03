@@ -192,7 +192,7 @@ const NavBar = React.memo(({ props }) => {
                   id="main-menu-nav"
                   className="active align-items-lg-center"
                 >
-                  {ENABLE_FORMS_MODULE && (
+                  {(getUserRolePermission(userRoles, CLIENT_REVIEWER) || !getUserRolePermission(userRoles, STAFF_REVIEWER)) ? ENABLE_FORMS_MODULE && (
                     <Nav.Link
                       as={Link}
                       to={`${baseUrl}form`}
@@ -205,7 +205,7 @@ const NavBar = React.memo(({ props }) => {
                       <i className="fa fa-wpforms fa-fw fa-lg mr-2" />
                       {t("Forms")}
                     </Nav.Link>
-                  )}
+                  ):null}
 
                   {getUserRolePermission(userRoles, ADMIN_ROLE) ? (
                     <Nav.Link
