@@ -36,8 +36,7 @@ export class FormService {
 
   buildUpdateString = (pathText, newValue) => {
     const returnString =
-      'jsonb_set("form_data"::jsonb,' + pathText + ',' + newValue + ')';
-    console.log(returnString);
+      'jsonb_set("form_data"::jsonb,' + pathText + ',' + newValue + ')';   
     return returnString;
   };
 
@@ -47,9 +46,7 @@ export class FormService {
     formId,
     submissionId,
   ) => {
-    console.log('partialUpdateObject', partialUpdateObject);
-    console.log('parentObjectNames', parentObjectNames);
-
+   
     for (const property in partialUpdateObject) {
       if (typeof partialUpdateObject[property] === 'object') {
         this.processContent(
@@ -67,14 +64,13 @@ export class FormService {
         } else {
           objectName = property;
         }
-        console.log('objectName', objectName);
-        console.log('objectName value', partialUpdateObject[property]);
+      
 
         const pathText = "'{" + objectName + "}'";
 
         const newValue = '\'"' + partialUpdateObject[property] + '"\'';
 
-        console.log(pathText, newValue);
+    
 
         await this.formRepository
           .createQueryBuilder()
