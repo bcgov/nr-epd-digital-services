@@ -38,11 +38,7 @@ const Landing = () =>{
                         <li>Site Risk Classification Report</li>
                     </ul>
 
-                    <p>These, as well as all other forms can be completed using the Site Remediation Forms</p>
-
-                    <p>Site remediation forms - Province of British Columbia</p>
-
-                    <p>Forms for site remediation procedures for land, air and water in B.C.</p>
+                    <p>These, as well as all other forms can be completed using the <a href="https://www2.gov.bc.ca/gov/content/environment/air-land-water/site-remediation/guidance-resources/forms">Site Remediation Forms</a></p>
                 </Col>
 
                 

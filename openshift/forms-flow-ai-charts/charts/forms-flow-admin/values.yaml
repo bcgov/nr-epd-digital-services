@@ -1,7 +1,7 @@
 ---
 Domain: #<DEFINE ME>
 postgresql:
-  url: "postgresql://postgres:postgres@forms-flow-ai-postgresql:5432/{{.Chart.Name}}"
+  url: "postgresql://postgres:postgres@forms-flow-ai-postgresql-ha-pgpool:5432/{{.Chart.Name}}"
 
 resources:
   limits:
@@ -17,13 +17,24 @@ formsflow:
   analytics: forms-flow-analytics #name of analytics component 
   
 
-ingress: 
+ingress:
+  ingressClassName: ""
+  annotations:
+#    kubernetes.io/ingress.class: nginx
   enabled: true # create an ingress for this component 
   hostname: "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}"
   port: 5000
+  tls: true
+  selfSigned: false
+  extraTls:
+   - {}
+#    - secretName: "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}-tls"
+#      hosts:
+#        - "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}"
   path: /
 
 image:
   registry: docker.io
   repository: formsflow/forms-flow-ai-admin
-  tag: v5.0.1 #The image tag to pull from
+  tag: v5.1.0 #The image tag to pull from
+
