@@ -82,7 +82,7 @@ system.out.println ("isApprovingAuthorityReqd"+execution.getVariable('isApprovin
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isAgentFillingForm== true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0axurx6" sourceRef="Activity_1ljp4g2" targetRef="Activity_1gun2rz">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus== 'Signed'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Signed'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0y97y5q" sourceRef="Activity_1ozfgid" targetRef="Gateway_1cvtuda" />
     <bpmn:sequenceFlow id="Flow_152v1ui" name="No" sourceRef="Gateway_1cvtuda" targetRef="Activity_1gun2rz">
@@ -217,6 +217,21 @@ system.out.println ("form signed");</camunda:script>
       <bpmn:outgoing>Flow_0ib3exu</bpmn:outgoing>
     </bpmn:task>
     <bpmn:userTask id="Activity_1ljp4g2" name="Form Signing" camunda:assignee="${hiddenUserIdForFormSharing}">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="action" label="Action" type="string" />
+        </camunda:formData>
+        <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="create" />
+        <camunda:taskListener event="complete">
+          <camunda:script scriptFormat="javascript">task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));</camunda:script>
+        </camunda:taskListener>
+        <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="complete" />
+        <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="complete">
+          <camunda:field name="fields">
+            <camunda:expression>["applicationId","applicationStatus"]</camunda:expression>
+          </camunda:field>
+        </camunda:taskListener>
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_1ezlpcw</bpmn:incoming>
       <bpmn:outgoing>Flow_0axurx6</bpmn:outgoing>
     </bpmn:userTask>
