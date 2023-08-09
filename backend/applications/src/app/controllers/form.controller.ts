@@ -39,8 +39,6 @@ export class FormController {
     @Param('formId') formId,
     @Body() content,
   ): Promise<SubmissionResponse> {
-    console.log(content);
-    console.log('formId 2' + formId);
     const savedSubmission = await this.formService.create(formId, content.data);
     const submissionResponse: SubmissionResponse =
       this.transformResult(savedSubmission);
@@ -53,7 +51,6 @@ export class FormController {
    * @returns saved form in formflow expected format
    */
   transformResult(savedSubmission: Form) {
-    console.log(savedSubmission);
     const submissionResponse: SubmissionResponse = new SubmissionResponse();
     submissionResponse._id = savedSubmission.id;
     submissionResponse.form = savedSubmission.formId;
@@ -75,7 +72,6 @@ export class FormController {
     @Param('submissionId') submissionId,
     @Body() content,
   ): Promise<any> {
-    console.log('Update Called,', content.data);
     return await this.formService.update(submissionId, formId, content.data);
   }
 
@@ -91,7 +87,6 @@ export class FormController {
     @Param('submissionId') submissionId,
     @Body() content,
   ) {
-    console.log('Partial Update Called,', content.data);
     //const toUpdateContent = JSON.parse(content.data);
     //let i=0;
     return await this.formService.partialUpdate(
