@@ -198,6 +198,8 @@ spec:
         - mountPath: /app/mail-config.properties
           name: "{{ .Chart.Name }}-mail-config"
           subPath: mail-config.properties
+      imagePullSecrets:
+      - name: "{{ .Values.formsflow.auth }}"
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

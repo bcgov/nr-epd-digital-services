@@ -92,6 +92,7 @@ export const STAFF_DESIGNER = "formsflow-designer";
 export const STAFF_REVIEWER = "formsflow-reviewer";
 export const ANONYMOUS_USER = "anonymous";
 export const ADMIN_ROLE = "formsflow-admin";
+export const CLIENT_REVIEWER = "formsflow-reviewer/formsflow-client-reviewer";
 
 
 
