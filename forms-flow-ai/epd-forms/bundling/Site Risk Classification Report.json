@@ -5273,7 +5273,7 @@
                                                     "components": [
                                                         {
                                                             "id": "e2iccjt",
-                                                            "key": "srcrsimpleemail",
+                                                            "key": "simpleemail",
                                                             "mask": false,
                                                             "type": "email",
                                                             "input": true,
@@ -6449,7 +6449,7 @@
                                             "offset": 0,
                                             "components": [
                                                 {
-                                                    "key": "srcrsimpleemail",
+                                                    "key": "simpleemail",
                                                     "type": "email",
                                                     "input": true,
                                                     "label": "Email",
