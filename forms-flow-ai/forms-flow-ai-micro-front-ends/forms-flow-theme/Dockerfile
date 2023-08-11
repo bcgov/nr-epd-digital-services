@@ -19,7 +19,7 @@ RUN cp -r /tmp/forms-flow-ai/forms-flow-theme/. /forms-flow-theme/app
 COPY package-lock.json /forms-flow-theme/app/package-lock.json
 COPY package.json /forms-flow-theme/app/package.json
 
-RUN npm install
+RUN npm ci
 
 COPY . /forms-flow-theme/app/
 
