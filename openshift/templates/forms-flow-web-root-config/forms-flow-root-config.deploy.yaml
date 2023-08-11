@@ -1,0 +1,353 @@
+---
+kind: Template
+apiVersion: v1
+metadata:
+  annotations:
+    description: Deployment template for a adjudication api service.
+    tags: "${API_NAME}"
+  name: "${API_NAME}-deploy"
+objects:
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: "${API_NAME}"
+    labels:
+      app: "${API_NAME}"
+      app-group: "${APP_GROUP}"
+      template: "${API_NAME}-deploy"
+  spec:
+    strategy:
+      type: Rolling
+      rollingParams:
+        updatePeriodSeconds: 1
+        intervalSeconds: 1
+        timeoutSeconds: 600
+        maxUnavailable: 25%
+        maxSurge: 25%
+        # pre:
+        #   failurePolicy: Abort
+          # execNewPod:
+            # command:
+            # - "/bin/bash"
+            # - "-c"
+            # - "python manage.py db upgrade"
+            # containerName: "${API_NAME}"
+    triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - "${API_NAME}"
+        from:
+          kind: ImageStreamTag
+          namespace: "${IMAGE_NAMESPACE}"
+          name: "${IMAGE_STREAM_NAME_FULL}"
+    - type: ConfigChange
+    replicas: 1
+    test: false
+    selector:
+      app: "${API_NAME}"
+      deploymentconfig: "${API_NAME}"
+    template:
+      metadata:
+        labels:
+          app: "${API_NAME}"
+          app-group: "${APP_GROUP}"
+          deploymentconfig: "${API_NAME}"
+          template: "${API_NAME}-deploy"
+          role: api
+      spec:
+        containers:
+        - name: "${API_NAME}"
+          image: "${API_NAME}"
+          imagePullPolicy: Always
+          env:
+            - name: MF_FORMSFLOW_WEB_URL
+              value: "https://forms-flow-web-ee-latest.apps.silver.devops.gov.bc.ca/forms-flow-web.js"
+            - name: MF_FORMSFLOW_SERVICE_URL
+              value: "https://forms-flow-microfrontends.aot-technologies.com/forms-flow-service@v5.2.1-alpha/forms-flow-service.gz.js"
+            - name: MF_FORMSFLOW_ADMIN_URL
+              value: "https://forms-flow-microfrontends.aot-technologies.com/forms-flow-admin@v5.2.1-alpha/forms-flow-admin.gz.js"
+            - name: MF_FORMSFLOW_NAV_URL
+              value: "https://forms-flow-nav-dev.apps.silver.devops.gov.bc.ca/forms-flow-nav.js"
+            - name: MF_FORMSFLOW_THEME_URL
+              value: "https://forms-flow-theme-dev.apps.silver.devops.gov.bc.ca/forms-flow-theme.js"
+            - name: FORMIO_DEFAULT_PROJECT_URL
+              value: "https://forms-flow-forms-e38158-dev.apps.silver.devops.gov.bc.ca"
+            - name: KEYCLOAK_URL
+              value: "https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca"
+            - name: FORMSFLOW_API_URL
+              value: "https://forms-flow-api-e38158-dev.apps.silver.devops.gov.bc.ca"
+            - name: BPM_API_URL
+              value: "https://forms-flow-bpm-e38158-dev.apps.silver.devops.gov.bc.ca/camunda"
+            - name: APPLICATION_NAME
+              value: "formsflow.ai"
+            - name: ENABLE_APPLICATION_ACCESS_PERMISSION_CHECK
+              value: "false"
+            - name: CUSTOM_SUBMISSION_URL
+              value: "TODO"
+            - name: CUSTOM_SUBMISSION_ENABLED
+              value: "false"
+            - name: EPD_IDP_LOGOUT_URL
+              value: "https://logontest7.gov.bc.ca/clp-cgi/logoff.cgi?retnow=1&returl=https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/protocol/openid-connect/logout?post_logout_redirect_uri=https://epd-frontend-dev.apps.silver.devops.gov.bc.ca/"
+            - name: EPD_CUSTOM_MAP_URL
+              value: "https://epd-frontend-dev.apps.silver.devops.gov.bc.ca/map"
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-ai
+                  key: NODE_ENV
+            - name: REACT_APP_API_SERVER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-ai
+                  key: FORMIO_URL
+            - name: REACT_APP_API_PROJECT_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-ai
+                  key: FORMIO_URL
+            - name: REACT_APP_BPM_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-ai
+                  key: BPM_API_URL
+            - name: REACT_APP_KEYCLOAK_CLIENT
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-web
+                  key: KEYCLOAK_CLIENT
+            - name: REACT_APP_WEB_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-ai
+                  key: WEB_API_URL
+            - name: REACT_APP_APPLICATION_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-web
+                  key: APPLICATION_NAME
+            - name: REACT_APP_USER_ACCESS_PERMISSIONS
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-web
+                  key: USER_ACCESS_PERMISSIONS
+            - name: REACT_APP_WEBSOCKET_ENCRYPT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: forms-flow-ai
+                  key: WEBSOCKET_ENCRYPT_KEY
+            - name: REACT_APP_KEYCLOAK_URL_REALM
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-ai
+                  key: KEYCLOAK_URL_REALM
+            - name: REACT_APP_KEYCLOAK_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-ai
+                  key: KEYCLOAK_URL
+            - name: REACT_APP_FORMIO_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: forms-flow-ai
+                  key: FORMIO_JWT_SECRET
+            - name: REACT_APP_MT_ADMIN_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-ai
+                  key: FORMSFLOW_ADMIN_BASE
+            - name: REACT_APP_MULTI_TENANCY_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-ai
+                  key: MULTI_TENANCY_ENABLED
+            - name: REACT_APP_KEYCLOAK_ENABLE_CLIENT_AUTH
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-ai
+                  key: KEYCLOAK_ENABLE_CLIENT_AUTH
+            - name: REACT_APP_CUSTOM_SUBMISSION_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-ai
+                  key: CUSTOM_SUBMISSION_URL
+            - name: REACT_APP_CUSTOM_SUBMISSION_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-ai
+                  key: CUSTOM_SUBMISSION_ENABLED
+            - name: REACT_APP_DOCUMENT_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-ai
+                  key: FORMSFLOW_DOC_API_URL
+            - name: REACT_APP_DRAFT_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-ai
+                  key: DRAFT_ENABLED
+            - name: REACT_APP_DRAFT_POLLING_RATE
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-ai
+                  key: DRAFT_POLLING_RATE
+            - name: REACT_APP_EXPORT_PDF_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-ai
+                  key: EXPORT_PDF_ENABLED
+            - name: REACT_APP_PUBLIC_WORKFLOW_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-web
+                  key: PUBLIC_WORKFLOW_ENABLED
+            - name: REACT_APP_OPENTELEMETRY_SERVICE
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-web
+                  key: OPENTELEMETRY_SERVICE
+            - name: REACT_APP_WEB_BASE_CUSTOM_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-web
+                  key: WEB_BASE_CUSTOM_URL
+            - name: CUSTOM_THEME_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-web
+                  key: CUSTOM_THEME_URL
+            - name: ENABLE_FORMS_MODULE
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-web
+                  key: ENABLE_FORMS_MODULE
+            - name: ENABLE_TASKS_MODULE
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-web
+                  key: ENABLE_TASKS_MODULE
+            - name: ENABLE_DASHBOARDS_MODULE
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-web
+                  key: ENABLE_DASHBOARDS_MODULE
+            - name: ENABLE_PROCESSES_MODULE
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-web
+                  key: ENABLE_PROCESSES_MODULE
+            - name: ENABLE_APPLICATIONS_MODULE
+              valueFrom:
+                configMapKeyRef:
+                  name: forms-flow-web
+                  key: ENABLE_APPLICATIONS_MODULE
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - '-c'
+                  - >-
+                    envsubst < /tmp/forms-flow-web-config.template/config.js >
+                    /usr/share/nginx/html/config//config.js;
+          volumeMounts:
+            - name: tmpfs
+              mountPath: /usr/share/nginx/html/config/
+            - name: forms-flow-web-config-template
+              readOnly: true
+              mountPath: /tmp/forms-flow-web-config.template
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "250Mi"
+            limits:
+              cpu: "150m"
+              memory: "500Mi"
+          terminationMessagePath: "/dev/termination-log"
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+        restartPolicy: Always
+        volumes:
+          - name: forms-flow-web-config-template
+            configMap:
+              name: forms-flow-web-config.template
+              defaultMode: 420
+          - name: tmpfs
+            emptyDir: {}
+        terminationGracePeriodSeconds: 30
+        dnsPolicy: ClusterFirst
+        securityContext: {}
+        schedulerName: default-scheduler
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${API_NAME}"
+    creationTimestamp: 
+    labels:
+      app: "${API_NAME}"
+      app-group: "${APP_GROUP}"
+      template: "${API_NAME}-deploy"
+  spec:
+    ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    selector:
+      deploymentconfig: "${API_NAME}"
+    type: ClusterIP
+    sessionAffinity: None
+   
+  # status:
+  #   loadBalancer: {}
+- kind: Route
+  apiVersion: v1
+  metadata:
+    name: "${API_NAME}"
+    labels:
+      app: "${API_NAME}"
+      app-group: "${APP_GROUP}"
+      template: "${API_NAME}-deploy"
+  spec:
+    to:
+      kind: Service
+      name: "${API_NAME}"
+      weight: 100
+    port:
+      targetPort: 8080-tcp
+    tls:
+      termination: edge
+    wildcardPolicy: None
+    host: "${API_NAME}-${TAG_NAME}.apps.silver.devops.gov.bc.ca"
+parameters:
+- name: API_NAME
+  displayName: Name
+  description: The name assigned to all of the OpenShift resources associated to the
+    server instance.
+  required: true
+  value: forms-flow-web-root-config
+- name: APP_GROUP
+  displayName: App Group
+  description: The name assigned to all of the deployments in this project.
+  required: true
+  value: epd
+- name: IMAGE_NAMESPACE
+  displayName: Image Namespace
+  required: true
+  description: The namespace of the OpenShift project containing the imagestream for
+    the application.
+  value: e38158-tools
+- name: TAG_NAME
+  displayName: Environment TAG name
+  description: The TAG name for this environment, e.g., dev, test, prod
+  required: true
+  value: prod
+- name: IMAGE_STREAM_NAME_FULL
+  displayName: Full image stream name (eg "frontend:dev")
+  description: Includes ImageStream name and tag
+  required: true
+  value: forms-flow-web-root-config:prod

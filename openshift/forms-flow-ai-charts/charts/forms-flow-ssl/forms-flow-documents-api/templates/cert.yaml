@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Chart.Name }}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}
+spec:
+  secretName: {{ .Chart.Name }}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}-tls
+  issuerRef:
+    name: {{ .Chart.Name }}-{{.Release.Namespace}}
+    kind: ClusterIssuer
+  commonName: {{ .Chart.Name }}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}
+  dnsNames:
+    - {{ .Chart.Name }}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}

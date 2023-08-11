@@ -1,0 +1,4 @@
+Domain: #<Domain_Name>
+issuer:
+  acmeEmail: ""
+  ingressClass: nginx

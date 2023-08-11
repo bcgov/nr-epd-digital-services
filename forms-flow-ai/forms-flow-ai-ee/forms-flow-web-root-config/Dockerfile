@@ -13,6 +13,8 @@ ARG MF_FORMSFLOW_ADMIN_URL
 ARG MF_FORMSFLOW_THEME_URL
 ARG REACT_APP_CUSTOM_LOGOUT_URL
 ARG REACT_APP_CUSTOM_MAP_URL
+ARG ssh_prv_key
+ARG ssh_pub_key
 
 # Set environment variables
 ENV MF_FORMSFLOW_WEB_URL ${MF_FORMSFLOW_WEB_URL}
@@ -40,19 +42,19 @@ RUN npm ci --only=production
 # Copy source code
 # COPY . /forms-flow-web-root-config/app/
 
+# Authorize SSH Host
+RUN mkdir -p /root/.ssh && \
+    chmod 0700 /root/.ssh && \
+    echo "    IdentityFile ~/.ssh/id_rsa" >> /etc/ssh/ssh_config
 
-COPY id_rsa_ff_ee /root/.ssh/id_rsa_ff_ee
-COPY id_rsa_ff_ee.pub /root/.ssh/id_rsa_ff_ee.pub
+RUN echo "$ssh_prv_key" |  sed 's/\\n/\n/g'  > /root/.ssh/id_rsa && \
+    echo "$ssh_pub_key" |  sed 's/\\n/\n/g' > /root/.ssh/id_rsa.pub && \
+    chmod 600 /root/.ssh/id_rsa && \
+    chmod 600 /root/.ssh/id_rsa.pub
 
-RUN cat /root/.ssh/id_rsa_ff_ee | xargs echo -e
+RUN mkdir -p /root/.ssh && ssh-keyscan github.com >> /root/.ssh/known_hosts
 
-RUN chmod 600 /root/.ssh/id_rsa_ff_ee
-RUN chmod 600 /root/.ssh/id_rsa_ff_ee.pub 
-
-RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
-
-RUN GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ff_ee -o IdentitiesOnly=yes' git clone git@github.com:AOT-Technologies/forms-flow-ai-ee.git /tmp/forms-flow-ai/
-#RUN git clone git@github.com:AOT-Technologies/forms-flow-ai-ee.git /tmp/forms-flow-ai/ --config core.sshCommand="ssh -i ${SSH_PRIVATE_KEY}"
+RUN git clone git@github.com:AOT-Technologies/forms-flow-ai-ee.git -b epd-ff-ee-5.2.0 /tmp/forms-flow-ai/
 
 RUN cp -r /tmp/forms-flow-ai/forms-flow-web-root-config/. /forms-flow-web-root-config/app
 
