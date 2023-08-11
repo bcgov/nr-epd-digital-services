@@ -964,7 +964,7 @@
                     "validate": {
                         "required": false,
                         "customMessage": "",
-                        "custom": "const emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n\r\n\r\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\r\nif(b.groups.indexOf('/formsflow/formsflow-reviewer/lrs-approving-authority') > -1 ||  b.groups.indexOf('/formsflow/formsflow-client') > -1  ||  b.groups.indexOf('/formsflow/formsflow-reviewer/formsflow-client-reviewer') > -1 )\r\n{\r\ndocument.querySelector(\"[ref='editgrid-notes-addRow']\").remove();\r\nvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\r\nfor(i=0;i<editButtons.length;i++){editButtons[i].remove()}\r\n\r\nvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\r\nfor(i=0;i<removeButtons.length;i++){removeButtons[i].remove()}\r\n}",
+                        "custom": "const emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n\r\n\r\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\r\nif(b.groups.indexOf('/formsflow/formsflow-client') > -1  ||  b.groups.indexOf('/formsflow/formsflow-reviewer/formsflow-client-reviewer') > -1 )\r\n{\r\ndocument.querySelector(\"[ref='editgrid-notes-addRow']\").remove();\r\nvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\r\nfor(i=0;i<editButtons.length;i++){editButtons[i].remove()}\r\n\r\nvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\r\nfor(i=0;i<removeButtons.length;i++){removeButtons[i].remove()}\r\n}\r\n\r\nif(b.groups.indexOf('/formsflow/formsflow-reviewer/lrs-approving-authority') > -1)\r\n{\r\n\r\nvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\r\nfor(i=0;i<editButtons.length;i++){editButtons[i].remove()}\r\n\r\nvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\r\nfor(i=0;i<removeButtons.length;i++){removeButtons[i].remove()}\r\n}",
                         "customPrivate": false,
                         "json": "",
                         "strictDateValidation": false,
@@ -1085,7 +1085,7 @@
                                             "wysiwyg": false,
                                             "editor": "",
                                             "fixedSize": true,
-                                            "id": "elqwts"
+                                            "id": "e9sz3oam"
                                         }
                                     ],
                                     "width": 4,
@@ -1177,7 +1177,7 @@
                                             "addons": [],
                                             "inputType": "radio",
                                             "fieldSet": false,
-                                            "id": "e0kijaow"
+                                            "id": "ed1tlx"
                                         }
                                     ],
                                     "width": 2,
@@ -1264,7 +1264,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "ez8fbb"
+                                            "id": "e4tdnvn"
                                         }
                                     ],
                                     "size": "md",
@@ -1351,7 +1351,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "e2rg6"
+                                            "id": "eo76ic5"
                                         }
                                     ],
                                     "size": "md",
@@ -1438,7 +1438,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "el0st1"
+                                            "id": "e9d2nw"
                                         }
                                     ],
                                     "size": "md",
@@ -1513,7 +1513,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "ez7ahka"
+                            "id": "ewkdsow"
                         }
                     ],
                     "placeholder": "",
@@ -1532,7 +1532,7 @@
                     "tree": true,
                     "lazyLoad": false,
                     "defaultOpen": false,
-                    "id": "er4ykg"
+                    "id": "erh6cgt"
                 },
                 {
                     "logic": [
@@ -6925,7 +6925,7 @@
                                                 }
                                             ],
                                             "collapsible": false,
-                                            "id": "e7nge5b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "e7nge5b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -7399,7 +7399,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eapos7600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eapos7600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -7615,7 +7615,7 @@
                                             "input": true,
                                             "label": "Crown Land File Numbers",
                                             "tableView": true,
-                                            "id": "e7fs5c500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "e7fs5c500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
