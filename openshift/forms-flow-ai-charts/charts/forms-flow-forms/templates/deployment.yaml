@@ -83,6 +83,8 @@ spec:
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         tty: true
+      imagePullSecrets:
+      - name: "{{ .Values.formsflow.auth }}"
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

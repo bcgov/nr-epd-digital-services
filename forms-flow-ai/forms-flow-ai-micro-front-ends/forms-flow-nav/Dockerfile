@@ -20,7 +20,7 @@ RUN cp -r /tmp/forms-flow-ai/forms-flow-nav/. /forms-flow-nav/app
 COPY package-lock.json /forms-flow-nav/app/package-lock.json
 COPY package.json /forms-flow-nav/app/package.json
 
-RUN npm install
+RUN npm ci
 
 
 COPY . /forms-flow-nav/app/

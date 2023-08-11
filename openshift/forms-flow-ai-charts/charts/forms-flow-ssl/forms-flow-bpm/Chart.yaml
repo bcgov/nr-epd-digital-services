@@ -1,0 +1,4 @@
+apiVersion: v2
+name: forms-flow-bpm
+version: v2.2.0
+icon: "https://raw.githubusercontent.com/AOT-Technologies/forms-flow-ai/develop/.images/logo.png"

@@ -81,7 +81,7 @@ RUN echo "Debug of git branch - ${FORMFLOW_SOURCE_REPO_BRANCH} ${FORMFLOW_SOURCE
 COPY package-lock.json /forms-flow-web/app/package-lock.json
 COPY package.json /forms-flow-web/app/package.json
 
-RUN npm install
+RUN npm ci
 #RUN npm install react-scripts@3.0.1 -g --silent
 COPY . /forms-flow-web/app/
 #COPY ./formcomponents /forms-flow-web/app/node_modules/formcomponents

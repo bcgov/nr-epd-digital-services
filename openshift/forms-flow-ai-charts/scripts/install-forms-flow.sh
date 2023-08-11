@@ -31,17 +31,17 @@ main() {
 
 runHelmInstall() {
 	echo
-	helm install forms-flow-ai $directory/forms-flow-ai --set Domain=$domain_name --set forms-flow-idm.keycloak.ingress.hostname=epd-keycloak-test.apps.silver.devops.gov.bc.ca --namespace $namespace --version $version_ff_ai
+	helm install forms-flow-ai $directory/forms-flow-ai --set Domain=$domain_name --set forms-flow-idm.keycloak.ingress.hostname=epd-keycloak-prod.apps.silver.devops.gov.bc.ca --namespace $namespace --version $version_ff_ai
 	helm install forms-flow-analytics $directory/forms-flow-analytics --set Domain=$domain_name --namespace $namespace --version $version_ff_analytics
 	helm install forms-flow-forms $directory/forms-flow-forms --set Domain=$domain_name --namespace $namespace --version $version_ff_forms
 	#helm install forms-flow-idm $directory/forms-flow-idm --set Domain=$domain_name --set keycloak.ingress.hostname=forms-flow-idm-$namespace.$domain_name --namespace $namespace --version $version_ff_idm
 
-	if [[ $is_premium =~ ^[Yy]$ ]]; then
-		helm install forms-flow-admin $directory/forms-flow-admin --set Domain=$domain_name --namespace $namespace --version $version_ff_admin
-	fi
+	# if [[ $is_premium =~ ^[Yy]$ ]]; then
+	# 	helm install forms-flow-admin $directory/forms-flow-admin --set Domain=$domain_name --namespace $namespace --version $version_ff_admin
+	# fi
 
 	helm install forms-flow-api $directory/forms-flow-api --set Domain=$domain_name --namespace $namespace --version $version_ff_api
-	helm install forms-flow-bpm $directory/forms-flow-bpm --set Domain=$domain_name --set camunda.websocket.securityOrigin=https://*.$domain_name --namespace $namespace --version $version_ff_bpm
+	helm install forms-flow-bpm $directory/forms-flow-bpm --set Domain=$domain_name --set camunda.websocket.securityOrigin=https://forms-flow-web-e38158-prod.apps.silver.devops.gov.bc.ca --namespace $namespace --version $version_ff_bpm
 	helm install forms-flow-data-analysis $directory/forms-flow-data-analysis --set Domain=$domain_name --namespace $namespace --version $version_ff_data_analysis
 	helm install forms-flow-web $directory/forms-flow-web --set Domain=$domain_name --namespace $namespace --version $version_ff_web
 	helm install forms-flow-documents-api $directory/forms-flow-documents-api --set Domain=$domain_name --namespace $namespace --version $version_ff_documents_api
