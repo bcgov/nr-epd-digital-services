@@ -34,8 +34,8 @@
       <bpmn:script>var system = java.lang.System;
 var clientEmail = execution.getVariable('simpleemail3');
 execution.setVariable('clientEmail',clientEmail);
-//hard code for now. handle with bundling.
-execution.setVariable('isSRCRExists',false);</bpmn:script>
+var riskclassification = execution.getVariable('riskclassification');
+system.out.println ("formUrl "+execution.getVariable('formUrl'));</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:receiveTask id="Task_05ulff4" name="Application Resubmitted" messageRef="Message_1ngb2eg">
       <bpmn:extensionElements>
@@ -86,13 +86,13 @@ execution.setVariable('cssaStatus', "Resubmitted");</camunda:script>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0unffch" name="Owner Submits" sourceRef="Activity_1ozfgid" targetRef="Activity_06nypz0" />
     <bpmn:sequenceFlow id="Flow_1tvwlrp" name="No" sourceRef="Gateway_0nd8s9d" targetRef="Activity_1n3rj1g">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isSRCRExists == false}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${riskclassification  == 'exempt'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0bwxoom" sourceRef="Activity_1n3rj1g" targetRef="Activity_1os7sys" />
     <bpmn:sequenceFlow id="Flow_0x0w3ip" sourceRef="Activity_1os7sys" targetRef="Event_0ml6v2t" />
     <bpmn:sequenceFlow id="Flow_00msr8t" sourceRef="Activity_040vqyo" targetRef="Gateway_0nd8s9d" />
     <bpmn:sequenceFlow id="Flow_115hro3" name="Yes" sourceRef="Gateway_0nd8s9d" targetRef="Activity_0truthe">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isSRCRExists == true}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${riskclassification  != 'exempt'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_04l5mhw" sourceRef="Activity_0ro66yt" targetRef="Activity_040vqyo" />
     <bpmn:sequenceFlow id="Flow_1oam11w" sourceRef="Activity_06nypz0" targetRef="Activity_0w5t5av">
@@ -325,6 +325,27 @@ task.execution.setVariable('applicationStatus', task.execution.getVariable('acti
         <bpmn:incoming>Flow_1ov6ysr</bpmn:incoming>
       </bpmn:endEvent>
       <bpmn:sequenceFlow id="Flow_0phfiwj" name="Approved/Rejected" sourceRef="Gateway_137ft2z" targetRef="Event_0k5f7wm">
+        <bpmn:extensionElements>
+          <camunda:executionListener event="take">
+            <camunda:script scriptFormat="javascript">execution.setVariable('formUrl', execution.getVariable('cssaFormUrl'));</camunda:script>
+          </camunda:executionListener>
+          <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.CombineSubmissionBundleListener" event="take" />
+          <camunda:executionListener event="take">
+            <camunda:script scriptFormat="javascript">execution.setVariable('bundleUrl', execution.getVariable('formUrl'));
+execution.setVariable('formUrl', execution.getVariable('srcrFormUrl'));</camunda:script>
+          </camunda:executionListener>
+          <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.CombineSubmissionBundleListener" event="take" />
+          <camunda:executionListener event="take">
+            <camunda:script scriptFormat="javascript">if (action == 'Approved')
+{
+execution.setVariable("applicationStatus", "Approved");
+}
+else{
+execution.setVariable("applicationStatus", "Rejected");
+}</camunda:script>
+          </camunda:executionListener>
+          <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
+        </bpmn:extensionElements>
         <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Approved' or action == 'Rejected' }</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_1psbp1l" sourceRef="Activity_0fgdxru" targetRef="Activity_15cbea9" />
