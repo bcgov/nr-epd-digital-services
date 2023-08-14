@@ -12,6 +12,7 @@ on:
       - dev
       - main
       - epdds-270 # Remove in future, just to verify this works
+      - epdds-270-fix # Remove in future, just to verify this works
     paths:
       - "forms-flow-ai/forms-flow-ai-ee/forms-flow-web-root-config"
       - ".github/workflows/cd-forms-flow-web-root-config.yaml"
@@ -46,11 +47,18 @@ jobs:
             echo "TAG_NAME="test"" >> $GITHUB_ENV
             echo "BRANCH_NAME="main"" >> $GITHUB_ENV
             echo "ENV_NAME="test"" >> $GITHUB_ENV
+          # else
+          #   echo "For ${{ github.ref_name }} branch, defaulting to dev values"
+          #   echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
+          #   echo "TAG_NAME="dev"" >> $GITHUB_ENV
+          #   echo "BRANCH_NAME="dev"" >> $GITHUB_ENV
+          # fi
           else
-            echo "For ${{ github.ref_name }} branch, defaulting to dev values"
+            echo "For ${{ github.ref_name }} branch, TEMP DEFAULTING TO TEST VALUES"
             echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
-            echo "TAG_NAME="dev"" >> $GITHUB_ENV
-            echo "BRANCH_NAME="dev"" >> $GITHUB_ENV
+            echo "TAG_NAME="test"" >> $GITHUB_ENV
+            echo "BRANCH_NAME="main"" >> $GITHUB_ENV
+            echo "ENV_NAME="test"" >> $GITHUB_ENV
           fi
         shell: bash
 
@@ -64,20 +72,7 @@ jobs:
         run: |
           oc project ${{ secrets.OC_NAMESPACE_NAMEPLATE }}-tools
 
-      # Build from either dev or main branch as appropriate
-      - name: Build from ${{ env.BRANCH_NAME }} branch
-        shell: bash
-        run: |
-          oc patch bc/${{ env.APP_NAME }}-dev-build -p '{"spec":{"source":{"git":{"ref":"${{ env.BRANCH_NAME }}"}}}}'
-
       - name: Start Build Openshift
         shell: bash
         run: |
-          oc start-build ${{ env.APP_NAME }}-dev-build --wait
-
-
-      - name: Tag+Deploy for ${{ env.TAG_NAME }}
-        shell: bash
-        run: |
-          oc tag ${{ env.APP_NAME }}:latest ${{ env.APP_NAME }}:${{ env.TAG_NAME }}
-
+          oc start-build ${{ env.APP_NAME }}-${{ env.TAG_NAME }}-build --wait
