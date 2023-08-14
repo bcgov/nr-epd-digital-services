@@ -47,18 +47,11 @@ jobs:
             echo "TAG_NAME="test"" >> $GITHUB_ENV
             echo "BRANCH_NAME="main"" >> $GITHUB_ENV
             echo "ENV_NAME="test"" >> $GITHUB_ENV
-          # else
-          #   echo "For ${{ github.ref_name }} branch, defaulting to dev values"
-          #   echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
-          #   echo "TAG_NAME="dev"" >> $GITHUB_ENV
-          #   echo "BRANCH_NAME="dev"" >> $GITHUB_ENV
-          # fi
           else
-            echo "For ${{ github.ref_name }} branch, TEMP DEFAULTING TO TEST VALUES"
+            echo "For ${{ github.ref_name }} branch, defaulting to dev values"
             echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
-            echo "TAG_NAME="test"" >> $GITHUB_ENV
-            echo "BRANCH_NAME="main"" >> $GITHUB_ENV
-            echo "ENV_NAME="test"" >> $GITHUB_ENV
+            echo "TAG_NAME="dev"" >> $GITHUB_ENV
+            echo "BRANCH_NAME="dev"" >> $GITHUB_ENV
           fi
         shell: bash
 
