@@ -113,7 +113,7 @@ jobs:
     #       message: "Release version ${{ inputs.RELEASE_VERSION }}"
 
 
-  forms-flow-root-config-build-and-deploy-prod:
+  forms-flow-root-config-and-microfrontends:
     runs-on: ubuntu-20.04
 
     if: github.repository == 'bcgov/nr-epd-digital-services'
@@ -140,7 +140,16 @@ jobs:
         run: |
           oc project ${{ secrets.OC_NAMESPACE_NAMEPLATE }}-tools
 
+      - name: Tag Microfrontends from Test
+        shell: bash
+        run: |
+          oc tag forms-flow-nav:test forms-flow-nav:prod
+          oc tag forms-flow-theme:test forms-flow-theme:prod
+          oc tag forms-flow-web-ee:test forms-flow-web-ee:prod
+
+
       - name: Start Build Openshift
         shell: bash
         run: |
           oc start-build ${{ env.APP_NAME }}-prod-build --wait
+   
