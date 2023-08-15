@@ -111,3 +111,45 @@ jobs:
     #     with:
     #       tag: "release/${{ inputs.RELEASE_VERSION }}"
     #       message: "Release version ${{ inputs.RELEASE_VERSION }}"
+
+
+  forms-flow-root-config-and-microfrontends:
+    runs-on: ubuntu-20.04
+
+    if: github.repository == 'bcgov/nr-epd-digital-services'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set ENV variables
+        id: set-variable
+        # make sure to update the TOOLS_NAME once all the environment for forms-flow-ai-web is ready
+        run: |
+          echo "For ${{ github.ref_name }} branch for PROD"
+          echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
+          echo "TAG_NAME="prod"" >> $GITHUB_ENV
+          echo "BRANCH_NAME="main"" >> $GITHUB_ENV
+          echo "ENV_NAME="prod"" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Login Openshift
+        shell: bash
+        run: |
+          oc login --server=${{secrets.OC_SERVER}} --token=${{secrets.OC_TOKEN}}
+
+      - name: Tools project
+        shell: bash
+        run: |
+          oc project ${{ secrets.OC_NAMESPACE_NAMEPLATE }}-tools
+
+      - name: Tag Microfrontends from Test
+        shell: bash
+        run: |
+          oc tag forms-flow-nav:test forms-flow-nav:prod
+          oc tag forms-flow-theme:test forms-flow-theme:prod
+          oc tag forms-flow-web-ee:test forms-flow-web-ee:prod
+
+
+      - name: Start Build Openshift
+        shell: bash
+        run: |
+          oc start-build ${{ env.APP_NAME }}-prod-build --wait
+   
