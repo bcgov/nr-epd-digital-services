@@ -81,7 +81,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
-                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(\r\n(roles.includes(\"formsflow-reviewer/csap\") || roles.includes(\"formsflow-reviewer/cssa-team\")) && \r\n(data.applicationStatus===\"New\" || data.applicationStatus===\"Resubmitted\") \r\n) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
+                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(\r\n(roles.includes(\"formsflow-reviewer/csap\") || roles.includes(\"formsflow-reviewer/cssa-team\")) && \r\n(data.applicationStatus===\"New\" || data.applicationStatus===\"Resubmitted\" || data.applicationStatus===\"Recheck\") \r\n) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
@@ -132,7 +132,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "e2cf3nk"
+                                            "id": "eyddot"
                                         }
                                     ],
                                     "width": 3,
@@ -1522,7 +1522,7 @@
                         "eq": "",
                         "json": ""
                     },
-                    "customConditional": "\r\n\r\n\r\nshow = false;\r\n\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst groups = UserDetails[\"groups\"];\r\nif((groups.includes(\"/formsflow/formsflow-client\")))\r\n{\r\nif( data.srcrNotes!== null && data.srcrNotes!== undefined && data.srcrNotes.filter((x)=>x.commentFor==='external').length > 0)\r\nshow = true;\r\nelse\r\nshow = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}\r\n\r\nvar addRowButton = document.querySelector(\"button[ref=editgrid-srcrNotes-addRow]\");\r\nif(addRowButton!=null)\r\n{\r\naddRowButton.addEventListener('click',\r\n(e)=>{\r\n\t\tif( groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\r\n\t\t{\r\n\t\t  var internalRadio = document.querySelectorAll(\"input[value='internal'][type='radio']\");\r\n\t\t  for (let i = 0; i < internalRadio.length; i++) {\r\n\t\t\tif(internalRadio[i].parentElement !== null)\r\n\t\t\t{\r\n\t\t\t\tinternalRadio[i].parentElement.remove();\r\n\t\t\t}\r\n\t\t  }\r\n\t\t}\r\n})\r\n\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\n\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n}\r\n\r\n\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\n\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n\r\n\r\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\r\n\r\nif(b.groups.includes(\"/formsflow/formsflow-client\"))\r\n{\r\n\tif(document.querySelector(\"[ref='editgrid-srcrNotes-addRow']\")!==null)\r\n\t{\r\n\t\tdocument.querySelector(\"[ref='editgrid-srcrNotes-addRow']\").remove();\r\n\t}\r\nvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\r\nfor(i=0;i<editButtons.length;i++){editButtons[i].remove()}\r\n\r\nvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\r\nfor(i=0;i<removeButtons.length;i++){removeButtons[i].remove()}\r\n}\r\n",
+                    "customConditional": "\r\n\r\n\r\nshow = false;\r\n\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst groups = UserDetails[\"groups\"];\r\nif(groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\"))\r\n{\r\nif( data.srcrNotes!== null && data.srcrNotes!== undefined && data.srcrNotes.filter((x)=>x.commentFor==='external').length > 0)\r\nshow = true;\r\nelse\r\nshow = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}\r\n\r\nvar addRowButton = document.querySelector(\"button[ref=editgrid-srcrNotes-addRow]\");\r\nif(addRowButton!=null)\r\n{\r\naddRowButton.addEventListener('click',\r\n(e)=>{\r\n\t\tif( groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\r\n\t\t{\r\n\t\t  var internalRadio = document.querySelectorAll(\"input[value='internal'][type='radio']\");\r\n\t\t  for (let i = 0; i < internalRadio.length; i++) {\r\n\t\t\tif(internalRadio[i].parentElement !== null)\r\n\t\t\t{\r\n\t\t\t\tinternalRadio[i].parentElement.remove();\r\n\t\t\t}\r\n\t\t  }\r\n\t\t}\r\n})\r\n\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\n\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n}\r\n\r\n\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\n\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n\r\n\r\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\r\n\r\nif(b.groups.includes(\"/formsflow/formsflow-client\"))\r\n{\r\n\tif(document.querySelector(\"[ref='editgrid-srcrNotes-addRow']\")!==null)\r\n\t{\r\n\t\tdocument.querySelector(\"[ref='editgrid-srcrNotes-addRow']\").remove();\r\n\t}\r\nvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\r\nfor(i=0;i<editButtons.length;i++){editButtons[i].remove()}\r\n\r\nvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\r\nfor(i=0;i<removeButtons.length;i++){removeButtons[i].remove()}\r\n}\r\n",
                     "logic": [],
                     "attributes": {},
                     "overlay": {
@@ -1624,7 +1624,7 @@
                                             "wysiwyg": false,
                                             "editor": "",
                                             "fixedSize": true,
-                                            "id": "ebhum3e"
+                                            "id": "e7mhh2h"
                                         }
                                     ],
                                     "width": 4,
@@ -1716,7 +1716,7 @@
                                             "addons": [],
                                             "inputType": "radio",
                                             "fieldSet": false,
-                                            "id": "ehuz6zl"
+                                            "id": "e1dkav"
                                         }
                                     ],
                                     "width": 2,
@@ -1803,7 +1803,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "ekgemfg"
+                                            "id": "e13r6r8"
                                         }
                                     ],
                                     "size": "md",
@@ -1890,7 +1890,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "ep20ta"
+                                            "id": "egzx9in"
                                         }
                                     ],
                                     "size": "md",
@@ -1977,7 +1977,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "ewwd8ti"
+                                            "id": "eimrn0f"
                                         }
                                     ],
                                     "size": "md",
@@ -2052,7 +2052,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "erk9lb"
+                            "id": "ewk3jif"
                         }
                     ],
                     "placeholder": "",
@@ -2071,7 +2071,7 @@
                     "tree": true,
                     "lazyLoad": false,
                     "defaultOpen": false,
-                    "id": "eje04vp"
+                    "id": "ecnlklf"
                 },
                 {
                     "title": "Collection Notice",
@@ -4439,7 +4439,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ele95t00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ele95t0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "spropertyOwnerAndOrOperator",
                                     "tree": false,
                                     "type": "panel",
@@ -13849,7 +13849,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eks0gu0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eks0gu000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "exposurePathwayQuestionnaireAffectedParcel",
                                     "tree": false,
                                     "type": "panel",
@@ -17792,7 +17792,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eo5mwyp00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eo5mwyp0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
