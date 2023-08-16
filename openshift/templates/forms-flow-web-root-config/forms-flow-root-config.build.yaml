@@ -46,36 +46,30 @@ objects:
             secretKeyRef:
               name: ff-ee-deploy-key-pub
               key: ssh-privatekey
+
+              # ARC: TODO IN URLS USE ${ENV_TAG}
         - name: MF_FORMSFLOW_WEB_URL
-          value: "https://forms-flow-web-ee-latest.apps.silver.devops.gov.bc.ca/forms-flow-web.js"
+          value: "https://forms-flow-web-ee-${ENV_TAG}.apps.silver.devops.gov.bc.ca/forms-flow-web.js"
         - name: MF_FORMSFLOW_SERVICE_URL
           value: "https://forms-flow-microfrontends.aot-technologies.com/forms-flow-service@v5.2.1-alpha/forms-flow-service.gz.js"
         - name: MF_FORMSFLOW_ADMIN_URL
           value: "https://forms-flow-microfrontends.aot-technologies.com/forms-flow-admin@v5.2.1-alpha/forms-flow-admin.gz.js"
         - name: MF_FORMSFLOW_NAV_URL
-          value: "https://forms-flow-nav-dev.apps.silver.devops.gov.bc.ca/forms-flow-nav.js"
+          value: "https://forms-flow-nav-${ENV_TAG}.apps.silver.devops.gov.bc.ca/forms-flow-nav.js"
         - name: MF_FORMSFLOW_THEME_URL
-          value: "https://forms-flow-theme-dev.apps.silver.devops.gov.bc.ca/forms-flow-theme.js"
+          value: "https://forms-flow-theme-${ENV_TAG}.apps.silver.devops.gov.bc.ca/forms-flow-theme.js"
         - name: FORMIO_DEFAULT_PROJECT_URL
-          value: "https://forms-flow-forms-e38158-dev.apps.silver.devops.gov.bc.ca"
+          value: "https://forms-flow-forms-e38158-${ENV_TAG}.apps.silver.devops.gov.bc.ca"
         - name: KEYCLOAK_URL
-          value: "https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca"
+          value: "https://epd-keycloak-${ENV_TAG}.apps.silver.devops.gov.bc.ca"
         - name: FORMSFLOW_API_URL
-          value: "https://forms-flow-api-e38158-dev.apps.silver.devops.gov.bc.ca"
+          value: "https://forms-flow-api-e38158-${ENV_TAG}.apps.silver.devops.gov.bc.ca"
         - name: BPM_API_URL
-          value: "https://forms-flow-bpm-e38158-dev.apps.silver.devops.gov.bc.ca/camunda"
+          value: "https://forms-flow-bpm-e38158-${ENV_TAG}.apps.silver.devops.gov.bc.ca/camunda"
         - name: APPLICATION_NAME
-          value: "formsflow.ai"
-        - name: ENABLE_APPLICATION_ACCESS_PERMISSION_CHECK
-          value: "false"
-        - name: CUSTOM_SUBMISSION_URL
-          value: "TODO"
-        - name: CUSTOM_SUBMISSION_ENABLED
-          value: "false"
-        - name: EPD_IDP_LOGOUT_URL
-          value: "https://logontest7.gov.bc.ca/clp-cgi/logoff.cgi?retnow=1&returl=https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/protocol/openid-connect/logout?post_logout_redirect_uri=https://epd-frontend-dev.apps.silver.devops.gov.bc.ca/"
+          value: "EPD"
         - name: EPD_CUSTOM_MAP_URL
-          value: "https://epd-frontend-dev.apps.silver.devops.gov.bc.ca/map"
+          value: "https://epd-frontend-${ENV_TAG}.apps.silver.devops.gov.bc.ca/map"
     output:
       to:
         kind: ImageStreamTag
@@ -90,7 +84,7 @@ parameters:
   displayName: Environment name
   description: The name of the environment, in build names and image stream tags
   required: true
-  value: dev
+  value: prod
 - name: GIT_REPO_URL
   displayName: Git Repo URL
   description: The URL to your GIT repo.
@@ -100,7 +94,7 @@ parameters:
   displayName: Git Reference
   description: The git reference or branch.
   required: true
-  value: dev
+  value: main
 - name: SOURCE_CONTEXT_DIR
   displayName: Source Context Directory
   description: The source context directory.
