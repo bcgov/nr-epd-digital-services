@@ -44,7 +44,7 @@ parameters:
   displayName: Name
   description: The name assigned to all of the resources defined in this template.
   required: true
-  value: forms-flow-nav
+  value: forms-flow-bpm
 - name: ENV_TAG
   displayName: Environment name
   description: The name of the environment, in build names and image stream tags
@@ -64,7 +64,7 @@ parameters:
   displayName: Source Context Directory
   description: The source context directory.
   required: false
-  value: forms-flow-ai-ee/forms-flow-bpm
+  value: forms-flow-ai/forms-flow-ai-ee/forms-flow-bpm
 - name: DOCKER_FILE_PATH
   displayName: Docker File Path
   description: The path to the docker file defining the build.
