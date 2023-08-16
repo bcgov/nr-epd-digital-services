@@ -34,7 +34,7 @@ jobs:
         id: set-variable
         # make sure to update the TOOLS_NAME once all the environment for forms-flow-ai-web is ready
         run: |
-          if [ '${{ github.ref_name }}' == 'dev' ]; then
+          if [ '${{ github.ref_name }}' == 'feat/task-228' ]; then
             echo "For ${{ github.ref_name }} branch"
             echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
             echo "TAG_NAME="dev"" >> $GITHUB_ENV
