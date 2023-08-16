@@ -915,6 +915,7 @@ execution.setVariable('requestType', 'CSSA');</camunda:script>
       <bpmn:outgoing>Flow_19ktqsm</bpmn:outgoing>
       <bpmn:outgoing>Flow_0qbjx6e</bpmn:outgoing>
       <bpmn:outgoing>Flow_1tu4hj7</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1ev1kr6</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:userTask id="Activity_08ykdar" name="Validate Bundle" camunda:candidateGroups="formsflow/formsflow-reviewer/cssa-team">
       <bpmn:extensionElements>
@@ -1170,6 +1171,7 @@ system.out.println ("isSentFromSociety "+ task.execution.getVariable('isSentFrom
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0kfjdmp</bpmn:incoming>
       <bpmn:incoming>Flow_0543g25</bpmn:incoming>
+      <bpmn:incoming>Flow_1ev1kr6</bpmn:incoming>
       <bpmn:outgoing>Flow_0d8ruax</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:userTask id="Activity_1uc1xs1" name="Validate Bundle" camunda:candidateGroups="formsflow/formsflow-reviewer/csap">
@@ -1233,6 +1235,9 @@ system.out.println ("form signed");</camunda:script>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_0aabyhy" sourceRef="Gateway_1lbpcug" targetRef="Activity_08ykdar">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Recheck' and isSentFromSociety == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1ev1kr6" name="Recheck" sourceRef="Gateway_0oobb3z" targetRef="Activity_1ao3zkj">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Recheck'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
   </bpmn:process>
   <bpmn:message id="Message_1ngb2eg" name="application_resubmitted" />
@@ -2150,6 +2155,15 @@ system.out.println ("form signed");</camunda:script>
         <di:waypoint x="3020" y="3070" />
         <di:waypoint x="3020" y="1480" />
         <di:waypoint x="1305" y="1480" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ev1kr6_di" bpmnElement="Flow_1ev1kr6">
+        <di:waypoint x="1230" y="1620" />
+        <di:waypoint x="1100" y="1620" />
+        <di:waypoint x="1100" y="1020" />
+        <di:waypoint x="1205" y="1020" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1048" y="1543" width="44" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
