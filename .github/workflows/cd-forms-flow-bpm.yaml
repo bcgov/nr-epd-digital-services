@@ -11,7 +11,7 @@ on:
     branches:
       - dev
       - main
-      - feat/task-228 # Remove in future, just to verify this works, #test
+      - feat/task-228 # Remove in future, just to verify this works
     paths:
       - "forms-flow-ai/forms-flow-ai-ee/forms-flow-bpm"
       - ".github/workflows/cd-forms-flow-bpm.yaml"
@@ -34,7 +34,7 @@ jobs:
         id: set-variable
         # make sure to update the TOOLS_NAME once all the environment for forms-flow-ai-web is ready
         run: |
-          if [ '${{ github.ref_name }}' == 'feat/task-228' ]; then
+          if [ '${{ github.ref_name }}' == 'dev' ]; then
             echo "For ${{ github.ref_name }} branch"
             echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
             echo "TAG_NAME="dev"" >> $GITHUB_ENV
@@ -68,7 +68,7 @@ jobs:
       - name: Build from ${{ env.BRANCH_NAME }} branch
         shell: bash
         run: |
-          oc patch bc/${{ env.APP_NAME }}-build -p '{"spec":{"source":{"git":{"ref":"feat/task-228"}}}}'
+          oc patch bc/${{ env.APP_NAME }}-build -p '{"spec":{"source":{"git":{"ref":"${{ env.BRANCH_NAME }}"}}}}'
 
       - name: Start Build Openshift
         shell: bash
