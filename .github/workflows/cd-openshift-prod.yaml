@@ -146,6 +146,7 @@ jobs:
           oc tag forms-flow-nav:test forms-flow-nav:prod
           oc tag forms-flow-theme:test forms-flow-theme:prod
           oc tag forms-flow-web-ee:test forms-flow-web-ee:prod
+          oc tag forms-flow-bpm:test forms-flow-bpm:prod
 
 
       - name: Start Build Openshift
