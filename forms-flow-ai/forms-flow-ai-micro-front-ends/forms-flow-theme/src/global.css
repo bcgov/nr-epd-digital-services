@@ -810,10 +810,21 @@ div.upload input[type="file"] {
 }
 
 
-.MuiTabs-scroller.MuiTabs-fixed > .MuiTabs-indicator  {
+section.custom-grid.grid-forms .MuiTabs-scroller.MuiTabs-fixed > .MuiTabs-indicator  {
   /* background-color: var(--color-bcgov--link); */
   background-color: var(--color-primary);
   height: 4px;
+}
+
+section.custom-grid.grid-forms > div > .MuiTabs-root {
+  margin-left: 20px;
+}
+
+/* Match the header of the "Create an Application Package" on Forms page to same styling on Applications page. */
+.MuiTabs-flexContainer > div[textcolor="primary"] {
+  /* match h3 stylings */
+  font-size: 26px;
+  font-weight: bold;
 }
 
 /* Target the "powered by Formsflow" footer */
@@ -827,13 +838,11 @@ td[colspan="12"] div {
 }
 
 
-/* Match the header of the "Create an Application Package" on Forms page to same styling on Applications page. */
-.MuiTabs-flexContainer > div[textcolor="primary"] {
-  /* match h3 stylings */
-  font-size: 26px;
-  font-weight: bold;
-}
-
+/* Applications page header */
 [data-testid="wrapper"] .table.table-bordered thead {
   background-color: #f2f2f2
 }
+
+/* #main > .container {
+  display: none;
+} */
