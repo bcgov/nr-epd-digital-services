@@ -132,7 +132,7 @@ export const columns = (
       sort: true,
       filter: textFilter({
         delay: 800,
-        placeholder: `\uf002 ${t("Application Id")}`, // custom the input placeholder
+        placeholder: `${t("Application ID")}`, // custom the input placeholder
         caseSensitive: false, // default is false, and true will only work when comparator is LIKE
         className: "icon-search",
         style: invalidFilters.APPLICATION_ID
@@ -151,7 +151,7 @@ export const columns = (
       formatter: nameFormatter,
       filter: textFilter({
         delay: 800,
-        placeholder: `\uf002 ${t("Application Name")}`, // custom the input placeholder
+        placeholder: `${t("Application Name")}`, // custom the input placeholder
         caseSensitive: false, // default is false, and true will only work when comparator is LIKE
         className: "icon-search",
         style: customStyle,
