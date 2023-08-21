@@ -113,7 +113,7 @@ jobs:
     #       message: "Release version ${{ inputs.RELEASE_VERSION }}"
 
 
-  forms-flow-root-config-and-microfrontends:
+  forms-flow-root-config-and-microfrontends-bpm-changes:
     runs-on: ubuntu-20.04
 
     if: github.repository == 'bcgov/nr-epd-digital-services'
