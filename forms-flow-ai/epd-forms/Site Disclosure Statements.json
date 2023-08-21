@@ -5501,7 +5501,7 @@
                                                 "required": true,
                                                 "pattern": "",
                                                 "customMessage": "",
-                                                "custom": "if(/^[0-9]+$/.test(input) && input>= 0 && input<= 60){\r\n\tvalid=true;\r\n}else{\r\n\tvalid = \"Invalid Minutes\";\r\n}",
+                                                "custom": "if(/^[0-9]*\\.?[0-9]*$/.test(input) && input>= 0 && input<= 60){\r\n\tvalid=true;\r\n}else{\r\n\tvalid = \"Invalid Minutes\";\r\n}",
                                                 "customPrivate": false,
                                                 "json": "",
                                                 "minLength": "",
@@ -5540,8 +5540,8 @@
                                             "dataGridLabel": false,
                                             "addons": [],
                                             "inputType": "text",
-                                            "id": "eck2wz",
-                                            "defaultValue": ""
+                                            "id": "e5tk2fz",
+                                            "defaultValue": null
                                         }
                                     ],
                                     "currentWidth": 4
@@ -5599,7 +5599,7 @@
                                                 "required": true,
                                                 "pattern": "",
                                                 "customMessage": "",
-                                                "custom": "if(/^[0-9]+$/.test(input) && input>= 0 && input<= 60){\r\n\tvalid=true;\r\n}else{\r\n\tvalid = \"Invalid Seconds\";\r\n}\r\n",
+                                                "custom": "if(/^[0-9]*\\.?[0-9]*$/.test(input) && input>= 0 && input<= 60){\r\n\tvalid=true;\r\n}else{\r\n\tvalid = \"Invalid Seconds\";\r\n}",
                                                 "customPrivate": false,
                                                 "json": "",
                                                 "minLength": "",
@@ -5638,7 +5638,7 @@
                                             "dataGridLabel": false,
                                             "addons": [],
                                             "inputType": "text",
-                                            "id": "ewlchft",
+                                            "id": "e95gtda",
                                             "defaultValue": ""
                                         }
                                     ],
@@ -5925,7 +5925,7 @@
                                                 "required": true,
                                                 "pattern": "",
                                                 "customMessage": "",
-                                                "custom": "if(/^[0-9]+$/.test(input) && input>= 0 && input<= 60){\r\n\tvalid=true;\r\n}else{\r\n\tvalid = \"Invalid Minutes\";\r\n}\r\n",
+                                                "custom": "if(/^[0-9]*\\.?[0-9]*$/.test(input) && input>= 0 && input<= 60){\r\n\tvalid=true;\r\n}else{\r\n\tvalid = \"Invalid Minutes\";\r\n}\r\n",
                                                 "customPrivate": false,
                                                 "json": "",
                                                 "minLength": "",
@@ -5964,7 +5964,7 @@
                                             "dataGridLabel": false,
                                             "addons": [],
                                             "inputType": "text",
-                                            "id": "ecuyyr6",
+                                            "id": "eccya3h",
                                             "defaultValue": ""
                                         }
                                     ],
@@ -6023,7 +6023,7 @@
                                                 "required": true,
                                                 "pattern": "",
                                                 "customMessage": "",
-                                                "custom": "if(/^[0-9]+$/.test(input) && input>= 0 && input<= 60){\r\n\tvalid=true;\r\n}else{\r\n\tvalid = \"Invalid Seconds\";\r\n}\r\n",
+                                                "custom": "if(/^[0-9]*\\.?[0-9]*$/.test(input) && input>= 0 && input<= 60){\r\n\tvalid=true;\r\n}else{\r\n\tvalid = \"Invalid Seconds\";\r\n}",
                                                 "customPrivate": false,
                                                 "json": "",
                                                 "minLength": "",
@@ -6062,7 +6062,7 @@
                                             "dataGridLabel": false,
                                             "addons": [],
                                             "inputType": "text",
-                                            "id": "eypuepw",
+                                            "id": "eplor7",
                                             "defaultValue": ""
                                         }
                                     ],
@@ -6970,7 +6970,7 @@
                                                 }
                                             ],
                                             "collapsible": false,
-                                            "id": "e7nge5b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "e7nge5b000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -7444,7 +7444,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eapos760000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eapos76000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -7660,7 +7660,7 @@
                                             "input": true,
                                             "label": "Crown Land File Numbers",
                                             "tableView": true,
-                                            "id": "e7fs5c50000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "e7fs5c5000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
