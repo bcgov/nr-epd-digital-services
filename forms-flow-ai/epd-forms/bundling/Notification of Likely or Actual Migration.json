@@ -4,8 +4,8 @@
             "title": "Notification of Likely or Actual Migration",
             "display": "form",
             "type": "form",
-            "name": "nlamForm",
-            "path": "nlamform",
+            "name": "nomBundleForm",
+            "path": "nomBundleForm",
             "tags": [
                 "common"
             ],
