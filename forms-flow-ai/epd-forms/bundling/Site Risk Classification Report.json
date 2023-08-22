@@ -23,7 +23,7 @@
                     "key": "bundleActions",
                     "tags": [],
                     "properties": {},
-                    "customConditional": "\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(roles.includes(\"formsflow-reviewer/cssa-team\") || roles.includes(\"formsflow-reviewer/csap\") || roles.includes(\"formsflow-reviewer/csap-society\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
+                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(roles.includes(\"formsflow-reviewer/cssa-team\") || roles.includes(\"formsflow-reviewer/csap\") || roles.includes(\"formsflow-reviewer/csap-society\") || roles.includes(\"formsflow-reviewer/site-information-advisor\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
                     "conditional": {
                         "json": "",
                         "show": null,
@@ -81,7 +81,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
-                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(\r\n(roles.includes(\"formsflow-reviewer/csap\") || roles.includes(\"formsflow-reviewer/cssa-team\")) && \r\n(data.applicationStatus===\"New\" || data.applicationStatus===\"Resubmitted\" || data.applicationStatus===\"Recheck\") \r\n) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
+                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(\r\n(roles.includes(\"formsflow-reviewer/csap\") || roles.includes(\"formsflow-reviewer/cssa-team\") || roles.includes(\"formsflow-reviewer/site-information-advisor\")) && \r\n(data.applicationStatus===\"New\" || data.applicationStatus===\"Resubmitted\" || data.applicationStatus===\"Recheck\") \r\n) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
@@ -132,7 +132,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "eyddot"
+                                            "id": "esb1927"
                                         }
                                     ],
                                     "width": 3,
@@ -173,7 +173,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
-                                            "customConditional": "\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(roles.includes(\"formsflow-reviewer/cssa-team\") || roles.includes(\"formsflow-reviewer/csap\") || roles.includes(\"formsflow-reviewer/csap-society\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
+                                            "customConditional": "\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(roles.includes(\"formsflow-reviewer/cssa-team\") || roles.includes(\"formsflow-reviewer/csap\") || roles.includes(\"formsflow-reviewer/csap-society\") || roles.includes(\"formsflow-reviewer/site-information-advisor\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
@@ -225,66 +225,41 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "e6pert"
+                                            "id": "ek5pvrq"
                                         },
                                         {
                                             "label": "Approved",
                                             "action": "custom",
                                             "showValidations": false,
-                                            "theme": "primary",
-                                            "size": "md",
-                                            "block": false,
-                                            "leftIcon": "",
-                                            "rightIcon": "",
-                                            "shortcut": "",
-                                            "description": "",
-                                            "tooltip": "",
-                                            "customClass": "",
-                                            "tabindex": "",
-                                            "disableOnInvalid": false,
-                                            "hidden": false,
-                                            "autofocus": false,
-                                            "disabled": false,
                                             "tableView": false,
-                                            "modalEdit": false,
                                             "key": "approveBundle",
-                                            "tags": [],
-                                            "properties": {},
-                                            "conditional": {
-                                                "show": null,
-                                                "when": null,
-                                                "eq": "",
-                                                "json": ""
-                                            },
                                             "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(roles.includes(\"formsflow-reviewer/sdm\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
-                                            "logic": [],
-                                            "attributes": {},
-                                            "overlay": {
-                                                "style": "",
-                                                "page": "",
-                                                "left": "",
-                                                "top": "",
-                                                "width": "",
-                                                "height": ""
-                                            },
                                             "type": "button",
                                             "custom": "\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Approved'\r\n})",
                                             "input": true,
                                             "placeholder": "",
                                             "prefix": "",
+                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
                                             "protected": false,
                                             "unique": false,
                                             "persistent": false,
+                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
+                                            "modalEdit": false,
                                             "dataGridLabel": true,
                                             "labelPosition": "top",
+                                            "description": "",
                                             "errorLabel": "",
+                                            "tooltip": "",
                                             "hideLabel": false,
+                                            "tabindex": "",
+                                            "disabled": false,
+                                            "autofocus": false,
                                             "dbIndex": false,
                                             "customDefaultValue": "",
                                             "calculateValue": "",
@@ -292,6 +267,7 @@
                                             "widget": {
                                                 "type": "input"
                                             },
+                                            "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
                                                 "required": false,
@@ -301,13 +277,32 @@
                                                 "multiple": false,
                                                 "unique": false
                                             },
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": ""
+                                            },
+                                            "overlay": {
+                                                "style": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
                                             "allowCalculateOverride": false,
                                             "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
+                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "eum808k"
+                                            "size": "md",
+                                            "leftIcon": "",
+                                            "rightIcon": "",
+                                            "block": false,
+                                            "disableOnInvalid": false,
+                                            "theme": "primary",
+                                            "id": "eqyowmh"
                                         }
                                     ],
                                     "width": 3,
@@ -393,7 +388,7 @@
                                             "rightIcon": "",
                                             "block": false,
                                             "disableOnInvalid": false,
-                                            "id": "emuwggv"
+                                            "id": "ed8k32w"
                                         }
                                     ],
                                     "size": "md",
@@ -479,7 +474,7 @@
                                             "rightIcon": "",
                                             "block": false,
                                             "disableOnInvalid": false,
-                                            "id": "e8gm9al"
+                                            "id": "expme1c"
                                         }
                                     ],
                                     "size": "md",
@@ -554,7 +549,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "e0forvl"
+                            "id": "e6ccgwp"
                         }
                     ],
                     "keyModified": true,
@@ -596,7 +591,7 @@
                     "addons": [],
                     "tree": false,
                     "lazyLoad": false,
-                    "id": "e9343q"
+                    "id": "e3zj9xq"
                 },
                 {
                     "title": "Site Owner Actions",
@@ -873,7 +868,7 @@
                     "key": "formActions",
                     "tags": [],
                     "properties": {},
-                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nif(roles.includes(\"formsflow-client\") || \r\nroles.includes(\"formsflow-reviewer/cssa-team\") || \r\nroles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\") || \r\nroles.includes(\"formsflow-reviewer/formsflow-client-reviewer\")) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
+                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nif(roles.includes(\"formsflow-client\") || \r\nroles.includes(\"formsflow-reviewer/cssa-team\") || \r\nroles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\") || \r\nroles.includes(\"formsflow-reviewer/formsflow-client-reviewer\") ||\r\nroles.includes(\"formsflow-reviewer/site-information-advisor\")) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
                     "conditional": {
                         "json": "",
                         "show": null,
@@ -906,60 +901,35 @@
                                             "label": "Previous Reviewer",
                                             "action": "custom",
                                             "showValidations": false,
-                                            "theme": "primary",
-                                            "size": "md",
-                                            "block": false,
-                                            "leftIcon": "",
-                                            "rightIcon": "",
-                                            "shortcut": "",
-                                            "description": "",
-                                            "tooltip": "",
-                                            "customClass": "",
-                                            "tabindex": "",
-                                            "disableOnInvalid": false,
-                                            "hidden": false,
-                                            "autofocus": false,
-                                            "disabled": false,
                                             "tableView": false,
-                                            "modalEdit": false,
                                             "key": "sendToPreviousReviewer",
-                                            "tags": [],
-                                            "properties": {},
-                                            "conditional": {
-                                                "show": null,
-                                                "when": null,
-                                                "eq": "",
-                                                "json": ""
-                                            },
                                             "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer\") && \r\n!roles.includes(\"formsflow-reviewer/cssa-team\") && \r\n!roles.includes(\"formsflow-reviewer/csap\") &&\r\n!roles.includes(\"formsflow-reviewer/site-risk-classification-officer\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
-                                            "logic": [],
-                                            "attributes": {},
-                                            "overlay": {
-                                                "style": "",
-                                                "page": "",
-                                                "left": "",
-                                                "top": "",
-                                                "width": "",
-                                                "height": ""
-                                            },
                                             "type": "button",
                                             "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst filteredData = _.pick(data, data.srcrUtilKeys);\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": filteredData};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Recheck'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Recheck'\r\n    }); \r\n});",
                                             "input": true,
                                             "placeholder": "",
                                             "prefix": "",
+                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
                                             "protected": false,
                                             "unique": false,
                                             "persistent": false,
+                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
+                                            "modalEdit": false,
                                             "dataGridLabel": true,
                                             "labelPosition": "top",
+                                            "description": "",
                                             "errorLabel": "",
+                                            "tooltip": "",
                                             "hideLabel": false,
+                                            "tabindex": "",
+                                            "disabled": false,
+                                            "autofocus": false,
                                             "dbIndex": false,
                                             "customDefaultValue": "",
                                             "calculateValue": "",
@@ -967,6 +937,7 @@
                                             "widget": {
                                                 "type": "input"
                                             },
+                                            "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
                                                 "required": false,
@@ -976,13 +947,32 @@
                                                 "multiple": false,
                                                 "unique": false
                                             },
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": ""
+                                            },
+                                            "overlay": {
+                                                "style": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
                                             "allowCalculateOverride": false,
                                             "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
+                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "exgk3zf"
+                                            "size": "md",
+                                            "leftIcon": "",
+                                            "rightIcon": "",
+                                            "block": false,
+                                            "disableOnInvalid": false,
+                                            "theme": "primary",
+                                            "id": "e3cp8ll"
                                         }
                                     ],
                                     "width": 3,
@@ -998,61 +988,36 @@
                                             "label": "Next Reviewer",
                                             "action": "custom",
                                             "showValidations": false,
-                                            "theme": "primary",
-                                            "size": "md",
-                                            "block": false,
-                                            "leftIcon": "",
-                                            "rightIcon": "",
-                                            "shortcut": "",
-                                            "description": "",
-                                            "tooltip": "",
-                                            "customClass": "",
-                                            "tabindex": "",
-                                            "disableOnInvalid": false,
-                                            "hidden": false,
-                                            "autofocus": false,
-                                            "disabled": false,
                                             "tableView": false,
-                                            "modalEdit": false,
                                             "key": "sendToNextReviewer",
-                                            "tags": [],
-                                            "properties": {},
-                                            "conditional": {
-                                                "show": null,
-                                                "when": null,
-                                                "eq": "",
-                                                "json": ""
-                                            },
                                             "customConditional": "\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(roles.includes(\"formsflow-reviewer/site-risk-classification-officer\") || roles.includes(\"formsflow-reviewer/caseworker\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
-                                            "logic": [],
-                                            "attributes": {},
-                                            "overlay": {
-                                                "style": "",
-                                                "page": "",
-                                                "left": "",
-                                                "top": "",
-                                                "width": "",
-                                                "height": ""
-                                            },
                                             "type": "button",
                                             "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst filteredData = _.pick(data, data.srcrUtilKeys);\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": filteredData};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Accepted'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'srcoAccepted'\r\n    }); \r\n});",
                                             "input": true,
                                             "keyModified": true,
                                             "placeholder": "",
                                             "prefix": "",
+                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
                                             "protected": false,
                                             "unique": false,
                                             "persistent": false,
+                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
+                                            "modalEdit": false,
                                             "dataGridLabel": true,
                                             "labelPosition": "top",
+                                            "description": "",
                                             "errorLabel": "",
+                                            "tooltip": "",
                                             "hideLabel": false,
+                                            "tabindex": "",
+                                            "disabled": false,
+                                            "autofocus": false,
                                             "dbIndex": false,
                                             "customDefaultValue": "",
                                             "calculateValue": "",
@@ -1060,6 +1025,7 @@
                                             "widget": {
                                                 "type": "input"
                                             },
+                                            "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
                                                 "required": false,
@@ -1069,72 +1035,66 @@
                                                 "multiple": false,
                                                 "unique": false
                                             },
-                                            "allowCalculateOverride": false,
-                                            "encrypted": false,
-                                            "showCharCount": false,
-                                            "showWordCount": false,
-                                            "allowMultipleMasks": false,
-                                            "addons": [],
-                                            "id": "ehan9ua"
-                                        },
-                                        {
-                                            "label": "Approved",
-                                            "action": "custom",
-                                            "showValidations": false,
-                                            "theme": "primary",
-                                            "size": "md",
-                                            "block": false,
-                                            "leftIcon": "",
-                                            "rightIcon": "",
-                                            "shortcut": "",
-                                            "description": "",
-                                            "tooltip": "",
-                                            "customClass": "",
-                                            "tabindex": "",
-                                            "disableOnInvalid": false,
-                                            "hidden": false,
-                                            "autofocus": false,
-                                            "disabled": false,
-                                            "tableView": false,
-                                            "modalEdit": false,
-                                            "key": "approve",
-                                            "tags": [],
-                                            "properties": {},
                                             "conditional": {
                                                 "show": null,
                                                 "when": null,
-                                                "eq": "",
-                                                "json": ""
+                                                "eq": ""
                                             },
-                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(roles.includes(\"formsflow-reviewer/sdm\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
-                                            "logic": [],
-                                            "attributes": {},
                                             "overlay": {
                                                 "style": "",
-                                                "page": "",
                                                 "left": "",
                                                 "top": "",
                                                 "width": "",
                                                 "height": ""
                                             },
+                                            "allowCalculateOverride": false,
+                                            "encrypted": false,
+                                            "showCharCount": false,
+                                            "showWordCount": false,
+                                            "properties": {},
+                                            "allowMultipleMasks": false,
+                                            "addons": [],
+                                            "size": "md",
+                                            "leftIcon": "",
+                                            "rightIcon": "",
+                                            "block": false,
+                                            "disableOnInvalid": false,
+                                            "theme": "primary",
+                                            "id": "e7vobp"
+                                        },
+                                        {
+                                            "label": "Approved",
+                                            "action": "custom",
+                                            "showValidations": false,
+                                            "tableView": false,
+                                            "key": "approve",
+                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(roles.includes(\"formsflow-reviewer/sdm\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
                                             "type": "button",
                                             "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst filteredData = _.pick(data, data.srcrUtilKeys);\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": filteredData};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Approved'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Approved'\r\n    }); \r\n});",
                                             "input": true,
                                             "placeholder": "",
                                             "prefix": "",
+                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
                                             "protected": false,
                                             "unique": false,
                                             "persistent": false,
+                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
+                                            "modalEdit": false,
                                             "dataGridLabel": true,
                                             "labelPosition": "top",
+                                            "description": "",
                                             "errorLabel": "",
+                                            "tooltip": "",
                                             "hideLabel": false,
+                                            "tabindex": "",
+                                            "disabled": false,
+                                            "autofocus": false,
                                             "dbIndex": false,
                                             "customDefaultValue": "",
                                             "calculateValue": "",
@@ -1142,6 +1102,7 @@
                                             "widget": {
                                                 "type": "input"
                                             },
+                                            "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
                                                 "required": false,
@@ -1151,13 +1112,32 @@
                                                 "multiple": false,
                                                 "unique": false
                                             },
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": ""
+                                            },
+                                            "overlay": {
+                                                "style": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
                                             "allowCalculateOverride": false,
                                             "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
+                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "e84gchm"
+                                            "size": "md",
+                                            "leftIcon": "",
+                                            "rightIcon": "",
+                                            "block": false,
+                                            "disableOnInvalid": false,
+                                            "theme": "primary",
+                                            "id": "e00fg4k"
                                         }
                                     ],
                                     "width": 3,
@@ -1174,59 +1154,35 @@
                                             "action": "custom",
                                             "showValidations": false,
                                             "theme": "warning",
-                                            "size": "md",
-                                            "block": false,
-                                            "leftIcon": "",
-                                            "rightIcon": "",
-                                            "shortcut": "",
-                                            "description": "",
-                                            "tooltip": "",
-                                            "customClass": "",
-                                            "tabindex": "",
-                                            "disableOnInvalid": false,
-                                            "hidden": false,
-                                            "autofocus": false,
-                                            "disabled": false,
                                             "tableView": false,
-                                            "modalEdit": false,
                                             "key": "sendToApplicant",
-                                            "tags": [],
-                                            "properties": {},
-                                            "conditional": {
-                                                "show": null,
-                                                "when": null,
-                                                "eq": "",
-                                                "json": ""
-                                            },
                                             "customConditional": "\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nconst taskUrl = window.location.pathname.split('/');\r\nconst taskId = taskUrl[2];\r\nconst authToken = localStorage.getItem(\"authToken\");\r\nconst bpmUrl = localStorage.getItem(\"bpmApiUrl\");\r\nvar reqUrl = bpmUrl + \"/task/\" + taskId + \"/variables\";\r\n\r\n   getData(reqUrl, authToken).then((response) => {\r\n  \r\n  \t\t var applicationStatus = response.applicationStatus?response.applicationStatus.value:'';\r\n\t      if (applicationStatus === 'Resubmit') {\r\n\r\n\t        component.disabled = true;\r\n\t        component.description = 'Disabled since CSSA resubmission in progress';\r\n\t        instance.triggerRedraw();\r\n\t      } else {\r\n\t        component.description = '';\r\n\t        component.disabled = false;\r\n\t        instance.triggerRedraw();\r\n\t      }\r\n\t  \r\n    });\r\n\r\n\r\nasync function getData(reqUrl, authToken) {\r\n    const response = await fetch(reqUrl, {\r\n        method: \"GET\",\r\n        headers: {\r\n            \"Content-type\": \"application/json\",\r\n            Accept: \"application/json\",\r\n            Authorization: \"Bearer \" + authToken,\r\n        },\r\n    });\r\n    const data = await response.json();\r\n    return data;\r\n}",
-                                            "logic": [],
-                                            "attributes": {},
-                                            "overlay": {
-                                                "style": "",
-                                                "page": "",
-                                                "left": "",
-                                                "top": "",
-                                                "width": "",
-                                                "height": ""
-                                            },
                                             "type": "button",
                                             "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst filteredData = _.pick(data, data.srcrUtilKeys);\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": filteredData};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Returned'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Returned'\r\n    }); \r\n});",
                                             "input": true,
                                             "placeholder": "",
                                             "prefix": "",
+                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
                                             "protected": false,
                                             "unique": false,
                                             "persistent": false,
+                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
+                                            "modalEdit": false,
                                             "dataGridLabel": true,
                                             "labelPosition": "top",
+                                            "description": "",
                                             "errorLabel": "",
+                                            "tooltip": "",
                                             "hideLabel": false,
+                                            "tabindex": "",
+                                            "disabled": false,
+                                            "autofocus": false,
                                             "dbIndex": false,
                                             "customDefaultValue": "",
                                             "calculateValue": "",
@@ -1234,6 +1190,7 @@
                                             "widget": {
                                                 "type": "input"
                                             },
+                                            "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
                                                 "required": false,
@@ -1243,13 +1200,31 @@
                                                 "multiple": false,
                                                 "unique": false
                                             },
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": ""
+                                            },
+                                            "overlay": {
+                                                "style": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
                                             "allowCalculateOverride": false,
                                             "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
+                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "etjisrh"
+                                            "size": "md",
+                                            "leftIcon": "",
+                                            "rightIcon": "",
+                                            "block": false,
+                                            "disableOnInvalid": false,
+                                            "id": "eu7wyde"
                                         }
                                     ],
                                     "size": "md",
@@ -1266,59 +1241,34 @@
                                             "action": "custom",
                                             "showValidations": false,
                                             "theme": "danger",
-                                            "size": "md",
-                                            "block": false,
-                                            "leftIcon": "",
-                                            "rightIcon": "",
-                                            "shortcut": "",
-                                            "description": "",
-                                            "tooltip": "",
-                                            "customClass": "",
-                                            "tabindex": "",
-                                            "disableOnInvalid": false,
-                                            "hidden": false,
-                                            "autofocus": false,
-                                            "disabled": false,
                                             "tableView": false,
-                                            "modalEdit": false,
                                             "key": "rejectForm",
-                                            "tags": [],
-                                            "properties": {},
-                                            "conditional": {
-                                                "show": null,
-                                                "when": null,
-                                                "eq": "",
-                                                "json": ""
-                                            },
-                                            "customConditional": "",
-                                            "logic": [],
-                                            "attributes": {},
-                                            "overlay": {
-                                                "style": "",
-                                                "page": "",
-                                                "left": "",
-                                                "top": "",
-                                                "width": "",
-                                                "height": ""
-                                            },
                                             "type": "button",
                                             "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst filteredData = _.pick(data, data.srcrUtilKeys);\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": filteredData};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Rejected'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Rejected'\r\n    }); \r\n});",
                                             "input": true,
                                             "placeholder": "",
                                             "prefix": "",
+                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
                                             "protected": false,
                                             "unique": false,
                                             "persistent": false,
+                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
+                                            "modalEdit": false,
                                             "dataGridLabel": true,
                                             "labelPosition": "top",
+                                            "description": "",
                                             "errorLabel": "",
+                                            "tooltip": "",
                                             "hideLabel": false,
+                                            "tabindex": "",
+                                            "disabled": false,
+                                            "autofocus": false,
                                             "dbIndex": false,
                                             "customDefaultValue": "",
                                             "calculateValue": "",
@@ -1326,6 +1276,7 @@
                                             "widget": {
                                                 "type": "input"
                                             },
+                                            "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
                                                 "required": false,
@@ -1335,13 +1286,31 @@
                                                 "multiple": false,
                                                 "unique": false
                                             },
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": ""
+                                            },
+                                            "overlay": {
+                                                "style": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
                                             "allowCalculateOverride": false,
                                             "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
+                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "ea1w52"
+                                            "size": "md",
+                                            "leftIcon": "",
+                                            "rightIcon": "",
+                                            "block": false,
+                                            "disableOnInvalid": false,
+                                            "id": "e5vu085"
                                         }
                                     ],
                                     "size": "md",
@@ -1416,7 +1385,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "e8f2ko"
+                            "id": "e49hwr"
                         }
                     ],
                     "keyModified": true,
@@ -1458,7 +1427,7 @@
                     "addons": [],
                     "tree": false,
                     "lazyLoad": false,
-                    "id": "e3vowgk"
+                    "id": "e0hm80f"
                 },
                 {
                     "label": "Notes",
@@ -1479,7 +1448,7 @@
                     "templates": {
                         "header": "{% console.log(\"row-key header\",'commentFor',row['commentFor'])  %}\r\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n\r\n{% if(groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")){  %}\r\n\r\n<div class=\"row card-header bg-default\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component) && component.key !== 'commentFor'  ) { %}\r\n         {% if(component.label === 'Notes') {  %}\r\n           <div class=\"col-sm-4\">{{ t(component.label) }}</div>\r\n         {% } else if(component.key !== 'comments') {  %}\r\n           <div class=\"col-sm-2\">{{ t(component.label) }}</div>\r\n         {% } %}\r\n        {% } %}\r\n      {% }) %}\r\n    </div>\r\n\r\n{% } else { %}\r\n\r\n<div class=\"row card-header bg-default\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component)) { %}\r\n      \r\n     {% if(component.key == 'comments') {  %}\r\n        <div class=\"col-sm-4\"> {{   t(component.label)}} </div>\r\n {% } else if(component.key == 'role' || component.key == 'createdBy') {  %}\r\n        <div class=\"col-sm-2\"> {{   t(component.label)}} </div>\r\n{% } else { %}\r\n  <div class=\"col-sm-1\"> {{  t(component.label)}} </div>\r\n{% } %}      \r\n\r\n      \r\n {% } %}\r\n      {% }) %}\r\n    </div>\r\n\r\n{% } %}\r\n\r\n\r\n\r\n\r\n",
                         "tableHeader": "\n      <tr>\n        {% util.eachComponent(components, function(component) { %}\n          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}\n            <td class=\"editgrid-table-column\">{{ component.label }}</td>\n          {% } %}\n        {% }) %}\n        {% if (!instance.options.readOnly && !instance.disabled) { %}\n          <td class=\"editgrid-table-column\">Actions</td>\n        {% } %}\n      </tr>\n    ",
-                        "row": "{% console.log(\"row-key main srcr\",'commentFor',row['commentFor'])  %}\r\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% console.log('rendering edit grid body')%}\r\n{% if((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){  %}\r\n\r\n\r\n\r\n<div class=\"row\">\r\n\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component) && component.key !== 'commentFor' ) { %}\r\n        {% console.log(\"row-key\",component.key,row[component.key])  %}\r\n        {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){ %}\r\n{% if(component.key == 'comments') {  %}\r\n          <div class=\"col-sm-4 text-break\">\r\n               {{ getView(component, row[component.key])}}\r\n          </div>\r\n{% } else { %}\r\n <div class=\"col-sm-2 text-break\">\r\n    {{ getView(component, row[component.key])}}\r\n          </div>\r\n{%}%}\r\n           \r\n\r\n            {% } %}\r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n              {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){ %}\r\n        <div class=\"col-sm-2\">\r\n          <div class=\"btn-group pull-right\">\r\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n       \r\n           {% } %}\r\n      {% } %}\r\n    </div>\r\n     {% } else if (groups.includes(\"/formsflow/formsflow-reviewer/site-risk-classification-officer\") || groups.includes(\"/formsflow/formsflow-reviewer/cssa-team\") || groups.includes(\"/formsflow/formsflow-reviewer/caseworker\") || groups.includes(\"/formsflow/formsflow-reviewer/sdm\")) { %}\r\n     <div class=\"row\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n      {% console.log('for sia') %}\r\n        {% if (displayValue(component)) { %}\r\n         {% if(component.key == 'comments') {  %}\r\n        <div class=\"col-sm-4 text-break\"> {{  getView(component, row[component.key])}} </div>\r\n{% } else if(component.key == 'role' || component.key == 'createdBy') {  %}\r\n        <div class=\"col-sm-2 text-break\"> {{  getView(component, row[component.key])}} </div>\r\n{% } else { %}\r\n  <div class=\"col-sm-1\"> {{  getView(component, row[component.key])}} </div>\r\n{% } %}      \r\n         \r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n        <div class=\"col-sm-1\">\r\n          <div class=\"btn-group pull-right\">\r\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n      {% } %}\r\n    </div>\r\n     {% } %}\r\n   \r\n     \r\n     \r\n{% const emptyElements = []; %}\r\n{% const elements = document.getElementsByClassName(\"list-group-item\"); %}\r\n{% for (let i = 0; i < elements.length; i++) { %}\r\n{%  const element = elements[i]; %}\r\n{% if(element.querySelectorAll('div.row').length===0){(element).remove() }} %}",
+                        "row": "{% console.log(\"row-key main srcr\",'commentFor',row['commentFor'])  %}\r\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% console.log('rendering edit grid body')%}\r\n{% if((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){  %}\r\n\r\n\r\n\r\n<div class=\"row\">\r\n\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component) && component.key !== 'commentFor' ) { %}\r\n        {% console.log(\"row-key\",component.key,row[component.key])  %}\r\n        {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){ %}\r\n{% if(component.key == 'comments') {  %}\r\n          <div class=\"col-sm-4 text-break\">\r\n               {{ getView(component, row[component.key])}}\r\n          </div>\r\n{% } else { %}\r\n <div class=\"col-sm-2 text-break\">\r\n    {{ getView(component, row[component.key])}}\r\n          </div>\r\n{%}%}\r\n           \r\n\r\n            {% } %}\r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n              {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){ %}\r\n        <div class=\"col-sm-2\">\r\n          <div class=\"btn-group pull-right\">\r\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n       \r\n           {% } %}\r\n      {% } %}\r\n    </div>\r\n     {% } else if (groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\") || groups.includes(\"/formsflow/formsflow-reviewer/site-risk-classification-officer\") || groups.includes(\"/formsflow/formsflow-reviewer/cssa-team\") || groups.includes(\"/formsflow/formsflow-reviewer/caseworker\") || groups.includes(\"/formsflow/formsflow-reviewer/sdm\")) { %}\r\n     <div class=\"row\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n      {% console.log('for sia') %}\r\n        {% if (displayValue(component)) { %}\r\n         {% if(component.key == 'comments') {  %}\r\n        <div class=\"col-sm-4 text-break\"> {{  getView(component, row[component.key])}} </div>\r\n{% } else if(component.key == 'role' || component.key == 'createdBy') {  %}\r\n        <div class=\"col-sm-2 text-break\"> {{  getView(component, row[component.key])}} </div>\r\n{% } else { %}\r\n  <div class=\"col-sm-1\"> {{  getView(component, row[component.key])}} </div>\r\n{% } %}      \r\n         \r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n        <div class=\"col-sm-1\">\r\n          <div class=\"btn-group pull-right\">\r\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n      {% } %}\r\n    </div>\r\n     {% } %}\r\n   \r\n     \r\n     \r\n{% const emptyElements = []; %}\r\n{% const elements = document.getElementsByClassName(\"list-group-item\"); %}\r\n{% for (let i = 0; i < elements.length; i++) { %}\r\n{%  const element = elements[i]; %}\r\n{% if(element.querySelectorAll('div.row').length===0){(element).remove() }} %}",
                         "tableRow": "\n      {% util.eachComponent(components, function(component) { %}\n          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}\n            <td class=\"editgrid-table-column\">\n              {{ getView(component, row[component.key]) }}\n            </td>\n          {% } %}\n        {% }) %}\n        {% if (!instance.options.readOnly && !instance.disabled) { %}\n          <td class=\"editgrid-table-column\">\n            <div class=\"btn-group\">\n              <button class=\"btn btn-default btn-light btn-sm editRow\" aria-label=\"{{ t('Edit row') }}\"><i class=\"{{ iconClass('edit') }}\"></i></button>\n              {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\n              <button class=\"btn btn-danger btn-sm removeRow\" aria-label=\"{{ t('Remove row') }}\"><i class=\"{{ iconClass('trash') }}\"></i></button>\n              {% } %}\n            </div>\n          </td>\n        {% } %}\n    ",
                         "footer": "{% const emptyElements = []; %}\r\n{% const elements = document.getElementsByClassName(\"list-group-item\"); %}\r\n{% for (let i = 0; i < elements.length; i++) { %}\r\n{% const element = elements[i]; %}\r\n{%if(element.querySelectorAll('div.row').length===0){(element).remove() }} %}\r\n"
                     },
@@ -1624,7 +1593,7 @@
                                             "wysiwyg": false,
                                             "editor": "",
                                             "fixedSize": true,
-                                            "id": "e7mhh2h"
+                                            "id": "esph7mh"
                                         }
                                     ],
                                     "width": 4,
@@ -1716,7 +1685,7 @@
                                             "addons": [],
                                             "inputType": "radio",
                                             "fieldSet": false,
-                                            "id": "e1dkav"
+                                            "id": "eb45oit"
                                         }
                                     ],
                                     "width": 2,
@@ -1803,7 +1772,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "e13r6r8"
+                                            "id": "exc6e2b"
                                         }
                                     ],
                                     "size": "md",
@@ -1890,7 +1859,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "egzx9in"
+                                            "id": "ecixpxo"
                                         }
                                     ],
                                     "size": "md",
@@ -1977,7 +1946,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "eimrn0f"
+                                            "id": "ej5pwxv"
                                         }
                                     ],
                                     "size": "md",
@@ -2052,7 +2021,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "ewk3jif"
+                            "id": "ef8ra6w"
                         }
                     ],
                     "placeholder": "",
@@ -2071,7 +2040,7 @@
                     "tree": true,
                     "lazyLoad": false,
                     "defaultOpen": false,
-                    "id": "ecnlklf"
+                    "id": "ebp7k8m"
                 },
                 {
                     "title": "Collection Notice",
@@ -4439,7 +4408,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ele95t0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ele95t00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "spropertyOwnerAndOrOperator",
                                     "tree": false,
                                     "type": "panel",
@@ -13849,7 +13818,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eks0gu000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eks0gu0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "exposurePathwayQuestionnaireAffectedParcel",
                                     "tree": false,
                                     "type": "panel",
@@ -17792,7 +17761,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eo5mwyp0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eo5mwyp00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
