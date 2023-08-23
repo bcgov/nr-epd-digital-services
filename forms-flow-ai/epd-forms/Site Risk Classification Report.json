@@ -81,7 +81,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
-                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(\r\n(roles.includes(\"formsflow-reviewer/csap\") || roles.includes(\"formsflow-reviewer/cssa-team\")) && \r\n(data.applicationStatus===\"New\" || data.applicationStatus===\"Resubmitted\" || data.applicationStatus===\"Recheck\") \r\n) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
+                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(\r\n(roles.includes(\"formsflow-reviewer/csap\") || roles.includes(\"formsflow-reviewer/cssa-team\")) && \r\n(data.applicationStatus===\"New\" || data.applicationStatus===\"Resubmitted\" || data.applicationStatus===\"Resubmit\" || data.applicationStatus===\"Recheck\") \r\n) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
@@ -132,7 +132,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "e19skw"
+                                            "id": "etj4e3"
                                         }
                                     ],
                                     "width": 3,
@@ -173,7 +173,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
-                                            "customConditional": "\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/cssa-team\") || \r\nroles.includes(\"formsflow-reviewer/cssa-manager\") || \r\nroles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\") || \r\nroles.includes(\"formsflow-reviewer/site-risk-classification-officer\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
+                                            "customConditional": "\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/cssa-team\") || \r\nroles.includes(\"formsflow-reviewer/cssa-manager\") || \r\nroles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\") || \r\nroles.includes(\"formsflow-reviewer/caseworker\")|| \r\nroles.includes(\"formsflow-reviewer/site-risk-classification-officer\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
@@ -185,7 +185,7 @@
                                                 "height": ""
                                             },
                                             "type": "button",
-                                            "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Accepted'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'srcoAccepted'\r\n    }); \r\n});",
+                                            "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Accepted'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Accepted'\r\n    }); \r\n});",
                                             "input": true,
                                             "keyModified": true,
                                             "placeholder": "",
@@ -225,7 +225,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "ejubjy6"
+                                            "id": "ecsac4o"
                                         },
                                         {
                                             "label": "Approved",
@@ -348,7 +348,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
-                                            "customConditional": "\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nconst taskUrl = window.location.pathname.split('/');\r\nconst taskId = taskUrl[2];\r\nconst authToken = localStorage.getItem(\"authToken\");\r\nconst bpmUrl = localStorage.getItem(\"bpmApiUrl\");\r\nvar reqUrl = bpmUrl + \"/task/\" + taskId + \"/variables\";\r\n\r\n   getData(reqUrl, authToken).then((response) => {\r\n  \r\n  \t\t var applicationStatus = response.applicationStatus?response.applicationStatus.value:'';\r\n\t      if (applicationStatus === 'Resubmit') {\r\n\r\n\t        component.disabled = true;\r\n\t        component.description = 'Disabled since CSSA resubmission in progress';\r\n\t        instance.triggerRedraw();\r\n\t      } else {\r\n\t        component.description = '';\r\n\t        component.disabled = false;\r\n\t        instance.triggerRedraw();\r\n\t      }\r\n\t  \r\n    });\r\n\r\n\r\nasync function getData(reqUrl, authToken) {\r\n    const response = await fetch(reqUrl, {\r\n        method: \"GET\",\r\n        headers: {\r\n            \"Content-type\": \"application/json\",\r\n            Accept: \"application/json\",\r\n            Authorization: \"Bearer \" + authToken,\r\n        },\r\n    });\r\n    const data = await response.json();\r\n    return data;\r\n}",
+                                            "customConditional": "",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
@@ -399,7 +399,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "exvqajo"
+                                            "id": "evvkm0o"
                                         }
                                     ],
                                     "size": "md",
@@ -440,7 +440,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
-                                            "customConditional": "",
+                                            "customConditional": "\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\")) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
@@ -491,7 +491,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "eosnv1g"
+                                            "id": "eb5yp5a"
                                         }
                                     ],
                                     "size": "md",
@@ -3589,7 +3589,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ele95t0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ele95t0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "spropertyOwnerAndOrOperator",
                                     "tree": false,
                                     "type": "panel",
@@ -12999,7 +12999,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eks0gu000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eks0gu000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "exposurePathwayQuestionnaireAffectedParcel",
                                     "tree": false,
                                     "type": "panel",
@@ -16942,7 +16942,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eo5mwyp0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eo5mwyp0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
