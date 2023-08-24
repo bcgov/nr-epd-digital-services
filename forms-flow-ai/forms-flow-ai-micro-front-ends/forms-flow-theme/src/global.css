@@ -529,7 +529,7 @@ select option:hover {
   /* padding: 10px; */
   box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2),
     0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
-  padding: 2rem 5rem; 
+  padding: 2rem 6rem; 
 }
 
 #sidebar {
@@ -861,4 +861,19 @@ td[colspan="12"] div {
   vertical-align: middle;
   /* display: inline; */
   display: inline-block;
+}
+
+.react-bootstrap-table-pagination-total {
+  margin-left: 1rem;
+}
+
+.react-daterange-picker > .react-daterange-picker__wrapper {
+  border-radius: 7px;
+}
+
+/* Style the datepicker in the table on Applications page */
+.react-bootstrap-table .react-daterange-picker .react-daterange-picker__inputGroup > span,
+.react-bootstrap-table .react-daterange-picker .react-daterange-picker__inputGroup > input::placeholder,
+.react-bootstrap-table .react-daterange-picker .react-daterange-picker__inputGroup svg {
+  color: #a7a7a7;
 }
