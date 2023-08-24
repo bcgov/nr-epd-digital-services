@@ -4632,7 +4632,7 @@
                                                     "components": [
                                                         {
                                                             "id": "e7zmcgf",
-                                                            "key": "streetAddress",
+                                                            "key": "srcrstreetAddress",
                                                             "mask": false,
                                                             "type": "textfield",
                                                             "input": true,
@@ -5436,7 +5436,9 @@
                                     "2-simpleemail": "",
                                     "2-postalZipCode": "",
                                     "2-provinceState": "",
-                                    "2-streetAddress": ""
+                                    "2-streetAddress": "",
+                                    "srcrstreetAddress": "",
+                                    "srcrsimpleemail": ""
                                 }
                             ],
                             "dataGridLabel": false,
@@ -5818,7 +5820,7 @@
                                             "offset": 0,
                                             "components": [
                                                 {
-                                                    "key": "streetAddress",
+                                                    "key": "srcrAgentstreetAddress",
                                                     "type": "textfield",
                                                     "input": true,
                                                     "label": "Street Address",
@@ -6418,7 +6420,7 @@
                                             "offset": 0,
                                             "components": [
                                                 {
-                                                    "key": "srcrsimpleemail",
+                                                    "key": "srcrAgentsimpleemail",
                                                     "type": "email",
                                                     "input": true,
                                                     "label": "Email",
