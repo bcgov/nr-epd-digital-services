@@ -37,7 +37,8 @@
 }
 
 :root {
-  --color-primary: #4d61fc;
+  /* --color-primary: #4d61fc; */
+  --color-primary: #003366;
   --color-secondary: #6c757d;
   --color-success: #3fb618;
   --color-info: #4d61fc;
@@ -64,7 +65,7 @@
   --color-gray-800: #373a3c;
   --color-gray-900: #212529;
 
-  --color-bcgov--link: #1A5A96
+  --color-bcgov--link: #38598A;
 
   --logo-path: "./logo.svg";
 
@@ -748,7 +749,7 @@ div.upload input[type="file"] {
 
 .head-active {
   color: #212529;
-  border-bottom: 4px solid #4d61fc;
+  border-bottom: 4px solid #38598A;
 }
 
 .padding-left-60 {
@@ -811,8 +812,7 @@ div.upload input[type="file"] {
 
 
 section.custom-grid.grid-forms .MuiTabs-scroller.MuiTabs-fixed > .MuiTabs-indicator  {
-  /* background-color: var(--color-bcgov--link); */
-  background-color: var(--color-primary);
+  background-color: var(--color-bcgov--link);
   height: 4px;
 }
 
@@ -846,3 +846,18 @@ td[colspan="12"] div {
 /* #main > .container {
   display: none;
 } */
+
+.table thead th.sortable span {
+  font-size: 1.5rem;
+}
+
+[data-testid="wrapper"] table.table td {
+  vertical-align: middle;
+  height: 4.5rem;
+}
+
+[data-testid="wrapper"] table.table td > label {
+  vertical-align: middle;
+  /* display: inline; */
+  display: inline-block;
+}

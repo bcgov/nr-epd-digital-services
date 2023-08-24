@@ -127,7 +127,7 @@ function FormTable() {
       <tr>
         <td colSpan={12}>
           <div style={{display: 'flex'}}>
-            <div style={{flex: 1, minWidth: '600px', padding: '20px', borderRight: '1px solid black'}}>
+            <div style={{flex: 1, minWidth: '600px', padding: '20px', borderRight: '1px solid #dee2e6'}}>
               <h4 className="font-weight-bold">{t("Description")}</h4>
               <p>{data}</p>
             </div>
