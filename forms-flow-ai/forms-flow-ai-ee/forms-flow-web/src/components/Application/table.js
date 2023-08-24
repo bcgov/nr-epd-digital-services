@@ -126,7 +126,7 @@ export const columns = (
   return [
     {
       dataField: "id",
-      text: <Translation>{(t) => t("Application Id")}</Translation>,
+      text: <Translation>{(t) => t("Application ID")}</Translation>,
       formatter: (cell, row) => linkApplication(cell, row, redirectUrl),
       headerClasses: "classApplicationId",
       sort: true,
