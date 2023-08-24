@@ -85,7 +85,7 @@ const nameFormatter = (cell) => {
   );
 };
 
-const customStyle = { border: "1px solid #ced4da", fontStyle: "normal" };
+const customStyle = { border: "1px solid #a7a7a7", fontStyle: "normal", "border-radius": "7px" };
 
 const styleForValidationFail = { border: "1px solid red" };
 
@@ -105,7 +105,7 @@ export const columns_history = [
 let applicationNotified = false;
 const notifyValidationError = () => {
   if (!applicationNotified) {
-    toast.error("Invalid application id");
+    toast.error("Invalid Application ID");
     applicationNotified = true;
   }
 };
@@ -161,29 +161,6 @@ export const columns = (
       }),
     },
     {
-      dataField: "applicationStatus",
-      text: <Translation>{(t) => t("Application Status")}</Translation>,
-      sort: true,
-      filter:
-        applicationStatus?.length > 0 &&
-        selectFilter({
-          options: getApplicationStatusOptions(applicationStatus),
-          style: customStyle,
-          placeholder: `${t("All")}`,
-          defaultValue: `${t("All")}`,
-          caseSensitive: false, // default is false, and true will only work when comparator is LIKE
-          getFilter: (filter) => {
-            statusFilter = filter;
-          },
-        }),
-    },
-    {
-      dataField: "formUrl",
-      text: <Translation>{(t) => t("Link To Form Submission")}</Translation>,
-      formatter: (cell, row) => linkSubmission(cell, row, redirectUrl),
-    },
-
-    {
       dataField: "modified",
       text: <Translation>{(t) => t("Last Modified")}</Translation>,
       formatter: timeFormatter,
@@ -212,6 +189,28 @@ export const columns = (
         );
       },
     },
+    {
+      dataField: "applicationStatus",
+      text: <Translation>{(t) => t("Application Status")}</Translation>,
+      sort: true,
+      filter:
+        applicationStatus?.length > 0 &&
+        selectFilter({
+          options: getApplicationStatusOptions(applicationStatus),
+          style: customStyle,
+          placeholder: `${t("All")}`,
+          defaultValue: `${t("All")}`,
+          caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+          getFilter: (filter) => {
+            statusFilter = filter;
+          },
+        }),
+    },
+    {
+      dataField: "formUrl",
+      text: <Translation>{(t) => t("Link To Form Submission")}</Translation>,
+      formatter: (cell, row) => linkSubmission(cell, row, redirectUrl),
+    },
   ];
 };
 
@@ -230,7 +229,8 @@ export const customDropUp = ({
 }) => {
   return (
     <DropdownButton
-      drop="up"
+      // drop="up"
+      drop="down"
       variant="secondary"
       title={currSizePerPage}
       style={{ display: "inline" }}
