@@ -22,7 +22,7 @@
         <bpmn:flowNodeRef>Gateway_1txthk0</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Event_1jftbqf</bpmn:flowNodeRef>
       </bpmn:lane>
-      <bpmn:lane id="Lane_0r9g0v1">
+      <bpmn:lane id="Lane_0r9g0v1" name="Site Owner">
         <bpmn:flowNodeRef>Activity_1gun2rz</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1ljp4g2</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_0rg109d</bpmn:flowNodeRef>
@@ -261,6 +261,7 @@ system.out.println ("form signed");</camunda:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_0r9g0v1_di" bpmnElement="Lane_0r9g0v1" isHorizontal="true">
         <dc:Bounds x="190" y="500" width="980" height="372" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_1xv1agn_di" bpmnElement="Lane_1xv1agn" isHorizontal="true">
         <dc:Bounds x="190" y="1230" width="980" height="400" />
