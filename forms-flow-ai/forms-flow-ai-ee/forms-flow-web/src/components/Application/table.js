@@ -60,7 +60,7 @@ const linkSubmission = (cell, row, redirectUrl) => {
   const icon = row.isClientEdit ? "fa fa-edit" : "fa fa-eye";
   return (
     <div onClick={() => window.open(url, "_blank")}>
-      <span style={{ color: "#2A3F71", cursor: "pointer" }}>
+      <span style={{ color: "#003366", cursor: "pointer", "font-weight": "bold", "font-size": "0.9rem" }}>
         <span>
           <i className={icon} />
           &nbsp;
@@ -208,7 +208,7 @@ export const columns = (
     },
     {
       dataField: "formUrl",
-      text: <Translation>{(t) => t("Link To Form Submission")}</Translation>,
+      text: <Translation>{(t) => t("Action")}</Translation>,
       formatter: (cell, row) => linkSubmission(cell, row, redirectUrl),
     },
   ];
