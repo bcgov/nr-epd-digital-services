@@ -6970,7 +6970,7 @@
                                                 }
                                             ],
                                             "collapsible": false,
-                                            "id": "e7nge5b000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "e7nge5b000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -7444,7 +7444,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eapos76000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eapos76000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -7660,7 +7660,7 @@
                                             "input": true,
                                             "label": "Crown Land File Numbers",
                                             "tableView": true,
-                                            "id": "e7fs5c5000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "e7fs5c5000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -10378,7 +10378,7 @@
                         "eq": "",
                         "json": ""
                     },
-                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nif(roles.includes(\"formsflow-reviewer/lrs-approving-authority\")|| \r\nroles.includes(\"formsflow-reviewer/site-information-advisor\") || \r\nroles.includes(\"formsflow-reviewer/formsflow-client-reviewer\") \r\n) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}\r\n",
+                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nif(roles.includes(\"formsflow-reviewer/lrs-approving-authority\")|| \r\nroles.includes(\"formsflow-reviewer/site-information-advisor\")\r\n) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}\r\n",
                     "logic": [],
                     "attributes": {},
                     "overlay": {
@@ -10429,7 +10429,7 @@
                     "showWordCount": false,
                     "allowMultipleMasks": false,
                     "addons": [],
-                    "id": "ef89byr"
+                    "id": "exmil7e"
                 },
                 {
                     "title": "APPROVING AUTHORITY CONTACT INFORMATION",
