@@ -4859,7 +4859,7 @@
                     "components": [
                         {
                             "id": "e7x80l",
-                            "key": "name",
+                            "key": "nirName",
                             "case": "",
                             "mask": false,
                             "type": "textfield",
