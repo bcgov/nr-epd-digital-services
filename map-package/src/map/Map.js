@@ -16,20 +16,29 @@ const Map = (props) => {
   const [address, setAddress] = useState("");
   const [location, setLocation] = useState([ 48.46762, -123.25458  ]);
   const [zoom, setZoom] = useState(13);
-  const [searchTrue, setSerachTrue] = useState(false);
+  const [searchTrue, setSerachTrue] = useState(true);
   //const [info, setInfo] = useState({});
   let info;
 
   useEffect(() => {
     if (props.initLocation.length > 0 && props.initLocation !== null && props.initLocation !== undefined && ( location[0] !== props.initLocation[0] ||   location[1] !== props.initLocation[1]   )) {
      
-      setSerachTrue(false);
-      setZoom(18);
-      setLocation(props.initLocation);
-      if(!props.readOnly)
-      {
-        setShow(true);
-      } 
+     
+
+      const timeoutId =  setTimeout(()=>{
+        //setSerachTrue(false);
+        setZoom(18);
+        setLocation(props.initLocation);
+        if(!props.readOnly)
+        {
+          setShow(true);
+        } 
+
+      },1000);
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
     }
   }, [props]);
 
