@@ -21,12 +21,19 @@ const Map = (props) => {
 
   useEffect(() => {
     if (props.initLocation.length > 0 && props.initLocation !== null && props.initLocation !== undefined) {
-      setZoom(13);
-      setLocation(props.initLocation);
+       
       if(props.readOnly)
       {
         setShow(false);
       } 
+
+      const timer = setTimeout(() => {
+        setZoom(13);
+        setLocation(props.initLocation);
+      }, 1000); // 3000 milliseconds (3 seconds)
+  
+      // Clean up the timer to avoid memory leaks
+      return () => clearTimeout(timer);
     }
   }, [props]);
 

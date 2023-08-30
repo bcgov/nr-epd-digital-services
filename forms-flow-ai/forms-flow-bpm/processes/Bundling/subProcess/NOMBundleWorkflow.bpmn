@@ -121,7 +121,7 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1oam11w" sourceRef="Activity_06nypz0" targetRef="Activity_0w5t5av">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted' || action == 'Approved' }</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_00mjhxs" sourceRef="Activity_0w5t5av" targetRef="Activity_0ro66yt" />
     <bpmn:sequenceFlow id="Flow_04l5mhw" sourceRef="Activity_0ro66yt" targetRef="Activity_040vqyo" />
