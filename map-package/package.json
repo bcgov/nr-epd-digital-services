@@ -1,6 +1,6 @@
 {
   "name": "react-parcelmap-bc",
-  "version": "1.0.4",
+  "version": "1.0.8",
   "private": false,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
