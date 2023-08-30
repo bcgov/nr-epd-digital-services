@@ -12,20 +12,23 @@ const Map = (props) => {
   let map;
   let routeLayer, waypointsLayer;
   const identifyBufferDistance = 4;
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
   const [address, setAddress] = useState("");
-  const [location, setLocation] = useState([ 48.419, -123.37]);
+  const [location, setLocation] = useState([ 48.46762, -123.25458  ]);
   const [zoom, setZoom] = useState(13);
+  const [searchTrue, setSerachTrue] = useState(false);
   //const [info, setInfo] = useState({});
   let info;
 
   useEffect(() => {
-    if (props.initLocation.length > 0 && props.initLocation !== null && props.initLocation !== undefined) {
-      setZoom(13);
+    if (props.initLocation.length > 0 && props.initLocation !== null && props.initLocation !== undefined && ( location[0] !== props.initLocation[0] ||   location[1] !== props.initLocation[1]   )) {
+     
+      setSerachTrue(false);
+      setZoom(18);
       setLocation(props.initLocation);
-      if(props.readOnly)
+      if(!props.readOnly)
       {
-        setShow(false);
+        setShow(true);
       } 
     }
   }, [props]);
@@ -171,7 +174,7 @@ const Map = (props) => {
                     .setLatLng(e.latlng)
                     .setContent(
                       "Site ID:" +
-                        feature.properties[targetLayer.topLineProperty] +
+                        feature.properties[targetLayer.tsopLineProperty] +
                         "<br/>" +
                         "Lat: " +
                         feature.properties[targetLayer.latitude] +
@@ -295,11 +298,12 @@ const Map = (props) => {
     getGeoCode(address).then((x) => {
       if (x.features.length > 0) {
         console.log(x.features[0].geometry.coordinates);
-        setZoom(50);
+        setZoom(20);
         setLocation([
           x.features[0].geometry.coordinates[1],
           x.features[0].geometry.coordinates[0],
         ]);
+        setSerachTrue(true);
       }
     });
   };
@@ -338,14 +342,19 @@ const Map = (props) => {
 
   const RecenterAutomatically = () => {
     const map = useMap();
-    useEffect(() => {
-       //map.setZoom(zoom);
+    useEffect(() => {    
+      map.setZoom(zoom);
+      
+      if(searchTrue)
+      {
       map.setView(location,zoom);
+      }
      
       map.fire("click", {
         latlng: L.latLng(location),
       });
-    }, [location]);
+
+    }, [map]);
     return null;
   };
 
@@ -426,7 +435,7 @@ const Map = (props) => {
         )}
       </div>
       <br />
-      <MapContainer center={location} zoom={zoom}   minZoom={10} scrollWheelZoom={false}  maxBounds={maxBounds} bounds={maxBounds} maxBoundsViscosity={1.0}>
+      <MapContainer center={location}  zoom={zoom} minZoom={10}  maxBounds={maxBounds} bounds={maxBounds} maxBoundsViscosity={1.0} >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
