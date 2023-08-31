@@ -154,7 +154,7 @@
                                 {
                                     "components": [
                                         {
-                                            "label": "Needs More Info Bundle",
+                                            "label": "Needs More Info",
                                             "action": "custom",
                                             "showValidations": false,
                                             "theme": "warning",
