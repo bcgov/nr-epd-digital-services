@@ -82,6 +82,7 @@
                                                 "json": ""
                                             },
                                             "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(\r\n(roles.includes(\"formsflow-reviewer/csap\") || roles.includes(\"formsflow-reviewer/cssa-team\") || roles.includes(\"formsflow-reviewer/site-information-advisor\")) && \r\n(data.applicationStatus===\"New\" || data.applicationStatus===\"Resubmitted\" || data.applicationStatus===\"Recheck\") \r\n) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
+                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(\r\n(roles.includes(\"formsflow-reviewer/csap\") || roles.includes(\"formsflow-reviewer/cssa-team\") || roles.includes(\"formsflow-reviewer/site-information-advisor\")) && \r\n(data.applicationStatus===\"New\" || data.applicationStatus===\"Resubmitted\" || data.applicationStatus===\"Recheck\") \r\n) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
@@ -132,7 +133,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "esb1927"
+                                            "id": "esb1927""id": "esb1927"
                                         }
                                     ],
                                     "width": 3,
@@ -173,6 +174,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
+                                            "customConditional": "\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(roles.includes(\"formsflow-reviewer/cssa-team\") || roles.includes(\"formsflow-reviewer/csap\") || roles.includes(\"formsflow-reviewer/csap-society\") || roles.includes(\"formsflow-reviewer/site-information-advisor\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
                                             "customConditional": "\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(roles.includes(\"formsflow-reviewer/cssa-team\") || roles.includes(\"formsflow-reviewer/csap\") || roles.includes(\"formsflow-reviewer/csap-society\") || roles.includes(\"formsflow-reviewer/site-information-advisor\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
                                             "logic": [],
                                             "attributes": {},
@@ -225,7 +227,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "ek5pvrq"
+                                            "id": "ek5pvrq""id": "ek5pvrq"
                                         },
                                         {
                                             "label": "Approved",
@@ -240,6 +242,7 @@
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
+                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
@@ -247,16 +250,23 @@
                                             "unique": false,
                                             "persistent": false,
                                             "hidden": false,
+                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
                                             "modalEdit": false,
+                                            "modalEdit": false,
                                             "dataGridLabel": true,
                                             "labelPosition": "top",
                                             "description": "",
+                                            "description": "",
                                             "errorLabel": "",
                                             "tooltip": "",
+                                            "tooltip": "",
                                             "hideLabel": false,
+                                            "tabindex": "",
+                                            "disabled": false,
+                                            "autofocus": false,
                                             "tabindex": "",
                                             "disabled": false,
                                             "autofocus": false,
@@ -267,6 +277,7 @@
                                             "widget": {
                                                 "type": "input"
                                             },
+                                            "attributes": {},
                                             "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
@@ -289,14 +300,33 @@
                                                 "width": "",
                                                 "height": ""
                                             },
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": ""
+                                            },
+                                            "overlay": {
+                                                "style": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
                                             "allowCalculateOverride": false,
                                             "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
                                             "properties": {},
+                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
                                             "size": "md",
+                                            "leftIcon": "",
+                                            "rightIcon": "",
+                                            "block": false,
+                                            "disableOnInvalid": false,
+                                            "theme": "primary",
+                                            "id": "eqyowmh""size": "md",
                                             "leftIcon": "",
                                             "rightIcon": "",
                                             "block": false,
@@ -388,7 +418,7 @@
                                             "rightIcon": "",
                                             "block": false,
                                             "disableOnInvalid": false,
-                                            "id": "ed8k32w"
+                                            "id": "ed8k32w""id": "ed8k32w"
                                         }
                                     ],
                                     "size": "md",
@@ -474,7 +504,7 @@
                                             "rightIcon": "",
                                             "block": false,
                                             "disableOnInvalid": false,
-                                            "id": "expme1c"
+                                            "id": "expme1c""id": "expme1c"
                                         }
                                     ],
                                     "size": "md",
@@ -549,7 +579,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "e6ccgwp"
+                            "id": "e6ccgwp""id": "e6ccgwp"
                         }
                     ],
                     "keyModified": true,
@@ -591,7 +621,7 @@
                     "addons": [],
                     "tree": false,
                     "lazyLoad": false,
-                    "id": "e3zj9xq"
+                    "id": "e3zj9xq""id": "e3zj9xq"
                 },
                 {
                     "title": "Site Owner Actions",
@@ -869,6 +899,7 @@
                     "tags": [],
                     "properties": {},
                     "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nif(roles.includes(\"formsflow-client\") || \r\nroles.includes(\"formsflow-reviewer/cssa-team\") || \r\nroles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\") || \r\nroles.includes(\"formsflow-reviewer/formsflow-client-reviewer\") ||\r\nroles.includes(\"formsflow-reviewer/site-information-advisor\")) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
+                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nif(roles.includes(\"formsflow-client\") || \r\nroles.includes(\"formsflow-reviewer/cssa-team\") || \r\nroles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\") || \r\nroles.includes(\"formsflow-reviewer/formsflow-client-reviewer\") ||\r\nroles.includes(\"formsflow-reviewer/site-information-advisor\")) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
                     "conditional": {
                         "json": "",
                         "show": null,
@@ -910,6 +941,7 @@
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
+                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
@@ -917,16 +949,23 @@
                                             "unique": false,
                                             "persistent": false,
                                             "hidden": false,
+                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
                                             "modalEdit": false,
+                                            "modalEdit": false,
                                             "dataGridLabel": true,
                                             "labelPosition": "top",
                                             "description": "",
+                                            "description": "",
                                             "errorLabel": "",
                                             "tooltip": "",
+                                            "tooltip": "",
                                             "hideLabel": false,
+                                            "tabindex": "",
+                                            "disabled": false,
+                                            "autofocus": false,
                                             "tabindex": "",
                                             "disabled": false,
                                             "autofocus": false,
@@ -937,6 +976,7 @@
                                             "widget": {
                                                 "type": "input"
                                             },
+                                            "attributes": {},
                                             "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
@@ -959,14 +999,33 @@
                                                 "width": "",
                                                 "height": ""
                                             },
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": ""
+                                            },
+                                            "overlay": {
+                                                "style": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
                                             "allowCalculateOverride": false,
                                             "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
                                             "properties": {},
+                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
                                             "size": "md",
+                                            "leftIcon": "",
+                                            "rightIcon": "",
+                                            "block": false,
+                                            "disableOnInvalid": false,
+                                            "theme": "primary",
+                                            "id": "e3cp8ll""size": "md",
                                             "leftIcon": "",
                                             "rightIcon": "",
                                             "block": false,
@@ -998,6 +1057,7 @@
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
+                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
@@ -1005,16 +1065,23 @@
                                             "unique": false,
                                             "persistent": false,
                                             "hidden": false,
+                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
                                             "modalEdit": false,
+                                            "modalEdit": false,
                                             "dataGridLabel": true,
                                             "labelPosition": "top",
                                             "description": "",
+                                            "description": "",
                                             "errorLabel": "",
                                             "tooltip": "",
+                                            "tooltip": "",
                                             "hideLabel": false,
+                                            "tabindex": "",
+                                            "disabled": false,
+                                            "autofocus": false,
                                             "tabindex": "",
                                             "disabled": false,
                                             "autofocus": false,
@@ -1025,6 +1092,7 @@
                                             "widget": {
                                                 "type": "input"
                                             },
+                                            "attributes": {},
                                             "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
@@ -1047,14 +1115,33 @@
                                                 "width": "",
                                                 "height": ""
                                             },
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": ""
+                                            },
+                                            "overlay": {
+                                                "style": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
                                             "allowCalculateOverride": false,
                                             "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
                                             "properties": {},
+                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
                                             "size": "md",
+                                            "leftIcon": "",
+                                            "rightIcon": "",
+                                            "block": false,
+                                            "disableOnInvalid": false,
+                                            "theme": "primary",
+                                            "id": "e7vobp""size": "md",
                                             "leftIcon": "",
                                             "rightIcon": "",
                                             "block": false,
@@ -1075,6 +1162,7 @@
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
+                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
@@ -1082,16 +1170,23 @@
                                             "unique": false,
                                             "persistent": false,
                                             "hidden": false,
+                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
                                             "modalEdit": false,
+                                            "modalEdit": false,
                                             "dataGridLabel": true,
                                             "labelPosition": "top",
                                             "description": "",
+                                            "description": "",
                                             "errorLabel": "",
                                             "tooltip": "",
+                                            "tooltip": "",
                                             "hideLabel": false,
+                                            "tabindex": "",
+                                            "disabled": false,
+                                            "autofocus": false,
                                             "tabindex": "",
                                             "disabled": false,
                                             "autofocus": false,
@@ -1102,6 +1197,7 @@
                                             "widget": {
                                                 "type": "input"
                                             },
+                                            "attributes": {},
                                             "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
@@ -1124,14 +1220,33 @@
                                                 "width": "",
                                                 "height": ""
                                             },
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": ""
+                                            },
+                                            "overlay": {
+                                                "style": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
                                             "allowCalculateOverride": false,
                                             "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
                                             "properties": {},
+                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
                                             "size": "md",
+                                            "leftIcon": "",
+                                            "rightIcon": "",
+                                            "block": false,
+                                            "disableOnInvalid": false,
+                                            "theme": "primary",
+                                            "id": "e00fg4k""size": "md",
                                             "leftIcon": "",
                                             "rightIcon": "",
                                             "block": false,
@@ -1163,6 +1278,7 @@
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
+                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
@@ -1170,16 +1286,23 @@
                                             "unique": false,
                                             "persistent": false,
                                             "hidden": false,
+                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
                                             "modalEdit": false,
+                                            "modalEdit": false,
                                             "dataGridLabel": true,
                                             "labelPosition": "top",
                                             "description": "",
+                                            "description": "",
                                             "errorLabel": "",
                                             "tooltip": "",
+                                            "tooltip": "",
                                             "hideLabel": false,
+                                            "tabindex": "",
+                                            "disabled": false,
+                                            "autofocus": false,
                                             "tabindex": "",
                                             "disabled": false,
                                             "autofocus": false,
@@ -1190,6 +1313,7 @@
                                             "widget": {
                                                 "type": "input"
                                             },
+                                            "attributes": {},
                                             "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
@@ -1212,14 +1336,32 @@
                                                 "width": "",
                                                 "height": ""
                                             },
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": ""
+                                            },
+                                            "overlay": {
+                                                "style": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
                                             "allowCalculateOverride": false,
                                             "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
                                             "properties": {},
+                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
                                             "size": "md",
+                                            "leftIcon": "",
+                                            "rightIcon": "",
+                                            "block": false,
+                                            "disableOnInvalid": false,
+                                            "id": "eu7wyde""size": "md",
                                             "leftIcon": "",
                                             "rightIcon": "",
                                             "block": false,
@@ -1249,6 +1391,7 @@
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
+                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
@@ -1256,16 +1399,23 @@
                                             "unique": false,
                                             "persistent": false,
                                             "hidden": false,
+                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
                                             "modalEdit": false,
+                                            "modalEdit": false,
                                             "dataGridLabel": true,
                                             "labelPosition": "top",
                                             "description": "",
+                                            "description": "",
                                             "errorLabel": "",
                                             "tooltip": "",
+                                            "tooltip": "",
                                             "hideLabel": false,
+                                            "tabindex": "",
+                                            "disabled": false,
+                                            "autofocus": false,
                                             "tabindex": "",
                                             "disabled": false,
                                             "autofocus": false,
@@ -1276,6 +1426,7 @@
                                             "widget": {
                                                 "type": "input"
                                             },
+                                            "attributes": {},
                                             "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
@@ -1298,14 +1449,32 @@
                                                 "width": "",
                                                 "height": ""
                                             },
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": ""
+                                            },
+                                            "overlay": {
+                                                "style": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
                                             "allowCalculateOverride": false,
                                             "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
                                             "properties": {},
+                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
                                             "size": "md",
+                                            "leftIcon": "",
+                                            "rightIcon": "",
+                                            "block": false,
+                                            "disableOnInvalid": false,
+                                            "id": "e5vu085""size": "md",
                                             "leftIcon": "",
                                             "rightIcon": "",
                                             "block": false,
@@ -1385,7 +1554,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "e49hwr"
+                            "id": "e49hwr""id": "e49hwr"
                         }
                     ],
                     "keyModified": true,
@@ -1427,7 +1596,7 @@
                     "addons": [],
                     "tree": false,
                     "lazyLoad": false,
-                    "id": "e0hm80f"
+                    "id": "e0hm80f""id": "e0hm80f"
                 },
                 {
                     "label": "Notes",
@@ -1448,6 +1617,7 @@
                     "templates": {
                         "header": "{% console.log(\"row-key header\",'commentFor',row['commentFor'])  %}\r\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n\r\n{% if(groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")){  %}\r\n\r\n<div class=\"row card-header bg-default\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component) && component.key !== 'commentFor'  ) { %}\r\n         {% if(component.label === 'Notes') {  %}\r\n           <div class=\"col-sm-4\">{{ t(component.label) }}</div>\r\n         {% } else if(component.key !== 'comments') {  %}\r\n           <div class=\"col-sm-2\">{{ t(component.label) }}</div>\r\n         {% } %}\r\n        {% } %}\r\n      {% }) %}\r\n    </div>\r\n\r\n{% } else { %}\r\n\r\n<div class=\"row card-header bg-default\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component)) { %}\r\n      \r\n     {% if(component.key == 'comments') {  %}\r\n        <div class=\"col-sm-4\"> {{   t(component.label)}} </div>\r\n {% } else if(component.key == 'role' || component.key == 'createdBy') {  %}\r\n        <div class=\"col-sm-2\"> {{   t(component.label)}} </div>\r\n{% } else { %}\r\n  <div class=\"col-sm-1\"> {{  t(component.label)}} </div>\r\n{% } %}      \r\n\r\n      \r\n {% } %}\r\n      {% }) %}\r\n    </div>\r\n\r\n{% } %}\r\n\r\n\r\n\r\n\r\n",
                         "tableHeader": "\n      <tr>\n        {% util.eachComponent(components, function(component) { %}\n          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}\n            <td class=\"editgrid-table-column\">{{ component.label }}</td>\n          {% } %}\n        {% }) %}\n        {% if (!instance.options.readOnly && !instance.disabled) { %}\n          <td class=\"editgrid-table-column\">Actions</td>\n        {% } %}\n      </tr>\n    ",
+                        "row": "{% console.log(\"row-key main srcr\",'commentFor',row['commentFor'])  %}\r\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% console.log('rendering edit grid body')%}\r\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){  %}\r\n\r\n\r\n\r\n<div class=\"row\">\r\n\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component) && component.key !== 'commentFor' ) { %}\r\n        {% console.log(\"row-key\",component.key,row[component.key])  %}\r\n        {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){ %}\r\n{% if(component.key == 'comments') {  %}\r\n          <div class=\"col-sm-4 text-break\">\r\n               {{ getView(component, row[component.key])}}\r\n          </div>\r\n{% } else { %}\r\n <div class=\"col-sm-2 text-break\">\r\n    {{ getView(component, row[component.key])}}\r\n          </div>\r\n{%}%}\r\n           \r\n\r\n            {% } %}\r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n              {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){ %}\r\n        <div class=\"col-sm-2\">\r\n          <div class=\"btn-group pull-right\">\r\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n       \r\n           {% } %}\r\n      {% } %}\r\n    </div>\r\n     {% } else if (groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\") || groups.includes(\"/formsflow/formsflow-reviewer/site-risk-classification-officer\") || groups.includes(\"/formsflow/formsflow-reviewer/cssa-team\") || groups.includes(\"/formsflow/formsflow-reviewer/caseworker\") || groups.includes(\"/formsflow/formsflow-reviewer/sdm\")) { %}\r\n     <div class=\"row\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n      {% console.log('for sia') %}\r\n        {% if (displayValue(component)) { %}\r\n         {% if(component.key == 'comments') {  %}\r\n        <div class=\"col-sm-4 text-break\"> {{  getView(component, row[component.key])}} </div>\r\n{% } else if(component.key == 'role' || component.key == 'createdBy') {  %}\r\n        <div class=\"col-sm-2 text-break\"> {{  getView(component, row[component.key])}} </div>\r\n{% } else { %}\r\n  <div class=\"col-sm-1\"> {{  getView(component, row[component.key])}} </div>\r\n{% } %}      \r\n         \r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n        <div class=\"col-sm-1\">\r\n          <div class=\"btn-group pull-right\">\r\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n      {% } %}\r\n    </div>\r\n     {% } %}\r\n   \r\n     \r\n     \r\n{% const emptyElements = []; %}\r\n{% const elements = document.getElementsByClassName(\"list-group-item\"); %}\r\n{% for (let i = 0; i < elements.length; i++) { %}\r\n{%  const element = elements[i]; %}\r\n{% if(element.querySelectorAll('div.row').length===0){(element).remove() }} %}",
                         "row": "{% console.log(\"row-key main srcr\",'commentFor',row['commentFor'])  %}\r\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% console.log('rendering edit grid body')%}\r\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){  %}\r\n\r\n\r\n\r\n<div class=\"row\">\r\n\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component) && component.key !== 'commentFor' ) { %}\r\n        {% console.log(\"row-key\",component.key,row[component.key])  %}\r\n        {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){ %}\r\n{% if(component.key == 'comments') {  %}\r\n          <div class=\"col-sm-4 text-break\">\r\n               {{ getView(component, row[component.key])}}\r\n          </div>\r\n{% } else { %}\r\n <div class=\"col-sm-2 text-break\">\r\n    {{ getView(component, row[component.key])}}\r\n          </div>\r\n{%}%}\r\n           \r\n\r\n            {% } %}\r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n              {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){ %}\r\n        <div class=\"col-sm-2\">\r\n          <div class=\"btn-group pull-right\">\r\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n       \r\n           {% } %}\r\n      {% } %}\r\n    </div>\r\n     {% } else if (groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\") || groups.includes(\"/formsflow/formsflow-reviewer/site-risk-classification-officer\") || groups.includes(\"/formsflow/formsflow-reviewer/cssa-team\") || groups.includes(\"/formsflow/formsflow-reviewer/caseworker\") || groups.includes(\"/formsflow/formsflow-reviewer/sdm\")) { %}\r\n     <div class=\"row\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n      {% console.log('for sia') %}\r\n        {% if (displayValue(component)) { %}\r\n         {% if(component.key == 'comments') {  %}\r\n        <div class=\"col-sm-4 text-break\"> {{  getView(component, row[component.key])}} </div>\r\n{% } else if(component.key == 'role' || component.key == 'createdBy') {  %}\r\n        <div class=\"col-sm-2 text-break\"> {{  getView(component, row[component.key])}} </div>\r\n{% } else { %}\r\n  <div class=\"col-sm-1\"> {{  getView(component, row[component.key])}} </div>\r\n{% } %}      \r\n         \r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n        <div class=\"col-sm-1\">\r\n          <div class=\"btn-group pull-right\">\r\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n      {% } %}\r\n    </div>\r\n     {% } %}\r\n   \r\n     \r\n     \r\n{% const emptyElements = []; %}\r\n{% const elements = document.getElementsByClassName(\"list-group-item\"); %}\r\n{% for (let i = 0; i < elements.length; i++) { %}\r\n{%  const element = elements[i]; %}\r\n{% if(element.querySelectorAll('div.row').length===0){(element).remove() }} %}",
                         "tableRow": "\n      {% util.eachComponent(components, function(component) { %}\n          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}\n            <td class=\"editgrid-table-column\">\n              {{ getView(component, row[component.key]) }}\n            </td>\n          {% } %}\n        {% }) %}\n        {% if (!instance.options.readOnly && !instance.disabled) { %}\n          <td class=\"editgrid-table-column\">\n            <div class=\"btn-group\">\n              <button class=\"btn btn-default btn-light btn-sm editRow\" aria-label=\"{{ t('Edit row') }}\"><i class=\"{{ iconClass('edit') }}\"></i></button>\n              {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\n              <button class=\"btn btn-danger btn-sm removeRow\" aria-label=\"{{ t('Remove row') }}\"><i class=\"{{ iconClass('trash') }}\"></i></button>\n              {% } %}\n            </div>\n          </td>\n        {% } %}\n    ",
                         "footer": "{% const emptyElements = []; %}\r\n{% const elements = document.getElementsByClassName(\"list-group-item\"); %}\r\n{% for (let i = 0; i < elements.length; i++) { %}\r\n{% const element = elements[i]; %}\r\n{%if(element.querySelectorAll('div.row').length===0){(element).remove() }} %}\r\n"
@@ -1491,6 +1661,7 @@
                         "eq": "",
                         "json": ""
                     },
+                    "customConditional": "\r\n\r\n\r\nshow = false;\r\n\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst groups = UserDetails[\"groups\"];\r\nif(groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\"))\r\n{\r\nif( data.srcrNotes!== null && data.srcrNotes!== undefined && data.srcrNotes.filter((x)=>x.commentFor==='external').length > 0)\r\nshow = true;\r\nelse\r\nshow = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}\r\n\r\nvar addRowButton = document.querySelector(\"button[ref=editgrid-srcrNotes-addRow]\");\r\nif(addRowButton!=null)\r\n{\r\naddRowButton.addEventListener('click',\r\n(e)=>{\r\n\t\tif( groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\r\n\t\t{\r\n\t\t  var internalRadio = document.querySelectorAll(\"input[value='internal'][type='radio']\");\r\n\t\t  for (let i = 0; i < internalRadio.length; i++) {\r\n\t\t\tif(internalRadio[i].parentElement !== null)\r\n\t\t\t{\r\n\t\t\t\tinternalRadio[i].parentElement.remove();\r\n\t\t\t}\r\n\t\t  }\r\n\t\t}\r\n})\r\n\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\n\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n}\r\n\r\n\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\n\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n\r\n\r\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\r\n\r\nif(b.groups.includes(\"/formsflow/formsflow-client\"))\r\n{\r\n\tif(document.querySelector(\"[ref='editgrid-srcrNotes-addRow']\")!==null)\r\n\t{\r\n\t\tdocument.querySelector(\"[ref='editgrid-srcrNotes-addRow']\").remove();\r\n\t}\r\nvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\r\nfor(i=0;i<editButtons.length;i++){editButtons[i].remove()}\r\n\r\nvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\r\nfor(i=0;i<removeButtons.length;i++){removeButtons[i].remove()}\r\n}\r\n",
                     "customConditional": "\r\n\r\n\r\nshow = false;\r\n\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst groups = UserDetails[\"groups\"];\r\nif(groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\"))\r\n{\r\nif( data.srcrNotes!== null && data.srcrNotes!== undefined && data.srcrNotes.filter((x)=>x.commentFor==='external').length > 0)\r\nshow = true;\r\nelse\r\nshow = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}\r\n\r\nvar addRowButton = document.querySelector(\"button[ref=editgrid-srcrNotes-addRow]\");\r\nif(addRowButton!=null)\r\n{\r\naddRowButton.addEventListener('click',\r\n(e)=>{\r\n\t\tif( groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\r\n\t\t{\r\n\t\t  var internalRadio = document.querySelectorAll(\"input[value='internal'][type='radio']\");\r\n\t\t  for (let i = 0; i < internalRadio.length; i++) {\r\n\t\t\tif(internalRadio[i].parentElement !== null)\r\n\t\t\t{\r\n\t\t\t\tinternalRadio[i].parentElement.remove();\r\n\t\t\t}\r\n\t\t  }\r\n\t\t}\r\n})\r\n\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\n\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n}\r\n\r\n\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\n\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n\r\n\r\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\r\n\r\nif(b.groups.includes(\"/formsflow/formsflow-client\"))\r\n{\r\n\tif(document.querySelector(\"[ref='editgrid-srcrNotes-addRow']\")!==null)\r\n\t{\r\n\t\tdocument.querySelector(\"[ref='editgrid-srcrNotes-addRow']\").remove();\r\n\t}\r\nvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\r\nfor(i=0;i<editButtons.length;i++){editButtons[i].remove()}\r\n\r\nvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\r\nfor(i=0;i<removeButtons.length;i++){removeButtons[i].remove()}\r\n}\r\n",
                     "logic": [],
                     "attributes": {},
@@ -1593,7 +1764,7 @@
                                             "wysiwyg": false,
                                             "editor": "",
                                             "fixedSize": true,
-                                            "id": "e01h3s"
+                                            "id": "e01h3s""id": "e01h3s"
                                         }
                                     ],
                                     "width": 4,
@@ -1685,7 +1856,7 @@
                                             "addons": [],
                                             "inputType": "radio",
                                             "fieldSet": false,
-                                            "id": "elp1go"
+                                            "id": "elp1go""id": "elp1go"
                                         }
                                     ],
                                     "width": 2,
@@ -1772,7 +1943,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "eadoz2d"
+                                            "id": "eadoz2d""id": "eadoz2d"
                                         }
                                     ],
                                     "size": "md",
@@ -1859,7 +2030,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "eb598n"
+                                            "id": "eb598n""id": "eb598n"
                                         }
                                     ],
                                     "size": "md",
@@ -1946,7 +2117,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "ee7h99"
+                                            "id": "ee7h99""id": "ee7h99"
                                         }
                                     ],
                                     "size": "md",
@@ -2021,7 +2192,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "e7y3onr"
+                            "id": "e7y3onr""id": "e7y3onr"
                         }
                     ],
                     "placeholder": "",
@@ -2040,7 +2211,7 @@
                     "tree": true,
                     "lazyLoad": false,
                     "defaultOpen": false,
-                    "id": "esodizxr"
+                    "id": "esodizxr""id": "esodizxr"
                 },
                 {
                     "title": "Collection Notice",
@@ -4633,6 +4804,7 @@
                                                         {
                                                             "id": "e7zmcgf",
                                                             "key": "srcrstreetAddress",
+                                                            "key": "srcrstreetAddress",
                                                             "mask": false,
                                                             "type": "textfield",
                                                             "input": true,
@@ -5243,6 +5415,7 @@
                                                         {
                                                             "id": "e2iccjt",
                                                             "key": "srcrsimpleemail",
+                                                            "key": "srcrsimpleemail",
                                                             "mask": false,
                                                             "type": "email",
                                                             "input": true,
@@ -5437,6 +5610,8 @@
                                     "2-postalZipCode": "",
                                     "2-provinceState": "",
                                     "2-streetAddress": "",
+                                    "srcrstreetAddress": "",
+                                    "srcrsimpleemail": """2-streetAddress": "",
                                     "srcrstreetAddress": "",
                                     "srcrsimpleemail": ""
                                 }
@@ -5820,6 +5995,7 @@
                                             "offset": 0,
                                             "components": [
                                                 {
+                                                    "key": "srcrAgentstreetAddress",
                                                     "key": "srcrAgentstreetAddress",
                                                     "type": "textfield",
                                                     "input": true,
@@ -6420,6 +6596,7 @@
                                             "offset": 0,
                                             "components": [
                                                 {
+                                                    "key": "srcrAgentsimpleemail",
                                                     "key": "srcrAgentsimpleemail",
                                                     "type": "email",
                                                     "input": true,
