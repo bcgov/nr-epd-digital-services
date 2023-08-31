@@ -2549,7 +2549,6 @@
                                         {
                                             "id": "emq6lz7",
                                             "key": "cssaStreetAddress",
-                                            "key": "cssaStreetAddress",
                                             "case": "",
                                             "mask": false,
                                             "type": "textfield",
@@ -7108,7 +7107,6 @@
                                     "FullName": "",
                                     "typeOfAp1": "",
                                     "cssaStreetAddress": "",
-                                    "cssaStreetAddress": "",
                                     "city": "",
                                     "organization": "",
                                     "professionalLicenseRegistration": "",
@@ -7469,7 +7467,6 @@
                                                     "offset": 0,
                                                     "components": [
                                                         {
-                                                            "key": "cssaApStreetAddress",
                                                             "key": "cssaApStreetAddress",
                                                             "type": "textfield",
                                                             "input": true,
@@ -8388,7 +8385,6 @@
                                                     "offset": 0,
                                                     "components": [
                                                         {
-                                                            "key": "cssaApsimpleemail",
                                                             "key": "cssaApsimpleemail",
                                                             "type": "email",
                                                             "input": true,
