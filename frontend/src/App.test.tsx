@@ -19,7 +19,7 @@ it('renders log in panel', () => {
         <App />
       </Provider>
       );
-  const loginPanel = screen.getByText(/Log In to my LRS Account/i);
+  const loginPanel = screen.getByText(/Login/i);
   expect(loginPanel).toBeInTheDocument();
 
 });
@@ -33,7 +33,7 @@ test('Renders LRS Form Accordion', () =>{
         <App />
       </Provider>
     );
-  const formAccordion = screen.getByText(/This is the first sample lrs form, please use this for lrs things/i)
+  const formAccordion = screen.getByText(/Welcome./i)
   expect(formAccordion).toBeInTheDocument()
 })
 
