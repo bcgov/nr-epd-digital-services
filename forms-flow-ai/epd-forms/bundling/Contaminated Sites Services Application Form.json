@@ -23006,7 +23006,7 @@
                         "eq": "",
                         "json": ""
                     },
-                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(roles.includes(\"formsflow-reviewer/cssa-team\")) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
+                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\nif(roles.includes(\"formsflow-reviewer/cssa-team\")||\r\nroles.includes(\"formsflow-reviewer/caseworker\")||\r\nroles.includes(\"formsflow-reviewer/sdm\")||\r\nroles.includes(\"formsflow-reviewer/site-risk-classification-officer\")) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
                     "logic": [],
                     "attributes": {},
                     "overlay": {
@@ -23057,7 +23057,7 @@
                     "showWordCount": false,
                     "allowMultipleMasks": false,
                     "addons": [],
-                    "id": "exzll48"
+                    "id": "eixn6zp"
                 },
                 {
                     "label": "applicationId",
