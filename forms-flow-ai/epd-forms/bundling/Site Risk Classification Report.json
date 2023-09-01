@@ -18880,7 +18880,7 @@
                         "eq": "",
                         "json": ""
                     },
-                    "customConditional": "",
+                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\nif(roles.includes(\"formsflow-reviewer/cssa-team\")||\r\nroles.includes(\"formsflow-reviewer/caseworker\")||\r\nroles.includes(\"formsflow-reviewer/sdm\")||\r\nroles.includes(\"formsflow-reviewer/site-risk-classification-officer\")) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
                     "logic": [],
                     "attributes": {},
                     "overlay": {
@@ -18931,7 +18931,7 @@
                     "showWordCount": false,
                     "allowMultipleMasks": false,
                     "addons": [],
-                    "id": "e2ae8ob"
+                    "id": "ed8xzn"
                 },
                 {
                     "label": "applicationId",
