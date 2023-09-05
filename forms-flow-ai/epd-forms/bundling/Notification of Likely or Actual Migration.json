@@ -1213,7 +1213,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ea2btv00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ea2btv0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "Panel-InformationForAffectedAndLikelyAffectedParcels",
                                     "tree": false,
                                     "type": "panel",
@@ -8501,7 +8501,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "e3t798j00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "e3t798j0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "simplecols4",
                                     "tree": false,
                                     "type": "columns",
@@ -9271,6 +9271,21 @@
                                             "label": "OGC/BCER sites described as non-priority sites",
                                             "value": "ogcBcerSitesDescribedAsNonPrioritySites",
                                             "shortcut": ""
+                                        },
+                                        {
+                                            "label": "Site release request under Scenario 1",
+                                            "value": "siteReleaseRequestUnderScenario1",
+                                            "shortcut": ""
+                                        },
+                                        {
+                                            "label": "SRCR submitted within past 5 years and no change to previous site risk classification",
+                                            "value": "srcrSubmittedWithinPast5YearsAndNoChangeToPreviousSiteRiskClassification",
+                                            "shortcut": ""
+                                        },
+                                        {
+                                            "label": "Application is for a determination that a  site is not contaminated",
+                                            "value": "applicationIsForADeterminationThatASiteIsNotContaminated",
+                                            "shortcut": ""
                                         }
                                     ],
                                     "dataType": "",
@@ -9335,7 +9350,7 @@
                                     "addons": [],
                                     "inputType": "radio",
                                     "fieldSet": false,
-                                    "id": "e6va7zg",
+                                    "id": "eliguki",
                                     "defaultValue": ""
                                 },
                                 {

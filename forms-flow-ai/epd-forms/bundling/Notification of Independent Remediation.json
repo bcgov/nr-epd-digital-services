@@ -1936,7 +1936,7 @@
                                     "redrawOn": "",
                                     "clearOnHide": true,
                                     "customDefaultValue": "",
-                                    "calculateValue": "const date1 = new Date(data.startdate);\r\nconst date2 = new Date(data.estimatedcompletiondate);\r\nconst diffTime = Math.abs(date2 - date1);\r\nconst diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); \r\nvalue = diffDays;\r\n",
+                                    "calculateValue": "const date1 = new Date(data.startdate);\r\nconst date2 = new Date(data.estimatedcompletiondate);\r\nif(date2 > date1 )\r\n{\r\nconst diffTime = Math.abs(date2 - date1);\r\nconst diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); \r\nif (!isNaN(diffDays)) {  \r\n    value = diffDays;\r\n  } else {  \r\n    value = 0;\r\n  }\r\n}\r\nelse\r\n{\r\n value = 0;\r\n}\r\n",
                                     "calculateServer": false,
                                     "allowCalculateOverride": false,
                                     "validateOn": "change",
@@ -1983,7 +1983,7 @@
                                     "dataGridLabel": false,
                                     "addons": [],
                                     "inputType": "text",
-                                    "id": "ep1qpun",
+                                    "id": "eqitdvx",
                                     "defaultValue": ""
                                 },
                                 {
@@ -8432,6 +8432,21 @@
                                             "label": "OGC/BCER sites described as non-priority sites",
                                             "value": "ogcBcerSitesDescribedAsNonPrioritySites",
                                             "shortcut": ""
+                                        },
+                                        {
+                                            "label": "Site release request under Scenario 1",
+                                            "value": "siteReleaseRequestUnderScenario1",
+                                            "shortcut": ""
+                                        },
+                                        {
+                                            "label": "SRCR submitted within past 5 years and no change to previous site risk classification",
+                                            "value": "srcrSubmittedWithinPast5YearsAndNoChangeToPreviousSiteRiskClassification",
+                                            "shortcut": ""
+                                        },
+                                        {
+                                            "label": "Application is for a determination that a  site is not contaminated",
+                                            "value": "applicationIsForADeterminationThatASiteIsNotContaminated",
+                                            "shortcut": ""
                                         }
                                     ],
                                     "dataType": "",
@@ -8496,7 +8511,7 @@
                                     "addons": [],
                                     "inputType": "radio",
                                     "fieldSet": false,
-                                    "id": "eiqewqp",
+                                    "id": "etve9iv",
                                     "defaultValue": ""
                                 },
                                 {
@@ -9000,7 +9015,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "epivnsp0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "epivnsp0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "contaminant",
                                     "mask": false,
                                     "type": "textfield",
@@ -9077,7 +9092,7 @@
                                     "truncateMultipleSpaces": false
                                 },
                                 {
-                                    "id": "el3hlvr0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "el3hlvr0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "maximumConcentration",
                                     "mask": false,
                                     "type": "textfield",
@@ -9822,7 +9837,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "esedw40000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "esedw40000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "contaminant",
                                     "mask": false,
                                     "type": "textfield",
@@ -9899,7 +9914,7 @@
                                     "truncateMultipleSpaces": false
                                 },
                                 {
-                                    "id": "esor9060000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "esor9060000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "maximumConcentration",
                                     "mask": false,
                                     "type": "textfield",
@@ -10641,7 +10656,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ej0y410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ej0y410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "contaminant",
                                     "mask": false,
                                     "type": "textfield",
@@ -10718,7 +10733,7 @@
                                     "truncateMultipleSpaces": false
                                 },
                                 {
-                                    "id": "e8qg9fh0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "e8qg9fh0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "maximumConcentration",
                                     "mask": false,
                                     "type": "textfield",
@@ -11466,7 +11481,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eevqmo9000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eevqmo9000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "contaminant",
                                     "mask": false,
                                     "type": "textfield",
@@ -11543,7 +11558,7 @@
                                     "truncateMultipleSpaces": false
                                 },
                                 {
-                                    "id": "et223l3000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "et223l3000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "maximumConcentration",
                                     "mask": false,
                                     "type": "textfield",
