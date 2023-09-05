@@ -15,11 +15,19 @@ ssh-keygen -t ed25519 -C "adam.coard@aot-technologies.com" -f /Users/adamcoard/D
 ```bash
 docker build -t ff-ee-web --build-arg ssh_prv_key="$(cat /Users/adamcoard/Dev/nr-epd-digital-services/notes/id_rsa_epd)" --build-arg ssh_pub_key="$(cat /Users/adamcoard/Dev/nr-epd-digital-services/notes/id_rsa_epd.pub)" .
 
+## Docker build with resources
+## Use this if you start running into out of memory issues
+docker build --build-arg NODE_OPTIONS=--max-old-space-size=6144 --memory=7144m --memory-swap=-1   --cpu-period=100000 --cpu-quota=50000 -t ff-ee-web --build-arg ssh_prv_key="$(cat /Users/adamcoard/Dev/nr-epd-digital-services/notes/id_rsa_epd)" --build-arg ssh_pub_key="$(cat /Users/adamcoard/Dev/nr-epd-digital-services/notes/id_rsa_epd.pub)" .
+
 # # DEBUG ONLY REMOVE
 # docker build -t ff-ee-web --build-arg ssh_prv_key="$(cat /Users/adamcoard/Dev/nr-epd-digital-services/notes/id_rsa_epd_newlines)" --build-arg ssh_pub_key="$(cat /Users/adamcoard/Dev/nr-epd-digital-services/notes/id_rsa_epd.pub)" .
 
 ## Run command
-docker run --name ff-ee-web -p 8080:8080 ff-ee-web
+docker run --name ff-ee-web -p 3004:8080 --rm ff-ee-web
+
+
+# Debug container
+docker run --name ff-ee-web --rm -p 8080:8080 ff-ee-web cat /etc/nginx/nginx.conf
 ```
 
 

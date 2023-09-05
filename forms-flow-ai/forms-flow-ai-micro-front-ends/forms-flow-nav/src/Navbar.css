@@ -44,8 +44,10 @@ h5,
 .inactive-tab {
   color: var(--navbar-items) !important;
 }
+
+.navbar-light .navbar-nav .nav-link.active-tab,
 .active-tab {
-  color: var(--navbar-active) !important;
+  color: #FCBA19 !important;
 }
 
 .active-tab-dropdown > #dashboard-dropdown {
