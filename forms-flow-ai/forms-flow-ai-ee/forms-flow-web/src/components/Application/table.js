@@ -60,7 +60,7 @@ const linkSubmission = (cell, row, redirectUrl) => {
   const icon = row.isClientEdit ? "fa fa-edit" : "fa fa-eye";
   return (
     <div onClick={() => window.open(url, "_blank")}>
-      <span style={{ color: "#2A3F71", cursor: "pointer" }}>
+      <span style={{ color: "#003366", cursor: "pointer", "font-weight": "bold", "font-size": "0.9rem" }}>
         <span>
           <i className={icon} />
           &nbsp;
@@ -85,7 +85,7 @@ const nameFormatter = (cell) => {
   );
 };
 
-const customStyle = { border: "1px solid #ced4da", fontStyle: "normal" };
+const customStyle = { border: "1px solid #a7a7a7", fontStyle: "normal", "border-radius": "7px" };
 
 const styleForValidationFail = { border: "1px solid red" };
 
@@ -105,7 +105,7 @@ export const columns_history = [
 let applicationNotified = false;
 const notifyValidationError = () => {
   if (!applicationNotified) {
-    toast.error("Invalid application id");
+    toast.error("Invalid Application ID");
     applicationNotified = true;
   }
 };
@@ -126,13 +126,13 @@ export const columns = (
   return [
     {
       dataField: "id",
-      text: <Translation>{(t) => t("Application Id")}</Translation>,
+      text: <Translation>{(t) => t("Application ID")}</Translation>,
       formatter: (cell, row) => linkApplication(cell, row, redirectUrl),
       headerClasses: "classApplicationId",
       sort: true,
       filter: textFilter({
         delay: 800,
-        placeholder: `\uf002 ${t("Application Id")}`, // custom the input placeholder
+        placeholder: `${t("Application ID")}`, // custom the input placeholder
         caseSensitive: false, // default is false, and true will only work when comparator is LIKE
         className: "icon-search",
         style: invalidFilters.APPLICATION_ID
@@ -151,7 +151,7 @@ export const columns = (
       formatter: nameFormatter,
       filter: textFilter({
         delay: 800,
-        placeholder: `\uf002 ${t("Application Name")}`, // custom the input placeholder
+        placeholder: `${t("Application Name")}`, // custom the input placeholder
         caseSensitive: false, // default is false, and true will only work when comparator is LIKE
         className: "icon-search",
         style: customStyle,
@@ -160,29 +160,6 @@ export const columns = (
         },
       }),
     },
-    {
-      dataField: "applicationStatus",
-      text: <Translation>{(t) => t("Application Status")}</Translation>,
-      sort: true,
-      filter:
-        applicationStatus?.length > 0 &&
-        selectFilter({
-          options: getApplicationStatusOptions(applicationStatus),
-          style: customStyle,
-          placeholder: `${t("All")}`,
-          defaultValue: `${t("All")}`,
-          caseSensitive: false, // default is false, and true will only work when comparator is LIKE
-          getFilter: (filter) => {
-            statusFilter = filter;
-          },
-        }),
-    },
-    {
-      dataField: "formUrl",
-      text: <Translation>{(t) => t("Link To Form Submission")}</Translation>,
-      formatter: (cell, row) => linkSubmission(cell, row, redirectUrl),
-    },
-
     {
       dataField: "modified",
       text: <Translation>{(t) => t("Last Modified")}</Translation>,
@@ -212,6 +189,28 @@ export const columns = (
         );
       },
     },
+    {
+      dataField: "applicationStatus",
+      text: <Translation>{(t) => t("Application Status")}</Translation>,
+      sort: true,
+      filter:
+        applicationStatus?.length > 0 &&
+        selectFilter({
+          options: getApplicationStatusOptions(applicationStatus),
+          style: customStyle,
+          placeholder: `${t("All")}`,
+          defaultValue: `${t("All")}`,
+          caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+          getFilter: (filter) => {
+            statusFilter = filter;
+          },
+        }),
+    },
+    {
+      dataField: "formUrl",
+      text: <Translation>{(t) => t("Action")}</Translation>,
+      formatter: (cell, row) => linkSubmission(cell, row, redirectUrl),
+    },
   ];
 };
 
@@ -230,7 +229,8 @@ export const customDropUp = ({
 }) => {
   return (
     <DropdownButton
-      drop="up"
+      // drop="up"
+      drop="down"
       variant="secondary"
       title={currSizePerPage}
       style={{ display: "inline" }}

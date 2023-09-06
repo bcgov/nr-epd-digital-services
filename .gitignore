@@ -123,3 +123,6 @@ backend/etl/debezium-jdbc/target/
 
 
 notes/
+
+forms-flow-ai/forms-flow-bpm/postgres/
+forms-flow-ai/forms-flow-ai-ee/forms-flow-bpm/postgres/
