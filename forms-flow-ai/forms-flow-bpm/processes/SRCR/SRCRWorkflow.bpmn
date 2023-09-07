@@ -211,7 +211,7 @@
       <bpmn:incoming>Flow_08zx269</bpmn:incoming>
       <bpmn:outgoing>Flow_1ifelq5</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_0s3vft8" name="Caseworker Review" camunda:candidateGroups="formsflow/formsflow-reviewer/site-risk-classification-officer">
+    <bpmn:userTask id="Activity_0s3vft8" name="Caseworker Review" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="action" label="Action" type="string" />
@@ -551,29 +551,29 @@ execution.setVariable('isSrco',false);</camunda:script>
         <dc:Bounds x="160" y="80" width="1160" height="3850" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_08r73ui_di" bpmnElement="Lane_08r73ui" isHorizontal="true">
-        <dc:Bounds x="190" y="2120" width="1130" height="630" />
-        <bpmndi:BPMNLabel />
+      <bpmndi:BPMNShape id="Lane_00mefnp_di" bpmnElement="Lane_00mefnp" isHorizontal="true">
+        <dc:Bounds x="190" y="3110" width="1130" height="820" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_1mfcqjo_di" bpmnElement="Lane_1mfcqjo" isHorizontal="true">
-        <dc:Bounds x="190" y="80" width="1130" height="760" />
-        <bpmndi:BPMNLabel />
+      <bpmndi:BPMNShape id="Lane_1h4fynz_di" bpmnElement="Lane_1h4fynz" isHorizontal="true">
+        <dc:Bounds x="190" y="2750" width="1130" height="360" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_1jh8ra0_di" bpmnElement="Lane_1jh8ra0" isHorizontal="true">
-        <dc:Bounds x="190" y="840" width="1130" height="390" />
+      <bpmndi:BPMNShape id="Lane_01ohwxm_di" bpmnElement="Lane_01ohwxm" isHorizontal="true">
+        <dc:Bounds x="190" y="1230" width="1130" height="470" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_1th7fqb_di" bpmnElement="Lane_1th7fqb" isHorizontal="true">
         <dc:Bounds x="190" y="1700" width="1130" height="420" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_01ohwxm_di" bpmnElement="Lane_01ohwxm" isHorizontal="true">
-        <dc:Bounds x="190" y="1230" width="1130" height="470" />
+      <bpmndi:BPMNShape id="Lane_1jh8ra0_di" bpmnElement="Lane_1jh8ra0" isHorizontal="true">
+        <dc:Bounds x="190" y="840" width="1130" height="390" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_1h4fynz_di" bpmnElement="Lane_1h4fynz" isHorizontal="true">
-        <dc:Bounds x="190" y="2750" width="1130" height="360" />
+      <bpmndi:BPMNShape id="Lane_1mfcqjo_di" bpmnElement="Lane_1mfcqjo" isHorizontal="true">
+        <dc:Bounds x="190" y="80" width="1130" height="760" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_00mefnp_di" bpmnElement="Lane_00mefnp" isHorizontal="true">
-        <dc:Bounds x="190" y="3110" width="1130" height="820" />
+      <bpmndi:BPMNShape id="Lane_08r73ui_di" bpmnElement="Lane_08r73ui" isHorizontal="true">
+        <dc:Bounds x="190" y="2120" width="1130" height="630" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_0vrofck" bpmnElement="Activity_0dughh2">
         <dc:Bounds x="1110" y="698" width="100" height="80" />
