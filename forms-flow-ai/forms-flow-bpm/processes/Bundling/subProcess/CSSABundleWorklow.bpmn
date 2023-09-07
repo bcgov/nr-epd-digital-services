@@ -62,7 +62,7 @@
     <bpmn:sequenceFlow id="Flow_0i3fcvy" name="No" sourceRef="Gateway_1chdumm" targetRef="Activity_0tsm937">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${riskclassification  == 'exempt'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_1esdw3m" name="Recheck" sourceRef="Gateway_0o9l3lp" targetRef="Activity_08ykdar">
+    <bpmn:sequenceFlow id="Flow_1esdw3m" name="Recheck" sourceRef="Gateway_0o9l3lp" targetRef="Activity_0vo5rls">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Recheck'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_16fwgn1" sourceRef="Activity_0a9pnut" targetRef="Activity_15772wo">
@@ -223,8 +223,6 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       <bpmn:incoming>Flow_1quswsc</bpmn:incoming>
       <bpmn:incoming>Flow_0gb2oz2</bpmn:incoming>
       <bpmn:incoming>Flow_0wr0mei</bpmn:incoming>
-      <bpmn:incoming>Flow_1esdw3m</bpmn:incoming>
-      <bpmn:incoming>Flow_0aabyhy</bpmn:incoming>
       <bpmn:incoming>Flow_0lgivc3</bpmn:incoming>
       <bpmn:outgoing>Flow_0bz8atu</bpmn:outgoing>
     </bpmn:userTask>
@@ -418,7 +416,7 @@ system.out.println ("form signed");</camunda:script>
       <bpmn:outgoing>Flow_0d8ioqs</bpmn:outgoing>
       <bpmn:outgoing>Flow_0ovj0pk</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_0aabyhy" sourceRef="Gateway_1lbpcug" targetRef="Activity_08ykdar">
+    <bpmn:sequenceFlow id="Flow_0aabyhy" sourceRef="Gateway_1lbpcug" targetRef="Activity_0vo5rls">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Recheck' and isSentFromSociety == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1ev1kr6" name="Recheck" sourceRef="Gateway_0oobb3z" targetRef="Activity_1ao3zkj">
@@ -449,6 +447,8 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
         </camunda:taskListener>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1tu4hj7</bpmn:incoming>
+      <bpmn:incoming>Flow_1esdw3m</bpmn:incoming>
+      <bpmn:incoming>Flow_0aabyhy</bpmn:incoming>
       <bpmn:outgoing>Flow_0gcqir8</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:subProcess id="Activity_1bhbq4y" name="SRCR Flow">
@@ -1183,9 +1183,9 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       <bpmn:outgoing>Flow_01suxh6</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:scriptTask id="Activity_0tsm937" name="Debug Log" scriptFormat="javascript">
-      <bpmn:incoming>Flow_1jxxrt6</bpmn:incoming>
       <bpmn:incoming>Flow_0i3fcvy</bpmn:incoming>
       <bpmn:incoming>Flow_0d8ioqs</bpmn:incoming>
+      <bpmn:incoming>Flow_1jxxrt6</bpmn:incoming>
       <bpmn:outgoing>Flow_0qiqnks</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
 system.out.println ("Begin CSSA Individual Flow - Sent To Caseworker");
@@ -1937,10 +1937,10 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
       <bpmndi:BPMNEdge id="Flow_1esdw3m_di" bpmnElement="Flow_1esdw3m">
         <di:waypoint x="2545" y="3140" />
         <di:waypoint x="2330" y="3140" />
-        <di:waypoint x="2330" y="1480" />
-        <di:waypoint x="1305" y="1480" />
+        <di:waypoint x="2330" y="1880" />
+        <di:waypoint x="1305" y="1880" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2278" y="3357" width="44" height="14" />
+          <dc:Bounds x="2278" y="3043" width="44" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_16fwgn1_di" bpmnElement="Flow_16fwgn1">
@@ -1976,7 +1976,7 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
         <di:waypoint x="2840" y="160" />
         <di:waypoint x="1305" y="160" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2689" y="3373" width="46" height="14" />
+          <dc:Bounds x="2787" y="3323" width="46" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_04vwdbt" bpmnElement="Flow_19ktqsm">
@@ -2129,8 +2129,8 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
       <bpmndi:BPMNEdge id="Flow_0aabyhy_di" bpmnElement="Flow_0aabyhy">
         <di:waypoint x="2865" y="3450" />
         <di:waypoint x="3020" y="3450" />
-        <di:waypoint x="3020" y="1480" />
-        <di:waypoint x="1305" y="1480" />
+        <di:waypoint x="3020" y="1880" />
+        <di:waypoint x="1305" y="1880" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1ev1kr6_di" bpmnElement="Flow_1ev1kr6">
         <di:waypoint x="1230" y="1620" />
@@ -2212,11 +2212,11 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_0e6s260" bpmnElement="Flow_1jxxrt6">
         <di:waypoint x="2865" y="3450" />
-        <di:waypoint x="3020" y="3450" />
-        <di:waypoint x="3020" y="2780" />
+        <di:waypoint x="2980" y="3450" />
+        <di:waypoint x="2980" y="2780" />
         <di:waypoint x="2620" y="2780" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2897" y="3433" width="44" height="14" />
+          <dc:Bounds x="2883" y="3433" width="44" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_1ytn3od" bpmnElement="Flow_07vh0na">
