@@ -186,7 +186,7 @@ task.execution.setVariable('applicationStatus', task.execution.getVariable('acti
         <bpmn:outgoing>Flow_053df1n</bpmn:outgoing>
         <bpmn:outgoing>Flow_1pdsmz6</bpmn:outgoing>
       </bpmn:exclusiveGateway>
-      <bpmn:scriptTask id="Activity_15ke6f4" name="Debug Log" scriptFormat="javascript">
+      <bpmn:scriptTask id="Activity_15ke6f4" name="Debug Logs" scriptFormat="javascript">
         <bpmn:incoming>Flow_06k5uq7</bpmn:incoming>
         <bpmn:incoming>Flow_1fquz60</bpmn:incoming>
         <bpmn:incoming>Flow_03tdbh3</bpmn:incoming>
