@@ -864,7 +864,7 @@
                                             "key": "sendBundleToNextReviewer",
                                             "customConditional": "\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(roles.includes(\"formsflow-reviewer/cssa-team\") || \r\nroles.includes(\"formsflow-reviewer/cssa-manager\") || \r\nroles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\") || \r\nroles.includes(\"formsflow-reviewer/caseworker\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
                                             "type": "button",
-                                            "custom": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\nif(roles.includes(\"formsflow-reviewer/cssa-manager\") && \r\n(data.selectSdm===''||data.selectSdm===undefined|| \r\n(data.typeOfReview==='directToMinistryApplication'&&data.selectCaseworker===undefined|| data.selectCaseworker==='')))\r\n{\r\n    alert('Please assign reviewers to continue!');\r\n    \r\n}\r\nelse\r\n{\r\n    form.emit('customEvent', {\r\n          type: \"actionComplete\",  \r\n          component: component,\r\n          actionType:'Accepted'\r\n    });\r\n}",
+                                            "custom": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\nif(roles.includes(\"formsflow-reviewer/cssa-manager\") && \r\n(data.selectCssaSdm===''||data.selectCssaSdm===undefined|| \r\n(data.typeOfReview==='directToMinistryApplication'&&data.selectCssaCaseworker===undefined|| data.selectCssaCaseworker==='')))\r\n{\r\n    alert('Please assign reviewers to continue!');\r\n    \r\n}\r\nelse\r\n{\r\n    form.emit('customEvent', {\r\n          type: \"actionComplete\",  \r\n          component: component,\r\n          actionType:'Accepted'\r\n    });\r\n}",
                                             "input": true,
                                             "keyModified": true,
                                             "placeholder": "",
@@ -1425,7 +1425,7 @@
                                             "unique": false,
                                             "errorLabel": "",
                                             "errors": "",
-                                            "key": "selectSdm",
+                                            "key": "selectCssaSdm",
                                             "tags": [],
                                             "properties": {},
                                             "conditional": {
@@ -1568,7 +1568,7 @@
                                             "unique": false,
                                             "errorLabel": "",
                                             "errors": "",
-                                            "key": "selectCaseworker",
+                                            "key": "selectCssaCaseworker",
                                             "tags": [],
                                             "properties": {},
                                             "conditional": {
