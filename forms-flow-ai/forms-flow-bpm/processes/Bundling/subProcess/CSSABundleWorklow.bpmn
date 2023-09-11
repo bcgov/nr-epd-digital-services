@@ -1137,7 +1137,7 @@ execution.setVariable('requestType', 'CSSA');</camunda:script>
     <bpmn:endEvent id="Event_0sdygwc" name="End">
       <bpmn:incoming>Flow_0izwlc1</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:userTask id="Activity_1hs3dja" name="SDM Updates Form" camunda:assignee="${sdmAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
+    <bpmn:userTask id="Activity_1hs3dja" name="SDM Updates Form" camunda:assignee="${cssaSdmAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
       <bpmn:extensionElements>
         <camunda:taskListener event="create">
           <camunda:script scriptFormat="javascript">task.execution.setVariable('isSdm',false);</camunda:script>
@@ -1157,7 +1157,7 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       <bpmn:incoming>Flow_07vh0na</bpmn:incoming>
       <bpmn:outgoing>Flow_08c8ij1</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_1bsz2qm" name="Caseworker Updates Form" camunda:assignee="${caseworkerAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
+    <bpmn:userTask id="Activity_1bsz2qm" name="Caseworker Updates Form" camunda:assignee="${cssaCaseworkerAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
       <bpmn:extensionElements>
         <camunda:taskListener event="create">
           <camunda:script scriptFormat="javascript">task.execution.setVariable('isCaseworker',false);</camunda:script>
@@ -1280,6 +1280,16 @@ execution.setVariable("applicationStatus", "Rejected");
       <bpmn:incoming>Flow_02ysv7t</bpmn:incoming>
       <bpmn:outgoing>Flow_026ykts</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
+var selectCssaSdm= execution.getVariable('selectCssaSdm');
+system.out.println ("selectCssaSdm"+selectCssaSdm);
+execution.setVariable('cssaSdmAssignment',selectCssaSdm);
+system.out.println ("cssaSdmAssignment"+execution.getVariable('cssaSdmAssignment'));
+
+var selectCssaCaseworker= execution.getVariable('selectCssaCaseworker');
+system.out.println ("selectCssaCaseworker"+selectCssaCaseworker);
+execution.setVariable('cssaCaseworkerAssignment',selectCssaCaseworker);
+system.out.println ("cssaCaseworkerAssignment"+execution.getVariable('cssaCaseworkerAssignment'));
+
 var selectSdm= execution.getVariable('selectSdm');
 system.out.println ("selectSdm"+selectSdm);
 execution.setVariable('sdmAssignment',selectSdm);
