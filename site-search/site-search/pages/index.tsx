@@ -2,6 +2,8 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Button from 'react-bootstrap/Button';
 import Header from '@/components/Header'
+import Link from 'next/link';
+
 
 // import { Inter } from 'next/font/google'
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -35,7 +37,9 @@ export default function Home() {
           </div>
 
           <div className="col-sm">
-            <Button variant='secondary'>Advanced Search</Button>
+            <Link href='/advanced-search'>
+              <Button variant='secondary'>Advanced Search</Button>
+            </Link>
           </div>
 
         </div>
