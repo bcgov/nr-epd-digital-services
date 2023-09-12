@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Button from 'react-bootstrap/Button';
+import Header from '@/components/Header'
 
 // import { Inter } from 'next/font/google'
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -22,15 +23,19 @@ export default function Home() {
     
       </main> */}
 
-      <main>
-        <h2>Site Search</h2>
+      <Header />
+
+      <main className='container'>
+
+
+        <h2 className='text-center py-5'>Site Search</h2>
         <div className="row">
-          <div className="col">
-            <input type="text" className="form-control" placeholder="Search" aria-label="Search" />
+          <div className="col-sm-10">
+            <input type="text" className="form-control" placeholder="Search Site Records..." aria-label="Search Site Records" />
           </div>
 
-          <div className="col">
-            <Button variant="secondary">Advanced Search</Button>
+          <div className="col-sm">
+            <Button variant='secondary'>Advanced Search</Button>
           </div>
 
         </div>
