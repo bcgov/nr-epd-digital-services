@@ -7,12 +7,33 @@ import { Site } from '@/api/sites'
 
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import { useSelector } from 'react-redux';
+import SimpleSearchResults from '@/features/simple-search/search-results';
 
 
 export default function Search() {
-    const [searchBySiteID, setSearchBySiteId] = useState(false)
-    const [isLoaded, setIsLoaded] = useState(false);
-    const sites: Site[] = useSelector(state => state.site.value)
+    const [searchBySiteID, setSearchBySiteId] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(true);
+    const sites: Site[] = useSelector(state => state.site.value);
+    const [searchResults, setSearchResults] = useState<Site[]>([]); //TODO Change to empty array
+
+    function handleSearch(e){
+        console.log('handleSearch', e.target.value)
+        // TODO: Debounce
+        // TODO: setisLoaded(true)
+        // TODO: Allow configurable what to search by, e.g. SiteID or City, etc.
+        // Do timeout on setIsLoaded(false)
+
+        setIsLoaded(false)
+        setTimeout(() => {
+            const results = sites.filter(site => String(site.siteID).includes(e.target.value))
+            setSearchResults(results)
+            setIsLoaded(true);
+        }, 500)
+
+
+    }
+
+    
 
 
     return (
@@ -22,7 +43,7 @@ export default function Search() {
                 <h2 className='text-center py-5'>Site Search</h2>
                 <div className="row">
                     <div className="col-sm-10">
-                        <input type="text" className="form-control" placeholder="Search Site Records..." aria-label="Search Site Records" />
+                        <input type="text" className="form-control" placeholder="Search Site Records..." aria-label="Search Site Records" onChange={handleSearch}/>
                     </div>
 
                     <div className="col-sm">
@@ -51,41 +72,10 @@ export default function Search() {
                     <div className="row search-results mt-5">
 
                         <div className="result">
-                            {sites.map(site => {
-                                return (
-                                    <div key={site.siteID}>
-
-
-
-                                        <a>View Site Details (TODO)</a>
-                                        <a>View on Map (TODO)</a>
-                                        <span className="float-end fst-italic">Last Updated: { site.lastUpdated.toISOString().split('T')[0] } </span>
-
-                                        <table className="table bg-light">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Site ID</th>
-                                                    <th scope="col">Address/City</th>
-                                                    <th scope="col">Latitude</th>
-                                                    <th scope="col">Longitude</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <th scope="row">{site.siteID}</th>
-                                                    <td>{site.address}</td>
-                                                    <td>{site.latitude}</td>
-                                                    <td>{site.longitude}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <hr className='mb-5' />
-                                    </div>
-                                )
+                            {!isLoaded && <div>Loading...</div>}
+                            {isLoaded && searchResults.map(site => {
+                                return <SimpleSearchResults key={site.siteID} site={site} />
                             })}
-
-
-
                         </div>
 
 
