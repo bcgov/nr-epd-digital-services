@@ -3,12 +3,16 @@ import Header from '@/components/Header'
 import { useState } from 'react';
 
 import { Link } from "react-router-dom";
+import { Site } from '@/api/sites'
 
 import ToggleButton from 'react-bootstrap/ToggleButton';
+import { useSelector } from 'react-redux';
 
 
 export default function Search() {
     const [searchBySiteID, setSearchBySiteId] = useState(false)
+    const sites: Site[] = useSelector(state => state.site.value)
+    console.log('Search, states: ', sites)
 
 
     return (
@@ -47,8 +51,51 @@ export default function Search() {
                     <div className="row search-results mt-5">
 
                         <div className="result">
-                            <div className="result-metadata">
-                                <a>View Site Details (TODO)</a>
+
+
+
+
+
+
+
+                            {/* <div className="result-metadata"> */}
+
+                            {sites.map(site => {
+                                // console.log('site site', site)
+                                return (
+                                    <div key={site.siteID}>
+
+
+
+                                        <a>View Site Details (TODO)</a>
+                                        <a>View on Map (TODO)</a>
+                                        <span className="float-end fst-italic">Last Updated: { site.lastUpdated.toISOString().split('T')[0] } </span>
+
+                                        <table className="table bg-light">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Site ID</th>
+                                                    <th scope="col">Address/City</th>
+                                                    <th scope="col">Latitude</th>
+                                                    <th scope="col">Longitude</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">{site.siteID}</th>
+                                                    <td>{site.address}</td>
+                                                    <td>{site.latitude}</td>
+                                                    <td>{site.longitude}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                )
+                            })}
+
+
+                            {/* <a>View Site Details (TODO)</a>
                                 <a>View on Map (TODO)</a>
                                 <span className="float-end fst-italic">Last Updated: todotodo</span>
 
@@ -69,10 +116,12 @@ export default function Search() {
                                             <td>123d 4m 29.9s</td>
                                         </tr>
                                     </tbody>
-                                </table>
+                                </table>     */}
 
 
-                            </div>
+                            {/* </div> */}
+
+
                         </div>
 
 
