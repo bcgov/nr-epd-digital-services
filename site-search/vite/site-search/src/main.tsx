@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.css'
+import AdvancedSearch from './pages/advanced-search.tsx';
 
 
 const router = createBrowserRouter([
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <Search />,
   },
+  {
+    path: "/advanced-search",
+    element: <AdvancedSearch />
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
