@@ -68,7 +68,7 @@ jobs:
       - name: Build from ${{ env.BRANCH_NAME }} branch
         shell: bash
         run: |
-          oc patch bc/${{ env.APP_NAME }}-build -p '{"spec":{"source":{"git":{"ref":"feat/task-228"}}}}'
+          oc patch bc/${{ env.APP_NAME }}-build -p '{"spec":{"source":{"git":{"ref":"${{ env.BRANCH_NAME }}"}}}}'
 
       - name: Start Build Openshift
         shell: bash
