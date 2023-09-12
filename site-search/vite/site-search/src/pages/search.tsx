@@ -11,8 +11,8 @@ import { useSelector } from 'react-redux';
 
 export default function Search() {
     const [searchBySiteID, setSearchBySiteId] = useState(false)
+    const [isLoaded, setIsLoaded] = useState(false);
     const sites: Site[] = useSelector(state => state.site.value)
-    console.log('Search, states: ', sites)
 
 
     return (
@@ -51,17 +51,7 @@ export default function Search() {
                     <div className="row search-results mt-5">
 
                         <div className="result">
-
-
-
-
-
-
-
-                            {/* <div className="result-metadata"> */}
-
                             {sites.map(site => {
-                                // console.log('site site', site)
                                 return (
                                     <div key={site.siteID}>
 
@@ -89,37 +79,11 @@ export default function Search() {
                                                 </tr>
                                             </tbody>
                                         </table>
-
+                                        <hr className='mb-5' />
                                     </div>
                                 )
                             })}
 
-
-                            {/* <a>View Site Details (TODO)</a>
-                                <a>View on Map (TODO)</a>
-                                <span className="float-end fst-italic">Last Updated: todotodo</span>
-
-                                <table className="table bg-light">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Site ID</th>
-                                            <th scope="col">Address/City</th>
-                                            <th scope="col">Latitude</th>
-                                            <th scope="col">Longitude</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">18326</th>
-                                            <td>123 Main St, Vancouver</td>
-                                            <td>49d 16m 46.8s</td>
-                                            <td>123d 4m 29.9s</td>
-                                        </tr>
-                                    </tbody>
-                                </table>     */}
-
-
-                            {/* </div> */}
 
 
                         </div>

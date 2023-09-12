@@ -4,7 +4,9 @@ import { createSlice } from '@reduxjs/toolkit'
 export const siteSlice = createSlice({
     name: 'site',
     initialState: {
-        value: [createRandomSite()]
+        // value: [createRandomSite()]
+        // value: (new Array(100)).fill(createRandomSite)
+        value: Array.from({length: 50}, _ => createRandomSite())
     },
     reducers: {
         add: ()=>console.log('todo') // Maybe not even necessary? SITE list won't mutate much, unlike site selection
