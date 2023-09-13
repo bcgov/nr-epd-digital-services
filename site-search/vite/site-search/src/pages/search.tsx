@@ -8,29 +8,26 @@ import { Site } from '@/api/sites'
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import { useSelector } from 'react-redux';
 import SimpleSearchResults from '@/features/simple-search/search-results';
+import './search.css';
 
 
-export default function Search() {
+export default function SearchPage() {
     const [searchBySiteID, setSearchBySiteId] = useState(false);
     const [isLoaded, setIsLoaded] = useState(true);
     const sites: Site[] = useSelector(state => state.site.value);
-    const [searchResults, setSearchResults] = useState<Site[]>([]); //TODO Change to empty array
+    const [searchResults, setSearchResults] = useState<Site[]>([]);
 
     function handleSearch(e){
         console.log('handleSearch', e.target.value)
         // TODO: Debounce
-        // TODO: setisLoaded(true)
-        // TODO: Allow configurable what to search by, e.g. SiteID or City, etc.
-        // Do timeout on setIsLoaded(false)
-
         setIsLoaded(false)
         setTimeout(() => {
+
+            // TODO - Only search on SiteID based on user selections
             const results = sites.filter(site => String(site.siteID).includes(e.target.value))
             setSearchResults(results)
             setIsLoaded(true);
-        }, 500)
-
-
+        }, 1000)
     }
 
     
@@ -43,17 +40,17 @@ export default function Search() {
                 <h2 className='text-center py-5'>Site Search</h2>
                 <div className="row">
                     <div className="col-sm-10">
-                        <input type="text" className="form-control" placeholder="Search Site Records..." aria-label="Search Site Records" onChange={handleSearch}/>
+                        <input type="text" className="form-control simple-search" placeholder="Search Site Records..." aria-label="Search Site Records" onChange={handleSearch}/>
                     </div>
 
                     <div className="col-sm">
                         <Link to='/advanced-search'>
-                            <Button variant='secondary'>Advanced Search</Button>
+                            <Button variant='outline-secondary'>Advanced Search</Button>
                         </Link>
                     </div>
                 </div>
 
-                <div className='bg-light p-3 mt-5'>
+                <div className='bg-light p-3 mt-5 rounded-4 border'>
                     <div className="row search-result-controls">
                         <div className="col">
                             <ToggleButton
@@ -69,7 +66,7 @@ export default function Search() {
                             </ToggleButton>
                         </div>
                     </div>
-                    <div className="row search-results mt-5">
+                    <div className="row search-results mt-3">
 
                         <div className="result">
                             {!isLoaded && <div>Loading...</div>}
