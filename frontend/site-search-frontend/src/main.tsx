@@ -11,6 +11,8 @@ import './index.css'
 import AdvancedSearch from './pages/advanced-search.tsx';
 import store from './store.ts'
 import { Provider } from 'react-redux'
+import SiteDetailsPage from './pages/site-details.tsx';
+import MapPage from './pages/map.tsx';
 
 
 const router = createBrowserRouter([
@@ -21,7 +23,15 @@ const router = createBrowserRouter([
   {
     path: "/advanced-search",
     element: <AdvancedSearch />
-  }
+  },
+  {
+    path: '/site/:siteID',
+    element: <SiteDetailsPage />
+  },
+  {
+    path: '/map',
+    element: <MapPage />
+  },
 ]);
 
 
