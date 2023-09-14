@@ -9,10 +9,12 @@ import ToggleButton from 'react-bootstrap/ToggleButton';
 import { useSelector } from 'react-redux';
 import SimpleSearchResults from '@/features/simple-search/search-results';
 import './search.css';
+import SearchToggle from '@/features/simple-search/search-toggle';
 
 
 export default function SearchPage() {
     const [searchBySiteID, setSearchBySiteId] = useState(false);
+    const [searchByCity, setSearchByCity] = useState(false);
     const [isLoaded, setIsLoaded] = useState(true);
     const sites: Site[] = useSelector(state => state.site.value);
     const [searchResults, setSearchResults] = useState<Site[]>([]);
@@ -24,7 +26,18 @@ export default function SearchPage() {
         setTimeout(() => {
 
             // TODO - Only search on SiteID based on user selections
-            const results = sites.filter(site => String(site.siteID).includes(e.target.value))
+            const results = sites.filter(site => {
+                // const isAnythingSelected = (!searchBySiteID)
+                const resultCollection = [];
+                if (searchBySiteID) {
+                    resultCollection.push(String(site.siteID).includes(e.target.value) )
+                }
+                if (searchByCity) {
+                    // resultCollection.push(String(site.siteID).includes(e.target.value) )
+                }
+                // If we have any hits, return true, otherwise if array is empty return false, so Array.filter works above
+                return resultCollection.length
+            })
             setSearchResults(results)
             setIsLoaded(true);
         }, 1000)
@@ -51,19 +64,10 @@ export default function SearchPage() {
                 </div>
 
                 <div className='bg-light p-3 mt-5 rounded-4 border'>
-                    <div className="row search-result-controls">
-                        <div className="col">
-                            <ToggleButton
-                                className="mb-2"
-                                id="toggle-check"
-                                type="checkbox"
-                                variant="outline-primary"
-                                checked={searchBySiteID}
-                                value="1"
-                                onChange={(e) => setSearchBySiteId(e.currentTarget.checked)}
-                            >
-                                Site ID
-                            </ToggleButton>
+                    <div className="d-flex search-result-controls">
+                        <div className="d-flex">
+                            <SearchToggle checked={searchBySiteID} onChange={setSearchBySiteId}>Site ID</SearchToggle>
+                            <SearchToggle checked={searchByCity} onChange={setSearchByCity}>City</SearchToggle>
                         </div>
                     </div>
                     <div className="row search-results mt-3">
@@ -71,8 +75,11 @@ export default function SearchPage() {
                         <div className="result">
                             {!isLoaded && <div>Loading...</div>}
                             {isLoaded && searchResults.map(site => {
-                                return <SimpleSearchResults key={site.siteID} site={site} />
+                                return <SimpleSearchResults key={site.uuid} site={site} />
                             })}
+                            {isLoaded && searchResults.length == 0 && <div>
+                                No results
+                            </div>}
                         </div>
 
 

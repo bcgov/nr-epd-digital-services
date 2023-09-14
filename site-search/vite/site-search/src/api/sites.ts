@@ -9,9 +9,12 @@
 
 
 export type Site = {
+    uuid?: string,
     siteID: number,
     address: string,
     latitude: number,
     longitude: number,
     lastUpdated: Date,
+    city: string,
+    region: string
 }
