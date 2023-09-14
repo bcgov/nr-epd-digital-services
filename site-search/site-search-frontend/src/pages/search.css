@@ -10,3 +10,15 @@
     overflow: scroll;
     border-color: black !important;
 }
+
+.fadeOut {
+    opacity: 0;
+    height: 0;
+    transition: 0.25s;
+}
+
+.fadeIn {
+    opacity: 1;
+    height: 500px;
+    transition: 0.25s;
+}

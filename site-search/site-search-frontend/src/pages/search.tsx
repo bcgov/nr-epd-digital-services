@@ -9,6 +9,8 @@ import { useSelector } from 'react-redux';
 import SimpleSearchResults from '@/features/simple-search/search-results';
 import './search.css';
 import SearchToggle from '@/features/simple-search/search-toggle';
+import Collapse from 'react-bootstrap/Collapse';
+
 
 
 
@@ -102,36 +104,37 @@ export default function SearchPage() {
                     </div>
                 </div>
 
-                {!!searchQuery.length && 
-                <div className='bg-light p-3 mt-5 rounded-4 border search-results'>
-                    <div className="d-flex search-result-controls">
-                        <div className="">
-                            <SearchToggle checked={searchBySiteID} onChange={setSearchBySiteId}>Site ID</SearchToggle>
-                            <SearchToggle checked={searchByCity} onChange={setSearchByCity}>City</SearchToggle>
-                            <SearchToggle checked={searchByRegion} onChange={setSearchByRegion}>Region</SearchToggle>
-                            <SearchToggle checked={searchByAddress} onChange={setSearchByAddress}>Address</SearchToggle>
-                            {/* The below were trying to use the commented out functions that re-trigger search on selection. Will pick this up again later. */}
-                            {/* <SearchToggle checked={searchBySiteID} onChange={updateSearchBySite}>Site ID</SearchToggle> */}
-                            {/* <SearchToggle checked={searchByCity} onChange={updateSearchByCity}>City</SearchToggle> */}
-                            {/* <SearchToggle checked={searchByRegion} onChange={updateSearchByRegion}>Region</SearchToggle> */}
+                <div className={!!searchQuery.length ? 'fadeIn' : 'fadeOut'}>
+                    <div className='bg-light p-3 mt-5 rounded-4 border search-results'>
+                        <div className="d-flex search-result-controls">
+                            <div className="">
+                                <SearchToggle checked={searchBySiteID} onChange={setSearchBySiteId}>Site ID</SearchToggle>
+                                <SearchToggle checked={searchByCity} onChange={setSearchByCity}>City</SearchToggle>
+                                <SearchToggle checked={searchByRegion} onChange={setSearchByRegion}>Region</SearchToggle>
+                                <SearchToggle checked={searchByAddress} onChange={setSearchByAddress}>Address</SearchToggle>
+                                {/* The below were trying to use the commented out functions that re-trigger search on selection. Will pick this up again later. */}
+                                {/* <SearchToggle checked={searchBySiteID} onChange={updateSearchBySite}>Site ID</SearchToggle> */}
+                                {/* <SearchToggle checked={searchByCity} onChange={updateSearchByCity}>City</SearchToggle> */}
+                                {/* <SearchToggle checked={searchByRegion} onChange={updateSearchByRegion}>Region</SearchToggle> */}
+                            </div>
                         </div>
-                    </div>
-                    <div className="row search-results mt-3">
+                        <div className="row search-results mt-3">
 
-                        <div className="result">
-                            {!isLoaded && <div>Loading...</div>}
-                            {isLoaded && searchResults.map(site => {
-                                return <SimpleSearchResults key={site.uuid} site={site} />
-                            })}
-                            {isLoaded && searchResults.length == 0 && <div>
-                                No results
-                            </div>}
+                            <div className="result">
+                                {!isLoaded && <div>Loading...</div>}
+                                {isLoaded && searchResults.map(site => {
+                                    return <SimpleSearchResults key={site.uuid} site={site} />
+                                })}
+                                {isLoaded && searchResults.length == 0 && <div>
+                                    No results
+                                </div>}
+                            </div>
+
+
                         </div>
-
-
                     </div>
                 </div>
-                }
+                
 
             </main>
         </>
