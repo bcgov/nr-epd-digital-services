@@ -60,8 +60,11 @@ export default function SearchPage() {
                 // Use filter to remove 'false' from array, so it only returns true on a positive id
                 return resultCollection.filter(x=>!!x).length
             })
+
+            // By putting a delay between setting search results and displaying them, we cut down on the jank when searching multi-lines
+            // May not be necessary w/ Debouncing
             setSearchResults(results)
-            setIsLoaded(true);
+            setTimeout(() => { setIsLoaded(true) }, 250)
         }, 1000)
     }
 
