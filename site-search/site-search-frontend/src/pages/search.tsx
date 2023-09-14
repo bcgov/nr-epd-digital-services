@@ -13,7 +13,6 @@ import Collapse from 'react-bootstrap/Collapse';
 
 
 
-
 export default function SearchPage() {
     const [searchBySiteID, setSearchBySiteId] = useState(false);
     const [searchByCity, setSearchByCity] = useState(false);
@@ -29,10 +28,14 @@ export default function SearchPage() {
         updateSearch(e.target.value)
     }
 
+    let searchTimeout: number;
     function updateSearch(query: string){
-        // TODO: Debounce
+        // TODO: Debounce! Also cancel timeouts if a new one comes in.
         setIsLoaded(false)
-        setTimeout(() => {
+
+        // Cancel the previous search if a new one comes in, stops jankiness as you type fast.
+        clearTimeout(searchTimeout)
+        searchTimeout = setTimeout(() => {
 
             // TODO - Only search on SiteID based on user selections
             // TODO - Re-trigger search when state changed
@@ -123,7 +126,7 @@ export default function SearchPage() {
                             <div className="result">
                                 {!isLoaded && <div>Loading...</div>}
                                 {isLoaded && searchResults.map(site => {
-                                    return <SimpleSearchResults key={site.uuid} site={site} />
+                                    return <SimpleSearchResults key={site.uuid} site={site} highlight={searchQuery} />
                                 })}
                                 {isLoaded && searchResults.length == 0 && <div>
                                     No results

@@ -1,14 +1,15 @@
 
 import { Site } from '@/api/sites'
 import { Link } from "react-router-dom";
+import Highlighter from '@/components/Highlighted';
 
 
-export default function SimpleSearchResults({ site }: Site) {
+export default function SimpleSearchResults({ site, highlight }: Site) {
     // console.log('SimpleSearchResults site', site)
 
     return (
         <div>
-            <h4>{site.address}</h4>
+            <h4><Highlighter highlight={highlight}>{site.address}</Highlighter></h4>
             <table className="table bg-light">
                 <thead>
                     <tr>
@@ -21,18 +22,18 @@ export default function SimpleSearchResults({ site }: Site) {
                 </thead>
                 <tbody>
                     <tr>
-                        <th scope="row">{site.siteID}</th>
-                        <td>{site.city}</td>
-                        <td>{site.region}</td>
-                        <td>{site.latitude}</td>
-                        <td>{site.longitude}</td>
+                        <th scope="row"><Highlighter highlight={highlight}>{String(site.siteID)}</Highlighter></th>
+                        <td><Highlighter highlight={highlight}>{site.city}</Highlighter></td>
+                        <td><Highlighter highlight={highlight}>{site.region}</Highlighter></td>
+                        <td><Highlighter highlight={highlight}>{String(site.latitude)}</Highlighter></td>
+                        <td><Highlighter highlight={highlight}>{String(site.longitude)}</Highlighter></td>
                     </tr>
                 </tbody>
             </table>
             <Link className='pr-3 text-decoration-none text-muted' to={`/site/${site.siteID}`}>View Site Details</Link>
             <Link className='px-3 text-decoration-none text-muted' to={`/map?siteID=${site.siteID}`}>View on Map</Link>
 
-           <span className="float-end fst-italic text-muted">Last Updated: {site.lastUpdated.toISOString().split('T')[0]} </span>
+            <span className="float-end fst-italic text-muted">Last Updated: {site.lastUpdated.toISOString().split('T')[0]} </span>
             <hr className='mb-5' />
         </div>
     )
