@@ -1,0 +1,12 @@
+.simple-search {
+    /* background-color: lightgray !important; */
+    /* border-color: gray !important; */
+    background-color: var(--main-gray) !important;
+    border-color: var(--dark-gray) !important;
+}
+
+.search-results {
+    max-height: 500px;
+    overflow: scroll;
+    border-color: black !important;
+}
