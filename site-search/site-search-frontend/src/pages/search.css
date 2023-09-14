@@ -22,3 +22,7 @@
     height: 500px;
     transition: 0.25s;
 }
+
+.highlighted {
+    background-color: yellow;
+}
