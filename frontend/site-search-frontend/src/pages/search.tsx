@@ -55,6 +55,12 @@ export default function SearchPage() {
                     resultCollection.push(String(site.address).includes(query))
                 }
 
+                // And search remaining cols if nothing selected:
+                if (nothingSelected) {
+                    resultCollection.push(String(site.latitude).includes(query))
+                    resultCollection.push(String(site.longitude).includes(query))
+                }
+
                 // console.log('sites.filter', { searchBySiteID, searchByCity, searchByRegion })
                 // If we have any hits, return true, otherwise if array is empty return false, so Array.filter works above
                 // Use filter to remove 'false' from array, so it only returns true on a positive id
