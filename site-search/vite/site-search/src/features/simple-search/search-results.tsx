@@ -22,7 +22,7 @@ export default function SimpleSearchResults({ site }: Site) {
                 <tbody>
                     <tr>
                         <th scope="row">{site.siteID}</th>
-                        <td>{site.address}</td>
+                        <td>{site.city}</td>
                         <td>{site.region}</td>
                         <td>{site.latitude}</td>
                         <td>{site.longitude}</td>

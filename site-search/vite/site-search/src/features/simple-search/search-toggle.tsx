@@ -5,7 +5,7 @@ export default function SearchToggle({ checked, onChange, children }) {
 
     return (
         <ToggleButton
-            className="mb-2"
+            className="mb-2 me-3"
             type="checkbox"
             variant="outline-primary"
             id={convertToClassName(children)}
