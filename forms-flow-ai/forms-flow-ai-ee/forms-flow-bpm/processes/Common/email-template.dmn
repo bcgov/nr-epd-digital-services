@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_1h338s2" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.11.0">
+  <decision id="decide-email-template" name="email-template">
+    <decisionTable id="decisionTable_1">
+      <input id="input_1" label="category">
+        <inputExpression id="inputExpression_1" typeRef="string">
+          <text>category</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_1buyced" label="to" name="to" typeRef="string" />
+      <output id="output_2" label="from" name="from" typeRef="string" />
+      <output id="OutputClause_0c48jer" label="cc" name="cc" typeRef="string" />
+      <output id="OutputClause_1ux6lei" label="bcc" name="bcc" typeRef="string" />
+      <output id="OutputClause_0h396nn" label="subject" name="subject" typeRef="string" />
+      <output id="OutputClause_1o2aisg" label="file" name="file" typeRef="string" />
+      <output id="OutputClause_02o2otj" label="support" name="support" typeRef="string" />
+      <rule id="DecisionRule_1wmujno">
+        <inputEntry id="UnaryTests_0ja6qkt">
+          <text>"sir_status_rejected"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0q16ubr">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_17vnkrr">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ldxbdq">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0506c3b">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1modk4k">
+          <text>"SIR Application Rejected"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_18eytpn">
+          <text>"templates/sir_application_rejected.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0q4faet">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_02c261e">
+      <dmndi:DMNShape id="DMNShape_0fxxwab" dmnElementRef="decide-email-template">
+        <dc:Bounds height="80" width="180" x="150" y="150" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
