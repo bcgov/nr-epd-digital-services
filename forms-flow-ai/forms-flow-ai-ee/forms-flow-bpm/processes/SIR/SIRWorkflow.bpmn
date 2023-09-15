@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1rb8wsa" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.11.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
   <bpmn:collaboration id="Collaboration_14e80c3">
-    <bpmn:participant id="Participant_1569q03" name="SIR Workflow 1.0" processRef="epd-sir-workflow" />
+    <bpmn:participant id="Participant_1569q03" name="SIR Workflow 1.0" processRef="sir-workflow-v1" />
   </bpmn:collaboration>
-  <bpmn:process id="epd-sir-workflow" name="SIR Workflow" isExecutable="true">
+  <bpmn:process id="sir-workflow-v1" name="SIR Workflow" isExecutable="true">
     <bpmn:laneSet id="LaneSet_0mph3xb">
       <bpmn:lane id="Lane_1mfcqjo" name="Client or QualifiedProfessional">
         <bpmn:flowNodeRef>Activity_1ozfgid</bpmn:flowNodeRef>
@@ -59,9 +59,11 @@
       <bpmn:script>var system = java.lang.System;
 system.out.println ("simpleemail"+execution.getVariable('simpleemail'));
 var clientEmail = execution.getVariable('simpleemail');
-execution.setVariable('to',clientEmail);
+execution.setVariable('clientEmail',clientEmail);
 var clientEmail2= execution.getVariable('applicantEmailForInvoice');
-execution.setVariable('clientEmail2',clientEmail2);</bpmn:script>
+execution.setVariable('clientEmail2',clientEmail2);
+system.out.println ("clientEmail"+clientEmail);
+system.out.println ("clientEmail2"+clientEmail2);</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:startEvent id="Event_02fettt" name="Submit Form">
       <bpmn:outgoing>Flow_1la2yud</bpmn:outgoing>
@@ -121,11 +123,6 @@ execution.setVariable('clientEmail2',clientEmail2);</bpmn:script>
     <bpmn:callActivity id="Activity_1os7sys" name="Send Email" calledElement="common-email-workflow">
       <bpmn:extensionElements>
         <camunda:in variables="all" />
-        <camunda:inputOutput>
-          <camunda:inputParameter name="category">sir_status_rejected</camunda:inputParameter>
-          <camunda:inputParameter name="name">Jaise</camunda:inputParameter>
-          <camunda:inputParameter name="applicationId">12345</camunda:inputParameter>
-        </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0c55q6w</bpmn:incoming>
       <bpmn:outgoing>Flow_00vwzxv</bpmn:outgoing>
