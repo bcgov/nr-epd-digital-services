@@ -1,0 +1,11 @@
+.controls {
+    background-color: var(--dark-gray);
+    padding: 1em;
+    border-radius: 10px;
+}
+
+.mapContainer {
+    /* min-height: 400px; */
+    min-height: calc(100vh - 250px);
+    /* background-color: orange; */
+}
