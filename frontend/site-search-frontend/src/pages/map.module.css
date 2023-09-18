@@ -1,11 +1,29 @@
 .controls {
-    background-color: var(--dark-gray);
+    /* background-color: var(--dark-gray); */
+    /* Same as --dark-gray, but with alpha set */
+    background-color: rgb(113 113 113 / 74%);
     padding: 1em;
     border-radius: 10px;
+
+
+    position: absolute;
+    left: 20px;
+
+    /* TODO: Revert top to 75px after moving map control +/- button */
+    /* top: 75px; */
+    top: 175px;
+    width: calc(100% - 40px);
+    z-index: 99999;
 }
 
 .mapContainer {
     /* min-height: 400px; */
-    min-height: calc(100vh - 250px);
+    min-height: calc(100vh - 59px);
     /* background-color: orange; */
+}
+
+/* For prod, likely need a bunch of breakpoints here to make mobile */
+.mapSearch {
+    /* min-width: 750px; */
+    min-width: 50vw;
 }
