@@ -7,11 +7,15 @@ import styles from './map.module.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
+import { useLocation } from "react-router-dom";
 
 
 
 export default function MapPage() {
     const [location, setLocation] = useState([48.46762, -123.25458]);
+    const {state} = useLocation();
+    const { routerSearchQuery } = state; // Read values passed on state
+    const [searchQuery, setSearchQuery] = useState(routerSearchQuery);
 
     return (
         <>
@@ -21,7 +25,7 @@ export default function MapPage() {
                     <div className="d-flex justify-content-between">
 
                         <div className='d-flex'>
-                            <input type="text" className={styles.mapSearch + " form-control"} placeholder="Search site records..." />
+                            <input type="text" className={styles.mapSearch + " form-control"} placeholder="Search site records..." value={searchQuery} />
 
                             <Button className='ms-4' variant="secondary">Vector</Button>
                             <Button className='mx-3' variant="secondary">Pin</Button>
