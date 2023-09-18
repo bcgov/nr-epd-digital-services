@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Header from '@/components/Header'
 import { useState } from 'react';
 
-import { Link } from "react-router-dom";
+import { Link, createSearchParams, useNavigate } from "react-router-dom";
 import { Site } from '@/api/sites'
 
 import { useSelector } from 'react-redux';
@@ -22,6 +22,7 @@ export default function SearchPage() {
     const sites: Site[] = useSelector(state => state.site.value);
     const [searchResults, setSearchResults] = useState<Site[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const navigate = useNavigate();
 
     function handleSearch(e){
         setSearchQuery(e.target.value)
@@ -74,6 +75,12 @@ export default function SearchPage() {
         }, 1000)
     }
 
+    function onEnter(e){
+        if (e.key === "Enter") { 
+            navigate('/map', { state: { routerSearchQuery: e.target.value}});
+        }
+    }
+
 
     /**
      * These below functions were an attempt to re-trigger serach after clicking a search option, but they did not work.
@@ -106,7 +113,7 @@ export default function SearchPage() {
                 <h2 className='text-center py-5'>Site Search</h2>
                 <div className="row">
                     <div className="col-sm-10">
-                        <input type="text" className="form-control simple-search" placeholder="Search Site Records..." aria-label="Search Site Records" onChange={handleSearch}/>
+                        <input type="text" className="form-control simple-search" placeholder="Search Site Records..." aria-label="Search Site Records" onChange={handleSearch} onKeyDown={onEnter}/>
                     </div>
 
                     <div className="col-sm">
