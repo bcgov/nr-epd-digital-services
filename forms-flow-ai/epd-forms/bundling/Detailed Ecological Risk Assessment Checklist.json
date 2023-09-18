@@ -3251,7 +3251,7 @@
                                                                 "required": true,
                                                                 "pattern": "",
                                                                 "customMessage": "",
-                                                                "custom": "if(/^[0-9]+$/.test(input) && input>= 0 && input<= 60){\n\tvalid=true;\n}else{\n\tvalid = \"Invalid Seconds\";\n}\n",
+                                                                "custom": "if (/^\\d+(\\.\\d+)?$/.test(input) && parseFloat(input) >= 0 && parseFloat(input) <= 60) {\r\n    valid = true;\r\n} else {\r\n    valid = \"Invalid Seconds\";\r\n}",
                                                                 "customPrivate": false,
                                                                 "json": "",
                                                                 "minLength": "",
@@ -3290,7 +3290,7 @@
                                                             "dataGridLabel": false,
                                                             "addons": [],
                                                             "inputType": "text",
-                                                            "id": "e14qcgn",
+                                                            "id": "eyo512q",
                                                             "defaultValue": ""
                                                         }
                                                     ],
@@ -3697,7 +3697,7 @@
                                                                 "required": true,
                                                                 "pattern": "",
                                                                 "customMessage": "",
-                                                                "custom": "\n\nif(/^[0-9]+$/.test(input) && input>= 0 && input<= 60){\n\tvalid=true;\n}else{\n\tvalid = \"Invalid Seconds\";\n}\n",
+                                                                "custom": "if (/^\\d+(\\.\\d+)?$/.test(input) && parseFloat(input) >= 0 && parseFloat(input) <= 60) {\r\n    valid = true;\r\n} else {\r\n    valid = \"Invalid Seconds\";\r\n}",
                                                                 "customPrivate": false,
                                                                 "json": "",
                                                                 "minLength": "",
@@ -3736,7 +3736,7 @@
                                                             "dataGridLabel": false,
                                                             "addons": [],
                                                             "inputType": "text",
-                                                            "id": "er8w3fk",
+                                                            "id": "e6lwl4p",
                                                             "defaultValue": ""
                                                         }
                                                     ],
@@ -5434,7 +5434,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eh8z2bfa0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eh8z2bfa00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "panel",
                                     "tags": [],
                                     "tree": false,
@@ -35957,7 +35957,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eof79400000000000000000000000000000000000000000000000000000",
+                                    "id": "eof794000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
