@@ -6,7 +6,7 @@ export const siteSlice = createSlice({
     initialState: {
         // value: [createRandomSite()]
         // value: (new Array(100)).fill(createRandomSite)
-        value: Array.from({length: 50}, _ => createRandomSite())
+        value: Array.from({length: 250}, _ => createRandomSite())
     },
     reducers: {
         add: ()=>console.log('todo') // Maybe not even necessary? SITE list won't mutate much, unlike site selection
