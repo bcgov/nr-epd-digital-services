@@ -10,8 +10,8 @@
     left: 20px;
 
     /* TODO: Revert top to 75px after moving map control +/- button */
-    /* top: 75px; */
-    top: 175px;
+    top: 75px;
+    /* top: 175px; */
     width: calc(100% - 40px);
     z-index: 99999;
 }
@@ -27,3 +27,29 @@
     /* min-width: 750px; */
     min-width: 50vw;
 }
+
+.detailsPane {
+    position: absolute;
+    right: 20px;
+    min-height: 400px;
+    min-width: 400px;
+    top: 200px;
+    background-color: lightgray;
+    z-index: 99999;
+    border-radius: 10px;
+    padding: 1rem;
+    overflow: hidden;
+}
+
+.detailsPane > * {
+    max-width: 400px;
+}
+
+.detailsPaneContent {
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* .detailsPaneContent {
+    max-width: 400px;
+} */

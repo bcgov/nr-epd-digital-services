@@ -1,7 +1,7 @@
 import Header from "@/components/Header"
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
-import { MapContainer, WMSTileLayer, Marker, Popup, TileLayer } from "react-leaflet";
+import { MapContainer, WMSTileLayer, Marker, Popup, TileLayer, ZoomControl } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import styles from './map.module.css';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -10,11 +10,15 @@ import ToggleButton from 'react-bootstrap/ToggleButton';
 import { useLocation } from "react-router-dom";
 import { Site } from "@/api/sites";
 import { useSelector } from "react-redux";
+import { LatLngExpression } from "leaflet";
+import CloseButton from 'react-bootstrap/CloseButton';
+import MapDetailsPane from "@/features/map/MapDetailsPane";
+
 
 
 
 export default function MapPage() {
-    const [location, setLocation] = useState([48.46762, -123.25458]);
+    const [location, setLocation] = useState<LatLngExpression>([48.46762, -123.25458]);
     const {state} = useLocation();
     // const { routerSearchQuery } = state; // Read values passed on state
     const routerSearchQuery = state && state.routerSearchQuery || '';
@@ -61,9 +65,21 @@ export default function MapPage() {
                     </div>
                 </div>
 
+
+                {/* TODO: Split this to it's own component */}
+                {/* <div className={styles.detailsPane}>
+                    <div className="d-flex justify-content-between">
+                        <span>&gt; Back</span>
+                        <CloseButton />
+                    </div>
+
+                    <span className="fst-italic">Last Updated: </span>
+                </div> */}
+                <MapDetailsPane />
+
                 {/* <MapContainer center={location} zoom={13} style={{height: "calc(100vh-160px)", width: "100vw"}} > */}
                 {/* <MapContainer center={location} zoom={13} style={{height: "100vh", width: "100vw"}} > */}
-                <MapContainer center={location} zoom={13} className={styles.mapContainer} >
+                <MapContainer center={location} zoom={8} className={styles.mapContainer} zoomControl={false} >
 
 
                     <TileLayer
@@ -76,6 +92,8 @@ export default function MapPage() {
                         transparent={true}
                         format="image/png"
                     />
+
+                    <ZoomControl position='bottomleft' />
 
                     
                     {/* Add all sites as map markers */}
