@@ -1,6 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Header from '@/components/Header'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Link, createSearchParams, useNavigate } from "react-router-dom";
 import { Site } from '@/api/sites'
@@ -43,18 +43,43 @@ export default function SearchPage() {
             const results = sites.filter(site => {
                 const nothingSelected = (!searchBySiteID && !searchByCity && !searchByRegion);
                 const resultCollection = [];
-                if (searchBySiteID || nothingSelected) {
-                    resultCollection.push(String(site.siteID).includes(query) )
+                // if (searchBySiteID || nothingSelected) {
+                //     resultCollection.push(String(site.siteID).includes(query) )
+                // }
+                // if (searchByCity || nothingSelected) {
+                //     resultCollection.push(String(site.city).includes(query))
+                // }
+                // if (searchByRegion || nothingSelected) {
+                //     resultCollection.push(String(site.region).includes(query))
+                // }
+                // if (searchByAddress || nothingSelected) {
+                //     resultCollection.push(String(site.address).includes(query))
+                // }
+
+                if ((searchBySiteID || nothingSelected) && String(site.siteID).includes(query)) {
+                    console.log('Searching Site', {site: site, query, searchBySiteID, nothingSelected})
+                    resultCollection.push(true)
                 }
-                if (searchByCity || nothingSelected) {
-                    resultCollection.push(String(site.city).includes(query))
+                if ((searchByCity || nothingSelected) && String(site.city).includes(query)) {
+                    console.log('Searching city', {siteCity: site.city, query, searchByCity, nothingSelected})
+                    resultCollection.push(true)
                 }
-                if (searchByRegion || nothingSelected) {
-                    resultCollection.push(String(site.region).includes(query))
+                else {
+                    console.log('Not searching city', {site: site, query, searchByCity, nothingSelected})
                 }
-                if (searchByAddress || nothingSelected) {
-                    resultCollection.push(String(site.address).includes(query))
+                if ((searchByRegion || nothingSelected) && String(site.region).includes(query)) {
+                    console.log('Searching Region', {site: site, query, searchByRegion, nothingSelected})
+                    resultCollection.push(true)
                 }
+                // else {
+                //     console.log('Not searching region', {site: site, query, searchByRegion, nothingSelected})
+                // }
+
+                if ((searchByAddress || nothingSelected) && String(site.address).includes(query)) {
+                    console.log('Searching Address', {site: site, query, searchByAddress, nothingSelected})
+                    resultCollection.push(true)
+                }
+                
 
                 // And search remaining cols if nothing selected:
                 if (nothingSelected) {
@@ -62,7 +87,7 @@ export default function SearchPage() {
                     resultCollection.push(String(site.longitude).includes(query))
                 }
 
-                // console.log('sites.filter', { searchBySiteID, searchByCity, searchByRegion })
+                console.log('sites.filter', { searchBySiteID, searchByCity, searchByRegion, resultCollection, nothingSelected, site })
                 // If we have any hits, return true, otherwise if array is empty return false, so Array.filter works above
                 // Use filter to remove 'false' from array, so it only returns true on a positive id
                 return resultCollection.filter(x=>!!x).length
@@ -86,22 +111,28 @@ export default function SearchPage() {
      * These below functions were an attempt to re-trigger serach after clicking a search option, but they did not work.
      * Lead to weird case where old values were rendered.
      */
-    // function updateSearchBySite(val: boolean){
-    //     // console.log('updateSearchBySite', val)
-    //     setSearchBySiteId(val)
-    //     updateSearch(searchQuery)
-    //     // setTimeout(() =>{updateSearch(searchQuery)}, 0)
-    // }
+    function updateSearchBySite(val: boolean){
+        // console.log('updateSearchBySite', val)
+        setSearchBySiteId(val)
+        // updateSearch(searchQuery)
+        // setTimeout(() =>{updateSearch(searchQuery)}, 0)
+    }
 
-    // function updateSearchByCity(val: boolean){
-    //     setSearchByCity(val);
-    //     updateSearch(searchQuery)
-    // }
+    function updateSearchByCity(val: boolean){
+        // setSearchByCity(val);
+        setSearchByCity(val);
+        // updateSearch(searchQuery)
+    }
 
-    // function updateSearchByRegion(val: boolean){
-    //     setSearchByRegion(val)
-    //     updateSearch(searchQuery)
-    // }
+    function updateSearchByRegion(val: boolean){
+        setSearchByRegion(val)
+        // updateSearch(searchQuery)
+    }
+
+    useEffect(() => {
+        console.log('arc useEffect called');
+        updateSearch(searchQuery)
+    }, [searchByAddress, searchByCity, searchByRegion, searchBySiteID])
 
     
 
@@ -127,14 +158,14 @@ export default function SearchPage() {
                     <div className='bg-light p-3 mt-5 rounded-4 border search-results'>
                         <div className="d-flex search-result-controls">
                             <div className="">
-                                <SearchToggle checked={searchBySiteID} onChange={setSearchBySiteId}>Site ID</SearchToggle>
-                                <SearchToggle checked={searchByCity} onChange={setSearchByCity}>City</SearchToggle>
-                                <SearchToggle checked={searchByRegion} onChange={setSearchByRegion}>Region</SearchToggle>
-                                <SearchToggle checked={searchByAddress} onChange={setSearchByAddress}>Address</SearchToggle>
+                                {/* <SearchToggle checked={searchBySiteID} onChange={setSearchBySiteId}>Site ID</SearchToggle> */}
+                                {/* <SearchToggle checked={searchByCity} onChange={setSearchByCity}>City</SearchToggle> */}
+                                {/* <SearchToggle checked={searchByRegion} onChange={setSearchByRegion}>Region</SearchToggle> */}
+                                {/* <SearchToggle checked={searchByAddress} onChange={setSearchByAddress}>Address</SearchToggle> */}
                                 {/* The below were trying to use the commented out functions that re-trigger search on selection. Will pick this up again later. */}
-                                {/* <SearchToggle checked={searchBySiteID} onChange={updateSearchBySite}>Site ID</SearchToggle> */}
-                                {/* <SearchToggle checked={searchByCity} onChange={updateSearchByCity}>City</SearchToggle> */}
-                                {/* <SearchToggle checked={searchByRegion} onChange={updateSearchByRegion}>Region</SearchToggle> */}
+                                <SearchToggle checked={searchBySiteID} onChange={updateSearchBySite}>Site ID</SearchToggle>
+                                <SearchToggle checked={searchByCity} onChange={updateSearchByCity}>City</SearchToggle>
+                                <SearchToggle checked={searchByRegion} onChange={updateSearchByRegion}>Region</SearchToggle>
                             </div>
                         </div>
                         <div className="row search-results mt-3">
@@ -142,7 +173,8 @@ export default function SearchPage() {
                             <div className="result">
                                 {!isLoaded && <div>Loading...</div>}
                                 {isLoaded && searchResults.map(site => {
-                                    return <SimpleSearchResults key={site.uuid} site={site} highlight={searchQuery} />
+                                    // return <SimpleSearchResults key={site.uuid} site={site} highlight={searchQuery} />
+                                    return <SimpleSearchResults key={site.uuid} site={site} highlight={searchQuery} searchOption={{ searchBySiteID, searchByCity, searchByRegion }}/>
                                 })}
                                 {isLoaded && searchResults.length == 0 && <div>
                                     No results
