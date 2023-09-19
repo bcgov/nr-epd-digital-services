@@ -9,7 +9,7 @@ export function createRandomSite(): Site {
         address: faker.location.streetAddress(),
         // Lat and Longitude restricted to approximately BC (some Alberta, oceans, etc)
         latitude: faker.location.latitude({min: 48, max: 59}), 
-        longitude: faker.location.longitude({min: -139, max: -114}),
+        longitude: faker.location.longitude({min: -139, max: -118}),
         lastUpdated: faker.date.past({years: 10}),
         city: faker.location.city(),
         region: randomRegion()
