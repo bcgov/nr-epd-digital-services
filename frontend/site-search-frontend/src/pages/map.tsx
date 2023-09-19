@@ -89,7 +89,12 @@ export default function MapPage() {
 
                     <span className="fst-italic">Last Updated: </span>
                 </div> */}
-                {selectedSite && <MapDetailsPane site={selectedSite} onClose={clearSelection} />}
+                {/* {selectedSite && <MapDetailsPane site={selectedSite} onClose={clearSelection} />} */}
+                {/* <MapDetailsPane className={selectedSite ? 'fadeIn' : 'fadeOut'} site={selectedSite} onClose={clearSelection} /> */}
+                <MapDetailsPane site={selectedSite} onClose={clearSelection} />
+
+                {/* !!searchQuery.length ? 'fadeIn' : 'fadeOut' */}
+ 
 
                 {/* <MapContainer center={location} zoom={13} style={{height: "calc(100vh-160px)", width: "100vw"}} > */}
                 {/* <MapContainer center={location} zoom={13} style={{height: "100vh", width: "100vw"}} > */}

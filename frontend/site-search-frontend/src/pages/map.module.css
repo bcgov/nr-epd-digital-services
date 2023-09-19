@@ -34,7 +34,8 @@
     min-height: 400px;
     min-width: 400px;
     top: 200px;
-    background-color: lightgray;
+    background-color: white;
+    border: 2px solid gray;
     z-index: 99999;
     border-radius: 10px;
     padding: 1rem;
@@ -52,4 +53,8 @@
 
 /* .detailsPaneContent {
     max-width: 400px;
+} */
+/* 
+.detailsPane.fadeOut {
+    height: 0;
 } */
