@@ -1,32 +1,34 @@
 import styles from '@/pages/map.module.css'
 import CloseButton from 'react-bootstrap/esm/CloseButton';
 import Button from 'react-bootstrap/Button';
+import { Site } from '@/api/sites';
+import { MouseEventHandler } from 'react';
 
 
-export default function MapDetailsPane({site}) {
+export default function MapDetailsPane({site, onClose}: {site: Site, onClose: MouseEventHandler}) {
     return (
 
         <div className={styles.detailsPane}>
             <div className="d-flex justify-content-between">
                 <span>&gt; Back</span>
-                <CloseButton />
+                <CloseButton onClick={onClose} />
             </div>
 
-            <div className="fst-italic my-3">Last Updated: </div>
+            <div className="fst-italic my-3">Last Updated: {site.lastUpdated.toISOString().split('T')[0]}</div>
 
 
             <div className={styles.detailsPaneContent + " d-flex mb-3"}>                
                 <div className="d-flex flex-column ">
                     <div className='fw-bold'>Site ID</div>
-                    <div>128381</div>
+                    <div>{site.siteID}</div>
                 </div>
                 <div className="d-flex flex-column ">
                     <div className='fw-bold'>Latitude</div>
-                    <div>49d 123s 123a</div>
+                    <div>{site.latitude}</div>
                 </div>
                 <div className="d-flex flex-column ">
                     <div className='fw-bold'>Longitude</div>
-                    <div>49d 123s 123a</div>
+                    <div>{site.longitude}</div>
                 </div>
                 <div className="d-flex flex-column ">
                     <div className='fw-bold'>Victoria File</div>
@@ -40,12 +42,12 @@ export default function MapDetailsPane({site}) {
 
             <div className="mb-3">
                 <div className='fw-bold'>Common Name</div>
-                <div>N/A</div>
+                <div>{site.address} </div>
             </div>
 
             <div className="mb-3">
                 <div className='fw-bold'>Region</div>
-                <div>N/A</div>
+                <div>{site.region}</div>
             </div>
 
             <div className="mb-3">

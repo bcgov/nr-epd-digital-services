@@ -24,7 +24,21 @@ export default function MapPage() {
     const routerSearchQuery = state && state.routerSearchQuery || '';
     const [searchQuery, setSearchQuery] = useState(routerSearchQuery);
 
+    const [selectedSite, setSelectedSite] = useState<Site | null>();
+
     const sites: Site[] = useSelector(state => state.site.value);
+
+    function onMarkerClick(e){
+        console.log('onMarkerClick', e);
+        const clickedSite = e?.target?.options?.site;
+        if (clickedSite) {
+            setSelectedSite(clickedSite)
+        }
+    }
+
+    function clearSelection(){
+        setSelectedSite(null);
+    }
 
     return (
         <>
@@ -34,7 +48,7 @@ export default function MapPage() {
                     <div className="d-flex justify-content-between">
 
                         <div className='d-flex'>
-                            <input type="text" className={styles.mapSearch + " form-control"} placeholder="Search site records..." value={searchQuery} />
+                            <input type="text" className={styles.mapSearch + " form-control"} placeholder="Search site records..." value={searchQuery} onChange={setSearchQuery}/>
 
                             <Button className='ms-4' variant="secondary">Vector</Button>
                             <Button className='mx-3' variant="secondary">Pin</Button>
@@ -75,7 +89,7 @@ export default function MapPage() {
 
                     <span className="fst-italic">Last Updated: </span>
                 </div> */}
-                <MapDetailsPane />
+                {selectedSite && <MapDetailsPane site={selectedSite} onClose={clearSelection} />}
 
                 {/* <MapContainer center={location} zoom={13} style={{height: "calc(100vh-160px)", width: "100vw"}} > */}
                 {/* <MapContainer center={location} zoom={13} style={{height: "100vh", width: "100vw"}} > */}
@@ -99,7 +113,12 @@ export default function MapPage() {
                     {/* Add all sites as map markers */}
 
                     {sites.map(site => {
-                        return <Marker position={[site.latitude, site.longitude]}></Marker>
+                        return <Marker 
+                            position={[site.latitude, site.longitude]}
+                            key={site.uuid}
+                            eventHandlers={{ click: onMarkerClick }}
+                            site={site}
+                        ></Marker>
                     })}
 
 
