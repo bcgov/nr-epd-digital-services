@@ -57,26 +57,19 @@ export default function SearchPage() {
                 // }
 
                 if ((searchBySiteID || nothingSelected) && String(site.siteID).includes(query)) {
-                    console.log('Searching Site', {site: site, query, searchBySiteID, nothingSelected})
+                    // console.log('Searching Site', {site: site, query, searchBySiteID, nothingSelected})
                     resultCollection.push(true)
                 }
                 if ((searchByCity || nothingSelected) && String(site.city).includes(query)) {
-                    console.log('Searching city', {siteCity: site.city, query, searchByCity, nothingSelected})
+                    // console.log('Searching city', {siteCity: site.city, query, searchByCity, nothingSelected})
                     resultCollection.push(true)
-                }
-                else {
-                    console.log('Not searching city', {site: site, query, searchByCity, nothingSelected})
                 }
                 if ((searchByRegion || nothingSelected) && String(site.region).includes(query)) {
-                    console.log('Searching Region', {site: site, query, searchByRegion, nothingSelected})
+                    // console.log('Searching Region', {site: site, query, searchByRegion, nothingSelected})
                     resultCollection.push(true)
                 }
-                // else {
-                //     console.log('Not searching region', {site: site, query, searchByRegion, nothingSelected})
-                // }
-
                 if ((searchByAddress || nothingSelected) && String(site.address).includes(query)) {
-                    console.log('Searching Address', {site: site, query, searchByAddress, nothingSelected})
+                    // console.log('Searching Address', {site: site, query, searchByAddress, nothingSelected})
                     resultCollection.push(true)
                 }
                 
@@ -87,7 +80,7 @@ export default function SearchPage() {
                     resultCollection.push(String(site.longitude).includes(query))
                 }
 
-                console.log('sites.filter', { searchBySiteID, searchByCity, searchByRegion, resultCollection, nothingSelected, site })
+                // console.log('sites.filter', { searchBySiteID, searchByCity, searchByRegion, resultCollection, nothingSelected, site })
                 // If we have any hits, return true, otherwise if array is empty return false, so Array.filter works above
                 // Use filter to remove 'false' from array, so it only returns true on a positive id
                 return resultCollection.filter(x=>!!x).length
@@ -110,27 +103,25 @@ export default function SearchPage() {
     /**
      * These below functions were an attempt to re-trigger serach after clicking a search option, but they did not work.
      * Lead to weird case where old values were rendered.
+     * 
+     * FIX: Using useEffect with the dependency array at the end.
      */
     function updateSearchBySite(val: boolean){
         // console.log('updateSearchBySite', val)
         setSearchBySiteId(val)
         // updateSearch(searchQuery)
-        // setTimeout(() =>{updateSearch(searchQuery)}, 0)
     }
 
     function updateSearchByCity(val: boolean){
         // setSearchByCity(val);
         setSearchByCity(val);
-        // updateSearch(searchQuery)
     }
 
     function updateSearchByRegion(val: boolean){
         setSearchByRegion(val)
-        // updateSearch(searchQuery)
     }
 
     useEffect(() => {
-        console.log('arc useEffect called');
         updateSearch(searchQuery)
     }, [searchByAddress, searchByCity, searchByRegion, searchBySiteID])
 
