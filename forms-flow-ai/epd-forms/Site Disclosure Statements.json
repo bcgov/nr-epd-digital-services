@@ -165,7 +165,7 @@
                     "key": "formActions",
                     "tags": [],
                     "properties": {},
-                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nif(roles.includes(\"formsflow-client\") || \r\nroles.includes(\"formsflow-reviewer/lrs-approving-authority\")|| \r\nroles.includes(\"formsflow-reviewer/formsflow-client-reviewer\") ) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
+                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails?UserDetails[\"role\"]:[];\r\nif(!UserDetails){\r\n  show = false;\r\n}\r\nelse if(roles.includes(\"formsflow-client\") || \r\nroles.includes(\"formsflow-reviewer/lrs-approving-authority\")|| \r\nroles.includes(\"formsflow-reviewer/formsflow-client-reviewer\") ) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
                     "conditional": {
                         "json": "",
                         "show": null,
@@ -198,60 +198,35 @@
                                             "label": "Send to Approving Authority",
                                             "action": "custom",
                                             "showValidations": false,
-                                            "theme": "primary",
-                                            "size": "md",
-                                            "block": false,
-                                            "leftIcon": "",
-                                            "rightIcon": "",
-                                            "shortcut": "",
-                                            "description": "",
-                                            "tooltip": "",
-                                            "customClass": "",
-                                            "tabindex": "",
-                                            "disableOnInvalid": false,
-                                            "hidden": false,
-                                            "autofocus": false,
-                                            "disabled": false,
                                             "tableView": false,
-                                            "modalEdit": false,
                                             "key": "sendToPreviousReviewer",
-                                            "tags": [],
-                                            "properties": {},
-                                            "conditional": {
-                                                "show": null,
-                                                "when": null,
-                                                "eq": "",
-                                                "json": ""
-                                            },
                                             "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/site-information-advisor\") &&\r\n!(data.section5DeclarationsCheckboxDecommissioning ||\r\ndata.section5DeclarationsCheckboxCeasingOperations)) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
-                                            "logic": [],
-                                            "attributes": {},
-                                            "overlay": {
-                                                "style": "",
-                                                "page": "",
-                                                "left": "",
-                                                "top": "",
-                                                "width": "",
-                                                "height": ""
-                                            },
                                             "type": "button",
                                             "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\n\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Recheck'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Recheck'\r\n    }); \r\n});",
                                             "input": true,
                                             "placeholder": "",
                                             "prefix": "",
+                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
                                             "protected": false,
                                             "unique": false,
                                             "persistent": false,
+                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
+                                            "modalEdit": false,
                                             "dataGridLabel": true,
                                             "labelPosition": "top",
+                                            "description": "",
                                             "errorLabel": "",
+                                            "tooltip": "",
                                             "hideLabel": false,
+                                            "tabindex": "",
+                                            "disabled": false,
+                                            "autofocus": false,
                                             "dbIndex": false,
                                             "customDefaultValue": "",
                                             "calculateValue": "",
@@ -259,6 +234,7 @@
                                             "widget": {
                                                 "type": "input"
                                             },
+                                            "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
                                                 "required": false,
@@ -268,13 +244,32 @@
                                                 "multiple": false,
                                                 "unique": false
                                             },
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": ""
+                                            },
+                                            "overlay": {
+                                                "style": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
                                             "allowCalculateOverride": false,
                                             "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
+                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "egglx6"
+                                            "size": "md",
+                                            "leftIcon": "",
+                                            "rightIcon": "",
+                                            "block": false,
+                                            "disableOnInvalid": false,
+                                            "theme": "primary",
+                                            "id": "ehc4spv"
                                         }
                                     ],
                                     "width": 3,
@@ -361,7 +356,7 @@
                                             "block": false,
                                             "disableOnInvalid": false,
                                             "theme": "primary",
-                                            "id": "e2o4dvo"
+                                            "id": "eond1ha"
                                         }
                                     ],
                                     "width": 3,
@@ -448,7 +443,7 @@
                                             "rightIcon": "",
                                             "block": false,
                                             "disableOnInvalid": false,
-                                            "id": "es66rxf"
+                                            "id": "e6b3lxd"
                                         }
                                     ],
                                     "size": "md",
@@ -534,7 +529,7 @@
                                             "rightIcon": "",
                                             "block": false,
                                             "disableOnInvalid": false,
-                                            "id": "enpk1cs"
+                                            "id": "esy7h5l"
                                         }
                                     ],
                                     "size": "md",
@@ -609,7 +604,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "eb1ex7b"
+                            "id": "ea92ei"
                         }
                     ],
                     "keyModified": true,
@@ -651,7 +646,7 @@
                     "addons": [],
                     "tree": false,
                     "lazyLoad": false,
-                    "id": "ekp2f42g"
+                    "id": "emgjonl"
                 },
                 {
                     "title": "Site Owner Actions",
@@ -666,7 +661,7 @@
                     "key": "siteOwnerActions",
                     "tags": [],
                     "properties": {},
-                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(roles.includes(\"formsflow-reviewer/formsflow-client-reviewer\") && data.applicationStatus !== undefined && data.applicationStatus !== ''\r\n&& data.applicationStatus !== 'Resubmit') {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
+                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails?UserDetails[\"role\"]:[];\r\nif(!UserDetails){\r\n  show = false;\r\n}\r\nelse if(roles.includes(\"formsflow-reviewer/formsflow-client-reviewer\") && data.applicationStatus !== undefined && data.applicationStatus !== ''\r\n&& data.applicationStatus !== 'Resubmit') {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
                     "conditional": {
                         "json": "",
                         "show": null,
@@ -770,7 +765,7 @@
                                             "block": false,
                                             "disableOnInvalid": false,
                                             "theme": "primary",
-                                            "id": "ei9zcv4"
+                                            "id": "el7s3lk"
                                         }
                                     ],
                                     "width": 3,
@@ -872,7 +867,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "evut574"
+                            "id": "ek60lf1"
                         }
                     ],
                     "keyModified": true,
@@ -914,10 +909,10 @@
                     "addons": [],
                     "tree": false,
                     "lazyLoad": false,
-                    "id": "erbd11"
+                    "id": "e9kmkmh"
                 },
                 {
-                    "label": "Edit Grid",
+                    "label": "Notes",
                     "labelPosition": "top",
                     "description": "",
                     "tooltip": "",
@@ -978,7 +973,7 @@
                         "eq": "",
                         "json": ""
                     },
-                    "customConditional": "show = false;\r\n\r\n\r\nvar addNotesButton = document.querySelector(\"button[ref=editgrid-notes-addRow]\");\r\n\r\nif(addNotesButton)\r\n{\r\naddNotesButton.addEventListener('click',\r\n(e)=>{\r\n\t\tif( groups.includes(\"/formsflow/formsflow-reviewer/lrs-approving-authority\"))\r\n\t\t{\r\n\t\t  var internalRadio = document.querySelectorAll(\"input[value='internal'][type='radio']\");\r\n\t\t  for (let i = 0; i < internalRadio.length; i++) {\r\n\t\t\tinternalRadio[i].parentElement.remove();\r\n\t\t  }\r\n\t\t}\r\n})\r\n}\r\n\r\n\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst groups = UserDetails[\"groups\"];\r\nif((groups.includes(\"/formsflow/formsflow-client\")  || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\r\n{\r\nif(data.notes && data.notes.filter((x)=>x.commentFor==='external').length > 0)\r\nshow = true;\r\nelse\r\nshow = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
+                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst groups = UserDetails?UserDetails[\"groups\"]:[];\r\nif(!UserDetails){\r\n  show = false;\r\n}\r\nelse if((groups.includes(\"/formsflow/formsflow-client\")  || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\r\n{\r\nif(data.notes && data.notes.filter((x)=>x.commentFor==='external').length > 0)\r\nshow = true;\r\nelse\r\nshow = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}\r\n\r\nif(UserDetails){\r\nvar addNotesButton = document.querySelector(\"button[ref=editgrid-notes-addRow]\");\r\n\r\nif(addNotesButton)\r\n{\r\naddNotesButton.addEventListener('click',\r\n(e)=>{\r\n\t\tif( groups.includes(\"/formsflow/formsflow-reviewer/lrs-approving-authority\"))\r\n\t\t{\r\n\t\t  var internalRadio = document.querySelectorAll(\"input[value='internal'][type='radio']\");\r\n\t\t  for (let i = 0; i < internalRadio.length; i++) {\r\n\t\t\tinternalRadio[i].parentElement.remove();\r\n\t\t  }\r\n\t\t}\r\n})\r\n}\r\n}",
                     "logic": [],
                     "attributes": {},
                     "overlay": {
@@ -1080,7 +1075,7 @@
                                             "wysiwyg": false,
                                             "editor": "",
                                             "fixedSize": true,
-                                            "id": "e9sz3oam"
+                                            "id": "eieupup"
                                         }
                                     ],
                                     "width": 4,
@@ -1172,7 +1167,7 @@
                                             "addons": [],
                                             "inputType": "radio",
                                             "fieldSet": false,
-                                            "id": "ed1tlx"
+                                            "id": "ef219v"
                                         }
                                     ],
                                     "width": 2,
@@ -1186,90 +1181,80 @@
                                     "components": [
                                         {
                                             "label": "Role",
-                                            "labelPosition": "top",
+                                            "disabled": true,
+                                            "tableView": true,
+                                            "customDefaultValue": "var b =JSON.parse(localStorage.getItem('UserDetails'))\r\nif(b.groups.indexOf('/formsflow/formsflow-client') > -1 )\r\n{\r\n value = 'Client'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/csap') > -1 )\r\n{\r\n value = 'Approved Professional'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/csap-society') > -1 )\r\n{\r\n value = 'CSAP Society'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/cssa-team') > -1 )\r\n{\r\n value = 'CSSA Team'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/caseworker') > -1 )\r\n{\r\n value = 'Caseworker'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/sdm') > -1 )\r\n{\r\n value = 'Statutory Decision Maker'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/site-risk-classification-officer') > -1 )\r\n{\r\n value = 'Site Risk Classification Officer'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/site-information-advisor') > -1 )\r\n{\r\n value = 'Site Information Advisor'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/lrs-approving-authority') > -1 )\r\n{\r\n value = 'Approving Authority'\r\n}",
+                                            "key": "role",
+                                            "type": "textfield",
+                                            "input": true,
                                             "placeholder": "",
-                                            "description": "",
-                                            "tooltip": "",
                                             "prefix": "",
+                                            "customClass": "",
                                             "suffix": "",
+                                            "multiple": false,
+                                            "defaultValue": null,
+                                            "protected": false,
+                                            "unique": false,
+                                            "persistent": true,
+                                            "hidden": false,
+                                            "clearOnHide": true,
+                                            "refreshOn": "",
+                                            "redrawOn": "",
+                                            "modalEdit": false,
+                                            "dataGridLabel": false,
+                                            "labelPosition": "top",
+                                            "description": "",
+                                            "errorLabel": "",
+                                            "tooltip": "",
+                                            "hideLabel": false,
+                                            "tabindex": "",
+                                            "autofocus": false,
+                                            "dbIndex": false,
+                                            "calculateValue": "",
+                                            "calculateServer": false,
                                             "widget": {
                                                 "type": "input"
                                             },
-                                            "inputMask": "",
-                                            "displayMask": "",
-                                            "allowMultipleMasks": false,
-                                            "customClass": "",
-                                            "tabindex": "",
-                                            "autocomplete": "",
-                                            "hidden": false,
-                                            "hideLabel": false,
-                                            "showWordCount": false,
-                                            "showCharCount": false,
-                                            "mask": false,
-                                            "autofocus": false,
-                                            "spellcheck": true,
-                                            "disabled": true,
-                                            "tableView": true,
-                                            "modalEdit": false,
-                                            "multiple": false,
-                                            "persistent": true,
-                                            "inputFormat": "plain",
-                                            "protected": false,
-                                            "dbIndex": false,
-                                            "case": "",
-                                            "truncateMultipleSpaces": false,
-                                            "encrypted": false,
-                                            "redrawOn": "",
-                                            "clearOnHide": true,
-                                            "customDefaultValue": "var b =JSON.parse(localStorage.getItem('UserDetails'))\r\nif(b.groups.indexOf('/formsflow/formsflow-client') > -1 )\r\n{\r\n value = 'Client'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/csap') > -1 )\r\n{\r\n value = 'Approved Professional'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/csap-society') > -1 )\r\n{\r\n value = 'CSAP Society'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/cssa-team') > -1 )\r\n{\r\n value = 'CSSA Team'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/caseworker') > -1 )\r\n{\r\n value = 'Caseworker'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/sdm') > -1 )\r\n{\r\n value = 'Statutory Decision Maker'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/site-risk-classification-officer') > -1 )\r\n{\r\n value = 'Site Risk Classification Officer'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/site-information-advisor') > -1 )\r\n{\r\n value = 'Site Information Advisor'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/lrs-approving-authority') > -1 )\r\n{\r\n value = 'Approving Authority'\r\n}",
-                                            "calculateValue": "",
-                                            "calculateServer": false,
-                                            "allowCalculateOverride": false,
+                                            "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
                                                 "required": false,
-                                                "pattern": "",
-                                                "customMessage": "",
                                                 "custom": "",
                                                 "customPrivate": false,
-                                                "json": "",
-                                                "minLength": "",
-                                                "maxLength": "",
                                                 "strictDateValidation": false,
                                                 "multiple": false,
-                                                "unique": false
+                                                "unique": false,
+                                                "minLength": "",
+                                                "maxLength": "",
+                                                "pattern": ""
                                             },
-                                            "unique": false,
-                                            "errorLabel": "",
-                                            "errors": "",
-                                            "key": "role",
-                                            "tags": [],
-                                            "properties": {},
                                             "conditional": {
                                                 "show": null,
                                                 "when": null,
-                                                "eq": "",
-                                                "json": ""
+                                                "eq": ""
                                             },
-                                            "customConditional": "",
-                                            "logic": [],
-                                            "attributes": {},
                                             "overlay": {
                                                 "style": "",
-                                                "page": "",
                                                 "left": "",
                                                 "top": "",
                                                 "width": "",
                                                 "height": ""
                                             },
-                                            "type": "textfield",
-                                            "input": true,
-                                            "refreshOn": "",
-                                            "dataGridLabel": false,
+                                            "allowCalculateOverride": false,
+                                            "encrypted": false,
+                                            "showCharCount": false,
+                                            "showWordCount": false,
+                                            "properties": {},
+                                            "allowMultipleMasks": false,
                                             "addons": [],
+                                            "mask": false,
                                             "inputType": "text",
-                                            "id": "ezqfos",
-                                            "defaultValue": ""
+                                            "inputFormat": "plain",
+                                            "inputMask": "",
+                                            "displayMask": "",
+                                            "spellcheck": true,
+                                            "truncateMultipleSpaces": false,
+                                            "id": "ehgoit"
                                         }
                                     ],
                                     "size": "md",
@@ -1356,7 +1341,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "eo76ic5"
+                                            "id": "e359aek"
                                         }
                                     ],
                                     "size": "md",
@@ -1443,7 +1428,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "e9d2nw"
+                                            "id": "ehegp6h"
                                         }
                                     ],
                                     "size": "md",
@@ -1518,7 +1503,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "ewkdsow"
+                            "id": "e1qmsg"
                         }
                     ],
                     "placeholder": "",
@@ -1537,7 +1522,7 @@
                     "tree": true,
                     "lazyLoad": false,
                     "defaultOpen": false,
-                    "id": "erh6cgt"
+                    "id": "e664pv2"
                 },
                 {
                     "logic": [
@@ -6990,7 +6975,7 @@
                                                 }
                                             ],
                                             "collapsible": false,
-                                            "id": "e7nge5b000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "e7nge5b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -7464,7 +7449,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eapos76000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eapos7600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -7680,7 +7665,7 @@
                                             "input": true,
                                             "label": "Crown Land File Numbers",
                                             "tableView": true,
-                                            "id": "e7fs5c5000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "e7fs5c500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
