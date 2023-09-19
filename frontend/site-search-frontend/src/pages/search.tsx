@@ -41,7 +41,7 @@ export default function SearchPage() {
             // TODO - Only search on SiteID based on user selections
             // TODO - Re-trigger search when state changed
             const results = sites.filter(site => {
-                const nothingSelected = (!searchBySiteID && !searchByCity && !searchByRegion);
+                const nothingSelected = (!searchBySiteID && !searchByCity && !searchByRegion && !searchByAddress);
                 const resultCollection = [];
                 // if (searchBySiteID || nothingSelected) {
                 //     resultCollection.push(String(site.siteID).includes(query) )
@@ -121,6 +121,10 @@ export default function SearchPage() {
         setSearchByRegion(val)
     }
 
+    function updateSearchByAddress(val: boolean){ 
+        setSearchByAddress(val)
+    }
+
     useEffect(() => {
         updateSearch(searchQuery)
     }, [searchByAddress, searchByCity, searchByRegion, searchBySiteID])
@@ -157,6 +161,9 @@ export default function SearchPage() {
                                 <SearchToggle checked={searchBySiteID} onChange={updateSearchBySite}>Site ID</SearchToggle>
                                 <SearchToggle checked={searchByCity} onChange={updateSearchByCity}>City</SearchToggle>
                                 <SearchToggle checked={searchByRegion} onChange={updateSearchByRegion}>Region</SearchToggle>
+
+                                {/* Glitch with Adddress, maybe update onChange like the rest? */}
+                                <SearchToggle checked={searchByAddress} onChange={updateSearchByAddress}>Address</SearchToggle>
                             </div>
                         </div>
                         <div className="row search-results mt-3">
