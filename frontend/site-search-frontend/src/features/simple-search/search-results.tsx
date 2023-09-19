@@ -4,7 +4,11 @@ import { Link } from "react-router-dom";
 import Highlighter from '@/components/Highlighted';
 
 
-export default function SimpleSearchResults({ site, highlight }: Site) {
+export default function SimpleSearchResults({ site, highlight, searchOption }: Site) {
+
+    // const defaultHighlighting = 
+    const { searchByCity, searchBySiteID, searchByRegion } = searchOption;
+    const searchEverything = (!searchByCity && !searchBySiteID && !searchByRegion)
     // console.log('SimpleSearchResults site', site)
 
     return (
@@ -22,9 +26,9 @@ export default function SimpleSearchResults({ site, highlight }: Site) {
                 </thead>
                 <tbody>
                     <tr>
-                        <th scope="row"><Highlighter highlight={highlight}>{String(site.siteID)}</Highlighter></th>
-                        <td><Highlighter highlight={highlight}>{site.city}</Highlighter></td>
-                        <td><Highlighter highlight={highlight}>{site.region}</Highlighter></td>
+                        <th scope="row"><Highlighter highlight={(searchBySiteID || searchEverything) ? highlight : ''}>{String(site.siteID)}</Highlighter></th>
+                        <td><Highlighter highlight={(searchByCity || searchEverything) ? highlight : ''}>{site.city}</Highlighter></td>
+                        <td><Highlighter highlight={(searchByRegion || searchEverything) ? highlight : ''}>{site.region}</Highlighter></td>
                         <td><Highlighter highlight={highlight}>{String(site.latitude)}</Highlighter></td>
                         <td><Highlighter highlight={highlight}>{String(site.longitude)}</Highlighter></td>
                     </tr>
