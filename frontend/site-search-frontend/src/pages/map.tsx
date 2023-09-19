@@ -14,7 +14,8 @@ import { useLocation } from "react-router-dom";
 export default function MapPage() {
     const [location, setLocation] = useState([48.46762, -123.25458]);
     const {state} = useLocation();
-    const { routerSearchQuery } = state; // Read values passed on state
+    // const { routerSearchQuery } = state; // Read values passed on state
+    const routerSearchQuery = state && state.routerSearchQuery || '';
     const [searchQuery, setSearchQuery] = useState(routerSearchQuery);
 
     return (
@@ -32,7 +33,7 @@ export default function MapPage() {
                         </div>
                         <div className="d-flex">
                             <Dropdown className='mx-3'>
-                                <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                                <Dropdown.Toggle variant="secondary" id="dropdown-data-layers">
                                     Data Layers
                                 </Dropdown.Toggle>
 
