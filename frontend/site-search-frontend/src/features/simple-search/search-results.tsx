@@ -29,8 +29,8 @@ export default function SimpleSearchResults({ site, highlight, searchOption }: S
                         <th scope="row"><Highlighter highlight={(searchBySiteID || searchEverything) ? highlight : ''}>{String(site.siteID)}</Highlighter></th>
                         <td><Highlighter highlight={(searchByCity || searchEverything) ? highlight : ''}>{site.city}</Highlighter></td>
                         <td><Highlighter highlight={(searchByRegion || searchEverything) ? highlight : ''}>{site.region}</Highlighter></td>
-                        <td><Highlighter highlight={highlight}>{String(site.latitude)}</Highlighter></td>
-                        <td><Highlighter highlight={highlight}>{String(site.longitude)}</Highlighter></td>
+                        <td><Highlighter highlight={searchEverything ? highlight : ''}>{String(site.latitude)}</Highlighter></td>
+                        <td><Highlighter highlight={searchEverything ? highlight : ''}>{String(site.longitude)}</Highlighter></td>
                     </tr>
                 </tbody>
             </table>
