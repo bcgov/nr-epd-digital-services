@@ -8,6 +8,8 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import { useLocation } from "react-router-dom";
+import { Site } from "@/api/sites";
+import { useSelector } from "react-redux";
 
 
 
@@ -17,6 +19,8 @@ export default function MapPage() {
     // const { routerSearchQuery } = state; // Read values passed on state
     const routerSearchQuery = state && state.routerSearchQuery || '';
     const [searchQuery, setSearchQuery] = useState(routerSearchQuery);
+
+    const sites: Site[] = useSelector(state => state.site.value);
 
     return (
         <>
@@ -72,6 +76,13 @@ export default function MapPage() {
                         transparent={true}
                         format="image/png"
                     />
+
+                    
+                    {/* Add all sites as map markers */}
+
+                    {sites.map(site => {
+                        return <Marker position={[site.latitude, site.longitude]}></Marker>
+                    })}
 
 
                 </MapContainer>
