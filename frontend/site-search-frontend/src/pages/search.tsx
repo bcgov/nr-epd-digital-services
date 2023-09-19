@@ -24,13 +24,13 @@ export default function SearchPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
 
-    function handleSearch(e){
+    function handleSearch(e) {
         setSearchQuery(e.target.value)
         updateSearch(e.target.value)
     }
 
     let searchTimeout: number;
-    function updateSearch(query: string){
+    function updateSearch(query: string) {
         // TODO: Debounce! Also cancel timeouts if a new one comes in.
         setIsLoaded(false)
 
@@ -72,7 +72,7 @@ export default function SearchPage() {
                     // console.log('Searching Address', {site: site, query, searchByAddress, nothingSelected})
                     resultCollection.push(true)
                 }
-                
+
 
                 // And search remaining cols if nothing selected:
                 if (nothingSelected) {
@@ -83,7 +83,7 @@ export default function SearchPage() {
                 // console.log('sites.filter', { searchBySiteID, searchByCity, searchByRegion, resultCollection, nothingSelected, site })
                 // If we have any hits, return true, otherwise if array is empty return false, so Array.filter works above
                 // Use filter to remove 'false' from array, so it only returns true on a positive id
-                return resultCollection.filter(x=>!!x).length
+                return resultCollection.filter(x => !!x).length
             })
 
             // By putting a delay between setting search results and displaying them, we cut down on the jank when searching multi-lines
@@ -93,9 +93,9 @@ export default function SearchPage() {
         }, 1000)
     }
 
-    function onEnter(e){
-        if (e.key === "Enter") { 
-            navigate('/map', { state: { routerSearchQuery: e.target.value}});
+    function onEnter(e) {
+        if (e.key === "Enter") {
+            navigate('/map', { state: { routerSearchQuery: e.target.value } });
         }
     }
 
@@ -106,22 +106,22 @@ export default function SearchPage() {
      * 
      * FIX: Using useEffect with the dependency array at the end.
      */
-    function updateSearchBySite(val: boolean){
+    function updateSearchBySite(val: boolean) {
         // console.log('updateSearchBySite', val)
         setSearchBySiteId(val)
         // updateSearch(searchQuery)
     }
 
-    function updateSearchByCity(val: boolean){
+    function updateSearchByCity(val: boolean) {
         // setSearchByCity(val);
         setSearchByCity(val);
     }
 
-    function updateSearchByRegion(val: boolean){
+    function updateSearchByRegion(val: boolean) {
         setSearchByRegion(val)
     }
 
-    function updateSearchByAddress(val: boolean){ 
+    function updateSearchByAddress(val: boolean) {
         setSearchByAddress(val)
     }
 
@@ -129,7 +129,7 @@ export default function SearchPage() {
         updateSearch(searchQuery)
     }, [searchByAddress, searchByCity, searchByRegion, searchBySiteID])
 
-    
+
 
 
     return (
@@ -139,7 +139,7 @@ export default function SearchPage() {
                 <h2 className='text-center py-5'>Site Search</h2>
                 <div className="row">
                     <div className="col-sm-10">
-                        <input type="text" className="form-control simple-search" placeholder="Search Site Records..." aria-label="Search Site Records" onChange={handleSearch} onKeyDown={onEnter}/>
+                        <input type="text" className="form-control simple-search" placeholder="Search Site Records..." aria-label="Search Site Records" onChange={handleSearch} onKeyDown={onEnter} />
                     </div>
 
                     <div className="col-sm">
@@ -172,7 +172,11 @@ export default function SearchPage() {
                                 {!isLoaded && <div>Loading...</div>}
                                 {isLoaded && searchResults.map(site => {
                                     // return <SimpleSearchResults key={site.uuid} site={site} highlight={searchQuery} />
-                                    return <SimpleSearchResults key={site.uuid} site={site} highlight={searchQuery} searchOption={{ searchBySiteID, searchByCity, searchByRegion }}/>
+                                    return <SimpleSearchResults key={site.uuid}
+                                        site={site}
+                                        highlight={searchQuery} 
+                                        searchOption={{ searchBySiteID, searchByCity, searchByRegion, searchByAddress }} 
+                                        />
                                 })}
                                 {isLoaded && searchResults.length == 0 && <div>
                                     No results
@@ -183,7 +187,7 @@ export default function SearchPage() {
                         </div>
                     </div>
                 </div>
-                
+
 
             </main>
         </>
