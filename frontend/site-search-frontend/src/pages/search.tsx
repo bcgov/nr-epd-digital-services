@@ -1,6 +1,8 @@
 import Button from 'react-bootstrap/Button';
 import Header from '@/components/Header'
 import { useEffect, useState } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
+
 
 import { Link, createSearchParams, useNavigate } from "react-router-dom";
 import { Site } from '@/api/sites'
@@ -90,7 +92,7 @@ export default function SearchPage() {
             // May not be necessary w/ Debouncing
             setSearchResults(results)
             setTimeout(() => { setIsLoaded(true) }, 250)
-        }, 1000)
+        }, 2000)
     }
 
     function onEnter(e) {
@@ -169,7 +171,12 @@ export default function SearchPage() {
                         <div className="row search-results mt-3">
 
                             <div className="result">
-                                {!isLoaded && <div>Loading...</div>}
+                                {!isLoaded && <div>
+                                    <Spinner animation="border" role="status" variant='secondary'>
+                                        <span className="visually-hidden">Loading...</span>
+                                    </Spinner>
+                                </div>}
+
                                 {isLoaded && searchResults.map(site => {
                                     // return <SimpleSearchResults key={site.uuid} site={site} highlight={searchQuery} />
                                     return <SimpleSearchResults key={site.uuid}
@@ -178,6 +185,7 @@ export default function SearchPage() {
                                         searchOption={{ searchBySiteID, searchByCity, searchByRegion, searchByAddress }} 
                                         />
                                 })}
+
                                 {isLoaded && searchResults.length == 0 && <div>
                                     No results
                                 </div>}
