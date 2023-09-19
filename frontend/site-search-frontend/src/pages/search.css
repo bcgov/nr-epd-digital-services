@@ -15,9 +15,9 @@
 
 .fadeOut {
     opacity: 0;
-    height: 0;
+    height: 0 !important;
     transition: 0.25s;
-    min-height: 0;
+    min-height: 0 !important;
 }
 
 .fadeIn {
