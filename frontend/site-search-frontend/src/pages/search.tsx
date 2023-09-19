@@ -2,16 +2,13 @@ import Button from 'react-bootstrap/Button';
 import Header from '@/components/Header'
 import { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
-
-
-import { Link, createSearchParams, useNavigate } from "react-router-dom";
+import { Link,  useNavigate } from "react-router-dom";
 import { Site } from '@/api/sites'
-
 import { useSelector } from 'react-redux';
 import SimpleSearchResults from '@/features/simple-search/search-results';
 import './search.css';
 import SearchToggle from '@/features/simple-search/search-toggle';
-import Collapse from 'react-bootstrap/Collapse';
+
 
 
 
@@ -20,10 +17,14 @@ export default function SearchPage() {
     const [searchByCity, setSearchByCity] = useState(false);
     const [searchByRegion, setSearchByRegion] = useState(false);
     const [searchByAddress, setSearchByAddress] = useState(false);
+    const [searchByRegionalFile, setSearchByRegionalFile] = useState(false);
+    const [searchByVictoriaFile, setSearchByVictoriaFile] = useState(false);
     const [isLoaded, setIsLoaded] = useState(true);
     const sites: Site[] = useSelector(state => state.site.value);
     const [searchResults, setSearchResults] = useState<Site[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [field, setField] = useState([]);
+
     const navigate = useNavigate();
 
     function handleSearch(e) {
@@ -127,6 +128,10 @@ export default function SearchPage() {
         setSearchByAddress(val)
     }
 
+    // function updateSearchByRegionalFile(val: boolean) {
+
+    // }
+
     useEffect(() => {
         updateSearch(searchQuery)
     }, [searchByAddress, searchByCity, searchByRegion, searchBySiteID])
@@ -163,9 +168,11 @@ export default function SearchPage() {
                                 <SearchToggle checked={searchBySiteID} onChange={updateSearchBySite}>Site ID</SearchToggle>
                                 <SearchToggle checked={searchByCity} onChange={updateSearchByCity}>City</SearchToggle>
                                 <SearchToggle checked={searchByRegion} onChange={updateSearchByRegion}>Region</SearchToggle>
-
-                                {/* Glitch with Adddress, maybe update onChange like the rest? */}
                                 <SearchToggle checked={searchByAddress} onChange={updateSearchByAddress}>Address</SearchToggle>
+
+                                <SearchToggle checked={searchByRegionalFile} onChange={setSearchByRegionalFile}>Regional File</SearchToggle>
+                                <SearchToggle checked={searchByVictoriaFile} onChange={setSearchByVictoriaFile}>Victoria File</SearchToggle>
+
                             </div>
                         </div>
                         <div className="row search-results mt-3">
