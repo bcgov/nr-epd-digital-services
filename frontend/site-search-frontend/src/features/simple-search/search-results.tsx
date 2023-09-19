@@ -7,13 +7,13 @@ import Highlighter from '@/components/Highlighted';
 export default function SimpleSearchResults({ site, highlight, searchOption }: Site) {
 
     // const defaultHighlighting = 
-    const { searchByCity, searchBySiteID, searchByRegion } = searchOption;
-    const searchEverything = (!searchByCity && !searchBySiteID && !searchByRegion)
+    const { searchByCity, searchBySiteID, searchByRegion, searchByAddress } = searchOption;
+    const searchEverything = (!searchByCity && !searchBySiteID && !searchByRegion && !searchByAddress)
     // console.log('SimpleSearchResults site', site)
 
     return (
         <div>
-            <h4><Highlighter highlight={highlight}>{site.address}</Highlighter></h4>
+            <h4><Highlighter highlight={(searchByAddress || searchEverything) ? highlight : ''}>{site.address}</Highlighter></h4>
             <table className="table bg-light">
                 <thead>
                     <tr>
