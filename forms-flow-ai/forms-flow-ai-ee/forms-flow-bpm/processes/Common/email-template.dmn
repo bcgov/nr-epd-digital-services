@@ -31,12 +31,38 @@
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1modk4k">
-          <text>"SIR Application Rejected"</text>
+          <text>"Site Information Request Rejected"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_18eytpn">
           <text>"templates/sir_application_rejected.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0q4faet">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ntr60u">
+        <inputEntry id="UnaryTests_0ml6jeo">
+          <text>"sir_status_approved"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0pe3y12">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0x28v17">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1rifrbf">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1x7izwu">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03f3dbu">
+          <text>"Site Information Request Approved"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1b28w7x">
+          <text>"templates/sir_application_approved.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0326fv6">
           <text>"epd-support@gov.bc.ca"</text>
         </outputEntry>
       </rule>
