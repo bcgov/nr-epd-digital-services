@@ -38,7 +38,7 @@
                   Hello ${name},
                 </p>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                    We have reviewed your Site Information Request. Unfortunately your application has been rejected by the site information officer.
+                    Your site information request has been accepted by site information officer for further processing. We will process your application and send the requested documents over email.
                 </p>
             </td>
         </tr>
