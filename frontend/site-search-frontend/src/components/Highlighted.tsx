@@ -1,12 +1,18 @@
-import React from "react";
+import React, { ReactNode } from "react";
+
+interface Props {
+    children?: ReactNode
+    highlight?: string;
+}
 
 
-const Highlighter = ({ children, highlight }) => {
+
+const Highlighter = ({ children, highlight }: Props) => {
     if (!highlight) return children;
     // console.log('CHILDREN', { children })
     const regexp = new RegExp(highlight, 'g');
-    const matches = children.match(regexp);
-    var parts = children.split(new RegExp(`${highlight.replace()}`, 'g'));
+    const matches = children?.match(regexp);
+    var parts = children?.split(new RegExp(`${highlight.replace()}`, 'g'));
 
     for (var i = 0; i < parts.length; i++) {
         if (i !== parts.length - 1) {

@@ -1,8 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import siteReducer from '@/features/simple-search/simple-search'
 
-export default configureStore({
+const store = configureStore({
   reducer: {
     site: siteReducer
   }
 })
+
+export default store;
+
+export type RootState = ReturnType<typeof store.getState>

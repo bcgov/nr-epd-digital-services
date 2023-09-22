@@ -3,8 +3,19 @@ import { Site } from '@/api/sites'
 import { Link } from "react-router-dom";
 import Highlighter from '@/components/Highlighted';
 
+interface Props {
+    site: Site;
+    highlight: string;
+    searchOption: {
+        searchByCity: boolean,
+        searchBySiteID: boolean,
+        searchByRegion: boolean,
+        searchByAddress: boolean
+    }
+}
 
-export default function SimpleSearchResults({ site, highlight, searchOption }: Site) {
+
+export default function SimpleSearchResults({ site, highlight, searchOption }: Props) {
 
     // const defaultHighlighting = 
     const { searchByCity, searchBySiteID, searchByRegion, searchByAddress } = searchOption;

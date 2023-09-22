@@ -1,7 +1,7 @@
 import Header from "@/components/Header"
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
-import { MapContainer, WMSTileLayer, Marker, Popup, TileLayer, ZoomControl } from "react-leaflet";
+import { MapContainer, WMSTileLayer, Marker, TileLayer, ZoomControl} from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import styles from './map.module.css';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -26,19 +26,26 @@ export default function MapPage() {
 
     const [selectedSite, setSelectedSite] = useState<Site | null>();
 
+    // May need separate marker component to useMap(), as it needs to be used in child
+    // const map = useMap();
+
     const sites: Site[] = useSelector(state => state.site.value);
 
     function onMarkerClick(e){
         console.log('onMarkerClick', e);
-        const clickedSite = e?.target?.options?.site;
+        const clickedSite: Site = e?.target?.options?.site;
         if (clickedSite) {
             setSelectedSite(clickedSite)
+            // map.setView([clickedSite.latitude, clickedSite.longitude], 14)
         }
     }
 
     function clearSelection(){
         setSelectedSite(null);
     }
+
+    // TODO - Set url query param when clicking a marker
+    // TODO - Center at a marker if a URL query param ID is set - Including if you just clicked one on map view (or are sent from Search)
 
     return (
         <>
@@ -66,7 +73,6 @@ export default function MapPage() {
                                 </Dropdown.Menu>
                             </Dropdown>
 
-                            {/* <Button>Map/List Toggle here</Button> */}
                             <ButtonGroup>
                                 <ToggleButton variant='secondary' value="false">
                                     Map
@@ -80,24 +86,8 @@ export default function MapPage() {
                 </div>
 
 
-                {/* TODO: Split this to it's own component */}
-                {/* <div className={styles.detailsPane}>
-                    <div className="d-flex justify-content-between">
-                        <span>&gt; Back</span>
-                        <CloseButton />
-                    </div>
 
-                    <span className="fst-italic">Last Updated: </span>
-                </div> */}
-                {/* {selectedSite && <MapDetailsPane site={selectedSite} onClose={clearSelection} />} */}
-                {/* <MapDetailsPane className={selectedSite ? 'fadeIn' : 'fadeOut'} site={selectedSite} onClose={clearSelection} /> */}
                 <MapDetailsPane site={selectedSite} onClose={clearSelection} />
-
-                {/* !!searchQuery.length ? 'fadeIn' : 'fadeOut' */}
- 
-
-                {/* <MapContainer center={location} zoom={13} style={{height: "calc(100vh-160px)", width: "100vw"}} > */}
-                {/* <MapContainer center={location} zoom={13} style={{height: "100vh", width: "100vw"}} > */}
                 <MapContainer center={location} zoom={8} className={styles.mapContainer} zoomControl={false} >
 
 
