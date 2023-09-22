@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 
 interface Props {
-    children?: ReactNode
+    children?: ReactNode;
     highlight?: string;
 }
 
@@ -11,8 +11,10 @@ const Highlighter = ({ children, highlight }: Props) => {
     if (!highlight) return children;
     // console.log('CHILDREN', { children })
     const regexp = new RegExp(highlight, 'g');
-    const matches = children?.match(regexp);
-    var parts = children?.split(new RegExp(`${highlight.replace()}`, 'g'));
+    const matches = (children as string).match(regexp);
+    // var parts = children?.split(new RegExp(`${highlight.replace()}`, 'g'));
+    // var parts = (children as string).split(new RegExp(`${highlight.replace('', '')}`, 'g'));
+    var parts = (children as string).split(new RegExp(`${highlight.replace('', '')}`, 'g'));
 
     for (var i = 0; i < parts.length; i++) {
         if (i !== parts.length - 1) {
@@ -27,7 +29,7 @@ const Highlighter = ({ children, highlight }: Props) => {
             }
 
 
-            parts[i] = (
+            (parts[i] as any) = (
                 <React.Fragment key={i}>
                     {parts[i]}<span className="highlighted">{match}</span>
                 </React.Fragment>

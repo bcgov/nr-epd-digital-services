@@ -1,8 +1,6 @@
 import { createRandomSite } from '@/api/dummy-data'
 import { createSlice } from '@reduxjs/toolkit'
 
-import { combineReducers } from '@reduxjs/toolkit'
-
 
 export const siteSlice = createSlice({
     name: 'site',
@@ -22,18 +20,3 @@ export const siteSlice = createSlice({
 export const { add } = siteSlice.actions
 
 export default siteSlice.reducer
-
-// export type RootState = ReturnType
-// // export type RootState = ReturnType<typeof store.getState>
-// // export type SiteSliceState: {
-
-// // }
-
-// // Infer the `RootState` and `AppDispatch` types from the store itself
-// // export type RootState = ReturnType<typeof siteSlice.getState>
-// // // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-// // export type AppDispatch = typeof store.dispatch
-
-
-// const rootReducer = combineReducers({})
-// export type RootState = ReturnType<typeof rootReducer>

@@ -1,6 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Header from '@/components/Header'
-import { ChangeEventHandler, useEffect, useState } from 'react';
+import { DetailedHTMLProps, InputHTMLAttributes, useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import { Link,  useNavigate } from "react-router-dom";
 import { Site } from '@/api/sites'
@@ -30,13 +30,20 @@ export default function SearchPage() {
     const navigate = useNavigate();
 
     // function handleSearch(e: React.MouseEvent<HTMLButtonElement, MouseEvent> ) {
-    function handleSearch(e: ChangeEventHandler<HTMLInputElement>  ) {
+    // function handleSearch(e: React.MouseEvent<HTMLButtonElement>  ) {
+    function handleSearch(e: DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>  ) {
+        // const value: string = (e.target as HTMLInputElement).value;
+        const value: string = ((e as MouseEvent).target as HTMLInputElement).value;
+
         // setSearchQuery(e.target.value)
         // updateSearch(e.target.value)
 
         // Replacing `target` with `currentTarget` for type stuff, still verify it works.
-        setSearchQuery(e.currentTarget.value)
-        updateSearch(e.currentTarget.value)
+        // setSearchQuery(e.currentTarget.value)
+        // updateSearch(e.currentTarget.value)
+        setSearchQuery(value)
+        updateSearch(value)
+
 
 
     }
