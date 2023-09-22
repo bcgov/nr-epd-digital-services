@@ -10,7 +10,6 @@ export default function MapDetailsPane({site, onClose}: {site: Site, onClose: Mo
 
         <div className={styles.detailsPane + " " + ( site ? 'fadeIn' : 'fadeOut')}>
             <div className="d-flex justify-content-between">
-                <span>&gt; Back</span>
                 <CloseButton onClick={onClose} />
             </div>
 

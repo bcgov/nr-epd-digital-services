@@ -1,6 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Header from '@/components/Header'
-import { useEffect, useState } from 'react';
+import { ChangeEventHandler, useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import { Link,  useNavigate } from "react-router-dom";
 import { Site } from '@/api/sites'
@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux';
 import SimpleSearchResults from '@/features/simple-search/search-results';
 import './search.css';
 import SearchToggle from '@/features/simple-search/search-toggle';
+import { RootState } from '@/store';
+
 
 
 
@@ -20,19 +22,26 @@ export default function SearchPage() {
     const [searchByRegionalFile, setSearchByRegionalFile] = useState(false);
     const [searchByVictoriaFile, setSearchByVictoriaFile] = useState(false);
     const [isLoaded, setIsLoaded] = useState(true);
-    const sites: Site[] = useSelector(state => state.site.value);
+    const sites: Site[] = useSelector((state: RootState) => state.site.value);
     const [searchResults, setSearchResults] = useState<Site[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [field, setField] = useState([]);
+    // const [field, setField] = useState([]);
 
     const navigate = useNavigate();
 
-    function handleSearch(e) {
-        setSearchQuery(e.target.value)
-        updateSearch(e.target.value)
+    // function handleSearch(e: React.MouseEvent<HTMLButtonElement, MouseEvent> ) {
+    function handleSearch(e: ChangeEventHandler<HTMLInputElement>  ) {
+        // setSearchQuery(e.target.value)
+        // updateSearch(e.target.value)
+
+        // Replacing `target` with `currentTarget` for type stuff, still verify it works.
+        setSearchQuery(e.currentTarget.value)
+        updateSearch(e.currentTarget.value)
+
+
     }
 
-    let searchTimeout: number;
+    let searchTimeout: ReturnType<typeof setTimeout>;
     function updateSearch(query: string) {
         // TODO: Debounce! Also cancel timeouts if a new one comes in.
         setIsLoaded(false)
@@ -92,8 +101,8 @@ export default function SearchPage() {
             // By putting a delay between setting search results and displaying them, we cut down on the jank when searching multi-lines
             // May not be necessary w/ Debouncing
             setSearchResults(results)
-            setTimeout(() => { setIsLoaded(true) }, 250)
-        }, 2000)
+            setTimeout(() => { setIsLoaded(true) }, 750)
+        }, 1500)
     }
 
     function onEnter(e) {

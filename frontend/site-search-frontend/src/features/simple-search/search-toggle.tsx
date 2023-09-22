@@ -1,7 +1,12 @@
-
 import ToggleButton from 'react-bootstrap/ToggleButton';
 
-export default function SearchToggle({ checked, onChange, children }) {
+interface Props {
+    checked: boolean;
+    onChange: Function,
+    children: string
+}
+
+export default function SearchToggle({ checked, onChange, children }: Props) {
 
     return (
         <ToggleButton
