@@ -11,8 +11,9 @@ import { useLocation } from "react-router-dom";
 import { Site } from "@/api/sites";
 import { useSelector } from "react-redux";
 import { LatLngExpression } from "leaflet";
-import CloseButton from 'react-bootstrap/CloseButton';
+// import CloseButton from 'react-bootstrap/CloseButton';
 import MapDetailsPane from "@/features/map/MapDetailsPane";
+import { RootState } from "@/store";
 
 
 
@@ -29,11 +30,12 @@ export default function MapPage() {
     // May need separate marker component to useMap(), as it needs to be used in child
     // const map = useMap();
 
-    const sites: Site[] = useSelector(state => state.site.value);
+    const sites: Site[] = useSelector((state: RootState) => state.site.value);
 
     function onMarkerClick(e){
         console.log('onMarkerClick', e);
-        const clickedSite: Site = e?.target?.options?.site;
+        // const clickedSite: Site = e?.target?.options?.site;
+        const clickedSite: Site = e?.target?.options["data-site"];
         if (clickedSite) {
             setSelectedSite(clickedSite)
             // map.setView([clickedSite.latitude, clickedSite.longitude], 14)
@@ -112,7 +114,7 @@ export default function MapPage() {
                             position={[site.latitude, site.longitude]}
                             key={site.uuid}
                             eventHandlers={{ click: onMarkerClick }}
-                            site={site}
+                            data-site={site}
                         ></Marker>
                     })}
 
