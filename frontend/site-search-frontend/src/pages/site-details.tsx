@@ -25,7 +25,7 @@ export default function SiteDetailsPage() {
             <div className="d-flex justify-content-between">
                 <div>
                     <Button variant='outline-secondary'>&lt; Back</Button>
-                    <span>{site.address}</span>
+                    <span>{site.siteID} - {site.address}</span>
                 </div>
                 <div>
                     <Button variant='secondary'>Edit</Button>
@@ -37,7 +37,60 @@ export default function SiteDetailsPage() {
                 <h4>Site Location</h4>
 
                 <div className="d-flex">
-                    <FlexRowItem label='Site ID'>{site.siteID}</FlexRowItem>
+                    <div className="d-flex flex-column ">
+                        <div className='fw-bold'>Site ID</div>
+                        <div>{site.siteID}</div>
+                    </div>
+                    {/* <FlexRowItem label='Site ID'>{site.siteID}</FlexRowItem>
+                    <FlexRowItem label='Victoria File'>{site.victoriaFile}</FlexRowItem> */}
+
+
+                    <div className="d-flex flex-column">
+                        <div className='fw-bold'>Victoria File</div>
+                        <div>{site.victoriaFile}</div>
+                    </div>
+
+                    <div className="d-flex flex-column">
+                        <div className='fw-bold'>Victoria File</div>
+                        <div>{site.victoriaFile}</div>
+                    </div>
+
+                    <div className="d-flex flex-column">
+                        <div className='fw-bold'>Regional File</div>
+                        <div>{site.regionalFile}</div>
+                    </div>
+
+                    <div className="d-flex flex-column">
+                        <div className='fw-bold'>Address File</div>
+                        <div>{site.address}</div>
+                    </div>
+
+                    <div className="d-flex flex-column">
+                        <div className='fw-bold'>Region</div>
+                        <div>{site.region}</div>
+                    </div>
+
+                    <div className="d-flex flex-column">
+                        <div className='fw-bold'>Latitude</div>
+                        <div>{site.latitude}</div>
+                    </div>
+
+                    <div className="d-flex flex-column">
+                        <div className='fw-bold'>Longitude</div>
+                        <div>{site.longitude}</div>
+                    </div>
+
+
+
+                    <div className="d-flex flex-column">
+                        <div className='fw-bold'>Parcel IDs</div>
+                        <div>{site.victoriaFile}</div>
+                    </div>
+
+                    <div className="d-flex flex-column">
+                        <div className='fw-bold'>Location Description</div>
+                        <div>{site.locationDescription}</div>
+                    </div>
                 </div>
             </div>
             
