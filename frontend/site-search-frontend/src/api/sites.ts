@@ -1,20 +1,18 @@
-// import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-// import type 
 
-// export const siteAPI = createApi({
-//     recucerPath: 'siteAPI',
+export class Site {
+    uuid?: string;
+    siteID: number;
+    address: string;
+    latitude: number;
+    longitude: number;
+    lastUpdated: Date | string;
+    city: string;
+    region: string;
 
-// })
-
-
-
-export type Site = {
-    uuid?: string,
-    siteID: number,
-    address: string,
-    latitude: number,
-    longitude: number,
-    lastUpdated: Date,
-    city: string,
-    region: string
+    constructor(data: Site) {
+        // Using "Object.assign()" to bypass having to assign all properties
+        // https://stackoverflow.com/questions/69291358/shortcut-syntax-to-class-constructor-from-typescript-interface
+        Object.assign(this, data);
+        this.lastUpdated = new Date(this.lastUpdated);
+    }
 }
