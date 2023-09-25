@@ -8,6 +8,10 @@ export class Site {
     lastUpdated: Date | string;
     city: string;
     region: string;
+    victoriaFile: string;
+    regionalFile: string;
+    parcelIDs: number[];
+    locationDescription: string;
 
     constructor(data: Site) {
         // Using "Object.assign()" to bypass having to assign all properties
