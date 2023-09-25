@@ -1,53 +1,70 @@
 import Header from "@/components/Header"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
-import { MapContainer, WMSTileLayer, Marker, TileLayer, ZoomControl} from "react-leaflet";
+import { MapContainer, WMSTileLayer, Marker, TileLayer, ZoomControl } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import styles from './map.module.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { Site } from "@/api/sites";
 import { useSelector } from "react-redux";
 import { LatLngExpression } from "leaflet";
 // import CloseButton from 'react-bootstrap/CloseButton';
 import MapDetailsPane from "@/features/map/MapDetailsPane";
 import { RootState } from "@/store";
+import SiteDetailsPage from "./site-details";
+import UpdateMapCentre from "@/features/map/UpdateMapCentre";
 
 
 
 
 export default function MapPage() {
     const [location, setLocation] = useState<LatLngExpression>([48.46762, -123.25458]);
-    const {state} = useLocation();
-    // const { routerSearchQuery } = state; // Read values passed on state
+    const { state } = useLocation();
     const routerSearchQuery = state && state.routerSearchQuery || '';
     const [searchQuery, setSearchQuery] = useState(routerSearchQuery);
-
+    const [zoom, setZoom] = useState<number>(8)
+    // Note: Potentially replace this with the State selector? selection.ts
     const [selectedSite, setSelectedSite] = useState<Site | null>();
-
-    // May need separate marker component to useMap(), as it needs to be used in child
-    // const map = useMap();
-
     const sites: Site[] = useSelector((state: RootState) => state.site.value);
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    function onMarkerClick(e){
-        console.log('onMarkerClick', e);
-        // const clickedSite: Site = e?.target?.options?.site;
+    useEffect(() => {
+        const siteIDParam = searchParams.get('siteID')
+        const site = sites.find(site => site.siteID.toString() == siteIDParam);
+
+        if (site) {
+            focusOnSite(site);
+            setZoom(14);
+            console.log('Map useEffect, searchParams', siteIDParam, site)
+            console.log('set location: [site.latitude, site.longitude]', [site.latitude, site.longitude])
+
+        }
+    }, [searchParams])
+
+
+
+    function onMarkerClick(e) {
+        // console.log('onMarkerClick', e);
         const clickedSite: Site = e?.target?.options["data-site"];
         if (clickedSite) {
+            searchParams.set('siteID', clickedSite.siteID.toString());
+            setSearchParams(searchParams);
+            focusOnSite(clickedSite);
             setSelectedSite(clickedSite)
-            // map.setView([clickedSite.latitude, clickedSite.longitude], 14)
         }
     }
 
-    function clearSelection(){
+    function clearSelection() {
         setSelectedSite(null);
     }
 
-    // TODO - Set url query param when clicking a marker
-    // TODO - Center at a marker if a URL query param ID is set - Including if you just clicked one on map view (or are sent from Search)
+    function focusOnSite(site: Site) {
+        setLocation([site.latitude, site.longitude])
+        // setZoom(10)
+    }
 
     return (
         <>
@@ -57,7 +74,7 @@ export default function MapPage() {
                     <div className="d-flex justify-content-between">
 
                         <div className='d-flex'>
-                            <input type="text" className={styles.mapSearch + " form-control"} placeholder="Search site records..." value={searchQuery} onChange={setSearchQuery}/>
+                            <input type="text" className={styles.mapSearch + " form-control"} placeholder="Search site records..." value={searchQuery} onChange={setSearchQuery} />
 
                             <Button className='ms-4' variant="secondary">Vector</Button>
                             <Button className='mx-3' variant="secondary">Pin</Button>
@@ -91,6 +108,7 @@ export default function MapPage() {
 
                 <MapDetailsPane site={selectedSite} onClose={clearSelection} />
                 <MapContainer center={location} zoom={8} className={styles.mapContainer} zoomControl={false} >
+                    <UpdateMapCentre mapCentre={location} zoom={zoom} />
 
 
                     <TileLayer
@@ -106,11 +124,11 @@ export default function MapPage() {
 
                     <ZoomControl position='bottomleft' />
 
-                    
+
                     {/* Add all sites as map markers */}
 
                     {sites.map(site => {
-                        return <Marker 
+                        return <Marker
                             position={[site.latitude, site.longitude]}
                             key={site.uuid}
                             eventHandlers={{ click: onMarkerClick }}
