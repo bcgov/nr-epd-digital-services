@@ -5,7 +5,8 @@ export class Site {
     address: string;
     latitude: number;
     longitude: number;
-    lastUpdated: Date | string;
+    // lastUpdated: Date | string;
+    lastUpdated: Date;
     city: string;
     region: string;
     victoriaFile: string;

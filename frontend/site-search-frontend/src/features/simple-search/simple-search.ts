@@ -4,7 +4,8 @@ import siteDummyData from '@/scripts/dummy-data.sites.json';
 import { Site } from '@/api/sites';
 
 // Instantiate dummy data, e.g. turn strings into Date objects
-const parsedDummyData = siteDummyData.map(siteData => new Site(siteData))
+// Use `as any` to get around fact that 'lastUpdated' is a string, not a date.
+const parsedDummyData = siteDummyData.map(siteData => new Site((siteData as any)))
 
 
 export const siteSlice = createSlice({

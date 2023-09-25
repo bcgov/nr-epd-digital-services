@@ -7,17 +7,19 @@ export interface SelectionState {
 }
 
 
-export const selectionSlice = ({
+export const selectionSlice = createSlice({
     name: 'selection',
-    initialState: [],
+    initialState: {
+        value: undefined,
+    },
 
     reducers: {
         select: (state, action: PayloadAction<Site>) => {
             console.log('Selection reducer start:', {state, action})
-            state.value = action.payload;
+            state.value = action.payload
         }
     }
 });
 
 export const { select } = selectionSlice.actions;
-export default selectionSlice.reducers;
+export default selectionSlice.reducer;
