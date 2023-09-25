@@ -36,59 +36,53 @@ export default function SiteDetailsPage() {
             <div className={styles.metadata}>
                 <h4>Site Location</h4>
 
-                <div className="d-flex">
-                    <div className="d-flex flex-column ">
-                        <div className='fw-bold'>Site ID</div>
+                <div className={styles.metadataGrid}>
+                    <div className={styles.metadataGridItem}>
+                        <div className={styles.formLabel}>Site ID</div>
                         <div>{site.siteID}</div>
                     </div>
                     {/* <FlexRowItem label='Site ID'>{site.siteID}</FlexRowItem>
                     <FlexRowItem label='Victoria File'>{site.victoriaFile}</FlexRowItem> */}
 
-
-                    <div className="d-flex flex-column">
-                        <div className='fw-bold'>Victoria File</div>
+                    <div className={styles.metadataGridItem}>
+                        <div className={styles.formLabel}>Victoria File</div>
                         <div>{site.victoriaFile}</div>
                     </div>
 
-                    <div className="d-flex flex-column">
-                        <div className='fw-bold'>Victoria File</div>
-                        <div>{site.victoriaFile}</div>
-                    </div>
-
-                    <div className="d-flex flex-column">
-                        <div className='fw-bold'>Regional File</div>
+                    <div className={styles.metadataGridItem}>
+                        <div className={styles.formLabel}>Regional File</div>
                         <div>{site.regionalFile}</div>
                     </div>
 
-                    <div className="d-flex flex-column">
-                        <div className='fw-bold'>Address File</div>
+                    <div className={styles.metadataGridItem}>
+                        <div className={styles.formLabel}>Address File</div>
                         <div>{site.address}</div>
                     </div>
 
-                    <div className="d-flex flex-column">
-                        <div className='fw-bold'>Region</div>
+                    <div className={styles.metadataGridItem}>
+                        <div className={styles.formLabel}>Region</div>
                         <div>{site.region}</div>
                     </div>
 
-                    <div className="d-flex flex-column">
-                        <div className='fw-bold'>Latitude</div>
+                    <div className={styles.metadataGridItem + " " + styles.gridHalfWidth}>
+                        <div className={styles.formLabel}>Latitude</div>
                         <div>{site.latitude}</div>
                     </div>
 
-                    <div className="d-flex flex-column">
-                        <div className='fw-bold'>Longitude</div>
+                    <div className={styles.metadataGridItem + " " + styles.gridHalfWidth}>
+                        <div className={styles.formLabel}>Longitude</div>
                         <div>{site.longitude}</div>
                     </div>
 
 
 
-                    <div className="d-flex flex-column">
-                        <div className='fw-bold'>Parcel IDs</div>
+                    <div className={styles.metadataGridItem + " " +  styles.gridFullwidth}>
+                        <div className={styles.formLabel}>Parcel IDs</div>
                         <div>{site.victoriaFile}</div>
                     </div>
 
-                    <div className="d-flex flex-column">
-                        <div className='fw-bold'>Location Description</div>
+                    <div className={styles.metadataGridItem + " " + styles.gridFullwidth}>
+                        <div className={styles.formLabel}>Location Description</div>
                         <div>{site.locationDescription}</div>
                     </div>
                 </div>
