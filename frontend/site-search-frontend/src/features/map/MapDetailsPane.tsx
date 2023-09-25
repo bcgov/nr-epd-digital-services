@@ -3,6 +3,7 @@ import CloseButton from 'react-bootstrap/esm/CloseButton';
 import Button from 'react-bootstrap/Button';
 import { Site } from '@/api/sites';
 import { MouseEventHandler } from 'react';
+import { Link } from 'react-router-dom';
 
 
 export default function MapDetailsPane({site, onClose}: {site: Site, onClose: MouseEventHandler}) {
@@ -54,7 +55,11 @@ export default function MapDetailsPane({site, onClose}: {site: Site, onClose: Mo
                 <div>N/A</div>
             </div>
 
-            <Button variant='secondary' className='w-100'>View Site Details</Button>
+            <Link to={`/site/${site.siteID}`}>
+                <Button variant='secondary' className='w-100'>
+                    View Site Details
+                </Button>
+            </Link>
 
 
         </div>

@@ -38,9 +38,7 @@ export default function MapPage() {
         if (site) {
             focusOnSite(site);
             setZoom(14);
-            console.log('Map useEffect, searchParams', siteIDParam, site)
-            console.log('set location: [site.latitude, site.longitude]', [site.latitude, site.longitude])
-
+            setSelectedSite(site);
         }
     }, [searchParams])
 
