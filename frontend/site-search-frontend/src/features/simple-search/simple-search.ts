@@ -11,7 +11,7 @@ export const siteSlice = createSlice({
         // value: Array.from({length: 25000}, _ => createRandomSite())
     },
     reducers: {
-        add: ()=>console.log('todo') // Maybe not even necessary? SITE list won't mutate much, unlike site selection
+        add: ()=>console.log('site reducer add todo') // Maybe not even necessary? SITE list won't mutate much, unlike site selection
     }
 })
 
