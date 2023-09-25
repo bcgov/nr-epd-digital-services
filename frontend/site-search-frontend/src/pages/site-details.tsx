@@ -1,9 +1,9 @@
 import { Site } from "@/api/sites";
 import Header from "@/components/Header"
 import { RootState } from "@/store";
-import { Button } from "react-bootstrap";
+import { Button, Nav } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, Outlet, useParams } from "react-router-dom";
 import styles from './site-details.module.css'
 import FlexRowItem from "@/components/FlexRowItem";
 
@@ -86,6 +86,25 @@ export default function SiteDetailsPage() {
                         <div>{site.locationDescription}</div>
                     </div>
                 </div>
+            </div>
+
+
+            <div className={styles.metadata}>
+                    <Nav variant="pills" defaultActiveKey="/summary">
+                        <Nav.Item>
+                            <Nav.Link as={Link} to={`/site/${siteID}/`} eventKey="link-0">Summary</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link as={Link} to={`/site/${siteID}/notations/`} eventKey="link-1">Notations</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link as={Link} to={`/site/${siteID}/participants/`} eventKey="link-2">Site Participants</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link as={Link} to={`/site/${siteID}/documents/`} eventKey="link-3">Documents</Nav.Link>
+                        </Nav.Item>
+                    </Nav>
+                    <Outlet />
             </div>
             
         </main>

@@ -13,6 +13,9 @@ import store from './store.ts'
 import { Provider } from 'react-redux'
 import SiteDetailsPage from './pages/site-details.tsx';
 import MapPage from './pages/map.tsx';
+import Notations from './features/site-details/notations.tsx';
+import Participants from './features/site-details/participants.tsx';
+import Documents from './features/site-details/documents.tsx';
 
 
 const router = createBrowserRouter([
@@ -26,7 +29,21 @@ const router = createBrowserRouter([
   },
   {
     path: '/site/:siteID',
-    element: <SiteDetailsPage />
+    element: <SiteDetailsPage />,
+    children: [
+      {
+        path: "notations",
+        element: <Notations />
+      },
+      {
+        path: "participants",
+        element: <Participants />
+      },
+      {
+        path: "documents",
+        element: <Documents />
+      }
+    ]
   },
   {
     path: '/map',
