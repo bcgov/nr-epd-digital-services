@@ -1,0 +1,2502 @@
+[
+    {
+        "uuid": "fd8d7528-82a9-4402-9ba3-36a82b17ab4f",
+        "siteID": 15682,
+        "address": "703 Roberts Trail",
+        "latitude": 48.3395,
+        "longitude": -125.9323,
+        "lastUpdated": "2015-02-02T17:24:17.996Z",
+        "city": "West Marques",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "ab5f6924-c756-4734-9a71-0d221bc78441",
+        "siteID": 16029,
+        "address": "21524 Lowe Manor",
+        "latitude": 51.1397,
+        "longitude": -137.1725,
+        "lastUpdated": "2019-06-29T18:01:23.304Z",
+        "city": "Corwincester",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "0c74fe3d-c121-4df1-94f9-10331173002b",
+        "siteID": 18777,
+        "address": "925 Nader Lake",
+        "latitude": 55.8097,
+        "longitude": -134.004,
+        "lastUpdated": "2022-12-23T17:17:14.540Z",
+        "city": "Montebello",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "957835fb-9104-42fe-b3ba-284307b1ca09",
+        "siteID": 16958,
+        "address": "1300 Terry Ramp",
+        "latitude": 57.981,
+        "longitude": -127.8005,
+        "lastUpdated": "2015-09-28T17:45:46.051Z",
+        "city": "East Darrinville",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "831b007f-e6bb-4cde-97cb-b3fc7e025e4a",
+        "siteID": 20327,
+        "address": "3497 Koelpin Fields",
+        "latitude": 48.4092,
+        "longitude": -123.3055,
+        "lastUpdated": "2023-04-08T07:00:03.322Z",
+        "city": "Anneburgh",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "25ba462c-38fa-42ca-b042-f21379caf582",
+        "siteID": 16961,
+        "address": "3689 Margarett Run",
+        "latitude": 57.4041,
+        "longitude": -124.7786,
+        "lastUpdated": "2018-04-08T06:25:27.083Z",
+        "city": "Fort Taraborough",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "1c433485-8bb5-4157-90b8-f5626ff869cf",
+        "siteID": 17110,
+        "address": "9174 Braun Villages",
+        "latitude": 48.7496,
+        "longitude": -135.4561,
+        "lastUpdated": "2019-11-21T06:42:14.002Z",
+        "city": "Lanceport",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "d8aeba56-fbe0-4c8e-b738-ea47ed3739d8",
+        "siteID": 19598,
+        "address": "350 Aniya Lights",
+        "latitude": 55.4531,
+        "longitude": -130.0521,
+        "lastUpdated": "2018-03-24T18:02:50.760Z",
+        "city": "Runolfssonbury",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "32c8a263-7549-4628-b53f-59a907f832b8",
+        "siteID": 17925,
+        "address": "2621 Enoch Estates",
+        "latitude": 55.4427,
+        "longitude": -124.1605,
+        "lastUpdated": "2020-12-06T14:06:23.929Z",
+        "city": "Torpview",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "bb67473d-1c3e-4d76-8675-8401badc7900",
+        "siteID": 19357,
+        "address": "58460 Windler Estate",
+        "latitude": 51.8487,
+        "longitude": -122.6407,
+        "lastUpdated": "2019-07-19T18:38:22.923Z",
+        "city": "Bernhardfield",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "e7774237-0e3d-419d-afac-445ec3384395",
+        "siteID": 17892,
+        "address": "79926 DuBuque Villages",
+        "latitude": 49.4744,
+        "longitude": -124.8741,
+        "lastUpdated": "2015-11-20T03:31:08.364Z",
+        "city": "New Louisa",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "353b9594-c410-488e-9612-01f97cfb3cfe",
+        "siteID": 18410,
+        "address": "482 Simeon Pike",
+        "latitude": 50.9568,
+        "longitude": -133.761,
+        "lastUpdated": "2015-09-13T16:21:56.963Z",
+        "city": "Pfefferhaven",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "13e2349d-2bc7-4b9f-904a-72383ad7e0b1",
+        "siteID": 20298,
+        "address": "754 Volkman Cape",
+        "latitude": 56.9609,
+        "longitude": -132.0529,
+        "lastUpdated": "2016-08-17T13:34:37.919Z",
+        "city": "Rippinchester",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "aa82dff1-e36d-4c48-96e6-828ff9851398",
+        "siteID": 20434,
+        "address": "57399 Mikel Court",
+        "latitude": 51.0929,
+        "longitude": -120.461,
+        "lastUpdated": "2020-03-21T03:03:04.891Z",
+        "city": "Bethlehem",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "5a6b1399-54bf-4499-991a-429017ceac3a",
+        "siteID": 16333,
+        "address": "506 Lucius Pike",
+        "latitude": 53.2838,
+        "longitude": -130.5881,
+        "lastUpdated": "2017-07-22T16:41:43.406Z",
+        "city": "Fort Vinceton",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "56d66b49-ab03-467b-9f5d-62dcb7e2d012",
+        "siteID": 18856,
+        "address": "2501 Agnes Turnpike",
+        "latitude": 50.6759,
+        "longitude": -118.1146,
+        "lastUpdated": "2014-04-07T22:18:40.576Z",
+        "city": "North Angela",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "4aa3b239-a9d8-44ff-8324-d51c2e3b30ce",
+        "siteID": 15198,
+        "address": "62351 Ayden Dale",
+        "latitude": 54.7505,
+        "longitude": -136.955,
+        "lastUpdated": "2018-06-25T04:39:16.539Z",
+        "city": "West Elyssabury",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "84e03f32-4fe1-47f6-b1dd-87d65fc5b10f",
+        "siteID": 16229,
+        "address": "20453 Heller Rue",
+        "latitude": 54.1255,
+        "longitude": -137.662,
+        "lastUpdated": "2017-10-20T10:34:40.058Z",
+        "city": "New Mariannehaven",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "8c48992c-6b3d-4a53-974e-7d8bff954c47",
+        "siteID": 19890,
+        "address": "1749 Hester Bypass",
+        "latitude": 48.1809,
+        "longitude": -133.8682,
+        "lastUpdated": "2016-05-31T19:50:15.652Z",
+        "city": "Millsstad",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "7a341e70-f7a7-4c77-ab64-c404830da7db",
+        "siteID": 16317,
+        "address": "725 Bins Glen",
+        "latitude": 55.9718,
+        "longitude": -133.1471,
+        "lastUpdated": "2020-11-07T07:35:28.810Z",
+        "city": "Lucianostad",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "58e739b4-271d-480f-a8d2-1638cae7a8a8",
+        "siteID": 17731,
+        "address": "260 Ophelia Burgs",
+        "latitude": 58.0074,
+        "longitude": -131.1192,
+        "lastUpdated": "2013-12-22T04:46:22.196Z",
+        "city": "Clevetown",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "537dc61f-500a-4803-a4b8-e75af4e8d4bd",
+        "siteID": 17167,
+        "address": "629 Schiller Route",
+        "latitude": 49.3865,
+        "longitude": -129.5746,
+        "lastUpdated": "2015-05-20T21:27:35.358Z",
+        "city": "Gardena",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "0adc74ea-6960-415e-a679-35330d124049",
+        "siteID": 16284,
+        "address": "85508 Frederique Cliff",
+        "latitude": 48.9524,
+        "longitude": -118.1808,
+        "lastUpdated": "2020-05-04T15:59:31.708Z",
+        "city": "Garden Grove",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "bf0e7cd1-fd32-451b-a6d5-aef6fc975682",
+        "siteID": 18317,
+        "address": "668 Marquardt Plain",
+        "latitude": 52.1287,
+        "longitude": -123.4952,
+        "lastUpdated": "2023-03-05T14:00:00.644Z",
+        "city": "Yasminestad",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "7756b63d-2ecc-474b-a4f3-c9db5b887b11",
+        "siteID": 15662,
+        "address": "2639 Marquardt Pine",
+        "latitude": 58.1571,
+        "longitude": -128.1063,
+        "lastUpdated": "2021-10-19T12:43:55.268Z",
+        "city": "Orange",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "91aa8c7b-61f1-4f3d-9447-7ee7a19e4fbe",
+        "siteID": 16455,
+        "address": "6609 Stroman Branch",
+        "latitude": 57.9474,
+        "longitude": -138.213,
+        "lastUpdated": "2021-01-28T06:23:21.513Z",
+        "city": "South Julianastad",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "c0d81503-6f96-4d63-9a8e-c5fd1702c58c",
+        "siteID": 16337,
+        "address": "9192 Jakubowski Village",
+        "latitude": 57.4212,
+        "longitude": -129.4005,
+        "lastUpdated": "2016-07-29T20:03:10.660Z",
+        "city": "South David",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "2753eb46-9156-4f4d-96a0-f76d541d4cae",
+        "siteID": 16415,
+        "address": "40642 Annamae Heights",
+        "latitude": 58.4335,
+        "longitude": -132.2513,
+        "lastUpdated": "2014-01-24T08:16:22.499Z",
+        "city": "East Sister",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "9670c018-5239-4934-9858-d0c1faf72255",
+        "siteID": 18653,
+        "address": "22321 Jada Stravenue",
+        "latitude": 51.4817,
+        "longitude": -126.2859,
+        "lastUpdated": "2013-10-01T02:03:01.697Z",
+        "city": "Mrazworth",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "d0621156-8ec2-4db3-8248-50625ddf5ef5",
+        "siteID": 17855,
+        "address": "7735 Morar Viaduct",
+        "latitude": 50.2441,
+        "longitude": -136.5753,
+        "lastUpdated": "2020-01-29T12:06:25.313Z",
+        "city": "Wylie",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "332ce55f-7f56-44bd-a21e-60b95ec3507f",
+        "siteID": 17726,
+        "address": "86141 Bella Streets",
+        "latitude": 48.6037,
+        "longitude": -118.3358,
+        "lastUpdated": "2023-05-29T03:49:19.670Z",
+        "city": "Orncester",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "0b566f9e-26a7-425a-9be7-a260b93618c6",
+        "siteID": 17998,
+        "address": "6937 Schuppe Fort",
+        "latitude": 52.2817,
+        "longitude": -119.2427,
+        "lastUpdated": "2022-02-16T04:38:24.322Z",
+        "city": "Passaic",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "e5b659e9-bc40-4a0c-8ca6-10d1092782c3",
+        "siteID": 15937,
+        "address": "24158 Otis Ports",
+        "latitude": 57.2388,
+        "longitude": -136.6928,
+        "lastUpdated": "2018-07-14T18:12:19.168Z",
+        "city": "Ciceroland",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "28afe0db-9de8-492d-ae6a-0444b4861bf5",
+        "siteID": 18212,
+        "address": "720 Eunice Station",
+        "latitude": 57.1259,
+        "longitude": -124.0823,
+        "lastUpdated": "2019-01-23T12:59:01.962Z",
+        "city": "Zulauffort",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "257a7c04-47ff-4aa7-bcce-f6df1729616c",
+        "siteID": 15822,
+        "address": "175 Mann Crossing",
+        "latitude": 55.5425,
+        "longitude": -133.7552,
+        "lastUpdated": "2014-03-06T15:18:08.715Z",
+        "city": "Port Jazminborough",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "56ebb8ed-2dc7-4660-8ca9-24f55d73d512",
+        "siteID": 19621,
+        "address": "5129 Giovanna Creek",
+        "latitude": 49.1001,
+        "longitude": -126.6786,
+        "lastUpdated": "2022-03-09T05:32:25.702Z",
+        "city": "South Norwoodland",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "56018f1f-f41a-4a4f-9571-2874f22317a4",
+        "siteID": 18725,
+        "address": "6617 Celine Forest",
+        "latitude": 50.4209,
+        "longitude": -123.899,
+        "lastUpdated": "2020-04-04T15:43:42.917Z",
+        "city": "New Fannyside",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "f0ad8812-8a1c-4428-8707-bc4d96ffad7b",
+        "siteID": 18517,
+        "address": "945 Garett Circle",
+        "latitude": 50.9977,
+        "longitude": -119.9581,
+        "lastUpdated": "2015-02-15T21:12:43.607Z",
+        "city": "University",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "fab9fc7b-338d-4b88-a253-3c20b782f5af",
+        "siteID": 18212,
+        "address": "49849 Abelardo Row",
+        "latitude": 52.56,
+        "longitude": -132.493,
+        "lastUpdated": "2023-08-23T06:09:58.383Z",
+        "city": "South Christiana",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "14c843a1-7cae-4bcb-bceb-e7bde273ce23",
+        "siteID": 20582,
+        "address": "2174 Lakin Extensions",
+        "latitude": 51.8425,
+        "longitude": -131.0794,
+        "lastUpdated": "2014-11-14T10:18:32.893Z",
+        "city": "North Margarett",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "58ab58cd-3fe2-4dfd-b649-8ba37043d631",
+        "siteID": 18137,
+        "address": "40065 Koss Points",
+        "latitude": 52.1892,
+        "longitude": -135.8066,
+        "lastUpdated": "2023-08-02T20:17:47.170Z",
+        "city": "Alhambra",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "9a7fc564-ef87-46f3-ae3a-8455d24129a4",
+        "siteID": 17868,
+        "address": "20136 Bethany Manors",
+        "latitude": 57.2028,
+        "longitude": -129.547,
+        "lastUpdated": "2021-12-17T09:04:37.645Z",
+        "city": "East Imogene",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "4122e3f4-80fb-4fe4-8be8-193ea7d9b828",
+        "siteID": 15544,
+        "address": "7472 Sam Ramp",
+        "latitude": 56.5207,
+        "longitude": -124.2027,
+        "lastUpdated": "2016-02-07T13:52:42.819Z",
+        "city": "Nitzscheview",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "2f84da70-061b-4d14-a327-7a679b63177c",
+        "siteID": 20406,
+        "address": "13455 Destin Mews",
+        "latitude": 57.9259,
+        "longitude": -135.8922,
+        "lastUpdated": "2019-04-22T19:10:53.896Z",
+        "city": "North Scottyfurt",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "95a5036a-8b66-4d04-94e5-ba808ed8114e",
+        "siteID": 16356,
+        "address": "16321 Colby Rest",
+        "latitude": 56.7432,
+        "longitude": -130.5068,
+        "lastUpdated": "2016-04-24T20:15:12.267Z",
+        "city": "North Pearliefurt",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "02f76ae3-6fc8-41d0-8597-0ad982c10a45",
+        "siteID": 17714,
+        "address": "893 Balistreri Trail",
+        "latitude": 52.1519,
+        "longitude": -122.559,
+        "lastUpdated": "2017-02-18T23:34:48.274Z",
+        "city": "MacGyverton",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "e6c9be9c-6bef-4310-9060-c97163429cc1",
+        "siteID": 18745,
+        "address": "2072 Crawford Keys",
+        "latitude": 52.48,
+        "longitude": -138.5209,
+        "lastUpdated": "2022-03-11T06:51:14.910Z",
+        "city": "Port Carolynemouth",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "79bd74bf-ae5b-48cc-87a2-89df4840ced7",
+        "siteID": 18100,
+        "address": "8266 Melody Courts",
+        "latitude": 50.0173,
+        "longitude": -124.4978,
+        "lastUpdated": "2023-09-21T19:24:13.219Z",
+        "city": "South Ignacio",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "eac998b9-0b80-4db6-87b8-f4c6d71cb5c8",
+        "siteID": 16131,
+        "address": "4441 Macejkovic Trail",
+        "latitude": 54.2545,
+        "longitude": -119.3795,
+        "lastUpdated": "2014-08-11T19:54:59.551Z",
+        "city": "Lake Alfredaworth",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "bc6e9ab5-27b9-4a3e-8bb3-de1a56b3e7b5",
+        "siteID": 16259,
+        "address": "57262 Trantow Square",
+        "latitude": 58.9602,
+        "longitude": -132.7314,
+        "lastUpdated": "2023-01-11T23:41:16.844Z",
+        "city": "Rockyport",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "8be02f86-38db-4f1f-a14e-0835d16e713e",
+        "siteID": 17352,
+        "address": "405 McCullough Pine",
+        "latitude": 57.148,
+        "longitude": -133.1412,
+        "lastUpdated": "2013-12-25T04:25:59.360Z",
+        "city": "Lake Loganfort",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "69135ef1-0486-4d64-933c-5c910433d382",
+        "siteID": 18513,
+        "address": "136 Kuvalis Manors",
+        "latitude": 49.7311,
+        "longitude": -125.5564,
+        "lastUpdated": "2021-10-16T23:05:06.194Z",
+        "city": "New Maziefort",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "dc161bfa-f8c2-46f9-bfd2-75eda14524fc",
+        "siteID": 19265,
+        "address": "216 Kutch Fall",
+        "latitude": 55.1669,
+        "longitude": -134.1648,
+        "lastUpdated": "2015-01-16T12:03:10.738Z",
+        "city": "South Genesisstad",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "c868af5b-c665-489a-a363-0ad37226973a",
+        "siteID": 19716,
+        "address": "2767 Gottlieb Path",
+        "latitude": 55.7615,
+        "longitude": -120.8573,
+        "lastUpdated": "2022-04-04T21:57:46.741Z",
+        "city": "East Maynardville",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "dfd01985-f299-444d-b20b-214f1e4cc0a8",
+        "siteID": 15443,
+        "address": "82599 Connelly Rapids",
+        "latitude": 50.4904,
+        "longitude": -136.9845,
+        "lastUpdated": "2015-09-04T16:29:04.254Z",
+        "city": "Paterson",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "0d922136-b699-44b7-aefa-9c9bb4a064db",
+        "siteID": 15214,
+        "address": "7339 Roberts Streets",
+        "latitude": 56.6406,
+        "longitude": -131.2406,
+        "lastUpdated": "2019-08-19T11:52:00.488Z",
+        "city": "West Carterland",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "1cecfdfd-a767-4525-9afc-e530876f36f4",
+        "siteID": 15961,
+        "address": "7022 Hollie Union",
+        "latitude": 53.2049,
+        "longitude": -122.1355,
+        "lastUpdated": "2016-05-11T20:13:09.036Z",
+        "city": "West Avis",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "0ed2f692-1b70-4c99-8d6f-8eb8b2e9e2b4",
+        "siteID": 19312,
+        "address": "12354 Jamel Road",
+        "latitude": 56.0577,
+        "longitude": -132.9414,
+        "lastUpdated": "2019-02-06T22:34:46.429Z",
+        "city": "Nakialand",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "48b2311f-f556-40ea-931d-7af61aafbdc3",
+        "siteID": 18203,
+        "address": "2656 Willy Corner",
+        "latitude": 49.5589,
+        "longitude": -128.7264,
+        "lastUpdated": "2023-01-17T16:19:38.455Z",
+        "city": "Metacester",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "0c3f698f-32aa-4446-8ace-145e52c29ea4",
+        "siteID": 20900,
+        "address": "16610 Guillermo Fall",
+        "latitude": 52.8658,
+        "longitude": -137.356,
+        "lastUpdated": "2017-12-03T09:56:03.750Z",
+        "city": "East Alec",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "5c68c190-0bec-4032-b234-f5ea1662cb75",
+        "siteID": 18180,
+        "address": "276 Kameron Lake",
+        "latitude": 57.9597,
+        "longitude": -123.9242,
+        "lastUpdated": "2016-08-13T14:03:30.578Z",
+        "city": "New Adolf",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "9f02e503-6382-41d2-bee3-df4a04948cc4",
+        "siteID": 17245,
+        "address": "66861 Sincere Coves",
+        "latitude": 49.1409,
+        "longitude": -127.8091,
+        "lastUpdated": "2018-08-22T10:03:31.749Z",
+        "city": "Port Emelie",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "aeb4d2a7-f903-47a4-8ce3-569add4ec49e",
+        "siteID": 17900,
+        "address": "67330 Strosin Light",
+        "latitude": 58.0403,
+        "longitude": -122.4799,
+        "lastUpdated": "2022-03-24T09:48:26.783Z",
+        "city": "Fort Bradfordworth",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "a55b7ef6-8e2a-4a57-b81d-77e6c1daa8ea",
+        "siteID": 15513,
+        "address": "360 Yesenia Parkway",
+        "latitude": 56.9756,
+        "longitude": -136.683,
+        "lastUpdated": "2016-01-04T10:08:15.756Z",
+        "city": "Fort Desmondburgh",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "277769f7-2acf-4be3-9359-83bff02fe836",
+        "siteID": 18390,
+        "address": "406 Randy Ranch",
+        "latitude": 53.8727,
+        "longitude": -128.2823,
+        "lastUpdated": "2021-08-15T08:32:04.249Z",
+        "city": "West Porterton",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "9a49f49f-3306-43cc-953d-016fd1c4bf17",
+        "siteID": 20455,
+        "address": "5277 Upton Forest",
+        "latitude": 52.6437,
+        "longitude": -120.3262,
+        "lastUpdated": "2014-11-28T07:40:46.647Z",
+        "city": "East Jada",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "85df1ef0-256f-4f4c-a13b-95d78e6a73e7",
+        "siteID": 18293,
+        "address": "98119 Dibbert Green",
+        "latitude": 52.5575,
+        "longitude": -118.5695,
+        "lastUpdated": "2021-11-28T09:36:29.504Z",
+        "city": "West Aurelie",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "88c6621e-9e7b-4727-b770-8232f337cad6",
+        "siteID": 19674,
+        "address": "3752 Maxie Mountains",
+        "latitude": 52.4978,
+        "longitude": -126.7312,
+        "lastUpdated": "2021-01-15T02:43:24.302Z",
+        "city": "Rebekahstad",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "70c69ea0-3e2f-4c47-b383-4c006325d7f9",
+        "siteID": 19091,
+        "address": "267 Maeve Wall",
+        "latitude": 49.2825,
+        "longitude": -118.0436,
+        "lastUpdated": "2019-10-18T13:28:28.666Z",
+        "city": "Damiantown",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "b72b1649-55d8-4021-bde2-cc3740c858a2",
+        "siteID": 16643,
+        "address": "800 Connie Course",
+        "latitude": 57.3529,
+        "longitude": -118.6025,
+        "lastUpdated": "2022-12-27T21:33:12.985Z",
+        "city": "Port Laronport",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "de9b11fc-9510-478e-ad70-03f91e21b58b",
+        "siteID": 18405,
+        "address": "65535 Lori Burgs",
+        "latitude": 58.5408,
+        "longitude": -125.3647,
+        "lastUpdated": "2020-07-19T08:43:13.230Z",
+        "city": "Considineberg",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "da93ab35-e7ac-476d-8e0a-a51c9f32473e",
+        "siteID": 17093,
+        "address": "880 Schaden Port",
+        "latitude": 53.7334,
+        "longitude": -122.6016,
+        "lastUpdated": "2023-08-13T21:08:04.436Z",
+        "city": "West Carolport",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "65ec9cba-8a98-4aa4-8ca8-d80c35e92094",
+        "siteID": 18225,
+        "address": "69457 Luella Bridge",
+        "latitude": 52.6485,
+        "longitude": -131.5101,
+        "lastUpdated": "2021-01-16T19:38:44.434Z",
+        "city": "North Hershel",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "dec927fc-64cc-4b38-8b7c-6e060192e01d",
+        "siteID": 20008,
+        "address": "31401 Saul Keys",
+        "latitude": 51.6858,
+        "longitude": -124.6199,
+        "lastUpdated": "2015-03-12T17:12:33.249Z",
+        "city": "Mount Vernon",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "9828c1ca-5df3-4533-9bc7-c72ad8c390b2",
+        "siteID": 15478,
+        "address": "3548 Monica Turnpike",
+        "latitude": 56.4461,
+        "longitude": -131.5662,
+        "lastUpdated": "2021-06-16T01:59:02.436Z",
+        "city": "Welchtown",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "f65540ef-8ca2-4c21-a007-752dbdc557f0",
+        "siteID": 18995,
+        "address": "96673 Boehm Island",
+        "latitude": 52.0873,
+        "longitude": -119.5343,
+        "lastUpdated": "2023-05-14T12:11:16.786Z",
+        "city": "Port Lindsayfield",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "f18cc5f5-b143-4887-8fac-bbfe51afa1b4",
+        "siteID": 17007,
+        "address": "649 Osborne Lakes",
+        "latitude": 58.2498,
+        "longitude": -134.8151,
+        "lastUpdated": "2015-12-04T08:55:35.425Z",
+        "city": "South Taureanchester",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "2cddf991-7dc7-46f5-837d-3d11e44d56b2",
+        "siteID": 17500,
+        "address": "74235 Mafalda Haven",
+        "latitude": 58.6127,
+        "longitude": -136.736,
+        "lastUpdated": "2021-08-30T17:13:32.342Z",
+        "city": "New Keshaun",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "b19e1446-43b0-4915-8982-bb10512b19a8",
+        "siteID": 17879,
+        "address": "2825 Helene Creek",
+        "latitude": 55.517,
+        "longitude": -127.9264,
+        "lastUpdated": "2015-04-12T12:24:47.430Z",
+        "city": "Auerville",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "838a80ed-bc58-4744-9ced-02b61eb61e1e",
+        "siteID": 18832,
+        "address": "21155 Robb Wells",
+        "latitude": 58.1465,
+        "longitude": -135.6066,
+        "lastUpdated": "2020-02-10T22:25:54.135Z",
+        "city": "Arnoldborough",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "5962c423-8ac7-44a9-a31b-167fbbda4d11",
+        "siteID": 19159,
+        "address": "86017 Andy Mount",
+        "latitude": 53.8885,
+        "longitude": -135.8266,
+        "lastUpdated": "2021-06-25T03:56:56.148Z",
+        "city": "Turnerview",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "ba946b47-9e4f-4f68-b05c-2fa7dbedf422",
+        "siteID": 19823,
+        "address": "1632 Irving Lane",
+        "latitude": 57.8427,
+        "longitude": -129.2441,
+        "lastUpdated": "2022-07-30T21:45:39.273Z",
+        "city": "Faheyton",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "7ac79f04-d000-43cf-9b07-fbbf7fe1c7c5",
+        "siteID": 19583,
+        "address": "19244 Carole Branch",
+        "latitude": 48.5125,
+        "longitude": -135.2518,
+        "lastUpdated": "2016-12-20T09:30:09.307Z",
+        "city": "West Justusside",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "b87205c2-a6ad-4081-947f-d21bfe9b7036",
+        "siteID": 19226,
+        "address": "74992 Langworth Inlet",
+        "latitude": 53.1313,
+        "longitude": -120.6146,
+        "lastUpdated": "2022-02-14T09:48:55.357Z",
+        "city": "Fort Loyalcester",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "def756d6-f0fe-41c9-be15-3a5e88ec3f66",
+        "siteID": 18588,
+        "address": "92403 Gunnar Creek",
+        "latitude": 53.4321,
+        "longitude": -138.6365,
+        "lastUpdated": "2019-11-26T10:55:08.270Z",
+        "city": "West Alenaburgh",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "e35e3f5d-97e7-4737-9b41-9f2eebad169f",
+        "siteID": 16551,
+        "address": "24521 Ernestina Ville",
+        "latitude": 49.5966,
+        "longitude": -127.308,
+        "lastUpdated": "2017-06-16T19:32:37.672Z",
+        "city": "Kossboro",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "2be9c318-e881-4b39-95fd-d73cc4128ee8",
+        "siteID": 18828,
+        "address": "965 Stehr Court",
+        "latitude": 56.2731,
+        "longitude": -137.973,
+        "lastUpdated": "2018-09-09T00:38:59.133Z",
+        "city": "Mikelville",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "fa8f59e0-7eca-4865-94c1-c5e5299b72a6",
+        "siteID": 19027,
+        "address": "28982 Steuber Views",
+        "latitude": 53.3677,
+        "longitude": -130.4166,
+        "lastUpdated": "2023-06-08T09:18:10.805Z",
+        "city": "Fannyshire",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "e541c815-c88c-4c02-958c-fdd12dcb9f05",
+        "siteID": 20086,
+        "address": "4127 Kailee Stream",
+        "latitude": 55.6053,
+        "longitude": -134.1927,
+        "lastUpdated": "2023-05-22T21:21:16.545Z",
+        "city": "Haagville",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "03779b9b-a019-48b8-bae8-871e9cbfe29b",
+        "siteID": 16891,
+        "address": "1819 Rosa Flat",
+        "latitude": 50.6723,
+        "longitude": -132.5555,
+        "lastUpdated": "2014-12-27T19:25:54.125Z",
+        "city": "Lenexa",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "bb9b9632-56b0-480c-84cc-4ec888d99300",
+        "siteID": 17215,
+        "address": "85767 Bulah Ports",
+        "latitude": 49.702,
+        "longitude": -120.4956,
+        "lastUpdated": "2015-06-12T01:19:20.148Z",
+        "city": "Caspertown",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "9f2cfa07-432f-49e9-a933-9a314288bbbf",
+        "siteID": 19228,
+        "address": "8494 April Trail",
+        "latitude": 56.596,
+        "longitude": -122.8722,
+        "lastUpdated": "2016-09-16T12:32:04.252Z",
+        "city": "Fayburgh",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "a78b6afc-20bd-4f05-9aea-c79b4ec62914",
+        "siteID": 17935,
+        "address": "7309 Altenwerth Wall",
+        "latitude": 51.0283,
+        "longitude": -131.2193,
+        "lastUpdated": "2013-11-02T01:13:28.267Z",
+        "city": "Goldnerchester",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "0fd0f649-3eaf-4d60-86d9-29d2f498ee60",
+        "siteID": 15898,
+        "address": "159 Verna Forks",
+        "latitude": 51.1386,
+        "longitude": -130.7478,
+        "lastUpdated": "2023-07-28T10:58:08.519Z",
+        "city": "South Americo",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "4a3fb6a9-6b73-4178-adcf-975871e5b84c",
+        "siteID": 20455,
+        "address": "866 Alvera Cliff",
+        "latitude": 53.8012,
+        "longitude": -133.1908,
+        "lastUpdated": "2019-05-12T08:03:33.193Z",
+        "city": "East Abe",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "c0526163-d34a-49a6-81c0-edda923989ba",
+        "siteID": 18461,
+        "address": "9472 Stark Lane",
+        "latitude": 55.9619,
+        "longitude": -120.2148,
+        "lastUpdated": "2016-02-09T18:12:28.057Z",
+        "city": "Dockfort",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "6089428e-fe13-4c73-bece-81bc6d053c5c",
+        "siteID": 15370,
+        "address": "9540 McKenzie Ranch",
+        "latitude": 57.233,
+        "longitude": -137.3905,
+        "lastUpdated": "2017-01-13T16:25:55.909Z",
+        "city": "East Hassieport",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "3aa531e8-7c35-46e0-a299-5f7eba19e37d",
+        "siteID": 20807,
+        "address": "78327 Jaskolski Isle",
+        "latitude": 58.1791,
+        "longitude": -120.1946,
+        "lastUpdated": "2019-10-11T04:27:15.783Z",
+        "city": "Katelinworth",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "12c5699c-e447-48f6-ae8b-53f1b99b4fd2",
+        "siteID": 20838,
+        "address": "490 Antonette Mill",
+        "latitude": 50.6332,
+        "longitude": -129.1593,
+        "lastUpdated": "2017-12-04T07:35:53.644Z",
+        "city": "East Rosamondfort",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "6fce0739-01ac-41b1-acbc-2dedb1d40370",
+        "siteID": 18685,
+        "address": "72199 Sauer Walks",
+        "latitude": 57.9703,
+        "longitude": -135.0421,
+        "lastUpdated": "2022-01-07T16:59:47.523Z",
+        "city": "North Efrainfield",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "17993787-e82b-4046-8fa9-7cfd3366b2a3",
+        "siteID": 18495,
+        "address": "3151 Alfred Glens",
+        "latitude": 53.5309,
+        "longitude": -124.2723,
+        "lastUpdated": "2020-05-29T05:25:17.762Z",
+        "city": "North Dario",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "b4578957-6631-4359-8417-d84871330466",
+        "siteID": 17144,
+        "address": "18491 Yasmeen Lakes",
+        "latitude": 55.496,
+        "longitude": -130.0219,
+        "lastUpdated": "2022-02-23T07:53:51.281Z",
+        "city": "Port Malvinacester",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "1c079782-a572-4ddf-9356-6457627a357e",
+        "siteID": 17881,
+        "address": "391 Mortimer Tunnel",
+        "latitude": 52.4642,
+        "longitude": -128.5154,
+        "lastUpdated": "2021-09-10T17:54:58.595Z",
+        "city": "South Lourdes",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "0e2d9241-4238-4161-8942-221fe8bfd2c2",
+        "siteID": 20450,
+        "address": "808 Tina Turnpike",
+        "latitude": 58.6208,
+        "longitude": -128.606,
+        "lastUpdated": "2023-01-24T07:29:40.703Z",
+        "city": "Kaletown",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "e3074197-a419-4752-93ac-bd66a114f95c",
+        "siteID": 18226,
+        "address": "701 Cristal Ville",
+        "latitude": 57.6725,
+        "longitude": -127.929,
+        "lastUpdated": "2017-11-30T10:32:34.996Z",
+        "city": "Tulare",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "3aaa73b0-c0fc-4134-9043-ac0e2efc0737",
+        "siteID": 16899,
+        "address": "90298 Myles Stream",
+        "latitude": 53.2285,
+        "longitude": -119.1439,
+        "lastUpdated": "2020-01-28T05:21:01.540Z",
+        "city": "Palo Alto",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "0d1a4c41-081f-4766-8c35-e02008194103",
+        "siteID": 18690,
+        "address": "27440 Gibson Dale",
+        "latitude": 54.1606,
+        "longitude": -122.3338,
+        "lastUpdated": "2015-10-17T11:06:38.110Z",
+        "city": "Broken Arrow",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "6537d2d5-2041-4ffb-985e-af23cb736d61",
+        "siteID": 19726,
+        "address": "544 Jed Rest",
+        "latitude": 51.3057,
+        "longitude": -128.4374,
+        "lastUpdated": "2019-07-06T23:05:03.646Z",
+        "city": "South Josefaberg",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "44ec5c65-1a1d-41c5-8ec9-9547c465956e",
+        "siteID": 15351,
+        "address": "646 Stehr Street",
+        "latitude": 54.2351,
+        "longitude": -124.8358,
+        "lastUpdated": "2021-10-12T21:55:49.395Z",
+        "city": "Kenner",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "b3899c58-7055-4c53-84c0-f9bc8efd5a6e",
+        "siteID": 17047,
+        "address": "390 Kristian Alley",
+        "latitude": 50.7963,
+        "longitude": -132.0913,
+        "lastUpdated": "2017-08-11T09:41:20.477Z",
+        "city": "Davonboro",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "ab3d61a5-516a-4d72-824f-35dd25faf8e5",
+        "siteID": 18554,
+        "address": "61918 Armando Knoll",
+        "latitude": 49.0395,
+        "longitude": -125.1529,
+        "lastUpdated": "2016-10-26T16:14:49.457Z",
+        "city": "Amaniworth",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "18e52c2d-a317-43f5-af5d-449e97341e41",
+        "siteID": 18795,
+        "address": "344 Skiles Ramp",
+        "latitude": 54.862,
+        "longitude": -130.0517,
+        "lastUpdated": "2016-04-24T14:28:15.709Z",
+        "city": "Lake Sheila",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "d1de57a2-f166-4c91-a4f0-a6b23930efe7",
+        "siteID": 15604,
+        "address": "696 Senger Pines",
+        "latitude": 53.3486,
+        "longitude": -122.8607,
+        "lastUpdated": "2015-12-18T13:15:21.583Z",
+        "city": "West Anabelberg",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "6428e91e-3048-4d3b-aaf2-5c8bd4613fa1",
+        "siteID": 20494,
+        "address": "28989 Cormier Way",
+        "latitude": 50.8252,
+        "longitude": -130.1739,
+        "lastUpdated": "2014-06-29T01:14:07.476Z",
+        "city": "Scottsdale",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "4f93698e-55d2-4e69-ad17-d5e4be7fe380",
+        "siteID": 18774,
+        "address": "224 Clarissa Plain",
+        "latitude": 48.1594,
+        "longitude": -124.1106,
+        "lastUpdated": "2014-09-18T15:21:17.935Z",
+        "city": "South Eldoraside",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "1fa9c01b-7b2a-4380-8016-fbb51f968f3b",
+        "siteID": 19490,
+        "address": "5044 Dee Prairie",
+        "latitude": 56.2091,
+        "longitude": -135.9092,
+        "lastUpdated": "2015-11-09T17:32:03.569Z",
+        "city": "North Camylleburgh",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "d499e4b3-9742-45c7-a3f7-051023def5c9",
+        "siteID": 19367,
+        "address": "780 Miracle Cliff",
+        "latitude": 53.1537,
+        "longitude": -124.9793,
+        "lastUpdated": "2018-08-19T09:34:53.677Z",
+        "city": "Grapevine",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "22e27552-1d38-4d27-a350-5734725e1b21",
+        "siteID": 18505,
+        "address": "78373 Jesus Crescent",
+        "latitude": 48.3083,
+        "longitude": -124.9677,
+        "lastUpdated": "2017-05-25T06:08:58.960Z",
+        "city": "Ullrichmouth",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "91c163f4-785c-4ec9-989f-4f0ea3c670fe",
+        "siteID": 15481,
+        "address": "2396 Vincent Mills",
+        "latitude": 58.4512,
+        "longitude": -127.1711,
+        "lastUpdated": "2017-08-24T13:30:27.353Z",
+        "city": "Metzside",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "173f4364-5140-4522-95dd-74a39e93b497",
+        "siteID": 16759,
+        "address": "523 Candido Run",
+        "latitude": 53.5694,
+        "longitude": -128.3076,
+        "lastUpdated": "2021-05-23T10:18:19.072Z",
+        "city": "Fort Bethboro",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "c150ddcd-a5bc-422c-beeb-d864e84fdd6d",
+        "siteID": 16197,
+        "address": "88206 Loyce Rapid",
+        "latitude": 51.0591,
+        "longitude": -136.2352,
+        "lastUpdated": "2021-12-30T12:07:17.366Z",
+        "city": "Perris",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "b5e32fc8-d41e-42ef-bcff-2393f04cd8ff",
+        "siteID": 16825,
+        "address": "6042 Green Cliff",
+        "latitude": 55.3592,
+        "longitude": -123.277,
+        "lastUpdated": "2022-11-25T06:18:39.483Z",
+        "city": "Micahburgh",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "4bb755b2-05f5-4499-b975-bd076f16d4b4",
+        "siteID": 20308,
+        "address": "987 Lysanne Parkways",
+        "latitude": 54.4685,
+        "longitude": -121.9738,
+        "lastUpdated": "2016-09-22T21:55:36.005Z",
+        "city": "Odessa",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "f48abe1b-5a9f-49c5-b0f4-eaaa79c36e74",
+        "siteID": 17534,
+        "address": "87737 Emmanuel Rest",
+        "latitude": 52.5507,
+        "longitude": -124.1756,
+        "lastUpdated": "2023-06-22T11:56:19.197Z",
+        "city": "East Draketon",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "a13b8e89-c92b-4c81-8878-a1c305176b68",
+        "siteID": 17790,
+        "address": "5161 Hoppe Mission",
+        "latitude": 50.59,
+        "longitude": -120.1417,
+        "lastUpdated": "2016-05-13T20:52:43.637Z",
+        "city": "Bayerchester",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "9c2e349c-6623-423c-a996-9d00fec8869a",
+        "siteID": 19067,
+        "address": "67348 Chadd Prairie",
+        "latitude": 52.5235,
+        "longitude": -136.4422,
+        "lastUpdated": "2019-04-03T08:18:40.404Z",
+        "city": "Wilberbury",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "e4b44891-afe7-4410-aa1c-b5fa29afd471",
+        "siteID": 17512,
+        "address": "466 Schamberger Plaza",
+        "latitude": 58.1781,
+        "longitude": -133.0443,
+        "lastUpdated": "2014-04-10T05:09:40.983Z",
+        "city": "West Emmett",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "b3aeab11-5bfd-4cf2-923e-50e84d23975a",
+        "siteID": 15748,
+        "address": "249 Rae Shoals",
+        "latitude": 56.2622,
+        "longitude": -119.8801,
+        "lastUpdated": "2019-11-30T21:27:42.522Z",
+        "city": "Lake Blaisebury",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "a11bc624-1473-4de4-a217-60b4dbf8f582",
+        "siteID": 18388,
+        "address": "16731 Pollich Mall",
+        "latitude": 58.9029,
+        "longitude": -121.0477,
+        "lastUpdated": "2014-02-16T09:09:35.514Z",
+        "city": "Walshstad",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "a4aad995-559e-4330-9267-692e90cf6661",
+        "siteID": 17136,
+        "address": "30504 Litzy Passage",
+        "latitude": 58.2266,
+        "longitude": -130.3548,
+        "lastUpdated": "2021-01-01T10:41:11.533Z",
+        "city": "Rubyeport",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "e3fa5606-c575-451d-9053-879ba5351e23",
+        "siteID": 15616,
+        "address": "66692 Wunsch Spur",
+        "latitude": 52.9074,
+        "longitude": -121.076,
+        "lastUpdated": "2014-08-05T21:18:21.460Z",
+        "city": "Jessieworth",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "895a1606-1618-45f5-842f-f184bdb661b5",
+        "siteID": 17951,
+        "address": "523 Stefanie Pike",
+        "latitude": 50.4294,
+        "longitude": -129.7678,
+        "lastUpdated": "2022-08-01T17:45:52.012Z",
+        "city": "New Marguerite",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "cdae7ca7-4143-4e35-9e87-0d9be69299aa",
+        "siteID": 18681,
+        "address": "864 Runolfsdottir River",
+        "latitude": 49.7323,
+        "longitude": -131.3977,
+        "lastUpdated": "2017-09-22T23:10:52.408Z",
+        "city": "Grand Forks",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "ef8cd8d1-2d32-4300-9015-3357bc38d759",
+        "siteID": 17186,
+        "address": "349 Koss Springs",
+        "latitude": 54.0952,
+        "longitude": -123.0386,
+        "lastUpdated": "2015-10-14T14:26:46.195Z",
+        "city": "North Alaina",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "f83c48f5-f9f7-433d-a98b-63754dac2af0",
+        "siteID": 20789,
+        "address": "60426 Haley Crossroad",
+        "latitude": 56.3934,
+        "longitude": -135.7144,
+        "lastUpdated": "2022-07-20T17:54:47.832Z",
+        "city": "Kreigerhaven",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "c8db726f-9dc7-48b3-9cca-856984b60a72",
+        "siteID": 18926,
+        "address": "2423 Larissa Roads",
+        "latitude": 57.8358,
+        "longitude": -138.1003,
+        "lastUpdated": "2020-05-24T15:23:18.872Z",
+        "city": "South Lamberthaven",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "86a13b16-ec8a-4d03-aa34-6be9258f5384",
+        "siteID": 15757,
+        "address": "65781 Bernhard Loaf",
+        "latitude": 50.798,
+        "longitude": -138.6714,
+        "lastUpdated": "2018-10-11T15:09:59.646Z",
+        "city": "Heavenworth",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "f740f44d-739c-40bc-a7ff-19c72049e64e",
+        "siteID": 15272,
+        "address": "107 Quitzon Corner",
+        "latitude": 57.2521,
+        "longitude": -127.7507,
+        "lastUpdated": "2018-12-25T16:41:14.548Z",
+        "city": "Lake Gideonview",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "89ee6efc-cfe0-4974-a54c-b0a0ed3cecaf",
+        "siteID": 20051,
+        "address": "8292 Krajcik Canyon",
+        "latitude": 56.1789,
+        "longitude": -120.7289,
+        "lastUpdated": "2014-05-17T10:49:15.760Z",
+        "city": "Fort Abbey",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "2c174d04-9c6a-4d3b-8dd0-5b582c089e61",
+        "siteID": 15297,
+        "address": "9820 Jessika Light",
+        "latitude": 52.1673,
+        "longitude": -137.0111,
+        "lastUpdated": "2015-08-16T13:38:15.020Z",
+        "city": "Blandaton",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "36a34666-16d4-47f3-a2fc-6535a448b138",
+        "siteID": 19134,
+        "address": "78171 Charlie Streets",
+        "latitude": 50.2378,
+        "longitude": -120.8828,
+        "lastUpdated": "2022-02-01T07:35:06.932Z",
+        "city": "West Benedict",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "aae90b9a-2a92-4312-8f18-8a2d5fa36652",
+        "siteID": 16126,
+        "address": "40019 Leilani Plain",
+        "latitude": 48.3595,
+        "longitude": -135.1893,
+        "lastUpdated": "2020-11-02T05:16:44.998Z",
+        "city": "Kingsport",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "bfcc78c7-a8ad-4013-9adc-f0dd6ba0a81a",
+        "siteID": 16609,
+        "address": "746 Meda Orchard",
+        "latitude": 52.2887,
+        "longitude": -125.8531,
+        "lastUpdated": "2014-05-10T05:08:21.818Z",
+        "city": "Fort Fredy",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "b9dcc9bd-266d-45a6-997e-93b14d86e542",
+        "siteID": 17366,
+        "address": "2988 Upton Mountain",
+        "latitude": 50.0119,
+        "longitude": -137.2447,
+        "lastUpdated": "2016-08-06T17:42:51.185Z",
+        "city": "Queenbury",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "d65253b5-c3a4-416b-bfc4-00214a746d13",
+        "siteID": 20141,
+        "address": "92785 Kelsie Path",
+        "latitude": 56.8278,
+        "longitude": -124.5518,
+        "lastUpdated": "2022-07-29T11:59:24.756Z",
+        "city": "North Wendell",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "1abfc382-72ce-485d-9d69-cf90f2eb9ae9",
+        "siteID": 15478,
+        "address": "67104 Johnson Overpass",
+        "latitude": 48.0228,
+        "longitude": -120.3033,
+        "lastUpdated": "2019-11-13T18:46:35.789Z",
+        "city": "Fort Novafield",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "d43724eb-6474-4d84-bf31-22f7fb923e55",
+        "siteID": 18748,
+        "address": "10540 Lang Isle",
+        "latitude": 50.9933,
+        "longitude": -129.6189,
+        "lastUpdated": "2022-03-23T00:46:49.432Z",
+        "city": "Kerlukeboro",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "7cd6680d-058a-4817-9675-8db13153c34f",
+        "siteID": 15195,
+        "address": "6560 Fritsch Curve",
+        "latitude": 57.3406,
+        "longitude": -138.2989,
+        "lastUpdated": "2017-02-24T12:49:09.128Z",
+        "city": "Maggiestad",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "d67c6fe8-2a45-4b12-848e-e7c0dbacb3c3",
+        "siteID": 20160,
+        "address": "62132 Carmella Circle",
+        "latitude": 50.5891,
+        "longitude": -135.0032,
+        "lastUpdated": "2016-06-22T06:52:49.834Z",
+        "city": "Woodbury",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "ee370fe7-8d68-4ae1-b3a0-0c603a7559c3",
+        "siteID": 16353,
+        "address": "807 Bette Canyon",
+        "latitude": 54.6865,
+        "longitude": -118.3464,
+        "lastUpdated": "2013-10-25T23:54:40.961Z",
+        "city": "McCulloughworth",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "e2e3e66c-40e8-4a90-9b75-b98370bd792a",
+        "siteID": 20951,
+        "address": "4179 Johnson Landing",
+        "latitude": 52.1019,
+        "longitude": -135.7775,
+        "lastUpdated": "2022-02-15T16:58:19.595Z",
+        "city": "Lindgrenton",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "6207eacd-4be4-46d1-b768-81edafb50f22",
+        "siteID": 18013,
+        "address": "856 Kreiger Corner",
+        "latitude": 54.1308,
+        "longitude": -118.0459,
+        "lastUpdated": "2023-07-22T11:15:15.833Z",
+        "city": "New Kevon",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "6544d4f3-dfd4-49ea-8edf-eb1f01c521cf",
+        "siteID": 20409,
+        "address": "97797 Elwyn Junctions",
+        "latitude": 55.867,
+        "longitude": -127.4502,
+        "lastUpdated": "2015-08-02T21:25:29.175Z",
+        "city": "Ceciliaburgh",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "73692f53-4951-460b-b993-5efdc3e87a6e",
+        "siteID": 20957,
+        "address": "296 Kunze Mill",
+        "latitude": 55.4861,
+        "longitude": -128.4006,
+        "lastUpdated": "2023-07-22T14:20:46.548Z",
+        "city": "East Agustinaland",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "71feca59-47a9-4a97-94b0-4b68ac21f538",
+        "siteID": 19598,
+        "address": "284 Grady Heights",
+        "latitude": 53.8036,
+        "longitude": -132.7099,
+        "lastUpdated": "2022-09-30T17:07:04.694Z",
+        "city": "West Maziehaven",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "47dbb41f-43c4-4b91-81c2-0043f7214a2b",
+        "siteID": 20158,
+        "address": "913 Ryan Ranch",
+        "latitude": 51.9784,
+        "longitude": -121.8241,
+        "lastUpdated": "2017-09-28T05:01:59.582Z",
+        "city": "Loweboro",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "647a3ffd-976e-4c0c-bfe4-7b4b5e8451e8",
+        "siteID": 16966,
+        "address": "6305 Adam Plains",
+        "latitude": 58.0586,
+        "longitude": -136.7103,
+        "lastUpdated": "2021-10-22T23:46:17.901Z",
+        "city": "South Hailiefort",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "bb620ce2-4923-44e0-a99a-5362a498f7a7",
+        "siteID": 17128,
+        "address": "379 Durgan Mills",
+        "latitude": 54.6643,
+        "longitude": -120.5306,
+        "lastUpdated": "2016-10-03T09:14:05.016Z",
+        "city": "West Justinechester",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "d21ef400-20a1-4554-9c85-df612fa58269",
+        "siteID": 16984,
+        "address": "85564 Douglas Mills",
+        "latitude": 51.9895,
+        "longitude": -133.0589,
+        "lastUpdated": "2014-06-13T15:23:14.912Z",
+        "city": "Cummingsmouth",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "09671446-4210-4a3b-96f3-1c910f37cfb6",
+        "siteID": 16356,
+        "address": "616 Wade Parks",
+        "latitude": 50.2669,
+        "longitude": -119.0136,
+        "lastUpdated": "2022-01-15T13:59:39.811Z",
+        "city": "Johns Creek",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "36aed971-b905-404e-a88e-3bee28732af7",
+        "siteID": 18142,
+        "address": "868 Littel Circles",
+        "latitude": 54.8599,
+        "longitude": -134.9007,
+        "lastUpdated": "2020-05-17T15:56:35.136Z",
+        "city": "West Joliebury",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "64f7159e-fb39-4439-add3-5a1fbda7761c",
+        "siteID": 20998,
+        "address": "8469 Corkery Fork",
+        "latitude": 52.938,
+        "longitude": -132.9597,
+        "lastUpdated": "2014-07-15T14:22:36.245Z",
+        "city": "North Rebeccaworth",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "535c1ce2-aa50-4a27-a998-fb8cc0199b22",
+        "siteID": 20501,
+        "address": "3728 Mraz Overpass",
+        "latitude": 51.4774,
+        "longitude": -138.1117,
+        "lastUpdated": "2019-11-02T18:24:54.478Z",
+        "city": "Wesley Chapel",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "affb4db6-27f2-45ef-869d-3f1b3e404dbd",
+        "siteID": 16229,
+        "address": "4440 Heaney Underpass",
+        "latitude": 55.7388,
+        "longitude": -119.5637,
+        "lastUpdated": "2019-03-27T13:52:38.188Z",
+        "city": "Lonnieworth",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "03bb32e2-f31d-471e-9539-bb7e26770d75",
+        "siteID": 16960,
+        "address": "4662 Wintheiser Estate",
+        "latitude": 52.451,
+        "longitude": -121.7718,
+        "lastUpdated": "2015-11-20T16:49:30.632Z",
+        "city": "Binghamton",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "524fdb63-b404-4322-a687-ed5d50d03037",
+        "siteID": 18824,
+        "address": "59879 Oswaldo Lakes",
+        "latitude": 50.6607,
+        "longitude": -134.3473,
+        "lastUpdated": "2020-07-10T05:28:00.574Z",
+        "city": "South Adelaboro",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "991c491d-daa2-4b65-a3e6-ab8f55c3899f",
+        "siteID": 16129,
+        "address": "16713 Sedrick Burg",
+        "latitude": 55.8384,
+        "longitude": -122.8042,
+        "lastUpdated": "2014-09-02T09:34:15.203Z",
+        "city": "Collinsview",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "346dd0e0-5526-4e47-b153-846daeb0e1b3",
+        "siteID": 17477,
+        "address": "4416 Roscoe Field",
+        "latitude": 48.2179,
+        "longitude": -118.2193,
+        "lastUpdated": "2018-05-01T12:25:05.838Z",
+        "city": "Port Layla",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "4631ae81-b561-48b9-8d88-451d9cb0d613",
+        "siteID": 18440,
+        "address": "770 Hartmann Skyway",
+        "latitude": 55.6063,
+        "longitude": -131.0822,
+        "lastUpdated": "2019-01-23T00:05:39.711Z",
+        "city": "Grantbury",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "629be896-9111-4d3d-a74b-bc3470a9c50b",
+        "siteID": 19644,
+        "address": "3037 Paucek Center",
+        "latitude": 55.0813,
+        "longitude": -133.4761,
+        "lastUpdated": "2021-07-05T21:38:13.529Z",
+        "city": "West Jessika",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "064b97e8-716d-45c5-bb19-8689802510ed",
+        "siteID": 17968,
+        "address": "8860 Tromp Branch",
+        "latitude": 54.3287,
+        "longitude": -126.9829,
+        "lastUpdated": "2015-03-29T02:40:30.163Z",
+        "city": "East Camdenfort",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "3a117012-7981-4bfe-8c7b-95245326cc30",
+        "siteID": 18792,
+        "address": "62270 Olson Causeway",
+        "latitude": 56.9514,
+        "longitude": -118.4435,
+        "lastUpdated": "2017-08-09T16:25:43.908Z",
+        "city": "Wilfredstead",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "1a2414e3-4a91-48bb-98d4-c953deb8f101",
+        "siteID": 19578,
+        "address": "834 Stamm Roads",
+        "latitude": 55.1436,
+        "longitude": -130.8004,
+        "lastUpdated": "2021-08-13T09:25:00.179Z",
+        "city": "North Sethfield",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "76c506ba-3363-46ac-b032-97e75380d8e7",
+        "siteID": 16413,
+        "address": "96275 Nitzsche Stravenue",
+        "latitude": 56.0765,
+        "longitude": -130.3284,
+        "lastUpdated": "2016-02-11T22:32:36.718Z",
+        "city": "Boscoshire",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "0715bac2-cd19-4b81-bbb6-56d0d4652def",
+        "siteID": 19417,
+        "address": "960 Verdie Oval",
+        "latitude": 51.9768,
+        "longitude": -126.4938,
+        "lastUpdated": "2020-04-23T18:54:31.709Z",
+        "city": "West Kadeberg",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "14835738-7c04-4e0a-b10a-ae65472c2c39",
+        "siteID": 15405,
+        "address": "572 Kozey Curve",
+        "latitude": 56.8904,
+        "longitude": -138.1904,
+        "lastUpdated": "2020-08-14T07:00:44.534Z",
+        "city": "Abbottfurt",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "c8b37c76-09ef-45df-81aa-ca927ee7291e",
+        "siteID": 19714,
+        "address": "7759 Monahan Burgs",
+        "latitude": 58.827,
+        "longitude": -119.2902,
+        "lastUpdated": "2018-12-26T17:24:03.164Z",
+        "city": "Lake Jayda",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "71ddbd61-bbeb-46a0-bd3c-9da5480a1934",
+        "siteID": 16764,
+        "address": "240 Dickinson Circles",
+        "latitude": 50.3262,
+        "longitude": -118.9604,
+        "lastUpdated": "2016-07-05T22:34:10.481Z",
+        "city": "Portland",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "676feed5-33bf-40c6-be55-5d08d0efea42",
+        "siteID": 16465,
+        "address": "222 Kamron Dale",
+        "latitude": 57.2699,
+        "longitude": -121.5201,
+        "lastUpdated": "2018-01-12T18:58:38.265Z",
+        "city": "Christoptown",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "4f619438-de72-429a-974d-f5b008734ada",
+        "siteID": 16682,
+        "address": "2160 Thad Stream",
+        "latitude": 56.3704,
+        "longitude": -127.915,
+        "lastUpdated": "2014-06-14T16:36:26.829Z",
+        "city": "Meghanfort",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "11df7c44-b88b-44a5-80bb-df43dae22cf9",
+        "siteID": 16107,
+        "address": "70298 McDermott Course",
+        "latitude": 55.4651,
+        "longitude": -126.8471,
+        "lastUpdated": "2018-01-17T12:31:50.393Z",
+        "city": "Mannport",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "6331ea7a-adbc-4481-8157-99be9a04fea7",
+        "siteID": 18602,
+        "address": "9173 Ankunding Mountain",
+        "latitude": 54.404,
+        "longitude": -134.2257,
+        "lastUpdated": "2018-04-22T02:02:02.386Z",
+        "city": "Mantecester",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "bb9eb11e-4a85-4c25-a207-96625df46480",
+        "siteID": 18181,
+        "address": "37354 Olson Lights",
+        "latitude": 58.0005,
+        "longitude": -135.8924,
+        "lastUpdated": "2015-11-18T17:14:58.084Z",
+        "city": "Philipland",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "ee70ca6b-6c6f-4a1e-bf7e-fc54936222cc",
+        "siteID": 16027,
+        "address": "6764 Isabel Mills",
+        "latitude": 53.9907,
+        "longitude": -136.5522,
+        "lastUpdated": "2022-10-06T17:52:35.884Z",
+        "city": "Lake Aubreeshire",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "587c3569-e12f-469a-801e-069a3f0a14b9",
+        "siteID": 20419,
+        "address": "313 Hegmann Turnpike",
+        "latitude": 52.9016,
+        "longitude": -134.3243,
+        "lastUpdated": "2016-01-27T05:49:40.695Z",
+        "city": "Fort Maryjane",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "a1d2269e-2ada-4aca-bfee-4ea13fa1ddb0",
+        "siteID": 15468,
+        "address": "174 Alexis Bypass",
+        "latitude": 49.2014,
+        "longitude": -127.0137,
+        "lastUpdated": "2017-05-03T11:30:41.798Z",
+        "city": "Randicester",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "6428806e-aa6d-4133-821a-0b3f68fa1892",
+        "siteID": 15915,
+        "address": "7610 Janiya Fort",
+        "latitude": 52.7151,
+        "longitude": -119.5856,
+        "lastUpdated": "2021-05-24T06:40:21.014Z",
+        "city": "North Korbin",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "8e78dfa8-9c95-4aad-a1e5-da7e3d080c41",
+        "siteID": 19792,
+        "address": "966 Murray Expressway",
+        "latitude": 55.6718,
+        "longitude": -131.1496,
+        "lastUpdated": "2020-08-17T13:00:33.376Z",
+        "city": "Fort Shaynatown",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "dd98273d-81c8-4c29-820f-92a804d340f8",
+        "siteID": 20486,
+        "address": "1704 Joanne Roads",
+        "latitude": 51.8265,
+        "longitude": -136.0349,
+        "lastUpdated": "2021-07-15T13:04:06.187Z",
+        "city": "Larsontown",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "bb225f41-c56b-426a-99f7-f3852ff5e106",
+        "siteID": 16054,
+        "address": "51354 Hudson Centers",
+        "latitude": 52.056,
+        "longitude": -128.2975,
+        "lastUpdated": "2015-04-06T02:07:12.110Z",
+        "city": "Stromanbury",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "e4c85dc7-78f2-4629-bdd7-1db238f0baac",
+        "siteID": 19519,
+        "address": "46044 Virgil Manors",
+        "latitude": 55.2111,
+        "longitude": -127.4427,
+        "lastUpdated": "2017-07-27T10:15:44.733Z",
+        "city": "Orvilleberg",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "69d604f6-387d-430a-b782-61158b468b7b",
+        "siteID": 19736,
+        "address": "52050 Jana Lakes",
+        "latitude": 57.2234,
+        "longitude": -132.5629,
+        "lastUpdated": "2016-06-04T17:27:50.657Z",
+        "city": "South Lynn",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "09a2e326-b6cc-416b-a754-4be564e36595",
+        "siteID": 18619,
+        "address": "173 Pfeffer Via",
+        "latitude": 52.5408,
+        "longitude": -123.4893,
+        "lastUpdated": "2017-07-12T07:31:29.389Z",
+        "city": "Dibbertfurt",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "3708fcd4-acfc-4aa1-8ff7-2536e8865c0c",
+        "siteID": 20624,
+        "address": "34795 Bridie View",
+        "latitude": 58.6867,
+        "longitude": -118.225,
+        "lastUpdated": "2019-05-11T21:29:15.011Z",
+        "city": "Swaniawskistead",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "c80e9aab-4200-4346-a757-33fa4a577c01",
+        "siteID": 18435,
+        "address": "2532 Marcelo Parkway",
+        "latitude": 49.2548,
+        "longitude": -124.6601,
+        "lastUpdated": "2020-09-14T04:34:01.440Z",
+        "city": "North Candido",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "c3c02bee-1527-4d21-8020-770fc4b0b89b",
+        "siteID": 17400,
+        "address": "194 Rico Groves",
+        "latitude": 56.1744,
+        "longitude": -131.4754,
+        "lastUpdated": "2019-08-13T02:58:16.062Z",
+        "city": "South Jermeyfield",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "86f1aca3-cac5-4618-a765-1930c68bf2b2",
+        "siteID": 15603,
+        "address": "983 Friesen Pike",
+        "latitude": 54.7135,
+        "longitude": -135.6854,
+        "lastUpdated": "2021-01-08T18:04:08.720Z",
+        "city": "Boydhaven",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "efc0e3e4-3aec-4aa5-89dd-9d7da68c3539",
+        "siteID": 18035,
+        "address": "36686 Watson Ville",
+        "latitude": 51.7362,
+        "longitude": -135.5104,
+        "lastUpdated": "2021-08-24T22:49:31.545Z",
+        "city": "New Gonzalo",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "cdd56dc9-f8e1-4954-93c7-f5d2bcdeb1dd",
+        "siteID": 15895,
+        "address": "6052 Goldner Crescent",
+        "latitude": 48.4019,
+        "longitude": -136.674,
+        "lastUpdated": "2016-08-17T02:46:28.490Z",
+        "city": "South Nat",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "c0f95f1e-c0e9-472d-bc6d-f8bb9ffc4097",
+        "siteID": 15749,
+        "address": "87682 Marvin Tunnel",
+        "latitude": 55.298,
+        "longitude": -120.7632,
+        "lastUpdated": "2017-09-21T19:00:49.190Z",
+        "city": "Austin",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "8620813f-0aba-4a88-bc64-934188cd1775",
+        "siteID": 18358,
+        "address": "6498 Stroman Spurs",
+        "latitude": 49.0929,
+        "longitude": -130.5525,
+        "lastUpdated": "2020-02-14T15:30:54.129Z",
+        "city": "Fort Kelvin",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "4457df62-b8ad-4bf3-a508-dd61852fafb5",
+        "siteID": 16820,
+        "address": "330 Leffler Radial",
+        "latitude": 57.2722,
+        "longitude": -131.8414,
+        "lastUpdated": "2022-09-29T05:56:34.759Z",
+        "city": "Arlington Heights",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "deb0c832-f1a5-4174-b305-19b6ed711e2c",
+        "siteID": 20045,
+        "address": "90958 Dashawn Mission",
+        "latitude": 49.3951,
+        "longitude": -127.7785,
+        "lastUpdated": "2016-01-15T18:31:54.886Z",
+        "city": "Lemkeborough",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "f0b093d3-3e6f-4781-8b23-501321fc0a02",
+        "siteID": 18815,
+        "address": "1986 Moore Crossing",
+        "latitude": 56.0993,
+        "longitude": -119.4169,
+        "lastUpdated": "2014-04-07T10:02:08.506Z",
+        "city": "South Jewell",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "086d36cd-d7b4-44c5-960b-98b4666d0d46",
+        "siteID": 15845,
+        "address": "60549 Camryn Villages",
+        "latitude": 57.9722,
+        "longitude": -128.9536,
+        "lastUpdated": "2020-02-14T16:33:51.943Z",
+        "city": "West Queen",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "efead2d9-7ea1-4d52-9dfe-7253c6f0c6e4",
+        "siteID": 20321,
+        "address": "4834 Ian Center",
+        "latitude": 49.7584,
+        "longitude": -135.5571,
+        "lastUpdated": "2015-10-13T19:59:54.399Z",
+        "city": "South Roderickland",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "3d1c2c02-a712-4e36-9906-b5fe7897f111",
+        "siteID": 16653,
+        "address": "278 Hammes Shores",
+        "latitude": 52.8747,
+        "longitude": -136.3774,
+        "lastUpdated": "2014-12-07T11:35:40.496Z",
+        "city": "Ellicott City",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "a7785ed7-74a6-491c-a2e4-c7403ca57206",
+        "siteID": 18064,
+        "address": "615 Roberts Trace",
+        "latitude": 48.8801,
+        "longitude": -138.0281,
+        "lastUpdated": "2018-03-28T05:25:52.523Z",
+        "city": "Downers Grove",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "9319773e-37bb-43b3-96e4-02b734b7be9e",
+        "siteID": 16328,
+        "address": "8796 Keebler Harbor",
+        "latitude": 49.7899,
+        "longitude": -118.8844,
+        "lastUpdated": "2016-06-25T04:55:17.603Z",
+        "city": "New Conrad",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "3bbee8a1-272d-4854-9f11-d395dea230a7",
+        "siteID": 19745,
+        "address": "299 Olga Ford",
+        "latitude": 49.5216,
+        "longitude": -129.0129,
+        "lastUpdated": "2014-11-04T03:56:44.644Z",
+        "city": "Port Hillard",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "7f0fe7c8-2bfe-4873-9d0e-9daa2bc2d112",
+        "siteID": 16989,
+        "address": "13591 Morar Orchard",
+        "latitude": 53.3586,
+        "longitude": -123.45,
+        "lastUpdated": "2018-05-29T12:27:02.846Z",
+        "city": "East Israel",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "db3399e8-4345-49b6-9377-fa04b849029c",
+        "siteID": 18686,
+        "address": "7413 Jadyn Landing",
+        "latitude": 55.4054,
+        "longitude": -137.0002,
+        "lastUpdated": "2022-01-25T03:21:27.640Z",
+        "city": "Chico",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "11bec402-d12e-456b-98c8-87f7cfb0abae",
+        "siteID": 17008,
+        "address": "43201 McClure Glens",
+        "latitude": 52.8188,
+        "longitude": -126.8155,
+        "lastUpdated": "2016-08-17T05:34:42.950Z",
+        "city": "Port Lesleybury",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "f6f0a747-6bcd-417b-9e52-f08ba5cda122",
+        "siteID": 19302,
+        "address": "368 Hoeger Brooks",
+        "latitude": 58.9684,
+        "longitude": -118.0452,
+        "lastUpdated": "2013-10-30T19:40:49.519Z",
+        "city": "West Horacechester",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "31d73121-1239-40da-a300-2414a814ceb8",
+        "siteID": 18191,
+        "address": "845 Napoleon Ways",
+        "latitude": 55.6157,
+        "longitude": -130.8562,
+        "lastUpdated": "2020-04-25T10:28:36.536Z",
+        "city": "Lake Marvinfurt",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "3d803455-bb5c-46ee-bc13-9fe7c81cff11",
+        "siteID": 19463,
+        "address": "250 Ondricka Vista",
+        "latitude": 54.4326,
+        "longitude": -135.631,
+        "lastUpdated": "2014-04-18T18:23:01.471Z",
+        "city": "Cape Coral",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "de15420c-8dd7-4fe9-a6de-f3cec6ae098d",
+        "siteID": 17754,
+        "address": "7578 Alana Via",
+        "latitude": 50.3585,
+        "longitude": -127.4045,
+        "lastUpdated": "2015-05-10T17:26:47.485Z",
+        "city": "East Jeffereyfort",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "5d5aa207-4d51-4529-ab17-126069d589e9",
+        "siteID": 18321,
+        "address": "650 Brooks Unions",
+        "latitude": 51.0157,
+        "longitude": -131.9486,
+        "lastUpdated": "2021-06-21T13:06:42.506Z",
+        "city": "Thornton",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "5a44ecd6-c356-4924-b8ba-13a49831e1e8",
+        "siteID": 20790,
+        "address": "7351 Kendrick Centers",
+        "latitude": 57.2699,
+        "longitude": -135.0314,
+        "lastUpdated": "2022-08-19T12:23:29.563Z",
+        "city": "Nobleboro",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "e77f21bb-2e88-479b-b0d2-eefb959df5bd",
+        "siteID": 18988,
+        "address": "5501 Norval Parkway",
+        "latitude": 58.6849,
+        "longitude": -138.9779,
+        "lastUpdated": "2016-04-02T15:55:22.296Z",
+        "city": "Independence",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "c86a93b0-f79d-4362-982a-9b99b2904cc6",
+        "siteID": 20710,
+        "address": "6078 Glover Walk",
+        "latitude": 48.7747,
+        "longitude": -127.8007,
+        "lastUpdated": "2018-08-05T12:27:19.196Z",
+        "city": "South Roy",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "233625b2-18a9-4fb3-97ae-aebc63273d41",
+        "siteID": 15220,
+        "address": "678 Lurline Circle",
+        "latitude": 51.7984,
+        "longitude": -126.142,
+        "lastUpdated": "2019-12-27T03:35:27.488Z",
+        "city": "Hudsonmouth",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "0f8e5538-defb-4a67-932c-c3b6fe9322c6",
+        "siteID": 17378,
+        "address": "9193 Ferry Brook",
+        "latitude": 49.6592,
+        "longitude": -131.0431,
+        "lastUpdated": "2015-06-04T08:29:05.779Z",
+        "city": "Mertzfort",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "ff08eef1-77fe-46f2-8beb-f6015fb52ebf",
+        "siteID": 15617,
+        "address": "1052 Schaefer Green",
+        "latitude": 56.1479,
+        "longitude": -128.3274,
+        "lastUpdated": "2018-06-19T11:06:43.505Z",
+        "city": "East Rowland",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "6a7e5f26-9cea-4ddd-ac55-0c28b95bd3f0",
+        "siteID": 20898,
+        "address": "8025 Alisa Shores",
+        "latitude": 49.7147,
+        "longitude": -135.2173,
+        "lastUpdated": "2018-10-14T19:00:12.953Z",
+        "city": "East Kennedifurt",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "a38e5e37-f689-4c0d-97a1-6910c6d040ad",
+        "siteID": 15331,
+        "address": "9683 Krystal Heights",
+        "latitude": 53.2118,
+        "longitude": -137.5491,
+        "lastUpdated": "2019-09-16T10:24:07.631Z",
+        "city": "Jovanboro",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "84e5e500-b875-43b7-b860-500d2c78d70b",
+        "siteID": 15404,
+        "address": "97507 Jayne Lodge",
+        "latitude": 54.4813,
+        "longitude": -123.0207,
+        "lastUpdated": "2023-03-17T17:16:27.899Z",
+        "city": "Vandervortmouth",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "a5b9bdef-170c-4e85-9012-bbd57ec5d466",
+        "siteID": 16694,
+        "address": "70361 Valentine Islands",
+        "latitude": 50.1224,
+        "longitude": -127.9736,
+        "lastUpdated": "2014-10-29T09:22:22.740Z",
+        "city": "South Emie",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "a80ef6fb-82fd-4c51-b7b6-066edcd106cc",
+        "siteID": 19853,
+        "address": "6748 Sabina Mall",
+        "latitude": 48.6155,
+        "longitude": -120.8329,
+        "lastUpdated": "2022-10-20T16:51:27.900Z",
+        "city": "East Odaboro",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "ab19c7d3-ae4b-4e15-a346-0c7d4c4806ac",
+        "siteID": 18834,
+        "address": "2491 Ruben Cliff",
+        "latitude": 52.2471,
+        "longitude": -137.7215,
+        "lastUpdated": "2017-02-17T23:28:04.173Z",
+        "city": "Toledo",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "2053c1a6-b427-4d3e-a1f7-9ed04842ef8b",
+        "siteID": 16492,
+        "address": "1470 Bednar Land",
+        "latitude": 58.3282,
+        "longitude": -128.299,
+        "lastUpdated": "2022-11-22T17:52:41.061Z",
+        "city": "Beahanchester",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "15719f22-68fb-4283-8bc0-58db7495ebb0",
+        "siteID": 15852,
+        "address": "4676 Elinore Burg",
+        "latitude": 58.2407,
+        "longitude": -133.2454,
+        "lastUpdated": "2021-08-01T17:08:02.357Z",
+        "city": "Ignatiusberg",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "8f628027-c82a-43d1-b278-a657394284c4",
+        "siteID": 18438,
+        "address": "553 Medhurst Creek",
+        "latitude": 56.2388,
+        "longitude": -133.2674,
+        "lastUpdated": "2020-07-05T03:55:52.435Z",
+        "city": "Bodebury",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "b00614a9-5ce4-4173-8091-a3f24a21f1cb",
+        "siteID": 20373,
+        "address": "88947 Thiel Plaza",
+        "latitude": 57.6893,
+        "longitude": -121.6733,
+        "lastUpdated": "2023-04-17T08:56:09.544Z",
+        "city": "West Napoleonshire",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "199d72e4-64f5-47e9-96bd-5ae356fc3321",
+        "siteID": 18195,
+        "address": "65220 Federico Ramp",
+        "latitude": 56.1444,
+        "longitude": -138.3111,
+        "lastUpdated": "2017-05-25T15:30:15.408Z",
+        "city": "Isabelleton",
+        "region": "Thompson-Okanagan"
+    },
+    {
+        "uuid": "6c81619c-c49e-4e1a-806d-fc9868a47786",
+        "siteID": 16464,
+        "address": "53270 Deangelo Neck",
+        "latitude": 58.9881,
+        "longitude": -121.5401,
+        "lastUpdated": "2015-09-07T13:41:27.309Z",
+        "city": "Schaeferburgh",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "df39decc-bc65-4b47-936d-c7dae6425765",
+        "siteID": 20009,
+        "address": "7053 Shanahan Road",
+        "latitude": 53.7396,
+        "longitude": -128.4522,
+        "lastUpdated": "2016-10-13T11:00:34.889Z",
+        "city": "Gerardside",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "324c507e-5625-4eeb-815f-d131bb3de30d",
+        "siteID": 17051,
+        "address": "99425 O'Keefe Pass",
+        "latitude": 50.0757,
+        "longitude": -119.8511,
+        "lastUpdated": "2022-02-13T07:52:31.451Z",
+        "city": "Pollichshire",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "137cec30-8b8b-497d-bcc1-7ee9e6913f84",
+        "siteID": 19533,
+        "address": "98894 Kutch Garden",
+        "latitude": 51.6246,
+        "longitude": -121.1281,
+        "lastUpdated": "2021-01-07T08:51:32.522Z",
+        "city": "Starkburgh",
+        "region": "Kootenay"
+    },
+    {
+        "uuid": "a452343d-9837-49a3-88d5-c9901b3c1219",
+        "siteID": 15864,
+        "address": "39734 Erdman Shores",
+        "latitude": 57.2492,
+        "longitude": -133.5176,
+        "lastUpdated": "2019-05-09T08:18:18.569Z",
+        "city": "Laneview",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "47e2f8df-6248-4936-80fc-49a161a04c87",
+        "siteID": 18380,
+        "address": "4251 Stanton Skyway",
+        "latitude": 56.784,
+        "longitude": -118.6645,
+        "lastUpdated": "2020-08-12T18:41:03.270Z",
+        "city": "Beahanport",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "ef9710be-ebf1-431f-bb28-1f23523bd5f2",
+        "siteID": 15634,
+        "address": "1255 Hanna Shore",
+        "latitude": 51.0096,
+        "longitude": -137.5078,
+        "lastUpdated": "2021-10-21T01:31:46.865Z",
+        "city": "Jacobifield",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "c35a2db8-e38a-449a-b01f-911b5df8f878",
+        "siteID": 15676,
+        "address": "31431 Adriana Lodge",
+        "latitude": 51.1276,
+        "longitude": -120.1682,
+        "lastUpdated": "2022-02-25T03:13:59.779Z",
+        "city": "Rauboro",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "8de756d9-0800-4009-9468-754637e30034",
+        "siteID": 16343,
+        "address": "154 Bertrand Shores",
+        "latitude": 50.897,
+        "longitude": -128.2098,
+        "lastUpdated": "2022-04-23T10:06:15.408Z",
+        "city": "Auerport",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "746f75d4-95e2-408d-815f-2dacf72de71c",
+        "siteID": 18168,
+        "address": "73035 Jo Isle",
+        "latitude": 50.102,
+        "longitude": -118.0329,
+        "lastUpdated": "2016-10-07T12:51:53.687Z",
+        "city": "Dooleyshire",
+        "region": "Mainland/Southwest"
+    },
+    {
+        "uuid": "5f3b0729-6e53-409f-be6a-7ca773557d04",
+        "siteID": 17983,
+        "address": "4491 Jessika Gardens",
+        "latitude": 48.1847,
+        "longitude": -138.7335,
+        "lastUpdated": "2022-05-12T10:48:09.931Z",
+        "city": "El Monte",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "ef2b4e81-daeb-4387-beee-884e8c855c37",
+        "siteID": 19311,
+        "address": "7266 Jasmin Lights",
+        "latitude": 58.7472,
+        "longitude": -131.7448,
+        "lastUpdated": "2021-02-13T07:16:31.637Z",
+        "city": "Rancho Cordova",
+        "region": "Vancouver Island/Coast"
+    },
+    {
+        "uuid": "316b1fa4-1bff-4cc0-ad60-4cdd673f5d1f",
+        "siteID": 17127,
+        "address": "806 Alison Passage",
+        "latitude": 55.0202,
+        "longitude": -130.5472,
+        "lastUpdated": "2022-08-06T15:46:01.541Z",
+        "city": "Madilynstead",
+        "region": "Cariboo"
+    },
+    {
+        "uuid": "b0296330-3bce-425c-877f-f78bfcfa3806",
+        "siteID": 16762,
+        "address": "370 Zemlak Ville",
+        "latitude": 56.7495,
+        "longitude": -127.922,
+        "lastUpdated": "2016-05-04T23:40:50.562Z",
+        "city": "Port Alenacester",
+        "region": " North Coast"
+    },
+    {
+        "uuid": "55dc60a0-f189-4946-b1a1-dd132196855a",
+        "siteID": 16911,
+        "address": "46317 Cole Forest",
+        "latitude": 56.2062,
+        "longitude": -132.961,
+        "lastUpdated": "2018-04-01T18:32:47.489Z",
+        "city": "South Bette",
+        "region": "Mainland/Southwest"
+    }
+]
