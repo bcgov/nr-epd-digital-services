@@ -24,7 +24,7 @@ export default function SiteDetailsPage() {
 
             <div className="d-flex justify-content-between">
                 <div>
-                    <Button variant='outline-secondary'>&lt; Back</Button>
+                    <Button variant='outline-secondary' onClick={ ()=> { history.back() } }>&lt; Back</Button>
                     <span>{site.siteID} - {site.address}</span>
                 </div>
                 <div>
