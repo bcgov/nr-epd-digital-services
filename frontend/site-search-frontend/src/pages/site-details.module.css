@@ -1,5 +1,6 @@
 .metadata {
     background-color: var(--main-gray);
+    padding: 20px;
 }
 
 .metadataGrid {
