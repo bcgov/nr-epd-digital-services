@@ -5,91 +5,63 @@ import { Button, Nav } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link, Outlet, useParams } from "react-router-dom";
 import styles from './site-details.module.css'
-import FlexRowItem from "@/components/FlexRowItem";
+import SiteGridItem from "@/features/site-details/SiteGridItem";
+import { useState } from "react";
 
 export default function SiteDetailsPage() {
     const { siteID } = useParams();
+
+    // Todo: Move 'Edit Mode' to redux, same with staff role stuff.
+    const [editMode, setEditMode] = useState(false);
     const siteIDNum = parseInt(siteID);
     const site: Site = useSelector((state: RootState) => state.site.value.find(searchedSite => searchedSite.siteID === siteIDNum));
-    // console.log('siteID', {siteID, site, use: useParams()});
 
-
+    function toggleEdit(){
+        setEditMode(!editMode)
+    }
 
 
     return (
         <>
-        <Header/>
-        <main className='container'>
-            <h2>Site Details- Incomplete</h2>
+            <Header />
+            <main className='container mt-3'>
 
-            <div className="d-flex justify-content-between">
-                <div>
-                    <Button variant='outline-secondary' onClick={ ()=> { history.back() } }>&lt; Back</Button>
-                    <span>{site.siteID} - {site.address}</span>
+                <div className="d-flex justify-content-between">
+                    <div>
+                        <Button className='me-3' variant='outline-secondary' onClick={() => { history.back() }}>&lt; Back</Button>
+                        <span>{site.siteID} - {site.address}</span>
+                    </div>
+                    {!editMode && <div>
+                        <Button className='mx-3' variant='secondary' onClick={toggleEdit}>Edit</Button>
+                        <Button variant='secondary'>Delete</Button>
+                    </div>}
+                    {editMode && <div>
+                        Editting...
+                        <Button variant='secondary' onClick={toggleEdit}>Done</Button>
+                    </div>}
                 </div>
-                <div>
-                    <Button variant='secondary'>Edit</Button>
-                    <Button variant='secondary'>Delete</Button>
-                </div>
-            </div>
 
-            <div className={styles.metadata}>
-                <h4>Site Location</h4>
+                <div className={styles.metadata}>
+                    <h4>Site Location</h4>
 
-                <div className={styles.metadataGrid}>
-                    <div className={styles.metadataGridItem}>
-                        <div className={styles.formLabel}>Site ID</div>
-                        <div>{site.siteID}</div>
-                    </div>
-                    {/* <FlexRowItem label='Site ID'>{site.siteID}</FlexRowItem>
-                    <FlexRowItem label='Victoria File'>{site.victoriaFile}</FlexRowItem> */}
+                    <div className={styles.metadataGrid}>
+                        <SiteGridItem label='Site ID' value={site.siteID} editMode={editMode} />
+                        <SiteGridItem label='Victoria File' value={site.victoriaFile} editMode={editMode}  />
+                        <SiteGridItem label='Regional File' value={site.regionalFile} editMode={editMode}  />
+                        <SiteGridItem label='Address' value={site.address} editMode={editMode} />
+                        <SiteGridItem label='Region' value={site.region} editMode={editMode} />
 
-                    <div className={styles.metadataGridItem}>
-                        <div className={styles.formLabel}>Victoria File</div>
-                        <div>{site.victoriaFile}</div>
-                    </div>
+                        <SiteGridItem label='Latitude' value={site.latitude} extraClasses={styles.gridHalfWidth} editMode={editMode}  />
+                        <SiteGridItem label='Longitude' value={site.longitude} extraClasses={styles.gridHalfWidth} editMode={editMode}  />
 
-                    <div className={styles.metadataGridItem}>
-                        <div className={styles.formLabel}>Regional File</div>
-                        <div>{site.regionalFile}</div>
-                    </div>
-
-                    <div className={styles.metadataGridItem}>
-                        <div className={styles.formLabel}>Address File</div>
-                        <div>{site.address}</div>
-                    </div>
-
-                    <div className={styles.metadataGridItem}>
-                        <div className={styles.formLabel}>Region</div>
-                        <div>{site.region}</div>
-                    </div>
-
-                    <div className={styles.metadataGridItem + " " + styles.gridHalfWidth}>
-                        <div className={styles.formLabel}>Latitude</div>
-                        <div>{site.latitude}</div>
-                    </div>
-
-                    <div className={styles.metadataGridItem + " " + styles.gridHalfWidth}>
-                        <div className={styles.formLabel}>Longitude</div>
-                        <div>{site.longitude}</div>
-                    </div>
-
-
-
-                    <div className={styles.metadataGridItem + " " +  styles.gridFullwidth}>
-                        <div className={styles.formLabel}>Parcel IDs</div>
-                        <div>{site.victoriaFile}</div>
-                    </div>
-
-                    <div className={styles.metadataGridItem + " " + styles.gridFullwidth}>
-                        <div className={styles.formLabel}>Location Description</div>
-                        <div>{site.locationDescription}</div>
+                        <SiteGridItem label='Parcel IDs' value={site.victoriaFile} extraClasses={styles.gridFullwidth} editMode={editMode}  />
+                        <SiteGridItem label='Location Description' value={site.locationDescription} extraClasses={styles.gridFullwidth} editMode={editMode}  />
+                    
                     </div>
                 </div>
-            </div>
 
 
-            <div className={styles.metadata}>
+                <div className={styles.metadata}>
                     <Nav variant="pills" defaultActiveKey="/summary">
                         <Nav.Item>
                             <Nav.Link as={Link} to={`/site/${siteID}/`} eventKey="link-0">Summary</Nav.Link>
@@ -105,9 +77,9 @@ export default function SiteDetailsPage() {
                         </Nav.Item>
                     </Nav>
                     <Outlet />
-            </div>
-            
-        </main>
+                </div>
+
+            </main>
         </>
     )
 }
