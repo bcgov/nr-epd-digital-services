@@ -17,6 +17,10 @@ import { RootState } from "@/store";
 import SiteDetailsPage from "./site-details";
 import UpdateMapCentre from "@/features/map/UpdateMapCentre";
 
+// Seeing if this fixes marker being loaded in prod
+import "leaflet/dist/images/marker-shadow.png";
+import "leaflet/dist/images/marker-icon-2x.png";
+
 
 
 
