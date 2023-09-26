@@ -64,6 +64,10 @@ export default function MapPage() {
         // setZoom(10)
     }
 
+    function onLayerClick(e) {
+        console.log('onLayerClick', { e })
+    }
+
     return (
         <>
             <Header />
@@ -116,8 +120,13 @@ export default function MapPage() {
                     <WMSTileLayer
                         url="https://openmaps.gov.bc.ca/geo/pub/ows"
                         layers="pub:WHSE_CADASTRE.PMBC_PARCEL_FABRIC_POLY_FA_SVW"
-                        transparent={true}
+                        transparent={false}
                         format="image/png"
+                        // eventHandlers={{
+                        //     click: onLayerClick
+                        // }}
+                        eventHandlers={{ click: onLayerClick }}
+                         
                     />
 
                     <ZoomControl position='bottomleft' />
