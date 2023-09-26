@@ -1,11 +1,11 @@
 {
     "forms": [
         {
-            "title": "Notification of Independent Remediation V1",
+            "title": "Notification of Independent Remediation",
             "display": "form",
             "type": "form",
-            "name": "nirBundleForm-latest",
-            "path": "nirbundleformlatest",
+            "name": "nirBundleForm",
+            "path": "nirbundleform",
             "tags": [
                 "common"
             ],
