@@ -3,6 +3,8 @@
     padding: 20px;
     margin-bottom: 20px;
     margin-top: 20px;
+    min-height: 300px;
+    border-radius: 5px;
 }
 
 .metadataGrid {
