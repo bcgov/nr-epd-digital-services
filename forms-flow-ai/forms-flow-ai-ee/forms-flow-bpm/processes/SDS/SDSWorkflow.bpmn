@@ -23,9 +23,10 @@
         <bpmn:flowNodeRef>Event_1jftbqf</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_0r9g0v1" name="Site Owner">
+        <bpmn:flowNodeRef>Gateway_0rg109d</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1gun2rz</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1ljp4g2</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Gateway_0rg109d</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1ra9ugf</bpmn:flowNodeRef>
       </bpmn:lane>
     </bpmn:laneSet>
     <bpmn:exclusiveGateway id="Gateway_1cvtuda" name="Is Site Owner Reqd">
@@ -82,6 +83,9 @@ system.out.println ("isApprovingAuthorityReqd"+execution.getVariable('isApprovin
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isAgentFillingForm== true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0axurx6" sourceRef="Activity_1ljp4g2" targetRef="Activity_1gun2rz">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormBPMFilteredDataPipelineListener" event="take" />
+      </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Signed'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0y97y5q" sourceRef="Activity_1ozfgid" targetRef="Gateway_1cvtuda" />
@@ -115,7 +119,7 @@ system.out.println ("isApprovingAuthorityReqd"+execution.getVariable('isApprovin
         </camunda:executionListener>
       </bpmn:extensionElements>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0ib3exu" sourceRef="Activity_1gun2rz" targetRef="Gateway_0rg109d" />
+    <bpmn:sequenceFlow id="Flow_0ib3exu" sourceRef="Activity_1gun2rz" targetRef="Activity_1ra9ugf" />
     <bpmn:sequenceFlow id="Flow_1xw8647" name="No" sourceRef="Gateway_0rg109d" targetRef="Activity_06nypz0">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isApprovingAuthorityReqd == false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
@@ -205,6 +209,22 @@ system.out.println ("isApprovingAuthorityReqd"+execution.getVariable('isApprovin
       <bpmn:incoming>Flow_1lqa1uz</bpmn:incoming>
       <bpmn:outgoing>Flow_1vu5vy0</bpmn:outgoing>
     </bpmn:userTask>
+    <bpmn:callActivity id="Activity_0dughh2" name="Send Email Notifications" calledElement="common-email-workflow">
+      <bpmn:extensionElements>
+        <camunda:in businessKey="#{execution.processBusinessKey}" />
+        <camunda:in variables="all" />
+        <camunda:out variables="all" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1yl0zu1</bpmn:incoming>
+      <bpmn:incoming>Flow_1lfvq5z</bpmn:incoming>
+      <bpmn:outgoing>Flow_0qui51z</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:sequenceFlow id="Flow_0qui51z" sourceRef="Activity_0dughh2" targetRef="Task_05ulff4" />
+    <bpmn:exclusiveGateway id="Gateway_0rg109d" name="Is Municipal Approval Reqd">
+      <bpmn:incoming>Flow_163w4dq</bpmn:incoming>
+      <bpmn:outgoing>Flow_1xw8647</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0ci62kp</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
     <bpmn:task id="Activity_1gun2rz" name="Debug Log">
       <bpmn:extensionElements>
         <camunda:executionListener event="start">
@@ -235,22 +255,17 @@ system.out.println ("form signed");</camunda:script>
       <bpmn:incoming>Flow_1ezlpcw</bpmn:incoming>
       <bpmn:outgoing>Flow_0axurx6</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:exclusiveGateway id="Gateway_0rg109d" name="Is Municipal Approval Reqd">
+    <bpmn:sequenceFlow id="Flow_163w4dq" sourceRef="Activity_1ra9ugf" targetRef="Gateway_0rg109d" />
+    <bpmn:scriptTask id="Activity_1ra9ugf" name="Recheck AA Required" scriptFormat="javascript">
       <bpmn:incoming>Flow_0ib3exu</bpmn:incoming>
-      <bpmn:outgoing>Flow_1xw8647</bpmn:outgoing>
-      <bpmn:outgoing>Flow_0ci62kp</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:callActivity id="Activity_0dughh2" name="Send Email Notifications" calledElement="common-email-workflow">
-      <bpmn:extensionElements>
-        <camunda:in businessKey="#{execution.processBusinessKey}" />
-        <camunda:in variables="all" />
-        <camunda:out variables="all" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1yl0zu1</bpmn:incoming>
-      <bpmn:incoming>Flow_1lfvq5z</bpmn:incoming>
-      <bpmn:outgoing>Flow_0qui51z</bpmn:outgoing>
-    </bpmn:callActivity>
-    <bpmn:sequenceFlow id="Flow_0qui51z" sourceRef="Activity_0dughh2" targetRef="Task_05ulff4" />
+      <bpmn:outgoing>Flow_163w4dq</bpmn:outgoing>
+      <bpmn:script>var system = java.lang.System;
+var decommissioning= execution.getVariable('section5DeclarationsCheckboxDecommissioning');
+var ceasingOperations= execution.getVariable('section5DeclarationsCheckboxCeasingOperations');
+execution.setVariable('isApprovingAuthorityReqd',!(decommissioning||ceasingOperations));
+
+system.out.println ("isApprovingAuthorityReqd"+execution.getVariable('isApprovingAuthorityReqd'));</bpmn:script>
+    </bpmn:scriptTask>
   </bpmn:process>
   <bpmn:message id="Message_1ngb2eg" name="application_resubmitted" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -321,35 +336,39 @@ system.out.println ("form signed");</camunda:script>
         <dc:Bounds x="493" y="902" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1gun2rz_di" bpmnElement="Activity_1gun2rz">
-        <dc:Bounds x="303" y="560" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1mbwv09" bpmnElement="Activity_1ljp4g2">
-        <dc:Bounds x="493" y="560" width="100" height="80" />
+      <bpmndi:BPMNShape id="BPMNShape_0vrofck" bpmnElement="Activity_0dughh2">
+        <dc:Bounds x="973" y="370" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0rg109d_di" bpmnElement="Gateway_0rg109d" isMarkerVisible="true">
-        <dc:Bounds x="328" y="715" width="50" height="50" />
+        <dc:Bounds x="328" y="775" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="236" y="726" width="73" height="27" />
+          <dc:Bounds x="236" y="786" width="73" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0vrofck" bpmnElement="Activity_0dughh2">
-        <dc:Bounds x="973" y="370" width="100" height="80" />
+      <bpmndi:BPMNShape id="Activity_1gun2rz_di" bpmnElement="Activity_1gun2rz">
+        <dc:Bounds x="303" y="530" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1mbwv09" bpmnElement="Activity_1ljp4g2">
+        <dc:Bounds x="493" y="530" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1z0yz4f_di" bpmnElement="Activity_1ra9ugf">
+        <dc:Bounds x="303" y="650" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1ezlpcw_di" bpmnElement="Flow_1ezlpcw">
         <di:waypoint x="378" y="372" />
         <di:waypoint x="543" y="372" />
-        <di:waypoint x="543" y="560" />
+        <di:waypoint x="543" y="530" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="452" y="353" width="18" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0axurx6_di" bpmnElement="Flow_0axurx6">
-        <di:waypoint x="493" y="600" />
-        <di:waypoint x="403" y="600" />
+        <di:waypoint x="493" y="570" />
+        <di:waypoint x="403" y="570" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0y97y5q_di" bpmnElement="Flow_0y97y5q">
         <di:waypoint x="353" y="302" />
@@ -357,9 +376,9 @@ system.out.println ("form signed");</camunda:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_152v1ui_di" bpmnElement="Flow_152v1ui">
         <di:waypoint x="353" y="397" />
-        <di:waypoint x="353" y="560" />
+        <di:waypoint x="353" y="530" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="322" y="453" width="15" height="14" />
+          <dc:Bounds x="322" y="441" width="15" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_180n8hx" bpmnElement="Flow_1la2yud">
@@ -374,22 +393,22 @@ system.out.println ("form signed");</camunda:script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0ib3exu_di" bpmnElement="Flow_0ib3exu">
-        <di:waypoint x="353" y="640" />
-        <di:waypoint x="353" y="715" />
+        <di:waypoint x="353" y="610" />
+        <di:waypoint x="353" y="650" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1xw8647_di" bpmnElement="Flow_1xw8647">
-        <di:waypoint x="353" y="765" />
+        <di:waypoint x="353" y="825" />
         <di:waypoint x="353" y="1320" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="335" y="806" width="15" height="14" />
+          <dc:Bounds x="335" y="861" width="15" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0ci62kp_di" bpmnElement="Flow_0ci62kp">
-        <di:waypoint x="378" y="740" />
-        <di:waypoint x="543" y="740" />
+        <di:waypoint x="378" y="800" />
+        <di:waypoint x="543" y="800" />
         <di:waypoint x="543" y="902" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="452" y="722" width="18" height="14" />
+          <dc:Bounds x="452" y="782" width="18" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1lqa1uz_di" bpmnElement="Flow_1lqa1uz">
@@ -447,6 +466,10 @@ system.out.println ("form signed");</camunda:script>
       <bpmndi:BPMNEdge id="Flow_0qui51z_di" bpmnElement="Flow_0qui51z">
         <di:waypoint x="1023" y="370" />
         <di:waypoint x="1023" y="302" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_163w4dq_di" bpmnElement="Flow_163w4dq">
+        <di:waypoint x="353" y="730" />
+        <di:waypoint x="353" y="775" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
