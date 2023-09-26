@@ -29,7 +29,7 @@ export default function SiteDetailsPage() {
                 <div className="d-flex justify-content-between">
                     <div>
                         <Button className='me-3' variant='outline-secondary' onClick={() => { history.back() }}>&lt; Back</Button>
-                        <span>{site.siteID} - {site.address}</span>
+                        <span className="fw-bolder">{site.siteID} - {site.address}</span>
                     </div>
                     {!editMode && <div>
                         <Button className='mx-3' variant='secondary' onClick={toggleEdit}>Edit</Button>
