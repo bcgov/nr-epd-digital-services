@@ -16,6 +16,11 @@ import MapPage from './pages/map.tsx';
 import Notations from './features/site-details/notations.tsx';
 import Participants from './features/site-details/participants.tsx';
 import Documents from './features/site-details/documents.tsx';
+import AssociatedSites from './features/site-details/associated-sites.tsx';
+import SuspectLandUses from './features/site-details/suspect-land-uses.tsx';
+import ParcelDescription from './features/site-details/parcel-description.tsx';
+import SiteProfile from './features/site-details/site-profile.tsx';
+import ActivityLog from './features/site-details/activity-log.tsx';
 
 
 const router = createBrowserRouter([
@@ -42,6 +47,26 @@ const router = createBrowserRouter([
       {
         path: "documents",
         element: <Documents />
+      },
+      {
+        path: "associated-sites",
+        element: <AssociatedSites />
+      },
+      {
+        path: "suspect-land-uses",
+        element: <SuspectLandUses />
+      },
+      {
+        path: "parcel-description",
+        element: <ParcelDescription />
+      },
+      {
+        path: "site-profile",
+        element: <SiteProfile />
+      },
+      {
+        path: "activity-log",
+        element: <ActivityLog />
       }
     ]
   },

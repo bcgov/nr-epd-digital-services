@@ -54,7 +54,7 @@ export default function SiteDetailsPage() {
                         <SiteGridItem label='Latitude' value={site.latitude} extraClasses={styles.gridHalfWidth} editMode={editMode}  />
                         <SiteGridItem label='Longitude' value={site.longitude} extraClasses={styles.gridHalfWidth} editMode={editMode}  />
 
-                        <SiteGridItem label='Parcel IDs' value={site.victoriaFile} extraClasses={styles.gridFullwidth} editMode={editMode}  />
+                        <SiteGridItem label='Parcel IDs' value={site.parcelIDs.join(', ')} extraClasses={styles.gridFullwidth} editMode={editMode}  />
                         <SiteGridItem label='Location Description' value={site.locationDescription} extraClasses={styles.gridFullwidth} editMode={editMode}  />
                     
                     </div>
@@ -62,7 +62,7 @@ export default function SiteDetailsPage() {
 
 
                 <div className={styles.metadata}>
-                    <Nav variant="pills" defaultActiveKey="/summary">
+                    <Nav variant="pills" defaultActiveKey="link-0">
                         <Nav.Item>
                             <Nav.Link as={Link} to={`/site/${siteID}/`} eventKey="link-0">Summary</Nav.Link>
                         </Nav.Item>
@@ -74,6 +74,21 @@ export default function SiteDetailsPage() {
                         </Nav.Item>
                         <Nav.Item>
                             <Nav.Link as={Link} to={`/site/${siteID}/documents/`} eventKey="link-3">Documents</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link as={Link} to={`/site/${siteID}/associated-sites/`} eventKey="link-4">Associated Sites</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link as={Link} to={`/site/${siteID}/suspect-land-uses/`} eventKey="link-5">Suspect Land Uses</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link as={Link} to={`/site/${siteID}/parcel-description/`} eventKey="link-6">Parcel Description</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link as={Link} to={`/site/${siteID}/site-profile/`} eventKey="link-7">Site Profile</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link as={Link} to={`/site/${siteID}/activity-log/`} eventKey="link-8">Activity Log</Nav.Link>
                         </Nav.Item>
                     </Nav>
                     <Outlet />
