@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client'
 import Search from './pages/search.tsx'
 import {
   createBrowserRouter,
+  Navigate,
   RouterProvider,
 } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
@@ -21,6 +22,7 @@ import SuspectLandUses from './features/site-details/suspect-land-uses.tsx';
 import ParcelDescription from './features/site-details/parcel-description.tsx';
 import SiteProfile from './features/site-details/site-profile.tsx';
 import ActivityLog from './features/site-details/activity-log.tsx';
+import Summary from './features/site-details/summary.tsx';
 
 
 const router = createBrowserRouter([
@@ -36,6 +38,11 @@ const router = createBrowserRouter([
     path: '/site/:siteID',
     element: <SiteDetailsPage />,
     children: [
+      {
+        // Summary is special case, happens by default, so no path.
+        path: "",
+        element: <Summary />,
+      },
       {
         path: "notations",
         element: <Notations />
