@@ -124,13 +124,8 @@ export default function MapPage() {
                     <WMSTileLayer
                         url="https://openmaps.gov.bc.ca/geo/pub/ows"
                         layers="pub:WHSE_CADASTRE.PMBC_PARCEL_FABRIC_POLY_FA_SVW"
-                        transparent={false}
+                        transparent={true}
                         format="image/png"
-                        // eventHandlers={{
-                        //     click: onLayerClick
-                        // }}
-                        eventHandlers={{ click: onLayerClick }}
-                         
                     />
 
                     <ZoomControl position='bottomleft' />
