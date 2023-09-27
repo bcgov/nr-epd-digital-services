@@ -24,6 +24,9 @@ export class Site {
         // This "new Date" is necessary when loading JSON dummy data which stores date as a string
         // This will likely have to change when integrating with API
         this.lastUpdated = new Date(this.lastUpdated);
+
+        // Initialize all dates inside notations too
+        this.notations = this.notations.map(note => new Notation(note));
     }
 }
 
