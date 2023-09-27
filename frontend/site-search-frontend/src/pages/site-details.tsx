@@ -61,6 +61,7 @@ export default function SiteDetailsPage() {
 
 
                 <div className={styles.metadata}>
+                    {/* TODO: Fix defaultActiveKey to work on refresh based on URL. Currently it requires state that is lost on refresh. */}
                     <Nav variant="pills" defaultActiveKey="link-0" className='mb-4'>
                         <Nav.Item>
                             <Nav.Link as={Link} to={`/site/${siteID}/`} eventKey="link-0">Summary</Nav.Link>
