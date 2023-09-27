@@ -56,13 +56,12 @@ export default function SiteDetailsPage() {
 
                         <SiteGridItem label='Parcel IDs' value={site.parcelIDs.join(', ')} extraClasses={styles.gridFullwidth} editMode={editMode}  />
                         <SiteGridItem label='Location Description' value={site.locationDescription} extraClasses={styles.gridFullwidth} editMode={editMode}  />
-                    
                     </div>
                 </div>
 
 
                 <div className={styles.metadata}>
-                    <Nav variant="pills" defaultActiveKey="link-0">
+                    <Nav variant="pills" defaultActiveKey="link-0" className='mb-4'>
                         <Nav.Item>
                             <Nav.Link as={Link} to={`/site/${siteID}/`} eventKey="link-0">Summary</Nav.Link>
                         </Nav.Item>
