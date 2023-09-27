@@ -39,3 +39,7 @@
     font-weight: bolder;
     background-color: var(--header-gray);
 }
+
+.formInput:read-only {
+    background-color: var(--input-gray)
+}
