@@ -1,0 +1,10 @@
+.searchBar {
+    background-color: var(--input-gray);
+    border: 1px solid black;
+}
+
+.notationItem {
+    border: 1px solid black;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+}
