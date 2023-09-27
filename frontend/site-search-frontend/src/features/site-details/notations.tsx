@@ -2,31 +2,19 @@ import { Button, Dropdown, DropdownButton } from 'react-bootstrap'
 import styles from './css/notations.module.css'
 import siteDetailsStyles from '@/pages/site-details.module.css'
 import SiteGridItem from './SiteGridItem'
-
-function NotationItem() {
-
-    return (
-        <div className={styles.notationItem}>
-            <div className="d-flex justify-content-between">
-                <div className="d-inline-flex">
-                    <p>Notation 1</p>
-                    <p className='mx-3'>Created: 1234-01-12</p>
-                </div>
-                <div className="d-inline-flex">
-                    <p className='mx-3'>SR</p>
-                    <p>DELETE</p>
-                </div>
-            </div>
-            <div>
-                <SiteGridItem label='Notation Type' value='todo' extraClasses={siteDetailsStyles.gridFullwidth} editMode={false} />
-
-            </div>
-        </div>
-    )
-}
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Notation, Site } from '@/api/sites';
+import { RootState } from '@/store';
 
 
 export default function Notations() {
+    const { siteID } = useParams();
+    const siteIDNum = parseInt(siteID);
+    const site: Site = useSelector((state: RootState) => state.site.value.find(searchedSite => searchedSite.siteID === siteIDNum));
+
+    console.log('site notations', site.notations);
+
 
     return (
         <div>
@@ -48,9 +36,36 @@ export default function Notations() {
 
             {/* TODO - Make below it's own component, even in same page? */}
 
-            <NotationItem />
+            {/* <NotationItem /> */}
+            {site.notations.map((siteNotationData, index) => {
+                return <NotationItem key={index} notation={siteNotationData} index={index} />
+            })}
 
 
+        </div>
+    )
+}
+
+
+function NotationItem( { notation, index }: {notation: Notation, index: number} ) {
+
+    return (
+        <div className={styles.notationItem}>
+            <div className="d-flex justify-content-between">
+                <div className="d-inline-flex">
+                    <p>Notation {index + 1}</p>
+                    <p className='mx-3'>Created: {notation.createdAt.toISOString().split('T')[0]}</p>
+                </div>
+                <div className="d-inline-flex">
+                    <p className='mx-3'>SR</p>
+                    <p>DELETE</p>
+                </div>
+            </div>
+            <div>
+                <SiteGridItem label='Notation Type' value={notation.notationType} extraClasses={siteDetailsStyles.gridFullwidth} editMode={false} />
+                <SiteGridItem label='Notation Class' value={notation.notationClass} extraClasses={siteDetailsStyles.gridFullwidth} editMode={false} />
+
+            </div>
         </div>
     )
 }
