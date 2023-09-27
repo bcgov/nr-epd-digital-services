@@ -11,17 +11,17 @@ import { useLocation, useSearchParams } from "react-router-dom";
 import { Site } from "@/api/sites";
 import { useSelector } from "react-redux";
 import { LatLngExpression } from "leaflet";
-// import CloseButton from 'react-bootstrap/CloseButton';
 import MapDetailsPane from "@/features/map/MapDetailsPane";
 import { RootState } from "@/store";
-import SiteDetailsPage from "./site-details";
 import UpdateMapCentre from "@/features/map/UpdateMapCentre";
+import icon from "leaflet/dist/images/marker-icon.png";
+import iconShadow from "leaflet/dist/images/marker-shadow.png";
+import L from "leaflet";
 
-// Seeing if this fixes marker being loaded in prod
-import "leaflet/dist/images/marker-shadow.png";
-import "leaflet/dist/images/marker-icon-2x.png";
-
-
+let DefaultIcon = L.icon({
+    iconUrl: icon,
+    shadowUrl: iconShadow,
+  });
 
 
 export default function MapPage() {
