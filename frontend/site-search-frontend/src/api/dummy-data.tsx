@@ -47,7 +47,7 @@ function randomNotation(): Notation {
         }
     }
 
-    return ({
+    return {
         createdAt: faker.date.past({years: 10}),
         completed: faker.date.past({years: 10}),
         initiated: faker.date.past({years: 10}),
@@ -59,5 +59,5 @@ function randomNotation(): Notation {
         // notationParticipants: [ Array.from({ length: faker.number.int({min: 1, max: 5}, () => { })  }) ]
         notationParticipants: Array.from({length: faker.number.int({min: 2, max: 5})}, () => {return randomNotationParticipant()}) 
         // notationParticipants: Array.from({length: 5}, () => {return randomNotationParticipant()}) 
-    })
+    }
 }
