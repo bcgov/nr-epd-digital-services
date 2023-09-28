@@ -3,7 +3,7 @@ import Header from "@/components/Header"
 import { RootState } from "@/store";
 import { Button, Nav } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Outlet, useParams } from "react-router-dom";
+import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 import styles from './site-details.module.css'
 import SiteGridItem from "@/features/site-details/SiteGridItem";
 import { useState } from "react";
@@ -13,13 +13,13 @@ export default function SiteDetailsPage() {
     const { siteID } = useParams();
     const editMode = useSelector((state: RootState) => state.edit.editMode)
     const siteIDNum = parseInt(siteID);
+    const location = useLocation();
     const site: Site = useSelector((state: RootState) => state.site.value.find(searchedSite => searchedSite.siteID === siteIDNum));
     const dispatch = useDispatch();
 
     function toggleEditClick(){
         dispatch(toggleEdit())
     }
-
 
     return (
         <>
@@ -61,31 +61,31 @@ export default function SiteDetailsPage() {
 
 
                 <div className={styles.metadata}>
-                    {/* TODO: Fix defaultActiveKey to work on refresh based on URL. Currently it requires state that is lost on refresh. */}
-                    <Nav variant="pills" defaultActiveKey="link-0" className='mb-4'>
+                    {/* defaultActiveKey depends on eventKeys matching the same as the `to` field */}
+                    <Nav variant="pills" defaultActiveKey={location.pathname} className='mb-4'>
                         <Nav.Item>
-                            <Nav.Link as={Link} to={`/site/${siteID}/`} eventKey="link-0">Summary</Nav.Link>
+                            <Nav.Link as={Link} to={`/site/${siteID}/`} eventKey={`/site/${siteID}/`} >Summary</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={Link} to={`/site/${siteID}/notations/`} eventKey="link-1">Notations</Nav.Link>
+                            <Nav.Link as={Link} to={`/site/${siteID}/notations/`} eventKey={`/site/${siteID}/notations/`}>Notations</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={Link} to={`/site/${siteID}/participants/`} eventKey="link-2">Site Participants</Nav.Link>
+                            <Nav.Link as={Link} to={`/site/${siteID}/participants/`} eventKey={`/site/${siteID}/participants/`} >Site Participants</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={Link} to={`/site/${siteID}/documents/`} eventKey="link-3">Documents</Nav.Link>
+                            <Nav.Link as={Link} to={`/site/${siteID}/documents/`} eventKey={`/site/${siteID}/documents/`}>Documents</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={Link} to={`/site/${siteID}/associated-sites/`} eventKey="link-4">Associated Sites</Nav.Link>
+                            <Nav.Link as={Link} to={`/site/${siteID}/associated-sites/`} eventKey={`/site/${siteID}/associated-sites/`}>Associated Sites</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={Link} to={`/site/${siteID}/suspect-land-uses/`} eventKey="link-5">Suspect Land Uses</Nav.Link>
+                            <Nav.Link as={Link} to={`/site/${siteID}/suspect-land-uses/`} eventKey={`/site/${siteID}/suspect-land-uses/`}>Suspect Land Uses</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={Link} to={`/site/${siteID}/parcel-description/`} eventKey="link-6">Parcel Description</Nav.Link>
+                            <Nav.Link as={Link} to={`/site/${siteID}/parcel-description/`} eventKey={`/site/${siteID}/parcel-description/`}>Parcel Description</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={Link} to={`/site/${siteID}/site-profile/`} eventKey="link-7">Site Profile</Nav.Link>
+                            <Nav.Link as={Link} to={`/site/${siteID}/site-profile/`} eventKey={`/site/${siteID}/site-profile/`}>Site Profile</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
                             <Nav.Link as={Link} to={`/site/${siteID}/activity-log/`} eventKey="link-8">Activity Log</Nav.Link>
