@@ -12,8 +12,14 @@ export default function Notations() {
     const { siteID } = useParams();
     const siteIDNum = parseInt(siteID);
     const site: Site = useSelector((state: RootState) => state.site.value.find(searchedSite => searchedSite.siteID === siteIDNum));
+    const editMode = useSelector((state: RootState) => state.edit.editMode)
+    
 
     console.log('site notations', site.notations);
+
+    function newNotation(){
+        console.log('new notation clicked, update store');
+    }
 
 
     return (
@@ -32,11 +38,8 @@ export default function Notations() {
                 </div>
             </div>
 
-            <Button variant='secondary'>+ New Notation</Button>
+            {editMode && <Button onClick={newNotation} variant='secondary'>+ New Notation</Button> }
 
-            {/* TODO - Make below it's own component, even in same page? */}
-
-            {/* <NotationItem /> */}
             {site.notations.map((siteNotationData, index) => {
                 return <NotationItem key={index} notation={siteNotationData} index={index} />
             })}
@@ -48,23 +51,41 @@ export default function Notations() {
 
 
 function NotationItem( { notation, index }: {notation: Notation, index: number} ) {
+    const isMinistry = useSelector((state: RootState) => state.user.isMinistry);
+    const editMode = useSelector((state: RootState) => state.edit.editMode)
 
     return (
         <div className={styles.notationItem}>
             <div className="d-flex justify-content-between">
                 <div className="d-inline-flex">
                     <p>Notation {index + 1}</p>
-                    <p className='mx-3'>Created: {notation.createdAt.toISOString().split('T')[0]}</p>
+                    {isMinistry && <p className='mx-3'>Created: {notation.createdAt.toISOString().split('T')[0]}</p> }
                 </div>
                 <div className="d-inline-flex">
                     <p className='mx-3'>SR</p>
                     <p>DELETE</p>
                 </div>
             </div>
-            <div>
-                <SiteGridItem label='Notation Type' value={notation.notationType} extraClasses={siteDetailsStyles.gridFullwidth} editMode={false} />
-                <SiteGridItem label='Notation Class' value={notation.notationClass} extraClasses={siteDetailsStyles.gridFullwidth} editMode={false} />
+            <div className={siteDetailsStyles.metadataGrid}>
+                <SiteGridItem label='Notation Type' value={notation.notationType} extraClasses={siteDetailsStyles.gridFullwidth} showSR={editMode} />
+                <SiteGridItem label='Notation Class' value={notation.notationClass} extraClasses={siteDetailsStyles.gridFullwidth} showSR={editMode}  />
 
+                <SiteGridItem label='Initiated' value={notation.initiated.toISOString().split('T')[0]} showSR={editMode} extraClasses={siteDetailsStyles.gridHalfWidth} />
+                <SiteGridItem label='Completed' value={notation.completed.toISOString().split('T')[0]} showSR={editMode} extraClasses={siteDetailsStyles.gridHalfWidth} />
+                <SiteGridItem label='Ministry Contact' value={notation.ministryContact} showSR={editMode} extraClasses={siteDetailsStyles.gridHalfWidth} />
+                <SiteGridItem label='Note' value={notation.note} showSR={editMode} extraClasses={siteDetailsStyles.gridSpan3} />
+                <SiteGridItem label='Required Actions' value={notation.requestedActions} showSR={editMode} extraClasses={siteDetailsStyles.gridFullwidth} />
+            </div>
+
+
+            <div>
+                <div className="mt-4 d-flex justify-content between">
+                    <div className="d-inline-flex">
+                        <Button variant='secondary'>+ Add</Button>
+                        <Button disabled={true} variant='secondary'>Make Selected Visible to Public</Button>
+                    </div>
+                </div>
+                Todo table goes here.
             </div>
         </div>
     )

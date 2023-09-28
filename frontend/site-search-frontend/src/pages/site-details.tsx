@@ -2,22 +2,22 @@ import { Site } from "@/api/sites";
 import Header from "@/components/Header"
 import { RootState } from "@/store";
 import { Button, Nav } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useParams } from "react-router-dom";
 import styles from './site-details.module.css'
 import SiteGridItem from "@/features/site-details/SiteGridItem";
 import { useState } from "react";
+import { toggleEdit } from '@/features/site-details/edit-mode/editModeSlice';
 
 export default function SiteDetailsPage() {
     const { siteID } = useParams();
-
-    // Todo: Move 'Edit Mode' to redux, same with staff role stuff.
-    const [editMode, setEditMode] = useState(false);
+    const editMode = useSelector((state: RootState) => state.edit.editMode)
     const siteIDNum = parseInt(siteID);
     const site: Site = useSelector((state: RootState) => state.site.value.find(searchedSite => searchedSite.siteID === siteIDNum));
+    const dispatch = useDispatch();
 
-    function toggleEdit(){
-        setEditMode(!editMode)
+    function toggleEditClick(){
+        dispatch(toggleEdit())
     }
 
 
@@ -32,12 +32,12 @@ export default function SiteDetailsPage() {
                         <span className="fw-bolder">{site.siteID} - {site.address}</span>
                     </div>
                     {!editMode && <div>
-                        <Button className='mx-3' variant='secondary' onClick={toggleEdit}>Edit</Button>
+                        <Button className='mx-3' variant='secondary' onClick={toggleEditClick}>Edit</Button>
                         <Button variant='warning'>Delete</Button>
                     </div>}
                     {editMode && <div>
-                        <Button variant='primary' className='mx-4' onClick={toggleEdit}>Save</Button>
-                        <Button variant='secondary' onClick={toggleEdit}>Cancel</Button>
+                        <Button variant='primary' className='mx-4' onClick={toggleEditClick}>Save</Button>
+                        <Button variant='secondary' onClick={toggleEditClick}>Cancel</Button>
                     </div>}
                 </div>
 
@@ -45,17 +45,17 @@ export default function SiteDetailsPage() {
                     <h4>Site Location</h4>
 
                     <div className={styles.metadataGrid}>
-                        <SiteGridItem label='Site ID' value={site.siteID} editMode={editMode} />
-                        <SiteGridItem label='Victoria File' value={site.victoriaFile} editMode={editMode}  />
-                        <SiteGridItem label='Regional File' value={site.regionalFile} editMode={editMode}  />
-                        <SiteGridItem label='Address' value={site.address} editMode={editMode} />
-                        <SiteGridItem label='Region' value={site.region} editMode={editMode} />
+                        <SiteGridItem label='Site ID' value={site.siteID}  />
+                        <SiteGridItem label='Victoria File' value={site.victoriaFile}   />
+                        <SiteGridItem label='Regional File' value={site.regionalFile}   />
+                        <SiteGridItem label='Address' value={site.address}  />
+                        <SiteGridItem label='Region' value={site.region}  />
 
-                        <SiteGridItem label='Latitude' value={site.latitude} extraClasses={styles.gridHalfWidth} editMode={editMode}  />
-                        <SiteGridItem label='Longitude' value={site.longitude} extraClasses={styles.gridHalfWidth} editMode={editMode}  />
+                        <SiteGridItem label='Latitude' value={site.latitude} extraClasses={styles.gridHalfWidth}   />
+                        <SiteGridItem label='Longitude' value={site.longitude} extraClasses={styles.gridHalfWidth}   />
 
-                        <SiteGridItem label='Parcel IDs' value={site.parcelIDs.join(', ')} extraClasses={styles.gridFullwidth} editMode={editMode}  />
-                        <SiteGridItem label='Location Description' value={site.locationDescription} extraClasses={styles.gridFullwidth} editMode={editMode}  />
+                        <SiteGridItem label='Parcel IDs' value={site.parcelIDs.join(', ')} extraClasses={styles.gridFullwidth}   />
+                        <SiteGridItem label='Location Description' value={site.locationDescription} extraClasses={styles.gridFullwidth}   />
                     </div>
                 </div>
 
