@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Notation, Site } from '@/api/sites';
 import { RootState } from '@/store';
-import { addNotationToSite, addNotationBySiteID, fixedNestedItemAdded, addNotationDebug, updateSite } from '../simple-search/simple-search';
+import { updateSite } from '../simple-search/simple-search';
 import { useEffect } from 'react';
 
 
@@ -18,14 +18,13 @@ export default function Notations() {
     const dispatch = useDispatch();
 
 
-    console.log('site notations', site.notations);
+    // console.log('site notations', site.notations);
 
-    useEffect(() => { console.log('nav useEffect')}, [site])
+    // useEffect(() => { console.log('nav useEffect')}, [site])
 
 
     // Note: This is currently not rendering immediately! After doing dispatch, click to other tab and back and see it works.
     function newNotation() {
-        console.log('new notation clicked, update store');
         const newNotation = new Notation({
             completed: new Date(),
             createdAt: new Date(),
@@ -37,11 +36,18 @@ export default function Notations() {
             note: '',
             requestedActions: []
         })
+        const newSite: Site = {...site, notations: [newNotation, ...site.notations]}
 
-        const newSite: Site = {...site, notations: [(newNotation as any) , ...site.notations]}
-
-        // console.log('newNotation dispatch...', { site, newSite})
         dispatch(updateSite(newSite));
+    }
+
+    function newParticipant({ notationIndex }){
+        const newParticipant = {name: '', role: '', siteRegistry: false};
+        // Push to array in newSite.notations[HOW-GET-THIS-ID].participants
+        const newSite: Site = {...site, notations: [...site.notations]}
+        newSite.notations[notationIndex].notationParticipants = [...newSite.notations[notationIndex].notationParticipants, newParticipant]
+        dispatch(updateSite(newSite))
+
     }
 
 
@@ -64,7 +70,7 @@ export default function Notations() {
             {editMode && <Button onClick={newNotation} variant='secondary'>+ New Notation</Button>}
 
             {site.notations.map((siteNotationData, index) => {
-                return <NotationItem key={index} notation={siteNotationData} index={index} />
+                return <NotationItem key={index} notation={siteNotationData} index={index} onClickAddParticipant={newParticipant}/>
             })}
 
 
@@ -73,9 +79,10 @@ export default function Notations() {
 }
 
 
-function NotationItem({ notation, index }: { notation: Notation, index: number }) {
+function NotationItem({ notation, index, onClickAddParticipant }: { notation: Notation, index: number, onClickAddParticipant: any }) {
     const isMinistry = useSelector((state: RootState) => state.user.isMinistry);
     const editMode = useSelector((state: RootState) => state.edit.editMode);
+
 
     // const 
     // TODO: Need to handle 'SR', update data model
@@ -108,7 +115,7 @@ function NotationItem({ notation, index }: { notation: Notation, index: number }
             <div>
                 {editMode && <div className="my-4 d-flex justify-content between">
                     <div className="d-inline-flex">
-                        <Button variant='secondary'>+ Add</Button>
+                        <Button variant='secondary' onClick={() => { onClickAddParticipant({notationIndex: index })}}>+ Add</Button>
                         <Button disabled={true} variant='secondary' className='ms-3'>Make Selected Visible to Public</Button>
                     </div>
                 </div>}
