@@ -1,4 +1,4 @@
-import { Button, Dropdown, DropdownButton } from 'react-bootstrap'
+import { Button, Dropdown, DropdownButton, Table } from 'react-bootstrap'
 import styles from './css/notations.module.css'
 import siteDetailsStyles from '@/pages/site-details.module.css'
 import SiteGridItem from './SiteGridItem'
@@ -79,13 +79,41 @@ function NotationItem( { notation, index }: {notation: Notation, index: number} 
 
 
             <div>
-                <div className="mt-4 d-flex justify-content between">
+                <div className="my-4 d-flex justify-content between">
                     <div className="d-inline-flex">
                         <Button variant='secondary'>+ Add</Button>
                         <Button disabled={true} variant='secondary'>Make Selected Visible to Public</Button>
                     </div>
                 </div>
-                Todo table goes here.
+
+
+                {/* TODO - Rip this out and make its own component, but how handle differing columns and fields elegantly? children props / slots most likely. */}
+                {/* SiteDetailsTable */}
+                <div className={ `${siteDetailsStyles.metadataGridItem} ${siteDetailsStyles.formLabel} px-2` }>Notation Participants</div>
+                <Table bordered hover>
+                    <thead className={siteDetailsStyles.formLabel}>
+                        <tr>
+                            <th>CHECK</th>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>SR</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {notation.notationParticipants.map((participant, id) => {
+                            return (
+                                <tr key={id}>
+                                    <td>[ ]</td>
+                                    <td>{participant.name}</td>
+                                    <td>{participant.role}</td>
+                                    <td>{participant.siteRegistry}</td>
+                                </tr>
+                            )
+                        })}
+
+                    </tbody>
+                </Table>
             </div>
         </div>
     )

@@ -4,7 +4,7 @@
   --main-gray: #EDEDED;
   --dark-gray: #717171;
   --header-gray: #a8a8a8;
-  --input-gray: #f0f0f0;
+  --table-header-gray: #e5e5e5;
 
 
   --bs-blue: #0d6efd;
@@ -31,4 +31,17 @@
   --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+}
+
+.table {
+  /* Override bootstrap's defaults here. */
+  /* --bs-table-bg: black !important; */
+  /* --bs-table-bg: var(--header-gray) !important; */
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+.table th {
+  background-color: var(--table-header-gray) !important;
+  /* background-color: var(--main-gray) !important; */
 }
