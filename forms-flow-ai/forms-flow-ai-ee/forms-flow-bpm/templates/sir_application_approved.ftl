@@ -35,11 +35,11 @@
         <tr>
             <td>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                  Hello ${name},
+                  Dear ${name},
                 </p>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                    Your site information request has been accepted by site information officer for further processing. We will process your application and send the requested documents over email.
-                </p>
+                    We wanted to inform you that your site information request has been successfully received and acknowledged by our site information officer. We are currently in the process of reviewing and processing your application. We will promptly send the requested documents to you via a separate email.
+                </p>               
             </td>
         </tr>
         <tr>
@@ -59,7 +59,7 @@
                 <p class="footer">Have questions or need help? Please email us at:
                     <a class="footer_link" href="mailto:${support}">${support}</a>
                 </p>
-                <p> EPD will never send an email that asks you to provide, confirm or verify personal, log on or account information.
+                <p> BC Public Services will never send an email that asks you to provide, confirm or verify personal, log on or account information.
                     DO NOT reply to this email as it was sent from an unmonitored account.
                 </p>
             </td>
