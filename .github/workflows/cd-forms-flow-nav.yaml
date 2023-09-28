@@ -1,4 +1,4 @@
-name: forms-flow-web Custom
+name: forms-flow-nav Custom
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ on:
     branches:
       - dev
       - main
-      - epdds-270 # Remove in future, just to verify this works
+      - ss-60-github-actions-bug # Remove in future, just to verify this works
     paths:
       - "forms-flow-ai/forms-flow-ai-micro-front-ends/forms-flow-nav"
       - ".github/workflows/cd-forms-flow-nav.yaml"
