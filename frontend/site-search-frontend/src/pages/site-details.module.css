@@ -13,6 +13,8 @@
     /* grid-template-columns: repeat(12, minmax(400px, 1fr)); */
     grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
     grid-gap: 20px;
+
+    align-items: start;
 }
 
 .metadataGridItem {
@@ -45,6 +47,8 @@
     display: flex;
     justify-content: space-between;
     font-size: 12px;
+    display: flex;
+    align-items: baseline;
 }
 
 .formInput:read-only {

@@ -5,12 +5,12 @@ import { Eye, EyeSlash } from 'react-bootstrap-icons';
 export default function SiteRegistryIcon({siteRegistry}: {siteRegistry: boolean}) {
     if (siteRegistry) {
         return (
-            <Eye size='22' className='text-body' />
+            <Eye size='20' className='text-body' />
         )
     }
     else {
         return (
-            <EyeSlash size='22' className='text-body' />
+            <EyeSlash size='20' className='text-body' />
         )
     }
 }
