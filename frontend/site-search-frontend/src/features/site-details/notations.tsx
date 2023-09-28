@@ -3,9 +3,11 @@ import styles from './css/notations.module.css'
 import siteDetailsStyles from '@/pages/site-details.module.css'
 import SiteGridItem from './SiteGridItem'
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Notation, Site } from '@/api/sites';
 import { RootState } from '@/store';
+import { addNotationToSite, addNotationBySiteID, fixedNestedItemAdded, addNotationDebug, updateSite } from '../simple-search/simple-search';
+import { useEffect } from 'react';
 
 
 export default function Notations() {
@@ -13,12 +15,33 @@ export default function Notations() {
     const siteIDNum = parseInt(siteID);
     const site: Site = useSelector((state: RootState) => state.site.value.find(searchedSite => searchedSite.siteID === siteIDNum));
     const editMode = useSelector((state: RootState) => state.edit.editMode)
+    const dispatch = useDispatch();
 
 
     console.log('site notations', site.notations);
 
+    useEffect(() => { console.log('nav useEffect')}, [site])
+
+
+    // Note: This is currently not rendering immediately! After doing dispatch, click to other tab and back and see it works.
     function newNotation() {
         console.log('new notation clicked, update store');
+        const newNotation = new Notation({
+            completed: new Date(),
+            createdAt: new Date(),
+            initiated: new Date(),
+            ministryContact: '',
+            notationClass: 'ENVIRONMENTAL MANAGEMENT ACT: GENERAL',
+            notationParticipants: [],
+            notationType: 'CERTIFICATE OF COMPLIANCE ISSUED USING RISK BASED STANDARDS',
+            note: '',
+            requestedActions: []
+        })
+
+        const newSite: Site = {...site, notations: [(newNotation as any) , ...site.notations]}
+
+        // console.log('newNotation dispatch...', { site, newSite})
+        dispatch(updateSite(newSite));
     }
 
 
