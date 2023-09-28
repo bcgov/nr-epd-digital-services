@@ -33,11 +33,11 @@ export default function SiteDetailsPage() {
                     </div>
                     {!editMode && <div>
                         <Button className='mx-3' variant='secondary' onClick={toggleEdit}>Edit</Button>
-                        <Button variant='secondary'>Delete</Button>
+                        <Button variant='warning'>Delete</Button>
                     </div>}
                     {editMode && <div>
-                        Editting...
-                        <Button variant='secondary' onClick={toggleEdit}>Done</Button>
+                        <Button variant='primary' className='mx-4' onClick={toggleEdit}>Save</Button>
+                        <Button variant='secondary' onClick={toggleEdit}>Cancel</Button>
                     </div>}
                 </div>
 
