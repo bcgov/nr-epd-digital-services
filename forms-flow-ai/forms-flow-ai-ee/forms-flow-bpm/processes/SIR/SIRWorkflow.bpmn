@@ -58,7 +58,9 @@
       <bpmn:script>var system = java.lang.System;
 system.out.println ("simpleemail"+execution.getVariable('simpleemail'));
 var clientEmail = execution.getVariable('simpleemail');
-execution.setVariable('emailTo',clientEmail);
+var emailsToArray = [];
+emailsToArray.push(clientEmail)
+execution.setVariable("emailTo", Java.to(emailsToArray, "java.lang.Object[]"));
 system.out.println ("emailTo"+execution.getVariable('emailTo'));
 system.out.println ("firstname "+execution.getVariable('s1-firstname'));
 var firstname=execution.getVariable('s1-firstname');
@@ -70,7 +72,7 @@ execution.setVariable('name',firstname);
       <bpmn:outgoing>Flow_1la2yud</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:userTask id="Activity_06nypz0" name="Review SIR Form" camunda:candidateGroups="formsflow/formsflow-reviewer/site-information-advisor">
-     <bpmn:extensionElements>
+      <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="action" label="Action" type="string" />
         </camunda:formData>
