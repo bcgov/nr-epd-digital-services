@@ -98,8 +98,8 @@ function NotationItem({ notation, index, onClickAddParticipant }: { notation: No
                     {isMinistry && <p className='mx-3'>Created: {notation.createdAt.toISOString().split('T')[0]}</p>}
                 </div>
                 <div className="d-inline-flex">
-                    <p className='mx-3'>SR</p>
-                    <p>DELETE</p>
+                    <Button className='text-dark' variant='link'><SiteRegistryIcon siteRegistry={false} /><span className="ms-1 me-3">SR</span></Button>
+                    <Button className='text-dark' variant='link'>Delete</Button>
                 </div>
             </div>
             <div className={siteDetailsStyles.metadataGrid}>
