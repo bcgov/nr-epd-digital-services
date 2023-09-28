@@ -8,6 +8,8 @@ import { Notation, Site } from '@/api/sites';
 import { RootState } from '@/store';
 import { updateSite } from '../simple-search/simple-search';
 import { useEffect } from 'react';
+import SiteRegistryIcon from '@/components/SiteRegistryIcon';
+
 
 
 export default function Notations() {
@@ -125,7 +127,7 @@ function NotationItem({ notation, index, onClickAddParticipant }: { notation: No
                 {/* SiteDetailsTable */}
                 <div className={`${siteDetailsStyles.metadataGridItem} ${siteDetailsStyles.formLabel} mt-4 px-2`}>Notation Participants</div>
                 <Table bordered hover>
-                    <thead className={siteDetailsStyles.formLabel}>
+                    <thead>
                         <tr>
                             {editMode && <th><Form.Check aria-label="Select all Notation Participants" /></th> }
                             <th>Name</th>
@@ -141,7 +143,7 @@ function NotationItem({ notation, index, onClickAddParticipant }: { notation: No
                                     {editMode && <td><Form.Check aria-label="Select this notation participant"/></td> }
                                     <td>{participant.name}</td>
                                     <td>{participant.role}</td>
-                                    {editMode && <td>{participant.siteRegistry}</td>}
+                                    {editMode && <td> <SiteRegistryIcon siteRegistry={participant.siteRegistry} /></td>}
                                 </tr>
                             )
                         })}
