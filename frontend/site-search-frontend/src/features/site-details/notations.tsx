@@ -1,4 +1,4 @@
-import { Button, Dropdown, DropdownButton, Table } from 'react-bootstrap'
+import { Button, Dropdown, DropdownButton, Form, Table } from 'react-bootstrap'
 import styles from './css/notations.module.css'
 import siteDetailsStyles from '@/pages/site-details.module.css'
 import SiteGridItem from './SiteGridItem'
@@ -13,11 +13,11 @@ export default function Notations() {
     const siteIDNum = parseInt(siteID);
     const site: Site = useSelector((state: RootState) => state.site.value.find(searchedSite => searchedSite.siteID === siteIDNum));
     const editMode = useSelector((state: RootState) => state.edit.editMode)
-    
+
 
     console.log('site notations', site.notations);
 
-    function newNotation(){
+    function newNotation() {
         console.log('new notation clicked, update store');
     }
 
@@ -38,7 +38,7 @@ export default function Notations() {
                 </div>
             </div>
 
-            {editMode && <Button onClick={newNotation} variant='secondary'>+ New Notation</Button> }
+            {editMode && <Button onClick={newNotation} variant='secondary'>+ New Notation</Button>}
 
             {site.notations.map((siteNotationData, index) => {
                 return <NotationItem key={index} notation={siteNotationData} index={index} />
@@ -50,16 +50,20 @@ export default function Notations() {
 }
 
 
-function NotationItem( { notation, index }: {notation: Notation, index: number} ) {
+function NotationItem({ notation, index }: { notation: Notation, index: number }) {
     const isMinistry = useSelector((state: RootState) => state.user.isMinistry);
-    const editMode = useSelector((state: RootState) => state.edit.editMode)
+    const editMode = useSelector((state: RootState) => state.edit.editMode);
+
+    // const 
+    // TODO: Need to handle 'SR', update data model
+
 
     return (
         <div className={styles.notationItem}>
             <div className="d-flex justify-content-between">
                 <div className="d-inline-flex">
                     <p>Notation {index + 1}</p>
-                    {isMinistry && <p className='mx-3'>Created: {notation.createdAt.toISOString().split('T')[0]}</p> }
+                    {isMinistry && <p className='mx-3'>Created: {notation.createdAt.toISOString().split('T')[0]}</p>}
                 </div>
                 <div className="d-inline-flex">
                     <p className='mx-3'>SR</p>
@@ -68,7 +72,7 @@ function NotationItem( { notation, index }: {notation: Notation, index: number} 
             </div>
             <div className={siteDetailsStyles.metadataGrid}>
                 <SiteGridItem label='Notation Type' value={notation.notationType} extraClasses={siteDetailsStyles.gridFullwidth} showSR={editMode} />
-                <SiteGridItem label='Notation Class' value={notation.notationClass} extraClasses={siteDetailsStyles.gridFullwidth} showSR={editMode}  />
+                <SiteGridItem label='Notation Class' value={notation.notationClass} extraClasses={siteDetailsStyles.gridFullwidth} showSR={editMode} />
 
                 <SiteGridItem label='Initiated' value={notation.initiated.toISOString().split('T')[0]} showSR={editMode} extraClasses={siteDetailsStyles.gridHalfWidth} />
                 <SiteGridItem label='Completed' value={notation.completed.toISOString().split('T')[0]} showSR={editMode} extraClasses={siteDetailsStyles.gridHalfWidth} />
@@ -89,14 +93,14 @@ function NotationItem( { notation, index }: {notation: Notation, index: number} 
 
                 {/* TODO - Rip this out and make its own component, but how handle differing columns and fields elegantly? children props / slots most likely. */}
                 {/* SiteDetailsTable */}
-                <div className={ `${siteDetailsStyles.metadataGridItem} ${siteDetailsStyles.formLabel} px-2` }>Notation Participants</div>
+                <div className={`${siteDetailsStyles.metadataGridItem} ${siteDetailsStyles.formLabel} px-2`}>Notation Participants</div>
                 <Table bordered hover>
                     <thead className={siteDetailsStyles.formLabel}>
                         <tr>
-                            <th>CHECK</th>
+                            {editMode && <th><Form.Check aria-label="Select all Notation Participants" /></th> }
                             <th>Name</th>
                             <th>Role</th>
-                            <th>SR</th>
+                            {editMode && <th>SR</th>}
                         </tr>
                     </thead>
                     <tbody>
@@ -104,10 +108,10 @@ function NotationItem( { notation, index }: {notation: Notation, index: number} 
                         {notation.notationParticipants.map((participant, id) => {
                             return (
                                 <tr key={id}>
-                                    <td>[ ]</td>
+                                    {editMode && <td><Form.Check aria-label="Select this notation participant"/></td> }
                                     <td>{participant.name}</td>
                                     <td>{participant.role}</td>
-                                    <td>{participant.siteRegistry}</td>
+                                    {editMode && <td>{participant.siteRegistry}</td>}
                                 </tr>
                             )
                         })}

@@ -45,3 +45,7 @@
   background-color: var(--table-header-gray) !important;
   /* background-color: var(--main-gray) !important; */
 }
+
+input[type='checkbox'] {
+  border: 2px solid var(--dark-gray);
+}
