@@ -15,12 +15,11 @@
         <bpmn:flowNodeRef>Activity_1os7sys</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Event_1lsroft</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_08g50qy</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1cdhp59</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1lbc6o5</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0w5t5av</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0ro66yt</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_04t1ow5</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0v6lyrk</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Event_0ml6v2t</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1lbc6o5</bpmn:flowNodeRef>
       </bpmn:lane>
     </bpmn:laneSet>
     <bpmn:sequenceFlow id="Flow_0unffch" name="Owner Submits" sourceRef="Activity_1ozfgid" targetRef="Activity_06nypz0" />
@@ -70,7 +69,7 @@ execution.setVariable('name',firstname);
       <bpmn:outgoing>Flow_1la2yud</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:userTask id="Activity_06nypz0" name="Review SIR Form" camunda:candidateGroups="formsflow/formsflow-reviewer/site-information-advisor">
-     <bpmn:extensionElements>
+      <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="action" label="Action" type="string" />
         </camunda:formData>
@@ -134,46 +133,13 @@ execution.setVariable('name',firstname);
 system.out.println ("Reviewed by SDM");</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:sequenceFlow id="Flow_0c55q6w" sourceRef="Activity_08g50qy" targetRef="Activity_1os7sys" />
-    <bpmn:sequenceFlow id="Flow_04l5mhw" sourceRef="Activity_0ro66yt" targetRef="Activity_04t1ow5" />
-    <bpmn:sequenceFlow id="Flow_17vvo0l" sourceRef="Activity_04t1ow5" targetRef="Event_0ml6v2t" />
+    <bpmn:sequenceFlow id="Flow_04l5mhw" sourceRef="Activity_0ro66yt" targetRef="Activity_0v6lyrk" />
     <bpmn:sequenceFlow id="Flow_1e1420i" name="Accepted" sourceRef="Activity_06nypz0" targetRef="Activity_1lbc6o5">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_18ztndk" sourceRef="Activity_1cdhp59" targetRef="Activity_0w5t5av" />
     <bpmn:sequenceFlow id="Flow_0x1z3oy" sourceRef="Activity_0w5t5av" targetRef="Activity_0ro66yt" />
-    <bpmn:userTask id="Activity_1cdhp59" name="Process SIR Application" camunda:candidateGroups="formsflow/formsflow-reviewer/site-information-advisor">
-      <bpmn:extensionElements>
-        <camunda:taskListener event="complete">
-          <camunda:script scriptFormat="javascript">task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
-</camunda:script>
-        </camunda:taskListener>
-        <camunda:formData>
-          <camunda:formField id="action" label="Action" type="string" />
-        </camunda:formData>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1d66let</bpmn:incoming>
-      <bpmn:outgoing>Flow_18ztndk</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:manualTask id="Activity_0w5t5av" name="Download SIR form and Update LAN">
-      <bpmn:incoming>Flow_18ztndk</bpmn:incoming>
-      <bpmn:outgoing>Flow_0x1z3oy</bpmn:outgoing>
-    </bpmn:manualTask>
-    <bpmn:manualTask id="Activity_0ro66yt" name="Generate PDF">
-      <bpmn:incoming>Flow_0x1z3oy</bpmn:incoming>
-      <bpmn:outgoing>Flow_04l5mhw</bpmn:outgoing>
-    </bpmn:manualTask>
-    <bpmn:callActivity id="Activity_04t1ow5" name="Send Email with Attachment" calledElement="common-email-workflow">
-      <bpmn:extensionElements>
-        <camunda:in variables="all" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_04l5mhw</bpmn:incoming>
-      <bpmn:outgoing>Flow_17vvo0l</bpmn:outgoing>
-    </bpmn:callActivity>
-    <bpmn:endEvent id="Event_0ml6v2t" name="End">
-      <bpmn:incoming>Flow_17vvo0l</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1d66let" sourceRef="Activity_1lbc6o5" targetRef="Activity_1cdhp59" />
-    <bpmn:callActivity id="Activity_1lbc6o5" name="Send Email - Approved" calledElement="common-email-workflow">
+    <bpmn:sequenceFlow id="Flow_1d66let" sourceRef="Activity_1lbc6o5" targetRef="Activity_0w5t5av" />
+    <bpmn:callActivity id="Activity_1lbc6o5" name="Send Email - Accepted" calledElement="common-email-workflow">
       <bpmn:extensionElements>
         <camunda:in variables="all" />
         <camunda:inputOutput>
@@ -183,6 +149,22 @@ system.out.println ("Reviewed by SDM");</bpmn:script>
       <bpmn:incoming>Flow_1e1420i</bpmn:incoming>
       <bpmn:outgoing>Flow_1d66let</bpmn:outgoing>
     </bpmn:callActivity>
+    <bpmn:manualTask id="Activity_0w5t5av" name="Download SIR form and Update LAN">
+      <bpmn:incoming>Flow_1d66let</bpmn:incoming>
+      <bpmn:outgoing>Flow_0x1z3oy</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:manualTask id="Activity_0ro66yt" name="Generate PDF">
+      <bpmn:incoming>Flow_0x1z3oy</bpmn:incoming>
+      <bpmn:outgoing>Flow_04l5mhw</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:manualTask id="Activity_0v6lyrk" name="Email Docs">
+      <bpmn:incoming>Flow_04l5mhw</bpmn:incoming>
+      <bpmn:outgoing>Flow_03fx6t9</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:sequenceFlow id="Flow_03fx6t9" sourceRef="Activity_0v6lyrk" targetRef="Event_0ml6v2t" />
+    <bpmn:endEvent id="Event_0ml6v2t" name="End">
+      <bpmn:incoming>Flow_03fx6t9</bpmn:incoming>
+    </bpmn:endEvent>
   </bpmn:process>
   <bpmn:message id="Message_1ngb2eg" name="application_resubmitted" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -229,30 +211,26 @@ system.out.println ("Reviewed by SDM");</bpmn:script>
       <bpmndi:BPMNShape id="Activity_1xcsoq8_di" bpmnElement="Activity_08g50qy">
         <dc:Bounds x="470" y="580" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0aw28zb" bpmnElement="Activity_1cdhp59">
-        <dc:Bounds x="500" y="710" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_15p2xxo_di" bpmnElement="Activity_0w5t5av">
-        <dc:Bounds x="650" y="710" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1gxzf5w_di" bpmnElement="Activity_0ro66yt">
-        <dc:Bounds x="810" y="710" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0261v87" bpmnElement="Activity_04t1ow5">
-        <dc:Bounds x="980" y="710" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0ml6v2t_di" bpmnElement="Event_0ml6v2t">
-        <dc:Bounds x="1182" y="732" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1190" y="775" width="20" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_0cku66m" bpmnElement="Activity_1lbc6o5">
         <dc:Bounds x="270" y="710" width="100" height="80" />
         <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_15p2xxo_di" bpmnElement="Activity_0w5t5av">
+        <dc:Bounds x="510" y="710" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1gxzf5w_di" bpmnElement="Activity_0ro66yt">
+        <dc:Bounds x="700" y="710" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_19o56bv" bpmnElement="Activity_0v6lyrk">
+        <dc:Bounds x="840" y="710" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0ml6v2t_di" bpmnElement="Event_0ml6v2t">
+        <dc:Bounds x="1002" y="732" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1010" y="775" width="20" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0unffch_di" bpmnElement="Flow_0unffch">
         <di:waypoint x="320" y="322" />
@@ -299,12 +277,8 @@ system.out.println ("Reviewed by SDM");</bpmn:script>
         <di:waypoint x="710" y="620" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_04l5mhw_di" bpmnElement="Flow_04l5mhw">
-        <di:waypoint x="910" y="750" />
-        <di:waypoint x="980" y="750" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_17vvo0l_di" bpmnElement="Flow_17vvo0l">
-        <di:waypoint x="1080" y="750" />
-        <di:waypoint x="1182" y="750" />
+        <di:waypoint x="800" y="750" />
+        <di:waypoint x="840" y="750" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1e1420i_di" bpmnElement="Flow_1e1420i">
         <di:waypoint x="320" y="580" />
@@ -313,17 +287,17 @@ system.out.println ("Reviewed by SDM");</bpmn:script>
           <dc:Bounds x="258" y="648" width="45" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_18ztndk_di" bpmnElement="Flow_18ztndk">
-        <di:waypoint x="600" y="750" />
-        <di:waypoint x="650" y="750" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0x1z3oy_di" bpmnElement="Flow_0x1z3oy">
-        <di:waypoint x="750" y="750" />
-        <di:waypoint x="810" y="750" />
+        <di:waypoint x="610" y="750" />
+        <di:waypoint x="700" y="750" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1d66let_di" bpmnElement="Flow_1d66let">
         <di:waypoint x="370" y="750" />
-        <di:waypoint x="500" y="750" />
+        <di:waypoint x="510" y="750" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03fx6t9_di" bpmnElement="Flow_03fx6t9">
+        <di:waypoint x="940" y="750" />
+        <di:waypoint x="1002" y="750" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
