@@ -3417,7 +3417,7 @@
                                                         "required": true,
                                                         "pattern": "",
                                                         "customMessage": "",
-                                                        "custom": "\r\nvar currentValue = input;\r\nfetch(localStorage.getItem('formsflow.ai.api.url')+'/user?memberOfGroup=formsflow%2Fformsflow-reviewer%2Fformsflow-client-reviewer',\r\n{'headers':{ 'authorization': 'Bearer '+localStorage.getItem('authToken')},'mode':'cors'})\r\n.then((p)=> {return p.json();}).\r\nthen((x)=>{\r\n    data.hiddenUserIdForFormSharing = '' ;\r\n x.data.find((y)=>{\r\n if( y.email=== currentValue ) \r\n { data.hiddenUserIdForFormSharing = y.username}\r\n\r\n })\r\n\r\n if(data.hiddenUserIdForFormSharing==='')\r\n {\r\n    valid = 'Unable to find user with provided email address';\r\n }\r\n else\r\n {\r\n    valid = true;\r\n }\r\n\r\n});",
+                                                        "custom": "\nvar currentValue = input;\n\nif(currentValue!== '')\n{\n\n\nif( data.hiddenUserIdForFormSharing === '')\n{\n   valid = 'Unable to find user with provided email address';\n}\n\n\nfetch(localStorage.getItem('formsflow.ai.api.url')+'/user?memberOfGroup=formsflow%2Fformsflow-reviewer%2Fformsflow-client-reviewer',\n{'headers':{ 'authorization': 'Bearer '+localStorage.getItem('authToken')},'mode':'cors'})\n.then((p)=> {return p.json();}).\nthen((x)=>{\n    data.hiddenUserIdForFormSharing = '' ;\n x.data.find((y)=>{\n if( y.email=== currentValue ) \n { data.hiddenUserIdForFormSharing = y.username}\n\n })\n\n if(data.hiddenUserIdForFormSharing==='')\n {\n    valid = 'Unable to find user with provided email address';\n }\n else\n {\n    valid = true;\n }\n\n}).then(()=>{\n\n\n    var previousValue = localStorage.getItem(\"sdsHiddenUserIdForFormSharing\"); \n\n    if(previousValue != currentValue )\n    {\n\tlocalStorage.setItem(\"sdsHiddenUserIdForFormSharing\", currentValue);\n        instance.triggerChange();\n    }\n\t\n})\n\n}\n\n",
                                                         "customPrivate": false,
                                                         "json": "",
                                                         "minLength": "",
@@ -3465,7 +3465,7 @@
                                                     "addons": [],
                                                     "inputType": "email",
                                                     "inputMask": "",
-                                                    "id": "e083wrc",
+                                                    "id": "e00h8xm",
                                                     "defaultValue": ""
                                                 }
                                             ],
@@ -6980,7 +6980,7 @@
                                                 }
                                             ],
                                             "collapsible": false,
-                                            "id": "e7nge5b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "e7nge5b000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -7454,7 +7454,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eapos760000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eapos76000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -7670,7 +7670,7 @@
                                             "input": true,
                                             "label": "Crown Land File Numbers",
                                             "tableView": true,
-                                            "id": "e7fs5c50000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "e7fs5c5000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
