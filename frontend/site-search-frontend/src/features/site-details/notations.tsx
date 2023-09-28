@@ -83,17 +83,17 @@ function NotationItem({ notation, index }: { notation: Notation, index: number }
 
 
             <div>
-                <div className="my-4 d-flex justify-content between">
+                {editMode && <div className="my-4 d-flex justify-content between">
                     <div className="d-inline-flex">
                         <Button variant='secondary'>+ Add</Button>
-                        <Button disabled={true} variant='secondary'>Make Selected Visible to Public</Button>
+                        <Button disabled={true} variant='secondary' className='ms-3'>Make Selected Visible to Public</Button>
                     </div>
-                </div>
+                </div>}
 
 
                 {/* TODO - Rip this out and make its own component, but how handle differing columns and fields elegantly? children props / slots most likely. */}
                 {/* SiteDetailsTable */}
-                <div className={`${siteDetailsStyles.metadataGridItem} ${siteDetailsStyles.formLabel} px-2`}>Notation Participants</div>
+                <div className={`${siteDetailsStyles.metadataGridItem} ${siteDetailsStyles.formLabel} mt-4 px-2`}>Notation Participants</div>
                 <Table bordered hover>
                     <thead className={siteDetailsStyles.formLabel}>
                         <tr>
