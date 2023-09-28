@@ -15,7 +15,7 @@ on:
     paths:
       - 'backend/**'
       - 'frontend/**'
-      - 'forms-flow-ai/forms-flow-ai-ee/**'
+      - 'forms-flow-ai/**'
       - '.github/workflows/cd-forms-flow-bpm.yaml'
 
 defaults:
