@@ -13,8 +13,10 @@ on:
       - main
       - ss-60-github-actions-bug #test auto trigger issue
     paths:
-      - "forms-flow-ai/forms-flow-ai-ee/forms-flow-bpm"
-      - ".github/workflows/cd-forms-flow-bpm.yaml"
+      - 'backend/**'
+      - 'frontend/**'
+      - 'forms-flow-ai/forms-flow-ai-ee/**'
+      - '.github/workflows/cd-forms-flow-bpm.yaml'
 
 defaults:
   run:
