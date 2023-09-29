@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import SiteRegistryIcon from '@/components/SiteRegistryIcon';
 import SubSearch from './sub-search/SubSearch';
 import SiteDetailsTable from './table/SiteDetailsTable';
+import formatDateToString from '@/helpers/formatDateToString';
 
 
 
@@ -24,17 +25,18 @@ export default function Notations() {
 
 
     function newNotation() {
-        const newNotation = new Notation({
-            completed: new Date(),
-            createdAt: new Date(),
-            initiated: new Date(),
+        const newNotation: Notation = {
+            completed: formatDateToString(new Date),
+            createdAt: formatDateToString(new Date),
+            initiated: formatDateToString(new Date),
             ministryContact: '',
             notationClass: 'ENVIRONMENTAL MANAGEMENT ACT: GENERAL',
             notationParticipants: [],
             notationType: 'CERTIFICATE OF COMPLIANCE ISSUED USING RISK BASED STANDARDS',
             note: '',
-            requestedActions: []
-        })
+            requestedActions: [],
+            siteRegistry: false,
+        }
         const newSite: Site = {...site, notations: [newNotation, ...site.notations]}
 
         dispatch(updateSite(newSite));
@@ -42,8 +44,19 @@ export default function Notations() {
 
     function newParticipant({ notationIndex }){
         const newParticipant = {name: '', role: '', siteRegistry: false};
-        const newSite: Site = {...site, notations: [...site.notations]}
-        newSite.notations[notationIndex].notationParticipants = [...newSite.notations[notationIndex].notationParticipants, newParticipant]
+        const newSite: Site = {
+            ...site,
+            notations: site.notations.map((notation, index) => {
+              if (index === notationIndex) {
+                return {
+                  ...notation,
+                  notationParticipants: [...notation.notationParticipants, newParticipant],
+                };
+              }
+              return notation;
+            }),
+          };
+
         dispatch(updateSite(newSite))
     }
 
@@ -71,8 +84,8 @@ function NotationItem({ notation, index, onClickAddParticipant }: { notation: No
 
     // Toggling these two makes it mirror exact state, but it shouldn't, instead should be for batch changing of them.
     // const defaultSelectionState: {index: number, siteRegistry: boolean}[] = notation.notationParticipants.map((x,index) => {return {index, siteRegistry: x.siteRegistry}} )
-    const defaultSelectionState: {index: number, siteRegistry: boolean}[] = notation.notationParticipants.map((x,index) => {return {index, siteRegistry: false}} )
-    const [participationSelection, setParticipationSeleciton] = useState(defaultSelectionState)
+    // const defaultSelectionState: {index: number, siteRegistry: boolean}[] = notation.notationParticipants.map((x,index) => {return {index, siteRegistry: false}} )
+    // const [participationSelection, setParticipationSeleciton] = useState(defaultSelectionState)
 
 
     // const 
@@ -84,7 +97,7 @@ function NotationItem({ notation, index, onClickAddParticipant }: { notation: No
             <div className="d-flex justify-content-between">
                 <div className="d-inline-flex">
                     <p>Notation {index + 1}</p>
-                    {isMinistry && <p className='mx-3'>Created: {notation.createdAt.toISOString().split('T')[0]}</p>}
+                    {isMinistry && <p className='mx-3'>Created: {notation.createdAt}</p>}
                 </div>
                 {editMode && <div className="d-inline-flex">
                     <Button className='text-dark' variant='link'><SiteRegistryIcon siteRegistry={false} /><span className="ms-1 me-3">SR</span></Button>
@@ -95,8 +108,8 @@ function NotationItem({ notation, index, onClickAddParticipant }: { notation: No
                 <SiteGridItem label='Notation Type' value={notation.notationType} extraClasses={siteDetailsStyles.gridFullwidth} showSR={editMode} />
                 <SiteGridItem label='Notation Class' value={notation.notationClass} extraClasses={siteDetailsStyles.gridFullwidth} showSR={editMode} />
 
-                <SiteGridItem label='Initiated' value={notation.initiated.toISOString().split('T')[0]} showSR={editMode} />
-                <SiteGridItem label='Completed' value={notation.completed.toISOString().split('T')[0]} showSR={editMode} />
+                <SiteGridItem label='Initiated' value={notation.initiated} showSR={editMode} />
+                <SiteGridItem label='Completed' value={notation.completed} showSR={editMode} />
                 <SiteGridItem label='Ministry Contact' value={notation.ministryContact} showSR={editMode}  />
                 <SiteGridItem label='Note' value={notation.note} showSR={editMode} extraClasses={siteDetailsStyles.gridFullwidth} />
                 <SiteGridItem label='Required Actions' value={notation.requestedActions} showSR={editMode} extraClasses={siteDetailsStyles.gridFullwidth} />

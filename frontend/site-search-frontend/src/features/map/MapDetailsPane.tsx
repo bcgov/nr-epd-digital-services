@@ -14,7 +14,7 @@ export default function MapDetailsPane({site, onClose}: {site: Site, onClose: Mo
                 <CloseButton onClick={onClose} />
             </div>
 
-            <div className="fst-italic my-3">Last Updated: {site?.lastUpdated.toISOString().split('T')[0]}</div>
+            <div className="fst-italic my-3">Last Updated: {site?.lastUpdated}</div>
 
 
             <div className={styles.detailsPaneContent + " d-flex mb-3"}>                

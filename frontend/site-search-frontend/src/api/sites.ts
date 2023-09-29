@@ -1,12 +1,15 @@
+interface canBeOnSiteRegistry {
+    siteRegistry: boolean;
+}
 
 export class Site {
-    uuid?: string;
+    uuid: string;
     siteID: number;
     address: string;
     latitude: number;
     longitude: number;
     // lastUpdated: Date | string;
-    lastUpdated: Date;
+    lastUpdated: string;
     city: string;
     region: string;
     victoriaFile: string;
@@ -14,20 +17,22 @@ export class Site {
     parcelIDs: number[];
     locationDescription: string;
 
-    notations: Notation[]
+    notations: Notation[];
+    participants: SiteParticipant[];
+    associatedSites: AssociatedSite[]
 
-    constructor(data: Site) {
-        // Using "Object.assign()" to bypass having to assign all properties
-        // https://stackoverflow.com/questions/69291358/shortcut-syntax-to-class-constructor-from-typescript-interface
-        Object.assign(this, data);
+    // constructor(data: Site) {
+    //     // Using "Object.assign()" to bypass having to assign all properties
+    //     // https://stackoverflow.com/questions/69291358/shortcut-syntax-to-class-constructor-from-typescript-interface
+    //     Object.assign(this, data);
 
-        // This "new Date" is necessary when loading JSON dummy data which stores date as a string
-        // This will likely have to change when integrating with API
-        this.lastUpdated = new Date(this.lastUpdated);
+    //     // This "new Date" is necessary when loading JSON dummy data which stores date as a string
+    //     // This will likely have to change when integrating with API
+    //     // this.lastUpdated = new Date(this.lastUpdated);
 
-        // Initialize all dates inside notations too
-        this.notations = this.notations.map(note => new Notation(note));
-    }
+    //     // Initialize all dates inside notations too
+    //     this.notations = this.notations.map(note => new Notation(note));
+    // }
 }
 
 // interface OnSiteRegistry {
@@ -35,32 +40,43 @@ export class Site {
 // }
 
 
-export class Notation {
-    createdAt: Date;
+export class Notation implements canBeOnSiteRegistry {
+    createdAt: string;
     // notationType: NOTATION_TYPES
-    notationType: 'CERTIFICATE OF COMPLIANCE ISSUED USING RISK BASED STANDARDS' | 'CERTIFICATE OF COMPLIANCE REQUESTED'
-    notationClass: "ENVIRONMENTAL MANAGEMENT ACT: GENERAL"
-    initiated: Date;
-    completed: Date;
+    notationType: 'CERTIFICATE OF COMPLIANCE ISSUED USING RISK BASED STANDARDS' | 'CERTIFICATE OF COMPLIANCE REQUESTED' | string
+    // notationClass: "ENVIRONMENTAL MANAGEMENT ACT: GENERAL"
+    notationClass: "ENVIRONMENTAL MANAGEMENT ACT: GENERAL" | string
+    initiated: string;
+    completed: string;
     ministryContact: string;
     note: string;
     requestedActions: string[]
     notationParticipants: {name: string, role: string, siteRegistry: boolean}[]
+    siteRegistry: boolean;
 
-    constructor(data: Notation) {
-        // See Site object for notes on constructor behaviour
-        Object.assign(this, data);
-        this.createdAt = new Date(this.createdAt);
-        this.initiated = new Date(this.initiated);
-        this.completed = new Date(this.completed);
-    }
+    // constructor(data: Notation) {
+    //     // See Site object for notes on constructor behaviour
+    //     Object.assign(this, data);
+    //     // this.createdAt = new Date(this.createdAt);
+    //     // this.initiated = new Date(this.initiated);
+    //     // this.completed = new Date(this.completed);
+    // }
 }
 
-// export enum NOTATION_TYPES {
-//     CERT_COMPLIANCE_ISSUED = 'CERTIFICATE OF COMPLIANCE ISSUED USING RISK BASED STANDARDS',
-//     CERT_COMPLIANCE_REQUESTED = 'CERTIFICATE OF COMPLIANCE REQUESTED'
-// }
 
-// export enum NOTATION_CLASS {
-//     ENV_GENERAL = 'ENVIRONMENTAL MANAGEMENT ACT: GENERAL'
-// }
+export class SiteParticipant implements canBeOnSiteRegistry {
+    name: string;
+    roles: string[];
+    startDate: string;
+    endDate: string;
+    notes: string;
+    siteRegistry: boolean;
+}
+
+export class AssociatedSite implements canBeOnSiteRegistry {
+    siteID: string;
+    parcelID: string;
+    dateNoted: string;
+    notes: string;
+    siteRegistry: boolean;
+}
