@@ -7,6 +7,7 @@ import { SiteRegistryIconButton } from '@/components/SiteRegistryIcon';
 
 interface SiteDetailsTableProps {
     onClickAdd?
+    label: string;
     headers: { label: string, accessor: string}[]
     // rows: any[];
     data: {
@@ -21,7 +22,7 @@ interface SiteDetailsTableProps {
 // Site Registry togglez    
 // editMode
 
-export default function SiteDetailsTable({ onClickAdd, headers, data }: SiteDetailsTableProps) {
+export default function SiteDetailsTable({ onClickAdd, headers, data, label }: SiteDetailsTableProps) {
     // const isMinistry = useSelector((state: RootState) => state.user.isMinistry);
     const editMode = useSelector((state: RootState) => state.edit.editMode);
 
@@ -39,11 +40,11 @@ export default function SiteDetailsTable({ onClickAdd, headers, data }: SiteDeta
 
             {/* TODO - Rip this out and make its own component, but how handle differing columns and fields elegantly? children props / slots most likely. */}
             {/* SiteDetailsTable */}
-            <div className={`${siteDetailsStyles.metadataGridItem} ${siteDetailsStyles.formLabel} mt-4 px-2`}>Notation Participants</div>
+            <div className={`${siteDetailsStyles.metadataGridItem} ${siteDetailsStyles.formLabel} mt-4 px-2`}>{label}</div>
             <Table bordered hover>
                 <thead>
                     <tr>
-                        {editMode && <th><Form.Check aria-label="Select all Notation Participants" /></th>}
+                        {editMode && <th><Form.Check aria-label="Select all {label}" /></th>}
                         {headers?.map((header, index) => <th key={index}>{header.label}</th>)}
                         {editMode && <th>SR</th>}
                     </tr>
@@ -53,7 +54,7 @@ export default function SiteDetailsTable({ onClickAdd, headers, data }: SiteDeta
                     {data?.map((row, index) => {
                         return (
                             <tr key={index}>
-                                {editMode && <td><Form.Check aria-label="Select this notation participant" /></td>}
+                                {editMode && <td><Form.Check aria-label="Select this {label}" /></td>}
                                 {headers?.map((header, index) => <td key={index}><TableEditItem value={row[header.accessor]} /></td>)}
                                 {editMode && <td> <SiteRegistryIconButton siteRegistry={row.siteRegistry} /></td>}
                             </tr>
