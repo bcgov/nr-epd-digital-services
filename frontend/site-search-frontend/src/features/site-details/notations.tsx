@@ -10,6 +10,7 @@ import { RootState } from '@/store';
 import { updateSite } from '../simple-search/simple-search';
 import { useEffect, useState } from 'react';
 import SiteRegistryIcon from '@/components/SiteRegistryIcon';
+import SubSearch from './sub-search/SubSearch';
 
 
 
@@ -49,17 +50,7 @@ export default function Notations() {
     return (
         <div>
 
-            <div className="row my-4">
-                <div className="col-10">
-                    <input type="text" className={"form-control " + styles.searchBar} placeholder="Search Notations" aria-label="Search Notations" />
-                </div>
-                <div className="col-2">
-                    <DropdownButton variant='outline-secondary' id="dropdown-notation-search-type" title="Sort results by: Date">
-                        <Dropdown.Item eventKey='Date'>Date</Dropdown.Item>
-                        <Dropdown.Item eventKey='???'>???</Dropdown.Item>
-                    </DropdownButton>
-                </div>
-            </div>
+           <SubSearch label='Notations' showResultsDropdown={false} /> 
 
             {editMode && <Button onClick={newNotation} variant='secondary'>+ New Notation</Button>}
 
