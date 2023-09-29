@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Notation, Site } from '@/api/sites';
 import { RootState } from '@/store';
 import { updateSite } from '../simple-search/simple-search';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import SiteRegistryIcon from '@/components/SiteRegistryIcon';
 
 
@@ -21,12 +21,6 @@ export default function Notations() {
     const dispatch = useDispatch();
 
 
-    // console.log('site notations', site.notations);
-
-    // useEffect(() => { console.log('nav useEffect')}, [site])
-
-
-    // Note: This is currently not rendering immediately! After doing dispatch, click to other tab and back and see it works.
     function newNotation() {
         const newNotation = new Notation({
             completed: new Date(),
@@ -46,18 +40,15 @@ export default function Notations() {
 
     function newParticipant({ notationIndex }){
         const newParticipant = {name: '', role: '', siteRegistry: false};
-        // Push to array in newSite.notations[HOW-GET-THIS-ID].participants
         const newSite: Site = {...site, notations: [...site.notations]}
         newSite.notations[notationIndex].notationParticipants = [...newSite.notations[notationIndex].notationParticipants, newParticipant]
         dispatch(updateSite(newSite))
-
     }
 
 
     return (
         <div>
 
-            {/* <div className={siteDetailsStyles.metadataGrid}> */}
             <div className="row my-4">
                 <div className="col-10">
                     <input type="text" className={"form-control " + styles.searchBar} placeholder="Search Notations" aria-label="Search Notations" />
@@ -85,6 +76,11 @@ export default function Notations() {
 function NotationItem({ notation, index, onClickAddParticipant }: { notation: Notation, index: number, onClickAddParticipant: any }) {
     const isMinistry = useSelector((state: RootState) => state.user.isMinistry);
     const editMode = useSelector((state: RootState) => state.edit.editMode);
+
+    // Toggling these two makes it mirror exact state, but it shouldn't, instead should be for batch changing of them.
+    // const defaultSelectionState: {index: number, siteRegistry: boolean}[] = notation.notationParticipants.map((x,index) => {return {index, siteRegistry: x.siteRegistry}} )
+    const defaultSelectionState: {index: number, siteRegistry: boolean}[] = notation.notationParticipants.map((x,index) => {return {index, siteRegistry: false}} )
+    const [participationSelection, setParticipationSeleciton] = useState(defaultSelectionState)
 
 
     // const 
@@ -117,9 +113,10 @@ function NotationItem({ notation, index, onClickAddParticipant }: { notation: No
 
             <div>
                 {editMode && <div className="my-4 d-flex justify-content between">
-                    <div className="d-inline-flex">
+                    <div className="d-inline-flex w-100">
                         <Button variant='secondary' onClick={() => { onClickAddParticipant({notationIndex: index })}}>+ Add</Button>
                         <Button disabled={true} variant='secondary' className='ms-3'>Make Selected Visible to Public</Button>
+                        <Button disabled={true} variant='secondary' className='ms-auto'>Remove Selected</Button>
                     </div>
                 </div>}
 
@@ -141,7 +138,7 @@ function NotationItem({ notation, index, onClickAddParticipant }: { notation: No
                         {notation.notationParticipants.map((participant, id) => {
                             return (
                                 <tr key={id}>
-                                    {editMode && <td><Form.Check aria-label="Select this notation participant"/></td> }
+                                    {editMode && <td><Form.Check aria-label="Select this notation participant" /></td> }
                                     <td><TableEditItem value={participant.name} /></td>
                                     <td><TableEditItem value={participant.role} /></td>
                                     {editMode && <td> <SiteRegistryIcon siteRegistry={participant.siteRegistry} /></td>}
