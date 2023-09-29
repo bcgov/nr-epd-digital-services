@@ -117,6 +117,7 @@ function NotationItem({ notation, index, onClickAddParticipant }: { notation: No
 
 
             <SiteDetailsTable 
+                label='Notation Participants'
                 headers={[
                     {label: 'Name', accessor: 'name'},
                     {label: 'Role', accessor: 'role'},
