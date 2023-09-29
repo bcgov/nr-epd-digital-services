@@ -66,6 +66,58 @@
           <text>"epd-support@gov.bc.ca"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0ygn6ai">
+        <inputEntry id="UnaryTests_1hzb1kb">
+          <text>"nom_updated"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0cbmy7o">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1pxf60n">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0mxfr8j">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1l7jv5i">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0tovgsb">
+          <text>"Notification of Likely or Actual Migration Application Status Update"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0la9u3x">
+          <text>"templates/nom_application.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1l601us">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1vzpiut">
+        <inputEntry id="UnaryTests_1owiayt">
+          <text>"nir_updated"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ne3kdr">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1m84wj0">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1otdreo">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0nj6yjz">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ol8a8s">
+          <text>"Notification of Independent Remediation Application Status Update"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ndgbup">
+          <text>"templates/nir_application.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0fm9kmi">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
