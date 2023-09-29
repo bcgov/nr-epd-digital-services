@@ -6,6 +6,9 @@
   --header-gray: #a8a8a8;
   --table-header-gray: #e5e5e5;
 
+  --bs-primary: #003366;
+  --bs-nav-pills-link-active-bg: #003366 !important; 
+
 
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -20,7 +23,7 @@
   --bs-white: #fff;
   --bs-gray: #6c757d;
   --bs-gray-dark: #343a40;
-  --bs-primary: #0d6efd;
+  /* --bs-primary: #0d6efd; */
   --bs-secondary: #6c757d;
   --bs-success: #198754;
   --bs-info: #0dcaf0;
@@ -48,4 +51,20 @@
 
 input[type='checkbox'] {
   border: 2px solid var(--dark-gray);
+}
+
+.form-control-plaintext {
+  cursor: initial;
+}
+
+/* .nav-pills .nav-link.active {
+  background-color: orange
+} */
+
+.nav-pills .nav-link.active {
+  background-color: var(--bs-primary);
+}
+
+.nav-pills .nav-link {
+  color: var(--bs-primary);
 }
