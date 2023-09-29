@@ -3,7 +3,7 @@ import styles from './css/summary.module.css'
 import { Site } from "@/api/sites";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 // import 'leaflet/dist/leaflet.css'; //Unsure if necessary after included in map.tsx
 
 export default function Summary() {
@@ -11,7 +11,6 @@ export default function Summary() {
     const siteIDNum = parseInt(siteID);
     const site: Site = useSelector((state: RootState) => state.site.value.find(searchedSite => searchedSite.siteID === siteIDNum));
 
-    console.log('summary site', site);
 
     return (
         <div>
@@ -44,6 +43,9 @@ export default function Summary() {
                     <p><span className="fw-bolder">Documents</span>: 2</p>
                     <p><span className="fw-bolder">Suspect Land Use</span>: 2</p>
                     <p><span className="fw-bolder">Parcel Description</span>: 2</p>
+
+
+                    <Link className='text-decoration-none' to={`/map?siteID=${site.siteID}`}>View on Map</Link>
                 </div>
             </div>
         </div>
