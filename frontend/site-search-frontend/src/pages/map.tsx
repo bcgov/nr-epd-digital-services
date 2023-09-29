@@ -14,16 +14,20 @@ import { LatLngExpression } from "leaflet";
 import MapDetailsPane from "@/features/map/MapDetailsPane";
 import { RootState } from "@/store";
 import UpdateMapCentre from "@/features/map/UpdateMapCentre";
-import icon from "leaflet/dist/images/marker-icon.png";
+// import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import L from "leaflet";
+import iconMarker from 'leaflet/dist/images/marker-icon.png'
 
-let DefaultIcon = L.icon({
-    iconUrl: icon,
-    shadowUrl: iconShadow,
+
+// import iconRetina from 'leaflet/dist/images/marker-icon-2x.png'
+
+const icon = L.icon({ 
+    // Icon-retina makes icons double in size on local, so leaving out.
+    // iconRetinaUrl:iconRetina, 
+    iconUrl: iconMarker, 
+    shadowUrl: iconShadow 
 });
-
-L.marker.prototype.options.icon = DefaultIcon;
 
 
 export default function MapPage() {
@@ -141,6 +145,7 @@ export default function MapPage() {
                             key={site.uuid}
                             eventHandlers={{ click: onMarkerClick }}
                             data-site={site}
+                            icon={icon}
                         ></Marker>
                     })}
 
