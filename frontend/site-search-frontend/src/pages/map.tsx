@@ -21,7 +21,9 @@ import L from "leaflet";
 let DefaultIcon = L.icon({
     iconUrl: icon,
     shadowUrl: iconShadow,
-  });
+});
+
+L.marker.prototype.options.icon = DefaultIcon;
 
 
 export default function MapPage() {
