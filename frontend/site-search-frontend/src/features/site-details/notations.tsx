@@ -87,11 +87,6 @@ function NotationItem({ notation, index, onClickAddParticipant }: { notation: No
     // const defaultSelectionState: {index: number, siteRegistry: boolean}[] = notation.notationParticipants.map((x,index) => {return {index, siteRegistry: false}} )
     // const [participationSelection, setParticipationSeleciton] = useState(defaultSelectionState)
 
-
-    // const 
-    // TODO: Need to handle 'SR', update data model
-
-
     return (
         <div className={styles.notationItem}>
             <div className="d-flex justify-content-between">
