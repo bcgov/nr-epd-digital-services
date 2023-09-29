@@ -47,10 +47,11 @@
     display: flex;
     justify-content: space-between;
     font-size: 12px;
-    display: flex;
-    align-items: baseline;
+    align-items: center;
+    min-height: 2rem;
 }
 
 .formInput:read-only {
-    background-color: var(--input-gray)
+    background-color: var(--input-gray);
+    padding: 0.375rem 0.75rem;
 }
