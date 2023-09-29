@@ -1313,6 +1313,16 @@ execution.setVariable("applicationStatus", "Rejected");
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isSentFromSociety == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0kw2jbo" name="Accepted" sourceRef="Gateway_0o9l3lp" targetRef="Activity_15e3ho6">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('bundleStatus', "cssaCaseworkerAccepted");</camunda:script>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+          <camunda:field name="fields">
+            <camunda:expression>["applicationId", "applicationStatus", "bundleStatus"]</camunda:expression>
+          </camunda:field>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0lgivc3" name="Recheck" sourceRef="Gateway_1lfy3cm" targetRef="Activity_08ykdar">
