@@ -3,7 +3,7 @@ import { RootState } from '@/store';
 import { Button, Form, Table } from 'react-bootstrap'
 import { useSelector } from 'react-redux';
 import { TableEditItem } from '../TableEditItem';
-import SiteRegistryIcon from '@/components/SiteRegistryIcon';
+import { SiteRegistryIconButton } from '@/components/SiteRegistryIcon';
 
 interface SiteDetailsTableProps {
     onClickAdd?
@@ -55,7 +55,7 @@ export default function SiteDetailsTable({ onClickAdd, headers, data }: SiteDeta
                             <tr key={index}>
                                 {editMode && <td><Form.Check aria-label="Select this notation participant" /></td>}
                                 {headers?.map((header, index) => <td key={index}><TableEditItem value={row[header.accessor]} /></td>)}
-                                {editMode && <td> <SiteRegistryIcon siteRegistry={row.siteRegistry} /></td>}
+                                {editMode && <td> <SiteRegistryIconButton siteRegistry={row.siteRegistry} /></td>}
                             </tr>
                         )
                     })}
