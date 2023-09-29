@@ -16,7 +16,8 @@ export default function SiteGridItem( {label, value, extraClasses = '', showSR =
                 <span><SiteRegistryIconButton siteRegistry={true} /> SR</span>
                 }
             </div>
-            <Form.Control className={styles.formInput} readOnly={!editMode} defaultValue={value} />
+            <Form.Control className={styles.formInput} readOnly={!editMode} plaintext={!editMode} defaultValue={value} />
         </div>
     )
 }
+

@@ -2,6 +2,7 @@ import { Button, Dropdown, DropdownButton, Form, Table } from 'react-bootstrap'
 import styles from './css/notations.module.css'
 import siteDetailsStyles from '@/pages/site-details.module.css'
 import SiteGridItem from './SiteGridItem'
+import { TableEditItem } from "./TableEditItem";
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Notation, Site } from '@/api/sites';
@@ -97,10 +98,10 @@ function NotationItem({ notation, index, onClickAddParticipant }: { notation: No
                     <p>Notation {index + 1}</p>
                     {isMinistry && <p className='mx-3'>Created: {notation.createdAt.toISOString().split('T')[0]}</p>}
                 </div>
-                <div className="d-inline-flex">
+                {editMode && <div className="d-inline-flex">
                     <Button className='text-dark' variant='link'><SiteRegistryIcon siteRegistry={false} /><span className="ms-1 me-3">SR</span></Button>
                     <Button className='text-dark' variant='link'>Delete</Button>
-                </div>
+                </div>}
             </div>
             <div className={siteDetailsStyles.metadataGrid}>
                 <SiteGridItem label='Notation Type' value={notation.notationType} extraClasses={siteDetailsStyles.gridFullwidth} showSR={editMode} />
@@ -141,8 +142,8 @@ function NotationItem({ notation, index, onClickAddParticipant }: { notation: No
                             return (
                                 <tr key={id}>
                                     {editMode && <td><Form.Check aria-label="Select this notation participant"/></td> }
-                                    <td>{participant.name}</td>
-                                    <td>{participant.role}</td>
+                                    <td><TableEditItem value={participant.name} /></td>
+                                    <td><TableEditItem value={participant.role} /></td>
                                     {editMode && <td> <SiteRegistryIcon siteRegistry={participant.siteRegistry} /></td>}
                                 </tr>
                             )
