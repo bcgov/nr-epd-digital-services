@@ -11,6 +11,7 @@ import { updateSite } from '../simple-search/simple-search';
 import { useEffect, useState } from 'react';
 import SiteRegistryIcon from '@/components/SiteRegistryIcon';
 import SubSearch from './sub-search/SubSearch';
+import SiteDetailsTable from './table/SiteDetailsTable';
 
 
 
@@ -102,44 +103,18 @@ function NotationItem({ notation, index, onClickAddParticipant }: { notation: No
             </div>
 
 
-            <div>
-                {editMode && <div className="my-4 d-flex justify-content between">
-                    <div className="d-inline-flex w-100">
-                        <Button variant='secondary' onClick={() => { onClickAddParticipant({notationIndex: index })}}>+ Add</Button>
-                        <Button disabled={true} variant='secondary' className='ms-3'>Make Selected Visible to Public</Button>
-                        <Button disabled={true} variant='secondary' className='ms-auto'>Remove Selected</Button>
-                    </div>
-                </div>}
+            <SiteDetailsTable 
+                headers={[
+                    {label: 'Name', accessor: 'name'},
+                    {label: 'Role', accessor: 'role'},
+                ]}
+                data={notation.notationParticipants}
+                onClickAdd={() => { onClickAddParticipant({notationIndex: index})}}
+            />
 
 
-                {/* TODO - Rip this out and make its own component, but how handle differing columns and fields elegantly? children props / slots most likely. */}
-                {/* SiteDetailsTable */}
-                <div className={`${siteDetailsStyles.metadataGridItem} ${siteDetailsStyles.formLabel} mt-4 px-2`}>Notation Participants</div>
-                <Table bordered hover>
-                    <thead>
-                        <tr>
-                            {editMode && <th><Form.Check aria-label="Select all Notation Participants" /></th> }
-                            <th>Name</th>
-                            <th>Role</th>
-                            {editMode && <th>SR</th>}
-                        </tr>
-                    </thead>
-                    <tbody>
 
-                        {notation.notationParticipants.map((participant, id) => {
-                            return (
-                                <tr key={id}>
-                                    {editMode && <td><Form.Check aria-label="Select this notation participant" /></td> }
-                                    <td><TableEditItem value={participant.name} /></td>
-                                    <td><TableEditItem value={participant.role} /></td>
-                                    {editMode && <td> <SiteRegistryIcon siteRegistry={participant.siteRegistry} /></td>}
-                                </tr>
-                            )
-                        })}
-
-                    </tbody>
-                </Table>
-            </div>
+            
         </div>
     )
 }
