@@ -3,6 +3,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import siteDummyData from '@/scripts/dummy-data.sites.json';
 import { Site } from '@/api/sites';
 import { current } from '@reduxjs/toolkit'
+import formatDateToString from '@/helpers/formatDateToString';
 
 
 
@@ -10,7 +11,7 @@ import { current } from '@reduxjs/toolkit'
 // Use `as any` to get around fact that 'lastUpdated' is a string, not a date.
 // Definitely causes redux issues though  - https://redux.js.org/faq/organizing-state#can-i-put-functions-promises-or-other-non-serializable-items-in-my-store-state
 // Should potentially only initialize date object in the view, not the store?
-const parsedDummyData: Site[] = siteDummyData.map(siteData => new Site((siteData as any)))
+// const parsedDummyData: Site[] = siteDummyData.map(siteData => new Site((siteData as any)))
 
 // const addNotationBySiteIDNewTemp = (state, action) => {
 //     const site: Site = state.value.find((todo) => todo.siteID === action.payload)
@@ -34,15 +35,16 @@ const addNotationBySiteIDNewTemp = (state, action) => {
     // site.notations.push();
     // site.notations = [];
     site.notations = [...site.notations, {
-        completed: new Date(),
-        createdAt: new Date(),
-        initiated: new Date(),
+        completed: formatDateToString(new Date()),
+        createdAt: formatDateToString(new Date()), 
+        initiated: formatDateToString(new Date()), 
         ministryContact: '',
         notationClass: 'ENVIRONMENTAL MANAGEMENT ACT: GENERAL',
         notationParticipants: [],
         notationType: 'CERTIFICATE OF COMPLIANCE ISSUED USING RISK BASED STANDARDS',
         note: '',
-        requestedActions: []
+        requestedActions: [],
+        siteRegistry: false,
     }]
 
     // return state; // ???? can i do a ...spread patch in here?
@@ -53,8 +55,8 @@ export const siteSlice = createSlice({
     name: 'site',
     initialState: {
         // value: Array.from({length: 250}, _ => createRandomSite())
-        value: parsedDummyData
-        // value: siteDummyData
+        // value: parsedDummyData
+        value: siteDummyData
     },
     reducers: {
         add: () => console.log('site reducer add todo'), // Maybe not even necessary? SITE list won't mutate much, unlike site selection

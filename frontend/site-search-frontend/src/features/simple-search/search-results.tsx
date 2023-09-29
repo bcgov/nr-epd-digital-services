@@ -45,10 +45,10 @@ export default function SimpleSearchResults({ site, highlight, searchOption }: P
                     </tr>
                 </tbody>
             </table>
-            <Link className='pr-3 text-decoration-none text-muted' to={`/site/${site.siteID}`}>View Site Details</Link>
+            <Link className='pr-3 text-decoration-none text-muted' to={`/site/${site.siteID}/`}>View Site Details</Link>
             <Link className='px-3 text-decoration-none text-muted' to={`/map?siteID=${site.siteID}`}>View on Map</Link>
 
-            <span className="float-end fst-italic text-muted">Last Updated: {site.lastUpdated.toISOString().split('T')[0]} </span>
+            <span className="float-end fst-italic text-muted">Last Updated: {site.lastUpdated} </span>
             <hr className='mb-5' />
         </div>
     )

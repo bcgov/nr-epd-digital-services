@@ -16,11 +16,12 @@
  */
 
 
-import { createRandomSite } from '../api/dummy-data.tsx'
+import { createRandomSite, generate } from '../api/dummy-data.tsx'
 import { writeFile } from 'fs';
 
 
-const output = Array.from({length: 250}, _ => createRandomSite());
+// const output = Array.from({length: 250}, _ => createRandomSite());
+const output = generate({siteCount: 250})
 const json = JSON.stringify(output);
 console.log('Writing to JSON file...');
 writeFile('dummy-data.sites.json', json, 'utf8', () => {
