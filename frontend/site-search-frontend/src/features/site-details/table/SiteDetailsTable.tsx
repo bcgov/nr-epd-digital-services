@@ -7,7 +7,8 @@ import { SiteRegistryIconButton } from '@/components/SiteRegistryIcon';
 import { useState } from 'react';
 
 interface SiteDetailsTableProps {
-    onClickAdd?
+    onClickAdd?;
+    onClickRemove?;
     label: string;
     headers: { label: string, accessor: string }[]
     // rows: any[];
@@ -56,6 +57,14 @@ export default function SiteDetailsTable({ onClickAdd, headers, data, label }: S
         return newChecked;
     }
 
+    function setVisibleOnSiteRegistry(){
+        alert('todo');
+    }
+
+    function getSelection(): string[]{
+        return Object.keys(checked).filter(key => checked[key] === true);
+    }
+
 
 
     return (
@@ -63,8 +72,8 @@ export default function SiteDetailsTable({ onClickAdd, headers, data, label }: S
             {editMode && <div className="my-4 d-flex justify-content between">
                 <div className="d-inline-flex w-100">
                     <Button variant='secondary' onClick={() => { onClickAdd() }}>+ Add</Button>
-                    <Button disabled={true} variant='secondary' className='ms-3'>Make Selected Visible to Public</Button>
-                    <Button disabled={true} variant='secondary' className='ms-auto'>Remove Selected</Button>
+                    <Button disabled={getSelection().length === 0} variant='secondary' onClick={setVisibleOnSiteRegistry} className='ms-3'>Make Selected Visible to Public</Button>
+                    <Button disabled={getSelection().length === 0} variant='secondary' className='ms-auto'>Remove Selected</Button>
                 </div>
             </div>}
 
