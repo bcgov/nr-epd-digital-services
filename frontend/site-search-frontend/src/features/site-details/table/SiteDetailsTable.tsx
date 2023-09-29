@@ -10,12 +10,9 @@ interface SiteDetailsTableProps {
     headers: { label: string, accessor: string}[]
     // rows: any[];
     data: {
-        participant: string,
-        roles: string[],
-        startDate: string,
-        endDate: string,
-        notes: string,
+        roles?: string[],
         siteRegistry: boolean
+        [key:string]: any;
     }[];
 }
 
@@ -57,31 +54,11 @@ export default function SiteDetailsTable({ onClickAdd, headers, data }: SiteDeta
                         return (
                             <tr key={index}>
                                 {editMode && <td><Form.Check aria-label="Select this notation participant" /></td>}
-
-                                {/* {headers?.map((header, index)) => {
-                                    // Need to match header based on accessor
-                                    <td><TableEditItem value={row[headers.accessor]} </td>
-                                }} */}
-
-                                {headers?.map((header, index) => <td key={index}>{row[header.accessor]}</td>)}
-
-                                {/* <td><TableEditItem value={participant.name} /></td>
-                                <td><TableEditItem value={participant.role} /></td> */}
+                                {headers?.map((header, index) => <td key={index}><TableEditItem value={row[header.accessor]} /></td>)}
                                 {editMode && <td> <SiteRegistryIcon siteRegistry={row.siteRegistry} /></td>}
                             </tr>
                         )
                     })}
-
-                    {/* {notation.notationParticipants.map((participant, id) => {
-                        return (
-                            <tr key={id}>
-                                {editMode && <td><Form.Check aria-label="Select this notation participant" /></td>}
-                                <td><TableEditItem value={participant.name} /></td>
-                                <td><TableEditItem value={participant.role} /></td>
-                                {editMode && <td> <SiteRegistryIcon siteRegistry={participant.siteRegistry} /></td>}
-                            </tr>
-                        )
-                    })} */}
 
                 </tbody>
             </Table>
