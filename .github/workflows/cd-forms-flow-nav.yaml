@@ -13,7 +13,9 @@ on:
       - main
       - ss-60-github-actions-bug # Remove in future, just to verify this works
     paths:
-      - "forms-flow-ai/forms-flow-ai-micro-front-ends/forms-flow-nav"
+      - 'backend/**'
+      - 'frontend/**'
+      - 'forms-flow-ai/**'
       - ".github/workflows/cd-forms-flow-nav.yaml"
 
 defaults:

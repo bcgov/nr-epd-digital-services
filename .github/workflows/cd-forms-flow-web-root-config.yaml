@@ -14,7 +14,9 @@ on:
       - epdds-270 # Remove in future, just to verify this works
       - epdds-270-fix # Remove in future, just to verify this works
     paths:
-      - "forms-flow-ai/forms-flow-ai-ee/forms-flow-web-root-config"
+      - 'backend/**'
+      - 'frontend/**'
+      - 'forms-flow-ai/**'
       - ".github/workflows/cd-forms-flow-web-root-config.yaml"
 
 defaults:

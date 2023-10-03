@@ -13,7 +13,9 @@ on:
       - main
       - epdds-270 # Remove in future, just to verify this works
     paths:
-      - "forms-flow-ai/forms-flow-ai-micro-front-ends/forms-flow-theme"
+      - 'backend/**'
+      - 'frontend/**'
+      - 'forms-flow-ai/**'
       - ".github/workflows/cd-forms-flow-theme.yaml"
 
 defaults:
