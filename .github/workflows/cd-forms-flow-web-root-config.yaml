@@ -1,4 +1,4 @@
-name: forms-flow-web Custom
+name: forms-flow-web-root-config Custom
 
 on:
   workflow_dispatch:

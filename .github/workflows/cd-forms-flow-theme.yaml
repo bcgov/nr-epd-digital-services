@@ -1,4 +1,4 @@
-name: forms-flow-web Custom
+name: forms-flow-web-theme Custom
 
 on:
   workflow_dispatch:

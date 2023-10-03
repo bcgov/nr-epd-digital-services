@@ -1,4 +1,4 @@
-name: forms-flow-web Custom
+name: forms-flow-web-ee Custom
 
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ on:
     paths:
       - 'backend/**'
       - 'frontend/**'
-      - 'forms-flow-ai/epd-forms/**'
+      - 'forms-flow-ai/**'
       - ".github/workflows/cd-forms-flow-web-ee.yaml"
 
 defaults:
