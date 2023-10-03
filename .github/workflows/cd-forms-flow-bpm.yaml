@@ -11,7 +11,7 @@ on:
     branches:
       - dev
       - main
-      - ss-60-github-actions-bug #test auto trigger issue#test
+      - ss-60-github-actions-bug #test auto trigger issue#test1
     paths:
       - 'backend/**'
       - 'frontend/**'
