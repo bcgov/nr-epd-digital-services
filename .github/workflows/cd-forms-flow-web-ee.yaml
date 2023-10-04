@@ -11,13 +11,12 @@ on:
     branches:
       - dev
       - main
-      - epdds-270 # Remove in future, just to verify this works
-      - ss-60-github-actions-bug # Remove in future, just to verify this workse#test1
+      
     paths:
       - 'backend/**'
       - 'frontend/**'
       - 'forms-flow-ai/**'
-      - ".github/workflows/cd-forms-flow-web-ee.yaml"
+      - ".github/workflows/**"
 
 defaults:
   run:
