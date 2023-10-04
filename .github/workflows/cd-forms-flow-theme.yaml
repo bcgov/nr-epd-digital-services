@@ -16,7 +16,7 @@ on:
       - 'backend/**'
       - 'frontend/**'
       - 'forms-flow-ai/**'
-      - ".github/workflows/**"
+      - '.github/workflows/**'
 
 defaults:
   run:
