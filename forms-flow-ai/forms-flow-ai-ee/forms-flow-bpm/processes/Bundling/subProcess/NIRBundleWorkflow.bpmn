@@ -35,13 +35,17 @@
       <bpmn:outgoing>Flow_0unffch</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
 var clientEmail = execution.getVariable('simpleemail3');
-execution.setVariable('clientEmail',clientEmail);
+var emailsToArray = [];
+emailsToArray.push(clientEmail)
+execution.setVariable("emailTo", Java.to(emailsToArray, "java.lang.Object[]"));
 var riskclassification = execution.getVariable('riskclassification');
 system.out.println ("formUrl "+execution.getVariable('formUrl'));
 var siteRiskClassification = execution.getVariable('siteRiskClassification');
 system.out.println ("siteRiskClassification "+siteRiskClassification );
 execution.setVariable('siteRiskClassification',siteRiskClassification);
-      </bpmn:script>
+var name=execution.getVariable('nirName');
+system.out.println ("name "+execution.getVariable('nirName'));
+execution.setVariable('name',name);      </bpmn:script>
     </bpmn:scriptTask>
     <bpmn:receiveTask id="Task_05ulff4" name="Application Resubmitted" messageRef="Message_1ngb2eg">
       <bpmn:extensionElements>
@@ -111,6 +115,9 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
     <bpmn:callActivity id="Activity_1os7sys" name="Send Email" calledElement="common-email-workflow">
       <bpmn:extensionElements>
         <camunda:in variables="all" />
+        <camunda:inputOutput>
+          <camunda:inputParameter name="category">nir_updated</camunda:inputParameter>
+        </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0bwxoom</bpmn:incoming>
       <bpmn:outgoing>Flow_0x0w3ip</bpmn:outgoing>
@@ -121,6 +128,9 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
     <bpmn:callActivity id="Activity_1gjzpac" name="Send Decision Email" calledElement="common-email-workflow">
       <bpmn:extensionElements>
         <camunda:in variables="all" />
+        <camunda:inputOutput>
+          <camunda:inputParameter name="category">nir_updated</camunda:inputParameter>
+        </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0ixmsle</bpmn:incoming>
       <bpmn:outgoing>Flow_1cgcuxz</bpmn:outgoing>
@@ -573,7 +583,7 @@ execution.setVariable("applicationStatus", "Rejected");
       </bpmn:extensionElements>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1cgcuxz" sourceRef="Activity_1gjzpac" targetRef="Event_01t23k0" />
-    <bpmn:sequenceFlow id="Flow_1g1b94u" sourceRef="Activity_06nypz0" targetRef="Activity_1n3rj1g">
+    <bpmn:sequenceFlow id="Flow_1g1b94u" name="Rejected" sourceRef="Activity_06nypz0" targetRef="Activity_1n3rj1g">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected' }</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
   </bpmn:process>
@@ -967,6 +977,9 @@ execution.setVariable("applicationStatus", "Rejected");
         <di:waypoint x="411" y="420" />
         <di:waypoint x="861" y="420" />
         <di:waypoint x="861" y="670" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="614" y="402" width="44" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
