@@ -57,7 +57,9 @@
       <bpmn:script>var system = java.lang.System;
 system.out.println ("simpleemail"+execution.getVariable('simpleemail'));
 var clientEmail = execution.getVariable('simpleemail');
-execution.setVariable('emailTo',clientEmail);
+var emailsToArray = [];
+emailsToArray.push(clientEmail)
+execution.setVariable("emailTo", Java.to(emailsToArray, "java.lang.Object[]"));
 system.out.println ("emailTo"+execution.getVariable('emailTo'));
 system.out.println ("firstname "+execution.getVariable('s1-firstname'));
 var firstname=execution.getVariable('s1-firstname');
