@@ -11,10 +11,12 @@ on:
     branches:
       - dev
       - main
-      - feat/task-228 # Remove in future, just to verify this works
+      - ss-60-github-actions-bug #test auto trigger issue#test1
     paths:
-      - "forms-flow-ai/forms-flow-ai-ee/forms-flow-bpm"
-      - ".github/workflows/cd-forms-flow-bpm.yaml"
+      - 'backend/**'
+      - 'frontend/**'
+      - 'forms-flow-ai/**'
+      - '.github/workflows/**'
 
 defaults:
   run:
