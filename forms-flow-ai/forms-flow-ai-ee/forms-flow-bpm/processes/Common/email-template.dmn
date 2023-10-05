@@ -92,6 +92,32 @@
           <text>"epd-support@gov.bc.ca"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0acnxxf">
+        <inputEntry id="UnaryTests_1qztb9n">
+          <text>"dera_updated"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1wgg4rq">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0gdiekd">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0bhfnrs">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0fxsu1y">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0lms8g0">
+          <text>"Detailed Ecological Risk Assessment Checklist"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_01beqp6">
+          <text>"templates/nom_application.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1iiimqa">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

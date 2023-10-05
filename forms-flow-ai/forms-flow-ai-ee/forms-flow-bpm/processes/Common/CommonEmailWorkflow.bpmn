@@ -68,27 +68,10 @@ system.out.println ("name: "+name);</bpmn:script>
   "from": "NOREPLYEPD@gov.bc.ca",
   "priority": "normal",
   "subject": execution.getVariable("subject"),
-  "to": [],
+  "to": execution.getVariable("emailTo"),
   "tag": "",
   "attachments": []
 }
-
-if(applicationType==="nom")
-{
-   console.log("nom emails",toEmailListArray);
-   console.log("nom emails type",typeof toEmailListArray);
-   var toEmailListArrayObj = JSON.parse(toEmailListArray);
-   console.log("toEmailListArrayObj",toEmailListArrayObj);
-   for(i in toEmailListArrayObj)
-	{
-		p.to.push(toEmailListArrayObj[i]);
-	}
-}
-else
-{
-  p.to.push(execution.getVariable("emailTo"))
-}
-
 
 console.log("Payload")
 console.log(JSON.stringify(p))
