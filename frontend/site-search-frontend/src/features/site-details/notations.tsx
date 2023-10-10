@@ -60,6 +60,37 @@ export default function Notations() {
         dispatch(updateSite(newSite))
     }
 
+    function removeAtWithSplice(array, index) {
+        const copy = [...array];
+        copy.splice(index, 1);
+        return copy;
+      }
+
+    function removeParticipant({notationIndex, checked}) {
+        console.log('notation removeParticipant', {checked, notationIndex})
+        const newSite: Site = {
+            ...site,
+
+            notations: [...site.notations.map((notation, index) => {
+                if (index=== notationIndex) {
+                    return {
+                        ...notation,
+                        notationParticipants: [...notation.notationParticipants.filter((_, participantIndex) => { 
+                            if (checked[participantIndex] === true) {
+                                // console.log(`checked[participantIndex] === ${checked[participantIndex]} at ${participantIndex}` )
+                                return false
+                            }
+                            return true;
+                        })]
+                    }
+                }
+                return notation
+            })]
+          };
+
+        dispatch(updateSite(newSite))
+    }
+
 
     return (
         <div>
@@ -69,7 +100,7 @@ export default function Notations() {
             {editMode && <Button onClick={newNotation} variant='secondary'>+ New Notation</Button>}
 
             {site.notations.map((siteNotationData, index) => {
-                return <NotationItem key={index} notation={siteNotationData} index={index} onClickAddParticipant={newParticipant}/>
+                return <NotationItem key={index} notation={siteNotationData} index={index} onClickAddParticipant={newParticipant} onClickRemoveParticipant={removeParticipant} />
             })}
 
 
@@ -78,7 +109,7 @@ export default function Notations() {
 }
 
 
-function NotationItem({ notation, index, onClickAddParticipant }: { notation: Notation, index: number, onClickAddParticipant: any }) {
+function NotationItem({ notation, index, onClickAddParticipant, onClickRemoveParticipant }: { notation: Notation, index: number, onClickAddParticipant: any, onClickRemoveParticipant: any }) {
     const isMinistry = useSelector((state: RootState) => state.user.isMinistry);
     const editMode = useSelector((state: RootState) => state.edit.editMode);
 
@@ -119,6 +150,7 @@ function NotationItem({ notation, index, onClickAddParticipant }: { notation: No
                 ]}
                 data={notation.notationParticipants}
                 onClickAdd={() => { onClickAddParticipant({notationIndex: index})}}
+                onClickRemove={(checked) => { onClickRemoveParticipant({notationIndex: index, checked})}}
             />
 
 

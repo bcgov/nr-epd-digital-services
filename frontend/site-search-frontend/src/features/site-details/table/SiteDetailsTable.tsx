@@ -51,7 +51,7 @@ export default function SiteDetailsTable({ onClickAdd, headers, data, label, onC
     // }
 
     function handleCheck({ index, event }) {
-        console.log('handleCheck', { index, event, checked })
+        // console.log('handleCheck', { index, event, checked })
         const newCheck = { ...checked }
         newCheck[index] = event.target.checked
         setChecked(newCheck)
