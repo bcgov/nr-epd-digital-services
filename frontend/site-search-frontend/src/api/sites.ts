@@ -22,6 +22,7 @@ export class Site {
     associatedSites: AssociatedSite[];
 
     suspectLandUses: SuspectLandUse[];
+    parcelDescriptions: ParcelDescription[]
     siteDisclosures: SiteDisclosure[];
     activityLog: ActivityLogItem[];
 
