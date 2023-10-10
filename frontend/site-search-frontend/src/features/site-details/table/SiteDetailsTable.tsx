@@ -24,7 +24,7 @@ interface SiteDetailsTableProps {
 // Site Registry togglez    
 // editMode
 
-export default function SiteDetailsTable({ onClickAdd, headers, data, label }: SiteDetailsTableProps) {
+export default function SiteDetailsTable({ onClickAdd, headers, data, label, onClickRemove }: SiteDetailsTableProps) {
     const editMode = useSelector((state: RootState) => state.edit.editMode);
     const [checked, setChecked] = useState<{ [key: string]: boolean }>(initializeCheckedObject(false));
     const [SRCheck, setSRChecks] = useState(copySiteRegistryToState());
@@ -57,6 +57,13 @@ export default function SiteDetailsTable({ onClickAdd, headers, data, label }: S
         setChecked(newCheck)
     }
 
+    function handleRemove(val) {
+        // Manually unselect all checkboxes after user deletes, otherwise selection kinda ghosts to
+        // other entries which now share that indice
+        setChecked(initializeCheckedObject(false))
+        onClickRemove(val)
+    }
+
     function checkAll(value: boolean) {
         const newChecked = initializeCheckedObject(value);
         setChecked(newChecked)
@@ -76,7 +83,7 @@ export default function SiteDetailsTable({ onClickAdd, headers, data, label }: S
         // alert('todo');
         // const idsToSetTrue = getSelection();
         // console.log({idsToSetTrue, checked, SRCheck })
-        console.log({ checked, SRCheck })
+        // console.log({ checked, SRCheck })
 
         // what are we updating here, site? no, only the props passed in? but can't update props...
         // idea: clone the props, set that as state, show that state, and modify that stae.
@@ -87,13 +94,11 @@ export default function SiteDetailsTable({ onClickAdd, headers, data, label }: S
         // goal - make checked write to SR check
         const checkedAsArray = [...Object.keys(checked).map(key => checked[key])];
         setSRChecks(checkedAsArray)
-
     }
 
     function getSelection(): string[] {
         return Object.keys(checked).filter(key => checked[key] === true);
     }
-
 
 
     return (
@@ -102,7 +107,8 @@ export default function SiteDetailsTable({ onClickAdd, headers, data, label }: S
                 <div className="d-inline-flex w-100">
                     <Button variant='secondary' onClick={() => { onClickAdd() }}>+ Add</Button>
                     <Button disabled={getSelection().length === 0} variant='secondary' onClick={onChangeSiteRegistry} className='ms-3'>Make Selected Visible to Public</Button>
-                    <Button disabled={getSelection().length === 0} variant='secondary' className='ms-auto'>Remove Selected</Button>
+                    {/* <Button disabled={getSelection().length === 0} variant='secondary' className='ms-auto' onClick={onClickRemove}>Remove Selected</Button> */}
+                    <Button disabled={getSelection().length === 0} variant='secondary' className='ms-auto' onClick={() => {handleRemove(checked)}}>Remove Selected</Button>
                 </div>
             </div>}
 
