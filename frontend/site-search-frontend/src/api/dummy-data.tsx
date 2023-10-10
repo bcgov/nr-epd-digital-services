@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { SiteParticipant, type Notation, type Site, AssociatedSite, SuspectLandUse, SiteDisclosure, ActivityLogItem, SiteDisclosurePurpose } from './sites'
+import { SiteParticipant, type Notation, type Site, AssociatedSite, SuspectLandUse, SiteDisclosure, ActivityLogItem, SiteDisclosurePurpose, ParcelDescription } from './sites'
 // import formatDateToString from '@/helpers/formatDateToString';
 import formatDateToString from '../helpers/formatDateToString.ts'
 
@@ -31,18 +31,12 @@ export function createRandomSite(): Site {
         parcelIDs: Array.from({length: 5}, _ => faker.number.int({min: 100000, max: 10000000})),
         locationDescription: 'LAT/LONGS CONFIRMED USING ICIS MAY 16,2013',
 
-        // Generate 1-5 notations
-        // notations: Array.from({length: faker.number.int({min: 2, max: 5}) }, () => { return randomNotation() }),
-        // participants: Array.from({length: faker.number.int({min: 2, max: 5}) }, () => { return randomSiteParticipant() }),
         notations: createAndPopulateArray({min: 2, max: 5, generator: randomNotation}),
         participants: createAndPopulateArray({min: 2, max: 5, generator: randomSiteParticipant}),
         suspectLandUses: createAndPopulateArray({min: 2, max: 5, generator: randomSuspectLandUse}),
-
-
+        parcelDescriptions: createAndPopulateArray({min: 2, max: 5, generator: randomParcelDescription}),
         siteDisclosures: createAndPopulateArray({min: 1, max: 2, generator: randomSiteDisclosure}),
         activityLog: createAndPopulateArray({min: 5, max: 10, generator: randomActivityLogItem}),
-
-
 
         // Associated Sites is generated after site generation with `createSiteAssociations()`, as we need siteIDs already gen'd.
         associatedSites: []
@@ -178,4 +172,21 @@ function randomActivityLogItem(): ActivityLogItem {
         timestamp: formatDateToString(faker.date.past({years: 10})) 
     }
 
+}
+
+function randomParcelDescription(): ParcelDescription {
+    const lot = faker.number.int({min: 1, max: 5})
+    const secondLot = faker.number.int({min: 1, max: 5})
+    const block = faker.number.int({min: 1, max: 5})
+    const district = faker.number.int({min: 1, max: 5})
+    const plan = faker.number.int({min: 2901, max: 9802})
+    
+    return {
+        siteRegistry: faker.datatype.boolean(),
+        dateNoted: formatDateToString(faker.date.past({years: 10})),
+        parcelID: faker.number.int({min: 15192, max: 20999}).toString(),
+        crownLandUsePIN: faker.number.int({min: 15192, max: 20999}).toString(),
+        crownLandFileNumber: faker.number.int({min: 15192, max: 20999}).toString(),
+        landDescription: `LOT ${lot} OF LOT ${secondLot} BLOCK ${block} DISTRICT LOT ${district} PLAN ${plan}`
+    }
 }
