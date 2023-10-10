@@ -85,7 +85,7 @@ export default function SiteDetailsPage() {
                             <Nav.Link as={Link} to={`/site/${siteID}/parcel-description/`} eventKey={`/site/${siteID}/parcel-description/`}>Parcel Description</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={Link} to={`/site/${siteID}/site-profile/`} eventKey={`/site/${siteID}/site-profile/`}>Site Profile</Nav.Link>
+                            <Nav.Link as={Link} to={`/site/${siteID}/site-profile/`} eventKey={`/site/${siteID}/site-profile/`}>Site Disclosure</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
                             <Nav.Link as={Link} to={`/site/${siteID}/activity-log/`} eventKey="link-8">Activity Log</Nav.Link>
