@@ -55,7 +55,7 @@ export default function MapDetailsPane({site, onClose}: {site: Site, onClose: Mo
                 <div>N/A</div>
             </div>
 
-            <Link to={`/site/${site?.siteID}`}>
+            <Link to={`/site/${site?.siteID}/`}>
                 <Button variant='secondary' className='w-100'>
                     View Site Details
                 </Button>
