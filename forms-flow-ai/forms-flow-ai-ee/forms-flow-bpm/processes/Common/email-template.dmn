@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_1h338s2" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.11.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_1h338s2" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.12.0">
   <decision id="decide-email-template" name="email-template">
     <decisionTable id="decisionTable_1">
       <input id="input_1" label="category">
@@ -167,6 +167,32 @@
           <text>"templates/sds_application.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0gjfcbj">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_169f9ov">
+        <inputEntry id="UnaryTests_1uv91pe">
+          <text>"srcr_updated"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0uu6ob6">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1l4qgxg">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_00nkxna">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_172x6wk">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15910of">
+          <text>"Site Risk Classification Report Update"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1sruqp3">
+          <text>"templates/srcr_application.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1it5ctl">
           <text>"epd-support@gov.bc.ca"</text>
         </outputEntry>
       </rule>
