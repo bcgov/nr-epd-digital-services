@@ -190,7 +190,7 @@
           <text>"Contaminated Sites Services Application Updated"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0vgimqo">
-          <text>"templates/cssa_application.ftl"</text>
+          <text>"templates/request_updated.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1gsjmsa">
           <text>"epd-support@gov.bc.ca"</text>
@@ -216,9 +216,61 @@
           <text>"Detailed Ecological Risk Assessment Checklist"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0clqxq8">
-          <text>"templates/cssa_application.ftl"</text>
+          <text>"templates/request_updated.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1avpxvu">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ftap7p">
+        <inputEntry id="UnaryTests_1v6foer">
+          <text>"sds_updated"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1sdla0f">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0h4ublc">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0wb1phf">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0m4y2n7">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0bwfg2l">
+          <text>"Site Disclosure Statements"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_16tjxob">
+          <text>"templates/sds_application.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0gjfcbj">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_169f9ov">
+        <inputEntry id="UnaryTests_1uv91pe">
+          <text>"srcr_updated"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0uu6ob6">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1l4qgxg">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_00nkxna">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_172x6wk">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15910of">
+          <text>"Site Risk Classification Report Update"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1sruqp3">
+          <text>"templates/srcr_application.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1it5ctl">
           <text>"epd-support@gov.bc.ca"</text>
         </outputEntry>
       </rule>

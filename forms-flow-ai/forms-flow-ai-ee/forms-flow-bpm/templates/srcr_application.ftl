@@ -15,7 +15,7 @@
                 <img style="width: 151px;" src="https://taft.fin.gov.bc.ca/img/BCID_H_rgb_pos_150.png">
             </td>
             <td>
-                <span id="nom_notification" style="overflow: visible;line-height: 30px;text-align: left;font-style: normal;font-weight: bold;font-size: 20px;color: rgba(0, 51, 102, 1);letter-spacing: -0.2px;vertical-align: middle;">Site Remediation Services</span>
+                <span id="srcr_notification" style="overflow: visible;line-height: 30px;text-align: left;font-style: normal;font-weight: bold;font-size: 20px;color: rgba(0, 51, 102, 1);letter-spacing: -0.2px;vertical-align: middle;">Site Remediation Services</span>
             </td>
         </tr>
     </table>
@@ -28,7 +28,7 @@
         <tr>
             <td>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height:27px;text-align: left;font-style: normal;font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
-                    ${formName}.
+                    Site Risk Classification Report.
                 </p>
             </td>
         </tr>
@@ -38,7 +38,7 @@
                   Hello,
                 </p>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                   Your <b>${formName}</b> application # ${applicationId} has been updated. Current status is <b>${action}</b> by ${userRole}.
+                   Your Site Risk Classification Report application has been updated. Current status is ${action}.
                 </p>
             </td>
         </tr>
