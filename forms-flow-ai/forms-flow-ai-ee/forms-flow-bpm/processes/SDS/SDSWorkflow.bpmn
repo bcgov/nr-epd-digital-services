@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0bimevz" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.12.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0bimevz" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.11.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
   <bpmn:collaboration id="Collaboration_0dynwsj">
     <bpmn:participant id="Participant_1569q03" name="SDS Workflow" processRef="sds-workflow-v1" />
   </bpmn:collaboration>
@@ -41,6 +41,10 @@
       <bpmn:script>var system = java.lang.System;
 var clientEmail= execution.getVariable('contactPersonEmailAddress');
 execution.setVariable('clientEmail',clientEmail);
+var emailsToArray = [];
+emailsToArray.push(clientEmail)
+execution.setVariable("emailTo", Java.to(emailsToArray, "java.lang.Object[]"));
+
 var siteOwnerEmail = execution.getVariable('ownerEmailAddress');
 execution.setVariable('siteOwnerEmail',siteOwnerEmail);
 
@@ -58,7 +62,11 @@ var decommissioning= execution.getVariable('section5DeclarationsCheckboxDecommis
 var ceasingOperations= execution.getVariable('section5DeclarationsCheckboxCeasingOperations');
 execution.setVariable('isApprovingAuthorityReqd',!(decommissioning||ceasingOperations));
 
-system.out.println ("isApprovingAuthorityReqd"+execution.getVariable('isApprovingAuthorityReqd'));</bpmn:script>
+system.out.println ("isApprovingAuthorityReqd"+execution.getVariable('isApprovingAuthorityReqd'));
+
+var contactPersonName= execution.getVariable('Section1C-FirstName');
+execution.setVariable('name',contactPersonName);
+system.out.println ("contactPersonName"+execution.getVariable('Section1C-FirstName'));</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:startEvent id="Event_02fettt" name="Submit Form">
       <bpmn:outgoing>Flow_1la2yud</bpmn:outgoing>
@@ -167,9 +175,11 @@ system.out.println ("isApprovingAuthorityReqd"+execution.getVariable('isApprovin
     </bpmn:userTask>
     <bpmn:callActivity id="Activity_0p4hm8r" name="Send Email Notifications" calledElement="common-email-workflow">
       <bpmn:extensionElements>
-        <camunda:in businessKey="#{execution.processBusinessKey}" />
         <camunda:in variables="all" />
         <camunda:out variables="all" />
+        <camunda:inputOutput>
+          <camunda:inputParameter name="category">sds_updated</camunda:inputParameter>
+        </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_05t61qf</bpmn:incoming>
       <bpmn:outgoing>Flow_05135h6</bpmn:outgoing>
@@ -211,9 +221,11 @@ system.out.println ("isApprovingAuthorityReqd"+execution.getVariable('isApprovin
     </bpmn:userTask>
     <bpmn:callActivity id="Activity_0dughh2" name="Send Email Notifications" calledElement="common-email-workflow">
       <bpmn:extensionElements>
-        <camunda:in businessKey="#{execution.processBusinessKey}" />
         <camunda:in variables="all" />
         <camunda:out variables="all" />
+        <camunda:inputOutput>
+          <camunda:inputParameter name="category">sds_updated</camunda:inputParameter>
+        </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1yl0zu1</bpmn:incoming>
       <bpmn:incoming>Flow_1lfvq5z</bpmn:incoming>
