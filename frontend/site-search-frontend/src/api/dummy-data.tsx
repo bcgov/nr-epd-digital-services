@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { SiteParticipant, type Notation, type Site, AssociatedSite } from './sites'
+import { SiteParticipant, type Notation, type Site, AssociatedSite, SuspectLandUse, SiteDisclosure, ActivityLogItem, SiteDisclosurePurpose } from './sites'
 // import formatDateToString from '@/helpers/formatDateToString';
 import formatDateToString from '../helpers/formatDateToString.ts'
 
@@ -32,13 +32,29 @@ export function createRandomSite(): Site {
         locationDescription: 'LAT/LONGS CONFIRMED USING ICIS MAY 16,2013',
 
         // Generate 1-5 notations
-        notations: Array.from({length: faker.number.int({min: 2, max: 5}) }, () => { return randomNotation() }),
-        participants: Array.from({length: faker.number.int({min: 2, max: 5}) }, () => { return randomSiteParticipant() }),
+        // notations: Array.from({length: faker.number.int({min: 2, max: 5}) }, () => { return randomNotation() }),
+        // participants: Array.from({length: faker.number.int({min: 2, max: 5}) }, () => { return randomSiteParticipant() }),
+        notations: createAndPopulateArray({min: 2, max: 5, generator: randomNotation}),
+        participants: createAndPopulateArray({min: 2, max: 5, generator: randomSiteParticipant}),
+        suspectLandUses: createAndPopulateArray({min: 2, max: 5, generator: randomSuspectLandUse}),
+
+
+        siteDisclosures: createAndPopulateArray({min: 1, max: 2, generator: randomSiteDisclosure}),
+        activityLog: createAndPopulateArray({min: 5, max: 10, generator: randomActivityLogItem}),
+
+
 
         // Associated Sites is generated after site generation with `createSiteAssociations()`, as we need siteIDs already gen'd.
         associatedSites: []
 
     }
+}
+
+/**
+ *  Helper function, creates an array of varying length (between min-max) and each item in array will be created by invoking generator().
+ */
+function createAndPopulateArray<T>({min, max, generator}): T[] {
+    return Array.from({length: faker.number.int({min, max}) }, () => { return generator() });
 }
 
 const REGIONS = ['Vancouver Island/Coast', 'Mainland/Southwest', 'Thompson-Okanagan', 'Kootenay', 'Cariboo',' North Coast'];
@@ -112,6 +128,54 @@ function randomAssociation(siteIDs: number[], parentSiteID: number): AssociatedS
         parcelID:  faker.number.int({min: 15192, max: 20999}).toString(),
         siteID: faker.helpers.arrayElement(validSiteIDs).toString(),
         siteRegistry: faker.datatype.boolean(),
+    }
+
+}
+
+function randomSuspectLandUse(): SuspectLandUse {
+    const date = formatDateToString(faker.date.past({years: 10}));
+
+    return {
+        siteRegistry: faker.datatype.boolean(),
+        notes: `INSERTED FOR SITE PROFILE DATED ${date} (described on Site Profile dated ${date})`,
+        landUse: faker.helpers.arrayElement(['PETROLEUM OR NATURAL GAS PRODUCTION FACILITIES', 'PETROLEUM OR NATURAL GAS DRILLING']),
+    }
+}
+
+function randomSiteDisclosure(): SiteDisclosure {
+    return {
+        siteRegistry: faker.datatype.boolean(),
+        dateReceived: formatDateToString(faker.date.past({years: 10})),
+        dateCompleted: formatDateToString(faker.date.past({years: 10})),
+        dateEntered: formatDateToString(faker.date.past({years: 10})),
+        dateRegistrar: formatDateToString(faker.date.past({years: 10})),
+        dateLocalAuthorityReceived: formatDateToString(faker.date.past({years: 10})),
+        summary: faker.lorem.lines({min: 1, max: 3}),
+        informationUsed: faker.lorem.lines({min: 3, max: 5}),
+        pastOrPresentOrders: faker.lorem.lines({min: 1, max: 3}),
+        commercialAndIndustrialPurposes: createAndPopulateArray({min: 2, max: 4, generator: randomSiteCommercialIndustrialActivity})
+
+
+
+    }
+
+}
+
+function randomSiteCommercialIndustrialActivity(): SiteDisclosurePurpose {
+    return {
+        scheduleReference:  faker.helpers.arrayElement(['F1*', 'F2*']),
+        description:  faker.helpers.arrayElement(['PETROLEUM OR NATURAL GAS PRODUCTION FACILITIES', 'PETROLEUM OR NATURAL GAS DRILLING']),
+        siteRegistry: faker.datatype.boolean()
+    }
+}
+
+function randomActivityLogItem(): ActivityLogItem {
+
+    return {
+        siteRegistry: faker.datatype.boolean(),
+        activity: 'Lorem ipsum dolor sit amet',
+        user: faker.person.lastName().toUpperCase() + " " + faker.person.firstName().toUpperCase(),
+        timestamp: formatDateToString(faker.date.past({years: 10})) 
     }
 
 }

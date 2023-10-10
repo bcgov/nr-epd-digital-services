@@ -12,7 +12,6 @@ export default function AssociatedSites() {
 
     return (
         <div>
-            <h4>Associated Sites go here</h4>
             <SubSearch label='Associated Sites'></SubSearch>
 
             {/* IDEA: Put in 'renderer' or 'component' option for each header? Should set component to use for that row

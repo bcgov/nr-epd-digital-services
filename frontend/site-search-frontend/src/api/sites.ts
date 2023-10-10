@@ -19,7 +19,12 @@ export class Site {
 
     notations: Notation[];
     participants: SiteParticipant[];
-    associatedSites: AssociatedSite[]
+    associatedSites: AssociatedSite[];
+
+    suspectLandUses: SuspectLandUse[];
+    siteDisclosures: SiteDisclosure[];
+    activityLog: ActivityLogItem[];
+
 
     // constructor(data: Site) {
     //     // Using "Object.assign()" to bypass having to assign all properties
@@ -78,5 +83,49 @@ export class AssociatedSite implements canBeOnSiteRegistry {
     parcelID: string;
     dateNoted: string;
     notes: string;
+   siteRegistry: boolean;
+}
+
+export class SuspectLandUse implements canBeOnSiteRegistry {
+   siteRegistry: boolean;
+   landUse: string;
+   notes: string; 
+}
+
+export class ParcelDescription implements canBeOnSiteRegistry {
     siteRegistry: boolean;
+    dateNoted: string;
+    parcelID: string;
+    crownLandUsePIN: string;
+    crownLandFileNumber: string;
+    landDescription: string;
+}
+
+export class SiteDisclosure implements canBeOnSiteRegistry {
+    siteRegistry: boolean;
+    dateReceived: string;
+    dateCompleted: string;
+    dateLocalAuthorityReceived: string;
+    dateRegistrar: string;
+    dateEntered: string;
+
+    commercialAndIndustrialPurposes: SiteDisclosurePurpose[]
+
+    summary: string;
+    informationUsed: string;
+    pastOrPresentOrders: string;
+}
+
+export class SiteDisclosurePurpose implements canBeOnSiteRegistry {
+    scheduleReference: string;
+    description: string;
+    siteRegistry: boolean
+
+}
+
+export class ActivityLogItem implements canBeOnSiteRegistry {
+    siteRegistry: boolean;
+    activity: string;
+    user: string;
+    timestamp: string;
 }
