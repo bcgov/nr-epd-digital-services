@@ -464,7 +464,7 @@ task.execution.setVariable('requestType', 'DERA');
 task.execution.setVariable('deraStatus', task.execution.getVariable('action'));
 task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
 task.execution.setVariable('deleteReason', "completed");
-task.execution.setVariable('userRole','Case worker');
+task.execution.setVariable('userRole','Caseworker');
 task.execution.setVariable('subFormName','DERA Form');</camunda:script>
           </camunda:taskListener>
           <camunda:properties>
@@ -894,7 +894,7 @@ system.out.println ("Sent to Caseworker");</bpmn:script>
           <camunda:taskListener event="create">
             <camunda:script scriptFormat="javascript">task.execution.setVariable('task_id',task.getId());
 task.execution.setVariableLocal('variable1',"srcr");
-task.execution.setVariable('userRole','Case worker');</camunda:script>
+task.execution.setVariable('userRole','Caseworker');</camunda:script>
           </camunda:taskListener>
           <camunda:taskListener event="complete">
             <camunda:script scriptFormat="javascript">task.execution.setVariable('requestStatus', task.execution.getVariable('action'));
