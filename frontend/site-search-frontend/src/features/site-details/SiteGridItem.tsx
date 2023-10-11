@@ -5,7 +5,15 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { SiteRegistryIconButton } from "@/components/SiteRegistryIcon";
 
-export default function SiteGridItem( {label, value, extraClasses = '', showSR = false }) {
+interface SiteGridItemProps {
+    label: string;
+    value: any;
+    extraClasses?: CSSModuleClasses | string;
+    showSR?: boolean;
+    readOnly?: boolean;
+}
+
+export default function SiteGridItem( {label, value, extraClasses = '', showSR = false, readOnly}: SiteGridItemProps) {
     const editMode = useSelector((state: RootState) => state.edit.editMode)
 
     return (
@@ -16,7 +24,7 @@ export default function SiteGridItem( {label, value, extraClasses = '', showSR =
                 <span><SiteRegistryIconButton siteRegistry={true} /> SR</span>
                 }
             </div>
-            <Form.Control className={styles.formInput} readOnly={!editMode} plaintext={!editMode} defaultValue={value} />
+            <Form.Control className={styles.formInput} readOnly={readOnly ? true : !editMode} plaintext={!editMode} defaultValue={value} />
         </div>
     )
 }

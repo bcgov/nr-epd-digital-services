@@ -55,7 +55,7 @@ export default function SiteDetailsPage() {
                         <SiteGridItem label='Longitude' value={site.longitude} extraClasses={styles.gridHalfWidth}   />
 
                         <SiteGridItem label='Parcel IDs' value={site.parcelIDs.join(', ')} extraClasses={styles.gridFullwidth}   />
-                        <SiteGridItem label='Location Description' value={site.locationDescription} extraClasses={styles.gridFullwidth}   />
+                        <SiteGridItem label='Location Description' value={site.locationDescription} extraClasses={styles.gridFullwidth} readOnly={true} />
                     </div>
                 </div>
 
