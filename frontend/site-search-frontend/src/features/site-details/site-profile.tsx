@@ -28,7 +28,7 @@ export default function SiteProfile() {
             {editMode && <Button onClick={newDisclosure} variant='secondary'>+ New Site Disclosure</Button>}
 
             {site.siteDisclosures.map((siteDisclosureData, index) => {
-                return <SiteDisclosureItem key={index} index={index} disclosure={siteDisclosureData} />
+                return <SiteDisclosureItem key={siteDisclosureData.uuid} index={index} disclosure={siteDisclosureData} />
             })}
         </div>
     )
@@ -72,6 +72,18 @@ function SiteDisclosureItem({ index, disclosure }: SiteDisclosureItemProps) {
                     ]} 
                     data={disclosure.commercialAndIndustrialPurposes}
                 />
+
+                <div>
+                    <p>IV Additional Comments and Explanations</p>
+
+                    {/* TODO - Make these TextAreas */}
+                    {/* Can create SiteGridTextAreaItem */}
+                    {/* Or can create <SiteGridItem renderer={SiteTextArea} /> */}
+                    {/* Can even combine? Leaning towards renderer option. */}
+                    <SiteGridItem label='Provide a brief summary of the planned activity and proposed land use of the site' value={disclosure.summary}></SiteGridItem>
+                    <SiteGridItem label='Indicate the information used to complete this site disclosure statement including a list of record searches completed.' value={disclosure.informationUsed}></SiteGridItem>
+                    <SiteGridItem label='List any past or present government orders, permits, approvals, certificates or notifications pertaining to the environmental condition of the site.' value={disclosure.pastOrPresentOrders}></SiteGridItem>
+                </div>
             </div>
         </>
     )

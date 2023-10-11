@@ -129,7 +129,7 @@ export default function SiteDetailsTable({ onClickAdd, headers, data, label, onC
                                 {editMode && <td>
                                     <Form.Check aria-label="Select this {label}" checked={checked[index]} onChange={(event) => handleCheck({ index, event })} />
                                 </td>}
-                                {headers?.map((header, index) => <td key={index}><TableEditItem value={row[header.accessor]} /></td>)}
+                                {headers?.map((header, index) => <td key={`${row.uuid}-${index}`}><TableEditItem value={row[header.accessor]} /></td>)}
                                 {editMode && <td> <SiteRegistryIconButton siteRegistry={SRCheck[index]} /></td>}
                             </tr>
                         )
