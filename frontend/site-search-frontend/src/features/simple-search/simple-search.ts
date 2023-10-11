@@ -30,25 +30,25 @@ import formatDateToString from '@/helpers/formatDateToString';
 //     }]
 // }
 
-const addNotationBySiteIDNewTemp = (state, action) => {
-    const site: Site = state.value.find((todo) => todo.siteID === action.payload)
-    // site.notations.push();
-    // site.notations = [];
-    site.notations = [...site.notations, {
-        completed: formatDateToString(new Date()),
-        createdAt: formatDateToString(new Date()), 
-        initiated: formatDateToString(new Date()), 
-        ministryContact: '',
-        notationClass: 'ENVIRONMENTAL MANAGEMENT ACT: GENERAL',
-        notationParticipants: [],
-        notationType: 'CERTIFICATE OF COMPLIANCE ISSUED USING RISK BASED STANDARDS',
-        note: '',
-        requestedActions: [],
-        siteRegistry: false,
-    }]
+// const addNotationBySiteIDNewTemp = (state, action) => {
+//     const site: Site = state.value.find((todo) => todo.siteID === action.payload)
+//     // site.notations.push();
+//     // site.notations = [];
+//     site.notations = [...site.notations, {
+//         completed: formatDateToString(new Date()),
+//         createdAt: formatDateToString(new Date()), 
+//         initiated: formatDateToString(new Date()), 
+//         ministryContact: '',
+//         notationClass: 'ENVIRONMENTAL MANAGEMENT ACT: GENERAL',
+//         notationParticipants: [],
+//         notationType: 'CERTIFICATE OF COMPLIANCE ISSUED USING RISK BASED STANDARDS',
+//         note: '',
+//         requestedActions: [],
+//         siteRegistry: false,
+//     }]
 
-    // return state; // ???? can i do a ...spread patch in here?
-}
+//     // return state; // ???? can i do a ...spread patch in here?
+// }
 
 
 export const siteSlice = createSlice({
@@ -64,13 +64,35 @@ export const siteSlice = createSlice({
             state.value = state.value.map((site) =>
                 site.siteID === action.payload.siteID ? action.payload : site
             )
-        }
+        },
+
+        deleteNotation: (state, action: PayloadAction<{ siteUUID: string, notationUUID: string }>) => {
+            // Find the site by siteUUID
+            const site = state.value.find((site) => site.uuid === action.payload.siteUUID);
+      
+            if (site) {
+              // Filter out the Notation with the provided UUID
+              site.notations = site.notations.filter((notation) => notation.uuid !== action.payload.notationUUID);
+            }
+          },
+
+        // deleteNotation: (state, action: PayloadAction<{ siteUUID: string, notationUUID: string }>) => {
+        //     const { siteUUID, notationUUID } = action.payload;
+      
+        //     // Find the site by UUID
+        //     const site = state.site.find(site => site.uuid === siteUUID);
+      
+        //     if (site) {
+        //       // Filter out the notation by UUID from the site's notations
+        //       site.notations = site.notations.filter(notation => notation.uuid !== notationUUID);
+        //     }
+        //   },
 
     }
 })
 
 
 // Action creators are generated for each case reducer function
-export const { add, updateSite } = siteSlice.actions
+export const { add, updateSite, deleteNotation } = siteSlice.actions
 
 export default siteSlice.reducer
