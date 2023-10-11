@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import { Site } from '@/api/sites';
 import { MouseEventHandler } from 'react';
 import { Link } from 'react-router-dom';
+import { formatLatLng } from '@/helpers/formatLatLng';
 
 
 export default function MapDetailsPane({site, onClose}: {site: Site, onClose: MouseEventHandler}) {
@@ -24,11 +25,11 @@ export default function MapDetailsPane({site, onClose}: {site: Site, onClose: Mo
                 </div>
                 <div className="d-flex flex-column ">
                     <div className='fw-bold'>Latitude</div>
-                    <div>{site?.latitude}</div>
+                    <div>{formatLatLng(site?.latitude)}</div>
                 </div>
                 <div className="d-flex flex-column ">
                     <div className='fw-bold'>Longitude</div>
-                    <div>{site?.longitude}</div>
+                    <div>{formatLatLng(site?.longitude)}</div>
                 </div>
                 <div className="d-flex flex-column ">
                     <div className='fw-bold'>Victoria File</div>
