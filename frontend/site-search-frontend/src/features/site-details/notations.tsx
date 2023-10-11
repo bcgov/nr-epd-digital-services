@@ -1,5 +1,5 @@
 import { Button, Dropdown, DropdownButton, Form, Table } from 'react-bootstrap'
-import styles from './css/notations.module.css'
+import styles from './css/siteDetails.module.css'
 import siteDetailsStyles from '@/pages/site-details.module.css'
 import SiteGridItem from './SiteGridItem'
 import { TableEditItem } from "./TableEditItem";
@@ -30,14 +30,15 @@ export default function Notations() {
             createdAt: formatDateToString(new Date),
             initiated: formatDateToString(new Date),
             ministryContact: '',
-            notationClass: 'ENVIRONMENTAL MANAGEMENT ACT: GENERAL',
+            notationClass: '',
             notationParticipants: [],
-            notationType: 'CERTIFICATE OF COMPLIANCE ISSUED USING RISK BASED STANDARDS',
+            notationType: '',
             note: '',
             requestedActions: [],
             siteRegistry: false,
         }
-        const newSite: Site = {...site, notations: [newNotation, ...site.notations]}
+        const newSite: Site = {...site, notations: [...site.notations, newNotation]}
+        // const newSite: Site = {...site, notations: [newNotation, ...site.notations]}
 
         dispatch(updateSite(newSite));
     }
@@ -119,7 +120,7 @@ function NotationItem({ notation, index, onClickAddParticipant, onClickRemovePar
     // const [participationSelection, setParticipationSeleciton] = useState(defaultSelectionState)
 
     return (
-        <div className={styles.notationItem}>
+        <div className={styles.detailsItem}>
             <div className="d-flex justify-content-between">
                 <div className="d-inline-flex">
                     <p>Notation {index + 1}</p>
