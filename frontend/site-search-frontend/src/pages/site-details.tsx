@@ -8,6 +8,7 @@ import styles from './site-details.module.css'
 import SiteGridItem from "@/features/site-details/SiteGridItem";
 import { useState } from "react";
 import { toggleEdit } from '@/features/site-details/edit-mode/editModeSlice';
+import { formatLatLng } from "@/helpers/formatLatLng";
 
 export default function SiteDetailsPage() {
     const { siteID } = useParams();
@@ -51,8 +52,8 @@ export default function SiteDetailsPage() {
                         <SiteGridItem label='Address' value={site.address}  />
                         <SiteGridItem label='Region' value={site.region}  />
 
-                        <SiteGridItem label='Latitude' value={site.latitude} extraClasses={styles.gridHalfWidth}   />
-                        <SiteGridItem label='Longitude' value={site.longitude} extraClasses={styles.gridHalfWidth}   />
+                        <SiteGridItem label='Latitude' value={formatLatLng(site.latitude)} extraClasses={styles.gridHalfWidth}   />
+                        <SiteGridItem label='Longitude' value={formatLatLng(site.longitude)} extraClasses={styles.gridHalfWidth}   />
 
                         <SiteGridItem label='Parcel IDs' value={site.parcelIDs.join(', ')} extraClasses={styles.gridFullwidth}   />
                         <SiteGridItem label='Location Description' value={site.locationDescription} extraClasses={styles.gridFullwidth} readOnly={true} />
