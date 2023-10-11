@@ -37,12 +37,12 @@ export default function Summary() {
                     </MapContainer>
                 </div>
                 <div className="col-md-3 border border-1 border-secondary rounded p-4">
-                    <p><span className="fw-bolder">Notations</span>: 2</p>
-                    <p><span className="fw-bolder">Participants</span>: 2</p>
-                    <p><span className="fw-bolder">Associated Sites</span>: 2</p>
-                    <p><span className="fw-bolder">Documents</span>: 2</p>
-                    <p><span className="fw-bolder">Suspect Land Use</span>: 2</p>
-                    <p><span className="fw-bolder">Parcel Description</span>: 2</p>
+                    <p><span className="fw-bolder">Notations</span>: {site.notations.length} </p>
+                    <p><span className="fw-bolder">Participants</span>: {site.participants.length} </p>
+                    <p><span className="fw-bolder">Associated Sites</span>: {site.associatedSites.length} </p>
+                    <p><span className="fw-bolder">Documents</span>: todo</p>
+                    <p><span className="fw-bolder">Suspect Land Use</span>: {site.suspectLandUses.length}</p>
+                    <p><span className="fw-bolder">Parcel Description</span>: {site.parcelDescriptions.length}</p>
 
 
                     <Link className='text-decoration-none' to={`/map?siteID=${site.siteID}`}>View on Map</Link>
