@@ -7,12 +7,13 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Notation, Site } from '@/api/sites';
 import { RootState } from '@/store';
-import { updateSite } from '../simple-search/simple-search';
+import { deleteNotation, updateSite } from '../simple-search/simple-search';
 import { useEffect, useState } from 'react';
 import SiteRegistryIcon from '@/components/SiteRegistryIcon';
 import SubSearch from './sub-search/SubSearch';
 import SiteDetailsTable from './table/SiteDetailsTable';
 import formatDateToString from '@/helpers/formatDateToString';
+import { faker } from '@faker-js/faker';
 
 
 
@@ -26,6 +27,7 @@ export default function Notations() {
 
     function newNotation() {
         const newNotation: Notation = {
+            uuid: faker.string.uuid(),
             completed: formatDateToString(new Date),
             createdAt: formatDateToString(new Date),
             initiated: formatDateToString(new Date),
@@ -44,7 +46,7 @@ export default function Notations() {
     }
 
     function newParticipant({ notationIndex }){
-        const newParticipant = {name: '', role: '', siteRegistry: false};
+        const newParticipant = {name: '', role: '', siteRegistry: false, uuid: faker.string.uuid()};
         const newSite: Site = {
             ...site,
             notations: site.notations.map((notation, index) => {
@@ -59,6 +61,11 @@ export default function Notations() {
           };
 
         dispatch(updateSite(newSite))
+    }
+
+    // Correctly updates state, but still have issue where deleting from the top has the top values overwrite it's replacement
+    function clickDeleteNotation(notation: Notation) {
+        dispatch(deleteNotation({ siteUUID: site.uuid, notationUUID: notation.uuid }))
     }
 
     function removeAtWithSplice(array, index) {
@@ -101,7 +108,8 @@ export default function Notations() {
             {editMode && <Button onClick={newNotation} variant='secondary'>+ New Notation</Button>}
 
             {site.notations.map((siteNotationData, index) => {
-                return <NotationItem key={index} notation={siteNotationData} index={index} onClickAddParticipant={newParticipant} onClickRemoveParticipant={removeParticipant} />
+                // return <NotationItem key={siteNotationData.uuid} notation={siteNotationData} index={index} onClickAddParticipant={newParticipant} onClickRemoveParticipant={removeParticipant} onClickDeleteNotation={clickDeleteNotation} />
+                return <NotationItem key={index} notation={siteNotationData} index={index} onClickAddParticipant={newParticipant} onClickRemoveParticipant={removeParticipant}  onClickDeleteNotation={clickDeleteNotation}  />
             })}
 
 
@@ -110,7 +118,7 @@ export default function Notations() {
 }
 
 
-function NotationItem({ notation, index, onClickAddParticipant, onClickRemoveParticipant }: { notation: Notation, index: number, onClickAddParticipant: any, onClickRemoveParticipant: any }) {
+function NotationItem({ notation, index, onClickAddParticipant, onClickRemoveParticipant, onClickDeleteNotation }: { notation: Notation, index: number, onClickAddParticipant: any, onClickRemoveParticipant: any, onClickDeleteNotation: any}) {
     const isMinistry = useSelector((state: RootState) => state.user.isMinistry);
     const editMode = useSelector((state: RootState) => state.edit.editMode);
 
@@ -128,7 +136,7 @@ function NotationItem({ notation, index, onClickAddParticipant, onClickRemovePar
                 </div>
                 {editMode && <div className="d-inline-flex">
                     <Button className='text-dark' variant='link'><SiteRegistryIcon siteRegistry={false} /><span className="ms-1 me-3">SR</span></Button>
-                    <Button className='text-dark' variant='link'>Delete</Button>
+                    <Button className='text-dark' variant='link' onClick={() => {onClickDeleteNotation(notation)}}>Delete</Button>
                 </div>}
             </div>
             <div className={siteDetailsStyles.metadataGrid}>

@@ -2,6 +2,10 @@ interface canBeOnSiteRegistry {
     siteRegistry: boolean;
 }
 
+interface hasUUID {
+    uuid: string;
+}
+
 export class Site {
     uuid: string;
     siteID: number;
@@ -26,51 +30,27 @@ export class Site {
     siteDisclosures: SiteDisclosure[];
     activityLog: ActivityLogItem[];
 
-
-    // constructor(data: Site) {
-    //     // Using "Object.assign()" to bypass having to assign all properties
-    //     // https://stackoverflow.com/questions/69291358/shortcut-syntax-to-class-constructor-from-typescript-interface
-    //     Object.assign(this, data);
-
-    //     // This "new Date" is necessary when loading JSON dummy data which stores date as a string
-    //     // This will likely have to change when integrating with API
-    //     // this.lastUpdated = new Date(this.lastUpdated);
-
-    //     // Initialize all dates inside notations too
-    //     this.notations = this.notations.map(note => new Notation(note));
-    // }
 }
 
-// interface OnSiteRegistry {
-//     visibleOnSiteRegistry: boolean
-// }
 
 
-export class Notation implements canBeOnSiteRegistry {
+export class Notation implements canBeOnSiteRegistry, hasUUID {
+    uuid: string;
     createdAt: string;
-    // notationType: NOTATION_TYPES
     notationType: 'CERTIFICATE OF COMPLIANCE ISSUED USING RISK BASED STANDARDS' | 'CERTIFICATE OF COMPLIANCE REQUESTED' | string
-    // notationClass: "ENVIRONMENTAL MANAGEMENT ACT: GENERAL"
     notationClass: "ENVIRONMENTAL MANAGEMENT ACT: GENERAL" | string
     initiated: string;
     completed: string;
     ministryContact: string;
     note: string;
     requestedActions: string[]
-    notationParticipants: {name: string, role: string, siteRegistry: boolean}[]
+    notationParticipants: {name: string, role: string, siteRegistry: boolean, uuid: string}[]
     siteRegistry: boolean;
-
-    // constructor(data: Notation) {
-    //     // See Site object for notes on constructor behaviour
-    //     Object.assign(this, data);
-    //     // this.createdAt = new Date(this.createdAt);
-    //     // this.initiated = new Date(this.initiated);
-    //     // this.completed = new Date(this.completed);
-    // }
 }
 
 
-export class SiteParticipant implements canBeOnSiteRegistry {
+export class SiteParticipant implements canBeOnSiteRegistry, hasUUID {
+    uuid: string;
     name: string;
     roles: string[];
     startDate: string;
@@ -79,7 +59,8 @@ export class SiteParticipant implements canBeOnSiteRegistry {
     siteRegistry: boolean;
 }
 
-export class AssociatedSite implements canBeOnSiteRegistry {
+export class AssociatedSite implements canBeOnSiteRegistry, hasUUID {
+    uuid: string;
     siteID: string;
     parcelID: string;
     dateNoted: string;
@@ -87,13 +68,15 @@ export class AssociatedSite implements canBeOnSiteRegistry {
    siteRegistry: boolean;
 }
 
-export class SuspectLandUse implements canBeOnSiteRegistry {
+export class SuspectLandUse implements canBeOnSiteRegistry, hasUUID {
+   uuid: string;
    siteRegistry: boolean;
    landUse: string;
    notes: string; 
 }
 
-export class ParcelDescription implements canBeOnSiteRegistry {
+export class ParcelDescription implements canBeOnSiteRegistry, hasUUID {
+    uuid: string;
     siteRegistry: boolean;
     dateNoted: string;
     parcelID: string;
@@ -102,7 +85,8 @@ export class ParcelDescription implements canBeOnSiteRegistry {
     landDescription: string;
 }
 
-export class SiteDisclosure implements canBeOnSiteRegistry {
+export class SiteDisclosure implements canBeOnSiteRegistry, hasUUID {
+    uuid: string;
     siteRegistry: boolean;
     dateReceived: string;
     dateCompleted: string;
@@ -117,14 +101,16 @@ export class SiteDisclosure implements canBeOnSiteRegistry {
     pastOrPresentOrders: string;
 }
 
-export class SiteDisclosurePurpose implements canBeOnSiteRegistry {
+export class SiteDisclosurePurpose implements canBeOnSiteRegistry, hasUUID {
+    uuid: string;
     scheduleReference: string;
     description: string;
     siteRegistry: boolean
 
 }
 
-export class ActivityLogItem implements canBeOnSiteRegistry {
+export class ActivityLogItem implements canBeOnSiteRegistry, hasUUID {
+    uuid: string;
     siteRegistry: boolean;
     activity: string;
     user: string;
