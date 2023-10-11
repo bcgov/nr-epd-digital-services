@@ -9,6 +9,7 @@ import SimpleSearchResults from '@/features/simple-search/search-results';
 import './search.css';
 import SearchToggle from '@/features/simple-search/search-toggle';
 import { RootState } from '@/store';
+import { formatLatLng } from '@/helpers/formatLatLng';
 
 
 
@@ -95,8 +96,8 @@ export default function SearchPage() {
 
                 // And search remaining cols if nothing selected:
                 if (nothingSelected) {
-                    resultCollection.push(String(site.latitude).includes(query))
-                    resultCollection.push(String(site.longitude).includes(query))
+                    resultCollection.push(formatLatLng(site.latitude).includes(query))
+                    resultCollection.push(formatLatLng(site.longitude).includes(query))
                 }
 
                 // console.log('sites.filter', { searchBySiteID, searchByCity, searchByRegion, resultCollection, nothingSelected, site })
