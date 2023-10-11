@@ -4,7 +4,7 @@ import { Button, Form, Table, ToggleButton } from 'react-bootstrap'
 import { useSelector } from 'react-redux';
 import { TableEditItem } from '../TableEditItem';
 import { SiteRegistryIconButton } from '@/components/SiteRegistryIcon';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface SiteDetailsTableProps {
     onClickAdd?;
@@ -27,6 +27,7 @@ interface SiteDetailsTableProps {
 export default function SiteDetailsTable({ onClickAdd, headers, data, label, onClickRemove }: SiteDetailsTableProps) {
     const editMode = useSelector((state: RootState) => state.edit.editMode);
     const [checked, setChecked] = useState<{ [key: string]: boolean }>(initializeCheckedObject(false));
+    const [headerChecked, setHeaderChecked] = useState<boolean>(false);
     const [SRCheck, setSRChecks] = useState(copySiteRegistryToState());
 
 
@@ -51,11 +52,16 @@ export default function SiteDetailsTable({ onClickAdd, headers, data, label, onC
     // }
 
     function handleCheck({ index, event }) {
-        // console.log('handleCheck', { index, event, checked })
         const newCheck = { ...checked }
         newCheck[index] = event.target.checked
         setChecked(newCheck)
     }
+
+    // If the user manually selects all checkboxes, the header should auto-toggle and vice versa.
+    useEffect(() => {
+        const allChecked = getSelection().length === Object.keys(checked).length
+        setHeaderChecked(allChecked);
+    }, [checked])
 
     function handleRemove(val) {
         // Manually unselect all checkboxes after user deletes, otherwise selection kinda ghosts to
@@ -116,7 +122,7 @@ export default function SiteDetailsTable({ onClickAdd, headers, data, label, onC
             <Table bordered hover>
                 <thead>
                     <tr>
-                        {editMode && <th><Form.Check aria-label="Select all {label}" onChange={(e) => checkAll(e.target.checked)} /></th>}
+                        {editMode && <th><Form.Check aria-label="Select all {label}" checked={headerChecked} onChange={(e) => checkAll(e.target.checked)} /></th>}
                         {headers?.map((header, index) => <th key={index}>{header.label}</th>)}
                         {editMode && <th>SR</th>}
                     </tr>
