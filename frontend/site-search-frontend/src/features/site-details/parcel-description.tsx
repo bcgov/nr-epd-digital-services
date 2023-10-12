@@ -7,7 +7,7 @@ import SiteDetailsTable from "./table/SiteDetailsTable";
 import { faker } from "@faker-js/faker";
 import { updateSite } from "../simple-search/simple-search";
 
-export default function ParcelDescription() {
+export default function ParcelDescriptionSubPage() {
     const { siteID } = useParams();
     const siteIDNum = parseInt(siteID);
     const site: Site = useSelector((state: RootState) => state.site.value.find(searchedSite => searchedSite.siteID === siteIDNum));

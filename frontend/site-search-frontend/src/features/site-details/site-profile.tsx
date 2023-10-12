@@ -39,7 +39,7 @@ interface SiteDisclosureItemProps {
     disclosure: SiteDisclosure
 }
 
-function SiteDisclosureItem({ index, disclosure }: SiteDisclosureItemProps) {
+function SiteDisclosureItem({ disclosure }: SiteDisclosureItemProps) {
     const editMode = useSelector((state: RootState) => state.edit.editMode)
     const isMinistry = useSelector((state: RootState) => state.user.isMinistry);
     return (
