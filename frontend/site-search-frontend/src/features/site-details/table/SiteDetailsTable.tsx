@@ -17,6 +17,7 @@ interface SiteDetailsTableProps {
         siteRegistry: boolean
         [key: string]: any;
     }[];
+    showAddRemoveButtons?: boolean;
 }
 
 
@@ -24,7 +25,7 @@ interface SiteDetailsTableProps {
 // Site Registry togglez    
 // editMode
 
-export default function SiteDetailsTable({ onClickAdd, headers, data, label, onClickRemove }: SiteDetailsTableProps) {
+export default function SiteDetailsTable({ onClickAdd, headers, data, label, onClickRemove, showAddRemoveButtons: hideAddRemoveButtons = true }: SiteDetailsTableProps) {
     const editMode = useSelector((state: RootState) => state.edit.editMode);
     const [checked, setChecked] = useState<{ [key: string]: boolean }>(initializeCheckedObject(false));
     const [headerChecked, setHeaderChecked] = useState<boolean>(false);
@@ -111,10 +112,11 @@ export default function SiteDetailsTable({ onClickAdd, headers, data, label, onC
         <div>
             {editMode && <div className="my-4 d-flex justify-content between">
                 <div className="d-inline-flex w-100">
-                    <Button variant='secondary' onClick={() => { onClickAdd() }}>+ Add</Button>
-                    <Button disabled={getSelection().length === 0} variant='secondary' onClick={onChangeSiteRegistry} className='ms-3'>Make Selected Visible to Public</Button>
-                    {/* <Button disabled={getSelection().length === 0} variant='secondary' className='ms-auto' onClick={onClickRemove}>Remove Selected</Button> */}
-                    <Button disabled={getSelection().length === 0} variant='secondary' className='ms-auto' onClick={() => {handleRemove(checked)}}>Remove Selected</Button>
+                    {/* <Button variant='secondary' onClick={() => { onClickAdd() }}>+ Add</Button> */}
+
+                    {hideAddRemoveButtons ? <Button variant='secondary' className='me-3' onClick={() => { onClickAdd() }}>+ Add</Button> : '' }
+                    <Button disabled={getSelection().length === 0} variant='secondary' onClick={onChangeSiteRegistry}>Make Selected Visible to Public</Button>
+                    {hideAddRemoveButtons ? <Button disabled={getSelection().length === 0} variant='secondary' className='ms-auto' onClick={() => {handleRemove(checked)}}>Remove Selected</Button> : '' }
                 </div>
             </div>}
 
