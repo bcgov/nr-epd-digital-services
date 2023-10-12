@@ -9,7 +9,7 @@ import { Notation, Site } from '@/api/sites';
 import { RootState } from '@/store';
 import { deleteNotation, updateSite } from '../simple-search/simple-search';
 import { useEffect, useState } from 'react';
-import SiteRegistryIcon from '@/components/SiteRegistryIcon';
+import SiteRegistryIcon, { SiteRegistryIconButton } from '@/components/SiteRegistryIcon';
 import SubSearch from './sub-search/SubSearch';
 import SiteDetailsTable from './table/SiteDetailsTable';
 import formatDateToString from '@/helpers/formatDateToString';
@@ -102,17 +102,13 @@ export default function Notations() {
 
     return (
         <div>
-
            <SubSearch label='Notations' showResultsDropdown={false} /> 
-
             {editMode && <Button onClick={newNotation} variant='secondary'>+ New Notation</Button>}
 
             {site.notations.map((siteNotationData, index) => {
                 // return <NotationItem key={siteNotationData.uuid} notation={siteNotationData} index={index} onClickAddParticipant={newParticipant} onClickRemoveParticipant={removeParticipant} onClickDeleteNotation={clickDeleteNotation} />
                 return <NotationItem key={index} notation={siteNotationData} index={index} onClickAddParticipant={newParticipant} onClickRemoveParticipant={removeParticipant}  onClickDeleteNotation={clickDeleteNotation}  />
             })}
-
-
         </div>
     )
 }
@@ -122,11 +118,6 @@ function NotationItem({ notation, index, onClickAddParticipant, onClickRemovePar
     const isMinistry = useSelector((state: RootState) => state.user.isMinistry);
     const editMode = useSelector((state: RootState) => state.edit.editMode);
 
-    // Toggling these two makes it mirror exact state, but it shouldn't, instead should be for batch changing of them.
-    // const defaultSelectionState: {index: number, siteRegistry: boolean}[] = notation.notationParticipants.map((x,index) => {return {index, siteRegistry: x.siteRegistry}} )
-    // const defaultSelectionState: {index: number, siteRegistry: boolean}[] = notation.notationParticipants.map((x,index) => {return {index, siteRegistry: false}} )
-    // const [participationSelection, setParticipationSeleciton] = useState(defaultSelectionState)
-
     return (
         <div className={styles.detailsItem}>
             <div className="d-flex justify-content-between">
@@ -135,7 +126,7 @@ function NotationItem({ notation, index, onClickAddParticipant, onClickRemovePar
                     {isMinistry && <p className='mx-3'>Created: {notation.createdAt}</p>}
                 </div>
                 {editMode && <div className="d-inline-flex">
-                    <Button className='text-dark' variant='link'><SiteRegistryIcon siteRegistry={false} /><span className="ms-1 me-3">SR</span></Button>
+                    <SiteRegistryIconButton siteRegistry={false}></SiteRegistryIconButton><span className="mt-2">SR</span>
                     <Button className='text-dark' variant='link' onClick={() => {onClickDeleteNotation(notation)}}>Delete</Button>
                 </div>}
             </div>
@@ -161,9 +152,6 @@ function NotationItem({ notation, index, onClickAddParticipant, onClickRemovePar
                 onClickAdd={() => { onClickAddParticipant({notationIndex: index})}}
                 onClickRemove={(checked) => { onClickRemoveParticipant({notationIndex: index, checked})}}
             />
-
-
-
             
         </div>
     )
