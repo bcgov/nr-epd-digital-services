@@ -45,9 +45,9 @@ function SiteDisclosureItem({ index, disclosure }: SiteDisclosureItemProps) {
     return (
         <>
             <div className={styles.detailsItem}>
-                <div className="d-flex justify-content-between">
+                <div className="d-flex justify-content-between mb-4">
                     <div className="d-inline-flex">
-                        <p>Site Disclosure Statement (Sec. III and IV) {index + 1}</p>
+                        <h5 className='fw-bold'>Site Disclosure Statement (Sec. III and IV)</h5>
                         
                     </div>
                     {editMode && <div className="d-inline-flex">
@@ -73,17 +73,15 @@ function SiteDisclosureItem({ index, disclosure }: SiteDisclosureItemProps) {
                     data={disclosure.commercialAndIndustrialPurposes}
                 />
 
-                <div>
-                    <p>IV Additional Comments and Explanations</p>
 
-                    {/* TODO - Make these TextAreas */}
-                    {/* Can create SiteGridTextAreaItem */}
-                    {/* Or can create <SiteGridItem renderer={SiteTextArea} /> */}
-                    {/* Can even combine? Leaning towards renderer option. */}
-                    <SiteGridItem label='Provide a brief summary of the planned activity and proposed land use of the site' value={disclosure.summary}></SiteGridItem>
-                    <SiteGridItem label='Indicate the information used to complete this site disclosure statement including a list of record searches completed.' value={disclosure.informationUsed}></SiteGridItem>
-                    <SiteGridItem label='List any past or present government orders, permits, approvals, certificates or notifications pertaining to the environmental condition of the site.' value={disclosure.pastOrPresentOrders}></SiteGridItem>
-                </div>
+                    <p className='fw-bold'>IV Additional Comments and Explanations</p>
+
+                    <div className={siteDetailsStyles.metadataGrid}>
+                        <SiteGridItem extraClasses={siteDetailsStyles.gridFullwidth} label='Provide a brief summary of the planned activity and proposed land use of the site' value={disclosure.summary}></SiteGridItem>
+                        <SiteGridItem extraClasses={siteDetailsStyles.gridFullwidth} label='Indicate the information used to complete this site disclosure statement including a list of record searches completed.' value={disclosure.informationUsed}></SiteGridItem>
+                        <SiteGridItem extraClasses={siteDetailsStyles.gridFullwidth} label='List any past or present government orders, permits, approvals, certificates or notifications pertaining to the environmental condition of the site.' value={disclosure.pastOrPresentOrders}></SiteGridItem>
+                    </div>
+
             </div>
         </>
     )
