@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_1h338s2" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.12.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_1h338s2" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.0.0">
   <decision id="decide-email-template" name="email-template">
     <decisionTable id="decisionTable_1">
       <input id="input_1" label="category">
@@ -135,12 +135,90 @@
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0ol8a8s">
-          <text>"Notification of Independent Remediation Application Status Update"</text>
+          <text>"Notification of Independent Remediation Application Status Updated"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ndgbup">
           <text>"templates/nir_application.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0fm9kmi">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ylcp2y">
+        <inputEntry id="UnaryTests_0vutjn4">
+          <text>"cssa_updated"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0j6lmht">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1nb6zso">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0mg1n8g">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1oaez8d">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1vijoh4">
+          <text>"Contaminated Sites Services Application Updated"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0oyjcx5">
+          <text>"templates/nom_application.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_01cbgvj">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0uj0rou">
+        <inputEntry id="UnaryTests_0et7qj2">
+          <text>"cssa_subforms_updated"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_09chnys">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15l2tcj">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0sxedkj">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0cnn4c3">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ogmqrc">
+          <text>"Contaminated Sites Services Application Updated"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0vgimqo">
+          <text>"templates/request_updated.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1gsjmsa">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0rvcfe1">
+        <inputEntry id="UnaryTests_0jdkeii">
+          <text>"dera_subforms_updated"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0umgos6">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13ksd1h">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xra4dg">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0f5jok8">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1r8jlep">
+          <text>"Detailed Ecological Risk Assessment Checklist"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0clqxq8">
+          <text>"templates/request_updated.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1avpxvu">
           <text>"epd-support@gov.bc.ca"</text>
         </outputEntry>
       </rule>
