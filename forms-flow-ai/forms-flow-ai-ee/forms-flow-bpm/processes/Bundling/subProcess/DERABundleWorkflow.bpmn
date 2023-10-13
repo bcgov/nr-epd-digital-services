@@ -407,7 +407,8 @@ task.execution.setVariable('requestType', 'DERA');
 task.execution.setVariable('deraStatus', task.execution.getVariable('action'));
 task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
 task.execution.setVariable('deleteReason', "completed");
-task.execution.setVariable('userRole','Statutory Decision Maker');</camunda:script>
+task.execution.setVariable('userRole','Statutory Decision Maker');
+task.execution.setVariable('subFormName','DERA Form');</camunda:script>
           </camunda:taskListener>
           <camunda:properties>
             <camunda:property name="formName" value="deraBundleForm" />
@@ -463,7 +464,8 @@ task.execution.setVariable('requestType', 'DERA');
 task.execution.setVariable('deraStatus', task.execution.getVariable('action'));
 task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
 task.execution.setVariable('deleteReason', "completed");
-task.execution.setVariable('userRole','Case worker');</camunda:script>
+task.execution.setVariable('userRole','Caseworker');
+task.execution.setVariable('subFormName','DERA Form');</camunda:script>
           </camunda:taskListener>
           <camunda:properties>
             <camunda:property name="formName" value="deraBundleForm" />
@@ -637,7 +639,7 @@ execution.setVariable('requestType', 'DERA');</camunda:script>
         <bpmn:extensionElements>
           <camunda:in variables="all" />
           <camunda:inputOutput>
-            <camunda:inputParameter name="category">dera_updated</camunda:inputParameter>
+            <camunda:inputParameter name="category">dera_subforms_updated</camunda:inputParameter>
           </camunda:inputOutput>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_0zq3j61</bpmn:incoming>
@@ -704,7 +706,7 @@ task.execution.setVariable('userRole','Statutory Decision Maker');</camunda:scri
         <camunda:taskListener event="complete">
           <camunda:script scriptFormat="javascript">task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
 task.execution.setVariable('deleteReason', "completed");
-task.execution.setVariable('userRole','Case worker 3');</camunda:script>
+task.execution.setVariable('userRole','Caseworker');</camunda:script>
         </camunda:taskListener>
         <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="complete" />
         <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="complete">
@@ -892,7 +894,7 @@ system.out.println ("Sent to Caseworker");</bpmn:script>
           <camunda:taskListener event="create">
             <camunda:script scriptFormat="javascript">task.execution.setVariable('task_id',task.getId());
 task.execution.setVariableLocal('variable1',"srcr");
-task.execution.setVariable('userRole','Case worker');</camunda:script>
+task.execution.setVariable('userRole','Caseworker');</camunda:script>
           </camunda:taskListener>
           <camunda:taskListener event="complete">
             <camunda:script scriptFormat="javascript">task.execution.setVariable('requestStatus', task.execution.getVariable('action'));
@@ -900,7 +902,8 @@ task.execution.setVariable('requestType', 'SRCR');
 task.execution.setVariable('deleteReason', "completed");
 task.execution.setVariable('srcrStatus', task.execution.getVariable('action'));
 task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
-task.execution.setVariable('userRole','Case worker 2');</camunda:script>
+task.execution.setVariable('userRole','Caseworker');
+task.execution.setVariable('subFormName','SRCR Form');</camunda:script>
           </camunda:taskListener>
           <camunda:properties>
             <camunda:property name="formName" value="srcrBundleForm" />
@@ -945,7 +948,8 @@ task.execution.setVariable('requestType', 'SRCR');
 task.execution.setVariable('deleteReason', "completed");
 task.execution.setVariable('srcrStatus', task.execution.getVariable('action'));
 task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
-task.execution.setVariable('userRole','Statutory Decision Maker');</camunda:script>
+task.execution.setVariable('userRole','Statutory Decision Maker');
+task.execution.setVariable('subFormName','SRCR Form');</camunda:script>
           </camunda:taskListener>
           <camunda:properties>
             <camunda:property name="formName" value="srcrBundleForm" />
@@ -1037,7 +1041,8 @@ task.execution.setVariable('requestType', 'SRCR');
 task.execution.setVariable('deleteReason', "completed");
 task.execution.setVariable('srcrStatus', task.execution.getVariable('action'));
 task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
-task.execution.setVariable('userRole','Site Risk Classification Officer');</camunda:script>
+task.execution.setVariable('userRole','Site Risk Classification Officer');
+task.execution.setVariable('subFormName','SRCR Form');</camunda:script>
           </camunda:taskListener>
           <camunda:properties>
             <camunda:property name="formName" value="srcrBundleForm" />
@@ -1293,7 +1298,7 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
         <bpmn:extensionElements>
           <camunda:in variables="all" />
           <camunda:inputOutput>
-            <camunda:inputParameter name="category">dera_updated</camunda:inputParameter>
+            <camunda:inputParameter name="category">dera_subforms_updated</camunda:inputParameter>
           </camunda:inputOutput>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_0lklj13</bpmn:incoming>
