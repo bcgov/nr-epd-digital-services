@@ -303,6 +303,8 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
       <bpmn:outgoing>Flow_05pndkl</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
 
+execution.setVariable('name','User');
+
 execution.setVariable('riskclassification','required');
 system.out.println ("riskclassification"+ execution.getVariable('riskclassification'));
 
@@ -573,6 +575,14 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
         <dc:Bounds x="155" y="80" width="2715" height="4420" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0r4krsn_di" bpmnElement="Lane_0r4krsn" isHorizontal="true">
+        <dc:Bounds x="185" y="2410" width="2685" height="950" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0kmo9n9_di" bpmnElement="Lane_0kmo9n9" isHorizontal="true">
+        <dc:Bounds x="185" y="3360" width="2685" height="1140" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_1x4hrgw_di" bpmnElement="Lane_1x4hrgw" isHorizontal="true">
         <dc:Bounds x="185" y="1800" width="2685" height="610" />
         <bpmndi:BPMNLabel />
@@ -591,14 +601,6 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_0t984kw_di" bpmnElement="Lane_0t984kw" isHorizontal="true">
         <dc:Bounds x="185" y="80" width="2685" height="450" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_0kmo9n9_di" bpmnElement="Lane_0kmo9n9" isHorizontal="true">
-        <dc:Bounds x="185" y="3360" width="2685" height="1140" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_0r4krsn_di" bpmnElement="Lane_0r4krsn" isHorizontal="true">
-        <dc:Bounds x="185" y="2410" width="2685" height="950" />
-        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_01ekw8c" bpmnElement="Activity_08ykdar">
         <dc:Bounds x="1205" y="1440" width="100" height="80" />
