@@ -127,7 +127,7 @@ function NotationItem({ notation, index, onClickAddParticipant, onClickRemovePar
                 </div>
                 {editMode && <div className="d-inline-flex">
                     <SiteRegistryIconButton siteRegistry={false}></SiteRegistryIconButton><span className="mt-2">SR</span>
-                    <Button className='text-dark' variant='link' onClick={() => {onClickDeleteNotation(notation)}}>Delete</Button>
+                    <Button className='text-dark' variant='link' onClick={() => {onClickDeleteNotation(notation)}}>DELETE</Button>
                 </div>}
             </div>
             <div className={siteDetailsStyles.metadataGrid}>

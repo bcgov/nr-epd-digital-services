@@ -52,7 +52,7 @@ function SiteDisclosureItem({ disclosure }: SiteDisclosureItemProps) {
                     </div>
                     {editMode && <div className="d-inline-flex">
                         <Button className='text-dark' variant='link'><SiteRegistryIcon siteRegistry={false} /><span className="ms-1 me-3">SR</span></Button>
-                        <Button className='text-dark' variant='link'>Delete</Button>
+                        <Button className='text-dark' variant='link'>DELETE</Button>
                     </div>}
                 </div>
 
