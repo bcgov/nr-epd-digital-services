@@ -30,6 +30,8 @@ export class Site {
     siteDisclosures: SiteDisclosure[];
     activityLog: ActivityLogItem[];
 
+    documents: SiteDocument[];
+
 }
 
 
@@ -115,4 +117,21 @@ export class ActivityLogItem implements canBeOnSiteRegistry, hasUUID {
     activity: string;
     user: string;
     timestamp: string;
+}
+
+export class SiteDocument implements canBeOnSiteRegistry, hasUUID {
+    uuid: string;
+    siteRegistry: boolean;
+    documentDate: string;
+    receivedDate: string;
+    uploadedDate: string;
+    title: string;
+    participants: DocumentParticipant[];
+}
+
+export class DocumentParticipant implements canBeOnSiteRegistry, hasUUID {
+    uuid: string;
+    siteRegistry: boolean;
+    name: string;
+    role: string;
 }

@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { SiteParticipant, type Notation, type Site, AssociatedSite, SuspectLandUse, SiteDisclosure, ActivityLogItem, SiteDisclosurePurpose, ParcelDescription } from './sites'
+import { SiteParticipant, type Notation, type Site, AssociatedSite, SuspectLandUse, SiteDisclosure, ActivityLogItem, SiteDisclosurePurpose, ParcelDescription, SiteDocument, DocumentParticipant } from './sites'
 // import formatDateToString from '@/helpers/formatDateToString';
 import formatDateToString from '../helpers/formatDateToString.ts'
 
@@ -33,6 +33,7 @@ export function createRandomSite(): Site {
 
         notations: createAndPopulateArray({ min: 2, max: 5, generator: randomNotation }),
         participants: createAndPopulateArray({ min: 2, max: 5, generator: randomSiteParticipant }),
+        documents: createAndPopulateArray({min: 1, max: 5, generator: randomDocument}),
         suspectLandUses: createAndPopulateArray({ min: 2, max: 5, generator: randomSuspectLandUse }),
         parcelDescriptions: createAndPopulateArray({ min: 2, max: 5, generator: randomParcelDescription }),
         siteDisclosures: createAndPopulateArray({ min: 1, max: 2, generator: randomSiteDisclosure }),
@@ -40,7 +41,6 @@ export function createRandomSite(): Site {
 
         // Associated Sites is generated after site generation with `createSiteAssociations()`, as we need siteIDs already gen'd.
         associatedSites: []
-
     }
 }
 
@@ -199,3 +199,32 @@ function randomParcelDescription(): ParcelDescription {
         landDescription: `LOT ${lot} OF LOT ${secondLot} BLOCK ${block} DISTRICT LOT ${district} PLAN ${plan}`
     }
 }
+
+function randomDocument(): SiteDocument {
+
+
+    return {
+        uuid: faker.string.uuid(),
+        siteRegistry: faker.datatype.boolean(),
+        documentDate:  formatDateToString(faker.date.past({ years: 10 })),
+        receivedDate: formatDateToString(faker.date.past({ years: 10 })),
+        uploadedDate:  formatDateToString(faker.date.past({ years: 10 })),
+        title: faker.helpers.arrayElement([
+            'Human Health and Ecological Risk Assessment for the Management Area adjacent to the Shell Site at 1503 West 41st Avenue, Vancouver BC (LC C010106)',
+            'Summary of Site Conditions, 1537 W 41st Avenue, Vancouver',
+            'Preliminary Site Investigation, Detailed Site Investigation and Remedial Plan for the Management Area adjacent to the Shell Site at 1503 West 41st Ave',
+        ]),
+        participants: createAndPopulateArray({min: 1, max: 3, generator: randomDocumentParticipant})
+    }
+}
+
+function randomDocumentParticipant(): DocumentParticipant {
+
+    return {
+        uuid: faker.string.uuid(),
+        name: faker.helpers.arrayElement(['SHELL CANADA PRODUCTS', 'SNC-LAVALIN ENVIRONMENT INC', 'IPSUM', 'AMET, DOLOR SIT']),
+        siteRegistry: faker.datatype.boolean(),
+        role: 'AUTHOR'
+    }
+}
+
