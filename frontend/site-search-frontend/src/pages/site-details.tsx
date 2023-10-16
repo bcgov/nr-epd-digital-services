@@ -16,6 +16,7 @@ export default function SiteDetailsPage() {
     const siteIDNum = parseInt(siteID);
     const location = useLocation();
     const site: Site = useSelector((state: RootState) => state.site.value.find(searchedSite => searchedSite.siteID === siteIDNum));
+    const isMinistry = useSelector((state: RootState) => state.user.isMinistry);
     const dispatch = useDispatch();
 
     function toggleEditClick(){
@@ -32,14 +33,21 @@ export default function SiteDetailsPage() {
                         <Button className='me-3' variant='outline-secondary' onClick={() => { history.back() }}>&lt; Back</Button>
                         <span className="fw-bolder">{site.siteID} - {site.address}</span>
                     </div>
-                    {!editMode && <div>
-                        <Button className='mx-3' variant='secondary' onClick={toggleEditClick}>Edit</Button>
-                        <Button variant='warning'>DELETE</Button>
+
+                    {isMinistry && <div>
+                        
+                        {!editMode && <div>
+                            <Button className='mx-3' variant='secondary' onClick={toggleEditClick}>Edit</Button>
+                            <Button variant='warning'>Delete</Button>
+                        </div>}
+                        {editMode && <div>
+                            <Button variant='primary' className='mx-4' onClick={toggleEditClick}>Save</Button>
+                            <Button variant='secondary' onClick={toggleEditClick}>Cancel</Button>
+                        </div>}
+                        
                     </div>}
-                    {editMode && <div>
-                        <Button variant='primary' className='mx-4' onClick={toggleEditClick}>Save</Button>
-                        <Button variant='secondary' onClick={toggleEditClick}>Cancel</Button>
-                    </div>}
+
+                    
                 </div>
 
                 <div className={styles.metadata}>
