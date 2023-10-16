@@ -16,7 +16,7 @@ export default function Summary() {
         <div>
             <div className="row">
                 <div className="col-md-9">
-                    <MapContainer zoom={13} zoomControl={false} center={[site.latitude, site.longitude]} className={styles.mapContainer} dragging={false} touchZoom={false} scrollWheelZoom={false}>
+                    <MapContainer zoom={13} center={[site.latitude, site.longitude]} className={styles.mapContainer} >
                         <TileLayer
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
