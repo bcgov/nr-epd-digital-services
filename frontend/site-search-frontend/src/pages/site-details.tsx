@@ -34,7 +34,7 @@ export default function SiteDetailsPage() {
                     </div>
                     {!editMode && <div>
                         <Button className='mx-3' variant='secondary' onClick={toggleEditClick}>Edit</Button>
-                        <Button variant='warning'>Delete</Button>
+                        <Button variant='warning'>DELETE</Button>
                     </div>}
                     {editMode && <div>
                         <Button variant='primary' className='mx-4' onClick={toggleEditClick}>Save</Button>
