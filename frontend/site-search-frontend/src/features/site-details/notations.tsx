@@ -45,7 +45,6 @@ export default function Notations() {
         // Potentially should put this in a useEffect()?
         // Goal is to scroll into new element only after it has been rendered.
         setTimeout(() => {
-            console.log({ site, target: 'notation-' + site.notations.length})
             const el = document.getElementById('notation-' + site.notations.length)
             if (el) {
                 el.scrollIntoView({behavior: 'smooth'})
@@ -144,7 +143,8 @@ function NotationItem({ notation, index, onClickAddParticipant, onClickRemovePar
                 <SiteGridItem label='Notation Type' value={notation.notationType} extraClasses={siteDetailsStyles.gridFullwidth} showSR={editMode} />
                 <SiteGridItem label='Notation Class' value={notation.notationClass} extraClasses={siteDetailsStyles.gridFullwidth} showSR={editMode} />
 
-                <SiteGridItem label='Initiated' value={notation.initiated} showSR={editMode} />
+                <SiteGridItem label='Initiated' value={notation.initiated} showSR={editMode}/>
+                {/* <SiteGridItem label='Initiated' value={new Date()} showSR={editMode}/> */}
                 <SiteGridItem label='Completed' value={notation.completed} showSR={editMode} />
                 <SiteGridItem label='Ministry Contact' value={notation.ministryContact} showSR={editMode}  />
                 <SiteGridItem label='Note' value={notation.note} showSR={editMode} extraClasses={siteDetailsStyles.gridFullwidth} />
