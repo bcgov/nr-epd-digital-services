@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_17ytju0" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.12.0">
   <bpmn:collaboration id="Collaboration_14e80c3">
-    <bpmn:participant id="Participant_1tv1lnj" name="SOSC Bundle Worklow" processRef="sosc-bundle-workflow-v1" />
+    <bpmn:participant id="Participant_1tv1lnj" name="SOSC Bundle Worklow" processRef="sosc-workflow-v1" />
   </bpmn:collaboration>
-  <bpmn:process id="sosc-bundle-workflow-v1" name="SOSC Bundle Worklow" isExecutable="true" camunda:versionTag="1">
+  <bpmn:process id="sosc-workflow-v1" name="SOSC Worklow" isExecutable="true" camunda:versionTag="1">
     <bpmn:laneSet id="LaneSet_1e6v5og">
       <bpmn:lane id="Lane_0t984kw" name="Client/Submitter">
         <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
@@ -1133,11 +1133,11 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0mzcdc9_di" bpmnElement="Flow_0mzcdc9">
         <di:waypoint x="1230" y="410" />
-        <di:waypoint x="800" y="410" />
-        <di:waypoint x="800" y="1480" />
+        <di:waypoint x="840" y="410" />
+        <di:waypoint x="840" y="1480" />
         <di:waypoint x="1205" y="1480" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="806" y="942" width="18" height="14" />
+          <dc:Bounds x="846" y="942" width="18" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_0ja899j" bpmnElement="Flow_01suxh6">
