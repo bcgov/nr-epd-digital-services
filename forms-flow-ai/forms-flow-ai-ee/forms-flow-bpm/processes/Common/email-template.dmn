@@ -138,7 +138,7 @@
           <text>"Notification of Independent Remediation Application Status Updated"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ndgbup">
-          <text>"templates/nir_application.ftl"</text>
+          <text>"templates/nom_application.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0fm9kmi">
           <text>"epd-support@gov.bc.ca"</text>
