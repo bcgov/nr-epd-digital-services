@@ -14,7 +14,24 @@ interface SiteGridItemProps {
     as?: 'input' | 'textarea';
 }
 
+interface SiteGridParentProps {
+    label: string;
+    children: any;
+    extraClasses?: CSSModuleClasses | string;
+    showSR?: boolean;
+}
+
 export default function SiteGridItem( {label, value, extraClasses = '', showSR = false, readOnly, as='input'}: SiteGridItemProps) {
+    const editMode = useSelector((state: RootState) => state.edit.editMode)
+
+    return (
+        <SiteGridParent label={label} extraClasses={extraClasses} showSR={showSR}>
+            <Form.Control className={styles.formInput} readOnly={readOnly ? true : !editMode} plaintext={!editMode} defaultValue={value} as={as} />
+        </SiteGridParent>
+    )
+}
+
+export function SiteGridParent( {label, extraClasses = '', showSR = false,children}: SiteGridParentProps ) { 
     const editMode = useSelector((state: RootState) => state.edit.editMode)
 
     return (
@@ -25,8 +42,12 @@ export default function SiteGridItem( {label, value, extraClasses = '', showSR =
                 <span><SiteRegistryIconButton siteRegistry={true} /> SR</span>
                 }
             </div>
-            <Form.Control className={styles.formInput} readOnly={readOnly ? true : !editMode} plaintext={!editMode} defaultValue={value} as={as} />
+            {children}
         </div>
     )
+
 }
+
+// SiteGridParent() - class that just shows header and SR logic, not just does {children} for the actual Form.Control
+// SiteGridDateItem() - replaces <Form.Control> with <input type='datetime'> and styles appropriately, uses SiteGridParent
 
