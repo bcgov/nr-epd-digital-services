@@ -6,6 +6,7 @@ import SubSearch from "./sub-search/SubSearch";
 import SiteDetailsTable from "./table/SiteDetailsTable";
 import { updateSite } from "../simple-search/simple-search";
 import { faker } from "@faker-js/faker";
+import { LinkableFormControl } from "./TableEditItem";
 
 export default function AssociatedSites() {
     const { siteID } = useParams();
@@ -52,7 +53,7 @@ export default function AssociatedSites() {
             <SiteDetailsTable
                 label='Associated Sites'
                 headers={[
-                    {label: 'Site ID', accessor: 'siteID'},
+                    {label: 'Site ID', accessor: 'siteID', renderer: LinkableFormControl},
                     {label: 'Parcel ID', accessor: 'parcelID'},
                     {label: 'Date Noted', accessor: 'dateNoted'},
                     {label: 'Notes', accessor: 'notes'}

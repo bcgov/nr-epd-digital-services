@@ -11,9 +11,10 @@ interface SiteGridItemProps {
     extraClasses?: CSSModuleClasses | string;
     showSR?: boolean;
     readOnly?: boolean;
+    as?: 'input' | 'textarea';
 }
 
-export default function SiteGridItem( {label, value, extraClasses = '', showSR = false, readOnly}: SiteGridItemProps) {
+export default function SiteGridItem( {label, value, extraClasses = '', showSR = false, readOnly, as='input'}: SiteGridItemProps) {
     const editMode = useSelector((state: RootState) => state.edit.editMode)
 
     return (
@@ -24,7 +25,7 @@ export default function SiteGridItem( {label, value, extraClasses = '', showSR =
                 <span><SiteRegistryIconButton siteRegistry={true} /> SR</span>
                 }
             </div>
-            <Form.Control className={styles.formInput} readOnly={readOnly ? true : !editMode} plaintext={!editMode} defaultValue={value} />
+            <Form.Control className={styles.formInput} readOnly={readOnly ? true : !editMode} plaintext={!editMode} defaultValue={value} as={as} />
         </div>
     )
 }
