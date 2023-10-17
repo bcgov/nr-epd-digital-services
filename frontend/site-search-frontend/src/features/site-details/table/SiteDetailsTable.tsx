@@ -10,7 +10,7 @@ interface SiteDetailsTableProps {
     onClickAdd?;
     onClickRemove?;
     label: string;
-    headers: { label: string, accessor: string }[]
+    headers: { label: string, accessor: string, renderer?: React.FC<{value: any}> }[]
     // rows: any[];
     data: {
         roles?: string[],
@@ -134,10 +134,22 @@ export default function SiteDetailsTable({ onClickAdd, headers, data, label, onC
                     {data?.map((row, index) => {
                         return (
                             <tr key={index}>
+                                {/* Checkbox col */}
                                 {editMode && <td>
                                     <Form.Check aria-label="Select this {label}" checked={checked[index]} onChange={(event) => handleCheck({ index, event })} />
                                 </td>}
-                                {headers?.map((header, index) => <td key={`${row.uuid}-${index}`}><TableEditItem value={row[header.accessor]} /></td>)}
+
+                                {/* Dynamic row content */}
+                                {headers?.map((header, index) => <td key={`${row.uuid}-${index}`}>
+                                    {/* If there is a custom `renderer`, use that, otherwise default to TableEditItem */}
+                                    { header.renderer ? 
+                                        <header.renderer value={row[header.accessor]} /> 
+                                        : <TableEditItem value={row[header.accessor]} />
+                                    }
+                                    {/* <TableEditItem value={row[header.accessor]} /> */}
+                                </td>)}
+
+                                {/* SR Col */}
                                 {editMode && <td> <SiteRegistryIconButton siteRegistry={SRCheck[index]} /></td>}
                             </tr>
                         )

@@ -77,9 +77,9 @@ function SiteDisclosureItem({ disclosure }: SiteDisclosureItemProps) {
                     <p className='fw-bold'>IV Additional Comments and Explanations</p>
 
                     <div className={siteDetailsStyles.metadataGrid}>
-                        <SiteGridItem extraClasses={siteDetailsStyles.gridFullwidth} label='Provide a brief summary of the planned activity and proposed land use of the site' value={disclosure.summary}></SiteGridItem>
-                        <SiteGridItem extraClasses={siteDetailsStyles.gridFullwidth} label='Indicate the information used to complete this site disclosure statement including a list of record searches completed.' value={disclosure.informationUsed}></SiteGridItem>
-                        <SiteGridItem extraClasses={siteDetailsStyles.gridFullwidth} label='List any past or present government orders, permits, approvals, certificates or notifications pertaining to the environmental condition of the site.' value={disclosure.pastOrPresentOrders}></SiteGridItem>
+                        <SiteGridItem extraClasses={siteDetailsStyles.gridFullwidth} as='textarea' label='Provide a brief summary of the planned activity and proposed land use of the site' value={disclosure.summary}></SiteGridItem>
+                        <SiteGridItem extraClasses={siteDetailsStyles.gridFullwidth} as='textarea' label='Indicate the information used to complete this site disclosure statement including a list of record searches completed.' value={disclosure.informationUsed}></SiteGridItem>
+                        <SiteGridItem extraClasses={siteDetailsStyles.gridFullwidth} as='textarea' label='List any past or present government orders, permits, approvals, certificates or notifications pertaining to the environmental condition of the site.' value={disclosure.pastOrPresentOrders}></SiteGridItem>
                     </div>
 
             </div>
