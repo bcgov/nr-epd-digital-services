@@ -354,8 +354,8 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
 execution.setVariable('name','User');
 system.out.println ("name"+ execution.getVariable('name'));
 
-var contactEmail = execution.getVariable('contactPersonEmailAddress');
-execution.setVariable('contactEmail', contactEmail);
+var applicantEmail = execution.getVariable('contactPersonEmailAddress');
+execution.setVariable('applicantEmail', applicantEmail );
 
 var apEmail = execution.getVariable('contactPersonEmailAddress2');
 execution.setVariable('apEmail', apEmail);
@@ -371,6 +371,15 @@ system.out.println("agentEmail"+agentEmail);
 
 var emailsToArray = [];
 emailsToArray.push(clientEmail);
+if(applicantEmail){
+  emailsToArray.push(applicantEmail);
+}
+if(agentEmail){
+  emailsToArray.push(agentEmail);
+}
+if(apEmail){
+  emailsToArray.push(apEmail);
+}
 execution.setVariable("emailTo", Java.to(emailsToArray, "java.lang.Object[]"));
 system.out.println ("emailTo"+execution.getVariable('emailTo'));
 
@@ -1152,9 +1161,9 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
         <di:waypoint x="2670" y="4372" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1m7z9cq_di" bpmnElement="Flow_1m7z9cq">
-        <di:waypoint x="1255" y="4145" />
-        <di:waypoint x="1255" y="4280" />
-        <di:waypoint x="2620" y="4280" />
+        <di:waypoint x="1280" y="4120" />
+        <di:waypoint x="2670" y="4120" />
+        <di:waypoint x="2670" y="4240" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0mrjkt1_di" bpmnElement="Flow_0mrjkt1">
         <di:waypoint x="1255" y="4145" />
