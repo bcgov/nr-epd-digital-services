@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import { setMinistryState } from '@/features/user/userSlice';
 import { RootState } from '@/store';
 import { useDispatch, useSelector } from 'react-redux';
+import { changeEditMode } from '@/features/site-details/edit-mode/editModeSlice';
 
 
 
@@ -15,7 +16,7 @@ export default function Header() {
 
 
   function minstryToggleChange(e) {
-    console.log('ministryToggleChange', { isMinistry, e });
+    dispatch(changeEditMode(false));
     dispatch(setMinistryState(!isMinistry));
   }
 
