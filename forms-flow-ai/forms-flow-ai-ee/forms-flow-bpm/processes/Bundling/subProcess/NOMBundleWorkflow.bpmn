@@ -88,12 +88,13 @@ execution.setVariable('formName','Notification of Likely or Actual Migration');
       <bpmn:extensionElements>
         <camunda:taskListener event="create">
           <camunda:script scriptFormat="javascript">task.execution.setVariable('isCssaTeam',false);
-task.execution.setVariable('userRole','Site Information Advisor');</camunda:script>
+</camunda:script>
         </camunda:taskListener>
         <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="create" />
         <camunda:taskListener event="complete">
           <camunda:script scriptFormat="javascript">task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
-task.execution.setVariable('deleteReason', "completed");</camunda:script>
+task.execution.setVariable('deleteReason', "completed");
+task.execution.setVariable('userRole','Site Information Advisor');</camunda:script>
         </camunda:taskListener>
         <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="complete" />
         <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="complete">
@@ -235,14 +236,15 @@ system.out.println ("Sent to Caseworker");</bpmn:script>
           <camunda:taskListener event="create">
             <camunda:script scriptFormat="javascript">task.execution.setVariable('task_id',task.getId());
 task.execution.setVariableLocal('variable1',"srcr");
-task.execution.setVariable('userRole','Case Worker');</camunda:script>
+</camunda:script>
           </camunda:taskListener>
           <camunda:taskListener event="complete">
             <camunda:script scriptFormat="javascript">task.execution.setVariable('requestStatus', task.execution.getVariable('action'));
 task.execution.setVariable('requestType', 'SRCR');
 task.execution.setVariable('deleteReason', "completed");
 task.execution.setVariable('srcrStatus', task.execution.getVariable('action'));
-task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));</camunda:script>
+task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
+task.execution.setVariable('userRole','Caseworker');</camunda:script>
           </camunda:taskListener>
           <camunda:properties>
             <camunda:property name="formName" value="srcrBundleForm" />
@@ -278,7 +280,7 @@ system.out.println ("Sent to SDM");</bpmn:script>
           </camunda:taskListener>
           <camunda:taskListener event="create">
             <camunda:script scriptFormat="javascript">task.execution.setVariable('task_id',task.getId());
-task.execution.setVariable('userRole','Statutory Decision Maker');
+
 </camunda:script>
           </camunda:taskListener>
           <camunda:taskListener event="complete">
@@ -286,7 +288,8 @@ task.execution.setVariable('userRole','Statutory Decision Maker');
 task.execution.setVariable('requestType', 'SRCR');
 task.execution.setVariable('deleteReason', "completed");
 task.execution.setVariable('srcrStatus', task.execution.getVariable('action'));
-task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));</camunda:script>
+task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
+task.execution.setVariable('userRole','Statutory Decision Maker');</camunda:script>
           </camunda:taskListener>
           <camunda:properties>
             <camunda:property name="formName" value="srcrBundleForm" />
@@ -364,14 +367,15 @@ system.out.println ("isSentFromSociety "+execution.getVariable('isSentFromSociet
           <camunda:taskListener event="create">
             <camunda:script scriptFormat="javascript">task.execution.setVariable('task_id',task.getId());
 task.execution.setVariableLocal('variable1',"srcr");
-task.execution.setVariable('userRole','Site Risk Classification Officer');</camunda:script>
+</camunda:script>
           </camunda:taskListener>
           <camunda:taskListener event="complete">
             <camunda:script scriptFormat="javascript">task.execution.setVariable('requestStatus', task.execution.getVariable('action'));
 task.execution.setVariable('requestType', 'SRCR');
 task.execution.setVariable('deleteReason', "completed");
 task.execution.setVariable('srcrStatus', task.execution.getVariable('action'));
-task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));</camunda:script>
+task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
+task.execution.setVariable('userRole','Site Risk Classification Officer');</camunda:script>
           </camunda:taskListener>
           <camunda:properties>
             <camunda:property name="formName" value="srcrBundleForm" />
@@ -459,6 +463,16 @@ execution.setVariable('srcrStatus', "Resubmitted");</camunda:script>
         <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected'}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_06k5uq7" name="Accepted" sourceRef="Gateway_0wyokmr" targetRef="Activity_15ke6f4">
+        <bpmn:extensionElements>
+          <camunda:executionListener event="take">
+            <camunda:script scriptFormat="javascript">execution.setVariable('srcrBundleStatus', "srcrCaseworkerAccepted");</camunda:script>
+          </camunda:executionListener>
+          <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+            <camunda:field name="fields">
+              <camunda:expression>["applicationId", "applicationStatus", "srcrBundleStatus"]</camunda:expression>
+            </camunda:field>
+          </camunda:executionListener>
+        </bpmn:extensionElements>
         <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_053df1n" name="Recheck" sourceRef="Gateway_0wyokmr" targetRef="Activity_12sm7v1">
@@ -567,6 +581,16 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_1g0e5n9" sourceRef="Activity_12sm7v1" targetRef="Activity_0idq8ua" />
       <bpmn:sequenceFlow id="Flow_1obpc5x" name="Accepted" sourceRef="Gateway_102i3iq" targetRef="Gateway_0ynmdzk">
+        <bpmn:extensionElements>
+          <camunda:executionListener event="take">
+            <camunda:script scriptFormat="javascript">execution.setVariable('srcrBundleStatus', "srcrSrcoAccepted");</camunda:script>
+          </camunda:executionListener>
+          <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+            <camunda:field name="fields">
+              <camunda:expression>["applicationId", "applicationStatus", "srcrBundleStatus"]</camunda:expression>
+            </camunda:field>
+          </camunda:executionListener>
+        </bpmn:extensionElements>
         <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_0szkd4s" name="Returned" sourceRef="Gateway_102i3iq" targetRef="Activity_0mpunb8">
@@ -587,7 +611,9 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
         <bpmn:incoming>Flow_0wuyk5q</bpmn:incoming>
         <bpmn:outgoing>Flow_117fny8</bpmn:outgoing>
       </bpmn:callActivity>
-      <bpmn:sequenceFlow id="Flow_0ojaeu2" sourceRef="Gateway_01ys7kk" targetRef="Gateway_0wyokmr" />
+      <bpmn:sequenceFlow id="Flow_0ojaeu2" sourceRef="Gateway_01ys7kk" targetRef="Gateway_0wyokmr">
+        <bpmn:extensionElements />
+      </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_0s3yccc" sourceRef="Gateway_01ys7kk" targetRef="Activity_05x4sl7" />
       <bpmn:sequenceFlow id="Flow_17jc772" sourceRef="Gateway_1bl74qu" targetRef="Gateway_137ft2z" />
       <bpmn:sequenceFlow id="Flow_03ti4c1" sourceRef="Gateway_1bl74qu" targetRef="Activity_05x4sl7" />
