@@ -16,7 +16,7 @@ export default function Summary() {
         <div>
             <div className="row">
                 <div className="col-md-9">
-                    <MapContainer zoom={13} center={[site.latitude, site.longitude]} className={styles.mapContainer} >
+                    <MapContainer zoom={13} center={[site.latitude, site.longitude]} className={styles.mapContainer} scrollWheelZoom={false} touchZoom={false} >
                         <TileLayer
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -40,7 +40,7 @@ export default function Summary() {
                     <p><span className="fw-bolder">Notations</span>: {site.notations.length} </p>
                     <p><span className="fw-bolder">Participants</span>: {site.participants.length} </p>
                     <p><span className="fw-bolder">Associated Sites</span>: {site.associatedSites.length} </p>
-                    <p><span className="fw-bolder">Documents</span>: todo</p>
+                    <p><span className="fw-bolder">Documents</span>: {site.documents.length} </p>
                     <p><span className="fw-bolder">Suspect Land Use</span>: {site.suspectLandUses.length}</p>
                     <p><span className="fw-bolder">Parcel Description</span>: {site.parcelDescriptions.length}</p>
 
