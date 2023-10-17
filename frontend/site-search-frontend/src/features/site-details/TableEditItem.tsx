@@ -28,3 +28,12 @@ export function TextAreaItem({value}) {
         <Form.Control className={styles.formInput} readOnly={!editMode} plaintext={!editMode} defaultValue={value} as='textarea' />
     );
 }
+
+export function DateItem({value}) {
+    const editMode = useSelector((state: RootState) => state.edit.editMode);
+
+    return (
+        <input type='date' className={styles.formInput + ' form-control'} defaultValue={value} readOnly={!editMode}  />
+    )
+
+}

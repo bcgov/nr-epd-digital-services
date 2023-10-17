@@ -8,6 +8,7 @@ import { Site, SiteParticipant } from "@/api/sites";
 // import { updateSite } from "../simple-search/simple-search";
 import { updateSite } from '../simple-search/simple-search';
 import { faker } from "@faker-js/faker";
+import { DateItem } from "./TableEditItem";
 
 export default function Participants() {
     const { siteID } = useParams();
@@ -54,8 +55,8 @@ export default function Participants() {
                 headers={[
                     {label: 'Participant', accessor: 'name'},
                     {label: 'Role(s)', accessor: 'roles'},
-                    {label: 'Start Date', accessor: 'startDate'},
-                    {label: 'End Date', accessor: 'endDate'},
+                    {label: 'Start Date', accessor: 'startDate', renderer: DateItem},
+                    {label: 'End Date', accessor: 'endDate', renderer: DateItem},
                     {label: 'Notes', accessor: 'notes'},
                 ]}
                 data={site.participants}
