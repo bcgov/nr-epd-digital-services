@@ -11,11 +11,22 @@
     display: grid;
     /* grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); */
     /* grid-template-columns: repeat(12, minmax(400px, 1fr)); */
-    grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+    /* grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); */
+    /* grid-template-columns: 16.6% 16.6% 16.6% 16.6% 16.6% 16.6%; */
+    /* grid-template-columns: 16%; */
     grid-gap: 20px;
 
     align-items: start;
 }
+
+@media (min-width: 992px){
+    .metadataGridFifths {
+        /* background-color: orange; */
+        grid-template-columns: 18% 18% 18% 18% 18%;
+    }
+    
+}
+
 
 .metadataGridItem {
     border: 1px solid black;
