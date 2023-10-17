@@ -48,6 +48,13 @@ export function SiteGridParent( {label, extraClasses = '', showSR = false,childr
 
 }
 
-// SiteGridParent() - class that just shows header and SR logic, not just does {children} for the actual Form.Control
-// SiteGridDateItem() - replaces <Form.Control> with <input type='datetime'> and styles appropriately, uses SiteGridParent
+export function SiteGridDateItem( {label, value, extraClasses = '', showSR = false, readOnly, as='input'}: SiteGridItemProps) {
+    const editMode = useSelector((state: RootState) => state.edit.editMode)
 
+    return (
+        <SiteGridParent label={label} extraClasses={extraClasses} showSR={showSR}>
+            <input type='date' className={styles.formInput + ' form-control'} defaultValue={value} readOnly={readOnly ? true : !editMode} />
+        </SiteGridParent>
+    )
+
+}
