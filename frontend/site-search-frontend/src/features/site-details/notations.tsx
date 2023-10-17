@@ -42,6 +42,16 @@ export default function Notations() {
         const newSite: Site = {...site, notations: [...site.notations, newNotation]}
         // const newSite: Site = {...site, notations: [newNotation, ...site.notations]}
 
+        // Potentially should put this in a useEffect()?
+        // Goal is to scroll into new element only after it has been rendered.
+        setTimeout(() => {
+            console.log({ site, target: 'notation-' + site.notations.length})
+            const el = document.getElementById('notation-' + site.notations.length)
+            if (el) {
+                el.scrollIntoView({behavior: 'smooth'})
+            }
+        }, 150)
+
         dispatch(updateSite(newSite));
     }
 
@@ -119,7 +129,7 @@ function NotationItem({ notation, index, onClickAddParticipant, onClickRemovePar
     const editMode = useSelector((state: RootState) => state.edit.editMode);
 
     return (
-        <div className={styles.detailsItem}>
+        <div className={styles.detailsItem} id={`notation-${index}`}>
             <div className="d-flex justify-content-between">
                 <div className="d-inline-flex">
                     <p>Notation {index + 1}</p>
