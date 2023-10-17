@@ -10,6 +10,8 @@ import { useState } from "react";
 import { toggleEdit } from '@/features/site-details/edit-mode/editModeSlice';
 import { formatLatLng } from "@/helpers/formatLatLng";
 
+import { CartFill, EnvelopeFill } from  'react-bootstrap-icons';
+
 export default function SiteDetailsPage() {
     const { siteID } = useParams();
     const editMode = useSelector((state: RootState) => state.edit.editMode)
@@ -45,6 +47,11 @@ export default function SiteDetailsPage() {
                             <Button variant='secondary' onClick={toggleEditClick}>Cancel</Button>
                         </div>}
                         
+                    </div>}
+
+                    {isMinistry === false && <div>
+                        <Button className='mx-3' variant='primary'><CartFill className='mb-1' /> Purchase Site Details</Button>
+                        <Button variant='secondary'><EnvelopeFill className='mb-1'  /> Subscribe to Site</Button>
                     </div>}
 
                     

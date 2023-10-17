@@ -27,7 +27,7 @@ export default function Header() {
         <Navbar.Brand href="/">BCGov Logo</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
+          <Nav className='w-100'>
             <NavDropdown title="Search" id="basic-nav-dropdown">
               <NavDropdown.Item href="/">Basic Search</NavDropdown.Item>
               <NavDropdown.Item href="/advanced-search">
@@ -40,15 +40,16 @@ export default function Header() {
               </NavDropdown.Item>
             </NavDropdown>
             
-            <NavDropdown title="Options" id="nav-options">
-                <div className="p-1">
+            <NavDropdown title="Prototype Options" id="nav-options" className='ms-auto'>
+                <div className="px-3">
                   <Form.Check
                     type="switch"
-                    label="Ministry Mode"
                     id="ministry-mode-toggle"
+                    className='d-inline'
                     onChange={minstryToggleChange}
                     checked={isMinistry}
                   />
+                  <Form.Check.Label className='d-inline ms-1' htmlFor="ministry-mode-toggle">Ministry</Form.Check.Label>
                 </div>
             </NavDropdown>
 
