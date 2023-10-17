@@ -54,6 +54,16 @@
       </bpmn:lane>
     </bpmn:laneSet>
     <bpmn:sequenceFlow id="Flow_1tu4hj7" name="Accepted" sourceRef="Gateway_0oobb3z" targetRef="Activity_0vo5rls">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('soscStatus', "cssaTeamAccepted");</camunda:script>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+          <camunda:field name="fields">
+            <camunda:expression>["soscStatus"]</camunda:expression>
+          </camunda:field>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0bz8atu" sourceRef="Activity_08ykdar" targetRef="Gateway_03fnjoh">
@@ -118,7 +128,16 @@
       </bpmn:extensionElements>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0kfjdmp" name="Accepted" sourceRef="Gateway_04o747e" targetRef="Activity_1ao3zkj">
-      <bpmn:extensionElements />
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('soscStatus', "csapAccepted");</camunda:script>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+          <camunda:field name="fields">
+            <camunda:expression>["soscStatus"]</camunda:expression>
+          </camunda:field>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_12uv3km" name="Returned" sourceRef="Gateway_04o747e" targetRef="Activity_1v5ffpw">
@@ -142,7 +161,16 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0gb2oz2" name="Accepted" sourceRef="Gateway_15p5urd" targetRef="Activity_08ykdar">
-      <bpmn:extensionElements />
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('soscStatus', "societyAccepted");</camunda:script>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+          <camunda:field name="fields">
+            <camunda:expression>["soscStatus"]</camunda:expression>
+          </camunda:field>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0d8ruax" sourceRef="Activity_1ao3zkj" targetRef="Gateway_1hfcr71" />
@@ -230,6 +258,14 @@ system.out.println ("isSentFromSociety "+ task.execution.getVariable('isSentFrom
     <bpmn:sequenceFlow id="Flow_02ysv7t" name="Accepted" sourceRef="Gateway_1lfy3cm" targetRef="Activity_1qnqtak">
       <bpmn:extensionElements>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormBPMFilteredDataPipelineListener" event="take" />
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('soscStatus', "mgrAccepted");</camunda:script>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+          <camunda:field name="fields">
+            <camunda:expression>["soscStatus"]</camunda:expression>
+          </camunda:field>
+        </camunda:executionListener>
       </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
