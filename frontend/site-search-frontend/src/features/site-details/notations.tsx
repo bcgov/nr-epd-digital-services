@@ -1,7 +1,7 @@
 import { Button, Dropdown, DropdownButton, Form, Table } from 'react-bootstrap'
 import styles from './css/siteDetails.module.css'
 import siteDetailsStyles from '@/pages/site-details.module.css'
-import SiteGridItem from './SiteGridItem'
+import SiteGridItem, { SiteGridDateItem } from './SiteGridItem'
 import { TableEditItem } from "./TableEditItem";
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -143,9 +143,8 @@ function NotationItem({ notation, index, onClickAddParticipant, onClickRemovePar
                 <SiteGridItem label='Notation Type' value={notation.notationType} extraClasses={siteDetailsStyles.gridFullwidth} showSR={editMode} />
                 <SiteGridItem label='Notation Class' value={notation.notationClass} extraClasses={siteDetailsStyles.gridFullwidth} showSR={editMode} />
 
-                <SiteGridItem label='Initiated' value={notation.initiated} showSR={editMode}/>
-                {/* <SiteGridItem label='Initiated' value={new Date()} showSR={editMode}/> */}
-                <SiteGridItem label='Completed' value={notation.completed} showSR={editMode} />
+                <SiteGridDateItem label='Initiated' value={notation.initiated} showSR={editMode}/>
+                <SiteGridDateItem label='Completed' value={notation.completed} showSR={editMode} />
                 <SiteGridItem label='Ministry Contact' value={notation.ministryContact} showSR={editMode}  />
                 <SiteGridItem label='Note' value={notation.note} showSR={editMode} extraClasses={siteDetailsStyles.gridFullwidth} />
                 <SiteGridItem label='Required Actions' value={notation.requestedActions} showSR={editMode} extraClasses={siteDetailsStyles.gridFullwidth} />
