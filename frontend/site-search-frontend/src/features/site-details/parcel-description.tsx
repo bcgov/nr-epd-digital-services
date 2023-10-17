@@ -6,6 +6,7 @@ import SubSearch from "./sub-search/SubSearch";
 import SiteDetailsTable from "./table/SiteDetailsTable";
 import { faker } from "@faker-js/faker";
 import { updateSite } from "../simple-search/simple-search";
+import { DateItem } from "./TableEditItem";
 
 export default function ParcelDescriptionSubPage() {
     const { siteID } = useParams();
@@ -46,7 +47,7 @@ export default function ParcelDescriptionSubPage() {
              <SiteDetailsTable
                 label='Parcel Descriptions'
                 headers={[
-                    {label: 'Date Noted', accessor: 'dateNoted'},
+                    {label: 'Date Noted', accessor: 'dateNoted', renderer: DateItem},
                     {label: 'Parcel ID', accessor: 'parcelID'},
                     {label: 'Crown Land PIN', accessor: 'crownLandUsePIN'},
                     {label: 'Crown Lands File Number', accessor: 'crownLandFileNumber'},

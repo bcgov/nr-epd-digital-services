@@ -7,7 +7,7 @@ import styles from './css/siteDetails.module.css'
 import { Button } from "react-bootstrap";
 import SiteRegistryIcon from "@/components/SiteRegistryIcon";
 import siteDetailsStyles from '@/pages/site-details.module.css'
-import SiteGridItem from "./SiteGridItem";
+import SiteGridItem, { SiteGridDateItem } from "./SiteGridItem";
 import SiteDetailsTable from "./table/SiteDetailsTable";
 
 export default function Documents() {
@@ -66,8 +66,8 @@ function DocumentItem({document, index}: DocumentItemProps) {
                 </div>
 
                 <div className={siteDetailsStyles.metadataGrid}>
-                    <SiteGridItem label='Document Date' value={document.documentDate} extraClasses={siteDetailsStyles.gridHalfWidth}  />
-                    <SiteGridItem label='Received Date' value={document.receivedDate} extraClasses={siteDetailsStyles.gridHalfWidth} />
+                    <SiteGridDateItem label='Document Date' value={document.documentDate} extraClasses={siteDetailsStyles.gridHalfWidth}  />
+                    <SiteGridDateItem label='Received Date' value={document.receivedDate} extraClasses={siteDetailsStyles.gridHalfWidth} />
                     <SiteGridItem label='Links' value={'View Online | Links'} extraClasses={siteDetailsStyles.gridSpan4 } />
                     <SiteGridItem label='Title' value={document.title} extraClasses={siteDetailsStyles.gridSpan6 } />
                 </div>

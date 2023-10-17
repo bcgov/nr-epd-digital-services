@@ -8,7 +8,7 @@ import styles from './css/siteDetails.module.css'
 import { Button } from "react-bootstrap";
 import SiteRegistryIcon from "@/components/SiteRegistryIcon";
 import siteDetailsStyles from '@/pages/site-details.module.css'
-import SiteGridItem from "./SiteGridItem";
+import SiteGridItem, { SiteGridDateItem } from "./SiteGridItem";
 
 export default function SiteProfile() {
     const { siteID } = useParams();
@@ -55,13 +55,12 @@ function SiteDisclosureItem({ disclosure }: SiteDisclosureItemProps) {
                         <Button className='text-dark' variant='link'>DELETE</Button>
                     </div>}
                 </div>
-
-                <div className={siteDetailsStyles.metadataGrid}>
-                    <SiteGridItem label='Date Received' value={disclosure.dateReceived}  extraClasses={siteDetailsStyles.gridHalfWidth} />
-                    <SiteGridItem label='Date Completed' value={disclosure.dateCompleted} extraClasses={siteDetailsStyles.gridHalfWidth} />
-                    <SiteGridItem label='Date Local Authority Received' value={disclosure.dateLocalAuthorityReceived} extraClasses={siteDetailsStyles.gridHalfWidth} />
-                    <SiteGridItem label='Date Registrar' value={disclosure.dateRegistrar} extraClasses={siteDetailsStyles.gridHalfWidth} />
-                    <SiteGridItem label='Date Entered' value={disclosure.dateEntered} extraClasses={siteDetailsStyles.gridHalfWidth}/>
+                <div className={siteDetailsStyles.metadataGrid + " " + siteDetailsStyles.metadataGridFifths }>
+                    <SiteGridDateItem label='Date Received' value={disclosure.dateReceived}  extraClasses={siteDetailsStyles.gridSpan1} />
+                    <SiteGridDateItem label='Date Completed' value={disclosure.dateCompleted} extraClasses={siteDetailsStyles.gridHalfWidth} />
+                    <SiteGridDateItem label='Date Local Authority Received' value={disclosure.dateLocalAuthorityReceived} extraClasses={siteDetailsStyles.gridHalfWidth} />
+                    <SiteGridDateItem label='Date Registrar' value={disclosure.dateRegistrar} extraClasses={siteDetailsStyles.gridHalfWidth} />
+                    <SiteGridDateItem label='Date Entered' value={disclosure.dateEntered} extraClasses={siteDetailsStyles.gridHalfWidth}/>
                 </div>
 
                 <SiteDetailsTable 
