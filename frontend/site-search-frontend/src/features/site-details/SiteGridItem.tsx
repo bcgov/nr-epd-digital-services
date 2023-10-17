@@ -48,7 +48,7 @@ export function SiteGridParent( {label, extraClasses = '', showSR = false,childr
 
 }
 
-export function SiteGridDateItem( {label, value, extraClasses = '', showSR = false, readOnly, as='input'}: SiteGridItemProps) {
+export function SiteGridDateItem( {label, value, extraClasses = '', showSR = false, readOnly}: SiteGridItemProps) {
     const editMode = useSelector((state: RootState) => state.edit.editMode)
 
     return (
