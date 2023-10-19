@@ -1,0 +1,4 @@
+.searchBar {
+    background-color: var(--input-gray);
+    border: 1px solid black;
+}
