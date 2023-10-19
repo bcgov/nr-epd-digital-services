@@ -482,7 +482,7 @@
                     "validate": {
                         "required": false,
                         "customMessage": "",
-                        "custom": "console.log('nothing');\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n\r\n\r\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\r\n\r\nif(b.groups.includes(\"/formsflow/formsflow-client\"))\r\n{\r\n\tif(document.querySelector(\"[ref='editgrid-cssaNotes-addRow']\") != null)\r\n\t{\r\n\t\tdocument.querySelector(\"[ref='editgrid-cssaNotes-addRow']\").remove();\r\n\t}\r\n\r\n\tvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\r\n\tif(editButtons!=null)\r\n\t{\r\n\t\tfor(i=0;i<editButtons.length;i++)\t\r\n\t\t{\r\n\t\t\teditButtons[i].remove();\r\n\t\t}\r\n\t}\r\n\t\r\n\tvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\r\n\tif(removeButtons !=null)\r\n\t{\r\n\t\tfor(i=0;i<removeButtons.length;i++){\r\n\t\t\tremoveButtons[i].remove();\r\n\t\t}\r\n\t}\r\n\r\n}\r\n\r\n\r\n",
+                        "custom": "console.log('nothing');\nconst emptyElements = [];\nconst elements = document.getElementsByClassName(\"list-group-item\");\nfor (let i = 0; i < elements.length; i++) {\nconst element = elements[i];\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\n \n}\n\n\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\n\nif(b.groups.includes(\"/formsflow/formsflow-client\") || b.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") )\n{\n\tif(document.querySelector(\"[ref='editgrid-cssaNotes-addRow']\") != null)\n\t{\n\t\tdocument.querySelector(\"[ref='editgrid-cssaNotes-addRow']\").remove();\n\t}\n\n\tvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\n\tif(editButtons!=null)\n\t{\n\t\tfor(i=0;i<editButtons.length;i++)\t\n\t\t{\n\t\t\teditButtons[i].remove();\n\t\t}\n\t}\n\t\n\tvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\n\tif(removeButtons !=null)\n\t{\n\t\tfor(i=0;i<removeButtons.length;i++){\n\t\t\tremoveButtons[i].remove();\n\t\t}\n\t}\n\n}\n\n\n",
                         "customPrivate": false,
                         "json": "",
                         "strictDateValidation": false,
@@ -501,7 +501,7 @@
                         "eq": "",
                         "json": ""
                     },
-                    "customConditional": "\r\n\r\nshow = false;\r\n\r\nconsole.log('cd');\r\n\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst groups = UserDetails[\"groups\"];\r\nif((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\r\n{\r\n   if(data.cssaNotes && data.cssaNotes.filter((x)=>x.commentFor==='external').length > 0)\r\n      show = true;\r\n   else\r\n      show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}\r\n\r\n\r\nvar addButton = document.querySelector(\"button[ref=editgrid-cssaNotes-addRow]\");\r\nif(addButton!==null && addButton !== undefined)\r\n{\r\naddButton.addEventListener('click',\r\n(e)=>{\r\n\t\tif( groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\r\n\t\t{\r\n\t\t  var internalRadio = document.querySelectorAll(\"input[value='internal'][type='radio']\");\r\n\t\t  for (let i = 0; i < internalRadio.length; i++) {\r\n\t\t\tinternalRadio[i].parentElement.remove();\r\n\t\t  }\r\n\t\t}\r\n})\r\n}\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\n\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n\r\n\r\nconsole.log('nothing 22');\r\n\r\n\r\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\r\n\r\nif(b.groups.includes(\"/formsflow/formsflow-client\"))\r\n{\r\n\tif(document.querySelector(\"[ref='editgrid-cssaNotes-addRow']\") != null)\r\n\t{\r\n\t\tdocument.querySelector(\"[ref='editgrid-cssaNotes-addRow']\").remove();\r\n\t}\r\n\r\n\tvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\r\n\tif(editButtons!=null)\r\n\t{\r\n\t\tfor(i=0;i<editButtons.length;i++)\t\r\n\t\t{\r\n\t\t\teditButtons[i].remove();\r\n\t\t}\r\n\t}\r\n\t\r\n\tvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\r\n\tif(removeButtons !=null)\r\n\t{\r\n\t\tfor(i=0;i<removeButtons.length;i++){\r\n\t\t\tremoveButtons[i].remove();\r\n\t\t}\r\n\t}\r\n\r\n}\r\n\r\n\r\n",
+                    "customConditional": "\n\nshow = false;\n\nconsole.log('cd');\n\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\nconst groups = UserDetails[\"groups\"];\nif((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\n{\n   if(data.cssaNotes && data.cssaNotes.filter((x)=>x.commentFor==='external').length > 0)\n      show = true;\n   else\n      show = false;\n}\nelse\n{\n  show = true;\n}\n\n\nvar addButton = document.querySelector(\"button[ref=editgrid-cssaNotes-addRow]\");\nif(addButton!==null && addButton !== undefined)\n{\naddButton.addEventListener('click',\n(e)=>{\n\t\tif( groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\n\t\t{\n\t\t  var internalRadio = document.querySelectorAll(\"input[value='internal'][type='radio']\");\n\t\t  for (let i = 0; i < internalRadio.length; i++) {\n\t\t\tinternalRadio[i].parentElement.remove();\n\t\t  }\n\t\t}\n})\n}\nconst emptyElements = [];\nconst elements = document.getElementsByClassName(\"list-group-item\");\nfor (let i = 0; i < elements.length; i++) {\nconst element = elements[i];\n\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\n \n}\n\n\nconsole.log('nothing 22');\n\n\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\n\nif(b.groups.includes(\"/formsflow/formsflow-client\") || b.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") )\n{\n\tif(document.querySelector(\"[ref='editgrid-cssaNotes-addRow']\") != null)\n\t{\n\t\tdocument.querySelector(\"[ref='editgrid-cssaNotes-addRow']\").remove();\n\t}\n\n\tvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\n\tif(editButtons!=null)\n\t{\n\t\tfor(i=0;i<editButtons.length;i++)\t\n\t\t{\n\t\t\teditButtons[i].remove();\n\t\t}\n\t}\n\t\n\tvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\n\tif(removeButtons !=null)\n\t{\n\t\tfor(i=0;i<removeButtons.length;i++){\n\t\t\tremoveButtons[i].remove();\n\t\t}\n\t}\n\n}\n\n\n",
                     "logic": [],
                     "attributes": {},
                     "overlay": {
@@ -603,7 +603,7 @@
                                             "wysiwyg": false,
                                             "editor": "",
                                             "fixedSize": true,
-                                            "id": "e063xj"
+                                            "id": "eq4yyt"
                                         }
                                     ],
                                     "width": 4,
@@ -695,7 +695,7 @@
                                             "addons": [],
                                             "inputType": "radio",
                                             "fieldSet": false,
-                                            "id": "eihmpi"
+                                            "id": "e11p497"
                                         }
                                     ],
                                     "width": 2,
@@ -782,7 +782,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "et35fx"
+                                            "id": "e1d5fun"
                                         }
                                     ],
                                     "size": "md",
@@ -869,7 +869,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "etts1t7"
+                                            "id": "espac7p"
                                         }
                                     ],
                                     "size": "md",
@@ -956,7 +956,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "ef7b4fx"
+                                            "id": "emh5fwc"
                                         }
                                     ],
                                     "size": "md",
@@ -1031,7 +1031,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "e9305o6"
+                            "id": "eb9exon"
                         }
                     ],
                     "placeholder": "",
@@ -1050,7 +1050,7 @@
                     "tree": true,
                     "lazyLoad": false,
                     "defaultOpen": false,
-                    "id": "e6d0qbf"
+                    "id": "eskandg"
                 },
                 {
                     "id": "evi8v2p",
@@ -1213,7 +1213,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ea2btv0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ea2btv00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "Panel-InformationForAffectedAndLikelyAffectedParcels",
                                     "tree": false,
                                     "type": "panel",
@@ -9085,7 +9085,7 @@
                                     "addons": [],
                                     "tree": false,
                                     "lazyLoad": false,
-                                    "id": "emrk44b000000000000"
+                                    "id": "emrk44b0000000000000000"
                                 }
                             ],
                             "errorLabel": "",
