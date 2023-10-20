@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_08oxgyg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.12.0" modeler:executionPlatform="Camunda Platform">
+  <bpmn:process id="create-bucket" name="CreateBucketWorkflow" isExecutable="true" camunda:historyTimeToLive="300">
+    <bpmn:startEvent id="Event_0kew5uc" name="Start">
+      <bpmn:outgoing>Flow_15fflso</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:scriptTask id="Activity_04ks0sg" name="Print Token" scriptFormat="javascript">
+      <bpmn:incoming>Flow_15fflso</bpmn:incoming>
+      <bpmn:outgoing>Flow_1v2p747</bpmn:outgoing>
+      <bpmn:script>var system = java.lang.System;
+execution.setVariable('token','eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJJZFJzYmIzRDFsWHplM2dvU2E5Q3QtdDdnSG5DYkl1dkdUYlRsUHBKYzAwIn0.eyJleHAiOjE2OTc4MjA3NzksImlhdCI6MTY5NzgyMDQ3OSwiYXV0aF90aW1lIjoxNjk3ODExODU2LCJqdGkiOiI2NTEzNWI1MC0yMTQ2LTRjZmItODk5NS1mZjcwZWM0NzQxY2YiLCJpc3MiOiJodHRwczovL2xvZ2lucHJveHkuZ292LmJjLmNhL2F1dGgvcmVhbG1zL3N0YW5kYXJkIiwiYXVkIjoiYmMtYm94LTQ1NTUiLCJzdWIiOiI1N2U3MmVjYzZhMzc0NjZjYmY1ODc5OWEyZjYwY2JiOUBpZGlyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYmMtYm94LTQ1NTUiLCJzZXNzaW9uX3N0YXRlIjoiOGJiZTg3OWQtNDRjOS00OTBjLWEwMzQtZTZjNjgwZGNmNzIxIiwic2NvcGUiOiJvcGVuaWQgYmNlaWRidXNpbmVzcyBlbWFpbCBwcm9maWxlIGlkaXIgYmNlaWRiYXNpYyIsInNpZCI6IjhiYmU4NzlkLTQ0YzktNDkwYy1hMDM0LWU2YzY4MGRjZjcyMSIsImlkaXJfdXNlcl9ndWlkIjoiNTdFNzJFQ0M2QTM3NDY2Q0JGNTg3OTlBMkY2MENCQjkiLCJpZGVudGl0eV9wcm92aWRlciI6ImlkaXIiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlkaXJfdXNlcm5hbWUiOiJOUEFOS0FKIiwibmFtZSI6Ik5pa2hpbGEgUGFua2FqIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiNTdlNzJlY2M2YTM3NDY2Y2JmNTg3OTlhMmY2MGNiYjlAaWRpciIsImRpc3BsYXlfbmFtZSI6IlBhbmthaiwgTmlraGlsYSBXTFJTOkVYIiwiZ2l2ZW5fbmFtZSI6Ik5pa2hpbGEiLCJmYW1pbHlfbmFtZSI6IlBhbmthaiIsImVtYWlsIjoibmlraGlsYS5wYW5rYWpAZ292LmJjLmNhIn0.HxfzA0GGXmbhB0dx4fagUVyO9AyNOr-tPtHKcP3MZbD_lCgpfEQC2Ucd71s-8KJvP-mmZkK2vGj7f2ArLZq-Y7uscoz6uULSdVuODnamddPQ-dNyxQmA9am3C50jmOhzlJENSaLpwRlznCaXFjjYTVEcza35-CRd2hhtItfPYlg3WV40khyQdb8qWnNGO4EgAwF1cxeRVcWjXcnCPMJTZ7RdgxiKPqnMBEohJxObK4AqYdN_4uG2sBBLagwjKPzl0w-2LtlsWix9Q_AKSsq_XwEMadMLRTaOdA7lbBmCPmt9-EX7e7-Yu5r3X5Iec7obL9Ci113tp8pVr3gKU56pQA');
+
+system.out.println ("appId"+execution.getVariable('applicationId'));</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:serviceTask id="Activity_1w8sq4d" name="Create Bucket">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Authorization">Bearer ${token}</camunda:entry>
+                <camunda:entry key="Content-Type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="method">PUT</camunda:inputParameter>
+            <camunda:inputParameter name="payload">
+              <camunda:script scriptFormat="javascript">var p = {
+  "accessKeyId": "nr-srs-dlv",
+  "active": true,
+  "bucket": "vkophq",
+  "bucketName": "application/"+execution.getVariable("applicationId"),
+  "endpoint": "https://nrs.objectstore.gov.bc.ca",
+  "region": "ca-central-1",
+  "secretAccessKey": "Ht53nIvXzmc7eGFcQwoP+0UsWWiATHeV/dW67gHO",
+  "key": "application/"+execution.getVariable("applicationId")
+}
+
+console.log("Payload")
+console.log(JSON.stringify(p))
+JSON.stringify(p)</camunda:script>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">
+              <camunda:script scriptFormat="groovy">"https://coms.api.gov.bc.ca/api/v1/bucket"</camunda:script>
+            </camunda:inputParameter>
+            <camunda:outputParameter name="bucketInfo">${S(response)}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1v2p747</bpmn:incoming>
+      <bpmn:outgoing>Flow_093urcj</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_1jy96yb" name="End">
+      <bpmn:incoming>Flow_0kyeyt4</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_093urcj" sourceRef="Activity_1w8sq4d" targetRef="Activity_1cy9bql" />
+    <bpmn:sequenceFlow id="Flow_15fflso" sourceRef="Event_0kew5uc" targetRef="Activity_04ks0sg">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormBPMFilteredDataPipelineListener" event="take" />
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1lr16lw" sourceRef="Activity_1cy9bql" targetRef="Activity_1ecbbkp" />
+    <bpmn:scriptTask id="Activity_1cy9bql" name="Set Bucket ID" scriptFormat="javascript">
+      <bpmn:incoming>Flow_093urcj</bpmn:incoming>
+      <bpmn:outgoing>Flow_1lr16lw</bpmn:outgoing>
+      <bpmn:script>var system = java.lang.System;
+execution.setVariable('bucketId',bucketInfo.prop("bucketId").value());
+system.out.println ("bucketId:"+execution.getVariable('bucketId'));
+
+execution.setVariable('userEmail','midhun.murali@aot-technologies.com');
+system.out.println ("userEmail:"+execution.getVariable('userEmail'));</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_1v2p747" sourceRef="Activity_04ks0sg" targetRef="Activity_1w8sq4d" />
+    <bpmn:serviceTask id="Activity_1ecbbkp" name="Find User by Email ID">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Authorization">Bearer ${token}</camunda:entry>
+                <camunda:entry key="Content-Type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:inputParameter name="url">
+              <camunda:script scriptFormat="javascript">"https://coms.api.gov.bc.ca/api/v1/user?email="+execution.getVariable("userEmail")</camunda:script>
+            </camunda:inputParameter>
+            <camunda:outputParameter name="userInfo">${S(response).mapTo("java.util.ArrayList")}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1lr16lw</bpmn:incoming>
+      <bpmn:outgoing>Flow_02ipbuj</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_02ipbuj" sourceRef="Activity_1ecbbkp" targetRef="Activity_08kj8y2" />
+    <bpmn:scriptTask id="Activity_08kj8y2" name="Set User ID" scriptFormat="javascript">
+      <bpmn:incoming>Flow_02ipbuj</bpmn:incoming>
+      <bpmn:outgoing>Flow_0w1oeqg</bpmn:outgoing>
+      <bpmn:script>var system = java.lang.System;
+execution.setVariable('userId',userInfo[0].userId);
+system.out.println ("userId:"+execution.getVariable('userId'));</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_0w1oeqg" sourceRef="Activity_08kj8y2" targetRef="Activity_0qqlkts" />
+    <bpmn:serviceTask id="Activity_0qqlkts" name="Set Permissions for User ID">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Authorization">Bearer ${token}</camunda:entry>
+                <camunda:entry key="Content-Type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="method">PUT</camunda:inputParameter>
+            <camunda:inputParameter name="payload">
+              <camunda:script scriptFormat="javascript">var p = [{
+  "permCode": "CREATE",
+  "userId": execution.getVariable("userId")
+}]
+
+console.log("Payload")
+console.log(JSON.stringify(p))
+JSON.stringify(p)</camunda:script>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">
+              <camunda:script scriptFormat="groovy">"https://coms.api.gov.bc.ca/api/v1/permission/bucket/"+execution.getVariable("bucketId")</camunda:script>
+            </camunda:inputParameter>
+            <camunda:outputParameter name="permissionInfo">${S(response)}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0w1oeqg</bpmn:incoming>
+      <bpmn:outgoing>Flow_0yp68e5</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0yp68e5" sourceRef="Activity_0qqlkts" targetRef="Activity_0yzfq0h" />
+    <bpmn:scriptTask id="Activity_0yzfq0h" name="User Permissions" scriptFormat="javascript">
+      <bpmn:incoming>Flow_0yp68e5</bpmn:incoming>
+      <bpmn:outgoing>Flow_1kisrm5</bpmn:outgoing>
+      <bpmn:script>var system = java.lang.System;
+system.out.println ("permissionInfo:"+permissionInfo);</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_1kisrm5" sourceRef="Activity_0yzfq0h" targetRef="Activity_0s655t8" />
+    <bpmn:task id="Activity_0s655t8" name="Send Email">
+      <bpmn:incoming>Flow_1kisrm5</bpmn:incoming>
+      <bpmn:outgoing>Flow_0kyeyt4</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_0kyeyt4" sourceRef="Activity_0s655t8" targetRef="Event_1jy96yb" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="create-bucket">
+      <bpmndi:BPMNShape id="Event_0kew5uc_di" bpmnElement="Event_0kew5uc">
+        <dc:Bounds x="172" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="178" y="145" width="25" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ynm6j6_di" bpmnElement="Activity_04ks0sg">
+        <dc:Bounds x="260" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0pegmhv_di" bpmnElement="Activity_1w8sq4d">
+        <dc:Bounds x="420" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1dlr36x" bpmnElement="Activity_08kj8y2">
+        <dc:Bounds x="890" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_14aj5pg" bpmnElement="Activity_1ecbbkp">
+        <dc:Bounds x="740" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_13xdoy5_di" bpmnElement="Activity_1cy9bql">
+        <dc:Bounds x="580" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1ubiopm" bpmnElement="Activity_0yzfq0h">
+        <dc:Bounds x="1240" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1upc4m1" bpmnElement="Activity_0qqlkts">
+        <dc:Bounds x="1060" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1jy96yb_di" bpmnElement="Event_1jy96yb">
+        <dc:Bounds x="1562" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1572" y="145" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0s655t8_di" bpmnElement="Activity_0s655t8">
+        <dc:Bounds x="1410" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_093urcj_di" bpmnElement="Flow_093urcj">
+        <di:waypoint x="520" y="120" />
+        <di:waypoint x="580" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15fflso_di" bpmnElement="Flow_15fflso">
+        <di:waypoint x="208" y="120" />
+        <di:waypoint x="260" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1lr16lw_di" bpmnElement="Flow_1lr16lw">
+        <di:waypoint x="680" y="120" />
+        <di:waypoint x="740" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1v2p747_di" bpmnElement="Flow_1v2p747">
+        <di:waypoint x="360" y="120" />
+        <di:waypoint x="420" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02ipbuj_di" bpmnElement="Flow_02ipbuj">
+        <di:waypoint x="840" y="120" />
+        <di:waypoint x="890" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0w1oeqg_di" bpmnElement="Flow_0w1oeqg">
+        <di:waypoint x="990" y="120" />
+        <di:waypoint x="1060" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0yp68e5_di" bpmnElement="Flow_0yp68e5">
+        <di:waypoint x="1160" y="120" />
+        <di:waypoint x="1240" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1kisrm5_di" bpmnElement="Flow_1kisrm5">
+        <di:waypoint x="1340" y="120" />
+        <di:waypoint x="1410" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0kyeyt4_di" bpmnElement="Flow_0kyeyt4">
+        <di:waypoint x="1510" y="120" />
+        <di:waypoint x="1562" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

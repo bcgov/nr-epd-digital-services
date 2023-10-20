@@ -300,6 +300,32 @@
           <text>"epd-support@gov.bc.ca"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_16q3hyu">
+        <inputEntry id="UnaryTests_05a8bsb">
+          <text>"upload_doc"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_01jhaag">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1bsegg2">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02w0u2i">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0dm9xyu">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0jmopgv">
+          <text>"File Upload Notification"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0iost0u">
+          <text>"templates/upload_doc.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15hlje7">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
