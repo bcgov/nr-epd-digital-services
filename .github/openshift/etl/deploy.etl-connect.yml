@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connect
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: connect
+  template:
+    metadata:
+      labels:
+        app: connect
+    spec:
+      containers:
+      - name: connect
+        image: debezium/connect-with-oracle-jdbc:${DEBEZIUM_VERSION}
+        ports:
+        - containerPort: 8083
+        env:
+        - name: BOOTSTRAP_SERVERS
+          value: kafka:9092
+        - name: GROUP_ID
+          value: "1"
+        - name: CONFIG_STORAGE_TOPIC
+          value: epd_connect_configs
+        - name: OFFSET_STORAGE_TOPIC
+          value: epd_connect_offsets
+        - name: STATUS_STORAGE_TOPIC
+          value: epd_connect_statuses
+        - name: KAFKA_DEBUG
+          value: "true"
+        - name: DEBUG_SUSPEND_FLAG
+          value: n
+        links:
+        - name: kafka
+          alias: kafka
+        - name: postgis
+          alias: postgis

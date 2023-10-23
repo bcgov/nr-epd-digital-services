@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      containers:
+      - name: kafka
+        image: debezium/kafka:${DEBEZIUM_VERSION}
+        ports:
+        - containerPort: 9092
+        env:
+        - name: ZOOKEEPER_CONNECT
+          value: zookeeper:2181
