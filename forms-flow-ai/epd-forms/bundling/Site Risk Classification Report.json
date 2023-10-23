@@ -613,7 +613,7 @@
                     "key": "siteOwnerActions",
                     "tags": [],
                     "properties": {},
-                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(roles.includes(\"formsflow-reviewer/formsflow-client-reviewer\") && data.applicationStatus !== undefined && data.applicationStatus !== '') {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
+                    "customConditional": "\n\n\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\n\n\n\nconst roles = UserDetails[\"role\"];\n\n\nif(roles.includes(\"formsflow-reviewer/formsflow-client-reviewer\") && data.applicationStatus !== undefined && data.applicationStatus !== '' && data.applicationStatus !== 'Resubmit') {\n  show = true;\n}\nelse\n{\n  show = false;\n}\n\n\n",
                     "conditional": {
                         "json": "",
                         "show": null,
@@ -716,7 +716,7 @@
                                             "block": false,
                                             "disableOnInvalid": false,
                                             "theme": "primary",
-                                            "id": "epc9zvp"
+                                            "id": "ejoitnl"
                                         }
                                     ],
                                     "width": 3,
@@ -818,7 +818,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "eb126od"
+                            "id": "eh1h8va"
                         }
                     ],
                     "keyModified": true,
@@ -860,7 +860,7 @@
                     "addons": [],
                     "tree": false,
                     "lazyLoad": false,
-                    "id": "erhjp1m"
+                    "id": "eizlo13"
                 },
                 {
                     "title": "Reviewer Actions",
@@ -2041,7 +2041,7 @@
                     "disableAddingRemovingRows": false,
                     "conditionalAddButton": "",
                     "hidden": false,
-                    "hideLabel": false,
+                    "hideLabel": true,
                     "autofocus": false,
                     "disabled": false,
                     "tableView": false,
@@ -2073,7 +2073,7 @@
                     "validate": {
                         "required": false,
                         "customMessage": "",
-                        "custom": "const emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\n\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n\r\n\r\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\r\n\r\nif(b.groups.includes(\"/formsflow/formsflow-client\"))\r\n{\r\n\tif(document.querySelector(\"[ref='editgrid-srcrNotes-addRow']\")!==null)\r\n\t{\r\n\t\tdocument.querySelector(\"[ref='editgrid-srcrNotes-addRow']\").remove();\r\n\t}\r\nvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\r\nfor(i=0;i<editButtons.length;i++){editButtons[i].remove()}\r\n\r\nvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\r\nfor(i=0;i<removeButtons.length;i++){removeButtons[i].remove()}\r\n}",
+                        "custom": "const emptyElements = [];\nconst elements = document.getElementsByClassName(\"list-group-item\");\nfor (let i = 0; i < elements.length; i++) {\nconst element = elements[i];\n\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\n \n}\n\n\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\n\nif(b.groups.includes(\"/formsflow/formsflow-client\") || b.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") )\n{\n\tif(document.querySelector(\"[ref='editgrid-srcrNotes-addRow']\")!==null)\n\t{\n\t\tdocument.querySelector(\"[ref='editgrid-srcrNotes-addRow']\").remove();\n\t}\nvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\nfor(i=0;i<editButtons.length;i++){editButtons[i].remove()}\n\nvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\nfor(i=0;i<removeButtons.length;i++){removeButtons[i].remove()}\n}",
                         "customPrivate": false,
                         "json": "",
                         "strictDateValidation": false,
@@ -2092,7 +2092,7 @@
                         "eq": "",
                         "json": ""
                     },
-                    "customConditional": "\r\n\r\n\r\nshow = false;\r\n\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst groups = UserDetails[\"groups\"];\r\nif(groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\"))\r\n{\r\nif( data.srcrNotes!== null && data.srcrNotes!== undefined && data.srcrNotes.filter((x)=>x.commentFor==='external').length > 0)\r\nshow = true;\r\nelse\r\nshow = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}\r\n\r\nvar addRowButton = document.querySelector(\"button[ref=editgrid-srcrNotes-addRow]\");\r\nif(addRowButton!=null)\r\n{\r\naddRowButton.addEventListener('click',\r\n(e)=>{\r\n\t\tif( groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\r\n\t\t{\r\n\t\t  var internalRadio = document.querySelectorAll(\"input[value='internal'][type='radio']\");\r\n\t\t  for (let i = 0; i < internalRadio.length; i++) {\r\n\t\t\tif(internalRadio[i].parentElement !== null)\r\n\t\t\t{\r\n\t\t\t\tinternalRadio[i].parentElement.remove();\r\n\t\t\t}\r\n\t\t  }\r\n\t\t}\r\n})\r\n\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\n\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n}\r\n\r\n\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\n\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n\r\n\r\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\r\n\r\nif(b.groups.includes(\"/formsflow/formsflow-client\"))\r\n{\r\n\tif(document.querySelector(\"[ref='editgrid-srcrNotes-addRow']\")!==null)\r\n\t{\r\n\t\tdocument.querySelector(\"[ref='editgrid-srcrNotes-addRow']\").remove();\r\n\t}\r\nvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\r\nfor(i=0;i<editButtons.length;i++){editButtons[i].remove()}\r\n\r\nvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\r\nfor(i=0;i<removeButtons.length;i++){removeButtons[i].remove()}\r\n}\r\n",
+                    "customConditional": "\n\n\nshow = false;\n\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\nconst groups = UserDetails[\"groups\"];\nif(groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\"))\n{\nif( data.srcrNotes!== null && data.srcrNotes!== undefined && data.srcrNotes.filter((x)=>x.commentFor==='external').length > 0)\nshow = true;\nelse\nshow = false;\n}\nelse\n{\n  show = true;\n}\n\nvar addRowButton = document.querySelector(\"button[ref=editgrid-srcrNotes-addRow]\");\nif(addRowButton!=null)\n{\naddRowButton.addEventListener('click',\n(e)=>{\n\t\tif( groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\n\t\t{\n\t\t  var internalRadio = document.querySelectorAll(\"input[value='internal'][type='radio']\");\n\t\t  for (let i = 0; i < internalRadio.length; i++) {\n\t\t\tif(internalRadio[i].parentElement !== null)\n\t\t\t{\n\t\t\t\tinternalRadio[i].parentElement.remove();\n\t\t\t}\n\t\t  }\n\t\t}\n})\n\nconst emptyElements = [];\nconst elements = document.getElementsByClassName(\"list-group-item\");\nfor (let i = 0; i < elements.length; i++) {\nconst element = elements[i];\n\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\n \n}\n}\n\n\nconst emptyElements = [];\nconst elements = document.getElementsByClassName(\"list-group-item\");\nfor (let i = 0; i < elements.length; i++) {\nconst element = elements[i];\n\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\n \n}\n\n\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\n\nif(b.groups.includes(\"/formsflow/formsflow-client\") || b.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")  )\n{\n\tif(document.querySelector(\"[ref='editgrid-srcrNotes-addRow']\")!==null)\n\t{\n\t\tdocument.querySelector(\"[ref='editgrid-srcrNotes-addRow']\").remove();\n\t}\nvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\nfor(i=0;i<editButtons.length;i++){editButtons[i].remove()}\n\nvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\nfor(i=0;i<removeButtons.length;i++){removeButtons[i].remove()}\n}\n",
                     "logic": [],
                     "attributes": {},
                     "overlay": {
@@ -2194,7 +2194,7 @@
                                             "wysiwyg": false,
                                             "editor": "",
                                             "fixedSize": true,
-                                            "id": "ehr5bkn"
+                                            "id": "ey1gq4r"
                                         }
                                     ],
                                     "width": 4,
@@ -2286,7 +2286,7 @@
                                             "addons": [],
                                             "inputType": "radio",
                                             "fieldSet": false,
-                                            "id": "eu7kzyq"
+                                            "id": "e9bcg9g"
                                         }
                                     ],
                                     "width": 2,
@@ -2302,7 +2302,7 @@
                                             "label": "Role",
                                             "disabled": true,
                                             "tableView": true,
-                                            "customDefaultValue": "var b =JSON.parse(localStorage.getItem('UserDetails'))\r\nif(b.groups.indexOf('/formsflow/formsflow-client') > -1 )\r\n{\r\n value = 'Client'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/csap') > -1 )\r\n{\r\n value = 'Approved Professional'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/csap-society') > -1 )\r\n{\r\n value = 'CSAP Society'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/cssa-team') > -1 )\r\n{\r\n value = 'CSSA Team'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/cssa-manager') > -1 )\r\n{\r\n value = 'CSSA Manager'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/caseworker') > -1 )\r\n{\r\n value = 'Caseworker'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/sdm') > -1 )\r\n{\r\n value = 'Statutory Decision Maker'\r\n}\r\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/site-risk-classification-officer') > -1 )\r\n{\r\n value = 'Site Risk Classification Officer'\r\n}",
+                                            "customDefaultValue": "var b =JSON.parse(localStorage.getItem('UserDetails'))\nif(b.groups.indexOf('/formsflow/formsflow-client') > -1 )\n{\n value = 'Client'\n}\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/csap') > -1 )\n{\n value = 'Approved Professional'\n}\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/csap-society') > -1 )\n{\n value = 'CSAP Society'\n}\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/cssa-team') > -1 )\n{\n value = 'CSSA Team'\n}\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/cssa-manager') > -1 )\n{\n value = 'CSSA Manager'\n}\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/caseworker') > -1 )\n{\n value = 'Caseworker'\n}\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/sdm') > -1 )\n{\n value = 'Statutory Decision Maker'\n}\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/site-risk-classification-officer') > -1 )\n{\n value = 'Site Risk Classification Officer'\n}\nelse if(b.groups.indexOf('/formsflow/formsflow-reviewer/site-information-advisor') > -1 )\n{\n value = 'Site Information Advisor'\n}",
                                             "key": "role",
                                             "type": "textfield",
                                             "input": true,
@@ -2373,7 +2373,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "ex4sns9"
+                                            "id": "epglnlb"
                                         }
                                     ],
                                     "size": "md",
@@ -2460,7 +2460,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "ebepm6j"
+                                            "id": "eeowpjq"
                                         }
                                     ],
                                     "size": "md",
@@ -2547,7 +2547,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "emoqtaq"
+                                            "id": "elq91z"
                                         }
                                     ],
                                     "size": "md",
@@ -2622,7 +2622,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "e9r4948"
+                            "id": "elyerv7"
                         }
                     ],
                     "placeholder": "",
@@ -2641,7 +2641,7 @@
                     "tree": true,
                     "lazyLoad": false,
                     "defaultOpen": false,
-                    "id": "e0yh46d"
+                    "id": "ek52ur9"
                 },
                 {
                     "title": "Collection Notice",
@@ -5069,7 +5069,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ele95t0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ele95t000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "spropertyOwnerAndOrOperator",
                                     "tree": false,
                                     "type": "panel",
@@ -14481,7 +14481,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eks0gu000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eks0gu00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "exposurePathwayQuestionnaireAffectedParcel",
                                     "tree": false,
                                     "type": "panel",
@@ -18424,7 +18424,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eo5mwyp0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eo5mwyp000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
