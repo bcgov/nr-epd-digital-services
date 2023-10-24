@@ -38,10 +38,10 @@
                   Hello,
                 </p>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                   Please upload the documents related to <b>Application ID : ${applicationId}<b> by clicking on the below link. 
+                   Please upload the documents related to <b>Application ID : ${applicationId}</b> by clicking on the below link. 
                 </p>
                 <p>
-                    <a href=${comsLink}>Upload Documents</a>
+                    <a href=${uploadLink}>Upload Documents</a>
                 </p>
             </td>
         </tr>
@@ -62,7 +62,7 @@
                 <p class="footer">Have questions or need help? Please email us at:
                     <a class="footer_link" href="mailto:${support}">${support}</a>
                 </p>
-                <p> EPD will never send an email that asks you to provide, confirm or verify personal, log on or account information.
+                <p> Site Remediation Services will never send an email that asks you to provide, confirm or verify personal, log on or account information.
                     DO NOT reply to this email as it was sent from an unmonitored account.
                 </p>
             </td>

@@ -8,7 +8,7 @@
       <bpmn:incoming>Flow_15fflso</bpmn:incoming>
       <bpmn:outgoing>Flow_1v2p747</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
-execution.setVariable('token','eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJJZFJzYmIzRDFsWHplM2dvU2E5Q3QtdDdnSG5DYkl1dkdUYlRsUHBKYzAwIn0.eyJleHAiOjE2OTc4MjA3NzksImlhdCI6MTY5NzgyMDQ3OSwiYXV0aF90aW1lIjoxNjk3ODExODU2LCJqdGkiOiI2NTEzNWI1MC0yMTQ2LTRjZmItODk5NS1mZjcwZWM0NzQxY2YiLCJpc3MiOiJodHRwczovL2xvZ2lucHJveHkuZ292LmJjLmNhL2F1dGgvcmVhbG1zL3N0YW5kYXJkIiwiYXVkIjoiYmMtYm94LTQ1NTUiLCJzdWIiOiI1N2U3MmVjYzZhMzc0NjZjYmY1ODc5OWEyZjYwY2JiOUBpZGlyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYmMtYm94LTQ1NTUiLCJzZXNzaW9uX3N0YXRlIjoiOGJiZTg3OWQtNDRjOS00OTBjLWEwMzQtZTZjNjgwZGNmNzIxIiwic2NvcGUiOiJvcGVuaWQgYmNlaWRidXNpbmVzcyBlbWFpbCBwcm9maWxlIGlkaXIgYmNlaWRiYXNpYyIsInNpZCI6IjhiYmU4NzlkLTQ0YzktNDkwYy1hMDM0LWU2YzY4MGRjZjcyMSIsImlkaXJfdXNlcl9ndWlkIjoiNTdFNzJFQ0M2QTM3NDY2Q0JGNTg3OTlBMkY2MENCQjkiLCJpZGVudGl0eV9wcm92aWRlciI6ImlkaXIiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlkaXJfdXNlcm5hbWUiOiJOUEFOS0FKIiwibmFtZSI6Ik5pa2hpbGEgUGFua2FqIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiNTdlNzJlY2M2YTM3NDY2Y2JmNTg3OTlhMmY2MGNiYjlAaWRpciIsImRpc3BsYXlfbmFtZSI6IlBhbmthaiwgTmlraGlsYSBXTFJTOkVYIiwiZ2l2ZW5fbmFtZSI6Ik5pa2hpbGEiLCJmYW1pbHlfbmFtZSI6IlBhbmthaiIsImVtYWlsIjoibmlraGlsYS5wYW5rYWpAZ292LmJjLmNhIn0.HxfzA0GGXmbhB0dx4fagUVyO9AyNOr-tPtHKcP3MZbD_lCgpfEQC2Ucd71s-8KJvP-mmZkK2vGj7f2ArLZq-Y7uscoz6uULSdVuODnamddPQ-dNyxQmA9am3C50jmOhzlJENSaLpwRlznCaXFjjYTVEcza35-CRd2hhtItfPYlg3WV40khyQdb8qWnNGO4EgAwF1cxeRVcWjXcnCPMJTZ7RdgxiKPqnMBEohJxObK4AqYdN_4uG2sBBLagwjKPzl0w-2LtlsWix9Q_AKSsq_XwEMadMLRTaOdA7lbBmCPmt9-EX7e7-Yu5r3X5Iec7obL9Ci113tp8pVr3gKU56pQA');
+execution.setVariable('token','eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJJZFJzYmIzRDFsWHplM2dvU2E5Q3QtdDdnSG5DYkl1dkdUYlRsUHBKYzAwIn0.eyJleHAiOjE2OTgxNjc3MzIsImlhdCI6MTY5ODE2NzQzMiwiYXV0aF90aW1lIjoxNjk4MTU3OTg1LCJqdGkiOiJlMDg3YTM1ZS1iN2YzLTQ5ZWUtYjgxNi0xMTJkYjM3ZmFlMGIiLCJpc3MiOiJodHRwczovL2xvZ2lucHJveHkuZ292LmJjLmNhL2F1dGgvcmVhbG1zL3N0YW5kYXJkIiwiYXVkIjoiYmMtYm94LTQ1NTUiLCJzdWIiOiI1N2U3MmVjYzZhMzc0NjZjYmY1ODc5OWEyZjYwY2JiOUBpZGlyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYmMtYm94LTQ1NTUiLCJzZXNzaW9uX3N0YXRlIjoiZTAwZTdlZWItYWViYy00ODk1LTg1ZTEtNDRhZjkyMjE5NWM2Iiwic2NvcGUiOiJvcGVuaWQgYmNlaWRidXNpbmVzcyBlbWFpbCBwcm9maWxlIGlkaXIgYmNlaWRiYXNpYyIsInNpZCI6ImUwMGU3ZWViLWFlYmMtNDg5NS04NWUxLTQ0YWY5MjIxOTVjNiIsImlkaXJfdXNlcl9ndWlkIjoiNTdFNzJFQ0M2QTM3NDY2Q0JGNTg3OTlBMkY2MENCQjkiLCJpZGVudGl0eV9wcm92aWRlciI6ImlkaXIiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlkaXJfdXNlcm5hbWUiOiJOUEFOS0FKIiwibmFtZSI6Ik5pa2hpbGEgUGFua2FqIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiNTdlNzJlY2M2YTM3NDY2Y2JmNTg3OTlhMmY2MGNiYjlAaWRpciIsImRpc3BsYXlfbmFtZSI6IlBhbmthaiwgTmlraGlsYSBXTFJTOkVYIiwiZ2l2ZW5fbmFtZSI6Ik5pa2hpbGEiLCJmYW1pbHlfbmFtZSI6IlBhbmthaiIsImVtYWlsIjoibmlraGlsYS5wYW5rYWpAZ292LmJjLmNhIn0.iians0361UpvFEheUpM44kvJCG8RDIwDdJEB9GsWNGgJH7W5HjDsEpl6kRyM2qszTEE-XyEHLLDw9QOzf_DHaL_V3b2pRzabCqy8Fk_0iCP-bm3BNoDOGaGyUivjzlP7y3PN4ZVbNgBsqn6IDsdXMAtr69ZHOEwFGaGT0tFmEu_flCciioM-wMox2zoSD8boTc1aAoh7ur-QWclZb6NPT9hwJtVPYiF4jVIRLKwv8PrI1Mt3LblSifCmdWsWT7VVEFg_SHY1F2fr3o8WtGgkrIbf0URQC7-rPF6XjqDOXAq6oabuREnMSpUeDPbE_5bm5XVS-7EAXsOuFxGeyQsHFg');
 
 system.out.println ("appId"+execution.getVariable('applicationId'));</bpmn:script>
     </bpmn:scriptTask>
@@ -67,7 +67,7 @@ JSON.stringify(p)</camunda:script>
 execution.setVariable('bucketId',bucketInfo.prop("bucketId").value());
 system.out.println ("bucketId:"+execution.getVariable('bucketId'));
 
-execution.setVariable('userEmail','midhun.murali@aot-technologies.com');
+execution.setVariable('userEmail','nikhila.pankaj@aot-technologies.com');
 system.out.println ("userEmail:"+execution.getVariable('userEmail'));</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:sequenceFlow id="Flow_1v2p747" sourceRef="Activity_04ks0sg" targetRef="Activity_1w8sq4d" />
@@ -135,18 +135,30 @@ JSON.stringify(p)</camunda:script>
       <bpmn:outgoing>Flow_0yp68e5</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_0yp68e5" sourceRef="Activity_0qqlkts" targetRef="Activity_0yzfq0h" />
-    <bpmn:scriptTask id="Activity_0yzfq0h" name="User Permissions" scriptFormat="javascript">
+    <bpmn:scriptTask id="Activity_0yzfq0h" name="Set Upload Link" scriptFormat="javascript">
       <bpmn:incoming>Flow_0yp68e5</bpmn:incoming>
       <bpmn:outgoing>Flow_1kisrm5</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
-system.out.println ("permissionInfo:"+permissionInfo);</bpmn:script>
+system.out.println ("permissionInfo:"+permissionInfo);
+execution.setVariable('uploadLink','https://bcbox.nrs.gov.bc.ca/list/objects?bucketId='+execution.getVariable('bucketId'));
+execution.setVariable('name','User');
+
+var emailAddresses = [];
+emailAddresses.push(userEmail);
+execution.setVariable("emailTo", Java.to(emailAddresses, "java.lang.Object[]"));</bpmn:script>
     </bpmn:scriptTask>
-    <bpmn:sequenceFlow id="Flow_1kisrm5" sourceRef="Activity_0yzfq0h" targetRef="Activity_0s655t8" />
-    <bpmn:task id="Activity_0s655t8" name="Send Email">
+    <bpmn:sequenceFlow id="Flow_1kisrm5" sourceRef="Activity_0yzfq0h" targetRef="Activity_09632sn" />
+    <bpmn:sequenceFlow id="Flow_0kyeyt4" sourceRef="Activity_09632sn" targetRef="Event_1jy96yb" />
+    <bpmn:callActivity id="Activity_09632sn" name="Send Email" calledElement="common-email-workflow">
+      <bpmn:extensionElements>
+        <camunda:in variables="all" />
+        <camunda:inputOutput>
+          <camunda:inputParameter name="category">upload_doc</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_1kisrm5</bpmn:incoming>
       <bpmn:outgoing>Flow_0kyeyt4</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:sequenceFlow id="Flow_0kyeyt4" sourceRef="Activity_0s655t8" targetRef="Event_1jy96yb" />
+    </bpmn:callActivity>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="create-bucket">
@@ -163,35 +175,35 @@ system.out.println ("permissionInfo:"+permissionInfo);</bpmn:script>
         <dc:Bounds x="420" y="80" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1dlr36x" bpmnElement="Activity_08kj8y2">
-        <dc:Bounds x="890" y="80" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_14aj5pg" bpmnElement="Activity_1ecbbkp">
-        <dc:Bounds x="740" y="80" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_13xdoy5_di" bpmnElement="Activity_1cy9bql">
         <dc:Bounds x="580" y="80" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1ubiopm" bpmnElement="Activity_0yzfq0h">
-        <dc:Bounds x="1240" y="80" width="100" height="80" />
+      <bpmndi:BPMNShape id="BPMNShape_1dlr36x" bpmnElement="Activity_08kj8y2">
+        <dc:Bounds x="780" y="240" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_14aj5pg" bpmnElement="Activity_1ecbbkp">
+        <dc:Bounds x="580" y="240" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1upc4m1" bpmnElement="Activity_0qqlkts">
-        <dc:Bounds x="1060" y="80" width="100" height="80" />
+        <dc:Bounds x="780" y="400" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1ubiopm" bpmnElement="Activity_0yzfq0h">
+        <dc:Bounds x="970" y="400" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1xvlvmw" bpmnElement="Activity_09632sn">
+        <dc:Bounds x="970" y="560" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1jy96yb_di" bpmnElement="Event_1jy96yb">
-        <dc:Bounds x="1562" y="102" width="36" height="36" />
+        <dc:Bounds x="1172" y="582" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1572" y="145" width="20" height="14" />
+          <dc:Bounds x="1182" y="625" width="20" height="14" />
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0s655t8_di" bpmnElement="Activity_0s655t8">
-        <dc:Bounds x="1410" y="80" width="100" height="80" />
-        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_093urcj_di" bpmnElement="Flow_093urcj">
         <di:waypoint x="520" y="120" />
@@ -202,32 +214,32 @@ system.out.println ("permissionInfo:"+permissionInfo);</bpmn:script>
         <di:waypoint x="260" y="120" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1lr16lw_di" bpmnElement="Flow_1lr16lw">
-        <di:waypoint x="680" y="120" />
-        <di:waypoint x="740" y="120" />
+        <di:waypoint x="630" y="160" />
+        <di:waypoint x="630" y="240" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1v2p747_di" bpmnElement="Flow_1v2p747">
         <di:waypoint x="360" y="120" />
         <di:waypoint x="420" y="120" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_02ipbuj_di" bpmnElement="Flow_02ipbuj">
-        <di:waypoint x="840" y="120" />
-        <di:waypoint x="890" y="120" />
+        <di:waypoint x="680" y="280" />
+        <di:waypoint x="780" y="280" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0w1oeqg_di" bpmnElement="Flow_0w1oeqg">
-        <di:waypoint x="990" y="120" />
-        <di:waypoint x="1060" y="120" />
+        <di:waypoint x="830" y="320" />
+        <di:waypoint x="830" y="400" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0yp68e5_di" bpmnElement="Flow_0yp68e5">
-        <di:waypoint x="1160" y="120" />
-        <di:waypoint x="1240" y="120" />
+        <di:waypoint x="880" y="440" />
+        <di:waypoint x="970" y="440" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1kisrm5_di" bpmnElement="Flow_1kisrm5">
-        <di:waypoint x="1340" y="120" />
-        <di:waypoint x="1410" y="120" />
+        <di:waypoint x="1020" y="480" />
+        <di:waypoint x="1020" y="560" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0kyeyt4_di" bpmnElement="Flow_0kyeyt4">
-        <di:waypoint x="1510" y="120" />
-        <di:waypoint x="1562" y="120" />
+        <di:waypoint x="1070" y="600" />
+        <di:waypoint x="1172" y="600" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
