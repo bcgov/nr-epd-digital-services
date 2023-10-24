@@ -8,7 +8,7 @@
       <bpmn:incoming>Flow_15fflso</bpmn:incoming>
       <bpmn:outgoing>Flow_1v2p747</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
-execution.setVariable('token','eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJJZFJzYmIzRDFsWHplM2dvU2E5Q3QtdDdnSG5DYkl1dkdUYlRsUHBKYzAwIn0.eyJleHAiOjE2OTgxNjc3MzIsImlhdCI6MTY5ODE2NzQzMiwiYXV0aF90aW1lIjoxNjk4MTU3OTg1LCJqdGkiOiJlMDg3YTM1ZS1iN2YzLTQ5ZWUtYjgxNi0xMTJkYjM3ZmFlMGIiLCJpc3MiOiJodHRwczovL2xvZ2lucHJveHkuZ292LmJjLmNhL2F1dGgvcmVhbG1zL3N0YW5kYXJkIiwiYXVkIjoiYmMtYm94LTQ1NTUiLCJzdWIiOiI1N2U3MmVjYzZhMzc0NjZjYmY1ODc5OWEyZjYwY2JiOUBpZGlyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYmMtYm94LTQ1NTUiLCJzZXNzaW9uX3N0YXRlIjoiZTAwZTdlZWItYWViYy00ODk1LTg1ZTEtNDRhZjkyMjE5NWM2Iiwic2NvcGUiOiJvcGVuaWQgYmNlaWRidXNpbmVzcyBlbWFpbCBwcm9maWxlIGlkaXIgYmNlaWRiYXNpYyIsInNpZCI6ImUwMGU3ZWViLWFlYmMtNDg5NS04NWUxLTQ0YWY5MjIxOTVjNiIsImlkaXJfdXNlcl9ndWlkIjoiNTdFNzJFQ0M2QTM3NDY2Q0JGNTg3OTlBMkY2MENCQjkiLCJpZGVudGl0eV9wcm92aWRlciI6ImlkaXIiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlkaXJfdXNlcm5hbWUiOiJOUEFOS0FKIiwibmFtZSI6Ik5pa2hpbGEgUGFua2FqIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiNTdlNzJlY2M2YTM3NDY2Y2JmNTg3OTlhMmY2MGNiYjlAaWRpciIsImRpc3BsYXlfbmFtZSI6IlBhbmthaiwgTmlraGlsYSBXTFJTOkVYIiwiZ2l2ZW5fbmFtZSI6Ik5pa2hpbGEiLCJmYW1pbHlfbmFtZSI6IlBhbmthaiIsImVtYWlsIjoibmlraGlsYS5wYW5rYWpAZ292LmJjLmNhIn0.iians0361UpvFEheUpM44kvJCG8RDIwDdJEB9GsWNGgJH7W5HjDsEpl6kRyM2qszTEE-XyEHLLDw9QOzf_DHaL_V3b2pRzabCqy8Fk_0iCP-bm3BNoDOGaGyUivjzlP7y3PN4ZVbNgBsqn6IDsdXMAtr69ZHOEwFGaGT0tFmEu_flCciioM-wMox2zoSD8boTc1aAoh7ur-QWclZb6NPT9hwJtVPYiF4jVIRLKwv8PrI1Mt3LblSifCmdWsWT7VVEFg_SHY1F2fr3o8WtGgkrIbf0URQC7-rPF6XjqDOXAq6oabuREnMSpUeDPbE_5bm5XVS-7EAXsOuFxGeyQsHFg');
+execution.setVariable('token','eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJJZFJzYmIzRDFsWHplM2dvU2E5Q3QtdDdnSG5DYkl1dkdUYlRsUHBKYzAwIn0.eyJleHAiOjE2OTgxNzI0NTgsImlhdCI6MTY5ODE3MjE1OCwiYXV0aF90aW1lIjoxNjk4MTY4MzgyLCJqdGkiOiJlMTM1YWM1My04NGRmLTQ0M2EtOTMxNC1iNDk2ZDM1YmJhMDciLCJpc3MiOiJodHRwczovL2xvZ2lucHJveHkuZ292LmJjLmNhL2F1dGgvcmVhbG1zL3N0YW5kYXJkIiwiYXVkIjoiYmMtYm94LTQ1NTUiLCJzdWIiOiI1N2U3MmVjYzZhMzc0NjZjYmY1ODc5OWEyZjYwY2JiOUBpZGlyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYmMtYm94LTQ1NTUiLCJzZXNzaW9uX3N0YXRlIjoiYjQ2YTA0MWItNjYwMy00ZTU1LWI1YWMtMjBjNWRiMzdiMDM5Iiwic2NvcGUiOiJvcGVuaWQgYmNlaWRidXNpbmVzcyBlbWFpbCBwcm9maWxlIGlkaXIgYmNlaWRiYXNpYyIsInNpZCI6ImI0NmEwNDFiLTY2MDMtNGU1NS1iNWFjLTIwYzVkYjM3YjAzOSIsImlkaXJfdXNlcl9ndWlkIjoiNTdFNzJFQ0M2QTM3NDY2Q0JGNTg3OTlBMkY2MENCQjkiLCJpZGVudGl0eV9wcm92aWRlciI6ImlkaXIiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlkaXJfdXNlcm5hbWUiOiJOUEFOS0FKIiwibmFtZSI6Ik5pa2hpbGEgUGFua2FqIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiNTdlNzJlY2M2YTM3NDY2Y2JmNTg3OTlhMmY2MGNiYjlAaWRpciIsImRpc3BsYXlfbmFtZSI6IlBhbmthaiwgTmlraGlsYSBXTFJTOkVYIiwiZ2l2ZW5fbmFtZSI6Ik5pa2hpbGEiLCJmYW1pbHlfbmFtZSI6IlBhbmthaiIsImVtYWlsIjoibmlraGlsYS5wYW5rYWpAZ292LmJjLmNhIn0.McS9SmP81_Luk5yuA_QGm6-eW3W7XwkYfxPz8DE0b6WrC4uEB2qqVTCqVsL5jRfuvS0XaOS9-GiFeQHMJASBMIrBta0DDtZJiH5N1j4nYbPS23zSdPhbnYm4kBevEwR8pllh1GuGLX8f6M1-P6YvHyxipeyx1YdOWPrd0XfaHFRDd0UZAyktE2QuGqsIyHpKD91Y3O0VpuoAkOUHiZSgkZE694PZZ-8MZl0Txp4t8HO-n8cMP5pa_ZlJsALSGGejR9aoBHcbx_voOKwc3rCfeBrApLt4_iWvyCPBIvTdNUAomrRvQU-c8_UdrYNRAZ59DPXyvqfPaB40cLjS_drxfQ');
 
 system.out.println ("appId"+execution.getVariable('applicationId'));</bpmn:script>
     </bpmn:scriptTask>
@@ -24,14 +24,15 @@ system.out.println ("appId"+execution.getVariable('applicationId'));</bpmn:scrip
             </camunda:inputParameter>
             <camunda:inputParameter name="method">PUT</camunda:inputParameter>
             <camunda:inputParameter name="payload">
-              <camunda:script scriptFormat="javascript">var p = {
-  "accessKeyId": "nr-srs-dlv",
+              <camunda:script scriptFormat="javascript">var system = java.lang.System;
+var p = {
+  "accessKeyId": system.getenv('COMS_ACCESS_KEY_ID'),
   "active": true,
-  "bucket": "vkophq",
+  "bucket": system.getenv('COMS_BUCKET'),
   "bucketName": "application/"+execution.getVariable("applicationId"),
-  "endpoint": "https://nrs.objectstore.gov.bc.ca",
+  "endpoint": system.getenv('COMS_ENDPOINT'),
   "region": "ca-central-1",
-  "secretAccessKey": "Ht53nIvXzmc7eGFcQwoP+0UsWWiATHeV/dW67gHO",
+  "secretAccessKey": system.getenv('COMS_ACCESS_KEY'),
   "key": "application/"+execution.getVariable("applicationId")
 }
 
