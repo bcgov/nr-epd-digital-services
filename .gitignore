@@ -114,7 +114,7 @@ snyk.sarif
 
 # Docker/Podman volumes
 .volumes
-./etl/debezium-jdbc/.settings/org.eclipse.m2e.core.prefs
+etl/debezium-jdbc/.settings/org.eclipse.m2e.core.prefs
 etl/debezium-jdbc/.settings/org.eclipse.jdt.core.prefs
 etl/debezium-jdbc/.settings/org.eclipse.core.resources.prefs
 etl/debezium-jdbc/.project
