@@ -1,14 +1,13 @@
 name: Continuous Integration And Deployment On Push to Tools
 #This is only for testing purpose and will be deleted in future.
 on:
-  workflow_dispatch: # TODO this is there for testing purposes, once the pipelines are all done, remove this
+  workflow_dispatch: 
   push:
     branches:
     #  - 'dev
-       - 'etl-debezium-poc' #test
+       - 'feat/srs-25-etl-deploy' #test
     paths:
-      - 'backend/**'
-      - 'frontend/**'
+      - 'etl/**'
       - '.github/workflows/ci-cd-debezium-tools.yaml'
 
 concurrency:
@@ -21,12 +20,12 @@ jobs:
     uses: ./.github/workflows/_build.yml
     strategy:
       matrix:
-        component: [ backend/etl/debezium-jdbc ]
+        component: [ etl/debezium-jdbc, etl/debezium-postgis/15-3.3 ]
         include:
-          - component: backend/etl/debezium-jdbc 
-            triggers: ('backend/etl/debezium-jdbc/')
-         - component: backend/etl/debezium-postgis/15-3.3 
-            triggers: ('backend/etl/debezium-postgis/15-3.3/')
+          - component:etl/debezium-jdbc 
+            triggers: ('etl/debezium-jdbc/')
+         - component: etl/debezium-postgis/15-3.3 
+            triggers: ('etl/debezium-postgis/15-3.3/')
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
