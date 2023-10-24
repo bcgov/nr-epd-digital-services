@@ -24,7 +24,7 @@ jobs:
         include:
           - component:etl/debezium-jdbc 
             triggers: ('etl/debezium-jdbc/')
-         - component: etl/debezium-postgis/15-3.3 
+          - component: etl/debezium-postgis/15-3.3 
             triggers: ('etl/debezium-postgis/15-3.3/')
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
