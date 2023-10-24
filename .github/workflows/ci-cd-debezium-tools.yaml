@@ -22,7 +22,7 @@ jobs:
       matrix:
         component: [ etl/debezium-jdbc, etl/debezium-postgis/15-3.3 ]
         include:
-          - component:etl/debezium-jdbc 
+          - component: etl/debezium-jdbc 
             triggers: ('etl/debezium-jdbc/')
           - component: etl/debezium-postgis/15-3.3 
             triggers: ('etl/debezium-postgis/15-3.3/')
