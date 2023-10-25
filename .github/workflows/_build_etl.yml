@@ -135,6 +135,4 @@ jobs:
           tags: ghcr.io/${{ github.repository }}/${{ inputs.component }}:${{ inputs.img_build }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-        env:
-          DEBEZIUM_VERSION: "1.9"  
           
