@@ -24,7 +24,8 @@ concurrency:
 
 jobs:
   builds:
-    name: Builds
+    name: Builds    
+    environment: etl-dev
     uses: ./.github/workflows/_build_etl.yml
     strategy:
       matrix:
@@ -41,4 +42,3 @@ jobs:
       img_build: "etl-tools"
       img_fallback: etl-tools
       triggers: ${{ matrix.triggers }}
-      environment: etl-dev
