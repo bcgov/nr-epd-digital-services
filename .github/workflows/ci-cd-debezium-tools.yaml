@@ -10,6 +10,14 @@ on:
       - 'etl/**'
       - '.github/workflows/ci-cd-debezium-tools.yaml'
 
+env:
+  DEBEZIUM_VERSION: ${{ secrets.DEBEZIUM_VERSION }}
+  ORACLE_JDBC_VERSION: ${{ secrets.ORACLE_JDBC_VERSION }}
+  ORACLE_JDBC_MD5: ${{ secrets.ORACLE_JDBC_MD5 }}
+  KAFKA_JDBC_VERSION: ${{ secrets.KAFKA_JDBC_VERSION }}
+  ORACLE_DB_HOST: ${{ secrets.ORACLE_DB_HOST }}
+  ORACLE_DB_PORT: ${{ secrets.ORACLE_DB_PORT }}      
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
