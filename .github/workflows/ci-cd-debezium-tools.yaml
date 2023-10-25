@@ -17,7 +17,7 @@ concurrency:
 jobs:
   builds:
     name: Builds
-    uses: ./.github/workflows/_build.yml
+    uses: ./.github/workflows/_build_etl.yml
     strategy:
       matrix:
         component: [ etl/debezium-jdbc, etl/debezium-postgis/15-3.3 ]
@@ -30,6 +30,6 @@ jobs:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
       component: ${{ matrix.component }}
-      img_build: "tools"
-      img_fallback: tools
+      img_build: "etl-tools"
+      img_fallback: etl-tools
       triggers: ${{ matrix.triggers }}
