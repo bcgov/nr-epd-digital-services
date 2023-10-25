@@ -60,6 +60,7 @@ jobs:
         run: |
           echo "For ${{ github.ref_name }} branch for Tools"
           echo "DEBEZIUM_VERSION=${{secrets.DEBEZIUM_VERSION}}" >> $GITHUB_ENV
+          echo "Finished setting environment
         shell: bash    
 
       # Check triggers to see if a build is required
