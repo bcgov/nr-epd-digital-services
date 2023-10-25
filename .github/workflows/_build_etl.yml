@@ -108,6 +108,12 @@ jobs:
           target: ${{ inputs.img_fallback }}
           tags: ${{ inputs.img_build }}
 
+      - name: Set ENV variables
+        id: set-variable
+        run: |
+          echo "DEBEZIUM_VERSION="1.9"" >> $GITHUB_ENV
+        shell: bash     
+
       # If a build is required, then create a new image
       - uses: actions/checkout@v3
         with:
