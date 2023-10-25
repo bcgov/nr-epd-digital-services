@@ -41,3 +41,4 @@ jobs:
       img_build: "etl-tools"
       img_fallback: etl-tools
       triggers: ${{ matrix.triggers }}
+      environment: etl-dev
