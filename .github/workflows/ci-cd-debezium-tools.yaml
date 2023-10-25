@@ -24,8 +24,7 @@ concurrency:
 
 jobs:
   builds:
-    name: Builds    
-    environment: etl-dev
+    name: Builds
     uses: ./.github/workflows/_build_etl.yml
     strategy:
       matrix:
