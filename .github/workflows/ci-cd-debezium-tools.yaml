@@ -1,4 +1,4 @@
-name: Continuous Integration And Deployment On Push to Tools
+name: CI CD Pipeline for Debezium
 #This is only for testing purpose and will be deleted in future.
 on:
   workflow_dispatch: 
