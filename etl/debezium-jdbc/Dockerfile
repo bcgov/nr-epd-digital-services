@@ -5,7 +5,7 @@ WORKDIR /app/
 COPY ./ ./
 RUN mvn clean install
 
-
+RUN echo "DEBEZIUM_VERSION is $DEBEZIUM_VERSION"
 
 FROM debezium/connect:$DEBEZIUM_VERSION
 
