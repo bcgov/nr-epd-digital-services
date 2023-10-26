@@ -54,13 +54,13 @@ jobs:
           # Check out source repo
           repository: ${{ github.repository }}
 
-      - name: Set ENV variables - Why I get skipped ?
+      - name: Set ENV variables
         id: set-variable
         # make sure to update the TOOLS_NAME once all the environment for forms-flow-ai-web is ready
         run: |
           echo "For ${{ github.ref_name }} branch for Tools"
           echo "DEBEZIUM_VERSION=${{secrets.DEBEZIUM_VERSION}}" >> $GITHUB_ENV
-          echo "Finished setting environment
+          echo "Finished setting environment"
         shell: bash    
 
       # Check triggers to see if a build is required
