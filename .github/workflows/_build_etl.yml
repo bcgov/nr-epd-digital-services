@@ -33,6 +33,9 @@ on:
       gh_token:
         required: true
         description: Default github token (secrets.GITHUB_TOKEN)
+      DEBEZIUM_VERSION:
+        required: true
+        description: Debezium Version (secrets.DEBEZIUM_VERSION)  
     outputs:
       build:
         description: True = build has changed
