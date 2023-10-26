@@ -54,7 +54,7 @@ jobs:
           # Check out source repo
           repository: ${{ github.repository }}
 
-      - name: Set ENV variables
+      - name: Set ENV variables - Why I get skipped ?
         id: set-variable
         # make sure to update the TOOLS_NAME once all the environment for forms-flow-ai-web is ready
         run: |
