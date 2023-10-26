@@ -8,7 +8,7 @@ on:
        - 'feat/srs-25-etl-deploy' #test
     paths:
       - 'etl/**'
-      - '.github/workflows/ci-cd-debezium-tools.yaml'
+      - '.github/workflows/**'
 
 env:
   DEBEZIUM_VERSION: ${{ secrets.DEBEZIUM_VERSION }}
