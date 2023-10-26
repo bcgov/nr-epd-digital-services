@@ -8,15 +8,7 @@ on:
        - 'feat/srs-25-etl-deploy' #test
     paths:
       - 'etl/**'
-      - '.github/workflows/**'
-
-env:
-  DEBEZIUM_VERSION: ${{ secrets.DEBEZIUM_VERSION }}
-  ORACLE_JDBC_VERSION: ${{ secrets.ORACLE_JDBC_VERSION }}
-  ORACLE_JDBC_MD5: ${{ secrets.ORACLE_JDBC_MD5 }}
-  KAFKA_JDBC_VERSION: ${{ secrets.KAFKA_JDBC_VERSION }}
-  ORACLE_DB_HOST: ${{ secrets.ORACLE_DB_HOST }}
-  ORACLE_DB_PORT: ${{ secrets.ORACLE_DB_PORT }}      
+      - '.github/workflows/**' 
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -35,8 +27,9 @@ jobs:
           - component: etl/debezium-postgis/15-3.3 
             triggers: ('etl/debezium-postgis/15-3.3/')
     secrets:
-      gh_token: ${{ secrets.GITHUB_TOKEN }}
+      DEBEZIUM_VERSION: ${{ secrets.DEBEZIUM_VERSION }}
     with:
+      environment: etl_dev
       component: ${{ matrix.component }}
       img_build: "etl-tools"
       img_fallback: etl-tools
