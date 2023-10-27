@@ -29,7 +29,7 @@ objects:
         dockerfilePath: "${DOCKER_FILE_PATH}"
         env:
           - name: "DEBEZIUM_VERSION"
-            value: "${DEBEZIUM_VERSION}"
+            value: ${DEBEZIUM_VERSION}
           - name: "ORACLE_JDBC_VERSION"
             value: "${ORACLE_JDBC_VERSION}"
           - name: "ORACLE_JDBC_MD5"
