@@ -45,7 +45,7 @@ execution.setVariable('clientEmail',clientEmail);
 var riskclassification = execution.getVariable('riskclassification');
 system.out.println ("formUrl "+execution.getVariable('formUrl'));
 execution.setVariable('emailTo',clientEmail);
-execution.setVariable('name','Test');
+execution.setVariable('name','User');
 system.out.println ("emailTo "+execution.getVariable('emailTo'));
 system.out.println ("name "+execution.getVariable('name'));
 
@@ -799,6 +799,17 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
         <dc:Bounds x="201" y="830" width="1198" height="1940" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0gzrwfr_di" bpmnElement="Flow_0gzrwfr">
+        <di:waypoint x="850" y="795" />
+        <di:waypoint x="850" y="820" />
+        <di:waypoint x="240" y="820" />
+        <di:waypoint x="240" y="410" />
+        <di:waypoint x="311" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1l3pe3s_di" bpmnElement="Flow_1l3pe3s">
+        <di:waypoint x="875" y="770" />
+        <di:waypoint x="1001" y="770" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_077ihmr_di" bpmnElement="Flow_077ihmr">
         <di:waypoint x="751" y="770" />
         <di:waypoint x="825" y="770" />
@@ -910,17 +921,6 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
         <di:waypoint x="259" y="145" />
         <di:waypoint x="311" y="145" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1l3pe3s_di" bpmnElement="Flow_1l3pe3s">
-        <di:waypoint x="875" y="770" />
-        <di:waypoint x="1001" y="770" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0gzrwfr_di" bpmnElement="Flow_0gzrwfr">
-        <di:waypoint x="850" y="795" />
-        <di:waypoint x="850" y="820" />
-        <di:waypoint x="240" y="820" />
-        <di:waypoint x="240" y="410" />
-        <di:waypoint x="311" y="410" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BPMNShape_0s7tget" bpmnElement="Event_02fettt">
         <dc:Bounds x="223" y="127" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -947,13 +947,6 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_01t23k0_di" bpmnElement="Event_01t23k0">
         <dc:Bounds x="852" y="2632" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_16j8qg5" bpmnElement="Activity_0hieobd">
-        <dc:Bounds x="1001" y="730" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_06j5m9d_di" bpmnElement="Gateway_06j5m9d" isMarkerVisible="true">
-        <dc:Bounds x="825" y="745" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1d2xehj_di" bpmnElement="Activity_0truthe" isExpanded="true">
         <dc:Bounds x="231" y="870" width="978" height="1670" />
@@ -1283,6 +1276,13 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1211" y="708" width="20" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_16j8qg5" bpmnElement="Activity_0hieobd">
+        <dc:Bounds x="1001" y="730" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_06j5m9d_di" bpmnElement="Gateway_06j5m9d" isMarkerVisible="true">
+        <dc:Bounds x="825" y="745" width="50" height="50" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

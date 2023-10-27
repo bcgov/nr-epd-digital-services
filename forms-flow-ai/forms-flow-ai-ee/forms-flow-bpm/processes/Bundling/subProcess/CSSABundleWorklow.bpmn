@@ -1359,7 +1359,7 @@ execution.setVariable('userIdForSharing',userIdForSharing);
 var listOwnerEmailAddress = [];
 listOwnerEmailAddress.push(clientEmail);
 execution.setVariable('EmailType','CSSA');
-execution.setVariable('name','');
+execution.setVariable('name','User');
 execution.setVariable("emailTo", Java.to(listOwnerEmailAddress, "java.lang.Object[]"));
 execution.setVariable('formName','Contaminated Sites Services Application Form');</bpmn:script>
     </bpmn:scriptTask>
@@ -1565,6 +1565,10 @@ task.execution.setVariable('userRole','CSSA Team');</camunda:script>
       <bpmndi:BPMNShape id="Lane_0t984kw_di" bpmnElement="Lane_0t984kw" isHorizontal="true">
         <dc:Bounds x="185" y="80" width="3168" height="570" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0n61nyr_di" bpmnElement="Flow_0n61nyr">
+        <di:waypoint x="2890" y="4670" />
+        <di:waypoint x="3192" y="4670" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_17tf2x2_di" bpmnElement="Flow_17tf2x2">
         <di:waypoint x="2735" y="3450" />
         <di:waypoint x="3110" y="3450" />
@@ -1968,10 +1972,6 @@ task.execution.setVariable('userRole','CSSA Team');</camunda:script>
           <dc:Bounds x="1197" y="1746" width="46" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0n61nyr_di" bpmnElement="Flow_0n61nyr">
-        <di:waypoint x="2890" y="4670" />
-        <di:waypoint x="3192" y="4670" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Gateway_1lfy3cm_di" bpmnElement="Gateway_1lfy3cm" isMarkerVisible="true">
         <dc:Bounds x="1230" y="1975" width="50" height="50" />
       </bpmndi:BPMNShape>
@@ -2024,19 +2024,6 @@ task.execution.setVariable('userRole','CSSA Team');</camunda:script>
         <dc:Bounds x="2815" y="3425" width="50" height="50" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="2763" y="3423" width="63" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1ftmftp" bpmnElement="Activity_0kxdigs">
-        <dc:Bounds x="2790" y="4630" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0a1sgdr_di" bpmnElement="Gateway_0pty1fn">
-        <dc:Bounds x="2545" y="3065" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1baonum" bpmnElement="Gateway_0o9l3lp" isMarkerVisible="true">
-        <dc:Bounds x="2545" y="3155" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="2578" y="3133" width="63" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0lezdpf_di" bpmnElement="Activity_07ttn7q" isExpanded="true">
@@ -2654,6 +2641,19 @@ task.execution.setVariable('userRole','CSSA Team');</camunda:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0zpn1pz_di" bpmnElement="Gateway_1l4bqor">
         <dc:Bounds x="2685" y="3425" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1ftmftp" bpmnElement="Activity_0kxdigs">
+        <dc:Bounds x="2790" y="4630" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0a1sgdr_di" bpmnElement="Gateway_0pty1fn">
+        <dc:Bounds x="2545" y="3065" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1baonum" bpmnElement="Gateway_0o9l3lp" isMarkerVisible="true">
+        <dc:Bounds x="2545" y="3155" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2578" y="3133" width="63" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

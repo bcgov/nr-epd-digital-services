@@ -245,7 +245,7 @@ system.out.println ("siteRiskClassification "+siteRiskClassification );
 execution.setVariable('siteRiskClassification',siteRiskClassification);
 execution.setVariable('formName','Detailed Ecological Risk Assessment Checklist');
 execution.setVariable('EmailType','DERA');
-execution.setVariable('name',execution.getVariable('deraPropertyOwnerName'));
+execution.setVariable('name','User');
 var emailsToArray = [];
 emailsToArray.push(clientEmail)
 execution.setVariable("emailTo", Java.to(emailsToArray, "java.lang.Object[]"));</bpmn:script>
