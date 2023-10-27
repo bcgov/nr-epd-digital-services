@@ -29,7 +29,7 @@ objects:
         dockerfilePath: "${DOCKER_FILE_PATH}"
         env:
           - name: "DEBEZIUM_VERSION"
-            value: ${DEBEZIUM_VERSION}
+            value: "${DEBEZIUM_VERSION}"
           - name: "ORACLE_JDBC_VERSION"
             value: "${ORACLE_JDBC_VERSION}"
           - name: "ORACLE_JDBC_MD5"
@@ -75,7 +75,7 @@ parameters:
   displayName: Debezium Version
   description: Debezium image version.
   required: false
-  value: 1.9
+  value: "1.9"
 - name: ORACLE_JDBC_VERSION
   displayName: Oracle JDBC Version
   description: Oracle JDBC Version.
