@@ -1,4 +1,4 @@
-name: forms-flow-web Custom
+name: forms-flow-web-ee Custom
 
 on:
   workflow_dispatch:
@@ -11,10 +11,12 @@ on:
     branches:
       - dev
       - main
-      - epdds-270 # Remove in future, just to verify this works
+      
     paths:
-      - "forms-flow-ai/forms-flow-ai-ee/forms-flow-web"
-      - ".github/workflows/cd-forms-flow-web-ee.yaml"
+      - 'backend/**'
+      - 'frontend/**'
+      - 'forms-flow-ai/**'
+      - '.github/workflows/**'
 
 defaults:
   run:

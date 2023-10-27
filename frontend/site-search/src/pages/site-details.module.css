@@ -1,0 +1,91 @@
+.metadata {
+    background-color: var(--main-gray);
+    padding: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    min-height: 300px;
+    border-radius: 5px;
+}
+
+.metadataGrid {
+    display: grid;
+    /* grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); */
+    /* grid-template-columns: repeat(12, minmax(400px, 1fr)); */
+    /* grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); */
+    /* grid-template-columns: 16.6% 16.6% 16.6% 16.6% 16.6% 16.6%; */
+    /* grid-template-columns: 16%; */
+    grid-gap: 20px;
+
+    align-items: start;
+}
+
+@media (min-width: 992px){
+    .metadataGridFifths {
+        /* background-color: orange; */
+        grid-template-columns: 18% 18% 18% 18% 18%;
+    }
+    
+}
+
+
+.metadataGridItem {
+    border: 1px solid black;
+    border-radius: 3px;
+    grid-column: span 2;
+}
+
+.metadataGridItem > div {
+    padding: 0 1rem;
+}
+
+.gridFullwidth {
+    grid-column: 1 / span 6 !important;
+}
+
+.gridHalfWidth {
+    grid-column: span 1;
+}
+
+.gridSpan1 {
+    grid-column: span 1
+}
+
+.gridSpan2 {
+    grid-column: span 2
+}
+
+.gridSpan3 {
+    grid-column: span 3
+}
+
+.gridSpan4 {
+    grid-column: span 4
+}
+
+.gridSpan5 {
+    grid-column: span 5
+}
+
+.gridSpan6 {
+    grid-column: span 6
+}
+
+
+
+
+
+
+.formLabel {
+    font-weight: bolder;
+    background-color: var(--header-gray);
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    align-items: center;
+    min-height: 2rem;
+}
+
+.formInput:read-only {
+    background-color: var(--input-gray);
+    padding: 0.375rem 0.75rem;
+}
