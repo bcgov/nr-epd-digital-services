@@ -326,6 +326,32 @@
           <text>"epd-support@gov.bc.ca"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0rm6z5c">
+        <inputEntry id="UnaryTests_1fdwbei">
+          <text>"user_search_failed"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_10h6o0k">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0fw340b">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1fpe11p">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0v23b7h">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1umfi1o">
+          <text>" Users Not Found : Upload Document Email Process"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_00qdw0s">
+          <text>"templates/user_search_failed.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1316z4s">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
