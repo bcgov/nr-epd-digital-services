@@ -73,10 +73,6 @@ var ownerEmail = execution.getVariable('owneremail');
 system.out.println ("ownerEmail "+ownerEmail);
 execution.setVariable('ownerEmail',ownerEmail);
 
-
-system.out.println("dataGrid simple"+ dataGridone);
-system.out.println("dataGrid exe"+ execution.getVariable('dataGridone'));
-
 var dataGridObject = null;
 
 dataGridObject = JSON.parse(dataGridone);
