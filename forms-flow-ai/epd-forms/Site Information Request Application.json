@@ -451,7 +451,7 @@
                     "tableView": false,
                     "modalEdit": false,
                     "templates": {
-                        "header": "{% console.log(\"row-key header\",'commentFor',row['commentFor'])  %}\r\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n\r\n{% if(groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\") || groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor-society\")){  %}\r\n\r\n<div class=\"row card-header bg-default\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component) && component.key !== 'commentFor'  ) { %}\r\n         {% if(component.label === 'Notes') {  %}\r\n           <div class=\"col-sm-4\">{{ t(component.label) }}</div>\r\n         {% } else if(component.key !== 'comments') {  %}\r\n           <div class=\"col-sm-2\">{{ t(component.label) }}</div>\r\n         {% } %}\r\n        {% } %}\r\n      {% }) %}\r\n    </div>\r\n\r\n{% } else { %}\r\n\r\n<div class=\"row card-header bg-default\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component)) { %}\r\n          {% if(component.key == 'comments') {  %}\r\n        <div class=\"col-sm-6\"> {{   t(component.label)}} </div>\r\n{% } else { %}\r\n  <div class=\"col-sm-1\"> {{  t(component.label)}} </div>\r\n{% } %}      \r\n {% } %}\r\n      {% }) %}\r\n    </div>\r\n\r\n{% } %}\r\n",
+                        "header": "{% console.log(\"row-key header\",'commentFor',row['commentFor'])  %}\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\n{% const groups = UserDetails[\"groups\"]; %}\n\n{% if(groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\") || groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor-society\")){  %}\n\n<div class=\"row card-header bg-default\">\n      {% util.eachComponent(components, function(component) { %}\n        {% if (displayValue(component) && component.key !== 'commentFor'  ) { %}\n         {% if(component.label === 'Notes') {  %}\n           <div class=\"col-sm-4\">{{ t(component.label) }}</div>\n         {% } else if(component.key !== 'comments') {  %}\n           <div class=\"col-sm-2\">{{ t(component.label) }}</div>\n         {% } %}\n        {% } %}\n      {% }) %}\n    </div>\n\n{% } else { %}\n\n<div class=\"row card-header bg-default\">\n      {% util.eachComponent(components, function(component) { %}\n        {% if (displayValue(component)) { %}\n          {% if(component.key == 'comments') {  %}\n        <div class=\"col-sm-6\"> {{   t(component.label)}} </div>\n{% } else { %}\n  <div class=\"col-sm-1\"> {{  t(component.label)}} </div>\n{% } %}      \n {% } %}\n      {% }) %}\n    </div>\n\n{% } %}\n",
                         "tableHeader": "\n      <tr>\n        {% util.eachComponent(components, function(component) { %}\n          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}\n            <td class=\"editgrid-table-column\">{{ component.label }}</td>\n          {% } %}\n        {% }) %}\n        {% if (!instance.options.readOnly && !instance.disabled) { %}\n          <td class=\"editgrid-table-column\">Actions</td>\n        {% } %}\n      </tr>\n    ",
                         "row": "{% console.log(\"row-key main\",'commentFor',row['commentFor'])  %}\r\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% console.log('rendering edit grid body')%}\r\n{% if((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\") || groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor-society\")) && row['commentFor']==='external'){  %}\r\n\r\n\r\n\r\n<div class=\"row\">\r\n\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component) && component.key !== 'commentFor' ) { %}\r\n        {% console.log(\"row-key\",component.key,row[component.key])  %}\r\n        {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\") || groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor-society\")) && row['commentFor']==='external'){ %}\r\n{% if(component.key == 'comments') {  %}\r\n          <div class=\"col-sm-4\">\r\n               {{ getView(component, row[component.key])}}\r\n          </div>\r\n{% } else { %}\r\n <div class=\"col-sm-2\">\r\n    {{ getView(component, row[component.key])}}\r\n          </div>\r\n{%}%}\r\n           \r\n\r\n            {% } %}\r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n              {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\") || groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor-society\")) && row['commentFor']==='external'){ %}\r\n        <div class=\"col-sm-2\">\r\n          <div class=\"btn-group pull-right\">\r\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n       \r\n           {% } %}\r\n      {% } %}\r\n    </div>\r\n     {% } else if (groups.includes(\"/formsflow/formsflow-reviewer/site-risk-classification-officer\") || groups.includes(\"/formsflow/formsflow-reviewer/cssa-team\") || groups.includes(\"/formsflow/formsflow-reviewer/caseworker\") || groups.includes(\"/formsflow/formsflow-reviewer/sdm\")) { %}\r\n     <div class=\"row\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n      {% console.log('for sia') %}\r\n        {% if (displayValue(component)) { %}\r\n         {% if(component.key == 'comments') {  %}\r\n        <div class=\"col-sm-6\"> {{  getView(component, row[component.key])}} </div>\r\n{% } else { %}\r\n  <div class=\"col-sm-1\"> {{  getView(component, row[component.key])}} </div>\r\n{% } %}      \r\n         \r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n        <div class=\"col-sm-2\">\r\n          <div class=\"btn-group pull-right\">\r\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n      {% } %}\r\n    </div>\r\n     {% } %}\r\n   \r\n     \r\n     \r\n{% const emptyElements = []; %}\r\n{% const elements = document.getElementsByClassName(\"list-group-item\"); %}\r\n{% for (let i = 0; i < elements.length; i++) { %}\r\n{%  const element = elements[i]; %}\r\n{% if(element.querySelectorAll('div.row').length===0){(element).remove() }} %}",
                         "tableRow": "\n      {% util.eachComponent(components, function(component) { %}\n          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}\n            <td class=\"editgrid-table-column\">\n              {{ getView(component, row[component.key]) }}\n            </td>\n          {% } %}\n        {% }) %}\n        {% if (!instance.options.readOnly && !instance.disabled) { %}\n          <td class=\"editgrid-table-column\">\n            <div class=\"btn-group\">\n              <button class=\"btn btn-default btn-light btn-sm editRow\" aria-label=\"{{ t('Edit row') }}\"><i class=\"{{ iconClass('edit') }}\"></i></button>\n              {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\n              <button class=\"btn btn-danger btn-sm removeRow\" aria-label=\"{{ t('Remove row') }}\"><i class=\"{{ iconClass('trash') }}\"></i></button>\n              {% } %}\n            </div>\n          </td>\n        {% } %}\n    ",
@@ -477,7 +477,7 @@
                     "validate": {
                         "required": false,
                         "customMessage": "",
-                        "custom": "const emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\nconsole.log('in validation remove');\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n\r\n\r\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\r\nconsole.log(\"from validation tab\")\r\nif(b.groups.includes(\"/formsflow/formsflow-client\"))\r\n{\r\nvar q = document.querySelector(\"[ref='editgrid-notes-addRow']\");\r\nif(q && q !== null){\r\n  console.log(\"inside validation remove\")\r\n  q.remove();\r\n}\r\nvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\r\nfor(i=0;i<editButtons.length;i++){editButtons[i].remove()}\r\n\r\nvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\r\nfor(i=0;i<removeButtons.length;i++){removeButtons[i].remove()}\r\n}",
+                        "custom": "const emptyElements = [];\nconst elements = document.getElementsByClassName(\"list-group-item\");\nfor (let i = 0; i < elements.length; i++) {\nconst element = elements[i];\nconsole.log('in validation remove');\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\n \n}\n\n\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\nconsole.log(\"from validation tab\")\nif(b.groups.includes(\"/formsflow/formsflow-client\") || b.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\"))\n{\nvar q = document.querySelector(\"[ref='editgrid-notes-addRow']\");\nif(q && q !== null){\n  console.log(\"inside validation remove\")\n  q.remove();\n}\nvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\nfor(i=0;i<editButtons.length;i++){editButtons[i].remove()}\n\nvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\nfor(i=0;i<removeButtons.length;i++){removeButtons[i].remove()}\n}\n",
                         "customPrivate": false,
                         "json": "",
                         "strictDateValidation": false,
@@ -496,7 +496,7 @@
                         "eq": "",
                         "json": ""
                     },
-                    "customConditional": "show = false;\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst groups = UserDetails?UserDetails[\"groups\"]:[];\r\nif(!UserDetails){\r\n  show = false;\r\n}\r\nelse if((groups.includes(\"/formsflow/formsflow-client\")))\r\n{\r\nif(data.notes && data.notes.filter((x)=>x.commentFor==='external').length > 0)\r\nshow = true;\r\nelse\r\nshow = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}\r\n\r\nif(UserDetails){\r\nvar addRowButton = document.querySelector(\"button[ref=editgrid-notes-addRow]\");\r\nif(addRowButton !==null)\r\n{\r\nif( groups.includes(\"/formsflow/formsflow-client\")){\r\n  addRowButton.remove();\r\n}\r\n\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\nconsole.log('in validation remove');\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n}\r\n}\r\n",
+                    "customConditional": "show = false;\nconsole.log('cb');\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\nconst groups = UserDetails?UserDetails[\"groups\"]:[];\nif(!UserDetails){\n  show = false;\n}\nelse if((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") ))\n{\nif(data.notes && data.notes.filter((x)=>x.commentFor==='external').length > 0)\nshow = true;\nelse\nshow = false;\n}\nelse\n{\n  show = true;\n}\n\nif(UserDetails){\nvar addRowButton = document.querySelector(\"button[ref=editgrid-notes-addRow]\");\nif(addRowButton !==null)\n{\nif( groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")  ){\n  addRowButton.remove();\n}\n\nconst emptyElements = [];\nconst elements = document.getElementsByClassName(\"list-group-item\");\nfor (let i = 0; i < elements.length; i++) {\nconst element = elements[i];\nconsole.log('in validation remove');\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\n \n}\n}\n}\n\n\nconst emptyElements = [];\nconst elements = document.getElementsByClassName(\"list-group-item\");\nfor (let i = 0; i < elements.length; i++) {\nconst element = elements[i];\nconsole.log('in validation remove');\nif(element.querySelectorAll('div.row').length===0){(element).remove() }} \n",
                     "logic": [],
                     "attributes": {},
                     "overlay": {
@@ -598,7 +598,7 @@
                                             "wysiwyg": false,
                                             "editor": "",
                                             "fixedSize": true,
-                                            "id": "ebf4lsny"
+                                            "id": "eov3xma"
                                         }
                                     ],
                                     "width": 4,
@@ -690,7 +690,7 @@
                                             "addons": [],
                                             "inputType": "radio",
                                             "fieldSet": false,
-                                            "id": "ebv75w4"
+                                            "id": "evbnqlo"
                                         }
                                     ],
                                     "width": 2,
@@ -777,7 +777,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "etbehkh"
+                                            "id": "eog1cy"
                                         }
                                     ],
                                     "size": "md",
@@ -864,7 +864,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "ew65mqf"
+                                            "id": "ev2c1sr"
                                         }
                                     ],
                                     "size": "md",
@@ -951,7 +951,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "ehngju"
+                                            "id": "e52p82"
                                         }
                                     ],
                                     "size": "md",
@@ -1026,7 +1026,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "ecge8nk"
+                            "id": "etxqyzk"
                         }
                     ],
                     "placeholder": "",
@@ -1045,7 +1045,7 @@
                     "tree": true,
                     "lazyLoad": false,
                     "defaultOpen": false,
-                    "id": "ephg3lb"
+                    "id": "er8w6ss"
                 },
                 {
                     "id": "et4x1z",
@@ -5670,7 +5670,7 @@
                                     "attributes": {},
                                     "components": [
                                         {
-                                            "id": "ecmzjdn00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "ecmzjdn00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "key": "panel",
                                             "tree": false,
                                             "type": "panel",
