@@ -51,7 +51,6 @@
         <bpmn:flowNodeRef>Activity_1qnqtak</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_0mexztf</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0m6abz8</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Gateway_0urokjh</bpmn:flowNodeRef>
       </bpmn:lane>
     </bpmn:laneSet>
     <bpmn:exclusiveGateway id="Gateway_1nljcfc" name="Direct to Ministry">
@@ -247,7 +246,6 @@ task.execution.setVariable('userRole','CSSA Team');</camunda:script>
       <bpmn:incoming>Flow_1s9sm8u</bpmn:incoming>
       <bpmn:incoming>Flow_1gnzs70</bpmn:incoming>
       <bpmn:incoming>Flow_0e8b4d4</bpmn:incoming>
-      <bpmn:incoming>Flow_0v5ez8t</bpmn:incoming>
       <bpmn:outgoing>Flow_1ehxfe5</bpmn:outgoing>
     </bpmn:callActivity>
     <bpmn:receiveTask id="Task_05ulff4" name="Application Resubmitted" messageRef="Message_1ngb2eg">
@@ -485,7 +483,7 @@ execution.setVariable('isSdm',false);</camunda:script>
     <bpmn:sequenceFlow id="Flow_1rsleyy" name="Approve/Reject" sourceRef="Gateway_0cjov6g" targetRef="Event_0rqe9p4">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Approved' or action == 'Rejected' }</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0s43gpy" sourceRef="Activity_0m6abz8" targetRef="Gateway_0urokjh" />
+    <bpmn:sequenceFlow id="Flow_0s43gpy" sourceRef="Activity_0m6abz8" targetRef="Gateway_0mexztf" />
     <bpmn:sequenceFlow id="Flow_07tic47" name="Accepted" sourceRef="Gateway_0mexztf" targetRef="Activity_1qnqtak">
       <bpmn:extensionElements>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormBPMFilteredDataPipelineListener" event="take" />
@@ -671,7 +669,7 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
 </bpmn:script>
     </bpmn:scriptTask>
     <bpmn:exclusiveGateway id="Gateway_0mexztf" name="Action Taken&#10;">
-      <bpmn:incoming>Flow_1q9t450</bpmn:incoming>
+      <bpmn:incoming>Flow_0s43gpy</bpmn:incoming>
       <bpmn:outgoing>Flow_07tic47</bpmn:outgoing>
       <bpmn:outgoing>Flow_1qaodt0</bpmn:outgoing>
     </bpmn:exclusiveGateway>
@@ -695,13 +693,6 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
       <bpmn:incoming>Flow_1igr7br</bpmn:incoming>
       <bpmn:outgoing>Flow_0s43gpy</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_1q9t450" sourceRef="Gateway_0urokjh" targetRef="Gateway_0mexztf" />
-    <bpmn:parallelGateway id="Gateway_0urokjh">
-      <bpmn:incoming>Flow_0s43gpy</bpmn:incoming>
-      <bpmn:outgoing>Flow_1q9t450</bpmn:outgoing>
-      <bpmn:outgoing>Flow_0v5ez8t</bpmn:outgoing>
-    </bpmn:parallelGateway>
-    <bpmn:sequenceFlow id="Flow_0v5ez8t" sourceRef="Gateway_0urokjh" targetRef="Activity_05x4sl7" />
   </bpmn:process>
   <bpmn:message id="Message_1ngb2eg" name="application_resubmitted" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -738,15 +729,6 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
       <bpmndi:BPMNShape id="Lane_01ohwxm_di" bpmnElement="Lane_01ohwxm" isHorizontal="true">
         <dc:Bounds x="190" y="1230" width="2100" height="470" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_0v5ez8t_di" bpmnElement="Flow_0v5ez8t">
-        <di:waypoint x="1025" y="2290" />
-        <di:waypoint x="1820" y="2290" />
-        <di:waypoint x="1820" y="1940" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1q9t450_di" bpmnElement="Flow_1q9t450">
-        <di:waypoint x="1000" y="2315" />
-        <di:waypoint x="1000" y="2365" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_19r835c_di" bpmnElement="Flow_19r835c">
         <di:waypoint x="1000" y="2560" />
         <di:waypoint x="1000" y="2650" />
@@ -822,7 +804,7 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0s43gpy_di" bpmnElement="Flow_0s43gpy">
         <di:waypoint x="1000" y="2220" />
-        <di:waypoint x="1000" y="2265" />
+        <di:waypoint x="1000" y="2365" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1rsleyy_di" bpmnElement="Flow_1rsleyy">
         <di:waypoint x="1000" y="4265" />
@@ -1284,9 +1266,6 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
       <bpmndi:BPMNShape id="BPMNShape_199wqgt" bpmnElement="Activity_0m6abz8">
         <dc:Bounds x="950" y="2140" width="100" height="80" />
         <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1otjx9z_di" bpmnElement="Gateway_0urokjh">
-        <dc:Bounds x="975" y="2265" width="50" height="50" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
