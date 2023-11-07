@@ -1195,7 +1195,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
-                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nconst taskUrl = window.location.pathname.split('/');\r\nconst taskId = taskUrl[2];\r\nconst authToken = localStorage.getItem(\"authToken\");\r\nconst bpmUrl = localStorage.getItem(\"bpmApiUrl\");\r\nvar reqUrl = bpmUrl + \"/task/\" + taskId + \"/variables\";\r\n\r\n   getData(reqUrl, authToken).then((response) => {\r\n  \r\n  \t\t var applicationStatus = response.applicationStatus?response.applicationStatus.value:'';\r\n\t      if(response.deraStatus && response.deraStatus.value === 'Returned'){\r\n    \t\t component.disabled = true;\r\n\t        component.description = 'Disabled since DERA resubmission in progress';\r\n\t        instance.triggerRedraw();\r\n\r\n\t     }\r\n\t      else if (applicationStatus === 'Resubmit') {\r\n\r\n\t        component.disabled = true;\r\n\t        component.description = 'Disabled since CSSA resubmission in progress';\r\n\t        instance.triggerRedraw();\r\n\t      } else {\r\n\t        component.description = '';\r\n\t        component.disabled = false;\r\n\t        instance.triggerRedraw();\r\n\t      }\r\n\t  \r\n    });\r\n\r\n\r\nasync function getData(reqUrl, authToken) {\r\n    const response = await fetch(reqUrl, {\r\n        method: \"GET\",\r\n        headers: {\r\n            \"Content-type\": \"application/json\",\r\n            Accept: \"application/json\",\r\n            Authorization: \"Bearer \" + authToken,\r\n        },\r\n    });\r\n    const data = await response.json();\r\n    return data;\r\n}",
+                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nconst taskUrl = window.location.pathname.split('/');\r\nconst taskId = taskUrl[2];\r\nconst authToken = localStorage.getItem(\"authToken\");\r\nconst bpmUrl = localStorage.getItem(\"bpmApiUrl\");\r\nvar reqUrl = bpmUrl + \"/task/\" + taskId + \"/variables\";\r\n\r\n   getData(reqUrl, authToken).then((response) => {\r\n  \r\n  \t\t var applicationStatus = response.applicationStatus?response.applicationStatus.value:'';\r\n\t\t var isCssaResubmitted = response.isCssaResubmitted?response.isCssaResubmitted.value:false;\r\n \t\t var isDeraResubmitted = response.isDeraResubmitted?response.isDeraResubmitted.value:false;\r\n\r\n\t      if(isDeraResubmitted){\r\n    \t\t component.disabled = true;\r\n\t        component.description = 'Disabled since DERA resubmission in progress';\r\n\t        instance.triggerRedraw();\r\n\r\n\t     }\r\n\t      else if (isCssaResubmitted) {\r\n\r\n\t        component.disabled = true;\r\n\t        component.description = 'Disabled since CSSA resubmission in progress';\r\n\t        instance.triggerRedraw();\r\n\t      } else {\r\n\t        component.description = '';\r\n\t        component.disabled = false;\r\n\t        instance.triggerRedraw();\r\n\t      }\r\n\t  \r\n    });\r\n\r\n\r\nasync function getData(reqUrl, authToken) {\r\n    const response = await fetch(reqUrl, {\r\n        method: \"GET\",\r\n        headers: {\r\n            \"Content-type\": \"application/json\",\r\n            Accept: \"application/json\",\r\n            Authorization: \"Bearer \" + authToken,\r\n        },\r\n    });\r\n    const data = await response.json();\r\n    return data;\r\n}",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
@@ -1246,7 +1246,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "epaslsk"
+                                            "id": "e6wka93"
                                         }
                                     ],
                                     "size": "md",
@@ -5069,7 +5069,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ele95t000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ele95t00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "spropertyOwnerAndOrOperator",
                                     "tree": false,
                                     "type": "panel",
@@ -14481,7 +14481,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eks0gu00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eks0gu0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "exposurePathwayQuestionnaireAffectedParcel",
                                     "tree": false,
                                     "type": "panel",
@@ -18424,7 +18424,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eo5mwyp000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eo5mwyp00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",

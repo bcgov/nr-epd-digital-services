@@ -392,7 +392,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
-                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nconst taskUrl = window.location.pathname.split('/');\r\nconst taskId = taskUrl[2];\r\nconst authToken = localStorage.getItem(\"authToken\");\r\nconst bpmUrl = localStorage.getItem(\"bpmApiUrl\");\r\nvar reqUrl = bpmUrl + \"/task/\" + taskId + \"/variables\";\r\n\r\n\r\n   getData(reqUrl, authToken).then((response) => {\r\n  \r\n\t if(roles.includes(\"formsflow-reviewer\")) {\r\n \tvar applicationStatus =   response.applicationStatus ? response.applicationStatus.value : '';\r\n  \t      show = true;\r\n  \t      \r\n\r\n  \t\t\r\n\t      if (applicationStatus === 'Resubmit') {\r\n\t        component.disabled = true;\r\n\t        component.description = 'Disabled since SRCR resubmission in progress';\r\n\t        instance.triggerRedraw();\r\n\t      } else {\r\n\t        component.description = '';\r\n\t        component.disabled = false;\r\n\t        instance.triggerRedraw();\r\n\t      }\r\n\t  }\r\n\t else\r\n\t {\r\n  \t\tshow = false;\r\n\t }\r\n    });\r\n\r\n\r\nasync function getData(reqUrl, authToken) {\r\n    const response = await fetch(reqUrl, {\r\n        method: \"GET\",\r\n        headers: {\r\n            \"Content-type\": \"application/json\",\r\n            Accept: \"application/json\",\r\n            Authorization: \"Bearer \" + authToken,\r\n        },\r\n    });\r\n    const data = await response.json();\r\n    return data;\r\n}",
+                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nconst taskUrl = window.location.pathname.split('/');\r\nconst taskId = taskUrl[2];\r\nconst authToken = localStorage.getItem(\"authToken\");\r\nconst bpmUrl = localStorage.getItem(\"bpmApiUrl\");\r\nvar reqUrl = bpmUrl + \"/task/\" + taskId + \"/variables\";\r\n\r\n\r\n   getData(reqUrl, authToken).then((response) => {\r\n  \r\n\t if(roles.includes(\"formsflow-reviewer\")) {\r\n \tvar applicationStatus =   response.applicationStatus ? response.applicationStatus.value : '';\r\n\tvar isResubmitted =   response.isSrcrResubmitted ? response.isSrcrResubmitted.value : false;\r\n  \t      show = true;\r\n  \t      \r\n\r\n  \t\t\r\n\t      if (isResubmitted) {\r\n\t        component.disabled = true;\r\n\t        component.description = 'Disabled since SRCR resubmission in progress';\r\n\t        instance.triggerRedraw();\r\n\t      } else {\r\n\t        component.description = '';\r\n\t        component.disabled = false;\r\n\t        instance.triggerRedraw();\r\n\t      }\r\n\t  }\r\n\t else\r\n\t {\r\n  \t\tshow = false;\r\n\t }\r\n    });\r\n\r\n\r\nasync function getData(reqUrl, authToken) {\r\n    const response = await fetch(reqUrl, {\r\n        method: \"GET\",\r\n        headers: {\r\n            \"Content-type\": \"application/json\",\r\n            Accept: \"application/json\",\r\n            Authorization: \"Bearer \" + authToken,\r\n        },\r\n    });\r\n    const data = await response.json();\r\n    return data;\r\n}",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
@@ -444,7 +444,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "ef22dsd"
+                                            "id": "eozzsx"
                                         }
                                     ],
                                     "size": "md",
@@ -5488,7 +5488,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eh8z2bfa0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eh8z2bfa0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "panel",
                                     "tags": [],
                                     "tree": false,
@@ -36017,7 +36017,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eof79400000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eof79400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
