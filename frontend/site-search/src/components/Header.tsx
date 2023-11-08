@@ -15,7 +15,7 @@ export default function Header() {
   const dispatch = useDispatch();
 
 
-  function minstryToggleChange(e) {
+  function minstryToggleChange() {
     dispatch(changeEditMode(false));
     dispatch(setMinistryState(!isMinistry));
   }
