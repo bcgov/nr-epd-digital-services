@@ -522,12 +522,13 @@ system.out.println ("isSentFromSociety "+execution.getVariable('isSentFromSociet
           <camunda:executionListener event="take">
             <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', "Resubmitted");
 execution.setVariable('requestStatus', "Resubmitted");
-execution.setVariable('deraStatus', "Resubmitted");</camunda:script>
+execution.setVariable('deraStatus', "Resubmitted");
+execution.setVariable('isDeraResubmitted', false);</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="take" />
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
             <camunda:field name="fields">
-              <camunda:expression>["applicationId", "applicationStatus", "deraStatus"]</camunda:expression>
+              <camunda:expression>["applicationId", "applicationStatus", "deraStatus","isDeraResubmitted"]</camunda:expression>
             </camunda:field>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
@@ -628,11 +629,12 @@ execution.setVariable('deraStatus', "Resubmitted");</camunda:script>
           <camunda:executionListener event="take">
             <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', "Resubmitted");
 execution.setVariable('requestStatus', "Resubmitted");
-execution.setVariable('deraStatus', "Resubmitted");</camunda:script>
+execution.setVariable('deraStatus', "Resubmitted");
+execution.setVariable('isDeraResubmitted', false);</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
             <camunda:field name="fields">
-              <camunda:expression>["applicationId", "applicationStatus", "deraStatus"]</camunda:expression>
+              <camunda:expression>["applicationId", "applicationStatus", "deraStatus","isDeraResubmitted"]</camunda:expression>
             </camunda:field>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
@@ -1107,11 +1109,12 @@ task.execution.setVariable('subFormName','SRCR Form');</camunda:script>
           <camunda:executionListener event="take">
             <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', "Resubmitted");
 execution.setVariable('requestStatus', "Resubmitted");
-execution.setVariable('srcrStatus', "Resubmitted");</camunda:script>
+execution.setVariable('srcrStatus', "Resubmitted");
+execution.setVariable('isSrcrResubmitted', false);</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
             <camunda:field name="fields">
-              <camunda:expression>["applicationId", "applicationStatus", "srcrStatus"]</camunda:expression>
+              <camunda:expression>["applicationId", "applicationStatus", "srcrStatus","isSrcrResubmitted"]</camunda:expression>
             </camunda:field>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
@@ -1180,12 +1183,13 @@ execution.setVariable('srcrStatus', "Resubmitted");</camunda:script>
           <camunda:executionListener event="take">
             <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', "Resubmitted");
 execution.setVariable('requestStatus', "Resubmitted");
-execution.setVariable('srcrStatus', "Resubmitted");</camunda:script>
+execution.setVariable('srcrStatus', "Resubmitted");
+execution.setVariable('isSrcrResubmitted', false);</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="take" />
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
             <camunda:field name="fields">
-              <camunda:expression>["applicationId", "applicationStatus", "srcrStatus"]</camunda:expression>
+              <camunda:expression>["applicationId", "applicationStatus", "srcrStatus","isSrcrResubmitted"]</camunda:expression>
             </camunda:field>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
@@ -1254,11 +1258,12 @@ execution.setVariable('srcrStatus', "Resubmitted");</camunda:script>
           <camunda:executionListener event="take">
             <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', "Resubmitted");
 execution.setVariable('requestStatus', "Resubmitted");
-execution.setVariable('srcrStatus', "Resubmitted");</camunda:script>
+execution.setVariable('srcrStatus', "Resubmitted");
+execution.setVariable('isSrcrResubmitted', false);</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
             <camunda:field name="fields">
-              <camunda:expression>["applicationId", "applicationStatus", "srcrStatus"]</camunda:expression>
+              <camunda:expression>["applicationId", "applicationStatus", "srcrStatus","isSrcrResubmitted"]</camunda:expression>
             </camunda:field>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
