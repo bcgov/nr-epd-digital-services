@@ -585,12 +585,13 @@ system.out.println ("isSentFromSociety "+execution.getVariable('isSentFromSociet
           <camunda:executionListener event="take">
             <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', "Resubmitted");
 execution.setVariable('requestStatus', "Resubmitted");
-execution.setVariable('cssaStatus', "Resubmitted");</camunda:script>
+execution.setVariable('cssaStatus', "Resubmitted");
+execution.setVariable('isCssaResubmitted', false);</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="take" />
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
             <camunda:field name="fields">
-              <camunda:expression>["applicationId", "applicationStatus", "cssaStatus"]</camunda:expression>
+              <camunda:expression>["applicationId", "applicationStatus", "cssaStatus","isCssaResubmitted"]</camunda:expression>
             </camunda:field>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
@@ -691,11 +692,12 @@ execution.setVariable('cssaStatus', "Resubmitted");</camunda:script>
           <camunda:executionListener event="take">
             <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', "Resubmitted");
 execution.setVariable('requestStatus', "Resubmitted");
-execution.setVariable('cssaStatus', "Resubmitted");</camunda:script>
+execution.setVariable('cssaStatus', "Resubmitted");
+execution.setVariable('isCssaResubmitted', false);</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
             <camunda:field name="fields">
-              <camunda:expression>["applicationId", "applicationStatus", "cssaStatus"]</camunda:expression>
+              <camunda:expression>["applicationId", "applicationStatus", "cssaStatus","isCssaResubmitted"]</camunda:expression>
             </camunda:field>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
@@ -963,11 +965,12 @@ task.execution.setVariable('subFormName','SRCR Form');</camunda:script>
           <camunda:executionListener event="take">
             <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', "Resubmitted");
 execution.setVariable('requestStatus', "Resubmitted");
-execution.setVariable('srcrStatus', "Resubmitted");</camunda:script>
+execution.setVariable('srcrStatus', "Resubmitted");
+execution.setVariable('isSrcrResubmitted', false);</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
             <camunda:field name="fields">
-              <camunda:expression>["applicationId", "applicationStatus", "srcrStatus"]</camunda:expression>
+              <camunda:expression>["applicationId", "applicationStatus", "srcrStatus","isSrcrResubmitted"]</camunda:expression>
             </camunda:field>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
@@ -1036,12 +1039,13 @@ execution.setVariable('srcrStatus', "Resubmitted");</camunda:script>
           <camunda:executionListener event="take">
             <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', "Resubmitted");
 execution.setVariable('requestStatus', "Resubmitted");
-execution.setVariable('srcrStatus', "Resubmitted");</camunda:script>
+execution.setVariable('srcrStatus', "Resubmitted");
+execution.setVariable('isSrcrResubmitted', false);</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="take" />
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
             <camunda:field name="fields">
-              <camunda:expression>["applicationId", "applicationStatus", "srcrStatus"]</camunda:expression>
+              <camunda:expression>["applicationId", "applicationStatus", "srcrStatus","isSrcrResubmitted"]</camunda:expression>
             </camunda:field>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
@@ -1110,11 +1114,12 @@ execution.setVariable('srcrStatus', "Resubmitted");</camunda:script>
           <camunda:executionListener event="take">
             <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', "Resubmitted");
 execution.setVariable('requestStatus', "Resubmitted");
-execution.setVariable('srcrStatus', "Resubmitted");</camunda:script>
+execution.setVariable('srcrStatus', "Resubmitted");
+execution.setVariable('isSrcrResubmitted', false);</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
             <camunda:field name="fields">
-              <camunda:expression>["applicationId", "applicationStatus", "srcrStatus"]</camunda:expression>
+              <camunda:expression>["applicationId", "applicationStatus", "srcrStatus", "isSrcrResubmitted"]</camunda:expression>
             </camunda:field>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
@@ -1672,6 +1677,18 @@ task.execution.setVariable('userRole','CSSA Team');</camunda:script>
       <bpmndi:BPMNShape id="BPMNShape_0i64ri8" bpmnElement="Activity_035ztxq">
         <dc:Bounds x="745" y="3330" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0ank1lf" bpmnElement="Gateway_15xl0xr" isMarkerVisible="true">
+        <dc:Bounds x="770" y="3555" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="718" y="3553" width="63" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_000bt00" bpmnElement="Event_129m2pb">
+        <dc:Bounds x="777" y="3652" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="771" y="3698" width="47" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_09m7thg" bpmnElement="Activity_1lysqui">
         <dc:Bounds x="565" y="3030" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -1711,18 +1728,6 @@ task.execution.setVariable('userRole','CSSA Team');</camunda:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0175hfp_di" bpmnElement="Gateway_1q522rt">
         <dc:Bounds x="695" y="3485" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0ank1lf" bpmnElement="Gateway_15xl0xr" isMarkerVisible="true">
-        <dc:Bounds x="770" y="3555" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="718" y="3553" width="63" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_000bt00" bpmnElement="Event_129m2pb">
-        <dc:Bounds x="777" y="3652" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="771" y="3698" width="47" height="14" />
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_0s49r3m" bpmnElement="Flow_0f731f5">
         <di:waypoint x="615" y="3285" />
@@ -1932,6 +1937,10 @@ task.execution.setVariable('userRole','CSSA Team');</camunda:script>
           <dc:Bounds x="1851" y="4086" width="64" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_11yj5rw" bpmnElement="Activity_1twm3ar">
+        <dc:Bounds x="1960" y="3230" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0uda94b_di" bpmnElement="Gateway_0ps7zso">
         <dc:Bounds x="1730" y="3005" width="50" height="50" />
       </bpmndi:BPMNShape>
@@ -1943,10 +1952,6 @@ task.execution.setVariable('userRole','CSSA Team');</camunda:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_11ce59l_di" bpmnElement="Gateway_1g6waa1">
         <dc:Bounds x="1730" y="4125" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_11yj5rw" bpmnElement="Activity_1twm3ar">
-        <dc:Bounds x="1960" y="3230" width="100" height="80" />
-        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_1w38rih" bpmnElement="Flow_05vthw4">
         <di:waypoint x="1950" y="4075" />
