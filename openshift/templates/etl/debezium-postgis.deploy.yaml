@@ -71,7 +71,7 @@ objects:
           image: "${API_NAME}"
           imagePullPolicy: Always
           ports:
-          - containerPort: 9092
+          - containerPort: 5432
             protocol: TCP
           env:
             - name: POSTGRES_USER
@@ -104,10 +104,10 @@ objects:
       template: "${API_NAME}-deploy"
   spec:
     ports:
-    - name: 7432-tcp
+    - name: 5432-tcp
       protocol: TCP
       port: 5432
-      targetPort: 7432
+      targetPort: 5432
     selector:
       deploymentconfig: "${API_NAME}"
     type: ClusterIP
@@ -128,7 +128,7 @@ objects:
       name: "${API_NAME}"
       weight: 100
     port:
-      targetPort: 7432-tcp
+      targetPort: 5432-tcp
     tls:
       termination: edge
     wildcardPolicy: None
