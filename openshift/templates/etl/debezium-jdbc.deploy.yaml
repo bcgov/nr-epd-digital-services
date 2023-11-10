@@ -54,11 +54,11 @@ objects:
           image: "${API_NAME}"
           imagePullPolicy: Always
           ports:
-          - containerPort: 9092
+          - containerPort: 8083
             protocol: TCP
           env:
             - name: BOOTSTRAP_SERVERS
-              value: "kafka:9092"  
+              value: "debezium-kafka:9092"  
             - name: GROUP_ID
               value: "1"  
             - name: CONFIG_STORAGE_TOPIC
@@ -73,11 +73,11 @@ objects:
               value: "n"        
           resources:
             requests:
-              cpu: "50m"
-              memory: "250Mi"
-            limits:
               cpu: "150m"
               memory: "500Mi"
+            limits:
+              cpu: "250m"
+              memory: "1Gi"
           terminationMessagePath: "/dev/termination-log"
           terminationMessagePolicy: File
           imagePullPolicy: Always
