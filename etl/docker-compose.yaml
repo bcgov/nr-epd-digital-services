@@ -19,7 +19,7 @@ services:
     build:
       context: debezium-postgis/15-3.3
     ports:
-     - "5432:5432"
+     - "7432:5432"
     environment:
      - POSTGRES_USER=postgres
      - POSTGRES_PASSWORD=postgres

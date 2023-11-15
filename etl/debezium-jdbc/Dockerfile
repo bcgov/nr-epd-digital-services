@@ -34,6 +34,8 @@ COPY --from=builder /app/target/*.jar $KAFKA_CONNECT_JDBC_DIR/
 COPY --from=builder /app/lib/*.jar $KAFKA_CONNECT_JDBC_DIR/
 COPY InstallCert.class .
 COPY "InstallCert\$SavingTrustManager.class" .
+COPY connect-log4j.properties /kafka/config/
+COPY log4j.properties /kafka/config/
 
 RUN java InstallCert --quiet "${ORACLE_DB_HOST}:${ORACLE_DB_PORT}"
 RUN keytool -exportcert -alias "$ORACLE_DB_HOST-1" -keystore jssecacerts -storepass changeit -file oracle.cer

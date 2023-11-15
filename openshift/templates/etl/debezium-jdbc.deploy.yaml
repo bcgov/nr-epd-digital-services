@@ -68,7 +68,7 @@ objects:
             - name: STATUS_STORAGE_TOPIC
               value: "epd_connect_statuses"   
             - name: KAFKA_DEBUG
-              value: "true"
+              value: "false"
             - name: DEBUG_SUSPEND_FLAG
               value: "n"        
           resources:
