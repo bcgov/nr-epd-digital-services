@@ -87,25 +87,6 @@ objects:
     sessionAffinity: None
   # status:
   #   loadBalancer: {}
-- kind: Route
-  apiVersion: v1
-  metadata:
-    name: "${API_NAME}"
-    labels:
-      app: "${API_NAME}"
-      app-group: "${APP_GROUP}"
-      template: "${API_NAME}-deploy"
-  spec:
-    to:
-      kind: Service
-      name: "${API_NAME}"
-      weight: 100
-    port:
-      targetPort: 2181-tcp
-    tls:
-      termination: edge
-    wildcardPolicy: None
-    host: "${API_NAME}-${TAG_NAME}.apps.silver.devops.gov.bc.ca"
 parameters:
 - name: API_NAME
   displayName: Name
