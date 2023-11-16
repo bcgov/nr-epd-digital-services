@@ -61,7 +61,15 @@ export default function SiteDetailsTable({ onClickAdd, headers, data, label, onC
     // If the user manually selects all checkboxes, the header should auto-toggle and vice versa.
     useEffect(() => {
         const allChecked = getSelection().length === Object.keys(checked).length
-        setHeaderChecked(allChecked);
+        const tableEmpty = !!(data.length === 0);
+
+        if (tableEmpty) {
+            setHeaderChecked(false)
+        }
+        else {
+            setHeaderChecked(allChecked);
+        }
+
     }, [checked])
 
     function handleRemove(val) {

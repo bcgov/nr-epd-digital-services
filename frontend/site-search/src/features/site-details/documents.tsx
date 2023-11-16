@@ -55,7 +55,7 @@ function DocumentItem({document, index}: DocumentItemProps) {
                 <div className="d-flex justify-content-between mb-4">
                     <div className="d-inline-flex">
                         <h5 className='fw-bold'></h5>
-                        <p>Notation {index + 1}</p>
+                        <p>Document {index + 1}</p>
                         {isMinistry && <p className='mx-3'>Uploaded: {document.uploadedDate}</p>} 
                     </div>
                     {editMode && <div className="d-inline-flex">

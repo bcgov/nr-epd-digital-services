@@ -16,7 +16,10 @@ export function TableEditItem({ value }) {
 export function LinkableFormControl({ value }) {
     return (
         <>
-            <Link to={`/site/${value}/`}>{value}</Link>
+            {/* Prototype little quickhack fix.  If we use the <Link/> then while it works it doesn't update the top metadata section until refresh.  So, <a> forces refresh. */}
+            {/* <Link to={`/site/${value}/`}>{value}</Link> */}
+            <a href={`/site/${value}/`}>{value}</a>
+
         </>
     )
 }
