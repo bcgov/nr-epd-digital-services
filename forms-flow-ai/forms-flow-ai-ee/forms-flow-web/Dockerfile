@@ -9,6 +9,7 @@ ARG ssh_pub_key
 
 # Add `/app/node_modules/.bin` to $PATH
 ENV PATH /forms-flow-web/app/node_modules/.bin:$PATH
+ENV CHOKIDAR_USEPOLLING true
 
 # Install and cache app dependencies
 
@@ -65,3 +66,9 @@ EXPOSE 8080
 
 # Start Nginx server
 CMD ["nginx", "-g", "daemon off;"]
+
+# # Expose port
+# EXPOSE 3004
+
+# # Start app
+# CMD ["npm", "start"]
