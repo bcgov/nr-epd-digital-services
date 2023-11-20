@@ -57,7 +57,7 @@ jobs:
       - name: Login Openshift
         shell: bash
         run: |
-          oc login --server=${{secrets.OC_SERVER}} --token=${{secrets.OC_ETL_TOKEN}}
+          oc login --server=${{secrets.OC_SERVER}} --token=${{secrets.OC_TOKEN}}
 
       - name: Tools project
         shell: bash
