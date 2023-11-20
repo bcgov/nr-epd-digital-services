@@ -5,9 +5,9 @@ WORKDIR /app/
 COPY ./ ./
 RUN mvn clean install
 
+RUN echo "DEBEZIUM_VERSION is $DEBEZIUM_VERSION"
 
-
-FROM debezium/connect:$DEBEZIUM_VERSION
+FROM debezium/connect:1.9
 
 ARG ORACLE_JDBC_VERSION
 ARG ORACLE_JDBC_MD5
@@ -34,6 +34,8 @@ COPY --from=builder /app/target/*.jar $KAFKA_CONNECT_JDBC_DIR/
 COPY --from=builder /app/lib/*.jar $KAFKA_CONNECT_JDBC_DIR/
 COPY InstallCert.class .
 COPY "InstallCert\$SavingTrustManager.class" .
+COPY connect-log4j.properties /kafka/config/
+COPY log4j.properties /kafka/config/
 
 RUN java InstallCert --quiet "${ORACLE_DB_HOST}:${ORACLE_DB_PORT}"
 RUN keytool -exportcert -alias "$ORACLE_DB_HOST-1" -keystore jssecacerts -storepass changeit -file oracle.cer

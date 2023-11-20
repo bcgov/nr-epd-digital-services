@@ -1020,7 +1020,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
-                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/site-risk-classification-officer\")) \r\n{\r\n show = true;\r\n}\r\nelse if (roles.includes(\"formsflow-reviewer/caseworker\") &&\r\ndata.srcrBundleStatus === \"srcrSrcoAccepted\")\r\n{\r\n if (data.typeOfReview === \"applicationViaTheSocietyOfContaminatedSitesApprovedProfessionalsOfBc\" ||\r\n data.siteRiskClassification !== 'notHighRisk')\r\n  show = false;\r\nelse\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
+                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\nconst roles = UserDetails[\"role\"];\n\nif(roles.includes(\"formsflow-reviewer/site-risk-classification-officer\")) \n{\n show = true;\n}\nelse if (roles.includes(\"formsflow-reviewer/caseworker\") &&\ndata.srcrBundleStatus === \"srcrSrcoAccepted\")\n{\n if (data.typeOfReview === \"applicationViaTheSocietyOfContaminatedSitesApprovedProfessionalsOfBc\" ||\n data.siteRiskClassification !== 'notHighRisk')\n  show = false;\nelse\n  show = true;\n}\nelse if (roles.includes(\"formsflow-reviewer/caseworker\") && data.srcrBundleStatus === \"srcrCaseworkerAccepted\")\n{\n // Incase of returned by SDM\n show = true;\n}\nelse\n{\n  show = false;\n}",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
@@ -1072,7 +1072,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "eznm0q"
+                                            "id": "eilltmi"
                                         },
                                         {
                                             "label": "Approved",
@@ -1195,7 +1195,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
-                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nconst taskUrl = window.location.pathname.split('/');\r\nconst taskId = taskUrl[2];\r\nconst authToken = localStorage.getItem(\"authToken\");\r\nconst bpmUrl = localStorage.getItem(\"bpmApiUrl\");\r\nvar reqUrl = bpmUrl + \"/task/\" + taskId + \"/variables\";\r\n\r\n   getData(reqUrl, authToken).then((response) => {\r\n  \r\n  \t\t var applicationStatus = response.applicationStatus?response.applicationStatus.value:'';\r\n\t      if(response.deraStatus && response.deraStatus.value === 'Returned'){\r\n    \t\t component.disabled = true;\r\n\t        component.description = 'Disabled since DERA resubmission in progress';\r\n\t        instance.triggerRedraw();\r\n\r\n\t     }\r\n\t      else if (applicationStatus === 'Resubmit') {\r\n\r\n\t        component.disabled = true;\r\n\t        component.description = 'Disabled since CSSA resubmission in progress';\r\n\t        instance.triggerRedraw();\r\n\t      } else {\r\n\t        component.description = '';\r\n\t        component.disabled = false;\r\n\t        instance.triggerRedraw();\r\n\t      }\r\n\t  \r\n    });\r\n\r\n\r\nasync function getData(reqUrl, authToken) {\r\n    const response = await fetch(reqUrl, {\r\n        method: \"GET\",\r\n        headers: {\r\n            \"Content-type\": \"application/json\",\r\n            Accept: \"application/json\",\r\n            Authorization: \"Bearer \" + authToken,\r\n        },\r\n    });\r\n    const data = await response.json();\r\n    return data;\r\n}",
+                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nconst taskUrl = window.location.pathname.split('/');\r\nconst taskId = taskUrl[2];\r\nconst authToken = localStorage.getItem(\"authToken\");\r\nconst bpmUrl = localStorage.getItem(\"bpmApiUrl\");\r\nvar reqUrl = bpmUrl + \"/task/\" + taskId + \"/variables\";\r\n\r\n   getData(reqUrl, authToken).then((response) => {\r\n  \r\n  \t\t var applicationStatus = response.applicationStatus?response.applicationStatus.value:'';\r\n\t\t var isCssaResubmitted = response.isCssaResubmitted?response.isCssaResubmitted.value:false;\r\n \t\t var isDeraResubmitted = response.isDeraResubmitted?response.isDeraResubmitted.value:false;\r\n\r\n\t      if(isDeraResubmitted){\r\n    \t\t component.disabled = true;\r\n\t        component.description = 'Disabled since DERA resubmission in progress';\r\n\t        instance.triggerRedraw();\r\n\r\n\t     }\r\n\t      else if (isCssaResubmitted) {\r\n\r\n\t        component.disabled = true;\r\n\t        component.description = 'Disabled since CSSA resubmission in progress';\r\n\t        instance.triggerRedraw();\r\n\t      } else {\r\n\t        component.description = '';\r\n\t        component.disabled = false;\r\n\t        instance.triggerRedraw();\r\n\t      }\r\n\t  \r\n    });\r\n\r\n\r\nasync function getData(reqUrl, authToken) {\r\n    const response = await fetch(reqUrl, {\r\n        method: \"GET\",\r\n        headers: {\r\n            \"Content-type\": \"application/json\",\r\n            Accept: \"application/json\",\r\n            Authorization: \"Bearer \" + authToken,\r\n        },\r\n    });\r\n    const data = await response.json();\r\n    return data;\r\n}",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
@@ -1246,7 +1246,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "epaslsk"
+                                            "id": "e6wka93"
                                         }
                                     ],
                                     "size": "md",
@@ -2047,7 +2047,7 @@
                     "tableView": false,
                     "modalEdit": false,
                     "templates": {
-                        "header": "{% console.log(\"row-key header\",'commentFor',row['commentFor'])  %}\r\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n\r\n{% if(groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")){  %}\r\n\r\n<div class=\"row card-header bg-default\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component) && component.key !== 'commentFor'  ) { %}\r\n         {% if(component.label === 'Notes') {  %}\r\n           <div class=\"col-sm-4\">{{ t(component.label) }}</div>\r\n         {% } else if(component.key !== 'comments') {  %}\r\n           <div class=\"col-sm-2\">{{ t(component.label) }}</div>\r\n         {% } %}\r\n        {% } %}\r\n      {% }) %}\r\n    </div>\r\n\r\n{% } else { %}\r\n\r\n<div class=\"row card-header bg-default\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component)) { %}\r\n      \r\n     {% if(component.key == 'comments') {  %}\r\n        <div class=\"col-sm-4\"> {{   t(component.label)}} </div>\r\n {% } else if(component.key == 'role' || component.key == 'createdBy') {  %}\r\n        <div class=\"col-sm-2\"> {{   t(component.label)}} </div>\r\n{% } else { %}\r\n  <div class=\"col-sm-1\"> {{  t(component.label)}} </div>\r\n{% } %}      \r\n\r\n      \r\n {% } %}\r\n      {% }) %}\r\n    </div>\r\n\r\n{% } %}\r\n\r\n\r\n\r\n\r\n",
+                        "header": "{% console.log(\"row-key header\",'commentFor',row['commentFor'])  %}\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\n{% const groups = UserDetails[\"groups\"]; %}\n\n{% if(groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")){  %}\n\n<div class=\"row card-header bg-default\">\n      {% util.eachComponent(components, function(component) { %}\n        {% if (displayValue(component) && component.key !== 'commentFor'  ) { %}\n         {% if(component.label === 'Notes') {  %}\n           <div class=\"col-sm-4\">{{ t(component.label) }}</div>\n         {% } else if(component.key !== 'comments') {  %}\n           <div class=\"col-sm-2\">{{ t(component.label) }}</div>\n         {% } %}\n        {% } %}\n      {% }) %}\n    </div>\n\n{% } else { %}\n\n<div class=\"row card-header bg-default\">\n      {% util.eachComponent(components, function(component) { %}\n        {% if (displayValue(component)) { %}\n      \n     {% if(component.key == 'comments') {  %}\n        <div class=\"col-sm-4\"> {{   t(component.label)}} </div>\n {% } else if(component.key == 'role' || component.key == 'createdBy') {  %}\n        <div class=\"col-sm-2\"> {{   t(component.label)}} </div>\n{% } else { %}\n  <div class=\"col-sm-1\"> {{  t(component.label)}} </div>\n{% } %}      \n\n      \n {% } %}\n      {% }) %}\n    </div>\n\n{% } %}",
                         "tableHeader": "\n      <tr>\n        {% util.eachComponent(components, function(component) { %}\n          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}\n            <td class=\"editgrid-table-column\">{{ component.label }}</td>\n          {% } %}\n        {% }) %}\n        {% if (!instance.options.readOnly && !instance.disabled) { %}\n          <td class=\"editgrid-table-column\">Actions</td>\n        {% } %}\n      </tr>\n    ",
                         "row": "{% console.log(\"row-key main srcr\",'commentFor',row['commentFor'])  %}\r\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% console.log('rendering edit grid body')%}\r\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){  %}\r\n\r\n\r\n\r\n<div class=\"row\">\r\n\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component) && component.key !== 'commentFor' ) { %}\r\n        {% console.log(\"row-key\",component.key,row[component.key])  %}\r\n        {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){ %}\r\n{% if(component.key == 'comments') {  %}\r\n          <div class=\"col-sm-4 text-break\">\r\n               {{ getView(component, row[component.key])}}\r\n          </div>\r\n{% } else { %}\r\n <div class=\"col-sm-2 text-break\">\r\n    {{ getView(component, row[component.key])}}\r\n          </div>\r\n{%}%}\r\n           \r\n\r\n            {% } %}\r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n              {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){ %}\r\n        <div class=\"col-sm-2\">\r\n          <div class=\"btn-group pull-right\">\r\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n       \r\n           {% } %}\r\n      {% } %}\r\n    </div>\r\n     {% } else if (groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\") || groups.includes(\"/formsflow/formsflow-reviewer/site-risk-classification-officer\") || groups.includes(\"/formsflow/formsflow-reviewer/cssa-manager\") || groups.includes(\"/formsflow/formsflow-reviewer/cssa-team\") || groups.includes(\"/formsflow/formsflow-reviewer/caseworker\") || groups.includes(\"/formsflow/formsflow-reviewer/sdm\")) { %}\r\n     <div class=\"row\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n      {% console.log('for sia') %}\r\n        {% if (displayValue(component)) { %}\r\n         {% if(component.key == 'comments') {  %}\r\n        <div class=\"col-sm-4 text-break\"> {{  getView(component, row[component.key])}} </div>\r\n{% } else if(component.key == 'role' || component.key == 'createdBy') {  %}\r\n        <div class=\"col-sm-2 text-break\"> {{  getView(component, row[component.key])}} </div>\r\n{% } else { %}\r\n  <div class=\"col-sm-1\"> {{  getView(component, row[component.key])}} </div>\r\n{% } %}      \r\n         \r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n        <div class=\"col-sm-1\">\r\n          <div class=\"btn-group pull-right\">\r\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n      {% } %}\r\n    </div>\r\n     {% } %}\r\n   \r\n     \r\n     \r\n{% const emptyElements = []; %}\r\n{% const elements = document.getElementsByClassName(\"list-group-item\"); %}\r\n{% for (let i = 0; i < elements.length; i++) { %}\r\n{%  const element = elements[i]; %}\r\n{% if(element.querySelectorAll('div.row').length===0){(element).remove() }} %}",
                         "tableRow": "\n      {% util.eachComponent(components, function(component) { %}\n          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}\n            <td class=\"editgrid-table-column\">\n              {{ getView(component, row[component.key]) }}\n            </td>\n          {% } %}\n        {% }) %}\n        {% if (!instance.options.readOnly && !instance.disabled) { %}\n          <td class=\"editgrid-table-column\">\n            <div class=\"btn-group\">\n              <button class=\"btn btn-default btn-light btn-sm editRow\" aria-label=\"{{ t('Edit row') }}\"><i class=\"{{ iconClass('edit') }}\"></i></button>\n              {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\n              <button class=\"btn btn-danger btn-sm removeRow\" aria-label=\"{{ t('Remove row') }}\"><i class=\"{{ iconClass('trash') }}\"></i></button>\n              {% } %}\n            </div>\n          </td>\n        {% } %}\n    ",
@@ -2194,7 +2194,7 @@
                                             "wysiwyg": false,
                                             "editor": "",
                                             "fixedSize": true,
-                                            "id": "ey1gq4r"
+                                            "id": "emqkff9"
                                         }
                                     ],
                                     "width": 4,
@@ -2286,7 +2286,7 @@
                                             "addons": [],
                                             "inputType": "radio",
                                             "fieldSet": false,
-                                            "id": "e9bcg9g"
+                                            "id": "e6fpgbb"
                                         }
                                     ],
                                     "width": 2,
@@ -2373,7 +2373,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "epglnlb"
+                                            "id": "epef9wl"
                                         }
                                     ],
                                     "size": "md",
@@ -2460,7 +2460,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "eeowpjq"
+                                            "id": "eh7dia"
                                         }
                                     ],
                                     "size": "md",
@@ -2547,7 +2547,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "elq91z"
+                                            "id": "ejuu0r"
                                         }
                                     ],
                                     "size": "md",
@@ -2622,7 +2622,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "elyerv7"
+                            "id": "e6aewb"
                         }
                     ],
                     "placeholder": "",
@@ -2641,7 +2641,7 @@
                     "tree": true,
                     "lazyLoad": false,
                     "defaultOpen": false,
-                    "id": "ek52ur9"
+                    "id": "e2kbdyi"
                 },
                 {
                     "title": "Collection Notice",
@@ -5069,7 +5069,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ele95t000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ele95t000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "spropertyOwnerAndOrOperator",
                                     "tree": false,
                                     "type": "panel",
@@ -14481,7 +14481,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eks0gu00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eks0gu00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "exposurePathwayQuestionnaireAffectedParcel",
                                     "tree": false,
                                     "type": "panel",
@@ -18424,7 +18424,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eo5mwyp000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eo5mwyp000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
