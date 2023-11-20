@@ -69,7 +69,7 @@ execution.setVariable('name',contactPersonName);
 system.out.println ("contactPersonName"+execution.getVariable('Section1C-FirstName'));
 
 
-execution.setVariable('name','');  
+execution.setVariable('name','User');  
 execution.setVariable('formName','Site Disclosure Statements');  </bpmn:script>
     </bpmn:scriptTask>
     <bpmn:startEvent id="Event_02fettt" name="Submit Form">
