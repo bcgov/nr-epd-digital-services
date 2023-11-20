@@ -44,4 +44,6 @@ COPY --from=build /usr/share/postgresql/$PG_MAJOR/extension/decoderbufs.control 
 COPY postgresql.conf.sample /usr/share/postgresql/postgresql.conf.sample
 
 # Copy the script which will initialize the replication permissions
-COPY /docker-entrypoint-initdb.d /docker-entrypoint-initdb.d
+COPY /docker-entrypoint-initdb.d/init-permissions.sh /docker-entrypoint-initdb.d/init-permissions.sh
+
+RUN chmod +x /docker-entrypoint-initdb.d/init-permissions.sh

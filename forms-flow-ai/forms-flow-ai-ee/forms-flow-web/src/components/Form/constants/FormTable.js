@@ -20,7 +20,7 @@ import SelectFormForDownload from "../FileUpload/SelectFormForDownload";
 import LoadingOverlay from "react-loading-overlay";
 import { STAFF_DESIGNER } from "../../../constants/constants";
 import { getBundle } from "../../../apiManager/services/bundleServices";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { TYPE_BUNDLE } from "../../../constants/applicationConstants";
 
 function FormTable() {
@@ -43,6 +43,7 @@ function FormTable() {
   const [search, setSearch] = useState(searchText || "");
   const [bundleData, setBundleData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
+  const { t } = useTranslation();
 
   const pageOptions = [
     {

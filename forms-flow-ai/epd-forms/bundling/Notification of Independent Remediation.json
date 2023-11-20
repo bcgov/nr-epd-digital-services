@@ -441,9 +441,9 @@
                     "tableView": false,
                     "modalEdit": false,
                     "templates": {
-                        "header": "{% console.log(\"row-key header\",'commentFor',row['commentFor'])  %}\r\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n\r\n{% if(groups.includes(\"/formsflow/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")){  %}\r\n\r\n<div class=\"row card-header bg-default\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component) && component.key !== 'commentFor'  ) { %}\r\n         {% if(component.label === 'Notes') {  %}\r\n           <div class=\"col-sm-4\">{{ t(component.label) }}</div>\r\n         {% } else if(component.key !== 'comments') {  %}\r\n           <div class=\"col-sm-2\">{{ t(component.label) }}</div>\r\n         {% } %}\r\n        {% } %}\r\n      {% }) %}\r\n    </div>\r\n\r\n{% } else { %}\r\n\r\n<div class=\"row card-header bg-default\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component)) { %}\r\n          {% if(component.key == 'comments') {  %}\r\n        <div class=\"col-sm-4\"> {{   t(component.label)}} </div>\r\n {% } else if(component.key == 'role' || component.key == 'createdBy') {  %}\r\n        <div class=\"col-sm-2\"> {{   t(component.label)}} </div>\r\n{% } else { %}\r\n  <div class=\"col-sm-1\"> {{  t(component.label)}} </div>\r\n{% } %}      \r\n {% } %}\r\n      {% }) %}\r\n    </div>\r\n\r\n{% } %}",
+                        "header": "{% console.log(\"row-key header\",'commentFor',row['commentFor'])  %}\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\n{% const groups = UserDetails[\"groups\"]; %}\n\n{% if(groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")){  %}\n\n<div class=\"row card-header bg-default\">\n      {% util.eachComponent(components, function(component) { %}\n        {% if (displayValue(component) && component.key !== 'commentFor'  ) { %}\n         {% if(component.label === 'Notes') {  %}\n           <div class=\"col-sm-4\">{{ t(component.label) }}</div>\n         {% } else if(component.key !== 'comments') {  %}\n           <div class=\"col-sm-2\">{{ t(component.label) }}</div>\n         {% } %}\n        {% } %}\n      {% }) %}\n    </div>\n\n{% } else { %}\n\n<div class=\"row card-header bg-default\">\n      {% util.eachComponent(components, function(component) { %}\n        {% if (displayValue(component)) { %}\n          {% if(component.key == 'comments') {  %}\n        <div class=\"col-sm-4\"> {{   t(component.label)}} </div>\n {% } else if(component.key == 'role' || component.key == 'createdBy') {  %}\n        <div class=\"col-sm-2\"> {{   t(component.label)}} </div>\n{% } else { %}\n  <div class=\"col-sm-1\"> {{  t(component.label)}} </div>\n{% } %}      \n {% } %}\n      {% }) %}\n    </div>\n\n{% } %}",
                         "tableHeader": "\n      <tr>\n        {% util.eachComponent(components, function(component) { %}\n          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}\n            <td class=\"editgrid-table-column\">{{ component.label }}</td>\n          {% } %}\n        {% }) %}\n        {% if (!instance.options.readOnly && !instance.disabled) { %}\n          <td class=\"editgrid-table-column\">Actions</td>\n        {% } %}\n      </tr>\n    ",
-                        "row": "\r\n\r\n{% console.log(\"row-key main\",'commentFor',row['commentFor'])  %}\r\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% console.log('rendering edit grid body')%}\r\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){  %}\r\n\r\n\r\n\r\n<div class=\"row\">\r\n\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component) && component.key !== 'commentFor' ) { %}\r\n        {% console.log(\"row-key\",component.key,row[component.key])  %}\r\n        {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){ %}\r\n{% if(component.key == 'comments') {  %}\r\n          <div class=\"col-sm-4  text-break\">\r\n               {{ getView(component, row[component.key])}}\r\n          </div>\r\n{% } else { %}\r\n <div class=\"col-sm-2  text-break\">\r\n    {{ getView(component, row[component.key])}}\r\n          </div>\r\n{%}%}\r\n           \r\n\r\n            {% } %}\r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n              {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){ %}\r\n        <div class=\"col-sm-2\">\r\n          <div class=\"btn-group pull-right\">\r\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n       \r\n           {% } %}\r\n      {% } %}\r\n    </div>\r\n     {% } else if (groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\") || groups.includes(\"/formsflow/formsflow-reviewer/cssa-team\") || groups.includes(\"/formsflow/formsflow-reviewer/caseworker\") || groups.includes(\"/formsflow/formsflow-reviewer/sdm\")) { %}\r\n     <div class=\"row\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n      {% console.log('for sia') %}\r\n        {% if (displayValue(component)) { %}\r\n         {% if(component.key == 'comments') {  %}\r\n        <div class=\"col-sm-4  text-break\"> {{  getView(component, row[component.key])}} </div>\r\n {% } else if(component.key == 'role' || component.key == 'createdBy') {  %}\r\n        <div class=\"col-sm-2 text-break\"> {{  getView(component, row[component.key])}} </div>\r\n{% } else { %}\r\n  <div class=\"col-sm-1\"> {{  getView(component, row[component.key])}} </div>\r\n{% } %}      \r\n         \r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n        <div class=\"col-sm-1\">\r\n          <div class=\"btn-group pull-right\">\r\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n      {% } %}\r\n    </div>\r\n     {% } %}\r\n   \r\n     \r\n     \r\n{% const emptyElements = []; %}\r\n{% const elements = document.getElementsByClassName(\"list-group-item\"); %}\r\n{% for (let i = 0; i < elements.length; i++) { %}\r\n{%  const element = elements[i]; %}\r\n{% if(element.querySelectorAll('div.row').length===0){(element).remove() }} %}",
+                        "row": "\n\n{% console.log(\"row-key main\",'commentFor',row['commentFor'])  %}\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\n{% const groups = UserDetails[\"groups\"]; %}\n{% console.log('rendering edit grid body')%}\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){  %}\n\n\n\n<div class=\"row\">\n\n      {% util.eachComponent(components, function(component) { %}\n        {% if (displayValue(component) && component.key !== 'commentFor' ) { %}\n        {% console.log(\"row-key\",component.key,row[component.key])  %}\n        {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\n{% const groups = UserDetails[\"groups\"]; %}\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){ %}\n{% if(component.key == 'comments') {  %}\n          <div class=\"col-sm-4  text-break\">\n               {{ getView(component, row[component.key])}}\n          </div>\n{% } else { %}\n <div class=\"col-sm-2  text-break\">\n    {{ getView(component, row[component.key])}}\n          </div>\n{%}%}\n           \n\n            {% } %}\n        {% } %}\n      {% }) %}\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\n              {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\n{% const groups = UserDetails[\"groups\"]; %}\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){ %}\n        <div class=\"col-sm-2\">\n          <div class=\"btn-group pull-right\">\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\n            {% } %}\n          </div>\n        </div>\n       \n           {% } %}\n      {% } %}\n    </div>\n     {% } else if (groups.includes(\"/formsflow/formsflow-reviewer/cssa-manager\") || groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\") || groups.includes(\"/formsflow/formsflow-reviewer/cssa-team\") || groups.includes(\"/formsflow/formsflow-reviewer/caseworker\") || groups.includes(\"/formsflow/formsflow-reviewer/sdm\")) { %}\n     <div class=\"row\">\n      {% util.eachComponent(components, function(component) { %}\n      {% console.log('for sia') %}\n        {% if (displayValue(component)) { %}\n         {% if(component.key == 'comments') {  %}\n        <div class=\"col-sm-4  text-break\"> {{  getView(component, row[component.key])}} </div>\n {% } else if(component.key == 'role' || component.key == 'createdBy') {  %}\n        <div class=\"col-sm-2 text-break\"> {{  getView(component, row[component.key])}} </div>\n{% } else { %}\n  <div class=\"col-sm-1\"> {{  getView(component, row[component.key])}} </div>\n{% } %}      \n         \n        {% } %}\n      {% }) %}\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\n        <div class=\"col-sm-1\">\n          <div class=\"btn-group pull-right\">\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\n            {% } %}\n          </div>\n        </div>\n      {% } %}\n    </div>\n     {% } %}\n   \n     \n     \n{% const emptyElements = []; %}\n{% const elements = document.getElementsByClassName(\"list-group-item\"); %}\n{% for (let i = 0; i < elements.length; i++) { %}\n{%  const element = elements[i]; %}\n{% if(element.querySelectorAll('div.row').length===0){(element).remove() }} %}",
                         "tableRow": "\n      {% util.eachComponent(components, function(component) { %}\n          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}\n            <td class=\"editgrid-table-column\">\n              {{ getView(component, row[component.key]) }}\n            </td>\n          {% } %}\n        {% }) %}\n        {% if (!instance.options.readOnly && !instance.disabled) { %}\n          <td class=\"editgrid-table-column\">\n            <div class=\"btn-group\">\n              <button class=\"btn btn-default btn-light btn-sm editRow\" aria-label=\"{{ t('Edit row') }}\"><i class=\"{{ iconClass('edit') }}\"></i></button>\n              {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\n              <button class=\"btn btn-danger btn-sm removeRow\" aria-label=\"{{ t('Remove row') }}\"><i class=\"{{ iconClass('trash') }}\"></i></button>\n              {% } %}\n            </div>\n          </td>\n        {% } %}\n    ",
                         "footer": "{% const emptyElements = []; %}\r\n{% const elements = document.getElementsByClassName(\"list-group-item\"); %}\r\n{% for (let i = 0; i < elements.length; i++) { %}\r\n{% const element = elements[i]; %}\r\n{%if(element.querySelectorAll('div.row').length===0){(element).remove() }} %}\r\n"
                     },
@@ -588,7 +588,7 @@
                                             "wysiwyg": false,
                                             "editor": "",
                                             "fixedSize": true,
-                                            "id": "e4fc3qw"
+                                            "id": "ex1e4u"
                                         }
                                     ],
                                     "width": 4,
@@ -680,7 +680,7 @@
                                             "addons": [],
                                             "inputType": "radio",
                                             "fieldSet": false,
-                                            "id": "eut4i8p"
+                                            "id": "ekd68k"
                                         }
                                     ],
                                     "width": 2,
@@ -767,7 +767,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "e0r0pe"
+                                            "id": "e3ncm9r"
                                         }
                                     ],
                                     "size": "md",
@@ -854,7 +854,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "e0qx6r5"
+                                            "id": "eylboa"
                                         }
                                     ],
                                     "size": "md",
@@ -941,7 +941,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "eaf97yl"
+                                            "id": "ejbifaj"
                                         }
                                     ],
                                     "size": "md",
@@ -1016,7 +1016,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "e9w4cmj"
+                            "id": "eplwoo"
                         }
                     ],
                     "placeholder": "",
@@ -1035,7 +1035,7 @@
                     "tree": true,
                     "lazyLoad": false,
                     "defaultOpen": false,
-                    "id": "emybtj9"
+                    "id": "e1a3j4p"
                 },
                 {
                     "id": "ecf3gbp",
@@ -9078,7 +9078,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "epivnsp00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "epivnsp00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "contaminant",
                                     "mask": false,
                                     "type": "textfield",
@@ -9155,7 +9155,7 @@
                                     "truncateMultipleSpaces": false
                                 },
                                 {
-                                    "id": "el3hlvr00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "el3hlvr00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "maximumConcentration",
                                     "mask": false,
                                     "type": "textfield",
@@ -9900,7 +9900,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "esedw400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "esedw400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "contaminant",
                                     "mask": false,
                                     "type": "textfield",
@@ -9977,7 +9977,7 @@
                                     "truncateMultipleSpaces": false
                                 },
                                 {
-                                    "id": "esor90600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "esor90600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "maximumConcentration",
                                     "mask": false,
                                     "type": "textfield",
@@ -10719,7 +10719,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ej0y4100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ej0y4100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "contaminant",
                                     "mask": false,
                                     "type": "textfield",
@@ -10796,7 +10796,7 @@
                                     "truncateMultipleSpaces": false
                                 },
                                 {
-                                    "id": "e8qg9fh00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "e8qg9fh00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "maximumConcentration",
                                     "mask": false,
                                     "type": "textfield",
@@ -11544,7 +11544,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eevqmo90000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eevqmo90000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "contaminant",
                                     "mask": false,
                                     "type": "textfield",
@@ -11621,7 +11621,7 @@
                                     "truncateMultipleSpaces": false
                                 },
                                 {
-                                    "id": "et223l30000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "et223l30000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "maximumConcentration",
                                     "mask": false,
                                     "type": "textfield",
