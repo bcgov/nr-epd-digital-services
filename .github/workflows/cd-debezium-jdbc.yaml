@@ -24,7 +24,7 @@ env:
   APP_NAME: "debezium-jdbc"
 
 jobs:
-  forms-flow-ai-bpm-cd-by-push:
+  etl-debezium-jdbc-cd-by-push:
     runs-on: ubuntu-20.04
 
     if: github.repository == 'bcgov/nr-epd-digital-services'
