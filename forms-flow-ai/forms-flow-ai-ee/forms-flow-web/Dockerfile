@@ -32,6 +32,15 @@ RUN echo "$ssh_prv_key" |  sed 's/\\n/\n/g'  > /root/.ssh/id_rsa && \
     chmod 600 /root/.ssh/id_rsa && \
     chmod 600 /root/.ssh/id_rsa.pub
 
+# COPY id_rsa_epd /root/.ssh/id_rsa
+# COPY id_rsa_epd.pub /root/.ssh/id_rsa.pub
+
+# RUN chmod 600 /root/.ssh/id_rsa
+
+# RUN chmod 600 /root/.ssh/id_rsa.pub
+
+# RUN mkdir -p /root/.ssh && ssh-keyscan github.com >> /root/.ssh/known_hosts
+
 RUN mkdir -p /root/.ssh && ssh-keyscan github.com >> /root/.ssh/known_hosts
 
 RUN git clone git@github.com:AOT-Technologies/forms-flow-ai-ee.git -b epd-ff-ee-5.2.0 /tmp/forms-flow-ai/

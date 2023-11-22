@@ -19,7 +19,7 @@ const AppRoutes = () => {
         <Route path="/profile" element={<ProtectedRoute element={<UserProfile/>}/>}/>
         <Route path="/signup" element={<SignUp/>}/>
         <Route path="/map" element={<Map/>}/>
-        <Route path="/fileupload" element={<FileUpload/>}/>
+        <Route path="/fileupload" element={<ProtectedRoute element={<FileUpload/>}/>}/>
         <Route path="/users" element={<UsersList />}></Route>
         <Route path="/users/add" element={<AddUserForm />}></Route>
         <Route path="*" element={<h1>Page not found</h1>}></Route>
