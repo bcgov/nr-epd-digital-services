@@ -315,7 +315,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
-                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\n\r\nconst roles = UserDetails[\"role\"];\r\nconsole.log('bundleStatus-----', data.bundleStatus);\r\nif(roles.includes(\"formsflow-reviewer/caseworker\")&&\r\n(data.bundleStatus === 'cssaMgrAccepted' || \r\ndata.bundleStatus === 'cssaCaseworkerAccepted')) {\r\n    if(data.typeOfReview === \"applicationViaTheSocietyOfContaminatedSitesApprovedProfessionalsOfBc\")\r\n  show = false;\r\n  else\r\n    show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
+                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\n\r\nconst roles = UserDetails[\"role\"];\r\nif(roles.includes(\"formsflow-reviewer/caseworker\")&&\r\n(data.bundleStatus === 'cssaMgrAccepted' || \r\ndata.bundleStatus === 'cssaCaseworkerAccepted')) {\r\n    if(data.typeOfReview === \"applicationViaTheSocietyOfContaminatedSitesApprovedProfessionalsOfBc\")\r\n  show = false;\r\n  else\r\n    show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
