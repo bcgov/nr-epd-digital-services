@@ -63,7 +63,13 @@ jobs:
         shell: bash
         run: |
           oc project ${{ secrets.OC_ETL_NAMESPACE_NAMEPLATE }}-tools
-                
+
+      # Build from either dev or main branch as appropriate
+      - name: Build from ${{ env.BRANCH_NAME }} branch
+        shell: bash
+        run: |
+          oc patch bc/${{ env.APP_NAME }}-build -p '{"spec":{"source":{"git":{"ref":"${{ env.BRANCH_NAME }}"}}}}'
+
       - name: Start Build Openshift
         shell: bash
         run: |
