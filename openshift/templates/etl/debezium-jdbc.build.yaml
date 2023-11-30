@@ -2,7 +2,7 @@
 kind: Template
 apiVersion: template.openshift.io/v1
 metadata:
-  name: "${API_NAME}-build-template"
+  name: "${API_NAME}-${ENV_TAG}-build-template"
   creationTimestamp: 
 objects:
 - kind: ImageStream
@@ -12,9 +12,9 @@ objects:
 - kind: BuildConfig
   apiVersion: v1
   metadata:
-    name: "${API_NAME}-build"
+    name: "${API_NAME}-${ENV_TAG}-build"
     labels:
-      app: "${API_NAME}-build"
+      app: "${API_NAME}-${ENV_TAG}-build"
   spec:
     runPolicy: Serial
     source:
@@ -44,13 +44,18 @@ objects:
     output:
       to:
         kind: ImageStreamTag
-        name: "${API_NAME}:latest"
+        name: "${API_NAME}:${ENV_TAG}"
 parameters:
 - name: API_NAME
   displayName: Name
   description: The name assigned to all of the resources defined in this template.
   required: true
   value: debezium-jdbc
+- name: ENV_TAG
+  displayName: Environment name
+  description: The name of the environment, in build names and image stream tags
+  required: true
+  value: dev  
 - name: GIT_REPO_URL
   displayName: Git Repo URL
   description: The URL to your GIT repo.
