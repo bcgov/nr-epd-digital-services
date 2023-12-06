@@ -12,7 +12,7 @@
     <table style="width: 580px;">
         <tr>
             <td style="width: 151px;">
-                <img style="width: 151px;" src="${logoURL}">
+                <img style="width: 151px;" src="https://taft.fin.gov.bc.ca/img/BCID_H_rgb_pos_150.png">
             </td>
             <td>
                 <span id="nom_notification" style="overflow: visible;line-height: 30px;text-align: left;font-style: normal;font-weight: bold;font-size: 20px;color: rgba(0, 51, 102, 1);letter-spacing: -0.2px;vertical-align: middle;">Site Remediation Services</span>
