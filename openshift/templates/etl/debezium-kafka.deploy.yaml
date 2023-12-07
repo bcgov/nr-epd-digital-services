@@ -26,6 +26,15 @@ objects:
         maxSurge: 25%
     triggers:
     - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - "${API_NAME}"
+        from:
+          kind: ImageStreamTag
+          namespace: "${IMAGE_NAMESPACE}"
+          name: "${API_NAME}:${TAG_NAME}"
     replicas: 1
     test: false
     selector:
@@ -42,7 +51,7 @@ objects:
       spec:
         containers:
         - name: "${API_NAME}" 
-          image: debezium/kafka:1.9
+          image: "${API_NAME}"
           imagePullPolicy: Always
           ports:
           - containerPort: 9092
@@ -108,4 +117,4 @@ parameters:
   displayName: Environment TAG name
   description: The TAG name for this environment, e.g., dev, test, prod
   required: true
-  value: dev
+  value: latest

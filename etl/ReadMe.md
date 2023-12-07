@@ -37,10 +37,49 @@ jdbc:oracle:thin:@(description=(address=(protocol=tcps)(host=172.18.215.225.nip.
 
 # Create sample data in postgresql using init.sql
 
+# OpenShift Build and Deploy process
+
+## 1. Build custom postgis
+
+```
+     oc process -f debezium-postgis.build.yaml |oc apply -f - 
+```
+
+## 2. Build kafka jdbc connect component
+
+```
+     oc process -f debezium-jdbc.build.yaml --param-file=.env |oc apply -f - 
+```
+
+## 3. Build kafka broker.
+```
+     oc process -f debezium-kafka.build.yaml |oc apply -f - 
+```
+
+## 4. Deploy postgis (switch to correct project for env before this step)
+```
+     oc process -f debezium-postgis.deploy.yaml |oc apply -f - 
+```
+## 5. Deploy zookeeper
+```
+     oc process -f debezium-zookeeper.deploy.yaml |oc apply -f - 
+```
+## 6. Deploy kafka
+```
+     oc process -f debezium-kafka.deploy.yaml |oc apply -f - 
+```
+## 7. Deploy kafka-jdbc connect.
+```
+     oc process -f debezium-jdbc.deploy.yaml |oc apply -f - 
+```
 
 # Register postgresql connector
 ```
 curl -H "Content-Type: application/json" -d @register-postgres-source-connector.json http://localhost:8083/connectors/ 
+
+curl -H "Content-Type: application/json" -d @register-postgres-source-connector.json https://debezium-jdbc-latest.apps.silver.devops.gov.bc.ca/connectors/
+
+
 
 ```
 
@@ -48,6 +87,9 @@ curl -H "Content-Type: application/json" -d @register-postgres-source-connector.
 
 ```
 curl -H "Content-Type: application/json" -d @register-oracle-jdbc-sink-connector.json http://localhost:8083/connectors/
+
+curl -H "Content-Type: application/json" -d @register-oracle-jdbc-sink-connector.json https://debezium-jdbc-latest.apps.silver.devops.gov.bc.ca/connectors/
+
 
 ```
 
@@ -67,6 +109,16 @@ curl -X DELETE localhost:8083/connectors/<connector-name>
 
 curl -X DELETE localhost:8083/connectors/oracle-jdbc-sink-connector
 curl -X DELETE localhost:8083/connectors/postgres-source-connector
-```      
+
+curl -X DELETE https://debezium-jdbc-latest.apps.silver.devops.gov.bc.ca/connectors/oracle-jdbc-sink-connector
+curl -X DELETE https://debezium-jdbc-latest.apps.silver.devops.gov.bc.ca/connectors/postgres-source-connector
+
+```    
+
+# Get all connectors registered.
+```
+curl localhost:8083/connectors/
+curl https://debezium-jdbc-latest.apps.silver.devops.gov.bc.ca/connectors
+```
 
 
