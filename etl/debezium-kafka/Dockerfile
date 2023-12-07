@@ -1,5 +1,3 @@
-ARG DEBEZIUM_VERSION
-
 
 FROM debezium/kafka:1.9
 
