@@ -12,6 +12,9 @@
         <bpmn:flowNodeRef>Activity_0k6ixqm</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_17raw62</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_08cgufe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0yw5we4</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0z3ea6o</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1n62qcp</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_0bf59ja" name="Approved Professional">
         <bpmn:flowNodeRef>Gateway_04o747e</bpmn:flowNodeRef>
@@ -97,7 +100,7 @@
       </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_05pndkl" sourceRef="Activity_1ozfgid" targetRef="Gateway_17raw62" />
+    <bpmn:sequenceFlow id="Flow_05pndkl" sourceRef="Activity_1ozfgid" targetRef="Gateway_1n62qcp" />
     <bpmn:sequenceFlow id="Flow_1stifo9" name="Resubmitted" sourceRef="Activity_1v5ffpw" targetRef="Activity_1ozfgid">
       <bpmn:extensionElements>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="take" />
@@ -388,7 +391,9 @@ execution.setVariable('apRequired',true);
 } else {
 execution.setVariable('apRequired',false);
 }
-system.out.println ("apRequired"+execution.getVariable('apRequired'));</bpmn:script>
+system.out.println ("apRequired"+execution.getVariable('apRequired'));
+
+execution.setVariable('emailsIdsToProcess',emailsToArray);</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:scriptTask id="Activity_0k6ixqm" name="Set Variables" scriptFormat="javascript">
       <bpmn:incoming>Flow_1rc30l8</bpmn:incoming>
@@ -560,7 +565,7 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       <bpmn:outgoing>Flow_0op6tja</bpmn:outgoing>
     </bpmn:parallelGateway>
     <bpmn:exclusiveGateway id="Gateway_17raw62" name="Is Application Resubmitted">
-      <bpmn:incoming>Flow_05pndkl</bpmn:incoming>
+      <bpmn:incoming>Flow_0siy98w</bpmn:incoming>
       <bpmn:outgoing>Flow_1xj96i6</bpmn:outgoing>
       <bpmn:outgoing>Flow_0527h3y</bpmn:outgoing>
       <bpmn:outgoing>Flow_0543g25</bpmn:outgoing>
@@ -626,6 +631,28 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       <bpmn:incoming>Flow_1q3zpib</bpmn:incoming>
       <bpmn:incoming>Flow_14l7yi6</bpmn:incoming>
     </bpmn:endEvent>
+    <bpmn:callActivity id="Activity_0yw5we4" name="Create BC Box Bucket &#38; Notify" calledElement="create-bucket">
+      <bpmn:extensionElements>
+        <camunda:in variables="all" />
+        <camunda:out variables="all" />
+        <camunda:inputOutput>
+          <camunda:inputParameter name="category">sds_updated</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0gp1fnz</bpmn:incoming>
+      <bpmn:outgoing>Flow_1nigg0r</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:endEvent id="Event_0z3ea6o">
+      <bpmn:incoming>Flow_1nigg0r</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1nigg0r" sourceRef="Activity_0yw5we4" targetRef="Event_0z3ea6o" />
+    <bpmn:sequenceFlow id="Flow_0siy98w" sourceRef="Gateway_1n62qcp" targetRef="Gateway_17raw62" />
+    <bpmn:parallelGateway id="Gateway_1n62qcp">
+      <bpmn:incoming>Flow_05pndkl</bpmn:incoming>
+      <bpmn:outgoing>Flow_0siy98w</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0gp1fnz</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_0gp1fnz" sourceRef="Gateway_1n62qcp" targetRef="Activity_0yw5we4" />
   </bpmn:process>
   <bpmn:message id="Message_1ngb2eg" name="application_resubmitted" />
   <bpmn:message id="Message_0lm44we" name="application_resubmitted" />
@@ -957,7 +984,7 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_05pndkl_di" bpmnElement="Flow_05pndkl">
         <di:waypoint x="1255" y="200" />
-        <di:waypoint x="1255" y="265" />
+        <di:waypoint x="1255" y="205" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_04vwdbt" bpmnElement="Flow_19ktqsm">
         <di:waypoint x="1280" y="1740" />
@@ -1013,6 +1040,19 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1197" y="1762" width="46" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nigg0r_di" bpmnElement="Flow_1nigg0r">
+        <di:waypoint x="630" y="320" />
+        <di:waypoint x="692" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0siy98w_di" bpmnElement="Flow_0siy98w">
+        <di:waypoint x="1255" y="255" />
+        <di:waypoint x="1255" y="265" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0gp1fnz_di" bpmnElement="Flow_0gp1fnz">
+        <di:waypoint x="1230" y="230" />
+        <di:waypoint x="590" y="230" />
+        <di:waypoint x="590" y="290" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BPMNShape_01ekw8c" bpmnElement="Activity_08ykdar">
         <dc:Bounds x="1205" y="1440" width="100" height="80" />
@@ -1145,6 +1185,16 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
         <bpmndi:BPMNLabel>
           <dc:Bounds x="2660" y="4418" width="20" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1fbwq27" bpmnElement="Activity_0yw5we4">
+        <dc:Bounds x="530" y="290" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0z3ea6o_di" bpmnElement="Event_0z3ea6o">
+        <dc:Bounds x="692" y="302" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_188tv23_di" bpmnElement="Gateway_1n62qcp">
+        <dc:Bounds x="1230" y="205" width="50" height="50" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
