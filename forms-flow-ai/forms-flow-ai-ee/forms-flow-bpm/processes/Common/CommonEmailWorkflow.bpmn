@@ -122,7 +122,7 @@ system.out.println ("result: "+result);</bpmn:script>
           <camunda:inputParameter name="category">${category}</camunda:inputParameter>
           <camunda:inputParameter name="host">
             <camunda:script scriptFormat="javascript">const host = (java.lang.System).getenv('APP_HOST');
-console.log(`Host: ${host}`);
+console.log(`host: ${host}`);
 execution.setVariable("host", host);</camunda:script>
           </camunda:inputParameter>
           <camunda:outputParameter name="support">
