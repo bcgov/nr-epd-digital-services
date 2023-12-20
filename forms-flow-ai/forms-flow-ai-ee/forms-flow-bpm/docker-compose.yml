@@ -76,6 +76,7 @@ services:
       - CHES_SECRET=56b613b2-fbf8-481a-b464-38967c66e066
       - CHES_AUTH_URL=https://dev.loginproxy.gov.bc.ca/auth/realms/comsvcauth/protocol/openid-connect/token
       - CHES_HOST_URL=https://ches-dev.api.gov.bc.ca
+      - APP_HOST=${APP_HOST:-epd-frontend-dev.apps.silver.devops.gov.bc.ca}
 
     networks:
       - forms-flow-bpm-network
