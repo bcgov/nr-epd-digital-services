@@ -25,6 +25,7 @@ RUN docker-maven-download central "$ORACLE_JDBC_REPO" "$ORACLE_JDBC_GROUP" "$ORA
 
 # Fetch and deploy Kafka Connect JDBC
 ENV KAFKA_CONNECT_JDBC_DIR=$KAFKA_CONNECT_PLUGINS_DIR/kafka-connect-jdbc
+ENV KAFKA_OPTS="-Djava.security.auth.login.config=/kafka/config/connect_jaas.conf" 
 RUN mkdir $KAFKA_CONNECT_JDBC_DIR
 
 #RUN cd $KAFKA_CONNECT_JDBC_DIR && \
@@ -36,6 +37,9 @@ COPY InstallCert.class .
 COPY "InstallCert\$SavingTrustManager.class" .
 COPY connect-log4j.properties /kafka/config/
 COPY log4j.properties /kafka/config/
+COPY connect_jaas.conf /kafka/config/
+COPY connect.password /kafka/config/
+#COPY connect-distributed.properties /kafka/config/
 
 RUN java InstallCert --quiet "${ORACLE_DB_HOST}:${ORACLE_DB_PORT}"
 RUN keytool -exportcert -alias "$ORACLE_DB_HOST-1" -keystore jssecacerts -storepass changeit -file oracle.cer
