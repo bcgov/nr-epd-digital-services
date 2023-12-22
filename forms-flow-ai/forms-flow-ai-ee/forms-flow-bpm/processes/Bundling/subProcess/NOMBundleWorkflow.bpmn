@@ -13,10 +13,11 @@
       <bpmn:lane id="Lane_1mfcqjo" name="Client or QualifiedProfessional">
         <bpmn:flowNodeRef>Event_02fettt</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1ozfgid</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_0yw5we4</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_04mee55</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1e0i2ru</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_1ju72yh</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0yw5we4</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_04mee55</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1g6gqbl</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_1xv1agn" name="Site Information Advisor (SIA)">
         <bpmn:flowNodeRef>Activity_06nypz0</bpmn:flowNodeRef>
@@ -765,20 +766,6 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
     <bpmn:sequenceFlow id="Flow_0gzrwfr" sourceRef="Gateway_06j5m9d" targetRef="Activity_06nypz0">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Recheck'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:callActivity id="Activity_0yw5we4" name="Create BC Box Bucket &#38; Notify" calledElement="create-bucket">
-      <bpmn:extensionElements>
-        <camunda:in variables="all" />
-        <camunda:out variables="all" />
-        <camunda:inputOutput>
-          <camunda:inputParameter name="category">sds_updated</camunda:inputParameter>
-        </camunda:inputOutput>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0tkaq29</bpmn:incoming>
-      <bpmn:outgoing>Flow_1nigg0r</bpmn:outgoing>
-    </bpmn:callActivity>
-    <bpmn:endEvent id="Event_04mee55">
-      <bpmn:incoming>Flow_1nigg0r</bpmn:incoming>
-    </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1nigg0r" sourceRef="Activity_0yw5we4" targetRef="Event_04mee55" />
     <bpmn:receiveTask id="Activity_1e0i2ru" name="Application Resubmitted" messageRef="Message_0lm44we">
       <bpmn:extensionElements>
@@ -798,12 +785,38 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
       <bpmn:outgoing>Flow_10r3k9c</bpmn:outgoing>
     </bpmn:receiveTask>
     <bpmn:sequenceFlow id="Flow_1x2maz6" sourceRef="Gateway_1ju72yh" targetRef="Activity_06nypz0" />
-    <bpmn:sequenceFlow id="Flow_0tkaq29" sourceRef="Gateway_1ju72yh" targetRef="Activity_0yw5we4" />
+    <bpmn:sequenceFlow id="Flow_0tkaq29" sourceRef="Gateway_1ju72yh" targetRef="Gateway_1g6gqbl" />
     <bpmn:parallelGateway id="Gateway_1ju72yh">
       <bpmn:incoming>Flow_0unffch</bpmn:incoming>
       <bpmn:outgoing>Flow_1x2maz6</bpmn:outgoing>
       <bpmn:outgoing>Flow_0tkaq29</bpmn:outgoing>
     </bpmn:parallelGateway>
+    <bpmn:callActivity id="Activity_0yw5we4" name="Create BC Box Bucket &#38; Notify" calledElement="create-bucket">
+      <bpmn:extensionElements>
+        <camunda:in variables="all" />
+        <camunda:out variables="all" />
+        <camunda:inputOutput>
+          <camunda:inputParameter name="category">sds_updated</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_13ehiar</bpmn:incoming>
+      <bpmn:outgoing>Flow_1nigg0r</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:endEvent id="Event_04mee55">
+      <bpmn:incoming>Flow_1nigg0r</bpmn:incoming>
+      <bpmn:incoming>Flow_1nbjw65</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_13ehiar" sourceRef="Gateway_1g6gqbl" targetRef="Activity_0yw5we4">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus=='New'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_1g6gqbl">
+      <bpmn:incoming>Flow_0tkaq29</bpmn:incoming>
+      <bpmn:outgoing>Flow_13ehiar</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1nbjw65</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1nbjw65" sourceRef="Gateway_1g6gqbl" targetRef="Event_04mee55">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus!='New'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
   </bpmn:process>
   <bpmn:message id="Message_1ngb2eg" name="application_resubmitted" />
   <bpmn:message id="Message_0lm44we" name="application_resubmitted" />
@@ -825,6 +838,20 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
         <dc:Bounds x="201" y="830" width="1198" height="1940" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0tkaq29_di" bpmnElement="Flow_0tkaq29">
+        <di:waypoint x="386" y="250" />
+        <di:waypoint x="546" y="250" />
+        <di:waypoint x="546" y="240" />
+        <di:waypoint x="705" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1x2maz6_di" bpmnElement="Flow_1x2maz6">
+        <di:waypoint x="361" y="275" />
+        <di:waypoint x="361" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nigg0r_di" bpmnElement="Flow_1nigg0r">
+        <di:waypoint x="860" y="150" />
+        <di:waypoint x="1033" y="150" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0gzrwfr_di" bpmnElement="Flow_0gzrwfr">
         <di:waypoint x="850" y="795" />
         <di:waypoint x="850" y="820" />
@@ -946,19 +973,15 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
         <di:waypoint x="259" y="145" />
         <di:waypoint x="311" y="145" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1nigg0r_di" bpmnElement="Flow_1nigg0r">
-        <di:waypoint x="850" y="220" />
-        <di:waypoint x="912" y="220" />
+      <bpmndi:BPMNEdge id="Flow_13ehiar_di" bpmnElement="Flow_13ehiar">
+        <di:waypoint x="730" y="215" />
+        <di:waypoint x="730" y="160" />
+        <di:waypoint x="760" y="160" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1x2maz6_di" bpmnElement="Flow_1x2maz6">
-        <di:waypoint x="361" y="275" />
-        <di:waypoint x="361" y="350" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0tkaq29_di" bpmnElement="Flow_0tkaq29">
-        <di:waypoint x="386" y="250" />
-        <di:waypoint x="568" y="250" />
-        <di:waypoint x="568" y="230" />
-        <di:waypoint x="750" y="230" />
+      <bpmndi:BPMNEdge id="Flow_1nbjw65_di" bpmnElement="Flow_1nbjw65">
+        <di:waypoint x="755" y="240" />
+        <di:waypoint x="1051" y="240" />
+        <di:waypoint x="1051" y="168" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BPMNShape_0s7tget" bpmnElement="Event_02fettt">
         <dc:Bounds x="223" y="127" width="36" height="36" />
@@ -985,17 +1008,14 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
         <dc:Bounds x="852" y="2632" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1fbwq27" bpmnElement="Activity_0yw5we4">
-        <dc:Bounds x="750" y="190" width="100" height="80" />
+        <dc:Bounds x="760" y="120" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_070x6ba" bpmnElement="Event_04mee55">
-        <dc:Bounds x="912" y="202" width="36" height="36" />
+        <dc:Bounds x="1033" y="132" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1hbqnlg" bpmnElement="Activity_1e0i2ru">
-        <dc:Bounds x="601" y="105" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1h832pl_di" bpmnElement="Gateway_1ju72yh">
-        <dc:Bounds x="336" y="225" width="50" height="50" />
+      <bpmndi:BPMNShape id="Gateway_1g6gqbl_di" bpmnElement="Gateway_1g6gqbl" isMarkerVisible="true">
+        <dc:Bounds x="705" y="215" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1d2xehj_di" bpmnElement="Activity_0truthe" isExpanded="true">
         <dc:Bounds x="231" y="870" width="978" height="1670" />
@@ -1332,6 +1352,12 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_06j5m9d_di" bpmnElement="Gateway_06j5m9d" isMarkerVisible="true">
         <dc:Bounds x="825" y="745" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1hbqnlg" bpmnElement="Activity_1e0i2ru">
+        <dc:Bounds x="601" y="105" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1h832pl_di" bpmnElement="Gateway_1ju72yh">
+        <dc:Bounds x="336" y="225" width="50" height="50" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

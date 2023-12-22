@@ -16,8 +16,9 @@
         <bpmn:flowNodeRef>Activity_15772wo</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_1qqphxe</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_0x0qkes</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_0yw5we4</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Event_0z3ea6o</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1gvu1qg</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0yw5we4</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_0bf59ja" name="Approved Professional">
         <bpmn:flowNodeRef>Activity_1uc1xs1</bpmn:flowNodeRef>
@@ -1571,6 +1572,20 @@ system.out.println ("form signed");</camunda:script>
       <bpmn:outgoing>Flow_0z0mcu6</bpmn:outgoing>
       <bpmn:outgoing>Flow_120wqw2</bpmn:outgoing>
     </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_120wqw2" sourceRef="Gateway_0x0qkes" targetRef="Gateway_1gvu1qg" />
+    <bpmn:sequenceFlow id="Flow_1nigg0r" sourceRef="Activity_0yw5we4" targetRef="Event_0z3ea6o" />
+    <bpmn:endEvent id="Event_0z3ea6o">
+      <bpmn:incoming>Flow_1nigg0r</bpmn:incoming>
+      <bpmn:incoming>Flow_1fbm96a</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="Gateway_1gvu1qg">
+      <bpmn:incoming>Flow_120wqw2</bpmn:incoming>
+      <bpmn:outgoing>Flow_1b01psv</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1fbm96a</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1b01psv" sourceRef="Gateway_1gvu1qg" targetRef="Activity_0yw5we4">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus=='New'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:callActivity id="Activity_0yw5we4" name="Create BC Box Bucket &#38; Notify" calledElement="create-bucket">
       <bpmn:extensionElements>
         <camunda:in variables="all" />
@@ -1579,14 +1594,12 @@ system.out.println ("form signed");</camunda:script>
           <camunda:inputParameter name="category">sds_updated</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_120wqw2</bpmn:incoming>
+      <bpmn:incoming>Flow_1b01psv</bpmn:incoming>
       <bpmn:outgoing>Flow_1nigg0r</bpmn:outgoing>
     </bpmn:callActivity>
-    <bpmn:sequenceFlow id="Flow_120wqw2" sourceRef="Gateway_0x0qkes" targetRef="Activity_0yw5we4" />
-    <bpmn:endEvent id="Event_0z3ea6o">
-      <bpmn:incoming>Flow_1nigg0r</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1nigg0r" sourceRef="Activity_0yw5we4" targetRef="Event_0z3ea6o" />
+    <bpmn:sequenceFlow id="Flow_1fbm96a" sourceRef="Gateway_1gvu1qg" targetRef="Event_0z3ea6o">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus!='New'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
   </bpmn:process>
   <bpmn:message id="Message_1ngb2eg" name="application_resubmitted" />
   <bpmn:message id="Message_0lm44we" name="application_resubmitted" />
@@ -1619,6 +1632,20 @@ system.out.println ("form signed");</camunda:script>
       <bpmndi:BPMNShape id="Lane_0t984kw_di" bpmnElement="Lane_0t984kw" isHorizontal="true">
         <dc:Bounds x="185" y="80" width="3168" height="570" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1nigg0r_di" bpmnElement="Flow_1nigg0r">
+        <di:waypoint x="630" y="320" />
+        <di:waypoint x="594" y="320" />
+        <di:waypoint x="594" y="250" />
+        <di:waypoint x="558" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_120wqw2_di" bpmnElement="Flow_120wqw2">
+        <di:waypoint x="970" y="250" />
+        <di:waypoint x="845" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0z0mcu6_di" bpmnElement="Flow_0z0mcu6">
+        <di:waypoint x="995" y="275" />
+        <di:waypoint x="995" y="295" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0n61nyr_di" bpmnElement="Flow_0n61nyr">
         <di:waypoint x="2890" y="4670" />
         <di:waypoint x="3192" y="4670" />
@@ -2010,17 +2037,14 @@ system.out.println ("form signed");</camunda:script>
           <dc:Bounds x="1197" y="1746" width="46" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0z0mcu6_di" bpmnElement="Flow_0z0mcu6">
-        <di:waypoint x="995" y="275" />
-        <di:waypoint x="995" y="295" />
+      <bpmndi:BPMNEdge id="Flow_1b01psv_di" bpmnElement="Flow_1b01psv">
+        <di:waypoint x="820" y="275" />
+        <di:waypoint x="820" y="320" />
+        <di:waypoint x="730" y="320" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_120wqw2_di" bpmnElement="Flow_120wqw2">
-        <di:waypoint x="970" y="250" />
-        <di:waypoint x="880" y="250" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1nigg0r_di" bpmnElement="Flow_1nigg0r">
-        <di:waypoint x="780" y="250" />
-        <di:waypoint x="728" y="250" />
+      <bpmndi:BPMNEdge id="Flow_1fbm96a_di" bpmnElement="Flow_1fbm96a">
+        <di:waypoint x="795" y="250" />
+        <di:waypoint x="558" y="250" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Gateway_1lfy3cm_di" bpmnElement="Gateway_1lfy3cm" isMarkerVisible="true">
         <dc:Bounds x="1230" y="1975" width="50" height="50" />
@@ -2076,29 +2100,15 @@ system.out.println ("form signed");</camunda:script>
           <dc:Bounds x="2763" y="3423" width="63" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0crarh0_di" bpmnElement="Activity_0a9pnut">
-        <dc:Bounds x="1205" y="270" width="100" height="80" />
-        <bpmndi:BPMNLabel />
+      <bpmndi:BPMNShape id="Event_0z3ea6o_di" bpmnElement="Event_0z3ea6o">
+        <dc:Bounds x="522" y="232" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_15772wo_di" bpmnElement="Activity_15772wo">
-        <dc:Bounds x="945" y="370" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1qqphxe_di" bpmnElement="Gateway_1qqphxe" isMarkerVisible="true">
-        <dc:Bounds x="970" y="295" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="881" y="310" width="68" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1xy381g_di" bpmnElement="Gateway_0x0qkes">
-        <dc:Bounds x="970" y="225" width="50" height="50" />
+      <bpmndi:BPMNShape id="Gateway_1gvu1qg_di" bpmnElement="Gateway_1gvu1qg" isMarkerVisible="true">
+        <dc:Bounds x="795" y="225" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1fbwq27" bpmnElement="Activity_0yw5we4">
-        <dc:Bounds x="780" y="220" width="100" height="80" />
+        <dc:Bounds x="630" y="290" width="100" height="80" />
         <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0z3ea6o_di" bpmnElement="Event_0z3ea6o">
-        <dc:Bounds x="692" y="232" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0lezdpf_di" bpmnElement="Activity_07ttn7q" isExpanded="true">
         <dc:Bounds x="415" y="2750" width="730" height="960" />
@@ -2709,6 +2719,23 @@ system.out.println ("form signed");</camunda:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0bwdoce_di" bpmnElement="Event_0bwdoce">
         <dc:Bounds x="2012" y="1562" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0crarh0_di" bpmnElement="Activity_0a9pnut">
+        <dc:Bounds x="1205" y="270" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_15772wo_di" bpmnElement="Activity_15772wo">
+        <dc:Bounds x="945" y="370" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1qqphxe_di" bpmnElement="Gateway_1qqphxe" isMarkerVisible="true">
+        <dc:Bounds x="970" y="295" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="881" y="310" width="68" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1xy381g_di" bpmnElement="Gateway_0x0qkes">
+        <dc:Bounds x="970" y="225" width="50" height="50" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -52,7 +52,16 @@ const Dashboard = () => {
   const handleFormsflowWebRedirection = () => {
     const formsFlowWebURL = process.env.REACT_APP_FORMSFLOW_WEB_URL || ((window as any)._env_ && (window as any)._env_.REACT_APP_FORMSFLOW_WEB_URL) || "";
 
-    window.location.assign(formsFlowWebURL);
+    const locationBeforeAuthRedirect = sessionStorage.getItem('locationBeforeAuthRedirect');
+    if(locationBeforeAuthRedirect!=="" && locationBeforeAuthRedirect !==null && locationBeforeAuthRedirect.indexOf("/fileupload")!== -1)
+    {
+
+      window.location.assign(locationBeforeAuthRedirect);
+    }
+    else
+    {
+      window.location.assign('http://localhost:3000');
+    }
 
   }
   //Automatically redirect to formsflow dashboard, don't render dashboard prototype

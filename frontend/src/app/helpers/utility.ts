@@ -4,7 +4,7 @@ import axios from "axios";
 import { User } from "oidc-client-ts"
 import { getClientSettings } from '../auth/UserManagerSetting';
 
-function getUser() {
+export function getUser() {
     const oidcStorage = sessionStorage.getItem(`oidc.user:`+getClientSettings().authority+`:`+getClientSettings().client_id)
     if (!oidcStorage) {
         return null;

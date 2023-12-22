@@ -8,7 +8,7 @@
       <bpmn:incoming>Flow_15fflso</bpmn:incoming>
       <bpmn:outgoing>Flow_1v2p747</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
-execution.setVariable('token',execution.getVariable('idirToken'));
+//execution.setVariable('token',execution.getVariable('idirToken'));
 
 system.out.println ("appId"+execution.getVariable('applicationId'));</bpmn:script>
     </bpmn:scriptTask>
@@ -41,18 +41,20 @@ console.log(JSON.stringify(p))
 JSON.stringify(p)</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="url">
-              <camunda:script scriptFormat="groovy">"https://coms.api.gov.bc.ca/api/v1/bucket"</camunda:script>
+              <camunda:script scriptFormat="groovy">var system = java.lang.System;
+system.getenv('COMS_API_HOST_URL')+"/api/v1/bucket"</camunda:script>
             </camunda:inputParameter>
             <camunda:outputParameter name="bucketInfo">${S(response)}</camunda:outputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
         </camunda:connector>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1v2p747</bpmn:incoming>
+      <bpmn:incoming>Flow_1xs70ve</bpmn:incoming>
       <bpmn:outgoing>Flow_093urcj</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:endEvent id="Event_1jy96yb" name="End">
       <bpmn:incoming>Flow_1bwkhdc</bpmn:incoming>
+      <bpmn:incoming>Flow_0bn2xps</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_093urcj" sourceRef="Activity_1w8sq4d" targetRef="Activity_1cy9bql" />
     <bpmn:sequenceFlow id="Flow_15fflso" sourceRef="Event_0kew5uc" targetRef="Activity_04ks0sg">
@@ -65,13 +67,14 @@ JSON.stringify(p)</camunda:script>
       <bpmn:incoming>Flow_093urcj</bpmn:incoming>
       <bpmn:outgoing>Flow_1lr16lw</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
+system.out.println ("bucketInfo:"+bucketInfo);
 execution.setVariable('bucketId',bucketInfo.prop("bucketId").value());
 system.out.println ("bucketId:"+execution.getVariable('bucketId'));
 
 execution.setVariable('userEmail','nikhila.pankaj@aot-technologies.com');
 system.out.println ("userEmail:"+execution.getVariable('userEmail'));</bpmn:script>
     </bpmn:scriptTask>
-    <bpmn:sequenceFlow id="Flow_1v2p747" sourceRef="Activity_04ks0sg" targetRef="Activity_1w8sq4d" />
+    <bpmn:sequenceFlow id="Flow_1v2p747" sourceRef="Activity_04ks0sg" targetRef="Activity_0nm63gf" />
     <bpmn:sequenceFlow id="Flow_02ipbuj" sourceRef="Activity_1qv0t76" targetRef="Activity_08kj8y2">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${statusCode == 200 &amp;&amp; !noUserFound }</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
@@ -110,7 +113,8 @@ console.log(JSON.stringify(p))
 JSON.stringify(p)</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="url">
-              <camunda:script scriptFormat="groovy">"https://coms.api.gov.bc.ca/api/v1/permission/bucket/"+execution.getVariable("bucketId")</camunda:script>
+              <camunda:script scriptFormat="groovy">var system = java.lang.System;
+system.getenv('COMS_API_HOST_URL')+"/api/v1/permission/bucket/"+execution.getVariable("bucketId")</camunda:script>
             </camunda:inputParameter>
             <camunda:outputParameter name="permissionInfo">${S(response)}</camunda:outputParameter>
           </camunda:inputOutput>
@@ -130,7 +134,7 @@ JSON.stringify(p)</camunda:script>
       <bpmn:outgoing>Flow_1kisrm5</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
 system.out.println ("permissionInfo:"+permissionInfo);
-execution.setVariable('uploadLink','https://bcbox.nrs.gov.bc.ca/list/objects?bucketId='+execution.getVariable('bucketId'));
+execution.setVariable('uploadLink',system.getenv('BCBOX_HOST_URL')+'/list/objects?bucketId='+execution.getVariable('bucketId'));
 execution.setVariable('name','User');
 
 var emailAddresses = [];
@@ -154,15 +158,8 @@ execution.setVariable("emailTo", Java.to(emailAddresses, "java.lang.Object[]"));
     <bpmn:scriptTask id="Activity_097eu3t" scriptFormat="javascript">
       <bpmn:incoming>Flow_1lr16lw</bpmn:incoming>
       <bpmn:outgoing>Flow_1ya0pii</bpmn:outgoing>
-      <bpmn:script>var emailsIdsToProcess = [];
+      <bpmn:script>var failedEmailIdsToProcess = [];
 
-var failedEmailIdsToProcess = [];
-
-emailsIdsToProcess.push('midhun.murali@aot-technologies.com');
-
-emailsIdsToProcess.push('nikhila.pankaj@aot-technologies.com');
-
-emailsIdsToProcess.push('midhun.murali@aot-technologies.comeee');
 
 
 if(emailsIdsToProcess.length &gt; 0 )
@@ -220,7 +217,8 @@ execution.setVariable('noUserFound',false);</bpmn:script>
         <camunda:connector>
           <camunda:inputOutput>
             <camunda:inputParameter name="url">
-              <camunda:script scriptFormat="javascript">"https://coms.api.gov.bc.ca/api/v1/user?email="+execution.getVariable("userEmail")</camunda:script>
+              <camunda:script scriptFormat="javascript">var system = java.lang.System;
+system.getenv('COMS_API_HOST_URL')+"/api/v1/user?email="+execution.getVariable("userEmail")</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="method">GET</camunda:inputParameter>
             <camunda:inputParameter name="headers">
@@ -282,20 +280,31 @@ execution.setVariable('noUserFound',true);
     <bpmn:sequenceFlow id="Flow_1htcy25" sourceRef="Gateway_19dzxjx" targetRef="Activity_0wzcmm4">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ remaningEmailsToProcessLength == 0 }</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0akk38p" sourceRef="Activity_0wzcmm4" targetRef="Activity_0ox0zll" />
+    <bpmn:sequenceFlow id="Flow_0akk38p" sourceRef="Activity_0wzcmm4" targetRef="Activity_0ox0zll">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ failedUsersCount &gt; 0 }</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:scriptTask id="Activity_0wzcmm4" name="Process Failed Users List" scriptFormat="javascript">
       <bpmn:incoming>Flow_0nma40t</bpmn:incoming>
       <bpmn:incoming>Flow_1htcy25</bpmn:incoming>
       <bpmn:outgoing>Flow_0akk38p</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0bn2xps</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
+
+var supportEmailAddressStr = system.getenv('EPD_SUPPORT_EMAIL');
+var supportEmailAddresses = supportEmailAddressStr.split(',');
+
 
 var failedEmailIdsToProcess = execution.getVariable('failedEmailIdsToProcess');
 
 system.out.println ("failedEmailIdsToProcess"+failedEmailIdsToProcess);
 
+var failedUsersCount = failedEmailIdsToProcess.length;
+
+execution.setVariable('failedUsersCount',failedUsersCount); 
+
 execution.setVariable('emailsToArray',failedEmailIdsToProcess.toString());
 
-execution.setVariable('emailTo',['midhun.murali@aot-technologies.com']);</bpmn:script>
+execution.setVariable('emailTo',supportEmailAddresses);</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:sequenceFlow id="Flow_0nj9lqa" sourceRef="Gateway_19dzxjx" targetRef="Activity_0w12saq">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ remaningEmailsToProcessLength &gt; 0 }</bpmn:conditionExpression>
@@ -326,185 +335,260 @@ system.out.println ("processing userId:"+execution.getVariable('userId'));</bpmn
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ remainingResponseArrayLength &gt; 0 }</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_193qrp0" sourceRef="Activity_0h98tra" targetRef="Activity_0qqlkts" />
+    <bpmn:serviceTask id="Activity_0nm63gf" name="Generate Token">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-Type">application/x-www-form-urlencoded</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="payload">
+              <camunda:script scriptFormat="javascript">var system = java.lang.System;
+var clientId=system.getenv('BCBOX_CLIENT_ID');
+var clientSecret= system.getenv('BCBOX_SECRET');
+system.out.println(system.getenv())
+var mypayload = ""; 
+mypayload=mypayload.concat("grant_type=client_credentials&amp;client_id=",clientId,"&amp;client_secret=",clientSecret);
+system.out.println ("mypayload: "+mypayload);
+mypayload;</camunda:script>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">
+              <camunda:script scriptFormat="javascript">var system = java.lang.System;
+var authUrl = system.getenv('BCBOX_AUTH_URL');
+authUrl;</camunda:script>
+            </camunda:inputParameter>
+            <camunda:outputParameter name="token">${S(response).prop("access_token").value()}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1v2p747</bpmn:incoming>
+      <bpmn:outgoing>Flow_0cog7s9</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:scriptTask id="Activity_14p4bxs" name="Print Token" scriptFormat="javascript">
+      <bpmn:incoming>Flow_0cog7s9</bpmn:incoming>
+      <bpmn:outgoing>Flow_1xs70ve</bpmn:outgoing>
+      <bpmn:script>var system = java.lang.System;
+system.out.println ("token: "+token);
+
+system.out.println ("category: "+category);
+system.out.println ("name: "+name);</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_0cog7s9" sourceRef="Activity_0nm63gf" targetRef="Activity_14p4bxs" />
+    <bpmn:sequenceFlow id="Flow_1xs70ve" sourceRef="Activity_14p4bxs" targetRef="Activity_1w8sq4d" />
+    <bpmn:sequenceFlow id="Flow_0bn2xps" sourceRef="Activity_0wzcmm4" targetRef="Event_1jy96yb">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ failedUsersCount &lt; 1  }</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="create-bucket">
+      <bpmndi:BPMNEdge id="Flow_1xs70ve_di" bpmnElement="Flow_1xs70ve">
+        <di:waypoint x="600" y="160" />
+        <di:waypoint x="600" y="240" />
+        <di:waypoint x="310" y="240" />
+        <di:waypoint x="310" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0cog7s9_di" bpmnElement="Flow_0cog7s9">
+        <di:waypoint x="510" y="120" />
+        <di:waypoint x="550" y="120" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_193qrp0_di" bpmnElement="Flow_193qrp0">
-        <di:waypoint x="840" y="490" />
-        <di:waypoint x="840" y="500" />
-        <di:waypoint x="760" y="500" />
+        <di:waypoint x="840" y="590" />
+        <di:waypoint x="840" y="600" />
+        <di:waypoint x="760" y="600" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_10lidzx_di" bpmnElement="Flow_10lidzx">
-        <di:waypoint x="760" y="520" />
-        <di:waypoint x="840" y="520" />
+        <di:waypoint x="760" y="620" />
+        <di:waypoint x="840" y="620" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1bwkhdc_di" bpmnElement="Flow_1bwkhdc">
-        <di:waypoint x="1510" y="620" />
-        <di:waypoint x="1542" y="620" />
+        <di:waypoint x="1510" y="830" />
+        <di:waypoint x="1510" y="784" />
+        <di:waypoint x="1680" y="784" />
+        <di:waypoint x="1680" y="758" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0nj9lqa_di" bpmnElement="Flow_0nj9lqa">
-        <di:waypoint x="1110" y="835" />
-        <di:waypoint x="1110" y="370" />
-        <di:waypoint x="590" y="370" />
+        <di:waypoint x="1110" y="935" />
+        <di:waypoint x="1110" y="470" />
+        <di:waypoint x="590" y="470" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0akk38p_di" bpmnElement="Flow_0akk38p">
-        <di:waypoint x="1370" y="620" />
-        <di:waypoint x="1410" y="620" />
+        <di:waypoint x="1370" y="730" />
+        <di:waypoint x="1415" y="730" />
+        <di:waypoint x="1415" y="870" />
+        <di:waypoint x="1460" y="870" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1htcy25_di" bpmnElement="Flow_1htcy25">
-        <di:waypoint x="1135" y="860" />
-        <di:waypoint x="1320" y="860" />
-        <di:waypoint x="1320" y="660" />
+        <di:waypoint x="1135" y="960" />
+        <di:waypoint x="1320" y="960" />
+        <di:waypoint x="1320" y="760" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1rpz5q5_di" bpmnElement="Flow_1rpz5q5">
-        <di:waypoint x="540" y="580" />
-        <di:waypoint x="540" y="620" />
+        <di:waypoint x="540" y="680" />
+        <di:waypoint x="540" y="720" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_161wtr2_di" bpmnElement="Flow_161wtr2">
-        <di:waypoint x="540" y="700" />
-        <di:waypoint x="540" y="740" />
-        <di:waypoint x="625" y="740" />
-        <di:waypoint x="625" y="860" />
-        <di:waypoint x="660" y="860" />
+        <di:waypoint x="540" y="800" />
+        <di:waypoint x="540" y="840" />
+        <di:waypoint x="625" y="840" />
+        <di:waypoint x="625" y="960" />
+        <di:waypoint x="660" y="960" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0n4uyt9_di" bpmnElement="Flow_0n4uyt9">
-        <di:waypoint x="760" y="860" />
-        <di:waypoint x="1085" y="860" />
+        <di:waypoint x="760" y="960" />
+        <di:waypoint x="1085" y="960" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0qkju4r_di" bpmnElement="Flow_0qkju4r">
-        <di:waypoint x="1040" y="605" />
-        <di:waypoint x="1040" y="290" />
-        <di:waypoint x="540" y="290" />
-        <di:waypoint x="540" y="350" />
+        <di:waypoint x="1040" y="705" />
+        <di:waypoint x="1040" y="390" />
+        <di:waypoint x="540" y="390" />
+        <di:waypoint x="540" y="450" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0nma40t_di" bpmnElement="Flow_0nma40t">
-        <di:waypoint x="1065" y="630" />
-        <di:waypoint x="1270" y="630" />
+        <di:waypoint x="1065" y="730" />
+        <di:waypoint x="1270" y="730" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1xir34m_di" bpmnElement="Flow_1xir34m">
-        <di:waypoint x="540" y="430" />
-        <di:waypoint x="540" y="500" />
+        <di:waypoint x="540" y="530" />
+        <di:waypoint x="540" y="600" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1ya0pii_di" bpmnElement="Flow_1ya0pii">
-        <di:waypoint x="440" y="390" />
-        <di:waypoint x="490" y="390" />
+        <di:waypoint x="440" y="490" />
+        <di:waypoint x="490" y="490" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0kyeyt4_di" bpmnElement="Flow_0kyeyt4">
-        <di:waypoint x="950" y="680" />
-        <di:waypoint x="1040" y="680" />
-        <di:waypoint x="1040" y="655" />
+        <di:waypoint x="950" y="780" />
+        <di:waypoint x="1040" y="780" />
+        <di:waypoint x="1040" y="755" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1kisrm5_di" bpmnElement="Flow_1kisrm5">
-        <di:waypoint x="760" y="680" />
-        <di:waypoint x="850" y="680" />
+        <di:waypoint x="760" y="780" />
+        <di:waypoint x="850" y="780" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0yp68e5_di" bpmnElement="Flow_0yp68e5">
-        <di:waypoint x="710" y="560" />
-        <di:waypoint x="710" y="640" />
+        <di:waypoint x="710" y="660" />
+        <di:waypoint x="710" y="740" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0w1oeqg_di" bpmnElement="Flow_0w1oeqg">
-        <di:waypoint x="710" y="430" />
-        <di:waypoint x="710" y="480" />
+        <di:waypoint x="710" y="530" />
+        <di:waypoint x="710" y="580" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_02ipbuj_di" bpmnElement="Flow_02ipbuj">
-        <di:waypoint x="590" y="640" />
-        <di:waypoint x="620" y="640" />
-        <di:waypoint x="620" y="390" />
-        <di:waypoint x="660" y="390" />
+        <di:waypoint x="590" y="740" />
+        <di:waypoint x="620" y="740" />
+        <di:waypoint x="620" y="490" />
+        <di:waypoint x="660" y="490" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1v2p747_di" bpmnElement="Flow_1v2p747">
-        <di:waypoint x="310" y="160" />
-        <di:waypoint x="310" y="210" />
+        <di:waypoint x="360" y="120" />
+        <di:waypoint x="410" y="120" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1lr16lw_di" bpmnElement="Flow_1lr16lw">
-        <di:waypoint x="490" y="290" />
-        <di:waypoint x="490" y="320" />
-        <di:waypoint x="380" y="320" />
-        <di:waypoint x="380" y="350" />
+        <di:waypoint x="490" y="390" />
+        <di:waypoint x="490" y="420" />
+        <di:waypoint x="380" y="420" />
+        <di:waypoint x="380" y="450" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_15fflso_di" bpmnElement="Flow_15fflso">
-        <di:waypoint x="208" y="120" />
+        <di:waypoint x="208" y="220" />
+        <di:waypoint x="234" y="220" />
+        <di:waypoint x="234" y="120" />
         <di:waypoint x="260" y="120" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_093urcj_di" bpmnElement="Flow_093urcj">
-        <di:waypoint x="360" y="250" />
-        <di:waypoint x="440" y="250" />
+        <di:waypoint x="360" y="350" />
+        <di:waypoint x="440" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0bn2xps_di" bpmnElement="Flow_0bn2xps">
+        <di:waypoint x="1370" y="720" />
+        <di:waypoint x="1516" y="720" />
+        <di:waypoint x="1516" y="740" />
+        <di:waypoint x="1662" y="740" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_0kew5uc_di" bpmnElement="Event_0kew5uc">
-        <dc:Bounds x="172" y="102" width="36" height="36" />
+        <dc:Bounds x="172" y="202" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="178" y="145" width="25" height="14" />
+          <dc:Bounds x="179" y="245" width="24" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1ynm6j6_di" bpmnElement="Activity_04ks0sg">
         <dc:Bounds x="260" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0pegmhv_di" bpmnElement="Activity_1w8sq4d">
-        <dc:Bounds x="260" y="210" width="100" height="80" />
+        <dc:Bounds x="260" y="310" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1jy96yb_di" bpmnElement="Event_1jy96yb">
-        <dc:Bounds x="1542" y="602" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1550" y="578" width="20" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_13xdoy5_di" bpmnElement="Activity_1cy9bql">
-        <dc:Bounds x="440" y="210" width="100" height="80" />
+        <dc:Bounds x="440" y="310" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1dlr36x" bpmnElement="Activity_08kj8y2">
-        <dc:Bounds x="660" y="350" width="100" height="80" />
+        <dc:Bounds x="660" y="450" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1upc4m1" bpmnElement="Activity_0qqlkts">
-        <dc:Bounds x="660" y="480" width="100" height="80" />
+        <dc:Bounds x="660" y="580" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1ubiopm" bpmnElement="Activity_0yzfq0h">
-        <dc:Bounds x="660" y="640" width="100" height="80" />
+        <dc:Bounds x="660" y="740" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1xvlvmw" bpmnElement="Activity_09632sn">
-        <dc:Bounds x="850" y="640" width="100" height="80" />
+        <dc:Bounds x="850" y="740" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1j4fi59_di" bpmnElement="Activity_097eu3t">
-        <dc:Bounds x="340" y="350" width="100" height="80" />
+        <dc:Bounds x="340" y="450" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_175j7tr_di" bpmnElement="Activity_0w12saq">
-        <dc:Bounds x="490" y="350" width="100" height="80" />
+        <dc:Bounds x="490" y="450" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1wpy171_di" bpmnElement="Gateway_1wpy171" isMarkerVisible="true">
-        <dc:Bounds x="1015" y="605" width="50" height="50" />
+        <dc:Bounds x="1015" y="705" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1shwfcy_di" bpmnElement="Activity_1shwfcy">
-        <dc:Bounds x="490" y="500" width="100" height="80" />
+        <dc:Bounds x="490" y="600" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_11jqbio_di" bpmnElement="Activity_06k5yjo">
-        <dc:Bounds x="660" y="820" width="100" height="80" />
+        <dc:Bounds x="660" y="920" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1dh907c_di" bpmnElement="Activity_1qv0t76">
-        <dc:Bounds x="490" y="620" width="100" height="80" />
+        <dc:Bounds x="490" y="720" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_0tgm1rk" bpmnElement="Gateway_19dzxjx" isMarkerVisible="true">
-        <dc:Bounds x="1085" y="835" width="50" height="50" />
+        <dc:Bounds x="1085" y="935" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_14ymop0_di" bpmnElement="Activity_0wzcmm4">
-        <dc:Bounds x="1270" y="580" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0jeq5mb" bpmnElement="Activity_0ox0zll">
-        <dc:Bounds x="1410" y="580" width="100" height="80" />
+        <dc:Bounds x="1270" y="680" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0r3h930_di" bpmnElement="Activity_0h98tra">
-        <dc:Bounds x="840" y="480" width="100" height="80" />
+        <dc:Bounds x="840" y="580" width="100" height="80" />
         <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1hi0nx6" bpmnElement="Activity_0nm63gf">
+        <dc:Bounds x="410" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_16v32xz" bpmnElement="Activity_14p4bxs">
+        <dc:Bounds x="550" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0jeq5mb" bpmnElement="Activity_0ox0zll">
+        <dc:Bounds x="1460" y="830" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1jy96yb_di" bpmnElement="Event_1jy96yb">
+        <dc:Bounds x="1662" y="722" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1670" y="698" width="20" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

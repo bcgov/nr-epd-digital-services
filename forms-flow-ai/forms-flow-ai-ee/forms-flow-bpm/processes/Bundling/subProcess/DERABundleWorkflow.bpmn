@@ -14,8 +14,9 @@
         <bpmn:flowNodeRef>Activity_15772wo</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_17raw62</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0yw5we4</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_0z3ea6o</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_1rynykh</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_0xyt2up</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0z3ea6o</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_0bf59ja" name="Approved Professional">
         <bpmn:flowNodeRef>Activity_1uc1xs1</bpmn:flowNodeRef>
@@ -1458,12 +1459,9 @@ execution.setVariable("applicationStatus", "Rejected");
           <camunda:inputParameter name="category">sds_updated</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_00n6yyz</bpmn:incoming>
+      <bpmn:incoming>Flow_0jisq49</bpmn:incoming>
       <bpmn:outgoing>Flow_1nigg0r</bpmn:outgoing>
     </bpmn:callActivity>
-    <bpmn:endEvent id="Event_0z3ea6o">
-      <bpmn:incoming>Flow_1nigg0r</bpmn:incoming>
-    </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1nigg0r" sourceRef="Activity_0yw5we4" targetRef="Event_0z3ea6o" />
     <bpmn:sequenceFlow id="Flow_0p4bdlb" sourceRef="Gateway_1rynykh" targetRef="Activity_15772wo" />
     <bpmn:parallelGateway id="Gateway_1rynykh">
@@ -1471,7 +1469,22 @@ execution.setVariable("applicationStatus", "Rejected");
       <bpmn:outgoing>Flow_0p4bdlb</bpmn:outgoing>
       <bpmn:outgoing>Flow_00n6yyz</bpmn:outgoing>
     </bpmn:parallelGateway>
-    <bpmn:sequenceFlow id="Flow_00n6yyz" sourceRef="Gateway_1rynykh" targetRef="Activity_0yw5we4" />
+    <bpmn:sequenceFlow id="Flow_00n6yyz" sourceRef="Gateway_1rynykh" targetRef="Gateway_0xyt2up" />
+    <bpmn:exclusiveGateway id="Gateway_0xyt2up">
+      <bpmn:incoming>Flow_00n6yyz</bpmn:incoming>
+      <bpmn:outgoing>Flow_0jisq49</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1nxvhcv</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0jisq49" sourceRef="Gateway_0xyt2up" targetRef="Activity_0yw5we4">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus=='New'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_0z3ea6o">
+      <bpmn:incoming>Flow_1nigg0r</bpmn:incoming>
+      <bpmn:incoming>Flow_1nxvhcv</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1nxvhcv" sourceRef="Gateway_0xyt2up" targetRef="Event_0z3ea6o">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus!='New'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
   </bpmn:process>
   <bpmn:message id="Message_1ngb2eg" name="application_resubmitted" />
   <bpmn:message id="Message_0lm44we" name="application_resubmitted" />
@@ -1504,6 +1517,20 @@ execution.setVariable("applicationStatus", "Rejected");
       <bpmndi:BPMNShape id="Lane_0t984kw_di" bpmnElement="Lane_0t984kw" isHorizontal="true">
         <dc:Bounds x="185" y="80" width="3168" height="570" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_00n6yyz_di" bpmnElement="Flow_00n6yyz">
+        <di:waypoint x="970" y="260" />
+        <di:waypoint x="945" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0p4bdlb_di" bpmnElement="Flow_0p4bdlb">
+        <di:waypoint x="995" y="285" />
+        <di:waypoint x="995" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nigg0r_di" bpmnElement="Flow_1nigg0r">
+        <di:waypoint x="755" y="260" />
+        <di:waypoint x="707" y="260" />
+        <di:waypoint x="707" y="350" />
+        <di:waypoint x="658" y="350" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0qbjx6e_di" bpmnElement="Flow_0qbjx6e">
         <di:waypoint x="1230" y="1720" />
         <di:waypoint x="305" y="1720" />
@@ -1875,17 +1902,14 @@ execution.setVariable("applicationStatus", "Rejected");
           <dc:Bounds x="1197" y="1792" width="46" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1nigg0r_di" bpmnElement="Flow_1nigg0r">
-        <di:waypoint x="755" y="260" />
-        <di:waypoint x="703" y="260" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0p4bdlb_di" bpmnElement="Flow_0p4bdlb">
-        <di:waypoint x="995" y="285" />
-        <di:waypoint x="995" y="330" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_00n6yyz_di" bpmnElement="Flow_00n6yyz">
-        <di:waypoint x="970" y="260" />
+      <bpmndi:BPMNEdge id="Flow_0jisq49_di" bpmnElement="Flow_0jisq49">
+        <di:waypoint x="895" y="260" />
         <di:waypoint x="855" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nxvhcv_di" bpmnElement="Flow_1nxvhcv">
+        <di:waypoint x="920" y="285" />
+        <di:waypoint x="920" y="350" />
+        <di:waypoint x="658" y="350" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BPMNShape_01ekw8c" bpmnElement="Activity_08ykdar">
         <dc:Bounds x="1205" y="1440" width="100" height="80" />
@@ -1935,15 +1959,11 @@ execution.setVariable("applicationStatus", "Rejected");
         <dc:Bounds x="1205" y="1840" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1fbwq27" bpmnElement="Activity_0yw5we4">
-        <dc:Bounds x="755" y="230" width="100" height="80" />
-        <bpmndi:BPMNLabel />
+      <bpmndi:BPMNShape id="Gateway_0xyt2up_di" bpmnElement="Gateway_0xyt2up" isMarkerVisible="true">
+        <dc:Bounds x="895" y="235" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0z3ea6o_di" bpmnElement="Event_0z3ea6o">
-        <dc:Bounds x="667" y="242" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1rb35ux_di" bpmnElement="Gateway_1rynykh">
-        <dc:Bounds x="970" y="235" width="50" height="50" />
+        <dc:Bounds x="622" y="332" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0lezdpf_di" bpmnElement="Activity_07ttn7q" isExpanded="true">
         <dc:Bounds x="415" y="2750" width="730" height="960" />
@@ -2555,6 +2575,13 @@ execution.setVariable("applicationStatus", "Rejected");
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1mmor63_di" bpmnElement="Event_1mmor63">
         <dc:Bounds x="2022" y="1582" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1fbwq27" bpmnElement="Activity_0yw5we4">
+        <dc:Bounds x="755" y="230" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1rb35ux_di" bpmnElement="Gateway_1rynykh">
+        <dc:Bounds x="970" y="235" width="50" height="50" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
