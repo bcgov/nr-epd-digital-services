@@ -13,24 +13,9 @@
                 {
                     "label": "Text Area",
                     "autoExpand": false,
-                    "hideLabel": true,
                     "tableView": true,
-                    "clearOnHide": false,
-                    "validate": {
-                        "custom": "var userData =JSON.parse(localStorage.getItem('UserDetails'))\n\nif(!(userData.groups.includes(\"/formsflow/formsflow-client\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\n{\n\n    utils.eachComponent(form.components, (x)=>{\n\n      console.log(x);\n  \n          if(x.type==='select' && (x.key === 'selectCssaSdm' || x.key === 'selectCssaCaseworker'))\n          {\n            //do nothing\n          }\n          else if ((x.type==='editgrid' && (x.key === 'notes' || x.key === 'srcrNotes' || x.key === 'deraNotes' || x.key === 'cssaNotes') ) ||x.key === 'comments' || x.key === 'commentFor')\n          {\n            //do nothing\n          }\n          else if(x.type === 'button')\n          {\n          //do nothing\n          }\n          else if(x.type === 'approvingAuthorityContactInformation')\n          { \n            if(userData.groups.includes(\"/formsflow/formsflow-reviewer/csap\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\n            {\n               x.disabled = false;\n            }\n          }\n          else if(x.properties.apField === \"true\")\n          {\n            if(userData.groups.includes(\"/formsflow/formsflow-reviewer/csap\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\n            {\n               x.disabled = false;\n            }\n          }\n          else\n          {\n          x.disabled = true;\n          }\n\n    })\n\n}",
-                        "required": false,
-                        "customPrivate": false,
-                        "strictDateValidation": false,
-                        "multiple": false,
-                        "unique": false,
-                        "minLength": "",
-                        "maxLength": "",
-                        "pattern": "",
-                        "minWords": "",
-                        "maxWords": ""
-                    },
                     "key": "textArea",
-                    "customConditional": "var userData =JSON.parse(localStorage.getItem('UserDetails'))\n\nif(!(userData.groups.includes(\"/formsflow/formsflow-client\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\n{\n\n    utils.eachComponent(form.components, (x)=>{\n\n      console.log(x);\n  \n          if(x.type==='select' && (x.key === 'selectCssaSdm' || x.key === 'selectCssaCaseworker'))\n          {\n            //do nothing\n          }\n          else if ((x.type==='editgrid' && (x.key === 'notes' || x.key === 'srcrNotes' || x.key === 'deraNotes' || x.key === 'cssaNotes') ) ||x.key === 'comments' || x.key === 'commentFor')\n          {\n            //do nothing\n          }\n          else if(x.type === 'button')\n          {\n          //do nothing\n          }\n          else if(x.type === 'approvingAuthorityContactInformation')\n          { \n            if(userData.groups.includes(\"/formsflow/formsflow-reviewer/csap\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\n            {\n               x.disabled = false;\n            }\n          }\n          else if(x.properties.apField === \"true\")\n          {\n            if(userData.groups.includes(\"/formsflow/formsflow-reviewer/csap\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\n            {\n               x.disabled = false;\n            }\n          }\n          else\n          {\n          x.disabled = true;\n          }\n\n    })\n\n}\n\nshow = false",
+                    "customConditional": "var userData =JSON.parse(localStorage.getItem('UserDetails'))\n\n\nif(!(userData.groups.includes(\"/formsflow/formsflow-client\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\n{\n\n    utils.eachComponent(form.components, (x)=>{\n\n   \n  \n          if(x.type==='select' && (x.key === 'selectCssaSdm' || x.key === 'selectCssaCaseworker' || x.key === 'selectCaseworker' || x.key === 'selectSrco' || x.key === 'selectSdm'  ))\n          {\n            //do nothing\n          }\n          else if ((x.type==='editgrid' && (x.key === 'notes' || x.key === 'srcrNotes' || x.key === 'deraNotes' || x.key === 'cssaNotes') ) ||x.key === 'comments' || x.key === 'commentFor')\n          {\n            //do nothing\n          }\n          else if(x.type === 'button')\n          {\n          //do nothing\n          }\n          else if(x.type === 'approvingAuthorityContactInformation')\n          { \n            if(userData.groups.includes(\"/formsflow/formsflow-reviewer/csap\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\n            {\n               x.disabled = false;\n            }\n          }\n          else if(x.properties.apField === \"true\")\n          {\n            if(userData.groups.includes(\"/formsflow/formsflow-reviewer/csap\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\n            {\n               x.disabled = false;\n            }\n            else\n            {\n\n            }\n          }\n          else\n          {\n          x.disabled = true;\n          }\n\n        \n\n    })\n\n}\n\nshow = false",
                     "type": "textarea",
                     "input": true,
                     "placeholder": "",
@@ -43,6 +28,7 @@
                     "unique": false,
                     "persistent": true,
                     "hidden": false,
+                    "clearOnHide": true,
                     "refreshOn": "",
                     "redrawOn": "",
                     "modalEdit": false,
@@ -51,6 +37,7 @@
                     "description": "",
                     "errorLabel": "",
                     "tooltip": "",
+                    "hideLabel": false,
                     "tabindex": "",
                     "disabled": false,
                     "autofocus": false,
@@ -63,6 +50,19 @@
                     },
                     "attributes": {},
                     "validateOn": "change",
+                    "validate": {
+                        "required": false,
+                        "custom": "",
+                        "customPrivate": false,
+                        "strictDateValidation": false,
+                        "multiple": false,
+                        "unique": false,
+                        "minLength": "",
+                        "maxLength": "",
+                        "pattern": "",
+                        "minWords": "",
+                        "maxWords": ""
+                    },
                     "conditional": {
                         "show": null,
                         "when": null,
@@ -93,7 +93,7 @@
                     "wysiwyg": false,
                     "editor": "",
                     "fixedSize": true,
-                    "id": "ejtv7pn"
+                    "id": "e1m2d26"
                 },
                 {
                     "label": "hiddenUserIdForFormSharingWithDiffOwner",
@@ -5573,7 +5573,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eh8z2bfa000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eh8z2bfa000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "panel",
                                     "tags": [],
                                     "tree": false,
@@ -36102,7 +36102,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eof7940000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eof7940000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
