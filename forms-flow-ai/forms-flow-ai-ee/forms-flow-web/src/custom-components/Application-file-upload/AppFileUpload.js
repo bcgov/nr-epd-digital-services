@@ -75,7 +75,7 @@ export default class AppFileUpload extends ReactComponent {
           return false;
         }}
       >
-        Upload Documents
+        View / Upload Documents
       </a>,
       element,
       () => (this.reactInstance = instance)
