@@ -15,16 +15,16 @@ export const FileUpload = () => {
     const applicationId = urlParams.get("appId");
     setAppId(applicationId as string);
 
-    if (
-      auth != null &&
-      auth.user != null &&
-      auth.user.profile != null &&
-      auth.user.profile.identity_provider !== "bceid"
-    ) {
-      alert("You are not allowed to use this functionality");
-      window.close();
-    } else {
-    }
+    // if (
+    //   auth != null &&
+    //   auth.user != null &&
+    //   auth.user.profile != null &&
+    //   auth.user.profile.identity_provider !== "bceid"
+    // ) {
+    //   alert("You are not allowed to use this functionality");
+    //   window.close();
+    // } else {
+    // }
   }, []);
 
   console.log(auth);

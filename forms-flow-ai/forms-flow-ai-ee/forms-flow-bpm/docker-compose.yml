@@ -77,6 +77,12 @@ services:
       - CHES_AUTH_URL=https://dev.loginproxy.gov.bc.ca/auth/realms/comsvcauth/protocol/openid-connect/token
       - CHES_HOST_URL=https://ches-dev.api.gov.bc.ca
       - APP_HOST=${APP_HOST:-epd-frontend-dev.apps.silver.devops.gov.bc.ca}
+      - BCBOX_AUTH_URL=${BCBOX_AUTH_URL}
+      - BCBOX_CLIENT_ID=${BCBOX_CLIENT_ID}
+      - BCBOX_SECRET=${BCBOX_SECRET}
+      - BCBOX_HOST_URL=${BCBOX_HOST_URL}
+      - COMS_API_HOST_URL=${COMS_API_HOST_URL}
+      - EPD_SUPPORT_EMAIL=${EPD_SUPPORT_EMAIL}
 
     networks:
       - forms-flow-bpm-network

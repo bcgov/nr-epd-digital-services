@@ -60,7 +60,7 @@ const Dashboard = () => {
     }
     else
     {
-      window.location.assign('http://localhost:3000');
+      window.location.assign(formsFlowWebURL);
     }
 
   }
