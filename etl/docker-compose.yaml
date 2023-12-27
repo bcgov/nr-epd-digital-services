@@ -8,6 +8,8 @@ services:
      - 3888:3888
   kafka:
     image: debezium/kafka:${DEBEZIUM_VERSION}
+    build:
+      context: debezium-kafka
     ports:
      - 9092:9092
     links:

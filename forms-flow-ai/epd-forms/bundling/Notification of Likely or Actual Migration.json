@@ -144,7 +144,7 @@
                         "eq": "",
                         "json": ""
                     },
-                    "customConditional": "var userData =JSON.parse(localStorage.getItem('UserDetails'))\r\n\r\nif(!(userData.groups.includes(\"/formsflow/formsflow-client\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\r\n{\r\n\r\n    utils.eachComponent(form.components, (x)=>{\r\n\r\n      //console.log('B',x.label,x.key,x.disabled);\r\n\r\n        // if(x.key === \"numericalStandards\")\r\n        // {\r\n        //   console.log('B',x.label,x.key,x.disabled);\r\n\r\n        // }\r\n  \r\n          if(x.type==='select' && (x.key === 'selectCssaSdm' || x.key === 'selectCssaCaseworker'))\r\n          {\r\n            //do nothing\r\n          }\r\n          else if ((x.type==='editgrid' && (x.key === 'notes' || x.key === 'srcrNotes' || x.key === 'deraNotes' || x.key === 'cssaNotes') ) ||x.key === 'comments' || x.key === 'commentFor')\r\n          {\r\n            //do nothing\r\n          }\r\n          else if(x.type === 'button')\r\n          {\r\n          //do nothing\r\n          }\r\n          else if(x.type === 'approvingAuthorityContactInformation')\r\n          { \r\n            if(userData.groups.includes(\"/formsflow/formsflow-reviewer/csap\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\r\n            {\r\n               x.disabled = false;\r\n            }\r\n          }\r\n          else if(x.properties.apField === \"true\")\r\n          {\r\n            if(userData.groups.includes(\"/formsflow/formsflow-reviewer/csap\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\r\n            {\r\n               x.disabled = false;\r\n            }\r\n            else\r\n            {\r\n\r\n            }\r\n          }\r\n          else\r\n          {\r\n          x.disabled = true;\r\n          }\r\n\r\n        \r\n\r\n    })\r\n\r\n}\r\n\r\nshow = false",
+                    "customConditional": "var userData =JSON.parse(localStorage.getItem('UserDetails'))\n\n\nif(!(userData.groups.includes(\"/formsflow/formsflow-client\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\n{\n\n    utils.eachComponent(form.components, (x)=>{\n\n   \n  \n          if(x.type==='select' && (x.key === 'selectCssaSdm' || x.key === 'selectCssaCaseworker' || x.key === 'selectCaseworker' || x.key === 'selectSrco' || x.key === 'selectSdm'  ))\n          {\n            //do nothing\n          }\n          else if ((x.type==='editgrid' && (x.key === 'notes' || x.key === 'srcrNotes' || x.key === 'deraNotes' || x.key === 'cssaNotes') ) ||x.key === 'comments' || x.key === 'commentFor')\n          {\n            //do nothing\n          }\n          else if(x.type === 'button')\n          {\n          //do nothing\n          }\n          else if(x.type === 'approvingAuthorityContactInformation')\n          { \n            if(userData.groups.includes(\"/formsflow/formsflow-reviewer/csap\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\n            {\n               x.disabled = false;\n            }\n          }\n          else if(x.properties.apField === \"true\")\n          {\n            if(userData.groups.includes(\"/formsflow/formsflow-reviewer/csap\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\n            {\n               x.disabled = false;\n            }\n            else\n            {\n\n            }\n          }\n          else\n          {\n          x.disabled = true;\n          }\n\n        \n\n    })\n\n}\n\nshow = false",
                     "logic": [],
                     "attributes": {},
                     "overlay": {
@@ -167,8 +167,8 @@
                     "inputType": "text",
                     "inputMask": "",
                     "fixedSize": true,
-                    "id": "e9wi8y8",
-                    "defaultValue": ""
+                    "id": "eu9w7fa",
+                    "defaultValue": null
                 },
                 {
                     "title": "Reviewer Actions",
@@ -1373,7 +1373,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ea2btv000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ea2btv0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "Panel-InformationForAffectedAndLikelyAffectedParcels",
                                     "tree": false,
                                     "type": "panel",
@@ -9245,7 +9245,7 @@
                                     "addons": [],
                                     "tree": false,
                                     "lazyLoad": false,
-                                    "id": "emrk44b00000000000000000000000000000000000000000"
+                                    "id": "emrk44b000000000000000000000000000000"
                                 }
                             ],
                             "errorLabel": "",
