@@ -11,6 +11,91 @@
             ],
             "components": [
                 {
+                    "label": "Text Area",
+                    "autoExpand": false,
+                    "tableView": true,
+                    "key": "textArea",
+                    "customConditional": "var userData =JSON.parse(localStorage.getItem('UserDetails'))\n\n\nif(!(userData.groups.includes(\"/formsflow/formsflow-client\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\n{\n\n    utils.eachComponent(form.components, (x)=>{\n\n   \n  \n          if(x.type==='select' && (x.key === 'selectCssaSdm' || x.key === 'selectCssaCaseworker' || x.key === 'selectCaseworker' || x.key === 'selectSrco' || x.key === 'selectSdm'  ))\n          {\n            //do nothing\n          }\n          else if ((x.type==='editgrid' && (x.key === 'notes' || x.key === 'srcrNotes' || x.key === 'deraNotes' || x.key === 'cssaNotes') ) ||x.key === 'comments' || x.key === 'commentFor')\n          {\n            //do nothing\n          }\n          else if(x.type === 'button')\n          {\n          //do nothing\n          }\n          else if(x.type === 'approvingAuthorityContactInformation')\n          { \n            if(userData.groups.includes(\"/formsflow/formsflow-reviewer/csap\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\n            {\n               x.disabled = false;\n            }\n          }\n          else if(x.properties.apField === \"true\")\n          {\n            if(userData.groups.includes(\"/formsflow/formsflow-reviewer/csap\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\n            {\n               x.disabled = false;\n            }\n            else\n            {\n\n            }\n          }\n          else\n          {\n          x.disabled = true;\n          }\n\n        \n\n    })\n\n}\n\nshow = false",
+                    "type": "textarea",
+                    "input": true,
+                    "placeholder": "",
+                    "prefix": "",
+                    "customClass": "",
+                    "suffix": "",
+                    "multiple": false,
+                    "defaultValue": null,
+                    "protected": false,
+                    "unique": false,
+                    "persistent": true,
+                    "hidden": false,
+                    "clearOnHide": true,
+                    "refreshOn": "",
+                    "redrawOn": "",
+                    "modalEdit": false,
+                    "dataGridLabel": false,
+                    "labelPosition": "top",
+                    "description": "",
+                    "errorLabel": "",
+                    "tooltip": "",
+                    "hideLabel": false,
+                    "tabindex": "",
+                    "disabled": false,
+                    "autofocus": false,
+                    "dbIndex": false,
+                    "customDefaultValue": "",
+                    "calculateValue": "",
+                    "calculateServer": false,
+                    "widget": {
+                        "type": "input"
+                    },
+                    "attributes": {},
+                    "validateOn": "change",
+                    "validate": {
+                        "required": false,
+                        "custom": "",
+                        "customPrivate": false,
+                        "strictDateValidation": false,
+                        "multiple": false,
+                        "unique": false,
+                        "minLength": "",
+                        "maxLength": "",
+                        "pattern": "",
+                        "minWords": "",
+                        "maxWords": ""
+                    },
+                    "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                    },
+                    "overlay": {
+                        "style": "",
+                        "left": "",
+                        "top": "",
+                        "width": "",
+                        "height": ""
+                    },
+                    "allowCalculateOverride": false,
+                    "encrypted": false,
+                    "showCharCount": false,
+                    "showWordCount": false,
+                    "properties": {},
+                    "allowMultipleMasks": false,
+                    "addons": [],
+                    "mask": false,
+                    "inputType": "text",
+                    "inputFormat": "html",
+                    "inputMask": "",
+                    "displayMask": "",
+                    "spellcheck": true,
+                    "truncateMultipleSpaces": false,
+                    "rows": 3,
+                    "wysiwyg": false,
+                    "editor": "",
+                    "fixedSize": true,
+                    "id": "ei2jjr6"
+                },
+                {
                     "title": "Reviewer Actions",
                     "collapsible": false,
                     "key": "nirBundleActions",
@@ -9078,7 +9163,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "epivnsp00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "epivnsp0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "contaminant",
                                     "mask": false,
                                     "type": "textfield",
@@ -9155,7 +9240,7 @@
                                     "truncateMultipleSpaces": false
                                 },
                                 {
-                                    "id": "el3hlvr00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "el3hlvr0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "maximumConcentration",
                                     "mask": false,
                                     "type": "textfield",
@@ -9900,7 +9985,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "esedw400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "esedw40000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "contaminant",
                                     "mask": false,
                                     "type": "textfield",
@@ -9977,7 +10062,7 @@
                                     "truncateMultipleSpaces": false
                                 },
                                 {
-                                    "id": "esor90600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "esor9060000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "maximumConcentration",
                                     "mask": false,
                                     "type": "textfield",
@@ -10719,7 +10804,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ej0y4100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ej0y410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "contaminant",
                                     "mask": false,
                                     "type": "textfield",
@@ -10796,7 +10881,7 @@
                                     "truncateMultipleSpaces": false
                                 },
                                 {
-                                    "id": "e8qg9fh00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "e8qg9fh0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "maximumConcentration",
                                     "mask": false,
                                     "type": "textfield",
@@ -11544,7 +11629,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eevqmo90000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eevqmo9000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "contaminant",
                                     "mask": false,
                                     "type": "textfield",
@@ -11621,7 +11706,7 @@
                                     "truncateMultipleSpaces": false
                                 },
                                 {
-                                    "id": "et223l30000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "et223l3000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "maximumConcentration",
                                     "mask": false,
                                     "type": "textfield",
