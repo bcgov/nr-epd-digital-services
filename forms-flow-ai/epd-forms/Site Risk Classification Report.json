@@ -253,7 +253,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
-                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/cssa-team\") || \r\nroles.includes(\"formsflow-reviewer/cssa-manager\") || \r\nroles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\") || \r\nroles.includes(\"formsflow-reviewer/site-risk-classification-officer\")) \r\n{\r\n show = true;\r\n}\r\nelse if (roles.includes(\"formsflow-reviewer/caseworker\") &&\r\ndata.srcrBundleStatus === \"srcrSrcoAccepted\")\r\n{\r\n if (data.applicabletriggers === \"ministryServiceApplicationWithTheRecommendationOfAnApprovedProfessional\" ||\r\n data.siteRiskClassification !== 'notHighRisk')\r\n  show = false;\r\nelse\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
+                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\nif(roles.includes(\"formsflow-reviewer/cssa-team\") || \r\nroles.includes(\"formsflow-reviewer/cssa-manager\") || \r\nroles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\") || \r\nroles.includes(\"formsflow-reviewer/site-risk-classification-officer\")) \r\n{\r\n show = true;\r\n}\r\nelse if (roles.includes(\"formsflow-reviewer/caseworker\") &&\r\ndata.srcrBundleStatus === \"srcrSrcoAccepted\")\r\n{\r\n if (data.applicabletriggers === \"ministryServiceApplicationWithTheRecommendationOfAnApprovedProfessional\" ||\r\n data.siteRiskClassification !== 'notHighRisk')\r\n  show = false;\r\nelse\r\n  show = true;\r\n}\r\nelse if (roles.includes(\"formsflow-reviewer/caseworker\") &&\r\ndata.applicationStatus === \"Recheck\" && data.srcrBundleStatus === \"srcrCaseworkerAccepted\")\r\n{\r\n   show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
@@ -305,7 +305,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "eueyf98"
+                                            "id": "ei0fqxf"
                                         },
                                         {
                                             "label": "Approved",
@@ -4303,7 +4303,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ele95t00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ele95t000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "spropertyOwnerAndOrOperator",
                                     "tree": false,
                                     "type": "panel",
@@ -13713,7 +13713,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eks0gu0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eks0gu00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "exposurePathwayQuestionnaireAffectedParcel",
                                     "tree": false,
                                     "type": "panel",
@@ -17656,7 +17656,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eo5mwyp00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eo5mwyp000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
