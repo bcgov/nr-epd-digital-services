@@ -30,7 +30,7 @@ const Header = () => {
           <Dropdown.Menu>
             {auth.user?.profile.identity_provider === "bceid" && ( //Only BCEID/Public Users should be able to edit their profile
               <Dropdown.Item
-                tag={Button}
+                as="button"
                 onClick={() => {
                   navigate("/profile");
                 }}
@@ -39,7 +39,7 @@ const Header = () => {
               </Dropdown.Item>
             )}
             <Dropdown.Item
-              tag={Button}
+              as="button"
               onClick={() => {
                 navigate("/dashboard");
               }}
