@@ -1484,8 +1484,8 @@ system.out.println ("isSentFromSociety "+execution.getVariable('isSentFromSociet
           <camunda:executionListener event="take">
             <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', "Resubmitted");
 execution.setVariable('requestStatus', "Resubmitted");
-execution.setVariable('cssaStatus', "Resubmitted");
-execution.setVariable('isCssaResubmitted', false);</camunda:script>
+execution.setVariable('soscStatus', "Resubmitted");
+execution.setVariable('isSoscResubmitted', false);</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="take" />
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
@@ -1593,8 +1593,8 @@ execution.setVariable('isCssaResubmitted', false);</camunda:script>
           <camunda:executionListener event="take">
             <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', "Resubmitted");
 execution.setVariable('requestStatus', "Resubmitted");
-execution.setVariable('cssaStatus', "Resubmitted");
-execution.setVariable('isCssaResubmitted', false);</camunda:script>
+execution.setVariable('soscStatus', "Resubmitted");
+execution.setVariable('isSoscResubmitted', false);</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
             <camunda:field name="fields">
@@ -1977,13 +1977,6 @@ system.out.println ("site owner flow");</camunda:script>
         <bpmndi:BPMNLabel>
           <dc:Bounds x="3573" y="3423" width="63" height="14" />
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0ji5op1" bpmnElement="Activity_0q362ss">
-        <dc:Bounds x="3870" y="3040" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0snwzvr" bpmnElement="Gateway_0uf75ow">
-        <dc:Bounds x="1640" y="2545" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0zmknij_di" bpmnElement="Activity_1bhbq4y" isExpanded="true">
         <dc:Bounds x="2155" y="2750" width="835" height="1630" />
@@ -2790,6 +2783,13 @@ system.out.println ("site owner flow");</camunda:script>
         <di:waypoint x="1865" y="2950" />
         <di:waypoint x="1865" y="2898" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_0ji5op1" bpmnElement="Activity_0q362ss">
+        <dc:Bounds x="3870" y="3040" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0snwzvr" bpmnElement="Gateway_0uf75ow">
+        <dc:Bounds x="1640" y="2545" width="50" height="50" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0gcqir8_di" bpmnElement="Flow_0gcqir8">
         <di:waypoint x="2065" y="1920" />
         <di:waypoint x="2065" y="1975" />
