@@ -12,11 +12,38 @@
             "components": [
                 {
                     "title": "Reviewer Actions",
+                    "theme": "default",
+                    "tooltip": "",
+                    "customClass": "",
                     "collapsible": false,
+                    "hidden": false,
+                    "hideLabel": false,
+                    "disabled": false,
+                    "modalEdit": false,
                     "key": "formActions",
-                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails?UserDetails[\"role\"]:[];\r\nconsole.log('data-----', data);\r\nif(!UserDetails){\r\n  show = false;\r\n}\r\nelse if(roles.includes(\"formsflow-client\")||\r\nroles.includes(\"formsflow-reviewer/formsflow-client-reviewer\")) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
+                    "tags": [],
+                    "properties": {},
+                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails?UserDetails[\"role\"]:[];\r\nconsole.log('data-----', data);\r\nif(!UserDetails){\r\n  show = false;\r\n}\r\nelse if(roles.includes(\"formsflow-client\") || \r\nroles.includes(\"formsflow-reviewer/cssa-team\") || \r\nroles.includes(\"formsflow-reviewer/cssa-manager\")|| \r\nroles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\") ||\r\nroles.includes(\"formsflow-reviewer/formsflow-client-reviewer\")) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
+                    "conditional": {
+                        "json": "",
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                    },
+                    "logic": [],
+                    "attributes": {},
+                    "overlay": {
+                        "style": "",
+                        "page": "",
+                        "left": "",
+                        "top": "",
+                        "width": "",
+                        "height": ""
+                    },
                     "type": "panel",
                     "label": "Panel",
+                    "breadcrumb": "default",
+                    "tabindex": "",
                     "input": false,
                     "tableView": false,
                     "components": [
@@ -29,35 +56,60 @@
                                             "label": "Previous Reviewer",
                                             "action": "custom",
                                             "showValidations": false,
+                                            "theme": "primary",
+                                            "size": "md",
+                                            "block": false,
+                                            "leftIcon": "",
+                                            "rightIcon": "",
+                                            "shortcut": "",
+                                            "description": "",
+                                            "tooltip": "",
+                                            "customClass": "",
+                                            "tabindex": "",
+                                            "disableOnInvalid": false,
+                                            "hidden": false,
+                                            "autofocus": false,
+                                            "disabled": false,
                                             "tableView": false,
+                                            "modalEdit": false,
                                             "key": "sendToPreviousReviewer",
-                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(\r\n(roles.includes(\"formsflow-reviewer/csap\") || roles.includes(\"formsflow-reviewer/cssa-team\")) && \r\n(data.applicationStatus===\"New\" || data.applicationStatus===\"Resubmitted\" || data.applicationStatus===\"Resubmit\" || data.applicationStatus===\"Recheck\") \r\n) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
+                                            "tags": [],
+                                            "properties": {},
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": "",
+                                                "json": ""
+                                            },
+                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer\") && \r\n!roles.includes(\"formsflow-reviewer/caseworker\") &&\r\n!(roles.includes(\"formsflow-reviewer/sdm\") && data.typeOfReview === \"applicationViaTheSocietyOfContaminatedSitesApprovedProfessionalsOfBc\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  if (roles.includes(\"formsflow-reviewer/caseworker\") &&\r\n  roles.includes(\"formsflow-reviewer/sdm\") &&\r\n  data.soscBundleStatus === \"cssaCaseworkerAccepted\")\r\n    show = true;\r\n  else\r\n   show = false;\r\n}",
+                                            "logic": [],
+                                            "attributes": {},
+                                            "overlay": {
+                                                "style": "",
+                                                "page": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
                                             "type": "button",
-                                            "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Recheck'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Recheck'\r\n    }); \r\n});",
+                                            "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst filteredData = _.pick(data, data.soscUtilKeys);\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": filteredData};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Recheck'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Recheck'\r\n    }); \r\n});",
                                             "input": true,
                                             "placeholder": "",
                                             "prefix": "",
-                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
                                             "protected": false,
                                             "unique": false,
                                             "persistent": false,
-                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
-                                            "modalEdit": false,
                                             "dataGridLabel": true,
                                             "labelPosition": "top",
-                                            "description": "",
                                             "errorLabel": "",
-                                            "tooltip": "",
                                             "hideLabel": false,
-                                            "tabindex": "",
-                                            "disabled": false,
-                                            "autofocus": false,
                                             "dbIndex": false,
                                             "customDefaultValue": "",
                                             "calculateValue": "",
@@ -65,7 +117,6 @@
                                             "widget": {
                                                 "type": "input"
                                             },
-                                            "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
                                                 "required": false,
@@ -75,32 +126,13 @@
                                                 "multiple": false,
                                                 "unique": false
                                             },
-                                            "conditional": {
-                                                "show": null,
-                                                "when": null,
-                                                "eq": ""
-                                            },
-                                            "overlay": {
-                                                "style": "",
-                                                "left": "",
-                                                "top": "",
-                                                "width": "",
-                                                "height": ""
-                                            },
                                             "allowCalculateOverride": false,
                                             "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
-                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "size": "md",
-                                            "leftIcon": "",
-                                            "rightIcon": "",
-                                            "block": false,
-                                            "disableOnInvalid": false,
-                                            "theme": "primary",
-                                            "id": "erimibd"
+                                            "id": "er62yzq"
                                         }
                                     ],
                                     "width": 3,
@@ -141,7 +173,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
-                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\nconst roles = UserDetails[\"role\"];\n\nif(roles.includes(\"formsflow-reviewer/cssa-team\") || \nroles.includes(\"formsflow-reviewer/cssa-manager\") || \nroles.includes(\"formsflow-reviewer/csap\") || \nroles.includes(\"formsflow-reviewer/csap-society\")) \n{\n  show = true;\n} else if (roles.includes(\"formsflow-reviewer/caseworker\"))\n{\n  if(data.soscStatus === 'mgrAccepted')\n    show = true;\n  else\n    show = false;\n}\nelse\n{\n  show = false;\n}",
+                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\nconst roles = UserDetails[\"role\"];\nconsole.log('data-----', data);\n\nif(roles.includes(\"formsflow-reviewer/caseworker\")&&\n(data.bundleStatus === 'cssaMgrAccepted' || \ndata.bundleStatus === 'cssaCaseworkerAccepted')) {\n    show = true;\n}\nelse\n{\n  show = false;\n}",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
@@ -153,7 +185,7 @@
                                                 "height": ""
                                             },
                                             "type": "button",
-                                            "custom": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\nconsole.log('data---', data);\r\nif(roles.includes(\"formsflow-reviewer/cssa-manager\") && \r\n(data.selectSoscSdm===''|| data.selectSoscCaseworker===''))\r\n{\r\n    alert('Please assign reviewers to continue!');\r\n    \r\n}\r\nelse\r\n{\r\n  const submissionId = form._submission._id;\r\n  const formId = form._submission.form;\r\n  const formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\n  const formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\r\n  const formio = new Formio(formDataReqUrl);\r\n  formio.saveSubmission(formDataReqObj1).then( result => {\r\n  form.emit('customEvent', {\r\n            type: \"actionComplete\",   \r\n            component: component,\r\n            actionType: 'Accepted'\r\n      }); \r\n  }).catch((error)=>{\r\n  //Error callback on not Save\r\n  form.emit('customEvent', {\r\n            type: \"actionError\",   \r\n            component: component,\r\n            actionType:'Accepted'\r\n      }); \r\n  });\r\n}",
+                                            "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst filteredData = _.pick(data, data.soscUtilKeys);\r\n\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": filteredData};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Accepted'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Accepted'\r\n    }); \r\n});",
                                             "input": true,
                                             "keyModified": true,
                                             "placeholder": "",
@@ -193,7 +225,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "evqa0v"
+                                            "id": "e2yn4l"
                                         },
                                         {
                                             "label": "Approved",
@@ -224,7 +256,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
-                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nconsole.log('data.apFirstName----', data.apFirstName);\r\nif(roles.includes(\"formsflow-reviewer/sdm\")) {\r\n  if (data.soscStatus === \"mgrAccepted\" && !(data.apFirstName === \"\" || \r\n  data.apFirstName === undefined || \r\n  data.apFirstName === null)) \r\n    show = true;\r\n else if (data.soscStatus === \"caseworkerAccepted\" )\r\n  show = true;\r\n else\r\n   show = false;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}\r\n",
+                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\n\r\n\r\nif(roles.includes(\"formsflow-reviewer/sdm\")&&\r\ndata.soscBundleStatus !== 'cssaMgrAccepted') {\r\n show = true;\r\n}\r\nelse\r\n{\r\n  if(data.typeOfReview === \"applicationViaTheSocietyOfContaminatedSitesApprovedProfessionalsOfBc\")\r\n    show = true;\r\n  else\r\n    show = false;\r\n}",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
@@ -236,7 +268,7 @@
                                                 "height": ""
                                             },
                                             "type": "button",
-                                            "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Approved'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Approved'\r\n    }); \r\n});",
+                                            "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst filteredData = _.pick(data, data.soscUtilKeys);\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": filteredData};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Approved'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Approved'\r\n    }); \r\n});",
                                             "input": true,
                                             "placeholder": "",
                                             "prefix": "",
@@ -275,7 +307,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "e25fbjq"
+                                            "id": "edokcji"
                                         }
                                     ],
                                     "width": 3,
@@ -292,35 +324,59 @@
                                             "action": "custom",
                                             "showValidations": false,
                                             "theme": "warning",
+                                            "size": "md",
+                                            "block": false,
+                                            "leftIcon": "",
+                                            "rightIcon": "",
+                                            "shortcut": "",
+                                            "description": "",
+                                            "tooltip": "",
+                                            "customClass": "",
+                                            "tabindex": "",
+                                            "disableOnInvalid": false,
+                                            "hidden": false,
+                                            "autofocus": false,
+                                            "disabled": false,
                                             "tableView": false,
+                                            "modalEdit": false,
                                             "key": "sendToApplicant",
-                                            "customConditional": "\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/cssa-manager\")) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
+                                            "tags": [],
+                                            "properties": {},
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": "",
+                                                "json": ""
+                                            },
+                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nconst taskUrl = window.location.pathname.split('/');\r\nconst taskId = taskUrl[2];\r\nconst authToken = localStorage.getItem(\"authToken\");\r\nconst bpmUrl = localStorage.getItem(\"bpmApiUrl\");\r\nvar reqUrl = bpmUrl + \"/task/\" + taskId + \"/variables\";\r\n\r\n\r\n   getData(reqUrl, authToken).then((response) => {\r\n  \r\n\t if(roles.includes(\"formsflow-reviewer\")) {\r\n \tvar applicationStatus =   response.applicationStatus ? response.applicationStatus.value : '';\r\n\tvar isResubmitted =   response.isSrcrResubmitted || response.isCssaResubmitted ? true : false;\r\n\r\n  \t      show = true;\r\n  \t      \r\n\r\n  \t\t\r\n\t      if (isResubmitted) {\r\n\t        component.disabled = true;\r\n\t        component.description = 'Disabled since SRCR or CSSA resubmission in progress';\r\n\t        instance.triggerRedraw();\r\n\t      } else {\r\n\t        component.description = '';\r\n\t        component.disabled = false;\r\n\t        instance.triggerRedraw();\r\n\t      }\r\n\t  }\r\n\t else\r\n\t {\r\n  \t\tshow = false;\r\n\t }\r\n    });\r\n\r\n\r\nasync function getData(reqUrl, authToken) {\r\n    const response = await fetch(reqUrl, {\r\n        method: \"GET\",\r\n        headers: {\r\n            \"Content-type\": \"application/json\",\r\n            Accept: \"application/json\",\r\n            Authorization: \"Bearer \" + authToken,\r\n        },\r\n    });\r\n    const data = await response.json();\r\n    return data;\r\n}",
+                                            "logic": [],
+                                            "attributes": {},
+                                            "overlay": {
+                                                "style": "",
+                                                "page": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
                                             "type": "button",
-                                            "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Returned'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Returned'\r\n    }); \r\n});",
+                                            "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst filteredData = _.pick(data, data.soscUtilKeys);\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": filteredData};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Returned'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Returned'\r\n    }); \r\n});",
                                             "input": true,
                                             "placeholder": "",
                                             "prefix": "",
-                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
                                             "protected": false,
                                             "unique": false,
                                             "persistent": false,
-                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
-                                            "modalEdit": false,
                                             "dataGridLabel": true,
                                             "labelPosition": "top",
-                                            "description": "",
                                             "errorLabel": "",
-                                            "tooltip": "",
                                             "hideLabel": false,
-                                            "tabindex": "",
-                                            "disabled": false,
-                                            "autofocus": false,
                                             "dbIndex": false,
                                             "customDefaultValue": "",
                                             "calculateValue": "",
@@ -328,7 +384,6 @@
                                             "widget": {
                                                 "type": "input"
                                             },
-                                            "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
                                                 "required": false,
@@ -338,31 +393,13 @@
                                                 "multiple": false,
                                                 "unique": false
                                             },
-                                            "conditional": {
-                                                "show": null,
-                                                "when": null,
-                                                "eq": ""
-                                            },
-                                            "overlay": {
-                                                "style": "",
-                                                "left": "",
-                                                "top": "",
-                                                "width": "",
-                                                "height": ""
-                                            },
                                             "allowCalculateOverride": false,
                                             "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
-                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "size": "md",
-                                            "leftIcon": "",
-                                            "rightIcon": "",
-                                            "block": false,
-                                            "disableOnInvalid": false,
-                                            "id": "e6k2pg"
+                                            "id": "ecdnmb"
                                         }
                                     ],
                                     "size": "md",
@@ -379,35 +416,59 @@
                                             "action": "custom",
                                             "showValidations": false,
                                             "theme": "danger",
+                                            "size": "md",
+                                            "block": false,
+                                            "leftIcon": "",
+                                            "rightIcon": "",
+                                            "shortcut": "",
+                                            "description": "",
+                                            "tooltip": "",
+                                            "customClass": "",
+                                            "tabindex": "",
+                                            "disableOnInvalid": false,
+                                            "hidden": false,
+                                            "autofocus": false,
+                                            "disabled": false,
                                             "tableView": false,
+                                            "modalEdit": false,
                                             "key": "rejectForm",
-                                            "customConditional": "\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\")|| \r\nroles.includes(\"formsflow-reviewer/cssa-manager\")) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
+                                            "tags": [],
+                                            "properties": {},
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": "",
+                                                "json": ""
+                                            },
+                                            "customConditional": "\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer\") && \r\n!(roles.includes(\"formsflow-reviewer/csap\") ||\r\nroles.includes(\"formsflow-reviewer/csap-society\"))) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
+                                            "logic": [],
+                                            "attributes": {},
+                                            "overlay": {
+                                                "style": "",
+                                                "page": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
                                             "type": "button",
-                                            "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Rejected'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Rejected'\r\n    }); \r\n});",
+                                            "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst filteredData = _.pick(data, data.soscUtilKeys);\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": filteredData};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Rejected'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Rejected'\r\n    }); \r\n});",
                                             "input": true,
                                             "placeholder": "",
                                             "prefix": "",
-                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
                                             "protected": false,
                                             "unique": false,
                                             "persistent": false,
-                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
-                                            "modalEdit": false,
                                             "dataGridLabel": true,
                                             "labelPosition": "top",
-                                            "description": "",
                                             "errorLabel": "",
-                                            "tooltip": "",
                                             "hideLabel": false,
-                                            "tabindex": "",
-                                            "disabled": false,
-                                            "autofocus": false,
                                             "dbIndex": false,
                                             "customDefaultValue": "",
                                             "calculateValue": "",
@@ -415,7 +476,6 @@
                                             "widget": {
                                                 "type": "input"
                                             },
-                                            "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
                                                 "required": false,
@@ -425,31 +485,13 @@
                                                 "multiple": false,
                                                 "unique": false
                                             },
-                                            "conditional": {
-                                                "show": null,
-                                                "when": null,
-                                                "eq": ""
-                                            },
-                                            "overlay": {
-                                                "style": "",
-                                                "left": "",
-                                                "top": "",
-                                                "width": "",
-                                                "height": ""
-                                            },
                                             "allowCalculateOverride": false,
                                             "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
-                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "size": "md",
-                                            "leftIcon": "",
-                                            "rightIcon": "",
-                                            "block": false,
-                                            "disableOnInvalid": false,
-                                            "id": "eb67pz"
+                                            "id": "ei16uod"
                                         }
                                     ],
                                     "size": "md",
@@ -524,39 +566,31 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "edce38k"
+                            "id": "ew34dkh"
                         }
                     ],
                     "keyModified": true,
                     "placeholder": "",
                     "prefix": "",
-                    "customClass": "",
                     "suffix": "",
                     "multiple": false,
                     "defaultValue": null,
                     "protected": false,
                     "unique": false,
                     "persistent": false,
-                    "hidden": false,
                     "clearOnHide": false,
                     "refreshOn": "",
                     "redrawOn": "",
-                    "modalEdit": false,
                     "dataGridLabel": false,
                     "labelPosition": "top",
                     "description": "",
                     "errorLabel": "",
-                    "tooltip": "",
-                    "hideLabel": false,
-                    "tabindex": "",
-                    "disabled": false,
                     "autofocus": false,
                     "dbIndex": false,
                     "customDefaultValue": "",
                     "calculateValue": "",
                     "calculateServer": false,
                     "widget": null,
-                    "attributes": {},
                     "validateOn": "change",
                     "validate": {
                         "required": false,
@@ -566,38 +600,50 @@
                         "multiple": false,
                         "unique": false
                     },
+                    "allowCalculateOverride": false,
+                    "encrypted": false,
+                    "showCharCount": false,
+                    "showWordCount": false,
+                    "allowMultipleMasks": false,
+                    "addons": [],
+                    "tree": false,
+                    "lazyLoad": false,
+                    "id": "e7wsqnw"
+                },
+                {
+                    "title": "Assign Reviewers",
+                    "theme": "default",
+                    "tooltip": "",
+                    "customClass": "",
+                    "collapsible": true,
+                    "hidden": false,
+                    "hideLabel": false,
+                    "disabled": false,
+                    "modalEdit": false,
+                    "key": "sdmAssignment",
+                    "tags": [],
+                    "properties": {},
+                    "customConditional": " if (data.riskclassification === \"exempt\" && (data.SoSC || \r\n data.certificationdocumentradioGroup.determinationOfContaminatedSite ||\r\n data.certificationdocumentradioGroup.approvalInPrinciple ||\r\n data.certificationdocumentradioGroup.certificateOfCompliance \r\n //|| data.applicationsrequested.553\r\n )){\r\n   const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n   const roles = UserDetails[\"role\"];\r\n    \r\n    if(roles.includes(\"formsflow-reviewer/cssa-manager\")) {\r\n      show = true;\r\n    }\r\n    else\r\n    {\r\n      show = false;\r\n    }\r\n} else {\r\n    show = false;\r\n}",
                     "conditional": {
+                        "json": "",
                         "show": null,
                         "when": null,
                         "eq": ""
                     },
+                    "logic": [],
+                    "attributes": {},
                     "overlay": {
                         "style": "",
+                        "page": "",
                         "left": "",
                         "top": "",
                         "width": "",
                         "height": ""
                     },
-                    "allowCalculateOverride": false,
-                    "encrypted": false,
-                    "showCharCount": false,
-                    "showWordCount": false,
-                    "properties": {},
-                    "allowMultipleMasks": false,
-                    "addons": [],
-                    "tree": false,
-                    "lazyLoad": false,
-                    "theme": "default",
-                    "breadcrumb": "default",
-                    "id": "exzzrf"
-                },
-                {
-                    "title": "Assign Reviewers",
-                    "collapsible": true,
-                    "key": "sdmAssignment",
-                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/cssa-manager\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
                     "type": "panel",
                     "label": "",
+                    "breadcrumb": "default",
+                    "tabindex": "",
                     "collapsed": false,
                     "input": false,
                     "tableView": false,
@@ -609,31 +655,10 @@
                                     "components": [
                                         {
                                             "label": "Select SDM",
-                                            "labelPosition": "top",
                                             "widget": "choicesjs",
-                                            "placeholder": "",
-                                            "description": "",
-                                            "tooltip": "",
-                                            "customClass": "",
-                                            "tabindex": "",
-                                            "hidden": false,
-                                            "hideLabel": false,
-                                            "uniqueOptions": false,
-                                            "autofocus": false,
-                                            "disabled": false,
                                             "tableView": true,
-                                            "modalEdit": false,
-                                            "multiple": false,
                                             "dataSrc": "url",
                                             "data": {
-                                                "values": [
-                                                    {
-                                                        "label": "",
-                                                        "value": ""
-                                                    }
-                                                ],
-                                                "resource": "",
-                                                "json": "",
                                                 "url": "{{localStorage.getItem('formsflow.ai.api.url')}}/user?memberOfGroup=formsflow/formsflow-reviewer/sdm",
                                                 "headers": [
                                                     {
@@ -649,96 +674,107 @@
                                                         "value": "application/json"
                                                     }
                                                 ],
+                                                "values": [
+                                                    {
+                                                        "label": "",
+                                                        "value": ""
+                                                    }
+                                                ],
+                                                "json": "",
+                                                "resource": "",
                                                 "custom": ""
                                             },
                                             "dataType": "string",
-                                            "idPath": "id",
                                             "valueProperty": "username",
                                             "template": "<span>{{ item.lastName }}, {{ item.firstName }}</span>",
-                                            "refreshOn": "",
-                                            "refreshOnBlur": "",
-                                            "clearOnRefresh": false,
-                                            "searchEnabled": true,
-                                            "selectThreshold": 0.3,
-                                            "readOnlyValue": false,
-                                            "customOptions": {},
-                                            "useExactSearch": false,
-                                            "persistent": true,
+                                            "validate": {
+                                                "required": true,
+                                                "custom": "",
+                                                "customPrivate": false,
+                                                "strictDateValidation": false,
+                                                "multiple": false,
+                                                "unique": false,
+                                                "onlyAvailableItems": false
+                                            },
+                                            "key": "selectSoscSdm",
+                                            "type": "select",
+                                            "selectValues": "data",
+                                            "disableLimit": false,
+                                            "input": true,
+                                            "keyModified": true,
+                                            "placeholder": "",
+                                            "prefix": "",
+                                            "customClass": "",
+                                            "suffix": "",
+                                            "multiple": false,
+                                            "defaultValue": null,
                                             "protected": false,
-                                            "dbIndex": false,
-                                            "encrypted": false,
+                                            "unique": false,
+                                            "persistent": true,
+                                            "hidden": false,
                                             "clearOnHide": true,
+                                            "refreshOn": "",
+                                            "redrawOn": "",
+                                            "modalEdit": false,
+                                            "dataGridLabel": false,
+                                            "labelPosition": "top",
+                                            "description": "",
+                                            "errorLabel": "",
+                                            "tooltip": "",
+                                            "hideLabel": false,
+                                            "tabindex": "",
+                                            "disabled": false,
+                                            "autofocus": false,
+                                            "dbIndex": false,
                                             "customDefaultValue": "",
                                             "calculateValue": "",
                                             "calculateServer": false,
-                                            "allowCalculateOverride": false,
+                                            "attributes": {},
                                             "validateOn": "change",
-                                            "validate": {
-                                                "required": true,
-                                                "onlyAvailableItems": false,
-                                                "customMessage": "",
-                                                "custom": "",
-                                                "customPrivate": false,
-                                                "json": "",
-                                                "strictDateValidation": false,
-                                                "multiple": false,
-                                                "unique": false
-                                            },
-                                            "unique": false,
-                                            "errorLabel": "",
-                                            "errors": "",
-                                            "key": "selectSoscSdm",
-                                            "tags": [],
-                                            "properties": {},
                                             "conditional": {
                                                 "show": null,
                                                 "when": null,
-                                                "eq": "",
-                                                "json": ""
+                                                "eq": ""
                                             },
-                                            "customConditional": "",
-                                            "logic": [],
-                                            "attributes": {},
                                             "overlay": {
                                                 "style": "",
-                                                "page": "",
                                                 "left": "",
                                                 "top": "",
                                                 "width": "",
                                                 "height": ""
                                             },
-                                            "type": "select",
-                                            "indexeddb": {
-                                                "filter": {}
-                                            },
-                                            "lazyLoad": true,
-                                            "selectValues": "data",
-                                            "selectFields": "",
-                                            "disableLimit": false,
-                                            "searchField": "",
-                                            "searchDebounce": 0.3,
-                                            "minSearch": 0,
-                                            "filter": "",
-                                            "limit": 100,
-                                            "authenticate": false,
-                                            "ignoreCache": false,
-                                            "redrawOn": "",
-                                            "input": true,
-                                            "keyModified": true,
-                                            "prefix": "",
-                                            "suffix": "",
-                                            "dataGridLabel": false,
+                                            "allowCalculateOverride": false,
+                                            "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
+                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
+                                            "idPath": "id",
+                                            "clearOnRefresh": false,
+                                            "limit": 100,
+                                            "lazyLoad": true,
+                                            "filter": "",
+                                            "searchEnabled": true,
+                                            "searchDebounce": 0.3,
+                                            "searchField": "",
+                                            "minSearch": 0,
+                                            "readOnlyValue": false,
+                                            "authenticate": false,
+                                            "ignoreCache": false,
+                                            "selectFields": "",
+                                            "selectThreshold": 0.3,
+                                            "uniqueOptions": false,
                                             "fuseOptions": {
                                                 "include": "score",
                                                 "threshold": 0.3
                                             },
-                                            "id": "evuipnr",
-                                            "defaultValue": "",
-                                            "sort": ""
+                                            "indexeddb": {
+                                                "filter": {}
+                                            },
+                                            "customOptions": {},
+                                            "useExactSearch": false,
+                                            "id": "el1o2ba"
                                         }
                                     ],
                                     "width": 4,
@@ -752,31 +788,10 @@
                                     "components": [
                                         {
                                             "label": "Select Caseworker",
-                                            "labelPosition": "top",
                                             "widget": "choicesjs",
-                                            "placeholder": "",
-                                            "description": "",
-                                            "tooltip": "",
-                                            "customClass": "",
-                                            "tabindex": "",
-                                            "hidden": false,
-                                            "hideLabel": false,
-                                            "uniqueOptions": false,
-                                            "autofocus": false,
-                                            "disabled": false,
                                             "tableView": true,
-                                            "modalEdit": false,
-                                            "multiple": false,
                                             "dataSrc": "url",
                                             "data": {
-                                                "values": [
-                                                    {
-                                                        "label": "",
-                                                        "value": ""
-                                                    }
-                                                ],
-                                                "resource": "",
-                                                "json": "",
                                                 "url": "{{localStorage.getItem('formsflow.ai.api.url')}}/user?memberOfGroup=formsflow/formsflow-reviewer/caseworker",
                                                 "headers": [
                                                     {
@@ -792,96 +807,107 @@
                                                         "value": "application/json"
                                                     }
                                                 ],
+                                                "values": [
+                                                    {
+                                                        "label": "",
+                                                        "value": ""
+                                                    }
+                                                ],
+                                                "json": "",
+                                                "resource": "",
                                                 "custom": ""
                                             },
                                             "dataType": "string",
-                                            "idPath": "id",
                                             "valueProperty": "username",
                                             "template": "<span>{{ item.lastName }}, {{ item.firstName }}</span>",
-                                            "refreshOn": "",
-                                            "refreshOnBlur": "",
-                                            "clearOnRefresh": false,
-                                            "searchEnabled": true,
-                                            "selectThreshold": 0.3,
-                                            "readOnlyValue": false,
-                                            "customOptions": {},
-                                            "useExactSearch": false,
-                                            "persistent": true,
+                                            "validate": {
+                                                "required": true,
+                                                "custom": "",
+                                                "customPrivate": false,
+                                                "strictDateValidation": false,
+                                                "multiple": false,
+                                                "unique": false,
+                                                "onlyAvailableItems": false
+                                            },
+                                            "key": "selectSoscCaseworker",
+                                            "type": "select",
+                                            "selectValues": "data",
+                                            "disableLimit": false,
+                                            "input": true,
+                                            "keyModified": true,
+                                            "placeholder": "",
+                                            "prefix": "",
+                                            "customClass": "",
+                                            "suffix": "",
+                                            "multiple": false,
+                                            "defaultValue": null,
                                             "protected": false,
-                                            "dbIndex": false,
-                                            "encrypted": false,
+                                            "unique": false,
+                                            "persistent": true,
+                                            "hidden": false,
                                             "clearOnHide": true,
+                                            "refreshOn": "",
+                                            "redrawOn": "",
+                                            "modalEdit": false,
+                                            "dataGridLabel": false,
+                                            "labelPosition": "top",
+                                            "description": "",
+                                            "errorLabel": "",
+                                            "tooltip": "",
+                                            "hideLabel": false,
+                                            "tabindex": "",
+                                            "disabled": false,
+                                            "autofocus": false,
+                                            "dbIndex": false,
                                             "customDefaultValue": "",
                                             "calculateValue": "",
                                             "calculateServer": false,
-                                            "allowCalculateOverride": false,
+                                            "attributes": {},
                                             "validateOn": "change",
-                                            "validate": {
-                                                "required": true,
-                                                "onlyAvailableItems": false,
-                                                "customMessage": "",
-                                                "custom": "",
-                                                "customPrivate": false,
-                                                "json": "",
-                                                "strictDateValidation": false,
-                                                "multiple": false,
-                                                "unique": false
-                                            },
-                                            "unique": false,
-                                            "errorLabel": "",
-                                            "errors": "",
-                                            "key": "selectSoscCaseworker",
-                                            "tags": [],
-                                            "properties": {},
                                             "conditional": {
                                                 "show": null,
                                                 "when": null,
-                                                "eq": "",
-                                                "json": ""
+                                                "eq": ""
                                             },
-                                            "customConditional": "",
-                                            "logic": [],
-                                            "attributes": {},
                                             "overlay": {
                                                 "style": "",
-                                                "page": "",
                                                 "left": "",
                                                 "top": "",
                                                 "width": "",
                                                 "height": ""
                                             },
-                                            "type": "select",
-                                            "indexeddb": {
-                                                "filter": {}
-                                            },
-                                            "lazyLoad": true,
-                                            "selectValues": "data",
-                                            "selectFields": "",
-                                            "disableLimit": false,
-                                            "searchField": "",
-                                            "searchDebounce": 0.3,
-                                            "minSearch": 0,
-                                            "filter": "",
-                                            "limit": 100,
-                                            "authenticate": false,
-                                            "ignoreCache": false,
-                                            "redrawOn": "",
-                                            "input": true,
-                                            "keyModified": true,
-                                            "prefix": "",
-                                            "suffix": "",
-                                            "dataGridLabel": false,
+                                            "allowCalculateOverride": false,
+                                            "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
+                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
+                                            "idPath": "id",
+                                            "clearOnRefresh": false,
+                                            "limit": 100,
+                                            "lazyLoad": true,
+                                            "filter": "",
+                                            "searchEnabled": true,
+                                            "searchDebounce": 0.3,
+                                            "searchField": "",
+                                            "minSearch": 0,
+                                            "readOnlyValue": false,
+                                            "authenticate": false,
+                                            "ignoreCache": false,
+                                            "selectFields": "",
+                                            "selectThreshold": 0.3,
+                                            "uniqueOptions": false,
                                             "fuseOptions": {
                                                 "include": "score",
                                                 "threshold": 0.3
                                             },
-                                            "id": "ei0g89",
-                                            "defaultValue": "",
-                                            "sort": ""
+                                            "indexeddb": {
+                                                "filter": {}
+                                            },
+                                            "customOptions": {},
+                                            "useExactSearch": false,
+                                            "id": "earnstg"
                                         }
                                     ],
                                     "width": 4,
@@ -965,39 +991,31 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "e4hrtb"
+                            "id": "eslru1i"
                         }
                     ],
                     "keyModified": true,
                     "placeholder": "",
                     "prefix": "",
-                    "customClass": "",
                     "suffix": "",
                     "multiple": false,
                     "defaultValue": null,
                     "protected": false,
                     "unique": false,
                     "persistent": false,
-                    "hidden": false,
                     "clearOnHide": false,
                     "refreshOn": "",
                     "redrawOn": "",
-                    "modalEdit": false,
                     "dataGridLabel": false,
                     "labelPosition": "top",
                     "description": "",
                     "errorLabel": "",
-                    "tooltip": "",
-                    "hideLabel": false,
-                    "tabindex": "",
-                    "disabled": false,
                     "autofocus": false,
                     "dbIndex": false,
                     "customDefaultValue": "",
                     "calculateValue": "",
                     "calculateServer": false,
                     "widget": null,
-                    "attributes": {},
                     "validateOn": "change",
                     "validate": {
                         "required": false,
@@ -1007,30 +1025,15 @@
                         "multiple": false,
                         "unique": false
                     },
-                    "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                    },
-                    "overlay": {
-                        "style": "",
-                        "left": "",
-                        "top": "",
-                        "width": "",
-                        "height": ""
-                    },
                     "allowCalculateOverride": false,
                     "encrypted": false,
                     "showCharCount": false,
                     "showWordCount": false,
-                    "properties": {},
                     "allowMultipleMasks": false,
                     "addons": [],
                     "tree": false,
                     "lazyLoad": false,
-                    "theme": "default",
-                    "breadcrumb": "default",
-                    "id": "en8s25"
+                    "id": "enrnknh"
                 },
                 {
                     "label": "Notes",
@@ -1655,6 +1658,101 @@
                     "lazyLoad": false,
                     "defaultOpen": false,
                     "id": "ec9q8u"
+                },
+                {
+                    "label": "Text Area",
+                    "labelPosition": "top",
+                    "placeholder": "",
+                    "description": "",
+                    "tooltip": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "widget": {
+                        "type": "input"
+                    },
+                    "displayMask": "",
+                    "editor": "",
+                    "autoExpand": false,
+                    "customClass": "",
+                    "tabindex": "",
+                    "autocomplete": "",
+                    "hidden": false,
+                    "hideLabel": false,
+                    "showWordCount": false,
+                    "showCharCount": false,
+                    "autofocus": false,
+                    "spellcheck": true,
+                    "disabled": false,
+                    "tableView": true,
+                    "modalEdit": false,
+                    "multiple": false,
+                    "persistent": true,
+                    "inputFormat": "html",
+                    "protected": false,
+                    "dbIndex": false,
+                    "case": "",
+                    "truncateMultipleSpaces": false,
+                    "encrypted": false,
+                    "redrawOn": "",
+                    "clearOnHide": true,
+                    "customDefaultValue": "",
+                    "calculateValue": "",
+                    "calculateServer": false,
+                    "allowCalculateOverride": false,
+                    "validateOn": "change",
+                    "validate": {
+                        "required": false,
+                        "pattern": "",
+                        "customMessage": "",
+                        "custom": "",
+                        "customPrivate": false,
+                        "json": "",
+                        "minLength": "",
+                        "maxLength": "",
+                        "minWords": "",
+                        "maxWords": "",
+                        "strictDateValidation": false,
+                        "multiple": false,
+                        "unique": false
+                    },
+                    "unique": false,
+                    "errorLabel": "",
+                    "errors": "",
+                    "key": "soscTextArea",
+                    "tags": [],
+                    "properties": {},
+                    "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": "",
+                        "json": ""
+                    },
+                    "customConditional": "var userData =JSON.parse(localStorage.getItem('UserDetails'))\r\n\r\nif(!(userData.groups.includes(\"/formsflow/formsflow-client\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\r\n{\r\n\r\n    utils.eachComponent(form.components, (x)=>{\r\n\r\n   \r\n  \r\n          if(x.type==='select' && (x.key === 'selectSoscSdm' || x.key === 'selectSoscCaseworker'))\r\n          {\r\n            //do nothing\r\n          }\r\n          else if ((x.type==='editgrid' && (x.key === 'soscNotes' ) ) ||x.key === 'comments' || x.key === 'commentFor')\r\n          {\r\n            //do nothing\r\n          }\r\n          else if(x.type === 'button')\r\n          {\r\n          //do nothing\r\n          }\r\n          else if(x.type === 'approvingAuthorityContactInformation')\r\n          { \r\n            if(userData.groups.includes(\"/formsflow/formsflow-reviewer/csap\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\r\n            {\r\n               x.disabled = false;\r\n            }\r\n          }\r\n          else if(x.properties.apField === \"true\")\r\n          {\r\n            if(userData.groups.includes(\"/formsflow/formsflow-reviewer/csap\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\r\n            {\r\n               x.disabled = false;\r\n            }\r\n            else\r\n            {\r\n\r\n            }\r\n          }\r\n          else\r\n          {\r\n          x.disabled = true;\r\n          }\r\n\r\n        \r\n\r\n    })\r\n\r\n}\r\n\r\nshow = false",
+                    "logic": [],
+                    "attributes": {},
+                    "overlay": {
+                        "style": "",
+                        "page": "",
+                        "left": "",
+                        "top": "",
+                        "width": "",
+                        "height": ""
+                    },
+                    "type": "textarea",
+                    "rows": 3,
+                    "wysiwyg": false,
+                    "input": true,
+                    "keyModified": true,
+                    "refreshOn": "",
+                    "dataGridLabel": false,
+                    "allowMultipleMasks": false,
+                    "addons": [],
+                    "mask": false,
+                    "inputType": "text",
+                    "inputMask": "",
+                    "fixedSize": true,
+                    "id": "ewfpnup",
+                    "defaultValue": ""
                 },
                 {
                     "label": "hiddenUserIdForFormSharingApplicantAsOwner",
@@ -8670,7 +8768,7 @@
                                             "id": "ej1mdrb"
                                         }
                                     ],
-                                    "id": "ej7yhy0000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ej7yhy0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -9710,7 +9808,7 @@
                                                     "id": "eqnyhh"
                                                 }
                                             ],
-                                            "id": "eskogm0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "eskogm0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -10242,7 +10340,7 @@
                                             "addons": [],
                                             "tree": false,
                                             "lazyLoad": false,
-                                            "id": "e0cqfrg0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                                            "id": "e0cqfrg0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
                                         }
                                     ],
                                     "layoutFixed": false,
@@ -10341,7 +10439,7 @@
                                             "input": true,
                                             "label": "Crown Land File Numbers",
                                             "tableView": true,
-                                            "id": "elizdoh0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "elizdoh0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -11789,7 +11887,7 @@
                                             "id": "e6o3au0o"
                                         }
                                     ],
-                                    "id": "erlwlrl00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "erlwlrl00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -12822,7 +12920,7 @@
                                                     "id": "eg4rrls"
                                                 }
                                             ],
-                                            "id": "ehjtgz000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "ehjtgz000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -13421,7 +13519,7 @@
                                             "addons": [],
                                             "tree": false,
                                             "lazyLoad": false,
-                                            "id": "emjblk6000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                                            "id": "emjblk6000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
                                         }
                                     ],
                                     "placeholder": "",
@@ -13465,7 +13563,7 @@
                                             "input": true,
                                             "label": "Crown Land File Numbers",
                                             "tableView": true,
-                                            "id": "eh8kmqu0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "eh8kmqu0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -14414,7 +14512,7 @@
                                             "id": "edt3c4"
                                         }
                                     ],
-                                    "id": "e80y9k8000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "e80y9k8000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -21956,7 +22054,7 @@
                                             "id": "es5kcwo"
                                         }
                                     ],
-                                    "id": "egwgsw0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "egwgsw0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -22753,7 +22851,7 @@
                                             "id": "erxxdli"
                                         }
                                     ],
-                                    "id": "e09khr20000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "e09khr20000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -23362,7 +23460,7 @@
                                             "id": "eu9o53q"
                                         }
                                     ],
-                                    "id": "eipn9d000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eipn9d000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -23892,7 +23990,7 @@
                                             "id": "ef617zf"
                                         }
                                     ],
-                                    "id": "ebh60il000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ebh60il000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -24663,7 +24761,7 @@
                                             "id": "eak2oy8"
                                         }
                                     ],
-                                    "id": "evgsijp000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "evgsijp000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -28737,7 +28835,7 @@
                                             "id": "e9e5bm"
                                         }
                                     ],
-                                    "id": "e6l31cy0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "e6l31cy0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -29672,7 +29770,7 @@
                                             "id": "ex2otfp"
                                         }
                                     ],
-                                    "id": "eauzdys000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eauzdys000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -30292,7 +30390,7 @@
                                             "id": "em3poaa"
                                         }
                                     ],
-                                    "id": "ey0h0vl00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ey0h0vl00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -30912,7 +31010,7 @@
                                             "id": "ebu3n7"
                                         }
                                     ],
-                                    "id": "el9aclo0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "el9aclo0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -31532,7 +31630,7 @@
                                             "id": "eincm2l"
                                         }
                                     ],
-                                    "id": "ehk7lsj000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ehk7lsj000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -32152,7 +32250,7 @@
                                             "id": "elx2wbn"
                                         }
                                     ],
-                                    "id": "ejahpfm000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ejahpfm000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -32858,7 +32956,7 @@
                                     "addons": [],
                                     "tree": false,
                                     "lazyLoad": false,
-                                    "id": "etzpsl000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                                    "id": "etzpsl000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
                                 }
                             ],
                             "placeholder": "",
@@ -33599,7 +33697,7 @@
                                             "defaultValue": ""
                                         }
                                     ],
-                                    "id": "esvz3la0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "esvz3la0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -37552,7 +37650,7 @@
                                             "id": "estazfs"
                                         }
                                     ],
-                                    "id": "ef5nwt0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ef5nwt0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -38058,7 +38156,7 @@
                                             "id": "eq5jxk"
                                         }
                                     ],
-                                    "id": "eoq12ev000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eoq12ev000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -38377,7 +38475,7 @@
                                             "id": "enjn8bkh"
                                         }
                                     ],
-                                    "id": "ett43n0j00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ett43n0j00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -38696,7 +38794,7 @@
                                             "id": "ee9w9ok"
                                         }
                                     ],
-                                    "id": "euuaaa0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "euuaaa0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -39015,7 +39113,7 @@
                                             "id": "e6efm7o"
                                         }
                                     ],
-                                    "id": "edr4h05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "edr4h05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -41126,7 +41224,7 @@
                                     "type": "columns",
                                     "input": false,
                                     "tableView": false,
-                                    "id": "ev4kpmc00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ev4kpmc00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -41923,7 +42021,7 @@
                                     "type": "columns",
                                     "input": false,
                                     "tableView": false,
-                                    "id": "ehbime0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ehbime0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -42831,7 +42929,7 @@
                                     "refreshOn": "",
                                     "addons": [],
                                     "inputType": "text",
-                                    "id": "errpqaf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "errpqaf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "defaultValue": ""
                                 }
                             ],
@@ -44418,7 +44516,7 @@
                     "id": "el00fud"
                 },
                 {
-                    "label": "bundleStatus",
+                    "label": "soscBundleStatus",
                     "customClass": "",
                     "modalEdit": false,
                     "defaultValue": null,
@@ -44486,7 +44584,7 @@
                     "allowMultipleMasks": false,
                     "addons": [],
                     "inputType": "hidden",
-                    "id": "eryzjur"
+                    "id": "eh7v2wn"
                 },
                 {
                     "label": "soscStatus",
@@ -44702,6 +44800,78 @@
                     "inputType": "hidden",
                     "id": "e6z1qd9",
                     "description": ""
+                },
+                {
+                    "label": "soscUtilKeys",
+                    "customClass": "",
+                    "modalEdit": false,
+                    "defaultValue": null,
+                    "persistent": true,
+                    "protected": false,
+                    "dbIndex": false,
+                    "encrypted": false,
+                    "redrawOn": "",
+                    "customDefaultValue": "const soscKeys = Object.keys(\n      utils.flattenComponents(form.components, false)\n    );\n\nvalue = soscKeys;",
+                    "calculateValue": "",
+                    "calculateServer": false,
+                    "key": "cssaUtilKeys",
+                    "tags": [],
+                    "properties": {},
+                    "logic": [],
+                    "attributes": {},
+                    "overlay": {
+                        "style": "",
+                        "page": "",
+                        "left": "",
+                        "top": "",
+                        "width": "",
+                        "height": ""
+                    },
+                    "type": "hidden",
+                    "input": true,
+                    "tableView": false,
+                    "keyModified": true,
+                    "placeholder": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "multiple": false,
+                    "unique": false,
+                    "hidden": false,
+                    "clearOnHide": true,
+                    "refreshOn": "",
+                    "dataGridLabel": false,
+                    "labelPosition": "top",
+                    "description": "",
+                    "errorLabel": "",
+                    "tooltip": "",
+                    "hideLabel": false,
+                    "tabindex": "",
+                    "disabled": false,
+                    "autofocus": false,
+                    "widget": {
+                        "type": "input"
+                    },
+                    "validateOn": "change",
+                    "validate": {
+                        "required": false,
+                        "custom": "",
+                        "customPrivate": false,
+                        "strictDateValidation": false,
+                        "multiple": false,
+                        "unique": false
+                    },
+                    "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                    },
+                    "allowCalculateOverride": false,
+                    "showCharCount": false,
+                    "showWordCount": false,
+                    "allowMultipleMasks": false,
+                    "addons": [],
+                    "inputType": "hidden",
+                    "id": "e0wiiqr"
                 }
             ]
         }
