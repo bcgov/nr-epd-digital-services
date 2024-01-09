@@ -52,6 +52,7 @@ import {
 } from "../apiManager/endpoints/config";
 import { AppConfig } from "../config";
 import { getFormioRoleIds } from "../apiManager/services/userservices";
+import Denied from "./Denied";
 
 export const kcServiceInstance = (tenantId = null) => {
   return KeycloakService.getInstance(
@@ -176,7 +177,8 @@ const PrivateRoute = React.memo((props) => {
           <Route
             {...rest}
             render={(props) =>
-              userRoles.includes(STAFF_REVIEWER) && !userRoles.includes(CLIENT_REVIEWER) ? (
+              userRoles.includes(STAFF_REVIEWER) &&
+              !userRoles.includes(CLIENT_REVIEWER) ? (
                 <Component {...props} />
               ) : (
                 <Redirect exact to="/404" />
@@ -236,12 +238,23 @@ const PrivateRoute = React.memo((props) => {
                 component={Form}
               />
             )}
-             {ENABLE_FORMS_MODULE && !userRoles.includes(STAFF_REVIEWER) && (
+
+            {ENABLE_FORMS_MODULE && userRoles.includes(STAFF_REVIEWER) && (
+              <Route
+                path={[`${BASE_ROUTE}form`, `${BASE_ROUTE}bundle`]}
+                component={Form}
+              >
+                <Redirect exact to="/403" />
+              </Route>
+            )}
+
+            {ENABLE_FORMS_MODULE && !userRoles.includes(STAFF_REVIEWER) && (
               <Route
                 path={[`${BASE_ROUTE}form`, `${BASE_ROUTE}bundle`]}
                 component={Form}
               />
             )}
+
             {ENABLE_FORMS_MODULE && (
               <DesignerRoute path={`${BASE_ROUTE}formflow`} component={Form} />
             )}
@@ -268,8 +281,6 @@ const PrivateRoute = React.memo((props) => {
               />
             )}
 
-
-
             {ENABLE_DASHBOARDS_MODULE && (
               <ReviewerDashboardRoute
                 path={`${BASE_ROUTE}metrics`}
@@ -290,14 +301,17 @@ const PrivateRoute = React.memo((props) => {
             )}
 
             <Route exact path={BASE_ROUTE}>
-             {userRoles.length && <Redirect
-                to={
-                  userRoles?.includes(STAFF_REVIEWER)
-                    ? `${redirecUrl}task`
-                    : `${redirecUrl}form`
-                }
-              />}
+              {userRoles.length && (
+                <Redirect
+                  to={
+                    userRoles?.includes(STAFF_REVIEWER)
+                      ? `${redirecUrl}task`
+                      : `${redirecUrl}form`
+                  }
+                />
+              )}
             </Route>
+            <Route path="/403" exact={true} component={Denied} />
             <Route path="/404" exact={true} component={NotFound} />
             <Redirect from="*" to="/404" />
           </Switch>
