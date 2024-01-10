@@ -93,6 +93,16 @@ system.out.println ("selectSoscCaseworker"+selectSoscCaseworker);
 execution.setVariable('soscCaseworkerAssignment',selectSoscCaseworker);
 system.out.println ("soscCaseworkerAssignment"+execution.getVariable('soscCaseworkerAssignment'));
 
+var selectSoscSdm= execution.getVariable('selectSoscSdm');
+system.out.println ("selectSoscSdm"+selectSoscSdm);
+execution.setVariable('soscSdmAssignment',selectSoscSdm);
+system.out.println ("soscSdmAssignment"+execution.getVariable('soscSdmAssignment'));
+
+var selectSoscCaseworker= execution.getVariable('selectSoscCaseworker');
+system.out.println ("selectSoscCaseworker"+selectSoscCaseworker);
+execution.setVariable('soscCaseworkerAssignment',selectSoscCaseworker);
+system.out.println ("soscCaseworkerAssignment"+execution.getVariable('soscCaseworkerAssignment'));
+
 var selectSdm= execution.getVariable('selectSdm');
 system.out.println ("selectSdm"+selectSdm);
 execution.setVariable('sdmAssignment',selectSdm);
@@ -1937,7 +1947,7 @@ system.out.println ("site owner flow");</camunda:script>
         <bpmn:script>var system = java.lang.System;
 system.out.println ("Sent to SDM");</bpmn:script>
       </bpmn:scriptTask>
-      <bpmn:userTask id="Activity_0da6ait" name="SDM Updates Form" camunda:assignee="${sdmAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
+      <bpmn:userTask id="Activity_0da6ait" name="SDM Updates Form" camunda:assignee="${soscSdmAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
         <bpmn:extensionElements>
           <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
             <camunda:field name="copyDataIndicator">
@@ -1992,7 +2002,7 @@ task.execution.setVariable('subFormName','CSSA Form');</camunda:script>
         <bpmn:incoming>Flow_1g1rouj</bpmn:incoming>
         <bpmn:incoming>Flow_1r30rh3</bpmn:incoming>
       </bpmn:endEvent>
-      <bpmn:userTask id="Activity_1o211vg" name="Caseworker Updates Form" camunda:assignee="${caseworkerAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
+      <bpmn:userTask id="Activity_1o211vg" name="Caseworker Updates Form" camunda:assignee="${soscCaseworkerAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
         <bpmn:extensionElements>
           <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
             <camunda:field name="copyDataIndicator">
@@ -2254,7 +2264,7 @@ execution.setVariable('requestType', 'CSSA');</camunda:script>
         <bpmn:script>var system = java.lang.System;
 system.out.println ("Sent to SDM");</bpmn:script>
       </bpmn:scriptTask>
-      <bpmn:userTask id="Activity_0ve5jnu" name="SDM Updates Form" camunda:assignee="${sdmAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
+      <bpmn:userTask id="Activity_0ve5jnu" name="SDM Updates Form" camunda:assignee="${soscSdmAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
         <bpmn:extensionElements>
           <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
             <camunda:field name="copyDataIndicator">
@@ -2309,7 +2319,7 @@ task.execution.setVariable('subFormName','SoSC Form');</camunda:script>
         <bpmn:incoming>Flow_1aeuu2q</bpmn:incoming>
         <bpmn:incoming>Flow_1qqnzvx</bpmn:incoming>
       </bpmn:endEvent>
-      <bpmn:userTask id="Activity_0o6jq79" name="Caseworker Updates Form" camunda:assignee="${caseworkerAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
+      <bpmn:userTask id="Activity_0o6jq79" name="Caseworker Updates Form" camunda:assignee="${soscCaseworkerAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
         <bpmn:extensionElements>
           <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
             <camunda:field name="copyDataIndicator">
