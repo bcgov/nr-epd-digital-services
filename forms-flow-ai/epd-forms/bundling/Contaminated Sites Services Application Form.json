@@ -253,13 +253,13 @@
                     "customClass": "",
                     "collapsible": false,
                     "hidden": false,
-                    "hideLabel": true,
+                    "hideLabel": false,
                     "disabled": false,
                     "modalEdit": false,
                     "key": "reviewerActions",
                     "tags": [],
                     "properties": {},
-                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nif(roles.includes(\"formsflow-client\") || \r\nroles.includes(\"formsflow-reviewer/cssa-team\") || \r\nroles.includes(\"formsflow-reviewer/cssa-manager\")|| \r\nroles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\") ||\r\nroles.includes(\"formsflow-reviewer/formsflow-client-reviewer\")) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  if (data.riskclassification === \"exempt\" && !(data.SoSC || data.certificationdocumentradioGroup.determinationOfContaminatedSite \r\n|| data.certificationdocumentradioGroup.approvalInPrinciple || data.certificationdocumentradioGroup.certificateOfCompliance)) {\r\n    show = false;\r\n  } else {\r\n    show = true;\r\n  }\r\n}",
+                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nconst isSoscAvailable = data.SoSC || (data.certificationdocumentradioGroup ? data.certificationdocumentradioGroup.determinationOfContaminatedSite \r\n|| data.certificationdocumentradioGroup.approvalInPrinciple || data.certificationdocumentradioGroup.certificateOfCompliance : false) ? true : false;\r\n\r\n\r\nif(roles.includes(\"formsflow-client\") || \r\nroles.includes(\"formsflow-reviewer/cssa-team\") || \r\nroles.includes(\"formsflow-reviewer/cssa-manager\")|| \r\nroles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\") ||\r\nroles.includes(\"formsflow-reviewer/formsflow-client-reviewer\")) {\r\n  show = false;\r\n}\r\nelse\r\n{    \r\n  \tif (data.riskclassification === \"exempt\" && !isSoscAvailable) {\r\n\t\tshow = false;\r\n\t} //else if (isSoscAvailable) {\r\n\t\t//show = true;\r\n\t//}\r\n\telse {\r\n\t\tshow = true;\r\n\t}\r\n}",
                     "conditional": {
                         "json": "",
                         "show": null,
@@ -363,7 +363,7 @@
                                             "block": false,
                                             "disableOnInvalid": false,
                                             "theme": "primary",
-                                            "id": "e9qfuxd"
+                                            "id": "eqyxmwr"
                                         }
                                     ],
                                     "offset": 0,
@@ -379,35 +379,60 @@
                                             "label": "Next Reviewer",
                                             "action": "custom",
                                             "showValidations": false,
+                                            "theme": "primary",
+                                            "size": "md",
+                                            "block": false,
+                                            "leftIcon": "",
+                                            "rightIcon": "",
+                                            "shortcut": "",
+                                            "description": "",
+                                            "tooltip": "",
+                                            "customClass": "",
+                                            "tabindex": "",
+                                            "disableOnInvalid": false,
+                                            "hidden": false,
+                                            "autofocus": false,
+                                            "disabled": false,
                                             "tableView": false,
+                                            "modalEdit": false,
                                             "key": "nextReviewer",
-                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\n\r\nconst roles = UserDetails[\"role\"];\r\nif(roles.includes(\"formsflow-reviewer/caseworker\")&&\r\n(data.bundleStatus === 'cssaMgrAccepted' || \r\ndata.bundleStatus === 'cssaCaseworkerAccepted')) {\r\n    if(data.typeOfReview === \"applicationViaTheSocietyOfContaminatedSitesApprovedProfessionalsOfBc\")\r\n  show = false;\r\n  else\r\n    show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
+                                            "tags": [],
+                                            "properties": {},
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": "",
+                                                "json": ""
+                                            },
+                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/caseworker\")){\r\n\tif((data.typeOfReview === \"applicationViaTheSocietyOfContaminatedSitesApprovedProfessionalsOfBc\" && data.bundleStatus === 'cssaMgrAccepted')||\r\n\tdata.bundleStatus === 'cssaCaseworkerAccepted')\r\n    show = false;\r\n\telse\r\n\t\tshow = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
+                                            "logic": [],
+                                            "attributes": {},
+                                            "overlay": {
+                                                "style": "",
+                                                "page": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
                                             "type": "button",
                                             "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\n\r\nconst filteredData = _.pick(data, data.cssaUtilKeys);\r\n\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": filteredData};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Accepted'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Accepted'\r\n    }); \r\n});",
                                             "input": true,
                                             "placeholder": "",
                                             "prefix": "",
-                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
                                             "protected": false,
                                             "unique": false,
                                             "persistent": false,
-                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
-                                            "modalEdit": false,
                                             "dataGridLabel": true,
                                             "labelPosition": "top",
-                                            "description": "",
                                             "errorLabel": "",
-                                            "tooltip": "",
                                             "hideLabel": false,
-                                            "tabindex": "",
-                                            "disabled": false,
-                                            "autofocus": false,
                                             "dbIndex": false,
                                             "customDefaultValue": "",
                                             "calculateValue": "",
@@ -415,7 +440,6 @@
                                             "widget": {
                                                 "type": "input"
                                             },
-                                            "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
                                                 "required": false,
@@ -425,32 +449,13 @@
                                                 "multiple": false,
                                                 "unique": false
                                             },
-                                            "conditional": {
-                                                "show": null,
-                                                "when": null,
-                                                "eq": ""
-                                            },
-                                            "overlay": {
-                                                "style": "",
-                                                "left": "",
-                                                "top": "",
-                                                "width": "",
-                                                "height": ""
-                                            },
                                             "allowCalculateOverride": false,
                                             "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
-                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "size": "md",
-                                            "leftIcon": "",
-                                            "rightIcon": "",
-                                            "block": false,
-                                            "disableOnInvalid": false,
-                                            "theme": "primary",
-                                            "id": "ec6q7r7"
+                                            "id": "el86edn"
                                         },
                                         {
                                             "label": "Approved",
@@ -527,7 +532,7 @@
                                             "block": false,
                                             "disableOnInvalid": false,
                                             "theme": "primary",
-                                            "id": "eirbfbl"
+                                            "id": "ey7r8g"
                                         }
                                     ],
                                     "width": 3,
@@ -615,7 +620,7 @@
                                             "rightIcon": "",
                                             "block": false,
                                             "disableOnInvalid": false,
-                                            "id": "e62fesg"
+                                            "id": "ex7hwfv"
                                         }
                                     ],
                                     "size": "md",
@@ -702,7 +707,7 @@
                                             "rightIcon": "",
                                             "block": false,
                                             "disableOnInvalid": false,
-                                            "id": "exrh1gr"
+                                            "id": "e941aai"
                                         }
                                     ],
                                     "size": "md",
@@ -777,7 +782,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "e8xg9k"
+                            "id": "ephbiq8"
                         }
                     ],
                     "keyModified": true,
@@ -819,7 +824,7 @@
                     "addons": [],
                     "tree": false,
                     "lazyLoad": false,
-                    "id": "e8doj05"
+                    "id": "e5jna9b"
                 },
                 {
                     "title": "Site Owner Actions",
@@ -1096,7 +1101,7 @@
                     "key": "cssaBundleActions",
                     "tags": [],
                     "properties": {},
-                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\nconsole.log('data----', data);\r\nif(roles.includes(\"formsflow-reviewer/cssa-team\") || \r\nroles.includes(\"formsflow-reviewer/cssa-manager\") ||\r\nroles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\")|| \r\nroles.includes(\"formsflow-reviewer/caseworker\")|| \r\nroles.includes(\"formsflow-reviewer/sdm\")) {\r\n  if (data.riskclassification === \"exempt\" && !(data.SoSC || data.certificationdocumentradioGroup.determinationOfContaminatedSite \r\n|| data.certificationdocumentradioGroup.approvalInPrinciple || data.certificationdocumentradioGroup.certificateOfCompliance)){\r\n    show = true;\r\n  } else {\r\n    show = false;\r\n  }\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
+                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\n\r\nconst isSoscAvailable = data.SoSC || (data.certificationdocumentradioGroup ? data.certificationdocumentradioGroup.determinationOfContaminatedSite \r\n|| data.certificationdocumentradioGroup.approvalInPrinciple || data.certificationdocumentradioGroup.certificateOfCompliance : false) ? true : false;\r\n\r\n\r\nif(roles.includes(\"formsflow-reviewer/cssa-team\") || \r\nroles.includes(\"formsflow-reviewer/cssa-manager\") ||\r\nroles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\")|| \r\nroles.includes(\"formsflow-reviewer/caseworker\")|| \r\nroles.includes(\"formsflow-reviewer/sdm\")) {\r\n    if (data.riskclassification === \"exempt\" && !isSoscAvailable){\r\n    \tshow = true;\r\n    } else {\r\n\t    show = false;\r\n    }\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
                     "conditional": {
                         "json": "",
                         "show": null,
@@ -1200,7 +1205,7 @@
                                             "block": false,
                                             "disableOnInvalid": false,
                                             "theme": "primary",
-                                            "id": "e1zfbv"
+                                            "id": "eig5rj"
                                         }
                                     ],
                                     "width": 3,
@@ -1288,7 +1293,7 @@
                                             "block": false,
                                             "disableOnInvalid": false,
                                             "theme": "primary",
-                                            "id": "e90eyla"
+                                            "id": "esfmnmr"
                                         },
                                         {
                                             "label": "Approved",
@@ -1365,7 +1370,7 @@
                                             "block": false,
                                             "disableOnInvalid": false,
                                             "theme": "primary",
-                                            "id": "e4fgawi"
+                                            "id": "es0z0ho"
                                         }
                                     ],
                                     "width": 3,
@@ -1452,7 +1457,7 @@
                                             "rightIcon": "",
                                             "block": false,
                                             "disableOnInvalid": false,
-                                            "id": "e8zdnv"
+                                            "id": "e9t69r"
                                         }
                                     ],
                                     "size": "md",
@@ -1539,7 +1544,7 @@
                                             "rightIcon": "",
                                             "block": false,
                                             "disableOnInvalid": false,
-                                            "id": "ep79en"
+                                            "id": "ehihlij"
                                         }
                                     ],
                                     "size": "md",
@@ -1614,7 +1619,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "ease9o"
+                            "id": "eug3kcu"
                         }
                     ],
                     "keyModified": true,
@@ -1656,7 +1661,7 @@
                     "addons": [],
                     "tree": false,
                     "lazyLoad": false,
-                    "id": "e5buvt8"
+                    "id": "e4m2qxa"
                 },
                 {
                     "title": "Assign Reviewers",
@@ -1671,7 +1676,7 @@
                     "key": "cssaReviewerAssignment",
                     "tags": [],
                     "properties": {},
-                    "customConditional": " if (data.riskclassification === \"exempt\" && !(data.SoSC || data.certificationdocumentradioGroup.determinationOfContaminatedSite \r\n|| data.certificationdocumentradioGroup.approvalInPrinciple || data.certificationdocumentradioGroup.certificateOfCompliance)){\r\n   const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n   const roles = UserDetails[\"role\"];\r\n    \r\n    if(roles.includes(\"formsflow-reviewer/cssa-manager\")) {\r\n      show = true;\r\n    }\r\n    else\r\n    {\r\n      show = false;\r\n    }\r\n} else {\r\n    show = false;\r\n}",
+                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\nconst isSoscAvailable = data.SoSC || (data.certificationdocumentradioGroup ? data.certificationdocumentradioGroup.determinationOfContaminatedSite \r\n|| data.certificationdocumentradioGroup.approvalInPrinciple || data.certificationdocumentradioGroup.certificateOfCompliance : false) ? true : false;\r\n\r\nif(roles.includes(\"formsflow-reviewer/cssa-manager\")) {\r\n\tif (data.riskclassification === \"exempt\" && !isSoscAvailable) {\r\n\t\tshow = true;\r\n\t} else {\r\n\t\tshow = false;\r\n\t}\r\n      \r\n}\r\nelse\r\n{\r\n      show = false;\r\n}",
                     "conditional": {
                         "json": "",
                         "show": null,
@@ -1822,7 +1827,7 @@
                                             },
                                             "customOptions": {},
                                             "useExactSearch": false,
-                                            "id": "eqxkye5"
+                                            "id": "ev4a8pp"
                                         }
                                     ],
                                     "width": 4,
@@ -1956,7 +1961,7 @@
                                             },
                                             "customOptions": {},
                                             "useExactSearch": false,
-                                            "id": "e07511"
+                                            "id": "eiywczv"
                                         }
                                     ],
                                     "width": 4,
@@ -2040,7 +2045,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "e8nu0j"
+                            "id": "eunccow"
                         }
                     ],
                     "keyModified": true,
@@ -2082,7 +2087,7 @@
                     "addons": [],
                     "tree": false,
                     "lazyLoad": false,
-                    "id": "ehkc0ga"
+                    "id": "eleuwbv"
                 },
                 {
                     "label": "Notes",
@@ -7662,7 +7667,7 @@
                                     "addons": [],
                                     "tree": false,
                                     "lazyLoad": false,
-                                    "id": "ehmz9lv000000000000000000000000000000000000000000000000000"
+                                    "id": "ehmz9lv000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
                                 }
                             ],
                             "placeholder": "",
@@ -9305,7 +9310,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "ewhx8sm000000000000000000000000000000000000000000000000000",
+                                    "id": "ewhx8sm000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -18473,7 +18478,7 @@
                                             },
                                             "inputMask": "999-999-999",
                                             "tableView": true,
-                                            "id": "elva88000000000000000000000000000000000000000000000000000",
+                                            "id": "elva88000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -18553,7 +18558,7 @@
                                             "tableView": true,
                                             "autoExpand": true,
                                             "inputFormat": "plain",
-                                            "id": "ey48nu000000000000000000000000000000000000000000000000000",
+                                            "id": "ey48nu000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -18928,7 +18933,7 @@
                                                     "input": true,
                                                     "label": "PIN",
                                                     "tableView": true,
-                                                    "id": "eyxe45n000000000000000000000000000000000000000000000000000",
+                                                    "id": "eyxe45n000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                     "placeholder": "",
                                                     "prefix": "",
                                                     "customClass": "",
@@ -19021,7 +19026,7 @@
                                                     "autoExpand": true,
                                                     "inputFormat": "plain",
                                                     "placeholder": "example, metes and bounds",
-                                                    "id": "efdcvf000000000000000000000000000000000000000000000000000",
+                                                    "id": "efdcvf000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                     "prefix": "",
                                                     "customClass": "",
                                                     "suffix": "",
@@ -19235,7 +19240,7 @@
                                                     "input": true,
                                                     "label": "Crown Land File Numbers",
                                                     "tableView": true,
-                                                    "id": "emf4u7g000000000000000000000000000000000000000000000000000",
+                                                    "id": "emf4u7g000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                     "placeholder": "",
                                                     "prefix": "",
                                                     "customClass": "",
@@ -20287,7 +20292,7 @@
                                                     },
                                                     "inputMask": "999-999-999",
                                                     "tableView": true,
-                                                    "id": "ev43oe9000000000000000000000000000000000000000000000000000",
+                                                    "id": "ev43oe9000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                     "placeholder": "",
                                                     "prefix": "",
                                                     "customClass": "",
@@ -20367,7 +20372,7 @@
                                                     "tableView": true,
                                                     "autoExpand": true,
                                                     "inputFormat": "plain",
-                                                    "id": "eb3d0l000000000000000000000000000000000000000000000000000",
+                                                    "id": "eb3d0l000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                     "placeholder": "",
                                                     "prefix": "",
                                                     "customClass": "",
@@ -20742,7 +20747,7 @@
                                                             "input": true,
                                                             "label": "PIN",
                                                             "tableView": true,
-                                                            "id": "eyv4fcu000000000000000000000000000000000000000000000000000",
+                                                            "id": "eyv4fcu000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                             "placeholder": "",
                                                             "prefix": "",
                                                             "customClass": "",
@@ -20835,7 +20840,7 @@
                                                             "autoExpand": true,
                                                             "inputFormat": "plain",
                                                             "placeholder": "example, metes and bounds",
-                                                            "id": "ecgeub000000000000000000000000000000000000000000000000000",
+                                                            "id": "ecgeub000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                             "prefix": "",
                                                             "customClass": "",
                                                             "suffix": "",
@@ -21049,7 +21054,7 @@
                                                             "input": true,
                                                             "label": "Crown Land File Numbers",
                                                             "tableView": true,
-                                                            "id": "eguyyh000000000000000000000000000000000000000000000000000",
+                                                            "id": "eguyyh000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                             "placeholder": "",
                                                             "prefix": "",
                                                             "customClass": "",
