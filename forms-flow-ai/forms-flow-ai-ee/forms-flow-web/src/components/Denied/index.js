@@ -9,7 +9,7 @@ const NotFound = React.memo(({ errorMessage, errorCode }) => {
         <p>
           {errorCode}
           <br />
-          <small>{errorMessage}</small>
+          <small className="small-fontsize">{errorMessage}</small>
         </p>
         <span className="circle big" />
         <span className="circle med" />
@@ -20,7 +20,7 @@ const NotFound = React.memo(({ errorMessage, errorCode }) => {
 });
 
 NotFound.defaultProps = {
-  errorMessage: "You do not have sufficient permissions to access this page. Please contact support " + SUPPORT_EMAIL + "for further clarification.",
+  errorMessage: "You do not have sufficient permissions to access this page. Please contact support " + SUPPORT_EMAIL + " for further clarification.",
   errorCode: "403",
 };
 
