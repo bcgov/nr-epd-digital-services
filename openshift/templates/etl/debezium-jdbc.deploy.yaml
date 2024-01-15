@@ -70,7 +70,9 @@ objects:
             - name: KAFKA_DEBUG
               value: "false"
             - name: DEBUG_SUSPEND_FLAG
-              value: "n"        
+              value: "n"   
+            - name: CONNECT_REST_EXTENSION_CLASSES
+              value: "org.apache.kafka.connect.rest.basic.auth.extension.BasicAuthSecurityRestExtension"       
           resources:
             requests:
               cpu: "150m"
