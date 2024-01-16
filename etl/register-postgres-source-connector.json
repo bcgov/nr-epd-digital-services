@@ -3,10 +3,10 @@
   "config": {  
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
     "tasks.max": "1",
-    "database.hostname": "etl-postgis-1",  
+    "database.hostname": "debezium-postgis",  
     "database.port": "5432",
     "database.user": "postgres",
-    "database.password": "postgres",
+    "database.password": "xxxxxxx",
     "database.dbname": "postgres",
     "database.server.id": "184054",      
     "database.server.name": "dbserver1",
