@@ -259,7 +259,7 @@
                     "key": "reviewerActions",
                     "tags": [],
                     "properties": {},
-                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nconst isSoscAvailable = data.SoSC || (data.certificationdocumentradioGroup ? data.certificationdocumentradioGroup.determinationOfContaminatedSite \r\n|| data.certificationdocumentradioGroup.approvalInPrinciple || data.certificationdocumentradioGroup.certificateOfCompliance : false) ? true : false;\r\n\r\n\r\nif(roles.includes(\"formsflow-client\") || \r\nroles.includes(\"formsflow-reviewer/cssa-team\") || \r\nroles.includes(\"formsflow-reviewer/cssa-manager\")|| \r\nroles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\") ||\r\nroles.includes(\"formsflow-reviewer/formsflow-client-reviewer\")) {\r\n  show = false;\r\n}\r\nelse\r\n{    \r\n  \tif (data.riskclassification === \"exempt\" && !isSoscAvailable) {\r\n\t\tshow = false;\r\n\t} //else if (isSoscAvailable) {\r\n\t\t//show = true;\r\n\t//}\r\n\telse {\r\n\t\tshow = true;\r\n\t}\r\n}",
+                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nconst isSoscAvailable = (data.submissionTypeTwo ? data.submissionTypeTwo.reportsSubmitted : false) || (data.applicationsrequested ? data.applicationsrequested.siteReclassification ||\r\ndata.applicationsrequested.approvalOfBackgroundConcentrations : false) || (data.certificationdocumentradioGroup ? data.certificationdocumentradioGroup.determinationOfContaminatedSite \r\n|| data.certificationdocumentradioGroup.approvalInPrinciple || data.certificationdocumentradioGroup.certificateOfCompliance : false) ? true : false;\r\n\r\n\r\nif(roles.includes(\"formsflow-client\") || \r\nroles.includes(\"formsflow-reviewer/cssa-team\") || \r\nroles.includes(\"formsflow-reviewer/cssa-manager\")|| \r\nroles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\") ||\r\nroles.includes(\"formsflow-reviewer/formsflow-client-reviewer\")) {\r\n  show = false;\r\n}\r\nelse\r\n{    \r\n  \tif (data.riskclassification === \"exempt\" && !isSoscAvailable) {\r\n\t\tshow = false;\r\n\t} //else if (isSoscAvailable) {\r\n\t\t//show = true;\r\n\t//}\r\n\telse {\r\n\t\tshow = true;\r\n\t}\r\n}",
                     "conditional": {
                         "json": "",
                         "show": null,
@@ -363,7 +363,7 @@
                                             "block": false,
                                             "disableOnInvalid": false,
                                             "theme": "primary",
-                                            "id": "eqyxmwr"
+                                            "id": "eztoxer"
                                         }
                                     ],
                                     "offset": 0,
@@ -379,60 +379,35 @@
                                             "label": "Next Reviewer",
                                             "action": "custom",
                                             "showValidations": false,
-                                            "theme": "primary",
-                                            "size": "md",
-                                            "block": false,
-                                            "leftIcon": "",
-                                            "rightIcon": "",
-                                            "shortcut": "",
-                                            "description": "",
-                                            "tooltip": "",
-                                            "customClass": "",
-                                            "tabindex": "",
-                                            "disableOnInvalid": false,
-                                            "hidden": false,
-                                            "autofocus": false,
-                                            "disabled": false,
                                             "tableView": false,
-                                            "modalEdit": false,
                                             "key": "nextReviewer",
-                                            "tags": [],
-                                            "properties": {},
-                                            "conditional": {
-                                                "show": null,
-                                                "when": null,
-                                                "eq": "",
-                                                "json": ""
-                                            },
                                             "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/caseworker\")){\r\n\tif((data.typeOfReview === \"applicationViaTheSocietyOfContaminatedSitesApprovedProfessionalsOfBc\" && data.bundleStatus === 'cssaMgrAccepted')||\r\n\tdata.bundleStatus === 'cssaCaseworkerAccepted')\r\n    show = false;\r\n\telse\r\n\t\tshow = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
-                                            "logic": [],
-                                            "attributes": {},
-                                            "overlay": {
-                                                "style": "",
-                                                "page": "",
-                                                "left": "",
-                                                "top": "",
-                                                "width": "",
-                                                "height": ""
-                                            },
                                             "type": "button",
                                             "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\n\r\nconst filteredData = _.pick(data, data.cssaUtilKeys);\r\n\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": filteredData};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Accepted'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Accepted'\r\n    }); \r\n});",
                                             "input": true,
                                             "placeholder": "",
                                             "prefix": "",
+                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
                                             "protected": false,
                                             "unique": false,
                                             "persistent": false,
+                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
+                                            "modalEdit": false,
                                             "dataGridLabel": true,
                                             "labelPosition": "top",
+                                            "description": "",
                                             "errorLabel": "",
+                                            "tooltip": "",
                                             "hideLabel": false,
+                                            "tabindex": "",
+                                            "disabled": false,
+                                            "autofocus": false,
                                             "dbIndex": false,
                                             "customDefaultValue": "",
                                             "calculateValue": "",
@@ -440,6 +415,7 @@
                                             "widget": {
                                                 "type": "input"
                                             },
+                                            "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
                                                 "required": false,
@@ -449,13 +425,32 @@
                                                 "multiple": false,
                                                 "unique": false
                                             },
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": ""
+                                            },
+                                            "overlay": {
+                                                "style": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
                                             "allowCalculateOverride": false,
                                             "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
+                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "el86edn"
+                                            "size": "md",
+                                            "leftIcon": "",
+                                            "rightIcon": "",
+                                            "block": false,
+                                            "disableOnInvalid": false,
+                                            "theme": "primary",
+                                            "id": "eizvqzb"
                                         },
                                         {
                                             "label": "Approved",
@@ -532,7 +527,7 @@
                                             "block": false,
                                             "disableOnInvalid": false,
                                             "theme": "primary",
-                                            "id": "ey7r8g"
+                                            "id": "eloup0m"
                                         }
                                     ],
                                     "width": 3,
@@ -620,7 +615,7 @@
                                             "rightIcon": "",
                                             "block": false,
                                             "disableOnInvalid": false,
-                                            "id": "ex7hwfv"
+                                            "id": "ezrru9k"
                                         }
                                     ],
                                     "size": "md",
@@ -707,7 +702,7 @@
                                             "rightIcon": "",
                                             "block": false,
                                             "disableOnInvalid": false,
-                                            "id": "e941aai"
+                                            "id": "ezs7k0y"
                                         }
                                     ],
                                     "size": "md",
@@ -782,7 +777,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "ephbiq8"
+                            "id": "ez67wbo"
                         }
                     ],
                     "keyModified": true,
@@ -824,7 +819,7 @@
                     "addons": [],
                     "tree": false,
                     "lazyLoad": false,
-                    "id": "e5jna9b"
+                    "id": "e1wzf3p"
                 },
                 {
                     "title": "Site Owner Actions",
@@ -7667,7 +7662,7 @@
                                     "addons": [],
                                     "tree": false,
                                     "lazyLoad": false,
-                                    "id": "ehmz9lv000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                                    "id": "ehmz9lv00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
                                 }
                             ],
                             "placeholder": "",
@@ -9310,7 +9305,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "ewhx8sm000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ewhx8sm00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -10007,14 +10002,10 @@
                             "label": "Submission Type:",
                             "tableView": false,
                             "defaultValue": {
-                                "521": false,
-                                "522": false,
-                                "523": false,
-                                "524": false,
-                                "524OtherReporting": false,
-                                "523MonitoringReports": false,
-                                "522SiteInvestigationReports": false,
-                                "522SiteInvestigationReportsRequiredByDirector": false
+                                "reportsSubmitted": false,
+                                "siteInvestigationReports": false,
+                                "monitoringReports": false,
+                                "otherReporting": false
                             },
                             "validate": {
                                 "required": true,
@@ -10025,28 +10016,28 @@
                                 "unique": false,
                                 "onlyAvailableItems": false
                             },
-                            "key": "submissiontype2",
+                            "key": "submissionTypeTwo",
                             "type": "selectboxes",
                             "input": true,
                             "values": [
                                 {
                                     "label": "5.2.1 Reports Submitted without an Application for Certification Document",
-                                    "value": "521",
+                                    "value": "reportsSubmitted",
                                     "shortcut": ""
                                 },
                                 {
                                     "label": "5.2.2 Site Investigation Reports Required by Director",
-                                    "value": "522",
+                                    "value": "siteInvestigationReports",
                                     "shortcut": ""
                                 },
                                 {
                                     "label": "5.2.3 Monitoring Reports",
-                                    "value": "523",
+                                    "value": "monitoringReports",
                                     "shortcut": ""
                                 },
                                 {
                                     "label": "5.2.4 Other Reporting",
-                                    "value": "524",
+                                    "value": "otherReporting",
                                     "shortcut": ""
                                 }
                             ],
@@ -10110,8 +10101,8 @@
                             "key": "MajorReports",
                             "conditional": {
                                 "show": true,
-                                "when": "submissiontype2",
-                                "eq": "521"
+                                "when": "submissionTypeTwo",
+                                "eq": "reportsSubmitted"
                             },
                             "type": "panel",
                             "label": "",
@@ -10632,8 +10623,8 @@
                             "key": "SiteInvestigationReports",
                             "conditional": {
                                 "show": true,
-                                "when": "submissiontype2",
-                                "eq": "522"
+                                "when": "submissionTypeTwo",
+                                "eq": "siteInvestigationReports"
                             },
                             "type": "panel",
                             "label": "",
@@ -11466,9 +11457,9 @@
                             ],
                             "collapsible": false,
                             "conditional": {
-                                "eq": "523",
+                                "eq": "monitoringReports",
                                 "show": true,
-                                "when": "submissiontype2"
+                                "when": "submissionTypeTwo"
                             },
                             "placeholder": "",
                             "prefix": "",
@@ -11721,9 +11712,9 @@
                             ],
                             "collapsible": false,
                             "conditional": {
-                                "eq": "524",
+                                "eq": "otherReporting",
                                 "show": true,
-                                "when": "submissiontype2"
+                                "when": "submissionTypeTwo"
                             },
                             "placeholder": "",
                             "prefix": "",
@@ -14444,22 +14435,22 @@
                             "values": [
                                 {
                                     "label": "5.5.1 Site Reclassification under Protocol 12",
-                                    "value": "551",
+                                    "value": "siteReclassification",
                                     "shortcut": ""
                                 },
                                 {
                                     "label": "5.5.2 Preapproval under Protocol 6 ",
-                                    "value": "552",
+                                    "value": "preapproval",
                                     "shortcut": ""
                                 },
                                 {
                                     "label": "5.5.3 Approval of background concentrations of substances (Protocol 4 or 9)",
-                                    "value": "553",
+                                    "value": "approvalOfBackgroundConcentrations",
                                     "shortcut": ""
                                 },
                                 {
                                     "label": "5.5.4 Other (Protocol 2 or 21)",
-                                    "value": "554",
+                                    "value": "otherProtocols",
                                     "shortcut": ""
                                 }
                             ],
@@ -14475,15 +14466,10 @@
                             },
                             "tableView": false,
                             "defaultValue": {
-                                "551": false,
-                                "552": false,
-                                "553": false,
-                                "554": false,
-                                "554Other": false,
-                                "551RiskReclassificationUnderProtocol12": false,
-                                "551SiteReclassificationUnderProtocol12": false,
-                                "551SiteRiskClassificationUnderProtocol12": false,
-                                "553ApprovalOfBackgroundConcentrationsOfSubstancesProtocol46Or9": false
+                                "siteReclassification": false,
+                                "preapproval": false,
+                                "approvalOfBackgroundConcentrations": false,
+                                "otherProtocols": false
                             },
                             "dataGridLabel": false,
                             "labelPosition": "top",
@@ -15205,7 +15191,7 @@
                             ],
                             "collapsible": false,
                             "conditional": {
-                                "eq": "551",
+                                "eq": "siteReclassification",
                                 "show": true,
                                 "when": "applicationsrequested"
                             },
@@ -15608,7 +15594,7 @@
                             ],
                             "collapsible": false,
                             "conditional": {
-                                "eq": "552",
+                                "eq": "preapproval",
                                 "show": true,
                                 "when": "applicationsrequested"
                             },
@@ -15680,7 +15666,7 @@
                             "tableView": false,
                             "components": [
                                 {
-                                    "key": "SoSC1",
+                                    "key": "SoSCone",
                                     "type": "checkbox",
                                     "input": true,
                                     "label": "Summary of Site Condition as per Protocol 17 and CSR section 7.1",
@@ -15832,7 +15818,7 @@
                             ],
                             "collapsible": false,
                             "conditional": {
-                                "eq": "553",
+                                "eq": "approvalOfBackgroundConcentrations",
                                 "show": true,
                                 "when": "applicationsrequested"
                             },
@@ -15991,7 +15977,7 @@
                             ],
                             "collapsible": false,
                             "conditional": {
-                                "eq": "554",
+                                "eq": "otherProtocols",
                                 "show": true,
                                 "when": "applicationsrequested"
                             },
@@ -18478,7 +18464,7 @@
                                             },
                                             "inputMask": "999-999-999",
                                             "tableView": true,
-                                            "id": "elva88000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "elva8800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -18558,7 +18544,7 @@
                                             "tableView": true,
                                             "autoExpand": true,
                                             "inputFormat": "plain",
-                                            "id": "ey48nu000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "ey48nu00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -18933,7 +18919,7 @@
                                                     "input": true,
                                                     "label": "PIN",
                                                     "tableView": true,
-                                                    "id": "eyxe45n000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                                    "id": "eyxe45n00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                     "placeholder": "",
                                                     "prefix": "",
                                                     "customClass": "",
@@ -19026,7 +19012,7 @@
                                                     "autoExpand": true,
                                                     "inputFormat": "plain",
                                                     "placeholder": "example, metes and bounds",
-                                                    "id": "efdcvf000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                                    "id": "efdcvf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                     "prefix": "",
                                                     "customClass": "",
                                                     "suffix": "",
@@ -19240,7 +19226,7 @@
                                                     "input": true,
                                                     "label": "Crown Land File Numbers",
                                                     "tableView": true,
-                                                    "id": "emf4u7g000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                                    "id": "emf4u7g00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                     "placeholder": "",
                                                     "prefix": "",
                                                     "customClass": "",
@@ -20292,7 +20278,7 @@
                                                     },
                                                     "inputMask": "999-999-999",
                                                     "tableView": true,
-                                                    "id": "ev43oe9000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                                    "id": "ev43oe900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                     "placeholder": "",
                                                     "prefix": "",
                                                     "customClass": "",
@@ -20372,7 +20358,7 @@
                                                     "tableView": true,
                                                     "autoExpand": true,
                                                     "inputFormat": "plain",
-                                                    "id": "eb3d0l000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                                    "id": "eb3d0l00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                     "placeholder": "",
                                                     "prefix": "",
                                                     "customClass": "",
@@ -20747,7 +20733,7 @@
                                                             "input": true,
                                                             "label": "PIN",
                                                             "tableView": true,
-                                                            "id": "eyv4fcu000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                                            "id": "eyv4fcu00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                             "placeholder": "",
                                                             "prefix": "",
                                                             "customClass": "",
@@ -20840,7 +20826,7 @@
                                                             "autoExpand": true,
                                                             "inputFormat": "plain",
                                                             "placeholder": "example, metes and bounds",
-                                                            "id": "ecgeub000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                                            "id": "ecgeub00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                             "prefix": "",
                                                             "customClass": "",
                                                             "suffix": "",
@@ -21054,7 +21040,7 @@
                                                             "input": true,
                                                             "label": "Crown Land File Numbers",
                                                             "tableView": true,
-                                                            "id": "eguyyh000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                                            "id": "eguyyh00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                             "placeholder": "",
                                                             "prefix": "",
                                                             "customClass": "",

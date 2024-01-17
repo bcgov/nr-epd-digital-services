@@ -878,9 +878,11 @@ execution.setVariable('name','User');
 execution.setVariable("emailTo", Java.to(listOwnerEmailAddress, "java.lang.Object[]"));
 execution.setVariable('formName','Contaminated Sites Services Application Form');
 
-var sosc = execution.getVariable('SoSC');
+var applicationsrequested = execution.getVariable('applicationsrequested');
 var certificationdocumentradioGroup = execution.getVariable('certificationdocumentradioGroup');
-var isSoscAvailable = sosc || (certificationdocumentradioGroup ? certificationdocumentradioGroup.determinationOfContaminatedSite 
+var submissionTypeTwo = execution.getVariable('submissionTypeTwo');
+var isSoscAvailable =   (submissionTypeTwo ? submissionTypeTwo.reportsSubmitted : false) || (applicationsrequested ? applicationsrequested.siteReclassification ||
+applicationsrequested.approvalOfBackgroundConcentrations : false) || (certificationdocumentradioGroup ? certificationdocumentradioGroup.determinationOfContaminatedSite 
 || certificationdocumentradioGroup.approvalInPrinciple || certificationdocumentradioGroup.certificateOfCompliance : false) ? true : false;
 
 execution.setVariable('isSoscAvailable',isSoscAvailable);</bpmn:script>
