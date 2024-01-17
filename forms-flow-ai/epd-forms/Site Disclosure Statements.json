@@ -7213,7 +7213,7 @@
                                                 }
                                             ],
                                             "collapsible": false,
-                                            "id": "e7nge5b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "e7nge5b000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -7687,7 +7687,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eapos760000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eapos76000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -7903,7 +7903,7 @@
                                             "input": true,
                                             "label": "Crown Land File Numbers",
                                             "tableView": true,
-                                            "id": "e7fs5c50000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "e7fs5c5000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -8342,7 +8342,23 @@
                             "id": "elzjql"
                         },
                         {
-                            "key": "schedule2Reference",
+                            "label": "Schedule 2 Reference and Description",
+                            "labelPosition": "top",
+                            "widget": "choicesjs",
+                            "placeholder": "Select all that apply",
+                            "description": "Select \"none\" if no Schedule 2 uses apply",
+                            "tooltip": "",
+                            "customClass": "",
+                            "tabindex": "",
+                            "hidden": false,
+                            "hideLabel": false,
+                            "uniqueOptions": false,
+                            "autofocus": false,
+                            "disabled": false,
+                            "tableView": true,
+                            "modalEdit": false,
+                            "multiple": true,
+                            "dataSrc": "values",
                             "data": {
                                 "values": [
                                     {
@@ -8350,27 +8366,27 @@
                                         "value": "none"
                                     },
                                     {
-                                        "label": "A1. adhesives manufacturing, bulk storage, shipping or handling",
+                                        "label": "A1. adhesives manufacturing or bulk storage",
                                         "value": "a1"
                                     },
                                     {
-                                        "label": "A2. chemical manufacturing, bulk storage, shipping or handling",
+                                        "label": "A2. chemical manufacturing or bulk storage",
                                         "value": "a2"
                                     },
                                     {
-                                        "label": "A3. explosives or ammunition manufacturing, bulk storage, shipping or handling",
+                                        "label": "A3. explosives or ammunition manufacturing or bulk storage",
                                         "value": "a3"
                                     },
                                     {
-                                        "label": "A4. fire retardant manufacturing, bulk storage, shipping or handling",
+                                        "label": "A4. fire retardant manufacturing, bulk storage or shipping",
                                         "value": "a4"
                                     },
                                     {
-                                        "label": "A5. fertilizer manufacturing, bulk storage, shipping or handling",
+                                        "label": "A5. fertilizer manufacturing, bulk storage or shipping",
                                         "value": "a5"
                                     },
                                     {
-                                        "label": "A6. ink or dye manufacturing, bulk storage, shipping or handling",
+                                        "label": "A6. ink or dye manufacturing or bulk storage",
                                         "value": "a6"
                                     },
                                     {
@@ -8378,7 +8394,7 @@
                                         "value": "a7"
                                     },
                                     {
-                                        "label": "A8. paint, lacquer or varnish manufacturing, formulation, recycling, bulk storage, shipping or handling, not including retail stores",
+                                        "label": "A8. paint, lacquer or varnish manufacturing, formulation, recycling or bulk storage",
                                         "value": "a8"
                                     },
                                     {
@@ -8394,15 +8410,15 @@
                                         "value": "a11"
                                     },
                                     {
-                                        "label": "A12. pesticide manufacturing, formulation, bulk storage, shipping or handling",
+                                        "label": "A12. pesticide manufacturing, formulation, bulk storage or shipping",
                                         "value": "a12"
                                     },
                                     {
-                                        "label": "A13. resin or plastic monomer manufacturing, formulation, bulk storage, shipping or handling",
+                                        "label": "A13. resin or plastic monomer manufacturing, formulation or bulk storage",
                                         "value": "a13"
                                     },
                                     {
-                                        "label": "B1. battery manufacturing, recycling, bulk storage, shipping or handling",
+                                        "label": "B1. battery manufacturing, recycling or bulk storage",
                                         "value": "b1"
                                     },
                                     {
@@ -8410,7 +8426,7 @@
                                         "value": "b2"
                                     },
                                     {
-                                        "label": "B3. electrical equipment manufacturing, refurbishing, bulk storage, shipping or handling",
+                                        "label": "B3. electrical equipment manufacturing, refurbishing or bulk storage",
                                         "value": "b3"
                                     },
                                     {
@@ -8422,11 +8438,11 @@
                                         "value": "b5"
                                     },
                                     {
-                                        "label": "B6. transformer oil manufacturing, processing, bulk storage, shipping or handling",
+                                        "label": "B6. transformer oil manufacturing, processing or bulk storage",
                                         "value": "b6"
                                     },
                                     {
-                                        "label": "B7. electrical power generating operations fuelled by coal or petroleum hydrocarbons that supply electricity to a community or commercial or industrial operation, excluding emergency generators",
+                                        "label": "B7. electrical power generating operations fueled by coal or petroleum hydrocarbons that supply electricity to a community or commercial or industrial operation, excluding emergency generators",
                                         "value": "b7"
                                     },
                                     {
@@ -8454,23 +8470,23 @@
                                         "value": "c6"
                                     },
                                     {
-                                        "label": "D1. asbestos mining, milling, bulk storage, shipping or handling",
+                                        "label": "D1. asbestos mining, milling, bulk storage or shipping",
                                         "value": "d1"
                                     },
                                     {
-                                        "label": "D2. coal coke manufacture, bulk storage, shipping or handling",
+                                        "label": "D2. coal coke manufacture, bulk storage or shipping",
                                         "value": "d2"
                                     },
                                     {
-                                        "label": "D3. coal or lignite mining, milling, bulk storage, shipping or handling",
+                                        "label": "D3. coal or lignite mining, milling, bulk storage or shipping",
                                         "value": "d3"
                                     },
                                     {
-                                        "label": "D4. milling reagent manufacture, bulk storage, shipping or handling",
+                                        "label": "D4. milling reagent manufacture, bulk storage or shipping",
                                         "value": "d4"
                                     },
                                     {
-                                        "label": "D5. metal concentrate bulk storage, shipping or handling",
+                                        "label": "D5. metal concentrate bulk storage or shipping",
                                         "value": "d5"
                                     },
                                     {
@@ -8514,16 +8530,8 @@
                                         "value": "e9"
                                     },
                                     {
-                                        "label": "E10. contamination or likely contamination of land by substances migrating from an industrial or commercial site",
-                                        "value": "e10"
-                                    },
-                                    {
                                         "label": "E11. fire training facilities at which fire retardants are used",
                                         "value": "e11"
-                                    },
-                                    {
-                                        "label": "E12. single or cumulative spills to the environment greater than the reportable quantities of substances listed in the Spill Reporting Regulation",
-                                        "value": "e12"
                                     },
                                     {
                                         "label": "F1. petroleum or natural gas drilling",
@@ -8538,7 +8546,7 @@
                                         "value": "f3"
                                     },
                                     {
-                                        "label": "F4. petroleum coke manufacture, bulk storage, shipping or handling",
+                                        "label": "F4. petroleum coke manufacture, bulk storage or shipping",
                                         "value": "f4"
                                     },
                                     {
@@ -8550,7 +8558,7 @@
                                         "value": "f6"
                                     },
                                     {
-                                        "label": "F7. petroleum product (other than compressed gas), or produced water storage in non-mobile above ground or underground tanks, except tanks associated with emergency generators or with secondary containment",
+                                        "label": "F7. petroleum product (other than compressed gas), or produced water storage in nonͲmobile above ground or underground tanks, except above ground tanks associated with emergency generators or with secondary containment",
                                         "value": "f7"
                                     },
                                     {
@@ -8562,11 +8570,11 @@
                                         "value": "f9"
                                     },
                                     {
-                                        "label": "F10. solvent manufacturing, bulk storage, shipping or handling",
+                                        "label": "F10. solvent manufacturing or bulk storage",
                                         "value": "f10"
                                     },
                                     {
-                                        "label": "F11. sulfur handling, processing or bulk storage and distribution",
+                                        "label": "F11. sulfur handling, processing, or bulk storage and distribution",
                                         "value": "f11"
                                     },
                                     {
@@ -8578,7 +8586,7 @@
                                         "value": "g2"
                                     },
                                     {
-                                        "label": "G3. dry docks, marinas, ship building or boat repair and maintenance, including paint removal from hulls",
+                                        "label": "G3. dry docks, marinas, shipbuilding or boat repair and maintenance, including paint removal from hulls",
                                         "value": "g3"
                                     },
                                     {
@@ -8590,7 +8598,7 @@
                                         "value": "g5"
                                     },
                                     {
-                                        "label": "H1. antifreeze bulk storage, recycling, shipping or handling",
+                                        "label": "H1. antifreeze bulk storage, recycling or shipping",
                                         "value": "h1"
                                     },
                                     {
@@ -8666,7 +8674,7 @@
                                         "value": "h19"
                                     },
                                     {
-                                        "label": "H20. municipal or provincial road snow removal dumping or yard snow removal dumping",
+                                        "label": "H20. municipal or provincial road or yard snow removal dumping",
                                         "value": "h20"
                                     },
                                     {
@@ -8702,107 +8710,100 @@
                                         "value": "i6"
                                     },
                                     {
-                                        "label": "I7. wood treatment chemical manufacturing, bulk storage",
+                                        "label": "I7. wood treatment chemical manufacturing or bulk storage",
                                         "value": "i7"
                                     }
                                 ],
+                                "resource": "",
                                 "json": "",
                                 "url": "",
-                                "resource": "",
                                 "custom": ""
                             },
-                            "type": "select",
-                            "input": true,
-                            "label": "Schedule 2 Reference and Description",
-                            "widget": "choicesjs",
                             "dataType": "auto",
-                            "multiple": true,
-                            "validate": {
-                                "required": true,
-                                "custom": "",
-                                "customPrivate": false,
-                                "strictDateValidation": false,
-                                "multiple": false,
-                                "unique": false,
-                                "onlyAvailableItems": false
-                            },
-                            "tableView": true,
-                            "description": "Select \"none\" if no Schedule 2 uses apply",
-                            "placeholder": "Select all that apply",
-                            "searchThreshold": 0.3,
-                            "prefix": "",
-                            "customClass": "",
-                            "suffix": "",
-                            "defaultValue": null,
-                            "protected": false,
-                            "unique": false,
-                            "persistent": true,
-                            "hidden": false,
-                            "clearOnHide": true,
+                            "idPath": "id",
+                            "valueProperty": "",
+                            "template": "<span>{{ item.label }}</span>",
                             "refreshOn": "",
-                            "redrawOn": "",
-                            "modalEdit": false,
-                            "dataGridLabel": false,
-                            "labelPosition": "top",
-                            "errorLabel": "",
-                            "tooltip": "",
-                            "hideLabel": false,
-                            "tabindex": "",
-                            "disabled": false,
-                            "autofocus": false,
+                            "refreshOnBlur": "",
+                            "clearOnRefresh": false,
+                            "searchEnabled": true,
+                            "selectThreshold": 0.3,
+                            "readOnlyValue": false,
+                            "customOptions": {},
+                            "useExactSearch": false,
+                            "persistent": true,
+                            "protected": false,
                             "dbIndex": false,
+                            "encrypted": false,
+                            "clearOnHide": true,
                             "customDefaultValue": "",
                             "calculateValue": "",
                             "calculateServer": false,
-                            "attributes": {},
+                            "allowCalculateOverride": false,
                             "validateOn": "change",
+                            "validate": {
+                                "required": true,
+                                "onlyAvailableItems": false,
+                                "customMessage": "",
+                                "custom": "",
+                                "customPrivate": false,
+                                "json": "",
+                                "strictDateValidation": false,
+                                "multiple": false,
+                                "unique": false
+                            },
+                            "unique": false,
+                            "errorLabel": "",
+                            "errors": "",
+                            "key": "schedule2Reference",
+                            "tags": [],
+                            "properties": {},
                             "conditional": {
                                 "show": null,
                                 "when": null,
-                                "eq": ""
+                                "eq": "",
+                                "json": ""
                             },
+                            "customConditional": "",
+                            "logic": [],
+                            "attributes": {},
                             "overlay": {
                                 "style": "",
+                                "page": "",
                                 "left": "",
                                 "top": "",
                                 "width": "",
                                 "height": ""
                             },
-                            "allowCalculateOverride": false,
-                            "encrypted": false,
+                            "type": "select",
+                            "indexeddb": {
+                                "filter": {}
+                            },
+                            "selectFields": "",
+                            "searchField": "",
+                            "searchDebounce": 0.3,
+                            "minSearch": 0,
+                            "filter": "",
+                            "limit": 100,
+                            "redrawOn": "",
+                            "input": true,
+                            "searchThreshold": 0.3,
+                            "prefix": "",
+                            "suffix": "",
+                            "dataGridLabel": false,
                             "showCharCount": false,
                             "showWordCount": false,
-                            "properties": {},
                             "allowMultipleMasks": false,
                             "addons": [],
-                            "idPath": "id",
-                            "clearOnRefresh": false,
-                            "limit": 100,
-                            "dataSrc": "values",
-                            "valueProperty": "",
                             "lazyLoad": true,
-                            "filter": "",
-                            "searchEnabled": true,
-                            "searchDebounce": 0.3,
-                            "searchField": "",
-                            "minSearch": 0,
-                            "readOnlyValue": false,
                             "authenticate": false,
                             "ignoreCache": false,
-                            "template": "<span>{{ item.label }}</span>",
-                            "selectFields": "",
-                            "selectThreshold": 0.3,
-                            "uniqueOptions": false,
                             "fuseOptions": {
                                 "include": "score",
                                 "threshold": 0.3
                             },
-                            "indexeddb": {
-                                "filter": {}
-                            },
-                            "customOptions": {},
-                            "useExactSearch": false,
-                            "id": "e5t2hd"
+                            "id": "e6a03i",
+                            "defaultValue": []
                         }
                     ],
                     "collapsible": true,
