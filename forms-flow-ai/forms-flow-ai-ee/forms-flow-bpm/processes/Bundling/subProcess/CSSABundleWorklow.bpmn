@@ -881,10 +881,16 @@ execution.setVariable('formName','Contaminated Sites Services Application Form')
 var applicationsrequested = execution.getVariable('applicationsrequested');
 var certificationdocumentradioGroup = execution.getVariable('certificationdocumentradioGroup');
 var submissionTypeTwo = execution.getVariable('submissionTypeTwo');
+
+submissionTypeTwo = JSON.parse(submissionTypeTwo);
+applicationsrequested = JSON.parse(applicationsrequested);
+certificationdocumentradioGroup = JSON.parse(certificationdocumentradioGroup);
+
 var isSoscAvailable =   (submissionTypeTwo ? submissionTypeTwo.reportsSubmitted : false) || (applicationsrequested ? applicationsrequested.siteReclassification ||
 applicationsrequested.approvalOfBackgroundConcentrations : false) || (certificationdocumentradioGroup ? certificationdocumentradioGroup.determinationOfContaminatedSite 
 || certificationdocumentradioGroup.approvalInPrinciple || certificationdocumentradioGroup.certificateOfCompliance : false) ? true : false;
 
+system.out.println ("isSoscAvailable "+isSoscAvailable );
 execution.setVariable('isSoscAvailable',isSoscAvailable);</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:receiveTask id="Activity_1v5ffpw" name="Application Resubmitted" messageRef="Message_0lm44we">
