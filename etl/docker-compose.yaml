@@ -50,5 +50,6 @@ services:
      - CONFIG_STORAGE_TOPIC=epd_connect_configs
      - OFFSET_STORAGE_TOPIC=epd_connect_offsets
      - STATUS_STORAGE_TOPIC=epd_connect_statuses
-     - KAFKA_DEBUG=true
+     - KAFKA_DEBUG=false
      - DEBUG_SUSPEND_FLAG=n
+     - CONNECT_REST_EXTENSION_CLASSES=org.apache.kafka.connect.rest.basic.auth.extension.BasicAuthSecurityRestExtension
