@@ -1307,7 +1307,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ea2btv0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ea2btv000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "Panel-InformationForAffectedAndLikelyAffectedParcels",
                                     "tree": false,
                                     "type": "panel",
@@ -9179,7 +9179,7 @@
                                     "addons": [],
                                     "tree": false,
                                     "lazyLoad": false,
-                                    "id": "emrk44b000000000000000000000000000000"
+                                    "id": "emrk44b00000000000000000000000000000000"
                                 }
                             ],
                             "errorLabel": "",
@@ -9452,17 +9452,12 @@
                                             "shortcut": ""
                                         },
                                         {
-                                            "label": "Duplicate site risk classification information – previous submissions exemption",
-                                            "value": "duplicateSiteRiskClassificationInformationPreviousSubmissionsExemption",
-                                            "shortcut": ""
-                                        },
-                                        {
                                             "label": "Soil quantity exemption [REMOVED]",
                                             "value": "soilQuantityExemption",
                                             "shortcut": ""
                                         },
                                         {
-                                            "label": "Application for a Determination that a site is not contaminated exemption",
+                                            "label": "Application for a determination that a site is not contaminated exemption",
                                             "value": "applicationForADeterminationThatASiteIsNotContaminatedExemption",
                                             "shortcut": ""
                                         },
@@ -9489,11 +9484,6 @@
                                         {
                                             "label": "SRCR submitted within past 5 years and no change to previous site risk classification",
                                             "value": "srcrSubmittedWithinPast5YearsAndNoChangeToPreviousSiteRiskClassification",
-                                            "shortcut": ""
-                                        },
-                                        {
-                                            "label": "Application is for a determination that a  site is not contaminated",
-                                            "value": "applicationIsForADeterminationThatASiteIsNotContaminated",
                                             "shortcut": ""
                                         }
                                     ],
@@ -9559,7 +9549,7 @@
                                     "addons": [],
                                     "inputType": "radio",
                                     "fieldSet": false,
-                                    "id": "eliguki",
+                                    "id": "ec0xe0p",
                                     "defaultValue": ""
                                 },
                                 {
