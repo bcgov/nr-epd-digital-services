@@ -19,6 +19,9 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
+      args:
+        - ssh_prv_key=${SSH_PRV_KEY}
+        - ssh_pub_key=${SSH_PUB_KEY}
     restart: always
     links:
       - forms-flow-bpm-db
