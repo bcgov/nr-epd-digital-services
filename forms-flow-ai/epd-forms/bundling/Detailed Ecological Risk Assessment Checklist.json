@@ -914,7 +914,7 @@
                                                 "height": ""
                                             },
                                             "type": "button",
-                                            "custom": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\nif(roles.includes(\"formsflow-reviewer/cssa-manager\") && \r\n(data.selectDeraSdm===''||data.selectDeraSdm===undefined|| \r\n(data.typeOfReview==='directToMinistryApplication'&&data.selectDeraCaseworker===undefined|| data.selectDeraCaseworker==='')))\r\n{\r\n    alert('Please assign reviewers to continue!');\r\n    \r\n}\r\nelse\r\n{\r\n    form.emit('customEvent', {\r\n          type: \"actionComplete\",  \r\n          component: component,\r\n          actionType:'Accepted'\r\n    });\r\n}",
+                                            "custom": "form.emit('customEvent', {\n          type: \"actionComplete\",  \n          component: component,\n          actionType:'Accepted'\n    });",
                                             "input": true,
                                             "keyModified": true,
                                             "placeholder": "",
@@ -954,7 +954,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "ey8dmh6"
+                                            "id": "em2s64"
                                         },
                                         {
                                             "label": "Approved",
@@ -1430,7 +1430,7 @@
                                             "allowCalculateOverride": false,
                                             "validateOn": "change",
                                             "validate": {
-                                                "required": true,
+                                                "required": false,
                                                 "onlyAvailableItems": false,
                                                 "customMessage": "",
                                                 "custom": "",
@@ -1492,7 +1492,7 @@
                                                 "include": "score",
                                                 "threshold": 0.3
                                             },
-                                            "id": "ewxonrk",
+                                            "id": "efplfsc",
                                             "defaultValue": "",
                                             "sort": ""
                                         }
@@ -1573,7 +1573,7 @@
                                             "allowCalculateOverride": false,
                                             "validateOn": "change",
                                             "validate": {
-                                                "required": true,
+                                                "required": false,
                                                 "onlyAvailableItems": false,
                                                 "customMessage": "",
                                                 "custom": "",
@@ -1635,7 +1635,7 @@
                                                 "include": "score",
                                                 "threshold": 0.3
                                             },
-                                            "id": "e2ye05i",
+                                            "id": "ead6qr",
                                             "defaultValue": "",
                                             "sort": ""
                                         }
@@ -5582,7 +5582,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eh8z2bfa0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eh8z2bfa000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "panel",
                                     "tags": [],
                                     "tree": false,
@@ -36178,7 +36178,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eof79400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eof7940000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
