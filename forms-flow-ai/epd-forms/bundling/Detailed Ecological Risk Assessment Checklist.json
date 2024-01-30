@@ -5582,7 +5582,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eh8z2bfa000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eh8z2bfa00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "panel",
                                     "tags": [],
                                     "tree": false,
@@ -35164,12 +35164,51 @@
                             "tableView": false,
                             "components": [
                                 {
-                                    "key": "riskclassificationexemption",
-                                    "type": "radio",
-                                    "input": true,
                                     "label": "riskclassificationchange",
+                                    "labelPosition": "top",
+                                    "optionsLabelPosition": "right",
+                                    "description": "",
+                                    "tooltip": "",
+                                    "customClass": "",
+                                    "tabindex": "",
                                     "inline": false,
+                                    "hidden": false,
+                                    "hideLabel": true,
+                                    "autofocus": false,
+                                    "disabled": false,
+                                    "tableView": false,
+                                    "modalEdit": false,
                                     "values": [
+                                        {
+                                            "label": "Duplicate site risk classification information – simultaneous triggers exemption",
+                                            "value": "duplicateSiteRiskClassificationInformationSimultaneousTriggersExemption",
+                                            "shortcut": ""
+                                        },
+                                        {
+                                            "label": "Soil quantity exemption [REMOVED]",
+                                            "value": "soilQuantityExemption",
+                                            "shortcut": ""
+                                        },
+                                        {
+                                            "label": "Application for a determination that a site is not contaminated exemption",
+                                            "value": "applicationForADeterminationThatASiteIsNotContaminatedExemption",
+                                            "shortcut": ""
+                                        },
+                                        {
+                                            "label": "Residential heating oil tank exemption",
+                                            "value": "residentialHeatingOilTankExemption",
+                                            "shortcut": ""
+                                        },
+                                        {
+                                            "label": "Spill reporting exemption",
+                                            "value": "spillReportingExemptio",
+                                            "shortcut": ""
+                                        },
+                                        {
+                                            "label": "OGC/BCER sites described as non-priority sites",
+                                            "value": "ogcBcerSitesDescribedAsNonPrioritySites",
+                                            "shortcut": ""
+                                        },
                                         {
                                             "label": "Site release request under Scenario 1",
                                             "value": "siteReleaseRequestUnderScenario1",
@@ -35177,79 +35216,74 @@
                                         },
                                         {
                                             "label": "SRCR submitted within past 5 years and no change to previous site risk classification",
-                                            "value": "SRCR",
-                                            "shortcut": ""
-                                        },
-                                        {
-                                            "label": "Application is for a determination that a  site is not contaminated",
-                                            "value": "determination",
+                                            "value": "srcrSubmittedWithinPast5YearsAndNoChangeToPreviousSiteRiskClassification",
                                             "shortcut": ""
                                         }
                                     ],
-                                    "validate": {
-                                        "required": true,
-                                        "custom": "",
-                                        "customPrivate": false,
-                                        "strictDateValidation": false,
-                                        "multiple": false,
-                                        "unique": false,
-                                        "onlyAvailableItems": false
-                                    },
-                                    "hideLabel": true,
-                                    "tableView": false,
-                                    "hideOnChildrenHidden": false,
-                                    "optionsLabelPosition": "right",
-                                    "placeholder": "",
-                                    "prefix": "",
-                                    "customClass": "",
-                                    "suffix": "",
-                                    "multiple": false,
-                                    "defaultValue": null,
-                                    "protected": false,
-                                    "unique": false,
+                                    "dataType": "",
                                     "persistent": true,
-                                    "hidden": false,
-                                    "clearOnHide": true,
-                                    "refreshOn": "",
-                                    "redrawOn": "",
-                                    "modalEdit": false,
-                                    "dataGridLabel": false,
-                                    "labelPosition": "top",
-                                    "description": "",
-                                    "errorLabel": "",
-                                    "tooltip": "",
-                                    "tabindex": "",
-                                    "disabled": false,
-                                    "autofocus": false,
+                                    "protected": false,
                                     "dbIndex": false,
+                                    "encrypted": false,
+                                    "redrawOn": "",
+                                    "clearOnHide": true,
                                     "customDefaultValue": "",
                                     "calculateValue": "",
                                     "calculateServer": false,
-                                    "widget": null,
-                                    "attributes": {},
-                                    "validateOn": "change",
+                                    "allowCalculateOverride": false,
+                                    "validate": {
+                                        "required": true,
+                                        "onlyAvailableItems": false,
+                                        "customMessage": "",
+                                        "custom": "",
+                                        "customPrivate": false,
+                                        "json": "",
+                                        "strictDateValidation": false,
+                                        "multiple": false,
+                                        "unique": false
+                                    },
+                                    "errorLabel": "",
+                                    "errors": "",
+                                    "key": "riskclassificationexemption",
+                                    "tags": [],
+                                    "properties": {},
                                     "conditional": {
                                         "show": null,
                                         "when": null,
-                                        "eq": ""
+                                        "eq": "",
+                                        "json": ""
                                     },
+                                    "customConditional": "",
+                                    "logic": [],
+                                    "attributes": {},
                                     "overlay": {
                                         "style": "",
+                                        "page": "",
                                         "left": "",
                                         "top": "",
                                         "width": "",
                                         "height": ""
                                     },
-                                    "allowCalculateOverride": false,
-                                    "encrypted": false,
+                                    "type": "radio",
+                                    "input": true,
+                                    "hideOnChildrenHidden": false,
+                                    "placeholder": "",
+                                    "prefix": "",
+                                    "suffix": "",
+                                    "multiple": false,
+                                    "unique": false,
+                                    "refreshOn": "",
+                                    "dataGridLabel": false,
+                                    "widget": null,
+                                    "validateOn": "change",
                                     "showCharCount": false,
                                     "showWordCount": false,
-                                    "properties": {},
                                     "allowMultipleMasks": false,
                                     "addons": [],
                                     "inputType": "radio",
                                     "fieldSet": false,
-                                    "id": "e92f5l9"
+                                    "id": "emm5c9e",
+                                    "defaultValue": ""
                                 },
                                 {
                                     "key": "dateOfMostRecentSiteRiskClassificationReport",
@@ -36111,7 +36145,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eof7940000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eof794000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
