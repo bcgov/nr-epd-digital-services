@@ -74,7 +74,7 @@ networkPolicy:
 
 service:
   type: ClusterIP
-  port: 4050
+  port: 3000
   portName: http
 
 route:
@@ -84,7 +84,7 @@ route:
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  host: chart-example.local
+  host: coms-e38158-dev.apps.silver.devops.gov.bc.ca
   # path: /
   tls:
     insecureEdgeTerminationPolicy: Redirect
@@ -135,10 +135,10 @@ config:
     # DB_POOL_MAX: "10"
 
     # KC_ENABLED: "true"
-    KC_IDENTITYKEY: ~
-    KC_PUBLICKEY: ~
-    KC_REALM: ~
-    KC_SERVERURL: ~
+    KC_IDENTITYKEY: "idir_user_guid,bceid_user_guid,github_id"
+    KC_PUBLICKEY: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvoHS3+T2OCyclTh2pw6lMfoLsa1DG9QlU7qunf5+M/ualGtXqoXA7T+G0YO7rk+grKZCmxZIulRPjybOIDmaYaT/mD+IalqVvAQ91O5+4wryFr+agkpPGAI3kp3sw1aVfQfgM8xBsPoRjJaGKBhG2yEa3Oy61r/+fDZcnNrId0bDNaXXAXZ20dbywuOFzbB/ctGwBnbMLAte83kZ6ZNeyufvbq101PLkV1TOYe0QA9qZRqt+cqa2gUW5k3cu0AYBsp76SfjnVfvjFtIBGek8DY13FvHX5TkN10yQ9901l6UQWt39BD9bM4nA+KWzhuBphZoDrP44Z9cOUFPCuZrKiQIDAQAB"
+    KC_REALM: "forms-flow-ai"
+    KC_SERVERURL: "https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth"
 
     OBJECTSTORAGE_BUCKET: ~
     # OBJECTSTORAGE_ENABLED: "true"
@@ -169,10 +169,20 @@ objectStorageSecretOverride:
 # Patroni subchart configuration overrides
 patroni:
   # Controls whether to enable managing a Patroni db dependency as a part of the helm release
-  enabled: false
+  enabled: true 
 
-  # replicaCount: 3
-  # resources: {}
+  replicaCount: 3
+  resources: 
+    limits:
+      cpu: 400m
+      memory: 512Mi
+    requests:
+      cpu: 20m
+      memory: 256Mi
 
-  # persistentVolume:
-  #   enabled: false
+  # Can we set default db name?
+
+  persistentVolume:
+    # enabled: false
+    enabled: true
+    # Can we reduce size?
