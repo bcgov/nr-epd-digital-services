@@ -88,7 +88,7 @@ curl -u <username>:<password> -H "Content-Type: application/json" -d @register-p
 ```
 curl -u <username>:<password> -H "Content-Type: application/json" -d @register-oracle-jdbc-sink-connector.json http://localhost:8083/connectors/
 
-curl -u <username>:<password> -H "Content-Type: application/json" -d @register-oracle-jdbc-sink-connector.json https://debezium-jdbc-latest.apps.silver.devops.gov.bc.ca/connectors/
+curl -u <username>:<password> -H "Content-Type: application/json" -d @register-oracle-jdbc-sink-connector.json https://debezium-jdbc-dev.apps.silver.devops.gov.bc.ca/connectors/
 
 
 ```

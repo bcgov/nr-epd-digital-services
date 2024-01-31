@@ -3384,9 +3384,89 @@ system.out.println ("soscStatus "+execution.getVariable('soscStatus') );</camund
         <di:waypoint x="1730" y="4540" />
         <di:waypoint x="2140" y="4540" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1l4qibu_di" bpmnElement="Flow_1l4qibu">
-        <di:waypoint x="2395" y="4540" />
-        <di:waypoint x="2190" y="4540" />
+      <bpmndi:BPMNEdge id="Flow_1i04zkp_di" bpmnElement="Flow_1i04zkp">
+        <di:waypoint x="5455" y="3090" />
+        <di:waypoint x="5920" y="3090" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15f3evi_di" bpmnElement="Flow_15f3evi">
+        <di:waypoint x="5430" y="3115" />
+        <di:waypoint x="5430" y="3155" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14qx1q0_di" bpmnElement="Flow_14qx1q0">
+        <di:waypoint x="4800" y="1580" />
+        <di:waypoint x="4872" y="1580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1kyum71_di" bpmnElement="Flow_1kyum71">
+        <di:waypoint x="3690" y="2570" />
+        <di:waypoint x="2855" y="2570" />
+        <di:waypoint x="2855" y="2750" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0nkb4yt_di" bpmnElement="Flow_0nkb4yt">
+        <di:waypoint x="3715" y="2595" />
+        <di:waypoint x="3715" y="2750" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0jxnrvm_di" bpmnElement="Flow_0jxnrvm">
+        <di:waypoint x="6020" y="3080" />
+        <di:waypoint x="6072" y="3080" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1azn5ag_di" bpmnElement="Flow_1azn5ag">
+        <di:waypoint x="4500" y="2295" />
+        <di:waypoint x="4500" y="2210" />
+        <di:waypoint x="6900" y="2210" />
+        <di:waypoint x="6900" y="2595" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="5691" y="2192" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04qadhc_di" bpmnElement="Flow_04qadhc">
+        <di:waypoint x="6875" y="2620" />
+        <di:waypoint x="6625" y="2620" />
+        <di:waypoint x="6625" y="2740" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02nvps4_di" bpmnElement="Flow_02nvps4">
+        <di:waypoint x="6925" y="2620" />
+        <di:waypoint x="7460" y="2620" />
+        <di:waypoint x="7460" y="2740" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01v1a0f_di" bpmnElement="Flow_01v1a0f">
+        <di:waypoint x="6625" y="3700" />
+        <di:waypoint x="6625" y="4540" />
+        <di:waypoint x="6965" y="4540" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="6548" y="4063" width="64" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_147keeo_di" bpmnElement="Flow_147keeo">
+        <di:waypoint x="7460" y="3700" />
+        <di:waypoint x="7460" y="4540" />
+        <di:waypoint x="7015" y="4540" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="7488" y="4073" width="64" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1j9qdt7_di" bpmnElement="Flow_1j9qdt7">
+        <di:waypoint x="820" y="3700" />
+        <di:waypoint x="820" y="4550" />
+        <di:waypoint x="1255" y="4550" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="803" y="4122" width="64" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1x22wup_di" bpmnElement="Flow_1x22wup">
+        <di:waypoint x="1808" y="4360" />
+        <di:waypoint x="1808" y="4550" />
+        <di:waypoint x="1305" y="4550" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1791" y="4452" width="66" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_17uy5we_di" bpmnElement="Flow_17uy5we">
+        <di:waypoint x="1280" y="4575" />
+        <di:waypoint x="1280" y="4670" />
+        <di:waypoint x="5650" y="4670" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1299" y="4606" width="82" height="27" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
