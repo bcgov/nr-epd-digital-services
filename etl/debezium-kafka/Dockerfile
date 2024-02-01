@@ -1,5 +1,5 @@
 
-FROM debezium/kafka:1.9
+FROM debezium/kafka:2.5
 
 
 COPY connect-log4j.properties /kafka/config/
