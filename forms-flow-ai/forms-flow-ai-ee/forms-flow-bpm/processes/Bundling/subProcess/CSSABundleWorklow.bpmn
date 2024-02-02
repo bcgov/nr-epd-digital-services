@@ -519,7 +519,7 @@ system.out.println ("isSentFromSociety "+execution.getVariable('isSentFromSociet
         <bpmn:extensionElements>
           <camunda:in variables="all" />
           <camunda:inputOutput>
-            <camunda:inputParameter name="category">cssa_subforms_updated</camunda:inputParameter>
+            <camunda:inputParameter name="category">sosc_subforms_updated</camunda:inputParameter>
           </camunda:inputOutput>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_0vixcwm</bpmn:incoming>
