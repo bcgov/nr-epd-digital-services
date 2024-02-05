@@ -302,7 +302,7 @@
       </rule>
       <rule id="DecisionRule_09gmjh8">
         <inputEntry id="UnaryTests_1d10vea">
-          <text>sosc_subforms_updated</text>
+          <text>"sosc_subforms_updated"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0yzoe34">
           <text></text>
