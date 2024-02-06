@@ -1867,7 +1867,7 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
       <bpmn:outgoing>Flow_07eueok</bpmn:outgoing>
       <bpmn:outgoing>Flow_0aabyhy</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:userTask id="Activity_1hs3dja" name="SDM Updates Form" camunda:assignee="${cssaSdmAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
+    <bpmn:userTask id="Activity_1hs3dja" name="SDM Updates Form" camunda:assignee="${sdmAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
       <bpmn:extensionElements>
         <camunda:taskListener event="create">
           <camunda:script scriptFormat="javascript">task.execution.setVariable('isSdm',false);</camunda:script>
@@ -1888,7 +1888,7 @@ task.execution.setVariable('userRole','Statutory Decision Maker');</camunda:scri
       <bpmn:incoming>Flow_07vh0na</bpmn:incoming>
       <bpmn:outgoing>Flow_08c8ij1</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_1bsz2qm" name="Caseworker Updates Form" camunda:assignee="${cssaCaseworkerAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
+    <bpmn:userTask id="Activity_1bsz2qm" name="Caseworker Updates Form" camunda:assignee="${caseworkerAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
       <bpmn:extensionElements>
         <camunda:taskListener event="create">
           <camunda:script scriptFormat="javascript">task.execution.setVariable('isCaseworker',false);</camunda:script>
@@ -1986,38 +1986,34 @@ system.out.println ("soscStatus "+execution.getVariable('soscStatus') );</camund
       <bpmn:script>var system = java.lang.System;
 var selectCssaSdm= execution.getVariable('selectCssaSdm');
 system.out.println ("selectCssaSdm"+selectCssaSdm);
-execution.setVariable('cssaSdmAssignment',selectCssaSdm);
-system.out.println ("cssaSdmAssignment"+execution.getVariable('cssaSdmAssignment'));
 
 var selectCssaCaseworker= execution.getVariable('selectCssaCaseworker');
 system.out.println ("selectCssaCaseworker"+selectCssaCaseworker);
-execution.setVariable('cssaCaseworkerAssignment',selectCssaCaseworker);
-system.out.println ("cssaCaseworkerAssignment"+execution.getVariable('cssaCaseworkerAssignment'));
 
 var selectSoscSdm= execution.getVariable('selectSoscSdm');
 system.out.println ("selectSoscSdm"+selectSoscSdm);
-execution.setVariable('soscSdmAssignment',selectSoscSdm);
-system.out.println ("soscSdmAssignment"+execution.getVariable('soscSdmAssignment'));
 
 var selectSoscCaseworker= execution.getVariable('selectSoscCaseworker');
 system.out.println ("selectSoscCaseworker"+selectSoscCaseworker);
-execution.setVariable('soscCaseworkerAssignment',selectSoscCaseworker);
-system.out.println ("soscCaseworkerAssignment"+execution.getVariable('soscCaseworkerAssignment'));
 
-var selectSdm= execution.getVariable('selectSdm');
+var selectSrcrSdm= execution.getVariable('selectSdm');
 system.out.println ("selectSdm"+selectSdm);
-execution.setVariable('sdmAssignment',selectSdm);
-system.out.println ("sdmAssignment"+execution.getVariable('sdmAssignment'));
 
-var selectCaseworker= execution.getVariable('selectCaseworker');
+var selectSrcrCaseworker= execution.getVariable('selectCaseworker');
 system.out.println ("selectCaseworker"+selectCaseworker);
-execution.setVariable('caseworkerAssignment',selectCaseworker);
-system.out.println ("caseworkerAssignment"+execution.getVariable('caseworkerAssignment'));
 
 var selectSrco= execution.getVariable('selectSrco');
 system.out.println ("selectSrco"+selectSrco);
 execution.setVariable('srcoAssignment',selectSrco);
-system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));</bpmn:script>
+system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
+
+var selectCaseworker = selectCssaCaseworker? selectCssaCaseworker:(selectSoscCaseworker?selectSoscCaseworker:(selectSrcrCaseworker?selectSrcrCaseworker:null));
+execution.setVariable('caseworkerAssignment',selectCaseworker);
+system.out.println ("caseworkerAssignment"+execution.getVariable('caseworkerAssignment'));
+
+var selectSdm = selectCssaSdm? selectCssaSdm:(selectSoscSdm?selectSoscSdm:(selectSrcrSdm?selectSrcrSdm:null));
+execution.setVariable('sdmAssignment',selectSdm);
+system.out.println ("sdmAssignment"+execution.getVariable('sdmAssignment'));</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:exclusiveGateway id="Gateway_1lfy3cm">
       <bpmn:incoming>Flow_1dtmwt0</bpmn:incoming>
@@ -2069,16 +2065,6 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));</
       <bpmndi:BPMNShape id="BPMNShape_0ji5op1" bpmnElement="Activity_0q362ss">
         <dc:Bounds x="3950" y="3040" width="100" height="80" />
         <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_06dqknd_di" bpmnElement="Activity_1qnqtak">
-        <dc:Bounds x="2095" y="2150" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1lfy3cm_di" bpmnElement="Gateway_1lfy3cm" isMarkerVisible="true">
-        <dc:Bounds x="2120" y="2045" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_16jqm7x_di" bpmnElement="Gateway_04645fs">
-        <dc:Bounds x="2120" y="1945" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1bge67f_di" bpmnElement="Activity_12e3zvm" isExpanded="true">
         <dc:Bounds x="1370" y="2750" width="740" height="960" />
@@ -2952,6 +2938,16 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));</
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1qrhl19_di" bpmnElement="Gateway_1qrhl19" isMarkerVisible="true">
         <dc:Bounds x="2395" y="4515" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_06dqknd_di" bpmnElement="Activity_1qnqtak">
+        <dc:Bounds x="2095" y="2150" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1lfy3cm_di" bpmnElement="Gateway_1lfy3cm" isMarkerVisible="true">
+        <dc:Bounds x="2120" y="2045" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_16jqm7x_di" bpmnElement="Gateway_04645fs">
+        <dc:Bounds x="2120" y="1945" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0jxnrvm_di" bpmnElement="Flow_0jxnrvm">
         <di:waypoint x="4050" y="3080" />
