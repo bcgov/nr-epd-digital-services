@@ -70,7 +70,7 @@
       <bpmn:outgoing>Flow_07eueok</bpmn:outgoing>
       <bpmn:outgoing>Flow_0aabyhy</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:userTask id="Activity_1hs3dja" name="SDM Updates Form" camunda:assignee="${sdmDeraAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
+    <bpmn:userTask id="Activity_1hs3dja" name="SDM Updates Form" camunda:assignee="${sdmAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
       <bpmn:extensionElements>
         <camunda:taskListener event="create">
           <camunda:script scriptFormat="javascript">task.execution.setVariable('isSdm',false);
@@ -92,7 +92,7 @@ task.execution.setVariable('userRole','Statutory Decision Maker');</camunda:scri
       <bpmn:incoming>Flow_07vh0na</bpmn:incoming>
       <bpmn:outgoing>Flow_08c8ij1</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_1bsz2qm" name="Caseworker Updates Form" camunda:assignee="${caseworkerDeraAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
+    <bpmn:userTask id="Activity_1bsz2qm" name="Caseworker Updates Form" camunda:assignee="${caseworkerAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
       <bpmn:extensionElements>
         <camunda:taskListener event="create">
           <camunda:script scriptFormat="javascript">task.execution.setVariable('isCaseworker',false);
@@ -707,7 +707,7 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
         <bpmn:script>var system = java.lang.System;
 system.out.println ("Sent to SDM");</bpmn:script>
       </bpmn:scriptTask>
-      <bpmn:userTask id="Activity_1gz28jq" name="SDM Updates Form" camunda:assignee="${sdmSoscAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
+      <bpmn:userTask id="Activity_1gz28jq" name="SDM Updates Form" camunda:assignee="${sdmAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
         <bpmn:extensionElements>
           <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
             <camunda:field name="copyDataIndicator">
@@ -763,7 +763,7 @@ task.execution.setVariable('subFormName','DERA Form');</camunda:script>
         <bpmn:incoming>Flow_07enxwq</bpmn:incoming>
         <bpmn:incoming>Flow_0yy721o</bpmn:incoming>
       </bpmn:endEvent>
-      <bpmn:userTask id="Activity_1lysqui" name="Caseworker Updates Form" camunda:assignee="${caseworkerSoscAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
+      <bpmn:userTask id="Activity_1lysqui" name="Caseworker Updates Form" camunda:assignee="${caseworkerAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
         <bpmn:extensionElements>
           <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
             <camunda:field name="copyDataIndicator">
@@ -1028,7 +1028,7 @@ execution.setVariable('requestType', 'DERA');</camunda:script>
         <bpmn:script>var system = java.lang.System;
 system.out.println ("Sent to SDM");</bpmn:script>
       </bpmn:scriptTask>
-      <bpmn:userTask id="Activity_0leiakj" name="SDM Updates Form" camunda:assignee="${sdmSoscAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
+      <bpmn:userTask id="Activity_0leiakj" name="SDM Updates Form" camunda:assignee="${sdmAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
         <bpmn:extensionElements>
           <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
             <camunda:field name="copyDataIndicator">
@@ -1084,7 +1084,7 @@ task.execution.setVariable('subFormName','SoSC Form');</camunda:script>
         <bpmn:incoming>Flow_0f2ltzc</bpmn:incoming>
         <bpmn:incoming>Flow_1uju8pu</bpmn:incoming>
       </bpmn:endEvent>
-      <bpmn:userTask id="Activity_0w9tds7" name="Caseworker Updates Form" camunda:assignee="${caseworkerSoscAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
+      <bpmn:userTask id="Activity_0w9tds7" name="Caseworker Updates Form" camunda:assignee="${caseworkerAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
         <bpmn:extensionElements>
           <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
             <camunda:field name="copyDataIndicator">
@@ -1625,40 +1625,37 @@ task.execution.setVariable('userRole','CSSA Manager');</camunda:script>
       <bpmn:incoming>Flow_02ysv7t</bpmn:incoming>
       <bpmn:outgoing>Flow_026ykts</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
-var selectSdm= execution.getVariable('selectSdm');
-system.out.println ("selectSdm"+selectSdm);
-execution.setVariable('sdmAssignment',selectSdm);
-system.out.println ("sdmAssignment"+execution.getVariable('sdmAssignment'));
 
 var selectDeraSdm= execution.getVariable('selectDeraSdm');
 system.out.println ("selectDeraSdm"+selectDeraSdm);
-execution.setVariable('sdmDeraAssignment',selectDeraSdm);
-system.out.println ("sdmDeraAssignment"+execution.getVariable('sdmDeraAssignment'));
-
-var selectSoscSdm= execution.getVariable('selectSoscSdm');
-system.out.println ("selectSoscSdm"+selectSoscSdm);
-execution.setVariable('sdmSoscAssignment',selectSoscSdm);
-system.out.println ("sdmSoscAssignment"+execution.getVariable('sdmSoscAssignment'));
-
-var selectCaseworker= execution.getVariable('selectCaseworker');
-system.out.println ("selectCaseworker"+selectCaseworker);
-execution.setVariable('caseworkerAssignment',selectCaseworker);
-system.out.println ("caseworkerAssignment"+execution.getVariable('caseworkerAssignment'));
 
 var selectDeraCaseworker= execution.getVariable('selectDeraCaseworker');
 system.out.println ("selectDeraCaseworker"+selectDeraCaseworker);
-execution.setVariable('caseworkerDeraAssignment',selectDeraCaseworker);
-system.out.println ("caseworkerDeraAssignment"+execution.getVariable('caseworkerDeraAssignment'));
+
+var selectSoscSdm= execution.getVariable('selectSoscSdm');
+system.out.println ("selectSoscSdm"+selectSoscSdm);
 
 var selectSoscCaseworker= execution.getVariable('selectSoscCaseworker');
 system.out.println ("selectSoscCaseworker"+selectSoscCaseworker);
-execution.setVariable('caseworkerSoscAssignment',selectSoscCaseworker);
-system.out.println ("caseworkerSoscAssignment"+execution.getVariable('caseworkerSoscAssignment'));
+
+var selectSrcrSdm= execution.getVariable('selectSdm');
+system.out.println ("selectSrcrSdm"+selectSrcrSdm);
+
+var selectSrcrCaseworker= execution.getVariable('selectCaseworker');
+system.out.println ("selectSrcrCaseworker"+selectSrcrCaseworker);
 
 var selectSrco= execution.getVariable('selectSrco');
 system.out.println ("selectSrco"+selectSrco);
 execution.setVariable('srcoAssignment',selectSrco);
-system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));</bpmn:script>
+system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
+
+var selectCaseworker = selectDeraCaseworker? selectDeraCaseworker:(selectSoscCaseworker?selectSoscCaseworker:(selectSrcrCaseworker?selectSrcrCaseworker:null));
+execution.setVariable('caseworkerAssignment',selectCaseworker);
+system.out.println ("caseworkerAssignment"+execution.getVariable('caseworkerAssignment'));
+
+var selectSdm = selectDeraSdm? selectDeraSdm:(selectSoscSdm?selectSoscSdm:(selectSrcrSdm?selectSrcrSdm:null));
+execution.setVariable('sdmAssignment',selectSdm);
+system.out.println ("sdmAssignment"+execution.getVariable('sdmAssignment'));</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:exclusiveGateway id="Gateway_1lfy3cm">
       <bpmn:incoming>Flow_00pfp2v</bpmn:incoming>
@@ -2530,6 +2527,9 @@ system.out.println ("srcrStatus "+execution.getVariable('srcrStatus') );</camund
           <dc:Bounds x="1696" y="3638" width="47" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0iglw7n" bpmnElement="Activity_0w9tds7">
+        <dc:Bounds x="1490" y="2980" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_03wgmzj" bpmnElement="Gateway_0t96cp0" isMarkerVisible="true">
         <dc:Bounds x="1515" y="3195" width="50" height="50" />
         <bpmndi:BPMNLabel>
@@ -2548,6 +2548,12 @@ system.out.println ("srcrStatus "+execution.getVariable('srcrStatus') );</camund
           <dc:Bounds x="1369" y="2803" width="83" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0xted0w" bpmnElement="Gateway_0zyh03w" isMarkerVisible="true">
+        <dc:Bounds x="1515" y="2905" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1578" y="2920" width="64" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1b9az61" bpmnElement="Activity_0nw3ta5">
         <dc:Bounds x="1855" y="3080" width="100" height="80" />
         <bpmndi:BPMNLabel />
@@ -2560,15 +2566,6 @@ system.out.println ("srcrStatus "+execution.getVariable('srcrStatus') );</camund
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1c6c7et" bpmnElement="Gateway_0opcd9e">
         <dc:Bounds x="1610" y="3485" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0xted0w" bpmnElement="Gateway_0zyh03w" isMarkerVisible="true">
-        <dc:Bounds x="1515" y="2905" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1578" y="2920" width="64" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0iglw7n" bpmnElement="Activity_0w9tds7">
-        <dc:Bounds x="1490" y="2980" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_1o5hl4i" bpmnElement="Flow_08gusn0">
         <di:waypoint x="1540" y="3245" />
