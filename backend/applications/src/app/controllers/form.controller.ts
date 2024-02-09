@@ -24,6 +24,15 @@ export class FormController {
       submissionId,
       formId,
     );
+
+    if(!savedSubmission)
+    {
+      return Promise.reject({
+        statusCode: 404,
+        message: 'Form data not found'
+      })
+    }
+
     const submissionResponse: SubmissionResponse =
       this.transformResult(savedSubmission);
     return submissionResponse;
