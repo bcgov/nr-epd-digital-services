@@ -1908,6 +1908,14 @@ system.out.println ("isSentFromSociety "+ execution.getVariable('isSentFromSocie
     <bpmn:sequenceFlow id="Flow_02ysv7t" name="Accepted" sourceRef="Gateway_1lfy3cm" targetRef="Activity_1qnqtak">
       <bpmn:extensionElements>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormBPMFilteredDataPipelineListener" event="take" />
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('bundleStatus', "cssaMgrAccepted");</camunda:script>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+          <camunda:field name="fields">
+            <camunda:expression>["applicationId", "applicationStatus", "bundleStatus"]</camunda:expression>
+          </camunda:field>
+        </camunda:executionListener>
       </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
