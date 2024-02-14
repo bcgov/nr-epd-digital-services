@@ -5,9 +5,9 @@ WORKDIR /app/
 COPY ./ ./
 RUN mvn clean install
 
-RUN echo "DEBEZIUM_VERSION is $DEBEZIUM_VERSION"
+RUN echo "DEBEZIUM_VERSION is " ${DEBEZIUM_VERSION}
 
-FROM debezium/connect:2.5
+FROM debezium/connect:${DEBEZIUM_VERSION}
 
 ARG ORACLE_JDBC_VERSION
 ARG ORACLE_JDBC_MD5
