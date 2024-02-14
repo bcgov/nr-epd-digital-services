@@ -1338,7 +1338,7 @@
                     "key": "deraReviewerAssignment",
                     "tags": [],
                     "properties": {},
-                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\n    \r\nif (data.riskclassification === \"exempt\" ||\r\nroles.includes(\"formsflow-client\")||\r\nroles.includes(\"formsflow-reviewer/cssa-team\")||\r\nroles.includes(\"formsflow-reviewer/cssa-manager\") ||\r\nroles.includes(\"formsflow-reviewer/caseworker\") ||\r\nroles.includes(\"formsflow-reviewer/sdm\")\r\n){\r\n    show = false;\r\n}",
+                    "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\n    \r\nif (data.riskclassification === \"exempt\" ||\r\nroles.includes(\"formsflow-client\")||\r\nroles.includes(\"formsflow-reviewer/cssa-team\")||\r\nroles.includes(\"formsflow-reviewer/cssa-manager\") ||\r\nroles.includes(\"formsflow-reviewer/caseworker\") ||\r\nroles.includes(\"formsflow-reviewer/sdm\")||\r\nroles.includes(\"formsflow-reviewer/csap\")||\r\nroles.includes(\"formsflow-reviewer/csap-society\")\r\n){\r\n    show = false;\r\n}",
                     "conditional": {
                         "json": "",
                         "show": null,
@@ -1489,7 +1489,7 @@
                                             },
                                             "customOptions": {},
                                             "useExactSearch": false,
-                                            "id": "ee2k2k"
+                                            "id": "e9au1tp"
                                         }
                                     ],
                                     "width": 4,
@@ -1623,7 +1623,7 @@
                                             },
                                             "customOptions": {},
                                             "useExactSearch": false,
-                                            "id": "e51zw6d"
+                                            "id": "epdmmou"
                                         }
                                     ],
                                     "width": 4,
@@ -1707,7 +1707,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "ecvc539"
+                            "id": "eaawkmb"
                         }
                     ],
                     "keyModified": true,
@@ -1749,7 +1749,7 @@
                     "addons": [],
                     "tree": false,
                     "lazyLoad": false,
-                    "id": "ehgpjvr"
+                    "id": "ehtokdl"
                 },
                 {
                     "label": "Notes",
@@ -5564,7 +5564,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eh8z2bfa00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eh8z2bfa00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "panel",
                                     "tags": [],
                                     "tree": false,
@@ -36160,7 +36160,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eof794000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eof794000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
