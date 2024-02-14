@@ -230,7 +230,7 @@ task.execution.setVariable('userRole','CSSA Team');</camunda:script>
       <bpmn:incoming>Flow_1qaodt0</bpmn:incoming>
       <bpmn:outgoing>Flow_0bo4cc7</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:parallelGateway id="Gateway_1og7p31">
+    <bpmn:parallelGateway id="Gateway_1og7p31" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_0bo4cc7</bpmn:incoming>
       <bpmn:outgoing>Flow_13r7dqy</bpmn:outgoing>
       <bpmn:outgoing>Flow_1d8a6i9</bpmn:outgoing>
@@ -532,7 +532,7 @@ task.execution.setVariable('userRole','Statutory Decision Maker');</camunda:scri
       <bpmn:outgoing>Flow_12ysqpj</bpmn:outgoing>
       <bpmn:outgoing>Flow_0ted4eh</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:parallelGateway id="Gateway_1vz1eaa">
+    <bpmn:parallelGateway id="Gateway_1vz1eaa" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_1ifelq5</bpmn:incoming>
       <bpmn:outgoing>Flow_0tc1zyz</bpmn:outgoing>
       <bpmn:outgoing>Flow_0e8b4d4</bpmn:outgoing>
@@ -574,7 +574,7 @@ task.execution.setVariable('userRole','Case Worker');</camunda:script>
       <bpmn:incoming>Flow_1lj8tdk</bpmn:incoming>
       <bpmn:outgoing>Flow_0klnns9</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:parallelGateway id="Gateway_1q4ox6z">
+    <bpmn:parallelGateway id="Gateway_1q4ox6z" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_0klnns9</bpmn:incoming>
       <bpmn:outgoing>Flow_1lhwgrf</bpmn:outgoing>
       <bpmn:outgoing>Flow_1gnzs70</bpmn:outgoing>
@@ -623,7 +623,7 @@ task.execution.setVariable('userRole','Site Risk Classification Officer');
       <bpmn:incoming>Flow_19r835c</bpmn:incoming>
       <bpmn:outgoing>Flow_0njekxy</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:parallelGateway id="Gateway_1ih6c9g">
+    <bpmn:parallelGateway id="Gateway_1ih6c9g" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_0njekxy</bpmn:incoming>
       <bpmn:outgoing>Flow_1bqktnr</bpmn:outgoing>
       <bpmn:outgoing>Flow_1s9sm8u</bpmn:outgoing>

@@ -188,7 +188,7 @@ task.execution.setVariable('userRole','Site Information Advisor');</camunda:scri
       <bpmn:incoming>Flow_05t61qf</bpmn:incoming>
       <bpmn:outgoing>Flow_05135h6</bpmn:outgoing>
     </bpmn:callActivity>
-    <bpmn:exclusiveGateway id="Gateway_1txthk0" name="Action Taken">
+    <bpmn:exclusiveGateway id="Gateway_1txthk0" name="Action Taken" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_1k5fi3f</bpmn:incoming>
       <bpmn:outgoing>Flow_05t61qf</bpmn:outgoing>
       <bpmn:outgoing>Flow_1lfvq5z</bpmn:outgoing>
@@ -197,7 +197,7 @@ task.execution.setVariable('userRole','Site Information Advisor');</camunda:scri
     <bpmn:endEvent id="Event_1jftbqf" name="End Flow">
       <bpmn:incoming>Flow_05135h6</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:exclusiveGateway id="Gateway_0ojnh7a">
+    <bpmn:exclusiveGateway id="Gateway_0ojnh7a" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_1vu5vy0</bpmn:incoming>
       <bpmn:outgoing>Flow_0q4y5zz</bpmn:outgoing>
       <bpmn:outgoing>Flow_1yl0zu1</bpmn:outgoing>
