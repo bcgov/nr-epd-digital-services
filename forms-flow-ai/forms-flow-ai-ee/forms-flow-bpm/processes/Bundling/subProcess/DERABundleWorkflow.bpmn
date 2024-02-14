@@ -2344,7 +2344,7 @@ system.out.println ("srcrStatus "+execution.getVariable('srcrStatus') );</camund
         <di:waypoint x="2145" y="4660" />
         <di:waypoint x="3670" y="4660" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2061" y="4600" width="81" height="27" />
+          <dc:Bounds x="2060" y="4600" width="82" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0fa3idu_di" bpmnElement="Flow_0fa3idu">

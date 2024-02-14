@@ -2007,7 +2007,7 @@ task.execution.setVariable('userRole','Caseworker');</camunda:script>
       <bpmn:incoming>Flow_01suxh6</bpmn:incoming>
       <bpmn:outgoing>Flow_19ik9s7</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:exclusiveGateway id="Gateway_1lgyz1h" name="Is Sent From Society">
+    <bpmn:exclusiveGateway id="Gateway_1lgyz1h" name="Is Sent From Society" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_0qiqnks</bpmn:incoming>
       <bpmn:outgoing>Flow_057qs1x</bpmn:outgoing>
       <bpmn:outgoing>Flow_01suxh6</bpmn:outgoing>
@@ -2348,7 +2348,7 @@ system.out.println ("sdmAssignment"+execution.getVariable('sdmAssignment'));</bp
         <di:waypoint x="3730" y="3475" />
         <di:waypoint x="3730" y="4630" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="3640" y="3606" width="81" height="27" />
+          <dc:Bounds x="3639" y="3606" width="82" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0nkb4yt_di" bpmnElement="Flow_0nkb4yt">
