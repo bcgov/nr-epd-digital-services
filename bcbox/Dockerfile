@@ -35,7 +35,7 @@ RUN chown -R 1001:0 /.npm
 
 # Install File Structure
 COPY --from=frontend ${APP_ROOT}/dist ${APP_ROOT}/dist
-COPY .git ${APP_ROOT}/.git
+# COPY .git ${APP_ROOT}/.git # Temporarily commented out line due to OCP build failure. Unsure why it is necessary in the first place.
 COPY app ${APP_ROOT}
 WORKDIR ${APP_ROOT}
 
