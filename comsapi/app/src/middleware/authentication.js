@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const { AuthType } = require('../components/constants');
 const { userService } = require('../services');
+const log = require('../components/log')(module.filename);
 
 /**
  * Basic Auth configuration object
@@ -53,13 +54,16 @@ const currentUser = async (req, res, next) => {
   };
 
   if (authorization) {
+    log.info('step - 0 ');
     // Basic Authorization
     if (config.has('basicAuth.enabled') && authorization.toLowerCase().startsWith('basic ')) {
+      log.info('step - 1 ');
       currentUser.authType = AuthType.BASIC;
     }
 
     // OIDC JWT Authorization
     else if (config.has('keycloak.enabled') && authorization.toLowerCase().startsWith('bearer ')) {
+      log.info('step - 2 ');
       currentUser.authType = AuthType.BEARER;
 
       try {
@@ -67,6 +71,7 @@ const currentUser = async (req, res, next) => {
         let isValid = false;
 
         if (config.has('keycloak.publicKey')) {
+          log.info('step - 3 ');
           const publicKey = config.get('keycloak.publicKey');
           const pemKey = publicKey.startsWith('-----BEGIN')
             ? publicKey
@@ -74,17 +79,21 @@ const currentUser = async (req, res, next) => {
           isValid = jwt.verify(bearerToken, pemKey, {
             issuer: `${config.get('keycloak.serverUrl')}/realms/${config.get('keycloak.realm')}`
           });
+          log.info('step - 4 ', isValid);
         } else {
           throw new Error('OIDC environment variable KC_PUBLICKEY or keycloak.publicKey must be defined');
         }
 
         if (isValid) {
+          log.info('step - 5 ');
           currentUser.tokenPayload = typeof isValid === 'object' ? isValid : jwt.decode(bearerToken);
           await userService.login(currentUser.tokenPayload);
+          log.info('step - 6 ');
         } else {
           throw new Error('Invalid authorization token');
         }
       } catch (err) {
+        log.info('step - 7 ',err);
         return next(new Problem(403, { detail: err.message, instance: req.originalUrl }));
       }
     }
