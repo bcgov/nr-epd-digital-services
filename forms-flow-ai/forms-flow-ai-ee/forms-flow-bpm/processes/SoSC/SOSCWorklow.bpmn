@@ -436,7 +436,7 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       <bpmn:outgoing>Flow_1ev1kr6</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_1e5ig6c" sourceRef="Gateway_03fnjoh" targetRef="Gateway_0oobb3z" />
-    <bpmn:parallelGateway id="Gateway_03fnjoh">
+    <bpmn:parallelGateway id="Gateway_03fnjoh" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_0bz8atu</bpmn:incoming>
       <bpmn:outgoing>Flow_1e5ig6c</bpmn:outgoing>
       <bpmn:outgoing>Flow_0q6vtm0</bpmn:outgoing>
@@ -463,7 +463,7 @@ system.out.println ("soscCaseworkerAssignment"+execution.getVariable('soscCasewo
       <bpmn:outgoing>Flow_0lgivc3</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_0ox6f9z" sourceRef="Gateway_0lf4jcq" targetRef="Gateway_1lfy3cm" />
-    <bpmn:parallelGateway id="Gateway_0lf4jcq">
+    <bpmn:parallelGateway id="Gateway_0lf4jcq" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_0gcqir8</bpmn:incoming>
       <bpmn:outgoing>Flow_0ox6f9z</bpmn:outgoing>
       <bpmn:outgoing>Flow_1hnx4nj</bpmn:outgoing>
@@ -522,7 +522,7 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       <bpmn:incoming>Flow_01suxh6</bpmn:incoming>
       <bpmn:outgoing>Flow_19ik9s7</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:parallelGateway id="Gateway_1d5b9rt">
+    <bpmn:parallelGateway id="Gateway_1d5b9rt" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_19ik9s7</bpmn:incoming>
       <bpmn:outgoing>Flow_0on1goq</bpmn:outgoing>
       <bpmn:outgoing>Flow_0z0wj6z</bpmn:outgoing>
@@ -554,7 +554,7 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       <bpmn:outgoing>Flow_07eueok</bpmn:outgoing>
       <bpmn:outgoing>Flow_0aabyhy</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:parallelGateway id="Gateway_0c5c1m3">
+    <bpmn:parallelGateway id="Gateway_0c5c1m3" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_08c8ij1</bpmn:incoming>
       <bpmn:outgoing>Flow_1l3oqze</bpmn:outgoing>
       <bpmn:outgoing>Flow_0op6tja</bpmn:outgoing>
@@ -584,7 +584,7 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0aoaeq3" sourceRef="Activity_1gjzpac" targetRef="Event_0sdygwc" />
     <bpmn:sequenceFlow id="Flow_1m7z9cq" sourceRef="Gateway_05gt5j7" targetRef="Activity_1gjzpac" />
-    <bpmn:parallelGateway id="Gateway_05gt5j7">
+    <bpmn:parallelGateway id="Gateway_05gt5j7" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_07eueok</bpmn:incoming>
       <bpmn:outgoing>Flow_1m7z9cq</bpmn:outgoing>
       <bpmn:outgoing>Flow_0mrjkt1</bpmn:outgoing>
@@ -592,13 +592,13 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
     <bpmn:sequenceFlow id="Flow_0mrjkt1" sourceRef="Gateway_05gt5j7" targetRef="Event_0sdygwc" />
     <bpmn:sequenceFlow id="Flow_1q3zpib" sourceRef="Gateway_1wshqhl" targetRef="Event_0sdygwc" />
     <bpmn:sequenceFlow id="Flow_1hksq9t" sourceRef="Gateway_1wshqhl" targetRef="Activity_1gjzpac" />
-    <bpmn:parallelGateway id="Gateway_1wshqhl">
+    <bpmn:parallelGateway id="Gateway_1wshqhl" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_1xju4ax</bpmn:incoming>
       <bpmn:outgoing>Flow_1q3zpib</bpmn:outgoing>
       <bpmn:outgoing>Flow_1hksq9t</bpmn:outgoing>
     </bpmn:parallelGateway>
     <bpmn:sequenceFlow id="Flow_14l7yi6" sourceRef="Gateway_1dnln9c" targetRef="Event_0sdygwc" />
-    <bpmn:parallelGateway id="Gateway_1dnln9c">
+    <bpmn:parallelGateway id="Gateway_1dnln9c" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_0qbjx6e</bpmn:incoming>
       <bpmn:outgoing>Flow_14l7yi6</bpmn:outgoing>
       <bpmn:outgoing>Flow_0a5mfei</bpmn:outgoing>

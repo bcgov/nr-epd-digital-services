@@ -110,7 +110,7 @@ task.execution.setVariable('userRole','Site Information Advisor');</camunda:scri
       <bpmn:outgoing>Flow_1oam11w</bpmn:outgoing>
       <bpmn:outgoing>Flow_0l71ern</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:callActivity id="Activity_1gjzpac" name="Send Decision Email" calledElement="common-email-workflow">
+    <bpmn:callActivity id="Activity_1gjzpac" name="Send Decision Email" camunda:asyncBefore="true" calledElement="common-email-workflow">
       <bpmn:extensionElements>
         <camunda:in variables="all" />
         <camunda:inputOutput>
@@ -204,7 +204,7 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
     <bpmn:sequenceFlow id="Flow_1xaizis" sourceRef="Gateway_15uoiyo" targetRef="Activity_0w5t5av" />
     <bpmn:sequenceFlow id="Flow_153luo3" sourceRef="Gateway_15uoiyo" targetRef="Activity_1os7sys" />
     <bpmn:sequenceFlow id="Flow_04r78pc" sourceRef="Gateway_1pd38qv" targetRef="Activity_1e0i2ru" />
-    <bpmn:parallelGateway id="Gateway_1pd38qv">
+    <bpmn:parallelGateway id="Gateway_1pd38qv" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_1ua4w6m</bpmn:incoming>
       <bpmn:outgoing>Flow_04r78pc</bpmn:outgoing>
       <bpmn:outgoing>Flow_1twoj9j</bpmn:outgoing>
@@ -639,17 +639,17 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.RequestStateListener" event="take" />
         </bpmn:extensionElements>
       </bpmn:sequenceFlow>
-      <bpmn:parallelGateway id="Gateway_0n1oykh">
+      <bpmn:parallelGateway id="Gateway_0n1oykh" camunda:asyncAfter="true">
         <bpmn:incoming>Flow_0wzucup</bpmn:incoming>
         <bpmn:outgoing>Flow_0wuyk5q</bpmn:outgoing>
         <bpmn:outgoing>Flow_0o1fhdi</bpmn:outgoing>
       </bpmn:parallelGateway>
-      <bpmn:parallelGateway id="Gateway_01ys7kk">
+      <bpmn:parallelGateway id="Gateway_01ys7kk" camunda:asyncAfter="true">
         <bpmn:incoming>Flow_0jq9w2c</bpmn:incoming>
         <bpmn:outgoing>Flow_0ojaeu2</bpmn:outgoing>
         <bpmn:outgoing>Flow_0s3yccc</bpmn:outgoing>
       </bpmn:parallelGateway>
-      <bpmn:parallelGateway id="Gateway_1bl74qu">
+      <bpmn:parallelGateway id="Gateway_1bl74qu" camunda:asyncAfter="true">
         <bpmn:incoming>Flow_1j4ubaw</bpmn:incoming>
         <bpmn:outgoing>Flow_17jc772</bpmn:outgoing>
         <bpmn:outgoing>Flow_03ti4c1</bpmn:outgoing>
@@ -664,7 +664,7 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
       <bpmn:outgoing>Flow_115hro3</bpmn:outgoing>
       <bpmn:outgoing>Flow_1tvwlrp</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:task id="Activity_1n3rj1g" name="Update Application">
+    <bpmn:task id="Activity_1n3rj1g" name="Update Application" camunda:asyncAfter="true">
       <bpmn:extensionElements>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="end" />
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="start" />
@@ -713,7 +713,7 @@ system.out.println (" here " + execution.getVariable('riskclassification'));</bp
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0bwxoom" sourceRef="Activity_1n3rj1g" targetRef="Activity_1os7sys" />
     <bpmn:sequenceFlow id="Flow_00msr8t" sourceRef="Activity_040vqyo" targetRef="Activity_07ktr3j" />
-    <bpmn:parallelGateway id="Gateway_15uoiyo">
+    <bpmn:parallelGateway id="Gateway_15uoiyo" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_1oam11w</bpmn:incoming>
       <bpmn:outgoing>Flow_1xaizis</bpmn:outgoing>
       <bpmn:outgoing>Flow_153luo3</bpmn:outgoing>
