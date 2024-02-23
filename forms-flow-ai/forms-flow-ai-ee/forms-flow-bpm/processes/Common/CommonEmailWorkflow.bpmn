@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_08oxgyg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.18.0" modeler:executionPlatform="Camunda Platform">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_08oxgyg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.0.0" modeler:executionPlatform="Camunda Platform">
   <bpmn:process id="common-email-workflow" name="CommonEmailWorkflow" isExecutable="true" camunda:historyTimeToLive="300">
     <bpmn:startEvent id="Event_0kew5uc" name="Start">
       <bpmn:outgoing>Flow_15fflso</bpmn:outgoing>
@@ -58,7 +58,12 @@ system.out.println ("name: "+name);</bpmn:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="method">POST</camunda:inputParameter>
             <camunda:inputParameter name="payload">
-              <camunda:script scriptFormat="javascript">var p = {
+              <camunda:script scriptFormat="javascript">var toEmailAddresses = JSON.parse(execution.getVariable("emailTo"));
+var toEmailAddressesArr =  Java.to(toEmailAddresses, "java.lang.Object[]");
+
+
+
+var p = {
   "bcc": [],
   "bodyType": "html",
   "body": execution.getVariable("text"),
@@ -68,7 +73,7 @@ system.out.println ("name: "+name);</bpmn:script>
   "from": "NOREPLYEPD@gov.bc.ca",
   "priority": "normal",
   "subject": execution.getVariable("subject"),
-  "to": execution.getVariable("emailTo"),
+  "to": toEmailAddressesArr,
   "tag": "",
   "attachments": []
 }
@@ -151,6 +156,34 @@ execution.setVariable("host", host);</camunda:script>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="common-email-workflow">
+      <bpmndi:BPMNEdge id="Flow_0tc827u_di" bpmnElement="Flow_0tc827u">
+        <di:waypoint x="740" y="120" />
+        <di:waypoint x="780" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1uskeb8_di" bpmnElement="Flow_1uskeb8">
+        <di:waypoint x="610" y="120" />
+        <di:waypoint x="640" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1v2p747_di" bpmnElement="Flow_1v2p747">
+        <di:waypoint x="470" y="120" />
+        <di:waypoint x="510" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1lr16lw_di" bpmnElement="Flow_1lr16lw">
+        <di:waypoint x="1030" y="120" />
+        <di:waypoint x="1072" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15fflso_di" bpmnElement="Flow_15fflso">
+        <di:waypoint x="208" y="120" />
+        <di:waypoint x="240" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_093urcj_di" bpmnElement="Flow_093urcj">
+        <di:waypoint x="880" y="120" />
+        <di:waypoint x="930" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0cog7s9_di" bpmnElement="Flow_0cog7s9">
+        <di:waypoint x="340" y="120" />
+        <di:waypoint x="370" y="120" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_0kew5uc_di" bpmnElement="Event_0kew5uc">
         <dc:Bounds x="172" y="102" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -182,34 +215,6 @@ execution.setVariable("host", host);</camunda:script>
       <bpmndi:BPMNShape id="ScriptTask_1l8slzj_di" bpmnElement="Task_1q29nrc">
         <dc:Bounds x="640" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_0cog7s9_di" bpmnElement="Flow_0cog7s9">
-        <di:waypoint x="340" y="120" />
-        <di:waypoint x="370" y="120" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_093urcj_di" bpmnElement="Flow_093urcj">
-        <di:waypoint x="880" y="120" />
-        <di:waypoint x="930" y="120" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_15fflso_di" bpmnElement="Flow_15fflso">
-        <di:waypoint x="208" y="120" />
-        <di:waypoint x="240" y="120" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1lr16lw_di" bpmnElement="Flow_1lr16lw">
-        <di:waypoint x="1030" y="120" />
-        <di:waypoint x="1072" y="120" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1v2p747_di" bpmnElement="Flow_1v2p747">
-        <di:waypoint x="470" y="120" />
-        <di:waypoint x="510" y="120" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1uskeb8_di" bpmnElement="Flow_1uskeb8">
-        <di:waypoint x="610" y="120" />
-        <di:waypoint x="640" y="120" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0tc827u_di" bpmnElement="Flow_0tc827u">
-        <di:waypoint x="740" y="120" />
-        <di:waypoint x="780" y="120" />
-      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

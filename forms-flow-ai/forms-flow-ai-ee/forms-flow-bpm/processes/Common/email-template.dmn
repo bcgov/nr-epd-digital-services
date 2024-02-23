@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_1h338s2" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.12.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_1h338s2" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.0.0">
   <decision id="decide-email-template" name="email-template">
     <decisionTable id="decisionTable_1">
       <input id="input_1" label="category">
@@ -300,29 +300,55 @@
           <text>"epd-support@gov.bc.ca"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_09gmjh8">
-        <inputEntry id="UnaryTests_1d10vea">
-          <text>"sosc_subforms_updated"</text>
+      <rule id="DecisionRule_0dewt8h">
+        <inputEntry id="UnaryTests_0worjz7">
+          <text>"upload_doc"</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_0yzoe34">
+        <outputEntry id="LiteralExpression_0biz5q2">
           <text></text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_1ui3pd7">
+        <outputEntry id="LiteralExpression_164f456">
           <text>"NOREPLYEPD@gov.bc.ca"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0kvviie">
+        <outputEntry id="LiteralExpression_0oj7nhc">
           <text></text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0rgifxa">
+        <outputEntry id="LiteralExpression_0wcixme">
           <text></text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_1jbmpy4">
-          <text>"Summary of Site Condition Report Update"</text>
+        <outputEntry id="LiteralExpression_0a1kzk1">
+          <text>"File Upload Notification"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_1vi0jj9">
-          <text>"templates/request_updated.ftl"</text>
+        <outputEntry id="LiteralExpression_1b09d2q">
+          <text>"templates/upload_doc.ftl"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_1c5ifkb">
+        <outputEntry id="LiteralExpression_0f9z5vn">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ja11nr">
+        <inputEntry id="UnaryTests_1gg254z">
+          <text>"user_search_failed"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xys9u2">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1npu10d">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0so0jig">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_038zbwv">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0t8mj51">
+          <text>" Users Not Found : Upload Document Email Process"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1klpv28">
+          <text>"templates/user_search_failed.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ak6s00">
           <text>"epd-support@gov.bc.ca"</text>
         </outputEntry>
       </rule>
