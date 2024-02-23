@@ -352,6 +352,32 @@
           <text>"epd-support@gov.bc.ca"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1s5z54g">
+        <inputEntry id="UnaryTests_14kl82x">
+          <text>"sosc_subforms_updated"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1e1mmud">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1g81lru">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0y287i3">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1frtnin">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0bnfpyw">
+          <text>"Summary of Site Condition Report Update"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0i5gmab">
+          <text>"templates/request_updated.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1yt92el">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
