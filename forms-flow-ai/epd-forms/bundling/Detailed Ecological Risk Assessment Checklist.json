@@ -34878,7 +34878,7 @@
                     "lazyLoad": false
                 },
                 {
-                    "title": "Section 5 - REVIEW PROCESS REQUESTED",
+                    "title": "Section 5 - Review Process Requested",
                     "theme": "default",
                     "tooltip": "",
                     "customClass": "",
@@ -34995,7 +34995,7 @@
                             "addons": [],
                             "inputType": "radio",
                             "fieldSet": false,
-                            "id": "e6k7dw"
+                            "id": "eyuip1"
                         },
                         {
                             "key": "resubmission",
@@ -35077,7 +35077,7 @@
                             "addons": [],
                             "inputType": "radio",
                             "fieldSet": false,
-                            "id": "etr18q6"
+                            "id": "egzh4gr"
                         }
                     ],
                     "placeholder": "",
@@ -35118,7 +35118,7 @@
                     "addons": [],
                     "tree": false,
                     "lazyLoad": false,
-                    "id": "e4arbe"
+                    "id": "ezm8zkq"
                 },
                 {
                     "title": "Section 6 - Site Risk Classification",
