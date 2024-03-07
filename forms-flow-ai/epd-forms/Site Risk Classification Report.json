@@ -152,10 +152,58 @@
                 },
                 {
                     "title": "Associated Application ID ( if any)",
+                    "theme": "default",
+                    "tooltip": "",
+                    "customClass": "",
                     "collapsible": false,
+                    "hidden": false,
+                    "hideLabel": false,
+                    "disabled": false,
+                    "modalEdit": false,
                     "key": "associatedApplicationIdIfAny",
+                    "tags": [],
+                    "properties": {},
+                    "customConditional": "",
+                    "conditional": {
+                        "json": "",
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                    },
+                    "logic": [
+                        {
+                            "name": "Disable Logic",
+                            "trigger": {
+                                "type": "javascript",
+                                "javascript": "result = true;\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\tconst groups = UserDetails[\"groups\"];\r\n\tif(!(groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\r\n\t{\r\n\t\tresult = true;\r\n\t}\r\n\telse\r\n\t{\r\n\t\tresult= false;\r\n\t}\t\r\n\t\r\n\t\t\t"
+                            },
+                            "actions": [
+                                {
+                                    "name": "Disable Action",
+                                    "type": "property",
+                                    "property": {
+                                        "label": "Disabled",
+                                        "value": "disabled",
+                                        "type": "boolean"
+                                    },
+                                    "state": true
+                                }
+                            ]
+                        }
+                    ],
+                    "attributes": {},
+                    "overlay": {
+                        "style": "",
+                        "page": "",
+                        "left": "",
+                        "top": "",
+                        "width": "",
+                        "height": ""
+                    },
                     "type": "panel",
                     "label": "Panel",
+                    "breadcrumb": "default",
+                    "tabindex": "",
                     "input": false,
                     "tableView": false,
                     "components": [
@@ -231,7 +279,7 @@
                             "allowMultipleMasks": false,
                             "addons": [],
                             "tag": "p",
-                            "id": "ez8txui"
+                            "id": "egcu3jc"
                         },
                         {
                             "label": "Edit Grid",
@@ -323,7 +371,7 @@
                                                     "displayMask": "",
                                                     "spellcheck": true,
                                                     "truncateMultipleSpaces": false,
-                                                    "id": "etraas"
+                                                    "id": "ejn0z6b"
                                                 }
                                             ],
                                             "width": 2,
@@ -407,7 +455,7 @@
                                     "tree": false,
                                     "lazyLoad": false,
                                     "autoAdjust": false,
-                                    "id": "eoo3f8r"
+                                    "id": "e1ko0yr"
                                 }
                             ],
                             "placeholder": "",
@@ -481,38 +529,30 @@
                                 "tableRow": "\n      {% util.eachComponent(components, function(component) { %}\n          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}\n            <td class=\"editgrid-table-column\">\n              {{ getView(component, row[component.key]) }}\n            </td>\n          {% } %}\n        {% }) %}\n        {% if (!instance.options.readOnly && !instance.disabled) { %}\n          <td class=\"editgrid-table-column\">\n            <div class=\"btn-group\">\n              <button class=\"btn btn-default btn-light btn-sm editRow\" aria-label=\"{{ t('Edit row') }}\"><i class=\"{{ iconClass('edit') }}\"></i></button>\n              {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\n              <button class=\"btn btn-danger btn-sm removeRow\" aria-label=\"{{ t('Remove row') }}\"><i class=\"{{ iconClass('trash') }}\"></i></button>\n              {% } %}\n            </div>\n          </td>\n        {% } %}\n    ",
                                 "footer": ""
                             },
-                            "id": "e3j7z5l"
+                            "id": "e8wkano"
                         }
                     ],
                     "placeholder": "",
                     "prefix": "",
-                    "customClass": "",
                     "suffix": "",
                     "multiple": false,
                     "defaultValue": null,
                     "protected": false,
                     "unique": false,
                     "persistent": false,
-                    "hidden": false,
                     "clearOnHide": false,
                     "refreshOn": "",
                     "redrawOn": "",
-                    "modalEdit": false,
                     "dataGridLabel": false,
                     "labelPosition": "top",
                     "description": "",
                     "errorLabel": "",
-                    "tooltip": "",
-                    "hideLabel": false,
-                    "tabindex": "",
-                    "disabled": false,
                     "autofocus": false,
                     "dbIndex": false,
                     "customDefaultValue": "",
                     "calculateValue": "",
                     "calculateServer": false,
                     "widget": null,
-                    "attributes": {},
                     "validateOn": "change",
                     "validate": {
                         "required": false,
@@ -522,30 +562,15 @@
                         "multiple": false,
                         "unique": false
                     },
-                    "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                    },
-                    "overlay": {
-                        "style": "",
-                        "left": "",
-                        "top": "",
-                        "width": "",
-                        "height": ""
-                    },
                     "allowCalculateOverride": false,
                     "encrypted": false,
                     "showCharCount": false,
                     "showWordCount": false,
-                    "properties": {},
                     "allowMultipleMasks": false,
                     "addons": [],
                     "tree": false,
                     "lazyLoad": false,
-                    "theme": "default",
-                    "breadcrumb": "default",
-                    "id": "e0v23wm"
+                    "id": "erd4jar"
                 },
                 {
                     "label": "Text Area",
@@ -1834,7 +1859,7 @@
                     "validate": {
                         "required": false,
                         "customMessage": "",
-                        "custom": "const emptyElements = [];\nconst elements = document.getElementsByClassName(\"list-group-item\");\nfor (let i = 0; i < elements.length; i++) {\nconst element = elements[i];\n\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\n \n}\n\n\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\n\nif(b.groups.includes(\"/formsflow/formsflow-client\") || b.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\"))\n{\n\tif(document.querySelector(\"[ref='editgrid-srcrNotes-addRow']\")!==null)\n\t{\n\t\tdocument.querySelector(\"[ref='editgrid-srcrNotes-addRow']\").remove();\n\t}\nvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\nfor(i=0;i<editButtons.length;i++){editButtons[i].remove()}\n\nvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\nfor(i=0;i<removeButtons.length;i++){removeButtons[i].remove()}\n}",
+                        "custom": "\r\n\r\n\r\n\r\n\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\n\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n\r\n\r\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\r\n\r\nif(b.groups.includes(\"/formsflow/formsflow-client\") || b.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\"))\r\n{\r\n\tif(document.querySelector(\"[ref='editgrid-srcrNotes-addRow']\")!==null)\r\n\t{\r\n\t\tdocument.querySelector(\"[ref='editgrid-srcrNotes-addRow']\").remove();\r\n\t}\r\nvar editButtons = document.querySelectorAll('.formio-component-srcrNotes button.btn.btn-default.btn-light.btn-sm.editRow');\r\nfor(i=0;i<editButtons.length;i++){editButtons[i].remove()}\r\n\r\nvar removeButtons = document.querySelectorAll('.formio-component-srcrNotes button.btn.btn-danger.btn-sm.removeRow');\r\nfor(i=0;i<removeButtons.length;i++){removeButtons[i].remove()}\r\n}",
                         "customPrivate": false,
                         "json": "",
                         "strictDateValidation": false,
@@ -1853,7 +1878,7 @@
                         "eq": "",
                         "json": ""
                     },
-                    "customConditional": "show = false;\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\nconst groups = UserDetails?UserDetails[\"groups\"]:[];\nif(!UserDetails){\n  show = false;\n}\nelse if(groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\"))\n{\nif( data.srcrNotes!== null && data.srcrNotes!== undefined && data.srcrNotes.filter((x)=>x.commentFor==='external').length > 0)\nshow = true;\nelse\nshow = false;\n}\nelse\n{\n  show = true;\n}\n\nif(UserDetails){\nvar addRowButton = document.querySelector(\"button[ref=editgrid-srcrNotes-addRow]\");\nif(addRowButton!=null)\n{\naddRowButton.addEventListener('click',\n(e)=>{\n\t\tif( groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\n\t\t{\n\t\t  var internalRadio = document.querySelectorAll(\"input[value='internal'][type='radio']\");\n\t\t  for (let i = 0; i < internalRadio.length; i++) {\n\t\t\tif(internalRadio[i].parentElement !== null)\n\t\t\t{\n\t\t\t\tinternalRadio[i].parentElement.remove();\n\t\t\t}\n\t\t  }\n\t\t}\n})\n\nconst emptyElements = [];\nconst elements = document.getElementsByClassName(\"list-group-item\");\nfor (let i = 0; i < elements.length; i++) {\nconst element = elements[i];\n\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\n \n}\n}\n\n\nconst emptyElements = [];\nconst elements = document.getElementsByClassName(\"list-group-item\");\nfor (let i = 0; i < elements.length; i++) {\nconst element = elements[i];\n\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\n \n}\n\n\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\n\nif(b.groups.includes(\"/formsflow/formsflow-client\") || b.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") )\n{\n\tif(document.querySelector(\"[ref='editgrid-srcrNotes-addRow']\")!==null)\n\t{\n\t\tdocument.querySelector(\"[ref='editgrid-srcrNotes-addRow']\").remove();\n\t}\nvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\nfor(i=0;i<editButtons.length;i++){editButtons[i].remove()}\n\nvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\nfor(i=0;i<removeButtons.length;i++){removeButtons[i].remove()}\n}\n}",
+                    "customConditional": "show = false;\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst groups = UserDetails?UserDetails[\"groups\"]:[];\r\nif(!UserDetails){\r\n  show = false;\r\n}\r\nelse if(groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\"))\r\n{\r\nif( data.srcrNotes!== null && data.srcrNotes!== undefined && data.srcrNotes.filter((x)=>x.commentFor==='external').length > 0)\r\nshow = true;\r\nelse\r\nshow = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}\r\n\r\nif(UserDetails){\r\nvar addRowButton = document.querySelector(\"button[ref=editgrid-srcrNotes-addRow]\");\r\nif(addRowButton!=null)\r\n{\r\naddRowButton.addEventListener('click',\r\n(e)=>{\r\n\t\tif( groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\r\n\t\t{\r\n\t\t  var internalRadio = document.querySelectorAll(\"input[value='internal'][type='radio']\");\r\n\t\t  for (let i = 0; i < internalRadio.length; i++) {\r\n\t\t\tif(internalRadio[i].parentElement !== null)\r\n\t\t\t{\r\n\t\t\t\tinternalRadio[i].parentElement.remove();\r\n\t\t\t}\r\n\t\t  }\r\n\t\t}\r\n})\r\n\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\n\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n}\r\n\r\n\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\n\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n\r\n\r\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\r\n\r\nif(b.groups.includes(\"/formsflow/formsflow-client\") || b.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") )\r\n{\r\n\tif(document.querySelector(\"[ref='editgrid-srcrNotes-addRow']\")!==null)\r\n\t{\r\n\t\tdocument.querySelector(\"[ref='editgrid-srcrNotes-addRow']\").remove();\r\n\t}\r\nvar editButtons = document.querySelectorAll('.formio-component-srcrNotes button.btn.btn-default.btn-light.btn-sm.editRow');\r\nfor(i=0;i<editButtons.length;i++){editButtons[i].remove()}\r\n\r\nvar removeButtons = document.querySelectorAll('.formio-component-srcrNotes button.btn.btn-danger.btn-sm.removeRow');\r\nfor(i=0;i<removeButtons.length;i++){removeButtons[i].remove()}\r\n}\r\n}",
                     "logic": [],
                     "attributes": {},
                     "overlay": {
@@ -1955,7 +1980,7 @@
                                             "wysiwyg": false,
                                             "editor": "",
                                             "fixedSize": true,
-                                            "id": "ewek8u"
+                                            "id": "ef5rpqm"
                                         }
                                     ],
                                     "width": 4,
@@ -2047,7 +2072,7 @@
                                             "addons": [],
                                             "inputType": "radio",
                                             "fieldSet": false,
-                                            "id": "e11qt4"
+                                            "id": "esjw3fq"
                                         }
                                     ],
                                     "offset": 0,
@@ -2134,7 +2159,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "eo4qfk7"
+                                            "id": "e6vcxik"
                                         }
                                     ],
                                     "size": "md",
@@ -2221,7 +2246,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "ed3zsv"
+                                            "id": "e95vl2d"
                                         }
                                     ],
                                     "size": "md",
@@ -2308,7 +2333,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "e4drfr8"
+                                            "id": "ehduts"
                                         }
                                     ],
                                     "size": "md",
@@ -2319,50 +2344,30 @@
                                     "currentWidth": 2
                                 }
                             ],
-                            "autoAdjust": false,
-                            "customClass": "",
-                            "hidden": false,
-                            "hideLabel": false,
-                            "modalEdit": false,
                             "key": "columns",
-                            "tags": [],
-                            "properties": {},
-                            "conditional": {
-                                "show": null,
-                                "when": null,
-                                "eq": "",
-                                "json": ""
-                            },
-                            "customConditional": "",
-                            "logic": [],
-                            "attributes": {},
-                            "overlay": {
-                                "style": "",
-                                "page": "",
-                                "left": "",
-                                "top": "",
-                                "width": "",
-                                "height": ""
-                            },
                             "type": "columns",
                             "input": false,
                             "tableView": false,
                             "placeholder": "",
                             "prefix": "",
+                            "customClass": "",
                             "suffix": "",
                             "multiple": false,
                             "defaultValue": null,
                             "protected": false,
                             "unique": false,
                             "persistent": false,
+                            "hidden": false,
                             "clearOnHide": false,
                             "refreshOn": "",
                             "redrawOn": "",
+                            "modalEdit": false,
                             "dataGridLabel": false,
                             "labelPosition": "top",
                             "description": "",
                             "errorLabel": "",
                             "tooltip": "",
+                            "hideLabel": false,
                             "tabindex": "",
                             "disabled": false,
                             "autofocus": false,
@@ -2371,6 +2376,7 @@
                             "calculateValue": "",
                             "calculateServer": false,
                             "widget": null,
+                            "attributes": {},
                             "validateOn": "change",
                             "validate": {
                                 "required": false,
@@ -2380,15 +2386,29 @@
                                 "multiple": false,
                                 "unique": false
                             },
+                            "conditional": {
+                                "show": null,
+                                "when": null,
+                                "eq": ""
+                            },
+                            "overlay": {
+                                "style": "",
+                                "left": "",
+                                "top": "",
+                                "width": "",
+                                "height": ""
+                            },
                             "allowCalculateOverride": false,
                             "encrypted": false,
                             "showCharCount": false,
                             "showWordCount": false,
+                            "properties": {},
                             "allowMultipleMasks": false,
                             "addons": [],
                             "tree": false,
                             "lazyLoad": false,
-                            "id": "eqb31yq"
+                            "autoAdjust": false,
+                            "id": "ev6rcx8"
                         }
                     ],
                     "placeholder": "",
@@ -2407,7 +2427,7 @@
                     "tree": true,
                     "lazyLoad": false,
                     "defaultOpen": false,
-                    "id": "ejimmk"
+                    "id": "efrnny6"
                 },
                 {
                     "title": "Collection Notice",
@@ -4835,7 +4855,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ele95t00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ele95t000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "spropertyOwnerAndOrOperator",
                                     "tree": false,
                                     "type": "panel",
@@ -14245,7 +14265,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eks0gu0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eks0gu00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "exposurePathwayQuestionnaireAffectedParcel",
                                     "tree": false,
                                     "type": "panel",
@@ -18188,7 +18208,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eo5mwyp00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eo5mwyp000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
