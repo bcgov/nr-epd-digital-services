@@ -65,7 +65,7 @@ parameters:
   displayName: Git Reference
   description: The git reference or branch.
   required: true
-  value: dev
+  value: feat/task-225-debezium-upgrade
 - name: SOURCE_CONTEXT_DIR
   displayName: Source Context Directory
   description: The source context directory.
@@ -80,7 +80,7 @@ parameters:
   displayName: Debezium Version
   description: Debezium image version.
   required: false
-  value: "1.9"
+  value: "2.5"
 - name: ORACLE_JDBC_VERSION
   displayName: Oracle JDBC Version
   description: Oracle JDBC Version.
