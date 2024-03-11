@@ -41,7 +41,14 @@ const closeBucketConfig = () => {
 };
 
 onMounted(async () => {
-  await bucketStore.fetchBuckets({ userId: getUserId.value, objectPerms: true });
+  console.log('here', getUserId.value);
+  if (!getUserId.value) {
+    setTimeout(() => {
+      bucketStore.fetchBuckets({ userId: getUserId.value, objectPerms: true });
+    }, 1000);
+  } else {
+    await bucketStore.fetchBuckets({ userId: getUserId.value, objectPerms: true });
+  }
 });
 </script>
 
