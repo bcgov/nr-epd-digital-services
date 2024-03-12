@@ -42,11 +42,24 @@ onErrorCaptured((e: Error) => {
 onBeforeMount(async () => {
   const router = useRouter();
 
-  const permResponse = await permissionStore.fetchBucketPermissions({ userId: getUserId.value, objectPerms: true });
-  if (!permResponse.some((x: BucketPermission) => x.bucketId === props.bucketId)) {
-    router.replace({ name: RouteNames.FORBIDDEN });
+  console.log('lov', getUserId.value);
+  if (!getUserId.value) {
+    setTimeout(() => {
+      permissionStore.fetchBucketPermissions({ userId: getUserId.value, objectPerms: true }).then((permResponse) => {
+        if (!permResponse.some((x: BucketPermission) => x.bucketId === props.bucketId)) {
+          router.replace({ name: RouteNames.FORBIDDEN });
+        } else {
+          ready.value = true;
+        }
+      });
+    }, 1000);
   } else {
-    ready.value = true;
+    const permResponse = await permissionStore.fetchBucketPermissions({ userId: getUserId.value, objectPerms: true });
+    if (!permResponse.some((x: BucketPermission) => x.bucketId === props.bucketId)) {
+      router.replace({ name: RouteNames.FORBIDDEN });
+    } else {
+      ready.value = true;
+    }
   }
 });
 
