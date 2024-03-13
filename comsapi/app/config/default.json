@@ -1,0 +1,26 @@
+{
+  "db": {
+    "database": "coms",
+    "host": "host.docker.internal",
+    "port": "8001",
+    "poolMin": "2",
+    "poolMax": "10",
+    "username": "postgres",
+    "password": "456789"
+  },
+  "server": {
+    "defaultTempExpiresIn": "300",
+    "logLevel": "http",
+    "maxRetries": "3",
+    "port": "4050"
+  },
+  "keycloak": {
+    "enabled": "true",
+    "clientId": "coms-api",
+    "clientSecret": "xxxxx",
+    "identityKey": "xxxxx",
+    "realm": "forms-flow-ai",
+    "serverUrl": "https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth",
+    "publicKey": "xxxxx"
+  }
+}
