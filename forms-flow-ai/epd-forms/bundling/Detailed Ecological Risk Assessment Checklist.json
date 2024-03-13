@@ -4263,86 +4263,92 @@
                                     "offset": 0,
                                     "components": [
                                         {
-                                            "id": "erq3m3",
-                                            "key": "city",
-                                            "case": "",
-                                            "mask": false,
-                                            "type": "textfield",
-                                            "input": true,
                                             "label": "City",
-                                            "hidden": false,
+                                            "labelPosition": "top",
+                                            "placeholder": "",
+                                            "description": "",
+                                            "tooltip": "",
                                             "prefix": "",
                                             "suffix": "",
-                                            "unique": false,
                                             "widget": {
                                                 "type": "input"
                                             },
+                                            "inputMask": "",
+                                            "displayMask": "",
+                                            "allowMultipleMasks": false,
+                                            "customClass": "",
+                                            "tabindex": "",
+                                            "autocomplete": "",
+                                            "hidden": false,
+                                            "hideLabel": false,
+                                            "showWordCount": false,
+                                            "showCharCount": false,
+                                            "mask": false,
+                                            "autofocus": false,
+                                            "spellcheck": true,
+                                            "disabled": false,
+                                            "tableView": false,
+                                            "modalEdit": false,
+                                            "multiple": false,
+                                            "persistent": true,
+                                            "inputFormat": "plain",
+                                            "protected": false,
                                             "dbIndex": false,
+                                            "case": "",
+                                            "truncateMultipleSpaces": false,
+                                            "encrypted": false,
+                                            "redrawOn": "",
+                                            "clearOnHide": true,
+                                            "customDefaultValue": "",
+                                            "calculateValue": "",
+                                            "calculateServer": false,
+                                            "allowCalculateOverride": false,
+                                            "validateOn": "change",
+                                            "validate": {
+                                                "required": true,
+                                                "pattern": "",
+                                                "customMessage": "",
+                                                "custom": "",
+                                                "customPrivate": false,
+                                                "json": "",
+                                                "minLength": "",
+                                                "maxLength": "",
+                                                "strictDateValidation": false,
+                                                "multiple": false,
+                                                "unique": false
+                                            },
+                                            "unique": false,
+                                            "errorLabel": "",
+                                            "errors": "",
+                                            "key": "landDescriptionCity",
+                                            "tags": [],
+                                            "properties": {},
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": "",
+                                                "json": ""
+                                            },
+                                            "customConditional": "",
+                                            "logic": [],
+                                            "attributes": {},
                                             "overlay": {
-                                                "top": "",
-                                                "left": "",
                                                 "style": "",
+                                                "page": "",
+                                                "left": "",
+                                                "top": "",
                                                 "width": "",
                                                 "height": ""
                                             },
-                                            "tooltip": "",
-                                            "disabled": false,
-                                            "multiple": false,
-                                            "redrawOn": "",
-                                            "tabindex": "",
-                                            "validate": {
-                                                "custom": "",
-                                                "unique": false,
-                                                "pattern": "",
-                                                "multiple": false,
-                                                "required": true,
-                                                "maxLength": "",
-                                                "minLength": "",
-                                                "customMessage": "",
-                                                "customPrivate": false,
-                                                "strictDateValidation": false
-                                            },
-                                            "autofocus": false,
-                                            "encrypted": false,
-                                            "hideLabel": false,
-                                            "inputMask": "",
-                                            "inputType": "text",
-                                            "modalEdit": false,
-                                            "protected": false,
-                                            "refreshOn": "",
-                                            "tableView": false,
-                                            "attributes": {},
-                                            "errorLabel": "",
-                                            "persistent": true,
-                                            "properties": {},
-                                            "spellcheck": true,
-                                            "validateOn": "change",
-                                            "clearOnHide": true,
-                                            "conditional": {
-                                                "eq": "",
-                                                "json": "",
-                                                "show": null,
-                                                "when": null
-                                            },
-                                            "customClass": "",
-                                            "description": "",
-                                            "inputFormat": "plain",
-                                            "placeholder": "",
-                                            "defaultValue": "",
-                                            "dataGridLabel": false,
-                                            "labelPosition": "top",
-                                            "showCharCount": false,
-                                            "showWordCount": false,
-                                            "calculateValue": "",
-                                            "calculateServer": false,
-                                            "customConditional": "",
-                                            "allowMultipleMasks": false,
-                                            "customDefaultValue": "",
+                                            "type": "textfield",
+                                            "input": true,
                                             "hideOnChildrenHidden": false,
-                                            "allowCalculateOverride": false,
+                                            "refreshOn": "",
+                                            "dataGridLabel": false,
                                             "addons": [],
-                                            "displayMask": "",
-                                            "truncateMultipleSpaces": false
+                                            "inputType": "text",
+                                            "id": "eklzwvc",
+                                            "defaultValue": ""
                                         }
                                     ],
                                     "currentWidth": 4
@@ -5700,7 +5706,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eh8z2bfa00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eh8z2bfa00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "panel",
                                     "tags": [],
                                     "tree": false,
@@ -34878,7 +34884,27 @@
                         "when": null,
                         "eq": ""
                     },
-                    "logic": [],
+                    "logic": [
+                        {
+                            "name": "Disable on Resubmit",
+                            "trigger": {
+                                "type": "javascript",
+                                "javascript": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\nconst groups = UserDetails[\"groups\"];\n\nresult = data.applicationStatus === 'Resubmit' \n&& groups.includes(\"/formsflow/formsflow-client\") &&\ndata.bundleStatus !== '';"
+                            },
+                            "actions": [
+                                {
+                                    "name": "Disable",
+                                    "type": "property",
+                                    "property": {
+                                        "label": "Disabled",
+                                        "value": "disabled",
+                                        "type": "boolean"
+                                    },
+                                    "state": true
+                                }
+                            ]
+                        }
+                    ],
                     "attributes": {},
                     "overlay": {
                         "style": "",
@@ -34976,7 +35002,7 @@
                             "addons": [],
                             "inputType": "radio",
                             "fieldSet": false,
-                            "id": "eyuip1"
+                            "id": "erymdko"
                         },
                         {
                             "key": "resubmission",
@@ -35058,7 +35084,7 @@
                             "addons": [],
                             "inputType": "radio",
                             "fieldSet": false,
-                            "id": "egzh4gr"
+                            "id": "eb857zr"
                         }
                     ],
                     "placeholder": "",
@@ -35099,7 +35125,7 @@
                     "addons": [],
                     "tree": false,
                     "lazyLoad": false,
-                    "id": "ezm8zkq"
+                    "id": "eut85qr"
                 },
                 {
                     "title": "Section 6 - Site Risk Classification",
@@ -35121,7 +35147,27 @@
                         "when": null,
                         "eq": ""
                     },
-                    "logic": [],
+                    "logic": [
+                        {
+                            "name": "Disable on Resubmit",
+                            "trigger": {
+                                "type": "javascript",
+                                "javascript": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\nconst groups = UserDetails[\"groups\"];\n\nresult = data.applicationStatus === 'Resubmit' \n&& groups.includes(\"/formsflow/formsflow-client\") &&\ndata.bundleStatus !== '';"
+                            },
+                            "actions": [
+                                {
+                                    "name": "Disable",
+                                    "type": "property",
+                                    "property": {
+                                        "label": "Disabled",
+                                        "value": "disabled",
+                                        "type": "boolean"
+                                    },
+                                    "state": true
+                                }
+                            ]
+                        }
+                    ],
                     "attributes": {},
                     "overlay": {
                         "style": "",
@@ -35203,7 +35249,7 @@
                             "properties": {},
                             "allowMultipleMasks": false,
                             "addons": [],
-                            "id": "e0z2apm"
+                            "id": "e66dif4"
                         },
                         {
                             "key": "riskclassification",
@@ -35290,7 +35336,7 @@
                             "addons": [],
                             "inputType": "radio",
                             "fieldSet": false,
-                            "id": "exm9qo9"
+                            "id": "efkzhd"
                         },
                         {
                             "key": "exemptions",
@@ -35412,7 +35458,7 @@
                                     "addons": [],
                                     "inputType": "radio",
                                     "fieldSet": false,
-                                    "id": "ew2kwvnc"
+                                    "id": "e39eef"
                                 },
                                 {
                                     "key": "dateOfMostRecentSiteRiskClassificationReport",
@@ -35526,7 +35572,7 @@
                                         "arrowkeys": true
                                     },
                                     "customOptions": {},
-                                    "id": "ekqhayr"
+                                    "id": "ef32gt"
                                 }
                             ],
                             "collapsible": false,
@@ -35591,7 +35637,7 @@
                             "lazyLoad": false,
                             "theme": "default",
                             "breadcrumb": "default",
-                            "id": "e8z1r1"
+                            "id": "e3lrq9"
                         },
                         {
                             "key": "siteRiskClassificationAtTimeOfApplication",
@@ -35683,7 +35729,7 @@
                             "addons": [],
                             "inputType": "radio",
                             "fieldSet": false,
-                            "id": "ecss1qk"
+                            "id": "e5tir0a"
                         }
                     ],
                     "placeholder": "",
@@ -35724,7 +35770,7 @@
                     "addons": [],
                     "tree": false,
                     "lazyLoad": false,
-                    "id": "ewzmnos"
+                    "id": "er9nehr"
                 },
                 {
                     "id": "ezcibp",
@@ -36307,7 +36353,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eof794000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eof794000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",

@@ -7840,7 +7840,7 @@
                                     "addons": [],
                                     "tree": false,
                                     "lazyLoad": false,
-                                    "id": "ehmz9lv0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                                    "id": "ehmz9lv0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
                                 }
                             ],
                             "placeholder": "",
@@ -9483,7 +9483,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "ewhx8sm0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ewhx8sm0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -16845,17 +16845,20 @@
                     "breadcrumb": "default",
                     "components": [
                         {
-                            "id": "e40pkyq",
-                            "key": "typeOfReview",
-                            "type": "radio",
-                            "input": true,
                             "label": "Type of review ",
-                            "addons": [],
-                            "hidden": false,
+                            "labelPosition": "top",
+                            "optionsLabelPosition": "right",
+                            "description": "",
+                            "tooltip": "",
+                            "customClass": "",
+                            "tabindex": "",
                             "inline": false,
-                            "prefix": "",
-                            "suffix": "",
-                            "unique": false,
+                            "hidden": false,
+                            "hideLabel": true,
+                            "autofocus": false,
+                            "disabled": false,
+                            "tableView": false,
+                            "modalEdit": false,
                             "values": [
                                 {
                                     "label": "Direct to ministry application",
@@ -16868,66 +16871,89 @@
                                     "shortcut": ""
                                 }
                             ],
-                            "widget": null,
+                            "dataType": "",
+                            "persistent": true,
+                            "protected": false,
                             "dbIndex": false,
+                            "encrypted": false,
+                            "redrawOn": "",
+                            "clearOnHide": true,
+                            "customDefaultValue": "",
+                            "calculateValue": "",
+                            "calculateServer": false,
+                            "allowCalculateOverride": false,
+                            "validate": {
+                                "required": true,
+                                "onlyAvailableItems": false,
+                                "customMessage": "",
+                                "custom": "",
+                                "customPrivate": false,
+                                "json": "",
+                                "strictDateValidation": false,
+                                "multiple": false,
+                                "unique": false
+                            },
+                            "errorLabel": "",
+                            "errors": "",
+                            "key": "typeOfReview",
+                            "tags": [],
+                            "properties": {},
+                            "conditional": {
+                                "show": null,
+                                "when": null,
+                                "eq": "",
+                                "json": ""
+                            },
+                            "customConditional": "",
+                            "logic": [
+                                {
+                                    "name": "Disable on Resubmit",
+                                    "trigger": {
+                                        "type": "javascript",
+                                        "javascript": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\nconst groups = UserDetails[\"groups\"];\n\nresult = data.applicationStatus === 'Resubmit' \n&& groups.includes(\"/formsflow/formsflow-client\") &&\ndata.bundleStatus !== '';"
+                                    },
+                                    "actions": [
+                                        {
+                                            "name": "Disable",
+                                            "type": "property",
+                                            "property": {
+                                                "label": "Disabled",
+                                                "value": "disabled",
+                                                "type": "boolean"
+                                            },
+                                            "state": true
+                                        }
+                                    ]
+                                }
+                            ],
+                            "attributes": {},
                             "overlay": {
-                                "top": "",
-                                "left": "",
                                 "style": "",
+                                "page": "",
+                                "left": "",
+                                "top": "",
                                 "width": "",
                                 "height": ""
                             },
-                            "tooltip": "",
-                            "disabled": false,
-                            "fieldSet": false,
-                            "multiple": false,
-                            "redrawOn": "",
-                            "tabindex": "",
-                            "validate": {
-                                "custom": "",
-                                "unique": false,
-                                "multiple": false,
-                                "required": true,
-                                "customMessage": "",
-                                "customPrivate": false,
-                                "onlyAvailableItems": false,
-                                "strictDateValidation": false
-                            },
-                            "autofocus": false,
-                            "encrypted": false,
-                            "hideLabel": true,
-                            "inputType": "radio",
-                            "modalEdit": false,
-                            "protected": false,
-                            "refreshOn": "",
-                            "tableView": false,
-                            "attributes": {},
-                            "errorLabel": "",
-                            "persistent": true,
-                            "properties": {},
-                            "validateOn": "change",
-                            "clearOnHide": true,
-                            "conditional": {
-                                "eq": "",
-                                "json": "",
-                                "show": null,
-                                "when": null
-                            },
-                            "customClass": "",
-                            "description": "",
+                            "type": "radio",
+                            "input": true,
                             "placeholder": "",
-                            "defaultValue": "",
+                            "prefix": "",
+                            "suffix": "",
+                            "multiple": false,
+                            "unique": false,
+                            "refreshOn": "",
                             "dataGridLabel": false,
-                            "labelPosition": "top",
+                            "widget": null,
+                            "validateOn": "change",
                             "showCharCount": false,
                             "showWordCount": false,
-                            "calculateValue": "",
-                            "calculateServer": false,
-                            "customConditional": "",
                             "allowMultipleMasks": false,
-                            "customDefaultValue": "",
-                            "optionsLabelPosition": "right",
-                            "allowCalculateOverride": false
+                            "addons": [],
+                            "inputType": "radio",
+                            "fieldSet": false,
+                            "id": "eeept5",
+                            "defaultValue": ""
                         },
                         {
                             "id": "ef0w5p",
@@ -18642,7 +18668,7 @@
                                             },
                                             "inputMask": "999-999-999",
                                             "tableView": true,
-                                            "id": "elva880000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "elva8800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -18722,7 +18748,7 @@
                                             "tableView": true,
                                             "autoExpand": true,
                                             "inputFormat": "plain",
-                                            "id": "ey48nu0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "ey48nu00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -19097,7 +19123,7 @@
                                                     "input": true,
                                                     "label": "PIN",
                                                     "tableView": true,
-                                                    "id": "eyxe45n0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                                    "id": "eyxe45n00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                     "placeholder": "",
                                                     "prefix": "",
                                                     "customClass": "",
@@ -19190,7 +19216,7 @@
                                                     "autoExpand": true,
                                                     "inputFormat": "plain",
                                                     "placeholder": "example, metes and bounds",
-                                                    "id": "efdcvf0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                                    "id": "efdcvf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                     "prefix": "",
                                                     "customClass": "",
                                                     "suffix": "",
@@ -19404,7 +19430,7 @@
                                                     "input": true,
                                                     "label": "Crown Land File Numbers",
                                                     "tableView": true,
-                                                    "id": "emf4u7g0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                                    "id": "emf4u7g00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                     "placeholder": "",
                                                     "prefix": "",
                                                     "customClass": "",
@@ -20456,7 +20482,7 @@
                                                     },
                                                     "inputMask": "999-999-999",
                                                     "tableView": true,
-                                                    "id": "ev43oe90000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                                    "id": "ev43oe900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                     "placeholder": "",
                                                     "prefix": "",
                                                     "customClass": "",
@@ -20536,7 +20562,7 @@
                                                     "tableView": true,
                                                     "autoExpand": true,
                                                     "inputFormat": "plain",
-                                                    "id": "eb3d0l0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                                    "id": "eb3d0l00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                     "placeholder": "",
                                                     "prefix": "",
                                                     "customClass": "",
@@ -20911,7 +20937,7 @@
                                                             "input": true,
                                                             "label": "PIN",
                                                             "tableView": true,
-                                                            "id": "eyv4fcu0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                                            "id": "eyv4fcu00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                             "placeholder": "",
                                                             "prefix": "",
                                                             "customClass": "",
@@ -21004,7 +21030,7 @@
                                                             "autoExpand": true,
                                                             "inputFormat": "plain",
                                                             "placeholder": "example, metes and bounds",
-                                                            "id": "ecgeub0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                                            "id": "ecgeub00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                             "prefix": "",
                                                             "customClass": "",
                                                             "suffix": "",
@@ -21218,7 +21244,7 @@
                                                             "input": true,
                                                             "label": "Crown Land File Numbers",
                                                             "tableView": true,
-                                                            "id": "eguyyh0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                                            "id": "eguyyh00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                                             "placeholder": "",
                                                             "prefix": "",
                                                             "customClass": "",
@@ -22640,7 +22666,27 @@
                                 "when": null,
                                 "eq": ""
                             },
-                            "logic": [],
+                            "logic": [
+                                {
+                                    "name": "Disable on Resubmit",
+                                    "trigger": {
+                                        "type": "javascript",
+                                        "javascript": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\nconst groups = UserDetails[\"groups\"];\n\nresult = data.applicationStatus === 'Resubmit' \n&& groups.includes(\"/formsflow/formsflow-client\") &&\ndata.bundleStatus !== '';"
+                                    },
+                                    "actions": [
+                                        {
+                                            "name": "Disable",
+                                            "type": "property",
+                                            "property": {
+                                                "label": "Disabled",
+                                                "value": "disabled",
+                                                "type": "boolean"
+                                            },
+                                            "state": true
+                                        }
+                                    ]
+                                }
+                            ],
                             "attributes": {},
                             "overlay": {
                                 "style": "",
@@ -22722,7 +22768,7 @@
                                     "properties": {},
                                     "allowMultipleMasks": false,
                                     "addons": [],
-                                    "id": "exlrqd"
+                                    "id": "erh1klu"
                                 },
                                 {
                                     "key": "riskclassification",
@@ -22809,7 +22855,7 @@
                                     "addons": [],
                                     "inputType": "radio",
                                     "fieldSet": false,
-                                    "id": "evx89p"
+                                    "id": "e7m4e14"
                                 },
                                 {
                                     "key": "exemptions",
@@ -22822,19 +22868,10 @@
                                     "components": [
                                         {
                                             "label": "riskclassificationchange",
-                                            "labelPosition": "top",
                                             "optionsLabelPosition": "right",
-                                            "description": "",
-                                            "tooltip": "",
-                                            "customClass": "",
-                                            "tabindex": "",
                                             "inline": false,
-                                            "hidden": false,
                                             "hideLabel": true,
-                                            "autofocus": false,
-                                            "disabled": false,
                                             "tableView": false,
-                                            "modalEdit": false,
                                             "values": [
                                                 {
                                                     "label": "Duplicate site risk classification information – simultaneous triggers exemption",
@@ -22877,70 +22914,70 @@
                                                     "shortcut": ""
                                                 }
                                             ],
-                                            "dataType": "",
-                                            "persistent": true,
-                                            "protected": false,
-                                            "dbIndex": false,
-                                            "encrypted": false,
-                                            "redrawOn": "",
-                                            "clearOnHide": true,
-                                            "customDefaultValue": "",
-                                            "calculateValue": "",
-                                            "calculateServer": false,
-                                            "allowCalculateOverride": false,
                                             "validate": {
                                                 "required": true,
-                                                "onlyAvailableItems": false,
-                                                "customMessage": "",
                                                 "custom": "",
                                                 "customPrivate": false,
-                                                "json": "",
                                                 "strictDateValidation": false,
                                                 "multiple": false,
-                                                "unique": false
+                                                "unique": false,
+                                                "onlyAvailableItems": false
                                             },
-                                            "errorLabel": "",
-                                            "errors": "",
                                             "key": "riskclassificationexemption",
-                                            "tags": [],
-                                            "properties": {},
-                                            "conditional": {
-                                                "show": null,
-                                                "when": null,
-                                                "eq": "",
-                                                "json": ""
-                                            },
-                                            "customConditional": "",
-                                            "logic": [],
-                                            "attributes": {},
-                                            "overlay": {
-                                                "style": "",
-                                                "page": "",
-                                                "left": "",
-                                                "top": "",
-                                                "width": "",
-                                                "height": ""
-                                            },
                                             "type": "radio",
                                             "input": true,
                                             "hideOnChildrenHidden": false,
                                             "placeholder": "",
                                             "prefix": "",
+                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
+                                            "defaultValue": null,
+                                            "protected": false,
                                             "unique": false,
+                                            "persistent": true,
+                                            "hidden": false,
+                                            "clearOnHide": true,
                                             "refreshOn": "",
+                                            "redrawOn": "",
+                                            "modalEdit": false,
                                             "dataGridLabel": false,
+                                            "labelPosition": "top",
+                                            "description": "",
+                                            "errorLabel": "",
+                                            "tooltip": "",
+                                            "tabindex": "",
+                                            "disabled": false,
+                                            "autofocus": false,
+                                            "dbIndex": false,
+                                            "customDefaultValue": "",
+                                            "calculateValue": "",
+                                            "calculateServer": false,
                                             "widget": null,
+                                            "attributes": {},
                                             "validateOn": "change",
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": ""
+                                            },
+                                            "overlay": {
+                                                "style": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
+                                            "allowCalculateOverride": false,
+                                            "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
+                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
                                             "inputType": "radio",
                                             "fieldSet": false,
-                                            "id": "edjjbpl",
-                                            "defaultValue": ""
+                                            "id": "eo3vk9d"
                                         },
                                         {
                                             "key": "dateOfMostRecentSiteRiskClassificationReport",
@@ -23054,7 +23091,7 @@
                                                 "arrowkeys": true
                                             },
                                             "customOptions": {},
-                                            "id": "es57k5g"
+                                            "id": "ekovi49"
                                         }
                                     ],
                                     "collapsible": false,
@@ -23119,7 +23156,7 @@
                                     "lazyLoad": false,
                                     "theme": "default",
                                     "breadcrumb": "default",
-                                    "id": "e3er853"
+                                    "id": "e9hx1fk"
                                 },
                                 {
                                     "key": "siteRiskClassificationAtTimeOfApplication",
@@ -23211,7 +23248,7 @@
                                     "addons": [],
                                     "inputType": "radio",
                                     "fieldSet": false,
-                                    "id": "e8u5znr"
+                                    "id": "ee37avk"
                                 }
                             ],
                             "placeholder": "",
@@ -23252,7 +23289,7 @@
                             "addons": [],
                             "tree": false,
                             "lazyLoad": false,
-                            "id": "elwo3a"
+                            "id": "efy1x9"
                         }
                     ],
                     "errorLabel": "",
@@ -23397,71 +23434,80 @@
                         },
                         {
                             "label": "By checking this box, I authorize the collection and submission of my information to the Ministry by a consultant on my behalf.",
-                            "tableView": false,
-                            "key": "byCheckingThisBoxIAuthorizeTheCollectionAndSubmissionOfMyInformationToTheMinistryByAConsultantOnMyBehalf",
-                            "type": "checkbox",
-                            "input": true,
-                            "defaultValue": false,
-                            "placeholder": "",
-                            "prefix": "",
-                            "customClass": "",
-                            "suffix": "",
-                            "multiple": false,
-                            "protected": false,
-                            "unique": false,
-                            "persistent": true,
-                            "hidden": false,
-                            "clearOnHide": true,
-                            "refreshOn": "",
-                            "redrawOn": "",
-                            "modalEdit": false,
-                            "dataGridLabel": true,
-                            "labelPosition": "right",
                             "description": "",
-                            "errorLabel": "",
                             "tooltip": "",
-                            "hideLabel": false,
+                            "shortcut": "",
+                            "inputType": "checkbox",
+                            "customClass": "",
                             "tabindex": "",
-                            "disabled": false,
+                            "hidden": false,
+                            "hideLabel": false,
                             "autofocus": false,
+                            "disabled": false,
+                            "tableView": false,
+                            "modalEdit": false,
+                            "defaultValue": false,
+                            "persistent": true,
+                            "protected": false,
                             "dbIndex": false,
+                            "encrypted": false,
+                            "redrawOn": "",
+                            "clearOnHide": true,
                             "customDefaultValue": "",
                             "calculateValue": "",
                             "calculateServer": false,
-                            "widget": null,
-                            "attributes": {},
-                            "validateOn": "change",
+                            "allowCalculateOverride": false,
                             "validate": {
-                                "required": false,
+                                "required": true,
+                                "customMessage": "",
                                 "custom": "",
                                 "customPrivate": false,
+                                "json": "",
                                 "strictDateValidation": false,
                                 "multiple": false,
                                 "unique": false
                             },
+                            "errorLabel": "",
+                            "errors": "",
+                            "key": "byCheckingThisBoxIAuthorizeTheCollectionAndSubmissionOfMyInformationToTheMinistryByAConsultantOnMyBehalf",
+                            "tags": [],
+                            "properties": {},
                             "conditional": {
                                 "show": null,
                                 "when": null,
-                                "eq": ""
+                                "eq": "",
+                                "json": ""
                             },
+                            "customConditional": "",
+                            "logic": [],
+                            "attributes": {},
                             "overlay": {
                                 "style": "",
+                                "page": "",
                                 "left": "",
                                 "top": "",
                                 "width": "",
                                 "height": ""
                             },
-                            "allowCalculateOverride": false,
-                            "encrypted": false,
+                            "type": "checkbox",
+                            "name": "",
+                            "value": "",
+                            "input": true,
+                            "placeholder": "",
+                            "prefix": "",
+                            "suffix": "",
+                            "multiple": false,
+                            "unique": false,
+                            "refreshOn": "",
+                            "dataGridLabel": true,
+                            "labelPosition": "right",
+                            "widget": null,
+                            "validateOn": "change",
                             "showCharCount": false,
                             "showWordCount": false,
-                            "properties": {},
                             "allowMultipleMasks": false,
                             "addons": [],
-                            "inputType": "checkbox",
-                            "value": "",
-                            "name": "",
-                            "id": "e3743a"
+                            "id": "eihp5j8"
                         }
                     ],
                     "placeholder": "",

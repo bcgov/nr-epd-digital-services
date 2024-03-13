@@ -1603,7 +1603,9 @@ execution.setVariable('emailsIdsToProcess',JSON.stringify(emailsToArray));
 system.out.println ("Submit Bundle");
 execution.setVariable('isAp',false);
 execution.setVariable('isSociety',false);
-execution.setVariable('isCssaTeam',false);</bpmn:script>
+execution.setVariable('isCssaTeam',false);
+execution.setVariable('isCaseworker',false);
+execution.setVariable('isSdm',false);</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:startEvent id="StartEvent_1" name="Submit New Application">
       <bpmn:outgoing>Flow_1rc30l8</bpmn:outgoing>
