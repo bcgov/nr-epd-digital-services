@@ -15,13 +15,13 @@ export class FormController {
    * @returns form count
    */
   @Get('health')
-  async getFormCount(): Promise<number> {
-    const formCount = await this.formService.formCount();
+  async healthCheck(): Promise<number> {
+    const formCount = await this.formService.healthCheck();
 
-    if (formCount == 0) {
+    if (!formCount) {
       return Promise.reject({
         statusCode: 404,
-        message: 'Form data not found',
+        message: 'Table not found',
       });
     }
     return formCount;

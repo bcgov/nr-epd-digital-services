@@ -10,11 +10,20 @@ export class FormService {
   ) { }
 
   /**
-   * Gets count of submitted forms
+   * Checks if table exists
    * @returns form count
    */
-  async formCount(): Promise<number> {
-    return this.formRepository.count();
+  async healthCheck(): Promise<any> {
+    const tableExists = (
+      await this.formRepository.manager.query(
+        `SELECT exists (
+      SELECT FROM information_schema.tables
+        WHERE  table_schema = 'epd_applications'
+        AND    table_name   = 'form'
+        )`,
+      )
+    )[0].exists;
+    return tableExists;
   }
 
   /**
