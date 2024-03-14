@@ -11,8 +11,8 @@ export class FormController {
   constructor(private formService: FormService) { }
 
   /**
-   * Gets count of submitted forms
-   * @returns form count
+   * Checks if table exists
+   * @returns boolean
    */
   @Get('health')
   async healthCheck(): Promise<number> {

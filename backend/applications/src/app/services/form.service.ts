@@ -11,7 +11,7 @@ export class FormService {
 
   /**
    * Checks if table exists
-   * @returns form count
+   * @returns boolean
    */
   async healthCheck(): Promise<any> {
     const tableExists = (
