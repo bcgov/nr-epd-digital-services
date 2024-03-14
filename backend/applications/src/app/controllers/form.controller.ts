@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post, Put } from '@nestjs/common';
-import { Resource, Unprotected } from 'nest-keycloak-connect';
+import { Unprotected } from 'nest-keycloak-connect';
 import { SubmissionResponse } from '../dto/submissionResponse.dto';
 import { Form } from '../entities/form.entity';
 import { FormService } from '../services/form.service';
@@ -8,7 +8,24 @@ import { FormService } from '../services/form.service';
 //@Resource('application-service')
 @Unprotected()
 export class FormController {
-  constructor(private formService: FormService) {}
+  constructor(private formService: FormService) { }
+
+  /**
+   * Checks if table exists
+   * @returns boolean
+   */
+  @Get('health')
+  async healthCheck(): Promise<number> {
+    const formCount = await this.formService.healthCheck();
+
+    if (!formCount) {
+      return Promise.reject({
+        statusCode: 404,
+        message: 'Table not found',
+      });
+    }
+    return formCount;
+  }
 
   /**
    * Get a submitted form using
@@ -25,12 +42,11 @@ export class FormController {
       formId,
     );
 
-    if(!savedSubmission)
-    {
+    if (!savedSubmission) {
       return Promise.reject({
         statusCode: 404,
-        message: 'Form data not found'
-      })
+        message: 'Form data not found',
+      });
     }
 
     const submissionResponse: SubmissionResponse =
