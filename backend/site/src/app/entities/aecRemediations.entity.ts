@@ -1,4 +1,15 @@
-import { Column, Entity, Index } from "typeorm";
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
+import { AecRemedApproaches } from "./aecRemedApproaches";
+import { AecRemedMeasures } from "./aecRemedMeasures";
+import { MediaCd } from "./mediaCd";
+import { Sites } from "./sites";
 
 @Index("aec_remediations_pkey", ["id"], { unique: true })
 @Index(
@@ -56,4 +67,24 @@ export class AecRemediations {
     nullable: true,
   })
   whenUpdated: Date | null;
+
+  @OneToMany(
+    () => AecRemedApproaches,
+    (aecRemedApproaches) => aecRemedApproaches.aecrem
+  )
+  aecRemedApproaches: AecRemedApproaches[];
+
+  @OneToMany(
+    () => AecRemedMeasures,
+    (aecRemedMeasures) => aecRemedMeasures.aecrem
+  )
+  aecRemedMeasures: AecRemedMeasures[];
+
+  @ManyToOne(() => MediaCd, (mediaCd) => mediaCd.aecRemediations)
+  @JoinColumn([{ name: "media_code", referencedColumnName: "code" }])
+  mediaCode2: MediaCd;
+
+  @ManyToOne(() => Sites, (sites) => sites.aecRemediations)
+  @JoinColumn([{ name: "site_id", referencedColumnName: "id" }])
+  site: Sites;
 }

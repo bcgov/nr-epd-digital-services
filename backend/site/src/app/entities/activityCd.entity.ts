@@ -1,4 +1,13 @@
-import { Column, Entity, Index } from "typeorm";
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
+import { ProtectionCategoryCd } from "./protectionCategoryCd";
+import { MatrixObjectives } from "./matrixObjectives";
 
 @Index("activity_cd_pkey", ["code"], { unique: true })
 @Index("act_cd_act_prot_combined", ["code", "protcatCode"], { unique: true })
@@ -13,4 +22,17 @@ export class ActivityCd {
 
   @Column("character varying", { name: "description", length: 80 })
   description: string;
+
+  @ManyToOne(
+    () => ProtectionCategoryCd,
+    (protectionCategoryCd) => protectionCategoryCd.activityCds
+  )
+  @JoinColumn([{ name: "protcat_code", referencedColumnName: "code" }])
+  protcatCode2: ProtectionCategoryCd;
+
+  @OneToMany(
+    () => MatrixObjectives,
+    (matrixObjectives) => matrixObjectives.activityCode2
+  )
+  matrixObjectives: MatrixObjectives[];
 }

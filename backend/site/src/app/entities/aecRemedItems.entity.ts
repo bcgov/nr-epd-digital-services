@@ -1,4 +1,7 @@
-import { Column, Entity, Index } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
+import { AecPcocs } from "./aecPcocs";
+import { AecRemedApproaches } from "./aecRemedApproaches";
+import { Sites } from "./sites";
 
 @Index("aecremitems_pcoc_frgn", ["aecpcocId"], {})
 @Index("aec_remed_items_pkey", ["aecpcocId", "aecremappId"], { unique: true })
@@ -88,4 +91,19 @@ export class AecRemedItems {
     nullable: true,
   })
   whenUpdated: Date | null;
+
+  @ManyToOne(() => AecPcocs, (aecPcocs) => aecPcocs.aecRemedItems)
+  @JoinColumn([{ name: "aecpcoc_id", referencedColumnName: "id" }])
+  aecpcoc: AecPcocs;
+
+  @ManyToOne(
+    () => AecRemedApproaches,
+    (aecRemedApproaches) => aecRemedApproaches.aecRemedItems
+  )
+  @JoinColumn([{ name: "aecremapp_id", referencedColumnName: "id" }])
+  aecremapp: AecRemedApproaches;
+
+  @ManyToOne(() => Sites, (sites) => sites.aecRemedItems)
+  @JoinColumn([{ name: "site_id", referencedColumnName: "id" }])
+  site: Sites;
 }

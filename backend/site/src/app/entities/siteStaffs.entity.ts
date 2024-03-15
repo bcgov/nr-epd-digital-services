@@ -1,4 +1,5 @@
-import { Column, Entity, Index } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
+import { PeopleOrgs } from "./peopleOrgs";
 
 @Index("site_staffs_pkey", ["id"], { unique: true })
 @Index("site_staff_employed_as_frgn", ["psnorgId"], {})
@@ -94,4 +95,8 @@ export class SiteStaffs {
     length: 75,
   })
   firstName: string | null;
+
+  @ManyToOne(() => PeopleOrgs, (peopleOrgs) => peopleOrgs.siteStaffs)
+  @JoinColumn([{ name: "psnorg_id", referencedColumnName: "id" }])
+  psnorg: PeopleOrgs;
 }

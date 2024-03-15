@@ -1,4 +1,14 @@
-import { Column, Entity, Index } from "typeorm";
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
+import { MediaCd } from "./mediaCd";
+import { AecAssessments } from "./aecAssessments";
+import { AecPcocs } from "./aecPcocs";
 
 @Index("aecmedia_assessment_frgn_frgn", ["aecassAreaId", "siteId"], {})
 @Index("aec_medias_pkey", ["id"], { unique: true })
@@ -51,4 +61,18 @@ export class AecMedias {
 
   @Column("smallint", { name: "rwm_note_flag" })
   rwmNoteFlag: number;
+
+  @ManyToOne(() => MediaCd, (mediaCd) => mediaCd.aecMedias)
+  @JoinColumn([{ name: "media_cd", referencedColumnName: "code" }])
+  mediaCd2: MediaCd;
+
+  @ManyToOne(() => AecAssessments, (aecAssessments) => aecAssessments.aecMedias)
+  @JoinColumn([
+    { name: "site_id", referencedColumnName: "siteId" },
+    { name: "aecass_area_id", referencedColumnName: "areaId" },
+  ])
+  aecAssessments: AecAssessments;
+
+  @OneToMany(() => AecPcocs, (aecPcocs) => aecPcocs.media)
+  aecPcocs: AecPcocs[];
 }

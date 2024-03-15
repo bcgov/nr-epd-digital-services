@@ -1,4 +1,16 @@
-import { Column, Entity, Index } from "typeorm";
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
+import { Sites } from "./sites";
+import { AecMedias } from "./aecMedias";
+import { AecPcocs } from "./aecPcocs";
+import { AecSources } from "./aecSources";
+import { MeasurementPopulations } from "./measurementPopulations";
 
 @Index("aec_assessments_pkey", ["areaId", "siteId"], { unique: true })
 @Index("aecass_site_id_frgn_frgn", ["siteId"], {})
@@ -80,4 +92,23 @@ export class AecAssessments {
 
   @Column("smallint", { name: "rwm_migrate_flag" })
   rwmMigrateFlag: number;
+
+  @ManyToOne(() => Sites, (sites) => sites.aecAssessments)
+  @JoinColumn([{ name: "site_id", referencedColumnName: "id" }])
+  site: Sites;
+
+  @OneToMany(() => AecMedias, (aecMedias) => aecMedias.aecAssessments)
+  aecMedias: AecMedias[];
+
+  @OneToMany(() => AecPcocs, (aecPcocs) => aecPcocs.aecAssessments)
+  aecPcocs: AecPcocs[];
+
+  @OneToMany(() => AecSources, (aecSources) => aecSources.aecAssessments)
+  aecSources: AecSources[];
+
+  @OneToMany(
+    () => MeasurementPopulations,
+    (measurementPopulations) => measurementPopulations.aecAssessments
+  )
+  measurementPopulations: MeasurementPopulations[];
 }

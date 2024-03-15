@@ -1,4 +1,15 @@
-import { Column, Entity, Index } from "typeorm";
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
+import { CriteriaLevelCd } from "./criteriaLevelCd";
+import { AecMedias } from "./aecMedias";
+import { AecAssessments } from "./aecAssessments";
+import { AecRemedItems } from "./aecRemedItems";
 
 @Index("aecpcoc_assessments_frgn_frgn", ["aecassAreaId", "siteId"], {})
 @Index("aec_pcocs_pkey", ["id"], { unique: true })
@@ -11,27 +22,11 @@ export class AecPcocs {
   @Column("bigint", { name: "media_id" })
   mediaId: string;
 
-  @Column("character varying", { name: "media_cd", nullable: true, length: 6 })
-  mediaCd: string | null;
-
   @Column("bigint", { name: "site_id" })
   siteId: string;
 
   @Column("character varying", { name: "aecass_area_id", length: 40 })
   aecassAreaId: string;
-
-  @Column("character varying", { name: "contaminant_cd", length: 50 })
-  contaminantCd: string;
-
-  @Column("character varying", {
-    name: "criteria_cd",
-    nullable: true,
-    length: 10,
-  })
-  criteriaCd: string | null;
-
-  @Column("character varying", { name: "level_cd", nullable: true, length: 6 })
-  levelCd: string | null;
 
   @Column("character", { name: "selected", nullable: true, length: 1 })
   selected: string | null;
@@ -61,4 +56,30 @@ export class AecPcocs {
     nullable: true,
   })
   whenUpdated: Date | null;
+
+  @ManyToOne(
+    () => CriteriaLevelCd,
+    (criteriaLevelCd) => criteriaLevelCd.aecPcocs
+  )
+  @JoinColumn([
+    { name: "contaminant_cd", referencedColumnName: "contaminantCode" },
+    { name: "criteria_cd", referencedColumnName: "criteriaCd" },
+    { name: "media_cd", referencedColumnName: "mediaCd" },
+    { name: "level_cd", referencedColumnName: "levelCode" },
+  ])
+  criteriaLevelCd: CriteriaLevelCd;
+
+  @ManyToOne(() => AecMedias, (aecMedias) => aecMedias.aecPcocs)
+  @JoinColumn([{ name: "media_id", referencedColumnName: "id" }])
+  media: AecMedias;
+
+  @ManyToOne(() => AecAssessments, (aecAssessments) => aecAssessments.aecPcocs)
+  @JoinColumn([
+    { name: "site_id", referencedColumnName: "siteId" },
+    { name: "aecass_area_id", referencedColumnName: "areaId" },
+  ])
+  aecAssessments: AecAssessments;
+
+  @OneToMany(() => AecRemedItems, (aecRemedItems) => aecRemedItems.aecpcoc)
+  aecRemedItems: AecRemedItems[];
 }

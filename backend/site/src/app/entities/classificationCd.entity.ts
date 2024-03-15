@@ -1,15 +1,15 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
 import { Sites } from "./sites";
 
-@Index("site_risk_cd_pkey", ["code"], { unique: true })
-@Entity("site_risk_cd", { schema: "public" })
-export class SiteRiskCd {
+@Index("classification_cd_pkey", ["code"], { unique: true })
+@Entity("classification_cd", { schema: "public" })
+export class ClassificationCd {
   @Column("character varying", { primary: true, name: "code", length: 6 })
   code: string;
 
   @Column("character varying", { name: "description", length: 40 })
   description: string;
 
-  @OneToMany(() => Sites, (sites) => sites.siteRiskCode2)
+  @OneToMany(() => Sites, (sites) => sites.classCode2)
   sites: Sites[];
 }
