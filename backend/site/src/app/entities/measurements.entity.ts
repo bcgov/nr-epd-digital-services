@@ -1,7 +1,7 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { ContamCd } from "./contamCd";
-import { MediaCd } from "./mediaCd";
-import { MeasurementPopulations } from "./measurementPopulations";
+import { ContamCd } from "./contamCd.entity";
+import { MediaCd } from "./mediaCd.entity";
+import { MeasurementPopulations } from "./measurementPopulations.entity";
 
 @Index("msmt_contam_ind", ["contaminantCd"], {})
 @Index("measurements_pkey", ["contaminantCd", "mediaCd", "msmtPopId"], {

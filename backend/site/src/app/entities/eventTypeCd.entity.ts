@@ -6,9 +6,9 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { EventClassCd } from "./eventClassCd";
-import { SiteStatusCd } from "./siteStatusCd";
-import { Events } from "./events";
+import { EventClassCd } from "./eventClassCd.entity";
+import { SiteStatusCd } from "./siteStatusCd.entity";
+import { Events } from "./events.entity";
 
 @Index("event_type_cd_pkey", ["code", "eclsCode"], { unique: true })
 @Index("etyp_classified_by_frgn", ["eclsCode"], {})

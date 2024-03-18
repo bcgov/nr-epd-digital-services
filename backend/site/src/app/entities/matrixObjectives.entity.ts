@@ -1,10 +1,10 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { ActivityCd } from "./activityCd";
-import { ContamCd } from "./contamCd";
-import { CriteriaCd } from "./criteriaCd";
-import { MediaCd } from "./mediaCd";
-import { ProtectionCategoryCd } from "./protectionCategoryCd";
-import { RemedSiteUseCd } from "./remedSiteUseCd";
+import { ActivityCd } from "./activityCd.entity";
+import { ContamCd } from "./contamCd.entity";
+import { CriteriaCd } from "./criteriaCd.entity";
+import { MediaCd } from "./mediaCd.entity";
+import { ProtectionCategoryCd } from "./protectionCategoryCd.entity";
+import { RemedSiteUseCd } from "./remedSiteUseCd.entity";
 
 @Index(
   "matrix_objectives_pkey",

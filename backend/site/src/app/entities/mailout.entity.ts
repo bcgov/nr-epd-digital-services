@@ -1,7 +1,7 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { BceRegionCd } from "./bceRegionCd";
-import { PeopleOrgs } from "./peopleOrgs";
-import { Sites } from "./sites";
+import { BceRegionCd } from "./bceRegionCd.entity";
+import { PeopleOrgs } from "./peopleOrgs.entity";
+import { Sites } from "./sites.entity";
 
 @Index("mailout_bcer_code", ["bcerCode"], {})
 @Index("mailout_pkey", ["psnorgId", "siteId"], { unique: true })

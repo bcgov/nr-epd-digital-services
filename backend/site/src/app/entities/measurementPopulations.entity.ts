@@ -6,10 +6,10 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { SiteDocs } from "./siteDocs";
-import { AecAssessments } from "./aecAssessments";
-import { Sites } from "./sites";
-import { Measurements } from "./measurements";
+import { SiteDocs } from "./siteDocs.entity";
+import { AecAssessments } from "./aecAssessments.entity";
+import { Sites } from "./sites.entity";
+import { Measurements } from "./measurements.entity";
 
 @Index("msmt_pop_aecass_ind", ["associatedAecassId", "siteId"], {})
 @Index("measurement_populations_pkey", ["id"], { unique: true })

@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
-import { ContamCd } from "./contamCd";
-import { MediaCd } from "./mediaCd";
+import { ContamCd } from "./contamCd.entity";
+import { MediaCd } from "./mediaCd.entity";
 
 @Entity("load_measurements", { schema: "public" })
 export class LoadMeasurements {

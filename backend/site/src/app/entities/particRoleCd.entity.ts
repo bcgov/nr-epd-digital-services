@@ -1,5 +1,5 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { SiteParticRoles } from "./siteParticRoles";
+import { SiteParticRoles } from "./siteParticRoles.entity";
 
 @Index("partic_role_cd_pkey", ["code"], { unique: true })
 @Entity("partic_role_cd", { schema: "public" })

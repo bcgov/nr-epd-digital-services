@@ -6,10 +6,10 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { ConditionsText } from "./conditionsText";
-import { EventPartics } from "./eventPartics";
-import { EventTypeCd } from "./eventTypeCd";
-import { Sites } from "./sites";
+import { ConditionsText } from "./conditionsText.entity";
+import { EventPartics } from "./eventPartics.entity";
+import { EventTypeCd } from "./eventTypeCd.entity";
+import { Sites } from "./sites.entity";
 
 @Index("event_described_by_frgn", ["eclsCode", "etypCode"], {})
 @Index("events_pkey", ["id"], { unique: true })

@@ -1,8 +1,8 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { EventParticRoleCd } from "./eventParticRoleCd";
-import { Events } from "./events";
-import { PeopleOrgs } from "./peopleOrgs";
-import { SitePartics } from "./sitePartics";
+import { EventParticRoleCd } from "./eventParticRoleCd.entity";
+import { Events } from "./events.entity";
+import { PeopleOrgs } from "./peopleOrgs.entity";
+import { SitePartics } from "./sitePartics.entity";
 
 @Index("event_partics_pkey", ["eprCode", "eventId", "spId"], { unique: true })
 @Index("ep_classified_by_frgn", ["eprCode"], {})

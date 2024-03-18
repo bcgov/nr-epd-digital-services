@@ -1,10 +1,10 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { AecMedias } from "./aecMedias";
-import { AecRemediations } from "./aecRemediations";
-import { CriteriaLevelCd } from "./criteriaLevelCd";
-import { LoadMeasurements } from "./loadMeasurements";
-import { MatrixObjectives } from "./matrixObjectives";
-import { Measurements } from "./measurements";
+import { AecMedias } from "./aecMedias.entity";
+import { AecRemediations } from "./aecRemediations.entity";
+import { CriteriaLevelCd } from "./criteriaLevelCd.entity";
+import { LoadMeasurements } from "./loadMeasurements.entity";
+import { MatrixObjectives } from "./matrixObjectives.entity";
+import { Measurements } from "./measurements.entity";
 
 @Index("media_cd_pkey", ["code"], { unique: true })
 @Entity("media_cd", { schema: "public" })

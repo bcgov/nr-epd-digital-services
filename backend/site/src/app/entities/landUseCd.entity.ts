@@ -1,6 +1,6 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { LandHistories } from "./landHistories";
-import { SiteProfileLandUses } from "./siteProfileLandUses";
+import { LandHistories } from "./landHistories.entity";
+import { SiteProfileLandUses } from "./siteProfileLandUses.entity";
 
 @Index("land_use_cd_pkey", ["code"], { unique: true })
 @Entity("land_use_cd", { schema: "public" })

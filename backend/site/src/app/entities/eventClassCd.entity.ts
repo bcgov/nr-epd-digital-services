@@ -1,5 +1,5 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { EventTypeCd } from "./eventTypeCd";
+import { EventTypeCd } from "./eventTypeCd.entity";
 
 @Index("event_class_cd_pkey", ["code"], { unique: true })
 @Entity("event_class_cd", { schema: "public" })

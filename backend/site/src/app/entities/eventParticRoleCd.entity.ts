@@ -1,5 +1,5 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { EventPartics } from "./eventPartics";
+import { EventPartics } from "./eventPartics.entity";
 
 @Index("event_partic_role_cd_pkey", ["code"], { unique: true })
 @Entity("event_partic_role_cd", { schema: "public" })

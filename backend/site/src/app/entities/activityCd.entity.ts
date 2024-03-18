@@ -6,8 +6,8 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { ProtectionCategoryCd } from "./protectionCategoryCd";
-import { MatrixObjectives } from "./matrixObjectives";
+import { ProtectionCategoryCd } from "./protectionCategoryCd.entity";
+import { MatrixObjectives } from "./matrixObjectives.entity";
 
 @Index("activity_cd_pkey", ["code"], { unique: true })
 @Index("act_cd_act_prot_combined", ["code", "protcatCode"], { unique: true })

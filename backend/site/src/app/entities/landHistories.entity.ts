@@ -1,6 +1,6 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { LandUseCd } from "./landUseCd";
-import { Sites } from "./sites";
+import { LandUseCd } from "./landUseCd.entity";
+import { Sites } from "./sites.entity";
 
 @Index("land_histories_pkey", ["lutCode", "siteId"], { unique: true })
 @Index("sluh_described_by_frgn", ["lutCode"], {})
