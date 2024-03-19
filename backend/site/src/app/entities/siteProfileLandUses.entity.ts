@@ -1,6 +1,6 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { LandUseCd } from "./landUseCd";
-import { SiteProfiles } from "./siteProfiles";
+import { LandUseCd } from "./landUseCd.entity";
+import { SiteProfiles } from "./siteProfiles.entity";
 
 @Index(
   "site_profile_land_uses_pkey",

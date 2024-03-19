@@ -1,7 +1,7 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { AecRemedApproaches } from "./aecRemedApproaches";
-import { CriteriaLevelCd } from "./criteriaLevelCd";
-import { MatrixObjectives } from "./matrixObjectives";
+import { AecRemedApproaches } from "./aecRemedApproaches.entity";
+import { CriteriaLevelCd } from "./criteriaLevelCd.entity";
+import { MatrixObjectives } from "./matrixObjectives.entity";
 
 @Index("remed_site_use_cd_pkey", ["code"], { unique: true })
 @Entity("remed_site_use_cd", { schema: "public" })

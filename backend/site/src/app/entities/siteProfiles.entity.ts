@@ -6,12 +6,12 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { ProfileAnswers } from "./profileAnswers";
-import { ProfileSubmissions } from "./profileSubmissions";
-import { SiteProfileLandUses } from "./siteProfileLandUses";
-import { SiteProfileOwners } from "./siteProfileOwners";
-import { SitePartics } from "./sitePartics";
-import { Sites } from "./sites";
+import { ProfileAnswers } from "./profileAnswers.entity";
+import { ProfileSubmissions } from "./profileSubmissions.entity";
+import { SiteProfileLandUses } from "./siteProfileLandUses.entity";
+import { SiteProfileOwners } from "./siteProfileOwners.entity";
+import { SitePartics } from "./sitePartics.entity";
+import { Sites } from "./sites.entity";
 
 @Index("site_profiles_pkey", ["dateCompleted", "siteId"], { unique: true })
 @Index("sprof_rwm_site_partic", ["rwmParticId"], {})

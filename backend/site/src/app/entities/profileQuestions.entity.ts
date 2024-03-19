@@ -6,8 +6,8 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { ProfileAnswers } from "./profileAnswers";
-import { ProfileCategories } from "./profileCategories";
+import { ProfileAnswers } from "./profileAnswers.entity";
+import { ProfileCategories } from "./profileCategories.entity";
 
 @Index("profque_cat_seq", ["categoryId", "sequenceNo"], {})
 @Index("profque_category_id", ["categoryId"], {})

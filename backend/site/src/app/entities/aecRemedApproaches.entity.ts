@@ -6,11 +6,11 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { AecRemediations } from "./aecRemediations";
-import { CriteriaCd } from "./criteriaCd";
-import { RemedSiteUseCd } from "./remedSiteUseCd";
-import { Sites } from "./sites";
-import { AecRemedItems } from "./aecRemedItems";
+import { AecRemediations } from "./aecRemediations.entity";
+import { CriteriaCd } from "./criteriaCd.entity";
+import { RemedSiteUseCd } from "./remedSiteUseCd.entity";
+import { Sites } from "./sites.entity";
+import { AecRemedItems } from "./aecRemedItems.entity";
 
 @Index(
   "aec_remed_approaches_aecrem_id_criteria_code_approach_remed_key",

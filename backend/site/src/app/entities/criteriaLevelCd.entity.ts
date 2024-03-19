@@ -6,11 +6,11 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { AecPcocs } from "./aecPcocs";
-import { ContamCd } from "./contamCd";
-import { CriteriaCd } from "./criteriaCd";
-import { MediaCd } from "./mediaCd";
-import { RemedSiteUseCd } from "./remedSiteUseCd";
+import { AecPcocs } from "./aecPcocs.entity";
+import { ContamCd } from "./contamCd.entity";
+import { CriteriaCd } from "./criteriaCd.entity";
+import { MediaCd } from "./mediaCd.entity";
+import { RemedSiteUseCd } from "./remedSiteUseCd.entity";
 
 @Index(
   "criteria_code_table_ind",

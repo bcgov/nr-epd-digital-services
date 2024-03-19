@@ -1,6 +1,6 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { SiteProfiles } from "./siteProfiles";
-import { SubmissionCd } from "./submissionCd";
+import { SiteProfiles } from "./siteProfiles.entity";
+import { SubmissionCd } from "./submissionCd.entity";
 
 @Index(
   "profile_submissions_pkey",

@@ -1,5 +1,5 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { SiteCrownLandContaminated } from "./siteCrownLandContaminated";
+import { SiteCrownLandContaminated } from "./siteCrownLandContaminated.entity";
 
 @Index("site_crown_land_status_cd_pkey", ["code"], { unique: true })
 @Entity("site_crown_land_status_cd", { schema: "public" })

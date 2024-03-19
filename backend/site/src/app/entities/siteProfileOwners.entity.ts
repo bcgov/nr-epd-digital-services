@@ -1,6 +1,6 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { SiteProfiles } from "./siteProfiles";
-import { SitePartics } from "./sitePartics";
+import { SiteProfiles } from "./siteProfiles.entity";
+import { SitePartics } from "./sitePartics.entity";
 
 @Index("spown_sprof_fk_i", ["dateCompleted", "siteId"], {})
 @Index("site_profile_owners_pkey", ["dateCompleted", "siteId", "spId"], {

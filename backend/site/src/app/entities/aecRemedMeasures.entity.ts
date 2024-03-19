@@ -1,7 +1,7 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { AecRemediations } from "./aecRemediations";
-import { RemedMeasureCd } from "./remedMeasureCd";
-import { Sites } from "./sites";
+import { AecRemediations } from "./aecRemediations.entity";
+import { RemedMeasureCd } from "./remedMeasureCd.entity";
+import { Sites } from "./sites.entity";
 
 @Index("aec_remed_measures_pkey", ["aecremId", "remedMeasureCd"], {
   unique: true,

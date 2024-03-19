@@ -1,5 +1,5 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { ProfileQuestions } from "./profileQuestions";
+import { ProfileQuestions } from "./profileQuestions.entity";
 
 @Index("profile_categories_pkey", ["id"], { unique: true })
 @Index("profcat_id_seq", ["id", "sequenceNo"], {})

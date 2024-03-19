@@ -1,5 +1,5 @@
 import { Column, Entity, Index, JoinColumn, OneToOne } from "typeorm";
-import { SiteDocs } from "./siteDocs";
+import { SiteDocs } from "./siteDocs.entity";
 
 @Index("doc_abstracts_pkey", ["sdocId"], { unique: true })
 @Entity("doc_abstracts", { schema: "public" })

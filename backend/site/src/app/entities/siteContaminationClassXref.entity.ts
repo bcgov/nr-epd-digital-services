@@ -1,6 +1,6 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { ContaminationClassCd } from "./contaminationClassCd";
-import { SiteCrownLandContaminated } from "./siteCrownLandContaminated";
+import { ContaminationClassCd } from "./contaminationClassCd.entity";
+import { SiteCrownLandContaminated } from "./siteCrownLandContaminated.entity";
 
 @Index(
   "site_contamination_class_xref_pkey",

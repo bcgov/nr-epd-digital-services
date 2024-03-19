@@ -1,5 +1,5 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { PeopleOrgs } from "./peopleOrgs";
+import { PeopleOrgs } from "./peopleOrgs.entity";
 
 @Index("site_staffs_pkey", ["id"], { unique: true })
 @Index("site_staff_employed_as_frgn", ["psnorgId"], {})

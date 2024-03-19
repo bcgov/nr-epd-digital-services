@@ -6,9 +6,9 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { MediaCd } from "./mediaCd";
-import { AecAssessments } from "./aecAssessments";
-import { AecPcocs } from "./aecPcocs";
+import { MediaCd } from "./mediaCd.entity";
+import { AecAssessments } from "./aecAssessments.entity";
+import { AecPcocs } from "./aecPcocs.entity";
 
 @Index("aecmedia_assessment_frgn_frgn", ["aecassAreaId", "siteId"], {})
 @Index("aec_medias_pkey", ["id"], { unique: true })

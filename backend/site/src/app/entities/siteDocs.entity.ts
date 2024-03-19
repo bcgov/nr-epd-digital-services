@@ -7,10 +7,10 @@ import {
   OneToMany,
   OneToOne,
 } from "typeorm";
-import { DocAbstracts } from "./docAbstracts";
-import { MeasurementPopulations } from "./measurementPopulations";
-import { SiteDocPartics } from "./siteDocPartics";
-import { Sites } from "./sites";
+import { DocAbstracts } from "./docAbstracts.entity";
+import { MeasurementPopulations } from "./measurementPopulations.entity";
+import { SiteDocPartics } from "./siteDocPartics.entity";
+import { Sites } from "./sites.entity";
 
 @Index("site_docs_pkey", ["id"], { unique: true })
 @Index("sdoc_rwm_flag", ["rwmFlag"], {})

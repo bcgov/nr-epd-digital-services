@@ -1,5 +1,5 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { Events } from "./events";
+import { Events } from "./events.entity";
 
 @Index("ctext_applied_to", ["eventId"], {})
 @Index("ctext_rwm_flag", ["rwmFlag"], {})

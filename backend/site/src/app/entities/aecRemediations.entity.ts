@@ -6,10 +6,10 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { AecRemedApproaches } from "./aecRemedApproaches";
-import { AecRemedMeasures } from "./aecRemedMeasures";
-import { MediaCd } from "./mediaCd";
-import { Sites } from "./sites";
+import { AecRemedApproaches } from "./aecRemedApproaches.entity";
+import { AecRemedMeasures } from "./aecRemedMeasures.entity";
+import { MediaCd } from "./mediaCd.entity";
+import { Sites } from "./sites.entity";
 
 @Index("aec_remediations_pkey", ["id"], { unique: true })
 @Index(

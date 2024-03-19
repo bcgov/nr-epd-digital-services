@@ -6,14 +6,14 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { EventPartics } from "./eventPartics";
-import { Mailout } from "./mailout";
-import { BceRegionCd } from "./bceRegionCd";
-import { SisAddresses } from "./sisAddresses";
-import { SiteCrownLandContaminated } from "./siteCrownLandContaminated";
-import { SiteDocPartics } from "./siteDocPartics";
-import { SitePartics } from "./sitePartics";
-import { SiteStaffs } from "./siteStaffs";
+import { EventPartics } from "./eventPartics.entity";
+import { Mailout } from "./mailout.entity";
+import { BceRegionCd } from "./bceRegionCd.entity";
+import { SisAddresses } from "./sisAddresses.entity";
+import { SiteCrownLandContaminated } from "./siteCrownLandContaminated.entity";
+import { SiteDocPartics } from "./siteDocPartics.entity";
+import { SitePartics } from "./sitePartics.entity";
+import { SiteStaffs } from "./siteStaffs.entity";
 
 @Index("psnorg_working_within_frgn", ["bcerCode"], {})
 @Index("people_orgs_pkey", ["id"], { unique: true })

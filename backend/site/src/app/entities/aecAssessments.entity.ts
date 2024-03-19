@@ -6,11 +6,11 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { Sites } from "./sites";
-import { AecMedias } from "./aecMedias";
-import { AecPcocs } from "./aecPcocs";
-import { AecSources } from "./aecSources";
-import { MeasurementPopulations } from "./measurementPopulations";
+import { Sites } from "./sites.entity";
+import { AecMedias } from "./aecMedias.entity";
+import { AecPcocs } from "./aecPcocs.entity";
+import { AecSources } from "./aecSources.entity";
+import { MeasurementPopulations } from "./measurementPopulations.entity";
 
 @Index("aec_assessments_pkey", ["areaId", "siteId"], { unique: true })
 @Index("aecass_site_id_frgn_frgn", ["siteId"], {})

@@ -1,5 +1,5 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { PeopleOrgs } from "./peopleOrgs";
+import { PeopleOrgs } from "./peopleOrgs.entity";
 
 @Index("sis_addresses_pkey", ["id"], { unique: true })
 @Index("addr_a_location_for_frgn", ["psnorgId"], {})

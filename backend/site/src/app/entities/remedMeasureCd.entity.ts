@@ -1,5 +1,5 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { AecRemedMeasures } from "./aecRemedMeasures";
+import { AecRemedMeasures } from "./aecRemedMeasures.entity";
 
 @Index("remed_measure_cd_pkey", ["code"], { unique: true })
 @Entity("remed_measure_cd", { schema: "public" })

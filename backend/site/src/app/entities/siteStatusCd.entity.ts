@@ -1,6 +1,6 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { EventTypeCd } from "./eventTypeCd";
-import { Sites } from "./sites";
+import { EventTypeCd } from "./eventTypeCd.entity";
+import { Sites } from "./sites.entity";
 
 @Index("site_status_cd_pkey", ["code"], { unique: true })
 @Entity("site_status_cd", { schema: "public" })

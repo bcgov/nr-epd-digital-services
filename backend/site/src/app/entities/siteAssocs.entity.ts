@@ -1,5 +1,5 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { Sites } from "./sites";
+import { Sites } from "./sites.entity";
 
 @Index("sa_rwm_flag", ["rwmFlag"], {})
 @Index("sa_rwm_note_flag", ["rwmNoteFlag"], {})

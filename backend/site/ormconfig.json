@@ -8,6 +8,7 @@
     "password": "postgres",
     "database": "",
     "synchronize": false,
-    "entities": ["entities/*.js"]
+    "entities" : ["src/app/entities/**/*.{js,ts}"],
+    "migrations" : ["src/migrations/**/*.ts"]
   }
 ]

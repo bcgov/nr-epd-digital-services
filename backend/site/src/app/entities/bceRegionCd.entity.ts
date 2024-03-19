@@ -1,8 +1,8 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { CityRegions } from "./cityRegions";
-import { Mailout } from "./mailout";
-import { PeopleOrgs } from "./peopleOrgs";
-import { Sites } from "./sites";
+import { CityRegions } from "./cityRegions.entity";
+import { Mailout } from "./mailout.entity";
+import { PeopleOrgs } from "./peopleOrgs.entity";
+import { Sites } from "./sites.entity";
 
 @Index("bce_region_cd_pkey", ["code"], { unique: true })
 @Entity("bce_region_cd", { schema: "public" })

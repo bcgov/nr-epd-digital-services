@@ -1,5 +1,5 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { SiteContaminationClassXref } from "./siteContaminationClassXref";
+import { SiteContaminationClassXref } from "./siteContaminationClassXref.entity";
 
 @Index("contamination_class_cd_pkey", ["code"], { unique: true })
 @Entity("contamination_class_cd", { schema: "public" })

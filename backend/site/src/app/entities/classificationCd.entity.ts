@@ -1,5 +1,5 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { Sites } from "./sites";
+import { Sites } from "./sites.entity";
 
 @Index("classification_cd_pkey", ["code"], { unique: true })
 @Entity("classification_cd", { schema: "public" })

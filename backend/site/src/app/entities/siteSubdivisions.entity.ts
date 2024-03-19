@@ -1,5 +1,5 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { Sites } from "./sites";
+import { Sites } from "./sites.entity";
 
 @Index(
   "site_subdivisions_site_id_subdiv_id_sprof_date_completed_key",

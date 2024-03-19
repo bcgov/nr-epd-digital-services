@@ -1,8 +1,8 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { CriteriaLevelCd } from "./criteriaLevelCd";
-import { LoadMeasurements } from "./loadMeasurements";
-import { MatrixObjectives } from "./matrixObjectives";
-import { Measurements } from "./measurements";
+import { CriteriaLevelCd } from "./criteriaLevelCd.entity";
+import { LoadMeasurements } from "./loadMeasurements.entity";
+import { MatrixObjectives } from "./matrixObjectives.entity";
+import { Measurements } from "./measurements.entity";
 
 @Index("contam_cd_pkey", ["contaminant"], { unique: true })
 @Entity("contam_cd", { schema: "public" })

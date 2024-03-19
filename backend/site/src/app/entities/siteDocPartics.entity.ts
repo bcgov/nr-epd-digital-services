@@ -1,8 +1,8 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { DocParticRoleCd } from "./docParticRoleCd";
-import { PeopleOrgs } from "./peopleOrgs";
-import { SiteDocs } from "./siteDocs";
-import { SitePartics } from "./sitePartics";
+import { DocParticRoleCd } from "./docParticRoleCd.entity";
+import { PeopleOrgs } from "./peopleOrgs.entity";
+import { SiteDocs } from "./siteDocs.entity";
+import { SitePartics } from "./sitePartics.entity";
 
 @Index("sdp_classified_by_frgn", ["dprCode"], {})
 @Index(

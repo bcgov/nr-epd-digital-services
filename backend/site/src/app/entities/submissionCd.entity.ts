@@ -1,5 +1,5 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { ProfileSubmissions } from "./profileSubmissions";
+import { ProfileSubmissions } from "./profileSubmissions.entity";
 
 @Index("submission_cd_pkey", ["code"], { unique: true })
 @Entity("submission_cd", { schema: "public" })

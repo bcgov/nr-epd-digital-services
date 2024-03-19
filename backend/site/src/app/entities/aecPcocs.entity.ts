@@ -6,10 +6,10 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { CriteriaLevelCd } from "./criteriaLevelCd";
-import { AecMedias } from "./aecMedias";
-import { AecAssessments } from "./aecAssessments";
-import { AecRemedItems } from "./aecRemedItems";
+import { CriteriaLevelCd } from "./criteriaLevelCd.entity";
+import { AecMedias } from "./aecMedias.entity";
+import { AecAssessments } from "./aecAssessments.entity";
+import { AecRemedItems } from "./aecRemedItems.entity";
 
 @Index("aecpcoc_assessments_frgn_frgn", ["aecassAreaId", "siteId"], {})
 @Index("aec_pcocs_pkey", ["id"], { unique: true })

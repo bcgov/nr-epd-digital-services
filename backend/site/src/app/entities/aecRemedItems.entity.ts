@@ -1,7 +1,7 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { AecPcocs } from "./aecPcocs";
-import { AecRemedApproaches } from "./aecRemedApproaches";
-import { Sites } from "./sites";
+import { AecPcocs } from "./aecPcocs.entity";
+import { AecRemedApproaches } from "./aecRemedApproaches.entity";
+import { Sites } from "./sites.entity";
 
 @Index("aecremitems_pcoc_frgn", ["aecpcocId"], {})
 @Index("aec_remed_items_pkey", ["aecpcocId", "aecremappId"], { unique: true })

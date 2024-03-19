@@ -1,6 +1,6 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { AecAssessments } from "./aecAssessments";
-import { SourceCd } from "./sourceCd";
+import { AecAssessments } from "./aecAssessments.entity";
+import { SourceCd } from "./sourceCd.entity";
 
 @Index("aecsrce_assessment_frgn_frgn", ["aecassAreaId", "siteId"], {})
 @Index("aec_sources_pkey", ["id"], { unique: true })

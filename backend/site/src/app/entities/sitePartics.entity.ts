@@ -6,13 +6,13 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { EventPartics } from "./eventPartics";
-import { SiteDocPartics } from "./siteDocPartics";
-import { SiteParticRoles } from "./siteParticRoles";
-import { PeopleOrgs } from "./peopleOrgs";
-import { Sites } from "./sites";
-import { SiteProfileOwners } from "./siteProfileOwners";
-import { SiteProfiles } from "./siteProfiles";
+import { EventPartics } from "./eventPartics.entity";
+import { SiteDocPartics } from "./siteDocPartics.entity";
+import { SiteParticRoles } from "./siteParticRoles.entity";
+import { PeopleOrgs } from "./peopleOrgs.entity";
+import { Sites } from "./sites.entity";
+import { SiteProfileOwners } from "./siteProfileOwners.entity";
+import { SiteProfiles } from "./siteProfiles.entity";
 
 @Index("site_partics_pkey", ["id"], { unique: true })
 @Index("sp_identified_by_frgn", ["psnorgId"], {})

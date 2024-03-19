@@ -1,5 +1,5 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { BceRegionCd } from "./bceRegionCd";
+import { BceRegionCd } from "./bceRegionCd.entity";
 
 @Index("cr_associated_region", ["bcerCode"], {})
 @Index("city_regions_pkey", ["city"], { unique: true })

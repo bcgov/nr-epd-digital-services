@@ -1,6 +1,6 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { ParticRoleCd } from "./particRoleCd";
-import { SitePartics } from "./sitePartics";
+import { ParticRoleCd } from "./particRoleCd.entity";
+import { SitePartics } from "./sitePartics.entity";
 
 @Index("spr_classified_by_frgn", ["prCode"], {})
 @Index("site_partic_roles_pkey", ["prCode", "spId"], { unique: true })

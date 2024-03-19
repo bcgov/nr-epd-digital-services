@@ -1,6 +1,6 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { ActivityCd } from "./activityCd";
-import { MatrixObjectives } from "./matrixObjectives";
+import { ActivityCd } from "./activityCd.entity";
+import { MatrixObjectives } from "./matrixObjectives.entity";
 
 @Index("protection_category_cd_pkey", ["code"], { unique: true })
 @Entity("protection_category_cd", { schema: "public" })

@@ -1,8 +1,8 @@
 import {Column,Entity,Index,JoinColumn,ManyToOne,OneToMany,OneToOne} from "typeorm";
-import {SiteContaminationClassXref} from './siteContaminationClassXref'
-import {Sites} from './sites'
-import {PeopleOrgs} from './peopleOrgs'
-import {SiteCrownLandStatusCd} from './siteCrownLandStatusCd'
+import {SiteContaminationClassXref} from './siteContaminationClassXref.entity'
+import {Sites} from './sites.entity'
+import {PeopleOrgs} from './peopleOrgs.entity'
+import {SiteCrownLandStatusCd} from './siteCrownLandStatusCd.entity'
 
 
 @Index("site_crown_land_contaminated_pkey",["id",],{ unique:true })

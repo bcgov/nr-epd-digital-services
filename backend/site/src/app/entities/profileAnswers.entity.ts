@@ -1,6 +1,6 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { ProfileQuestions } from "./profileQuestions";
-import { SiteProfiles } from "./siteProfiles";
+import { ProfileQuestions } from "./profileQuestions.entity";
+import { SiteProfiles } from "./siteProfiles.entity";
 
 @Index("profile_answers_pkey", ["questionId", "siteId", "sprofDateCompleted"], {
   unique: true,
