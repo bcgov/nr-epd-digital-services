@@ -192,7 +192,7 @@ siteAssocs:SiteAssocs[];
 
 siteAssocs2:SiteAssocs[];
 
-@OneToOne(()=>SiteCrownLandContaminated,siteCrownLandContaminated=>siteCrownLandContaminated.)
+@OneToOne(()=>SiteCrownLandContaminated,siteCrownLandContaminated=>siteCrownLandContaminated.sites)
 
 
 siteCrownLandContaminated:SiteCrownLandContaminated;

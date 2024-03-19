@@ -42,7 +42,7 @@ siteContaminationClassXrefs:SiteContaminationClassXref[];
 @JoinColumn([{ name: "id", referencedColumnName: "id" },
 ])
 
-:Sites;
+sites:Sites;
 
 @ManyToOne(()=>PeopleOrgs,peopleOrgs=>peopleOrgs.siteCrownLandContaminateds)
 @JoinColumn([{ name: "psnorg_id", referencedColumnName: "id" },
