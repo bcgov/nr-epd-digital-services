@@ -1245,7 +1245,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
-                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/site-risk-classification-officer\")) \r\n{\r\n show = true;\r\n}\r\nelse if (roles.includes(\"formsflow-reviewer/caseworker\") &&\r\ndata.srcrBundleStatus === \"srcrSrcoAccepted\")\r\n{\r\n if (data.typeOfReview === \"applicationViaTheSocietyOfContaminatedSitesApprovedProfessionalsOfBc\" ||\r\n data.siteRiskClassification !== 'notHighRisk')\r\n  show = false;\r\nelse\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
+                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/site-risk-classification-officer\")) \r\n{\r\n show = true;\r\n}\r\nelse if (roles.includes(\"formsflow-reviewer/caseworker\") &&\r\ndata.srcrBundleStatus === \"SRCO Accepted SRCR Form\")\r\n{\r\n if (data.typeOfReview === \"applicationViaTheSocietyOfContaminatedSitesApprovedProfessionalsOfBc\" ||\r\n data.siteRiskClassification !== 'notHighRisk')\r\n  show = false;\r\nelse\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
@@ -1328,7 +1328,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
-                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/sdm\")) {\r\n  if (data.srcrBundleStatus === \"srcrCaseworkerAccepted\") \r\n  show = true;\r\n  else if (data.srcrBundleStatus === \"srcrSrcoAccepted\") {\r\n     if (data.typeOfReview === \"applicationViaTheSocietyOfContaminatedSitesApprovedProfessionalsOfBc\" ||\r\n data.siteRiskClassification !== 'notHighRisk')\r\n     show = true;\r\n   else\r\n    show = false;\r\n  }\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
+                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/sdm\")) {\r\n  if (data.srcrBundleStatus === \"Caseworker Accepted SRCR Form\") \r\n  show = true;\r\n  else if (data.srcrBundleStatus === \"SRCO Accepted SRCR Form\") {\r\n     if (data.typeOfReview === \"applicationViaTheSocietyOfContaminatedSitesApprovedProfessionalsOfBc\" ||\r\n data.siteRiskClassification !== 'notHighRisk')\r\n     show = true;\r\n   else\r\n    show = false;\r\n  }\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
