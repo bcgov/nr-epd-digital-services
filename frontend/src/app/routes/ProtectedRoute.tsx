@@ -1,5 +1,6 @@
 import { useAuth } from "react-oidc-context";
 import { Navigate } from "react-router";
+import { useLocation } from "react-router-dom";
 
 export type ProtectedRouteProps = {
   element: JSX.Element;
@@ -7,12 +8,14 @@ export type ProtectedRouteProps = {
 
 function ProtectedRoute({ element }: ProtectedRouteProps) {
   const auth = useAuth();
+  const prevLocation = useLocation();
   if (auth.isLoading) {
     return <div>loading</div>;
   }
-  if (auth.isAuthenticated) {
+  if (auth.isAuthenticated) {    
     return element;
-  } else {
+  } else {   
+    sessionStorage.setItem('locationBeforeAuthRedirect',window.location.href);
     return <Navigate to={"/"} replace />;
   }
 }

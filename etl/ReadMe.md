@@ -75,9 +75,9 @@ jdbc:oracle:thin:@(description=(address=(protocol=tcps)(host=172.18.215.225.nip.
 
 # Register postgresql connector
 ```
-curl -H "Content-Type: application/json" -d @register-postgres-source-connector.json http://localhost:8083/connectors/ 
+curl -u <username>:<password> -H "Content-Type: application/json" -d @register-postgres-source-connector.json http://localhost:8083/connectors/ 
 
-curl -H "Content-Type: application/json" -d @register-postgres-source-connector.json https://debezium-jdbc-latest.apps.silver.devops.gov.bc.ca/connectors/
+curl -u <username>:<password> -H "Content-Type: application/json" -d @register-postgres-source-connector.json https://debezium-jdbc-dev.apps.silver.devops.gov.bc.ca/connectors/
 
 
 
@@ -86,9 +86,9 @@ curl -H "Content-Type: application/json" -d @register-postgres-source-connector.
 # Register Oracle jdbc sink connector
 
 ```
-curl -H "Content-Type: application/json" -d @register-oracle-jdbc-sink-connector.json http://localhost:8083/connectors/
+curl -u <username>:<password> -H "Content-Type: application/json" -d @register-oracle-jdbc-sink-connector.json http://localhost:8083/connectors/
 
-curl -H "Content-Type: application/json" -d @register-oracle-jdbc-sink-connector.json https://debezium-jdbc-latest.apps.silver.devops.gov.bc.ca/connectors/
+curl -u <username>:<password> -H "Content-Type: application/json" -d @register-oracle-jdbc-sink-connector.json https://debezium-jdbc-dev.apps.silver.devops.gov.bc.ca/connectors/
 
 
 ```
@@ -105,20 +105,20 @@ docker-compose -f docker-compose.yaml exec kafka /kafka/bin/kafka-console-consum
 
 # Delete connectors
 ```
-curl -X DELETE localhost:8083/connectors/<connector-name>
+curl -u <user>:<password> -X DELETE localhost:8083/connectors/<connector-name>
 
-curl -X DELETE localhost:8083/connectors/oracle-jdbc-sink-connector
-curl -X DELETE localhost:8083/connectors/postgres-source-connector
+curl -u <user>:<password> -X DELETE localhost:8083/connectors/oracle-jdbc-sink-connector
+curl -u <user>:<password> -X DELETE localhost:8083/connectors/postgres-source-connector
 
-curl -X DELETE https://debezium-jdbc-latest.apps.silver.devops.gov.bc.ca/connectors/oracle-jdbc-sink-connector
-curl -X DELETE https://debezium-jdbc-latest.apps.silver.devops.gov.bc.ca/connectors/postgres-source-connector
+curl -u <user>:<password> -X DELETE https://debezium-jdbc-dev.apps.silver.devops.gov.bc.ca/connectors/oracle-jdbc-sink-connector
+curl -u <user>:<password> -X DELETE https://debezium-jdbc-dev.apps.silver.devops.gov.bc.ca/connectors/postgres-source-connector
 
 ```    
 
 # Get all connectors registered.
 ```
-curl localhost:8083/connectors/
-curl https://debezium-jdbc-latest.apps.silver.devops.gov.bc.ca/connectors
+curl -u <user>:<password> localhost:8083/connectors/
+curl -u <user>:<password> https://debezium-jdbc-dev.apps.silver.devops.gov.bc.ca/connectors
 ```
 
 

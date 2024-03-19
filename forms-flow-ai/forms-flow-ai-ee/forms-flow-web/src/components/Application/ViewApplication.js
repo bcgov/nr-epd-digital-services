@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import startCase from "lodash/startCase";
@@ -28,6 +28,7 @@ import { setBundleSubmissionData } from "../../actions/bundleActions";
 import BundleView from "../Bundle/item/submission/View";
 import BundleHistory from "./BundleHistory";
 import { TYPE_BUNDLE } from "../../constants/applicationConstants";
+import Nodata from "../Nodata";
 
 const ViewApplication = React.memo(() => {
   const { t } = useTranslation();
@@ -49,6 +50,7 @@ const ViewApplication = React.memo(() => {
   const tenantKey = useSelector((state) => state.tenants?.tenantId);
   const dispatch = useDispatch();
   const redirectUrl = MULTITENANCY_ENABLED ? `/tenant/${tenantKey}/` : "/";
+  const [customSubmissionAPIFailed,setCustomSubmissionAPIFailed]  = useState(false);
 
   useEffect(() => {
     dispatch(setApplicationDetailLoader(true));
@@ -62,9 +64,17 @@ const ViewApplication = React.memo(() => {
                 getCustomSubmission(
                   res.submissionId,
                   res.formId,
-                  (err, data) => {
-                    if (res.formType === TYPE_BUNDLE) {
-                      dispatch(setBundleSubmissionData({ data: data.data }));
+                  (err, data) => {                  
+                    if(err)
+                    {                    
+                      setCustomSubmissionAPIFailed(true);
+                      dispatch(setBundleSubmissionData({ data: null }));
+                    }
+                    else
+                    {
+                      if (res.formType === TYPE_BUNDLE) {
+                        dispatch(setBundleSubmissionData({ data: data.data }));
+                      }
                     }
                   }
                 )
@@ -149,15 +159,19 @@ const ViewApplication = React.memo(() => {
             </Translation>
           }
         >
-          {applicationDetail.formType === TYPE_BUNDLE &&
-          currentForm.isBundle ? (
-            <BundleView
-              bundleIdProp={applicationDetail.formId}
-              showPrintButton={false}
-            />
-          ) : (
-            <View page="application-detail" />
-          )}
+          {
+          
+          customSubmissionAPIFailed ? (<Nodata/>) : 
+            applicationDetail.formType === TYPE_BUNDLE &&           
+            currentForm.isBundle ? (
+              <BundleView
+                bundleIdProp={applicationDetail.formId}
+                showPrintButton={false}
+              />
+            ) : (
+              <View page="application-detail" />
+            )
+          }
         </Tab>
         <Tab
           eventKey="history"
