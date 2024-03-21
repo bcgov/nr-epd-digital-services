@@ -1,6 +1,5 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
 import { CriteriaLevelCd } from "./criteriaLevelCd.entity";
-import { LoadMeasurements } from "./loadMeasurements.entity";
 import { MatrixObjectives } from "./matrixObjectives.entity";
 import { Measurements } from "./measurements.entity";
 
@@ -19,12 +18,6 @@ export class ContamCd {
     (criteriaLevelCd) => criteriaLevelCd.contaminantCode2
   )
   criteriaLevelCds: CriteriaLevelCd[];
-
-  @OneToMany(
-    () => LoadMeasurements,
-    (loadMeasurements) => loadMeasurements.contaminantCd
-  )
-  loadMeasurements: LoadMeasurements[];
 
   @OneToMany(
     () => MatrixObjectives,

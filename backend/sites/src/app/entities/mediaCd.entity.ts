@@ -2,7 +2,6 @@ import { Column, Entity, Index, OneToMany } from "typeorm";
 import { AecMedias } from "./aecMedias.entity";
 import { AecRemediations } from "./aecRemediations.entity";
 import { CriteriaLevelCd } from "./criteriaLevelCd.entity";
-import { LoadMeasurements } from "./loadMeasurements.entity";
 import { MatrixObjectives } from "./matrixObjectives.entity";
 import { Measurements } from "./measurements.entity";
 
@@ -29,12 +28,6 @@ export class MediaCd {
     (criteriaLevelCd) => criteriaLevelCd.mediaCd2
   )
   criteriaLevelCds: CriteriaLevelCd[];
-
-  @OneToMany(
-    () => LoadMeasurements,
-    (loadMeasurements) => loadMeasurements.mediaCd
-  )
-  loadMeasurements: LoadMeasurements[];
 
   @OneToMany(
     () => MatrixObjectives,
