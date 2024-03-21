@@ -6,7 +6,7 @@ import { SitePartics } from "./sitePartics.entity";
 @Index("site_partic_roles_pkey", ["prCode", "spId"], { unique: true })
 @Index("spr_rwm_flag", ["rwmFlag"], {})
 @Index("spr_classifying_frgn", ["spId"], {})
-@Entity("site_partic_roles", { schema: "public" })
+@Entity("site_partic_roles")
 export class SiteParticRoles {
   @Column("character varying", { primary: true, name: "pr_code", length: 6 })
   prCode: string;

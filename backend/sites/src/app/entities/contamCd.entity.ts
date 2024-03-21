@@ -4,7 +4,7 @@ import { MatrixObjectives } from "./matrixObjectives.entity";
 import { Measurements } from "./measurements.entity";
 
 @Index("contam_cd_pkey", ["contaminant"], { unique: true })
-@Entity("contam_cd", { schema: "public" })
+@Entity("contam_cd")
 export class ContamCd {
   @Column("character varying", {
     primary: true,

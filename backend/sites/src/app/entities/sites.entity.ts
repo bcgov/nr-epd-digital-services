@@ -30,7 +30,7 @@ import { SiteStatusCd } from './siteStatusCd.entity'
 @Index("site_risk_is", ["siteRiskCode",], {})
 @Index("site_described_by_frgn", ["sstCode",], {})
 @Index("sites_victoria_file_no_key", ["victoriaFileNo",], { unique: true })
-@Entity("sites", { schema: "public" })
+@Entity("sites")
 export class Sites {
 
     @Field()

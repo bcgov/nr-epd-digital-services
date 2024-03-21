@@ -10,7 +10,7 @@ import { SitePartics } from "./sitePartics.entity";
 @Index("ep_psnorg_frgn", ["psnorgId"], {})
 @Index("ep_rwm_flag", ["rwmFlag"], {})
 @Index("ep_played_by_frgn", ["spId"], {})
-@Entity("event_partics", { schema: "public" })
+@Entity("event_partics")
 export class EventPartics {
   @Column("bigint", { primary: true, name: "event_id" })
   eventId: string;

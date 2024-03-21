@@ -5,7 +5,7 @@ import { SourceCd } from "./sourceCd.entity";
 @Index("aecsrce_assessment_frgn_frgn", ["aecassAreaId", "siteId"], {})
 @Index("aec_sources_pkey", ["id"], { unique: true })
 @Index("aecsrce_source_cd_frgn", ["sourceCd"], {})
-@Entity("aec_sources", { schema: "public" })
+@Entity("aec_sources")
 export class AecSources {
   @Column("bigint", { primary: true, name: "id" })
   id: string;

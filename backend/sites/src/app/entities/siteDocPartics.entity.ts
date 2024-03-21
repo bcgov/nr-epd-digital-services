@@ -15,7 +15,7 @@ import { SitePartics } from "./sitePartics.entity";
 @Index("sdp_rwm_flag", ["rwmFlag"], {})
 @Index("sdp_playing_a_role_i_frgn", ["sdocId"], {})
 @Index("sdp_played_by_frgn", ["spId"], {})
-@Entity("site_doc_partics", { schema: "public" })
+@Entity("site_doc_partics")
 export class SiteDocPartics {
   @Column("bigint", { primary: true, name: "id" })
   id: string;

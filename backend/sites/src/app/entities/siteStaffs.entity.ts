@@ -6,7 +6,7 @@ import { PeopleOrgs } from "./peopleOrgs.entity";
 @Index("site_staffs_psnorg_id_start_date_key", ["psnorgId", "startDate"], {
   unique: true,
 })
-@Entity("site_staffs", { schema: "public" })
+@Entity("site_staffs")
 export class SiteStaffs {
   @Column("bigint", { primary: true, name: "id" })
   id: string;

@@ -1,7 +1,7 @@
 import { Column, Entity, Index } from "typeorm";
 
 @Index("spatial_ref_sys_pkey", ["srid"], { unique: true })
-@Entity("spatial_ref_sys", { schema: "public" })
+@Entity("spatial_ref_sys")
 export class SpatialRefSys {
   @Column("integer", { primary: true, name: "srid" })
   srid: number;

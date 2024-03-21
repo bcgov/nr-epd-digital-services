@@ -2,7 +2,7 @@ import { Column, Entity, Index } from "typeorm";
 
 @Index("subdivisions_pkey", ["id"], { unique: true })
 @Index("subdivisions_pid_pin_key", ["pid", "pin"], { unique: true })
-@Entity("subdivisions", { schema: "public" })
+@Entity("subdivisions")
 export class Subdivisions {
   @Column("bigint", { primary: true, name: "id" })
   id: string;

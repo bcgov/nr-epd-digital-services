@@ -12,7 +12,7 @@ import { MatrixObjectives } from "./matrixObjectives.entity";
 @Index("activity_cd_pkey", ["code"], { unique: true })
 @Index("act_cd_act_prot_combined", ["code", "protcatCode"], { unique: true })
 @Index("act_cd_protcat_frgn", ["protcatCode"], {})
-@Entity("activity_cd", { schema: "public" })
+@Entity("activity_cd")
 export class ActivityCd {
   @Column("character varying", { primary: true, name: "code", length: 6 })
   code: string;

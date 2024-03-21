@@ -17,7 +17,7 @@ import { SiteStaffs } from "./siteStaffs.entity";
 
 @Index("psnorg_working_within_frgn", ["bcerCode"], {})
 @Index("people_orgs_pkey", ["id"], { unique: true })
-@Entity("people_orgs", { schema: "public" })
+@Entity("people_orgs")
 export class PeopleOrgs {
   @Column("bigint", { primary: true, name: "id" })
   id: string;

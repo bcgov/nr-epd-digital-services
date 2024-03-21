@@ -10,7 +10,7 @@ import { Sites } from "./sites.entity";
 @Index("site_subdivisions_pkey", ["siteSubdivId"], { unique: true })
 @Index("sitesub_for_profile", ["sprofDateCompleted"], {})
 @Index("sitesub_comprised_of_frgn", ["subdivId"], {})
-@Entity("site_subdivisions", { schema: "public" })
+@Entity("site_subdivisions")
 export class SiteSubdivisions {
   @Column("bigint", { name: "site_id", unique: true })
   siteId: string;

@@ -3,7 +3,7 @@ import { LandHistories } from "./landHistories.entity";
 import { SiteProfileLandUses } from "./siteProfileLandUses.entity";
 
 @Index("land_use_cd_pkey", ["code"], { unique: true })
-@Entity("land_use_cd", { schema: "public" })
+@Entity("land_use_cd")
 export class LandUseCd {
   @Column("character varying", { primary: true, name: "code", length: 6 })
   code: string;

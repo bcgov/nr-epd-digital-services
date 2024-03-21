@@ -2,7 +2,7 @@ import { Column, Entity, Index, JoinColumn, OneToOne } from "typeorm";
 import { SiteDocs } from "./siteDocs.entity";
 
 @Index("doc_abstracts_pkey", ["sdocId"], { unique: true })
-@Entity("doc_abstracts", { schema: "public" })
+@Entity("doc_abstracts")
 export class DocAbstracts {
   @Column("bigint", { primary: true, name: "sdoc_id" })
   sdocId: string;

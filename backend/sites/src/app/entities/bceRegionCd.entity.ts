@@ -5,7 +5,7 @@ import { PeopleOrgs } from "./peopleOrgs.entity";
 import { Sites } from "./sites.entity";
 
 @Index("bce_region_cd_pkey", ["code"], { unique: true })
-@Entity("bce_region_cd", { schema: "public" })
+@Entity("bce_region_cd")
 export class BceRegionCd {
   @Column("character varying", { primary: true, name: "code", length: 6 })
   code: string;

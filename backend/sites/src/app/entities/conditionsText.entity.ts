@@ -3,7 +3,7 @@ import { Events } from "./events.entity";
 
 @Index("ctext_applied_to", ["eventId"], {})
 @Index("ctext_rwm_flag", ["rwmFlag"], {})
-@Entity("conditions_text", { schema: "public" })
+@Entity("conditions_text")
 export class ConditionsText {
   @Column("bigint", { primary: true, name: "event_id" })
   eventId: string;

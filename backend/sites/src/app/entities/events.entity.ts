@@ -18,7 +18,7 @@ import { Sites } from "./sites.entity";
 @Index("event_rwm_note_flag", ["rwmNoteFlag"], {})
 @Index("event_applicable_to_frgn", ["siteId"], {})
 @Index("event_responsibility_of_frgn", ["spId"], {})
-@Entity("events", { schema: "public" })
+@Entity("events")
 export class Events {
   @Column("bigint", { primary: true, name: "id" })
   id: string;

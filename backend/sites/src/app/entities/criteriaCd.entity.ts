@@ -4,7 +4,7 @@ import { CriteriaLevelCd } from "./criteriaLevelCd.entity";
 import { MatrixObjectives } from "./matrixObjectives.entity";
 
 @Index("criteria_cd_pkey", ["code"], { unique: true })
-@Entity("criteria_cd", { schema: "public" })
+@Entity("criteria_cd")
 export class CriteriaCd {
   @Column("character varying", { primary: true, name: "code", length: 10 })
   code: string;

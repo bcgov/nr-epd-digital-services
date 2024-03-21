@@ -14,7 +14,7 @@ import { MeasurementPopulations } from "./measurementPopulations.entity";
 
 @Index("aec_assessments_pkey", ["areaId", "siteId"], { unique: true })
 @Index("aecass_site_id_frgn_frgn", ["siteId"], {})
-@Entity("aec_assessments", { schema: "public" })
+@Entity("aec_assessments")
 export class AecAssessments {
   @Column("bigint", { primary: true, name: "site_id" })
   siteId: string;

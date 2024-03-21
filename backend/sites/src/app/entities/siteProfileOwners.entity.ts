@@ -7,7 +7,7 @@ import { SitePartics } from "./sitePartics.entity";
   unique: true,
 })
 @Index("spown_sp_fk_i", ["spId"], {})
-@Entity("site_profile_owners", { schema: "public" })
+@Entity("site_profile_owners")
 export class SiteProfileOwners {
   @Column("bigint", { primary: true, name: "site_id" })
   siteId: string;

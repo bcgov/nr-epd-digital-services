@@ -13,7 +13,7 @@ import { ProfileCategories } from "./profileCategories.entity";
 @Index("profque_category_id", ["categoryId"], {})
 @Index("profile_questions_pkey", ["id"], { unique: true })
 @Index("profque_parent_id", ["parentId"], {})
-@Entity("profile_questions", { schema: "public" })
+@Entity("profile_questions")
 export class ProfileQuestions {
   @Column("bigint", { primary: true, name: "id" })
   id: string;

@@ -19,7 +19,7 @@ import { Sites } from "./sites.entity";
 )
 @Index("aecrem_media_frgn", ["mediaCode"], {})
 @Index("aecrem_sites_frgn", ["siteId"], {})
-@Entity("aec_remediations", { schema: "public" })
+@Entity("aec_remediations")
 export class AecRemediations {
   @Column("bigint", { primary: true, name: "id" })
   id: string;

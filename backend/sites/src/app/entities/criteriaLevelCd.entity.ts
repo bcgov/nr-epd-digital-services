@@ -31,7 +31,7 @@ import { RemedSiteUseCd } from "./remedSiteUseCd.entity";
 @Index("criteria_code_ind", ["criteriaCd"], {})
 @Index("criteria_media_cd_frgn", ["mediaCd"], {})
 @Index("criteria_remed_use_frgn", ["remedSiteUseCd"], {})
-@Entity("criteria_level_cd", { schema: "public" })
+@Entity("criteria_level_cd")
 export class CriteriaLevelCd {
   @Column("character varying", {
     primary: true,

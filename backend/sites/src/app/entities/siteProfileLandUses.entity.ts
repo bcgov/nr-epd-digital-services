@@ -7,7 +7,7 @@ import { SiteProfiles } from "./siteProfiles.entity";
   ["lutCode", "siteId", "sprofDateCompleted"],
   { unique: true }
 )
-@Entity("site_profile_land_uses", { schema: "public" })
+@Entity("site_profile_land_uses")
 export class SiteProfileLandUses {
   @Column("bigint", { primary: true, name: "site_id" })
   siteId: string;

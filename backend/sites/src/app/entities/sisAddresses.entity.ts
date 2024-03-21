@@ -3,7 +3,7 @@ import { PeopleOrgs } from "./peopleOrgs.entity";
 
 @Index("sis_addresses_pkey", ["id"], { unique: true })
 @Index("addr_a_location_for_frgn", ["psnorgId"], {})
-@Entity("sis_addresses", { schema: "public" })
+@Entity("sis_addresses")
 export class SisAddresses {
   @Column("bigint", { primary: true, name: "id" })
   id: string;

@@ -6,7 +6,7 @@ import { MatrixObjectives } from "./matrixObjectives.entity";
 import { Measurements } from "./measurements.entity";
 
 @Index("media_cd_pkey", ["code"], { unique: true })
-@Entity("media_cd", { schema: "public" })
+@Entity("media_cd")
 export class MediaCd {
   @Column("character varying", { primary: true, name: "code", length: 6 })
   code: string;

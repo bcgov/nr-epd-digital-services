@@ -7,7 +7,7 @@ import { Sites } from "./sites.entity";
 @Index("aec_remed_items_pkey", ["aecpcocId", "aecremappId"], { unique: true })
 @Index("aecremitems_remed_frgn", ["aecremId"], {})
 @Index("aecremitems_sites_frgn", ["siteId"], {})
-@Entity("aec_remed_items", { schema: "public" })
+@Entity("aec_remed_items")
 export class AecRemedItems {
   @Column("bigint", { primary: true, name: "aecremapp_id" })
   aecremappId: string;

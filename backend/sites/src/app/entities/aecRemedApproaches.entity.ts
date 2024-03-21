@@ -22,7 +22,7 @@ import { AecRemedItems } from "./aecRemedItems.entity";
 @Index("aec_remed_approaches_pkey", ["id"], { unique: true })
 @Index("aecremapp_rem_use_frgn", ["remedSiteUseCode"], {})
 @Index("aecremapp_sites_frgn", ["siteId"], {})
-@Entity("aec_remed_approaches", { schema: "public" })
+@Entity("aec_remed_approaches")
 export class AecRemedApproaches {
   @Column("bigint", { primary: true, name: "id" })
   id: string;

@@ -7,7 +7,7 @@ import { Sites } from "./sites.entity";
 @Index("sluh_rwm_flag", ["rwmFlag"], {})
 @Index("sluh_rwm_note_flag", ["rwmNoteFlag"], {})
 @Index("sluh_applicable_to_frgn", ["siteId"], {})
-@Entity("land_histories", { schema: "public" })
+@Entity("land_histories")
 export class LandHistories {
   @Column("bigint", { primary: true, name: "site_id" })
   siteId: string;

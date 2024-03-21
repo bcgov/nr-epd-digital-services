@@ -3,7 +3,7 @@ import { EventTypeCd } from "./eventTypeCd.entity";
 import { Sites } from "./sites.entity";
 
 @Index("site_status_cd_pkey", ["code"], { unique: true })
-@Entity("site_status_cd", { schema: "public" })
+@Entity("site_status_cd")
 export class SiteStatusCd {
   @Column("character varying", { primary: true, name: "code", length: 6 })
   code: string;

@@ -13,7 +13,7 @@ import { Events } from "./events.entity";
 @Index("event_type_cd_pkey", ["code", "eclsCode"], { unique: true })
 @Index("etyp_classified_by_frgn", ["eclsCode"], {})
 @Index("etyp_related_to_frgn", ["sstCode"], {})
-@Entity("event_type_cd", { schema: "public" })
+@Entity("event_type_cd")
 export class EventTypeCd {
   @Column("character varying", { primary: true, name: "code", length: 6 })
   code: string;

@@ -7,7 +7,7 @@ import { SiteCrownLandContaminated } from "./siteCrownLandContaminated.entity";
   ["contaminationClassCode", "sclcId"],
   { unique: true }
 )
-@Entity("site_contamination_class_xref", { schema: "public" })
+@Entity("site_contamination_class_xref")
 export class SiteContaminationClassXref {
   @Column("bigint", { primary: true, name: "sclc_id" })
   sclcId: string;

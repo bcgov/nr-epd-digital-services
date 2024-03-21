@@ -18,7 +18,7 @@ import { SiteProfiles } from "./siteProfiles.entity";
 @Index("sp_identified_by_frgn", ["psnorgId"], {})
 @Index("sp_rwm_flag", ["rwmFlag"], {})
 @Index("sp_identified_by2_frgn", ["siteId"], {})
-@Entity("site_partics", { schema: "public" })
+@Entity("site_partics")
 export class SitePartics {
   @Column("bigint", { primary: true, name: "id" })
   id: string;

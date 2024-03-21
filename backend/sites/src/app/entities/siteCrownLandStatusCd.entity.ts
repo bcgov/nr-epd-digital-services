@@ -2,7 +2,7 @@ import { Column, Entity, Index, OneToMany } from "typeorm";
 import { SiteCrownLandContaminated } from "./siteCrownLandContaminated.entity";
 
 @Index("site_crown_land_status_cd_pkey", ["code"], { unique: true })
-@Entity("site_crown_land_status_cd", { schema: "public" })
+@Entity("site_crown_land_status_cd")
 export class SiteCrownLandStatusCd {
   @Column("character varying", { primary: true, name: "code", length: 6 })
   code: string;

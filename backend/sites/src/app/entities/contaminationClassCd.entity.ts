@@ -2,7 +2,7 @@ import { Column, Entity, Index, OneToMany } from "typeorm";
 import { SiteContaminationClassXref } from "./siteContaminationClassXref.entity";
 
 @Index("contamination_class_cd_pkey", ["code"], { unique: true })
-@Entity("contamination_class_cd", { schema: "public" })
+@Entity("contamination_class_cd")
 export class ContaminationClassCd {
   @Column("character varying", { primary: true, name: "code", length: 6 })
   code: string;

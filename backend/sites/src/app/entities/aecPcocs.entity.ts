@@ -14,7 +14,7 @@ import { AecRemedItems } from "./aecRemedItems.entity";
 @Index("aecpcoc_assessments_frgn_frgn", ["aecassAreaId", "siteId"], {})
 @Index("aec_pcocs_pkey", ["id"], { unique: true })
 @Index("aecpcocs_media_frgn_frgn", ["mediaId"], {})
-@Entity("aec_pcocs", { schema: "public" })
+@Entity("aec_pcocs")
 export class AecPcocs {
   @Column("bigint", { primary: true, name: "id" })
   id: string;

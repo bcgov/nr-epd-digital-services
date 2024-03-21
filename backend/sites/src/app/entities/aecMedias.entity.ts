@@ -13,7 +13,7 @@ import { AecPcocs } from "./aecPcocs.entity";
 @Index("aecmedia_assessment_frgn_frgn", ["aecassAreaId", "siteId"], {})
 @Index("aec_medias_pkey", ["id"], { unique: true })
 @Index("aecmedia_media_frgn_frgn", ["mediaCd"], {})
-@Entity("aec_medias", { schema: "public" })
+@Entity("aec_medias")
 export class AecMedias {
   @Column("bigint", { primary: true, name: "id" })
   id: string;

@@ -6,7 +6,7 @@ import { Sites } from "./sites.entity";
 @Index("sa_adjacent_to_frgn", ["siteId"], {})
 @Index("site_assocs_pkey", ["siteId", "siteIdAssociatedWith"], { unique: true })
 @Index("sa_associated_with_frgn", ["siteIdAssociatedWith"], {})
-@Entity("site_assocs", { schema: "public" })
+@Entity("site_assocs")
 export class SiteAssocs {
   @Column("bigint", { primary: true, name: "site_id" })
   siteId: string;

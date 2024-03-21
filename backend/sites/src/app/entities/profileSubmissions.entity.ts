@@ -9,7 +9,7 @@ import { SubmissionCd } from "./submissionCd.entity";
 )
 @Index("profsbm_sprof_fk_i", ["sprofDateCompleted", "sprofSiteId"], {})
 @Index("profsbm_submcd_fk_i", ["submcdCode"], {})
-@Entity("profile_submissions", { schema: "public" })
+@Entity("profile_submissions")
 export class ProfileSubmissions {
   @Column("timestamp without time zone", {
     primary: true,

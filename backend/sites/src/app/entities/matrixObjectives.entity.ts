@@ -37,7 +37,7 @@ import { RemedSiteUseCd } from "./remedSiteUseCd.entity";
 @Index("matobj_media_frgn", ["mediaCode"], {})
 @Index("matobj_protcat_frgn", ["protcatCode"], {})
 @Index("matobj_remed_use_frgn", ["remedSiteUseCode"], {})
-@Entity("matrix_objectives", { schema: "public" })
+@Entity("matrix_objectives")
 export class MatrixObjectives {
   @Column("character varying", {
     primary: true,

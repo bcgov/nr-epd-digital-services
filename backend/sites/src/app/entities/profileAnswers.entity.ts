@@ -6,7 +6,7 @@ import { SiteProfiles } from "./siteProfiles.entity";
   unique: true,
 })
 @Index("profans_sprof", ["siteId", "sprofDateCompleted"], {})
-@Entity("profile_answers", { schema: "public" })
+@Entity("profile_answers")
 export class ProfileAnswers {
   @Column("bigint", { primary: true, name: "site_id" })
   siteId: string;

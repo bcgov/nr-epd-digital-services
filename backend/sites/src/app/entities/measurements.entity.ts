@@ -8,7 +8,7 @@ import { MeasurementPopulations } from "./measurementPopulations.entity";
   unique: true,
 })
 @Index("msmt_media_ind", ["mediaCd"], {})
-@Entity("measurements", { schema: "public" })
+@Entity("measurements")
 export class Measurements {
   @Column("bigint", { primary: true, name: "msmt_pop_id" })
   msmtPopId: string;

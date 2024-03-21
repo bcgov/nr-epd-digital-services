@@ -3,7 +3,7 @@ import { ProfileQuestions } from "./profileQuestions.entity";
 
 @Index("profile_categories_pkey", ["id"], { unique: true })
 @Index("profcat_id_seq", ["id", "sequenceNo"], {})
-@Entity("profile_categories", { schema: "public" })
+@Entity("profile_categories")
 export class ProfileCategories {
   @Column("bigint", { primary: true, name: "id" })
   id: string;

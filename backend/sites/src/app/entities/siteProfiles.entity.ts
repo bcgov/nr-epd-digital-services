@@ -16,7 +16,7 @@ import { Sites } from "./sites.entity";
 @Index("site_profiles_pkey", ["dateCompleted", "siteId"], { unique: true })
 @Index("sprof_rwm_site_partic", ["rwmParticId"], {})
 @Index("sprof_site_reg_site_partic", ["siteRegParticId"], {})
-@Entity("site_profiles", { schema: "public" })
+@Entity("site_profiles")
 export class SiteProfiles {
   @Column("bigint", { primary: true, name: "site_id" })
   siteId: string;

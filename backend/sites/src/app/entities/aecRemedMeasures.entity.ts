@@ -8,7 +8,7 @@ import { Sites } from "./sites.entity";
 })
 @Index("aecremmea_remmea_cd_indx", ["remedMeasureCd"], {})
 @Index("aecremmea_sites_frgn", ["siteId"], {})
-@Entity("aec_remed_measures", { schema: "public" })
+@Entity("aec_remed_measures")
 export class AecRemedMeasures {
   @Column("bigint", { name: "site_id" })
   siteId: string;

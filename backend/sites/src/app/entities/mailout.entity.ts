@@ -5,7 +5,7 @@ import { Sites } from "./sites.entity";
 
 @Index("mailout_bcer_code", ["bcerCode"], {})
 @Index("mailout_pkey", ["psnorgId", "siteId"], { unique: true })
-@Entity("mailout", { schema: "public" })
+@Entity("mailout")
 export class Mailout {
   @Column("bigint", { primary: true, name: "site_id" })
   siteId: string;

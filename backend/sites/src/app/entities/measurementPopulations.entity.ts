@@ -15,7 +15,7 @@ import { Measurements } from "./measurements.entity";
 @Index("measurement_populations_pkey", ["id"], { unique: true })
 @Index("msmt_pop_sdoc_ind", ["sdocId"], {})
 @Index("msmt_pop_site_ind", ["siteId"], {})
-@Entity("measurement_populations", { schema: "public" })
+@Entity("measurement_populations")
 export class MeasurementPopulations {
   @Column("bigint", { primary: true, name: "id" })
   id: string;

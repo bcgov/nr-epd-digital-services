@@ -2,7 +2,7 @@ import { Column, Entity, Index } from "typeorm";
 
 @Index("sitereg_bco", ["regFlag", "siteId"], {})
 @Index("site_registry_pkey", ["siteId"], { unique: true })
-@Entity("site_registry", { schema: "public" })
+@Entity("site_registry")
 export class SiteRegistry {
   @Column("bigint", { primary: true, name: "site_id" })
   siteId: string;
