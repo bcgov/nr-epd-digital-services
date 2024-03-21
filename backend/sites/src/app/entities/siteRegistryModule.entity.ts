@@ -1,7 +1,10 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("site_registry_module", { schema: "public" })
 export class SiteRegistryModule {
+  @PrimaryGeneratedColumn('uuid', { name: 'id' })
+  id: string;
+
   @Column("character", { name: "sites", nullable: true, length: 1 })
   sites: string | null;
 

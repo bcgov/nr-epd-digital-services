@@ -5,7 +5,7 @@ import { Events } from "./events.entity";
 @Index("ctext_rwm_flag", ["rwmFlag"], {})
 @Entity("conditions_text", { schema: "public" })
 export class ConditionsText {
-  @Column("bigint", { name: "event_id" })
+  @Column("bigint", { primary: true, name: "event_id" })
   eventId: string;
 
   @Column("character varying", { name: "conditions_comment", length: 2000 })
