@@ -1,244 +1,243 @@
-import {Column,Entity,Index,JoinColumn,ManyToOne,OneToMany,OneToOne} from "typeorm";
-import {AecAssessments} from './aecAssessments.entity'
-import {AecRemedApproaches} from './aecRemedApproaches.entity'
-import {AecRemedItems} from './aecRemedItems.entity'
-import {AecRemedMeasures} from './aecRemedMeasures.entity'
-import {AecRemediations} from './aecRemediations.entity'
-import {Events} from './events.entity'
-import {LandHistories} from './landHistories.entity'
-import {Mailout} from './mailout.entity'
-import {MeasurementPopulations} from './measurementPopulations.entity'
-import {SiteAssocs} from './siteAssocs.entity'
-import {SiteCrownLandContaminated} from './siteCrownLandContaminated.entity'
-import {SiteDocs} from './siteDocs.entity'
-import {SitePartics} from './sitePartics.entity'
-import {SiteProfiles} from './siteProfiles.entity'
-import {SiteSubdivisions} from './siteSubdivisions.entity'
-import {BceRegionCd} from './bceRegionCd.entity'
-import {ClassificationCd} from './classificationCd.entity'
-import {SiteRiskCd} from './siteRiskCd.entity'
-import {SiteStatusCd} from './siteStatusCd.entity'
+import { Field, ObjectType } from '@nestjs/graphql';
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
+import { AecAssessments } from './aecAssessments.entity'
+import { AecRemedApproaches } from './aecRemedApproaches.entity'
+import { AecRemedItems } from './aecRemedItems.entity'
+import { AecRemedMeasures } from './aecRemedMeasures.entity'
+import { AecRemediations } from './aecRemediations.entity'
+import { Events } from './events.entity'
+import { LandHistories } from './landHistories.entity'
+import { Mailout } from './mailout.entity'
+import { MeasurementPopulations } from './measurementPopulations.entity'
+import { SiteAssocs } from './siteAssocs.entity'
+import { SiteCrownLandContaminated } from './siteCrownLandContaminated.entity'
+import { SiteDocs } from './siteDocs.entity'
+import { SitePartics } from './sitePartics.entity'
+import { SiteProfiles } from './siteProfiles.entity'
+import { SiteSubdivisions } from './siteSubdivisions.entity'
+import { BceRegionCd } from './bceRegionCd.entity'
+import { ClassificationCd } from './classificationCd.entity'
+import { SiteRiskCd } from './siteRiskCd.entity'
+import { SiteStatusCd } from './siteStatusCd.entity'
+
+@ObjectType()
+@Index("site_bco", ["bcerCode", "classCode", "id", "rwmFlag", "sstCode",], {})
+@Index("site_responsibility_o_frgn", ["bcerCode",], {})
+@Index("site_classification", ["classCode",], {})
+@Index("site_geom_ddx", ["geometry",], {})
+@Index("sites_pkey", ["id",], { unique: true })
+@Index("site_gen_desc_flag", ["rwmGeneralDescFlag",], {})
+@Index("site_risk_is", ["siteRiskCode",], {})
+@Index("site_described_by_frgn", ["sstCode",], {})
+@Index("sites_victoria_file_no_key", ["victoriaFileNo",], { unique: true })
+@Entity("sites", { schema: "public" })
+export class Sites {
+
+    @Field()
+    @Column("bigint", { primary: true, name: "id" })
+    id: string;
+
+    @Field()
+    @Column("character varying", { name: "bcer_code", length: 6 })
+    bcerCode: string;
+
+    @Field()
+    @Column("character varying", { name: "sst_code", length: 6 })
+    sstCode: string;
+
+    @Field()
+    @Column("character varying", { name: "common_name", length: 40 })
+    commonName: string;
+
+    @Field()
+    @Column("character varying", { name: "addr_type", length: 7 })
+    addrType: string;
+
+    @Field()
+    @Column("character varying", { name: "addr_line_1", length: 50 })
+    addrLine_1: string;
+
+    @Field()
+    @Column("character varying", { name: "addr_line_2", nullable: true, length: 50 })
+    addrLine_2: string | null;
+
+    @Field()
+    @Column("character varying", { name: "addr_line_3", nullable: true, length: 50 })
+    addrLine_3: string | null;
+
+    @Field()
+    @Column("character varying", { name: "addr_line_4", nullable: true, length: 50 })
+    addrLine_4: string | null;
+
+    @Field()
+    @Column("character varying", { name: "city", length: 30 })
+    city: string;
+
+    @Field()
+    @Column("character varying", { name: "prov_state", length: 2 })
+    provState: string;
+
+    @Field()
+    @Column("character varying", { name: "postal_code", nullable: true, length: 10 })
+    postalCode: string | null;
+
+    @Field()
+    @Column("double precision", { name: "latdeg", nullable: true, precision: 53 })
+    latdeg: number | null;
+
+    @Field()
+    @Column("double precision", { name: "longdeg", nullable: true, precision: 53 })
+    longdeg: number | null;
+
+    @Field()
+    @Column("character varying", { name: "victoria_file_no", nullable: true, unique: true, length: 40 })
+    victoriaFileNo: string | null;
+
+    @Field()
+    @Column("character varying", { name: "regional_file_no", nullable: true, length: 40 })
+    regionalFileNo: string | null;
+
+    @Field()
+    @Column("character varying", { name: "class_code", nullable: true, length: 6 })
+    classCode: string | null;
 
+    @Field()
+    @Column("character varying", { name: "general_description", nullable: true, length: 255 })
+    generalDescription: string | null;
 
-@Index("site_bco",["bcerCode","classCode","id","rwmFlag","sstCode",],{  })
-@Index("site_responsibility_o_frgn",["bcerCode",],{  })
-@Index("site_classification",["classCode",],{  })
-@Index("site_geom_ddx",["geometry",],{  })
-@Index("sites_pkey",["id",],{ unique:true })
-@Index("site_gen_desc_flag",["rwmGeneralDescFlag",],{  })
-@Index("site_risk_is",["siteRiskCode",],{  })
-@Index("site_described_by_frgn",["sstCode",],{  })
-@Index("sites_victoria_file_no_key",["victoriaFileNo",],{ unique:true })
-@Entity("sites" ,{schema:"public" } )
-export  class Sites {
+    @Field()
+    @Column("character varying", { name: "who_created", length: 30 })
+    whoCreated: string;
 
-@Column("bigint",{ primary:true,name:"id" })
-id:string;
+    @Field()
+    @Column("character varying", { name: "who_updated", nullable: true, length: 30 })
+    whoUpdated: string | null;
 
-@Column("character varying",{ name:"bcer_code",length:6 })
-bcerCode:string;
+    @Field()
+    @Column("timestamp without time zone", { name: "when_created" })
+    whenCreated: Date;
 
-@Column("character varying",{ name:"sst_code",length:6 })
-sstCode:string;
+    @Field()
+    @Column("timestamp without time zone", { name: "when_updated", nullable: true })
+    whenUpdated: Date | null;
 
-@Column("character varying",{ name:"common_name",length:40 })
-commonName:string;
+    @Field()
+    @Column("smallint", { name: "rwm_flag" })
+    rwmFlag: number;
 
-@Column("character varying",{ name:"addr_type",length:7 })
-addrType:string;
+    @Field()
+    @Column("smallint", { name: "rwm_general_desc_flag" })
+    rwmGeneralDescFlag: number;
 
-@Column("character varying",{ name:"addr_line_1",length:50 })
-addrLine_1:string;
+    @Field()
+    @Column("character", { name: "consultant_submitted", nullable: true, length: 1 })
+    consultantSubmitted: string | null;
 
-@Column("character varying",{ name:"addr_line_2",nullable:true,length:50 })
-addrLine_2:string | null;
+    @Field()
+    @Column("smallint", { name: "long_degrees", nullable: true })
+    longDegrees: number | null;
 
-@Column("character varying",{ name:"addr_line_3",nullable:true,length:50 })
-addrLine_3:string | null;
+    @Field()
+    @Column("smallint", { name: "long_minutes", nullable: true })
+    longMinutes: number | null;
 
-@Column("character varying",{ name:"addr_line_4",nullable:true,length:50 })
-addrLine_4:string | null;
+    @Field()
+    @Column("numeric", { name: "long_seconds", nullable: true, precision: 4, scale: 2 })
+    longSeconds: string | null;
 
-@Column("character varying",{ name:"city",length:30 })
-city:string;
+    @Field()
+    @Column("smallint", { name: "lat_degrees", nullable: true })
+    latDegrees: number | null;
 
-@Column("character varying",{ name:"prov_state",length:2 })
-provState:string;
+    @Field()
+    @Column("smallint", { name: "lat_minutes", nullable: true })
+    latMinutes: number | null;
 
-@Column("character varying",{ name:"postal_code",nullable:true,length:10 })
-postalCode:string | null;
+    @Field()
+    @Column("numeric", { name: "lat_seconds", nullable: true, precision: 4, scale: 2 })
+    latSeconds: string | null;
 
-@Column("double precision",{ name:"latdeg",nullable:true,precision:53 })
-latdeg:number | null;
+    @Field()
+    @Column("character varying", { name: "sr_status", length: 1, default: () => "'Y'", })
+    srStatus: string;
 
-@Column("double precision",{ name:"longdeg",nullable:true,precision:53 })
-longdeg:number | null;
+    @Field()
+    @Column("character varying", { name: "latlong_reliability_flag", length: 12 })
+    latlongReliabilityFlag: string;
 
-@Column("character varying",{ name:"victoria_file_no",nullable:true,unique:true,length:40 })
-victoriaFileNo:string | null;
+    @Field()
+    @Column("character varying", { name: "site_risk_code", length: 6, default: () => "'UNC'", })
+    siteRiskCode: string;
 
-@Column("character varying",{ name:"regional_file_no",nullable:true,length:40 })
-regionalFileNo:string | null;
+    @Field()
+    @Column("geometry", { name: "geometry", nullable: true })
+    geometry: string | null;
 
-@Column("character varying",{ name:"class_code",nullable:true,length:6 })
-classCode:string | null;
+    @OneToMany(() => AecAssessments, aecAssessments => aecAssessments.site)
+    aecAssessments: AecAssessments[];
 
-@Column("character varying",{ name:"general_description",nullable:true,length:255 })
-generalDescription:string | null;
+    @OneToMany(() => AecRemedApproaches, aecRemedApproaches => aecRemedApproaches.site)
+    aecRemedApproaches: AecRemedApproaches[];
 
-@Column("character varying",{ name:"who_created",length:30 })
-whoCreated:string;
+    @OneToMany(() => AecRemedItems, aecRemedItems => aecRemedItems.site)
+    aecRemedItems: AecRemedItems[];
 
-@Column("character varying",{ name:"who_updated",nullable:true,length:30 })
-whoUpdated:string | null;
+    @OneToMany(() => AecRemedMeasures, aecRemedMeasures => aecRemedMeasures.site)
+    aecRemedMeasures: AecRemedMeasures[];
 
-@Column("timestamp without time zone",{ name:"when_created" })
-whenCreated:Date;
+    @OneToMany(() => AecRemediations, aecRemediations => aecRemediations.site)
+    aecRemediations: AecRemediations[];
 
-@Column("timestamp without time zone",{ name:"when_updated",nullable:true })
-whenUpdated:Date | null;
+    @OneToMany(() => Events, events => events.site)
+    events: Events[];
 
-@Column("smallint",{ name:"rwm_flag" })
-rwmFlag:number;
+    @OneToMany(() => LandHistories, landHistories => landHistories.site)
+    landHistories: LandHistories[];
 
-@Column("smallint",{ name:"rwm_general_desc_flag" })
-rwmGeneralDescFlag:number;
+    @OneToMany(() => Mailout, mailout => mailout.site)
+    mailouts: Mailout[];
 
-@Column("character",{ name:"consultant_submitted",nullable:true,length:1 })
-consultantSubmitted:string | null;
+    @OneToMany(() => MeasurementPopulations, measurementPopulations => measurementPopulations.site)
+    measurementPopulations: MeasurementPopulations[];
 
-@Column("smallint",{ name:"long_degrees",nullable:true })
-longDegrees:number | null;
+    @OneToMany(() => SiteAssocs, siteAssocs => siteAssocs.site)
+    siteAssocs: SiteAssocs[];
 
-@Column("smallint",{ name:"long_minutes",nullable:true })
-longMinutes:number | null;
+    @OneToMany(() => SiteAssocs, siteAssocs => siteAssocs.siteIdAssociatedWith2)
+    siteAssocs2: SiteAssocs[];
 
-@Column("numeric",{ name:"long_seconds",nullable:true,precision:4,scale:2 })
-longSeconds:string | null;
+    @OneToOne(() => SiteCrownLandContaminated, siteCrownLandContaminated => siteCrownLandContaminated.sites)
+    siteCrownLandContaminated: SiteCrownLandContaminated;
 
-@Column("smallint",{ name:"lat_degrees",nullable:true })
-latDegrees:number | null;
+    @OneToMany(() => SiteDocs, siteDocs => siteDocs.site)
+    siteDocs: SiteDocs[];
 
-@Column("smallint",{ name:"lat_minutes",nullable:true })
-latMinutes:number | null;
+    @OneToMany(() => SitePartics, sitePartics => sitePartics.site)
+    sitePartics: SitePartics[];
 
-@Column("numeric",{ name:"lat_seconds",nullable:true,precision:4,scale:2 })
-latSeconds:string | null;
+    @OneToMany(() => SiteProfiles, siteProfiles => siteProfiles.site)
+    siteProfiles: SiteProfiles[];
 
-@Column("character varying",{ name:"sr_status",length:1,default: () => "'Y'", })
-srStatus:string;
+    @OneToMany(() => SiteSubdivisions, siteSubdivisions => siteSubdivisions.site)
+    siteSubdivisions: SiteSubdivisions[];
 
-@Column("character varying",{ name:"latlong_reliability_flag",length:12 })
-latlongReliabilityFlag:string;
+    @ManyToOne(() => BceRegionCd, bceRegionCd => bceRegionCd.sites)
+    @JoinColumn([{ name: "bcer_code", referencedColumnName: "code" },
+    ])
+    bcerCode2: BceRegionCd;
 
-@Column("character varying",{ name:"site_risk_code",length:6,default: () => "'UNC'", })
-siteRiskCode:string;
+    @ManyToOne(() => ClassificationCd, classificationCd => classificationCd.sites)
+    @JoinColumn([{ name: "class_code", referencedColumnName: "code" },
+    ])
+    classCode2: ClassificationCd;
 
-@Column("geometry",{ name:"geometry",nullable:true })
-geometry:string | null;
+    @ManyToOne(() => SiteRiskCd, siteRiskCd => siteRiskCd.sites)
+    @JoinColumn([{ name: "site_risk_code", referencedColumnName: "code" },
+    ])
+    siteRiskCode2: SiteRiskCd;
 
-@OneToMany(()=>AecAssessments,aecAssessments=>aecAssessments.site)
-
-
-aecAssessments:AecAssessments[];
-
-@OneToMany(()=>AecRemedApproaches,aecRemedApproaches=>aecRemedApproaches.site)
-
-
-aecRemedApproaches:AecRemedApproaches[];
-
-@OneToMany(()=>AecRemedItems,aecRemedItems=>aecRemedItems.site)
-
-
-aecRemedItems:AecRemedItems[];
-
-@OneToMany(()=>AecRemedMeasures,aecRemedMeasures=>aecRemedMeasures.site)
-
-
-aecRemedMeasures:AecRemedMeasures[];
-
-@OneToMany(()=>AecRemediations,aecRemediations=>aecRemediations.site)
-
-
-aecRemediations:AecRemediations[];
-
-@OneToMany(()=>Events,events=>events.site)
-
-
-events:Events[];
-
-@OneToMany(()=>LandHistories,landHistories=>landHistories.site)
-
-
-landHistories:LandHistories[];
-
-@OneToMany(()=>Mailout,mailout=>mailout.site)
-
-
-mailouts:Mailout[];
-
-@OneToMany(()=>MeasurementPopulations,measurementPopulations=>measurementPopulations.site)
-
-
-measurementPopulations:MeasurementPopulations[];
-
-@OneToMany(()=>SiteAssocs,siteAssocs=>siteAssocs.site)
-
-
-siteAssocs:SiteAssocs[];
-
-@OneToMany(()=>SiteAssocs,siteAssocs=>siteAssocs.siteIdAssociatedWith2)
-
-
-siteAssocs2:SiteAssocs[];
-
-@OneToOne(()=>SiteCrownLandContaminated,siteCrownLandContaminated=>siteCrownLandContaminated.sites)
-
-
-siteCrownLandContaminated:SiteCrownLandContaminated;
-
-@OneToMany(()=>SiteDocs,siteDocs=>siteDocs.site)
-
-
-siteDocs:SiteDocs[];
-
-@OneToMany(()=>SitePartics,sitePartics=>sitePartics.site)
-
-
-sitePartics:SitePartics[];
-
-@OneToMany(()=>SiteProfiles,siteProfiles=>siteProfiles.site)
-
-
-siteProfiles:SiteProfiles[];
-
-@OneToMany(()=>SiteSubdivisions,siteSubdivisions=>siteSubdivisions.site)
-
-
-siteSubdivisions:SiteSubdivisions[];
-
-@ManyToOne(()=>BceRegionCd,bceRegionCd=>bceRegionCd.sites)
-@JoinColumn([{ name: "bcer_code", referencedColumnName: "code" },
-])
-
-bcerCode2:BceRegionCd;
-
-@ManyToOne(()=>ClassificationCd,classificationCd=>classificationCd.sites)
-@JoinColumn([{ name: "class_code", referencedColumnName: "code" },
-])
-
-classCode2:ClassificationCd;
-
-@ManyToOne(()=>SiteRiskCd,siteRiskCd=>siteRiskCd.sites)
-@JoinColumn([{ name: "site_risk_code", referencedColumnName: "code" },
-])
-
-siteRiskCode2:SiteRiskCd;
-
-@ManyToOne(()=>SiteStatusCd,siteStatusCd=>siteStatusCd.sites)
-@JoinColumn([{ name: "sst_code", referencedColumnName: "code" },
-])
-
-sstCode2:SiteStatusCd;
-
+    @ManyToOne(() => SiteStatusCd, siteStatusCd => siteStatusCd.sites)
+    @JoinColumn([{ name: "sst_code", referencedColumnName: "code" },
+    ])
+    sstCode2: SiteStatusCd;
 }
