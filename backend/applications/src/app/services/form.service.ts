@@ -7,7 +7,24 @@ import { Form } from '../entities/form.entity';
 export class FormService {
   constructor(
     @InjectRepository(Form) private readonly formRepository: Repository<Form>,
-  ) {}
+  ) { }
+
+  /**
+   * Checks if table exists
+   * @returns boolean
+   */
+  async healthCheck(): Promise<any> {
+    const tableExists = (
+      await this.formRepository.manager.query(
+        `SELECT exists (
+      SELECT FROM information_schema.tables
+        WHERE  table_schema = 'epd_applications'
+        AND    table_name   = 'form'
+        )`,
+      )
+    )[0].exists;
+    return tableExists;
+  }
 
   /**
    * Creates new form submission
@@ -36,7 +53,7 @@ export class FormService {
 
   buildUpdateString = (pathText, newValue) => {
     const returnString =
-      'jsonb_set("form_data"::jsonb,' + pathText + ',' + newValue + ')';   
+      'jsonb_set("form_data"::jsonb,' + pathText + ',' + newValue + ')';
     return returnString;
   };
 
@@ -46,7 +63,6 @@ export class FormService {
     formId,
     submissionId,
   ) => {
-   
     for (const property in partialUpdateObject) {
       if (typeof partialUpdateObject[property] === 'object') {
         this.processContent(
@@ -64,13 +80,10 @@ export class FormService {
         } else {
           objectName = property;
         }
-      
 
         const pathText = "'{" + objectName + "}'";
 
         const newValue = '\'"' + partialUpdateObject[property] + '"\'';
-
-    
 
         await this.formRepository
           .createQueryBuilder()

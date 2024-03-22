@@ -300,6 +300,84 @@
           <text>"epd-support@gov.bc.ca"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0dewt8h">
+        <inputEntry id="UnaryTests_0worjz7">
+          <text>"upload_doc"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0biz5q2">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_164f456">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0oj7nhc">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0wcixme">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0a1kzk1">
+          <text>"File Upload Notification"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1b09d2q">
+          <text>"templates/upload_doc.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0f9z5vn">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ja11nr">
+        <inputEntry id="UnaryTests_1gg254z">
+          <text>"user_search_failed"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xys9u2">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1npu10d">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0so0jig">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_038zbwv">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0t8mj51">
+          <text>" Users Not Found : Upload Document Email Process"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1klpv28">
+          <text>"templates/user_search_failed.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ak6s00">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1s5z54g">
+        <inputEntry id="UnaryTests_14kl82x">
+          <text>"sosc_subforms_updated"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1e1mmud">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1g81lru">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0y287i3">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1frtnin">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0bnfpyw">
+          <text>"Summary of Site Condition Report Update"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0i5gmab">
+          <text>"templates/request_updated.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1yt92el">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

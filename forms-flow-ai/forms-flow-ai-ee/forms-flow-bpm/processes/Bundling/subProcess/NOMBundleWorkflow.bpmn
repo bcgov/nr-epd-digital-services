@@ -13,6 +13,10 @@
       <bpmn:lane id="Lane_1mfcqjo" name="Client or QualifiedProfessional">
         <bpmn:flowNodeRef>Event_02fettt</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1ozfgid</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0yw5we4</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_04mee55</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1g6gqbl</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_0vt72pb</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1e0i2ru</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_1xv1agn" name="Site Information Advisor (SIA)">
@@ -39,7 +43,9 @@
       <bpmn:incoming>Flow_1la2yud</bpmn:incoming>
       <bpmn:incoming>Flow_10r3k9c</bpmn:incoming>
       <bpmn:outgoing>Flow_0unffch</bpmn:outgoing>
-      <bpmn:script>var system = java.lang.System;
+      <bpmn:script>
+
+var system = java.lang.System;
 var clientEmail = execution.getVariable('ownerContactEmail');
 execution.setVariable('clientEmail',clientEmail);
 var riskclassification = execution.getVariable('riskclassification');
@@ -75,13 +81,14 @@ for(i in dataGridObject)
 
 if(listOwnerEmailAddress.length &gt; 0)
 {	
-	execution.setVariable("emailTo", Java.to(listOwnerEmailAddress, "java.lang.Object[]"));
+	execution.setVariable('emailTo',JSON.stringify(listOwnerEmailAddress));	
 }
 execution.setVariable('EmailType','nom');
 
 
 system.out.println ("emailsToArray after "+execution.getVariable('emailsToArray'));
 execution.setVariable('formName','Notification of Likely or Actual Migration');
+execution.setVariable('emailsIdsToProcess',JSON.stringify(listOwnerEmailAddress));
 
 </bpmn:script>
     </bpmn:scriptTask>
@@ -104,13 +111,13 @@ task.execution.setVariable('userRole','Site Information Advisor');</camunda:scri
           </camunda:field>
         </camunda:taskListener>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0unffch</bpmn:incoming>
       <bpmn:incoming>Flow_0gzrwfr</bpmn:incoming>
+      <bpmn:incoming>Flow_0oif1h7</bpmn:incoming>
       <bpmn:outgoing>Flow_1ua4w6m</bpmn:outgoing>
       <bpmn:outgoing>Flow_1oam11w</bpmn:outgoing>
       <bpmn:outgoing>Flow_0l71ern</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:callActivity id="Activity_1gjzpac" name="Send Decision Email" calledElement="common-email-workflow">
+    <bpmn:callActivity id="Activity_1gjzpac" name="Send Decision Email" camunda:asyncBefore="true" calledElement="common-email-workflow">
       <bpmn:extensionElements>
         <camunda:in variables="all" />
         <camunda:inputOutput>
@@ -132,7 +139,7 @@ task.execution.setVariable('userRole','Site Information Advisor');</camunda:scri
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormBPMFilteredDataPipelineListener" event="take" />
       </bpmn:extensionElements>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0unffch" name="Owner Submits" sourceRef="Activity_1ozfgid" targetRef="Activity_06nypz0" />
+    <bpmn:sequenceFlow id="Flow_0unffch" name="Owner Submits" sourceRef="Activity_1ozfgid" targetRef="Gateway_0vt72pb" />
     <bpmn:sequenceFlow id="Flow_1ua4w6m" name="Need Info" sourceRef="Activity_06nypz0" targetRef="Gateway_1pd38qv">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
@@ -167,23 +174,6 @@ execution.setVariable("applicationStatus", "Rejected");
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
       </bpmn:extensionElements>
     </bpmn:sequenceFlow>
-    <bpmn:receiveTask id="Activity_1e0i2ru" name="Application Resubmitted" messageRef="Message_0lm44we">
-      <bpmn:extensionElements>
-        <camunda:executionListener event="start">
-          <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', "Resubmit");
-execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
-        </camunda:executionListener>
-        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="start" />
-        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="start">
-          <camunda:field name="fields">
-            <camunda:expression>["applicationId", "applicationStatus"]</camunda:expression>
-          </camunda:field>
-        </camunda:executionListener>
-        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="start" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_04r78pc</bpmn:incoming>
-      <bpmn:outgoing>Flow_10r3k9c</bpmn:outgoing>
-    </bpmn:receiveTask>
     <bpmn:sequenceFlow id="Flow_10r3k9c" name="Resubmitted" sourceRef="Activity_1e0i2ru" targetRef="Activity_1ozfgid">
       <bpmn:extensionElements>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="take" />
@@ -204,7 +194,7 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
     <bpmn:sequenceFlow id="Flow_1xaizis" sourceRef="Gateway_15uoiyo" targetRef="Activity_0w5t5av" />
     <bpmn:sequenceFlow id="Flow_153luo3" sourceRef="Gateway_15uoiyo" targetRef="Activity_1os7sys" />
     <bpmn:sequenceFlow id="Flow_04r78pc" sourceRef="Gateway_1pd38qv" targetRef="Activity_1e0i2ru" />
-    <bpmn:parallelGateway id="Gateway_1pd38qv">
+    <bpmn:parallelGateway id="Gateway_1pd38qv" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_1ua4w6m</bpmn:incoming>
       <bpmn:outgoing>Flow_04r78pc</bpmn:outgoing>
       <bpmn:outgoing>Flow_1twoj9j</bpmn:outgoing>
@@ -639,17 +629,17 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.RequestStateListener" event="take" />
         </bpmn:extensionElements>
       </bpmn:sequenceFlow>
-      <bpmn:parallelGateway id="Gateway_0n1oykh">
+      <bpmn:parallelGateway id="Gateway_0n1oykh" camunda:asyncAfter="true">
         <bpmn:incoming>Flow_0wzucup</bpmn:incoming>
         <bpmn:outgoing>Flow_0wuyk5q</bpmn:outgoing>
         <bpmn:outgoing>Flow_0o1fhdi</bpmn:outgoing>
       </bpmn:parallelGateway>
-      <bpmn:parallelGateway id="Gateway_01ys7kk">
+      <bpmn:parallelGateway id="Gateway_01ys7kk" camunda:asyncAfter="true">
         <bpmn:incoming>Flow_0jq9w2c</bpmn:incoming>
         <bpmn:outgoing>Flow_0ojaeu2</bpmn:outgoing>
         <bpmn:outgoing>Flow_0s3yccc</bpmn:outgoing>
       </bpmn:parallelGateway>
-      <bpmn:parallelGateway id="Gateway_1bl74qu">
+      <bpmn:parallelGateway id="Gateway_1bl74qu" camunda:asyncAfter="true">
         <bpmn:incoming>Flow_1j4ubaw</bpmn:incoming>
         <bpmn:outgoing>Flow_17jc772</bpmn:outgoing>
         <bpmn:outgoing>Flow_03ti4c1</bpmn:outgoing>
@@ -664,7 +654,7 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
       <bpmn:outgoing>Flow_115hro3</bpmn:outgoing>
       <bpmn:outgoing>Flow_1tvwlrp</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:task id="Activity_1n3rj1g" name="Update Application">
+    <bpmn:task id="Activity_1n3rj1g" name="Update Application" camunda:asyncAfter="true">
       <bpmn:extensionElements>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="end" />
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="start" />
@@ -713,7 +703,7 @@ system.out.println (" here " + execution.getVariable('riskclassification'));</bp
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0bwxoom" sourceRef="Activity_1n3rj1g" targetRef="Activity_1os7sys" />
     <bpmn:sequenceFlow id="Flow_00msr8t" sourceRef="Activity_040vqyo" targetRef="Activity_07ktr3j" />
-    <bpmn:parallelGateway id="Gateway_15uoiyo">
+    <bpmn:parallelGateway id="Gateway_15uoiyo" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_1oam11w</bpmn:incoming>
       <bpmn:outgoing>Flow_1xaizis</bpmn:outgoing>
       <bpmn:outgoing>Flow_153luo3</bpmn:outgoing>
@@ -778,6 +768,57 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
     <bpmn:sequenceFlow id="Flow_0gzrwfr" sourceRef="Gateway_06j5m9d" targetRef="Activity_06nypz0">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Recheck'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
+    <bpmn:callActivity id="Activity_0yw5we4" name="Create BC Box Bucket &#38; Notify" calledElement="create-bucket">
+      <bpmn:extensionElements>
+        <camunda:in variables="all" />
+        <camunda:out variables="all" />
+        <camunda:inputOutput>
+          <camunda:inputParameter name="category">sds_updated</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_13ehiar</bpmn:incoming>
+      <bpmn:outgoing>Flow_1nigg0r</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:endEvent id="Event_04mee55">
+      <bpmn:incoming>Flow_1nigg0r</bpmn:incoming>
+      <bpmn:incoming>Flow_1nbjw65</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_13ehiar" sourceRef="Gateway_1g6gqbl" targetRef="Activity_0yw5we4">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus=='New'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1nigg0r" sourceRef="Activity_0yw5we4" targetRef="Event_04mee55" />
+    <bpmn:sequenceFlow id="Flow_1nbjw65" sourceRef="Gateway_1g6gqbl" targetRef="Event_04mee55">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus!='New'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0oif1h7" sourceRef="Gateway_0vt72pb" targetRef="Activity_06nypz0" />
+    <bpmn:sequenceFlow id="Flow_036ynk2" sourceRef="Gateway_0vt72pb" targetRef="Gateway_1g6gqbl" />
+    <bpmn:exclusiveGateway id="Gateway_1g6gqbl">
+      <bpmn:incoming>Flow_036ynk2</bpmn:incoming>
+      <bpmn:outgoing>Flow_13ehiar</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1nbjw65</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:parallelGateway id="Gateway_0vt72pb">
+      <bpmn:incoming>Flow_0unffch</bpmn:incoming>
+      <bpmn:outgoing>Flow_0oif1h7</bpmn:outgoing>
+      <bpmn:outgoing>Flow_036ynk2</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:receiveTask id="Activity_1e0i2ru" name="Application Resubmitted" messageRef="Message_0lm44we">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="start">
+          <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', "Resubmit");
+execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="start" />
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="start">
+          <camunda:field name="fields">
+            <camunda:expression>["applicationId", "applicationStatus"]</camunda:expression>
+          </camunda:field>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="start" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_04r78pc</bpmn:incoming>
+      <bpmn:outgoing>Flow_10r3k9c</bpmn:outgoing>
+    </bpmn:receiveTask>
   </bpmn:process>
   <bpmn:message id="Message_1ngb2eg" name="application_resubmitted" />
   <bpmn:message id="Message_0lm44we" name="application_resubmitted" />
@@ -799,6 +840,27 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
         <dc:Bounds x="201" y="830" width="1198" height="1940" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_036ynk2_di" bpmnElement="Flow_036ynk2">
+        <di:waypoint x="386" y="260" />
+        <di:waypoint x="836" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0oif1h7_di" bpmnElement="Flow_0oif1h7">
+        <di:waypoint x="361" y="285" />
+        <di:waypoint x="361" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nbjw65_di" bpmnElement="Flow_1nbjw65">
+        <di:waypoint x="886" y="260" />
+        <di:waypoint x="1102" y="260" />
+        <di:waypoint x="1102" y="168" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nigg0r_di" bpmnElement="Flow_1nigg0r">
+        <di:waypoint x="911" y="150" />
+        <di:waypoint x="1084" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13ehiar_di" bpmnElement="Flow_13ehiar">
+        <di:waypoint x="861" y="235" />
+        <di:waypoint x="861" y="200" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0gzrwfr_di" bpmnElement="Flow_0gzrwfr">
         <di:waypoint x="850" y="795" />
         <di:waypoint x="850" y="820" />
@@ -858,7 +920,7 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_04r78pc_di" bpmnElement="Flow_04r78pc">
         <di:waypoint x="651" y="325" />
-        <di:waypoint x="651" y="250" />
+        <di:waypoint x="651" y="185" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_153luo3_di" bpmnElement="Flow_153luo3">
         <di:waypoint x="386" y="490" />
@@ -875,8 +937,7 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
         <di:waypoint x="861" y="640" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_10r3k9c_di" bpmnElement="Flow_10r3k9c">
-        <di:waypoint x="651" y="170" />
-        <di:waypoint x="651" y="145" />
+        <di:waypoint x="601" y="145" />
         <di:waypoint x="411" y="145" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="529" y="133" width="62" height="14" />
@@ -912,9 +973,9 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0unffch_di" bpmnElement="Flow_0unffch">
         <di:waypoint x="361" y="185" />
-        <di:waypoint x="361" y="350" />
+        <di:waypoint x="361" y="235" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="334" y="242" width="76" height="14" />
+          <dc:Bounds x="262" y="293" width="76" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_180n8hx" bpmnElement="Flow_1la2yud">
@@ -938,9 +999,6 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
       <bpmndi:BPMNShape id="BPMNShape_1aljg9k" bpmnElement="Activity_1gjzpac">
         <dc:Bounds x="570" y="2610" width="100" height="80" />
         <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1hbqnlg" bpmnElement="Activity_1e0i2ru">
-        <dc:Bounds x="601" y="170" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_165edj8_di" bpmnElement="Gateway_1pd38qv">
         <dc:Bounds x="626" y="325" width="50" height="50" />
@@ -1283,6 +1341,22 @@ system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_06j5m9d_di" bpmnElement="Gateway_06j5m9d" isMarkerVisible="true">
         <dc:Bounds x="825" y="745" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1fbwq27" bpmnElement="Activity_0yw5we4">
+        <dc:Bounds x="811" y="120" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_070x6ba" bpmnElement="Event_04mee55">
+        <dc:Bounds x="1084" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1g6gqbl_di" bpmnElement="Gateway_1g6gqbl" isMarkerVisible="true">
+        <dc:Bounds x="836" y="235" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0lh9qc4_di" bpmnElement="Gateway_0vt72pb">
+        <dc:Bounds x="336" y="235" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1hbqnlg" bpmnElement="Activity_1e0i2ru">
+        <dc:Bounds x="601" y="105" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

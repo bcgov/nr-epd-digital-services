@@ -1,0 +1,23 @@
+[
+  {
+    "name": "IDIR",
+    "elevatedRights": true,
+    "idp": "idir",
+    "identityKey": "idir_user_guid",
+    "searchable": true
+  },
+  {
+    "name": "BCeID Basic",
+    "elevatedRights": false,
+    "idp": "bceidbasic",
+    "identityKey": "sub",
+    "searchable": false
+  },
+  {
+    "name": "BCeID Business",
+    "elevatedRights": false,
+    "idp": "bceidbusiness",
+    "identityKey": "bceid_user_guid",
+    "searchable": false
+  }
+]

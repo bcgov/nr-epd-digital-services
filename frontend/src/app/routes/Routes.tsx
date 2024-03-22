@@ -8,6 +8,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import { SignUp } from "../features/signup/signup";
 import { UserProfile } from "../features/users/UserProfile";
 import Map from '../features/Map/Map'
+import {FileUpload} from "../features/bcbox/FileUpload";
 
 const AppRoutes = () => {
   return (
@@ -18,6 +19,7 @@ const AppRoutes = () => {
         <Route path="/profile" element={<ProtectedRoute element={<UserProfile/>}/>}/>
         <Route path="/signup" element={<SignUp/>}/>
         <Route path="/map" element={<Map/>}/>
+        <Route path="/fileupload" element={<ProtectedRoute element={<FileUpload/>}/>}/>
         <Route path="/users" element={<UsersList />}></Route>
         <Route path="/users/add" element={<AddUserForm />}></Route>
         <Route path="*" element={<h1>Page not found</h1>}></Route>
