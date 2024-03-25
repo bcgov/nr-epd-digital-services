@@ -1,3 +1,4 @@
+import { Field, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   Entity,
@@ -11,26 +12,33 @@ import { AecMedias } from "./aecMedias.entity";
 import { AecAssessments } from "./aecAssessments.entity";
 import { AecRemedItems } from "./aecRemedItems.entity";
 
+@ObjectType()
 @Index("aecpcoc_assessments_frgn_frgn", ["aecassAreaId", "siteId"], {})
 @Index("aec_pcocs_pkey", ["id"], { unique: true })
 @Index("aecpcocs_media_frgn_frgn", ["mediaId"], {})
 @Entity("aec_pcocs")
 export class AecPcocs {
+  @Field()
   @Column("bigint", { primary: true, name: "id" })
   id: string;
 
+  @Field()
   @Column("bigint", { name: "media_id" })
   mediaId: string;
 
+  @Field()
   @Column("bigint", { name: "site_id" })
   siteId: string;
 
+  @Field()
   @Column("character varying", { name: "aecass_area_id", length: 40 })
   aecassAreaId: string;
 
+  @Field()
   @Column("character", { name: "selected", nullable: true, length: 1 })
   selected: string | null;
 
+  @Field()
   @Column("character varying", {
     name: "who_created",
     nullable: true,
@@ -38,12 +46,14 @@ export class AecPcocs {
   })
   whoCreated: string | null;
 
+  @Field()
   @Column("timestamp without time zone", {
     name: "when_created",
     nullable: true,
   })
   whenCreated: Date | null;
 
+  @Field()
   @Column("character varying", {
     name: "who_updated",
     nullable: true,
@@ -51,6 +61,7 @@ export class AecPcocs {
   })
   whoUpdated: string | null;
 
+  @Field()
   @Column("timestamp without time zone", {
     name: "when_updated",
     nullable: true,

@@ -1,5 +1,5 @@
 {
-  "name": "sitesapi",
+  "name": "siteapi",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -37,7 +37,8 @@
     "@nestjs/typeorm": "^9.0.1",
     "apollo-server-express": "^3.10.2",
     "graphql": "^16.6.0",
-    "nest-keycloak-connect": "^1.10.0",
+    "keycloak-connect": "^18.0.2",
+    "nest-keycloak-connect": "^1.9.0",
     "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",

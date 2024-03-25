@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class MasterScript1711061936590 implements MigrationInterface {
-    name = 'MasterScript1711061936590'
+export class MasterScript1711158079022 implements MigrationInterface {
+    name = 'MasterScript1711158079022'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "sites"."profile_categories" ("id" bigint NOT NULL, "sequence_no" bigint NOT NULL, "description" character varying(200) NOT NULL, "question_type" character varying(1) NOT NULL, "effective_date" TIMESTAMP NOT NULL, "expiry_date" TIMESTAMP, "who_created" character varying(30) NOT NULL, "who_updated" character varying(30), "when_created" TIMESTAMP NOT NULL, "when_updated" TIMESTAMP, "category_precursor" character varying(300), CONSTRAINT "PK_ad4c4dbdc4185df6dc92444151a" PRIMARY KEY ("id"))`);
@@ -106,8 +106,8 @@ export class MasterScript1711061936590 implements MigrationInterface {
         await queryRunner.query(`CREATE UNIQUE INDEX "site_contamination_class_xref_pkey" ON "sites"."site_contamination_class_xref" ("contamination_class_code", "sclc_id") `);
         await queryRunner.query(`CREATE TABLE "sites"."site_crown_land_status_cd" ("code" character varying(6) NOT NULL, "description" character varying(140) NOT NULL, CONSTRAINT "PK_04711244d6fc460ad7ab782490f" PRIMARY KEY ("code"))`);
         await queryRunner.query(`CREATE UNIQUE INDEX "site_crown_land_status_cd_pkey" ON "sites"."site_crown_land_status_cd" ("code") `);
-        await queryRunner.query(`CREATE TABLE "site_crown_land_contaminated" ("id" bigint NOT NULL, "estimated_cost_of_remediations" double precision NOT NULL, "actual_cost_of_remediations" double precision, "contamination_other_desc" character varying(50), "who_created" character varying(30) NOT NULL, "who_updated" character varying(30) DEFAULT statement_timestamp(), "when_created" TIMESTAMP NOT NULL, "when_updated" TIMESTAMP DEFAULT statement_timestamp(), "psnorg_id" bigint, "site_crown_land_status_code" character varying(6), CONSTRAINT "PK_6eda683ea614a412d989c0a7451" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "site_crown_land_contaminated_pkey" ON "site_crown_land_contaminated" ("id") `);
+        await queryRunner.query(`CREATE TABLE "sites"."site_crown_land_contaminated" ("id" bigint NOT NULL, "estimated_cost_of_remediations" double precision NOT NULL, "actual_cost_of_remediations" double precision, "contamination_other_desc" character varying(50), "who_created" character varying(30) NOT NULL, "who_updated" character varying(30) DEFAULT statement_timestamp(), "when_created" TIMESTAMP NOT NULL, "when_updated" TIMESTAMP DEFAULT statement_timestamp(), "psnorg_id" bigint, "site_crown_land_status_code" character varying(6), CONSTRAINT "PK_6eda683ea614a412d989c0a7451" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE UNIQUE INDEX "site_crown_land_contaminated_pkey" ON "sites"."site_crown_land_contaminated" ("id") `);
         await queryRunner.query(`CREATE TABLE "sites"."site_staffs" ("id" bigint NOT NULL, "psnorg_id" bigint NOT NULL, "emp_num" character varying(10), "user_id" character varying(16) NOT NULL, "e_mail_addr" character varying(40), "stftype_code" character varying(6), "prt_name" character varying(15) NOT NULL, "display_name" character varying(255), "region_code" character varying(6), "start_date" TIMESTAMP NOT NULL, "termination_date" TIMESTAMP, "staff_role" character varying(12) NOT NULL, "who_created" character varying(30) NOT NULL, "who_updated" character varying(30), "when_created" TIMESTAMP NOT NULL, "when_updated" TIMESTAMP, "last_name" character varying(150), "first_name" character varying(75), CONSTRAINT "UQ_6a823f4bdaf2485661fa50b8246" UNIQUE ("psnorg_id"), CONSTRAINT "UQ_ca2c3e875aa5e455ee86bf8e02e" UNIQUE ("start_date"), CONSTRAINT "PK_6d0b93303c2f0101bd49f49e044" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE UNIQUE INDEX "site_staffs_psnorg_id_start_date_key" ON "sites"."site_staffs" ("psnorg_id", "start_date") `);
         await queryRunner.query(`CREATE INDEX "site_staff_employed_as_frgn" ON "sites"."site_staffs" ("psnorg_id") `);
@@ -230,12 +230,12 @@ export class MasterScript1711061936590 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE "sites"."subdivisions" ("id" bigint NOT NULL, "date_noted" TIMESTAMP NOT NULL, "pin" character varying(9), "pid" character varying(9), "bcaa_folio_number" character varying(20), "entity_type" character varying(4), "addr_line_1" character varying(50), "addr_line_2" character varying(50), "addr_line_3" character varying(50), "addr_line_4" character varying(50), "city" character varying(30), "postal_code" character varying(10), "legal_description" character varying(255), "who_created" character varying(30) NOT NULL, "who_updated" character varying(30), "when_created" TIMESTAMP NOT NULL, "when_updated" TIMESTAMP, "crown_lands_file_no" character varying(7), "pid_status_cd" character varying(1) NOT NULL, "valid_pid" character(1), CONSTRAINT "UQ_ad7dfb7e17c409d8b025f8776a8" UNIQUE ("pin"), CONSTRAINT "UQ_2008492ca13515d645bfbf1699e" UNIQUE ("pid"), CONSTRAINT "PK_f521e4439b27c529d97c90d1907" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE UNIQUE INDEX "subdivisions_pid_pin_key" ON "sites"."subdivisions" ("pid", "pin") `);
         await queryRunner.query(`CREATE UNIQUE INDEX "subdivisions_pkey" ON "sites"."subdivisions" ("id") `);
-        await queryRunner.query(`CREATE TABLE "sites"."spatial_ref_sys" ("srid" integer NOT NULL, "auth_name" character varying(256), "auth_srid" integer, "srtext" character varying(2048), "proj4text" character varying(2048), CONSTRAINT "PK_ff8a45f5398d8ad47f3b844bb58" PRIMARY KEY ("srid"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "spatial_ref_sys_pkey" ON "sites"."spatial_ref_sys" ("srid") `);
-        await queryRunner.query(`CREATE TABLE "sites"."site_registry_module" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "sites" character(1), "site_location_description" character(1), "site_partics" character(1), "site_partic_notes" character(1), "site_partic_roles" character(1), "site_partic_dates" character(1), "notations" character(1), "notation_notes" character(1), "notation_actions" character(1), "notation_partics" character(1), "documents" character(1), "document_notes" character(1), "document_partics" character(1), "document_abstracts" character(1), "document_measure_pops" character(1), "document_measure_details" character(1), "associations" character(1), "association_notes" character(1), "association_dates" character(1), "suspect_land_uses" character(1), "suspect_land_use_notes" character(1), "aec_assessments" character(1), "aec_assessment_mig_potential" character(1), "aec_assessment_sources" character(1), "aec_assessment_medias" character(1), "aec_assessment_media_notes" character(1), "aec_assessment_pcocs" character(1), "aec_remed_plans" character(1), "aec_remed_plan_notes" character(1), "aec_remed_plan_items" character(1), "aec_remed_plan_item_measures" character(1), "aec_remed_approaches" character(1), CONSTRAINT "PK_7c6a966c058663ac877148f6f42" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "sites"."site_registry" ("site_id" bigint NOT NULL, "reg_flag" smallint, "reg_userid" character varying(16), "init_approval_date" TIMESTAMP, "last_approval_date" TIMESTAMP, "tombstone_date" TIMESTAMP, CONSTRAINT "PK_f9b6fe314837927a20473fa8540" PRIMARY KEY ("site_id"))`);
         await queryRunner.query(`CREATE UNIQUE INDEX "site_registry_pkey" ON "sites"."site_registry" ("site_id") `);
         await queryRunner.query(`CREATE INDEX "sitereg_bco" ON "sites"."site_registry" ("reg_flag", "site_id") `);
+        await queryRunner.query(`CREATE TABLE "sites"."spatial_ref_sys" ("srid" integer NOT NULL, "auth_name" character varying(256), "auth_srid" integer, "srtext" character varying(2048), "proj4text" character varying(2048), CONSTRAINT "PK_ff8a45f5398d8ad47f3b844bb58" PRIMARY KEY ("srid"))`);
+        await queryRunner.query(`CREATE UNIQUE INDEX "spatial_ref_sys_pkey" ON "sites"."spatial_ref_sys" ("srid") `);
+        await queryRunner.query(`CREATE TABLE "sites"."site_registry_module" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "sites" character(1), "site_location_description" character(1), "site_partics" character(1), "site_partic_notes" character(1), "site_partic_roles" character(1), "site_partic_dates" character(1), "notations" character(1), "notation_notes" character(1), "notation_actions" character(1), "notation_partics" character(1), "documents" character(1), "document_notes" character(1), "document_partics" character(1), "document_abstracts" character(1), "document_measure_pops" character(1), "document_measure_details" character(1), "associations" character(1), "association_notes" character(1), "association_dates" character(1), "suspect_land_uses" character(1), "suspect_land_use_notes" character(1), "aec_assessments" character(1), "aec_assessment_mig_potential" character(1), "aec_assessment_sources" character(1), "aec_assessment_medias" character(1), "aec_assessment_media_notes" character(1), "aec_assessment_pcocs" character(1), "aec_remed_plans" character(1), "aec_remed_plan_notes" character(1), "aec_remed_plan_items" character(1), "aec_remed_plan_item_measures" character(1), "aec_remed_approaches" character(1), CONSTRAINT "PK_7c6a966c058663ac877148f6f42" PRIMARY KEY ("id"))`);
         await queryRunner.query(`ALTER TABLE "sites"."profile_questions" ADD CONSTRAINT "FK_14edd82a4bb575de4f9f1cf07fe" FOREIGN KEY ("category_id") REFERENCES "sites"."profile_categories"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "sites"."profile_questions" ADD CONSTRAINT "FK_49ae5cf816287627cfd33bf2e0f" FOREIGN KEY ("parent_id") REFERENCES "sites"."profile_questions"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "sites"."profile_answers" ADD CONSTRAINT "FK_938ad8c705f3e2de4f81f3af1ef" FOREIGN KEY ("question_id") REFERENCES "sites"."profile_questions"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
@@ -275,10 +275,10 @@ export class MasterScript1711061936590 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "sites"."mailout" ADD CONSTRAINT "FK_0377a38291463564bca530aa113" FOREIGN KEY ("site_id") REFERENCES "sites"."sites"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "sites"."sis_addresses" ADD CONSTRAINT "FK_182f20c89cd73a826528fe101e2" FOREIGN KEY ("psnorg_id") REFERENCES "sites"."people_orgs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "sites"."site_contamination_class_xref" ADD CONSTRAINT "FK_d55e2c28916898fb8709cead017" FOREIGN KEY ("contamination_class_code") REFERENCES "sites"."contamination_class_cd"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "sites"."site_contamination_class_xref" ADD CONSTRAINT "FK_13b56121c4098b587b4fdbd0175" FOREIGN KEY ("sclc_id") REFERENCES "site_crown_land_contaminated"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "site_crown_land_contaminated" ADD CONSTRAINT "FK_6eda683ea614a412d989c0a7451" FOREIGN KEY ("id") REFERENCES "sites"."sites"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "site_crown_land_contaminated" ADD CONSTRAINT "FK_2c5f5026d5645f6af23b5e3dd75" FOREIGN KEY ("psnorg_id") REFERENCES "sites"."people_orgs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "site_crown_land_contaminated" ADD CONSTRAINT "FK_d6b2ef003392e7f94acb0a76081" FOREIGN KEY ("site_crown_land_status_code") REFERENCES "sites"."site_crown_land_status_cd"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "sites"."site_contamination_class_xref" ADD CONSTRAINT "FK_13b56121c4098b587b4fdbd0175" FOREIGN KEY ("sclc_id") REFERENCES "sites"."site_crown_land_contaminated"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "sites"."site_crown_land_contaminated" ADD CONSTRAINT "FK_6eda683ea614a412d989c0a7451" FOREIGN KEY ("id") REFERENCES "sites"."sites"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "sites"."site_crown_land_contaminated" ADD CONSTRAINT "FK_2c5f5026d5645f6af23b5e3dd75" FOREIGN KEY ("psnorg_id") REFERENCES "sites"."people_orgs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "sites"."site_crown_land_contaminated" ADD CONSTRAINT "FK_d6b2ef003392e7f94acb0a76081" FOREIGN KEY ("site_crown_land_status_code") REFERENCES "sites"."site_crown_land_status_cd"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "sites"."site_staffs" ADD CONSTRAINT "FK_6a823f4bdaf2485661fa50b8246" FOREIGN KEY ("psnorg_id") REFERENCES "sites"."people_orgs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "sites"."people_orgs" ADD CONSTRAINT "FK_689cb78e07c25d64080a1328600" FOREIGN KEY ("bcer_code") REFERENCES "sites"."bce_region_cd"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "sites"."site_doc_partics" ADD CONSTRAINT "FK_4f9b4ac9bd8d02e44e73516902e" FOREIGN KEY ("dpr_code") REFERENCES "sites"."doc_partic_role_cd"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`);
@@ -380,9 +380,9 @@ export class MasterScript1711061936590 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "sites"."site_doc_partics" DROP CONSTRAINT "FK_4f9b4ac9bd8d02e44e73516902e"`);
         await queryRunner.query(`ALTER TABLE "sites"."people_orgs" DROP CONSTRAINT "FK_689cb78e07c25d64080a1328600"`);
         await queryRunner.query(`ALTER TABLE "sites"."site_staffs" DROP CONSTRAINT "FK_6a823f4bdaf2485661fa50b8246"`);
-        await queryRunner.query(`ALTER TABLE "site_crown_land_contaminated" DROP CONSTRAINT "FK_d6b2ef003392e7f94acb0a76081"`);
-        await queryRunner.query(`ALTER TABLE "site_crown_land_contaminated" DROP CONSTRAINT "FK_2c5f5026d5645f6af23b5e3dd75"`);
-        await queryRunner.query(`ALTER TABLE "site_crown_land_contaminated" DROP CONSTRAINT "FK_6eda683ea614a412d989c0a7451"`);
+        await queryRunner.query(`ALTER TABLE "sites"."site_crown_land_contaminated" DROP CONSTRAINT "FK_d6b2ef003392e7f94acb0a76081"`);
+        await queryRunner.query(`ALTER TABLE "sites"."site_crown_land_contaminated" DROP CONSTRAINT "FK_2c5f5026d5645f6af23b5e3dd75"`);
+        await queryRunner.query(`ALTER TABLE "sites"."site_crown_land_contaminated" DROP CONSTRAINT "FK_6eda683ea614a412d989c0a7451"`);
         await queryRunner.query(`ALTER TABLE "sites"."site_contamination_class_xref" DROP CONSTRAINT "FK_13b56121c4098b587b4fdbd0175"`);
         await queryRunner.query(`ALTER TABLE "sites"."site_contamination_class_xref" DROP CONSTRAINT "FK_d55e2c28916898fb8709cead017"`);
         await queryRunner.query(`ALTER TABLE "sites"."sis_addresses" DROP CONSTRAINT "FK_182f20c89cd73a826528fe101e2"`);
@@ -423,12 +423,12 @@ export class MasterScript1711061936590 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "sites"."profile_answers" DROP CONSTRAINT "FK_938ad8c705f3e2de4f81f3af1ef"`);
         await queryRunner.query(`ALTER TABLE "sites"."profile_questions" DROP CONSTRAINT "FK_49ae5cf816287627cfd33bf2e0f"`);
         await queryRunner.query(`ALTER TABLE "sites"."profile_questions" DROP CONSTRAINT "FK_14edd82a4bb575de4f9f1cf07fe"`);
-        await queryRunner.query(`DROP INDEX "sites"."sitereg_bco"`);
-        await queryRunner.query(`DROP INDEX "sites"."site_registry_pkey"`);
-        await queryRunner.query(`DROP TABLE "sites"."site_registry"`);
         await queryRunner.query(`DROP TABLE "sites"."site_registry_module"`);
         await queryRunner.query(`DROP INDEX "sites"."spatial_ref_sys_pkey"`);
         await queryRunner.query(`DROP TABLE "sites"."spatial_ref_sys"`);
+        await queryRunner.query(`DROP INDEX "sites"."sitereg_bco"`);
+        await queryRunner.query(`DROP INDEX "sites"."site_registry_pkey"`);
+        await queryRunner.query(`DROP TABLE "sites"."site_registry"`);
         await queryRunner.query(`DROP INDEX "sites"."subdivisions_pkey"`);
         await queryRunner.query(`DROP INDEX "sites"."subdivisions_pid_pin_key"`);
         await queryRunner.query(`DROP TABLE "sites"."subdivisions"`);
@@ -551,8 +551,8 @@ export class MasterScript1711061936590 implements MigrationInterface {
         await queryRunner.query(`DROP INDEX "sites"."site_staff_employed_as_frgn"`);
         await queryRunner.query(`DROP INDEX "sites"."site_staffs_psnorg_id_start_date_key"`);
         await queryRunner.query(`DROP TABLE "sites"."site_staffs"`);
-        await queryRunner.query(`DROP INDEX "public"."site_crown_land_contaminated_pkey"`);
-        await queryRunner.query(`DROP TABLE "site_crown_land_contaminated"`);
+        await queryRunner.query(`DROP INDEX "sites"."site_crown_land_contaminated_pkey"`);
+        await queryRunner.query(`DROP TABLE "sites"."site_crown_land_contaminated"`);
         await queryRunner.query(`DROP INDEX "sites"."site_crown_land_status_cd_pkey"`);
         await queryRunner.query(`DROP TABLE "sites"."site_crown_land_status_cd"`);
         await queryRunner.query(`DROP INDEX "sites"."site_contamination_class_xref_pkey"`);

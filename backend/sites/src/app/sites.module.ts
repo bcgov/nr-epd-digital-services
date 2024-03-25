@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Sites } from './entities/sites.entity';
 
 /**
  * Module for wrapping all functionalities in sites microserivce
  */
 @Module({
-  imports: [TypeOrmModule.forFeature([Sites])],
+  imports: [TypeOrmModule.forFeature()],
   providers: [],
 })
 export class SitesModule { }

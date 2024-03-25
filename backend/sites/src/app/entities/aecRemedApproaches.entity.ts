@@ -1,3 +1,4 @@
+import { Field, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   Entity,
@@ -12,6 +13,7 @@ import { RemedSiteUseCd } from "./remedSiteUseCd.entity";
 import { Sites } from "./sites.entity";
 import { AecRemedItems } from "./aecRemedItems.entity";
 
+@ObjectType()
 @Index(
   "aec_remed_approaches_aecrem_id_criteria_code_approach_remed_key",
   ["aecremId", "approach", "criteriaCode", "remedSiteUseCode"],
@@ -24,15 +26,19 @@ import { AecRemedItems } from "./aecRemedItems.entity";
 @Index("aecremapp_sites_frgn", ["siteId"], {})
 @Entity("aec_remed_approaches")
 export class AecRemedApproaches {
+  @Field()
   @Column("bigint", { primary: true, name: "id" })
   id: string;
 
+  @Field()
   @Column("bigint", { name: "site_id" })
   siteId: string;
 
+  @Field()
   @Column("bigint", { name: "aecrem_id", unique: true })
   aecremId: string;
 
+  @Field()
   @Column("character varying", {
     name: "criteria_code",
     unique: true,
@@ -40,9 +46,11 @@ export class AecRemedApproaches {
   })
   criteriaCode: string;
 
+  @Field()
   @Column("character varying", { name: "approach", unique: true, length: 10 })
   approach: string;
 
+  @Field()
   @Column("character varying", {
     name: "remed_site_use_code",
     unique: true,
@@ -50,12 +58,15 @@ export class AecRemedApproaches {
   })
   remedSiteUseCode: string;
 
+  @Field()
   @Column("character varying", { name: "who_created", length: 30 })
   whoCreated: string;
 
+  @Field()
   @Column("timestamp without time zone", { name: "when_created" })
   whenCreated: Date;
 
+  @Field()
   @Column("character varying", {
     name: "who_updated",
     nullable: true,
@@ -63,6 +74,7 @@ export class AecRemedApproaches {
   })
   whoUpdated: string | null;
 
+  @Field()
   @Column("timestamp without time zone", {
     name: "when_updated",
     nullable: true,
