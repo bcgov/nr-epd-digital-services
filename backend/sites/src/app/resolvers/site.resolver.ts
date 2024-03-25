@@ -8,8 +8,8 @@ import { SiteService } from '../services/site.service';
  * Resolver for Region
  */
 @Resolver(() => Sites)
-@Resource('user-service')
-export class SitesResolver {
+@Resource('site-service')
+export class SiteResolver {
     constructor(private readonly siteService: SiteService) { }
 
     /**
