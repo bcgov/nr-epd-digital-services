@@ -2,7 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, Index, OneToMany } from "typeorm";
 import { LandHistories } from "./landHistories.entity";
 import { SiteProfileLandUses } from "./siteProfileLandUses.entity";
-import { observeNotification } from 'rxjs/internal/Notification';
+
 
 @ObjectType()
 @Index("land_use_cd_pkey", ["code"], { unique: true })

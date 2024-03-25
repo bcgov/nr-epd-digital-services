@@ -1,3 +1,4 @@
+import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
 import { ActivityCd } from "./activityCd.entity";
 import { ContamCd } from "./contamCd.entity";
@@ -6,6 +7,7 @@ import { MediaCd } from "./mediaCd.entity";
 import { ProtectionCategoryCd } from "./protectionCategoryCd.entity";
 import { RemedSiteUseCd } from "./remedSiteUseCd.entity";
 
+@ObjectType()
 @Index(
   "matrix_objectives_pkey",
   [
@@ -39,6 +41,7 @@ import { RemedSiteUseCd } from "./remedSiteUseCd.entity";
 @Index("matobj_remed_use_frgn", ["remedSiteUseCode"], {})
 @Entity("matrix_objectives")
 export class MatrixObjectives {
+  @Field()
   @Column("character varying", {
     primary: true,
     name: "criteria_code",
@@ -46,9 +49,11 @@ export class MatrixObjectives {
   })
   criteriaCode: string;
 
+  @Field()
   @Column("character varying", { primary: true, name: "media_code", length: 6 })
   mediaCode: string;
 
+  @Field()
   @Column("character varying", {
     primary: true,
     name: "contaminant_code",
@@ -56,6 +61,7 @@ export class MatrixObjectives {
   })
   contaminantCode: string;
 
+  @Field()
   @Column("character varying", {
     primary: true,
     name: "remed_site_use_code",
@@ -63,6 +69,7 @@ export class MatrixObjectives {
   })
   remedSiteUseCode: string;
 
+  @Field()
   @Column("character varying", {
     primary: true,
     name: "protcat_code",
@@ -70,6 +77,7 @@ export class MatrixObjectives {
   })
   protcatCode: string;
 
+  @Field()
   @Column("character varying", {
     primary: true,
     name: "activity_code",
@@ -77,12 +85,15 @@ export class MatrixObjectives {
   })
   activityCode: string;
 
+  @Field()
   @Column("character varying", { name: "ph_range", nullable: true, length: 15 })
   phRange: string | null;
 
+  @Field()
   @Column("bigint", { primary: true, name: "level_value" })
   levelValue: string;
 
+  @Field()
   @Column("character varying", { name: "units", length: 10 })
   units: string;
 

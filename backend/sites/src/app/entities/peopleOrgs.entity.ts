@@ -1,3 +1,4 @@
+import { Field, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   Entity,
@@ -15,13 +16,16 @@ import { SiteDocPartics } from "./siteDocPartics.entity";
 import { SitePartics } from "./sitePartics.entity";
 import { SiteStaffs } from "./siteStaffs.entity";
 
+@ObjectType()
 @Index("psnorg_working_within_frgn", ["bcerCode"], {})
 @Index("people_orgs_pkey", ["id"], { unique: true })
 @Entity("people_orgs")
 export class PeopleOrgs {
+  @Field()
   @Column("bigint", { primary: true, name: "id" })
   id: string;
 
+  @Field()
   @Column("character varying", {
     name: "organization_name",
     nullable: true,
@@ -29,18 +33,23 @@ export class PeopleOrgs {
   })
   organizationName: string | null;
 
+  @Field()
   @Column("character varying", { name: "display_name", length: 150 })
   displayName: string;
 
+  @Field()
   @Column("character varying", { name: "entity_type", length: 12 })
   entityType: string;
 
+  @Field()
   @Column("character varying", { name: "location", nullable: true, length: 40 })
   location: string | null;
 
+  @Field()
   @Column("character varying", { name: "bcer_code", nullable: true, length: 6 })
   bcerCode: string | null;
 
+  @Field()
   @Column("character varying", {
     name: "contact_name",
     nullable: true,
@@ -48,6 +57,7 @@ export class PeopleOrgs {
   })
   contactName: string | null;
 
+  @Field()
   @Column("character varying", {
     name: "mail_userid",
     nullable: true,
@@ -55,6 +65,7 @@ export class PeopleOrgs {
   })
   mailUserid: string | null;
 
+  @Field()
   @Column("character varying", {
     name: "last_name",
     nullable: true,
@@ -62,6 +73,7 @@ export class PeopleOrgs {
   })
   lastName: string | null;
 
+  @Field()
   @Column("character varying", {
     name: "first_name",
     nullable: true,
@@ -69,6 +81,7 @@ export class PeopleOrgs {
   })
   firstName: string | null;
 
+  @Field()
   @Column("character varying", {
     name: "middle_name",
     nullable: true,
@@ -76,9 +89,11 @@ export class PeopleOrgs {
   })
   middleName: string | null;
 
+  @Field()
   @Column("character varying", { name: "who_created", length: 30 })
   whoCreated: string;
 
+  @Field()
   @Column("character varying", {
     name: "who_updated",
     nullable: true,
@@ -86,15 +101,18 @@ export class PeopleOrgs {
   })
   whoUpdated: string | null;
 
+  @Field()
   @Column("timestamp without time zone", { name: "when_created" })
   whenCreated: Date;
 
+  @Field()
   @Column("timestamp without time zone", {
     name: "when_updated",
     nullable: true,
   })
   whenUpdated: Date | null;
 
+  @Field()
   @Column("timestamp without time zone", { name: "end_date", nullable: true })
   endDate: Date | null;
 

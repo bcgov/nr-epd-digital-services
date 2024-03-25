@@ -1,12 +1,16 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
 import { AecRemedMeasures } from "./aecRemedMeasures.entity";
+import { Field, ObjectType } from '@nestjs/graphql';
 
+@ObjectType()
 @Index("remed_measure_cd_pkey", ["code"], { unique: true })
 @Entity("remed_measure_cd")
 export class RemedMeasureCd {
+  @Field()
   @Column("character varying", { primary: true, name: "code", length: 6 })
   code: string;
 
+  @Field()
   @Column("character varying", { name: "description", length: 40 })
   description: string;
 

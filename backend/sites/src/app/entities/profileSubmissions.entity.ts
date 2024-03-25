@@ -1,7 +1,9 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
 import { SiteProfiles } from "./siteProfiles.entity";
 import { SubmissionCd } from "./submissionCd.entity";
+import { Field, ObjectType } from '@nestjs/graphql';
 
+@ObjectType()
 @Index(
   "profile_submissions_pkey",
   ["sprofDateCompleted", "sprofSiteId", "submcdCode"],
@@ -11,12 +13,14 @@ import { SubmissionCd } from "./submissionCd.entity";
 @Index("profsbm_submcd_fk_i", ["submcdCode"], {})
 @Entity("profile_submissions")
 export class ProfileSubmissions {
+  @Field()
   @Column("timestamp without time zone", {
     primary: true,
     name: "sprof_date_completed",
   })
   sprofDateCompleted: Date;
 
+  @Field()
   @Column("character varying", {
     primary: true,
     name: "submcd_code",
@@ -24,6 +28,7 @@ export class ProfileSubmissions {
   })
   submcdCode: string;
 
+  @Field()
   @Column("bigint", { primary: true, name: "sprof_site_id" })
   sprofSiteId: string;
 
