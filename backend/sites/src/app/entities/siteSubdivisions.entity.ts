@@ -2,7 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
 import { Sites } from "./sites.entity";
 
-@ObjectType
+@ObjectType()
 @Index(
   "site_subdivisions_site_id_subdiv_id_sprof_date_completed_key",
   ["siteId", "sprofDateCompleted", "subdivId"],
@@ -15,27 +15,27 @@ import { Sites } from "./sites.entity";
 @Entity("site_subdivisions")
 export class SiteSubdivisions {
   
-  @Field  
+  @Field()  
   @Column("bigint", { name: "site_id", unique: true })
   siteId: string;
   
-  @Field
+  @Field()
   @Column("bigint", { name: "subdiv_id", unique: true })
   subdivId: string;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", { name: "date_noted" })
   dateNoted: Date;
   
-  @Field
+  @Field()
   @Column("character varying", { name: "initial_indicator", length: 1 })
   initialIndicator: string;
   
-  @Field
+  @Field()
   @Column("character varying", { name: "who_created", length: 30 })
   whoCreated: string;
   
-  @Field
+  @Field()
   @Column("character varying", {
     name: "who_updated",
     nullable: true,
@@ -43,18 +43,18 @@ export class SiteSubdivisions {
   })
   whoUpdated: string | null;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", { name: "when_created" })
   whenCreated: Date;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", {
     name: "when_updated",
     nullable: true,
   })
   whenUpdated: Date | null;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", {
     name: "sprof_date_completed",
     nullable: true,
@@ -62,11 +62,11 @@ export class SiteSubdivisions {
   })
   sprofDateCompleted: Date | null;
   
-  @Field
+  @Field()
   @Column("bigint", { primary: true, name: "site_subdiv_id" })
   siteSubdivId: string;
   
-  @Field
+  @Field()
   @Column("character varying", { name: "send_to_sr", length: 1 })
   sendToSr: string;
 

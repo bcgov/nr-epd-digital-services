@@ -2,7 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
 import { Sites } from "./sites.entity";
 
-@ObjectType
+@ObjectType()
 @Index("sa_rwm_flag", ["rwmFlag"], {})
 @Index("sa_rwm_note_flag", ["rwmNoteFlag"], {})
 @Index("sa_adjacent_to_frgn", ["siteId"], {})
@@ -11,27 +11,27 @@ import { Sites } from "./sites.entity";
 @Entity("site_assocs")
 export class SiteAssocs {
   
-  @Field
+  @Field()
   @Column("bigint", { primary: true, name: "site_id" })
   siteId: string;
   
-  @Field
+  @Field()
   @Column("bigint", { primary: true, name: "site_id_associated_with" })
   siteIdAssociatedWith: string;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", { name: "effective_date" })
   effectiveDate: Date;
   
-  @Field
+  @Field()
   @Column("character varying", { name: "note", nullable: true, length: 255 })
   note: string | null;
   
-  @Field
+  @Field()
   @Column("character varying", { name: "who_created", length: 30 })
   whoCreated: string;
   
-  @Field
+  @Field()
   @Column("character varying", {
     name: "who_updated",
     nullable: true,
@@ -39,26 +39,26 @@ export class SiteAssocs {
   })
   whoUpdated: string | null;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", { name: "when_created" })
   whenCreated: Date;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", {
     name: "when_updated",
     nullable: true,
   })
   whenUpdated: Date | null;
   
-  @Field
+  @Field()
   @Column("smallint", { name: "rwm_flag" })
   rwmFlag: number;
   
-  @Field
+  @Field()
   @Column("smallint", { name: "rwm_note_flag" })
   rwmNoteFlag: number;
   
-  @Field
+  @Field()
   @Column("character varying", { name: "common_pid", length: 1 })
   commonPid: string;
 

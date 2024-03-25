@@ -13,45 +13,45 @@ import { MeasurementPopulations } from "./measurementPopulations.entity";
 import { SiteDocPartics } from "./siteDocPartics.entity";
 import { Sites } from "./sites.entity";
 
-@ObjectType
+@ObjectType()
 @Index("site_docs_pkey", ["id"], { unique: true })
 @Index("sdoc_rwm_flag", ["rwmFlag"], {})
 @Index("sdoc_about_frgn", ["siteId"], {})
 @Entity("site_docs")
 export class SiteDocs {
   
-  @Field
+  @Field()
   @Column("bigint", { primary: true, name: "id" })
   id: string;
   
-  @Field
+  @Field()
   @Column("bigint", { name: "site_id" })
   siteId: string;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", { name: "submission_date" })
   submissionDate: Date;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", {
     name: "document_date",
     nullable: true,
   })
   documentDate: Date | null;
   
-  @Field
+  @Field()
   @Column("character varying", { name: "title", length: 150 })
   title: string;
   
-  @Field
+  @Field()
   @Column("character varying", { name: "note", nullable: true, length: 255 })
   note: string | null;
   
-  @Field
+  @Field()
   @Column("character varying", { name: "who_created", length: 30 })
   whoCreated: string;
   
-  @Field
+  @Field()
   @Column("character varying", {
     name: "who_updated",
     nullable: true,
@@ -59,22 +59,22 @@ export class SiteDocs {
   })
   whoUpdated: string | null;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", { name: "when_created" })
   whenCreated: Date;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", {
     name: "when_updated",
     nullable: true,
   })
   whenUpdated: Date | null;
   
-  @Field
+  @Field()
   @Column("smallint", { name: "rwm_flag" })
   rwmFlag: number;
   
-  @Field
+  @Field()
   @Column("smallint", { name: "rwm_note_flag", nullable: true })
   rwmNoteFlag: number | null;
 

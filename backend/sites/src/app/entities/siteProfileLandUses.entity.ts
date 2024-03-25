@@ -3,7 +3,7 @@ import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
 import { LandUseCd } from "./landUseCd.entity";
 import { SiteProfiles } from "./siteProfiles.entity";
 
-@ObjectType
+@ObjectType()
 @Index(
   "site_profile_land_uses_pkey",
   ["lutCode", "siteId", "sprofDateCompleted"],
@@ -12,26 +12,26 @@ import { SiteProfiles } from "./siteProfiles.entity";
 @Entity("site_profile_land_uses")
 export class SiteProfileLandUses {
   
-  @Field
+  @Field()
   @Column("bigint", { primary: true, name: "site_id" })
   siteId: string;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", {
     primary: true,
     name: "sprof_date_completed",
   })
   sprofDateCompleted: Date;
   
-  @Field
+  @Field()
   @Column("character varying", { primary: true, name: "lut_code", length: 6 })
   lutCode: string;
   
-  @Field
+  @Field()
   @Column("character varying", { name: "who_created", length: 16 })
   whoCreated: string;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", { name: "when_created" })
   whenCreated: Date;
 

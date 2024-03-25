@@ -3,7 +3,7 @@ import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
 import { SiteProfiles } from "./siteProfiles.entity";
 import { SitePartics } from "./sitePartics.entity";
 
-@ObjectType
+@ObjectType()
 @Index("spown_sprof_fk_i", ["dateCompleted", "siteId"], {})
 @Index("site_profile_owners_pkey", ["dateCompleted", "siteId", "spId"], {
   unique: true,
@@ -12,22 +12,22 @@ import { SitePartics } from "./sitePartics.entity";
 @Entity("site_profile_owners")
 export class SiteProfileOwners {
   
-  @Field
+  @Field()
   @Column("bigint", { primary: true, name: "site_id" })
   siteId: string;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", {
     primary: true,
     name: "date_completed",
   })
   dateCompleted: Date;
   
-  @Field
+  @Field()
   @Column("bigint", { primary: true, name: "sp_id" })
   spId: string;
   
-  @Field
+  @Field()
   @Column("character varying", {
     name: "owner_company_contact",
     nullable: true,
@@ -35,7 +35,7 @@ export class SiteProfileOwners {
   })
   ownerCompanyContact: string | null;
   
-  @Field
+  @Field()
   @Column("character varying", {
     name: "agent_authorized_ind",
     nullable: true,

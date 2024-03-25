@@ -15,7 +15,7 @@ import { Sites } from "./sites.entity";
 import { SiteProfileOwners } from "./siteProfileOwners.entity";
 import { SiteProfiles } from "./siteProfiles.entity";
 
-@ObjectType
+@ObjectType()
 @Index("site_partics_pkey", ["id"], { unique: true })
 @Index("sp_identified_by_frgn", ["psnorgId"], {})
 @Index("sp_rwm_flag", ["rwmFlag"], {})
@@ -23,54 +23,54 @@ import { SiteProfiles } from "./siteProfiles.entity";
 @Entity("site_partics")
 export class SitePartics {
   
-  @Field
+  @Field()
   @Column("bigint", { primary: true, name: "id" })
   id: string;
   
-  @Field
+  @Field()
   @Column("bigint", { name: "site_id" })
   siteId: string;
   
-  @Field
+  @Field()
   @Column("bigint", { name: "psnorg_id" })
   psnorgId: string;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", { name: "effective_date" })
   effectiveDate: Date;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", { name: "end_date", nullable: true })
   endDate: Date | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "note", nullable: true, length: 255 })
   note: string | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "who_created", length: 30 })
   whoCreated: string;
   
-  @Field
+  @Field()
   @Column("character", { name: "who_updated", nullable: true, length: 30 })
   whoUpdated: string | null;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", { name: "when_created" })
   whenCreated: Date;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", {
     name: "when_updated",
     nullable: true,
   })
   whenUpdated: Date | null;
   
-  @Field
+  @Field()
   @Column("smallint", { name: "rwm_flag" })
   rwmFlag: number;
   
-  @Field
+  @Field()
   @Column("smallint", { name: "rwm_note_flag" })
   rwmNoteFlag: number;
 

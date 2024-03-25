@@ -3,7 +3,7 @@ import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
 import { ParticRoleCd } from "./particRoleCd.entity";
 import { SitePartics } from "./sitePartics.entity";
 
-@ObjectType
+@ObjectType()
 @Index("spr_classified_by_frgn", ["prCode"], {})
 @Index("site_partic_roles_pkey", ["prCode", "spId"], { unique: true })
 @Index("spr_rwm_flag", ["rwmFlag"], {})
@@ -11,19 +11,19 @@ import { SitePartics } from "./sitePartics.entity";
 @Entity("site_partic_roles")
 export class SiteParticRoles {
   
-  @Field
+  @Field()
   @Column("character varying", { primary: true, name: "pr_code", length: 6 })
   prCode: string;
   
-  @Field
+  @Field()
   @Column("bigint", { primary: true, name: "sp_id" })
   spId: string;
   
-  @Field
+  @Field()
   @Column("character varying", { name: "who_created", length: 30 })
   whoCreated: string;
   
-  @Field
+  @Field()
   @Column("character varying", {
     name: "who_updated",
     nullable: true,
@@ -31,18 +31,18 @@ export class SiteParticRoles {
   })
   whoUpdated: string | null;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", { name: "when_created" })
   whenCreated: Date;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", {
     name: "when_updated",
     nullable: true,
   })
   whenUpdated: Date | null;
   
-  @Field
+  @Field()
   @Column("smallint", { name: "rwm_flag" })
   rwmFlag: number;
 

@@ -2,16 +2,16 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, Index, OneToMany } from "typeorm";
 import { SiteCrownLandContaminated } from "./siteCrownLandContaminated.entity";
 
-@ObjectType
+@ObjectType()
 @Index("site_crown_land_status_cd_pkey", ["code"], { unique: true })
 @Entity("site_crown_land_status_cd")
 export class SiteCrownLandStatusCd {
   
-  @Field
+  @Field()
   @Column("character varying", { primary: true, name: "code", length: 6 })
   code: string;
 
-  @Field
+  @Field()
   @Column("character varying", { name: "description", length: 140 })
   description: string;
 

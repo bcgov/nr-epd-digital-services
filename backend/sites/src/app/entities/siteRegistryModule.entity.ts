@@ -1,17 +1,17 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@ObjectType
+@ObjectType()
 @Entity("site_registry_module")
 export class SiteRegistryModule {
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
   id: string;
   
-  @Field
+  @Field()
   @Column("character", { name: "sites", nullable: true, length: 1 })
   sites: string | null;
   
-  @Field
+  @Field()
   @Column("character", {
     name: "site_location_description",
     nullable: true,
@@ -19,51 +19,51 @@ export class SiteRegistryModule {
   })
   siteLocationDescription: string | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "site_partics", nullable: true, length: 1 })
   sitePartics: string | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "site_partic_notes", nullable: true, length: 1 })
   siteParticNotes: string | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "site_partic_roles", nullable: true, length: 1 })
   siteParticRoles: string | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "site_partic_dates", nullable: true, length: 1 })
   siteParticDates: string | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "notations", nullable: true, length: 1 })
   notations: string | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "notation_notes", nullable: true, length: 1 })
   notationNotes: string | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "notation_actions", nullable: true, length: 1 })
   notationActions: string | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "notation_partics", nullable: true, length: 1 })
   notationPartics: string | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "documents", nullable: true, length: 1 })
   documents: string | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "document_notes", nullable: true, length: 1 })
   documentNotes: string | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "document_partics", nullable: true, length: 1 })
   documentPartics: string | null;
   
-  @Field
+  @Field()
   @Column("character", {
     name: "document_abstracts",
     nullable: true,
@@ -71,7 +71,7 @@ export class SiteRegistryModule {
   })
   documentAbstracts: string | null;
   
-  @Field
+  @Field()
   @Column("character", {
     name: "document_measure_pops",
     nullable: true,
@@ -79,7 +79,7 @@ export class SiteRegistryModule {
   })
   documentMeasurePops: string | null;
   
-  @Field
+  @Field()
   @Column("character", {
     name: "document_measure_details",
     nullable: true,
@@ -87,23 +87,23 @@ export class SiteRegistryModule {
   })
   documentMeasureDetails: string | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "associations", nullable: true, length: 1 })
   associations: string | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "association_notes", nullable: true, length: 1 })
   associationNotes: string | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "association_dates", nullable: true, length: 1 })
   associationDates: string | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "suspect_land_uses", nullable: true, length: 1 })
   suspectLandUses: string | null;
   
-  @Field
+  @Field()
   @Column("character", {
     name: "suspect_land_use_notes",
     nullable: true,
@@ -111,11 +111,11 @@ export class SiteRegistryModule {
   })
   suspectLandUseNotes: string | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "aec_assessments", nullable: true, length: 1 })
   aecAssessments: string | null;
   
-  @Field
+  @Field()
   @Column("character", {
     name: "aec_assessment_mig_potential",
     nullable: true,
@@ -123,7 +123,7 @@ export class SiteRegistryModule {
   })
   aecAssessmentMigPotential: string | null;
   
-  @Field
+  @Field()
   @Column("character", {
     name: "aec_assessment_sources",
     nullable: true,
@@ -131,7 +131,7 @@ export class SiteRegistryModule {
   })
   aecAssessmentSources: string | null;
   
-  @Field
+  @Field()
   @Column("character", {
     name: "aec_assessment_medias",
     nullable: true,
@@ -139,7 +139,7 @@ export class SiteRegistryModule {
   })
   aecAssessmentMedias: string | null;
   
-  @Field
+  @Field()
   @Column("character", {
     name: "aec_assessment_media_notes",
     nullable: true,
@@ -147,7 +147,7 @@ export class SiteRegistryModule {
   })
   aecAssessmentMediaNotes: string | null;
   
-  @Field
+  @Field()
   @Column("character", {
     name: "aec_assessment_pcocs",
     nullable: true,
@@ -155,11 +155,11 @@ export class SiteRegistryModule {
   })
   aecAssessmentPcocs: string | null;
   
-  @Field
+  @Field()
   @Column("character", { name: "aec_remed_plans", nullable: true, length: 1 })
   aecRemedPlans: string | null;
   
-  @Field
+  @Field()
   @Column("character", {
     name: "aec_remed_plan_notes",
     nullable: true,
@@ -167,7 +167,7 @@ export class SiteRegistryModule {
   })
   aecRemedPlanNotes: string | null;
   
-  @Field
+  @Field()
   @Column("character", {
     name: "aec_remed_plan_items",
     nullable: true,
@@ -175,7 +175,7 @@ export class SiteRegistryModule {
   })
   aecRemedPlanItems: string | null;
   
-  @Field
+  @Field()
   @Column("character", {
     name: "aec_remed_plan_item_measures",
     nullable: true,
@@ -183,7 +183,7 @@ export class SiteRegistryModule {
   })
   aecRemedPlanItemMeasures: string | null;
   
-  @Field
+  @Field()
   @Column("character", {
     name: "aec_remed_approaches",
     nullable: true,

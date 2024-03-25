@@ -1,15 +1,15 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, Index } from "typeorm";
 
-@ObjectType
+@ObjectType()
 @Index("spatial_ref_sys_pkey", ["srid"], { unique: true })
 @Entity("spatial_ref_sys")
 export class SpatialRefSys {
-  @Field
+  @Field()
   @Column("integer", { primary: true, name: "srid" })
   srid: number;
   
-  @Field
+  @Field()
   @Column("character varying", {
     name: "auth_name",
     nullable: true,
@@ -17,15 +17,15 @@ export class SpatialRefSys {
   })
   authName: string | null;
   
-  @Field
+  @Field()
   @Column("integer", { name: "auth_srid", nullable: true })
   authSrid: number | null;
   
-  @Field
+  @Field()
   @Column("character varying", { name: "srtext", nullable: true, length: 2048 })
   srtext: string | null;
   
-  @Field
+  @Field()
   @Column("character varying", {
     name: "proj4text",
     nullable: true,

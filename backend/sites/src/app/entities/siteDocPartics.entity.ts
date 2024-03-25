@@ -5,7 +5,7 @@ import { PeopleOrgs } from "./peopleOrgs.entity";
 import { SiteDocs } from "./siteDocs.entity";
 import { SitePartics } from "./sitePartics.entity";
 
-@ObjectType
+@ObjectType()
 @Index("sdp_classified_by_frgn", ["dprCode"], {})
 @Index(
   "site_doc_partics_sdoc_id_psnorg_id_dpr_code_key",
@@ -20,31 +20,31 @@ import { SitePartics } from "./sitePartics.entity";
 @Entity("site_doc_partics")
 export class SiteDocPartics {
   
-  @Field
+  @Field()
   @Column("bigint", { primary: true, name: "id" })
   id: string;
   
-  @Field
+  @Field()
   @Column("character varying", { name: "dpr_code", unique: true, length: 6 })
   dprCode: string;
   
-  @Field
+  @Field()
   @Column("bigint", { name: "sdoc_id", unique: true })
   sdocId: string;
   
-  @Field
+  @Field()
   @Column("bigint", { name: "sp_id" })
   spId: string;
   
-  @Field
+  @Field()
   @Column("bigint", { name: "psnorg_id", unique: true })
   psnorgId: string;
   
-  @Field
+  @Field()
   @Column("character varying", { name: "who_created", length: 30 })
   whoCreated: string;
   
-  @Field
+  @Field()
   @Column("character varying", {
     name: "who_updated",
     nullable: true,
@@ -52,18 +52,18 @@ export class SiteDocPartics {
   })
   whoUpdated: string | null;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", { name: "when_created" })
   whenCreated: Date;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", {
     name: "when_updated",
     nullable: true,
   })
   whenUpdated: Date | null;
   
-  @Field
+  @Field()
   @Column("smallint", { name: "rwm_flag" })
   rwmFlag: number;
 

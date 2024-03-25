@@ -2,19 +2,19 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, Index, OneToMany } from "typeorm";
 import { ProfileSubmissions } from "./profileSubmissions.entity";
 
-@ObjectType
+@ObjectType()
 @Index("submission_cd_pkey", ["code"], { unique: true })
 @Entity("submission_cd")
 export class SubmissionCd {
-  @Field
+  @Field()
   @Column("character varying", { primary: true, name: "code", length: 6 })
   code: string;
 
-  @Field
+  @Field()
   @Column("character varying", { name: "description", length: 40 })
   description: string;
 
-  @Field
+  @Field()
   @Column("character varying", { name: "used_in", length: 4 })
   usedIn: string;
 

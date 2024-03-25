@@ -3,7 +3,7 @@ import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
 import { ContaminationClassCd } from "./contaminationClassCd.entity";
 import { SiteCrownLandContaminated } from "./siteCrownLandContaminated.entity";
 
-@ObjectType
+@ObjectType()
 @Index(
   "site_contamination_class_xref_pkey",
   ["contaminationClassCode", "sclcId"],
@@ -12,11 +12,11 @@ import { SiteCrownLandContaminated } from "./siteCrownLandContaminated.entity";
 @Entity("site_contamination_class_xref")
 export class SiteContaminationClassXref {
   
-  @Field
+  @Field()
   @Column("bigint", { primary: true, name: "sclc_id" })
   sclcId: string;
   
-  @Field
+  @Field()
   @Column("character varying", {
     primary: true,
     name: "contamination_class_code",
@@ -24,11 +24,11 @@ export class SiteContaminationClassXref {
   })
   contaminationClassCode: string;
   
-  @Field
+  @Field()
   @Column("character varying", { name: "who_created", length: 30 })
   whoCreated: string;
   
-  @Field
+  @Field()
   @Column("character varying", {
     name: "who_updated",
     nullable: true,
@@ -36,11 +36,11 @@ export class SiteContaminationClassXref {
   })
   whoUpdated: string | null;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", { name: "when_created" })
   whenCreated: Date;
   
-  @Field
+  @Field()
   @Column("timestamp without time zone", {
     name: "when_updated",
     nullable: true,
