@@ -1,3 +1,4 @@
+import { Field, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   Entity,
@@ -12,6 +13,7 @@ import { CriteriaCd } from "./criteriaCd.entity";
 import { MediaCd } from "./mediaCd.entity";
 import { RemedSiteUseCd } from "./remedSiteUseCd.entity";
 
+@ObjectType()
 @Index(
   "criteria_code_table_ind",
   ["contaminantCode", "criteriaCd", "levelCode", "mediaCd", "remedSiteUseCd"],
@@ -33,6 +35,7 @@ import { RemedSiteUseCd } from "./remedSiteUseCd.entity";
 @Index("criteria_remed_use_frgn", ["remedSiteUseCd"], {})
 @Entity("criteria_level_cd")
 export class CriteriaLevelCd {
+  @Field()
   @Column("character varying", {
     primary: true,
     name: "contaminant_code",
@@ -40,6 +43,7 @@ export class CriteriaLevelCd {
   })
   contaminantCode: string;
 
+  @Field()
   @Column("character varying", {
     primary: true,
     name: "criteria_cd",
@@ -47,12 +51,15 @@ export class CriteriaLevelCd {
   })
   criteriaCd: string;
 
+  @Field()
   @Column("character varying", { primary: true, name: "media_cd", length: 6 })
   mediaCd: string;
 
+  @Field()
   @Column("character varying", { primary: true, name: "level_code", length: 6 })
   levelCode: string;
 
+  @Field()
   @Column("character varying", {
     name: "remed_site_use_cd",
     nullable: true,
@@ -60,15 +67,19 @@ export class CriteriaLevelCd {
   })
   remedSiteUseCd: string | null;
 
+  @Field()
   @Column("bigint", { name: "lower_level", nullable: true })
   lowerLevel: string | null;
 
+  @Field()
   @Column("bigint", { name: "upper_level", nullable: true })
   upperLevel: string | null;
 
+  @Field()
   @Column("character varying", { name: "units", nullable: true, length: 10 })
   units: string | null;
 
+  @Field()
   @Column("character varying", { name: "level_description", length: 80 })
   levelDescription: string;
 

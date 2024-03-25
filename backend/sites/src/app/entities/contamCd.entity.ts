@@ -1,11 +1,14 @@
+import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, Index, OneToMany } from "typeorm";
 import { CriteriaLevelCd } from "./criteriaLevelCd.entity";
 import { MatrixObjectives } from "./matrixObjectives.entity";
 import { Measurements } from "./measurements.entity";
 
+@ObjectType()
 @Index("contam_cd_pkey", ["contaminant"], { unique: true })
 @Entity("contam_cd")
 export class ContamCd {
+  @Field()
   @Column("character varying", {
     primary: true,
     name: "contaminant",
