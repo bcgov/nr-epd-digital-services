@@ -1,24 +1,17 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
-import { AecAssessments } from './aecAssessments.entity'
-import { AecRemedApproaches } from './aecRemedApproaches.entity'
-import { AecRemedItems } from './aecRemedItems.entity'
-import { AecRemedMeasures } from './aecRemedMeasures.entity'
-import { AecRemediations } from './aecRemediations.entity'
-import { Events } from './events.entity'
-import { LandHistories } from './landHistories.entity'
-import { Mailout } from './mailout.entity'
-import { MeasurementPopulations } from './measurementPopulations.entity'
-import { SiteAssocs } from './siteAssocs.entity'
-import { SiteCrownLandContaminated } from './siteCrownLandContaminated.entity'
-import { SiteDocs } from './siteDocs.entity'
-import { SitePartics } from './sitePartics.entity'
-import { SiteProfiles } from './siteProfiles.entity'
-import { SiteSubdivisions } from './siteSubdivisions.entity'
-import { BceRegionCd } from './bceRegionCd.entity'
-import { ClassificationCd } from './classificationCd.entity'
-import { SiteRiskCd } from './siteRiskCd.entity'
-import { SiteStatusCd } from './siteStatusCd.entity'
+import { Events } from './events.entity';
+import { LandHistories } from './landHistories.entity';
+import { Mailout } from './mailout.entity';
+import { SiteAssocs } from './siteAssocs.entity';
+import { SiteDocs } from './siteDocs.entity';
+import { SitePartics } from './sitePartics.entity';
+import { SiteProfiles } from './siteProfiles.entity';
+import { SiteSubdivisions } from './siteSubdivisions.entity';
+import { BceRegionCd } from './bceRegionCd.entity';
+import { ClassificationCd } from './classificationCd.entity';
+import { SiteRiskCd } from './siteRiskCd.entity';
+import { SiteStatusCd } from './siteStatusCd.entity';
 
 @ObjectType()
 @Index("site_bco", ["bcerCode", "classCode", "id", "rwmFlag", "sstCode",], {})
@@ -173,21 +166,6 @@ export class Sites {
     @Column("geometry", { name: "geometry", nullable: true })
     geometry: string | null;
 
-    @OneToMany(() => AecAssessments, aecAssessments => aecAssessments.site)
-    aecAssessments: AecAssessments[];
-
-    @OneToMany(() => AecRemedApproaches, aecRemedApproaches => aecRemedApproaches.site)
-    aecRemedApproaches: AecRemedApproaches[];
-
-    @OneToMany(() => AecRemedItems, aecRemedItems => aecRemedItems.site)
-    aecRemedItems: AecRemedItems[];
-
-    @OneToMany(() => AecRemedMeasures, aecRemedMeasures => aecRemedMeasures.site)
-    aecRemedMeasures: AecRemedMeasures[];
-
-    @OneToMany(() => AecRemediations, aecRemediations => aecRemediations.site)
-    aecRemediations: AecRemediations[];
-
     @OneToMany(() => Events, events => events.site)
     events: Events[];
 
@@ -197,17 +175,11 @@ export class Sites {
     @OneToMany(() => Mailout, mailout => mailout.site)
     mailouts: Mailout[];
 
-    @OneToMany(() => MeasurementPopulations, measurementPopulations => measurementPopulations.site)
-    measurementPopulations: MeasurementPopulations[];
-
     @OneToMany(() => SiteAssocs, siteAssocs => siteAssocs.site)
     siteAssocs: SiteAssocs[];
 
     @OneToMany(() => SiteAssocs, siteAssocs => siteAssocs.siteIdAssociatedWith2)
     siteAssocs2: SiteAssocs[];
-
-    @OneToOne(() => SiteCrownLandContaminated, siteCrownLandContaminated => siteCrownLandContaminated.sites)
-    siteCrownLandContaminated: SiteCrownLandContaminated;
 
     @OneToMany(() => SiteDocs, siteDocs => siteDocs.site)
     siteDocs: SiteDocs[];

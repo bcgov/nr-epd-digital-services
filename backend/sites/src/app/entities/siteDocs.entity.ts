@@ -8,8 +8,6 @@ import {
   OneToMany,
   OneToOne,
 } from "typeorm";
-import { DocAbstracts } from "./docAbstracts.entity";
-import { MeasurementPopulations } from "./measurementPopulations.entity";
 import { SiteDocPartics } from "./siteDocPartics.entity";
 import { Sites } from "./sites.entity";
 
@@ -19,38 +17,38 @@ import { Sites } from "./sites.entity";
 @Index("sdoc_about_frgn", ["siteId"], {})
 @Entity("site_docs")
 export class SiteDocs {
-  
+
   @Field()
   @Column("bigint", { primary: true, name: "id" })
   id: string;
-  
+
   @Field()
   @Column("bigint", { name: "site_id" })
   siteId: string;
-  
+
   @Field()
   @Column("timestamp without time zone", { name: "submission_date" })
   submissionDate: Date;
-  
+
   @Field()
   @Column("timestamp without time zone", {
     name: "document_date",
     nullable: true,
   })
   documentDate: Date | null;
-  
+
   @Field()
   @Column("character varying", { name: "title", length: 150 })
   title: string;
-  
+
   @Field()
   @Column("character varying", { name: "note", nullable: true, length: 255 })
   note: string | null;
-  
+
   @Field()
   @Column("character varying", { name: "who_created", length: 30 })
   whoCreated: string;
-  
+
   @Field()
   @Column("character varying", {
     name: "who_updated",
@@ -58,34 +56,25 @@ export class SiteDocs {
     length: 30,
   })
   whoUpdated: string | null;
-  
+
   @Field()
   @Column("timestamp without time zone", { name: "when_created" })
   whenCreated: Date;
-  
+
   @Field()
   @Column("timestamp without time zone", {
     name: "when_updated",
     nullable: true,
   })
   whenUpdated: Date | null;
-  
+
   @Field()
   @Column("smallint", { name: "rwm_flag" })
   rwmFlag: number;
-  
+
   @Field()
   @Column("smallint", { name: "rwm_note_flag", nullable: true })
   rwmNoteFlag: number | null;
-
-  @OneToOne(() => DocAbstracts, (docAbstracts) => docAbstracts.sdoc)
-  docAbstracts: DocAbstracts;
-
-  @OneToMany(
-    () => MeasurementPopulations,
-    (measurementPopulations) => measurementPopulations.sdoc
-  )
-  measurementPopulations: MeasurementPopulations[];
 
   @OneToMany(() => SiteDocPartics, (siteDocPartics) => siteDocPartics.sdoc)
   siteDocPartics: SiteDocPartics[];

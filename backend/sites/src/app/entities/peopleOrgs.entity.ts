@@ -11,7 +11,6 @@ import { EventPartics } from "./eventPartics.entity";
 import { Mailout } from "./mailout.entity";
 import { BceRegionCd } from "./bceRegionCd.entity";
 import { SisAddresses } from "./sisAddresses.entity";
-import { SiteCrownLandContaminated } from "./siteCrownLandContaminated.entity";
 import { SiteDocPartics } from "./siteDocPartics.entity";
 import { SitePartics } from "./sitePartics.entity";
 import { SiteStaffs } from "./siteStaffs.entity";
@@ -128,12 +127,6 @@ export class PeopleOrgs {
 
   @OneToMany(() => SisAddresses, (sisAddresses) => sisAddresses.psnorg)
   sisAddresses: SisAddresses[];
-
-  @OneToMany(
-    () => SiteCrownLandContaminated,
-    (siteCrownLandContaminated) => siteCrownLandContaminated.psnorg
-  )
-  siteCrownLandContaminateds: SiteCrownLandContaminated[];
 
   @OneToMany(() => SiteDocPartics, (siteDocPartics) => siteDocPartics.psnorg)
   siteDocPartics: SiteDocPartics[];
