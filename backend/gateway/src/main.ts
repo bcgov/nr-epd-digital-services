@@ -11,6 +11,9 @@ async function bootstrap() {
       process.env.USERS_MICROSERVICE
         ? process.env.USERS_MICROSERVICE
         : 'http://users:4005',
+      process.env.SITE_MICROSERVICE
+        ? process.env.SITE_MICROSERVICE
+        : 'http://sites:4007',
     ],
     interval: 100,
     timeout: 180000,
