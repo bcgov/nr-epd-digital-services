@@ -12,6 +12,7 @@ import { BceRegionCd } from './bceRegionCd.entity';
 import { ClassificationCd } from './classificationCd.entity';
 import { SiteRiskCd } from './siteRiskCd.entity';
 import { SiteStatusCd } from './siteStatusCd.entity';
+import { SiteCrownLandContaminated } from './siteCrownLandContaminated.entity'
 
 @ObjectType()
 @Index("site_bco", ["bcerCode", "classCode", "id", "rwmFlag", "sstCode",], {})
@@ -212,4 +213,7 @@ export class Sites {
     @JoinColumn([{ name: "sst_code", referencedColumnName: "code" },
     ])
     sstCode2: SiteStatusCd;
+
+    @OneToOne(() => SiteCrownLandContaminated, siteCrownLandContaminated => siteCrownLandContaminated.sites)
+    siteCrownLandContaminated: SiteCrownLandContaminated;
 }

@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
 import { ContaminationClassCd } from "./contaminationClassCd.entity";
+import { SiteCrownLandContaminated } from "./siteCrownLandContaminated.entity";
 
 @ObjectType()
 @Index(
@@ -54,4 +55,13 @@ export class SiteContaminationClassXref {
     { name: "contamination_class_code", referencedColumnName: "code" },
   ])
   contaminationClassCode2: ContaminationClassCd;
+
+  @ManyToOne(
+    () => SiteCrownLandContaminated,
+    (siteCrownLandContaminated) =>
+      siteCrownLandContaminated.siteContaminationClassXrefs,
+    { onDelete: "CASCADE" }
+  )
+  @JoinColumn([{ name: "sclc_id", referencedColumnName: "id" }])
+  sclc: SiteCrownLandContaminated;
 }

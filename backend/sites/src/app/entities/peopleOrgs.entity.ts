@@ -14,6 +14,7 @@ import { SisAddresses } from "./sisAddresses.entity";
 import { SiteDocPartics } from "./siteDocPartics.entity";
 import { SitePartics } from "./sitePartics.entity";
 import { SiteStaffs } from "./siteStaffs.entity";
+import { SiteCrownLandContaminated } from "./siteCrownLandContaminated.entity";
 
 @ObjectType()
 @Index("psnorg_working_within_frgn", ["bcerCode"], {})
@@ -127,6 +128,12 @@ export class PeopleOrgs {
 
   @OneToMany(() => SisAddresses, (sisAddresses) => sisAddresses.psnorg)
   sisAddresses: SisAddresses[];
+
+  @OneToMany(
+    () => SiteCrownLandContaminated,
+    (siteCrownLandContaminated) => siteCrownLandContaminated.psnorg
+  )
+  siteCrownLandContaminateds: SiteCrownLandContaminated[];
 
   @OneToMany(() => SiteDocPartics, (siteDocPartics) => siteDocPartics.psnorg)
   siteDocPartics: SiteDocPartics[];
