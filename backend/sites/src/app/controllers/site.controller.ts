@@ -14,7 +14,7 @@ export class SiteController {
     @Get('/') async getSubmission(): Promise<FetchSiteResponse> {
         const sites = await this.siteService.findAll();
 
-        if (!sites) {
+        if (sites?.data.length == 0) {
             return Promise.reject({
                 statusCode: 404,
                 message: 'Form data not found',
