@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class MasterScript1711640697487 implements MigrationInterface {
-    name = 'MasterScript1711640697487'
+export class MasterScript1711646316453 implements MigrationInterface {
+    name = 'MasterScript1711646316453'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "sites"."profile_categories" ("id" bigint NOT NULL, "sequence_no" bigint NOT NULL, "description" character varying(200) NOT NULL, "question_type" character varying(1) NOT NULL, "effective_date" TIMESTAMP NOT NULL, "expiry_date" TIMESTAMP, "who_created" character varying(30) NOT NULL, "who_updated" character varying(30), "when_created" TIMESTAMP NOT NULL, "when_updated" TIMESTAMP, "category_precursor" character varying(300), CONSTRAINT "PK_ad4c4dbdc4185df6dc92444151a" PRIMARY KEY ("id"))`);
@@ -145,11 +145,11 @@ export class MasterScript1711640697487 implements MigrationInterface {
         await queryRunner.query(`CREATE UNIQUE INDEX "profile_submissions_pkey" ON "sites"."profile_submissions" ("sprof_date_completed", "sprof_site_id", "submcd_code") `);
         await queryRunner.query(`CREATE TABLE "sites"."submission_cd" ("code" character varying(6) NOT NULL, "description" character varying(40) NOT NULL, "used_in" character varying(4) NOT NULL, CONSTRAINT "PK_51386aa61774360a636f5acd29d" PRIMARY KEY ("code"))`);
         await queryRunner.query(`CREATE UNIQUE INDEX "submission_cd_pkey" ON "sites"."submission_cd" ("code") `);
-        await queryRunner.query(`CREATE TABLE "sites"."spatial_ref_sys" ("srid" integer NOT NULL, "auth_name" character varying(256), "auth_srid" integer, "srtext" character varying(2048), "proj4text" character varying(2048), CONSTRAINT "PK_ff8a45f5398d8ad47f3b844bb58" PRIMARY KEY ("srid"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "spatial_ref_sys_pkey" ON "sites"."spatial_ref_sys" ("srid") `);
         await queryRunner.query(`CREATE TABLE "sites"."subdivisions" ("id" bigint NOT NULL, "date_noted" TIMESTAMP NOT NULL, "pin" character varying(9), "pid" character varying(9), "bcaa_folio_number" character varying(20), "entity_type" character varying(4), "addr_line_1" character varying(50), "addr_line_2" character varying(50), "addr_line_3" character varying(50), "addr_line_4" character varying(50), "city" character varying(30), "postal_code" character varying(10), "legal_description" character varying(255), "who_created" character varying(30) NOT NULL, "who_updated" character varying(30), "when_created" TIMESTAMP NOT NULL, "when_updated" TIMESTAMP, "crown_lands_file_no" character varying(7), "pid_status_cd" character varying(1) NOT NULL, "valid_pid" character(1), CONSTRAINT "UQ_ad7dfb7e17c409d8b025f8776a8" UNIQUE ("pin"), CONSTRAINT "UQ_2008492ca13515d645bfbf1699e" UNIQUE ("pid"), CONSTRAINT "PK_f521e4439b27c529d97c90d1907" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE UNIQUE INDEX "subdivisions_pid_pin_key" ON "sites"."subdivisions" ("pid", "pin") `);
         await queryRunner.query(`CREATE UNIQUE INDEX "subdivisions_pkey" ON "sites"."subdivisions" ("id") `);
+        await queryRunner.query(`CREATE TABLE "sites"."spatial_ref_sys" ("srid" integer NOT NULL, "auth_name" character varying(256), "auth_srid" integer, "srtext" character varying(2048), "proj4text" character varying(2048), CONSTRAINT "PK_ff8a45f5398d8ad47f3b844bb58" PRIMARY KEY ("srid"))`);
+        await queryRunner.query(`CREATE UNIQUE INDEX "spatial_ref_sys_pkey" ON "sites"."spatial_ref_sys" ("srid") `);
         await queryRunner.query(`CREATE TABLE "sites"."site_registry_module" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "sites" character(1), "site_location_description" character(1), "site_partics" character(1), "site_partic_notes" character(1), "site_partic_roles" character(1), "site_partic_dates" character(1), "notations" character(1), "notation_notes" character(1), "notation_actions" character(1), "notation_partics" character(1), "documents" character(1), "document_notes" character(1), "document_partics" character(1), "document_abstracts" character(1), "document_measure_pops" character(1), "document_measure_details" character(1), "associations" character(1), "association_notes" character(1), "association_dates" character(1), "suspect_land_uses" character(1), "suspect_land_use_notes" character(1), "aec_assessments" character(1), "aec_assessment_mig_potential" character(1), "aec_assessment_sources" character(1), "aec_assessment_medias" character(1), "aec_assessment_media_notes" character(1), "aec_assessment_pcocs" character(1), "aec_remed_plans" character(1), "aec_remed_plan_notes" character(1), "aec_remed_plan_items" character(1), "aec_remed_plan_item_measures" character(1), "aec_remed_approaches" character(1), CONSTRAINT "PK_7c6a966c058663ac877148f6f42" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "sites"."site_registry" ("site_id" bigint NOT NULL, "reg_flag" smallint, "reg_userid" character varying(16), "init_approval_date" TIMESTAMP, "last_approval_date" TIMESTAMP, "tombstone_date" TIMESTAMP, CONSTRAINT "PK_f9b6fe314837927a20473fa8540" PRIMARY KEY ("site_id"))`);
         await queryRunner.query(`CREATE UNIQUE INDEX "site_registry_pkey" ON "sites"."site_registry" ("site_id") `);
@@ -275,11 +275,11 @@ export class MasterScript1711640697487 implements MigrationInterface {
         await queryRunner.query(`DROP INDEX "sites"."site_registry_pkey"`);
         await queryRunner.query(`DROP TABLE "sites"."site_registry"`);
         await queryRunner.query(`DROP TABLE "sites"."site_registry_module"`);
+        await queryRunner.query(`DROP INDEX "sites"."spatial_ref_sys_pkey"`);
+        await queryRunner.query(`DROP TABLE "sites"."spatial_ref_sys"`);
         await queryRunner.query(`DROP INDEX "sites"."subdivisions_pkey"`);
         await queryRunner.query(`DROP INDEX "sites"."subdivisions_pid_pin_key"`);
         await queryRunner.query(`DROP TABLE "sites"."subdivisions"`);
-        await queryRunner.query(`DROP INDEX "sites"."spatial_ref_sys_pkey"`);
-        await queryRunner.query(`DROP TABLE "sites"."spatial_ref_sys"`);
         await queryRunner.query(`DROP INDEX "sites"."submission_cd_pkey"`);
         await queryRunner.query(`DROP TABLE "sites"."submission_cd"`);
         await queryRunner.query(`DROP INDEX "sites"."profile_submissions_pkey"`);

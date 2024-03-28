@@ -40,6 +40,10 @@ import { SiteCrownLandStatusCd } from './entities/siteCrownLandStatusCd.entity';
 import { SisAddresses } from './entities/sisAddresses.entity';
 import { SiteStaffs } from './entities/siteStaffs.entity';
 import { DocParticRoleCd } from './entities/docParticRoleCd.entity';
+import { LtoDownload } from './entities/ltoDownload.entity';
+import { LtoPrevDownload } from './entities/ltoPrevDownload.entity';
+import { PlanTable } from './entities/planTable.entity';
+import { SiteCrownLandContaminated } from './entities/siteCrownLandContaminated.entity';
 
 /**
  * Module for wrapping all functionalities in sites microserivce
@@ -50,7 +54,8 @@ import { DocParticRoleCd } from './entities/docParticRoleCd.entity';
     EventClassCd, SiteStatusCd, Events, ConditionsText, EventPartics, EventTypeCd, LandUseCd, LandHistories, SiteProfileLandUses,
     ProfileAnswers, ProfileSubmissions, SiteProfileLandUses, SiteProfileOwners, ProfileQuestions, ProfileCategories, SubmissionCd,
     SiteDocPartics, PeopleOrgs, SiteParticRoles, ParticRoleCd, EventParticRoleCd, CityRegions, SiteContaminationClassXref,
-    ContaminationClassCd, SiteCrownLandStatusCd, SisAddresses, SiteStaffs, DocParticRoleCd])],
+    ContaminationClassCd, SiteCrownLandStatusCd, SisAddresses, SiteStaffs, DocParticRoleCd, LtoDownload, LtoPrevDownload,
+    PlanTable, SiteCrownLandContaminated])],
   providers: [
     SiteResolver,
     SiteService,
