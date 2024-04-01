@@ -17,7 +17,7 @@ export class SiteController {
         if (sites?.data.length == 0) {
             return Promise.reject({
                 statusCode: 404,
-                message: 'Form data not found',
+                message: 'Site data not found',
             });
         }
         return sites;

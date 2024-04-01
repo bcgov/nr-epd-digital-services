@@ -91,12 +91,11 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: default
     hostname: site-database
-
     restart: always
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready" ]
-      interval: 25s
-      timeout: 15s
+      interval: 30s
+      timeout: 25s
       retries: 5
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql

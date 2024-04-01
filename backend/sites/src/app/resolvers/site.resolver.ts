@@ -1,4 +1,4 @@
-import { Query, Resolver } from '@nestjs/graphql';
+import { Args, Query, Resolver } from '@nestjs/graphql';
 import { Resource, RoleMatchingMode, Roles } from 'nest-keycloak-connect';
 import { FetchSiteResponse } from '../dto/response/fetchSiteResponse';
 import { Sites } from '../entities/sites.entity';
@@ -19,5 +19,16 @@ export class SiteResolver {
     @Query(() => FetchSiteResponse, { name: 'sites' })
     findAll() {
         return this.siteService.findAll();
+    }
+
+    /**
+    * Find sites where search parameter matches a site id or address
+   * @param searchParam search parameter
+   * @returns sites where id or address matches the search param
+   */
+    @Roles({ roles: ['site-admin'], mode: RoleMatchingMode.ANY })
+    @Query(() => [Sites], { name: 'searchSites' })
+    searchSites(@Args('searchParam', { type: () => String }) searchParam: string) {
+        return this.siteService.searchSites(searchParam);
     }
 }
