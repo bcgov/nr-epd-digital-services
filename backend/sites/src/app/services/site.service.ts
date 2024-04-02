@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like } from 'typeorm';
+import { Repository } from 'typeorm';
 import { FetchSiteResponse } from '../dto/response/fetchSiteResponse';
 import { Sites } from '../entities/sites.entity';
 
@@ -34,15 +34,16 @@ export class SiteService {
      * @returns sites where id or address matches the search param
      */
     async searchSites(searchParam: string) {
-        const sites = await this.siteRepository.createQueryBuilder("sites")
-            .where("CAST(sites.id AS TEXT) like :searchParam", { searchParam: `%${searchParam}%` })
-            .orWhere("sites.addr_line_1 like :searchParam", { searchParam: `%${searchParam}%` })
-            .orWhere("sites.addr_line_2 like :searchParam", { searchParam: `%${searchParam}%` })
-            .orWhere("sites.addr_line_3 like :searchParam", { searchParam: `%${searchParam}%` })
-            .orWhere("sites.addr_line_4 like :searchParam", { searchParam: `%${searchParam}%` })
-            .orWhere("sites.city like :searchParam", { searchParam: `%${searchParam}%` })
-            .orWhere("sites.provState like :searchParam", { searchParam: `%${searchParam}%` })
-            .orWhere("sites.postalCode like :searchParam", { searchParam: `%${searchParam}%` })
+        const sites = await this.siteRepository
+            .createQueryBuilder('sites')
+            .where('CAST(sites.id AS TEXT) like :searchParam', { searchParam: `%${searchParam}%` })
+            .orWhere('LOWER(sites.addr_line_1) LIKE LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
+            .orWhere('LOWER(sites.addr_line_2) LIKE LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
+            .orWhere('LOWER(sites.addr_line_3) like LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
+            .orWhere('LOWER(sites.addr_line_4) like LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
+            .orWhere('LOWER(sites.city) like LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
+            .orWhere('LOWER(sites.provState) like LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
+            .orWhere('LOWER(sites.postalCode) like LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
             .getMany();
 
         return sites;
