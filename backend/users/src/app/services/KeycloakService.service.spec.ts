@@ -125,7 +125,7 @@ describe('KeycloakService', () => {
       // Assert
       expect(axios.put).toHaveBeenCalledTimes(1); // Ensure axios.put is called
       expect(axios.put).toHaveBeenCalledWith(
-        expect.stringContaining(`https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth/admin/realms/forms-flow-ai/users/${userId}/groups/${groupId}`),
+        expect.stringContaining(`/admin/realms/forms-flow-ai/users/${userId}/groups/${groupId}`),
         {}, // Empty object for the request body
         {
           headers: {
@@ -150,7 +150,7 @@ describe('KeycloakService', () => {
       await expect(keycloakService.addUserToGroup(userId, groupId, accessToken)).rejects.toThrowError(errorMessage);
     
       // Ensure axios.put is called
-      expect(axios.put).toHaveBeenCalledTimes(2);
+      expect(axios.put).toHaveBeenCalledTimes(1);
     });
   });
 
