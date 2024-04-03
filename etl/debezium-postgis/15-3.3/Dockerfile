@@ -7,14 +7,16 @@ ENV PROTOC_VERSION=1.4
 # Install the packages which will be required to get everything to compile
 RUN apt-get update \
     && apt-get install -f -y --no-install-recommends \
-        software-properties-common \
-        build-essential \
-        pkg-config \
-        git \
-        postgresql-server-dev-$PG_MAJOR \
+    software-properties-common \
+    build-essential \
+    pkg-config \
+    git \
+    postgresql-server-dev-$PG_MAJOR \
+    clang-11 \
+    llvm-11 \
     && add-apt-repository "deb http://ftp.debian.org/debian testing main contrib" \
     && apt-get update && apt-get install -f -y --no-install-recommends \
-        libprotobuf-c-dev=$PROTOC_VERSION.* \
+    libprotobuf-c-dev=$PROTOC_VERSION.* \
     && rm -rf /var/lib/apt/lists/*
 
 # Compile the plugin from sources and install it
@@ -30,10 +32,10 @@ LABEL maintainer="Team ADA"
 
 RUN apt-get update \
     && apt-get install -f -y --no-install-recommends \
-        software-properties-common \   
+    software-properties-common \   
     && add-apt-repository "deb http://ftp.debian.org/debian testing main contrib" \
     && apt-get update && apt-get install -f -y --no-install-recommends \
-        libprotobuf-c1 \
+    libprotobuf-c1 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /usr/lib/postgresql/$PG_MAJOR/lib/decoderbufs.so /usr/lib/postgresql/$PG_MAJOR/lib/
