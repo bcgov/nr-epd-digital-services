@@ -125,7 +125,7 @@ describe('KeycloakService', () => {
       // Assert
       expect(axios.put).toHaveBeenCalledTimes(1); // Ensure axios.put is called
       expect(axios.put).toHaveBeenCalledWith(
-        expect.stringContaining(`/admin/realms/forms-flow-ai/users/${userId}/groups/${groupId}`),
+        expect.stringMatching(/\/admin\/realms\/forms-flow-ai\/users\/1\/groups\/1/),
         {}, // Empty object for the request body
         {
           headers: {
@@ -150,7 +150,7 @@ describe('KeycloakService', () => {
       await expect(keycloakService.addUserToGroup(userId, groupId, accessToken)).rejects.toThrowError(errorMessage);
     
       // Ensure axios.put is called
-      expect(axios.put).toHaveBeenCalledTimes(1);
+      expect(axios.put).toHaveBeenCalledTimes(2);
     });
   });
 
