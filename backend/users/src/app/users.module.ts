@@ -9,6 +9,8 @@ import { RegionResolver } from './resolvers/region.resolver';
 import { RegionService } from './services/region.service';
 import { OrganizationTypeService } from './services/organizationType.service';
 import { OrganizationTypeResolver } from './resolvers/organizationType.resolver';
+import { UsersController } from './controllers/users.controller';
+import { KeycloakService } from './services/KeycloakService.service';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -22,6 +24,8 @@ import { OrganizationTypeResolver } from './resolvers/organizationType.resolver'
     RegionService,
     OrganizationTypeResolver,
     OrganizationTypeService,
+    KeycloakService,
   ],
+  controllers: [UsersController],
 })
 export class UsersModule {}
