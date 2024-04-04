@@ -91,7 +91,7 @@ export class KeycloakService {
    * @param groupId - ID of the group.
    * @param accessToken - Access token.
    */
-    async addUserToGroup(userId: string, groupId: string, accessToken: string): Promise<void> {
+    async addUserToGroup(userId: string, groupId: string, accessToken: string): Promise<any> {
         try {
           // Extract environment variables
           const keycloakAuthUrl = this.configService.get<string>('KEYCLOCK_AUTH_URL');
@@ -99,12 +99,18 @@ export class KeycloakService {
           const url = `${keycloakAuthUrl}/admin/realms/${realm}/users/${userId}/groups/${groupId}`;
 
           // Add user to group in Keycloak
-          await axios.put(url, {}, {
+           await axios.put(url, {}, {
                 headers: {
                   Authorization: `Bearer ${accessToken}`,
                   'Content-Type': 'application/json',
                 },
               });
+            
+              // Return a success response
+              return {
+                success: true,
+                message: 'User added to group successfully',
+              };
         } 
         catch (error) 
         {

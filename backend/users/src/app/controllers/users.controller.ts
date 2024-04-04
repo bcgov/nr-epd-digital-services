@@ -8,8 +8,13 @@ import { AddUserToGroupDto } from 'src/app/dto/addUserToGroup';
 export class UsersController {
     constructor(private readonly keyCloakService: KeycloakService) {}
 
+    /**
+     * Add user to a group in Keycloak.
+     * @param addUserToGroupDto - Object containing userId.
+     * @returns Object indicating success status and message.
+     */
     @Post('/addGroup')
-    async addUserToGroup(@Body() addUserToGroupDto: AddUserToGroupDto): Promise<void> {
+    async addUserToGroup(@Body() addUserToGroupDto: AddUserToGroupDto): Promise<any> {
         try 
         {
             const { userId } = addUserToGroupDto;
@@ -30,7 +35,11 @@ export class UsersController {
             }
       
             // Add user to group
-            await this.keyCloakService.addUserToGroup(userId, groupId, accessToken);
+            const result = await this.keyCloakService.addUserToGroup(userId, groupId, accessToken);
+            if(result.success)
+            {
+              return result;
+            }
         } 
         catch (error) 
         {
