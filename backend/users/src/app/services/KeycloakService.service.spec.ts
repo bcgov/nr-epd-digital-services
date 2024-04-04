@@ -125,7 +125,7 @@ describe('KeycloakService', () => {
       // Assert
       expect(axios.put).toHaveBeenCalledTimes(1); // Ensure axios.put is called
       expect(axios.put).toHaveBeenCalledWith(
-        expect.stringMatching(/\/admin\/realms\/forms-flow-ai\/users\/1\/groups\/1/),
+        expect.stringContaining(`/admin/realms/forms-flow-ai/users/${userId}/groups/${groupId}`),
         {}, // Empty object for the request body
         {
           headers: {
