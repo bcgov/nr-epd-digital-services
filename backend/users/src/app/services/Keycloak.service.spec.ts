@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { KeycloakService } from './KeycloakService.service';
+import { KeycloakService } from './Keycloak.service';
 import axios from 'axios';
 
 jest.mock('axios');

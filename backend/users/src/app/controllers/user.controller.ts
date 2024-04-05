@@ -1,11 +1,12 @@
 import { Controller, Post, Body, HttpException, HttpStatus  } from '@nestjs/common';
-import { Unprotected } from 'nest-keycloak-connect';
-import { KeycloakService } from 'src/app/services/KeycloakService.service';
+import { Resource, RoleMatchingMode, Roles, Unprotected } from 'nest-keycloak-connect';
+import { KeycloakService } from 'src/app/services/Keycloak.service';
 import { AddUserToGroupDto } from 'src/app/dto/addUserToGroup';
 
-@Controller('users')
-@Unprotected()
-export class UsersController {
+@Controller('user')
+//@Resource('user-service')
+@Unprotected() // Working on it.
+export class UserController {
     constructor(private readonly keyCloakService: KeycloakService) {}
 
     /**
@@ -14,6 +15,7 @@ export class UsersController {
      * @returns Object indicating success status and message.
      */
     @Post('/addGroup')
+    // @Roles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
     async addUserToGroup(@Body() addUserToGroupDto: AddUserToGroupDto): Promise<any> {
         try 
         {

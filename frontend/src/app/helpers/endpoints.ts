@@ -1,4 +1,4 @@
-export const USERS = "/users";
+export const USERS = "/user";
 
 export const GRAPHQL= "/graphql"
 
