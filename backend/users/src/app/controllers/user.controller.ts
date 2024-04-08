@@ -4,8 +4,7 @@ import { KeycloakService } from 'src/app/services/Keycloak.service';
 import { AddUserToGroupDto } from 'src/app/dto/addUserToGroup';
 
 @Controller('user')
-//@Resource('user-service')
-@Unprotected() // Working on it.
+@Resource('user-service')
 export class UserController {
     constructor(private readonly keyCloakService: KeycloakService) {}
 
@@ -15,7 +14,7 @@ export class UserController {
      * @returns Object indicating success status and message.
      */
     @Post('/addGroup')
-    // @Roles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
+    @Roles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
     async addUserToGroup(@Body() addUserToGroupDto: AddUserToGroupDto): Promise<any> {
         try 
         {

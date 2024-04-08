@@ -13,15 +13,15 @@ export class KeycloakService {
     */
     async getToken(): Promise<any> {
      // Extract environment variables
-    const keycloakAuthUrl = this.configService.get<string>('KEYCLOCK_AUTH_URL');
-    const realm = this.configService.get<string>('KEYCLOCK_MASTER_REALM');
-    const username = this.configService.get<string>('KEYCLOCK_USERNAME');
-    const password = this.configService.get<string>('KEYCLOCK_PASSWORD');
-    const clientId = this.configService.get<string>('KEYCLOCK_CLIENT_ID');
-    const grantType = this.configService.get<string>('KEYCLOCK_GRANT_TYPE');
+     const keycloakAuthUrl = this.configService.get<string>('KEYCLOCK_AUTH_URL');
+     const realm = this.configService.get<string>('KEYCLOCK_MASTER_REALM');
+     const username = this.configService.get<string>('KEYCLOCK_USERNAME');
+     const password = this.configService.get<string>('KEYCLOCK_PASSWORD');
+     const clientId = this.configService.get<string>('KEYCLOCK_ADMIN_CLIENT_ID');
+     const grantType = this.configService.get<string>('KEYCLOCK_GRANT_TYPE');
      
-    // Construct URL for token request
-    const url = `${keycloakAuthUrl}/realms/${realm}/protocol/openid-connect/token`;
+     // Construct URL for token request
+     const url = `${keycloakAuthUrl}/realms/${realm}/protocol/openid-connect/token`;
   
       try {
         // Request access token from Keycloak
