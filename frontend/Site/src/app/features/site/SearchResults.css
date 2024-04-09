@@ -1,0 +1,18 @@
+.results-loading
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+
+
+
+@media (max-width: 768px)
+{
+    .hide-custom
+    {
+        display: none;
+    }
+}
