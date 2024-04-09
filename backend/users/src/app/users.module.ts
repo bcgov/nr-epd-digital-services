@@ -10,7 +10,7 @@ import { RegionService } from './services/region.service';
 import { OrganizationTypeService } from './services/organizationType.service';
 import { OrganizationTypeResolver } from './resolvers/organizationType.resolver';
 import { UserController } from './controllers/user.controller';
-import { KeycloakService } from './services/Keycloak.service';
+import { KeycloakService } from './services/keycloak.service';
 
 /**
  * Module for wrapping all functionalities in user microserivce

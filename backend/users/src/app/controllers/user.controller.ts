@@ -1,6 +1,6 @@
 import { Controller, Post, Body, HttpException, HttpStatus  } from '@nestjs/common';
 import { Resource, RoleMatchingMode, Roles, Unprotected } from 'nest-keycloak-connect';
-import { KeycloakService } from 'src/app/services/Keycloak.service';
+import { KeycloakService } from 'src/app/services/keycloak.service';
 import { AddUserToGroupDto } from 'src/app/dto/addUserToGroup';
 
 @Controller('user')
