@@ -11,12 +11,12 @@ import "./Dashboard.css";
 import { SdmDashboard } from "./sdmDashboard/SdmDashboard";
 import { ReviewerDashoard } from "./reviewerDashboard/ReviewerDashoard";
 import { getSDMUserRole } from "../../helpers/envManager";
+import { getAxiosInstance } from "../../helpers/utility";
+import { USERS } from "../../helpers/endpoints";
 
 const Dashboard = () => {
   const dispatch = useDispatch<AppDispatch>();
-
   const userIsProfileVerifiedValue = useSelector(isProfileVerified);
-
   const navigate = useNavigate();
 
   // const lastVisitedURL = useSelector(getLastVisitedURL);
@@ -28,8 +28,9 @@ const Dashboard = () => {
   //   }
   // },[lastVisitedURL])
 
+  const BCeID = "bceid";
+  const BCSC = "bcsc";
   const auth = useAuth();
-
   useEffect(() => {
     if (
       auth.user?.profile &&
@@ -49,9 +50,31 @@ const Dashboard = () => {
   }, [userIsProfileVerifiedValue]);
 
 
+  useEffect( () => {
+      if(auth.user?.profile.identity_provider === BCeID || auth.user?.profile.identity_provider === BCSC)
+      {
+          assignGroupToUser(); 
+      }
+  }, []);
+
+  const assignGroupToUser = () => {
+    getAxiosInstance().post(USERS + '/addGroup', {
+      userId: auth.user?.profile.sub 
+    })
+    .then(response => {
+      if(response.data.success)
+      {
+        console.log(response.data.message);
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+    
+  }
+  
   const handleFormsflowWebRedirection = () => {
     const formsFlowWebURL = process.env.REACT_APP_FORMSFLOW_WEB_URL || ((window as any)._env_ && (window as any)._env_.REACT_APP_FORMSFLOW_WEB_URL) || "";
-
     const locationBeforeAuthRedirect = sessionStorage.getItem('locationBeforeAuthRedirect');
     if(locationBeforeAuthRedirect!=="" && locationBeforeAuthRedirect !==null && locationBeforeAuthRedirect.indexOf("/fileupload")!== -1)
     {
@@ -104,3 +127,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
