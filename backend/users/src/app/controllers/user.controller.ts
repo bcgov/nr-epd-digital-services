@@ -3,7 +3,7 @@ import { Resource, RoleMatchingMode, Roles, Unprotected } from 'nest-keycloak-co
 import { KeycloakService } from 'src/app/services/keycloak.service';
 import { AddUserToGroupDto } from 'src/app/dto/addUserToGroup';
 
-@Controller('user')
+@Controller('users')
 @Resource('user-service')
 export class UserController {
     constructor(private readonly keyCloakService: KeycloakService) {}
