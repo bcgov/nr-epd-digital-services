@@ -24,6 +24,7 @@ describe('SiteResolver', () => {
               return result;
             }),
             searchSites: jest.fn(),
+            findSiteBySiteId: jest.fn(),
           },
         },
       ],
@@ -46,31 +47,59 @@ describe('SiteResolver', () => {
     expect(siteService.findAll).toHaveBeenCalled();
   });
 
-  it('should call siteService.searchSites with the provided searchParam', () => {
-    const searchParam = 'example';
-    siteResolver.searchSites(searchParam);
-    expect(siteService.searchSites).toHaveBeenCalledWith(searchParam);
+  describe('searchSites', () => {
+    it('should call siteService.searchSites with the provided searchParam', () => {
+      const searchParam = 'example';
+      siteResolver.searchSites(searchParam);
+      expect(siteService.searchSites).toHaveBeenCalledWith(searchParam);
+    });
+
+    it('site search matches a search parameter', async () => {
+      const searchParam = '123';
+      const expectedFilteredSites = [sampleSites[0]]; // Only Site 1 matches the searchParam
+      (siteService.searchSites as jest.Mock).mockResolvedValue(expectedFilteredSites);
+
+      const result: Sites[] = await siteResolver.searchSites(searchParam);
+
+      expect(siteService.searchSites).toHaveBeenCalledWith(searchParam);
+      expect(result).toEqual(expectedFilteredSites);
+    });
+
+    it('site search has no matches with the search parameter', async () => {
+      const searchParam = 'example';
+      const expectedFilteredSites: Sites[] = [];
+      (siteService.searchSites as jest.Mock).mockResolvedValue(expectedFilteredSites);
+
+      const result: Sites[] = await siteResolver.searchSites(searchParam);
+
+      expect(siteService.searchSites).toHaveBeenCalledWith(searchParam);
+      expect(result).toEqual(expectedFilteredSites);
+    });
   });
 
-  it('site search matches a search parameter', async () => {
-    const searchParam = '123';
-    const expectedFilteredSites = [sampleSites[0]]; // Only Site 1 matches the searchParam
-    (siteService.searchSites as jest.Mock).mockResolvedValue(expectedFilteredSites);
+  describe('findSiteBySiteId', () => {
+    it('should call siteService.findSiteBySiteId with the provided siteId', () => {
+      const siteId = '123';
+      siteResolver.findSiteBySiteId(siteId);
+      expect(siteService.findSiteBySiteId).toHaveBeenCalledWith(siteId);
+    });
 
-    const result: Sites[] = await siteResolver.searchSites(searchParam);
+    it('finds a matching site id', async () => {
+      const expectedResult = [sampleSites[0]];
+      const siteId = '123';
 
-    expect(siteService.searchSites).toHaveBeenCalledWith(searchParam);
-    expect(result).toEqual(expectedFilteredSites);
-  });
+      (siteService.findSiteBySiteId as jest.Mock).mockResolvedValue(expectedResult);
+      const result = await siteResolver.findSiteBySiteId(siteId);
+      expect(result).toEqual(expectedResult);
+    });
 
-  it('site search has no matches with the search parameter', async () => {
-    const searchParam = 'example';
-    const expectedFilteredSites: Sites[] = [];
-    (siteService.searchSites as jest.Mock).mockResolvedValue(expectedFilteredSites);
+    it('has no matches with the site Id parameter', async () => {
+      const expectedResult = undefined
+      const siteId = '111';
 
-    const result: Sites[] = await siteResolver.searchSites(searchParam);
-
-    expect(siteService.searchSites).toHaveBeenCalledWith(searchParam);
-    expect(result).toEqual(expectedFilteredSites);
+      (siteService.findSiteBySiteId as jest.Mock).mockResolvedValue(expectedResult);
+      const result = await siteResolver.findSiteBySiteId(siteId);
+      expect(result).toEqual(expectedResult);
+    });
   });
 });

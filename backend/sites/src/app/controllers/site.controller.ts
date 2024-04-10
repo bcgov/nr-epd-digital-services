@@ -1,6 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { Unprotected } from 'nest-keycloak-connect';
-import { FetchSiteResponse } from '../dto/response/fetchSiteResponse';
+import { FetchSiteDetail, FetchSiteResponse } from '../dto/response/fetchSiteResponse';
 import { SiteService } from '../services/site.service';
 
 @Controller('site')
@@ -11,7 +11,7 @@ export class SiteController {
      * Get all sites
      * @returns all sites
      */
-    @Get('/') async getSubmission(): Promise<FetchSiteResponse> {
+    @Get('/') async getAllSites(): Promise<FetchSiteResponse> {
         const sites = await this.siteService.findAll();
 
         if (sites?.data.length == 0) {
@@ -23,4 +23,20 @@ export class SiteController {
         return sites;
     }
 
+    /**
+    * Get site by site Id
+    * @returns site matching the site id
+    */
+    @Get('/:siteId') async getSiteBySiteId(@Param('siteId') siteId): Promise<FetchSiteDetail> {
+        const site = await this.siteService.findSiteBySiteId(siteId);
+
+        if (!site) {
+            return Promise.reject({
+                statusCode: 404,
+                message: 'Site data not found',
+            });
+        }
+
+        return site;
+    }
 }
