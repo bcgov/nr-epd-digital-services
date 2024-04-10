@@ -154,8 +154,8 @@ objects:
               path: /
               port: ${{CONTAINER_PORT}}
               scheme: HTTP
-            initialDelaySeconds: 60
-            periodSeconds: 60
+            initialDelaySeconds: 10
+            periodSeconds: 30
             timeoutSeconds: 5
             failureThreshold: 3
             successThreshold: 1
@@ -166,8 +166,8 @@ objects:
               path: /
               port: ${{CONTAINER_PORT}}
               scheme: HTTP
-            initialDelaySeconds: 60
-            periodSeconds: 60
+            initialDelaySeconds: 10
+            periodSeconds: 30
             timeoutSeconds: 5
         # initContainers:
         #   - name: wait-for-graphql
