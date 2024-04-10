@@ -7,6 +7,7 @@ import { BarsIcon } from "../common/icon";
 import { useState } from "react";
 import MobileNavMenu from "./MobileNavMenu";
 import { ArrowDownIcon } from "../common/icon";
+import LanguageSwitcher from "../language/LanguageSwitcher";
 
 const Header = () => {
 
@@ -26,8 +27,7 @@ const Header = () => {
         <h1 className="siteName">SITE</h1>
       </div>
       <div className="header-right-corner-section m-2">
-        <div >EN <ArrowDownIcon/></div>
-
+        <LanguageSwitcher/>
         <button
           className="navbar-toggler display-upto-medium"
           type="button"

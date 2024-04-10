@@ -1,0 +1,87 @@
+.custom-toggle {
+  color: var(--typography-color-primary-invert) !important;
+  font: var(--typography-regular-large-body);
+  height: 31px;
+}
+
+.custom-toggle:first-child:active {
+  border-color: transparent !important;
+}
+
+.custom-menu {
+  border-radius: var(--surface-border-radius-medium) !important;
+  padding: var(--layout-padding-medium) 0px var(--layout-padding-medium) 0px !important;
+  gap: 16px;
+  width: 272px;
+  height: 370px;
+  box-shadow: var(--shadow-medium);
+  background-color: var(--surface-background-white) !important;
+}
+
+.custom-item {
+  padding: var(--layout-padding-small) var(--layout-padding-medium) var(--layout-padding-small) var(--layout-padding-medium) !important;
+  gap: var(--layout-margin-medium);
+  color: var(--typography-color-primary) !important;
+  height: 43px;
+  width: 272px !important;
+  font: var(--typography-regular-body);
+}
+
+.custom-item:hover {
+    background-color: var(--surface-secondary-hover) !important;
+}
+
+.custom-item-first-child {
+  padding: var(--layout-padding-small) var(--layout-padding-medium) var(--layout-padding-small) var(--layout-padding-medium) !important;
+  gap: var(--layout-margin-medium);
+  width: 272px !important;
+  height: 43px;
+}
+
+.custom-item-first-child:hover {
+    background-color: var(--surface-secondary-hover) !important;
+}
+
+.custom-item-label {
+  font: var(--typography-regular-label);
+  color: var(--typography-color-secondary) !important;
+  height: 21px;
+}
+
+/* .custom-item:active {background-color: #EDEBE9 !important;}
+.custom-item-first-child:active {background-color: #EDEBE9 !important;} */
+
+.tick-icon {
+  color: var(--icons-icons-primary);
+  width: 14px;
+  height: 27px;
+  float: right;
+}
+
+@media screen and (max-width: 767px){
+    .custom-menu {
+        border-radius: 0px 0px var(--surface-border-radius-medium) var(--surface-border-radius-medium) !important;
+        padding: var(--layout-padding-large) !important;
+        gap: 16px;
+        width: 320px;
+        height: 498px;
+        box-shadow: var(--shadow-medium);
+        background-color: var(--surface-background-white) !important;
+      }
+
+      .custom-item {
+        padding: var(--layout-padding-medium) 0px var(--layout-padding-medium) 0px !important;
+        gap: var(--layout-margin-medium);
+        color: var(--typography-color-primary) !important;
+        height: 59px;
+        width: 272px !important;
+        font: var(--typography-regular-body);
+      }
+
+      .custom-item-first-child {
+        padding: var(--layout-padding-medium) 0px var(--layout-padding-medium) 0px !important;
+        gap: var(--layout-margin-medium);
+        width: 272px !important;
+      
+      }
+}
