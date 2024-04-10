@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FetchSiteResponse } from '../dto/response/fetchSiteResponse';
+import { FetchSiteDetail, FetchSiteResponse } from '../dto/response/fetchSiteResponse';
 import { Sites } from '../entities/sites.entity';
 
 /**
@@ -47,5 +47,20 @@ export class SiteService {
             .getMany();
 
         return sites;
+    }
+
+    /**
+      * Find sites by its ID
+     * @param siteId site Id
+     * @returns a single site matching the site ID
+     */
+    async findSiteBySiteId(siteId: string) {
+        const response = new FetchSiteDetail();
+
+        response.httpStatusCode = 200;
+
+        response.data = await this.siteRepository.findOneOrFail({ where: { id: siteId } });
+
+        return response;
     }
 }
