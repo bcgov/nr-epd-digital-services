@@ -11,7 +11,7 @@ import "./Dashboard.css";
 import { SdmDashboard } from "./sdmDashboard/SdmDashboard";
 import { ReviewerDashoard } from "./reviewerDashboard/ReviewerDashoard";
 import { getSDMUserRole } from "../../helpers/envManager";
-import { getAxiosInstance } from "../../helpers/utility";
+import { getAxiosInstanceForUsers } from "../../helpers/utility";
 import { USERS } from "../../helpers/endpoints";
 
 const Dashboard = () => {
@@ -58,7 +58,7 @@ const Dashboard = () => {
   }, []);
 
   const assignGroupToUser = () => {
-    getAxiosInstance().post(USERS + '/addGroup', {
+    getAxiosInstanceForUsers().post(USERS + '/addGroup', {
       userId: auth.user?.profile.sub 
     })
     .then(response => {

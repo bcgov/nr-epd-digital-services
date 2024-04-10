@@ -1,5 +1,5 @@
 import { nanoid } from '@reduxjs/toolkit';
-import { API }  from './endpoints'
+import { API, USERS_API }  from './endpoints'
 import axios from "axios";
 import { User } from "oidc-client-ts"
 import { getClientSettings } from '../auth/UserManagerSetting';
@@ -44,3 +44,20 @@ export const getAxiosInstance = () => {
       return instance;
 }
 
+
+export const getAxiosInstanceForUsers = () => {
+
+    const user = getUser();
+    const instance = axios.create({
+        baseURL: USERS_API,
+        timeout: 1000,
+        headers: {
+        'Authorization': 'Bearer '+user?.access_token,
+        'requestID': generateRequestId(),
+        'Access-Control-Allow-Origin':'*',
+        'Content-Type':'application/json'
+    }
+      });
+
+      return instance;
+}
