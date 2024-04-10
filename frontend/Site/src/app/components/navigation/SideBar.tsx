@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./SideBar.css";
 import { getSideBarNavList } from "./dto/SideNav";
 import { AnglesLeftIcon } from "../common/icon";
@@ -9,19 +9,22 @@ function SideBar() {
   //console.log('getSideBarNavList()',getSideBarNavList());
   const navList = getSideBarNavList();
   const location = useLocation();
+  let tabIndex = 1;
 
-  const renderMenuOption = (item: any) => {
+  const renderMenuOption = (item: any, index: number) => {
+    ++tabIndex;
 
     const isCurrentPath = location.pathname === item.linkTo;
 
     return (
-      <div  className={`sideBar-NavItem ${isCurrentPath && item.icon ? 'currentPath' : ''}`} role="menuitem">
+      <div tabIndex={tabIndex}  className={`sideBar-NavItem ${isCurrentPath && item.icon ? 'currentPath' : ''}`} role="menuitem">
         {item.icon && <item.icon className="sideBar-Icon" />}
         {item.displayText && item.icon && (
           <Link
           to={item.linkTo}
           className={`sideBarDisplayText nav-section-bold-label nav-color-primary-default`}
-          aria-label={item.displayText}
+          aria-label={item.displayText}    
+               
         >
           {item.displayText}
         </Link>
@@ -51,12 +54,12 @@ function SideBar() {
           })
           .map((item, index) => (
             <React.Fragment key={index}>
-              {renderMenuOption(item)}
+              {renderMenuOption(item,index)}
               {item.children &&
                 item.children.map((child, index) => {
                   return (
                      <React.Fragment key={index}>
-                        {renderMenuOption(child)}
+                        {renderMenuOption(child,index)}
                       </React.Fragment>
                   );
                 })}
@@ -71,10 +74,10 @@ function SideBar() {
           })
           .map((item, childIndex) => (
             <React.Fragment key={childIndex}>
-              {renderMenuOption(item)}
+              {renderMenuOption(item,childIndex)}
               {item.children &&
                 item.children.map((item, index) => {
-                  return renderMenuOption(item);
+                  return renderMenuOption(item,index);
                 })}
               {/* Additional static item */}
               {/* <div className="sideBar-NavItem arrows">

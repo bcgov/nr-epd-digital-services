@@ -18,7 +18,7 @@ const Header = () => {
 
   return (
     <header className="navbar">
-      <div className="banner">
+      <div className="banner" tabIndex={1}>
         <a href="https://gov.bc.ca">
           <img src={logo} className="logo" alt="BC Government Logo" />
           {/* <img src={logoVertical} className="logo" alt="BC Government Logo" /> */}

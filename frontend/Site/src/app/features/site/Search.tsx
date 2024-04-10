@@ -71,6 +71,7 @@ const Search = () => {
               placeholder="Search"
               aria-label="Search input"
               value={searchText}
+              tabIndex={13}
             />
             {noUserAction ?  null :(
             <CircleXMarkIcon className="clear-button" onClick={()=>{handleClearSearch()}} > 
