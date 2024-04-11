@@ -5,6 +5,8 @@ import { loadingState } from "./dto/SiteSlice";
 import { RequestStatus } from "../../helpers/requests/status";
 import { useSelector } from "react-redux";
 
+
+
 const SearchResults = ({ data }: { data: any[] }) => {
   const columns: string[] = [
     "Site ID",

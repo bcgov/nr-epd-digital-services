@@ -16,11 +16,13 @@ import {
   CircleXMarkIcon
 } from "../../components/common/icon";
 import Intro from "./Intro";
+import Column from "./columns/Column";
 
 const Search = () => {
   const dispatch = useDispatch<AppDispatch>();
   const sites = useSelector(selectAllSites);
   const [noUserAction, setUserAction] = useState(true);
+  const [displayColumn,SetDisplayColumns] = useState(false);
 
   useEffect(() => {}, []);
 
@@ -89,7 +91,7 @@ const Search = () => {
             <h2 className="search-results-section-title">Results</h2>
           </div>
           <div className="table-actions hide-custom">
-            <div className="table-actions-items">
+            <div className="table-actions-items" onClick={()=>{SetDisplayColumns(!displayColumn)}} >
               <TableColumnsIcon />
               Columns
             </div>
@@ -113,11 +115,14 @@ const Search = () => {
             <span>Export Results As File</span>
           </div>
         </div>
+        {displayColumn ? (<div> <Column/></div> ): null }
         <div className="" aria-label="Search results">
           <SearchResults data={search(searchText)} />
         </div>
       </div>
       )}
+
+     
     </div>
   );
 };
