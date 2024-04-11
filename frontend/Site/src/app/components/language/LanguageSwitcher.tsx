@@ -51,12 +51,12 @@ const LanguageSwitcher = () => {
   return (
     <>
       {/* Dropdown component for language selection */}
-      <Dropdown className="justify-content-end " aria-label="Language Selector">
+      <Dropdown aria-label="Language Selector">
         {/* Dropdown toggle button */}
         <Dropdown.Toggle
           id="language-dropdown"
           variant=""
-          className="custom-toggle"
+          className="custom-toggle  p-sm-0 p-md-2"
           aria-label="Language Menu"
         >
           {/* Display current selected language */}
@@ -76,8 +76,10 @@ const LanguageSwitcher = () => {
               className="custom-item-first-child"
               disabled
               role="menuitem"
+              aria-disabled="true"
+              tabIndex={-1} // Prevent tab focus on disabled items
             >
-              <div className="custom-item-label">Please select a language:</div>
+              <div className="custom-item-label pb-2">Please select a language:</div>
             </Dropdown.Item>
           </div>
 
@@ -86,17 +88,18 @@ const LanguageSwitcher = () => {
             LANGUAGE.map((lang) => (
               <Dropdown.Item
                 onClick={() => changeLanguage(lang.key)}
-                className="custom-item"
+                className="custom-item d-flex w-100 align-items-center"
                 role="menuitem"
                 aria-label={lang.value}
                 aria-current={currentLanguage === lang.key ? "true" : undefined}
+                tabIndex={0} // Allow keyboard focus
               >
                 {/* Display language name */}
                 <span>{lang.value}</span>
 
                 {/* Display tick icon if current language is selected */}
                 {currentLanguage === lang.key && (
-                  <TickIcon className="tick-icon" />
+                  <TickIcon className="tick-icon " />
                 )}
               </Dropdown.Item>
             ))}

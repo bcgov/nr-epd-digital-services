@@ -18,7 +18,9 @@ import {
     FaAnglesRight,
     FaAngleDown,
     FaRegCircleXmark,
-    FaCheck
+    FaCheck,
+    FaCaretUp,
+    FaCaretDown
     } from "react-icons/fa6";
 
  
@@ -42,3 +44,5 @@ import {
   export const ArrowDownIcon = FaAngleDown ;
   export const CircleXMarkIcon = FaRegCircleXmark;
   export const TickIcon = FaCheck;
+  export const DropdownUpIcon = FaCaretUp;
+  export const DropdownIcon = FaCaretDown;

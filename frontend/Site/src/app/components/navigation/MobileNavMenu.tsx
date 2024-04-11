@@ -2,12 +2,13 @@ import React from "react";
 import { getSideBarNavList } from "./dto/SideNav";
 import "./MobileNavMenu.css";
 import { Link } from 'react-router-dom';
+import UserAccount from "../account/UserAccount";
 
 const MobileNavMenu = (props:any) => {
   const menuOptions = getSideBarNavList();
 
   return (
-    <div className="mobile-nav">
+    <div className="mobile-nav" >
       <div className="mobile-nav-top">
         {menuOptions.map((item, index) => {
           return (
@@ -51,7 +52,9 @@ const MobileNavMenu = (props:any) => {
           );
         })}
       </div>
-      <div className="mobile-nav-user-section">Logged In as : USER</div>
+      <div className="mobile-nav-user-section">
+        <UserAccount mobileView={props.mobileView} />
+      </div>
     </div>
   );
 };
