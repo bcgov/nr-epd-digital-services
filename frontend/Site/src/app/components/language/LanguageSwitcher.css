@@ -49,7 +49,7 @@
     .custom-menu {
         border-radius: 0px 0px var(--surface-border-radius-medium) var(--surface-border-radius-medium);
         padding: var(--layout-padding-large);
-        box-shadow: var(--shadow-medium);
+        box-shadow: var(--surface-shadow-medium);
         background-color: var(--surface-background-white);
         inset: 41px 0 0 0 ;
         overflow: auto;
