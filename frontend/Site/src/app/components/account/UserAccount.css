@@ -20,8 +20,9 @@
   border-radius: var(--surface-border-radius-medium) !important;
   padding: var(--layout-padding-medium) 0px var(--layout-padding-medium) 0px !important;
   background-color: var(--surface-background-white) !important;
-  box-shadow: var(--shadow-medium);
+  box-shadow: var(--surface-shadow-medium);
   inset: 16px 0px auto auto !important;
+  border: none !important;
 }
 
 .account-custom-item-first {

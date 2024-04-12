@@ -28,13 +28,13 @@ const UserAccount = ( props : any) =>{
                   {/* Logged in as label */}
                   <div className="account-custom-label" id="user-account-label">Logged in as:</div>
                   {/* Dropdown toggle button */}
-                  <div  role="button" className="account-username py-3 d-flex align-items-center justify-content-between" aria-expanded={dropdownArrow}
+                  <div  role="button" className="account-username py-3 d-flex align-items-center" aria-expanded={dropdownArrow}
             aria-controls="account-menu"
             aria-labelledby="user-account-label">
                     {/* Profile image */}
                     <img src={user.profileImage} alt="User profile image." className="account-image"  aria-hidden="true"/>
                     {/* User name */}
-                    <div className="p-2">{user.name}</div>
+                    <div className="p-3">{user.name}</div>
                     <div id="account-dropdown" className="account-custom-toggle-mobile align-item-center" aria-label="Account Menu Button"
                     onClick={toggleButton}>
                      { dropdownArrow ? <DropdownUpIcon/> : <DropdownIcon/> }
