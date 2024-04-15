@@ -23,7 +23,7 @@ RUN set -x \
         && chmod -R 777 /app/
 
 # Expose port - mostly a convention, for readability
-EXPOSE 4005
+EXPOSE 4006
 
 # Start up command
 
