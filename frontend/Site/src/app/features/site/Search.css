@@ -235,3 +235,14 @@
     float: right;  
     right: 40px;
 }
+
+.active
+{
+    
+    padding: var(--layout-padding-small) var(--layout-padding-medium) var(--layout-padding-small) var(--layout-padding-medium);
+    gap: 8px;
+    border-radius: var(--surface-border-radius-medium) var(--surface-border-radius-medium) 0px 0px;
+    background: var(--surface-primary-default);
+    border-bottom: 1px solid var(--surface-color-border-light);
+    color: white;
+}

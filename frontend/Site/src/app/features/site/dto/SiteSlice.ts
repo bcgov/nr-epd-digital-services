@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getAxiosInstance } from "../../../helpers/utility";
 import { print } from "graphql";
-import { FETCH_SITES } from "../graphql/Site";
+import { graphQlSiteQuery } from "../graphql/Site";
 import { SiteState } from "./SiteState";
 import { RequestStatus } from "../../../helpers/requests/status";
 import { Site } from "./Site";
@@ -13,17 +13,19 @@ const initialState: SiteState = {
   fetchStatus: RequestStatus.idle,
   deleteStatus: RequestStatus.idle,
   addedStatus: RequestStatus.idle,
-  updateStatus: RequestStatus.idle
+  updateStatus: RequestStatus.idle,
+  searchQuery:'',
 };
 
 export const fetchSites = createAsyncThunk(
   "sites/fetchSites",
-  async (searchParam: String) => {
+  async (searchParam: String, { getState }) => {
     try {
+      const state:any = getState();
       const response = await getAxiosInstance().post(
         GRAPHQL,
         {
-          query: print(FETCH_SITES),
+          query: print(graphQlSiteQuery(state.sites.searchQuery)),
           variables: {
             searchParam: searchParam,
           },
@@ -99,6 +101,14 @@ const siteSlice = createSlice({
         };
       },
     },
+    updateSearchQuery: (state, action) => {  
+      console.log(' action.payload', action.payload)   
+      const newState = {
+        ...state,
+      };      
+      newState.searchQuery = action.payload;
+      return newState;      
+    }
   },
   extraReducers(builder) {
     builder      
@@ -126,7 +136,7 @@ export const loadingState = (state: any) => state.sites.fetchStatus;
 
 
 export const {
-    siteAdded , resetSites , setFetchLoadingState
+    siteAdded , resetSites , setFetchLoadingState ,updateSearchQuery
 } = siteSlice.actions;
 
 export default siteSlice.reducer;

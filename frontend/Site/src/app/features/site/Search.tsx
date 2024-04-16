@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./Search.css";
 import "@bcgov/design-tokens/css/variables.css";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchSites , resetSites , setFetchLoadingState } from "./dto/SiteSlice";
-import { useEffect } from "react";
+import { fetchSites , resetSites , setFetchLoadingState , updateSearchQuery } from "./dto/SiteSlice";
+
 import { AppDispatch } from "../../Store";
 import { selectAllSites } from "./dto/SiteSlice";
 import SearchResults from "./SearchResults";
@@ -16,11 +16,43 @@ import {
   CircleXMarkIcon
 } from "../../components/common/icon";
 import Intro from "./Intro";
+import Column from "./columns/Column";
+import TableColumns from "./dto/Columns";
+import { getSiteSearchResultsColumns } from "./dto/Columns";
 
 const Search = () => {
   const dispatch = useDispatch<AppDispatch>();
   const sites = useSelector(selectAllSites);
   const [noUserAction, setUserAction] = useState(true);
+  const [displayColumn,SetDisplayColumns] = useState(false);
+  const columns = getSiteSearchResultsColumns();
+  const [columnsToDisplay, setColumnsToDisplay] = useState<TableColumns[]>([...columns]);
+
+
+  const toggleColumnSelectionForDisplay = (column:TableColumns) =>{
+      const index =  columnsToDisplay.findIndex(item=>item.id===column.id);  
+  
+      if (index !== -1 && !columnsToDisplay[index].disabled) {
+        const updatedColumnsToDisplay = [...columnsToDisplay];
+        updatedColumnsToDisplay[index] = {
+            ...updatedColumnsToDisplay[index],
+            isChecked: !updatedColumnsToDisplay[index].isChecked
+        };
+        setColumnsToDisplay(updatedColumnsToDisplay);
+    }
+  }
+
+  const resetDefaultColums = () => {
+    setColumnsToDisplay(columns);
+  }
+
+  useEffect(()=>{
+    console.log("updated",columnsToDisplay.filter(x=>x.isChecked === true).map((item,index)=>{ return item.graphQLPropertyName  }).toString());
+
+    dispatch(updateSearchQuery(columnsToDisplay.filter(x=>x.isChecked === true).map((item,index)=>{ return item.graphQLPropertyName  }).toString()));
+    dispatch(fetchSites(searchText));
+  },[columnsToDisplay]);
+  
 
   useEffect(() => {}, []);
 
@@ -61,7 +93,6 @@ const Search = () => {
     <div className="siteSearchContainer" role="search">
       <div className="row search-container">
         <h1 className="search-text-label">Search Site Registry</h1>
-
         <div className="row">
           <div className="d-flex align-items-center">
             <input
@@ -89,7 +120,7 @@ const Search = () => {
             <h2 className="search-results-section-title">Results</h2>
           </div>
           <div className="table-actions hide-custom">
-            <div className="table-actions-items">
+            <div className={`table-actions-items ${displayColumn ? 'active': ''} ` } onClick={()=>{ console.log(columns); SetDisplayColumns(!displayColumn)}} >
               <TableColumnsIcon />
               Columns
             </div>
@@ -99,6 +130,7 @@ const Search = () => {
             </div>
           </div>
         </div>
+        {displayColumn ? (<div> <Column toggleColumnSelectionForDisplay={toggleColumnSelectionForDisplay} columns={columnsToDisplay} reset={resetDefaultColums}  /></div> ): null }
         <div className="search-result-actions d-none d-md-flex">
           <div className="search-result-actions-btn">
             <ShoppingCartIcon />
@@ -113,11 +145,14 @@ const Search = () => {
             <span>Export Results As File</span>
           </div>
         </div>
+       
         <div className="" aria-label="Search results">
-          <SearchResults data={search(searchText)} />
+          <SearchResults data={search(searchText)} columns={columnsToDisplay.filter(x=>x.isChecked === true)} />
         </div>
       </div>
       )}
+
+     
     </div>
   );
 };

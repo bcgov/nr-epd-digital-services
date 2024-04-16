@@ -9,4 +9,5 @@ export class SiteState
     deleteStatus:string =  RequestStatus.idle;
     addedStatus:string =  RequestStatus.idle;   
     updateStatus:string  = RequestStatus.idle;
+    searchQuery: string = '';
 }
