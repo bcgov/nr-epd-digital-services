@@ -1,4 +1,9 @@
-export class SiteColumns {
+export enum ColumnType {
+  Link,
+  Text
+}
+
+export class TableColumns {
   constructor(
     public id: number,
     public displayName: string,
@@ -8,192 +13,210 @@ export class SiteColumns {
     public disabled: boolean,
     public isDefault: boolean,
     public sortOrder: number,
-    public isChecked: boolean = false
+    public isChecked: boolean = false,
+    public displayType: ColumnType = ColumnType.Text,    
   ) {}
 }
 
 const getSiteSearchResultsColumns = () => {
-  const columns: SiteColumns[] = [
-    {
-      id: 1,
-      displayName: "Site ID",
-      active: true,
-      graphQLPropertyName: "id",
-      groupId: 1,
-      disabled: false,
-      isDefault: true,
-      sortOrder: 1,
-      isChecked:false
-    },
-    {
-      id: 2,
-      displayName: "Site Remediation Status",
-      active: true,
-      graphQLPropertyName: "srStatus",
-      groupId: 1,
-      disabled: false,
-      isDefault: true,
-      sortOrder: 1,
-      isChecked:false
-    },
-    {
-      id: 3,
-      displayName: "Site Risk code",
-      active: true,
-      graphQLPropertyName: "siteRiskCode",
-      groupId: 1,
-      disabled: false,
-      isDefault: true,
-      sortOrder: 1,
-      isChecked:false
-    },
-    {
-      id: 4,
-      displayName: "General Description",
-      active: true,
-      graphQLPropertyName: "generalDescription",
-      groupId: 1,
-      disabled: false,
-      isDefault: true,
-      sortOrder: 1,
-      isChecked:false
-    },
-    {
-      id: 5,
-      displayName: "Common Name",
-      active: true,
-      graphQLPropertyName: "commonName",
-      groupId: 2,
-      disabled: false,
-      isDefault: true,
-      sortOrder: 1,
-      isChecked:false
-    },
-    {
-      id: 6,
-      displayName: "Site Address",
-      active: true,
-      graphQLPropertyName: "addrLine_1,addrLine_2,addrLine_3",
-      groupId: 2,
-      disabled: false,
-      isDefault: true,
-      sortOrder: 1,
-      isChecked:false
-    },
-    {
-      id: 7,
-      displayName: "City",
-      active: true,
-      graphQLPropertyName: "city",
-      groupId: 2,
-      disabled: false,
-      isDefault: true,
-      sortOrder: 1,
-      isChecked:false
-    },
-    {
-      id: 8,
-      displayName: "Latitude",
-      active: true,
-      graphQLPropertyName: "latdeg",
-      groupId: 2,
-      disabled: false,
-      isDefault: true,
-      sortOrder: 1,
-      isChecked:false
-    },
-    {
-      id: 9,
-      displayName: "Latitude(D,M,S)",
-      active: true,
-      graphQLPropertyName: "latDegrees,latMinutes,latSeconds",
-      groupId: 3,
-      disabled: false,
-      isDefault: true,
-      sortOrder: 1,
-      isChecked:false
-    },
-    {
-      id: 10,
-      displayName: "Longitude",
-      active: true,
-      graphQLPropertyName: "longdeg",
-      groupId: 3,
-      disabled: false,
-      isDefault: true,
-      sortOrder: 1,
-      isChecked:false
-    },
-    {
-      id: 11,
-      displayName: "Longitude(D,M,S)",
-      active: true,
-      graphQLPropertyName: "longDegrees,longMinutes,longSeconds",
-      groupId: 3,
-      disabled: false,
-      isDefault: true,
-      sortOrder: 1,
-      isChecked:false
-    },
-    {
-      id: 12,
-      displayName: "Lat/Long Reliability",
-      active: true,
-      graphQLPropertyName: "latlongReliabilityFlag",
-      groupId: 3,
-      disabled: false,
-      isDefault: true,
-      sortOrder: 1,
-      isChecked:false
-    },
-    {
-      id: 13,
-      displayName: "Created By",
-      active: true,
-      graphQLPropertyName: "whoCreated",
-      groupId: 4,
-      disabled: false,
-      isDefault: true,
-      sortOrder: 1,
-      isChecked:false
-    },
-    {
-      id: 14,
-      displayName: "Date Created",
-      active: true,
-      graphQLPropertyName: "whenCreated",
-      groupId: 4,
-      disabled: false,
-      isDefault: true,
-      sortOrder: 1,
-      isChecked:false
-    },
-    {
-      id: 15,
-      displayName: "Last Updated",
-      active: true,
-      graphQLPropertyName: "whenCreated",
-      groupId: 4,
-      disabled: false,
-      isDefault: true,
-      sortOrder: 1,
-      isChecked:false
-    },
-    {
-      id: 16,
-      displayName: "Consultant Submitted",
-      active: true,
-      graphQLPropertyName: "consultantSubmitted",
-      groupId: 4,
-      disabled: false,
-      isDefault: true,
-      sortOrder: 1,
-      isChecked:false
-    },
+  const columns: TableColumns[] = [
+    new TableColumns(
+      1,
+      "Site ID",
+      true,
+      "id",
+      1,
+      true,
+      true,
+      1,
+      true,
+      ColumnType.Link
+    ),
+    new TableColumns(
+      6,
+      "Site Address",
+      true,
+      "addrLine_1,addrLine_2,addrLine_3",
+      2,
+      true,
+      true,
+      1,
+      true,
+      ColumnType.Text
+    ),
+    new TableColumns(
+      7,
+      "City",
+      true,
+      "city",
+      2,
+      false,
+      true,
+      1,
+      true,
+      ColumnType.Text
+    ),
+    new TableColumns(
+      2,
+      "Site Remediation Status",
+      true,
+      "srStatus",
+      1,
+      false,
+      true,
+      1,
+      false,
+      ColumnType.Text
+    ),
+    new TableColumns(
+      3,
+      "Site Risk code",
+      true,
+      "siteRiskCode",
+      1,
+      false,
+      true,
+      1,
+      false,
+      ColumnType.Text
+    ),
+    new TableColumns(
+      4,
+      "General Description",
+      true,
+      "generalDescription",
+      1,
+      false,
+      true,
+      1,
+      false,
+      ColumnType.Text
+    ),
+    new TableColumns(
+      5,
+      "Common Name",
+      true,
+      "commonName",
+      2,
+      false,
+      true,
+      1,
+      false,
+      ColumnType.Text
+    ),
+    new TableColumns(
+      8,
+      "Latitude",
+      true,
+      "latdeg",
+      2,
+      false,
+      true,
+      1,
+      false,
+      ColumnType.Text
+    ),
+    new TableColumns(
+      9,
+      "Latitude(D,M,S)",
+      true,
+      "latDegrees,latMinutes,latSeconds",
+      3,
+      false,
+      true,
+      1,
+      false,
+      ColumnType.Text
+    ),
+    new TableColumns(
+      10,
+      "Longitude",
+      true,
+      "longdeg",
+      3,
+      false,
+      true,
+      1,
+      false,
+      ColumnType.Text
+    ),
+    new TableColumns(
+      11,
+      "Longitude(D,M,S)",
+      true,
+      "longDegrees,longMinutes,longSeconds",
+      3,
+      false,
+      true,
+      1,
+      false,
+      ColumnType.Text
+    ),
+    new TableColumns(
+      12,
+      "Lat/Long Reliability",
+      true,
+      "latlongReliabilityFlag",
+      3,
+      false,
+      true,
+      1,
+      false,
+      ColumnType.Text
+    ),
+    new TableColumns(
+      13,
+      "Created By",
+      true,
+      "whoCreated",
+      4,
+      false,
+      true,
+      1,
+      false,
+      ColumnType.Text
+    ),
+    new TableColumns(
+      14,
+      "Date Created",
+      true,
+      "whenCreated",
+      4,
+      false,
+      true,
+      1,
+      false,
+      ColumnType.Text
+    ),
+    new TableColumns(
+      15,
+      "Last Updated",
+      true,
+      "whenCreated",
+      4,
+      false,
+      true,
+      1,
+      false,
+      ColumnType.Text
+    ),
+    new TableColumns(
+      16,
+      "Consultant Submitted",
+      true,
+      "consultantSubmitted",
+      4,
+      false,
+      true,
+      1,
+      false,
+      ColumnType.Text
+    ),
   ];
+
   return columns;
 };
 
 export { getSiteSearchResultsColumns };
 
-export default SiteColumns;
+export default TableColumns;
