@@ -8,4 +8,4 @@ export const API:string = process.env.REACT_APP_BACKEND_API|| ((window as any)._
 
 export const USERS_API: string =  process.env.REACT_APP_BACKEND_USERS_API|| ((window as any)._env_ && (window as any)._env_.REACT_APP_BACKEND_USERS_API) 
 
-export const COMS_API: string =  process.env.REACT_APP_BACKEND_COMS_API|| ((window as any)._env_ && (window as any)._env_.REACT_APP_BACKEND_COMS_API) 
+export const COMS_API: string =  process.env.REACT_APP_BCBOX_BASE_URL|| ((window as any)._env_ && (window as any)._env_.REACT_APP_BCBOX_BASE_URL) 
