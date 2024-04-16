@@ -1,0 +1,68 @@
+.account-custom-dropdown {
+  display: flex;
+  justify-content: space-between;
+}
+
+.account-custom-toggle {
+    color: var(--typography-color-primary-invert) !important;
+}
+
+.account-custom-toggle-mobile {
+  color: var(--typography-color-primary);
+}
+
+.account-custom-toggle:active {
+  border-color: transparent !important;
+}
+
+.account-custom-menu {
+  height: 231px;
+  border-radius: var(--surface-border-radius-medium) !important;
+  padding: var(--layout-padding-medium) 0px var(--layout-padding-medium) 0px !important;
+  background-color: var(--surface-background-white) !important;
+  box-shadow: var(--surface-shadow-medium);
+  inset: 16px 0px auto auto !important;
+  border: none !important;
+}
+
+.account-custom-item-first {
+  padding: 0px var(--layout-margin-medium) 16px var(--layout-margin-medium) !important;
+  border-bottom: 1px solid var(--surface-color-border-light, #D8D8D8) !important;
+}
+
+.account-custom-label {
+  font: var(--typography-regular-label);
+  color: var(--typography-color-secondary);
+}
+
+.account-image {
+  border-radius: 100px;
+  height: 44px;
+  width: 44px;
+}
+
+.account-username span {
+  color: var(--typography-color-primary);
+  font: var(--typography-bold-body);
+}
+
+.account-custom-item {
+  display: flex !important;
+  padding: var(--layout-padding-small) var(--layout-padding-medium) var(--layout-padding-small) var(--layout-padding-medium) !important;
+  gap: var(--layout-margin-medium) ;
+  color: var(--typography-color-primary) !important;
+}
+
+.account-custom-item-mobile {
+  padding: var(--layout-padding-medium) 0px var(--layout-padding-medium) 0px !important;
+}
+.account-custom-item:hover {
+  background-color: var(--surface-secondary-hover) !important;
+  color: var(--typography-color-secondary) !important;
+}
+
+@media screen and (max-width: 767px){
+  .user-dropdown{
+    display: none;
+  }
+}

@@ -1,0 +1,72 @@
+
+.custom-toggle {
+  cursor: pointer;
+  color: var(--typography-color-primary-invert);
+}
+
+.custom-toggle:first-child:active {
+  border-color: transparent;
+}
+
+.custom-menu {
+  height: 370px;
+  border-radius: var(--surface-border-radius-medium);
+  padding: var(--layout-padding-medium) 0px var(--layout-padding-medium) 0px;
+  box-shadow: var(--surface-shadow-medium);
+  background-color: var(--surface-background-white);
+  inset: 45px auto auto auto;
+  position:absolute;
+  left:calc(100% - 410px);
+}
+
+.custom-item {
+  padding: var(--layout-padding-small) var(--layout-padding-medium) var(--layout-padding-small) var(--layout-padding-medium);
+  gap: var(--layout-margin-medium);
+  color: var(--typography-color-primary);
+}
+
+.custom-item:hover {
+    background-color: var(--surface-secondary-hover);
+    color: var(--typography-color-secondary);
+}
+
+.custom-item-first-child {
+  padding: var(--layout-padding-small) var(--layout-padding-medium) var(--layout-padding-small) var(--layout-padding-medium) ;
+  gap: var(--layout-margin-medium);
+  
+}
+
+.custom-item-label {
+  font: var(--typography-regular-label);
+  color: var(--typography-color-secondary);
+}
+
+.tick-icon {
+  color: var(--icons-icons-primary);
+  float: right;
+}
+
+@media screen and (max-width: 767px){
+    .custom-menu {
+        border-radius: 0px 0px var(--surface-border-radius-medium) var(--surface-border-radius-medium);
+        padding: var(--layout-padding-large);
+        box-shadow: var(--surface-shadow-medium);
+        background-color: var(--surface-background-white);
+        inset: 41px 0 0 0 ;
+        overflow: auto;
+      }
+  
+
+      .custom-item {
+        padding: var(--layout-padding-medium) 0px var(--layout-padding-medium) 0px;
+        gap: var(--layout-margin-medium);
+        color: var(--typography-color-primary);
+        font: var(--typography-regular-body);
+      }
+
+      .custom-item-first-child {
+        padding: var(--layout-padding-medium) 0px var(--layout-padding-medium) 0px;
+        gap: var(--layout-margin-medium);
+      
+      }
+}

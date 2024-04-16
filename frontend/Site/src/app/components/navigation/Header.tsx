@@ -2,11 +2,13 @@ import logo from "../../../app/images/logos/logo-banner.png";
 import logoVertical from "../../../app/images/logos/logo-vertical.png"
 
 import "./Header.css";
-
+import moon from "../../images/moon.png";
 import { BarsIcon } from "../common/icon";
 import { useState } from "react";
 import MobileNavMenu from "./MobileNavMenu";
 import { ArrowDownIcon } from "../common/icon";
+import LanguageSwitcher from "../language/LanguageSwitcher";
+import UserAccount from "../account/UserAccount";
 
 const Header = () => {
 
@@ -25,9 +27,8 @@ const Header = () => {
         </a>
         <h1 className="siteName">SITE</h1>
       </div>
-      <div className="header-right-corner-section m-2">
-        <div >EN <ArrowDownIcon/></div>
-
+      <div className="header-right-corner-section d-flex align-items-center">
+        <LanguageSwitcher/>
         <button
           className="navbar-toggler display-upto-medium"
           type="button"
@@ -39,6 +40,12 @@ const Header = () => {
         >
           <BarsIcon className="bars-button" />
         </button>
+        <div className="d-sm-none d-md-flex d-none">
+          {/* Profile image */}
+          <img src={moon} alt="Moon image for theme."/>
+        </div>
+        {!isOpen && <UserAccount  mobileView={isOpen}/>}
+       
       </div>
    
       <div
@@ -47,7 +54,7 @@ const Header = () => {
         }`}
         onClick={() => toggleNavbar()}
       >
-        <MobileNavMenu toggleOpen={toggleNavbar} />
+        <MobileNavMenu toggleOpen={toggleNavbar} mobileView={isOpen}/>
       </div>
     </header>
   );

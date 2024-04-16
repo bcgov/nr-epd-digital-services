@@ -1,12 +1,12 @@
 header {
     background-color: #053662;
     border-bottom: 2px solid #F8BA47;
-    padding: 0 65px 0 65px;
+    /* padding: 0 65px 0 65px; */
+    padding: 10px var(--layout-padding-xlarge) 11px var(--layout-padding-xlarge) !important;
     color: #fff;
     display: flex;
     height: 65px;
     top: 0px;
-
     width: 100%;
   }
 
@@ -61,11 +61,12 @@ header {
 
   .header-right-corner-section
   {
-    display: flex; 
+    gap: var(--layout-padding-large);
+    opacity: 0px;
+    /* display: flex; 
     gap: 16px;
     opacity: 0px;
-    align-items: center;
-
+    align-items: center; */
   }
 
   .bars-button
@@ -77,6 +78,8 @@ header {
     text-align: center;
 
   }
+
+  
 
   /*
     These are sample media queries only. Media queries are quite subjective
@@ -112,6 +115,7 @@ header {
     position: absolute;
     top: 65px;
     width: 100%;
+    right:0;
     color: black;
   }
 
