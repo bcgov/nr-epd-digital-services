@@ -10,8 +10,9 @@
     },
     "notificationBanner": "FRONTEND_NOTIFICATION_BANNER",
     "oidc": {
-      "authority": "https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/",
-      "clientId": "epd-local"
+      "authority": "FRONTEND_OIDC_AUTHORITY",
+      "clientId": "FRONTEND_OIDC_CLIENTID"
+
     }
   },
   "server": {
