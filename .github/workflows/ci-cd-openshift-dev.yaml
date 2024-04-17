@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - 'dev'
-      - 'feat/task-228' #test1
+      - 'feat/srs-343' #test1
                              
     paths:
       - 'backend/**'
