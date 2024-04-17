@@ -76,7 +76,7 @@ route:
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  # host: https://bcbox-e38158-dev.apps.silver.devops.gov.bc.ca
+  host: chart-example.local
   # path: /
   tls:
     insecureEdgeTerminationPolicy: Redirect

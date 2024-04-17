@@ -8,7 +8,7 @@ services:
   database:
     user: postgres
     networks:
-      - app-tier 
+      - app-tier
     container_name: database
     environment:
       POSTGRES_USER: postgres
@@ -18,7 +18,7 @@ services:
     image: postgis/postgis:15-3.3
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: [ "CMD-SHELL", "pg_isready" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -27,12 +27,12 @@ services:
 
   users:
     networks:
-      - app-tier 
+      - app-tier
     build:
       context: backend/users
       dockerfile: ./local.Dockerfile
     container_name: users
-    hostname: users   
+    hostname: users
     links:
       - database
     ports:
@@ -41,11 +41,11 @@ services:
       database:
         condition: service_healthy
     expose:
-      - 4005 
+      - 4005
     volumes:
       - ./backend/users:/app:z
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4005"]
+      test: [ "CMD", "curl", "-f", "http://localhost:4005" ]
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -56,7 +56,7 @@ services:
       - app-tier
     build:
       context: backend/applications
-      dockerfile: ./local.Dockerfile 
+      dockerfile: ./local.Dockerfile
     container_name: applications
     hostname: applications
     depends_on:
@@ -67,20 +67,69 @@ services:
     ports:
       - "4006:4006"
     expose:
-      - 4006 
+      - 4006
     volumes:
       - ./backend/applications:/app:z
       - /app/node_modules
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4006"]
+      test: [ "CMD", "curl", "-f", "http://localhost:4006" ]
       interval: 1m30s
       timeout: 10s
       retries: 3
-      start_period: 40s 
+      start_period: 40s
 
-  graphqlgateway:    
+  site-database:
+    image: postgres/postgis-debezium:15
+    user: postgres
     networks:
-      - app-tier 
+      - app-tier
+    container_name: site-database
+    build:
+      context: etl/debezium-postgis/15-3.3
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: default
+    hostname: site-database
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 30s
+      timeout: 25s
+      retries: 5
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  sites:
+    networks:
+      - app-tier
+    build:
+      context: backend/sites
+      dockerfile: ./local.Dockerfile
+    container_name: sites
+    hostname: sites
+    depends_on:
+      site-database:
+        condition: service_healthy
+    links:
+      - site-database
+    ports:
+      - "4007:4007"
+    expose:
+      - 4007
+    volumes:
+      - ./backend/sites:/app:z
+      - /app/node_modules
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:4007" ]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  graphqlgateway:
+    networks:
+      - app-tier
     container_name: graphqlgateway
     build:
       context: backend/gateway
@@ -91,10 +140,11 @@ services:
       POSTGRESQL_PASSWORD: default
       POSTGRESQL_DATABASE: default
       USERS_MICROSERVICE: http://users:4005
+      SITE_MICROSERVICE: http://sites:4007
       USERS_MICROSERVICE_ENDPOINT: http://users:4005/graphql
-      APPLICATION_MICROSERVICE_ENDPOINT: http://applications:4006/graphql
+      SITE_MICROSERVICE_ENDPOINT: http://sites:4007/graphql
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4010"]
+      test: [ "CMD", "curl", "-f", "http://localhost:4010" ]
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -103,49 +153,50 @@ services:
     image: node:14
     links:
       - database
+      - site-database
     ports:
       - "4010:4010"
     depends_on:
       - "users"
-      - "applications"
+      - "sites"
     volumes:
       - ./backend/gateway:/app:z
       - /app/node_modules
     working_dir: "/app"
 
-  frontend:
-    container_name: frontend
-    entrypoint:
-      - "sh"
-      - "-c"
-      - "npm i && npm run start"
-    environment:      
-      - WATCHPACK_POLLING=true 
-      - NODE_ENV=development
-      - BACKEND_URL=backend
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4000"]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-    hostname: frontend
-    image: node:14
-    links:
-      - graphqlgateway
-    ports:
-      - "4000:3000"
-      - "35729:35729"
-    volumes:
-      - ./frontend:/app:z
-      - /app/node_modules
-    working_dir: "/app"
+frontend:
+  container_name: frontend
+  entrypoint:
+    - "sh"
+    - "-c"
+    - "npm i && npm run start"
+  environment:
+    - WATCHPACK_POLLING=true
+    - NODE_ENV=development
+    - BACKEND_URL=backend
+  healthcheck:
+    test: [ "CMD", "curl", "-f", "http://localhost:4000" ]
+    interval: 1m30s
+    timeout: 10s
+    retries: 3
+    start_period: 40s
+  hostname: frontend
+  image: node:14
+  links:
+    - graphqlgateway
+  ports:
+    - "4000:3000"
+    - "35729:35729"
+  volumes:
+    - ./frontend:/app:z
+    - /app/node_modules
+  working_dir: "/app"
 
-  userapi_doc:
-        container_name: userapi_doc
-        build:
-            context: ./backend/documentation/users
-            dockerfile: ./Dockerfile
-        restart: always
-        ports:
-            - "4001:4001"
+userapi_doc:
+  container_name: userapi_doc
+  build:
+    context: ./backend/documentation/users
+    dockerfile: ./Dockerfile
+  restart: always
+  ports:
+    - "4001:4001"

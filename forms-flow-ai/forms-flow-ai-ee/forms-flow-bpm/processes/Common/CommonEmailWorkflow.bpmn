@@ -58,7 +58,12 @@ system.out.println ("name: "+name);</bpmn:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="method">POST</camunda:inputParameter>
             <camunda:inputParameter name="payload">
-              <camunda:script scriptFormat="javascript">var p = {
+              <camunda:script scriptFormat="javascript">var toEmailAddresses = JSON.parse(execution.getVariable("emailTo"));
+var toEmailAddressesArr =  Java.to(toEmailAddresses, "java.lang.Object[]");
+
+
+
+var p = {
   "bcc": [],
   "bodyType": "html",
   "body": execution.getVariable("text"),
@@ -68,7 +73,7 @@ system.out.println ("name: "+name);</bpmn:script>
   "from": "NOREPLYEPD@gov.bc.ca",
   "priority": "normal",
   "subject": execution.getVariable("subject"),
-  "to": execution.getVariable("emailTo"),
+  "to": toEmailAddressesArr,
   "tag": "",
   "attachments": []
 }
@@ -120,6 +125,11 @@ system.out.println ("result: "+result);</bpmn:script>
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="category">${category}</camunda:inputParameter>
+          <camunda:inputParameter name="host">
+            <camunda:script scriptFormat="javascript">const host = (java.lang.System).getenv('APP_HOST');
+console.log(`host: ${host}`);
+execution.setVariable("host", host);</camunda:script>
+          </camunda:inputParameter>
           <camunda:outputParameter name="support">
             <camunda:script scriptFormat="groovy">dmnResult.get("support")</camunda:script>
           </camunda:outputParameter>

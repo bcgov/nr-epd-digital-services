@@ -58,10 +58,10 @@ const handleAuth = ({ req }) => {
                 : 'http://users:4005/graphql',
             },
             {
-              name: 'applications',
-              url: process.env.APPLICATION_MICROSERVICE_ENDPOINT
-                ? process.env.APPLICATION_MICROSERVICE_ENDPOINT
-                : 'http://applications:4006/graphql',
+              name: 'sites',
+              url: process.env.SITE_MICROSERVICE_ENDPOINT
+                ? process.env.SITE_MICROSERVICE_ENDPOINT
+                : 'http://sites:4007/graphql',
             },
           ],
         }),
@@ -72,4 +72,4 @@ const handleAuth = ({ req }) => {
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
