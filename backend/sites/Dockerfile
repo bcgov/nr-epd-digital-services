@@ -12,7 +12,7 @@ COPY package*.json ./
 #ENV NODE_ENV production
 
 # Install app dependencies using the `npm ci` command instead of `npm install`
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 
 # Bundle app source
 COPY . ./

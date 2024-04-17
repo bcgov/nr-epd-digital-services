@@ -12,6 +12,7 @@
     "oidc": {
       "authority": "FRONTEND_OIDC_AUTHORITY",
       "clientId": "FRONTEND_OIDC_CLIENTID"
+
     }
   },
   "server": {

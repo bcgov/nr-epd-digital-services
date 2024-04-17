@@ -11,8 +11,8 @@ import "./Dashboard.css";
 import { SdmDashboard } from "./sdmDashboard/SdmDashboard";
 import { ReviewerDashoard } from "./reviewerDashboard/ReviewerDashoard";
 import { getSDMUserRole } from "../../helpers/envManager";
-import { getAxiosInstanceForUsers } from "../../helpers/utility";
-import { USERS } from "../../helpers/endpoints";
+import { getAxiosInstanceForComs, getAxiosInstanceForUsers } from "../../helpers/utility";
+import { COMS, USERS } from "../../helpers/endpoints";
 
 const Dashboard = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -53,7 +53,8 @@ const Dashboard = () => {
   useEffect( () => {
       if(auth.user?.profile.identity_provider === BCeID || auth.user?.profile.identity_provider === BCSC)
       {
-          assignGroupToUser(); 
+          assignGroupToUser();
+          assignUserToBCbox();
       }
   }, []);
 
@@ -73,6 +74,42 @@ const Dashboard = () => {
     
   }
   
+  const assignUserToBCbox = () => {
+    try{
+
+        // Get the user's identity ID from auth.user.profile.sub
+        const identityId = auth.user?.profile.sub;
+
+        if (!identityId) {
+          throw new Error('User identity ID is missing.');
+        }
+        // Make the Axios GET request with value in the query string
+        getAxiosInstanceForComs().get(COMS, {
+          params: {
+            identityId: auth.user?.profile.sub 
+          }
+        })
+        .then(response => {
+          if(response.data.success)
+          {
+            console.log(response.data.message);
+          }
+          else {
+            throw new Error('Failed to assign user to BCbox.');
+          }
+        })
+        .catch(error => {
+          // Handle errors
+          console.error('Error assigning user to BCbox:', error.message);
+        });
+    }
+    catch (error: any) {
+      // Handle errors
+      console.error('Error assigning user to BCbox:', error.message);
+    }
+    
+  }
+
   const handleFormsflowWebRedirection = () => {
     const formsFlowWebURL = process.env.REACT_APP_FORMSFLOW_WEB_URL || ((window as any)._env_ && (window as any)._env_.REACT_APP_FORMSFLOW_WEB_URL) || "";
     const locationBeforeAuthRedirect = sessionStorage.getItem('locationBeforeAuthRedirect');
