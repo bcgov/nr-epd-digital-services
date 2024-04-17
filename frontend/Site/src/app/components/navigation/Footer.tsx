@@ -1,6 +1,7 @@
 import React from 'react'
 import './Footer.css';
 import logo from "../../../app/images/logos/logo-white.png";
+import { FOOTER_TEXT_1, FOOTER_TEXT_2 } from '../../constants/Constant';
 
 const Footer = () => {
   return (
@@ -8,7 +9,7 @@ const Footer = () => {
         <section className="footer d-flex justify-content-center">
             <span className='footer-inner-content-width'>
               <p className="footer-section-content1">
-              The B.C. Public Service acknowledges the territories of First Nations around B.C. and is grateful to carry out our work on these lands. We acknowledge the rights, interests, priorities, and concerns of all Indigenous Peoples - First Nations, Métis, and Inuit - respecting and acknowledging their distinct cultures, histories, rights, laws, and governments.
+              {FOOTER_TEXT_1}
               </p>            
             </span>
         </section>
@@ -21,7 +22,7 @@ const Footer = () => {
                          </a>
                     </span>
                     <p className="footer-inner-content-width">
-                    We can help in over 120 languages and through Telephone Device For The Deaf (TDD). Call, email or text us, or find a service centre
+                    {FOOTER_TEXT_2}
                     </p>
                                   
               </div>

@@ -16,7 +16,7 @@ const SearchResults: FC<ColumnProps> = ({ data, columns }) => {
   const requestStatus = useSelector(loadingState);
 
   useEffect(() => {
-    console.log("loadingState", requestStatus);
+    console.log("loadingState", columns);
   }, [requestStatus]);
 
   const getTableCellHtml = (
@@ -74,7 +74,7 @@ const SearchResults: FC<ColumnProps> = ({ data, columns }) => {
               aria-label="Select Row"
             />
           </td>
-          {columns.map((column,columnIndex) => {
+          {columns && columns.map((column,columnIndex) => {
             return renderTableCell(column, rowIndex, columnIndex);
           })}
           <td className="border-quick-color search-results-text">
@@ -89,11 +89,16 @@ const SearchResults: FC<ColumnProps> = ({ data, columns }) => {
   };
 
   const renderTableHeader = () => {
+
+    if (!columns || columns.length === 0) {
+      return null;
+    }
+
     return( <tr className="search-results-section-header">
     <th scope="col" className="search-results-th">
       <input type="checkbox" className="checkbox-color" />
     </th>
-    {columns.map((item, index) => (
+    {columns && columns.map((item, index) => (
       <th
         key={index}
         scope="col"

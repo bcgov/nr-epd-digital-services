@@ -8,22 +8,6 @@ jest.mock('react-oidc-context', () => ({
   useAuth: jest.fn(),
 }))
 
-
-
-// it('renders log in panel', () => {
-//   (useAuth as jest.Mock).mockReturnValue(
-//     {isAuthenticated: false}
-//   )
-//   render(
-//       <Provider store={store}>
-//         <App />
-//       </Provider>
-//       );
-//   const loginPanel = screen.getByText(/Dashboard/i);
-//   expect(loginPanel).toBeInTheDocument();
-
-// });
-
 test('Renders Intro', () =>{
   (useAuth as jest.Mock).mockReturnValue(
     {isAuthenticated: false}
@@ -33,7 +17,7 @@ test('Renders Intro', () =>{
         <App />
       </Provider>
     );
-  const formAccordion = screen.getByText(/Introducing the New Site Registry/i)
+  const formAccordion = screen.getByText(/Search Site Registry/i)
   expect(formAccordion).toBeInTheDocument()
 })
 

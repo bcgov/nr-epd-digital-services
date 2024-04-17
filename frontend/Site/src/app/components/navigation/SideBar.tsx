@@ -5,8 +5,7 @@ import { AnglesLeftIcon } from "../common/icon";
 import { AnglesRightIcon } from "../common/icon";
 import { Link, useLocation } from 'react-router-dom';
 
-function SideBar() {
-  //console.log('getSideBarNavList()',getSideBarNavList());
+function SideBar() {  
   const navList = getSideBarNavList();
   const location = useLocation();
   let tabIndex = 1;
@@ -35,11 +34,7 @@ function SideBar() {
            aria-label={item.displayText}
          >
            {item.displayText}
-         </span>
-          // <span className="nav-section-bold-label nav-color-secondary" aria-label={item.displayText}>
-          //   {" "}
-          //   {item.displayText}{" "}
-          // </span>
+         </span>       
         )}
       </div>
     );

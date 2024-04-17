@@ -42,6 +42,7 @@ export const fetchSites = createAsyncThunk(
 const siteSlice = createSlice({
   name: "sites",
   initialState,
+  
   reducers: {
     setFetchLoadingState:(state,action)=>{
       const newState = {

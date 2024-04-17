@@ -46,13 +46,7 @@ const Search = () => {
     setColumnsToDisplay(columns);
   }
 
-  useEffect(()=>{
-    console.log("updated",columnsToDisplay.filter(x=>x.isChecked === true).map((item,index)=>{ return item.graphQLPropertyName  }).toString());
-
-    dispatch(updateSearchQuery(columnsToDisplay.filter(x=>x.isChecked === true).map((item,index)=>{ return item.graphQLPropertyName  }).toString()));
-    dispatch(fetchSites(searchText));
-  },[columnsToDisplay]);
-  
+ 
 
   useEffect(() => {}, []);
 
@@ -67,6 +61,15 @@ const Search = () => {
   }, [sites]);
 
   const [searchText, setSearchText] = useState('');
+
+  useEffect(()=>{
+    console.log("updated",columnsToDisplay.filter(x=>x.isChecked === true).map((item,index)=>{ return item.graphQLPropertyName  }).toString());
+
+    dispatch(updateSearchQuery(columnsToDisplay.filter(x=>x.isChecked === true).map((item,index)=>{ return item.graphQLPropertyName  }).toString()));
+    //dispatch();
+    fetchSites(searchText);
+  },[dispatch,columnsToDisplay, searchText]);
+  
 
   const handleClearSearch = ()=>{
     setSearchText('');
