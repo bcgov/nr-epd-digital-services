@@ -90,9 +90,9 @@ const Dashboard = () => {
           }
         })
         .then(response => {
-          if(response.data.success)
+          if(response.data)
           {
-            console.log(response.data.message);
+            console.info("Assign user to BCbox successfully.");
           }
           else {
             throw new Error('Failed to assign user to BCbox.');
