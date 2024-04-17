@@ -55,7 +55,7 @@ parameters:
   displayName: Environment name
   description: The name of the environment, in build names and image stream tags
   required: true
-  value:  feat/task-225-debezium-upgrade  
+  value:  dev 
 - name: GIT_REPO_URL
   displayName: Git Repo URL
   description: The URL to your GIT repo.
@@ -65,7 +65,7 @@ parameters:
   displayName: Git Reference
   description: The git reference or branch.
   required: true
-  value: feat/task-225-debezium-upgrade
+  value: dev
 - name: SOURCE_CONTEXT_DIR
   displayName: Source Context Directory
   description: The source context directory.
