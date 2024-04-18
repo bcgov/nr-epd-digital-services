@@ -78,10 +78,10 @@ const LanguageSwitcher = () => {
       <div aria-label="Language Selector" aria-expanded="false" ref={divRef}>
         {/* Dropdown toggle button */}
         <div id="language-dropdown" className="custom-toggle"
-         aria-label="Language Menu" >
+         aria-label="Language Menu" onClick={toggleBtn} >
           {/* Display current selected language */}
           {currentLanguage.toUpperCase() }
-          <DropdownIcon onClick={toggleBtn} className="pb-1 ps-1"/>
+          <DropdownIcon className="pb-1 ps-1"/>
         </div>
         
       </div>
