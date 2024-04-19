@@ -6,7 +6,9 @@
       "type": "form",
       "name": "sdsForm",
       "path": "sdsform",
-      "tags": ["common"],
+      "tags": [
+        "common"
+      ],
       "components": [
         {
           "title": "Application Documents",
@@ -63,7 +65,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -119,7 +125,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "overlay": {
             "style": "",
             "left": "",
@@ -175,7 +185,9 @@
           "customDefaultValue": "",
           "calculateValue": "",
           "calculateServer": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "attributes": {},
           "validateOn": "change",
           "validate": {
@@ -191,7 +203,11 @@
             "minWords": "",
             "maxWords": ""
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "overlay": {
             "style": "",
             "left": "",
@@ -233,7 +249,12 @@
           "tags": [],
           "properties": {},
           "customConditional": "",
-          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "json": "",
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "logic": [],
           "attributes": {},
           "overlay": {
@@ -337,7 +358,9 @@
           "tabindex": "",
           "disabled": false,
           "autofocus": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "validateOn": "change",
           "validate": {
             "required": false,
@@ -347,7 +370,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "allowCalculateOverride": false,
           "showCharCount": false,
           "showWordCount": false,
@@ -402,7 +429,9 @@
           "tabindex": "",
           "disabled": false,
           "autofocus": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "validateOn": "change",
           "validate": {
             "required": false,
@@ -412,7 +441,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "allowCalculateOverride": false,
           "showCharCount": false,
           "showWordCount": false,
@@ -467,7 +500,9 @@
           "tabindex": "",
           "disabled": false,
           "autofocus": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "validateOn": "change",
           "validate": {
             "required": false,
@@ -477,7 +512,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "allowCalculateOverride": false,
           "showCharCount": false,
           "showWordCount": false,
@@ -500,7 +539,12 @@
           "tags": [],
           "properties": {},
           "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails?UserDetails[\"role\"]:[];\r\nif(!UserDetails){\r\n  show = false;\r\n}\r\nelse if(roles.includes(\"formsflow-client\") || \r\nroles.includes(\"formsflow-reviewer/lrs-approving-authority\")|| \r\nroles.includes(\"formsflow-reviewer/formsflow-client-reviewer\") ) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
-          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "json": "",
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "logic": [],
           "attributes": {},
           "overlay": {
@@ -560,7 +604,9 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -571,7 +617,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -641,7 +691,9 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -652,7 +704,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -723,7 +779,9 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -734,7 +792,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -803,7 +865,9 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -814,7 +878,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -887,7 +955,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -963,7 +1035,12 @@
           "tags": [],
           "properties": {},
           "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails?UserDetails[\"role\"]:[];\r\nif(!UserDetails){\r\n  show = false;\r\n}\r\nelse if(roles.includes(\"formsflow-reviewer/formsflow-client-reviewer\") && data.applicationStatus !== undefined && data.applicationStatus !== ''\r\n&& data.applicationStatus !== 'Resubmit') {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
-          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "json": "",
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "logic": [],
           "attributes": {},
           "overlay": {
@@ -1048,7 +1125,9 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "validateOn": "change",
                       "validate": {
                         "required": false,
@@ -1144,7 +1223,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -1262,7 +1345,12 @@
           "key": "notes",
           "tags": [],
           "properties": {},
-          "conditional": { "show": null, "when": null, "eq": "", "json": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": "",
+            "json": ""
+          },
           "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst groups = UserDetails?UserDetails[\"groups\"]:[];\r\nif(!UserDetails){\r\n  show = false;\r\n}\r\nelse if((groups.includes(\"/formsflow/formsflow-client\")  || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\r\n{\r\nif(data.notes && data.notes.filter((x)=>x.commentFor==='external').length > 0)\r\nshow = true;\r\nelse\r\nshow = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}\r\n\r\nif(UserDetails){\r\nvar addNotesButton = document.querySelector(\"button[ref=editgrid-notes-addRow]\");\r\n\r\nif(addNotesButton)\r\n{\r\naddNotesButton.addEventListener('click',\r\n(e)=>{\r\n\t\tif( groups.includes(\"/formsflow/formsflow-reviewer/lrs-approving-authority\"))\r\n\t\t{\r\n\t\t  var internalRadio = document.querySelectorAll(\"input[value='internal'][type='radio']\");\r\n\t\t  for (let i = 0; i < internalRadio.length; i++) {\r\n\t\t\tinternalRadio[i].parentElement.remove();\r\n\t\t  }\r\n\t\t}\r\n})\r\n}\r\n}",
           "logic": [],
           "attributes": {},
@@ -1330,10 +1418,16 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -1430,7 +1524,11 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -1492,7 +1590,9 @@
                       "dbIndex": false,
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -1506,7 +1606,11 @@
                         "maxLength": "",
                         "pattern": ""
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -1573,7 +1677,9 @@
                       "dbIndex": false,
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -1587,7 +1693,11 @@
                         "maxLength": "",
                         "pattern": ""
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -1654,7 +1764,9 @@
                       "dbIndex": false,
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -1668,7 +1780,11 @@
                         "maxLength": "",
                         "pattern": ""
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -1823,8 +1939,16 @@
           "label": "Has the site been used for any industrial or commercial uses described in <a target='_blank' href='https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/375_96_04'>SCHEDULE 2</a> of the Contaminated Sites Regulation?",
           "inline": false,
           "values": [
-            { "label": "Yes", "value": "yes", "shortcut": "" },
-            { "label": "No", "value": "no", "shortcut": "" }
+            {
+              "label": "Yes",
+              "value": "yes",
+              "shortcut": ""
+            },
+            {
+              "label": "No",
+              "value": "no",
+              "shortcut": ""
+            }
           ],
           "validate": {
             "required": true,
@@ -1868,7 +1992,11 @@
           "widget": null,
           "attributes": {},
           "validateOn": "change",
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "overlay": {
             "style": "",
             "left": "",
@@ -2064,8 +2192,16 @@
               "label": "Do any of the exemptions from submitting a site disclosure statement apply? (see the <a href=\"https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/375_96_01\" target=\"_blank\">CONTAMINATED SITES REGULATION</a>, Division 3, Part 2)",
               "inline": false,
               "values": [
-                { "label": "Yes", "value": "yes", "shortcut": "" },
-                { "label": "No", "value": "no", "shortcut": "" }
+                {
+                  "label": "Yes",
+                  "value": "yes",
+                  "shortcut": ""
+                },
+                {
+                  "label": "No",
+                  "value": "no",
+                  "shortcut": ""
+                }
               ],
               "validate": {
                 "required": true,
@@ -2108,7 +2244,11 @@
               "widget": null,
               "attributes": {},
               "validateOn": "change",
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -2333,8 +2473,13 @@
               "selectFields": "",
               "selectThreshold": 0.3,
               "uniqueOptions": false,
-              "fuseOptions": { "include": "score", "threshold": 0.3 },
-              "indexeddb": { "filter": {} },
+              "fuseOptions": {
+                "include": "score",
+                "threshold": 0.3
+              },
+              "indexeddb": {
+                "filter": {}
+              },
               "customOptions": {},
               "useExactSearch": false,
               "id": "ep5ab3d"
@@ -2379,7 +2524,9 @@
               "customDefaultValue": "",
               "calculateValue": "",
               "calculateServer": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "attributes": {},
               "validateOn": "change",
               "validate": {
@@ -2567,7 +2714,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -2653,7 +2804,9 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "attributes": {},
                           "validateOn": "change",
                           "conditional": {
@@ -2739,7 +2892,9 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "attributes": {},
                           "validateOn": "change",
                           "conditional": {
@@ -2814,7 +2969,11 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": { "show": null, "when": null, "eq": "" },
+                  "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": ""
+                  },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -2867,7 +3026,9 @@
                   "customDefaultValue": "",
                   "calculateValue": "",
                   "calculateServer": false,
-                  "widget": { "type": "input" },
+                  "widget": {
+                    "type": "input"
+                  },
                   "attributes": {},
                   "validateOn": "change",
                   "validate": {
@@ -2881,7 +3042,11 @@
                     "maxLength": "",
                     "pattern": ""
                   },
-                  "conditional": { "show": null, "when": null, "eq": "" },
+                  "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": ""
+                  },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -2963,7 +3128,9 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "attributes": {},
                           "validateOn": "change",
                           "conditional": {
@@ -3049,7 +3216,9 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "attributes": {},
                           "validateOn": "change",
                           "conditional": {
@@ -3124,7 +3293,11 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": { "show": null, "when": null, "eq": "" },
+                  "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": ""
+                  },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -3202,7 +3375,9 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "attributes": {},
                           "validateOn": "change",
                           "conditional": {
@@ -3288,7 +3463,9 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "attributes": {},
                           "validateOn": "change",
                           "conditional": {
@@ -3337,7 +3514,9 @@
                           "tooltip": "",
                           "prefix": "",
                           "suffix": "",
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "inputMask": "",
                           "displayMask": "",
                           "allowMultipleMasks": false,
@@ -3459,7 +3638,11 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": { "show": null, "when": null, "eq": "" },
+                  "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": ""
+                  },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -3500,7 +3683,9 @@
                           "tooltip": "",
                           "prefix": "",
                           "suffix": "",
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "inputMask": "",
                           "displayMask": "",
                           "allowMultipleMasks": false,
@@ -3596,7 +3781,9 @@
                           "tooltip": "",
                           "prefix": "",
                           "suffix": "",
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "displayMask": "",
                           "customClass": "",
                           "tabindex": "",
@@ -3638,7 +3825,9 @@
                             "unique": false
                           },
                           "unique": false,
-                          "kickbox": { "enabled": false },
+                          "kickbox": {
+                            "enabled": false
+                          },
                           "errorLabel": "",
                           "errors": "",
                           "key": "ownerEmailAddress",
@@ -3721,7 +3910,11 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": { "show": null, "when": null, "eq": "" },
+                  "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": ""
+                  },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -3779,7 +3972,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -3847,7 +4044,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -3909,7 +4110,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -3976,7 +4181,9 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -3990,7 +4197,11 @@
                         "maxLength": "",
                         "pattern": ""
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -4032,7 +4243,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -4154,7 +4367,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -4208,7 +4425,9 @@
               "customDefaultValue": "",
               "calculateValue": "",
               "calculateServer": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "attributes": {},
               "validateOn": "change",
               "validate": {
@@ -4222,7 +4441,11 @@
                 "maxLength": "",
                 "pattern": ""
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -4293,7 +4516,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -4369,10 +4596,16 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -4451,10 +4684,16 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -4522,7 +4761,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -4576,7 +4819,9 @@
               "customDefaultValue": "",
               "calculateValue": "",
               "calculateServer": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "attributes": {},
               "validateOn": "change",
               "validate": {
@@ -4590,7 +4835,11 @@
                 "maxLength": "",
                 "pattern": ""
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -4672,10 +4921,16 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -4754,10 +5009,16 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -4825,7 +5086,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -4866,7 +5131,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -5001,10 +5268,16 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -5026,7 +5299,9 @@
                       "displayMask": "",
                       "spellcheck": true,
                       "truncateMultipleSpaces": false,
-                      "kickbox": { "enabled": false },
+                      "kickbox": {
+                        "enabled": false
+                      },
                       "id": "ejljdcr"
                     }
                   ],
@@ -5073,7 +5348,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -5133,7 +5412,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "overlay": {
             "style": "",
             "left": "",
@@ -5233,7 +5516,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -5283,7 +5570,9 @@
               "customDefaultValue": "",
               "calculateValue": "",
               "calculateServer": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "attributes": {},
               "validateOn": "change",
               "validate": {
@@ -5297,7 +5586,11 @@
                 "maxLength": "",
                 "pattern": ""
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -5368,7 +5661,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -5433,7 +5730,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -5472,7 +5773,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -5568,7 +5871,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -5664,7 +5969,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -5786,7 +6093,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -5853,7 +6164,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -5892,7 +6207,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -5988,7 +6305,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -6084,7 +6403,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -6206,7 +6527,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -6272,7 +6597,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -6333,7 +6662,11 @@
               "widget": null,
               "attributes": {},
               "validateOn": "change",
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -6412,7 +6745,11 @@
               "widget": null,
               "attributes": {},
               "validateOn": "change",
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -6490,10 +6827,16 @@
                   "customDefaultValue": "",
                   "calculateValue": "",
                   "calculateServer": false,
-                  "widget": { "type": "input" },
+                  "widget": {
+                    "type": "input"
+                  },
                   "attributes": {},
                   "validateOn": "change",
-                  "conditional": { "show": null, "when": null, "eq": "" },
+                  "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": ""
+                  },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -6575,7 +6918,9 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "attributes": {},
                           "validateOn": "change",
                           "conditional": {
@@ -6624,7 +6969,9 @@
                           "tooltip": "",
                           "prefix": "",
                           "suffix": "",
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "inputMask": "",
                           "displayMask": "",
                           "allowMultipleMasks": false,
@@ -6746,7 +7093,11 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": { "show": null, "when": null, "eq": "" },
+                  "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": ""
+                  },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -6852,7 +7203,9 @@
                                   "customDefaultValue": "",
                                   "calculateValue": "",
                                   "calculateServer": false,
-                                  "widget": { "type": "input" },
+                                  "widget": {
+                                    "type": "input"
+                                  },
                                   "attributes": {},
                                   "validateOn": "change",
                                   "conditional": {
@@ -7007,7 +7360,9 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "attributes": {},
                           "validateOn": "change",
                           "conditional": {
@@ -7081,7 +7436,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -7142,7 +7501,11 @@
                   "widget": null,
                   "attributes": {},
                   "validateOn": "change",
-                  "conditional": { "show": null, "when": null, "eq": "" },
+                  "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": ""
+                  },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -7313,7 +7676,9 @@
                               "customDefaultValue": "",
                               "calculateValue": "",
                               "calculateServer": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "attributes": {},
                               "validateOn": "change",
                               "conditional": {
@@ -7397,7 +7762,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -7465,10 +7834,16 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -7535,7 +7910,11 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": { "show": null, "when": null, "eq": "" },
+                  "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": ""
+                  },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -7672,7 +8051,11 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": { "show": null, "when": null, "eq": "" },
+                  "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": ""
+                  },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -7733,7 +8116,9 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -7747,7 +8132,11 @@
                         "maxLength": "",
                         "pattern": ""
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -7816,7 +8205,11 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": { "show": null, "when": null, "eq": "" },
+                  "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": ""
+                  },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -7934,7 +8327,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "overlay": {
             "style": "",
             "left": "",
@@ -7992,7 +8389,12 @@
             {
               "key": "html",
               "type": "htmlelement",
-              "attrs": [{ "attr": "", "value": "" }],
+              "attrs": [
+                {
+                  "attr": "",
+                  "value": ""
+                }
+              ],
               "input": false,
               "label": "HTML",
               "content": "In the format of the examples provided below, select from the drop-down list, all the industrial or commercial uses described in <a target=\"_blank\" href=\"https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/375_96_04\">SCHEDULE 2 </a> which have occurred or are occurring on this site.",
@@ -8036,7 +8438,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -8099,7 +8505,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -8136,7 +8546,10 @@
               "dataSrc": "values",
               "data": {
                 "values": [
-                  { "label": "None", "value": "none" },
+                  {
+                    "label": "None",
+                    "value": "none"
+                  },
                   {
                     "label": "A1. adhesives manufacturing or bulk storage",
                     "value": "a1"
@@ -8161,7 +8574,10 @@
                     "label": "A6. ink or dye manufacturing or bulk storage",
                     "value": "a6"
                   },
-                  { "label": "A7. leather or hides tanning", "value": "a7" },
+                  {
+                    "label": "A7. leather or hides tanning",
+                    "value": "a7"
+                  },
                   {
                     "label": "A8. paint, lacquer or varnish manufacturing, formulation, recycling or bulk storage",
                     "value": "a8"
@@ -8174,7 +8590,10 @@
                     "label": "A10. plastic products (foam or expanded plastic) manufacturing or repurposing",
                     "value": "a10"
                   },
-                  { "label": "A11. textile dyeing", "value": "a11" },
+                  {
+                    "label": "A11. textile dyeing",
+                    "value": "a11"
+                  },
                   {
                     "label": "A12. pesticide manufacturing, formulation, bulk storage or shipping",
                     "value": "a12"
@@ -8211,11 +8630,26 @@
                     "label": "B7. electrical power generating operations fueled by coal or petroleum hydrocarbons that supply electricity to a community or commercial or industrial operation, excluding emergency generators",
                     "value": "b7"
                   },
-                  { "label": "C1. foundries", "value": "c1" },
-                  { "label": "C2. galvanizing", "value": "c2" },
-                  { "label": "C3. metal plating or finishing", "value": "c3" },
-                  { "label": "C4. metal salvage operations", "value": "c4" },
-                  { "label": "C5. metal smelting or refining", "value": "c5" },
+                  {
+                    "label": "C1. foundries",
+                    "value": "c1"
+                  },
+                  {
+                    "label": "C2. galvanizing",
+                    "value": "c2"
+                  },
+                  {
+                    "label": "C3. metal plating or finishing",
+                    "value": "c3"
+                  },
+                  {
+                    "label": "C4. metal salvage operations",
+                    "value": "c4"
+                  },
+                  {
+                    "label": "C5. metal smelting or refining",
+                    "value": "c5"
+                  },
                   {
                     "label": "C6. welding or machine shops (repair or fabrication)",
                     "value": "c6"
@@ -8240,7 +8674,10 @@
                     "label": "D5. metal concentrate bulk storage or shipping",
                     "value": "d5"
                   },
-                  { "label": "D6. metal ore mining or milling", "value": "d6" },
+                  {
+                    "label": "D6. metal ore mining or milling",
+                    "value": "d6"
+                  },
                   {
                     "label": "E1. appliance, equipment or engine maintenance, repair, reconditioning, cleaning or salvage",
                     "value": "e1"
@@ -8265,7 +8702,10 @@
                     "label": "E6. outdoor firearm shooting ranges",
                     "value": "e6"
                   },
-                  { "label": "E7. road salt or brine storage", "value": "e7" },
+                  {
+                    "label": "E7. road salt or brine storage",
+                    "value": "e7"
+                  },
                   {
                     "label": "E8. measuring instruments (containing mercury) manufacture, repair or bulk storage",
                     "value": "e8"
@@ -8286,7 +8726,10 @@
                     "label": "F2. petroleum or natural gas production facilities",
                     "value": "f2"
                   },
-                  { "label": "F3. natural gas processing", "value": "f3" },
+                  {
+                    "label": "F3. natural gas processing",
+                    "value": "f3"
+                  },
                   {
                     "label": "F4. petroleum coke manufacture, bulk storage or shipping",
                     "value": "f4"
@@ -8307,7 +8750,10 @@
                     "label": "F8. petroleum product, other than compressed gas, bulk storage or distribution",
                     "value": "f8"
                   },
-                  { "label": "F9. petroleum refining", "value": "f9" },
+                  {
+                    "label": "F9. petroleum refining",
+                    "value": "f9"
+                  },
                   {
                     "label": "F10. solvent manufacturing or bulk storage",
                     "value": "f10"
@@ -8328,7 +8774,10 @@
                     "label": "G3. dry docks, marinas, shipbuilding or boat repair and maintenance, including paint removal from hulls",
                     "value": "g3"
                   },
-                  { "label": "G4. marine equipment salvage", "value": "g4" },
+                  {
+                    "label": "G4. marine equipment salvage",
+                    "value": "g4"
+                  },
                   {
                     "label": "G5. rail car or locomotive maintenance, cleaning, salvage or related uses, including railyards",
                     "value": "g5"
@@ -8341,7 +8790,10 @@
                     "label": "H2. barrel, drum or tank reconditioning or salvage",
                     "value": "h2"
                   },
-                  { "label": "H3. biomedical waste disposal", "value": "h3" },
+                  {
+                    "label": "H3. biomedical waste disposal",
+                    "value": "h3"
+                  },
                   {
                     "label": "H4. bulk manure stockpiling and high rate land application or disposal (nonfarm applications only)",
                     "value": "h4"
@@ -8422,7 +8874,10 @@
                     "label": "I1. particle or wafer board manufacturing",
                     "value": "i1"
                   },
-                  { "label": "I2. pulp mill operations", "value": "i2" },
+                  {
+                    "label": "I2. pulp mill operations",
+                    "value": "i2"
+                  },
                   {
                     "label": "I3. pulp and paper manufacturing",
                     "value": "i3"
@@ -8506,7 +8961,9 @@
                 "height": ""
               },
               "type": "select",
-              "indexeddb": { "filter": {} },
+              "indexeddb": {
+                "filter": {}
+              },
               "selectFields": "",
               "searchField": "",
               "searchDebounce": 0.3,
@@ -8526,7 +8983,10 @@
               "lazyLoad": true,
               "authenticate": false,
               "ignoreCache": false,
-              "fuseOptions": { "include": "score", "threshold": 0.3 },
+              "fuseOptions": {
+                "include": "score",
+                "threshold": 0.3
+              },
               "id": "e6a03i",
               "defaultValue": []
             }
@@ -8570,7 +9030,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "overlay": {
             "style": "",
             "left": "",
@@ -8673,10 +9137,16 @@
               "customDefaultValue": "",
               "calculateValue": "",
               "calculateServer": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "attributes": {},
               "validateOn": "change",
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -8751,10 +9221,16 @@
               "customDefaultValue": "",
               "calculateValue": "",
               "calculateServer": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "attributes": {},
               "validateOn": "change",
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -8829,10 +9305,16 @@
               "customDefaultValue": "",
               "calculateValue": "",
               "calculateServer": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "attributes": {},
               "validateOn": "change",
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -8899,7 +9381,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "overlay": {
             "style": "",
             "left": "",
@@ -8999,7 +9485,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -9074,7 +9564,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -9139,7 +9633,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -9214,7 +9712,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -9279,7 +9781,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -9354,7 +9860,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -9419,7 +9929,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -9483,7 +9997,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -9543,7 +10061,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "overlay": {
             "style": "",
             "left": "",
@@ -9578,7 +10100,12 @@
           "tags": [],
           "properties": {},
           "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/formsflow-client-reviewer\") || \r\nroles.includes(\"formsflow-reviewer/lrs-approving-authority\") ||\r\nroles.includes(\"formsflow-reviewer/site-information-advisor\") ||\r\n(roles.includes(\"formsflow-client\") && !data.section1BAgentCheckbox)) {\r\n  show = true;\r\n  \r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
-          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "json": "",
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "logic": [],
           "attributes": {},
           "overlay": {
@@ -9643,7 +10170,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -9733,7 +10264,9 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -9744,7 +10277,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -9838,7 +10375,9 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -9852,7 +10391,11 @@
                         "maxLength": "",
                         "pattern": ""
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -9910,7 +10453,9 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -9924,7 +10469,11 @@
                         "maxLength": "",
                         "pattern": ""
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -9980,7 +10529,11 @@
                       "label": "Radio Group",
                       "inline": false,
                       "values": [
-                        { "label": "Owner", "value": "owner", "shortcut": "" },
+                        {
+                          "label": "Owner",
+                          "value": "owner",
+                          "shortcut": ""
+                        },
                         {
                           "label": "Operator",
                           "value": "operator",
@@ -10029,7 +10582,11 @@
                         "unique": false,
                         "onlyAvailableItems": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -10152,7 +10709,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -10229,7 +10790,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -10314,7 +10879,12 @@
           "key": "submit",
           "tags": [],
           "properties": {},
-          "conditional": { "show": null, "when": null, "eq": "", "json": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": "",
+            "json": ""
+          },
           "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nif(roles.includes(\"formsflow-reviewer/lrs-approving-authority\")|| \r\nroles.includes(\"formsflow-reviewer/site-information-advisor\")\r\n) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  if (roles.includes(\"formsflow-reviewer/formsflow-client-reviewer\") &&\r\n  data.section1BAgentCheckbox){\r\n    show = false    \r\n  } else {\r\n    show = true;\r\n  }\r\n}\r\n",
           "logic": [],
           "attributes": {},
@@ -10348,7 +10918,9 @@
           "customDefaultValue": "",
           "calculateValue": "",
           "calculateServer": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "validateOn": "change",
           "validate": {
             "required": false,
@@ -10380,7 +10952,12 @@
           "tags": [],
           "properties": {},
           "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/lrs-approving-authority\")) {\r\n  component.disabled = false;\r\n}\r\nelse\r\n{\r\n  component.disabled = true;\r\n}\r\n",
-          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "json": "",
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "logic": [],
           "attributes": {},
           "overlay": {
@@ -10444,7 +11021,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -10482,7 +11063,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -10532,7 +11115,9 @@
                       "errors": "",
                       "key": "approvingAuthContactName",
                       "tags": [],
-                      "properties": { "apField": "true" },
+                      "properties": {
+                        "apField": "true"
+                      },
                       "conditional": {
                         "show": null,
                         "when": null,
@@ -10578,7 +11163,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -10628,7 +11215,9 @@
                       "errors": "",
                       "key": "approvingAuthContactAgency",
                       "tags": [],
-                      "properties": { "apField": "true" },
+                      "properties": {
+                        "apField": "true"
+                      },
                       "conditional": {
                         "show": null,
                         "when": null,
@@ -10700,7 +11289,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -10728,7 +11321,9 @@
               "tooltip": "",
               "prefix": "",
               "suffix": "",
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "inputMask": "",
               "displayMask": "",
               "allowMultipleMasks": false,
@@ -10778,7 +11373,9 @@
               "errors": "",
               "key": "approvingAuthContactAddress",
               "tags": [],
-              "properties": { "apField": "true" },
+              "properties": {
+                "apField": "true"
+              },
               "conditional": {
                 "show": null,
                 "when": null,
@@ -10826,7 +11423,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "(999) 999-9999",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -10874,7 +11473,9 @@
                       "errors": "",
                       "key": "approvingAuthContactPhone",
                       "tags": [],
-                      "properties": { "apField": "true" },
+                      "properties": {
+                        "apField": "true"
+                      },
                       "conditional": {
                         "show": null,
                         "when": null,
@@ -10924,7 +11525,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "displayMask": "",
                       "customClass": "",
                       "tabindex": "",
@@ -10966,12 +11569,16 @@
                         "unique": false
                       },
                       "unique": false,
-                      "kickbox": { "enabled": false },
+                      "kickbox": {
+                        "enabled": false
+                      },
                       "errorLabel": "",
                       "errors": "",
                       "key": "ApprovingAuthEmail",
                       "tags": [],
-                      "properties": { "apField": "true" },
+                      "properties": {
+                        "apField": "true"
+                      },
                       "conditional": {
                         "show": null,
                         "when": null,
@@ -11049,7 +11656,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -11077,7 +11688,9 @@
               "tooltip": "",
               "prefix": "",
               "suffix": "",
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "inputMask": "",
               "displayMask": "",
               "allowMultipleMasks": false,
@@ -11127,7 +11740,9 @@
               "errors": "",
               "key": "applicationNumber",
               "tags": [],
-              "properties": { "apField": "true" },
+              "properties": {
+                "apField": "true"
+              },
               "conditional": {
                 "show": null,
                 "when": null,
@@ -11199,7 +11814,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -11268,7 +11887,9 @@
                       "errors": "",
                       "key": "chkBuildingPermit",
                       "tags": [],
-                      "properties": { "apField": "true" },
+                      "properties": {
+                        "apField": "true"
+                      },
                       "conditional": {
                         "show": null,
                         "when": null,
@@ -11315,7 +11936,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -11365,7 +11988,9 @@
                       "errors": "",
                       "key": "buildingPermitNumber",
                       "tags": [],
-                      "properties": { "apField": "true" },
+                      "properties": {
+                        "apField": "true"
+                      },
                       "conditional": {
                         "show": null,
                         "when": null,
@@ -11441,7 +12066,9 @@
                       "errors": "",
                       "key": "chkSubdivision",
                       "tags": [],
-                      "properties": { "apField": "true" },
+                      "properties": {
+                        "apField": "true"
+                      },
                       "conditional": {
                         "show": null,
                         "when": null,
@@ -11488,7 +12115,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -11538,7 +12167,9 @@
                       "errors": "",
                       "key": "subdivisionApplicationNumber",
                       "tags": [],
-                      "properties": { "apField": "true" },
+                      "properties": {
+                        "apField": "true"
+                      },
                       "conditional": {
                         "show": null,
                         "when": null,
@@ -11614,7 +12245,9 @@
                       "errors": "",
                       "key": "chkZoning",
                       "tags": [],
-                      "properties": { "apField": "true" },
+                      "properties": {
+                        "apField": "true"
+                      },
                       "conditional": {
                         "show": null,
                         "when": null,
@@ -11661,7 +12294,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -11711,7 +12346,9 @@
                       "errors": "",
                       "key": "zoningApplicationNumber",
                       "tags": [],
-                      "properties": { "apField": "true" },
+                      "properties": {
+                        "apField": "true"
+                      },
                       "conditional": {
                         "show": null,
                         "when": null,
@@ -11787,7 +12424,9 @@
                       "errors": "",
                       "key": "chkDevelopmentPermit",
                       "tags": [],
-                      "properties": { "apField": "true" },
+                      "properties": {
+                        "apField": "true"
+                      },
                       "conditional": {
                         "show": null,
                         "when": null,
@@ -11834,7 +12473,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -11884,7 +12525,9 @@
                       "errors": "",
                       "key": "developmentPermitNumber",
                       "tags": [],
-                      "properties": { "apField": "true" },
+                      "properties": {
+                        "apField": "true"
+                      },
                       "conditional": {
                         "show": null,
                         "when": null,
@@ -11955,7 +12598,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -12064,7 +12711,9 @@
                       "errors": "",
                       "key": "datereceivedbyapprovingauthority",
                       "tags": [],
-                      "properties": { "apField": "true" },
+                      "properties": {
+                        "apField": "true"
+                      },
                       "conditional": {
                         "show": null,
                         "when": null,
@@ -12203,7 +12852,9 @@
                       "errors": "",
                       "key": "datesubmittedtoregistrar",
                       "tags": [],
-                      "properties": { "apField": "true" },
+                      "properties": {
+                        "apField": "true"
+                      },
                       "conditional": {
                         "show": null,
                         "when": null,
@@ -12300,7 +12951,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -12375,7 +13030,12 @@
           "tags": [],
           "properties": {},
           "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/lrs-approving-authority\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
-          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "json": "",
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "logic": [],
           "attributes": {},
           "overlay": {
@@ -12461,7 +13121,9 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "validateOn": "change",
                       "validate": {
                         "required": false,
@@ -12527,7 +13189,9 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -12538,7 +13202,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -12620,7 +13288,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -12725,7 +13397,9 @@
           "tabindex": "",
           "disabled": false,
           "autofocus": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "validateOn": "change",
           "validate": {
             "required": false,
@@ -12735,7 +13409,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "allowCalculateOverride": false,
           "showCharCount": false,
           "showWordCount": false,
@@ -12793,7 +13471,9 @@
           "tabindex": "",
           "disabled": false,
           "autofocus": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "validateOn": "change",
           "validate": {
             "required": false,
@@ -12803,7 +13483,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "allowCalculateOverride": false,
           "showCharCount": false,
           "showWordCount": false,

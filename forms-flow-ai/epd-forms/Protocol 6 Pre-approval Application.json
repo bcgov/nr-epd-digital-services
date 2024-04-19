@@ -6,7 +6,9 @@
       "type": "form",
       "name": "p6Form",
       "path": "p6form",
-      "tags": ["common"],
+      "tags": [
+        "common"
+      ],
       "components": [
         {
           "id": "eldw6z6",
@@ -54,7 +56,12 @@
           "properties": {},
           "validateOn": "change",
           "clearOnHide": true,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -148,7 +155,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -189,7 +198,11 @@
                       "spellcheck": true,
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "inputFormat": "plain",
@@ -230,7 +243,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -271,7 +286,11 @@
                       "spellcheck": true,
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "inputFormat": "plain",
@@ -330,7 +349,11 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": false,
-              "conditional": { "eq": "", "show": null, "when": null },
+              "conditional": {
+                "eq": "",
+                "show": null,
+                "when": null
+              },
               "customClass": "",
               "description": "",
               "placeholder": "",
@@ -355,7 +378,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -451,7 +479,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -541,7 +571,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -686,7 +718,9 @@
               "prefix": "",
               "suffix": "",
               "unique": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "dbIndex": false,
               "overlay": {
                 "top": "",
@@ -879,7 +913,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -969,7 +1005,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -1059,7 +1097,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -1301,7 +1341,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -1391,7 +1433,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -1481,7 +1525,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -1775,7 +1821,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -1865,7 +1913,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -1955,7 +2005,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -2093,7 +2145,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -2168,7 +2225,9 @@
               "prefix": "",
               "suffix": "",
               "unique": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "dbIndex": false,
               "overlay": {
                 "top": "",
@@ -2209,7 +2268,11 @@
               "spellcheck": true,
               "validateOn": "change",
               "clearOnHide": true,
-              "conditional": { "eq": "", "show": null, "when": null },
+              "conditional": {
+                "eq": "",
+                "show": null,
+                "when": null
+              },
               "customClass": "",
               "description": "",
               "inputFormat": "plain",
@@ -2259,7 +2322,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -2300,7 +2365,11 @@
                       "spellcheck": true,
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "inputFormat": "plain",
@@ -2341,7 +2410,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -2382,7 +2453,11 @@
                       "spellcheck": true,
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "inputFormat": "plain",
@@ -2424,7 +2499,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -2531,7 +2608,11 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": false,
-              "conditional": { "eq": "", "show": null, "when": null },
+              "conditional": {
+                "eq": "",
+                "show": null,
+                "when": null
+              },
               "customClass": "",
               "description": "",
               "placeholder": "",
@@ -2580,7 +2661,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -2621,7 +2704,11 @@
                       "spellcheck": true,
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "inputFormat": "plain",
@@ -2659,7 +2746,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -2758,7 +2847,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -2848,9 +2939,13 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
-                      "kickbox": { "enabled": false },
+                      "kickbox": {
+                        "enabled": false
+                      },
                       "overlay": {
                         "top": "",
                         "left": "",
@@ -2890,7 +2985,11 @@
                       "spellcheck": true,
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "inputFormat": "plain",
@@ -2949,7 +3048,11 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": false,
-              "conditional": { "eq": "", "show": null, "when": null },
+              "conditional": {
+                "eq": "",
+                "show": null,
+                "when": null
+              },
               "customClass": "",
               "description": "",
               "placeholder": "",
@@ -2974,7 +3077,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -3050,8 +3158,16 @@
               "suffix": "",
               "unique": false,
               "values": [
-                { "label": "Yes", "value": "yes", "shortcut": "" },
-                { "label": "No", "value": "no", "shortcut": "" }
+                {
+                  "label": "Yes",
+                  "value": "yes",
+                  "shortcut": ""
+                },
+                {
+                  "label": "No",
+                  "value": "no",
+                  "shortcut": ""
+                }
               ],
               "widget": null,
               "dbIndex": false,
@@ -3091,7 +3207,11 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": true,
-              "conditional": { "eq": "", "show": null, "when": null },
+              "conditional": {
+                "eq": "",
+                "show": null,
+                "when": null
+              },
               "customClass": "",
               "description": "",
               "placeholder": "",
@@ -3165,7 +3285,9 @@
                   "prefix": "",
                   "suffix": "",
                   "unique": false,
-                  "widget": { "type": "input" },
+                  "widget": {
+                    "type": "input"
+                  },
                   "dbIndex": false,
                   "overlay": {
                     "top": "",
@@ -3206,7 +3328,11 @@
                   "spellcheck": true,
                   "validateOn": "change",
                   "clearOnHide": true,
-                  "conditional": { "eq": "", "show": null, "when": null },
+                  "conditional": {
+                    "eq": "",
+                    "show": null,
+                    "when": null
+                  },
                   "customClass": "",
                   "description": "",
                   "inputFormat": "plain",
@@ -3256,7 +3382,9 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
                           "overlay": {
                             "top": "",
@@ -3342,7 +3470,9 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
                           "overlay": {
                             "top": "",
@@ -3429,7 +3559,9 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
                           "overlay": {
                             "top": "",
@@ -3536,7 +3668,11 @@
                   "properties": {},
                   "validateOn": "change",
                   "clearOnHide": false,
-                  "conditional": { "eq": "", "show": null, "when": null },
+                  "conditional": {
+                    "eq": "",
+                    "show": null,
+                    "when": null
+                  },
                   "customClass": "",
                   "description": "",
                   "placeholder": "",
@@ -3585,7 +3721,9 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
                           "overlay": {
                             "top": "",
@@ -3668,7 +3806,9 @@
                           "tooltip": "",
                           "prefix": "",
                           "suffix": "",
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "inputMask": "",
                           "displayMask": "",
                           "allowMultipleMasks": false,
@@ -3767,7 +3907,9 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
                           "overlay": {
                             "top": "",
@@ -3857,9 +3999,13 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
-                          "kickbox": { "enabled": false },
+                          "kickbox": {
+                            "enabled": false
+                          },
                           "overlay": {
                             "top": "",
                             "left": "",
@@ -3962,7 +4108,11 @@
                   "properties": {},
                   "validateOn": "change",
                   "clearOnHide": false,
-                  "conditional": { "eq": "", "show": null, "when": null },
+                  "conditional": {
+                    "eq": "",
+                    "show": null,
+                    "when": null
+                  },
                   "customClass": "",
                   "description": "",
                   "placeholder": "",
@@ -4015,7 +4165,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": { "eq": "", "json": "", "show": "", "when": "" },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": "",
+            "when": ""
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -4091,8 +4246,16 @@
               "suffix": "",
               "unique": false,
               "values": [
-                { "label": "Yes", "value": "yes", "shortcut": "" },
-                { "label": "No", "value": "no", "shortcut": "" }
+                {
+                  "label": "Yes",
+                  "value": "yes",
+                  "shortcut": ""
+                },
+                {
+                  "label": "No",
+                  "value": "no",
+                  "shortcut": ""
+                }
               ],
               "widget": null,
               "dbIndex": false,
@@ -4214,7 +4377,9 @@
                   "prefix": "",
                   "suffix": "",
                   "unique": false,
-                  "widget": { "type": "input" },
+                  "widget": {
+                    "type": "input"
+                  },
                   "dbIndex": false,
                   "overlay": {
                     "top": "",
@@ -4312,7 +4477,9 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
                           "overlay": {
                             "top": "",
@@ -4398,7 +4565,9 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
                           "overlay": {
                             "top": "",
@@ -4485,7 +4654,9 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
                           "overlay": {
                             "top": "",
@@ -4592,7 +4763,11 @@
                   "properties": {},
                   "validateOn": "change",
                   "clearOnHide": false,
-                  "conditional": { "eq": "", "show": null, "when": null },
+                  "conditional": {
+                    "eq": "",
+                    "show": null,
+                    "when": null
+                  },
                   "customClass": "",
                   "description": "",
                   "placeholder": "",
@@ -4641,7 +4816,9 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
                           "overlay": {
                             "top": "",
@@ -4724,7 +4901,9 @@
                           "tooltip": "",
                           "prefix": "",
                           "suffix": "",
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "inputMask": "",
                           "displayMask": "",
                           "allowMultipleMasks": false,
@@ -4823,7 +5002,9 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
                           "overlay": {
                             "top": "",
@@ -4913,9 +5094,13 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
-                          "kickbox": { "enabled": false },
+                          "kickbox": {
+                            "enabled": false
+                          },
                           "overlay": {
                             "top": "",
                             "left": "",
@@ -5018,7 +5203,11 @@
                   "properties": {},
                   "validateOn": "change",
                   "clearOnHide": false,
-                  "conditional": { "eq": "", "show": null, "when": null },
+                  "conditional": {
+                    "eq": "",
+                    "show": null,
+                    "when": null
+                  },
                   "customClass": "",
                   "description": "",
                   "placeholder": "",
@@ -5073,7 +5262,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -5149,8 +5343,16 @@
               "suffix": "",
               "unique": false,
               "values": [
-                { "label": "Yes", "value": "yes", "shortcut": "" },
-                { "label": "No", "value": "no", "shortcut": "" }
+                {
+                  "label": "Yes",
+                  "value": "yes",
+                  "shortcut": ""
+                },
+                {
+                  "label": "No",
+                  "value": "no",
+                  "shortcut": ""
+                }
               ],
               "widget": null,
               "dbIndex": false,
@@ -5356,7 +5558,9 @@
                   "prefix": "",
                   "suffix": "",
                   "unique": false,
-                  "widget": { "type": "input" },
+                  "widget": {
+                    "type": "input"
+                  },
                   "dbIndex": false,
                   "overlay": {
                     "top": "",
@@ -5397,7 +5601,11 @@
                   "spellcheck": true,
                   "validateOn": "change",
                   "clearOnHide": true,
-                  "conditional": { "eq": "", "show": null, "when": null },
+                  "conditional": {
+                    "eq": "",
+                    "show": null,
+                    "when": null
+                  },
                   "customClass": "",
                   "description": "",
                   "inputFormat": "plain",
@@ -5447,7 +5655,9 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
                           "overlay": {
                             "top": "",
@@ -5533,7 +5743,9 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
                           "overlay": {
                             "top": "",
@@ -5620,7 +5832,9 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
                           "overlay": {
                             "top": "",
@@ -5727,7 +5941,11 @@
                   "properties": {},
                   "validateOn": "change",
                   "clearOnHide": false,
-                  "conditional": { "eq": "", "show": null, "when": null },
+                  "conditional": {
+                    "eq": "",
+                    "show": null,
+                    "when": null
+                  },
                   "customClass": "",
                   "description": "",
                   "placeholder": "",
@@ -5776,7 +5994,9 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
                           "overlay": {
                             "top": "",
@@ -5859,7 +6079,9 @@
                           "tooltip": "",
                           "prefix": "",
                           "suffix": "",
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "inputMask": "",
                           "displayMask": "",
                           "allowMultipleMasks": false,
@@ -5955,7 +6177,9 @@
                           "tooltip": "",
                           "prefix": "",
                           "suffix": "",
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "inputMask": "",
                           "displayMask": "",
                           "allowMultipleMasks": false,
@@ -6055,9 +6279,13 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
-                          "kickbox": { "enabled": false },
+                          "kickbox": {
+                            "enabled": false
+                          },
                           "overlay": {
                             "top": "",
                             "left": "",
@@ -6160,7 +6388,11 @@
                   "properties": {},
                   "validateOn": "change",
                   "clearOnHide": false,
-                  "conditional": { "eq": "", "show": null, "when": null },
+                  "conditional": {
+                    "eq": "",
+                    "show": null,
+                    "when": null
+                  },
                   "customClass": "",
                   "description": "",
                   "placeholder": "",
@@ -6215,7 +6447,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -6293,7 +6530,9 @@
               "prefix": "",
               "suffix": "",
               "unique": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "dbIndex": false,
               "overlay": {
                 "top": "",
@@ -6372,7 +6611,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -6469,7 +6713,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -6507,7 +6753,11 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -6548,7 +6798,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -6704,7 +6956,11 @@
                       },
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "defaultDate": "",
                       "description": "",
@@ -6797,7 +7053,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -6832,7 +7093,9 @@
           "prefix": "",
           "suffix": "",
           "unique": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "dbIndex": false,
           "overlay": {
             "top": "",
@@ -6871,7 +7134,12 @@
           "properties": {},
           "validateOn": "change",
           "clearOnHide": true,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -6934,7 +7202,9 @@
           "tabindex": "",
           "disabled": false,
           "autofocus": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "validateOn": "change",
           "validate": {
             "required": false,
@@ -6944,7 +7214,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "allowCalculateOverride": false,
           "showCharCount": false,
           "showWordCount": false,
@@ -7002,7 +7276,9 @@
           "tabindex": "",
           "disabled": false,
           "autofocus": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "validateOn": "change",
           "validate": {
             "required": false,
@@ -7012,7 +7288,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "allowCalculateOverride": false,
           "showCharCount": false,
           "showWordCount": false,
