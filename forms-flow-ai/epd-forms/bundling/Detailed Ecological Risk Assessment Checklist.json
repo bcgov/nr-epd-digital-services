@@ -5211,7 +5211,7 @@
                       "validateOn": "change",
                       "validate": {
                         "required": true,
-                        "pattern": "^[A-Za-z0-9]* ?[A-Za-z0-9]*$",
+                        "pattern": "^[A-Za-z0-9\\s-]{2,18}$",
                         "customMessage": "Please enter a valid postal code",
                         "custom": "",
                         "customPrivate": false,
@@ -5252,7 +5252,7 @@
                       "dataGridLabel": false,
                       "addons": [],
                       "inputType": "text",
-                      "id": "eb815ea",
+                      "id": "e106rpj",
                       "defaultValue": ""
                     }
                   ],
@@ -5380,7 +5380,7 @@
                       "validateOn": "change",
                       "validate": {
                         "required": true,
-                        "pattern": "^\\+?[0-9\\-().\\s]{10,20}$",
+                        "pattern": "^\\+?[0-9\\-().\\s]{10,17}$",
                         "customMessage": "Please enter a valid phone number",
                         "custom": "",
                         "customPrivate": false,
@@ -5421,7 +5421,7 @@
                       "dataGridLabel": false,
                       "addons": [],
                       "inputType": "text",
-                      "id": "eujtism",
+                      "id": "e5u02zfh",
                       "defaultValue": ""
                     }
                   ],
@@ -5715,8 +5715,7 @@
               "attributes": {},
               "components": [
                 {
-                  "id": "eh8z2bfa00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                  "id": "eh8z2bfa00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                  "id": "eh8z2bfa000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                   "key": "panel",
                   "tags": [],
                   "tree": false,
@@ -6322,7 +6321,7 @@
                               "validateOn": "change",
                               "validate": {
                                 "required": true,
-                                "pattern": "^\\+?[0-9\\-().\\s]{10,20}$",
+                                "pattern": "^\\+?[0-9\\-().\\s]{10,15}$",
                                 "customMessage": "Please enter a valid phone number",
                                 "custom": "",
                                 "customPrivate": false,
@@ -6363,7 +6362,7 @@
                               "dataGridLabel": false,
                               "addons": [],
                               "inputType": "text",
-                              "id": "ege8e4",
+                              "id": "ehuf0s",
                               "defaultValue": ""
                             }
                           ],
@@ -6601,7 +6600,7 @@
                               "validateOn": "change",
                               "validate": {
                                 "required": true,
-                                "pattern": "^[A-Za-z0-9]* ?[A-Za-z0-9]*$",
+                                "pattern": "^[A-Za-z]\\d[A-Za-z] ?\\d[A-Za-z]\\d$",
                                 "customMessage": "Please enter a valid postal code",
                                 "custom": "",
                                 "customPrivate": false,
@@ -6642,7 +6641,7 @@
                               "dataGridLabel": false,
                               "addons": [],
                               "inputType": "text",
-                              "id": "eyjunnm",
+                              "id": "es060w",
                               "defaultValue": ""
                             }
                           ],

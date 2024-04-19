@@ -3490,7 +3490,7 @@
                           "validateOn": "change",
                           "validate": {
                             "required": true,
-                            "pattern": "^[A-Za-z0-9]* ?[A-Za-z0-9]*$",
+                            "pattern": "^[A-Za-z0-9\\s-]{2,18}$",
                             "customMessage": "Please enter a valid postal code",
                             "custom": "",
                             "customPrivate": false,
@@ -3531,7 +3531,7 @@
                           "dataGridLabel": false,
                           "addons": [],
                           "inputType": "text",
-                          "id": "exxa5b",
+                          "id": "eawmq3p",
                           "defaultValue": ""
                         }
                       ],
@@ -3659,7 +3659,7 @@
                           "validateOn": "change",
                           "validate": {
                             "required": true,
-                            "pattern": "^\\+?[0-9\\-().\\s]{10,20}$",
+                            "pattern": "^\\+?[0-9\\-().\\s]{10,17}$",
                             "customMessage": "Please enter a valid phone number",
                             "custom": "",
                             "customPrivate": false,
@@ -3700,7 +3700,7 @@
                           "dataGridLabel": false,
                           "addons": [],
                           "inputType": "text",
-                          "id": "es4dzt9",
+                          "id": "e5okgle",
                           "defaultValue": ""
                         }
                       ],
@@ -4852,7 +4852,7 @@
                           "validateOn": "change",
                           "validate": {
                             "required": true,
-                            "pattern": "^[A-Za-z0-9]* ?[A-Za-z0-9]*$",
+                            "pattern": "^[A-Za-z0-9\\s-]{2,18}$",
                             "customMessage": "Please enter a valid postal code",
                             "custom": "",
                             "customPrivate": false,
@@ -4893,7 +4893,7 @@
                           "dataGridLabel": false,
                           "addons": [],
                           "inputType": "text",
-                          "id": "evdy1g",
+                          "id": "elrga8g",
                           "defaultValue": ""
                         }
                       ],
@@ -5021,7 +5021,7 @@
                           "validateOn": "change",
                           "validate": {
                             "required": true,
-                            "pattern": "^\\+?[0-9\\-().\\s]{10,20}$",
+                            "pattern": "^\\+?[0-9\\-().\\s]{10,17}$",
                             "customMessage": "Please enter a valid phone number",
                             "custom": "",
                             "customPrivate": false,
@@ -5062,7 +5062,7 @@
                           "dataGridLabel": false,
                           "addons": [],
                           "inputType": "text",
-                          "id": "ehsc2lm",
+                          "id": "ej6ly3",
                           "defaultValue": ""
                         }
                       ],
@@ -6211,7 +6211,7 @@
                           "validateOn": "change",
                           "validate": {
                             "required": true,
-                            "pattern": "^[A-Za-z0-9]* ?[A-Za-z0-9]*$",
+                            "pattern": "^[A-Za-z]\\d[A-Za-z] ?\\d[A-Za-z]\\d$",
                             "customMessage": "Please enter a valid postal code",
                             "custom": "",
                             "customPrivate": false,
@@ -6252,7 +6252,7 @@
                           "dataGridLabel": false,
                           "addons": [],
                           "inputType": "text",
-                          "id": "erre5a",
+                          "id": "erroylc",
                           "defaultValue": ""
                         }
                       ],
@@ -6380,7 +6380,7 @@
                           "validateOn": "change",
                           "validate": {
                             "required": true,
-                            "pattern": "^\\+?[0-9\\-().\\s]{10,20}$",
+                            "pattern": "^\\+?[0-9\\-().\\s]{10,15}$",
                             "customMessage": "Please enter a valid phone number",
                             "custom": "",
                             "customPrivate": false,
@@ -6421,7 +6421,7 @@
                           "dataGridLabel": false,
                           "addons": [],
                           "inputType": "text",
-                          "id": "eg5xwj",
+                          "id": "ec6f3yg",
                           "defaultValue": ""
                         }
                       ],
@@ -7530,7 +7530,7 @@
                           "validateOn": "change",
                           "validate": {
                             "required": true,
-                            "pattern": "^[A-Za-z0-9]* ?[A-Za-z0-9]*$",
+                            "pattern": "^[A-Za-z]\\d[A-Za-z] ?\\d[A-Za-z]\\d$",
                             "customMessage": "Please enter a valid postal code",
                             "custom": "",
                             "customPrivate": false,
@@ -7571,7 +7571,7 @@
                           "dataGridLabel": false,
                           "addons": [],
                           "inputType": "text",
-                          "id": "erk96z",
+                          "id": "eewmmx",
                           "defaultValue": ""
                         }
                       ],
@@ -7704,7 +7704,7 @@
                           "validateOn": "change",
                           "validate": {
                             "required": true,
-                            "pattern": "^\\+?[0-9\\-().\\s]{10,20}$",
+                            "pattern": "^\\+?[0-9\\-().\\s]{10,15}$",
                             "customMessage": "Please enter a valid phone number",
                             "custom": "",
                             "customPrivate": false,
@@ -7745,7 +7745,7 @@
                           "dataGridLabel": false,
                           "addons": [],
                           "inputType": "text",
-                          "id": "ebh6ays",
+                          "id": "eeawucm",
                           "defaultValue": ""
                         }
                       ],
@@ -10214,8 +10214,8 @@
                           "dataGridLabel": false,
                           "addons": [],
                           "inputType": "text",
-                          "id": "ewj87h",
-                          "defaultValue": ""
+                          "id": "e92mvm",
+                          "defaultValue": null
                         }
                       ],
                       "currentWidth": 6
@@ -13336,8 +13336,8 @@
                           "dataGridLabel": false,
                           "addons": [],
                           "inputType": "text",
-                          "id": "etcczno",
-                          "defaultValue": ""
+                          "id": "e7ujsy",
+                          "defaultValue": null
                         }
                       ],
                       "currentWidth": 6
@@ -44971,7 +44971,7 @@
                               "validateOn": "change",
                               "validate": {
                                 "required": true,
-                                "pattern": "^[A-Za-z0-9]* ?[A-Za-z0-9]*$",
+                                "pattern": "^[A-Za-z0-9\\s-]{2,18}$",
                                 "customMessage": "Please enter a valid postal code",
                                 "custom": "",
                                 "customPrivate": false,
@@ -45011,7 +45011,7 @@
                               "dataGridLabel": false,
                               "addons": [],
                               "inputType": "text",
-                              "id": "ecwvlko",
+                              "id": "eh5igvl",
                               "defaultValue": ""
                             }
                           ],
