@@ -6,7 +6,9 @@
       "type": "form",
       "name": "nomBundleForm",
       "path": "nombundleform",
-      "tags": ["common"],
+      "tags": [
+        "common"
+      ],
       "components": [
         {
           "title": "Application Documents",
@@ -22,7 +24,12 @@
           "tags": [],
           "properties": {},
           "customConditional": "if( data.applicationStatus!=\"New\" && data.applicationStatus!=\"\" && data.applicationStatus!=null)\r\n{\r\n\tconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\tconst groups = UserDetails[\"groups\"];\r\n\tif((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\r\n\t{\r\n\t\tshow = true;\r\n\t}\r\n\telse\r\n\t{\r\n\t\tshow= false;\r\n\t}\t\r\n}\r\nelse\r\n{\r\n  \tshow= false;\r\n}\r\n",
-          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "json": "",
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "logic": [],
           "attributes": {},
           "overlay": {
@@ -85,7 +92,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -151,7 +162,9 @@
           "tooltip": "",
           "prefix": "",
           "suffix": "",
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "displayMask": "",
           "editor": "",
           "autoExpand": false,
@@ -203,7 +216,12 @@
           "key": "textArea",
           "tags": [],
           "properties": {},
-          "conditional": { "show": null, "when": null, "eq": "", "json": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": "",
+            "json": ""
+          },
           "customConditional": "var userData =JSON.parse(localStorage.getItem('UserDetails'))\n\n\nif(!(userData.groups.includes(\"/formsflow/formsflow-client\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\n{\n\n    utils.eachComponent(form.components, (x)=>{\n\n   \n  \n          if(x.type==='select' && (x.key === 'selectCssaSdm' || x.key === 'selectCssaCaseworker' || x.key === 'selectCaseworker' || x.key === 'selectSrco' || x.key === 'selectSdm'  ))\n          {\n            //do nothing\n          }\n          else if ((x.type==='editgrid' && (x.key === 'notes' || x.key === 'srcrNotes' || x.key === 'deraNotes' || x.key === 'cssaNotes') ) ||x.key === 'comments' || x.key === 'commentFor')\n          {\n            //do nothing\n          }\n          else if(x.type === 'button')\n          {\n          //do nothing\n          }\n          else if(x.type === 'approvingAuthorityContactInformation')\n          { \n            if(userData.groups.includes(\"/formsflow/formsflow-reviewer/csap\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\n            {\n               x.disabled = false;\n            }\n          }\n          else if(x.properties.apField === \"true\")\n          {\n            if(userData.groups.includes(\"/formsflow/formsflow-reviewer/csap\") || userData.groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\n            {\n               x.disabled = false;\n            }\n            else\n            {\n\n            }\n          }\n          else\n          {\n          x.disabled = true;\n          }\n\n        \n\n    })\n\n}\n\nshow = false",
           "logic": [],
           "attributes": {},
@@ -244,7 +262,12 @@
           "tags": [],
           "properties": {},
           "customConditional": "\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/cssa-team\") || \r\nroles.includes(\"formsflow-reviewer/csap\") || \r\nroles.includes(\"formsflow-reviewer/csap-society\")|| \r\nroles.includes(\"formsflow-reviewer/caseworker\")|| \r\nroles.includes(\"formsflow-reviewer/sdm\") || \r\nroles.includes(\"formsflow-reviewer/site-information-advisor\")) \r\n {\r\n  if (data.riskclassification === \"exempt\"){\r\n    show = true;\r\n  } else {\r\n    show = false;\r\n  }\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
-          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "json": "",
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "logic": [],
           "attributes": {},
           "overlay": {
@@ -338,7 +361,9 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "validateOn": "change",
                       "validate": {
                         "required": false,
@@ -428,7 +453,9 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "validateOn": "change",
                       "validate": {
                         "required": false,
@@ -518,7 +545,9 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "validateOn": "change",
                       "validate": {
                         "required": false,
@@ -587,7 +616,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -705,7 +738,12 @@
           "key": "cssaNotes",
           "tags": [],
           "properties": {},
-          "conditional": { "show": null, "when": null, "eq": "", "json": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": "",
+            "json": ""
+          },
           "customConditional": "\n\nshow = false;\n\nconsole.log('cd');\n\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\nconst groups = UserDetails[\"groups\"];\nif((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\n{\n   if(data.cssaNotes && data.cssaNotes.filter((x)=>x.commentFor==='external').length > 0)\n      show = true;\n   else\n      show = false;\n}\nelse\n{\n  show = true;\n}\n\n\nvar addButton = document.querySelector(\"button[ref=editgrid-cssaNotes-addRow]\");\nif(addButton!==null && addButton !== undefined)\n{\naddButton.addEventListener('click',\n(e)=>{\n\t\tif( groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\n\t\t{\n\t\t  var internalRadio = document.querySelectorAll(\"input[value='internal'][type='radio']\");\n\t\t  for (let i = 0; i < internalRadio.length; i++) {\n\t\t\tinternalRadio[i].parentElement.remove();\n\t\t  }\n\t\t}\n})\n}\nconst emptyElements = [];\nconst elements = document.getElementsByClassName(\"list-group-item\");\nfor (let i = 0; i < elements.length; i++) {\nconst element = elements[i];\n\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\n \n}\n\n\nconsole.log('nothing 22');\n\n\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\n\nif(b.groups.includes(\"/formsflow/formsflow-client\") || b.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") )\n{\n\tif(document.querySelector(\"[ref='editgrid-cssaNotes-addRow']\") != null)\n\t{\n\t\tdocument.querySelector(\"[ref='editgrid-cssaNotes-addRow']\").remove();\n\t}\n\n\tvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\n\tif(editButtons!=null)\n\t{\n\t\tfor(i=0;i<editButtons.length;i++)\t\n\t\t{\n\t\t\teditButtons[i].remove();\n\t\t}\n\t}\n\t\n\tvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\n\tif(removeButtons !=null)\n\t{\n\t\tfor(i=0;i<removeButtons.length;i++){\n\t\t\tremoveButtons[i].remove();\n\t\t}\n\t}\n\n}\n\n\n",
           "logic": [],
           "attributes": {},
@@ -773,10 +811,16 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -873,7 +917,11 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -935,7 +983,9 @@
                       "dbIndex": false,
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -949,7 +999,11 @@
                         "maxLength": "",
                         "pattern": ""
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -1016,7 +1070,9 @@
                       "dbIndex": false,
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -1030,7 +1086,11 @@
                         "maxLength": "",
                         "pattern": ""
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -1097,7 +1157,9 @@
                       "dbIndex": false,
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -1111,7 +1173,11 @@
                         "maxLength": "",
                         "pattern": ""
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -1280,7 +1346,12 @@
           "properties": {},
           "validateOn": "change",
           "clearOnHide": true,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -1538,7 +1609,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -1624,7 +1697,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -1728,7 +1803,11 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": false,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -1777,7 +1856,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -1864,7 +1945,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -1953,7 +2036,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -2036,7 +2121,9 @@
                               "tooltip": "",
                               "prefix": "",
                               "suffix": "",
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "inputMask": "",
                               "displayMask": "",
                               "allowMultipleMasks": false,
@@ -2153,7 +2240,11 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": false,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -2199,7 +2290,9 @@
                               "tooltip": "",
                               "prefix": "",
                               "suffix": "",
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "inputMask": "",
                               "displayMask": "",
                               "allowMultipleMasks": false,
@@ -2334,7 +2427,9 @@
                               "customDefaultValue": "",
                               "calculateValue": "",
                               "calculateServer": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "attributes": {},
                               "validateOn": "change",
                               "conditional": {
@@ -2363,7 +2458,9 @@
                               "displayMask": "",
                               "spellcheck": true,
                               "truncateMultipleSpaces": false,
-                              "kickbox": { "enabled": false },
+                              "kickbox": {
+                                "enabled": false
+                              },
                               "id": "e7hpr1"
                             }
                           ],
@@ -2414,7 +2511,11 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": false,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -2535,7 +2636,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -2621,7 +2724,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -2707,7 +2812,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -2811,7 +2918,11 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": false,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -2944,7 +3055,9 @@
                                       "tooltip": "",
                                       "prefix": "",
                                       "suffix": "",
-                                      "widget": { "type": "input" },
+                                      "widget": {
+                                        "type": "input"
+                                      },
                                       "inputMask": "",
                                       "displayMask": "",
                                       "allowMultipleMasks": false,
@@ -3040,7 +3153,9 @@
                                       "tooltip": "",
                                       "prefix": "",
                                       "suffix": "",
-                                      "widget": { "type": "input" },
+                                      "widget": {
+                                        "type": "input"
+                                      },
                                       "inputMask": "",
                                       "displayMask": "",
                                       "allowMultipleMasks": false,
@@ -3136,7 +3251,9 @@
                                       "tooltip": "",
                                       "prefix": "",
                                       "suffix": "",
-                                      "widget": { "type": "input" },
+                                      "widget": {
+                                        "type": "input"
+                                      },
                                       "inputMask": "",
                                       "displayMask": "",
                                       "allowMultipleMasks": false,
@@ -3380,7 +3497,9 @@
                                       "tooltip": "",
                                       "prefix": "",
                                       "suffix": "",
-                                      "widget": { "type": "input" },
+                                      "widget": {
+                                        "type": "input"
+                                      },
                                       "inputMask": "",
                                       "displayMask": "",
                                       "allowMultipleMasks": false,
@@ -3476,7 +3595,9 @@
                                       "tooltip": "",
                                       "prefix": "",
                                       "suffix": "",
-                                      "widget": { "type": "input" },
+                                      "widget": {
+                                        "type": "input"
+                                      },
                                       "inputMask": "",
                                       "displayMask": "",
                                       "allowMultipleMasks": false,
@@ -3572,7 +3693,9 @@
                                       "tooltip": "",
                                       "prefix": "",
                                       "suffix": "",
-                                      "widget": { "type": "input" },
+                                      "widget": {
+                                        "type": "input"
+                                      },
                                       "inputMask": "",
                                       "displayMask": "",
                                       "allowMultipleMasks": false,
@@ -3750,7 +3873,11 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": false,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -3779,7 +3906,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -3820,7 +3949,11 @@
                       "spellcheck": true,
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "include if applicable",
                       "inputFormat": "plain",
@@ -3855,8 +3988,16 @@
                       "tableView": false,
                       "modalEdit": false,
                       "values": [
-                        { "label": "Yes", "value": "yes", "shortcut": "" },
-                        { "label": "No", "value": "no", "shortcut": "" }
+                        {
+                          "label": "Yes",
+                          "value": "yes",
+                          "shortcut": ""
+                        },
+                        {
+                          "label": "No",
+                          "value": "no",
+                          "shortcut": ""
+                        }
                       ],
                       "dataType": "",
                       "persistent": true,
@@ -3968,7 +4109,11 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -4032,7 +4177,11 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -4084,7 +4233,11 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": true,
-              "conditional": { "eq": "", "show": null, "when": null },
+              "conditional": {
+                "eq": "",
+                "show": null,
+                "when": null
+              },
               "customClass": "",
               "description": "",
               "layoutFixed": false,
@@ -4137,7 +4290,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -4247,7 +4405,11 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": true,
-              "conditional": { "eq": "", "show": null, "when": null },
+              "conditional": {
+                "eq": "",
+                "show": null,
+                "when": null
+              },
               "customClass": "",
               "description": "",
               "placeholder": "",
@@ -4326,7 +4488,11 @@
               "widget": null,
               "attributes": {},
               "validateOn": "change",
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -4423,7 +4589,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": true,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -4518,7 +4689,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -4559,7 +4732,11 @@
                       "spellcheck": true,
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "inputFormat": "plain",
@@ -4601,7 +4778,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -4708,7 +4887,11 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": false,
-              "conditional": { "eq": "", "show": null, "when": null },
+              "conditional": {
+                "eq": "",
+                "show": null,
+                "when": null
+              },
               "customClass": "",
               "description": "",
               "placeholder": "",
@@ -4738,7 +4921,9 @@
               "prefix": "",
               "suffix": "",
               "unique": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "dbIndex": false,
               "overlay": {
                 "top": "",
@@ -4945,7 +5130,11 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -4990,7 +5179,9 @@
                               "tooltip": "",
                               "prefix": "",
                               "suffix": "",
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "inputMask": "",
                               "displayMask": "",
                               "allowMultipleMasks": false,
@@ -5086,7 +5277,9 @@
                               "tooltip": "",
                               "prefix": "",
                               "suffix": "",
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "inputMask": "",
                               "displayMask": "",
                               "allowMultipleMasks": false,
@@ -5182,7 +5375,9 @@
                               "tooltip": "",
                               "prefix": "",
                               "suffix": "",
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "inputMask": "",
                               "displayMask": "",
                               "allowMultipleMasks": false,
@@ -5299,7 +5494,11 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": false,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -5373,7 +5572,11 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -5418,7 +5621,9 @@
                               "tooltip": "",
                               "prefix": "",
                               "suffix": "",
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "inputMask": "",
                               "displayMask": "",
                               "allowMultipleMasks": false,
@@ -5514,7 +5719,9 @@
                               "tooltip": "",
                               "prefix": "",
                               "suffix": "",
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "inputMask": "",
                               "displayMask": "",
                               "allowMultipleMasks": false,
@@ -5610,7 +5817,9 @@
                               "tooltip": "",
                               "prefix": "",
                               "suffix": "",
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "inputMask": "",
                               "displayMask": "",
                               "allowMultipleMasks": false,
@@ -5727,7 +5936,11 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": false,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -5784,7 +5997,11 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": false,
-              "conditional": { "eq": "", "show": null, "when": null },
+              "conditional": {
+                "eq": "",
+                "show": null,
+                "when": null
+              },
               "customClass": "",
               "description": "",
               "placeholder": "",
@@ -5834,7 +6051,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -5923,7 +6142,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -5964,7 +6185,11 @@
                       "spellcheck": true,
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "inputFormat": "plain",
@@ -6002,7 +6227,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -6119,7 +6346,11 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": false,
-              "conditional": { "eq": "", "show": null, "when": null },
+              "conditional": {
+                "eq": "",
+                "show": null,
+                "when": null
+              },
               "customClass": "",
               "description": "",
               "placeholder": "",
@@ -6144,7 +6375,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": true,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -6220,7 +6456,9 @@
               "prefix": "",
               "suffix": "",
               "unique": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "dbIndex": false,
               "overlay": {
                 "top": "",
@@ -6319,7 +6557,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -6409,7 +6649,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -6516,7 +6758,11 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": false,
-              "conditional": { "eq": "", "show": null, "when": null },
+              "conditional": {
+                "eq": "",
+                "show": null,
+                "when": null
+              },
               "customClass": "",
               "description": "",
               "placeholder": "",
@@ -6566,7 +6812,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -6642,7 +6890,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -6742,7 +6992,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -6822,9 +7074,13 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
-                      "kickbox": { "enabled": false },
+                      "kickbox": {
+                        "enabled": false
+                      },
                       "overlay": {
                         "top": "",
                         "left": "",
@@ -6911,7 +7167,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -7028,7 +7286,11 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": false,
-              "conditional": { "eq": "", "show": null, "when": null },
+              "conditional": {
+                "eq": "",
+                "show": null,
+                "when": null
+              },
               "customClass": "",
               "description": "",
               "placeholder": "",
@@ -7275,7 +7537,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": true,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -7431,7 +7698,9 @@
               "prefix": "",
               "suffix": "",
               "unique": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "dbIndex": false,
               "overlay": {
                 "top": "",
@@ -7530,7 +7799,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -7620,7 +7891,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -7727,7 +8000,11 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": false,
-              "conditional": { "eq": "", "show": null, "when": null },
+              "conditional": {
+                "eq": "",
+                "show": null,
+                "when": null
+              },
               "customClass": "",
               "description": "",
               "placeholder": "",
@@ -7777,7 +8054,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -7853,7 +8132,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -7953,7 +8234,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -8033,9 +8316,13 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
-                      "kickbox": { "enabled": false },
+                      "kickbox": {
+                        "enabled": false
+                      },
                       "overlay": {
                         "top": "",
                         "left": "",
@@ -8122,7 +8409,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -8239,7 +8528,11 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": false,
-              "conditional": { "eq": "", "show": null, "when": null },
+              "conditional": {
+                "eq": "",
+                "show": null,
+                "when": null
+              },
               "customClass": "",
               "description": "",
               "placeholder": "",
@@ -8264,7 +8557,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": true,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -8342,7 +8640,9 @@
               "prefix": "",
               "suffix": "",
               "unique": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "dbIndex": false,
               "overlay": {
                 "top": "",
@@ -8421,7 +8721,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": true,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -8625,7 +8930,10 @@
                           "tableView": true,
                           "data": {
                             "values": [
-                              { "label": "Soil -  g/m3", "value": "soilGM3" },
+                              {
+                                "label": "Soil -  g/m3",
+                                "value": "soilGM3"
+                              },
                               {
                                 "label": "Groundwater and surface water -  g/L",
                                 "value": "groundwaterAndSurfaceWaterGL"
@@ -8726,7 +9034,9 @@
                             "include": "score",
                             "threshold": 0.3
                           },
-                          "indexeddb": { "filter": {} },
+                          "indexeddb": {
+                            "filter": {}
+                          },
                           "customOptions": {},
                           "useExactSearch": false,
                           "id": "ea1loh"
@@ -8786,7 +9096,9 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "attributes": {},
                           "validateOn": "change",
                           "conditional": {
@@ -8872,7 +9184,9 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "attributes": {},
                           "validateOn": "change",
                           "conditional": {
@@ -8958,7 +9272,9 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "attributes": {},
                           "validateOn": "change",
                           "conditional": {
@@ -9114,7 +9430,11 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": true,
-          "conditional": { "eq": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -9278,7 +9598,11 @@
               "widget": null,
               "attributes": {},
               "validateOn": "change",
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -9619,7 +9943,11 @@
               "tableView": false,
               "modalEdit": false,
               "values": [
-                { "label": "High Risk", "value": "highRisk", "shortcut": "" },
+                {
+                  "label": "High Risk",
+                  "value": "highRisk",
+                  "shortcut": ""
+                },
                 {
                   "label": "Non-High Risk",
                   "value": "nonHighRisk",
@@ -9630,7 +9958,11 @@
                   "value": "riskManagedHighRisk",
                   "shortcut": ""
                 },
-                { "label": "Pending", "value": "pending", "shortcut": "" }
+                {
+                  "label": "Pending",
+                  "value": "pending",
+                  "shortcut": ""
+                }
               ],
               "dataType": "",
               "persistent": true,
@@ -9737,7 +10069,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "overlay": {
             "style": "",
             "left": "",
@@ -9773,7 +10109,12 @@
           "tags": [],
           "properties": {},
           "customConditional": "",
-          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "json": "",
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "logic": [],
           "attributes": {},
           "overlay": {
@@ -9827,7 +10168,9 @@
               "customDefaultValue": "",
               "calculateValue": "",
               "calculateServer": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "attributes": {},
               "validateOn": "change",
               "validate": {
@@ -9843,7 +10186,11 @@
                 "minWords": "",
                 "maxWords": ""
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -9925,7 +10272,12 @@
           "tags": [],
           "properties": {},
           "customConditional": "",
-          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "json": "",
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "logic": [],
           "attributes": {},
           "overlay": {
@@ -9989,7 +10341,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -10047,10 +10403,16 @@
               "customDefaultValue": "",
               "calculateValue": "",
               "calculateServer": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "attributes": {},
               "validateOn": "change",
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -10133,10 +10495,16 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -10247,7 +10615,11 @@
                       "calculateServer": false,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -10324,7 +10696,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -10408,7 +10784,12 @@
           "key": "submit",
           "tags": [],
           "properties": {},
-          "conditional": { "show": null, "when": null, "eq": "", "json": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": "",
+            "json": ""
+          },
           "customConditional": "",
           "logic": [],
           "attributes": {},
@@ -10441,7 +10822,9 @@
           "customDefaultValue": "",
           "calculateValue": "",
           "calculateServer": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "validateOn": "change",
           "validate": {
             "required": false,
@@ -10505,7 +10888,9 @@
           "tabindex": "",
           "disabled": false,
           "autofocus": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "validateOn": "change",
           "validate": {
             "required": false,
@@ -10515,7 +10900,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "allowCalculateOverride": false,
           "showCharCount": false,
           "showWordCount": false,
@@ -10557,7 +10946,9 @@
           "customDefaultValue": "",
           "calculateValue": "",
           "calculateServer": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "attributes": {},
           "validateOn": "change",
           "validate": {
@@ -10568,7 +10959,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "overlay": {
             "style": "",
             "left": "",
@@ -10630,7 +11025,9 @@
           "tabindex": "",
           "disabled": false,
           "autofocus": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "validateOn": "change",
           "validate": {
             "required": false,
@@ -10640,7 +11037,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "allowCalculateOverride": false,
           "showCharCount": false,
           "showWordCount": false,
@@ -10698,7 +11099,9 @@
           "tabindex": "",
           "disabled": false,
           "autofocus": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "validateOn": "change",
           "validate": {
             "required": false,
@@ -10708,7 +11111,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "allowCalculateOverride": false,
           "showCharCount": false,
           "showWordCount": false,
