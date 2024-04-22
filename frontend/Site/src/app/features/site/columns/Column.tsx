@@ -7,9 +7,10 @@ interface ColumnProps {
   toggleColumnSelectionForDisplay: (item: TableColumns) => void;
   columns: TableColumns[];
   reset:() => void;
+  close:() => void;
 }
 
-const Column:React.FC<ColumnProps> = ({toggleColumnSelectionForDisplay,columns,reset}) => {
+const Column:React.FC<ColumnProps> = ({toggleColumnSelectionForDisplay,columns,reset, close}) => {
 
   console.log('child updated ',columns)
 
@@ -20,8 +21,8 @@ const Column:React.FC<ColumnProps> = ({toggleColumnSelectionForDisplay,columns,r
 
   const columnItem = (item:TableColumns,index:number) => {
     return (
-      <div key={index} className="column-item">
-      <input type="checkbox"  aria-label={item.displayName}  aria-checked={item.isChecked ? "true" : "false"}  disabled={item.disabled} checked={item.isChecked} onChange={(e)=>{toggleColumnSelectionForDisplay(item)}} />
+      <div key={index} className="column-item more-gap">
+      <input type="checkbox" className='checkbox-color'  aria-label={item.displayName}  aria-checked={item.isChecked ? "true" : "false"}  disabled={item.disabled} checked={item.isChecked} onChange={(e)=>{toggleColumnSelectionForDisplay(item)}} />
       {item.displayName}
   </div>
     )
@@ -54,7 +55,7 @@ const Column:React.FC<ColumnProps> = ({toggleColumnSelectionForDisplay,columns,r
         <div className='row'>
           <div className='col-12'>
               <input type='button' value={'Reset Columns'} className='reset-btn' onClick={()=>{ reset()}} ></input>
-              <input type='button' value="Close" className='close-btn'></input> 
+              <input type='button' value="Close" className='close-btn' onClick={()=>{ close() }} ></input> 
 
           </div>
 

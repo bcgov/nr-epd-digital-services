@@ -16,3 +16,117 @@
         display: none;
     }
 }
+
+
+.tableWidth
+{
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.table th
+{
+   min-width:100px;
+}
+
+
+@media (min-width: 576px) {
+
+    .table td:first-child {
+        position: sticky;
+        left: 0;
+        background-color: white  !important; 
+        z-index: 1; 
+    }
+
+    .table th:first-child {
+        position: sticky;
+        left: 0;
+       
+        z-index: 1; 
+    }
+    
+    
+    .table td:nth-child(2)   {
+        position: sticky;
+        left: 29px;
+        background-color: white !important; 
+        z-index: 1; 
+    }
+    
+    .table th:nth-child(2)   {
+        position: sticky;
+        left: 29px;
+       
+        z-index: 1; 
+    }
+    
+    
+    .table td:last-child{
+        position: sticky;
+        right: 0;
+        background-color: white  !important;
+        z-index: 1;
+    }
+
+    .table th:last-child {
+        position: sticky;
+        right: 0;      
+        z-index: 1;
+    }
+    
+    .table td:nth-last-child(2) {
+        position: sticky;
+        right: 100px;
+        background-color: white  !important;
+        z-index: 1;
+    }
+    
+    .table  th:nth-last-child(2) {
+        position: sticky;
+        right: 100px;
+      
+        z-index: 1;
+    }
+}
+
+
+body::-webkit-scrollbar {
+    width: 1em;
+  }
+   
+  body::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+   
+  body::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+  }
+
+  div.tableWidth::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;    
+  }
+
+  /* Define the thumb style */
+  div.tableWidth::-webkit-scrollbar-thumb {
+    background: #4E4E4E;
+    border-radius: 5px;
+  }
+  
+   div.tableWidth::-webkit-scrollbar-track {
+   display: none;
+  }
+
+  .checkbox-column
+  {
+    min-width: 10px !important;
+    width: 10px !important;
+  }
+  
+  .table-border-radius
+  {
+    border-radius: 4px 4px 0px 0px;
+  }
+

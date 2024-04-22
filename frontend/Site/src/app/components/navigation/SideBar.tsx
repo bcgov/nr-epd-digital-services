@@ -22,9 +22,8 @@ function SideBar() {
           <Link
           to={item.linkTo}
           className={`sideBarDisplayText nav-section-bold-label nav-color-primary-default`}
-          aria-label={item.displayText}    
-               
-        >
+          aria-label={item.displayText}
+          >
           {item.displayText}
         </Link>
         )}

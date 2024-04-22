@@ -28,7 +28,7 @@ const SearchResults: FC<ColumnProps> = ({ data, columns }) => {
     if (type === ColumnType.Link) {
       return (
         <td key={rowKey} className="border-quick-color search-results-text">
-          <a href="#" aria-label={`${displayName + " " + value}`}>
+          <a href="/site/details" aria-label={`${displayName + " " + value}`}>
             {value}
           </a>
         </td>
@@ -95,7 +95,7 @@ const SearchResults: FC<ColumnProps> = ({ data, columns }) => {
     }
 
     return( <tr className="search-results-section-header">
-    <th scope="col" className="search-results-th">
+    <th scope="col" className="search-results-th checkbox-column">
       <input type="checkbox" className="checkbox-color" />
     </th>
     {columns && columns.map((item, index) => (
@@ -127,7 +127,7 @@ const SearchResults: FC<ColumnProps> = ({ data, columns }) => {
 
   const renderNoResultsFound = () => {
    return (<tr>
-            <td colSpan={8} className="noContent border-quick-color">
+            <td colSpan={16} className="noContent border-quick-color">
               {requestStatus === RequestStatus.loading ? (
                 <div className="results-loading">
                   <SpinnerIcon
@@ -144,7 +144,8 @@ const SearchResults: FC<ColumnProps> = ({ data, columns }) => {
   }
 
   return (
-    <table className="table" aria-label="Search Results">
+    <div className="tableWidth table-border-radius">
+    <table className="table " aria-label="Search Results">
       <thead aria-label="Search Results Header">
         {renderTableHeader()}
       </thead>
@@ -156,6 +157,7 @@ const SearchResults: FC<ColumnProps> = ({ data, columns }) => {
         )}
       </tbody>
     </table>
+    </div>
   );
 };
 

@@ -32,7 +32,7 @@ const Header = () => {
         <button
           className="navbar-toggler display-upto-medium"
           type="button"
-          onClick={toggleNavbar}
+          onClick={toggleNavbar} 
           aria-label="menu for mobile/smaller devices"
           aria-expanded={isOpen ? "true" : "false"}
           aria-controls="navbarMenu"

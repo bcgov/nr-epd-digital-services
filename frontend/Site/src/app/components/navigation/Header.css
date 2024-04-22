@@ -76,7 +76,11 @@ header {
     font-weight: 900;
     line-height: 21px;
     text-align: center;
-
+    border:0px !important;
+    background: none;
+    border: 0px;
+    outline: none;
+    box-shadow: none;
   }
 
   

@@ -1,7 +1,6 @@
 import gql from 'graphql-tag'
 
-export const graphQlSiteQuery = (columns:string) => {
-  console.log('columns gq',columns)
+export const graphQlSiteQuery = (columns:string) => { 
   return (gql`
 query searchSites($searchParam: String!){ 
     searchSites(searchParam: $searchParam) {

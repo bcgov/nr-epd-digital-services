@@ -27,7 +27,7 @@
 .search-container
 {
     display: flex;
-    gap: var(--layout-margin-large);
+    gap: var(--layout-margin-medium);
     flex-direction: column;
 }
 
@@ -205,6 +205,15 @@
     cursor: pointer;
 }
 
+.table-actions-items:hover
+{
+    background: var(--surface-primary-hover);
+    color: white;
+    border-radius: var(--layout-border-medium) var(--layout-border-medium) 0 0;
+    border: 0px 0px 1px 0px;
+    
+}
+
 
 .checkbox-color:hover, .checkbox-color:checked 
 {
@@ -245,4 +254,59 @@
     background: var(--surface-primary-default);
     border-bottom: 1px solid var(--surface-color-border-light);
     color: white;
+}
+
+.bars-button-table-options
+{
+  color: var(--typography-color-primary);  
+  font-size: 21px;
+  font-weight: 900;
+  line-height: 21px;
+  text-align: center;
+  background: white;
+  border: 0px;
+  background: none;
+  border: 0px;
+  color: var(--surface-icons-primary);
+
+}
+
+
+.mobileTableColumnOptions
+{
+    z-index: 1000;
+    position: absolute;
+    right: 40px; 
+    min-height: auto; 
+    margin-top: 10px;
+    padding: var(--layout-padding-medium) 0px var(--layout-padding-medium) 0px;
+    gap: 16px;
+    border-radius: var(--layout-border-width-medium);
+    background: var(--surface-background-white); 
+    box-shadow: 0px 1.2px 3.6px 0px #0000001A;
+    min-width: 200px;
+}
+
+.table-options-text-color
+{
+    color: var(--typography-color-primary)
+}
+
+
+/* .search-icon {
+   
+} */
+
+
+/*To be confirm if required or not */
+div.row.search-container.results {
+    gap: var(--layout-padding-medium);
+}
+
+
+div.search-parent
+{
+    display: flex;
+    flex-direction: column;
+    gap: var(--layout-margin-xlarge);
 }

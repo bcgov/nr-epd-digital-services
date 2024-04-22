@@ -49,3 +49,11 @@
 
 
 }
+
+    
+
+
+.checkbox-color
+{
+    accent-color: var(--icons-icons-info) !important;
+}
