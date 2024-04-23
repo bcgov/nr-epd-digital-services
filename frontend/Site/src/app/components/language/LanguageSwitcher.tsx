@@ -75,7 +75,7 @@ const LanguageSwitcher = () => {
   return (
     <>
       {/* Dropdown component for language selection */}
-      <div aria-label="Language Selector" aria-expanded="false" ref={divRef}>
+      <div aria-label="Language Selector" ref={divRef}>
         {/* Dropdown toggle button */}
         <div id="language-dropdown" className="custom-toggle"
          aria-label="Language Menu" >

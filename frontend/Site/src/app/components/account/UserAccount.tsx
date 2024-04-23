@@ -35,7 +35,7 @@ const UserAccount = ( props : any) =>{
                     <img src={user.profileImage} alt="User profile image." className="account-image"  aria-hidden="true"/>
                     {/* User name */}
                     <div className="p-3">{user.name}</div>
-                    <div id="account-dropdown" className="account-custom-toggle-mobile align-item-center" aria-label="Account Menu Button"
+                    <div className="account-custom-toggle-mobile align-item-center" aria-label="Account Menu Button"
                     onClick={toggleButton}>
                      { dropdownArrow ? <DropdownUpIcon/> : <DropdownIcon/> }
                     </div>
@@ -68,7 +68,7 @@ const UserAccount = ( props : any) =>{
                 <div className="d-flex">
                     {/* Profile image */}
                     <img src={user.profileImage} alt="User profile image." className="account-image" />
-                    <Dropdown.Toggle id="account-dropdown" variant="" className="account-custom-toggle p-2" aria-label="Account Menu">
+                    <Dropdown.Toggle  variant="" className="account-custom-toggle p-2" aria-label="Account Menu">
                     </Dropdown.Toggle>
                 </div>
                 {/* Dropdown menu */}
