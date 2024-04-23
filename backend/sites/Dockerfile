@@ -5,6 +5,9 @@ FROM node:16.14.0-alpine
 # Install packages, build and keep only prod packages
 WORKDIR /app
 
+# Fix npm cache folder ownership
+RUN chown -R node:node /home/node/.npm
+
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
 
