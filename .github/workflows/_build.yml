@@ -170,5 +170,5 @@ jobs:
             tags: ghcr.io/${{ github.repository }}/backend/sites-migration:${{ inputs.img_build }}
             cache-from: type=gha
             cache-to: type=gha,mode=max
-            file: ./backend/site/Dockerfile-migrations-openshift
+            file: ./backend/sites/Dockerfile-migrations-openshift
           
