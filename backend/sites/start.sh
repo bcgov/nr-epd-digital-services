@@ -9,7 +9,11 @@
 
 #!/bin/sh
 
+# Set npm cache directory
+export NPM_CONFIG_CACHE=/home/node/.npm
+
 # Ensure ownership of .npm folder
+mkdir -p /home/node/.npm
 chown -R node:node /home/node/.npm
 
 # Start the API
