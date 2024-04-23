@@ -627,7 +627,7 @@
                 {
                   "components": [
                     {
-                      "label": "Reject Bundle",
+                      "label": "Reject Form",
                       "action": "custom",
                       "showValidations": false,
                       "theme": "danger",
@@ -706,7 +706,7 @@
                       "showWordCount": false,
                       "allowMultipleMasks": false,
                       "addons": [],
-                      "id": "e2vl9fp"
+                      "id": "e0cja8v"
                     }
                   ],
                   "size": "md",
@@ -5992,7 +5992,7 @@
                               "validateOn": "change",
                               "validate": {
                                 "required": true,
-                                "pattern": "^[A-Za-z0-9]* ?[A-Za-z0-9]*$",
+                                "pattern": "^[A-Za-z0-9\\s-]{2,18}$",
                                 "customMessage": "Please enter a valid postal code",
                                 "custom": "",
                                 "customPrivate": false,
@@ -6033,7 +6033,7 @@
                               "dataGridLabel": false,
                               "addons": [],
                               "inputType": "text",
-                              "id": "e76005",
+                              "id": "e5bnnq",
                               "defaultValue": null
                             }
                           ],
@@ -6090,7 +6090,7 @@
                               "validateOn": "change",
                               "validate": {
                                 "required": true,
-                                "pattern": "^\\+?[0-9\\-().\\s]{10,20}$",
+                                "pattern": "^\\+?[0-9\\-().\\s]{10,17}$",
                                 "customMessage": "Please enter a valid phone number",
                                 "custom": "",
                                 "customPrivate": false,
@@ -6130,8 +6130,8 @@
                               "dataGridLabel": false,
                               "addons": [],
                               "inputType": "text",
-                              "id": "ebpgi08",
-                              "defaultValue": ""
+                              "id": "exdver",
+                              "defaultValue": null
                             }
                           ],
                           "currentWidth": 3
@@ -7189,7 +7189,7 @@
                           "validateOn": "change",
                           "validate": {
                             "required": true,
-                            "pattern": "^[A-Za-z0-9]* ?[A-Za-z0-9]*$",
+                            "pattern": "^[A-Za-z]\\d[A-Za-z] ?\\d[A-Za-z]\\d$",
                             "customMessage": "Please enter a valid postal code",
                             "custom": "",
                             "customPrivate": false,
@@ -7230,7 +7230,7 @@
                           "dataGridLabel": false,
                           "addons": [],
                           "inputType": "text",
-                          "id": "eui2pi",
+                          "id": "ezzbxxt",
                           "defaultValue": ""
                         }
                       ],
@@ -7287,7 +7287,7 @@
                           "validateOn": "change",
                           "validate": {
                             "required": true,
-                            "pattern": "^\\+?[0-9\\-().\\s]{10,20}$",
+                            "pattern": "^\\+?[0-9\\-().\\s]{10,15}$",
                             "customMessage": "Please enter a valid phone number",
                             "custom": "",
                             "customPrivate": false,
@@ -7328,7 +7328,7 @@
                           "dataGridLabel": false,
                           "addons": [],
                           "inputType": "text",
-                          "id": "eooloft",
+                          "id": "ehzw0nm",
                           "defaultValue": ""
                         }
                       ],
