@@ -484,39 +484,63 @@
                 {
                   "components": [
                     {
-                      "label": "Reject Form",
+                      "label": "Reject Bundle",
                       "action": "custom",
                       "showValidations": false,
                       "theme": "danger",
+                      "size": "md",
+                      "block": false,
+                      "leftIcon": "",
+                      "rightIcon": "",
+                      "shortcut": "",
+                      "description": "",
+                      "tooltip": "",
+                      "customClass": "",
+                      "tabindex": "",
+                      "disableOnInvalid": false,
+                      "hidden": false,
+                      "autofocus": false,
+                      "disabled": false,
                       "tableView": false,
+                      "modalEdit": false,
                       "key": "rejectBundle",
+                      "tags": [],
+                      "properties": {},
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": "",
+                        "json": ""
+                      },
                       "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer\") && \r\n!(roles.includes(\"formsflow-reviewer/csap\") ||\r\nroles.includes(\"formsflow-reviewer/csap-society\"))) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
+                      "logic": [],
+                      "attributes": {},
+                      "overlay": {
+                        "style": "",
+                        "page": "",
+                        "left": "",
+                        "top": "",
+                        "width": "",
+                        "height": ""
+                      },
                       "type": "button",
                       "custom": "\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Rejected'\r\n}); ",
                       "input": true,
                       "placeholder": "",
                       "prefix": "",
-                      "customClass": "",
                       "suffix": "",
                       "multiple": false,
                       "defaultValue": null,
                       "protected": false,
                       "unique": false,
                       "persistent": false,
-                      "hidden": false,
                       "clearOnHide": true,
                       "refreshOn": "",
                       "redrawOn": "",
-                      "modalEdit": false,
                       "dataGridLabel": true,
                       "labelPosition": "top",
-                      "description": "",
                       "errorLabel": "",
-                      "tooltip": "",
                       "hideLabel": false,
-                      "tabindex": "",
-                      "disabled": false,
-                      "autofocus": false,
                       "dbIndex": false,
                       "customDefaultValue": "",
                       "calculateValue": "",
@@ -524,7 +548,6 @@
                       "widget": {
                         "type": "input"
                       },
-                      "attributes": {},
                       "validateOn": "change",
                       "validate": {
                         "required": false,
@@ -534,31 +557,13 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
-                      "overlay": {
-                        "style": "",
-                        "left": "",
-                        "top": "",
-                        "width": "",
-                        "height": ""
-                      },
                       "allowCalculateOverride": false,
                       "encrypted": false,
                       "showCharCount": false,
                       "showWordCount": false,
-                      "properties": {},
                       "allowMultipleMasks": false,
                       "addons": [],
-                      "size": "md",
-                      "leftIcon": "",
-                      "rightIcon": "",
-                      "block": false,
-                      "disableOnInvalid": false,
-                      "id": "ez5okzn"
+                      "id": "ex8f3sk"
                     }
                   ],
                   "size": "md",
@@ -1456,7 +1461,7 @@
               "attributes": {},
               "components": [
                 {
-                  "id": "ea2btv00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                  "id": "ea2btv0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                   "key": "Panel-InformationForAffectedAndLikelyAffectedParcels",
                   "tree": false,
                   "type": "panel",
@@ -2152,7 +2157,7 @@
                               "validateOn": "change",
                               "validate": {
                                 "required": true,
-                                "pattern": "^[A-Za-z0-9]* ?[A-Za-z0-9]*$",
+                                "pattern": "^[A-Za-z0-9\\s-]{2,18}$",
                                 "customMessage": "Please enter a valid postal code",
                                 "custom": "",
                                 "customPrivate": false,
@@ -2193,7 +2198,7 @@
                               "dataGridLabel": false,
                               "addons": [],
                               "inputType": "text",
-                              "id": "e362y5",
+                              "id": "e42kbzm",
                               "defaultValue": ""
                             }
                           ],
@@ -2321,7 +2326,7 @@
                               "validateOn": "change",
                               "validate": {
                                 "required": true,
-                                "pattern": "^\\+?[0-9\\-().\\s]{10,20}$",
+                                "pattern": "^\\+?[0-9\\-().\\s]{10,17}$",
                                 "customMessage": "Please enter a valid phone number",
                                 "custom": "",
                                 "customPrivate": false,
@@ -2362,7 +2367,7 @@
                               "dataGridLabel": false,
                               "addons": [],
                               "inputType": "text",
-                              "id": "eemvrmq",
+                              "id": "ez20e5w",
                               "defaultValue": ""
                             }
                           ],
@@ -6299,8 +6304,8 @@
                       "dataGridLabel": false,
                       "addons": [],
                       "inputType": "text",
-                      "id": "e9j174c",
-                      "defaultValue": ""
+                      "id": "eppl9aj",
+                      "defaultValue": null
                     }
                   ],
                   "currentWidth": 4
@@ -6921,7 +6926,7 @@
                       "validateOn": "change",
                       "validate": {
                         "required": true,
-                        "pattern": "^\\+?[0-9\\-().\\s]{10,20}$",
+                        "pattern": "^\\+?[0-9\\-().\\s]{10,17}$",
                         "customMessage": "Please enter a valid phone number",
                         "custom": "",
                         "customPrivate": false,
@@ -6962,7 +6967,7 @@
                       "dataGridLabel": false,
                       "addons": [],
                       "inputType": "text",
-                      "id": "e38t4ic",
+                      "id": "eom5fd6",
                       "defaultValue": ""
                     }
                   ],
@@ -7198,7 +7203,7 @@
                       "validateOn": "change",
                       "validate": {
                         "required": true,
-                        "pattern": "^[A-Za-z0-9]* ?[A-Za-z0-9]*$",
+                        "pattern": "^[A-Za-z0-9\\s-]{2,18}$",
                         "customMessage": "Please enter a valid postal code",
                         "custom": "",
                         "customPrivate": false,
@@ -7239,7 +7244,7 @@
                       "dataGridLabel": false,
                       "addons": [],
                       "inputType": "text",
-                      "id": "euscki",
+                      "id": "eer5xdr",
                       "defaultValue": ""
                     }
                   ],
@@ -8163,7 +8168,7 @@
                       "validateOn": "change",
                       "validate": {
                         "required": true,
-                        "pattern": "^\\+?[0-9\\-().\\s]{10,20}$",
+                        "pattern": "^\\+?[0-9\\-().\\s]{10,15}$",
                         "customMessage": "Please enter a valid phone number",
                         "custom": "",
                         "customPrivate": false,
@@ -8204,7 +8209,7 @@
                       "dataGridLabel": false,
                       "addons": [],
                       "inputType": "text",
-                      "id": "eysplko",
+                      "id": "eijmvso",
                       "defaultValue": ""
                     }
                   ],
@@ -8440,7 +8445,7 @@
                       "validateOn": "change",
                       "validate": {
                         "required": true,
-                        "pattern": "^[A-Za-z0-9]* ?[A-Za-z0-9]*$",
+                        "pattern": "^[A-Za-z]\\d[A-Za-z] ?\\d[A-Za-z]\\d$",
                         "customMessage": "Please enter a valid postal code",
                         "custom": "",
                         "customPrivate": false,
@@ -8481,7 +8486,7 @@
                       "dataGridLabel": false,
                       "addons": [],
                       "inputType": "text",
-                      "id": "euv59kh",
+                      "id": "e5xlzh",
                       "defaultValue": ""
                     }
                   ],
@@ -9374,7 +9379,7 @@
                   "addons": [],
                   "tree": false,
                   "lazyLoad": false,
-                  "id": "emrk44b0000000000000000000000000000000000000000000000000000000"
+                  "id": "emrk44b000000000000000000000000000000000000000000000000000000000"
                 }
               ],
               "errorLabel": "",

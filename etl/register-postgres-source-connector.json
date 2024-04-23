@@ -11,6 +11,7 @@
     "database.server.id": "184054",      
     "database.server.name": "dbserver1",
     "table.whitelist": "public.*",
+    "topic.prefix": "epd",
     "transforms": "unwrap",
     "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
     "transforms.unwrap.drop.tombstones": "false",
@@ -18,7 +19,7 @@
     "time.precision.mode":"connect",
     "heartbeat.action.query": "SELECT 1;",
     "errors.retry.timeout": -1,
-    "errors.max.retries": "5",
+    "errors.max.retries": "-1",
     "retry.backoff.ms": "30000",
     "retriable.restart.connector.wait.ms": "30000"
   }

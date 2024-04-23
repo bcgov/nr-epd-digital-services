@@ -52,11 +52,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       // TODO - Experiment with using old files for localhsot if need be, and true for prod
-      autoSchemaFile: true,
-      cors: {
+      autoSchemaFile: {
+        federation: 2,
+        path: './schema.graphql',
+      },
+      /*cors: {
         credentials: true,
         origin: true,
-      },
+      },*/
       context: () => {
         //console.log('req at user '+ new Date(),req)
       },

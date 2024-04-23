@@ -1,5 +1,5 @@
 # RedHat UBI 8 with nodejs 14
-FROM node:14.5.0-alpine
+FROM node:16.14.0-alpine
 #FROM artifacts.developer.gov.bc.ca/docker-remote/node:14.17.1-alpine
 
 # Install packages, build and keep only prod packages
@@ -12,7 +12,7 @@ COPY package*.json ./
 #ENV NODE_ENV production
 
 # Install app dependencies using the `npm ci` command instead of `npm install`
-RUN npm ci --legacy-peer-deps
+RUN npm ci
 
 # Bundle app source
 COPY . ./
