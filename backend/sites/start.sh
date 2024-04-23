@@ -9,13 +9,8 @@
 
 #!/bin/sh
 
-# Check if .npm directory exists
-if [ -d "/home/node/.npm" ]; then
-  # Change ownership of .npm folder
-  chown -R node:node /home/node/.npm
-else
-  echo "Directory '/home/node/.npm' not found. Skipping ownership change."
-fi
+# Set npm cache directory
+export NPM_CONFIG_CACHE=/home/node/.npm
 
 # Start the API
 npm run start:prod
