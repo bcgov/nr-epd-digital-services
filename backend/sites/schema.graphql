@@ -1,0 +1,57 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Sites {
+  id: String!
+  bcerCode: String!
+  sstCode: String!
+  commonName: String!
+  addrType: String!
+  addrLine_1: String!
+  addrLine_2: String!
+  addrLine_3: String!
+  addrLine_4: String!
+  city: String!
+  provState: String!
+  postalCode: String!
+  latdeg: Float!
+  longdeg: Float!
+  victoriaFileNo: String!
+  regionalFileNo: String!
+  classCode: String!
+  generalDescription: String!
+  whoCreated: String!
+  whoUpdated: String!
+  whenCreated: DateTime!
+  whenUpdated: DateTime!
+  rwmFlag: Float!
+  rwmGeneralDescFlag: Float!
+  consultantSubmitted: String!
+  longDegrees: Float!
+  longMinutes: Float!
+  longSeconds: String!
+  latDegrees: Float!
+  latMinutes: Float!
+  latSeconds: String!
+  srStatus: String!
+  latlongReliabilityFlag: String!
+  siteRiskCode: String!
+  geometry: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type FetchSiteResponse {
+  httpStatusCode: Int!
+  data: [Sites!]!
+}
+
+type Query {
+  sites: FetchSiteResponse!
+  searchSites(searchParam: String!): [Sites!]!
+  findSiteBySiteId(siteId: String!): Sites!
+}
