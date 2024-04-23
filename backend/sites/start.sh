@@ -9,8 +9,8 @@
 
 #!/bin/sh
 
-# Set npm cache directory
-export NPM_CONFIG_CACHE=/home/node/.npm
+# Ensure ownership of .npm folder
+chown -R node:node /home/node/.npm
 
 # Start the API
 npm run start:prod
