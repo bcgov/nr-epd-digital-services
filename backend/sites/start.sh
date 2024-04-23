@@ -7,5 +7,8 @@
 # Creates a "dist" folder with the production build
 #npm run build
 
+# Change ownership of .npm folder
+chown -R node:node /home/node/.npm
+
 # start the API 
 npm run start:prod
