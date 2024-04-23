@@ -26,6 +26,12 @@ RUN set -x \
 # Expose port - mostly a convention, for readability
 EXPOSE 4006
 
+# Grant access to group 0 to allow npm v9 to work
+# See: https://docs.openshift.com/container-platform/4.11/openshift_images/create-images.html#use-uid_create-images
+RUN chgrp -R 0 /app && \
+    chmod -R g=u /app
+
 # Start up command
+
 
 ENTRYPOINT [ "sh", "start.sh" ]
