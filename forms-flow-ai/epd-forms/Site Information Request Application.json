@@ -6,7 +6,9 @@
       "type": "form",
       "name": "siraForm",
       "path": "siraform",
-      "tags": ["common"],
+      "tags": [
+        "common"
+      ],
       "components": [
         {
           "title": "Application Documents",
@@ -63,7 +65,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -119,7 +125,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "overlay": {
             "style": "",
             "left": "",
@@ -175,7 +185,9 @@
           "customDefaultValue": "",
           "calculateValue": "",
           "calculateServer": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "attributes": {},
           "validateOn": "change",
           "validate": {
@@ -191,7 +203,11 @@
             "minWords": "",
             "maxWords": ""
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "overlay": {
             "style": "",
             "left": "",
@@ -296,7 +312,9 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "validateOn": "change",
                       "validate": {
                         "required": false,
@@ -386,7 +404,9 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "validateOn": "change",
                       "validate": {
                         "required": false,
@@ -451,7 +471,9 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -462,7 +484,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -544,7 +570,11 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -604,7 +634,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "overlay": {
             "style": "",
             "left": "",
@@ -681,7 +715,12 @@
           "key": "notes",
           "tags": [],
           "properties": {},
-          "conditional": { "show": null, "when": null, "eq": "", "json": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": "",
+            "json": ""
+          },
           "customConditional": "show = false;\nconsole.log('cb');\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\nconst groups = UserDetails?UserDetails[\"groups\"]:[];\nif(!UserDetails){\n  show = false;\n}\nelse if((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") ))\n{\nif(data.notes && data.notes.filter((x)=>x.commentFor==='external').length > 0)\nshow = true;\nelse\nshow = false;\n}\nelse\n{\n  show = true;\n}\n\nif(UserDetails){\nvar addRowButton = document.querySelector(\"button[ref=editgrid-notes-addRow]\");\nif(addRowButton !==null)\n{\nif( groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")  ){\n  addRowButton.remove();\n}\n\nconst emptyElements = [];\nconst elements = document.getElementsByClassName(\"list-group-item\");\nfor (let i = 0; i < elements.length; i++) {\nconst element = elements[i];\nconsole.log('in validation remove');\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\n \n}\n}\n}\n\n\nconst emptyElements = [];\nconst elements = document.getElementsByClassName(\"list-group-item\");\nfor (let i = 0; i < elements.length; i++) {\nconst element = elements[i];\nconsole.log('in validation remove');\nif(element.querySelectorAll('div.row').length===0){(element).remove() }} \n",
           "logic": [],
           "attributes": {},
@@ -749,10 +788,16 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -849,7 +894,11 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -911,7 +960,9 @@
                       "dbIndex": false,
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -925,7 +976,11 @@
                         "maxLength": "",
                         "pattern": ""
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -992,7 +1047,9 @@
                       "dbIndex": false,
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -1006,7 +1063,11 @@
                         "maxLength": "",
                         "pattern": ""
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -1073,7 +1134,9 @@
                       "dbIndex": false,
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -1087,7 +1150,11 @@
                         "maxLength": "",
                         "pattern": ""
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -1256,7 +1323,12 @@
           "properties": {},
           "validateOn": "change",
           "clearOnHide": true,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -1351,7 +1423,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -1441,7 +1515,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -1548,7 +1624,11 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": false,
-              "conditional": { "eq": "", "show": null, "when": null },
+              "conditional": {
+                "eq": "",
+                "show": null,
+                "when": null
+              },
               "customClass": "",
               "description": "",
               "placeholder": "",
@@ -1578,7 +1658,9 @@
               "prefix": "",
               "suffix": "",
               "unique": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "dbIndex": false,
               "overlay": {
                 "top": "",
@@ -1657,7 +1739,9 @@
               "prefix": "",
               "suffix": "",
               "unique": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "dbIndex": false,
               "overlay": {
                 "top": "",
@@ -1756,7 +1840,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -1846,7 +1932,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -1932,7 +2020,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -2104,7 +2194,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -2146,7 +2238,11 @@
                       "spellcheck": true,
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "inputFormat": "plain",
@@ -2188,7 +2284,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -2347,7 +2445,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "displayMask": "",
                       "customClass": "",
                       "tabindex": "",
@@ -2389,7 +2489,9 @@
                         "unique": false
                       },
                       "unique": false,
-                      "kickbox": { "enabled": false },
+                      "kickbox": {
+                        "enabled": false
+                      },
                       "errorLabel": "",
                       "errors": "",
                       "key": "simpleemail",
@@ -2444,7 +2546,9 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -2592,7 +2696,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -2668,8 +2777,16 @@
               "suffix": "",
               "unique": false,
               "values": [
-                { "label": "Yes", "value": "yes", "shortcut": "" },
-                { "label": "No", "value": "no", "shortcut": "" }
+                {
+                  "label": "Yes",
+                  "value": "yes",
+                  "shortcut": ""
+                },
+                {
+                  "label": "No",
+                  "value": "no",
+                  "shortcut": ""
+                }
               ],
               "widget": null,
               "dbIndex": false,
@@ -3079,7 +3196,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -3165,7 +3284,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -3269,7 +3390,11 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": false,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -3318,7 +3443,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -3404,7 +3531,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -3508,7 +3637,11 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": false,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -3538,7 +3671,9 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": { "type": "input" },
+                      "widget": {
+                        "type": "input"
+                      },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -3790,7 +3925,11 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -3853,7 +3992,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -3916,7 +4059,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -3991,7 +4138,9 @@
                               "customDefaultValue": "",
                               "calculateValue": "",
                               "calculateServer": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "attributes": {},
                               "validateOn": "change",
                               "conditional": {
@@ -4077,7 +4226,9 @@
                               "customDefaultValue": "",
                               "calculateValue": "",
                               "calculateServer": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "attributes": {},
                               "validateOn": "change",
                               "conditional": {
@@ -4163,7 +4314,9 @@
                               "customDefaultValue": "",
                               "calculateValue": "",
                               "calculateServer": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "attributes": {},
                               "validateOn": "change",
                               "conditional": {
@@ -4238,7 +4391,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -4304,7 +4461,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -4379,7 +4540,9 @@
                               "customDefaultValue": "",
                               "calculateValue": "",
                               "calculateServer": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "attributes": {},
                               "validateOn": "change",
                               "conditional": {
@@ -4465,7 +4628,9 @@
                               "customDefaultValue": "",
                               "calculateValue": "",
                               "calculateServer": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "attributes": {},
                               "validateOn": "change",
                               "conditional": {
@@ -4551,7 +4716,9 @@
                               "customDefaultValue": "",
                               "calculateValue": "",
                               "calculateServer": false,
-                              "widget": { "type": "input" },
+                              "widget": {
+                                "type": "input"
+                              },
                               "attributes": {},
                               "validateOn": "change",
                               "conditional": {
@@ -4626,7 +4793,11 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": { "show": null, "when": null, "eq": "" },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -4748,7 +4919,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -4824,8 +5000,16 @@
               "suffix": "",
               "unique": false,
               "values": [
-                { "label": "Yes", "value": "yes", "shortcut": "" },
-                { "label": "No", "value": "no", "shortcut": "" }
+                {
+                  "label": "Yes",
+                  "value": "yes",
+                  "shortcut": ""
+                },
+                {
+                  "label": "No",
+                  "value": "no",
+                  "shortcut": ""
+                }
               ],
               "widget": null,
               "dbIndex": false,
@@ -4903,7 +5087,9 @@
               "prefix": "",
               "suffix": "",
               "unique": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "dbIndex": false,
               "overlay": {
                 "top": "",
@@ -5070,7 +5256,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -5214,8 +5405,16 @@
               "suffix": "",
               "unique": false,
               "values": [
-                { "label": "Yes", "value": "yes", "shortcut": "" },
-                { "label": "No", "value": "no", "shortcut": "" }
+                {
+                  "label": "Yes",
+                  "value": "yes",
+                  "shortcut": ""
+                },
+                {
+                  "label": "No",
+                  "value": "no",
+                  "shortcut": ""
+                }
               ],
               "widget": null,
               "dbIndex": false,
@@ -5425,7 +5624,9 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
                           "overlay": {
                             "top": "",
@@ -5513,7 +5714,9 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
                           "overlay": {
                             "top": "",
@@ -5760,7 +5963,9 @@
                           "prefix": "",
                           "suffix": "",
                           "unique": false,
-                          "widget": { "type": "input" },
+                          "widget": {
+                            "type": "input"
+                          },
                           "dbIndex": false,
                           "overlay": {
                             "top": "",
@@ -5983,7 +6188,9 @@
                                   "prefix": "",
                                   "suffix": "",
                                   "unique": false,
-                                  "widget": { "type": "input" },
+                                  "widget": {
+                                    "type": "input"
+                                  },
                                   "dbIndex": false,
                                   "overlay": {
                                     "top": "",
@@ -6115,7 +6322,11 @@
                       "validateOn": "change",
                       "clearOnHide": false,
                       "collapsible": false,
-                      "conditional": { "eq": "", "show": null, "when": null },
+                      "conditional": {
+                        "eq": "",
+                        "show": null,
+                        "when": null
+                      },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -6149,7 +6360,11 @@
                   "layoutFixed": false,
                   "placeholder": "",
                   "defaultValue": [
-                    { "s2-date": "", "s2-author": "", "s4-documentTitle": "" }
+                    {
+                      "s2-date": "",
+                      "s2-author": "",
+                      "s4-documentTitle": ""
+                    }
                   ],
                   "dataGridLabel": false,
                   "labelPosition": "top",
@@ -6205,7 +6420,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -6656,7 +6876,11 @@
                   "properties": {},
                   "validateOn": "change",
                   "clearOnHide": false,
-                  "conditional": { "eq": "", "show": null, "when": null },
+                  "conditional": {
+                    "eq": "",
+                    "show": null,
+                    "when": null
+                  },
                   "customClass": "",
                   "description": "",
                   "placeholder": "",
@@ -7067,7 +7291,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -7108,7 +7337,12 @@
           "key": "submit",
           "tags": [],
           "properties": {},
-          "conditional": { "show": null, "when": null, "eq": "", "json": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": "",
+            "json": ""
+          },
           "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\r\nconsole.log(\"form UserDetails\",UserDetails);\r\n\r\nconst roles = UserDetails[\"role\"];\r\n\r\nconsole.log(\"form roles\",roles);\r\nif(roles.includes(\"formsflow-reviewer/site-information-advisor\")) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
           "logic": [],
           "attributes": {},
@@ -7142,7 +7376,9 @@
           "customDefaultValue": "",
           "calculateValue": "",
           "calculateServer": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "validateOn": "change",
           "validate": {
             "required": false,
@@ -7204,7 +7440,9 @@
           "tabindex": "",
           "disabled": false,
           "autofocus": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "validateOn": "change",
           "validate": {
             "required": false,
@@ -7214,7 +7452,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "allowCalculateOverride": false,
           "showCharCount": false,
           "showWordCount": false,
@@ -7272,7 +7514,9 @@
           "tabindex": "",
           "disabled": false,
           "autofocus": false,
-          "widget": { "type": "input" },
+          "widget": {
+            "type": "input"
+          },
           "validateOn": "change",
           "validate": {
             "required": false,
@@ -7282,7 +7526,11 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": { "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "allowCalculateOverride": false,
           "showCharCount": false,
           "showWordCount": false,
