@@ -24,7 +24,7 @@ RUN mkdir -p /home/node/.npm \
     && chown -R node:node /home/node/.npm
 
 # Expose port
-EXPOSE 4006
+EXPOSE 4007
 
 # Start the API
 CMD ["npm", "run", "start:prod"]
