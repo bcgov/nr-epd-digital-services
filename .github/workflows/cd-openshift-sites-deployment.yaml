@@ -11,7 +11,7 @@ on:
     branches:
       - dev
       - main
-      - srs-338
+      - srs-338-sites-deployment
     paths:
       - 'backend/**'
       - 'frontend/**'
@@ -21,7 +21,7 @@ defaults:
     shell: bash
     working-directory: ./backend/sites
 env:
-  APP_NAME: "debezium-postgis"
+  APP_NAME: "etl-sites"
 
 jobs:
   etl-env-sites-application-cd-by-push:
