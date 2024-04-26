@@ -6,9 +6,7 @@
       "type": "form",
       "name": "srcrForm",
       "path": "srcrform",
-      "tags": [
-        "common"
-      ],
+      "tags": ["common"],
       "components": [
         {
           "title": "Application Documents",
@@ -65,11 +63,7 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": {
-                "show": null,
-                "when": null,
-                "eq": ""
-              },
+              "conditional": { "show": null, "when": null, "eq": "" },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -125,11 +119,7 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": {
-            "show": null,
-            "when": null,
-            "eq": ""
-          },
+          "conditional": { "show": null, "when": null, "eq": "" },
           "overlay": {
             "style": "",
             "left": "",
@@ -164,12 +154,7 @@
           "tags": [],
           "properties": {},
           "customConditional": "",
-          "conditional": {
-            "json": "",
-            "show": null,
-            "when": null,
-            "eq": ""
-          },
+          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
           "logic": [
             {
               "name": "Disable Logic",
@@ -209,12 +194,7 @@
           "components": [
             {
               "label": "HTML",
-              "attrs": [
-                {
-                  "attr": "",
-                  "value": ""
-                }
-              ],
+              "attrs": [{ "attr": "", "value": "" }],
               "content": "Please enter the associated application ID (in case this application accompanies another application already submitted in the system).",
               "refreshOnChange": false,
               "key": "html",
@@ -259,11 +239,7 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": {
-                "show": null,
-                "when": null,
-                "eq": ""
-              },
+              "conditional": { "show": null, "when": null, "eq": "" },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -329,9 +305,7 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": {
-                            "type": "input"
-                          },
+                          "widget": { "type": "input" },
                           "attributes": {},
                           "validateOn": "change",
                           "validate": {
@@ -433,11 +407,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -495,11 +465,7 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": {
-                "show": null,
-                "when": null,
-                "eq": ""
-              },
+              "conditional": { "show": null, "when": null, "eq": "" },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -607,9 +573,7 @@
           "customDefaultValue": "",
           "calculateValue": "",
           "calculateServer": false,
-          "widget": {
-            "type": "input"
-          },
+          "widget": { "type": "input" },
           "attributes": {},
           "validateOn": "change",
           "validate": {
@@ -625,11 +589,7 @@
             "minWords": "",
             "maxWords": ""
           },
-          "conditional": {
-            "show": null,
-            "when": null,
-            "eq": ""
-          },
+          "conditional": { "show": null, "when": null, "eq": "" },
           "overlay": {
             "style": "",
             "left": "",
@@ -671,12 +631,7 @@
           "tags": [],
           "properties": {},
           "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails?UserDetails[\"role\"]:[];\r\nif(!UserDetails){\r\n  show = false;\r\n}\r\nelse if(roles.includes(\"formsflow-client\")||\r\nroles.includes(\"formsflow-reviewer/formsflow-client-reviewer\")) {\r\n  show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}",
-          "conditional": {
-            "json": "",
-            "show": null,
-            "when": null,
-            "eq": ""
-          },
+          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
           "logic": [],
           "attributes": {},
           "overlay": {
@@ -736,9 +691,7 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -749,11 +702,7 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -849,9 +798,7 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "validateOn": "change",
                       "validate": {
                         "required": false,
@@ -906,9 +853,7 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -919,11 +864,7 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -994,9 +935,7 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -1007,11 +946,7 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -1081,9 +1016,7 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -1094,11 +1027,7 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -1171,11 +1100,7 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": {
-                "show": null,
-                "when": null,
-                "eq": ""
-              },
+              "conditional": { "show": null, "when": null, "eq": "" },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -1251,12 +1176,7 @@
           "tags": [],
           "properties": {},
           "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\n\r\nif(roles.includes(\"formsflow-reviewer/cssa-manager\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
-          "conditional": {
-            "json": "",
-            "show": null,
-            "when": null,
-            "eq": ""
-          },
+          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
           "logic": [],
           "attributes": {},
           "overlay": {
@@ -1299,12 +1219,7 @@
                       "multiple": false,
                       "dataSrc": "url",
                       "data": {
-                        "values": [
-                          {
-                            "label": "",
-                            "value": ""
-                          }
-                        ],
+                        "values": [{ "label": "", "value": "" }],
                         "resource": "",
                         "json": "",
                         "url": "{{localStorage.getItem('formsflow.ai.api.url')}}/user?memberOfGroup=formsflow/formsflow-reviewer/sdm",
@@ -1317,10 +1232,7 @@
                             "key": "Content-type",
                             "value": "application/json"
                           },
-                          {
-                            "key": "Accept",
-                            "value": "application/json"
-                          }
+                          { "key": "Accept", "value": "application/json" }
                         ],
                         "custom": ""
                       },
@@ -1381,9 +1293,7 @@
                         "height": ""
                       },
                       "type": "select",
-                      "indexeddb": {
-                        "filter": {}
-                      },
+                      "indexeddb": { "filter": {} },
                       "lazyLoad": true,
                       "selectValues": "data",
                       "selectFields": "",
@@ -1405,10 +1315,7 @@
                       "showWordCount": false,
                       "allowMultipleMasks": false,
                       "addons": [],
-                      "fuseOptions": {
-                        "include": "score",
-                        "threshold": 0.3
-                      },
+                      "fuseOptions": { "include": "score", "threshold": 0.3 },
                       "id": "eqqpt0n",
                       "defaultValue": "",
                       "sort": ""
@@ -1442,12 +1349,7 @@
                       "multiple": false,
                       "dataSrc": "url",
                       "data": {
-                        "values": [
-                          {
-                            "label": "",
-                            "value": ""
-                          }
-                        ],
+                        "values": [{ "label": "", "value": "" }],
                         "resource": "",
                         "json": "",
                         "url": "{{localStorage.getItem('formsflow.ai.api.url')}}/user?memberOfGroup=formsflow/formsflow-reviewer/caseworker",
@@ -1460,10 +1362,7 @@
                             "key": "Content-type",
                             "value": "application/json"
                           },
-                          {
-                            "key": "Accept",
-                            "value": "application/json"
-                          }
+                          { "key": "Accept", "value": "application/json" }
                         ],
                         "custom": ""
                       },
@@ -1524,9 +1423,7 @@
                         "height": ""
                       },
                       "type": "select",
-                      "indexeddb": {
-                        "filter": {}
-                      },
+                      "indexeddb": { "filter": {} },
                       "lazyLoad": true,
                       "selectValues": "data",
                       "selectFields": "",
@@ -1548,10 +1445,7 @@
                       "showWordCount": false,
                       "allowMultipleMasks": false,
                       "addons": [],
-                      "fuseOptions": {
-                        "include": "score",
-                        "threshold": 0.3
-                      },
+                      "fuseOptions": { "include": "score", "threshold": 0.3 },
                       "id": "e0djsx",
                       "defaultValue": "",
                       "sort": ""
@@ -1585,12 +1479,7 @@
                       "multiple": false,
                       "dataSrc": "url",
                       "data": {
-                        "values": [
-                          {
-                            "label": "",
-                            "value": ""
-                          }
-                        ],
+                        "values": [{ "label": "", "value": "" }],
                         "resource": "",
                         "json": "",
                         "url": "{{localStorage.getItem('formsflow.ai.api.url')}}/user?memberOfGroup=formsflow/formsflow-reviewer/site-risk-classification-officer",
@@ -1603,10 +1492,7 @@
                             "key": "Content-type",
                             "value": "application/json"
                           },
-                          {
-                            "key": "Accept",
-                            "value": "application/json"
-                          }
+                          { "key": "Accept", "value": "application/json" }
                         ],
                         "custom": ""
                       },
@@ -1667,9 +1553,7 @@
                         "height": ""
                       },
                       "type": "select",
-                      "indexeddb": {
-                        "filter": {}
-                      },
+                      "indexeddb": { "filter": {} },
                       "lazyLoad": true,
                       "selectValues": "data",
                       "selectFields": "",
@@ -1691,10 +1575,7 @@
                       "showWordCount": false,
                       "allowMultipleMasks": false,
                       "addons": [],
-                      "fuseOptions": {
-                        "include": "score",
-                        "threshold": 0.3
-                      },
+                      "fuseOptions": { "include": "score", "threshold": 0.3 },
                       "id": "ee27bwl",
                       "defaultValue": "",
                       "sort": ""
@@ -1750,11 +1631,7 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": {
-                "show": null,
-                "when": null,
-                "eq": ""
-              },
+              "conditional": { "show": null, "when": null, "eq": "" },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -1872,12 +1749,7 @@
           "key": "srcrNotes",
           "tags": [],
           "properties": {},
-          "conditional": {
-            "show": null,
-            "when": null,
-            "eq": "",
-            "json": ""
-          },
+          "conditional": { "show": null, "when": null, "eq": "", "json": "" },
           "customConditional": "show = false;\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst groups = UserDetails?UserDetails[\"groups\"]:[];\r\nif(!UserDetails){\r\n  show = false;\r\n}\r\nelse if(groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\"))\r\n{\r\nif( data.srcrNotes!== null && data.srcrNotes!== undefined && data.srcrNotes.filter((x)=>x.commentFor==='external').length > 0)\r\nshow = true;\r\nelse\r\nshow = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}\r\n\r\nif(UserDetails){\r\nvar addRowButton = document.querySelector(\"button[ref=editgrid-srcrNotes-addRow]\");\r\nif(addRowButton!=null)\r\n{\r\naddRowButton.addEventListener('click',\r\n(e)=>{\r\n\t\tif( groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\r\n\t\t{\r\n\t\t  var internalRadio = document.querySelectorAll(\"input[value='internal'][type='radio']\");\r\n\t\t  for (let i = 0; i < internalRadio.length; i++) {\r\n\t\t\tif(internalRadio[i].parentElement !== null)\r\n\t\t\t{\r\n\t\t\t\tinternalRadio[i].parentElement.remove();\r\n\t\t\t}\r\n\t\t  }\r\n\t\t}\r\n})\r\n\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\n\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n}\r\n\r\n\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\n\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n\r\n\r\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\r\n\r\nif(b.groups.includes(\"/formsflow/formsflow-client\") || b.groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") )\r\n{\r\n\tif(document.querySelector(\"[ref='editgrid-srcrNotes-addRow']\")!==null)\r\n\t{\r\n\t\tdocument.querySelector(\"[ref='editgrid-srcrNotes-addRow']\").remove();\r\n\t}\r\nvar editButtons = document.querySelectorAll('.formio-component-srcrNotes button.btn.btn-default.btn-light.btn-sm.editRow');\r\nfor(i=0;i<editButtons.length;i++){editButtons[i].remove()}\r\n\r\nvar removeButtons = document.querySelectorAll('.formio-component-srcrNotes button.btn.btn-danger.btn-sm.removeRow');\r\nfor(i=0;i<removeButtons.length;i++){removeButtons[i].remove()}\r\n}\r\n}",
           "logic": [],
           "attributes": {},
@@ -1945,16 +1817,10 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -2051,11 +1917,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -2117,9 +1979,7 @@
                       "dbIndex": false,
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -2133,11 +1993,7 @@
                         "maxLength": "",
                         "pattern": ""
                       },
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -2204,9 +2060,7 @@
                       "dbIndex": false,
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -2220,11 +2074,7 @@
                         "maxLength": "",
                         "pattern": ""
                       },
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -2291,9 +2141,7 @@
                       "dbIndex": false,
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "attributes": {},
                       "validateOn": "change",
                       "validate": {
@@ -2307,11 +2155,7 @@
                         "maxLength": "",
                         "pattern": ""
                       },
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -2386,11 +2230,7 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": {
-                "show": null,
-                "when": null,
-                "eq": ""
-              },
+              "conditional": { "show": null, "when": null, "eq": "" },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -2443,12 +2283,7 @@
           "tags": [],
           "properties": {},
           "customConditional": "",
-          "conditional": {
-            "json": "",
-            "show": null,
-            "when": null,
-            "eq": ""
-          },
+          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
           "logic": [],
           "attributes": {},
           "overlay": {
@@ -2508,12 +2343,7 @@
               "label": "HTML",
               "tag": "p",
               "className": "",
-              "attrs": [
-                {
-                  "attr": "",
-                  "value": ""
-                }
-              ],
+              "attrs": [{ "attr": "", "value": "" }],
               "content": "<p>\nCollection Notice for Environmental Protection Platform:<br/>\nYour personal information is collected under 26(c) of the Freedom of Information and Protection of Privacy Act for the purpose of accessing services of the Environmental Protection Division. If you have any questions about the collection of your information, please contact Site Remediation Services at <a href=\"mailto:site@gov.bc.ca\">site@gov.bc.ca</a><br/><br/>\nCollection Notice for Site Remediation Forms:<br/>\nYour personal information is collected under 26(c) of the Freedom of Information and Protection of Privacy Act for the purpose of receiving site remediation services. If you have any questions about the collection of your information, please contact Site Remediation Services at <a href=\"mailto:site@gov.bc.ca\">site@gov.bc.ca</a>\n</p>",
               "refreshOnChange": false,
               "customClass": "",
@@ -2633,12 +2463,7 @@
           "properties": {},
           "validateOn": "change",
           "clearOnHide": true,
-          "conditional": {
-            "eq": "",
-            "json": "",
-            "show": null,
-            "when": null
-          },
+          "conditional": { "eq": "", "json": "", "show": null, "when": null },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -2701,12 +2526,7 @@
           "properties": {},
           "validateOn": "change",
           "clearOnHide": true,
-          "conditional": {
-            "eq": "",
-            "json": "",
-            "show": null,
-            "when": null
-          },
+          "conditional": { "eq": "", "json": "", "show": null, "when": null },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -2801,9 +2621,7 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -2893,9 +2711,7 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -3002,11 +2818,7 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": false,
-              "conditional": {
-                "eq": "",
-                "show": null,
-                "when": null
-              },
+              "conditional": { "eq": "", "show": null, "when": null },
               "customClass": "",
               "description": "",
               "placeholder": "",
@@ -3036,16 +2848,8 @@
               "suffix": "",
               "unique": false,
               "values": [
-                {
-                  "label": "Yes",
-                  "value": "yes",
-                  "shortcut": ""
-                },
-                {
-                  "label": "No",
-                  "value": "no",
-                  "shortcut": ""
-                }
+                { "label": "Yes", "value": "yes", "shortcut": "" },
+                { "label": "No", "value": "no", "shortcut": "" }
               ],
               "widget": null,
               "dbIndex": false,
@@ -3155,11 +2959,7 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": true,
-              "conditional": {
-                "eq": "",
-                "show": null,
-                "when": null
-              },
+              "conditional": { "eq": "", "show": null, "when": null },
               "customClass": "",
               "description": "",
               "placeholder": "",
@@ -3189,9 +2989,7 @@
               "prefix": "",
               "suffix": "",
               "unique": false,
-              "widget": {
-                "type": "input"
-              },
+              "widget": { "type": "input" },
               "dbIndex": false,
               "overlay": {
                 "top": "",
@@ -3277,9 +3075,7 @@
               "prefix": "",
               "suffix": "",
               "unique": false,
-              "widget": {
-                "type": "input"
-              },
+              "widget": { "type": "input" },
               "dbIndex": false,
               "overlay": {
                 "top": "",
@@ -3490,11 +3286,7 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": {
-                        "eq": "",
-                        "show": null,
-                        "when": null
-                      },
+                      "conditional": { "eq": "", "show": null, "when": null },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -3539,9 +3331,7 @@
                               "tooltip": "",
                               "prefix": "",
                               "suffix": "",
-                              "widget": {
-                                "type": "input"
-                              },
+                              "widget": { "type": "input" },
                               "inputMask": "",
                               "displayMask": "",
                               "allowMultipleMasks": false,
@@ -3637,9 +3427,7 @@
                               "tooltip": "",
                               "prefix": "",
                               "suffix": "",
-                              "widget": {
-                                "type": "input"
-                              },
+                              "widget": { "type": "input" },
                               "inputMask": "",
                               "displayMask": "",
                               "allowMultipleMasks": false,
@@ -3735,9 +3523,7 @@
                               "tooltip": "",
                               "prefix": "",
                               "suffix": "",
-                              "widget": {
-                                "type": "input"
-                              },
+                              "widget": { "type": "input" },
                               "inputMask": "",
                               "displayMask": "",
                               "allowMultipleMasks": false,
@@ -3854,11 +3640,7 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": false,
-                      "conditional": {
-                        "eq": "",
-                        "show": null,
-                        "when": null
-                      },
+                      "conditional": { "eq": "", "show": null, "when": null },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -3932,11 +3714,7 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": {
-                        "eq": "",
-                        "show": null,
-                        "when": null
-                      },
+                      "conditional": { "eq": "", "show": null, "when": null },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -3981,9 +3759,7 @@
                               "tooltip": "",
                               "prefix": "",
                               "suffix": "",
-                              "widget": {
-                                "type": "input"
-                              },
+                              "widget": { "type": "input" },
                               "inputMask": "",
                               "displayMask": "",
                               "allowMultipleMasks": false,
@@ -4079,9 +3855,7 @@
                               "tooltip": "",
                               "prefix": "",
                               "suffix": "",
-                              "widget": {
-                                "type": "input"
-                              },
+                              "widget": { "type": "input" },
                               "inputMask": "",
                               "displayMask": "",
                               "allowMultipleMasks": false,
@@ -4177,9 +3951,7 @@
                               "tooltip": "",
                               "prefix": "",
                               "suffix": "",
-                              "widget": {
-                                "type": "input"
-                              },
+                              "widget": { "type": "input" },
                               "inputMask": "",
                               "displayMask": "",
                               "allowMultipleMasks": false,
@@ -4296,11 +4068,7 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": false,
-                      "conditional": {
-                        "eq": "",
-                        "show": null,
-                        "when": null
-                      },
+                      "conditional": { "eq": "", "show": null, "when": null },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -4357,11 +4125,7 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": false,
-              "conditional": {
-                "eq": "",
-                "show": null,
-                "when": null
-              },
+              "conditional": { "eq": "", "show": null, "when": null },
               "customClass": "",
               "description": "",
               "placeholder": "",
@@ -4411,9 +4175,7 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -4503,9 +4265,7 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -4591,9 +4351,7 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
@@ -4710,11 +4468,7 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": false,
-              "conditional": {
-                "eq": "",
-                "show": null,
-                "when": null
-              },
+              "conditional": { "eq": "", "show": null, "when": null },
               "customClass": "",
               "description": "",
               "placeholder": "",
@@ -4739,12 +4493,7 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": {
-            "eq": "",
-            "json": "",
-            "show": null,
-            "when": null
-          },
+          "conditional": { "eq": "", "json": "", "show": null, "when": null },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -4861,7 +4610,7 @@
               "attributes": {},
               "components": [
                 {
-                  "id": "ele95t000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                  "id": "ele95t0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                   "key": "spropertyOwnerAndOrOperator",
                   "tree": false,
                   "type": "panel",
@@ -4917,9 +4666,7 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -4997,9 +4744,7 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -5040,11 +4785,7 @@
                       "spellcheck": true,
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": {
-                        "eq": "",
-                        "show": null,
-                        "when": null
-                      },
+                      "conditional": { "eq": "", "show": null, "when": null },
                       "customClass": "",
                       "description": "",
                       "inputFormat": "plain",
@@ -5094,9 +4835,7 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": {
-                                "type": "input"
-                              },
+                              "widget": { "type": "input" },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -5182,9 +4921,7 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": {
-                                "type": "input"
-                              },
+                              "widget": { "type": "input" },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -5271,9 +5008,7 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": {
-                                "type": "input"
-                              },
+                              "widget": { "type": "input" },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -5380,11 +5115,7 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": false,
-                      "conditional": {
-                        "eq": "",
-                        "show": null,
-                        "when": null
-                      },
+                      "conditional": { "eq": "", "show": null, "when": null },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -5433,9 +5164,7 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": {
-                                "type": "input"
-                              },
+                              "widget": { "type": "input" },
                               "dbIndex": false,
                               "overlay": {
                                 "top": "",
@@ -5518,9 +5247,7 @@
                               "tooltip": "",
                               "prefix": "",
                               "suffix": "",
-                              "widget": {
-                                "type": "input"
-                              },
+                              "widget": { "type": "input" },
                               "inputMask": "",
                               "displayMask": "",
                               "allowMultipleMasks": false,
@@ -5554,7 +5281,7 @@
                               "validateOn": "change",
                               "validate": {
                                 "required": true,
-                                "pattern": "^[A-Za-z0-9\\s-]{2,18}$ ",
+                                "pattern": "^[A-Za-z0-9\\s-]{2,18}$",
                                 "customMessage": "Please enter a valid postal code",
                                 "custom": "",
                                 "customPrivate": false,
@@ -5595,8 +5322,8 @@
                               "dataGridLabel": false,
                               "addons": [],
                               "inputType": "text",
-                              "id": "eu11o8q9",
-                              "defaultValue": ""
+                              "id": "etlhx8",
+                              "defaultValue": null
                             }
                           ],
                           "currentWidth": 3
@@ -5616,9 +5343,7 @@
                               "tooltip": "",
                               "prefix": "",
                               "suffix": "",
-                              "widget": {
-                                "type": "input"
-                              },
+                              "widget": { "type": "input" },
                               "inputMask": "",
                               "displayMask": "",
                               "allowMultipleMasks": false,
@@ -5716,13 +5441,9 @@
                               "prefix": "",
                               "suffix": "",
                               "unique": false,
-                              "widget": {
-                                "type": "input"
-                              },
+                              "widget": { "type": "input" },
                               "dbIndex": false,
-                              "kickbox": {
-                                "enabled": false
-                              },
+                              "kickbox": { "enabled": false },
                               "overlay": {
                                 "top": "",
                                 "left": "",
@@ -5825,11 +5546,7 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": false,
-                      "conditional": {
-                        "eq": "",
-                        "show": null,
-                        "when": null
-                      },
+                      "conditional": { "eq": "", "show": null, "when": null },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -5854,11 +5571,7 @@
                   "validateOn": "change",
                   "clearOnHide": false,
                   "collapsible": false,
-                  "conditional": {
-                    "eq": "",
-                    "show": null,
-                    "when": null
-                  },
+                  "conditional": { "eq": "", "show": null, "when": null },
                   "customClass": "",
                   "description": "",
                   "placeholder": "",
@@ -5928,12 +5641,7 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": true,
-          "conditional": {
-            "eq": "",
-            "json": "",
-            "show": null,
-            "when": null
-          },
+          "conditional": { "eq": "", "json": "", "show": null, "when": null },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -6159,16 +5867,10 @@
                   "customDefaultValue": "",
                   "calculateValue": "",
                   "calculateServer": false,
-                  "widget": {
-                    "type": "input"
-                  },
+                  "widget": { "type": "input" },
                   "attributes": {},
                   "validateOn": "change",
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -6225,9 +5927,7 @@
                   "customDefaultValue": "",
                   "calculateValue": "",
                   "calculateServer": false,
-                  "widget": {
-                    "type": "input"
-                  },
+                  "widget": { "type": "input" },
                   "attributes": {},
                   "validateOn": "change",
                   "validate": {
@@ -6241,11 +5941,7 @@
                     "maxLength": "",
                     "pattern": ""
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -6327,9 +6023,7 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": {
-                            "type": "input"
-                          },
+                          "widget": { "type": "input" },
                           "attributes": {},
                           "validateOn": "change",
                           "conditional": {
@@ -6415,9 +6109,7 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": {
-                            "type": "input"
-                          },
+                          "widget": { "type": "input" },
                           "attributes": {},
                           "validateOn": "change",
                           "conditional": {
@@ -6503,9 +6195,7 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": {
-                            "type": "input"
-                          },
+                          "widget": { "type": "input" },
                           "attributes": {},
                           "validateOn": "change",
                           "conditional": {
@@ -6580,11 +6270,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -6662,9 +6348,7 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": {
-                            "type": "input"
-                          },
+                          "widget": { "type": "input" },
                           "attributes": {},
                           "validateOn": "change",
                           "conditional": {
@@ -6713,9 +6397,7 @@
                           "tooltip": "",
                           "prefix": "",
                           "suffix": "",
-                          "widget": {
-                            "type": "input"
-                          },
+                          "widget": { "type": "input" },
                           "inputMask": "",
                           "displayMask": "",
                           "allowMultipleMasks": false,
@@ -6811,9 +6493,7 @@
                           "tooltip": "",
                           "prefix": "",
                           "suffix": "",
-                          "widget": {
-                            "type": "input"
-                          },
+                          "widget": { "type": "input" },
                           "inputMask": "",
                           "displayMask": "",
                           "allowMultipleMasks": false,
@@ -6909,9 +6589,7 @@
                           "tooltip": "",
                           "prefix": "",
                           "suffix": "",
-                          "widget": {
-                            "type": "input"
-                          },
+                          "widget": { "type": "input" },
                           "displayMask": "",
                           "customClass": "",
                           "tabindex": "",
@@ -6953,9 +6631,7 @@
                             "unique": false
                           },
                           "unique": false,
-                          "kickbox": {
-                            "enabled": false
-                          },
+                          "kickbox": { "enabled": false },
                           "errorLabel": "",
                           "errors": "",
                           "key": "agentSimpleEmail",
@@ -7036,11 +6712,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -7108,12 +6780,7 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": true,
-          "conditional": {
-            "eq": "",
-            "json": "",
-            "show": null,
-            "when": null
-          },
+          "conditional": { "eq": "", "json": "", "show": null, "when": null },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -7177,12 +6844,7 @@
           "properties": {},
           "validateOn": "change",
           "clearOnHide": true,
-          "conditional": {
-            "eq": "",
-            "json": "",
-            "show": null,
-            "when": null
-          },
+          "conditional": { "eq": "", "json": "", "show": null, "when": null },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -7213,12 +6875,7 @@
           "tags": [],
           "properties": {},
           "customConditional": "",
-          "conditional": {
-            "json": "",
-            "show": null,
-            "when": null,
-            "eq": ""
-          },
+          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
           "logic": [
             {
               "name": "Disable on Resubmit",
@@ -7346,11 +7003,7 @@
               "widget": null,
               "attributes": {},
               "validateOn": "change",
-              "conditional": {
-                "show": null,
-                "when": null,
-                "eq": ""
-              },
+              "conditional": { "show": null, "when": null, "eq": "" },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -7456,12 +7109,7 @@
           "properties": {},
           "validateOn": "change",
           "clearOnHide": true,
-          "conditional": {
-            "eq": "",
-            "json": "",
-            "show": null,
-            "when": null
-          },
+          "conditional": { "eq": "", "json": "", "show": null, "when": null },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -7492,12 +7140,7 @@
           "tags": [],
           "properties": {},
           "customConditional": "",
-          "conditional": {
-            "json": "",
-            "show": null,
-            "when": null,
-            "eq": ""
-          },
+          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
           "logic": [],
           "attributes": {},
           "overlay": {
@@ -7641,16 +7284,8 @@
               "tableView": false,
               "modalEdit": false,
               "values": [
-                {
-                  "label": "Yes",
-                  "value": "yes",
-                  "shortcut": ""
-                },
-                {
-                  "label": "No",
-                  "value": "no",
-                  "shortcut": ""
-                }
+                { "label": "Yes", "value": "yes", "shortcut": "" },
+                { "label": "No", "value": "no", "shortcut": "" }
               ],
               "dataType": "",
               "persistent": true,
@@ -7770,16 +7405,8 @@
                   "modalEdit": false,
                   "defaultValue": "no",
                   "values": [
-                    {
-                      "label": "Yes",
-                      "value": "yes",
-                      "shortcut": ""
-                    },
-                    {
-                      "label": "No",
-                      "value": "no",
-                      "shortcut": ""
-                    }
+                    { "label": "Yes", "value": "yes", "shortcut": "" },
+                    { "label": "No", "value": "no", "shortcut": "" }
                   ],
                   "dataType": "",
                   "persistent": true,
@@ -7989,16 +7616,8 @@
                   "modalEdit": false,
                   "defaultValue": "no",
                   "values": [
-                    {
-                      "label": "Yes",
-                      "value": "yes",
-                      "shortcut": ""
-                    },
-                    {
-                      "label": "No",
-                      "value": "no",
-                      "shortcut": ""
-                    }
+                    { "label": "Yes", "value": "yes", "shortcut": "" },
+                    { "label": "No", "value": "no", "shortcut": "" }
                   ],
                   "dataType": "",
                   "persistent": true,
@@ -8208,16 +7827,8 @@
                   "modalEdit": false,
                   "defaultValue": "no",
                   "values": [
-                    {
-                      "label": "Yes",
-                      "value": "yes",
-                      "shortcut": ""
-                    },
-                    {
-                      "label": "No",
-                      "value": "no",
-                      "shortcut": ""
-                    }
+                    { "label": "Yes", "value": "yes", "shortcut": "" },
+                    { "label": "No", "value": "no", "shortcut": "" }
                   ],
                   "dataType": "",
                   "persistent": true,
@@ -8427,16 +8038,8 @@
                   "modalEdit": false,
                   "defaultValue": "no",
                   "values": [
-                    {
-                      "label": "Yes",
-                      "value": "yes",
-                      "shortcut": ""
-                    },
-                    {
-                      "label": "No",
-                      "value": "no",
-                      "shortcut": ""
-                    }
+                    { "label": "Yes", "value": "yes", "shortcut": "" },
+                    { "label": "No", "value": "no", "shortcut": "" }
                   ],
                   "dataType": "",
                   "persistent": true,
@@ -8596,16 +8199,8 @@
                   "modalEdit": false,
                   "defaultValue": "no",
                   "values": [
-                    {
-                      "label": "Yes",
-                      "value": "yes",
-                      "shortcut": ""
-                    },
-                    {
-                      "label": "No",
-                      "value": "no",
-                      "shortcut": ""
-                    }
+                    { "label": "Yes", "value": "yes", "shortcut": "" },
+                    { "label": "No", "value": "no", "shortcut": "" }
                   ],
                   "dataType": "",
                   "persistent": true,
@@ -8815,16 +8410,8 @@
                   "modalEdit": false,
                   "defaultValue": "no",
                   "values": [
-                    {
-                      "label": "Yes",
-                      "value": "yes",
-                      "shortcut": ""
-                    },
-                    {
-                      "label": "No",
-                      "value": "no",
-                      "shortcut": ""
-                    }
+                    { "label": "Yes", "value": "yes", "shortcut": "" },
+                    { "label": "No", "value": "no", "shortcut": "" }
                   ],
                   "dataType": "",
                   "persistent": true,
@@ -9034,16 +8621,8 @@
                   "modalEdit": false,
                   "defaultValue": "no",
                   "values": [
-                    {
-                      "label": "Yes",
-                      "value": "yes",
-                      "shortcut": ""
-                    },
-                    {
-                      "label": "No",
-                      "value": "no",
-                      "shortcut": ""
-                    }
+                    { "label": "Yes", "value": "yes", "shortcut": "" },
+                    { "label": "No", "value": "no", "shortcut": "" }
                   ],
                   "dataType": "",
                   "persistent": true,
@@ -9466,16 +9045,8 @@
               "suffix": "",
               "unique": false,
               "values": [
-                {
-                  "label": "Yes",
-                  "value": "yes",
-                  "shortcut": ""
-                },
-                {
-                  "label": "No",
-                  "value": "no",
-                  "shortcut": ""
-                }
+                { "label": "Yes", "value": "yes", "shortcut": "" },
+                { "label": "No", "value": "no", "shortcut": "" }
               ],
               "widget": null,
               "dbIndex": false,
@@ -9547,9 +9118,7 @@
               "tooltip": "",
               "prefix": "",
               "suffix": "",
-              "widget": {
-                "type": "input"
-              },
+              "widget": { "type": "input" },
               "displayMask": "",
               "editor": "",
               "autoExpand": true,
@@ -9645,16 +9214,8 @@
               "suffix": "",
               "unique": false,
               "values": [
-                {
-                  "label": "Yes",
-                  "value": "yes",
-                  "shortcut": ""
-                },
-                {
-                  "label": "No",
-                  "value": "no",
-                  "shortcut": ""
-                }
+                { "label": "Yes", "value": "yes", "shortcut": "" },
+                { "label": "No", "value": "no", "shortcut": "" }
               ],
               "widget": null,
               "dbIndex": false,
@@ -9726,9 +9287,7 @@
               "tooltip": "",
               "prefix": "",
               "suffix": "",
-              "widget": {
-                "type": "input"
-              },
+              "widget": { "type": "input" },
               "displayMask": "",
               "editor": "",
               "autoExpand": true,
@@ -9963,11 +9522,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -10000,16 +9555,8 @@
                       "label": "HS-1 : Do substances in soil exceed UCC for human intake of soil for the applicable land use?",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        },
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" },
                         {
                           "label": "Pending",
                           "value": "pending",
@@ -10057,11 +9604,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -10096,16 +9639,8 @@
                       "tableView": false,
                       "modalEdit": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        },
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" },
                         {
                           "label": "Pending",
                           "value": "pending",
@@ -10183,16 +9718,8 @@
                       "label": "HS-3 : Does the area of UC contaminated soil exceed 50 m2 on urban park, agricultural or residential lands or 125 m2 on commercial or industrial lands? (Footnote 4)",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        },
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" },
                         {
                           "label": "Pending",
                           "value": "pending",
@@ -10240,11 +9767,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -10269,16 +9792,8 @@
                       "inline": false,
                       "tableView": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        }
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" }
                       ],
                       "validate": {
                         "required": true,
@@ -10322,11 +9837,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -10352,16 +9863,8 @@
                       "label": "HS-5 : If the site land use is wildlands, are humans present on the site for greater than 2 hours/day, 1 day/ week? Footnote 5",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        }
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" }
                       ],
                       "tooltip": "Human exposure on wildlands sites during limited periods of the year (i.e. hunting camps) may be compared to the prescribed exposure threshold of 2 hours/day, 1 day/week by averaging total annual exposure over a 12-month period. Actual human exposure must be indicated in supporting technical reports.",
                       "validate": {
@@ -10404,11 +9907,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -10467,11 +9966,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -10508,16 +10003,8 @@
                       "label": "HV-1 : Do substances in air or soil vapour exceed UCCs for human inhalation for the applicable land use? Footnote 4",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        },
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" },
                         {
                           "label": "Pending",
                           "value": "pending",
@@ -10565,11 +10052,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -10595,16 +10078,8 @@
                       "label": "HV-2 : Is the site land use urban park, agricultural, residential, commercial or industrial?",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        }
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" }
                       ],
                       "validate": {
                         "required": true,
@@ -10647,11 +10122,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -10710,11 +10181,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -10751,16 +10218,8 @@
                       "label": "HW-1 : Does current drinking water use apply to groundwater or surface water at the site?",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        }
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" }
                       ],
                       "validate": {
                         "required": true,
@@ -10803,11 +10262,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -10833,16 +10288,8 @@
                       "label": "HW-2 : Do substances in groundwater exceed 10 times UCCs for drinking water within 10 m of a drinking water well or exceed UCCs within the well? Footnote 6",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        },
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" },
                         {
                           "label": "Pending",
                           "value": "pending",
@@ -10890,11 +10337,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -10920,16 +10363,8 @@
                       "label": "HW-3 : Do substances in surface water exceed 10 times UCCs for drinking water within 100 m upstream of a drinking water intake or exceed UCCs at the intake? Footnote 6",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        },
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" },
                         {
                           "label": "Pending",
                           "value": "pending",
@@ -10977,11 +10412,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -11040,11 +10471,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -11110,11 +10537,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -11147,16 +10570,8 @@
                       "label": "TS-1 : Do substances in soil exceed UCCs for toxicity to invertebrates and plants for the applicable land use?",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        },
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" },
                         {
                           "label": "Pending",
                           "value": "pending",
@@ -11204,11 +10619,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -11234,16 +10645,8 @@
                       "label": "TS-2 : Are UC contaminated soils within 1 m of the soil surface? Footnote 4",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        },
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" },
                         {
                           "label": "Pending",
                           "value": "pending",
@@ -11291,11 +10694,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -11321,16 +10720,8 @@
                       "label": "TS-3 : Is the soil surface above UC contaminated soil undeveloped land?",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        }
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" }
                       ],
                       "validate": {
                         "required": true,
@@ -11373,11 +10764,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -11403,16 +10790,8 @@
                       "label": "TS-4 : Is the area identified in TS-3 potential terrestrial habitat?",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        }
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" }
                       ],
                       "validate": {
                         "required": true,
@@ -11455,11 +10834,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -11485,16 +10860,8 @@
                       "label": "TS-5 : Does the area of UC contaminated soil exceed 100 m2 on urban park, agricultural or residential lands or 250 m2 on commercial or industrial lands or 500 m2 on wildlands? Footnote  4, 9",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        }
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" }
                       ],
                       "tooltip": " Footnote 4: Where concentrations occur above UCCs, cross-sections and contour maps are required to support conclusions that upper cap contamination is located at depths greater than 1 m below soil surface and to support conclusions of the areal extent of UC contamination. “Areal extent” refers to the total combined areal extent of UC contaminated soil at a site, contiguous or non-contiguous.\n Footnote 9: Area threshold assumes site contamination is surrounded by the same land use.",
                       "validate": {
@@ -11537,11 +10904,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -11600,11 +10963,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -11641,16 +11000,8 @@
                       "label": "AW-1 : Does aquatic life water use apply to groundwater or surface water at the site?",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        }
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" }
                       ],
                       "validate": {
                         "required": true,
@@ -11693,11 +11044,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -11723,16 +11070,8 @@
                       "label": "AW-2 : Do substances in groundwater exceed UCCs for aquatic life water use within 10 m of the high water mark of an aquatic habitat? Footnote 6, 7",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        },
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" },
                         {
                           "label": "Pending",
                           "value": "pending",
@@ -11780,11 +11119,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -11810,16 +11145,8 @@
                       "label": "AW-3 : Do substances in surface water or unauthorized discharges to surface water exceed UCCs for aquatic life water use? Footnote 8",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        },
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" },
                         {
                           "label": "Pending",
                           "value": "pending",
@@ -11867,11 +11194,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -11930,11 +11253,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -11971,16 +11290,8 @@
                       "label": "AS-1 : Do substances in the upper 1 m of sediment exceed the UCCs for the applicable site sensitivity?",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        },
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" },
                         {
                           "label": "Pending",
                           "value": "pending",
@@ -12033,11 +11344,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -12063,16 +11370,8 @@
                       "label": "AS-2 : Does the area of UC contaminated sediment exceed 50 m2? Footnote 4",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        },
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" },
                         {
                           "label": "Pending",
                           "value": "pending",
@@ -12120,11 +11419,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -12183,11 +11478,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -12224,16 +11515,8 @@
                       "label": "LIW-1 : Do current livestock or irrigation water uses apply to groundwater or surface water at the site?",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        }
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" }
                       ],
                       "validate": {
                         "required": true,
@@ -12276,11 +11559,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -12306,16 +11585,8 @@
                       "label": "LIW-2 : Do substances in groundwater exceed 10 times applicable UCCs within 10 m of a water supply well or exceed applicable UCCs in the well? Footnote 5, 6",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        },
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" },
                         {
                           "label": "Pending",
                           "value": "pending",
@@ -12363,11 +11634,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -12393,16 +11660,8 @@
                       "label": "LIW-3 : Do substances in surface water exceed 10 times applicable UCCs within 100 m upstream of a drinking water intake or exceed applicable UCCs at the intake?",
                       "inline": false,
                       "values": [
-                        {
-                          "label": "Yes",
-                          "value": "yes",
-                          "shortcut": ""
-                        },
-                        {
-                          "label": "No",
-                          "value": "no",
-                          "shortcut": ""
-                        },
+                        { "label": "Yes", "value": "yes", "shortcut": "" },
+                        { "label": "No", "value": "no", "shortcut": "" },
                         {
                           "label": "Pending",
                           "value": "pending",
@@ -12450,11 +11709,7 @@
                       "widget": null,
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -12513,11 +11768,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -12583,11 +11834,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -12649,11 +11896,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -12726,27 +11969,11 @@
               "disabled": false,
               "tableView": false,
               "modalEdit": false,
-              "defaultValue": {
-                "nA": false,
-                "no": false,
-                "yes": false
-              },
+              "defaultValue": { "nA": false, "no": false, "yes": false },
               "values": [
-                {
-                  "label": "Yes",
-                  "value": "yes",
-                  "shortcut": ""
-                },
-                {
-                  "label": "No",
-                  "value": "no",
-                  "shortcut": ""
-                },
-                {
-                  "label": "N/A",
-                  "value": "nA",
-                  "shortcut": ""
-                }
+                { "label": "Yes", "value": "yes", "shortcut": "" },
+                { "label": "No", "value": "no", "shortcut": "" },
+                { "label": "N/A", "value": "nA", "shortcut": "" }
               ],
               "persistent": true,
               "protected": false,
@@ -12777,12 +12004,7 @@
               "key": "ExposurePathwaysAreTheRiskCriteriaForAnyExposurePathwayExceeded",
               "tags": [],
               "properties": {},
-              "conditional": {
-                "show": "",
-                "when": "",
-                "eq": "",
-                "json": ""
-              },
+              "conditional": { "show": "", "when": "", "eq": "", "json": "" },
               "customConditional": "",
               "logic": [],
               "attributes": {},
@@ -12866,9 +12088,7 @@
               "customDefaultValue": "",
               "calculateValue": "",
               "calculateServer": false,
-              "widget": {
-                "type": "input"
-              },
+              "widget": { "type": "input" },
               "attributes": {},
               "validateOn": "change",
               "overlay": {
@@ -13043,12 +12263,7 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": {
-            "eq": "",
-            "json": "",
-            "show": null,
-            "when": null
-          },
+          "conditional": { "eq": "", "json": "", "show": null, "when": null },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -13080,12 +12295,7 @@
           "tags": [],
           "properties": {},
           "customConditional": "",
-          "conditional": {
-            "json": "",
-            "show": null,
-            "when": null,
-            "eq": ""
-          },
+          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
           "logic": [
             {
               "name": "Disable on Resubmit",
@@ -13131,11 +12341,7 @@
               "label": "Site Risk Classification",
               "inline": false,
               "values": [
-                {
-                  "label": "High Risk",
-                  "value": "highRisk",
-                  "shortcut": ""
-                },
+                { "label": "High Risk", "value": "highRisk", "shortcut": "" },
                 {
                   "label": "Risk-managed High Risk",
                   "value": "riskManagedHighRisk",
@@ -13146,11 +12352,7 @@
                   "value": "notHighRisk",
                   "shortcut": ""
                 },
-                {
-                  "label": "Pending",
-                  "value": "pending",
-                  "shortcut": ""
-                }
+                { "label": "Pending", "value": "pending", "shortcut": "" }
               ],
               "validate": {
                 "required": true,
@@ -13193,11 +12395,7 @@
               "widget": null,
               "attributes": {},
               "validateOn": "change",
-              "conditional": {
-                "show": null,
-                "when": null,
-                "eq": ""
-              },
+              "conditional": { "show": null, "when": null, "eq": "" },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -13303,12 +12501,7 @@
           "properties": {},
           "validateOn": "change",
           "clearOnHide": true,
-          "conditional": {
-            "eq": "",
-            "json": "",
-            "show": null,
-            "when": null
-          },
+          "conditional": { "eq": "", "json": "", "show": null, "when": null },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -13383,16 +12576,8 @@
               "suffix": "",
               "unique": false,
               "values": [
-                {
-                  "label": "Yes",
-                  "value": "yes",
-                  "shortcut": ""
-                },
-                {
-                  "label": "No",
-                  "value": "no",
-                  "shortcut": ""
-                }
+                { "label": "Yes", "value": "yes", "shortcut": "" },
+                { "label": "No", "value": "no", "shortcut": "" }
               ],
               "widget": null,
               "dbIndex": false,
@@ -13468,21 +12653,9 @@
               "suffix": "",
               "unique": false,
               "values": [
-                {
-                  "label": "Yes",
-                  "value": "yes",
-                  "shortcut": ""
-                },
-                {
-                  "label": "No",
-                  "value": "no",
-                  "shortcut": ""
-                },
-                {
-                  "label": "N/A",
-                  "value": "nA",
-                  "shortcut": ""
-                }
+                { "label": "Yes", "value": "yes", "shortcut": "" },
+                { "label": "No", "value": "no", "shortcut": "" },
+                { "label": "N/A", "value": "nA", "shortcut": "" }
               ],
               "widget": null,
               "dbIndex": false,
@@ -13592,11 +12765,7 @@
               "properties": {},
               "validateOn": "change",
               "clearOnHide": true,
-              "conditional": {
-                "eq": "",
-                "show": null,
-                "when": null
-              },
+              "conditional": { "eq": "", "show": null, "when": null },
               "customClass": "",
               "description": "",
               "placeholder": "",
@@ -13619,12 +12788,7 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": {
-            "eq": "",
-            "json": "",
-            "show": null,
-            "when": null
-          },
+          "conditional": { "eq": "", "json": "", "show": null, "when": null },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -13652,12 +12816,7 @@
           "key": "content",
           "tags": [],
           "properties": {},
-          "conditional": {
-            "show": null,
-            "when": null,
-            "eq": "",
-            "json": ""
-          },
+          "conditional": { "show": null, "when": null, "eq": "", "json": "" },
           "customConditional": "",
           "logic": [],
           "attributes": {},
@@ -13772,16 +12931,8 @@
               "suffix": "",
               "unique": false,
               "values": [
-                {
-                  "label": "Yes",
-                  "value": "yes",
-                  "shortcut": ""
-                },
-                {
-                  "label": "No",
-                  "value": "no",
-                  "shortcut": ""
-                }
+                { "label": "Yes", "value": "yes", "shortcut": "" },
+                { "label": "No", "value": "no", "shortcut": "" }
               ],
               "widget": null,
               "dbIndex": false,
@@ -13861,21 +13012,9 @@
               "tableView": false,
               "modalEdit": false,
               "values": [
-                {
-                  "label": "Yes",
-                  "value": "yes",
-                  "shortcut": ""
-                },
-                {
-                  "label": "Likely",
-                  "value": "likely",
-                  "shortcut": ""
-                },
-                {
-                  "label": "No",
-                  "value": "no",
-                  "shortcut": ""
-                }
+                { "label": "Yes", "value": "yes", "shortcut": "" },
+                { "label": "Likely", "value": "likely", "shortcut": "" },
+                { "label": "No", "value": "no", "shortcut": "" }
               ],
               "dataType": "",
               "persistent": true,
@@ -13949,9 +13088,7 @@
               "tooltip": "",
               "prefix": "",
               "suffix": "",
-              "widget": {
-                "type": "input"
-              },
+              "widget": { "type": "input" },
               "displayMask": "",
               "editor": "",
               "autoExpand": true,
@@ -14051,21 +13188,9 @@
               "tableView": false,
               "modalEdit": false,
               "values": [
-                {
-                  "label": "Yes",
-                  "value": "yes",
-                  "shortcut": ""
-                },
-                {
-                  "label": "Likely",
-                  "value": "likely",
-                  "shortcut": ""
-                },
-                {
-                  "label": "No",
-                  "value": "no",
-                  "shortcut": ""
-                }
+                { "label": "Yes", "value": "yes", "shortcut": "" },
+                { "label": "Likely", "value": "likely", "shortcut": "" },
+                { "label": "No", "value": "no", "shortcut": "" }
               ],
               "dataType": "",
               "persistent": true,
@@ -14207,9 +13332,7 @@
               "tooltip": "",
               "prefix": "",
               "suffix": "",
-              "widget": {
-                "type": "input"
-              },
+              "widget": { "type": "input" },
               "displayMask": "",
               "editor": "",
               "autoExpand": true,
@@ -14261,12 +13384,7 @@
               "key": "ifYesWhatSubstancesExceedOrAreLikelyToExceedUpperCapConcentrationsAndInWhatMedia",
               "tags": [],
               "properties": {},
-              "conditional": {
-                "show": "",
-                "when": "",
-                "eq": "",
-                "json": ""
-              },
+              "conditional": { "show": "", "when": "", "eq": "", "json": "" },
               "customConditional": "show = (data.AreUpperCapConcentrationsExceededOrLikelyExceeded === \"yes\" || data.AreUpperCapConcentrationsExceededOrLikelyExceeded === \"likely\")",
               "logic": [],
               "attributes": {},
@@ -14346,7 +13464,7 @@
               "attributes": {},
               "components": [
                 {
-                  "id": "eks0gu00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                  "id": "eks0gu000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                   "key": "exposurePathwayQuestionnaireAffectedParcel",
                   "tree": false,
                   "type": "panel",
@@ -14401,9 +13519,7 @@
                       "prefix": "",
                       "suffix": "",
                       "unique": false,
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "dbIndex": false,
                       "overlay": {
                         "top": "",
@@ -14444,11 +13560,7 @@
                       "spellcheck": true,
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": {
-                        "eq": "",
-                        "show": null,
-                        "when": null
-                      },
+                      "conditional": { "eq": "", "show": null, "when": null },
                       "customClass": "",
                       "description": "",
                       "inputFormat": "plain",
@@ -14513,11 +13625,7 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": {
-                        "eq": "",
-                        "show": null,
-                        "when": null
-                      },
+                      "conditional": { "eq": "", "show": null, "when": null },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -14591,16 +13699,8 @@
                           "suffix": "",
                           "unique": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            },
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" },
                             {
                               "label": "Pending",
                               "value": "pending",
@@ -14676,16 +13776,8 @@
                           "label": "HS-2 : Are UC contaminated soils located within 1 m of the soil surface? (Footnote 4)",
                           "inline": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            },
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" },
                             {
                               "label": "Pending",
                               "value": "pending",
@@ -14763,16 +13855,8 @@
                           "label": "HS-3 : Does the area of UC contaminated soil exceed 50 m2 on urban park, agricultural or residential lands or 125 m2 on commercial or industrial lands? (Footnote 4)",
                           "inline": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            },
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" },
                             {
                               "label": "Pending",
                               "value": "pending",
@@ -14850,16 +13934,8 @@
                           "label": "HS-4 : Is the site land use urban park, agricultural, residential, commercial or industrial (i.e. not wildlands)?",
                           "inline": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            }
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" }
                           ],
                           "validate": {
                             "required": true,
@@ -14932,16 +14008,8 @@
                           "label": "HS-5 : If the site land use is wildlands, are humans present on the site for greater than 2 hours/day, 1 day/ week? Footnote 5",
                           "inline": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            }
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" }
                           ],
                           "tooltip": "Human exposure on wildlands sites during limited periods of the year (i.e. hunting camps) may be compared to the prescribed exposure threshold of 2 hours/day, 1 day/week by averaging total annual exposure over a 12-month period. Actual human exposure must be indicated in supporting technical reports.",
                           "validate": {
@@ -15014,11 +14082,7 @@
                       "validateOn": "change",
                       "clearOnHide": false,
                       "collapsible": false,
-                      "conditional": {
-                        "eq": "",
-                        "show": null,
-                        "when": null
-                      },
+                      "conditional": { "eq": "", "show": null, "when": null },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -15093,16 +14157,8 @@
                           "suffix": "",
                           "unique": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            },
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" },
                             {
                               "label": "Pending",
                               "value": "pending",
@@ -15178,16 +14234,8 @@
                           "label": "HV-2 : Is the site land use urban park, agricultural, residential, commercial or industrial?",
                           "inline": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            }
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" }
                           ],
                           "validate": {
                             "required": true,
@@ -15260,11 +14308,7 @@
                       "validateOn": "change",
                       "clearOnHide": false,
                       "collapsible": false,
-                      "conditional": {
-                        "eq": "",
-                        "show": null,
-                        "when": null
-                      },
+                      "conditional": { "eq": "", "show": null, "when": null },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -15339,16 +14383,8 @@
                           "suffix": "",
                           "unique": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            }
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" }
                           ],
                           "widget": null,
                           "dbIndex": false,
@@ -15419,16 +14455,8 @@
                           "label": "HW-2 : Do substances in groundwater exceed 10 times UCCs for drinking water within 10 m of a drinking water well or exceed UCCs within the well? Footnote 6",
                           "inline": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            },
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" },
                             {
                               "label": "Pending",
                               "value": "pending",
@@ -15506,16 +14534,8 @@
                           "label": "HW-3 : Do substances in surface water exceed 10 times UCCs for drinking water within 100 m upstream of a drinking water intake or exceed UCCs at the intake? Footnote 6",
                           "inline": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            },
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" },
                             {
                               "label": "Pending",
                               "value": "pending",
@@ -15593,11 +14613,7 @@
                       "validateOn": "change",
                       "clearOnHide": false,
                       "collapsible": false,
-                      "conditional": {
-                        "eq": "",
-                        "show": null,
-                        "when": null
-                      },
+                      "conditional": { "eq": "", "show": null, "when": null },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -15667,16 +14683,8 @@
                           "label": "TS-1 : Do substances in soil exceed UCCs for toxicity to invertebrates and plants for the applicable land use?",
                           "inline": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            },
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" },
                             {
                               "label": "Pending",
                               "value": "pending",
@@ -15754,16 +14762,8 @@
                           "label": "TS-2 : Are UC contaminated soils within 1 m of the soil surface? Footnote 4",
                           "inline": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            },
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" },
                             {
                               "label": "Pending",
                               "value": "pending",
@@ -15841,16 +14841,8 @@
                           "label": "TS-3 : Is the soil surface above UC contaminated soil undeveloped land?",
                           "inline": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            }
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" }
                           ],
                           "validate": {
                             "required": true,
@@ -15923,16 +14915,8 @@
                           "label": "TS-4 : Is the area identified in TS-3 potential terrestrial habitat?",
                           "inline": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            }
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" }
                           ],
                           "validate": {
                             "required": true,
@@ -16005,16 +14989,8 @@
                           "label": "TS-5 : Does the area of UC contaminated soil exceed 100 m2 on urban park, agricultural or residential lands or 250 m2 on commercial or industrial lands or 500 m2 on wildlands? Footnote  4, 9",
                           "inline": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            }
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" }
                           ],
                           "tooltip": "Footnote 4: Where concentrations occur above UCCs, cross-sections and contour maps are required to support conclusions that upper cap contamination is located at depths greater than 1 m below soil surface and to support conclusions of the areal extent of UC contamination. “Areal extent” refers to the total combined areal extent of UC contaminated soil at a site, contiguous or non-contiguous.\nFootnote 9: Area threshold assumes site contamination is surrounded by the same land use.",
                           "validate": {
@@ -16087,11 +15063,7 @@
                       "validateOn": "change",
                       "clearOnHide": false,
                       "collapsible": false,
-                      "conditional": {
-                        "eq": "",
-                        "show": null,
-                        "when": null
-                      },
+                      "conditional": { "eq": "", "show": null, "when": null },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -16154,11 +15126,7 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": {
-                        "eq": "",
-                        "show": null,
-                        "when": null
-                      },
+                      "conditional": { "eq": "", "show": null, "when": null },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -16232,16 +15200,8 @@
                           "suffix": "",
                           "unique": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            }
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" }
                           ],
                           "widget": null,
                           "dbIndex": false,
@@ -16312,16 +15272,8 @@
                           "label": "AW-2 : Do substances in groundwater exceed UCCs for aquatic life water use within 10 m of the high water mark of an aquatic habitat? Footnote 6, 7",
                           "inline": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            },
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" },
                             {
                               "label": "Pending",
                               "value": "pending",
@@ -16399,16 +15351,8 @@
                           "label": "AW-3 : Do substances in surface water or unauthorized discharges to surface water exceed UCCs for aquatic life water use? Footnote 8",
                           "inline": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            },
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" },
                             {
                               "label": "Pending",
                               "value": "pending",
@@ -16486,11 +15430,7 @@
                       "validateOn": "change",
                       "clearOnHide": false,
                       "collapsible": false,
-                      "conditional": {
-                        "eq": "",
-                        "show": null,
-                        "when": null
-                      },
+                      "conditional": { "eq": "", "show": null, "when": null },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -16560,16 +15500,8 @@
                           "label": "AS-1 : Do substances in the upper 1 m of sediment exceed the UCCs for the applicable site sensitivity?",
                           "inline": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            },
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" },
                             {
                               "label": "Pending",
                               "value": "pending",
@@ -16652,16 +15584,8 @@
                           "label": "AS-2 : Does the area of UC contaminated sediment exceed 50 m2? Footnote 4",
                           "inline": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            },
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" },
                             {
                               "label": "Pending",
                               "value": "pending",
@@ -16739,11 +15663,7 @@
                       "validateOn": "change",
                       "clearOnHide": false,
                       "collapsible": false,
-                      "conditional": {
-                        "eq": "",
-                        "show": null,
-                        "when": null
-                      },
+                      "conditional": { "eq": "", "show": null, "when": null },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -16818,16 +15738,8 @@
                           "suffix": "",
                           "unique": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            }
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" }
                           ],
                           "widget": null,
                           "dbIndex": false,
@@ -16898,16 +15810,8 @@
                           "label": "LIW-2 : Do substances in groundwater exceed 10 times applicable UCCs within 10 m of a water supply well or exceed applicable UCCs in the well? Footnote 5, 6",
                           "inline": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            },
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" },
                             {
                               "label": "Pending",
                               "value": "pending",
@@ -16985,16 +15889,8 @@
                           "label": "LIW-3 : Do substances in surface water exceed 10 times applicable UCCs within 100 m upstream of a drinking water intake or exceed applicable UCCs at the intake?",
                           "inline": false,
                           "values": [
-                            {
-                              "label": "Yes",
-                              "value": "yes",
-                              "shortcut": ""
-                            },
-                            {
-                              "label": "No",
-                              "value": "no",
-                              "shortcut": ""
-                            },
+                            { "label": "Yes", "value": "yes", "shortcut": "" },
+                            { "label": "No", "value": "no", "shortcut": "" },
                             {
                               "label": "Pending",
                               "value": "pending",
@@ -17072,11 +15968,7 @@
                       "validateOn": "change",
                       "clearOnHide": false,
                       "collapsible": false,
-                      "conditional": {
-                        "eq": "",
-                        "show": null,
-                        "when": null
-                      },
+                      "conditional": { "eq": "", "show": null, "when": null },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -17139,11 +16031,7 @@
                       "properties": {},
                       "validateOn": "change",
                       "clearOnHide": true,
-                      "conditional": {
-                        "eq": "",
-                        "show": null,
-                        "when": null
-                      },
+                      "conditional": { "eq": "", "show": null, "when": null },
                       "customClass": "",
                       "description": "",
                       "placeholder": "",
@@ -17234,11 +16122,7 @@
                   "validateOn": "change",
                   "clearOnHide": false,
                   "collapsible": false,
-                  "conditional": {
-                    "eq": "",
-                    "show": null,
-                    "when": null
-                  },
+                  "conditional": { "eq": "", "show": null, "when": null },
                   "customClass": "",
                   "description": "",
                   "placeholder": "",
@@ -17316,21 +16200,9 @@
               "tableView": false,
               "modalEdit": false,
               "values": [
-                {
-                  "label": "Yes",
-                  "value": "yes",
-                  "shortcut": ""
-                },
-                {
-                  "label": "Likely",
-                  "value": "likely",
-                  "shortcut": ""
-                },
-                {
-                  "label": "No",
-                  "value": "no",
-                  "shortcut": ""
-                }
+                { "label": "Yes", "value": "yes", "shortcut": "" },
+                { "label": "Likely", "value": "likely", "shortcut": "" },
+                { "label": "No", "value": "no", "shortcut": "" }
               ],
               "dataType": "",
               "persistent": true,
@@ -17410,9 +16282,7 @@
               "prefix": "",
               "suffix": "",
               "unique": false,
-              "widget": {
-                "type": "input"
-              },
+              "widget": { "type": "input" },
               "dbIndex": false,
               "overlay": {
                 "top": "",
@@ -17629,16 +16499,8 @@
               "inline": false,
               "tableView": false,
               "values": [
-                {
-                  "label": "Yes",
-                  "value": "yes",
-                  "shortcut": ""
-                },
-                {
-                  "label": "No",
-                  "value": "no",
-                  "shortcut": ""
-                }
+                { "label": "Yes", "value": "yes", "shortcut": "" },
+                { "label": "No", "value": "no", "shortcut": "" }
               ],
               "validate": {
                 "required": true,
@@ -17929,9 +16791,7 @@
                               "customDefaultValue": "",
                               "calculateValue": "",
                               "calculateServer": false,
-                              "widget": {
-                                "type": "input"
-                              },
+                              "widget": { "type": "input" },
                               "attributes": {},
                               "validateOn": "change",
                               "validate": {
@@ -17995,11 +16855,7 @@
                                   "value": "yes",
                                   "shortcut": ""
                                 },
-                                {
-                                  "label": "No",
-                                  "value": "no",
-                                  "shortcut": ""
-                                }
+                                { "label": "No", "value": "no", "shortcut": "" }
                               ],
                               "validate": {
                                 "required": true,
@@ -18109,11 +16965,7 @@
                         "multiple": false,
                         "unique": false
                       },
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -18177,16 +17029,10 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -18254,16 +17100,10 @@
                       "customDefaultValue": "",
                       "calculateValue": "",
                       "calculateServer": false,
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "attributes": {},
                       "validateOn": "change",
-                      "conditional": {
-                        "show": null,
-                        "when": null,
-                        "eq": ""
-                      },
+                      "conditional": { "show": null, "when": null, "eq": "" },
                       "overlay": {
                         "style": "",
                         "left": "",
@@ -18289,7 +17129,7 @@
                     }
                   ],
                   "collapsible": false,
-                  "id": "eo5mwyp000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                  "id": "eo5mwyp0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                   "placeholder": "",
                   "prefix": "",
                   "customClass": "",
@@ -18327,11 +17167,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -18415,12 +17251,7 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": {
-            "eq": "",
-            "json": "",
-            "show": null,
-            "when": null
-          },
+          "conditional": { "eq": "", "json": "", "show": null, "when": null },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -18484,12 +17315,7 @@
           "properties": {},
           "validateOn": "change",
           "clearOnHide": true,
-          "conditional": {
-            "eq": "",
-            "json": "",
-            "show": null,
-            "when": null
-          },
+          "conditional": { "eq": "", "json": "", "show": null, "when": null },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -18566,9 +17392,7 @@
               "prefix": "",
               "suffix": "",
               "unique": false,
-              "widget": {
-                "type": "input"
-              },
+              "widget": { "type": "input" },
               "dbIndex": false,
               "overlay": {
                 "top": "",
@@ -18647,12 +17471,7 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": {
-            "eq": "",
-            "json": "",
-            "show": null,
-            "when": null
-          },
+          "conditional": { "eq": "", "json": "", "show": null, "when": null },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -18716,12 +17535,7 @@
           "properties": {},
           "validateOn": "change",
           "clearOnHide": true,
-          "conditional": {
-            "eq": "",
-            "json": "",
-            "show": null,
-            "when": null
-          },
+          "conditional": { "eq": "", "json": "", "show": null, "when": null },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -18867,9 +17681,7 @@
               "prefix": "",
               "suffix": "",
               "unique": false,
-              "widget": {
-                "type": "input"
-              },
+              "widget": { "type": "input" },
               "dbIndex": false,
               "overlay": {
                 "top": "",
@@ -18946,9 +17758,7 @@
               "prefix": "",
               "suffix": "",
               "unique": false,
-              "widget": {
-                "type": "input"
-              },
+              "widget": { "type": "input" },
               "dbIndex": false,
               "overlay": {
                 "top": "",
@@ -19138,12 +17948,7 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": {
-            "eq": "",
-            "json": "",
-            "show": null,
-            "when": null
-          },
+          "conditional": { "eq": "", "json": "", "show": null, "when": null },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -19184,12 +17989,7 @@
           "key": "submit",
           "tags": [],
           "properties": {},
-          "conditional": {
-            "show": null,
-            "when": null,
-            "eq": "",
-            "json": ""
-          },
+          "conditional": { "show": null, "when": null, "eq": "", "json": "" },
           "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails[\"role\"];\r\nif(roles.includes(\"formsflow-client\")) {\r\n  show = true;\r\n}\r\nelse\r\n{\r\n  show = false;\r\n}",
           "logic": [],
           "attributes": {},
@@ -19223,9 +18023,7 @@
           "customDefaultValue": "",
           "calculateValue": "",
           "calculateServer": false,
-          "widget": {
-            "type": "input"
-          },
+          "widget": { "type": "input" },
           "validateOn": "change",
           "validate": {
             "required": false,
@@ -19287,9 +18085,7 @@
           "tabindex": "",
           "disabled": false,
           "autofocus": false,
-          "widget": {
-            "type": "input"
-          },
+          "widget": { "type": "input" },
           "validateOn": "change",
           "validate": {
             "required": false,
@@ -19299,11 +18095,7 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": {
-            "show": null,
-            "when": null,
-            "eq": ""
-          },
+          "conditional": { "show": null, "when": null, "eq": "" },
           "allowCalculateOverride": false,
           "showCharCount": false,
           "showWordCount": false,
@@ -19361,9 +18153,7 @@
           "tabindex": "",
           "disabled": false,
           "autofocus": false,
-          "widget": {
-            "type": "input"
-          },
+          "widget": { "type": "input" },
           "validateOn": "change",
           "validate": {
             "required": false,
@@ -19373,11 +18163,7 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": {
-            "show": null,
-            "when": null,
-            "eq": ""
-          },
+          "conditional": { "show": null, "when": null, "eq": "" },
           "allowCalculateOverride": false,
           "showCharCount": false,
           "showWordCount": false,
@@ -19420,9 +18206,7 @@
           "customDefaultValue": "",
           "calculateValue": "",
           "calculateServer": false,
-          "widget": {
-            "type": "input"
-          },
+          "widget": { "type": "input" },
           "attributes": {},
           "validateOn": "change",
           "validate": {
@@ -19433,11 +18217,7 @@
             "multiple": false,
             "unique": false
           },
-          "conditional": {
-            "show": null,
-            "when": null,
-            "eq": ""
-          },
+          "conditional": { "show": null, "when": null, "eq": "" },
           "overlay": {
             "style": "",
             "left": "",
