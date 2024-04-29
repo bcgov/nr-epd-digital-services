@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FetchSiteDetail, FetchSiteResponse, SearchSiteResponse } from '../dto/response/fetchSiteResponse';
 import { Sites } from '../entities/sites.entity';
-
+import { SiteUtil } from '../utils/site.util';
 /**
  * Nestjs Service For Region Entity
  */
@@ -33,11 +33,11 @@ export class SiteService {
      * @param searchParam search parameter
      * @returns sites where id or address matches the search param
      */
-    async searchSites(searchParam: string, page: number, pageSize: number) {
-        /*async searchSites(searchParam: string, page: number, pageSize: number, siteId: string, siteRemediationStatus: string,
-            siteRiskCode: string, commonName: string, siteAddress: string, city: string, createdBy: string, latLongReliability: string,
-            latDecimal: number, latDeg: number, latMin: number, latSec: string, longDecimal: number, longDeg: number, longMin: number,
-            longSec: string, dateCreated: Date, lastUpdated: Date) {*/
+    async searchSites(searchParam: string, page: number, pageSize: number, siteId?: string, siteRemediationStatus?: string,
+        siteRiskCode?: string, commonName?: string, siteAddress?: string, city?: string, createdBy?: string, latLongReliability?: string,
+        latDecimal?: number, latDeg?: number, latMin?: number, latSec?: string, longDecimal?: number, longDeg?: number, longMin?: number,
+        longSec?: string, dateCreated?: Date, lastUpdated?: Date) {
+        const siteUtil: SiteUtil = new SiteUtil();
         const response = new SearchSiteResponse();
 
         const query = await this.siteRepository
@@ -45,13 +45,13 @@ export class SiteService {
             .where('CAST(sites.id AS TEXT) like :searchParam', { searchParam: `%${searchParam}%` })
             .orWhere('LOWER(sites.addr_line_1) LIKE LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
             .orWhere('LOWER(sites.addr_line_2) LIKE LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
-            .orWhere('LOWER(sites.addr_line_3) like LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
-            .orWhere('LOWER(sites.addr_line_4) like LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
-            .orWhere('LOWER(sites.city) like LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
-            .orWhere('LOWER(sites.provState) like LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
-            .orWhere('LOWER(sites.postalCode) like LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
+            .orWhere('LOWER(sites.addr_line_3) LIKE LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
+            .orWhere('LOWER(sites.addr_line_4) LIKE LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
+            .orWhere('LOWER(sites.city) LIKE LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
+            .orWhere('LOWER(sites.provState) LIKE LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
+            .orWhere('LOWER(sites.postalCode) LIKE LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
 
-        /*if (siteId) {
+        if (siteId) {
             query.andWhere('sites.id = :siteId', { siteId: siteId })
         }
 
@@ -68,8 +68,9 @@ export class SiteService {
         }
 
         if (siteAddress) {
-            const newAddress = this.removeSpecialCharacters(siteAddress);
-            query.andWhere('sites.common_name = :newAddress', { newAddress: newAddress })
+            const cleanedAddress = siteUtil.removeSpecialCharacters(siteAddress);// clean all special characters from address
+            query.andWhere(`regexp_replace(concat_ws('', sites.addr_line_1, sites.addr_line_2, sites.addr_line_3, sites.addr_line_4), '[^a-zA-Z0-9]', '', 'g') LIKE :cleanedAddress`,
+                { cleanedAddress: `%${cleanedAddress}%` })
         }
 
         if (city) {
@@ -122,7 +123,7 @@ export class SiteService {
 
         if (lastUpdated) {
             query.andWhere('sites.whenUpdated = :lastUpdated', { lastUpdated: lastUpdated })
-        }*/
+        }
 
         const result = await query.skip((page - 1) * pageSize).take(pageSize).getManyAndCount();
 
@@ -133,10 +134,6 @@ export class SiteService {
 
         return response;
     }
-
-    /*removeSpecialCharacters(address: string) {
-
-    }*/
 
     /**
       * Find sites by its ID

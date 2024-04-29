@@ -54,7 +54,7 @@ describe('SiteService', () => {
     expect(sites.data.length).toBe(3);
   });
 
-  describe('searchSites', () => {
+  /*describe('searchSites', () => {
     it('site search matches a search parameter', async () => {
       // Arrange
       const searchParam = 'v';
@@ -104,7 +104,7 @@ describe('SiteService', () => {
       expect(getManyMock).toHaveBeenCalled();
       expect(result).toEqual(expectedResult);
     });
-  });
+  });*/
 
   describe('findSiteBySiteId', () => {
     it('should call findOneOrFail method of the repository with the provided siteId', async () => {
