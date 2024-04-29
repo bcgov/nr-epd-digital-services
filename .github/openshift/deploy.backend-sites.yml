@@ -3,8 +3,8 @@ kind: Template
 metadata:
   name: ${NAME}
   annotations:
-    description: "EPD backend-sites"
-    tags: "epd-backend"
+    description: "sites-application"
+    tags: "sites"
     iconClass: icon-js
 labels:
   app: ${NAME}-${COMPONENT}
@@ -12,10 +12,10 @@ labels:
 parameters:
 - name: NAME
   description: Module name
-  value: epd
+  value: sites
 - name: COMPONENT
   description: Component name
-  value: backend-sites
+  value: application
 - name: IMAGE_TAG
   description: Image tag to use
   value: latest
