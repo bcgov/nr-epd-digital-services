@@ -18,7 +18,7 @@ function SideBar() {
     const isParentGroup:boolean =item.displayText && !item.icon;
 
     return (
-      <div tabIndex={tabIndex} aria-label={item.displayText} aria-roledescription="menu" role={isParentGroup? 'group': 'menuitem'}  className={`sideBar-NavItem ${isCurrentPath && item.icon ? 'currentPath' : ''}`}>
+      <section tabIndex={tabIndex} aria-label={item.displayText} aria-roledescription="menu" role={isParentGroup? 'group': 'menuitem'}  className={`sideBar-NavItem ${isCurrentPath && item.icon ? 'currentPath' : ''}`}>
         {item.icon && <item.icon className="sideBar-Icon" />}
         {item.displayText && item.icon && (
           <Link
@@ -39,7 +39,7 @@ function SideBar() {
            {item.displayText}
          </span>       
         )}
-      </div>
+      </section>
     );
   };
 

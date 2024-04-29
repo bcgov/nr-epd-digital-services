@@ -1,19 +1,44 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { SpinnerIcon, SortIcon } from "../../components/common/icon";
 import "./SearchResults.css";
 import { loadingState } from "./dto/SiteSlice";
 import { RequestStatus } from "../../helpers/requests/status";
 import { useSelector } from "react-redux";
 import TableColumns, { ColumnType } from "./dto/Columns";
+import Pagination from "./pagination/Pagination";
 
 interface ColumnProps {
   data: any;
   columns: TableColumns[];
+  pageChange:(pageRequested:number,resultsCount:number) => void;
 }
 
-const SearchResults: FC<ColumnProps> = ({ data, columns }) => {
+const SearchResults: FC<ColumnProps> = ({ pageChange, data, columns }) => {
  
   const requestStatus = useSelector(loadingState);
+ let [currentPage,SetCurrentPage] = useState(2);
+ let [resultsPerPage,SetResultsPerPage] = useState(5);
+
+
+
+
+ // let currentPage = 3;
+ // const resultsPerPage = 5;
+  const totalResults = 100;
+  const selectPage = (pageNumber:number): void=>
+  {
+    SetCurrentPage( pageNumber);
+  }
+
+  const changeResultsPerPage = (pageNumber:number): void=>
+  {
+    SetResultsPerPage( pageNumber);
+    
+  }
+
+  useEffect(()=>{
+    pageChange(currentPage,resultsPerPage);
+  },[currentPage,resultsPerPage])
 
   useEffect(() => {
     console.log("loadingState", columns);
@@ -127,7 +152,7 @@ const SearchResults: FC<ColumnProps> = ({ data, columns }) => {
 
   const renderNoResultsFound = () => {
    return (<tr>
-            <td colSpan={16} className="noContent border-quick-color">
+            <td colSpan={20} className="noContent border-quick-color">
               {requestStatus === RequestStatus.loading ? (
                 <div className="results-loading">
                   <SpinnerIcon
@@ -144,6 +169,7 @@ const SearchResults: FC<ColumnProps> = ({ data, columns }) => {
   }
 
   return (
+    <React.Fragment>
     <div className="tableWidth table-border-radius">
     <table className="table " aria-label="Search Results">
       <thead aria-label="Search Results Header">
@@ -157,7 +183,13 @@ const SearchResults: FC<ColumnProps> = ({ data, columns }) => {
         )}
       </tbody>
     </table>
+   
     </div>
+     <div>
+     <Pagination changeResultsPerPage={changeResultsPerPage}  selectPage={selectPage} currentPage={currentPage} resultsPerPage={resultsPerPage} totalResults={totalResults} />
+   </div>
+   </React.Fragment>
+
   );
 };
 

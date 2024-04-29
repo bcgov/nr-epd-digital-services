@@ -71,6 +71,10 @@ const Search = () => {
     left: `${left}px`
   });
 
+  const pageChange = (pageRequested:number,resultsCount:number) => {
+    console.log(pageRequested,resultsCount)
+  }
+
   useEffect(() => {
     console.log(sites);
     //if(sites)
@@ -129,9 +133,32 @@ const Search = () => {
     <div className="siteSearchContainer" role="search">
       <div className="row search-container">
         <h1 className="search-text-label">Search Site Registry</h1>
-        <div className="row">
+        <div className="">
           <div className="d-flex align-items-center">
-            {!noUserAction ? null : (
+            <div className="custom-text-search">
+            
+              {!noUserAction ? null : (
+                  <div className="custom-text-search-start">
+              <MagnifyingGlassIcon>
+              </MagnifyingGlassIcon>
+              </div>
+            )}
+             
+              <div className={`custom-text-search-middle`}>
+                <input tabIndex={13} aria-label="Search input"  
+                placeholder="Search" onChange={handleTextChange} 
+                value={searchText} type="text" 
+                className={`textSearch custom-text-search-control  ${!noUserAction ? `addBorder` : ``}`}/>
+              </div>
+              {noUserAction ? null : (
+              <div className="custom-text-search-end">
+                <CircleXMarkIcon onClick={() => {
+                  handleClearSearch();
+                }}/>
+              </div>
+               )}
+            </div>
+            {/* {!noUserAction ? null : (
               <MagnifyingGlassIcon className="search-icon " style={customStyle}>
               </MagnifyingGlassIcon>
             )}
@@ -147,11 +174,9 @@ const Search = () => {
             {noUserAction ? null : (
               <CircleXMarkIcon
                 className="clear-button"
-                onClick={() => {
-                  handleClearSearch();
-                }}
+                
               ></CircleXMarkIcon>
-            )}
+            )} */}
           </div>
         </div>
       </div>
@@ -253,6 +278,7 @@ const Search = () => {
         <div>
            <div className="" aria-label="Search results">
             <SearchResults
+              pageChange={pageChange}
               data={search(searchText)}
               columns={columnsToDisplay.filter((x) => x.isChecked === true)}
             />

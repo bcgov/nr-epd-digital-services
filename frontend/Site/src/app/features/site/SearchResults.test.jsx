@@ -25,7 +25,7 @@ describe('SearchResults Component', () => {
 
   test('renders no results found when data is empty', () => {
     const emptyData = [];
-    const { container } = render(<Provider store={store}><SearchResults data={emptyData} /></Provider>);
+    const { container } = render(<Provider store={store}><SearchResults data={emptyData} pageChange={()=>{}} /></Provider>);
     const noResultsText = screen.getByText('No Results Found');
     expect(noResultsText).toBeInTheDocument();
   
@@ -42,7 +42,7 @@ describe('SearchResults Component', () => {
         whenCreated: '2024-04-04'
       },   
     ];
-    const { container } = render(<Provider store={store}><SearchResults data={mockData} /></Provider>);
+    const { container } = render(<Provider store={store}><SearchResults data={mockData} pageChange={(currentPage,resultsPerPage)=>{}} /></Provider>);
     const siteIdLink = screen.getByText('View');
     expect(siteIdLink).toBeInTheDocument();
   });
@@ -58,7 +58,7 @@ describe('SearchResults Component', () => {
         whenCreated: '2024-04-04'
       },    
     ];
-    render(<Provider store={store}><SearchResults data={mockData} /></Provider>);
+    render(<Provider store={store}><SearchResults data={mockData} pageChange={(currentPage,resultsPerPage)=>{}} /></Provider>);
     const checkbox = screen.getByLabelText('Select Row');
     expect(checkbox).toBeInTheDocument();
     userEvent.click(checkbox);
@@ -80,7 +80,7 @@ describe('SearchResults Component', () => {
       },
    
     ];
-    render(<Provider store={store}><SearchResults data={mockData} columns={columns} /></Provider>);
+    render(<Provider store={store}><SearchResults data={mockData} columns={columns} pageChange={()=>{}} /></Provider>);
     const siteIdLink = screen.getByText('View');
     expect(siteIdLink).toBeInTheDocument();
   });
