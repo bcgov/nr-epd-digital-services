@@ -21,4 +21,23 @@ export class FetchSiteDetail extends BaseHttpResponse {
     data: Sites;
 }
 
+/**
+ * Class for returing search site response from graphql services
+ */
+@ObjectType()
+export class SearchSiteResponse {
+    @Field(() => Sites)
+    sites: Sites[];
+
+    @Field()
+    count: number;
+
+    @Field()
+    page: number;
+
+    @Field()
+    pageSize: number;
+
+}
+
 
