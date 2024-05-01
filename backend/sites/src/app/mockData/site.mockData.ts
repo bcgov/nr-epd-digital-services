@@ -45,7 +45,7 @@ export const sampleSites: Sites[] = [
         latDegrees: 0, // Example lat degrees
         latMinutes: 0, // Example lat minutes
         latSeconds: '0', // Example lat seconds
-        srStatus: 'SR Status',
+        srStatus: 'SR Status 1',
         latlongReliabilityFlag: 'LatLong Reliability Flag',
         siteRiskCode: 'Site Risk Code',
         geometry: '{}', // Example geometry
@@ -96,7 +96,7 @@ export const sampleSites: Sites[] = [
         latDegrees: 0, // Example lat degrees
         latMinutes: 0, // Example lat minutes
         latSeconds: '0', // Example lat seconds
-        srStatus: 'SR Status',
+        srStatus: 'SR Status 2',
         latlongReliabilityFlag: 'LatLong Reliability Flag',
         siteRiskCode: 'Site Risk Code',
         geometry: '{}', // Example geometry
