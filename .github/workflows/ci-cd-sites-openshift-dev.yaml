@@ -6,7 +6,7 @@ on:
     branches:
       - 'dev'
       - 'feat/task-228' 
-      - 'srs-338' #test
+      - 'srs-338' #test11
                              
     paths:
       - 'backend/**'
