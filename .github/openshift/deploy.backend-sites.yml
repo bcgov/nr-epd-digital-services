@@ -3,8 +3,8 @@ kind: Template
 metadata:
   name: ${NAME}
   annotations:
-    description: "sites-application"
-    tags: "sites"
+    description: "epd-application"
+    tags: "epd"
     iconClass: icon-js
 labels:
   app: ${NAME}-${COMPONENT}
@@ -12,7 +12,7 @@ labels:
 parameters:
 - name: NAME
   description: Module name
-  value: sites
+  value: epd
 - name: COMPONENT
   description: Component name
   value: application
