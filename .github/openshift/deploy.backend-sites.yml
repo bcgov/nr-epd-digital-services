@@ -116,26 +116,22 @@ objects:
           imagePullPolicy: Always
           name: ${NAME}-${COMPONENT}
           env:
-          - name: POSTGRESQL_HOST
+          - name: POSTGRES_USER
             valueFrom:
               configMapKeyRef:
                 name: ${NAME}-database
-                key: POSTGRESQL_HOST
-          - name: POSTGRES_DATABASE
+                key: POSTGRES_USER
+          - name: POSTGRES_PASSWORD
             valueFrom:
               configMapKeyRef:
                 name: ${NAME}-database
-                key: POSTGRES_DATABASE
-          - name: POSTGRES_DB_SCHEMA
+                key: POSTGRES_PASSWORD
+          - name: POSTGRES_DB
             valueFrom:
               configMapKeyRef:
                 name: ${NAME}-database
-                key: POSTGRES_DB_APPLICATION_SCHEMA
-          - name: POSTGRES_DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: ${NAME}-database
-                key: POSTGRES_DB_APPLICATION_PASSWORD
+                key: POSTGRES_DB
+
 
           ports:
           - containerPort: ${{CONTAINER_PORT}}
@@ -177,66 +173,22 @@ objects:
           env:
           - name: Typeorm-migration-sites
             value: "jdbc:postgresql://${COMPONENT}-postgres:5432/${COMPONENT}"
-          - name: POSTGRESQL_HOST
+          - name: POSTGRES_USER
             valueFrom:
               configMapKeyRef:
                 name: ${NAME}-database
-                key: POSTGRESQL_HOST
-          - name: POSTGRESQL_PORT
+                key: POSTGRES_USER
+          - name: POSTGRES_PASSWORD
             valueFrom:
               configMapKeyRef:
                 name: ${NAME}-database
-                key: POSTGRESQL_PORT
-          - name: POSTGRES_DATABASE
+                key: POSTGRES_PASSWORD
+          - name: POSTGRES_DB
             valueFrom:
               configMapKeyRef:
                 name: ${NAME}-database
-                key: POSTGRES_DATABASE
-          - name: POSTGRES_DB_SCHEMA
-            valueFrom:
-              configMapKeyRef:
-                name: ${NAME}-database
-                key: POSTGRES_DB_APPLICATION_SCHEMA
-          - name: POSTGRES_ADMIN_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: ${NAME}-database
-                key: POSTGRES_ADMIN_USERNAME
-          - name: POSTGRES_ADMIN_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: ${NAME}-database
-                key: POSTGRES_ADMIN_PASSWORD
-          - name: POSTGRES_DB_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: ${NAME}-database
-                key: POSTGRES_DB_APPLICATION_USERNAME
-          - name: POSTGRES_DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: ${NAME}-database
-                key: POSTGRES_DB_APPLICATION_PASSWORD
-          - name: KEYCLOCK_AUTH_URL
-            valueFrom:
-              configMapKeyRef:
-                name: keycloak-config
-                key: KEYCLOCK_AUTH_URL
-          - name: KEYCLOCK_REALM
-            valueFrom:
-              configMapKeyRef:
-                name: keycloak-config
-                key: KEYCLOCK_REALM
-          - name: KEYCLOCK_APP_CLIENT_ID
-            valueFrom:
-              secretKeyRef:
-                name: keycloak
-                key: KEYCLOCK_APP_CLIENT_ID
-          - name: KEYCLOCK_APP_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: keycloak
-                key: KEYCLOCK_APP_SECRET
+                key: POSTGRES_DB
+
           resources:
             limits:
               cpu: 100m
