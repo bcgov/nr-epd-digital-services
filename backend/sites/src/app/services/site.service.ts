@@ -33,14 +33,14 @@ export class SiteService {
      * @param searchParam search parameter
      * @returns sites where id or address matches the search param
      */
-    async searchSites(searchParam: string, page: number, pageSize: number, siteId?: string, siteRemediationStatus?: string,
-        siteRiskCode?: string, commonName?: string, siteAddress?: string, city?: string, createdBy?: string, latLongReliability?: string,
-        latDecimal?: number, latDeg?: number, latMin?: number, latSec?: string, longDecimal?: number, longDeg?: number, longMin?: number,
-        longSec?: string, dateCreated?: Date, lastUpdated?: Date) {
+    async searchSites(searchParam: string, page: number, pageSize: number, id?: string, srStatus?: string,
+        siteRiskCode?: string, commonName?: string, addrLine_1?: string, city?: string, whoCreated?: string, latlongReliabilityFlag?: string,
+        latdeg?: number, latDegrees?: number, latMinutes?: number, latSeconds?: string, longdeg?: number, longDegrees?: number, longMinutes?: number,
+        longSeconds?: string, whenCreated?: Date, whenUpdated?: Date) {
         const siteUtil: SiteUtil = new SiteUtil();
         const response = new SearchSiteResponse();
 
-        const query = await this.siteRepository
+        const query =  this.siteRepository
             .createQueryBuilder('sites')
             .where('CAST(sites.id AS TEXT) like :searchParam', { searchParam: `%${searchParam}%` })
             .orWhere('LOWER(sites.addr_line_1) LIKE LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
@@ -51,12 +51,12 @@ export class SiteService {
             .orWhere('LOWER(sites.provState) LIKE LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
             .orWhere('LOWER(sites.postalCode) LIKE LOWER(:searchParam)', { searchParam: `%${searchParam.toLowerCase()}%` })
 
-        if (siteId) {
-            query.andWhere('sites.id = :siteId', { siteId: siteId })
+        if (id) {
+            query.andWhere('sites.id = :id', { id: id })
         }
 
-        if (siteRemediationStatus) {
-            query.andWhere('sites.srStatus = :siteRemediationStatus', { siteRemediationStatus: siteRemediationStatus })
+        if (srStatus) {
+            query.andWhere('sites.srStatus = :srStatus', { srStatus: srStatus })
         }
 
         if (siteRiskCode) {
@@ -67,8 +67,8 @@ export class SiteService {
             query.andWhere('sites.common_name = :commonName', { commonName: commonName })
         }
 
-        if (siteAddress) {
-            const cleanedAddress = siteUtil.removeSpecialCharacters(siteAddress);// clean all special characters from address
+        if (addrLine_1) {
+            const cleanedAddress = siteUtil.removeSpecialCharacters(addrLine_1);// clean all special characters from address
             query.andWhere(`regexp_replace(concat_ws('', sites.addr_line_1, sites.addr_line_2, sites.addr_line_3, sites.addr_line_4), '[^a-zA-Z0-9]', '', 'g') LIKE :cleanedAddress`,
                 { cleanedAddress: `%${cleanedAddress}%` })
         }
@@ -77,52 +77,52 @@ export class SiteService {
             query.andWhere('sites.city = :city', { city: city })
         }
 
-        if (createdBy) {
-            query.andWhere('sites.who_created = :createdBy', { createdBy: createdBy })
+        if (whoCreated) {
+            query.andWhere('sites.who_created = :whoCreated', { whoCreated: whoCreated })
         }
 
-        if (latLongReliability) {
-            query.andWhere('sites.latlong_reliability_flag = :latLongReliability', { latLongReliability: latLongReliability })
+        if (latlongReliabilityFlag) {
+            query.andWhere('sites.latlong_reliability_flag = :latlongReliabilityFlag', { latlongReliabilityFlag: latlongReliabilityFlag })
         }
 
-        if (latDecimal) {
-            query.andWhere('sites.latdeg = :latDecimal', { latDecimal: latDecimal })
+        if (latdeg) {
+            query.andWhere('sites.latdeg = :latdeg', { latdeg: latdeg })
         }
 
-        if (latDeg) {
-            query.andWhere('sites.lat_degrees = :latDeg', { latDeg: latDeg })
+        if (latDegrees) {
+            query.andWhere('sites.lat_degrees = :latDegrees', { latDegrees: latDegrees })
         }
 
-        if (latMin) {
-            query.andWhere('sites.lat_minutes = :latMin', { latMin: latMin })
+        if (latMinutes) {
+            query.andWhere('sites.lat_minutes = :latMinutes', { latMinutes: latMinutes })
         }
 
-        if (latSec) {
-            query.andWhere('sites.lat_seconds = :latSec', { latSec: latSec })
+        if (latSeconds) {
+            query.andWhere('sites.lat_seconds = :latSeconds', { latSeconds: latSeconds })
         }
 
-        if (longDecimal) {
-            query.andWhere('sites.longdeg = :longDecimal', { longDecimal: longDecimal })
+        if (longdeg) {
+            query.andWhere('sites.longdeg = :longdeg', { longdeg: longdeg })
         }
 
-        if (longDeg) {
-            query.andWhere('sites.long_degrees = :longDeg', { longDeg: longDeg })
+        if (longDegrees) {
+            query.andWhere('sites.long_degrees = :longDeg', { longDeg: longDegrees })
         }
 
-        if (longMin) {
-            query.andWhere('sites.long_minutes = :longMin', { longMin: longMin })
+        if (longMinutes) {
+            query.andWhere('sites.long_minutes = :longMinutes', { longMinutes: longMinutes })
         }
 
-        if (longSec) {
-            query.andWhere('sites.long_seconds = :longSec', { longSec: longSec })
+        if (longSeconds) {
+            query.andWhere('sites.long_seconds = :longSeconds', { longSeconds: longSeconds })
         }
 
-        if (dateCreated) {
-            query.andWhere('sites.whenCreated = :dateCreated', { dateCreated: dateCreated })
+        if (whenCreated) {
+            query.andWhere('sites.whenCreated = :whenCreated', { whenCreated: whenCreated })
         }
 
-        if (lastUpdated) {
-            query.andWhere('sites.whenUpdated = :lastUpdated', { lastUpdated: lastUpdated })
+        if (whenUpdated) {
+            query.andWhere('sites.whenUpdated = :whenUpdated', { whenUpdated: whenUpdated })
         }
 
         const result = await query.skip((page - 1) * pageSize).take(pageSize).getManyAndCount();

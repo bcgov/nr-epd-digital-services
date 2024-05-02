@@ -26,7 +26,7 @@ export class FetchSiteDetail extends BaseHttpResponse {
  */
 @ObjectType()
 export class SearchSiteResponse {
-    @Field(() => Sites)
+    @Field(() => [Sites])
     sites: Sites[];
 
     @Field()
