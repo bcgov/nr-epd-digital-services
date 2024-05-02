@@ -119,18 +119,38 @@ objects:
           - name: POSTGRES_USER
             valueFrom:
               configMapKeyRef:
-                name: ${NAME}-database
+                name: sites-database
                 key: POSTGRES_USER
           - name: POSTGRES_PASSWORD
             valueFrom:
               configMapKeyRef:
-                name: ${NAME}-database
+                name: sites-database
                 key: POSTGRES_PASSWORD
           - name: POSTGRES_DB
             valueFrom:
               configMapKeyRef:
-                name: ${NAME}-database
+                name: sites-database
                 key: POSTGRES_DB
+          - name: POSTGRES_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_DATABASE
+          - name: POSTGRES_DB_SCHEMA
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_DB_SCHEMA
+          - name: POSTGRES_DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: sites-database
+                key: POSTGRES_DB_USERNAME
+          - name: POSTGRES_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: sites-database
+                key: POSTGRES_DB_PASSWORD
 
 
           ports:
@@ -176,22 +196,22 @@ objects:
           - name: POSTGRESQL_HOST
             valueFrom:
               configMapKeyRef:
-                name: ${NAME}-database
+                name: sites-database
                 key: POSTGRESQL_HOST
           - name: POSTGRES_USER
             valueFrom:
               configMapKeyRef:
-                name: ${NAME}-database
+                name: sites-database
                 key: POSTGRES_USER
           - name: POSTGRES_PASSWORD
             valueFrom:
               configMapKeyRef:
-                name: ${NAME}-database
+                name: sites-database
                 key: POSTGRES_PASSWORD
           - name: POSTGRES_DB
             valueFrom:
               configMapKeyRef:
-                name: ${NAME}-database
+                name: sites-database
                 key: POSTGRES_DB
 
           resources:
