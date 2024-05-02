@@ -1,4 +1,4 @@
-name: debezium-postgis Custom
+name: Sites database Custom build
 
 on:
   workflow_dispatch:
@@ -12,6 +12,7 @@ on:
       - dev
       - main
       - feat/srs-25-etl-deploy
+      - srs-338
     paths:
       - 'etl/**'
       - '.github/workflows/**'
@@ -21,10 +22,10 @@ defaults:
     shell: bash
     working-directory: ./etl/debezium-postgis
 env:
-  APP_NAME: "debezium-postgis"
+  APP_NAME: "sites-database"
 
 jobs:
-  etl-debezium-postgis-cd-by-push:
+  sites-database-custom-build-cd-by-push:
     runs-on: ubuntu-20.04
 
     if: github.repository == 'bcgov/nr-epd-digital-services'
