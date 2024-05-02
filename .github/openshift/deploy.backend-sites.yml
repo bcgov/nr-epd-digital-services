@@ -173,6 +173,11 @@ objects:
           env:
           - name: Typeorm-migration-sites
             value: "jdbc:postgresql://${COMPONENT}-postgres:5432/${COMPONENT}"
+          - name: POSTGRESQL_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: ${NAME}-database
+                key: POSTGRESQL_HOST
           - name: POSTGRES_USER
             valueFrom:
               configMapKeyRef:
