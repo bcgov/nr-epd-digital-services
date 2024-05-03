@@ -15,16 +15,18 @@ function SideBar() {
 
     const isCurrentPath = location.pathname === item.linkTo;
 
+    const isParentGroup:boolean =item.displayText && !item.icon;
+
     return (
-      <div tabIndex={tabIndex}  className={`sideBar-NavItem ${isCurrentPath && item.icon ? 'currentPath' : ''}`} role="menuitem">
+      <section tabIndex={tabIndex} aria-label={item.displayText} aria-roledescription="menu" role={isParentGroup? 'group': 'menuitem'}  className={`sideBar-NavItem ${isCurrentPath && item.icon ? 'currentPath' : ''}`}>
         {item.icon && <item.icon className="sideBar-Icon" />}
         {item.displayText && item.icon && (
           <Link
           to={item.linkTo}
           className={`sideBarDisplayText nav-section-bold-label nav-color-primary-default`}
-          aria-label={item.displayText}    
-               
-        >
+          aria-label={item.displayText}
+          role="menuitem"
+          >
           {item.displayText}
         </Link>
         )}
@@ -32,17 +34,18 @@ function SideBar() {
            <span
            className="nav-section-bold-label nav-color-secondary"
            aria-label={item.displayText}
+           role="menuitem"
          >
            {item.displayText}
          </span>       
         )}
-      </div>
+      </section>
     );
   };
 
   return (
     <div className="side-bar">
-      <div className="sideBar-Nav">
+      <div className="sideBar-Nav" role="menu">
         {navList
           .filter((item) => {
             return !item.lowerSection;
@@ -62,7 +65,7 @@ function SideBar() {
           ))}
       </div>
 
-      <div className="sideBar-Nav">
+      <div className="sideBar-Nav" role="menu">
         {navList
           .filter((item) => {
             return item.lowerSection;

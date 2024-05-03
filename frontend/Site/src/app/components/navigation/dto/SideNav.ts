@@ -47,6 +47,7 @@ const getSideBarNavList = () => {
       new SideNav(2,"Purchases", false, purchasesIcon, "/purchases"),
     ],false),
     new SideNav(5,"Cart", false, cartIcon, "/cart", [], true),
+    
   ];
 
   return sideNavList;
