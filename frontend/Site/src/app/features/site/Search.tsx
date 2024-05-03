@@ -5,8 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   fetchSites,
   resetSites,
-  setFetchLoadingState,
-  updateSearchQuery,
+  setFetchLoadingState,  
 } from "./dto/SiteSlice";
 
 import { AppDispatch } from "../../Store";
@@ -89,30 +88,9 @@ const Search = () => {
 
   const [searchText, setSearchText] = useState("");
 
-  useEffect(() => {
-    console.log(
-      "updated",
-      columnsToDisplay
-        .filter((x) => x.isChecked === true)
-        .map((item, index) => {
-          return item.graphQLPropertyName;
-        })
-        .toString()
-    );
-
-    dispatch(
-      updateSearchQuery(
-        columnsToDisplay
-          .filter((x) => x.isChecked === true)
-          .map((item, index) => {
-            return item.graphQLPropertyName;
-          })
-          .toString()
-      )
-    );
-    //dispatch();
-    fetchSites({ searchParam: searchText });
-  }, [dispatch, columnsToDisplay, searchText]);
+  // useEffect(() => {    
+  //   fetchSites(searchText);
+  // }, [dispatch,  searchText]);
 
   const handleClearSearch = () => {
     setSearchText("");
