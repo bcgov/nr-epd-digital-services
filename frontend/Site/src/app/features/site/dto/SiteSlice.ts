@@ -4,8 +4,9 @@ import { print } from "graphql";
 import { graphQlSiteQuery } from "../graphql/Site";
 import { SiteState } from "./SiteState";
 import { RequestStatus } from "../../../helpers/requests/status";
-import { Site } from "./Site";
+import { SiteResultDto } from "./Site";
 import { GRAPHQL } from "../../../helpers/endpoints";
+import { stat } from "fs";
 
 const initialState: SiteState = {
   sites: [],
@@ -15,29 +16,33 @@ const initialState: SiteState = {
   addedStatus: RequestStatus.idle,
   updateStatus: RequestStatus.idle,
   searchQuery:'',
-};
+}
+
 
 export const fetchSites = createAsyncThunk(
   "sites/fetchSites",
-  async (searchParam: String, { getState }) => {
+  async (args: {searchParam?: string, page?: string, pageSize?: string, filter?: {}}, {getState}) => {
     try {
+      const { searchParam = "", page = "1", pageSize = "10", filter = {} } = args;
       const state:any = getState();
       const response = await getAxiosInstance().post(
         GRAPHQL,
         {
-          query: print(graphQlSiteQuery(state.sites.searchQuery)),
+          query: print(graphQlSiteQuery(state.sites.searchQuery, filter)),
           variables: {
             searchParam: searchParam,
+            page: page,
+            pageSize: pageSize,
+            ...filter
           },
         }
       );
-      return response.data.data.searchSites;
+      return response.data.data.searchSites.sites;
     } catch (error) {
       throw error;
     }
   }
 );
-
 
 const siteSlice = createSlice({
   name: "sites",
@@ -89,7 +94,7 @@ const siteSlice = createSlice({
     },
     siteAdded: {
       reducer(state, action) {
-        const updatedArr: Site[] = [state.sites, action.payload];
+        const updatedArr: SiteResultDto[] = [state.sites, action.payload];
         state.sites = updatedArr;
       },
       prepare(name: string, email: string): any {
@@ -109,7 +114,7 @@ const siteSlice = createSlice({
       };      
       newState.searchQuery = action.payload;
       return newState;      
-    }
+    },
   },
   extraReducers(builder) {
     builder      
@@ -128,8 +133,8 @@ const siteSlice = createSlice({
       .addCase(fetchSites.rejected, (state, action) => {
         const newState = { ...state };
         return newState;
-      })     
-  },
+      }) 
+    },
 });
 
 export const selectAllSites = (state: any) => state.sites.sites;

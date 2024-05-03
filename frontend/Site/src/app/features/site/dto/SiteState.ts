@@ -1,9 +1,9 @@
 import { RequestStatus } from "../../../helpers/requests/status";
-import { Site } from "./Site"
+import { SiteResultDto } from "./Site"
 
 export class SiteState 
 {
-    sites: Site[] = [];   
+    sites: SiteResultDto[] = [];   
     error:string = '';
     fetchStatus:string =  RequestStatus.idle;
     deleteStatus:string =  RequestStatus.idle;

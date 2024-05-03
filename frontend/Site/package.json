@@ -36,13 +36,14 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^9.0.8",
     "redux-persist": "^6.0.0",
+    "rsuite": "^5.59.2",
     "serve": "^14.1.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@react-parcelmap-bc)/\"  ",
+    "test": "react-scripts test Site/src/app/features/site/filter --transformIgnorePatterns \"node_modules/(?!@react-parcelmap-bc)/\"  ",
     "eject": "react-scripts eject",
     "test:cov": "npm test -- --coverage"
   },

@@ -1,4 +1,4 @@
-export class Site {
+export class Sites {
   id: number;
   siteId: number;
   address: string;
@@ -14,4 +14,11 @@ export class Site {
     this.region = '';
     this.lastUpdatedDate = '';
   }
+}
+
+export class SiteResultDto {
+  page: string = '';
+  pageSize: string = '';
+  count: String = '';
+  sites: Sites[] = [];
 }

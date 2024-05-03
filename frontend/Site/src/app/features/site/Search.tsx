@@ -19,12 +19,14 @@ import Intro from "./Intro";
 import Column from "./columns/Column";
 import TableColumns from "./dto/Columns";
 import { getSiteSearchResultsColumns } from "./dto/Columns";
+import SiteFilterForm from "./filters/SiteFilterForm";
 
 const Search = () => {
   const dispatch = useDispatch<AppDispatch>();
   const sites = useSelector(selectAllSites);
   const [noUserAction, setUserAction] = useState(true);
   const [displayColumn,SetDisplayColumns] = useState(false);
+  const [displayFilters,SetDisplayFilters] = useState(false);
   const columns = getSiteSearchResultsColumns();
   const [columnsToDisplay, setColumnsToDisplay] = useState<TableColumns[]>([...columns]);
 
@@ -46,7 +48,9 @@ const Search = () => {
     setColumnsToDisplay(columns);
   }
 
- 
+  const cancelSearchFilter = () => {
+    SetDisplayFilters(false);
+ }
 
   useEffect(() => {}, []);
 
@@ -67,7 +71,8 @@ const Search = () => {
 
     dispatch(updateSearchQuery(columnsToDisplay.filter(x=>x.isChecked === true).map((item,index)=>{ return item.graphQLPropertyName  }).toString()));
     //dispatch();
-    fetchSites(searchText);
+    
+    fetchSites({ searchParam: searchText.trim() });
   },[dispatch,columnsToDisplay, searchText]);
   
 
@@ -81,7 +86,7 @@ const Search = () => {
     setSearchText(event.target.value);
     if (event.target.value.length >= 3) {
       dispatch(setFetchLoadingState(null));
-      dispatch(fetchSites(event.target.value));
+      dispatch(fetchSites({searchParam: event.target.value}));
     }
     else
     {
@@ -123,16 +128,17 @@ const Search = () => {
             <h2 className="search-results-section-title">Results</h2>
           </div>
           <div className="table-actions hide-custom">
-            <div className={`table-actions-items ${displayColumn ? 'active': ''} ` } onClick={()=>{ console.log(columns); SetDisplayColumns(!displayColumn)}} >
+            <div className={`table-actions-items ${displayColumn ? 'active': ''} ` } onClick={()=>{ console.log(columns); SetDisplayColumns(!displayColumn); SetDisplayFilters(false);}} >
               <TableColumnsIcon />
               Columns
             </div>
-            <div className="table-actions-items">
+            <div className={`table-actions-items ${displayFilters ? 'active': ''}`}  onClick={() => {SetDisplayFilters(!displayFilters); SetDisplayColumns(false);}}>
               <FilterIcon />
               Filters
             </div>
           </div>
         </div>
+        {displayFilters && <SiteFilterForm cancelSearchFilter = {cancelSearchFilter}/>}
         {displayColumn ? (<div> <Column toggleColumnSelectionForDisplay={toggleColumnSelectionForDisplay} columns={columnsToDisplay} reset={resetDefaultColums}  /></div> ): null }
         <div className="search-result-actions d-none d-md-flex">
           <div className="search-result-actions-btn">
