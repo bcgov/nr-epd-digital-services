@@ -317,8 +317,6 @@
     color: white;
 }
 
-.active:hover { background: var(--surface-primary-hover);}
-
 .bars-button-table-options
 {
   color: var(--typography-color-primary);  
