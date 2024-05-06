@@ -8,6 +8,7 @@ export interface FormField {
     label: string;
     placeholder?: string;
     graphQLPropertyName?: string,
+    allowNumbersOnly?: boolean; 
     options?: {key :string, value: string}[];
     value: any;
     children?: FormField[];
@@ -33,6 +34,7 @@ export const formRows: FormField[][] = [
                 pattern: /^[0-9,]+$/,
                 customMessage: 'Site ID can only contain numbers and commas',
             },
+            allowNumbersOnly: true,
         },
         {
             type: 'dropdown',
@@ -117,6 +119,7 @@ export const formRows: FormField[][] = [
                 pattern: /^[0-9.]+$/,
                 customMessage: 'Latitude (Decimal) can only contain numbers and decimal points',
             },
+            allowNumbersOnly: true,
         },
         {
             type: 'group',
@@ -134,6 +137,7 @@ export const formRows: FormField[][] = [
                         pattern: /^[0-9.]+$/,
                         customMessage: 'Latitude Degrees can only contain numbers and decimal points',
                     },
+                    allowNumbersOnly : true,
                 },
                 {
                     type: 'text',
@@ -145,6 +149,7 @@ export const formRows: FormField[][] = [
                         pattern: /^[0-9.]+$/,
                         customMessage: 'Latitude Minutes can only contain numbers and decimal points',
                     },
+                    allowNumbersOnly : true,
                 },
                 {
                     type: 'text',
@@ -156,6 +161,7 @@ export const formRows: FormField[][] = [
                         pattern: /^[0-9.]+$/,
                         customMessage: 'Latitude Seconds can only contain numbers and decimal points',
                     },
+                    allowNumbersOnly : true,
                 },
             ],
         },
@@ -169,6 +175,7 @@ export const formRows: FormField[][] = [
                 pattern: /^[0-9.]+$/,
                 customMessage: 'Longitude (Decimal) can only contain numbers and decimal points',
             },
+            allowNumbersOnly : true,
         },
         {
             type: 'group',
@@ -186,6 +193,7 @@ export const formRows: FormField[][] = [
                         pattern: /^[0-9.]+$/,
                         customMessage: 'Longitude Degrees can only contain numbers and decimal points',
                     },
+                    allowNumbersOnly : true,
                 },
                 {
                     type: 'text',
@@ -197,6 +205,7 @@ export const formRows: FormField[][] = [
                         pattern: /^[0-9.]+$/,
                         customMessage: 'Longitude Minutes can only contain numbers and decimal points',
                     },
+                    allowNumbersOnly : true,
                 },
                 {
                     type: 'text',
@@ -208,6 +217,7 @@ export const formRows: FormField[][] = [
                         pattern: /^[0-9.]+$/,
                         customMessage: 'Longitude Seconds can only contain numbers and decimal points',
                     },
+                    allowNumbersOnly : true,
                 },
             ],
         },

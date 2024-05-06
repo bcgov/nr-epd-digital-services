@@ -1,15 +1,32 @@
 import React from 'react';
 import { render, fireEvent, waitFor, getByTestId } from '@testing-library/react';
 import SiteFilterForm from './SiteFilterForm';
+import { Provider } from 'react-redux';
+import configureStore from 'redux-mock-store';
 
+const mockStore = configureStore([]);
 
 describe('SiteFilterForm component', () => {
+    let store;
+
+    beforeEach(() => {
+        store = mockStore({
+        // Your initial Redux store state here
+        sites: {},
+        });
+    });
+
     it('render without chrashing', async () => {
-        render(<SiteFilterForm/>);
+        render(
+            <Provider store={store}>
+                <SiteFilterForm  cancelSearchFilter={() => {}}/>
+            </Provider>);
     });
 
     it('Update the input text value correctly', async () =>{
-        const { getByLabelText } = render(<SiteFilterForm/>);
+        const { getByLabelText } = render( <Provider store={store}>
+            <SiteFilterForm  cancelSearchFilter={() => {}}/>
+        </Provider>);
         const input = getByLabelText('Site ID');
         fireEvent.change(input, {target : {value: "1"}});
         expect(input.value).toBe("1");
@@ -18,7 +35,9 @@ describe('SiteFilterForm component', () => {
     });
 
     it('Clear form data on reset button click', async () => {
-        const { getByText, getByLabelText } = render(<SiteFilterForm/>);
+        const { getByText, getByLabelText } = render( <Provider store={store}>
+            <SiteFilterForm  cancelSearchFilter={() => {}}/>
+        </Provider>);
         const input = getByLabelText('Site ID');
         fireEvent.change(input, {target : {value: "1"}})
         const resetButton = getByText('Reset Filters');
@@ -27,7 +46,9 @@ describe('SiteFilterForm component', () => {
     });
 
     it('clear form data on cancel button click', async () => {
-        const { getByText, getByLabelText} = render(<SiteFilterForm/>);
+        const { getByText, getByLabelText} = render( <Provider store={store}>
+            <SiteFilterForm  cancelSearchFilter={() => {}}/>
+        </Provider>);
         console.log(getByLabelText);
         const input = getByLabelText('Site Address');
         fireEvent.change(input, {target:{value: "12345 ABC"}});
@@ -36,23 +57,16 @@ describe('SiteFilterForm component', () => {
         expect(input.value).toBe('');
     });
 
-    it('adds and removes selected filter correctly', async () => {
-        const { getByText, getByLabelText } = render(<SiteFilterForm/>);
-        const input = getByLabelText('Site ID');
-        fireEvent.change(input, { target: { value : '1252, 5265'}});
-        const subBtn = getByText('Submit');
-        fireEvent.click(subBtn);
-        console.log(getByTestId);
-        // await waitFor(() => {
-        //     const selectedFilter = getByTestId('selected-filter');
-        //     expect(selectedFilter.textContent).toContain('1252, 5265');
-        // });
-        // const removeButton = getByTestId('remove-filter');
-        // fireEvent.click(removeButton);
-        // await waitFor(() => {
-        // const selectedFilter = getByTestId('selected-filter');
-        // expect(selectedFilter.textContent).toBe('');
-        // });
-    });
-
+    it('renders Dropdown component correctly', () => {
+        const { getByLabelText, getByPlaceholderText } = render(
+            <Provider store={store}>
+                <SiteFilterForm  cancelSearchFilter={() => {}}/>
+            </Provider>
+        );
+        console.log(getByPlaceholderText)
+        const dropdownLabel = getByLabelText('City');
+        const dropdownPlaceholder = getByPlaceholderText('Select City');
+        expect(dropdownLabel).toBeInTheDocument();
+        expect(dropdownPlaceholder).toBeInTheDocument();
+      });
 });

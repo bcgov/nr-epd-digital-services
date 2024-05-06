@@ -5,7 +5,7 @@ import { formRows, FormField } from '../dto/SiteFilterConfig';
 import './SiteFilterForm.css';
 import { CalendarIcon, DropdownIcon, XmarkIcon } from "../../../components/common/icon";
 import 'rsuite/DateRangePicker/styles/index.css';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../Store";
 import { fetchSites } from "../dto/SiteSlice";
 
@@ -77,7 +77,6 @@ const Dropdown: React.FC<InputProps> = ({ label, placeholder, options, value, on
 
     const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedOption = event.target.value;
-        console.log(event.target)
         setSelected(selectedOption !== '');
         onChange(selectedOption);
     };
@@ -99,6 +98,7 @@ const Dropdown: React.FC<InputProps> = ({ label, placeholder, options, value, on
                 // onChange={(e) => onChange(e.target.value)}
                 onChange={handleSelectChange}
                 aria-label={label}
+                placeholder={placeholder}
             >
                 <option value="" className="custom-disabled-option">{placeholder}</option>
                 {options?.map((option, index) => (
@@ -161,6 +161,7 @@ const DateInput: React.FC<InputProps> = ({ label, placeholder, value, onChange }
 
 const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
     const dispatch = useDispatch<AppDispatch>();
+    const sites = useSelector((state:any) => state.sites);
     const [formData, setFormData] =  useState<{ [key: string]: any | [Date, Date] }>({});
     const [selectedFilters, setSelectedFilters] = useState<{ key: any; value: any }[]>([]);
     
@@ -172,30 +173,41 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
     };
     
     const handleInputChange = (graphQLPropertyName: any, value: String | [Date, Date]) => {
-       if(value !== '' || value != undefined)
-        {
-            setFormData((prevData) => ({
-                ...prevData,
-                [graphQLPropertyName]:value 
-            }));
-        }
-       
+        setFormData((prevData) => ({
+            ...prevData,
+            [graphQLPropertyName]:value 
+        }));
     };
 
     const handleFormSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        // Add logic for form submission (e.g., API call)
-        // const selectedInput = Object.keys(formData).join(', ')
-        // console.log(selectedInput);
-        console.log(formData);
+        console.log("Form Data ----->", formData);
         debugger;
-        // dispatch(updateSearchQuery(selectedInput));
-        dispatch(fetchSites({filter: formData}));
+        const filteredFormData: { [key: string]: string } = {};
+        const filters: { key: string, value: string }[] = [];
+
+        // Filter out form data with non-empty values and construct filteredFormData and filters
+        for (const [key, value] of Object.entries(formData)) {
+            if(key === 'whenCreated' || key === 'whenUpdated' )
+            {
+                let dateRangeValue = formatDateRange(value);
+                filteredFormData[key] = dateRangeValue
+                filters.push({ key, value: dateRangeValue });
+            }
+            else if (value.trim() !== '') {
+                filteredFormData[key] = value;
+                filters.push({ key, value });
+            }
+        }
+
+      
         // show and format pill.
-        if(Object.keys(formData).length !== 0)
+        if(filters.length !== 0)
         {
-            var filters = Object.entries(formData).map(([key, value]) => ({ key, value}));
+            // dispatch(updateSearchQuery(selectedInput));
+            dispatch(fetchSites({searchParam: sites.searchQuery, filter: filteredFormData}));
             setSelectedFilters(filters);
+
             // Save filter selections to local storage
             localStorage.setItem('siteFilterPills', JSON.stringify(filters));
         }
@@ -210,11 +222,12 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
         setFormData(prevData => {
             const newData = { ...prevData };
             delete newData[filter.key]; // Remove the filter key from the form data
-            dispatch(fetchSites({filter: newData}));
+            dispatch(fetchSites({searchParam: sites.searchQuery, filter: newData}));
             return newData;
         });
-      
-        setSelectedFilters(selectedFilters.filter(item => item.key !== filter.key));
+        let currFilter = selectedFilters.filter(item => item.key !== filter.key);
+        setSelectedFilters(currFilter);
+        localStorage.setItem('siteFilterPills', JSON.stringify(currFilter));
     };
 
     useEffect(() => {
@@ -223,7 +236,7 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
         if (storedFilters) {
             setSelectedFilters(JSON.parse(storedFilters));
         }
-    }, []);
+    }, [setSelectedFilters]);
 
     return (
         <>
@@ -303,7 +316,8 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
          <div id="filter-pill" className="d-flex justify-content-end flex-wrap selected-filter">
          {selectedFilters.map((filter, index) => (
              <div key={index} className="d-flex custom-pill align-items-center">
-                 {filter.key === 'whenCreated' || filter.key === 'whenUpdated' ? formatDateRange(filter.value) : filter.value}
+                {filter.value}
+                 {/* {filter.key === 'whenCreated' || filter.key === 'whenUpdated' ? formatDateRange(filter.value) : filter.value} */}
                  <div className="d-flex align-items-center x-mark" onClick={() => handleRemoveFilter(filter)}><XmarkIcon/></div>
              </div>
          ))}

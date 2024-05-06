@@ -1,10 +1,23 @@
 import gql from 'graphql-tag'
 import { stringify } from 'querystring';
 
-export const graphQlSiteQuery = () => { 
+export const graphQlSiteQuery = (filter: {}) => { 
+  const filterConditions = filter && Object.keys(filter);
+  let fieldsString = '';
+  let fieldsArgString = '';
+  let selectedInput = '';
+
+  // Dynamically generate the fields part of the query
+  if(filterConditions)
+  {
+    fieldsString = filterConditions.map(field => `${field}: $${field}`).join(", ");
+    fieldsArgString = filterConditions.map(field => `$${field}: String`).join(", ");
+  }
+  
+
   return (gql`
-query searchSites($searchParam: String!){ 
-    searchSites(searchParam: $searchParam, page:"1", pageSize:"5") {
+query searchSites($searchParam: String!,  $page: String!, $pageSize: String!, ${fieldsArgString}){ 
+    searchSites(searchParam: $searchParam, , page: $page, pageSize: $pageSize, ${fieldsString}) {
        sites
        {
         id

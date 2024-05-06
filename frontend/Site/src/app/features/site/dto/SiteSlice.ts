@@ -28,7 +28,7 @@ export const fetchSites = createAsyncThunk(
       const response = await getAxiosInstance().post(
         GRAPHQL,
         {
-          query: print(graphQlSiteQuery()),
+          query: print(graphQlSiteQuery(filter)),
           variables: {
             searchParam: searchParam,
             page: page,
@@ -107,14 +107,13 @@ const siteSlice = createSlice({
         };
       },
     },
-    // updateSearchQuery: (state, action) => {  
-    //   console.log(' action.payload', action.payload)   
-    //   const newState = {
-    //     ...state,
-    //   };      
-    //   newState.searchQuery = action.payload;
-    //   return newState;      
-    // }
+    updateSearchQuery: (state, action) => {  
+      const newState = {
+        ...state,
+      };      
+      newState.searchQuery = action.payload;
+      return newState;      
+    }
   },
   extraReducers(builder) {
     builder      
@@ -142,7 +141,7 @@ export const loadingState = (state: any) => state.sites.fetchStatus;
 
 
 export const {
-    siteAdded , resetSites , setFetchLoadingState 
+    siteAdded , resetSites , setFetchLoadingState, updateSearchQuery 
 } = siteSlice.actions;
 
 export default siteSlice.reducer;

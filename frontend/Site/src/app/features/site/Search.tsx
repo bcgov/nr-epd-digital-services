@@ -5,7 +5,9 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   fetchSites,
   resetSites,
-  setFetchLoadingState,  
+  setFetchLoadingState,
+  updateSearchQuery,  
+  
 } from "./dto/SiteSlice";
 
 import { AppDispatch } from "../../Store";
@@ -104,6 +106,7 @@ const Search = () => {
     if (event.target.value.length >= 3) {
       dispatch(setFetchLoadingState(null));
       dispatch(fetchSites({ searchParam: event.target.value }));
+      dispatch(updateSearchQuery(event.target.value))
     } else {
       console.log("reset");
       dispatch(resetSites(null));
