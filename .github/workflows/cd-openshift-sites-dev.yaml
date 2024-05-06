@@ -11,7 +11,7 @@ on:
     branches:
       - dev
       - main
-      - srs-338
+     
     paths:
       - 'backend/**'
       - 'frontend/**'
