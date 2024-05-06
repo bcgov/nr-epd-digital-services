@@ -20,12 +20,7 @@ const SearchResults: FC<ColumnProps> = ({ pageChange, data, columns, totalRecord
  let [currentPage,SetCurrentPage] = useState(1);
  let [resultsPerPage,SetResultsPerPage] = useState(5);
 
-
-
-
- // let currentPage = 3;
- // const resultsPerPage = 5;
-  const totalResults = 20;
+  const totalResults = totalRecords;
   const selectPage = (pageNumber:number): void=>
   {
     SetCurrentPage( pageNumber);
@@ -187,7 +182,9 @@ const SearchResults: FC<ColumnProps> = ({ pageChange, data, columns, totalRecord
    
     </div>
      <div>
+     {data.length != 0 ? (
      <Pagination changeResultsPerPage={changeResultsPerPage}  selectPage={selectPage} currentPage={currentPage} resultsPerPage={resultsPerPage} totalResults={totalResults} />
+     ):null}
    </div>
    </React.Fragment>
 
