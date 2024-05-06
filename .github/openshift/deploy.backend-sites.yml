@@ -141,6 +141,26 @@ objects:
               configMapKeyRef:
                 name: sites-database
                 key: POSTGRES_DB_SCHEMA
+          - name: KEYCLOCK_AUTH_URL
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: KEYCLOCK_AUTH_URL
+          - name: KEYCLOCK_CLIENT_ID
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: KEYCLOCK_CLIENT_ID
+          - name: KEYCLOCK_REALM
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: KEYCLOCK_REALM
+          - name: KEYCLOCK_SECRET
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: KEYCLOCK_SECRET
           - name: POSTGRES_DB_USERNAME
             valueFrom:
               secretKeyRef:
@@ -198,6 +218,21 @@ objects:
               configMapKeyRef:
                 name: sites-database
                 key: POSTGRESQL_HOST
+          - name: POSTGRESQL_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRESQL_PORT
+          - name: POSTGRES_ADMIN_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_ADMIN_USERNAME
+          - name: POSTGRES_ADMIN_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_ADMIN_PASSWORD
           - name: POSTGRES_USER
             valueFrom:
               configMapKeyRef:
