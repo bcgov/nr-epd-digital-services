@@ -10,4 +10,7 @@ export class SiteState
     addedStatus:string =  RequestStatus.idle;   
     updateStatus:string  = RequestStatus.idle;
     searchQuery: string = '';
+    pageSize:number = 10;
+    currentPage:number = 1;
+    resultsCount: number = 0;
 }

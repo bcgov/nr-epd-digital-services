@@ -2,8 +2,8 @@ import gql from 'graphql-tag'
 
 export const graphQlSiteQuery = () => { 
   return (gql`
-query searchSites($searchParam: String!){ 
-    searchSites(searchParam: $searchParam, page:"1", pageSize:"5") {
+query searchSites($searchParam: String!, $page:String!, $pageSize: String!  ){ 
+    searchSites(searchParam: $searchParam, page:$page, pageSize:$pageSize) {
        sites
        {
         id
@@ -29,6 +29,7 @@ query searchSites($searchParam: String!){
         whenCreated
         consultantSubmitted
        }
+       count
      
     }
   }

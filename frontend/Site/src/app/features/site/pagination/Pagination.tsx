@@ -121,6 +121,7 @@ function getCurrentBreakpoint() {
 
   const renderNextSetPages = (currentPage: number): ReactNode => {
       const pages: JSX.Element[] = [];
+      console.log("renderNextSetPages");
 
       let pagesCount = maxPagesToRender-currentPage;
       let startPage = currentPage;
@@ -135,6 +136,22 @@ function getCurrentBreakpoint() {
                 startPage = 1;
             }
           }
+      }
+      else if (pagesCount == 0 && currentPage > pagesToDisplay)
+      {
+
+          if(currentPage - pagesToDisplay > 0)
+          {
+              startPage = currentPage - pagesToDisplay;
+          }
+          else
+          {
+            startPage = 1;
+          }
+      }
+      else 
+      {
+        startPage = 2;
       }
 
       console.log("startPage",startPage)
