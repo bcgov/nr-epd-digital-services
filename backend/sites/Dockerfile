@@ -27,4 +27,4 @@ RUN mkdir -p /home/node/.npm \
 EXPOSE 4007
 
 # Start the API
-CMD ["npm", "run", "start:prod"]
+CMD ["sh", "start.sh"]
