@@ -11,7 +11,6 @@ describe('SiteFilterForm component', () => {
 
     beforeEach(() => {
         store = mockStore({
-        // Your initial Redux store state here
         sites: {},
         });
     });
@@ -49,7 +48,6 @@ describe('SiteFilterForm component', () => {
         const { getByText, getByLabelText} = render( <Provider store={store}>
             <SiteFilterForm  cancelSearchFilter={() => {}}/>
         </Provider>);
-        console.log(getByLabelText);
         const input = getByLabelText('Site Address');
         fireEvent.change(input, {target:{value: "12345 ABC"}});
         const cancelBtn = getByText('Cancel');
@@ -63,7 +61,6 @@ describe('SiteFilterForm component', () => {
                 <SiteFilterForm  cancelSearchFilter={() => {}}/>
             </Provider>
         );
-        console.log(getByPlaceholderText)
         const dropdownLabel = getByLabelText('City');
         const dropdownPlaceholder = getByPlaceholderText('Select City');
         expect(dropdownLabel).toBeInTheDocument();

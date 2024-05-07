@@ -23,11 +23,8 @@
 }
 
 .custom-date-range .rs-input-group {
-    /* margin: 0;
-    border: none; */
     border: 1px solid var(--surface-color-border-light, #D8D8D8) !important;
     background-color: var(--surface-background-white) !important;
-    /* padding: var(--layout-padding-small) var(--layout-padding-medium) var(--layout-padding-small) var(--layout-padding-medium) !important; */
     padding: 3px 0px 3px var(--layout-padding-medium); 
     border-radius: var(--layout-margin-xsmall) !important;
 }
@@ -82,11 +79,8 @@
     font-weight: 400;
     line-height: 24px;
     text-align: left;
-    /* color: var(--typography-color-disabled) !important; */
 }
-/* .custom-option:first-child {
-    color: var(--typography-color-disabled) !important;
-} */
+
 .custom-disabled-option {
     color: var(--typography-color-disabled) !important;
 }
@@ -94,9 +88,6 @@
     color: var(--typography-color-primary) !important;
 }
 
-/* .custom-option:first-of-type {
-    color: var(--typography-color-disabled) !important;
-} */
 .custom-option {
     font-size: 16px;
     font-weight: 400;
@@ -132,4 +123,9 @@
 .x-mark {
     padding-top: 1px;
     color: var(--typography-color-primary-invert);
+}
+
+.custom-input.error:focus {
+    border-color: red;
+    box-shadow: 0 0 0 .25rem rgba(255,0,0, 0.25);
 }

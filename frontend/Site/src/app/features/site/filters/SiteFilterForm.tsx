@@ -11,7 +11,6 @@ import { fetchSites } from "../dto/SiteSlice";
 
 
 interface InputProps extends FormField {
-    // graphQLPropertyName?: string,
     children?: InputProps[];
     onChange: (value: any) => void;
 }
@@ -20,32 +19,38 @@ interface childProps {
     cancelSearchFilter : () => void
 }
 
-const TextInput: React.FC<InputProps> =  ({label, placeholder, type, value, validation, onChange})=> {
 
-    // const [error, setError] = useState<string | null>(null);
-    // const [inputValue, setInputValue] = useState<string>(value); // Maintain local state for input value
+const TextInput: React.FC<InputProps> =  ({label, placeholder, type, value, validation, allowNumbersOnly, onChange})=> {
 
-    // const validateInput = (inputValue: string) => {
-    //     if(validation)
-    //     {
-    //         if(validation.pattern && !validation.pattern.test(inputValue))
-    //         {
-    //             setError(validation.customMessage || 'Invalid input');
-    //             return false;
-    //         }
-    //     }
+    const [error, setError] = useState<string | null>(null);
 
-    //     setError(null);
-    //     return true;
-    // }
+    const validateInput = (inputValue: string) => {
+        if(validation)
+        {
+            if(validation.pattern && !validation.pattern.test(inputValue))
+            {
+                setError(validation.customMessage || 'Invalid input');
+                return false;
+            }
+        }
+
+        setError(null);
+        return true;
+    }
 
     const handleTextInputChange = (e : React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value;
-        // setInputValue(inputValue); // Update local state immediately
-        // if(validateInput(inputValue))
-        // {
-            // onChange(inputValue); // Update parent component state only if validation passes
-        // }
+        if(allowNumbersOnly)
+        {
+                if(validateInput(inputValue))
+                {
+                    onChange(inputValue); // Update parent component state only if validation passes
+                }
+        }
+        else
+        {
+            onChange(inputValue); 
+        }
     }
 
     // Replace any spaces in the label with underscores to create a valid id
@@ -58,13 +63,14 @@ const TextInput: React.FC<InputProps> =  ({label, placeholder, type, value, vali
             <input
                 type={type}
                 id={inputTxtId}
-                className="form-control custom-input"
+                className={`form-control custom-input ${error && 'error'}`}
                 placeholder={placeholder}
                 value={value ?? ''}
-                onChange={(e) => onChange(e.target.value)}
+                onChange={handleTextInputChange}
                 aria-label={label} // Accessibility
+                required = {error ? true : false}
             />
-            {/* {error && <div className="error-message">{error}</div>} */}
+            {error && <div className="text-danger p-1 small">{error}</div>}
         </div>
     );
 }
@@ -76,7 +82,7 @@ const Dropdown: React.FC<InputProps> = ({ label, placeholder, options, value, on
     const [selected, setSelected] = useState<boolean>(false);
 
     const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedOption = event.target.value;
+        const selectedOption = event.target.value.trim();
         setSelected(selectedOption !== '');
         onChange(selectedOption);
     };
@@ -93,9 +99,7 @@ const Dropdown: React.FC<InputProps> = ({ label, placeholder, options, value, on
             <select
                 id={drdownId}
                 className={`form-select custom-input custom-select ${selected ? 'custom-option' : ''} ${isFirstOptionGrey? 'custom-disabled-option' : 'custom-primary-option'}`}
-                // className="form-select custom-input custom-select"
-                value={value ?? ''}
-                // onChange={(e) => onChange(e.target.value)}
+                value={value.trim() ?? ''}
                 onChange={handleSelectChange}
                 aria-label={label}
                 placeholder={placeholder}
@@ -112,6 +116,42 @@ const Dropdown: React.FC<InputProps> = ({ label, placeholder, options, value, on
 }
 
 const GroupInput: React.FC<InputProps> = ({label, children}) =>{
+    const [error, setError] = useState<string | null>(null);
+
+    const validateInput = (inputValue: string, validation?: RegExp, customMessage?: string) => {
+        if(validation)
+        {
+            if(validation && !validation.test(inputValue))
+            {
+                setError(customMessage || 'Invalid input');
+                return false;
+            }
+        }
+
+        setError(null);
+        return true;
+    }
+
+    const handleTextInputChange = (
+        e: React.ChangeEvent<HTMLInputElement>,
+        child: InputProps
+    ) => {
+        const inputValue = e.target.value.trim();
+        if (child.allowNumbersOnly) {
+            if (
+                validateInput(
+                    inputValue,
+                    child.validation?.pattern,
+                    child.validation?.customMessage
+                )
+            ) {
+                child.onChange(inputValue); // Update parent component state only if validation passes
+            }
+        } else {
+            child.onChange(inputValue);
+        }
+    };
+
     return(
         <div className="mb-3"> {/* Container for the group input */}
             {/* Label for the group input */}
@@ -124,14 +164,15 @@ const GroupInput: React.FC<InputProps> = ({label, children}) =>{
                         {/* Render each child field as an input element */}
                         <input
                             type={child.type}
-                            className="form-control custom-input"
+                            className={`form-control custom-input ${error && 'error'}`}
                             placeholder={child.placeholder}
                             value={child.value ?? ''}
-                            onChange={(e) => child.onChange(e.target.value)}
+                            onChange={(e) => handleTextInputChange(e, child)}
                             aria-label={child.label} // Accessibility
                         />
                     </div>
                 ))}
+                {error && <div className="text-danger p-1 mx-2 small">{error}</div>}
             </div>
         </div>
     );
@@ -181,8 +222,6 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
 
     const handleFormSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        console.log("Form Data ----->", formData);
-        debugger;
         const filteredFormData: { [key: string]: string } = {};
         const filters: { key: string, value: string }[] = [];
 
@@ -204,7 +243,6 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
         // show and format pill.
         if(filters.length !== 0)
         {
-            // dispatch(updateSearchQuery(selectedInput));
             dispatch(fetchSites({searchParam: sites.searchQuery, filter: filteredFormData}));
             setSelectedFilters(filters);
 
@@ -253,6 +291,7 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
                                     onChange={(value) => handleInputChange(field.graphQLPropertyName, value)}
                                     type={field.type}
                                     validation={field.validation}
+                                    allowNumbersOnly={field.allowNumbersOnly}
                                 />
                             )}
                             {field.type === 'dropdown' && (
@@ -279,6 +318,7 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
                                     label={field.label}
                                     children={field.children?.map((child) => ({
                                         validation : child.validation,
+                                        allowNumbersOnly: child.allowNumbersOnly,
                                         type: child.type,
                                         label: child.label,
                                         placeholder: child.placeholder,
@@ -317,7 +357,6 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
          {selectedFilters.map((filter, index) => (
              <div key={index} className="d-flex custom-pill align-items-center">
                 {filter.value}
-                 {/* {filter.key === 'whenCreated' || filter.key === 'whenUpdated' ? formatDateRange(filter.value) : filter.value} */}
                  <div className="d-flex align-items-center x-mark" onClick={() => handleRemoveFilter(filter)}><XmarkIcon/></div>
              </div>
          ))}

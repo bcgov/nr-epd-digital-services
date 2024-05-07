@@ -31,7 +31,7 @@ export const formRows: FormField[][] = [
             graphQLPropertyName: 'id',
             value: '',
             validation: {
-                pattern: /^[0-9,]+$/,
+                pattern: /^[0-9,\s]*$/,
                 customMessage: 'Site ID can only contain numbers and commas',
             },
             allowNumbersOnly: true,
@@ -116,7 +116,7 @@ export const formRows: FormField[][] = [
             graphQLPropertyName:'latdeg',
             value: '',
             validation: {
-                pattern: /^[0-9.]+$/,
+                pattern: /^[0-9.\s]*$/,
                 customMessage: 'Latitude (Decimal) can only contain numbers and decimal points',
             },
             allowNumbersOnly: true,
@@ -134,7 +134,7 @@ export const formRows: FormField[][] = [
                     graphQLPropertyName:'latDegrees',
                     value: '',
                     validation: {
-                        pattern: /^[0-9.]+$/,
+                        pattern: /^[0-9.\s]*$/,
                         customMessage: 'Latitude Degrees can only contain numbers and decimal points',
                     },
                     allowNumbersOnly : true,
@@ -146,7 +146,7 @@ export const formRows: FormField[][] = [
                     graphQLPropertyName:'latMinutes',
                     value: '',
                     validation: {
-                        pattern: /^[0-9.]+$/,
+                        pattern: /^[0-9.\s]*$/,
                         customMessage: 'Latitude Minutes can only contain numbers and decimal points',
                     },
                     allowNumbersOnly : true,
@@ -158,7 +158,7 @@ export const formRows: FormField[][] = [
                     graphQLPropertyName:'latSeconds',
                     value: '',
                     validation: {
-                        pattern: /^[0-9.]+$/,
+                        pattern: /^[0-9.\s]*$/,
                         customMessage: 'Latitude Seconds can only contain numbers and decimal points',
                     },
                     allowNumbersOnly : true,
@@ -172,7 +172,7 @@ export const formRows: FormField[][] = [
             graphQLPropertyName:'longdeg',
             value: '',
             validation: {
-                pattern: /^[0-9.]+$/,
+                pattern: /^[0-9.\s]*$/,
                 customMessage: 'Longitude (Decimal) can only contain numbers and decimal points',
             },
             allowNumbersOnly : true,
@@ -190,7 +190,7 @@ export const formRows: FormField[][] = [
                     graphQLPropertyName:'longDegrees',
                     value: '',
                     validation: {
-                        pattern: /^[0-9.]+$/,
+                        pattern: /^[0-9.\s]*$/,
                         customMessage: 'Longitude Degrees can only contain numbers and decimal points',
                     },
                     allowNumbersOnly : true,
@@ -202,7 +202,7 @@ export const formRows: FormField[][] = [
                     graphQLPropertyName:'longMinutes',
                     value: '',
                     validation: {
-                        pattern: /^[0-9.]+$/,
+                        pattern: /^[0-9.\s]*$/,
                         customMessage: 'Longitude Minutes can only contain numbers and decimal points',
                     },
                     allowNumbersOnly : true,
@@ -214,7 +214,7 @@ export const formRows: FormField[][] = [
                     graphQLPropertyName:'longSeconds',
                     value: '',
                     validation: {
-                        pattern: /^[0-9.]+$/,
+                        pattern: /^[0-9.\s]*$/,
                         customMessage: 'Longitude Seconds can only contain numbers and decimal points',
                     },
                     allowNumbersOnly : true,
