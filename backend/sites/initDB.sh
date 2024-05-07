@@ -30,8 +30,15 @@ psql "user=$POSTGRES_ADMIN_USERNAME password=$POSTGRES_ADMIN_PASSWORD host=$POST
 
 echo "init db complete"
 
+# Set NPM_CONFIG_CACHE environment variable
+export NPM_CONFIG_CACHE=/home/node/.npm
+
+# Ensure ownership of .npm folder
+mkdir -p /home/node/.npm \
+    && chown -R node:node /home/node/.npm
+
 # run type orm migrations 
-sudo npm run typeorm migration:run -- -d ./typeOrm.config.ts
+npm run typeorm:run-migrations
 
 echo "migrations completed"
 
