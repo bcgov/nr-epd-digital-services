@@ -20,9 +20,13 @@ RUN npm ci
 # Bundle app source
 COPY . .
 
-RUN set -x \
-        && chmod -R 777 /app/
+# Set permissions for the application directory
+RUN chmod -R 755 /app
 
-RUN apk add postgresql-client
+# Install PostgreSQL client if needed
+RUN apk add --no-cache postgresql-client
+
+# Disable npm cache
+RUN npm config set cache false
 
 ENTRYPOINT [ "sh", "initDB.sh" ]
