@@ -31,10 +31,11 @@ psql "user=$POSTGRES_ADMIN_USERNAME password=$POSTGRES_ADMIN_PASSWORD host=$POST
 echo "init db complete"
 
 
-# Change ownership of .npm cache folder
-sudo chown -R 1015500000:0 "/.npm"
-# run type orm migrations 
-npm run typeorm:run-migrations
+# Ensure ownership of .npm folder
+chown -R node:node /home/node/.npm
+
+# Run TypeORM migrations with npm
+su -c "npm run typeorm:run-migrations" -s /bin/sh node
 echo "migrations completed"
 
 exit 0
