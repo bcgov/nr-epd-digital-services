@@ -1,7 +1,7 @@
 FROM node:16.14.0-alpine
 
 # Set cache directory within the project directory
-ENV NPM_CONFIG_CACHE=/app/npm-cache
+ENV NPM_CONFIG_CACHE=/home/node/.npm
 
 # Install packages, build, and keep only prod packages
 WORKDIR /app
@@ -9,9 +9,9 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Create npm-cache directory
-RUN mkdir -p /app/npm-cache \
-    && chown -R node:node /app/npm-cache
+# Create npm-cache directory and ensure correct ownership
+RUN mkdir -p /home/node/.npm \
+    && chown -R node:node /home/node/.npm
 
 # Install app dependencies using npm ci
 RUN npm ci
