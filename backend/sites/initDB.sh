@@ -37,9 +37,10 @@ export NPM_CONFIG_CACHE=/app/npm-cache
 # Create npm-cache directory if it doesn't exist
 mkdir -p /app/npm-cache
 
-# Run TypeORM migrations with npm
-npm run typeorm:run-migrations
+# Run TypeORM migrations with npm, specifying the cache directory
+npm --cache=/app/npm-cache run typeorm:run-migrations
 
 # Print a message indicating completion
 echo "Migrations completed"
+
 exit 0
