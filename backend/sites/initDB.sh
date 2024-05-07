@@ -30,17 +30,8 @@ psql "user=$POSTGRES_ADMIN_USERNAME password=$POSTGRES_ADMIN_PASSWORD host=$POST
 
 echo "init db complete"
 
-
-# Set cache directory within the project directory
-export NPM_CONFIG_CACHE=/app/npm-cache
-
-# Create npm-cache directory if it doesn't exist
-mkdir -p /app/npm-cache
-
-# Run TypeORM migrations with npm, specifying the cache directory
-npm run typeorm migration:run --cache=/app/npm-cache -- -d ./typeOrm.config.ts
-
-# Print a message indicating completion
-echo "Migrations completed"
+# run type orm migrations 
+npm run typeorm:run-migrations
+echo "migrations completed"
 
 exit 0
