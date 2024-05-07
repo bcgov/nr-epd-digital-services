@@ -35,6 +35,9 @@ echo "init db complete"
 mkdir -p /home/node/.npm
 chown -R node:node /home/node/.npm
 
+# Change ownership of .npm cache folder
+sudo chown -R 1015500000:0 /home/node/.npm
+
 # Run TypeORM migrations with npm
 npm run typeorm:run-migrations
 
