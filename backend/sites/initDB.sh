@@ -31,11 +31,14 @@ psql "user=$POSTGRES_ADMIN_USERNAME password=$POSTGRES_ADMIN_PASSWORD host=$POST
 echo "init db complete"
 
 
-# Ensure ownership of .npm folder
+# Create .npm directory if it doesn't exist and ensure ownership
+mkdir -p /home/node/.npm
 chown -R node:node /home/node/.npm
 
 # Run TypeORM migrations with npm
-su -c "npm run typeorm:run-migrations" -s /bin/sh node
-echo "migrations completed"
+npm run typeorm:run-migrations
+
+# Print a message indicating completion
+echo "Migrations completed"
 
 exit 0
