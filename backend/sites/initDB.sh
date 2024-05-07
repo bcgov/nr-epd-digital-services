@@ -31,8 +31,7 @@ psql "user=$POSTGRES_ADMIN_USERNAME password=$POSTGRES_ADMIN_PASSWORD host=$POST
 echo "init db complete"
 
 # run type orm migrations 
-npm run typeorm migration:run --cache=/home/node/.npm -- -d ./typeOrm.config.ts
-
+npm run typeorm:run-migrations
 echo "migrations completed"
 
 exit 0
