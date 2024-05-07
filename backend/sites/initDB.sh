@@ -37,6 +37,10 @@ export NPM_CONFIG_CACHE=/home/node/.npm
 mkdir -p /home/node/.npm \
     && chown -R node:node /home/node/.npm
 
+# NPM Permission Fix
+mkdir -p /.npm
+chown -R  1015500000:0 /.npm
+
 # run type orm migrations 
 npm run typeorm:run-migrations
 
