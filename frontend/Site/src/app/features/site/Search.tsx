@@ -8,10 +8,12 @@ import {
   setFetchLoadingState,
   updateSearchQuery,  
   
+  updatePageSizeSetting,
+  resultsCount
 } from "./dto/SiteSlice";
 
 import { AppDispatch } from "../../Store";
-import { selectAllSites } from "./dto/SiteSlice";
+import { selectAllSites,currentPageSelection } from "./dto/SiteSlice";
 import SearchResults from "./SearchResults";
 import {
   ShoppingCartIcon,
@@ -30,8 +32,11 @@ import { getSiteSearchResultsColumns } from "./dto/Columns";
 import SiteFilterForm from "./filters/SiteFilterForm";
 
 const Search = () => {
+  const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch<AppDispatch>();
   const sites = useSelector(selectAllSites);
+  const currentPageInState  = useSelector(currentPageSelection);
+  const totalRecords = useSelector(resultsCount);
   const [noUserAction, setUserAction] = useState(true);
   const [displayColumn, SetDisplayColumns] = useState(false);
   const [displayFilters, SetDisplayFilters] = useState(false);
@@ -54,6 +59,16 @@ const Search = () => {
       setColumnsToDisplay(updatedColumnsToDisplay);
     }
   };
+
+  useEffect(()=>{
+    console.log("currentPageSelection",currentPageInState);
+    dispatch(fetchSites({searchParam: searchText}));
+  },[currentPageInState]);
+
+  useEffect(()=>{
+    console.log("currentPageSelection",currentPageInState);
+    dispatch(fetchSites({searchParam: searchText}));
+  },[currentPageInState]);
 
   const hideColumns = () => {
     SetDisplayColumns(false);
@@ -79,16 +94,20 @@ const Search = () => {
     left: `${left}px`,
   });
 
-  const pageChange = (pageRequested: number, resultsCount: number) => {
-    console.log(pageRequested, resultsCount);
-  };
+  const pageChange = (pageRequested:number,resultsCount:number) => {
+    dispatch(updatePageSizeSetting({
+      "currentPage": pageRequested,
+      "pageSize": resultsCount
+    }));
+    console.log(pageRequested,resultsCount)
+  }
 
   useEffect(() => {
     console.log(sites);
     //if(sites)
   }, [sites]);
 
-  const [searchText, setSearchText] = useState("");
+
 
   // useEffect(() => {    
   //   fetchSites(searchText);
@@ -306,7 +325,8 @@ const Search = () => {
                 pageChange={pageChange}
                 data={search(searchText)}
                 columns={columnsToDisplay.filter((x) => x.isChecked === true)}
-              />
+                totalRecords={totalRecords}
+            />
             </div>
           </div>
         </div>

@@ -11,20 +11,16 @@ interface ColumnProps {
   data: any;
   columns: TableColumns[];
   pageChange:(pageRequested:number,resultsCount:number) => void;
+  totalRecords: number;
 }
 
-const SearchResults: FC<ColumnProps> = ({ pageChange, data, columns }) => {
+const SearchResults: FC<ColumnProps> = ({ pageChange, data, columns, totalRecords }) => {
  
   const requestStatus = useSelector(loadingState);
- let [currentPage,SetCurrentPage] = useState(2);
+ let [currentPage,SetCurrentPage] = useState(1);
  let [resultsPerPage,SetResultsPerPage] = useState(5);
 
-
-
-
- // let currentPage = 3;
- // const resultsPerPage = 5;
-  const totalResults = 100;
+  const totalResults = totalRecords;
   const selectPage = (pageNumber:number): void=>
   {
     SetCurrentPage( pageNumber);
@@ -48,7 +44,7 @@ const SearchResults: FC<ColumnProps> = ({ pageChange, data, columns }) => {
     type: ColumnType,
     displayName: string,
     value: string,
-    rowKey: number
+    rowKey: number 
   ) => {
     if (type === ColumnType.Link) {
       return (
@@ -186,7 +182,9 @@ const SearchResults: FC<ColumnProps> = ({ pageChange, data, columns }) => {
    
     </div>
      <div>
+     {data.length != 0 ? (
      <Pagination changeResultsPerPage={changeResultsPerPage}  selectPage={selectPage} currentPage={currentPage} resultsPerPage={resultsPerPage} totalResults={totalResults} />
+     ):null}
    </div>
    </React.Fragment>
 

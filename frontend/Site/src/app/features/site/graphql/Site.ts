@@ -43,6 +43,7 @@ query searchSites($searchParam: String!,  $page: String!, $pageSize: String!, ${
         whenCreated
         consultantSubmitted
        }
+       count
      
     }
   }
