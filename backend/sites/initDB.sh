@@ -31,23 +31,15 @@ psql "user=$POSTGRES_ADMIN_USERNAME password=$POSTGRES_ADMIN_PASSWORD host=$POST
 echo "init db complete"
 
 
-# Ensure /home/node directory exists
-mkdir -p /home/node
+# Set cache directory within the project directory
+export NPM_CONFIG_CACHE=/app/npm-cache
 
-# Change ownership of /home/node directory
-chown -R node:node /home/node
-
-# Create a custom npm cache directory if it doesn't exist and ensure ownership
-mkdir -p /home/node/npm-cache
-chown -R node:node /home/node/npm-cache
-
-# Set npm cache directory to the custom directory
-export NPM_CONFIG_CACHE=/home/node/npm-cache
+# Create npm-cache directory if it doesn't exist
+mkdir -p /app/npm-cache
 
 # Run TypeORM migrations with npm
 npm run typeorm:run-migrations
 
 # Print a message indicating completion
 echo "Migrations completed"
-
 exit 0
