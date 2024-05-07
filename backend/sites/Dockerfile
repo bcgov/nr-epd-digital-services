@@ -5,8 +5,8 @@ FROM node:16.14.0-alpine
 ENV NPM_CONFIG_CACHE=/home/node/.npm
 
 # NPM Permission Fix
-RUN mkdir -p /.npm \
-    && chown -R 1001:0 /.npm
+RUN mkdir -p /home/node/.npm \
+    && chown -R 1001:0 /home/node/.npm
 
 # Install packages, build, and keep only prod packages
 WORKDIR /app
@@ -29,10 +29,6 @@ USER 1001
 
 # Build the application
 RUN npm run build
-
-# Ensure ownership of .npm folder
-RUN mkdir -p /home/node/.npm \
-    && chown -R 1001:0 /home/node/.npm
 
 # Expose port
 EXPOSE 4007
