@@ -37,9 +37,12 @@ mkdir -p /home/node
 # Change ownership of /home/node directory
 chown -R node:node /home/node
 
-# Create .npm directory if it doesn't exist and ensure ownership
-mkdir -p /home/node/.npm
-chown -R node:node /home/node/.npm
+# Create a custom npm cache directory if it doesn't exist and ensure ownership
+mkdir -p /home/node/npm-cache
+chown -R node:node /home/node/npm-cache
+
+# Set npm cache directory to the custom directory
+export NPM_CONFIG_CACHE=/home/node/npm-cache
 
 # Run TypeORM migrations with npm
 npm run typeorm:run-migrations
