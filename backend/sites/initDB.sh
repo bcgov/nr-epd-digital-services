@@ -30,9 +30,6 @@ psql "user=$POSTGRES_ADMIN_USERNAME password=$POSTGRES_ADMIN_PASSWORD host=$POST
 
 echo "init db complete"
 
-# Fix permissions for npm cache folder
-sudo chown -R 1015500000:0 "/.npm"
-echo "npm permission set"
 
 # run type orm migrations 
 npm run typeorm migration:run -- -d ./typeOrm.config.ts
