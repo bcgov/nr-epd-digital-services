@@ -43,7 +43,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test Site/src/app/features/site/filter --transformIgnorePatterns \"node_modules/(?!@react-parcelmap-bc)/\"  ",
+    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@react-parcelmap-bc)/\"  ",
     "eject": "react-scripts eject",
     "test:cov": "npm test -- --coverage"
   },
