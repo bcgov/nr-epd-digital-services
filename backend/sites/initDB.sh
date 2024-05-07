@@ -31,12 +31,15 @@ psql "user=$POSTGRES_ADMIN_USERNAME password=$POSTGRES_ADMIN_PASSWORD host=$POST
 echo "init db complete"
 
 
+# Ensure /home/node directory exists
+mkdir -p /home/node
+
+# Change ownership of /home/node directory
+chown -R node:node /home/node
+
 # Create .npm directory if it doesn't exist and ensure ownership
 mkdir -p /home/node/.npm
 chown -R node:node /home/node/.npm
-
-# Change ownership of .npm cache folder
-sudo chown -R 1015500000:0 /home/node/.npm
 
 # Run TypeORM migrations with npm
 npm run typeorm:run-migrations
