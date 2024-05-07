@@ -1,9 +1,8 @@
 FROM node:16.14.0-alpine
-#FROM artifacts.developer.gov.bc.ca/docker-remote/node:14.17.1-alpine
 
 # NPM Permission Fix
-RUN mkdir -p /.npm
-RUN chown -R 1001:0 /.npm
+RUN mkdir -p /.npm \
+    && chown -R 1001:0 /.npm
 
 # Install packages, build and keep only prod packages
 WORKDIR /app
@@ -12,22 +11,25 @@ WORKDIR /app
 COPY package*.json ./
 
 # Set NODE_ENV environment variable
-#ENV NODE_ENV production
+# ENV NODE_ENV production
 
 # Install app dependencies using the `npm ci` command instead of `npm install`
 RUN npm ci
 
-#RUN npm build
-
 # Bundle app source
 COPY . .
 
-RUN chown -R 1001:0 
+# Change ownership of files to non-root user
+RUN chown -R 1001:0 /app
+
+# Switch to non-root user
 USER 1001
 
-RUN set -x \
-        && chmod -R 777 /app/
+# Set permissions recursively to make sure files are accessible
+RUN chmod -R 777 /app/
 
-RUN apk add postgresql-client
+# Install postgresql-client
+RUN apk add --no-cache postgresql-client
 
+# Define the entrypoint
 ENTRYPOINT [ "sh", "initDB.sh" ]
