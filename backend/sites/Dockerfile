@@ -2,11 +2,11 @@
 FROM node:16.14.0-alpine
 
 # Set npm cache directory
-ENV NPM_CONFIG_CACHE=/home/node/.npm
+# ENV NPM_CONFIG_CACHE=/home/node/.npm
 
-# NPM Permission Fix
-RUN mkdir -p /home/node/.npm \
-    && chown -R 1001:0 /home/node/.npm
+# # NPM Permission Fix
+# RUN mkdir -p /home/node/.npm \
+#     && chown -R 1001:0 /home/node/.npm
 
 # Install packages, build, and keep only prod packages
 WORKDIR /app
