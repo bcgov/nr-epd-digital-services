@@ -20,6 +20,6 @@ RUN apk add --no-cache postgresql-client
 
 # Switch to non-root user
 USER node
-
+#test
 # Define the entrypoint
 ENTRYPOINT [ "sh", "initDB.sh" ]
