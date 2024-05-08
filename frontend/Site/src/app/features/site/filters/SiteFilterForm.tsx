@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { DateRangePicker } from 'rsuite';
 import { format } from 'date-fns';
-import { formRows, FormField } from '../dto/SiteFilterConfig';
+import { formRows, IFormField } from '../dto/SiteFilterConfig';
 import './SiteFilterForm.css';
 import { CalendarIcon, DropdownIcon, XmarkIcon } from "../../../components/common/icon";
 import 'rsuite/DateRangePicker/styles/index.css';
@@ -10,7 +10,7 @@ import { AppDispatch } from "../../../Store";
 import { fetchSites } from "../dto/SiteSlice";
 
 
-interface InputProps extends FormField {
+interface InputProps extends IFormField {
     children?: InputProps[];
     onChange: (value: any) => void;
 }
@@ -204,7 +204,7 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
     const dispatch = useDispatch<AppDispatch>();
     const sites = useSelector((state:any) => state.sites);
     const [formData, setFormData] =  useState<{ [key: string]: any | [Date, Date] }>({});
-    const [selectedFilters, setSelectedFilters] = useState<{ key: any; value: any }[]>([]);
+    const [selectedFilters, setSelectedFilters] = useState<{ key: any; value: any, label: string  }[]>([]);
     
     const formatDateRange = (range: [Date, Date]) => {
         const [startDate, endDate] = range;
@@ -223,26 +223,27 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
     const handleFormSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         const filteredFormData: { [key: string]: string } = {};
-        const filters: { key: string, value: string }[] = [];
-
+        const filters: { key: string, value: string, label: string }[] = [];
+        
         // Filter out form data with non-empty values and construct filteredFormData and filters
         for (const [key, value] of Object.entries(formData)) {
+            let currLabel = formRows && formRows.flatMap(row => row).find(row => row.graphQLPropertyName === key);
             if(key === 'whenCreated' || key === 'whenUpdated' )
             {
                 let dateRangeValue = formatDateRange(value);
                 filteredFormData[key] = dateRangeValue
-                filters.push({ key, value: dateRangeValue });
+                filters.push({ key, value: dateRangeValue, label: currLabel?.label ?? '' });
             }
             else if (value.trim() !== '') {
                 filteredFormData[key] = value;
-                filters.push({ key, value });
+                filters.push({ key, value, label: currLabel?.label ?? '' });
             }
         }
 
-      
         // show and format pill.
         if(filters.length !== 0)
         {
+            console.log(filters);
             dispatch(fetchSites({searchParam: sites.searchQuery, filter: filteredFormData}));
             setSelectedFilters(filters);
 
@@ -337,7 +338,7 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
             ))}
 
 
-            <div className="d-flex flex-sm-wrap justify-content-between w-100">
+            <div className="d-flex flex-wrap justify-content-between w-100">
                 <div>
                     <button type="reset" className="reset-button" onClick={handleReset}>Reset Filters</button>
                 </div>
@@ -356,7 +357,7 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
          <div id="filter-pill" className="d-flex justify-content-end flex-wrap selected-filter">
          {selectedFilters.map((filter, index) => (
              <div key={index} className="d-flex custom-pill align-items-center">
-                {filter.value}
+                {filter && `${filter.label} : ${filter.value}`}
                  <div className="d-flex align-items-center x-mark" onClick={() => handleRemoveFilter(filter)}><XmarkIcon/></div>
              </div>
          ))}

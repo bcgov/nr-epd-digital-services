@@ -1,9 +1,4 @@
-interface DropdownKeyValuePair {
-    key :string,
-    value: string
-}
-
-export interface FormField {
+export interface IFormField {
     type: 'text' | 'dropdown' | 'date' | 'group';
     label: string;
     placeholder?: string;
@@ -11,7 +6,7 @@ export interface FormField {
     allowNumbersOnly?: boolean; 
     options?: {key :string, value: string}[];
     value: any;
-    children?: FormField[];
+    children?: IFormField[];
     validation?: {
         required?: boolean;
         minLength?: number;
@@ -22,7 +17,7 @@ export interface FormField {
 }
 
 
-export const formRows: FormField[][] = [
+export const formRows: IFormField[][] = [
     [
         {
             type: 'text',
