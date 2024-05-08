@@ -10,7 +10,6 @@ RUN mkdir -p /home/node/.npm \
 
 # Install packages, build, and keep only prod packages
 WORKDIR /app
-#test
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
