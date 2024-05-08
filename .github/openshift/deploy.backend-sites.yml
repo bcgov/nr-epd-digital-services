@@ -1,0 +1,320 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ${NAME}
+  annotations:
+    description: "EPD backend-sites"
+    tags: "epd-backend"
+    iconClass: icon-js
+labels:
+  app: ${NAME}-${COMPONENT}
+  app.kubernetes.io/part-of: ${NAME}-${COMPONENT}
+parameters:
+- name: NAME
+  description: Module name
+  value: epd
+- name: COMPONENT
+  description: Component name
+  value: backend-sites
+- name: IMAGE_TAG
+  description: Image tag to use
+  value: latest
+- name: DOMAIN
+  value: apps.silver.devops.gov.bc.ca
+- name: CPU_REQUEST
+  value: "125m"
+- name: MEMORY_REQUEST
+  value: "150Mi"
+- name: CPU_LIMIT
+  value: "275m"
+- name: MEMORY_LIMIT
+  value: "450Mi"
+- name: MIN_REPLICAS
+  description: The minimum amount of replicas
+  value: "1"
+- name: MAX_REPLICAS
+  description: The maximum amount of replicas
+  value: "3"
+- name: CONTAINER_PORT
+  description: The port on which the application will be accessible
+  required: true
+- name: REGISTRY
+  description: Container registry to import from (internal is image-registry.openshift-image-registry.svc:5000)
+  value: ghcr.io
+- name: PROMOTE
+  description: Image (namespace/name:tag) to promote/import
+  value: bcgov/nr-epd-digital-services/backend/sites
+- name: INIT_IMAGE
+  description: Image (namespace/name:tag) to promote/import
+  value: bcgov/nr-epd-digital-services/backend/sites-migration
+- name: ENV
+  description: The Environment on which it is deployed
+  required: true
+objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: ${NAME}-${COMPONENT}
+    name: ${NAME}-${COMPONENT}
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - name: ${IMAGE_TAG}
+      from:
+        kind: DockerImage
+        name: ${REGISTRY}/${PROMOTE}:${IMAGE_TAG}
+      referencePolicy:
+        type: Local
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: ${NAME}-${COMPONENT}-migration
+    name: ${NAME}-${COMPONENT}-migration
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - name: ${IMAGE_TAG}
+      from:
+        kind: DockerImage
+        name: ${REGISTRY}/${INIT_IMAGE}:${IMAGE_TAG}
+      referencePolicy:
+        type: Local
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: ${NAME}-${COMPONENT}
+    name: ${NAME}-${COMPONENT}
+  spec:
+    replicas: 1
+    triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - ${NAME}-${COMPONENT}
+        from:
+          kind: ImageStreamTag
+          name: ${NAME}-${COMPONENT}:${IMAGE_TAG}
+    selector:
+      deploymentconfig: ${NAME}-${COMPONENT}
+    strategy:
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: ${NAME}-${COMPONENT}
+          deploymentconfig: ${NAME}-${COMPONENT}
+      spec:
+        containers:
+        - image: " "
+          imagePullPolicy: Always
+          name: ${NAME}-${COMPONENT}
+          env:
+          - name: POSTGRESQL_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRESQL_HOST
+          - name: POSTGRESQL_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRESQL_PORT
+          - name: POSTGRES_ADMIN_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_ADMIN_USERNAME
+          - name: POSTGRES_ADMIN_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_ADMIN_PASSWORD
+          - name: POSTGRES_DB_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_DB_USERNAME
+          - name: POSTGRES_DB_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_DB_PASSWORD
+          - name: POSTGRES_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_DATABASE
+          - name: POSTGRES_DB_SCHEMA
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_DB_SCHEMA
+
+          - name: KEYCLOCK_AUTH_URL
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: KEYCLOCK_AUTH_URL
+          - name: KEYCLOCK_CLIENT_ID
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: KEYCLOCK_CLIENT_ID
+          - name: KEYCLOCK_REALM
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: KEYCLOCK_REALM
+          - name: KEYCLOCK_SECRET
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: KEYCLOCK_SECRET
+
+
+
+
+          ports:
+          - containerPort: ${{CONTAINER_PORT}}
+            protocol: TCP
+          resources:
+            requests:
+              cpu: ${CPU_REQUEST}
+              memory: ${MEMORY_REQUEST}
+            limits:
+              cpu: ${CPU_LIMIT}
+              memory: ${MEMORY_LIMIT}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: ${{CONTAINER_PORT}}
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 30
+            successThreshold: 1
+          livenessProbe:
+            successThreshold: 1
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: ${{CONTAINER_PORT}}
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 5
+        initContainers:
+        # - name: init-${NAME}-backend-users-typeorm-migrations
+        #   image: image-registry.openshift-image-registry.svc:5000/${NAME}-${COMPONENT}:${IMAGE_TAG}
+        #   command: ['sh', '-c', 'initContainer.sh']
+        #  ${NAME}-${COMPONENT}:${IMAGE_TAG}
+        - name: epd-db-migration-sites
+          image: "image-registry.openshift-image-registry.svc:5000/c6a6e5-${ENV}/${NAME}-${COMPONENT}-migration:${IMAGE_TAG}"
+          env:
+          - name: Typeorm-migration-sites
+            value: "jdbc:postgresql://${COMPONENT}-postgres:5432/${COMPONENT}"
+          - name: POSTGRESQL_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRESQL_HOST
+          - name: POSTGRESQL_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRESQL_PORT
+          - name: POSTGRES_ADMIN_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_ADMIN_USERNAME
+          - name: POSTGRES_ADMIN_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_ADMIN_PASSWORD
+          - name: POSTGRES_DB_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_DB_USERNAME
+          - name: POSTGRES_DB_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_DB_PASSWORD
+          - name: POSTGRES_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_DATABASE
+          - name: POSTGRES_DB_SCHEMA
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_DB_SCHEMA
+
+          resources:
+            limits:
+              cpu: 100m
+              memory: 150Mi
+            requests:
+              cpu: 50m
+              memory: 50Mi
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ${NAME}-${COMPONENT}
+    name: ${NAME}-${COMPONENT}
+  spec:
+    ports:
+    - name: ${CONTAINER_PORT}-tcp
+      protocol: TCP
+      port: 80
+      targetPort: ${{CONTAINER_PORT}}
+    selector:
+      deploymentconfig: ${NAME}-${COMPONENT}
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    labels:
+      app: ${NAME}-${COMPONENT}
+    name: ${NAME}-${COMPONENT}
+  spec:
+    host: ${NAME}-${COMPONENT}-${ENV}.${DOMAIN}
+    port:
+      targetPort: ${CONTAINER_PORT}-tcp
+    to:
+      kind: Service
+      name: ${NAME}-${COMPONENT}
+      weight: 100
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+- apiVersion: autoscaling/v2
+  kind: HorizontalPodAutoscaler
+  metadata:
+    name: "${NAME}-${COMPONENT}"
+  spec:
+    scaleTargetRef:
+      apiVersion: apps.openshift.io/v1
+      kind: DeploymentConfig
+      name: "${NAME}-${COMPONENT}"
+    minReplicas: ${{MIN_REPLICAS}}
+    maxReplicas: ${{MAX_REPLICAS}}
+    metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 100
