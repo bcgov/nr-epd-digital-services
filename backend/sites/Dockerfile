@@ -27,6 +27,7 @@ RUN chown -R 1001:0 /app \
 
 # Switch to non-root user
 USER 1001
+#test
 
 # Build the application
 RUN npm run build
