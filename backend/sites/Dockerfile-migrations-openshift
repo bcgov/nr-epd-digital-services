@@ -3,23 +3,22 @@ FROM node:16.14.0-alpine
 # Set npm cache directory
 ENV NPM_CONFIG_CACHE=/home/node/.npm
 
-# Set working directory
+# Install packages, build, and keep only prod packages
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
 
-# Install app dependencies using the `npm ci` command
-RUN npm ci --unsafe-perm
+# Install app dependencies using the `npm ci` command instead of `npm install`
+RUN npm config set unsafe-perm true \
+    && npm ci \
+    && npm config set unsafe-perm false
 
-# Copy the rest of the application code
+# Bundle app source
 COPY . .
 
 # Install postgresql-client
 RUN apk add --no-cache postgresql-client
 
-# Switch to non-root user
-USER node
-#test
 # Define the entrypoint
 ENTRYPOINT [ "sh", "initDB.sh" ]
