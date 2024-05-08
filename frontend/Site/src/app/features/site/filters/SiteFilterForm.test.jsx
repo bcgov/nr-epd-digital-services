@@ -1,5 +1,4 @@
-import React from 'react';
-import { render, fireEvent, waitFor, getByTestId } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import SiteFilterForm from './SiteFilterForm';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
