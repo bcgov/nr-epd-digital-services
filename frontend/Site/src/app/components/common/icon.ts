@@ -21,6 +21,8 @@ import {
     FaCheck,
     FaCaretUp,
     FaCaretDown,
+    FaCalendar,
+    FaXmark,
     FaAngleLeft,
     FaAngleRight 
     } from "react-icons/fa6";
@@ -48,5 +50,7 @@ import {
   export const TickIcon = FaCheck;
   export const DropdownUpIcon = FaCaretUp;
   export const DropdownIcon = FaCaretDown;
+  export const CalendarIcon = FaCalendar;
+  export const XmarkIcon = FaXmark;
   export const AngleLeft = FaAngleLeft;
   export const AngleRight = FaAngleRight;

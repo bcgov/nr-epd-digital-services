@@ -36,6 +36,7 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^9.0.8",
     "redux-persist": "^6.0.0",
+    "rsuite": "^5.59.2",
     "serve": "^14.1.2",
     "web-vitals": "^2.1.4"
   },

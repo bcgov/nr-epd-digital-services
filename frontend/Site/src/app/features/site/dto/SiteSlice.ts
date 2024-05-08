@@ -4,7 +4,7 @@ import { print } from "graphql";
 import { graphQlSiteQuery } from "../graphql/Site";
 import { SiteState } from "./SiteState";
 import { RequestStatus } from "../../../helpers/requests/status";
-import { Site } from "./Site";
+import { SiteResultDto } from "./Site";
 import { GRAPHQL } from "../../../helpers/endpoints";
 import { act } from "react-dom/test-utils";
 
@@ -23,17 +23,19 @@ const initialState: SiteState = {
 
 export const fetchSites = createAsyncThunk(
   "sites/fetchSites",
-  async (searchParam: String, { getState }) => {
+  async (args: {searchParam?: string, page?: string, pageSize?: string, filter?: {}}, {getState}) => {
     try {
+      const { searchParam = "", page = "1", pageSize = "10", filter = {} } = args;
       const state:any = getState();
       const response = await getAxiosInstance().post(
         GRAPHQL,
         {
-          query: print(graphQlSiteQuery()),
+          query: print(graphQlSiteQuery(filter)),
           variables: {
             searchParam: searchParam,
             page: ""+state.sites.currentPage,
-            pageSize: ""+state.sites.pageSize
+            pageSize: ""+state.sites.pageSize,
+            ...filter
           },
         }
       );
@@ -43,9 +45,6 @@ export const fetchSites = createAsyncThunk(
     }
   }
 );
-
-
-
 
 const siteSlice = createSlice({
   name: "sites",
@@ -97,7 +96,7 @@ const siteSlice = createSlice({
     },
     siteAdded: {
       reducer(state, action) {
-        const updatedArr: Site[] = [state.sites, action.payload];
+        const updatedArr: SiteResultDto[] = [state.sites, action.payload];
         state.sites = updatedArr;
       },
       prepare(name: string, email: string): any {
@@ -110,14 +109,13 @@ const siteSlice = createSlice({
         };
       },
     },
-    // updateSearchQuery: (state, action) => {  
-    //   console.log(' action.payload', action.payload)   
-    //   const newState = {
-    //     ...state,
-    //   };      
-    //   newState.searchQuery = action.payload;
-    //   return newState;      
-    // }
+    updateSearchQuery: (state, action) => {  
+      const newState = {
+        ...state,
+      };      
+      newState.searchQuery = action.payload;
+      return newState;      
+    },
     updatePageSizeSetting:(state,action) => {
       console.log("reste")
       const newState = {
@@ -146,8 +144,8 @@ const siteSlice = createSlice({
       .addCase(fetchSites.rejected, (state, action) => {
         const newState = { ...state };
         return newState;
-      })     
-  },
+      }) 
+    },
 });
 
 export const selectAllSites = (state: any) => state.sites.sites;
@@ -157,7 +155,7 @@ export const resultsCount = (state:any) => state.sites.resultsCount;
 
 
 export const {
-    siteAdded , resetSites , setFetchLoadingState , updatePageSizeSetting
+    siteAdded , resetSites , setFetchLoadingState , updatePageSizeSetting, updateSearchQuery
 } = siteSlice.actions;
 
 export default siteSlice.reducer;

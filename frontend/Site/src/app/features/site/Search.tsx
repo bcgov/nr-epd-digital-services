@@ -5,7 +5,9 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   fetchSites,
   resetSites,
-  setFetchLoadingState,  
+  setFetchLoadingState,
+  updateSearchQuery,  
+  
   updatePageSizeSetting,
   resultsCount
 } from "./dto/SiteSlice";
@@ -27,6 +29,7 @@ import Intro from "./Intro";
 import Column from "./columns/Column";
 import TableColumns from "./dto/Columns";
 import { getSiteSearchResultsColumns } from "./dto/Columns";
+import SiteFilterForm from "./filters/SiteFilterForm";
 
 const Search = () => {
   const [searchText, setSearchText] = useState("");
@@ -36,6 +39,8 @@ const Search = () => {
   const totalRecords = useSelector(resultsCount);
   const [noUserAction, setUserAction] = useState(true);
   const [displayColumn, SetDisplayColumns] = useState(false);
+  const [displayFilters, SetDisplayFilters] = useState(false);
+
   const columns = getSiteSearchResultsColumns();
   const [columnsToDisplay, setColumnsToDisplay] = useState<TableColumns[]>([
     ...columns,
@@ -57,15 +62,24 @@ const Search = () => {
 
   useEffect(()=>{
     console.log("currentPageSelection",currentPageInState);
-    dispatch(fetchSites(searchText));
+    dispatch(fetchSites({searchParam: searchText}));
   },[currentPageInState]);
 
-  const hideColumns =() => {
+  useEffect(()=>{
+    console.log("currentPageSelection",currentPageInState);
+    dispatch(fetchSites({searchParam: searchText}));
+  },[currentPageInState]);
+
+  const hideColumns = () => {
     SetDisplayColumns(false);
-  }
+  };
 
   const resetDefaultColums = () => {
     setColumnsToDisplay(columns);
+  };
+
+  const cancelSearchFilter = () => {
+    SetDisplayFilters(false);
   };
 
   useEffect(() => {}, []);
@@ -75,9 +89,9 @@ const Search = () => {
     return sites;
   };
 
-  const dynamicSearchIconStyle = (left:any) => ({
+  const dynamicSearchIconStyle = (left: any) => ({
     position: `absoulte`,
-    left: `${left}px`
+    left: `${left}px`,
   });
 
   const pageChange = (pageRequested:number,resultsCount:number) => {
@@ -110,7 +124,8 @@ const Search = () => {
     setSearchText(event.target.value);
     if (event.target.value.length >= 3) {
       dispatch(setFetchLoadingState(null));
-      dispatch(fetchSites(event.target.value));
+      dispatch(fetchSites({ searchParam: event.target.value }));
+      dispatch(updateSearchQuery(event.target.value))
     } else {
       console.log("reset");
       dispatch(resetSites(null));
@@ -118,8 +133,17 @@ const Search = () => {
     console.log(searchText);
   };
 
-  const customStyle: React.CSSProperties = { left: (document.getElementsByClassName('form-control textSearch')[0])?.getBoundingClientRect().x + 2 +'px' , position: 'absolute' , color: 'grey', margin: '4px' };
-
+  const customStyle: React.CSSProperties = {
+    left:
+      document
+        .getElementsByClassName("form-control textSearch")[0]
+        ?.getBoundingClientRect().x +
+      2 +
+      "px",
+    position: "absolute",
+    color: "grey",
+    margin: "4px",
+  };
 
   return (
     <div className="siteSearchContainer" role="search">
@@ -128,27 +152,34 @@ const Search = () => {
         <div className="">
           <div className="d-flex align-items-center">
             <div className="custom-text-search">
-            
               {!noUserAction ? null : (
-                  <div className="custom-text-search-start">
-              <MagnifyingGlassIcon>
-              </MagnifyingGlassIcon>
-              </div>
-            )}
-             
+                <div className="custom-text-search-start">
+                  <MagnifyingGlassIcon></MagnifyingGlassIcon>
+                </div>
+              )}
+
               <div className={`custom-text-search-middle`}>
-                <input tabIndex={13} aria-label="Search input"  
-                placeholder="Search" onChange={handleTextChange} 
-                value={searchText} type="text" 
-                className={`textSearch custom-text-search-control  ${!noUserAction ? `addBorder` : ``}`}/>
+                <input
+                  tabIndex={13}
+                  aria-label="Search input"
+                  placeholder="Search"
+                  onChange={handleTextChange}
+                  value={searchText}
+                  type="text"
+                  className={`textSearch custom-text-search-control  ${
+                    !noUserAction ? `addBorder` : ``
+                  }`}
+                />
               </div>
               {noUserAction ? null : (
-              <div className="custom-text-search-end">
-                <CircleXMarkIcon onClick={() => {
-                  handleClearSearch();
-                }}/>
-              </div>
-               )}
+                <div className="custom-text-search-end">
+                  <CircleXMarkIcon
+                    onClick={() => {
+                      handleClearSearch();
+                    }}
+                  />
+                </div>
+              )}
             </div>
             {/* {!noUserAction ? null : (
               <MagnifyingGlassIcon className="search-icon " style={customStyle}>
@@ -177,109 +208,129 @@ const Search = () => {
           <Intro></Intro>
         </div>
       ) : (
-        <div className="search-parent" >
-        <div
-          className="row search-container results" aria-label="search-results-section-title"
-        >
-          <div className="search-results-section-header-top">
-            <div>
-              <h2 className="search-results-section-title">Results</h2>
-            </div>
-            <div className="table-actions hide-custom">
-              <div
-                className={`table-actions-items ${
-                  displayColumn ? "active" : ""
-                } `}
-                onClick={() => {
-                  console.log(columns);
-                  SetDisplayColumns(!displayColumn);
-                }}
-              >
-                <TableColumnsIcon />
-                Columns
+        <div className="search-parent">
+          <div
+            className="row search-container results"
+            aria-label="search-results-section-title"
+          >
+            <div className="search-results-section-header-top">
+              <div>
+                <h2 className="search-results-section-title">Results</h2>
               </div>
-              <div className="table-actions-items">
-                <FilterIcon />
-                Filters
-              </div>
-            </div>
-            <button
-              className="display-upto-medium"
-              type="button"
-              onClick={() => {
-                SetShowMobileTableMenu(!showMobileTableMenu);
-              }}
-              aria-label="menu for table columns /filter options"
-              aria-controls="navbarMenu"
-              aria-haspopup="true"
-            >
-              <BarsIcon className="bars-button-table-options" />
-              <div className={`${showMobileTableMenu ? "mobileTableColumnOptions" : "d-none" }`}>
-                <div>
+              <div className="table-actions hide-custom">
                 <div
-                className={`table-actions-items`}
-                onClick={() => {
-                  console.log(columns);
-                  SetDisplayColumns(!displayColumn);
-                }}
-              >
-                <TableColumnsIcon />
-                <span className="table-options-text-color">Columns</span>
-              </div>
-              <div className="table-actions-items">
-                <FilterIcon />
-                <span className="table-options-text-color">Filters</span>                
-              </div>
+                  className={`table-actions-items ${
+                    displayColumn ? "active" : ""
+                  } `}
+                  onClick={() => {
+                    console.log(columns);
+                    SetDisplayColumns(!displayColumn);
+                    SetDisplayFilters(false);
+                  }}
+                >
+                  <TableColumnsIcon />
+                  Columns
                 </div>
+                <div
+                  className={`table-actions-items ${
+                    displayFilters ? "active" : ""
+                  }`}
+                  onClick={() => {
+                    SetDisplayFilters(!displayFilters);
+                    SetDisplayColumns(false);
+                  }}
+                >
+                  <FilterIcon />
+                  Filters
+                </div>
+              </div>
+              <button
+                className="display-upto-medium"
+                type="button"
+                onClick={() => {
+                  SetShowMobileTableMenu(!showMobileTableMenu);
+                }}
+                aria-label="menu for table columns /filter options"
+                aria-controls="navbarMenu"
+                aria-haspopup="true"
+              >
+                <BarsIcon className="bars-button-table-options" />
+                <div
+                  className={`${
+                    showMobileTableMenu ? "mobileTableColumnOptions" : "d-none"
+                  }`}
+                >
+                  <div>
+                    <div
+                      className={`table-actions-items`}
+                      onClick={() => {
+                        console.log(columns);
+                        SetDisplayColumns(!displayColumn);
+                        SetDisplayFilters(false);
+                      }}
+                    >
+                      <TableColumnsIcon />
+                      <span className="table-options-text-color">Columns</span>
+                    </div>
+                    <div
+                      className={`table-actions-items ${
+                        displayFilters ? "active" : ""
+                      }`}
+                      onClick={() => {
+                        SetDisplayFilters(!displayFilters);
+                        SetDisplayColumns(false);
+                      }}
+                    >
+                      <FilterIcon />
+                      <span className="table-options-text-color">Filters</span>
+                    </div>
+                  </div>
+                </div>
+              </button>
             </div>
-            </button>
-           
-           
+            {displayFilters && (
+              <SiteFilterForm cancelSearchFilter={cancelSearchFilter} />
+            )}
+            {displayColumn ? (
+              <div>
+                {" "}
+                <Column
+                  toggleColumnSelectionForDisplay={
+                    toggleColumnSelectionForDisplay
+                  }
+                  columns={columnsToDisplay}
+                  reset={resetDefaultColums}
+                  close={hideColumns}
+                />
+              </div>
+            ) : null}
+            <div className="search-result-actions">
+              <div className="search-result-actions-btn">
+                <ShoppingCartIcon />
+                <span>Add Selected To Cart</span>
+              </div>
+              <div className="search-result-actions-btn">
+                <FolderPlusIcon />
+                <span>Add Selected To Folio</span>
+              </div>
+              <div className="search-result-actions-btn">
+                <FileExportIcon />
+                <span>Export Results As File</span>
+              </div>
+            </div>
           </div>
-         
-          {displayColumn ? (
-            <div>
-              {" "}
-              <Column
-                toggleColumnSelectionForDisplay={
-                  toggleColumnSelectionForDisplay
-                }
-                columns={columnsToDisplay}
-                reset={resetDefaultColums}
-                close={hideColumns}
-              />
-            </div>
-          ) : null}
-          <div className="search-result-actions">
-            <div className="search-result-actions-btn">
-              <ShoppingCartIcon />
-              <span>Add Selected To Cart</span>
-            </div>
-            <div className="search-result-actions-btn">
-              <FolderPlusIcon />
-              <span>Add Selected To Folio</span>
-            </div>
-            <div className="search-result-actions-btn">
-              <FileExportIcon />
-              <span>Export Results As File</span>
-            </div>
-          </div>
-
-         
-        </div>
-        <div>
-           <div className="" aria-label="Search results">
-            <SearchResults
-              pageChange={pageChange}
-              data={search(searchText)}
-              columns={columnsToDisplay.filter((x) => x.isChecked === true)}
-              totalRecords={totalRecords}
+          <div>
+            <div className="" aria-label="Search results">
+              <SearchResults
+                pageChange={pageChange}
+                data={search(searchText)}
+                columns={columnsToDisplay.filter((x) => x.isChecked === true)}
+                totalRecords={totalRecords}
             />
+            </div>
           </div>
-          </div>
-          </div>
+        </div>
       )}
-       
     </div>
   );
 };
