@@ -4,9 +4,10 @@ FROM node:16.14.0-alpine
 # Set npm cache directory
 ENV NPM_CONFIG_CACHE=/home/node/.npm
 
-# NPM Permission Fix
+# Create the npm cache directory and set permissions
 RUN mkdir -p /home/node/.npm \
-    && chown -R 1001:0 /home/node/.npm
+    && chown -R 1001:0 /home/node/.npm \
+    && chmod -R g=u /home/node/.npm
 
 # Install packages, build, and keep only prod packages
 WORKDIR /app
@@ -18,7 +19,7 @@ COPY package*.json ./
 RUN npm ci
 
 # Bundle app source
-COPY . ./
+COPY . .
 
 # Change ownership of files to non-root user
 RUN chown -R 1001:0 /app \
