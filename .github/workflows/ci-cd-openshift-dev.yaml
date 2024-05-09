@@ -22,7 +22,7 @@ jobs:
     uses: ./.github/workflows/_build.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/gateway, backend/legacy, backend/users, frontend]
+        component: [backend/applications, backend/gateway, backend/legacy, backend/users, backend/sites, frontend]
         include:
           - component: backend/applications
             triggers: ('backend/applications/')
@@ -32,6 +32,8 @@ jobs:
             triggers: ('backend/legacy/')
           - component: backend/users
             triggers:  ('backend/users/')
+          - component: backend/sites
+            triggers:  ('backend/sites/')
           - component: frontend
             triggers: ('frontend/')
     secrets:
@@ -48,7 +50,7 @@ jobs:
     uses: ./.github/workflows/_code-cov.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/gateway, backend/users, frontend]
+        component: [backend/applications, backend/gateway, backend/users, backend/sites, frontend]
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
@@ -66,7 +68,7 @@ jobs:
     uses: ./.github/workflows/_deploy.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/gateway, backend/legacy, backend/users, database, frontend]
+        component: [backend/applications, backend/gateway, backend/legacy, backend/users, backend/sites, database, frontend]
         include:
           - component: database
             overwrite: false
@@ -88,6 +90,10 @@ jobs:
             overwrite: true
             template_file: .github/openshift/deploy.backend-users.yml
             template_vars: -p PROMOTE=${{ github.repository }}/backend/users -p CONTAINER_PORT=4005 -p ENV=dev -p IMAGE_TAG=dev  
+          - component: backend/sites
+            overwrite: true
+            template_file: .github/openshift/deploy.backend-sites.yml
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/sites -p CONTAINER_PORT=4007 -p ENV=dev -p IMAGE_TAG=dev 
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
