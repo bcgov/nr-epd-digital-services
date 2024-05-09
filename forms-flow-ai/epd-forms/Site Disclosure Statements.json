@@ -1104,7 +1104,7 @@
                                                 "height": ""
                                             },
                                             "type": "button",
-                                            "custom": "if(data.Signature==='' || data.firstAndLastName==='' || data.datesigned==='' || data.radioGroup==='')\r\n{\r\n    alert('Please complete the signature section before submitting!');\r\n    \r\n    if(!form.checkValidity(null, false, null, true))\r\n    {\r\n      \tconst submissionId = form._submission._id;\r\n\tconst formId = form._submission.form;\r\n\tconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\n\r\n\tconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\r\n\tconst formio = new Formio(formDataReqUrl);\r\n\tformio.saveSubmission(formDataReqObj1).then( result => {\r\n\tform.emit('customEvent', {\r\n          \ttype: \"actionComplete\",   \r\n         \t component: component,\r\n          \tactionType: 'Signed'\r\n    \t\t}); \r\n\t}).catch((error)=>{\r\n\t//Error callback on not Save\r\n\tform.emit('customEvent', {\r\n          \ttype: \"actionError\",   \r\n          \tcomponent: component,\r\n          \tactionType:'Signed'\r\n    \t}); \r\n\t});\r\n    }\r\n    \r\n}\r\nelse\r\n{\r\nconst submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\n\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Signed'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Signed'\r\n    }); \r\n});\r\n}",
+                                            "custom": "if(data.Signature==='' || data.firstAndLastName==='' || data.datesigned==='' || data.radioGroup==='')\r\n{\r\n    alert('Please complete the signature section before submitting!');\r\n}\r\nelse\r\n{\r\nconst submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\n\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Signed'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Signed'\r\n    }); \r\n});\r\n}",
                                             "input": true,
                                             "placeholder": "",
                                             "prefix": "",
@@ -1143,7 +1143,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "e7diehb"
+                                            "id": "eyaylv"
                                         }
                                     ],
                                     "width": 3,
@@ -7393,7 +7393,7 @@
                                                 }
                                             ],
                                             "collapsible": false,
-                                            "id": "e7nge5b000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "e7nge5b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -7867,7 +7867,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eapos76000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eapos7600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -8083,7 +8083,7 @@
                                             "input": true,
                                             "label": "Crown Land File Numbers",
                                             "tableView": true,
-                                            "id": "e7fs5c5000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "e7fs5c500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
