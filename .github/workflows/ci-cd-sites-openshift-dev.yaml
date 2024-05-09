@@ -1,0 +1,83 @@
+name: Continuous Integration And Deployment for SITES Application
+
+on:
+  workflow_dispatch: # TODO this is there for testing purposes, once the pipelines are all done, remove this
+  push:
+    branches:
+      - 'dev'
+      - 'feat/task-228' 
+      - 'srs-338' #test111
+                             
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+      - '.github/workflows/ci-cd-sites-openshift-dev.yaml'
+      
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  builds:
+    name: Builds
+    uses: ./.github/workflows/_build_sites.yml
+    strategy:
+      matrix:
+        component: [ backend/sites ]
+        include:
+          
+          - component: backend/sites
+            triggers:  ('backend/sites/')
+          
+    secrets:
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      component: ${{ matrix.component }}
+      img_build: "dev" # ask the team dev or latest
+      img_fallback: dev
+      triggers: ${{ matrix.triggers }}
+   
+  # TODO - REIMPLMENET BEFORE MERGING, JUST TESTING WITHOUT THESE TO VERIFY DEPLOYS
+  tests:
+    name: Unit Tests
+    uses: ./.github/workflows/_code-cov.yml
+    strategy:
+      matrix:
+        component: [ backend/sites ]
+    secrets:
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      component: ${{ matrix.component }}
+      lcov_file: ${{ matrix.component }}/coverage/lcov.info
+      test_cmd: npm run test:cov
+
+  deploys:
+    name: Deploys
+    needs:
+      - builds
+    # If any of the previous created a build, then deploy
+    # TODO - RE-ENABLE IF COMMAND BELOW, DISABLED DURING EXPERIMENTAL DEV
+    if: contains(needs.*.outputs.build, 'true')
+    uses: ./.github/workflows/_deploy_sites.yml
+    strategy:
+      matrix:
+        component: [ backend/sites ]
+        include:
+           
+          - component: backend/sites
+            overwrite: true
+            template_file: .github/openshift/deploy.backend-sites.yml
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/sites -p CONTAINER_PORT=4007 -p ENV=dev -p IMAGE_TAG=dev 
+          
+    
+    
+    secrets:
+      oc_namespace: ${{ secrets.OC_ETL_NAMESPACE_NAMEPLATE }}
+      oc_server: ${{ secrets.OC_SERVER }}
+      oc_token: ${{ secrets.OC_TOKEN }}
+    with:
+      environment: dev
+      component: ${{ matrix.component }}
+      overwrite: ${{ matrix.overwrite }}
+      template_file: ${{ matrix.template_file }}
+      template_vars: ${{ matrix.template_vars }}
