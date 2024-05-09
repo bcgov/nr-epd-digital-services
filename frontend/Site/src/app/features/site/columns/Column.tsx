@@ -1,11 +1,11 @@
 import React from 'react'
 import { getSiteSearchResultsColumns } from '../dto/Columns'
-import TableColumns from '../dto/Columns';
+import { TableColumn } from '../../../components/table/TableColumn';
 import './Column.css'
 
 interface ColumnProps {
-  toggleColumnSelectionForDisplay: (item: TableColumns) => void;
-  columns: TableColumns[];
+  toggleColumnSelectionForDisplay: (item: TableColumn) => void;
+  columns: TableColumn[];
   reset:() => void;
   close:() => void;
 }
@@ -19,7 +19,7 @@ const Column:React.FC<ColumnProps> = ({toggleColumnSelectionForDisplay,columns,r
        return columns.filter(item=>item.groupId === groupId);
   }
 
-  const columnItem = (item:TableColumns,index:number) => {
+  const columnItem = (item:TableColumn,index:number) => {
     return (
       <div key={index} className="column-item more-gap">
       <input type="checkbox" className='checkbox-color'  aria-label={item.displayName}  aria-checked={item.isChecked ? "true" : "false"}  disabled={item.disabled} checked={item.isChecked} onChange={(e)=>{toggleColumnSelectionForDisplay(item)}} />

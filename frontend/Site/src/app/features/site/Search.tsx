@@ -27,7 +27,7 @@ import {
 } from "../../components/common/icon";
 import Intro from "./Intro";
 import Column from "./columns/Column";
-import TableColumns from "./dto/Columns";
+import { TableColumn } from "../../components/table/TableColumn";
 import { getSiteSearchResultsColumns } from "./dto/Columns";
 import SiteFilterForm from "./filters/SiteFilterForm";
 
@@ -42,12 +42,12 @@ const Search = () => {
   const [displayFilters, SetDisplayFilters] = useState(false);
 
   const columns = getSiteSearchResultsColumns();
-  const [columnsToDisplay, setColumnsToDisplay] = useState<TableColumns[]>([
+  const [columnsToDisplay, setColumnsToDisplay] = useState<TableColumn[]>([
     ...columns,
   ]);
   const [showMobileTableMenu, SetShowMobileTableMenu] = useState(false);
 
-  const toggleColumnSelectionForDisplay = (column: TableColumns) => {
+  const toggleColumnSelectionForDisplay = (column: TableColumn) => {
     const index = columnsToDisplay.findIndex((item) => item.id === column.id);
 
     if (index !== -1 && !columnsToDisplay[index].disabled) {

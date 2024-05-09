@@ -1,20 +1,22 @@
 import React, { ReactNode } from "react";
 import "./Pagination.css";
-import { AngleLeft, AngleRight } from "../../../components/common/icon";
+import { AngleLeft, AngleRight } from "../../common/icon";
 
 interface PaginationProps {
-  selectPage: (pageNumber: number) => void;
-  currentPage: number;
-  resultsPerPage: number;
-  totalResults: number;
-  changeResultsPerPage: (resultsCount: number) => void;
+  selectPage?: (pageNumber: number) => void;
+  currentPage?: number;
+  resultsPerPage?: number;
+  totalResults?: number;
+  changeResultsPerPage?: (resultsCount: number) => void;
 }
+
+
 
 const Pagination: React.FC<PaginationProps> = ({
   selectPage,
-  currentPage,
-  resultsPerPage,
-  totalResults,
+  currentPage = 1,
+  resultsPerPage = 1,
+  totalResults = 1,
   changeResultsPerPage,
 }) => {
   // Define breakpoints
@@ -46,7 +48,7 @@ const Pagination: React.FC<PaginationProps> = ({
     pagesToDisplay = 2;
   }
 
-  const totalPagesRequired = Math.ceil(totalResults / resultsPerPage);
+  const totalPagesRequired = Math.ceil((totalResults ?? 0) / (resultsPerPage ?? 1));
 
   // More Pages Required
   const morePagesToDisplay = totalPagesRequired > pagesToDisplay;
@@ -68,7 +70,7 @@ const Pagination: React.FC<PaginationProps> = ({
   const page = (pageNumber: number) => {
     return (
       <div
-        onClick={() => selectPage(pageNumber)}
+        onClick={() => selectPage?.(pageNumber)}
         className={`pagination-page ${
           currentPage === pageNumber ? "pagination-page-active" : ""
         }`}
@@ -100,7 +102,7 @@ const Pagination: React.FC<PaginationProps> = ({
           <div className="pagination-section">{page(totalPagesRequired)}</div>
           <AngleRight
             className="pagination-page"
-            onClick={() => selectPage(currentPage + 1)}
+            onClick={() => selectPage?.(currentPage + 1)}
           />
         </React.Fragment>
       );
@@ -129,7 +131,7 @@ const Pagination: React.FC<PaginationProps> = ({
         <React.Fragment>
           <AngleLeft
             className="pagination-page"
-            onClick={() => selectPage(currentPage - 1)}
+            onClick={() => selectPage?.(currentPage - 1)}
           />
           <div className="pagination-section">{page(1)}</div>
           {paginationDots}
@@ -199,7 +201,7 @@ const Pagination: React.FC<PaginationProps> = ({
           <select
             className="reslect-options-select"
             onChange={(e) => {
-              changeResultsPerPage(parseInt(e.target.value));
+              changeResultsPerPage?.(parseInt(e.target.value));
             }}
           >
             <option>5</option>
@@ -216,7 +218,7 @@ const Pagination: React.FC<PaginationProps> = ({
             className="reslect-options-select"
             value={currentPage}
             onChange={(e) => {
-              selectPage(parseInt(e.target.value));
+              selectPage?.(parseInt(e.target.value));
             }}
           >
             {pageSelectOptions()}

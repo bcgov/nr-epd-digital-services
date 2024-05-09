@@ -1,0 +1,46 @@
+
+.table-header
+{
+    border: 1px solid;
+    border-color: var(--surface-border-light);
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+.table-header-th
+{
+    font-family: 'BCSans';
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 12px;
+        letter-spacing: 0em;
+        text-align: left;
+        color: var(--typography-color-secondary);
+        border-right: 1px solid #D8D8D8;
+        border-left: 1px solid #D8D8D8;
+       
+        background: var(--surface-brand-gray-20) !important;
+
+}
+
+.checkbox-column
+{
+  min-width: 10px !important;
+  width: 10px !important;
+}
+
+.checkbox-color:hover, .checkbox-color:checked 
+{
+    accent-color: #474543;
+}
+
+.column-sort-icon
+{
+    font-size: 14px;
+    line-height: 21.01px;
+    font-weight: 900;
+    height: 21px;
+    color: var(--icons-icons-disabled);
+    width: 9px;
+    margin-left: 5px;
+}
