@@ -30,6 +30,7 @@ import Column from "./columns/Column";
 import { TableColumn } from "../../components/table/TableColumn";
 import { getSiteSearchResultsColumns } from "./dto/Columns";
 import SiteFilterForm from "./filters/SiteFilterForm";
+import PageContainer from "../../components/simple/PageContainer";
 
 const Search = () => {
   const [searchText, setSearchText] = useState("");
@@ -146,8 +147,8 @@ const Search = () => {
   };
 
   return (
-    <div className="siteSearchContainer" role="search">
-      <div className="row search-container">
+    <PageContainer role="Search" >
+<div className="row search-container">
         <h1 className="search-text-label">Search Site Registry</h1>
         <div className="">
           <div className="d-flex align-items-center">
@@ -331,7 +332,11 @@ const Search = () => {
           </div>
         </div>
       )}
-    </div>
+    </PageContainer>
+    
+    // <div className="siteSearchContainer" role="search">
+      
+    // </div>
   );
 };
 
