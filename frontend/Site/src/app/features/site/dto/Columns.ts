@@ -1,26 +1,8 @@
-export enum ColumnType {
-  Link,
-  Text
-}
-
-export class TableColumns {
-  constructor(
-    public id: number,
-    public displayName: string,
-    public active: boolean,
-    public graphQLPropertyName: string,
-    public groupId: number,
-    public disabled: boolean,
-    public isDefault: boolean,
-    public sortOrder: number,
-    public isChecked: boolean = false,
-    public displayType: ColumnType = ColumnType.Text,    
-  ) {}
-}
+import { TableColumn , ColumnType } from "../../../components/table/TableColumn";
 
 const getSiteSearchResultsColumns = () => {
-  const columns: TableColumns[] = [
-    new TableColumns(
+  const columns: TableColumn[] = [
+    new TableColumn(
       1,
       "Site ID",
       true,
@@ -32,7 +14,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       ColumnType.Link
     ),
-    new TableColumns(
+    new TableColumn(
       6,
       "Site Address",
       true,
@@ -44,7 +26,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       ColumnType.Text
     ),
-    new TableColumns(
+    new TableColumn(
       7,
       "City",
       true,
@@ -56,7 +38,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       ColumnType.Text
     ),
-    new TableColumns(
+    new TableColumn(
       2,
       "Site Remediation Status",
       true,
@@ -68,7 +50,7 @@ const getSiteSearchResultsColumns = () => {
       false,
       ColumnType.Text
     ),
-    new TableColumns(
+    new TableColumn(
       3,
       "Site Risk code",
       true,
@@ -80,7 +62,7 @@ const getSiteSearchResultsColumns = () => {
       false,
       ColumnType.Text
     ),
-    new TableColumns(
+    new TableColumn(
       4,
       "General Description",
       true,
@@ -92,7 +74,7 @@ const getSiteSearchResultsColumns = () => {
       false,
       ColumnType.Text
     ),
-    new TableColumns(
+    new TableColumn(
       5,
       "Common Name",
       true,
@@ -104,7 +86,7 @@ const getSiteSearchResultsColumns = () => {
       false,
       ColumnType.Text
     ),
-    new TableColumns(
+    new TableColumn(
       8,
       "Latitude",
       true,
@@ -116,7 +98,7 @@ const getSiteSearchResultsColumns = () => {
       false,
       ColumnType.Text
     ),
-    new TableColumns(
+    new TableColumn(
       9,
       "Latitude(D,M,S)",
       true,
@@ -128,7 +110,7 @@ const getSiteSearchResultsColumns = () => {
       false,
       ColumnType.Text
     ),
-    new TableColumns(
+    new TableColumn(
       10,
       "Longitude",
       true,
@@ -140,7 +122,7 @@ const getSiteSearchResultsColumns = () => {
       false,
       ColumnType.Text
     ),
-    new TableColumns(
+    new TableColumn(
       11,
       "Longitude(D,M,S)",
       true,
@@ -152,7 +134,7 @@ const getSiteSearchResultsColumns = () => {
       false,
       ColumnType.Text
     ),
-    new TableColumns(
+    new TableColumn(
       12,
       "Lat/Long Reliability",
       true,
@@ -164,7 +146,7 @@ const getSiteSearchResultsColumns = () => {
       false,
       ColumnType.Text
     ),
-    new TableColumns(
+    new TableColumn(
       13,
       "Created By",
       true,
@@ -176,7 +158,7 @@ const getSiteSearchResultsColumns = () => {
       false,
       ColumnType.Text
     ),
-    new TableColumns(
+    new TableColumn(
       14,
       "Date Created",
       true,
@@ -188,7 +170,7 @@ const getSiteSearchResultsColumns = () => {
       false,
       ColumnType.Text
     ),
-    new TableColumns(
+    new TableColumn(
       15,
       "Last Updated",
       true,
@@ -200,7 +182,7 @@ const getSiteSearchResultsColumns = () => {
       false,
       ColumnType.Text
     ),
-    new TableColumns(
+    new TableColumn(
       16,
       "Consultant Submitted",
       true,
@@ -219,4 +201,4 @@ const getSiteSearchResultsColumns = () => {
 
 export { getSiteSearchResultsColumns };
 
-export default TableColumns;
+

@@ -35,8 +35,7 @@ const UserAccount = ( props : any) =>{
                     <img src={user.profileImage} alt="User profile image." className="account-image"  aria-hidden="true"/>
                     {/* User name */}
                     <div className="p-3">{user.name}</div>
-                    <div id="account-dropdown" className="account-custom-toggle-mobile align-item-center" aria-label="Account Menu Button"
-                    >
+                    <div id="account-dropdown" className="account-custom-toggle-mobile align-item-center" aria-label="Account Menu Button">
                      { dropdownArrow ? <DropdownUpIcon/> : <DropdownIcon/> }
                     </div>
                   </div>

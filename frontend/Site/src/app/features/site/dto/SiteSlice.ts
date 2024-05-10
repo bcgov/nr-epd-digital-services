@@ -4,8 +4,9 @@ import { print } from "graphql";
 import { graphQlSiteQuery } from "../graphql/Site";
 import { SiteState } from "./SiteState";
 import { RequestStatus } from "../../../helpers/requests/status";
-import { Site } from "./Site";
+import { SiteResultDto } from "./Site";
 import { GRAPHQL } from "../../../helpers/endpoints";
+import { act } from "react-dom/test-utils";
 
 const initialState: SiteState = {
   sites: [],
@@ -15,19 +16,26 @@ const initialState: SiteState = {
   addedStatus: RequestStatus.idle,
   updateStatus: RequestStatus.idle,
   searchQuery:'',
+  currentPage: 1,
+  pageSize: 10,
+  resultsCount: 0
 };
 
 export const fetchSites = createAsyncThunk(
   "sites/fetchSites",
-  async (searchParam: String, { getState }) => {
+  async (args: {searchParam?: string, page?: string, pageSize?: string, filter?: {}}, {getState}) => {
     try {
+      const { searchParam = "", page = "1", pageSize = "10", filter = {} } = args;
       const state:any = getState();
       const response = await getAxiosInstance().post(
         GRAPHQL,
         {
-          query: print(graphQlSiteQuery(state.sites.searchQuery)),
+          query: print(graphQlSiteQuery(filter)),
           variables: {
             searchParam: searchParam,
+            page: ""+state.sites.currentPage,
+            pageSize: ""+state.sites.pageSize,
+            ...filter
           },
         }
       );
@@ -37,7 +45,6 @@ export const fetchSites = createAsyncThunk(
     }
   }
 );
-
 
 const siteSlice = createSlice({
   name: "sites",
@@ -89,7 +96,7 @@ const siteSlice = createSlice({
     },
     siteAdded: {
       reducer(state, action) {
-        const updatedArr: Site[] = [state.sites, action.payload];
+        const updatedArr: SiteResultDto[] = [state.sites, action.payload];
         state.sites = updatedArr;
       },
       prepare(name: string, email: string): any {
@@ -103,12 +110,20 @@ const siteSlice = createSlice({
       },
     },
     updateSearchQuery: (state, action) => {  
-      console.log(' action.payload', action.payload)   
       const newState = {
         ...state,
       };      
       newState.searchQuery = action.payload;
       return newState;      
+    },
+    updatePageSizeSetting:(state,action) => {
+      console.log("reste")
+      const newState = {
+       ...state
+      };
+       newState.currentPage = action.payload.currentPage;
+       newState.pageSize = action.payload.pageSize;
+       return newState;
     }
   },
   extraReducers(builder) {
@@ -120,24 +135,27 @@ const siteSlice = createSlice({
       })
       .addCase(fetchSites.fulfilled, (state, action) => {
         const newState = { ...state };
-        //console.log('newState',newState,action)
+        console.log('newState',newState,action)
         newState.fetchStatus = RequestStatus.success;
-        newState.sites = action.payload;
+        newState.sites = action.payload.sites;
+        newState.resultsCount = action.payload.count;
         return newState;
       })
       .addCase(fetchSites.rejected, (state, action) => {
         const newState = { ...state };
         return newState;
-      })     
-  },
+      }) 
+    },
 });
 
 export const selectAllSites = (state: any) => state.sites.sites;
 export const loadingState = (state: any) => state.sites.fetchStatus;
+export const currentPageSelection = (state: any) => state.sites.currentPage;
+export const resultsCount = (state:any) => state.sites.resultsCount;
 
 
 export const {
-    siteAdded , resetSites , setFetchLoadingState ,updateSearchQuery
+    siteAdded , resetSites , setFetchLoadingState , updatePageSizeSetting, updateSearchQuery
 } = siteSlice.actions;
 
 export default siteSlice.reducer;

@@ -20,7 +20,7 @@ const Header = () => {
 
   return (
     <header className="navbar">
-      <div className="banner" tabIndex={1}>
+      <div className="banner" tabIndex={1} role="navigation">
         <a href="https://gov.bc.ca">
           <img src={logo} className="logo" alt="BC Government Logo" />
           {/* <img src={logoVertical} className="logo" alt="BC Government Logo" /> */}
@@ -30,9 +30,9 @@ const Header = () => {
       <div className="header-right-corner-section d-flex align-items-center">
         <LanguageSwitcher/>
         <button
-          className="navbar-toggler display-upto-medium"
+          className="navbar-toggler display-upto-medium no-bg-br-outline" 
           type="button"
-          onClick={toggleNavbar}
+          onClick={toggleNavbar} 
           aria-label="menu for mobile/smaller devices"
           aria-expanded={isOpen ? "true" : "false"}
           aria-controls="navbarMenu"
@@ -46,9 +46,8 @@ const Header = () => {
         </div>
         {!isOpen && <UserAccount  mobileView={isOpen}/>}
        
-      </div>
-   
-      <div
+      </div>   
+      <div role="menu"
         className={`small-screen-menu mobile-menu ${
           isOpen ? "show" : "d-none"
         }`}
