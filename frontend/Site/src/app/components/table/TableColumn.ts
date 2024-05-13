@@ -9,11 +9,11 @@ export enum ColumnType {
       public displayName: string,
       public active: boolean,
       public graphQLPropertyName: string,
-      public groupId: number,
-      public disabled: boolean,
-      public isDefault: boolean,
-      public sortOrder: number,
-      public isChecked: boolean = false,
+      public groupId?: number,
+      public disabled?: boolean,
+      public isDefault?: boolean,
+      public sortOrder?: number,
+      public isChecked?: boolean,
       public displayType: ColumnType = ColumnType.Text,    
     ) {}
   }

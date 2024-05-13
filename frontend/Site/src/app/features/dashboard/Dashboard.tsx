@@ -1,72 +1,115 @@
-import React from 'react'
-import { ColumnType, TableColumn } from '../../components/table/TableColumn';
-import Table
- from '../../components/table/Table';
-import { RequestStatus } from '../../helpers/requests/status';
-const Dashboard = () => {
+import { useEffect, useState } from "react";
+import Table from "../../components/table/Table";
+import { RequestStatus } from "../../helpers/requests/status";
+import {
+  recentAssignedColumn,
+  recentFoliosColumns,
+  recentViewedColumns,
+} from "./DashboardConfig";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../Store";
+import { fetchRecentViews } from "./DashboardSlice";
+import { UserType } from "../../helpers/requests/userType";
+import "./Dashboard.css";
+import PageContainer from "../../components/simple/PageContainer";
 
-  const loading = RequestStatus.success;
-
-  const data = [
-    { id: 1, siteId: "001", siteAddress: "123 Main St", city: "New York", generalDescription: "Lorem ipsum", lastUpdated: "2024-05-01", map: "", details: "" },
-    { id: 2, siteId: "002", siteAddress: "456 Oak Ave", city: "Los Angeles", generalDescription: "Dolor sit amet", lastUpdated: "2024-05-02", map: "", details: "" },   
-  ];
-
-  const columns: TableColumn[] = [
-    new TableColumn(
-      1,
-      "Site ID",
-      true,
-      "id",
-      1,
-      true,
-      true,
-      1,
-      true,
-      ColumnType.Link
-    ),
-    new TableColumn(
-      6,
-      "Site Address",
-      true,
-      "addrLine_1,addrLine_2,addrLine_3",
-      2,
-      true,
-      true,
-      1,
-      true,
-      ColumnType.Text
-    ),
-    new TableColumn(
-      7,
-      "City",
-      true,
-      "city",
-      2,
-      false,
-      true,
-      1,
-      true,
-      ColumnType.Text
-    ),
-    new TableColumn(
-      4,
-      "General Description",
-      true,
-      "generalDescription",
-      1,
-      false,
-      true,
-      1,
-      false,
-      ColumnType.Text
-    )]
-  return (
-   <div>
-    <Table label='Recent Views' isLoading={loading} columns={columns} data={data} showPageOptions={false}   />
-   </div>
-  
-  )
+interface DashboardWidgetProps {
+  title?: string;
+  buttonText?: string;
+  columns: any[];
+  loading: RequestStatus;
+  data: any[];
+  onButtonClick?: () => void;
 }
 
-export default Dashboard
+const DashboardTableWidget: React.FC<DashboardWidgetProps> = ({
+  title,
+  buttonText,
+  columns,
+  loading,
+  data,
+  onButtonClick,
+}) => (
+  <div className="d-flex flex-column dashboard-widget-container">
+    <h4 className="dashboard-lbl">{title}</h4>
+    {buttonText && onButtonClick && (
+      <div>
+        <button
+          className="dashboard-btn"
+          type="button"
+          onClick={onButtonClick}
+          aria-label={buttonText}
+        >
+          <span className="btn-lbl">{buttonText}</span>
+        </button>
+      </div>
+    )}
+    <div>
+      <Table
+        label={title ?? ""}
+        isLoading={loading}
+        columns={columns}
+        data={data}
+        showPageOptions={false}
+      />
+    </div>
+  </div>
+);
+
+const Dashboard = () => {
+  const [name, setName] = useState<string>("");
+  const [loading, setLoading] = useState<RequestStatus>(RequestStatus.loading);
+  const [data, setData] = useState<any[]>([]);
+  const [userType, setUserType] = useState<UserType>(UserType.External);
+  const dispatch = useDispatch<AppDispatch>();
+  const sites = useSelector((state: any) => state.dashboard);
+
+  useEffect(() => {
+    dispatch(fetchRecentViews("1"));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (sites.status === RequestStatus.success) {
+      setData(sites.dashboard.recentView.data);
+      setLoading(sites.status);
+      setName("First Name");
+    }
+  }, [sites.status]);
+
+  const handleButtonClick = () => {
+    alert("Button clicked!");
+    // Additional logic can be added here
+  };
+
+  return (
+    <PageContainer role="Dashboard">
+      <h1 className="dashboard-title">Welcome, {name}</h1>
+      <DashboardTableWidget
+        title="Recently Viewed"
+        columns={recentViewedColumns}
+        loading={loading}
+        data={data}
+      />
+      <DashboardTableWidget
+        title={
+          userType === UserType.External
+            ? "Recently Modified Folios"
+            : "Sites from Applications recently assigned to me"
+        }
+        buttonText={
+          userType === UserType.External ? "View All Folios" : "View All"
+        }
+        columns={
+          userType === UserType.External
+            ? recentFoliosColumns
+            : recentAssignedColumn
+        }
+        loading={loading}
+        data={data}
+        onButtonClick={handleButtonClick}
+      />
+    </PageContainer>
+  );
+};
+
+export default Dashboard;
