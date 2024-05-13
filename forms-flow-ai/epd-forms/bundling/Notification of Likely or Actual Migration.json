@@ -1456,7 +1456,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ea2btv0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ea2btv00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "Panel-InformationForAffectedAndLikelyAffectedParcels",
                                     "tree": false,
                                     "type": "panel",
@@ -1502,46 +1502,27 @@
                                     "breadcrumb": "default",
                                     "components": [
                                         {
-                                            "html": "<p>Affected Owner Information</p>",
+                                            "html": "<p>Affected Owner Information (Owners could include lessees, tenants and owners of neighbouring roadways, easements and utility corridors, including municipalities and the provincial government)</p>",
                                             "label": "Text/Images",
-                                            "customClass": "",
                                             "refreshOnChange": false,
-                                            "hidden": false,
-                                            "modalEdit": false,
                                             "key": "simplecontent4",
-                                            "tags": [],
-                                            "properties": {},
-                                            "conditional": {
-                                                "show": null,
-                                                "when": null,
-                                                "eq": "",
-                                                "json": ""
-                                            },
-                                            "customConditional": "",
-                                            "logic": [],
-                                            "attributes": {},
-                                            "overlay": {
-                                                "style": "",
-                                                "page": "",
-                                                "left": "",
-                                                "top": "",
-                                                "width": "",
-                                                "height": ""
-                                            },
                                             "type": "content",
                                             "input": false,
                                             "tableView": false,
                                             "placeholder": "",
                                             "prefix": "",
+                                            "customClass": "",
                                             "suffix": "",
                                             "multiple": false,
                                             "defaultValue": null,
                                             "protected": false,
                                             "unique": false,
                                             "persistent": true,
+                                            "hidden": false,
                                             "clearOnHide": true,
                                             "refreshOn": "",
                                             "redrawOn": "",
+                                            "modalEdit": false,
                                             "dataGridLabel": false,
                                             "labelPosition": "top",
                                             "description": "",
@@ -1556,6 +1537,7 @@
                                             "calculateValue": "",
                                             "calculateServer": false,
                                             "widget": null,
+                                            "attributes": {},
                                             "validateOn": "change",
                                             "validate": {
                                                 "required": false,
@@ -1565,13 +1547,26 @@
                                                 "multiple": false,
                                                 "unique": false
                                             },
+                                            "conditional": {
+                                                "show": null,
+                                                "when": null,
+                                                "eq": ""
+                                            },
+                                            "overlay": {
+                                                "style": "",
+                                                "left": "",
+                                                "top": "",
+                                                "width": "",
+                                                "height": ""
+                                            },
                                             "allowCalculateOverride": false,
                                             "encrypted": false,
                                             "showCharCount": false,
                                             "showWordCount": false,
+                                            "properties": {},
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "e795nf2p"
+                                            "id": "exlv3ya"
                                         },
                                         {
                                             "id": "el2vewr",
@@ -9374,7 +9369,7 @@
                                     "addons": [],
                                     "tree": false,
                                     "lazyLoad": false,
-                                    "id": "emrk44b000000000000000000000000000000000000000000000000000000000000"
+                                    "id": "emrk44b0000000000000000000000000000000000000000000000000000000000000000"
                                 }
                             ],
                             "errorLabel": "",
