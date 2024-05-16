@@ -5294,7 +5294,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ele95t0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ele95t000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "spropertyOwnerAndOrOperator",
                                     "tree": false,
                                     "type": "panel",
@@ -13524,16 +13524,20 @@
                     "breadcrumb": "default",
                     "components": [
                         {
-                            "id": "ethg5nf",
-                            "key": "siteRiskClassification",
-                            "type": "radio",
-                            "input": true,
                             "label": "Site Risk Classification",
-                            "hidden": false,
+                            "labelPosition": "top",
+                            "optionsLabelPosition": "right",
+                            "description": "",
+                            "tooltip": "",
+                            "customClass": "",
+                            "tabindex": "",
                             "inline": false,
-                            "prefix": "",
-                            "suffix": "",
-                            "unique": false,
+                            "hidden": false,
+                            "hideLabel": false,
+                            "autofocus": false,
+                            "disabled": false,
+                            "tableView": false,
+                            "modalEdit": false,
                             "values": [
                                 {
                                     "label": "High Risk",
@@ -13556,67 +13560,93 @@
                                     "shortcut": ""
                                 }
                             ],
-                            "widget": null,
+                            "dataType": "",
+                            "persistent": true,
+                            "protected": false,
                             "dbIndex": false,
+                            "encrypted": false,
+                            "redrawOn": "",
+                            "clearOnHide": true,
+                            "customDefaultValue": "",
+                            "calculateValue": "",
+                            "calculateServer": false,
+                            "allowCalculateOverride": false,
+                            "validate": {
+                                "required": true,
+                                "onlyAvailableItems": false,
+                                "customMessage": "",
+                                "custom": "",
+                                "customPrivate": false,
+                                "json": "",
+                                "strictDateValidation": false,
+                                "multiple": false,
+                                "unique": false
+                            },
+                            "errorLabel": "",
+                            "errors": "",
+                            "key": "siteRiskClassification",
+                            "tags": [],
+                            "properties": {},
+                            "conditional": {
+                                "show": null,
+                                "when": null,
+                                "eq": "",
+                                "json": ""
+                            },
+                            "customConditional": "",
+                            "logic": [
+                                {
+                                    "name": "Disable Risk Classification",
+                                    "trigger": {
+                                        "type": "simple",
+                                        "simple": {
+                                            "show": true,
+                                            "when": "applicationStatus",
+                                            "eq": "Resubmit"
+                                        }
+                                    },
+                                    "actions": [
+                                        {
+                                            "name": "Disabled",
+                                            "type": "property",
+                                            "property": {
+                                                "label": "Disabled",
+                                                "value": "disabled",
+                                                "type": "boolean"
+                                            },
+                                            "state": true
+                                        }
+                                    ]
+                                }
+                            ],
+                            "attributes": {},
                             "overlay": {
-                                "top": "",
-                                "left": "",
                                 "style": "",
+                                "page": "",
+                                "left": "",
+                                "top": "",
                                 "width": "",
                                 "height": ""
                             },
-                            "tooltip": "",
-                            "disabled": false,
-                            "fieldSet": false,
-                            "multiple": false,
-                            "redrawOn": "",
-                            "tabindex": "",
-                            "validate": {
-                                "custom": "",
-                                "unique": false,
-                                "multiple": false,
-                                "required": true,
-                                "customMessage": "",
-                                "customPrivate": false,
-                                "onlyAvailableItems": false,
-                                "strictDateValidation": false
-                            },
-                            "autofocus": false,
-                            "encrypted": false,
-                            "hideLabel": false,
-                            "inputType": "radio",
-                            "modalEdit": false,
-                            "protected": false,
-                            "refreshOn": "",
-                            "tableView": false,
-                            "attributes": {},
-                            "errorLabel": "",
-                            "persistent": true,
-                            "properties": {},
-                            "validateOn": "change",
-                            "clearOnHide": true,
-                            "conditional": {
-                                "eq": "",
-                                "json": "",
-                                "show": null,
-                                "when": null
-                            },
-                            "customClass": "",
-                            "description": "",
+                            "type": "radio",
+                            "input": true,
                             "placeholder": "",
-                            "defaultValue": "",
+                            "prefix": "",
+                            "suffix": "",
+                            "multiple": false,
+                            "unique": false,
+                            "refreshOn": "",
                             "dataGridLabel": false,
-                            "labelPosition": "top",
+                            "widget": null,
+                            "validateOn": "change",
                             "showCharCount": false,
                             "showWordCount": false,
-                            "calculateValue": "",
-                            "calculateServer": false,
-                            "customConditional": "",
                             "allowMultipleMasks": false,
-                            "customDefaultValue": "",
-                            "optionsLabelPosition": "right",
-                            "allowCalculateOverride": false,
-                            "addons": []
+                            "addons": [],
+                            "inputType": "radio",
+                            "fieldSet": false,
+                            "id": "erkkev6o",
+                            "defaultValue": ""
                         }
                     ],
                     "errorLabel": "",
@@ -14737,7 +14767,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eks0gu000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eks0gu00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "exposurePathwayQuestionnaireAffectedParcel",
                                     "tree": false,
                                     "type": "panel",
@@ -18680,7 +18710,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eo5mwyp0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eo5mwyp000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
