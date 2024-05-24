@@ -1,5 +1,4 @@
 import gql from 'graphql-tag'
-import { stringify } from 'querystring';
 
 export const graphQlSiteQuery = (filter: {}) => { 
   const filterConditions = filter && Object.keys(filter);
@@ -44,7 +43,8 @@ query searchSites($searchParam: String!,  $page: String!, $pageSize: String!, ${
         consultantSubmitted
        }
        count
-     
+       page
+       pageSize
     }
   }
 `);

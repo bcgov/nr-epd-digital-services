@@ -118,6 +118,7 @@ const Search = () => {
     setSearchText("");
     setUserAction(true);
     dispatch(resetSites(null));
+    dispatch(updateSearchQuery(""))
   };
 
   const handleTextChange = (event: any) => {
