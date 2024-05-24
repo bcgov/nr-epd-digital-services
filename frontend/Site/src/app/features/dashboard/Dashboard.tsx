@@ -63,7 +63,7 @@ const Dashboard = () => {
     )]
   return (
    <div>
-    <Table label='Recent Views' isLoading={loading} columns={columns} data={data} showPageOptions={false}   />
+    <Table label='Recent Views' isLoading={loading} columns={columns} data={data} showPageOptions={false} idColumnGQLPropName="id" allowRowsSelect={false}  />
    </div>
   
   )

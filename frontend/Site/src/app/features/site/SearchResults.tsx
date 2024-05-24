@@ -54,6 +54,8 @@ const SearchResults: FC<ColumnProps> = ({
       changeResultsPerPage={changeResultsPerPage}
       currentPage={currentPage}
       resultsPerPage={resultsPerPage}
+      idColumnGQLPropName="id"
+      allowRowsSelect={true}
     ></Table>
   );
 };

@@ -1,7 +1,18 @@
 export enum ColumnType {
     Link,
-    Text
+    Text,
+    TextBox,
+    DropDown,
+    Checkbox,
+    Calender
   }
+
+export enum ColumnSize{
+  Default,
+  Double,
+  Triple
+}
+
   
   export class TableColumn {
     constructor(
@@ -14,7 +25,12 @@ export enum ColumnType {
       public isDefault: boolean,
       public sortOrder: number,
       public isChecked: boolean = false,
-      public displayType: ColumnType = ColumnType.Text,    
+      public displayType: ColumnType = ColumnType.Text,   
+      public linkRedirectionURL: string = '',
+      public dynamicColumn: boolean = false,
+      public columnSize: ColumnSize = ColumnSize.Default,
+      
+    
     ) {}
   }
   
