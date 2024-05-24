@@ -18,6 +18,8 @@ interface TableProps {
   currentPage?: number;
   resultsPerPage?: number;
   showPageOptions? : boolean;
+  idColumnGQLPropName: string;
+  allowRowsSelect : boolean;
 }
 
 const Table: FC<TableProps> = ({
@@ -30,7 +32,9 @@ const Table: FC<TableProps> = ({
   changeResultsPerPage,
   currentPage,
   resultsPerPage,
-  showPageOptions
+  showPageOptions,
+  idColumnGQLPropName,
+  allowRowsSelect
 }) => {
   
 
@@ -39,9 +43,9 @@ const Table: FC<TableProps> = ({
       <div className="tableWidth table-border-radius">
         <table className="table" aria-label={label}>
           <thead aria-label={`${label} Header`}>
-            <TableHeader columns={columns} />
+            <TableHeader columns={columns} allowRowsSelect={allowRowsSelect} />
           </thead>
-            <TableBody isLoading={isLoading} columns={columns} data={data} />
+            <TableBody isLoading={isLoading} columns={columns} data={data} idColumnGQLPropName={idColumnGQLPropName} allowRowsSelect={allowRowsSelect} />
         </table>
       </div>
       <div>

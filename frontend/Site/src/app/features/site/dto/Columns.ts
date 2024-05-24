@@ -1,7 +1,8 @@
-import { TableColumn , ColumnType } from "../../../components/table/TableColumn";
+import { TableColumn , ColumnType, ColumnSize } from "../../../components/table/TableColumn";
 
 const getSiteSearchResultsColumns = () => {
   const columns: TableColumn[] = [
+    
     new TableColumn(
       1,
       "Site ID",
@@ -12,7 +13,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       true,
-      ColumnType.Link
+      ColumnType.Text
     ),
     new TableColumn(
       6,
@@ -24,7 +25,13 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       true,
-      ColumnType.Text
+      ColumnType.Text,
+      "site/details/",
+      false,
+      ColumnSize.Triple
+      ,
+      
+      
     ),
     new TableColumn(
       7,
@@ -193,6 +200,34 @@ const getSiteSearchResultsColumns = () => {
       1,
       false,
       ColumnType.Text
+    ),
+    new TableColumn(
+      17,
+      "View",
+      true,
+      "id",
+      4,
+      true,
+      true,
+      1,
+      true,
+      ColumnType.Link,
+      "site/map/",
+      true
+    ),
+    new TableColumn(
+      18,
+      "Details",
+      true,
+      "id",
+      4,
+      true,
+      true,
+      1,
+      true,
+      ColumnType.Link,
+      "site/details/",
+      true
     ),
   ];
 

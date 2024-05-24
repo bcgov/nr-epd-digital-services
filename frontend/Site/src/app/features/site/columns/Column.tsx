@@ -16,7 +16,7 @@ const Column:React.FC<ColumnProps> = ({toggleColumnSelectionForDisplay,columns,r
 
   const filterColumnsByGroup = (groupId:number) =>
   {
-       return columns.filter(item=>item.groupId === groupId);
+       return columns.filter(item=>item.groupId === groupId && item.dynamicColumn === false);
   }
 
   const columnItem = (item:TableColumn,index:number) => {
@@ -56,7 +56,6 @@ const Column:React.FC<ColumnProps> = ({toggleColumnSelectionForDisplay,columns,r
           <div className='col-12'>
               <input type='button' value={'Reset Columns'} className='reset-btn' onClick={()=>{ reset()}} ></input>
               <input type='button' value="Close" className='close-btn' onClick={()=>{ close() }} ></input> 
-
           </div>
 
         </div>

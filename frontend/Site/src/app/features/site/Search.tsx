@@ -327,7 +327,7 @@ const Search = () => {
                 pageChange={pageChange}
                 data={search(searchText)}
                 columns={columnsToDisplay.filter((x) => x.isChecked === true)}
-                totalRecords={totalRecords}
+                totalRecords={totalRecords}                
             />
             </div>
           </div>

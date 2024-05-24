@@ -1,23 +1,24 @@
 import React, { FC } from 'react';
-import { TableColumn } from '../TableColumn';
+import { ColumnSize, TableColumn } from '../TableColumn';
 import { SortIcon } from '../../common/icon';
 import './TableHeader.css'
 
 interface TableHeaderProps
 {
-    columns: TableColumn[]
+    columns: TableColumn[];
+    allowRowsSelect: boolean
 }
 
-const TableHeader:FC<TableHeaderProps> = ({columns}) => {
+const TableHeader:FC<TableHeaderProps> = ({columns,allowRowsSelect}) => {
     if (!columns || columns.length === 0) {
         return null;
       }
   
       return (
         <tr className="table-header">
-          <th scope="col" className="table-header-th checkbox-column">
+         {allowRowsSelect && <th scope="col" className="table-header-th checkbox-column">
             <input type="checkbox" className="checkbox-color" />
-          </th>
+          </th>}
           {columns &&
             columns.map((item, index) => (
               <th
@@ -28,20 +29,20 @@ const TableHeader:FC<TableHeaderProps> = ({columns}) => {
                   item.displayName === "Last Updated Date"
                     ? "hide-custom"
                     : ""
-                }`}
+                } ${item.columnSize === ColumnSize.Triple ? "triple": ""} `}
               >
                 {item.displayName}
                 <SortIcon className="column-sort-icon" />
               </th>
             ))}
-          <th scope="col" className={`table-header-th`}>
+          {/* <th scope="col" className={`table-header-th`}>
             View Map
             <SortIcon className="column-sort-icon" />
           </th>
           <th scope="col" className={`table-header-th`}>
             Details
             <SortIcon className="column-sort-icon" />
-          </th>
+          </th> */}
         </tr>
       );
 }

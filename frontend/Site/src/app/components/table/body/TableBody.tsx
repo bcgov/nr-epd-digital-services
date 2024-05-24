@@ -7,10 +7,12 @@ interface TableBodyProps {
    
     isLoading: RequestStatus;
     columns: TableColumn[];
-    data: any;   
+    data: any;
+    idColumnGQLPropName: string;
+    allowRowsSelect: boolean;
   }
 
-const TableBody: FC<TableBodyProps> = ({isLoading,columns,data}) => {
+const TableBody: FC<TableBodyProps> = ({isLoading,columns,data,idColumnGQLPropName,allowRowsSelect}) => {
 
     const renderNoResultsFound = () => {
         return (
@@ -33,17 +35,48 @@ const TableBody: FC<TableBodyProps> = ({isLoading,columns,data}) => {
         type: ColumnType,
         displayName: string,
         value: string,
-        rowKey: number
+        rowKey: number,
+        href: string
       ) => {
-        if (type === ColumnType.Link) {
+        if(type === ColumnType.Checkbox )
+          {
+           return ( <td className="table-border-light content-text">
+            <input
+              type="checkbox"
+              className="checkbox-color"
+              aria-label="Select Row"
+            />
+          </td>);
+          }
+        else if (type === ColumnType.Link) {
           return (
             <td key={rowKey} className="table-border-light content-text">
-              <a href="/site/details" aria-label={`${displayName + " " + value}`}>
+              <a href={href+value} aria-label={`${displayName + " " + value}`}>
                 {value}
               </a>
             </td>
           );
-        } else {
+        } 
+        else if (type === ColumnType.TextBox) {
+          return (
+            <td key={rowKey} className="table-border-light content-text">
+              <input type="text" value={value}/>
+              {/* <a href="/site/details" aria-label={`${displayName + " " + value}`}>
+                {value}
+              </a> */}
+            </td>
+          );
+        }       
+        else if (type === ColumnType.DropDown) {
+          return (
+            <td key={rowKey} className="table-border-light content-text">
+              <select>
+                <option>{value}</option>
+              </select>            
+            </td>
+          );
+        }    
+        else {
           return (
             <td
               key={rowKey}
@@ -80,7 +113,8 @@ const TableBody: FC<TableBodyProps> = ({isLoading,columns,data}) => {
           column.displayType,
           column.displayName,
           cellValue,
-          columnIndex + rowIndex
+          columnIndex + rowIndex,
+          column.linkRedirectionURL
         );
       };
     
@@ -88,23 +122,23 @@ const TableBody: FC<TableBodyProps> = ({isLoading,columns,data}) => {
         return (
           <React.Fragment key={rowIndex}>
             <tr>
-              <td className="table-border-light content-text">
-                <input
-                  type="checkbox"
-                  className="checkbox-color"
-                  aria-label="Select Row"
-                />
-              </td>
+            {allowRowsSelect && <td className="table-border-light content-text">
+            <input
+              type="checkbox"
+              className="checkbox-color"
+              aria-label="Select Row"
+            />
+          </td>}
               {columns &&
                 columns.map((column, columnIndex) => {
                   return renderTableCell(column, rowIndex, columnIndex);
                 })}
-              <td className="table-border-light content-text">
-                <a href="/map">View</a>
+              {/* <td className="table-border-light content-text">               
+                <a href={"/map?id=" + getValue(rowIndex, idColumnGQLPropName)}>View</a>
               </td>
               <td className="table-border-light content-text">
-                <a href="/site/details">Details</a>
-              </td>
+              <a href={"/details?id=" + getValue(rowIndex, idColumnGQLPropName)}>Details</a>
+              </td> */}
             </tr>
           </React.Fragment>
         );

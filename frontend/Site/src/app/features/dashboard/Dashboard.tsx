@@ -82,6 +82,7 @@ const Dashboard = () => {
   };
 
   return (
+
     <PageContainer role="Dashboard">
       <h1 className="dashboard-title">Welcome, {name}</h1>
       <DashboardTableWidget
@@ -111,5 +112,10 @@ const Dashboard = () => {
     </PageContainer>
   );
 };
+
+  
+  )
+}
+
 
 export default Dashboard;
