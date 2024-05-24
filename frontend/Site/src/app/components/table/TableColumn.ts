@@ -24,11 +24,11 @@ export enum ColumnSize{
       public disabled?: boolean,
       public isDefault?: boolean,
       public sortOrder?: number,
-      public isChecked?: boolean = false,
-      public displayType: ColumnType = ColumnType.Text,   
-      public linkRedirectionURL: string = '',
-      public dynamicColumn: boolean = false,
-      public columnSize: ColumnSize = ColumnSize.Default,
+      public isChecked?: boolean,
+      public displayType?: ColumnType,   
+      public linkRedirectionURL?: string,
+      public dynamicColumn?: boolean,
+      public columnSize?: ColumnSize,
     ) {}
   }
   

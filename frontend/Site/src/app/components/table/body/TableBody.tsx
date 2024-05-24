@@ -110,11 +110,11 @@ const TableBody: FC<TableBodyProps> = ({isLoading,columns,data,idColumnGQLPropNa
           .join(" ");
     
         return getTableCellHtml(
-          column.displayType,
+          column.displayType ?? ColumnType.Text,
           column.displayName,
           cellValue,
           columnIndex + rowIndex,
-          column.linkRedirectionURL
+          column.linkRedirectionURL ?? ''
         );
       };
     
