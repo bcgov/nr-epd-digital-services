@@ -36,6 +36,7 @@ const Search = () => {
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch<AppDispatch>();
   const sites = useSelector(selectAllSites);
+  const currSearchVal = useSelector((state:any) => state.sites);
   const currentPageInState  = useSelector(currentPageSelection);
   const totalRecords = useSelector(resultsCount);
   const [noUserAction, setUserAction] = useState(true);
@@ -62,13 +63,7 @@ const Search = () => {
   };
 
   useEffect(()=>{
-    console.log("currentPageSelection",currentPageInState);
-    dispatch(fetchSites({searchParam: searchText}));
-  },[currentPageInState]);
-
-  useEffect(()=>{
-    console.log("currentPageSelection",currentPageInState);
-    dispatch(fetchSites({searchParam: searchText}));
+    dispatch(fetchSites({searchParam: currSearchVal.searchQuery ?? searchText}));
   },[currentPageInState]);
 
   const hideColumns = () => {
@@ -104,9 +99,13 @@ const Search = () => {
   }
 
   useEffect(() => {
-    console.log(sites);
-    //if(sites)
-  }, [sites]);
+    if(currSearchVal.searchQuery)
+    {
+        setUserAction(false);
+        setSearchText(currSearchVal.searchQuery);
+        dispatch(fetchSites({searchParam: currSearchVal.searchQuery}));
+    }
+  }, []);
 
 
 
