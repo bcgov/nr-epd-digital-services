@@ -1,50 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans');
-.custom-label {
-    color: var(--typography-color-primary); 
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 16px;
-    text-align: left;
-    }
-
-.custom-input {
-    border: 1px solid var(--surface-color-border-light, #D8D8D8) !important;
-    background-color: var(--surface-background-white) !important;
-    padding: var(--layout-padding-small) var(--layout-padding-medium) var(--layout-padding-small) var(--layout-padding-medium) !important;
-    border-radius: var(--layout-margin-xsmall) !important;
-}
-
-.custom-input::placeholder {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-    text-align: left;
-    color: var(--typography-color-disabled);
-}
-
-.custom-date-range .rs-input-group {
-    border: 1px solid var(--surface-color-border-light, #D8D8D8) !important;
-    background-color: var(--surface-background-white) !important;
-    padding: 3px 0px 3px var(--layout-padding-medium); 
-    border-radius: var(--layout-margin-xsmall) !important;
-}
-
-.custom-date-range .rs-input{
-    padding: 0;
-}
-.custom-date-range.rs-picker-toggle-wrapper{
-    display: block;
-}
-
-.rs-input::placeholder  {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-    text-align: left;
-    color: var(--typography-color-disabled);
-}
-
-
 
 .reset-button {
     border-radius: var(--surface-border-radius-medium);
@@ -72,29 +26,6 @@
 }
 
 
-.custom-select {
-    background-image: url('../../../images/dropdown.png') !important;
-    background-size: 12px !important;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-    text-align: left;
-}
-
-.custom-disabled-option {
-    color: var(--typography-color-disabled) !important;
-}
-.custom-primary-option {
-    color: var(--typography-color-primary) !important;
-}
-
-.custom-option {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-    text-align: left;
-    /* color: var(--typography-color-primary) !important;  */
-}
 
 .selected-filter {
     gap:var(--layout-margin-xsmall);
@@ -125,7 +56,3 @@
     color: var(--typography-color-primary-invert);
 }
 
-.custom-input.error:focus {
-    border-color: red;
-    box-shadow: 0 0 0 .25rem rgba(255,0,0, 0.25);
-}
