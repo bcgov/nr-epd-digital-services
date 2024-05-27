@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import { format } from 'date-fns';
 import { formRows} from '../dto/SiteFilterConfig';
 import './SiteFilterForm.css';
 import {XmarkIcon } from "../../../components/common/icon";
@@ -9,6 +8,7 @@ import { AppDispatch } from "../../../Store";
 import { fetchSites } from "../dto/SiteSlice";
 import Form from "../../../components/form/Form";
 import { FormFieldType, IFormField } from "../../../components/form/IForm";
+import { formatDateRange } from "../../../helpers/dateFormat";
 
 interface childProps {
     cancelSearchFilter : () => void
@@ -19,13 +19,6 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
     const sites = useSelector((state:any) => state.sites);
     const [formData, setFormData] =  useState<{ [key: string]: any | [Date, Date] }>({});
     const [selectedFilters, setSelectedFilters] = useState<{ key: any; value: any, label: string  }[]>([]);
-    
-    const formatDateRange = (range: [Date, Date]) => {
-        const [startDate, endDate] = range;
-        const formattedStartDate = format(startDate, 'dd-MMM-yy');
-        const formattedEndDate = format(endDate, 'dd-MMM-yy');
-        return `${formattedStartDate} - ${formattedEndDate}`;
-    };
     
     const handleInputChange = (graphQLPropertyName: any, value: String | [Date, Date]) => {
         setFormData((prevData) => ({
@@ -61,9 +54,7 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
         const flattedArr = flattenFormRows(formRows)
         // Filter out form data with non-empty values and construct filteredFormData and filters
         for (const [key, value] of Object.entries(formData)) {
-            debugger;
             let currLabel = flattedArr && flattedArr.find(row => row.graphQLPropertyName === key);
-            console.log('kkkll ---> ', currLabel);
             if(key === 'whenCreated' || key === 'whenUpdated' )
             {
                 let dateRangeValue = formatDateRange(value);
@@ -79,7 +70,6 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
         // show and format pill.
         if(filters.length !== 0)
         {
-            console.log('filters ---> ',filters);
             dispatch(fetchSites({searchParam: sites.searchQuery, filter: filteredFormData}));
             setSelectedFilters(filters);
 
