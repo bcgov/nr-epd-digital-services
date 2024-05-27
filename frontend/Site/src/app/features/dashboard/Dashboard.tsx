@@ -51,6 +51,8 @@ const DashboardTableWidget: React.FC<DashboardWidgetProps> = ({
         columns={columns}
         data={data}
         showPageOptions={false}
+        idColumnGQLPropName=""
+        allowRowsSelect={true}
       />
     </div>
   </div>

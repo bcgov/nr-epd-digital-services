@@ -3,6 +3,7 @@ import SectionHeader from "../../components/simple/SectionHeader";
 import PageContainer from "../../components/simple/PageContainer";
 import "./SiteDetails.css";
 import LabelComponent from "./LabelComponent";
+import { ChevronDown } from "../../components/common/icon";
 
 const SiteDetails = () => {
   return (
@@ -19,6 +20,20 @@ const SiteDetails = () => {
             headingtype="page"
           ></SectionHeader>
         </div>
+      </div>
+      <div className="section-container">
+        <div className="section-container-label">
+          <span>
+          Location Details
+          </span>
+          <span className="view-map">
+            View on Map
+          </span>
+        </div>
+        <div>
+          <ChevronDown/>
+        </div>
+       
       </div>
       <div className="row">
         <div className="col-6">Map</div>

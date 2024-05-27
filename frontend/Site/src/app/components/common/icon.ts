@@ -24,7 +24,8 @@ import {
     FaCalendar,
     FaXmark,
     FaAngleLeft,
-    FaAngleRight 
+    FaAngleRight,
+    FaChevronDown
     } from "react-icons/fa6";
 
  
@@ -54,3 +55,4 @@ import {
   export const XmarkIcon = FaXmark;
   export const AngleLeft = FaAngleLeft;
   export const AngleRight = FaAngleRight;
+  export const ChevronDown = FaChevronDown;
