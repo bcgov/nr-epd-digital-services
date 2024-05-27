@@ -1,4 +1,3 @@
-import { RequestStatus } from "../../../helpers/requests/status";
 
 interface IDashboard {
     recentView: []

@@ -1,26 +1,10 @@
-export interface IFormField {
-    type: 'text' | 'dropdown' | 'date' | 'group';
-    label: string;
-    placeholder?: string;
-    graphQLPropertyName?: string,
-    allowNumbersOnly?: boolean; 
-    options?: {key :string, value: string}[];
-    value: any;
-    children?: IFormField[];
-    validation?: {
-        required?: boolean;
-        minLength?: number;
-        maxLength?: number;
-        pattern?: RegExp;
-        customMessage?: string;
-    };
-}
+import { FormFieldType, IFormField } from "../../../components/form/IForm";
 
 
 export const formRows: IFormField[][] = [
     [
         {
-            type: 'text',
+            type: FormFieldType.Text,
             label: 'Site ID',
             placeholder: 'Separate IDs by a comma (",")',
             graphQLPropertyName: 'id',
@@ -32,7 +16,7 @@ export const formRows: IFormField[][] = [
             allowNumbersOnly: true,
         },
         {
-            type: 'dropdown',
+            type: FormFieldType.DropDown,
             label: 'Site Remediation Status',
             placeholder: 'Select Code',
             graphQLPropertyName: 'srStatus',
@@ -43,7 +27,7 @@ export const formRows: IFormField[][] = [
             value: '',
         },
         {
-            type: 'text',
+            type: FormFieldType.Text,
             label: 'Common Name',
             placeholder: 'Type keywords',
             graphQLPropertyName:'commonName',
@@ -51,7 +35,7 @@ export const formRows: IFormField[][] = [
             
         },
         {
-            type: 'dropdown',
+            type: FormFieldType.DropDown,
             label: 'Site Risk Code',
             placeholder: 'Select Code',
             graphQLPropertyName:'siteRiskCode',
@@ -63,14 +47,14 @@ export const formRows: IFormField[][] = [
             value: '',
         },
         {
-            type: 'text',
+            type: FormFieldType.Text,
             label: 'Site Address',
             placeholder: 'Type keywords',
             graphQLPropertyName:'addrLine_1',
             value: '',
         },
         {
-            type: 'dropdown',
+            type: FormFieldType.DropDown,
             label: 'City',
             placeholder: 'Select City',
             graphQLPropertyName:'city',
@@ -82,7 +66,7 @@ export const formRows: IFormField[][] = [
             value: '',
         },
         {
-            type: 'dropdown',
+            type: FormFieldType.DropDown,
             label: 'Created By',
             placeholder: 'Select Staff',
             graphQLPropertyName:'whoCreated',
@@ -94,7 +78,7 @@ export const formRows: IFormField[][] = [
             value: '',
         },
         {
-            type: 'dropdown',
+            type: FormFieldType.DropDown,
             label: 'Lat/Long Reliability',
             placeholder: 'Select Reliability',
             graphQLPropertyName:'latlongReliabilityFlag',
@@ -105,7 +89,7 @@ export const formRows: IFormField[][] = [
             value: '',
         },
         {
-            type: 'text',
+            type: FormFieldType.Text,
             label: 'Latitude (Decimal)',
             placeholder: 'Type latitude as decimal',
             graphQLPropertyName:'latdeg',
@@ -117,13 +101,12 @@ export const formRows: IFormField[][] = [
             allowNumbersOnly: true,
         },
         {
-            type: 'group',
+            type: FormFieldType.Group,
             label: 'Latitude (D, M, S)',
             value: '',
-            // graphQLPropertyName:'latitude',
             children: [
                 {
-                    type: 'text',
+                    type: FormFieldType.Text,
                     label: 'Deg',
                     placeholder: 'Deg',
                     graphQLPropertyName:'latDegrees',
@@ -135,7 +118,7 @@ export const formRows: IFormField[][] = [
                     allowNumbersOnly : true,
                 },
                 {
-                    type: 'text',
+                    type: FormFieldType.Text,
                     label: 'Min',
                     placeholder: 'Min',
                     graphQLPropertyName:'latMinutes',
@@ -147,7 +130,7 @@ export const formRows: IFormField[][] = [
                     allowNumbersOnly : true,
                 },
                 {
-                    type: 'text',
+                    type: FormFieldType.Text,
                     label: 'Sec',
                     placeholder: 'Sec',
                     graphQLPropertyName:'latSeconds',
@@ -161,7 +144,7 @@ export const formRows: IFormField[][] = [
             ],
         },
         {
-            type: 'text',
+            type: FormFieldType.Text,
             label: 'Longitude (Decimal)',
             placeholder: 'Type longitude as decimal',
             graphQLPropertyName:'longdeg',
@@ -173,13 +156,12 @@ export const formRows: IFormField[][] = [
             allowNumbersOnly : true,
         },
         {
-            type: 'group',
+            type: FormFieldType.Group,
             label: 'Longitude (D, M, S)',
             value: '',
-            // graphQLPropertyName:'longitude',
             children: [
                 {
-                    type: 'text',
+                    type: FormFieldType.Text,
                     label: 'Deg',
                     placeholder: 'Deg',
                     graphQLPropertyName:'longDegrees',
@@ -191,7 +173,7 @@ export const formRows: IFormField[][] = [
                     allowNumbersOnly : true,
                 },
                 {
-                    type: 'text',
+                    type: FormFieldType.Text,
                     label: 'Min',
                     placeholder: 'Min',
                     graphQLPropertyName:'longMinutes',
@@ -203,7 +185,7 @@ export const formRows: IFormField[][] = [
                     allowNumbersOnly : true,
                 },
                 {
-                    type: 'text',
+                    type: FormFieldType.Text,
                     label: 'Sec',
                     placeholder: 'Sec',
                     graphQLPropertyName:'longSeconds',
@@ -217,14 +199,14 @@ export const formRows: IFormField[][] = [
             ],
         },
         {
-            type: 'date',
+            type: FormFieldType.Date,
             label: 'Date Created',
             placeholder: 'MM/DD/YY - MM/DD/YY',
             graphQLPropertyName:'whenCreated',
             value: [],
         },
         {
-            type: 'date',
+            type: FormFieldType.Date,
             label: 'Last Updated',
             placeholder: 'MM/DD/YY - MM/DD/YYY',
             graphQLPropertyName:'whenUpdated',

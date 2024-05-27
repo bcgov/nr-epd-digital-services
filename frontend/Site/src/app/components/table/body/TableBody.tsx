@@ -2,17 +2,17 @@ import React, { FC } from 'react'
 import { SpinnerIcon } from '../../common/icon';
 import { RequestStatus } from '../../../helpers/requests/status';
 import { ColumnType, TableColumn } from '../TableColumn';
+import { Link } from 'react-router-dom';
 
 interface TableBodyProps {
    
     isLoading: RequestStatus;
     columns: TableColumn[];
     data: any;
-    idColumnGQLPropName: string;
     allowRowsSelect: boolean;
   }
 
-const TableBody: FC<TableBodyProps> = ({isLoading,columns,data,idColumnGQLPropName,allowRowsSelect}) => {
+const TableBody: FC<TableBodyProps> = ({isLoading, columns, data, allowRowsSelect}) => {
 
     const renderNoResultsFound = () => {
         return (
@@ -51,9 +51,9 @@ const TableBody: FC<TableBodyProps> = ({isLoading,columns,data,idColumnGQLPropNa
         else if (type === ColumnType.Link) {
           return (
             <td key={rowKey} className="table-border-light content-text">
-              <a href={href+value} aria-label={`${displayName + " " + value}`}>
+              <Link to={href+value} aria-label={`${displayName + " " + value}`}>
                 {value}
-              </a>
+              </Link>
             </td>
           );
         } 
@@ -104,7 +104,7 @@ const TableBody: FC<TableBodyProps> = ({isLoading,columns,data,idColumnGQLPropNa
           return "";
         }
     
-        const cellValue = column.graphQLPropertyName
+        const cellValue = column.graphQLPropertyName && column.graphQLPropertyName
           .split(",")
           .map((graphQLPropertyName) => getValue(rowIndex, graphQLPropertyName))
           .join(" ");
@@ -112,7 +112,7 @@ const TableBody: FC<TableBodyProps> = ({isLoading,columns,data,idColumnGQLPropNa
         return getTableCellHtml(
           column.displayType ?? ColumnType.Text,
           column.displayName,
-          cellValue,
+          cellValue ?? '',
           columnIndex + rowIndex,
           column.linkRedirectionURL ?? ''
         );

@@ -35,7 +35,7 @@ const getSideBarNavList = () => {
   const sideNavList: SideNav[] = [
     new SideNav(1,"Dashboard", true, dashboardIcon, "/dashboard"),
     new SideNav(2,"Search", true, null, "/", [
-      new SideNav(1,"Text Search", false, textSearchIcon, "/"),
+      new SideNav(1,"Text Search", false, textSearchIcon, "/search"),
       new SideNav(2,"Map Search", false, mapLocationIcon, "/map"),
     ]),
     new SideNav(3,"Resources", true, null, "/", [
