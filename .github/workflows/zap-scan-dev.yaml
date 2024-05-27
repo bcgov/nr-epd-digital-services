@@ -5,6 +5,7 @@ on:
     branches:
       - dev
       - main
+      - srs-10
          
   workflow_dispatch:
     inputs:
@@ -29,7 +30,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-full-scan@v0.4.0
+        uses: zaproxy/action-full-scan@v0.10.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -42,7 +43,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -55,7 +56,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -68,7 +69,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -80,7 +81,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -92,7 +93,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -104,7 +105,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -116,31 +117,31 @@ jobs:
     if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_DATA_ANALYSIS_URL }}
-  zap_scan_forms-flow-documents_dev:
-    runs-on: ubuntu-latest
-    name: Scan the forms-flow-documents-dev
-    if: ${{ github.event.inputs.environment == 'dev' }}
-    steps:
-      - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
-        with:
-          allow_issue_writing: false
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: 'ZAP Scan Report'
-          target: ${{ secrets.ZAP_DEV_FORMSFLOW_DOCUMENTS_URL }}
+  # zap_scan_forms-flow-documents_dev:
+  #   runs-on: ubuntu-latest
+  #   name: Scan the forms-flow-documents-dev
+  #   if: ${{ github.event.inputs.environment == 'dev' }}
+  #   steps:
+  #     - name: ZAP Scan
+  #       uses: zaproxy/action-api-scan@v0.6.0
+  #       with:
+  #         allow_issue_writing: false
+  #         token: ${{ secrets.GITHUB_TOKEN }}
+  #         issue_title: 'ZAP Scan Report'
+  #         target: ${{ secrets.ZAP_DEV_FORMSFLOW_DOCUMENTS_URL }}
   zap_scan_forms-flow-forms_dev:
     runs-on: ubuntu-latest
     name: Scan the forms-flow-forms-dev
     if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -152,7 +153,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -164,7 +165,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'test' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-full-scan@v0.4.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -177,7 +178,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'test' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -190,7 +191,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'test' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -203,7 +204,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'test' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -215,7 +216,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'test' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -227,7 +228,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'test' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -239,7 +240,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'test' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -251,31 +252,31 @@ jobs:
     if: ${{ github.event.inputs.environment == 'test' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_TEST_FORMSFLOW_DATA_ANALYSIS_URL }}
-  zap_scan_forms-flow-documents_test:
-    runs-on: ubuntu-latest
-    name: Scan the forms-flow-documents-test
-    if: ${{ github.event.inputs.environment == 'test' }}
-    steps:
-      - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
-        with:
-          allow_issue_writing: false
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: 'ZAP Scan Report'
-          target: ${{ secrets.ZAP_TEST_FORMSFLOW_DOCUMENTS_URL }}
+  # zap_scan_forms-flow-documents_test:
+  #   runs-on: ubuntu-latest
+  #   name: Scan the forms-flow-documents-test
+  #   if: ${{ github.event.inputs.environment == 'test' }}
+  #   steps:
+  #     - name: ZAP Scan
+  #       uses: zaproxy/action-api-scan@v0.6.0
+  #       with:
+  #         allow_issue_writing: false
+  #         token: ${{ secrets.GITHUB_TOKEN }}
+  #         issue_title: 'ZAP Scan Report'
+  #         target: ${{ secrets.ZAP_TEST_FORMSFLOW_DOCUMENTS_URL }}
   zap_scan_forms-flow-forms_test:
     runs-on: ubuntu-latest
     name: Scan the forms-flow-forms-test
     if: ${{ github.event.inputs.environment == 'test' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -287,7 +288,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'test' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -299,7 +300,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'prod' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-full-scan@v0.4.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -312,7 +313,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'prod' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -325,7 +326,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'prod' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -338,7 +339,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'prod' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -350,7 +351,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'prod' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -362,7 +363,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'prod' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -374,7 +375,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'prod' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -386,31 +387,31 @@ jobs:
     if: ${{ github.event.inputs.environment == 'prod' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_PROD_FORMSFLOW_DATA_ANALYSIS_URL }}
-  zap_scan_forms-flow-documents_prod:
-    runs-on: ubuntu-latest
-    name: Scan the forms-flow-documents-prod
-    if: ${{ github.event.inputs.environment == 'prod' }}
-    steps:
-      - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
-        with:
-          allow_issue_writing: false
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: 'ZAP Scan Report'
-          target: ${{ secrets.ZAP_PROD_FORMSFLOW_DOCUMENTS_URL }}
+  # zap_scan_forms-flow-documents_prod:
+  #   runs-on: ubuntu-latest
+  #   name: Scan the forms-flow-documents-prod
+  #   if: ${{ github.event.inputs.environment == 'prod' }}
+  #   steps:
+  #     - name: ZAP Scan
+  #       uses: zaproxy/action-api-scan@v0.6.0
+  #       with:
+  #         allow_issue_writing: false
+  #         token: ${{ secrets.GITHUB_TOKEN }}
+  #         issue_title: 'ZAP Scan Report'
+  #         target: ${{ secrets.ZAP_PROD_FORMSFLOW_DOCUMENTS_URL }}
   zap_scan_forms-flow-forms_prod:
     runs-on: ubuntu-latest
     name: Scan the forms-flow-forms-prod
     if: ${{ github.event.inputs.environment == 'prod' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -422,7 +423,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'prod' }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.6.0
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
