@@ -14,6 +14,7 @@ export const formRows: IFormField[][] = [
                 customMessage: 'Site ID can only contain numbers and commas',
             },
             allowNumbersOnly: true,
+            colSize: 'col-lg-4 col-md-6 col-sm-12',
         },
         {
             type: FormFieldType.DropDown,
@@ -25,6 +26,7 @@ export const formRows: IFormField[][] = [
                 { key: 'N', value: 'No'}
             ],
             value: '',
+            colSize: 'col-lg-4 col-md-6 col-sm-12',
         },
         {
             type: FormFieldType.Text,
@@ -32,6 +34,7 @@ export const formRows: IFormField[][] = [
             placeholder: 'Type keywords',
             graphQLPropertyName:'commonName',
             value: '',
+            colSize: 'col-lg-4 col-md-6 col-sm-12',
             
         },
         {
@@ -45,6 +48,7 @@ export const formRows: IFormField[][] = [
                 { key : 'UNC', value : 'Unclassified'}
             ],
             value: '',
+            colSize: 'col-lg-4 col-md-6 col-sm-12',
         },
         {
             type: FormFieldType.Text,
@@ -52,6 +56,7 @@ export const formRows: IFormField[][] = [
             placeholder: 'Type keywords',
             graphQLPropertyName:'addrLine_1',
             value: '',
+            colSize: 'col-lg-4 col-md-6 col-sm-12',
         },
         {
             type: FormFieldType.DropDown,
@@ -64,6 +69,7 @@ export const formRows: IFormField[][] = [
                 {key:'City3', value:'City3'}
             ],
             value: '',
+            colSize: 'col-lg-4 col-md-6 col-sm-12',
         },
         {
             type: FormFieldType.DropDown,
@@ -76,6 +82,7 @@ export const formRows: IFormField[][] = [
                 {key:'Staff3', value:'Staff3'}
             ],
             value: '',
+            colSize: 'col-lg-4 col-md-6 col-sm-12',
         },
         {
             type: FormFieldType.DropDown,
@@ -87,6 +94,7 @@ export const formRows: IFormField[][] = [
                 {key: 'UNCONFIRMED', value:'UNCONFIRMED'},
             ],
             value: '',
+            colSize: 'col-lg-4 col-md-6 col-sm-12',
         },
         {
             type: FormFieldType.Text,
@@ -99,11 +107,13 @@ export const formRows: IFormField[][] = [
                 customMessage: 'Latitude (Decimal) can only contain numbers and decimal points',
             },
             allowNumbersOnly: true,
+            colSize: 'col-lg-4 col-md-6 col-sm-12',
         },
         {
             type: FormFieldType.Group,
             label: 'Latitude (D, M, S)',
             value: '',
+            colSize: 'col-lg-4 col-md-6 col-sm-12',
             children: [
                 {
                     type: FormFieldType.Text,
@@ -149,6 +159,7 @@ export const formRows: IFormField[][] = [
             placeholder: 'Type longitude as decimal',
             graphQLPropertyName:'longdeg',
             value: '',
+            colSize: 'col-lg-4 col-md-6 col-sm-12',
             validation: {
                 pattern: /^[0-9.\s]*$/,
                 customMessage: 'Longitude (Decimal) can only contain numbers and decimal points',
@@ -159,6 +170,7 @@ export const formRows: IFormField[][] = [
             type: FormFieldType.Group,
             label: 'Longitude (D, M, S)',
             value: '',
+            colSize: 'col-lg-4 col-md-6 col-sm-12',
             children: [
                 {
                     type: FormFieldType.Text,
@@ -204,6 +216,7 @@ export const formRows: IFormField[][] = [
             placeholder: 'MM/DD/YY - MM/DD/YY',
             graphQLPropertyName:'whenCreated',
             value: [],
+            colSize: 'col-lg-4 col-md-6 col-sm-12',
         },
         {
             type: FormFieldType.Date,
@@ -211,6 +224,7 @@ export const formRows: IFormField[][] = [
             placeholder: 'MM/DD/YY - MM/DD/YYY',
             graphQLPropertyName:'whenUpdated',
             value: [],
+            colSize: 'col-lg-4 col-md-6 col-sm-12',
         },
     ],
 ];
