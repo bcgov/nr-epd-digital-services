@@ -51,15 +51,15 @@ export class Sites {
     @Column("character varying", { name: "addr_line_1", length: 50 })
     addrLine_1: string;
 
-    @Field()
+    @Field({nullable: true})
     @Column("character varying", { name: "addr_line_2", nullable: true, length: 50 })
     addrLine_2: string | null;
 
-    @Field()
+    @Field({nullable: true})
     @Column("character varying", { name: "addr_line_3", nullable: true, length: 50 })
     addrLine_3: string | null;
 
-    @Field()
+    @Field({nullable: true})
     @Column("character varying", { name: "addr_line_4", nullable: true, length: 50 })
     addrLine_4: string | null;
 
@@ -71,31 +71,31 @@ export class Sites {
     @Column("character varying", { name: "prov_state", length: 2 })
     provState: string;
 
-    @Field()
+    @Field({nullable: true})
     @Column("character varying", { name: "postal_code", nullable: true, length: 10 })
     postalCode: string | null;
 
-    @Field()
+    @Field({nullable: true})
     @Column("double precision", { name: "latdeg", nullable: true, precision: 53 })
     latdeg: number | null;
 
-    @Field()
+    @Field({nullable: true})
     @Column("double precision", { name: "longdeg", nullable: true, precision: 53 })
     longdeg: number | null;
 
-    @Field()
+    @Field({nullable: true})
     @Column("character varying", { name: "victoria_file_no", nullable: true, unique: true, length: 40 })
     victoriaFileNo: string | null;
 
-    @Field()
+    @Field({nullable: true})
     @Column("character varying", { name: "regional_file_no", nullable: true, length: 40 })
     regionalFileNo: string | null;
 
-    @Field()
+    @Field({nullable: true})
     @Column("character varying", { name: "class_code", nullable: true, length: 6 })
     classCode: string | null;
 
-    @Field()
+    @Field({nullable: true})
     @Column("character varying", { name: "general_description", nullable: true, length: 255 })
     generalDescription: string | null;
 
@@ -103,7 +103,7 @@ export class Sites {
     @Column("character varying", { name: "who_created", length: 30 })
     whoCreated: string;
 
-    @Field()
+    @Field({nullable: true})
     @Column("character varying", { name: "who_updated", nullable: true, length: 30 })
     whoUpdated: string | null;
 
@@ -111,7 +111,7 @@ export class Sites {
     @Column("timestamp without time zone", { name: "when_created" })
     whenCreated: Date;
 
-    @Field()
+    @Field({nullable: true})
     @Column("timestamp without time zone", { name: "when_updated", nullable: true })
     whenUpdated: Date | null;
 
@@ -123,31 +123,31 @@ export class Sites {
     @Column("smallint", { name: "rwm_general_desc_flag" })
     rwmGeneralDescFlag: number;
 
-    @Field()
+    @Field({nullable: true})
     @Column("character", { name: "consultant_submitted", nullable: true, length: 1 })
     consultantSubmitted: string | null;
 
-    @Field()
+    @Field({nullable: true})
     @Column("smallint", { name: "long_degrees", nullable: true })
     longDegrees: number | null;
 
-    @Field()
+    @Field({nullable: true})
     @Column("smallint", { name: "long_minutes", nullable: true })
     longMinutes: number | null;
 
-    @Field()
+    @Field({nullable: true})
     @Column("numeric", { name: "long_seconds", nullable: true, precision: 4, scale: 2 })
     longSeconds: string | null;
 
-    @Field()
+    @Field({nullable: true})
     @Column("smallint", { name: "lat_degrees", nullable: true })
     latDegrees: number | null;
 
-    @Field()
+    @Field({nullable: true})
     @Column("smallint", { name: "lat_minutes", nullable: true })
     latMinutes: number | null;
 
-    @Field()
+    @Field({nullable: true})
     @Column("numeric", { name: "lat_seconds", nullable: true, precision: 4, scale: 2 })
     latSeconds: string | null;
 
@@ -163,7 +163,7 @@ export class Sites {
     @Column("character varying", { name: "site_risk_code", length: 6, default: () => "'UNC'", })
     siteRiskCode: string;
 
-    @Field()
+    @Field({nullable: true})
     @Column("geometry", { name: "geometry", nullable: true })
     geometry: string | null;
 
