@@ -40,6 +40,7 @@ export class SearchSiteResponse {
 
 }
 
+
 @ObjectType()
 export class DashboardResponse extends BaseHttpResponse{
     @Field({nullable:true})

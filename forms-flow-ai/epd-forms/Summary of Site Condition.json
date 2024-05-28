@@ -809,7 +809,7 @@
                                                 "height": ""
                                             },
                                             "type": "button",
-                                            "custom": " const submissionId = form._submission._id;\n  const formId = form._submission.form;\n  const formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\n  const formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\n  const formio = new Formio(formDataReqUrl);\n  formio.saveSubmission(formDataReqObj1).then( result => {\n  form.emit('customEvent', {\n            type: \"actionComplete\",   \n            component: component,\n            actionType: 'Accepted'\n      }); \n  }).catch((error)=>{\n  //Error callback on not Save\n  form.emit('customEvent', {\n            type: \"actionError\",   \n            component: component,\n            actionType:'Accepted'\n      }); \n  });",
+                                            "custom": " if(data.approvedProfessionalName === '')\r\n {\r\n   alert(\"Part 7 - Approved Professional Name is required.\")\r\n }\r\n else if(data.recommendationCheckbox.aCoCUnderSection533OfEma === false && data.recommendationCheckbox.aDeterminationUnderSection44OfEma === false && data.recommendationCheckbox.aSiteRiskReclassification === false && data.recommendationCheckbox.anAiPUnderSection531OfEma === false && data.recommendationCheckbox.other === false){\r\n  alert(\"Part 7 - Please select those that apply is required\");\r\n }\r\nelse if(data.describe1 === '')\r\n{\r\n alert(\"Part 7 - Describe: is  required.\")\r\n}\r\nelse if(data.forARecommendationForADetermination === '')\r\n{\r\n alert(\"Part 7 - For a recommendation for a Determination is required\");\r\n}\r\nelse if(data.forARecommendationForanApprovalInPrinciple === '')\r\n{\r\n alert(\"Part 7 - For a recommendation for an Approval in Principle and for a Certificate of Compliance is required.\");\r\n}\r\nelse if(data.siteRiskReclassification === '')\r\n{\r\n alert(\"Part 7 - For a recommendation for a Site Risk Reclassification is required\");\r\n}\r\nelse if(data.asOfTheDateOfSigningOfThisReportTheApprovedProfessionalOrApprovedProfessionalsIfMoreThanOneIsAreMemberSInGoodStandingOfTheRosterOfApprovedProfessionalsAsMaintainedByTheMinistryAndMemberSOfTheContaminatedSitesApprovedProfessionalsSocietyCsapSociety === false)\r\n{\r\n alert(\"Part 7 - As of the date of signing of this report the approved professional, or approved professionals if more than one, is/are member(s) in good standing of the Roster of Approved Professionals, as maintained by the ministry, and member(s) of the Contaminated Sites Approved Professionals Society (CSAP Society) is required\");\r\n}\r\nelse if(data.theApprovedProfessionalsSigningThisSummaryOfSiteConditionHaveReviewedTable1Protocol6ForContaminatedSitesEligibilityOfApplicationsForReviewByApprovedProfessionalsAndConfirmThatTheApplicationForContaminatedSitesServicesMayBeProcessedInTheMannerForNonHighRiskSitesUnderTheRosterOfApprovedProfessionalsProcess === false)\r\n{\r\n alert(\"Part 7 - The approved professionals signing this Summary of Site Condition have reviewed Table 1, Protocol 6 for Contaminated Sites (Eligibility of Applications for Review by Approved Professionals) and confirm that the Application for Contaminated Sites Services may be processed in the manner for non-high risk sites under the Roster of Approved Professionals process is required\");\r\n}\r\nelse if(data.theReviewerHasNoObligationToUndertakeAnyInquiryIntoTheValidityAccuracyOrPrecisionOfWhatIsReportedInTheDocumentsReviewedBeyondThatWhichThereIsReasonableCauseToBelieveThatThereCouldBeErrorsOrOversightsInThoseReports === false)\r\n{\r\n alert(\"Part 7 - The reviewer has no obligation to undertake any inquiry into the validity, accuracy or precision of what is reported in the documents reviewed, beyond that which there is reasonable cause to believe that there could be errors or oversights in those reports is required\");\r\n}\r\n else\r\n {\r\n    const submissionId = form._submission._id;\r\n    const formId = form._submission.form;\r\n    const formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\n    const formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\r\n    const formio = new Formio(formDataReqUrl);\r\n    formio.saveSubmission(formDataReqObj1).then( result => {\r\n    form.emit('customEvent', {\r\n            type: \"actionComplete\",   \r\n            component: component,\r\n            actionType: 'Accepted'\r\n      }); \r\n   }).catch((error)=>{\r\n   //Error callback on not Save\r\n    form.emit('customEvent', {\r\n            type: \"actionError\",   \r\n            component: component,\r\n            actionType:'Accepted'\r\n      }); \r\n  });\r\n}",
                                             "input": true,
                                             "keyModified": true,
                                             "placeholder": "",
@@ -849,7 +849,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "eehs2m"
+                                            "id": "egsqf1"
                                         },
                                         {
                                             "label": "Approved",
@@ -1853,7 +1853,7 @@
                     "templates": {
                         "header": "{% console.log(\"row-key header\",'commentFor',row['commentFor'])  %}\r\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n\r\n{% if(groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")){  %}\r\n\r\n<div class=\"row card-header bg-default\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component) && component.key !== 'commentFor'  ) { %}\r\n         {% if(component.label === 'Notes') {  %}\r\n           <div class=\"col-sm-4\">{{ t(component.label) }}</div>\r\n         {% } else if(component.key !== 'comments') {  %}\r\n           <div class=\"col-sm-2\">{{ t(component.label) }}</div>\r\n         {% } %}\r\n        {% } %}\r\n      {% }) %}\r\n    </div>\r\n\r\n{% } else { %}\r\n\r\n<div class=\"row card-header bg-default\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component)) { %}\r\n      \r\n     {% if(component.key == 'comments') {  %}\r\n        <div class=\"col-sm-4\"> {{   t(component.label)}} </div>\r\n {% } else if(component.key == 'commentFor' || component.key == 'role' || component.key == 'createdBy') {  %}\r\n        <div class=\"col-sm-2\"> {{   t(component.label)}} </div>\r\n{% } else { %}\r\n  <div class=\"col-sm-1\"> {{  t(component.label)}} </div>\r\n{% } %}      \r\n\r\n      \r\n {% } %}\r\n      {% }) %}\r\n    </div>\r\n\r\n{% } %}\r\n\r\n\r\n\r\n\r\n",
                         "tableHeader": "\n      <tr>\n        {% util.eachComponent(components, function(component) { %}\n          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}\n            <td class=\"editgrid-table-column\">{{ component.label }}</td>\n          {% } %}\n        {% }) %}\n        {% if (!instance.options.readOnly && !instance.disabled) { %}\n          <td class=\"editgrid-table-column\">Actions</td>\n        {% } %}\n      </tr>\n    ",
-                        "row": "{% console.log(\"row-key main sosc\",'commentFor',row['commentFor'])  %}\r\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% console.log('rendering edit grid body')%}\r\n{% if((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){  %}\r\n\r\n\r\n\r\n<div class=\"row\">\r\n\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component) && component.key !== 'commentFor' ) { %}\r\n        {% console.log(\"row-key\",component.key,row[component.key])  %}\r\n        {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){ %}\r\n{% if(component.key == 'comments') {  %}\r\n          <div class=\"col-sm-4 text-break\">\r\n               {{ getView(component, row[component.key])}}\r\n          </div>\r\n{% } else { %}\r\n <div class=\"col-sm-2 text-break\">\r\n    {{ getView(component, row[component.key])}}\r\n          </div>\r\n{%}%}\r\n           \r\n\r\n            {% } %}\r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n              {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){ %}\r\n        <div class=\"col-sm-2\">\r\n          <div class=\"btn-group pull-right\">\r\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n       \r\n           {% } %}\r\n      {% } %}\r\n    </div>\r\n     {% } else if (groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\") || groups.includes(\"/formsflow/formsflow-reviewer/site-risk-classification-officer\") || groups.includes(\"/formsflow/formsflow-reviewer/cssa-team\") || groups.includes(\"/formsflow/formsflow-reviewer/caseworker\") || groups.includes(\"/formsflow/formsflow-reviewer/cssa-manager\") || groups.includes(\"/formsflow/formsflow-reviewer/sdm\")) { %}\r\n     <div class=\"row\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n      {% console.log('for sia') %}\r\n        {% if (displayValue(component)) { %}\r\n         {% if(component.key == 'comments') {  %}\r\n        <div class=\"col-sm-4 text-break\"> {{  getView(component, row[component.key])}} </div>\r\n{% } else if( component.key == 'commentFor' || component.key == 'role' || component.key == 'createdBy') {  %}\r\n        <div class=\"col-sm-2 text-break\"> {{  getView(component, row[component.key])}} </div>\r\n{% } else { %}\r\n  <div class=\"col-sm-1\"> {{  getView(component, row[component.key])}} </div>\r\n{% } %}      \r\n         \r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n        <div class=\"col-sm-1\">\r\n          <div class=\"btn-group pull-right\">\r\n           {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'CSSA Team' && groups.includes(\"/formsflow/formsflow-reviewer/cssa-team\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t    {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'CSSA Manager' && groups.includes(\"/formsflow/formsflow-reviewer/cssa-manager\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n            {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Client' && groups.includes(\"/formsflow/formsflow-client\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n            {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Approved Professional' && groups.includes(\"/formsflow/formsflow-reviewer/csap\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n            {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'CSAP Society' && groups.includes(\"/formsflow/formsflow-reviewer/csap-society\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t     {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Caseworker' && groups.includes(\"/formsflow/formsflow-reviewer/caseworker\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t    {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Statutory Decision Maker' && groups.includes(\"/formsflow/formsflow-reviewer/sdm\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t    {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Site Risk Classification Officer' && groups.includes(\"/formsflow/formsflow-reviewer/site-risk-classification-officer\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t    {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Site Information Advisor' && groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n\r\n          </div>\r\n        </div>\r\n      {% } %}\r\n    </div>\r\n     {% } %}\r\n   \r\n     \r\n     \r\n{% const emptyElements = []; %}\r\n{% const elements = document.getElementsByClassName(\"list-group-item\"); %}\r\n{% for (let i = 0; i < elements.length; i++) { %}\r\n{%  const element = elements[i]; %}\r\n{% if(element.querySelectorAll('div.row').length===0){(element).remove() }} %}",
+                        "row": "{% console.log(\"row-key main sosc\",'commentFor',row['commentFor'])  %}\r\n{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% console.log('rendering edit grid body')%}\r\n{% if((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){  %}\r\n\r\n\r\n\r\n<div class=\"row\">\r\n\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component) && component.key !== 'commentFor' ) { %}\r\n        {% console.log(\"row-key\",component.key,row[component.key])  %}\r\n        {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){ %}\r\n{% if(component.key == 'comments') {  %}\r\n          <div class=\"col-sm-4 text-break\">\r\n               {{ getView(component, row[component.key])}}\r\n          </div>\r\n{% } else { %}\r\n <div class=\"col-sm-2 text-break\">\r\n    {{ getView(component, row[component.key])}}\r\n          </div>\r\n{%}%}\r\n           \r\n\r\n            {% } %}\r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n              {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\")) && row['commentFor']==='external'){ %}\r\n        <div class=\"col-sm-2\">\r\n          <div class=\"btn-group pull-right\">\r\n             {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'CSSA Team' && groups.includes(\"/formsflow/formsflow-reviewer/cssa-team\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t    {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'CSSA Manager' && groups.includes(\"/formsflow/formsflow-reviewer/cssa-manager\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n            {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Client' && groups.includes(\"/formsflow/formsflow-client\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n            {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Approved Professional' && groups.includes(\"/formsflow/formsflow-reviewer/csap\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n            {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'CSAP Society' && groups.includes(\"/formsflow/formsflow-reviewer/csap-society\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t     {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Caseworker' && groups.includes(\"/formsflow/formsflow-reviewer/caseworker\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t    {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Statutory Decision Maker' && groups.includes(\"/formsflow/formsflow-reviewer/sdm\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t    {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Site Risk Classification Officer' && groups.includes(\"/formsflow/formsflow-reviewer/site-risk-classification-officer\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t    {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Site Information Advisor' && groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n\r\n          </div>\r\n        </div>\r\n       \r\n           {% } %}\r\n      {% } %}\r\n    </div>\r\n     {% } else if (groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\") || groups.includes(\"/formsflow/formsflow-reviewer/site-risk-classification-officer\") || groups.includes(\"/formsflow/formsflow-reviewer/cssa-team\") || groups.includes(\"/formsflow/formsflow-reviewer/caseworker\") || groups.includes(\"/formsflow/formsflow-reviewer/cssa-manager\") || groups.includes(\"/formsflow/formsflow-reviewer/sdm\")) { %}\r\n     <div class=\"row\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n      {% console.log('for sia') %}\r\n        {% if (displayValue(component)) { %}\r\n         {% if(component.key == 'comments') {  %}\r\n        <div class=\"col-sm-4 text-break\"> {{  getView(component, row[component.key])}} </div>\r\n{% } else if( component.key == 'commentFor' || component.key == 'role' || component.key == 'createdBy') {  %}\r\n        <div class=\"col-sm-2 text-break\"> {{  getView(component, row[component.key])}} </div>\r\n{% } else { %}\r\n  <div class=\"col-sm-1\"> {{  getView(component, row[component.key])}} </div>\r\n{% } %}      \r\n         \r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n        <div class=\"col-sm-1\">\r\n          <div class=\"btn-group pull-right\">\r\n           {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'CSSA Team' && groups.includes(\"/formsflow/formsflow-reviewer/cssa-team\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t    {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'CSSA Manager' && groups.includes(\"/formsflow/formsflow-reviewer/cssa-manager\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n            {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Client' && groups.includes(\"/formsflow/formsflow-client\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n            {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Approved Professional' && groups.includes(\"/formsflow/formsflow-reviewer/csap\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n            {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'CSAP Society' && groups.includes(\"/formsflow/formsflow-reviewer/csap-society\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t     {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Caseworker' && groups.includes(\"/formsflow/formsflow-reviewer/caseworker\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t    {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Statutory Decision Maker' && groups.includes(\"/formsflow/formsflow-reviewer/sdm\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t    {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Site Risk Classification Officer' && groups.includes(\"/formsflow/formsflow-reviewer/site-risk-classification-officer\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t    {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Site Information Advisor' && groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n\r\n          </div>\r\n        </div>\r\n      {% } %}\r\n    </div>\r\n     {% } %}\r\n   \r\n     \r\n     \r\n{% const emptyElements = []; %}\r\n{% const elements = document.getElementsByClassName(\"list-group-item\"); %}\r\n{% for (let i = 0; i < elements.length; i++) { %}\r\n{%  const element = elements[i]; %}\r\n{% if(element.querySelectorAll('div.row').length===0){(element).remove() }} %}",
                         "tableRow": "\n      {% util.eachComponent(components, function(component) { %}\n          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}\n            <td class=\"editgrid-table-column\">\n              {{ getView(component, row[component.key]) }}\n            </td>\n          {% } %}\n        {% }) %}\n        {% if (!instance.options.readOnly && !instance.disabled) { %}\n          <td class=\"editgrid-table-column\">\n            <div class=\"btn-group\">\n              <button class=\"btn btn-default btn-light btn-sm editRow\" aria-label=\"{{ t('Edit row') }}\"><i class=\"{{ iconClass('edit') }}\"></i></button>\n              {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\n              <button class=\"btn btn-danger btn-sm removeRow\" aria-label=\"{{ t('Remove row') }}\"><i class=\"{{ iconClass('trash') }}\"></i></button>\n              {% } %}\n            </div>\n          </td>\n        {% } %}\n    ",
                         "footer": "{% const emptyElements = []; %}\r\n{% const elements = document.getElementsByClassName(\"list-group-item\"); %}\r\n{% for (let i = 0; i < elements.length; i++) { %}\r\n{% const element = elements[i]; %}\r\n{%if(element.querySelectorAll('div.row').length===0){(element).remove() }} %}\r\n"
                     },
@@ -1998,7 +1998,7 @@
                                             "wysiwyg": false,
                                             "editor": "",
                                             "fixedSize": true,
-                                            "id": "emj0pr"
+                                            "id": "ebau17v"
                                         }
                                     ],
                                     "width": 4,
@@ -2090,7 +2090,7 @@
                                             "addons": [],
                                             "inputType": "radio",
                                             "fieldSet": false,
-                                            "id": "enluilf"
+                                            "id": "e0a881q"
                                         }
                                     ],
                                     "offset": 0,
@@ -2177,7 +2177,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "e62tbl"
+                                            "id": "epd5tl"
                                         }
                                     ],
                                     "size": "md",
@@ -2264,7 +2264,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "eic3e09"
+                                            "id": "e8v286"
                                         }
                                     ],
                                     "size": "md",
@@ -2351,7 +2351,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "eke9ahj"
+                                            "id": "ecrvyvk"
                                         }
                                     ],
                                     "size": "md",
@@ -2426,7 +2426,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "egn4rob"
+                            "id": "e50zfxy"
                         }
                     ],
                     "keyModified": true,
@@ -2446,7 +2446,7 @@
                     "tree": true,
                     "lazyLoad": false,
                     "defaultOpen": false,
-                    "id": "e6riw3m"
+                    "id": "ex820g"
                 },
                 {
                     "label": "isClientRole",
@@ -9613,7 +9613,7 @@
                                             "id": "ej1mdrb"
                                         }
                                     ],
-                                    "id": "ej7yhy0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ej7yhy000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -10663,7 +10663,7 @@
                                                     "id": "eqnyhh"
                                                 }
                                             ],
-                                            "id": "eskogm00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "eskogm0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -11195,7 +11195,7 @@
                                             "addons": [],
                                             "tree": false,
                                             "lazyLoad": false,
-                                            "id": "e0cqfrg00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                                            "id": "e0cqfrg0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
                                         }
                                     ],
                                     "layoutFixed": false,
@@ -11294,7 +11294,7 @@
                                             "input": true,
                                             "label": "Crown Land File Numbers",
                                             "tableView": true,
-                                            "id": "elizdoh00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "elizdoh0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -12742,7 +12742,7 @@
                                             "id": "e6o3au0o"
                                         }
                                     ],
-                                    "id": "erlwlrl000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "erlwlrl00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -13785,7 +13785,7 @@
                                                     "id": "eg4rrls"
                                                 }
                                             ],
-                                            "id": "ehjtgz0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "ehjtgz000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -14384,7 +14384,7 @@
                                             "addons": [],
                                             "tree": false,
                                             "lazyLoad": false,
-                                            "id": "emjblk60000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                                            "id": "emjblk6000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
                                         }
                                     ],
                                     "placeholder": "",
@@ -14428,7 +14428,7 @@
                                             "input": true,
                                             "label": "Crown Land File Numbers",
                                             "tableView": true,
-                                            "id": "eh8kmqu00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "eh8kmqu0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -15337,7 +15337,7 @@
                                             "id": "egqqs34"
                                         }
                                     ],
-                                    "id": "e80y9k80000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "e80y9k8000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -22879,7 +22879,7 @@
                                             "id": "es5kcwo"
                                         }
                                     ],
-                                    "id": "egwgsw00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "egwgsw0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -23676,7 +23676,7 @@
                                             "id": "erxxdli"
                                         }
                                     ],
-                                    "id": "e09khr200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "e09khr20000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -24285,7 +24285,7 @@
                                             "id": "eu9o53q"
                                         }
                                     ],
-                                    "id": "eipn9d0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eipn9d000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -24815,7 +24815,7 @@
                                             "id": "ef617zf"
                                         }
                                     ],
-                                    "id": "ebh60il0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ebh60il000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -25586,7 +25586,7 @@
                                             "id": "eak2oy8"
                                         }
                                     ],
-                                    "id": "evgsijp0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "evgsijp000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -29730,7 +29730,7 @@
                                             "id": "e9e5bm"
                                         }
                                     ],
-                                    "id": "e6l31cy00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "e6l31cy0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -30640,7 +30640,7 @@
                                             "id": "eb274z"
                                         }
                                     ],
-                                    "id": "eauzdys0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eauzdys000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -31235,7 +31235,7 @@
                                             "id": "euj2r2l"
                                         }
                                     ],
-                                    "id": "ey0h0vl000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ey0h0vl00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -31830,7 +31830,7 @@
                                             "id": "ehez7s"
                                         }
                                     ],
-                                    "id": "el9aclo00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "el9aclo0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -32425,7 +32425,7 @@
                                             "id": "et10s3fg"
                                         }
                                     ],
-                                    "id": "ehk7lsj0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ehk7lsj000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -33020,7 +33020,7 @@
                                             "id": "eu50tno"
                                         }
                                     ],
-                                    "id": "ejahpfm0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ejahpfm000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -33726,7 +33726,7 @@
                                     "addons": [],
                                     "tree": false,
                                     "lazyLoad": false,
-                                    "id": "etzpsl0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                                    "id": "etzpsl000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
                                 }
                             ],
                             "placeholder": "",
@@ -34467,7 +34467,7 @@
                                             "defaultValue": ""
                                         }
                                     ],
-                                    "id": "esvz3la00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "esvz3la0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -35907,7 +35907,7 @@
                                 "required": true,
                                 "pattern": "",
                                 "customMessage": "",
-                                "custom": "if(data.isApprovedProfessional === 'true')\n{\n  component.validate.required = true;\n}\nelse\n{\n  component.validate.required = false;\n}\n",
+                                "custom": "if(data.isApprovedProfessional === 'true')\r\n{\r\n  component.validate.required = true;\r\n \r\n}\r\nelse\r\n{\r\n  instance.triggerRedraw();\r\n  component.validate.required = false;\r\n\r\n}\r\n\r\n",
                                 "customPrivate": false,
                                 "json": "",
                                 "minLength": "",
@@ -35947,7 +35947,7 @@
                             "dataGridLabel": false,
                             "addons": [],
                             "inputType": "text",
-                            "id": "ewrmqba",
+                            "id": "eqzvu1t",
                             "defaultValue": ""
                         },
                         {
@@ -36013,7 +36013,7 @@
                                 "required": true,
                                 "onlyAvailableItems": false,
                                 "customMessage": "",
-                                "custom": "if(data.isApprovedProfessional === 'true')\n{\n  component.validate.required = true;\n}\nelse\n{\n  component.validate.required = false;\n}",
+                                "custom": "if(data.isApprovedProfessional === 'true')\r\n{\r\n  component.validate.required = true;\r\n \r\n}\r\nelse\r\n{\r\n  instance.triggerRedraw();\r\n  component.validate.required = false;\r\n\r\n}\r\n\r\n",
                                 "customPrivate": false,
                                 "json": "",
                                 "strictDateValidation": false,
@@ -36063,7 +36063,7 @@
                             "allowMultipleMasks": false,
                             "addons": [],
                             "fieldSet": false,
-                            "id": "evhmt9l"
+                            "id": "et6c3lc"
                         },
                         {
                             "label": "Describe:",
@@ -36110,7 +36110,7 @@
                                 "required": true,
                                 "pattern": "",
                                 "customMessage": "",
-                                "custom": "if(data.isApprovedProfessional === 'true')\n{\n  component.validate.required = true;\n}\nelse\n{\n  component.validate.required = false;\n}",
+                                "custom": "if(data.isApprovedProfessional === 'true')\r\n{\r\n  component.validate.required = true;\r\n \r\n}\r\nelse\r\n{\r\n  instance.triggerRedraw();\r\n  component.validate.required = false;\r\n\r\n}\r\n\r\n",
                                 "customPrivate": false,
                                 "json": "",
                                 "minLength": "",
@@ -36158,7 +36158,7 @@
                             "inputType": "text",
                             "inputMask": "",
                             "fixedSize": true,
-                            "id": "edfuc18",
+                            "id": "e37sahh",
                             "defaultValue": ""
                         },
                         {
@@ -36337,7 +36337,7 @@
                                 "required": true,
                                 "onlyAvailableItems": false,
                                 "customMessage": "",
-                                "custom": "if(data.isApprovedProfessional === 'true')\n{\n  component.validate.required = true;\n}\nelse\n{\n  component.validate.required = false;\n}",
+                                "custom": "if(data.isApprovedProfessional === 'true')\r\n{\r\n  component.validate.required = true;\r\n \r\n}\r\nelse\r\n{\r\n  instance.triggerRedraw();\r\n  component.validate.required = false;\r\n\r\n}\r\n\r\n",
                                 "customPrivate": false,
                                 "json": "",
                                 "strictDateValidation": false,
@@ -36385,7 +36385,7 @@
                             "addons": [],
                             "inputType": "radio",
                             "fieldSet": false,
-                            "id": "ektmyt",
+                            "id": "ejfuwnu",
                             "defaultValue": ""
                         },
                         {
@@ -36430,7 +36430,7 @@
                                 "required": true,
                                 "onlyAvailableItems": false,
                                 "customMessage": "",
-                                "custom": "if(data.isApprovedProfessional === 'true')\n{\n  component.validate.required = true;\n}\nelse\n{\n  component.validate.required = false;\n}",
+                                "custom": "if(data.isApprovedProfessional === 'true')\r\n{\r\n  component.validate.required = true;\r\n \r\n}\r\nelse\r\n{\r\n  instance.triggerRedraw();\r\n  component.validate.required = false;\r\n\r\n}\r\n\r\n",
                                 "customPrivate": false,
                                 "json": "",
                                 "strictDateValidation": false,
@@ -36478,7 +36478,7 @@
                             "addons": [],
                             "inputType": "radio",
                             "fieldSet": false,
-                            "id": "e21t4b",
+                            "id": "ez2aitk",
                             "defaultValue": ""
                         },
                         {
@@ -36523,7 +36523,7 @@
                                 "required": true,
                                 "onlyAvailableItems": false,
                                 "customMessage": "",
-                                "custom": "if(data.isApprovedProfessional === 'true')\n{\n  component.validate.required = true;\n}\nelse\n{\n  component.validate.required = false;\n}",
+                                "custom": "if(data.isApprovedProfessional === 'true')\r\n{\r\n  component.validate.required = true;\r\n \r\n}\r\nelse\r\n{\r\n  instance.triggerRedraw();\r\n  component.validate.required = false;\r\n\r\n}\r\n\r\n",
                                 "customPrivate": false,
                                 "json": "",
                                 "strictDateValidation": false,
@@ -36571,8 +36571,8 @@
                             "addons": [],
                             "inputType": "radio",
                             "fieldSet": false,
-                            "id": "e1hwqz9",
-                            "defaultValue": null
+                            "id": "ebrqxvl",
+                            "defaultValue": ""
                         },
                         {
                             "collapsible": false,
@@ -38366,7 +38366,7 @@
                                             "id": "e1fko3e"
                                         }
                                     ],
-                                    "id": "exxst50000000000000000000000000000000000000",
+                                    "id": "exxst5000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -38879,7 +38879,7 @@
                                             "id": "etpowo"
                                         }
                                     ],
-                                    "id": "e1yarnp0000000000000000000000000000000000000",
+                                    "id": "e1yarnp000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -39194,7 +39194,7 @@
                                             "id": "ely64h"
                                         }
                                     ],
-                                    "id": "evqtm1s0000000000000000000000000000000000000",
+                                    "id": "evqtm1s000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -39506,7 +39506,7 @@
                                             "id": "ecxrd2p"
                                         }
                                     ],
-                                    "id": "eq0o650000000000000000000000000000000000000",
+                                    "id": "eq0o65000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -39822,7 +39822,7 @@
                                             "id": "eoumhto"
                                         }
                                     ],
-                                    "id": "e3447c0000000000000000000000000000000000000",
+                                    "id": "e3447c000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -40044,7 +40044,7 @@
                                     "validate": {
                                         "required": true,
                                         "customMessage": "",
-                                        "custom": "if(data.isApprovedProfessional === 'true')\n{\n  component.validate.required = true;\n}\nelse\n{\n  component.validate.required = false;\n}",
+                                        "custom": "if(data.isApprovedProfessional === 'true')\r\n{\r\n  component.validate.required = true;\r\n \r\n}\r\nelse\r\n{\r\n  instance.triggerRedraw();\r\n  component.validate.required = false;\r\n\r\n}\r\n\r\n",
                                         "customPrivate": false,
                                         "json": "",
                                         "strictDateValidation": false,
@@ -40093,7 +40093,7 @@
                                     "showWordCount": false,
                                     "allowMultipleMasks": false,
                                     "addons": [],
-                                    "id": "e5q1mqy"
+                                    "id": "e2yv839"
                                 },
                                 {
                                     "label": "The approved professionals signing this Summary of Site Condition have reviewed Table 1, Protocol 6 for Contaminated Sites (Eligibility of Applications for Review by Approved Professionals) and confirm that the Application for Contaminated Sites Services may be processed in the manner for non-high risk sites under the Roster of Approved Professionals process",
@@ -40123,7 +40123,7 @@
                                     "validate": {
                                         "required": true,
                                         "customMessage": "",
-                                        "custom": "if(data.isApprovedProfessional === 'true')\n{\n  component.validate.required = true;\n}\nelse\n{\n  component.validate.required = false;\n}",
+                                        "custom": "if(data.isApprovedProfessional === 'true')\r\n{\r\n  component.validate.required = true;\r\n \r\n}\r\nelse\r\n{\r\n  instance.triggerRedraw();\r\n  component.validate.required = false;\r\n\r\n}\r\n\r\n",
                                         "customPrivate": false,
                                         "json": "",
                                         "strictDateValidation": false,
@@ -40172,7 +40172,7 @@
                                     "showWordCount": false,
                                     "allowMultipleMasks": false,
                                     "addons": [],
-                                    "id": "eoutdg9"
+                                    "id": "eyjk9lt"
                                 },
                                 {
                                     "label": "The reviewer has no obligation to undertake any inquiry into the validity, accuracy or precision of what is reported in the documents reviewed, beyond that which there is reasonable cause to believe that there could be errors or oversights in those reports",
@@ -40202,7 +40202,7 @@
                                     "validate": {
                                         "required": true,
                                         "customMessage": "",
-                                        "custom": "if(data.isApprovedProfessional === 'true')\n{\n  component.validate.required = true;\n}\nelse\n{\n  component.validate.required = false;\n}",
+                                        "custom": "if(data.isApprovedProfessional === 'true')\r\n{\r\n  component.validate.required = true;\r\n \r\n}\r\nelse\r\n{\r\n  instance.triggerRedraw();\r\n  component.validate.required = false;\r\n\r\n}\r\n\r\n",
                                         "customPrivate": false,
                                         "json": "",
                                         "strictDateValidation": false,
@@ -40251,7 +40251,7 @@
                                     "showWordCount": false,
                                     "allowMultipleMasks": false,
                                     "addons": [],
-                                    "id": "ehaof83"
+                                    "id": "e65cknj"
                                 },
                                 {
                                     "label": "(as appropriate) The source site has been satisfactorily investigated for all areas of (potential) environmental concern and (potential) contaminants of concern to determine the lateral and vertical extents of contamination with due regard to EMA, the CSR, and the HWR;",
@@ -41790,7 +41790,7 @@
                                     "type": "columns",
                                     "input": false,
                                     "tableView": false,
-                                    "id": "e2boct80000000000000000000000000000000000000",
+                                    "id": "e2boct8000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -42538,7 +42538,7 @@
                                     "type": "columns",
                                     "input": false,
                                     "tableView": false,
-                                    "id": "ejno24q00000000000000000000000000000000000",
+                                    "id": "ejno24q0000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -43528,7 +43528,7 @@
                                     "refreshOn": "",
                                     "addons": [],
                                     "inputType": "text",
-                                    "id": "errpqaf000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "errpqaf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "defaultValue": ""
                                 }
                             ],
