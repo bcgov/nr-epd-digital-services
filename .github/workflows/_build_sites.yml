@@ -1,5 +1,5 @@
 #test
-name: Build Image
+name: Build SITE Application Image
 
 on:
   workflow_call:
@@ -139,27 +139,7 @@ jobs:
           # if: inputs.component == 'backend/users-migration'
           # file: ./backend/users/Dockerfile-migrations-openshift
 
-      - name: Build and push Migration image for users
-        if: steps.check.outputs.build == 'true' && inputs.component == 'backend/users'
-        uses: docker/build-push-action@v3.1.1
-        with:
-          context: ./${{ inputs.component }}/
-          push: true
-          tags: ghcr.io/${{ github.repository }}/backend/users-migration:${{ inputs.img_build }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          file: ./backend/users/Dockerfile-migrations-openshift
-
-      - name: Build and push Migration image for applications
-        if: steps.check.outputs.build == 'true' && inputs.component == 'backend/applications'
-        uses: docker/build-push-action@v3.1.1
-        with:
-          context: ./${{ inputs.component }}/
-          push: true
-          tags: ghcr.io/${{ github.repository }}/backend/applications-migration:${{ inputs.img_build }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          file: ./backend/applications/Dockerfile-migrations-openshift
+      
 
       - name: Build and push Migration image for Sites
         if: steps.check.outputs.build == 'true' && inputs.component == 'backend/sites'
