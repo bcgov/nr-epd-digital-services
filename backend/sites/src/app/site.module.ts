@@ -44,6 +44,9 @@ import { LtoDownload } from './entities/ltoDownload.entity';
 import { LtoPrevDownload } from './entities/ltoPrevDownload.entity';
 import { PlanTable } from './entities/planTable.entity';
 import { SiteCrownLandContaminated } from './entities/siteCrownLandContaminated.entity';
+import { DashboardResolver } from './resolvers/dashboard.resolver';
+import { DashboardService } from './services/dashboard.service';
+import { RecentViews } from './entities/recentViews.entity';
 
 /**
  * Module for wrapping all functionalities in sites microserivce
@@ -55,10 +58,12 @@ import { SiteCrownLandContaminated } from './entities/siteCrownLandContaminated.
     ProfileAnswers, ProfileSubmissions, SiteProfileLandUses, SiteProfileOwners, ProfileQuestions, ProfileCategories, SubmissionCd,
     SiteDocPartics, PeopleOrgs, SiteParticRoles, ParticRoleCd, EventParticRoleCd, CityRegions, SiteContaminationClassXref,
     ContaminationClassCd, SiteCrownLandStatusCd, SisAddresses, SiteStaffs, DocParticRoleCd, LtoDownload, LtoPrevDownload,
-    PlanTable, SiteCrownLandContaminated])],
+    PlanTable, SiteCrownLandContaminated, RecentViews])],
   providers: [
     SiteResolver,
     SiteService,
+    DashboardResolver,
+    DashboardService
   ],
   controllers: [SiteController],
 })

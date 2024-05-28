@@ -1,7 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Sites } from '../../entities/sites.entity';
-
 import { BaseHttpResponse } from './baseHttpResponse';
+import { RecentViews } from '../../entities/recentViews.entity';
 
 /**
  * Class for returing fetch site response from graphql services
@@ -41,3 +41,11 @@ export class SearchSiteResponse {
 }
 
 
+@ObjectType()
+export class DashboardResponse extends BaseHttpResponse{
+    @Field({nullable:true})
+    message: string;
+
+    @Field(() => [RecentViews],  { nullable: true })
+    data: RecentViews[] | null;
+}

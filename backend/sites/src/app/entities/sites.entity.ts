@@ -13,6 +13,7 @@ import { ClassificationCd } from './classificationCd.entity';
 import { SiteRiskCd } from './siteRiskCd.entity';
 import { SiteStatusCd } from './siteStatusCd.entity';
 import { SiteCrownLandContaminated } from './siteCrownLandContaminated.entity'
+import { RecentViews } from './recentViews.entity';
 
 @ObjectType()
 @Index("site_bco", ["bcerCode", "classCode", "id", "rwmFlag", "sstCode",], {})
@@ -216,4 +217,7 @@ export class Sites {
 
     @OneToOne(() => SiteCrownLandContaminated, siteCrownLandContaminated => siteCrownLandContaminated.sites)
     siteCrownLandContaminated: SiteCrownLandContaminated;
+
+    @OneToMany(() => RecentViews, (recentViews) => recentViews.site)
+    recentViewedSites: RecentViews[];
 }
