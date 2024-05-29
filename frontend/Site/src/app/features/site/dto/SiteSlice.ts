@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getAxiosInstance } from "../../../helpers/utility";
 import { print } from "graphql";
-import { graphQlSiteQuery } from "../graphql/Site";
+import { graphQlSiteQuery, graphqlSiteDetailsQuery } from "../graphql/Site";
 import { SiteState } from "./SiteState";
 import { RequestStatus } from "../../../helpers/requests/status";
 import { SiteResultDto } from "./Site";
@@ -18,8 +18,37 @@ const initialState: SiteState = {
   searchQuery:'',
   currentPage: 1,
   pageSize: 10,
-  resultsCount: 0
+  resultsCount: 0,
+  siteDetails: null,
+  siteDetailsFetchStatus:  RequestStatus.idle,
+  siteDetailsDeleteStatus:  RequestStatus.idle,
+  siteDetailsAddedStatus:  RequestStatus.idle,  
+  siteDetailsUpdateStatus: RequestStatus.idle
 };
+
+
+export const fetchSitesDetails = createAsyncThunk(  "sites/fetchSitesDetails",
+  async(args:{siteId:string}) => {
+    try
+    {
+       const {siteId} = args;
+
+       const response = await getAxiosInstance().post(
+        GRAPHQL,
+        {
+          query: print(graphqlSiteDetailsQuery()),
+          variables: {
+            siteId: siteId          
+          },
+        }
+      );
+      return response.data.data.findSiteBySiteId.data;
+       
+    }catch (error) {
+      throw error;
+    }
+  }
+)
 
 export const fetchSites = createAsyncThunk(
   "sites/fetchSites",
@@ -125,7 +154,7 @@ const siteSlice = createSlice({
        newState.pageSize = action.payload.pageSize;
        return newState;
     }
-  },
+  },  
   extraReducers(builder) {
     builder      
       .addCase(fetchSites.pending, (state, action) => {
@@ -145,6 +174,22 @@ const siteSlice = createSlice({
         const newState = { ...state };
         return newState;
       }) 
+      .addCase(fetchSitesDetails.pending,(state,action) => {
+        const newState = { ...state };
+        newState.siteDetailsFetchStatus = RequestStatus.loading;
+        return newState;
+      })
+      .addCase(fetchSitesDetails.fulfilled,(state,action) => {
+        const newState = { ...state };
+        newState.siteDetails = action.payload;
+        newState.siteDetailsFetchStatus = RequestStatus.success;
+        return newState;
+      })
+      .addCase(fetchSitesDetails.rejected,(state,action) => {
+        const newState = { ...state };
+        newState.siteDetailsFetchStatus = RequestStatus.failed;
+        return newState;
+      })
     },
 });
 
@@ -152,6 +197,8 @@ export const selectAllSites = (state: any) => state.sites.sites;
 export const loadingState = (state: any) => state.sites.fetchStatus;
 export const currentPageSelection = (state: any) => state.sites.currentPage;
 export const resultsCount = (state:any) => state.sites.resultsCount;
+export const siteDetailsLoadingState =  (state: any) => state.sites.fetchSitesDetails;
+export const selectSiteDetails = (state: any) => state.sites.siteDetails;
 
 
 export const {

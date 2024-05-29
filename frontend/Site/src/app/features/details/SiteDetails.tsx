@@ -9,23 +9,47 @@ import {
   FolderPlusIcon,
   ShoppingCartIcon,
 } from "../../components/common/icon";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { ColumnType, TableColumn } from "../../components/table/TableColumn";
 import Table from "../../components/table/Table";
 import { RequestStatus } from "../../helpers/requests/status";
 import userEvent from "@testing-library/user-event";
 import SummaryForm from "./SummaryForm";
 import PanelWithUpDown from "../../components/simple/PanelWithUpDown";
+import { fetchSitesDetails, selectSiteDetails } from "../site/dto/SiteSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from "../../Store";
 
 const SiteDetails = () => {
+
+  const dispatch = useDispatch<AppDispatch>();
+  const details = useSelector(selectSiteDetails);
   const navigate = useNavigate();
   const onClickBackButton = () => {
     navigate(-1);
   };
 
-  const [showLocationDetails, SetShowLocationDetails] = useState(false);
-  const [showParcelDetails, SetShowParcelDetails] = useState(false);
+
+  const [edit,SetEdit]= useState(false);
+
+  const {id} = useParams();
+
+  useEffect(()=>{
+    console.log("id",id)
+    dispatch(fetchSitesDetails({siteId: id ?? ""}));
+  },[id]);
+
+
+  useEffect(()=>{
+    console.log("details",details)
+  },[details])
+
+ 
+
+
+  const [showLocationDetails, SetShowLocationDetails] = useState(true);
+  const [showParcelDetails, SetShowParcelDetails] = useState(true);
 
   const data = [
     {
@@ -54,19 +78,19 @@ const SiteDetails = () => {
       graphQLPropertyName: "activity",
     },
     {
-      id: 1,
+      id: 2,
       displayName: "User",
       active: true,
       graphQLPropertyName: "user",
     },
     {
-      id: 1,
+      id: 3,
       displayName: "Time Stamp",
       active: true,
       graphQLPropertyName: "timeStamp",
     },
     {
-      id: 1,
+      id: 4,
       displayName: "SR",
       active: true,
       graphQLPropertyName: "id",
@@ -82,31 +106,31 @@ const SiteDetails = () => {
       graphQLPropertyName: "documents",
     },
     {
-      id: 1,
+      id: 2,
       displayName: "Land Uses",
       active: true,
       graphQLPropertyName: "landUses",
     },
     {
-      id: 1,
+      id: 3,
       displayName: "Associated Sites",
       active: true,
       graphQLPropertyName: "associatedSites",
     },
     {
-      id: 1,
+      id: 4,
       displayName: "Notations",
       active: true,
       graphQLPropertyName: "notation",
     },
     {
-      id: 1,
+      id: 5,
       displayName: "Partipants",
       active: true,
       graphQLPropertyName: "participants",
     },
     {
-      id: 1,
+      id: 6,
       displayName: "Parcel Description",
       active: true,
       graphQLPropertyName: "parcelDescription",
@@ -124,8 +148,8 @@ const SiteDetails = () => {
           <span className="btn-back-lbl"> Back to</span>
         </button>
         <div className="d-flex gap-2">
-          <button className="d-flex btn-cart align-items-center">
-            <span className="btn-cart-lbl"> Edit</span>
+          <button className="d-flex btn-cart align-items-center" onClick={()=>{SetEdit(!edit)}}>
+            <span className="btn-cart-lbl" > Edit</span>
           </button>
           <button className="d-flex btn-cart align-items-center">
             <ShoppingCartIcon className="btn-icon" />
@@ -154,8 +178,8 @@ const SiteDetails = () => {
         <div className="row">
           <div className="col-6">Map</div>
           <div className="col-6">
-            <SummaryForm />
-            <div className="row">
+            <SummaryForm sitesDetails={details} edit={edit} />
+            {/* <div className="row">
               <div className="col-12">
                 <LabelComponent name="Site ID" value="14532" />
               </div>
@@ -190,7 +214,7 @@ const SiteDetails = () => {
               <div className="col-12">
                 <LabelComponent name="Site Risk Classification" value="ssss" />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </PanelWithUpDown>

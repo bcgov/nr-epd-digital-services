@@ -1,5 +1,5 @@
 import { RequestStatus } from "../../../helpers/requests/status";
-import { SiteResultDto } from "./Site"
+import { SiteResultDto, Sites } from "./Site"
 
 export class SiteState 
 {
@@ -13,4 +13,9 @@ export class SiteState
     pageSize:number = 10;
     currentPage:number = 1;
     resultsCount: number = 0;
+    siteDetails?: Sites | null = null;
+    siteDetailsFetchStatus:string =  RequestStatus.idle;
+    siteDetailsDeleteStatus:string =  RequestStatus.idle;
+    siteDetailsAddedStatus:string =  RequestStatus.idle;   
+    siteDetailsUpdateStatus:string  = RequestStatus.idle;
 }

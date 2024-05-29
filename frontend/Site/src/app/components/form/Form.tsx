@@ -245,7 +245,7 @@ const Form: React.FC<IFormRendererProps>  = ({ formRows, formData, editMode, han
                                     customLabelCss = {field.customLabelCss}
                                     customInputTextCss={field.customInputTextCss}
                                     placeholder={field.placeholder}
-                                    value={formData[field.graphQLPropertyName ?? ''] || ''}
+                                    value={formData && (formData[field.graphQLPropertyName ?? ''] || '')}
                                     onChange={(value) => handleInputChange(field.graphQLPropertyName, value)}
                                     type={field.type}
                                     validation={field.validation}
@@ -261,7 +261,7 @@ const Form: React.FC<IFormRendererProps>  = ({ formRows, formData, editMode, han
                                     customInputTextCss={field.customInputTextCss}
                                     placeholder={field.placeholder}
                                     options={field.options || []}
-                                    value={formData[field.graphQLPropertyName ?? ''] || ''}
+                                    value={ formData && (formData[field.graphQLPropertyName ?? ''] || '')}
                                     onChange={(value) => handleInputChange(field.graphQLPropertyName, value)}
                                     type={field.type}
                                     isEditing={editMode ?? true}
@@ -288,14 +288,14 @@ const Form: React.FC<IFormRendererProps>  = ({ formRows, formData, editMode, han
                                         type: child.type,
                                         label: child.label,
                                         placeholder: child.placeholder,
-                                        value: formData[child.graphQLPropertyName ?? ''] || '',
+                                        value: formData && (formData[child.graphQLPropertyName ?? ''] || ''),
                                         suffix: child.suffix,
                                         onChange: (value:any) =>
                                             handleInputChange(child.graphQLPropertyName, value),
                                     }))}
                                     onChange={(value) => handleInputChange(field.graphQLPropertyName, value)}
                                     type={field.type}
-                                    value={formData[field.label] || ''}
+                                    value={formData && (formData[field.label] || '')}
                                     isEditing={editMode ?? true}
                                     customLabelCss = {field.customLabelCss}
                                     customInputTextCss={field.customInputTextCss}

@@ -49,3 +49,32 @@ query searchSites($searchParam: String!,  $page: String!, $pageSize: String!, ${
   }
 `);
 }
+
+
+export const graphqlSiteDetailsQuery = () => {
+  return (gql`
+  query findSiteBySiteId($siteId: String!){ 
+        findSiteBySiteId(siteId: $siteId) {
+         data
+         {
+          id,     
+          commonName,
+          addrLine_1,
+          addrLine_2,
+          addrLine_3,
+          addrLine_4,
+          longDegrees,
+          longMinutes,
+          longMinutes,
+          latDegrees,
+          latMinutes,
+          latSeconds,
+          city,
+          generalDescription,
+          siteRiskCode
+         }
+         httpStatusCode
+      }
+    }
+  `);
+}

@@ -1,8 +1,16 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import { FormFieldType, IFormField } from "../../components/form/IForm";
 import Form from "../../components/form/Form";
+import { Sites } from "../site/dto/Site";
+import "./SummaryForm.css"
 
-const SummaryForm = () => {
+interface SummaryFormProps{
+    sitesDetails: Sites,
+    edit: boolean
+}
+
+const SummaryForm:FC<SummaryFormProps> = ({sitesDetails, edit}) => {
+    console.log("sitesDetails",sitesDetails)
   const formRows: IFormField[][] = [
     [
       {
@@ -10,7 +18,7 @@ const SummaryForm = () => {
         label: "Site ID",
         placeholder: 'Separate IDs by a comma (",")',
         graphQLPropertyName: "id",
-        value: "",
+        value: sitesDetails?.id,
         validation: {
           pattern: /^[0-9,\s]*$/,
           customMessage: "Site ID can only contain numbers and commas",
@@ -18,7 +26,7 @@ const SummaryForm = () => {
         allowNumbersOnly: true,
         colSize: 'col-lg-6 col-md-6 col-sm-12',
         customLabelCss: 'custom-lbl-text',
-        customInputTextCss:'custom-input-text'
+        customInputTextCss:'custom-input-text',
       },
     ],
     [
@@ -33,12 +41,15 @@ const SummaryForm = () => {
             placeholder: "Deg",
             graphQLPropertyName: "latDegrees",
             value: "",
+            suffix: "d ",
             validation: {
               pattern: /^[0-9.\s]*$/,
               customMessage:
                 "Latitude Degrees can only contain numbers and decimal points",
             },
             allowNumbersOnly: true,
+            customLabelCss: 'custom-lbl-text',
+            customInputTextCss:'custom-input-text',
           },
           {
             type: FormFieldType.Text,
@@ -46,12 +57,15 @@ const SummaryForm = () => {
             placeholder: "Min",
             graphQLPropertyName: "latMinutes",
             value: "",
+            suffix: "m ",
             validation: {
               pattern: /^[0-9.\s]*$/,
               customMessage:
                 "Latitude Minutes can only contain numbers and decimal points",
             },
             allowNumbersOnly: true,
+            customLabelCss: 'custom-lbl-text',
+            customInputTextCss:'custom-input-text',
           },
           {
             type: FormFieldType.Text,
@@ -59,12 +73,15 @@ const SummaryForm = () => {
             placeholder: "Sec",
             graphQLPropertyName: "latSeconds",
             value: "",
+            suffix: "s ",
             validation: {
               pattern: /^[0-9.\s]*$/,
               customMessage:
                 "Latitude Seconds can only contain numbers and decimal points",
             },
             allowNumbersOnly: true,
+            customLabelCss: 'custom-lbl-text',
+            customInputTextCss:'custom-input-text',
           },
         ],
       },
@@ -122,7 +139,7 @@ const SummaryForm = () => {
         label: "Site Address",
         placeholder: "Site Address",
         graphQLPropertyName: "addrLine_1",
-        value: "",
+        value: sitesDetails?.address,
       },
       {
         type: FormFieldType.Text,
@@ -137,7 +154,7 @@ const SummaryForm = () => {
         type: FormFieldType.Text,
         label: "Common Name",
         placeholder: "Common Name",
-        graphQLPropertyName: "common",
+        graphQLPropertyName: "commonName",
         value: "",
       },
     ],
@@ -146,7 +163,7 @@ const SummaryForm = () => {
         type: FormFieldType.Text,
         label: "Location Description",
         placeholder: "Location Description",
-        graphQLPropertyName: "common",
+        graphQLPropertyName: "generalDescription",
         value: "",
       },
     ],
@@ -155,7 +172,7 @@ const SummaryForm = () => {
         type: FormFieldType.Text,
         label: "Site Risk Classification",
         placeholder: "Site Risk Classification",
-        graphQLPropertyName: "common",
+        graphQLPropertyName: "siteRiskCode",
         value: "",
       },
     ],
@@ -167,9 +184,9 @@ const SummaryForm = () => {
 
   return (
     <form onSubmit={() => {}}>
-      <Form editMode={false}
+      <Form editMode={edit}
         formRows={formRows}
-        formData={formData}
+        formData={sitesDetails}
         handleInputChange={() => {}}
       />
     </form>

@@ -7,7 +7,7 @@ interface PanelWithUpDownProps {
 }
 
 const PanelWithUpDown: FC<PanelWithUpDownProps> = ({ label, children }) => {
-  const [showDetails, setShowDetails] = useState(false);
+  const [showDetails, setShowDetails] = useState(true);
   return (
     <div className="section-container">
       <div className="section-container-header">
