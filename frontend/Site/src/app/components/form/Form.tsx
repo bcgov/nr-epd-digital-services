@@ -5,6 +5,7 @@ import { CalendarIcon, DropdownIcon, XmarkIcon } from '../common/icon';
 import 'rsuite/DateRangePicker/styles/index.css';
 import { FormFieldType, IFormField } from "./IForm";
 import { formatDateRange } from "../../helpers/dateFormat";
+import avatar from '../../images/avatar.png';
 
 interface IFormRendererProps {
     formRows: IFormField[][]; // Define the type of formRows according to your application
@@ -19,7 +20,7 @@ interface InputProps extends IFormField {
     onChange: (value: any) => void;
 }
 
-const TextInput: React.FC<InputProps> =  ({label, placeholder, type, value, validation, allowNumbersOnly, isEditing, customLabelCss, customInputTextCss, onChange})=> {
+const TextInput: React.FC<InputProps> =  ({label, placeholder, type, value, validation, allowNumbersOnly, isEditing, customLabelCss, customInputTextCss, customEditLabelCss, customEditInputTextCss, onChange})=> {
 
     const [error, setError] = useState<string | null>(null);
 
@@ -56,14 +57,14 @@ const TextInput: React.FC<InputProps> =  ({label, placeholder, type, value, vali
     const inputTxtId = label.replace(/\s+/g, '_');
     return (
         <div className="mb-3">
-            <label htmlFor={inputTxtId} className={`${!isEditing ? customLabelCss ?? '' : 'form-label custom-label'}`}>
+            <label htmlFor={inputTxtId} className={`${!isEditing ? customLabelCss ?? '' : `form-label ${ customEditLabelCss ?? 'custom-label'}`}`}>
                 {label}
             </label>
            {  isEditing ? 
                 <input
                     type={type}
                     id={inputTxtId}
-                    className={`form-control custom-input ${error && 'error'}`}
+                    className={`form-control custom-input ${ customEditInputTextCss ?? 'custom-input-text'}  ${error && 'error'}`}
                     placeholder={placeholder}
                     value={value ?? ''}
                     onChange={handleTextInputChange}
@@ -78,11 +79,12 @@ const TextInput: React.FC<InputProps> =  ({label, placeholder, type, value, vali
     );
 }
 
-const Dropdown: React.FC<InputProps> = ({ label, placeholder, options, value, isEditing, customLabelCss, customInputTextCss, onChange }) => {
+const Dropdown: React.FC<InputProps> = ({ label, placeholder, options, value, isEditing, isImage, customLabelCss, customInputTextCss, customEditLabelCss, customEditInputTextCss, onChange }) => {
 
     // Replace any spaces in the label with underscores to create a valid id
     const drdownId = label.replace(/\s+/g, '_');
     const [selected, setSelected] = useState<boolean>(false);
+    const imgUrl = avatar;
 
     const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedOption = event.target.value.trim();
@@ -94,7 +96,7 @@ const Dropdown: React.FC<InputProps> = ({ label, placeholder, options, value, is
     return(
         <div className="mb-3">
             {/* Create a label for the dropdown using the form-label class */}
-            <label htmlFor={drdownId} className={`${!isEditing ? customLabelCss ?? '' : 'form-label custom-label'}`}>
+            <label htmlFor={drdownId} className={`${!isEditing ? customLabelCss ?? '' :  `form-label ${ customEditLabelCss ?? 'custom-label'}`}`}>
                 {label}
             </label>
 
@@ -102,7 +104,7 @@ const Dropdown: React.FC<InputProps> = ({ label, placeholder, options, value, is
             { isEditing ?
                 <select
                     id={drdownId}
-                    className={`form-select custom-input custom-select ${selected ? 'custom-option' : ''} ${isFirstOptionGrey? 'custom-disabled-option' : 'custom-primary-option'}`}
+                    className={`form-select custom-input custom-select ${ customEditInputTextCss ?? 'custom-input-text'} ${selected ? 'custom-option' : ''} ${isFirstOptionGrey? 'custom-disabled-option' : 'custom-primary-option'}`}
                     value={value.trim() ?? ''}
                     onChange={handleSelectChange}
                     aria-label={label}
@@ -116,13 +118,19 @@ const Dropdown: React.FC<InputProps> = ({ label, placeholder, options, value, is
                     ))}
                 </select>
                 :
-                <p className={`${customInputTextCss ?? ''}`}>{options?.find(opt => opt.key === value)?.value}</p>
+                isImage ?
+                <div className="d-flex align-items-center gap-2">
+                    <img src={options?.find(opt => opt.key === value)?.imageUrl ?? imgUrl} alt="User image." className="custom-form-image"  aria-hidden="true" role="img" aria-label="User image"/>
+                    <p className={`m-0 ${customInputTextCss ?? ''}`}>{options?.find(opt => opt.key === value)?.value}</p>
+                </div>
+                :
+                    <p className={`${customInputTextCss ?? ''}`}>{options?.find(opt => opt.key === value)?.value}</p>
             }
         </div>
     );
 }
 
-const GroupInput: React.FC<InputProps> = ({label, children, isEditing, customLabelCss, customInputTextCss,}) =>{
+const GroupInput: React.FC<InputProps> = ({label, children, isEditing, customLabelCss, customInputTextCss, customEditLabelCss, customEditInputTextCss,}) =>{
     const [error, setError] = useState<string | null>(null);
     let currentConcatenatedValue;
 
@@ -173,7 +181,7 @@ const GroupInput: React.FC<InputProps> = ({label, children, isEditing, customLab
     return(
         <div className="mb-3"> {/* Container for the group input */}
             {/* Label for the group input */}
-            <label className={`${!isEditing ? customLabelCss ?? '' : 'form-label custom-label'}`}>{label}</label>
+            <label className={`${!isEditing ? customLabelCss ?? '' :  `form-label ${ customEditLabelCss ?? 'custom-label'}`}`}>{label}</label>
             
             {/* Bootstrap row for the group of child fields */}
             <div className="row">
@@ -183,7 +191,7 @@ const GroupInput: React.FC<InputProps> = ({label, children, isEditing, customLab
                             {/* Render each child field as an input element */}
                                 <input
                                 type={child.type}
-                                className={`form-control custom-input ${error && 'error'}`}
+                                className={`form-control custom-input ${ customEditInputTextCss ?? 'custom-input-text'} ${error && 'error'}`}
                                 placeholder={child.placeholder}
                                 value={child.value ?? ''}
                                 onChange={(e) => handleTextInputChange(e, child)}
@@ -201,7 +209,7 @@ const GroupInput: React.FC<InputProps> = ({label, children, isEditing, customLab
     );
 }
 
-const DateInput: React.FC<InputProps> = ({ label, placeholder, value, isEditing, customLabelCss, customInputTextCss, onChange }) => {
+const DateInput: React.FC<InputProps> = ({ label, placeholder, value, isEditing, customLabelCss, customInputTextCss, customEditLabelCss, customEditInputTextCss, onChange }) => {
     let dateRangeValue;
     if(value.length > 0)
     {
@@ -212,7 +220,7 @@ const DateInput: React.FC<InputProps> = ({ label, placeholder, value, isEditing,
     const dateRangeId = label.replace(/\s+/g, '_');
     return (
     <div className="mb-3">
-        <label htmlFor={dateRangeId} className={`${!isEditing ? customLabelCss ?? '' : 'form-label custom-label'}`}>{label}</label>
+        <label htmlFor={dateRangeId} className={`${!isEditing ? customLabelCss ?? '' :  `form-label ${ customEditLabelCss ?? 'custom-label'}`}`}>{label}</label>
         { isEditing ? 
             <DateRangePicker 
             id={dateRangeId}
@@ -236,7 +244,7 @@ const DateInput: React.FC<InputProps> = ({ label, placeholder, value, isEditing,
 const Form: React.FC<IFormRendererProps>  = ({ formRows, formData, editMode, handleInputChange }) => {
     return(<>
      {formRows.map((row, rowIndex) => (
-                <div key={rowIndex} className="row mb-3">
+                <div key={rowIndex} className="row">
                     {row.map((field, colIndex) => (
                         <div key={colIndex} className={field.colSize}>
                             {field.type === FormFieldType.Text && (
@@ -244,8 +252,10 @@ const Form: React.FC<IFormRendererProps>  = ({ formRows, formData, editMode, han
                                     label={field.label}
                                     customLabelCss = {field.customLabelCss}
                                     customInputTextCss={field.customInputTextCss}
+                                    customEditLabelCss = {field.customEditLabelCss}
+                                    customEditInputTextCss={field.customEditInputTextCss}
                                     placeholder={field.placeholder}
-                                    value={formData && (formData[field.graphQLPropertyName ?? ''] || '')}
+                                    value={formData[field.graphQLPropertyName ?? ''] || ''}
                                     onChange={(value) => handleInputChange(field.graphQLPropertyName, value)}
                                     type={field.type}
                                     validation={field.validation}
@@ -259,12 +269,15 @@ const Form: React.FC<IFormRendererProps>  = ({ formRows, formData, editMode, han
                                     label={field.label}
                                     customLabelCss = {field.customLabelCss}
                                     customInputTextCss={field.customInputTextCss}
+                                    customEditLabelCss = {field.customEditLabelCss}
+                                    customEditInputTextCss={field.customEditInputTextCss}
                                     placeholder={field.placeholder}
                                     options={field.options || []}
-                                    value={ formData && (formData[field.graphQLPropertyName ?? ''] || '')}
+                                    value={formData[field.graphQLPropertyName ?? ''] || ''}
                                     onChange={(value) => handleInputChange(field.graphQLPropertyName, value)}
                                     type={field.type}
                                     isEditing={editMode ?? true}
+                                    isImage = {field.isImage}
                                 />
                             )}
                             {field.type === FormFieldType.Date && (
@@ -272,6 +285,8 @@ const Form: React.FC<IFormRendererProps>  = ({ formRows, formData, editMode, han
                                     label={field.label}
                                     customLabelCss = {field.customLabelCss}
                                     customInputTextCss={field.customInputTextCss}
+                                    customEditLabelCss = {field.customEditLabelCss}
+                                    customEditInputTextCss={field.customEditInputTextCss}
                                     placeholder={field.placeholder}
                                     value={formData[field.graphQLPropertyName ?? ''] || []}
                                     onChange={(value) => handleInputChange(field.graphQLPropertyName, value)}
@@ -288,17 +303,19 @@ const Form: React.FC<IFormRendererProps>  = ({ formRows, formData, editMode, han
                                         type: child.type,
                                         label: child.label,
                                         placeholder: child.placeholder,
-                                        value: formData && (formData[child.graphQLPropertyName ?? ''] || ''),
+                                        value: formData[child.graphQLPropertyName ?? ''] || '',
                                         suffix: child.suffix,
                                         onChange: (value:any) =>
                                             handleInputChange(child.graphQLPropertyName, value),
                                     }))}
                                     onChange={(value) => handleInputChange(field.graphQLPropertyName, value)}
                                     type={field.type}
-                                    value={formData && (formData[field.label] || '')}
+                                    value={formData[field.label] || ''}
                                     isEditing={editMode ?? true}
                                     customLabelCss = {field.customLabelCss}
                                     customInputTextCss={field.customInputTextCss}
+                                    customEditLabelCss = {field.customEditLabelCss}
+                                    customEditInputTextCss={field.customEditInputTextCss}
                                 />
                             )}
                         </div>

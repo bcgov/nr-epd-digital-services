@@ -8,9 +8,16 @@
 
 .custom-input {
     border: 1px solid var(--surface-color-border-light, #D8D8D8) !important;
-    background-color: var(--surface-background-white) !important;
+    background-color: var(--surface-background-white, #FFFFFF) !important;
     padding: var(--layout-padding-small) var(--layout-padding-medium) var(--layout-padding-small) var(--layout-padding-medium) !important;
     border-radius: var(--layout-margin-xsmall) !important;
+}
+
+.custom-input-text { 
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
 }
 
 .custom-input::placeholder {
@@ -45,6 +52,7 @@
 
 .custom-select {
     background-image: url('../../images/dropdown.png') !important;
+    background-repeat: no-repeat !important;
     background-size: 12px !important;
     font-size: 16px;
     font-weight: 400;
@@ -60,13 +68,19 @@
 }
 
 .custom-option {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    line-height: 24px !important;
     text-align: left;
 }
 
 .custom-input.error:focus {
     border-color: red;
     box-shadow: 0 0 0 .25rem rgba(255,0,0, 0.25);
+}
+
+.custom-form-image {
+        border-radius: 100px;
+        height: 27px;
+        width: 27px;
 }

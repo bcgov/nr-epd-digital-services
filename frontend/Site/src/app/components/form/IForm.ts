@@ -12,13 +12,16 @@ export interface IFormField {
     placeholder?: string;
     colSize?: string;
     customLabelCss?:string;
+    customEditLabelCss?:string;
     customInputTextCss?:string;
+    customEditInputTextCss?:string;
     graphQLPropertyName?: string,
     allowNumbersOnly?: boolean; 
-    options?: {key :string, value: string}[];
+    options?: {key :string, value: string, imageUrl?: any}[];
     value: any;
     children?: IFormField[];
     suffix?: string;
+    isImage?: boolean;
     validation?: {
         required?: boolean;
         minLength?: number;
