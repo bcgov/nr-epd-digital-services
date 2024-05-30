@@ -1,0 +1,164 @@
+header {
+    background-color: #053662;
+    border-bottom: 2px solid #F8BA47;
+    /* padding: 0 65px 0 65px; */
+    padding: 10px var(--layout-padding-xlarge) 11px var(--layout-padding-xlarge) !important;
+    color: #fff;
+    display: flex;
+    height: 65px;
+    top: 0px;
+    width: 100%;
+  }
+
+  .logo
+  {
+    height: 41px;
+  }
+  
+  header h1 {
+    font-family: 'BCSans';
+    font-weight: normal;  /* 400 */
+    margin: 5px 5px 0 18px;
+    visibility: hidden;
+  }
+  
+  header .banner {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0 10px 0 0;
+    /* border-style: dotted;
+    border-width: 1px;
+    border-color: lightgrey; */
+    padding-left:24px;
+  }
+
+  header .siteName
+  {
+    margin-left: 24px;
+  }
+  
+  header .other {
+    display: flex;
+    flex-grow: 1; 
+    /* border-style: dotted;
+    border-width: 1px;
+    border-color: lightgrey; */
+  }
+
+  #authentication-button{
+    display:flex;
+    width: 100px;
+    align-self: flex-end;
+    margin-right: 1rem;
+  }
+  
+  #logged-in-toggle{
+    background-color: #036;
+    border-color: #036;
+  }
+
+
+  .header-right-corner-section
+  {
+    gap: var(--layout-padding-large);
+    opacity: 0px;
+    /* display: flex; 
+    gap: 16px;
+    opacity: 0px;
+    align-items: center; */
+  }
+
+  .bars-button
+  {
+    color: var(--typography-color-primary-invert);  
+    font-size: 21px;
+    font-weight: 900;
+    line-height: 21px;
+    text-align: center;
+    border:0px !important;
+  
+  }
+
+  .no-bg-br-outline
+  {
+    background: none;
+    border: 0px;
+    outline: none;
+    box-shadow: none;
+  }
+
+  
+
+  /*
+    These are sample media queries only. Media queries are quite subjective
+    but, in general, should be made for the three different classes of screen
+    size: phone, tablet, full.
+  */
+  
+  @media screen and (max-width:599px){
+    header h1{
+      display: none;
+    }
+  }
+
+  @media screen and (min-width: 600px) and (max-width: 899px) {
+    header h1 {
+      font-size: calc(5px + 2vw);
+      visibility: visible;
+      display: flex;
+    }
+  }
+  
+  @media screen and (min-width: 900px) {
+    header h1 {
+      font-size: 2.0em;
+      visibility: visible;
+      display: flex;
+    }
+  }
+
+  .small-screen-menu
+  {
+    background: white;
+    position: absolute;
+    top: 65px;
+    width: 100%;
+    right:0;
+    color: black;
+  }
+
+  @media screen and (min-width: 768px)
+  {
+    .display-upto-medium
+    {
+      display: none !important;
+    }
+  }
+  
+
+
+  .mobile-menu
+  {
+    overflow: auto;
+    height: 100vh;
+    max-height: 400px;
+    margin-bottom: var(--layout-margin-xxxlarge);
+    z-index: 1000;
+    border-bottom-left-radius: var(--surface-border-radius-medium);
+    border-bottom-right-radius: var(--surface-border-radius-medium);
+    border: 1px solid grey;
+  }
+
+
+  ::-webkit-scrollbar {
+    width: 12px; /* width of the scrollbar */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; /* color of the track */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #888; /* color of the thumb */
+  }

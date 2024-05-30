@@ -1,0 +1,27 @@
+.label-container
+{    
+    display: flex;
+    flex-direction: column;
+    gap: var(--layout-margin-xsmall);
+}
+
+.field-label
+{
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 21.01px;
+    text-align: left;
+    color: var(--typography-color-secondary);
+}
+
+
+.field-value
+{
+    color: var(--typography-color-secondary);
+
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 27.01px;
+    text-align: left;
+
+}

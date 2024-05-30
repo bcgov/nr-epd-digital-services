@@ -1,0 +1,145 @@
+:root {
+    --side-bar-padding-large: var(--layout-padding-large);
+    --side-bar-padding-medium: var(--layout-padding-medium);
+    --side-bar-background-color: #FFFFFF;
+    --side-bar-shadow: 0px 3.2px 7.2px 0px rgba(0, 0, 0, 0.13);
+    --current-path-background-color: #053662;
+    --side-bar-text-color: var(--surface-primary-default);
+    --side-bar-text-hover-color: #FFFFFF;
+}
+
+.side-bar {
+    display: flex;
+    flex-direction: column;
+    background: var(--side-bar-background-color);
+    box-shadow: var(--side-bar-shadow);
+    top: 65px;
+    padding: var(--layout-padding-large) var(--layout-padding-medium) var(--layout-padding-large) var(--layout-padding-medium);
+    justify-content: space-between;
+    min-height: calc(100vh - 65px) !important;
+}
+
+.side-bar:hover {
+    width: 160px;
+    z-index: 1000;
+    position: sticky;
+}
+
+.side-bar:hover .sideBar-Nav {
+    align-items: flex-start;
+    padding: 0px;
+}
+
+.side-bar:hover .sideBar-Nav .arrow-left {
+    display: none;
+}
+
+.side-bar:hover .sideBar-Nav .arrow-right {
+    display: block;
+}
+
+.side-bar:hover .arrows {
+    display: flex;
+    align-self: end;
+}
+
+.side-bar .sideBar-Nav .arrow-right {
+    display: none;
+}
+
+.sideBar-Nav {
+    display: flex;
+    gap: 24px;
+    flex-direction: column;
+    list-style: none;
+    align-items: center;
+
+}
+
+.sideBar-Nav:hover {
+    align-items: flex-start;
+}
+
+
+.sideBar-NavItem {
+    height: 40px;
+    padding: var(--layout-padding-small);
+    border-radius: var(--layout-padding-small);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+.side-bar:hover .sideBarDisplayText {
+    display: block;
+    text-decoration: none !important;
+
+}
+
+.sideBarDisplayText {
+    display: none;
+}
+
+
+.sideBar-NavLabel {
+    font-family: 'BCSans';
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 21px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #474543;
+}
+
+
+.sideBar-Icon {
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: var(--surface-primary-default);
+}
+
+.nav-section-bold-label {
+    font-family: 'BCSans';
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 21.01px;
+    text-align: left;
+}
+
+.nav-color-secondary {
+    color: var(--typography-color-secondary);
+}
+
+.nav-color-primary-default {
+    color: var(--surface-primary-default);
+
+}
+
+.currentPath {
+    background: var(--current-path-background-color);
+    border-radius: 0px;
+    width: 40px;
+    justify-content: center;
+}
+
+.currentPath .sideBar-Icon,
+.currentPath .sideBarDisplayText {
+    color: white !important;
+}
+
+.side-bar:hover .currentPath {
+    width: 100%;
+}
+
+.sideBarDisplayText:hover {
+    color: var(--surface-primary-default) !important;
+}
+
+.currentPath .sideBarDisplayText:hover {
+    color: var(--side-bar-text-hover-color) !important;
+}
