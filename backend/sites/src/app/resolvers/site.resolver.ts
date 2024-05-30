@@ -31,4 +31,10 @@ export class SiteResolver {
     searchSites(@Args('searchParam', { type: () => String }) searchParam: string) {
         return this.siteService.searchSites(searchParam);
     }
+
+    @Roles({ roles: ['site-admin'], mode: RoleMatchingMode.ANY })
+    @Query(() => Sites, { name: 'findSiteBySiteId' })
+    findSiteBySiteId(@Args('siteId', { type: () => String }) siteId: string) {
+        return this.siteService.findSiteBySiteId(siteId);
+    }
 }

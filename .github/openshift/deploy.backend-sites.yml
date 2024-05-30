@@ -3,7 +3,7 @@ kind: Template
 metadata:
   name: ${NAME}
   annotations:
-    description: "EPD backend-gateway"
+    description: "EPD backend-sites"
     tags: "epd-backend"
     iconClass: icon-js
 labels:
@@ -15,7 +15,7 @@ parameters:
   value: epd
 - name: COMPONENT
   description: Component name
-  value: backend-gateway
+  value: backend-sites
 - name: IMAGE_TAG
   description: Image tag to use
   value: latest
@@ -43,7 +43,10 @@ parameters:
   value: ghcr.io
 - name: PROMOTE
   description: Image (namespace/name:tag) to promote/import
-  value: bcgov/nr-epd-digital-services/backend/gateway
+  value: bcgov/nr-epd-digital-services/backend/sites
+- name: INIT_IMAGE
+  description: Image (namespace/name:tag) to promote/import
+  value: bcgov/nr-epd-digital-services/backend/sites-migration
 - name: ENV
   description: The Environment on which it is deployed
   required: true
@@ -62,6 +65,22 @@ objects:
       from:
         kind: DockerImage
         name: ${REGISTRY}/${PROMOTE}:${IMAGE_TAG}
+      referencePolicy:
+        type: Local
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: ${NAME}-${COMPONENT}-migration
+    name: ${NAME}-${COMPONENT}-migration
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - name: ${IMAGE_TAG}
+      from:
+        kind: DockerImage
+        name: ${REGISTRY}/${INIT_IMAGE}:${IMAGE_TAG}
       referencePolicy:
         type: Local
 - apiVersion: v1
@@ -92,7 +111,6 @@ objects:
           app: ${NAME}-${COMPONENT}
           deploymentconfig: ${NAME}-${COMPONENT}
       spec:
-
         containers:
         - image: " "
           imagePullPolicy: Always
@@ -101,44 +119,68 @@ objects:
           - name: POSTGRESQL_HOST
             valueFrom:
               configMapKeyRef:
-                name: ${NAME}-database
+                name: sites-database
                 key: POSTGRESQL_HOST
-          - name: POSTGRESQL_DATABASE
+          - name: POSTGRESQL_PORT
             valueFrom:
               configMapKeyRef:
-                name: ${NAME}-database
-                key: POSTGRES_DATABASE
-          - name: USERS_MICROSERVICE
+                name: sites-database
+                key: POSTGRESQL_PORT
+          - name: POSTGRES_ADMIN_USERNAME
             valueFrom:
               configMapKeyRef:
-                name: ${NAME}-database
-                key: USERS_MICROSERVICE
-          - name: USERS_MICROSERVICE_ENDPOINT
+                name: sites-database
+                key: POSTGRES_ADMIN_USERNAME
+          - name: POSTGRES_ADMIN_PASSWORD
             valueFrom:
               configMapKeyRef:
-                name: ${NAME}-database
-                key: USERS_MICROSERVICE_ENDPOINT
-          - name: APPLICATION_MICROSERVICE_ENDPOINT
+                name: sites-database
+                key: POSTGRES_ADMIN_PASSWORD
+          - name: POSTGRES_DB_USERNAME
             valueFrom:
               configMapKeyRef:
-                name: ${NAME}-database
-                key: APPLICATION_MICROSERVICE_ENDPOINT
-          - name: POSTGRESQL_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: ${NAME}-database
-                key: POSTGRES_DB_PASSWORD
-          - name: POSTGRESQL_USER
-            valueFrom:
-              secretKeyRef:
-                name: ${NAME}-database
+                name: sites-database
                 key: POSTGRES_DB_USERNAME
-          # - name: USERS_MICROSERVICE
-          #   value: https://${NAME}-backend-users-${ENV}.${DOMAIN}
-          # - name: USERS_MICROSERVICE_ENDPOINT
-          #   value: https://${NAME}-backend-users-${ENV}.${DOMAIN}/graphql
-          # - name: APPLICATION_MICROSERVICE_ENDPOINT
-          #   value: https://${NAME}-backend-applications-${ENV}.${DOMAIN}/graphql
+          - name: POSTGRES_DB_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_DB_PASSWORD
+          - name: POSTGRES_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_DATABASE
+          - name: POSTGRES_DB_SCHEMA
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_DB_SCHEMA
+
+          - name: KEYCLOCK_AUTH_URL
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: KEYCLOCK_AUTH_URL
+          - name: KEYCLOCK_CLIENT_ID
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: KEYCLOCK_CLIENT_ID
+          - name: KEYCLOCK_REALM
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: KEYCLOCK_REALM
+          - name: KEYCLOCK_SECRET
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: KEYCLOCK_SECRET
+
+
+
+
           ports:
           - containerPort: ${{CONTAINER_PORT}}
             protocol: TCP
@@ -157,7 +199,7 @@ objects:
             initialDelaySeconds: 10
             periodSeconds: 30
             timeoutSeconds: 5
-            failureThreshold: 3
+            failureThreshold: 30
             successThreshold: 1
           livenessProbe:
             successThreshold: 1
@@ -169,26 +211,64 @@ objects:
             initialDelaySeconds: 10
             periodSeconds: 30
             timeoutSeconds: 5
-        # initContainers:
-        #   - name: wait-for-graphql
-        #   # is this image going to work?
-        #     image: busybox:1.28 
-        #     args:
-        #     - /bin/sh
-        #     - -c
-        #     - >
-        #       set -x;
-        #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://epd-backend-applications/:)" != "200" ]]; do 
-        #         echo '.'
-        #         sleep 15;
-        #       done  
         initContainers:
-        - name: init-${NAME}-backend-applications
-          image: registry.access.redhat.com/ubi8/ubi:latest
-          command: ['sh', '-c', 'until getent hosts epd-backend-applications; do echo waiting for applications; sleep 2; done;']
-        - name: init-${NAME}-backend-users
-          image: registry.access.redhat.com/ubi8/ubi:latest
-          command: ['sh', '-c', 'until getent hosts epd-backend-users; do echo waiting for users; sleep 2; done;']
+        # - name: init-${NAME}-backend-users-typeorm-migrations
+        #   image: image-registry.openshift-image-registry.svc:5000/${NAME}-${COMPONENT}:${IMAGE_TAG}
+        #   command: ['sh', '-c', 'initContainer.sh']
+        #  ${NAME}-${COMPONENT}:${IMAGE_TAG}
+        - name: epd-db-migration-sites
+          image: "image-registry.openshift-image-registry.svc:5000/c6a6e5-${ENV}/${NAME}-${COMPONENT}-migration:${IMAGE_TAG}"
+          env:
+          - name: Typeorm-migration-sites
+            value: "jdbc:postgresql://${COMPONENT}-postgres:5432/${COMPONENT}"
+          - name: POSTGRESQL_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRESQL_HOST
+          - name: POSTGRESQL_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRESQL_PORT
+          - name: POSTGRES_ADMIN_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_ADMIN_USERNAME
+          - name: POSTGRES_ADMIN_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_ADMIN_PASSWORD
+          - name: POSTGRES_DB_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_DB_USERNAME
+          - name: POSTGRES_DB_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_DB_PASSWORD
+          - name: POSTGRES_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_DATABASE
+          - name: POSTGRES_DB_SCHEMA
+            valueFrom:
+              configMapKeyRef:
+                name: sites-database
+                key: POSTGRES_DB_SCHEMA
+
+          resources:
+            limits:
+              cpu: 100m
+              memory: 150Mi
+            requests:
+              cpu: 50m
+              memory: 50Mi
 - apiVersion: v1
   kind: Service
   metadata:

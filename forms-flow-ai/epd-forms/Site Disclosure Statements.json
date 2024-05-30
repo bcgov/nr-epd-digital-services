@@ -1104,7 +1104,7 @@
                                                 "height": ""
                                             },
                                             "type": "button",
-                                            "custom": "if(data.Signature==='' || data.firstAndLastName==='' || data.datesigned==='' || data.radioGroup==='')\r\n{\r\n    alert('Please complete the signature section before submitting!');\r\n    \r\n    if(!form.checkValidity(null, false, null, true))\r\n    {\r\n      \tconst submissionId = form._submission._id;\r\n\tconst formId = form._submission.form;\r\n\tconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\n\r\n\tconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\r\n\tconst formio = new Formio(formDataReqUrl);\r\n\tformio.saveSubmission(formDataReqObj1).then( result => {\r\n\tform.emit('customEvent', {\r\n          \ttype: \"actionComplete\",   \r\n         \t component: component,\r\n          \tactionType: 'Signed'\r\n    \t\t}); \r\n\t}).catch((error)=>{\r\n\t//Error callback on not Save\r\n\tform.emit('customEvent', {\r\n          \ttype: \"actionError\",   \r\n          \tcomponent: component,\r\n          \tactionType:'Signed'\r\n    \t}); \r\n\t});\r\n    }\r\n    \r\n}\r\nelse\r\n{\r\nconst submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\n\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Signed'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Signed'\r\n    }); \r\n});\r\n}",
+                                            "custom": "if(data.Signature==='' || data.firstAndLastName==='' || data.datesigned==='' || data.radioGroup==='')\r\n{\r\n    alert('Please complete the signature section before submitting!');\r\n}\r\nelse\r\n{\r\nconst submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\n\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Signed'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Signed'\r\n    }); \r\n});\r\n}",
                                             "input": true,
                                             "placeholder": "",
                                             "prefix": "",
@@ -1143,7 +1143,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "e7diehb"
+                                            "id": "eyaylv"
                                         }
                                     ],
                                     "width": 3,
@@ -1308,7 +1308,7 @@
                     "templates": {
                         "header": "{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n\r\n{% if(groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-reviewer/lrs-approving-authority\") || groups.includes(\"/formsflow/formsflow-client\")){  %}\r\n\r\n<div class=\"row card-header bg-default\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component) && component.key !== 'commentFor'  ) { %}\r\n         {% if(component.label === 'Notes') {  %}\r\n           <div class=\"col-sm-4\">{{ t(component.label) }}</div>\r\n         {% } else if(component.key !== 'comments') {  %}\r\n           <div class=\"col-sm-2\">{{ t(component.label) }}</div>\r\n         {% } %}\r\n        {% } %}\r\n      {% }) %}\r\n    </div>\r\n\r\n{% } else { %}\r\n\r\n<div class=\"row card-header bg-default\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component)) { %}\r\n          {% if(component.key == 'comments') {  %}\r\n        <div class=\"col-sm-4\"> {{   t(component.label)}} </div>\r\n {% } else if( component.key == 'commentFor' || component.key == 'role' || component.key == 'createdBy') {  %}\r\n        <div class=\"col-sm-2\"> {{   t(component.label)}} </div>\r\n{% } else { %}\r\n  <div class=\"col-sm-1\"> {{  t(component.label)}} </div>\r\n{% } %}      \r\n {% } %}\r\n      {% }) %}\r\n    </div>\r\n\r\n{% } %}",
                         "tableHeader": "\n      <tr>\n        {% util.eachComponent(components, function(component) { %}\n          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}\n            <td class=\"editgrid-table-column\">{{ component.label }}</td>\n          {% } %}\n        {% }) %}\n        {% if (!instance.options.readOnly && !instance.disabled) { %}\n          <td class=\"editgrid-table-column\">Actions</td>\n        {% } %}\n      </tr>\n    ",
-                        "row": "{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n\r\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-reviewer/lrs-approving-authority\") || groups.includes(\"/formsflow/formsflow-client\")) && row['commentFor']==='external'){  %}\r\n\r\n\r\n\r\n<div class=\"row\">\r\n\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component) && component.key !== 'commentFor' ) { %}\r\n        {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-reviewer/lrs-approving-authority\") || groups.includes(\"/formsflow/formsflow-client\")) && row['commentFor']==='external'){ %}\r\n{% if(component.key == 'comments') {  %}\r\n          <div class=\"col-sm-4\">\r\n               {{ getView(component, row[component.key])}}\r\n          </div>\r\n{% } else { %}\r\n <div class=\"col-sm-2\">\r\n    {{ getView(component, row[component.key])}}\r\n          </div>\r\n{%}%}\r\n           \r\n\r\n            {% } %}\r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n              {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-reviewer/lrs-approving-authority\") || groups.includes(\"/formsflow/formsflow-client\")) && row['commentFor']==='external'){ %}\r\n        <div class=\"col-sm-2\">\r\n          <div class=\"btn-group pull-right\">\r\n            <button class=\"btn btn-default btn-light btn-sm editRow\"><i class=\"{{ iconClass('edit') }}\"></i></button>\r\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n       \r\n           {% } %}\r\n      {% } %}\r\n    </div>\r\n     {% } else if (groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\")) { %}\r\n     <div class=\"row\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component)) { %}\t\t\r\n\t\t   {% if(component.key == 'comments') {  %}\r\n        <div class=\"col-sm-4  text-break\"> {{  getView(component, row[component.key])}} </div>\r\n {% } else if(component.key == 'commentFor' || component.key == 'role' || component.key == 'createdBy') {  %}\r\n        <div class=\"col-sm-2 text-break\"> {{  getView(component, row[component.key])}} </div>\r\n{% } else { %}\r\n  <div class=\"col-sm-1\"> {{  getView(component, row[component.key])}} </div>\r\n{% } %}          \r\n         \r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n        <div class=\"col-sm-2\">\r\n          <div class=\"btn-group pull-right\">\r\n            <button class=\"btn btn-default btn-light btn-sm editRow\"><i class=\"{{ iconClass('edit') }}\"></i></button>\r\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n      {% } %}\r\n    </div>\r\n     {% } %}\r\n   \r\n     \r\n     \r\n{% const emptyElements = []; %}\r\n{% const elements = document.getElementsByClassName(\"list-group-item\"); %}\r\n{% for (let i = 0; i < elements.length; i++) { %}\r\n{%  const element = elements[i]; %}\r\n{% if(element.querySelectorAll('div.row').length===0){(element).remove() }} %}",
+                        "row": "{% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n\r\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-reviewer/lrs-approving-authority\") || groups.includes(\"/formsflow/formsflow-client\")) && row['commentFor']==='external'){  %}\r\n\r\n\r\n\r\n<div class=\"row\">\r\n\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component) && component.key !== 'commentFor' ) { %}\r\n        {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-reviewer/lrs-approving-authority\") || groups.includes(\"/formsflow/formsflow-client\")) && row['commentFor']==='external'){ %}\r\n{% if(component.key == 'comments') {  %}\r\n          <div class=\"col-sm-4\">\r\n               {{ getView(component, row[component.key])}}\r\n          </div>\r\n{% } else { %}\r\n <div class=\"col-sm-2\">\r\n    {{ getView(component, row[component.key])}}\r\n          </div>\r\n{%}%}\r\n           \r\n\r\n            {% } %}\r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n              {% const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))%}\r\n{% const groups = UserDetails[\"groups\"]; %}\r\n{% if((groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || groups.includes(\"/formsflow/formsflow-reviewer/lrs-approving-authority\") || groups.includes(\"/formsflow/formsflow-client\")) && row['commentFor']==='external'){ %}\r\n        <div class=\"col-sm-2\">\r\n          <div class=\"btn-group pull-right\">\r\n            <button class=\"btn btn-default btn-light btn-sm editRow\"><i class=\"{{ iconClass('edit') }}\"></i></button>\r\n            {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n       \r\n           {% } %}\r\n      {% } %}\r\n    </div>\r\n     {% } else if (groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\")) { %}\r\n     <div class=\"row\">\r\n      {% util.eachComponent(components, function(component) { %}\r\n        {% if (displayValue(component)) { %}\t\t\r\n\t\t   {% if(component.key == 'comments') {  %}\r\n        <div class=\"col-sm-4  text-break\"> {{  getView(component, row[component.key])}} </div>\r\n {% } else if(component.key == 'commentFor' || component.key == 'role' || component.key == 'createdBy') {  %}\r\n        <div class=\"col-sm-2 text-break\"> {{  getView(component, row[component.key])}} </div>\r\n{% } else { %}\r\n  <div class=\"col-sm-1\"> {{  getView(component, row[component.key])}} </div>\r\n{% } %}          \r\n         \r\n        {% } %}\r\n      {% }) %}\r\n      {% if (!instance.options.readOnly && !instance.disabled) { %}\r\n        <div class=\"col-sm-2\">\r\n          <div class=\"btn-group pull-right\">\r\n             {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'CSSA Team' && groups.includes(\"/formsflow/formsflow-reviewer/cssa-team\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t    {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'CSSA Manager' && groups.includes(\"/formsflow/formsflow-reviewer/cssa-manager\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n            {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Client' && groups.includes(\"/formsflow/formsflow-client\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n            {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Approved Professional' && groups.includes(\"/formsflow/formsflow-reviewer/csap\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n            {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'CSAP Society' && groups.includes(\"/formsflow/formsflow-reviewer/csap-society\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t     {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Caseworker' && groups.includes(\"/formsflow/formsflow-reviewer/caseworker\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t    {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Statutory Decision Maker' && groups.includes(\"/formsflow/formsflow-reviewer/sdm\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t    {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Site Risk Classification Officer' && groups.includes(\"/formsflow/formsflow-reviewer/site-risk-classification-officer\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n \t    {% if ((!instance.hasRemoveButtons || instance.hasRemoveButtons())  && (row['role'] == 'Site Information Advisor' && groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\") ) ) { %}\r\n              <button class=\"btn btn-danger btn-sm removeRow\"><i class=\"{{ iconClass('trash') }}\"></i></button>\r\n            {% } %}\r\n          </div>\r\n        </div>\r\n      {% } %}\r\n    </div>\r\n     {% } %}\r\n   \r\n     \r\n     \r\n{% const emptyElements = []; %}\r\n{% const elements = document.getElementsByClassName(\"list-group-item\"); %}\r\n{% for (let i = 0; i < elements.length; i++) { %}\r\n{%  const element = elements[i]; %}\r\n{% if(element.querySelectorAll('div.row').length===0){(element).remove() }} %}",
                         "tableRow": "\n      {% util.eachComponent(components, function(component) { %}\n          {% if (!component.hasOwnProperty('tableView') || component.tableView) { %}\n            <td class=\"editgrid-table-column\">\n              {{ getView(component, row[component.key]) }}\n            </td>\n          {% } %}\n        {% }) %}\n        {% if (!instance.options.readOnly && !instance.disabled) { %}\n          <td class=\"editgrid-table-column\">\n            <div class=\"btn-group\">\n              <button class=\"btn btn-default btn-light btn-sm editRow\" aria-label=\"{{ t('Edit row') }}\"><i class=\"{{ iconClass('edit') }}\"></i></button>\n              {% if (!instance.hasRemoveButtons || instance.hasRemoveButtons()) { %}\n              <button class=\"btn btn-danger btn-sm removeRow\" aria-label=\"{{ t('Remove row') }}\"><i class=\"{{ iconClass('trash') }}\"></i></button>\n              {% } %}\n            </div>\n          </td>\n        {% } %}\n    ",
                         "footer": ""
                     },
@@ -1453,7 +1453,7 @@
                                             "wysiwyg": false,
                                             "editor": "",
                                             "fixedSize": true,
-                                            "id": "eifyo3e"
+                                            "id": "es9os8m"
                                         }
                                     ],
                                     "width": 4,
@@ -1545,7 +1545,7 @@
                                             "addons": [],
                                             "inputType": "radio",
                                             "fieldSet": false,
-                                            "id": "emjzvct"
+                                            "id": "eki92oi"
                                         }
                                     ],
                                     "offset": 0,
@@ -1632,7 +1632,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "eaku5gr"
+                                            "id": "ekqsw98"
                                         }
                                     ],
                                     "size": "md",
@@ -1719,7 +1719,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "eofazbr"
+                                            "id": "ex46hk"
                                         }
                                     ],
                                     "size": "md",
@@ -1806,7 +1806,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "e752qvp"
+                                            "id": "emy21yq"
                                         }
                                     ],
                                     "size": "md",
@@ -1817,50 +1817,30 @@
                                     "currentWidth": 2
                                 }
                             ],
-                            "autoAdjust": false,
-                            "customClass": "",
-                            "hidden": false,
-                            "hideLabel": false,
-                            "modalEdit": false,
                             "key": "columns",
-                            "tags": [],
-                            "properties": {},
-                            "conditional": {
-                                "show": null,
-                                "when": null,
-                                "eq": "",
-                                "json": ""
-                            },
-                            "customConditional": "",
-                            "logic": [],
-                            "attributes": {},
-                            "overlay": {
-                                "style": "",
-                                "page": "",
-                                "left": "",
-                                "top": "",
-                                "width": "",
-                                "height": ""
-                            },
                             "type": "columns",
                             "input": false,
                             "tableView": false,
                             "placeholder": "",
                             "prefix": "",
+                            "customClass": "",
                             "suffix": "",
                             "multiple": false,
                             "defaultValue": null,
                             "protected": false,
                             "unique": false,
                             "persistent": false,
+                            "hidden": false,
                             "clearOnHide": false,
                             "refreshOn": "",
                             "redrawOn": "",
+                            "modalEdit": false,
                             "dataGridLabel": false,
                             "labelPosition": "top",
                             "description": "",
                             "errorLabel": "",
                             "tooltip": "",
+                            "hideLabel": false,
                             "tabindex": "",
                             "disabled": false,
                             "autofocus": false,
@@ -1869,6 +1849,7 @@
                             "calculateValue": "",
                             "calculateServer": false,
                             "widget": null,
+                            "attributes": {},
                             "validateOn": "change",
                             "validate": {
                                 "required": false,
@@ -1878,15 +1859,29 @@
                                 "multiple": false,
                                 "unique": false
                             },
+                            "conditional": {
+                                "show": null,
+                                "when": null,
+                                "eq": ""
+                            },
+                            "overlay": {
+                                "style": "",
+                                "left": "",
+                                "top": "",
+                                "width": "",
+                                "height": ""
+                            },
                             "allowCalculateOverride": false,
                             "encrypted": false,
                             "showCharCount": false,
                             "showWordCount": false,
+                            "properties": {},
                             "allowMultipleMasks": false,
                             "addons": [],
                             "tree": false,
                             "lazyLoad": false,
-                            "id": "edizbwe"
+                            "autoAdjust": false,
+                            "id": "e10md9i"
                         }
                     ],
                     "placeholder": "",
@@ -1905,7 +1900,7 @@
                     "tree": true,
                     "lazyLoad": false,
                     "defaultOpen": false,
-                    "id": "eellgat"
+                    "id": "ef7ln16"
                 },
                 {
                     "logic": [
@@ -3550,7 +3545,7 @@
                                                     "validateOn": "change",
                                                     "validate": {
                                                         "required": true,
-                                                        "pattern": "^[A-Za-z0-9]* ?[A-Za-z0-9]*$",
+                                                        "pattern": "^[A-Za-z0-9\\s-]{2,18}$",
                                                         "customMessage": "Please enter a valid postal code",
                                                         "custom": "",
                                                         "customPrivate": false,
@@ -3591,7 +3586,7 @@
                                                     "dataGridLabel": false,
                                                     "addons": [],
                                                     "inputType": "text",
-                                                    "id": "e2gamcl",
+                                                    "id": "e3sx4f",
                                                     "defaultValue": ""
                                                 }
                                             ],
@@ -3719,7 +3714,7 @@
                                                     "validateOn": "change",
                                                     "validate": {
                                                         "required": true,
-                                                        "pattern": "^\\+?[0-9\\-().\\s]{10,20}$",
+                                                        "pattern": "^\\+?[0-9\\-().\\s]{10,17}$",
                                                         "customMessage": "Please enter a valid phone number",
                                                         "custom": "",
                                                         "customPrivate": false,
@@ -3760,7 +3755,7 @@
                                                     "dataGridLabel": false,
                                                     "addons": [],
                                                     "inputType": "text",
-                                                    "id": "eidsihh",
+                                                    "id": "ehlvnq",
                                                     "defaultValue": ""
                                                 }
                                             ],
@@ -5167,7 +5162,7 @@
                                             "validateOn": "change",
                                             "validate": {
                                                 "required": true,
-                                                "pattern": "^\\+?[0-9\\-().\\s]{10,20}$",
+                                                "pattern": "^\\+?[0-9\\-().\\s]{10,15}$",
                                                 "customMessage": "Please enter a valid phone number",
                                                 "custom": "",
                                                 "customPrivate": false,
@@ -5208,8 +5203,8 @@
                                             "dataGridLabel": false,
                                             "addons": [],
                                             "inputType": "text",
-                                            "id": "eliitc",
-                                            "defaultValue": null
+                                            "id": "ekdbvfi",
+                                            "defaultValue": ""
                                         }
                                     ],
                                     "currentWidth": 6
@@ -7046,8 +7041,8 @@
                                                     "dataGridLabel": false,
                                                     "addons": [],
                                                     "inputType": "text",
-                                                    "id": "ezant6",
-                                                    "defaultValue": ""
+                                                    "id": "eqvn0f",
+                                                    "defaultValue": null
                                                 }
                                             ],
                                             "currentWidth": 6
@@ -7398,7 +7393,7 @@
                                                 }
                                             ],
                                             "collapsible": false,
-                                            "id": "e7nge5b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "e7nge5b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",
@@ -7872,7 +7867,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eapos760000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eapos7600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -8088,7 +8083,7 @@
                                             "input": true,
                                             "label": "Crown Land File Numbers",
                                             "tableView": true,
-                                            "id": "e7fs5c50000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                            "id": "e7fs5c500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                             "placeholder": "",
                                             "prefix": "",
                                             "customClass": "",

@@ -11,3 +11,14 @@ export class FetchSiteResponse extends BaseHttpResponse {
     @Field(() => [Sites])
     data: Sites[];
 }
+
+/**
+ * Class for returing fetch site response from graphql services
+ */
+@ObjectType()
+export class FetchSiteDetail extends BaseHttpResponse {
+    @Field(() => Sites)
+    data: Sites;
+}
+
+
