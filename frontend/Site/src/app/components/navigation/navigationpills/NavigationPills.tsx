@@ -7,6 +7,7 @@ const NavigationPills: React.FC<INavigationPills> = ({ items, components }) => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   const handlePillClick = (index: number) => {
+    console.log(index)
     setActiveIndex(index);
   };
 
@@ -17,15 +18,15 @@ const NavigationPills: React.FC<INavigationPills> = ({ items, components }) => {
           <Link
             key={index}
             to="#"
-            className={`pill ${index === activeIndex ? 'active' : ''}`}
+            className={`d-flex gap-2 custom-nav-pill ${index === activeIndex ? 'active' : 'disabled'}`}
             onClick={() => handlePillClick(index)}
           >
-            {item}
+           {item}
           </Link>
         ))}
       </div>
-      <div className="content">
-        {components.map((component, index) =>
+      <div className="mt-4">
+        {components && components?.map((component, index) =>
           index === activeIndex ? <div key={index}>{component}</div> : null
         )}
       </div>
