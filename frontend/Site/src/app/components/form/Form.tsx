@@ -79,6 +79,28 @@ const TextInput: React.FC<InputProps> =  ({label, placeholder, type, value, vali
     );
 }
 
+const CustomSearchDropdown:  React.FC<InputProps> = ({ label, placeholder, options, value, isEditing, isImage, customLabelCss, customInputTextCss, customEditLabelCss, customEditInputTextCss, onChange }) => {
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    // const filteredOptions = options.filter(option =>
+    //     option.label.toLowerCase().includes(searchTerm.toLowerCase())
+    // );
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value);
+        setIsOpen(true);
+    };
+
+    const handleOptionClick = (optionValue: string) => {
+        onChange(optionValue);
+        setIsOpen(false);
+    };
+
+    return (
+        <></>
+    );
+}
 const Dropdown: React.FC<InputProps> = ({ label, placeholder, options, value, isEditing, isImage, customLabelCss, customInputTextCss, customEditLabelCss, customEditInputTextCss, onChange }) => {
 
     // Replace any spaces in the label with underscores to create a valid id

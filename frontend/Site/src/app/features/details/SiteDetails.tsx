@@ -24,6 +24,7 @@ import { fetchSitesDetails, selectSiteDetails,  trackChanges,
 import { AppDispatch } from "../../Store";
 import Notations from "./notations/Notations";
 import NavigationPills from "../../components/navigation/navigationpills/NavigationPills";
+import { navComponents, navItems } from "../../components/navigation/navigationpills/NavigationPillsConfig";
 import ModalDialog from "../../components/modaldialog/ModalDialog";
 import {
   CancelButton,
@@ -49,6 +50,14 @@ const initialParcelIds = [
 const SiteDetails = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const onClickBackButton = () => {
+    navigate(-1);
+  };
+
+  const [showLocationDetails, SetShowLocationDetails] = useState(false);
+  const [showParcelDetails, SetShowParcelDetails] = useState(false);
+
+
   const { id } = useParams();
 
   const details = useSelector(selectSiteDetails);
@@ -59,8 +68,6 @@ const SiteDetails = () => {
   const [edit, setEdit] = useState(false);
   const [save, setSave] = useState(false);
   const [parcelIds, setParcelIds] = useState(initialParcelIds);
-  const [showLocationDetails, setShowLocationDetails] = useState(true);
-  const [showParcelDetails, setShowParcelDetails] = useState(true);
   const items = ['Component 1', 'Component 2', 'Component 3'];
   const components = [<></>];
 
@@ -111,8 +118,7 @@ const SiteDetails = () => {
     },
   ];
 
-  // Handlers
-  const onClickBackButton = () => navigate(-1);
+
 
   const handleInputChange = (graphQLPropertyName: any, value: any) => {
     const trackerLabel = getTrackerLabel(graphQLPropertyName);
@@ -280,9 +286,7 @@ const SiteDetails = () => {
       </div>
 
       <div className="section-details-header row">
-      <div>
-        <NavigationPills items={items} components={components} />
-      </div>
+        
         <div>
           <CustomLabel label="Site ID:" labelType="b-h5" />
           <CustomLabel label="18326" labelType="r-h5" />
@@ -291,6 +295,7 @@ const SiteDetails = () => {
           <CustomLabel label="29292 quadra, victoria" labelType="b-h1" />
         </div>
       </div>
+      <NavigationPills items={navItems} components={navComponents}/>
       <PanelWithUpDown label="Location Details" secondChild = {
         (<div className="row w-100">
         <div className="col-12 col-lg-6">
@@ -355,7 +360,7 @@ const SiteDetails = () => {
           />
         </div>
       </div>
-      <Notations/>
+     
     </PageContainer>
   );
 };
