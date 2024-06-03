@@ -8,7 +8,7 @@ import { AppDispatch } from "../../../Store";
 import { fetchSites } from "../dto/SiteSlice";
 import Form from "../../../components/form/Form";
 import { FormFieldType, IFormField } from "../../../components/form/IForm";
-import { formatDateRange } from "../../../helpers/dateFormat";
+import { formatDateRange } from "../../../helpers/utility";
 
 interface childProps {
     cancelSearchFilter : () => void

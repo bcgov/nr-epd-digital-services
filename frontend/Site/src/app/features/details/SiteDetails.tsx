@@ -18,6 +18,7 @@ import userEvent from "@testing-library/user-event";
 import SummaryForm from "./SummaryForm";
 import PanelWithUpDown from "../../components/simple/PanelWithUpDown";
 import Notations from "./notations/Notations";
+import NavigationPills from "../../components/navigation/navigationpills/NavigationPills";
 
 const SiteDetails = () => {
   const navigate = useNavigate();
@@ -27,6 +28,9 @@ const SiteDetails = () => {
 
   const [showLocationDetails, SetShowLocationDetails] = useState(false);
   const [showParcelDetails, SetShowParcelDetails] = useState(false);
+
+  const items = ['Component 1', 'Component 2', 'Component 3'];
+  const components = [<></>];
 
   const data = [
     {
@@ -140,6 +144,9 @@ const SiteDetails = () => {
         </div>
       </div>
       <div className="section-details-header row">
+      <div>
+        <NavigationPills items={items} components={components} />
+      </div>
         <div>
           <CustomLabel label="Site ID:" labelType="b-h5"></CustomLabel>
           <CustomLabel label="18326" labelType="r-h5"></CustomLabel>
@@ -152,7 +159,8 @@ const SiteDetails = () => {
         </div>
       </div>
       <PanelWithUpDown label="Location Details" secondChild = {
-        <div className="row">
+        <div className="row w-100">
+          {/* <div color="row"> Location Details </div> */}
           <div className="col-6">Map</div>
           <div className="col-6">
             {/* <SummaryForm /> */}

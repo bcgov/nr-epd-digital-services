@@ -1,0 +1,16 @@
+
+  
+  .pill {
+    padding: 10px 20px;
+    background-color: lightgray;
+    border-radius: var(--layout-border-radius-medium);
+    margin-right: 5px;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+  }
+  
+  .pill.active {
+    background-color: dodgerblue;
+    color: white;
+  }

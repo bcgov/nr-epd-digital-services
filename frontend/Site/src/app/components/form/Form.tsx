@@ -4,8 +4,8 @@ import './Form.css';
 import { CalendarIcon, DropdownIcon, XmarkIcon } from '../common/icon';
 import 'rsuite/DateRangePicker/styles/index.css';
 import { FormFieldType, IFormField } from "./IForm";
-import { formatDateRange } from "../../helpers/dateFormat";
 import avatar from '../../images/avatar.png';
+import { formatDateRange } from "../../helpers/utility";
 
 interface IFormRendererProps {
     formRows: IFormField[][]; // Define the type of formRows according to your application

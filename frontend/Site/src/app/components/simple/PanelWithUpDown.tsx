@@ -13,12 +13,12 @@ const PanelWithUpDown: FC<PanelWithUpDownProps> = ({ label, firstChild, secondCh
     <div className="d-flex flex-column section-container" role="region" aria-label={label || "Section"} aria-expanded={showDetails}>
       {
         label && 
-         <div className="d-flex w-100 justify-content-between">
-           <div className="w-100 section-content-label">
+         <div className="d-flex justify-content-between">
+           <div className="section-content-label">
              { label }
            </div>
            <button
-             className="border-0 bg-white"
+             className="border-0 bg-transparent"
              onClick={() => setShowDetails(!showDetails)}
              aria-label={showDetails ? "Collapse section" : "Expand section"}
              aria-expanded={showDetails}
@@ -29,28 +29,28 @@ const PanelWithUpDown: FC<PanelWithUpDownProps> = ({ label, firstChild, secondCh
       }
       { 
        !label && !showDetails &&  
-          <div className="d-flex align-items-center">
+          <div className="d-flex gap-2">
             { firstChild }  
-            <button className="border-0 bg-white" onClick={() => setShowDetails(!showDetails)} aria-label="Expand section">
-              <ChevronDown />
-            </button>
+            <div className="m-0 py-4">
+              <button className="border-0 bg-transparent" onClick={() => setShowDetails(!showDetails)} aria-label="Expand section">
+                <ChevronDown />
+              </button>
+            </div>
           </div>
       }
       {
         showDetails && 
           <div className="d-flex position-relative">
-              <div className="w-100 ">
                 { secondChild }
-              </div>
                 {
                   showDetails && !label && (
-                   <div className="position-absolute end-0">
-                     <div className="mt-4">
-                       <button className="border-0 bg-white" onClick={() => setShowDetails(!showDetails)} aria-label="Collapse section">
+                  //  <div className="position-absolute end-0">
+                     <div className="m-0 py-4 position-absolute end-0">
+                       <button className="border-0 bg-transparent" onClick={() => setShowDetails(!showDetails)} aria-label="Collapse section">
                          <ChevronUp />
                        </button>
                      </div>
-                   </div>
+                  //  </div>
                 )}
           </div>
       }

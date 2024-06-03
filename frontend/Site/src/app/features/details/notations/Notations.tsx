@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactEventHandler, useState } from "react";
 import PanelWithUpDown from "../../../components/simple/PanelWithUpDown";
 import LabelComponent from "../LabelComponent";
 import Form from "../../../components/form/Form";
@@ -10,7 +10,7 @@ import { RequestStatus } from "../../../helpers/requests/status";
 import { UserType } from "../../../helpers/requests/userType";
 import { AppDispatch } from "../../../Store";
 import { useDispatch } from "react-redux";
-import { Plus, UserMinus, UserPlus } from "../../../components/common/icon";
+import { CircleXMarkIcon, MagnifyingGlassIcon, Plus, UserMinus, UserPlus } from "../../../components/common/icon";
 import { INotations } from "./INotations";
 import { UserMode } from "../../../helpers/requests/userMode";
 
@@ -58,7 +58,7 @@ const Notations: React.FC<INotations> = ({
     user,
   }) => {
 
-    const [userType, setUserType] = useState<UserType>(UserType.External);
+    const [userType, setUserType] = useState<UserType>(UserType.Internal);
     const [viewMode, setViewMode] = useState(UserMode.EditMode);
 
     const [formData, setFormData] =  useState<{ [key: string]: any | [Date, Date] }>({});
@@ -72,6 +72,26 @@ const Notations: React.FC<INotations> = ({
 
     const [sortByValue, setSortByValue] = useState<{ [key: string]: any }>({});
     
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const searchTerm = event.target.value;
+      setSearchTerm(searchTerm.trim());
+      const filtered = dummyData.filter((form) =>
+        Object.entries(form).some(
+          ([key, value]) =>
+            typeof value === 'string' &&
+            value.toLowerCase().includes(searchTerm.trim().toLowerCase())
+        )
+      );
+      console.log(filtered)
+      // setData(filtered);
+    };
+
+    const clearSearch = () => {
+      setSearchTerm('');
+    };
+
     const handleAddParticipant = () => {
         alert('handleAddParticipant click');
     };
@@ -101,6 +121,9 @@ const Notations: React.FC<INotations> = ({
         case 'newToOld':
           sorted.sort((a, b) => b.date - a.date); // Sorting by date from new to old
           break;
+        case 'oldTonew':
+          sorted.sort((a, b) => a.date - b.date); // Sorting by date from new to old
+          break;
         // Add more cases for additional sorting options
         default:
           break;
@@ -125,12 +148,28 @@ const Notations: React.FC<INotations> = ({
               </button>
             </div>
           }
-            <div className={`${userType == UserType.Internal ? `col-lg-6 col-md-12` : `col-lg-12`}`}>
-              <div className="row justify-content-between">
-                <div className={`${userType == UserType.Internal ? `col` : `col-xxl-8 col-xl-8 col-lg-8 col-md-12 col-sm-12 col-xs-12`}`}>
-                  <Form formRows={notationSortBy} formData={sortByValue} editMode={true} handleInputChange={handleSortChange}/> 
-                </div>
-                <div className={`${userType == UserType.Internal ? `col` : `col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-xs-12`}`}>
+            <div className={`${userType == UserType.Internal && (viewMode == UserMode.EditMode || viewMode == UserMode.SrMode) ? `col-lg-6 col-md-12` : `col-lg-12`}`}>
+              <div className="row align-items-center justify-content-between p-0">
+                <div className={`mb-3 ${userType == UserType.Internal ? (viewMode == UserMode.EditMode || viewMode == UserMode.SrMode) ? `col` : `col-lg-8 col-md-12` : `col-xxl-8 col-xl-8 col-lg-8 col-md-12 col-sm-12 col-xs-12`}`}>
+                  <label className="form-label custom-search-label">Search Site Registry</label>
+                      <div className="d-flex align-items-center justify-content-center w-100 position-relative">
+                          <input
+                            aria-label="Search input "
+                            onChange={(event) => {handleSearchChange(event)}}
+                            value={searchTerm}
+                            type="text"
+                            className={`form-control custom-search ${searchTerm.length > 0 ? 'ps-2' : 'ps-5'}`}
+                          />
+                          {
+                            searchTerm.length <= 0  
+                              ? 
+                              <span className="search-icon custom-icon position-absolute px-2"><MagnifyingGlassIcon/></span>
+                              :  
+                              <span className="clear-icon custom-icon position-absolute px-2"><CircleXMarkIcon  onClick={clearSearch} /></span>
+                          }
+                      </div>
+                  </div>            
+                <div className={`${userType == UserType.Internal ? (viewMode == UserMode.EditMode || viewMode == UserMode.SrMode) ? `col` : `col-lg-4 col-md-12` : `col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-xs-12`}`}>
                   <Form formRows={notationSortBy} formData={sortByValue} editMode={true} handleInputChange={handleSortChange}
                   aria-label="Sort By Form"/> 
                 </div>
@@ -147,11 +186,11 @@ const Notations: React.FC<INotations> = ({
                   </div>
                   }
               secondChild= { 
-                  <div>
+                  <div className="w-100">
                       <Form formRows={ userType == UserType.External ? notationFormRowExternal : notationFormRowsInternal } formData={formData} editMode={viewMode == UserMode.EditMode} handleInputChange={handleInputChange}
                       aria-label="Sort Notation Form"/>
                       <Widget title={'Notation'} tableColumns={ userType == UserType.Internal ? notationColumnInternal : notationColumnExternal} tableData={data} tableIsLoading={loading} allowRowsSelect={viewMode == UserMode.EditMode}
-                      aria-label="Notation Widget">
+                      aria-label="Notation Widget" hideTable={false} hideTitle={false}>
                        { userType == UserType.Internal &&
                           <div className="d-flex gap-2">
                             <button className=" d-flex align-items-center notation-btn" type="button" onClick={handleAddParticipant} aria-label={'Add Participant'} >

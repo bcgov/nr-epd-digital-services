@@ -3,6 +3,15 @@ import { API } from "./endpoints";
 import axios from "axios";
 import { User } from "oidc-client-ts";
 import { getClientSettings } from "../auth/UserManagerSetting";
+import { format } from "date-fns";
+
+  
+export const formatDateRange = (range: [Date, Date]) => {
+    const [startDate, endDate] = range;
+    const formattedStartDate = format(startDate, 'dd-MMM-yy');
+    const formattedEndDate = format(endDate, 'dd-MMM-yy');
+    return `${formattedStartDate} - ${formattedEndDate}`;
+};
 
 export function getUser() {
   const oidcStorage = sessionStorage.getItem(

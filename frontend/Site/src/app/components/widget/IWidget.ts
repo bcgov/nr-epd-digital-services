@@ -8,4 +8,6 @@ export interface IWidget {
     customLabelCss?: string;
     children?: React.ReactNode;
     allowRowsSelect?:boolean;
+    hideTable?:boolean;
+    hideTitle?:boolean;
 }

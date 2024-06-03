@@ -10,24 +10,30 @@ const Widget: React.FC<IWidget> = ({
     tableData,
     children,
     customLabelCss,
-    allowRowsSelect
+    allowRowsSelect,
+    hideTable,
+    hideTitle,
 }) => {
     return(
         <div className={`d-flex flex-column widget-container`}>
-        {title && <h4 className={`${customLabelCss ?? `widget-lbl`}`}>{title}</h4>}
-        <div>
-          {children}
-        </div>
-        <div>
-          <Table
-            label={title ?? ""}
-            isLoading={tableIsLoading}
-            columns={tableColumns}
-            data={tableData}
-            showPageOptions={false}
-            allowRowsSelect={allowRowsSelect}
-          />
-        </div>
+        {!hideTitle && title && <h4 className={`${customLabelCss ?? `widget-lbl`}`}>{title}</h4>}
+        {children && 
+          <div>
+            {children}
+          </div>
+        }
+        { !hideTable && 
+          <div>
+            <Table
+              label={title ?? ""}
+              isLoading={tableIsLoading}
+              columns={tableColumns}
+              data={tableData}
+              showPageOptions={false}
+              allowRowsSelect={allowRowsSelect}
+            />
+          </div>
+        }
       </div>
     );
 }
