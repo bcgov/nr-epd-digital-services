@@ -8,7 +8,7 @@ import { AppDispatch } from "../../../Store";
 import { fetchSites } from "../dto/SiteSlice";
 import Form from "../../../components/form/Form";
 import { FormFieldType, IFormField } from "../../../components/form/IForm";
-import { formatDateRange } from "../../../helpers/dateFormat";
+import { formatDateRange } from "../../../helpers/utility";
 
 interface childProps {
     cancelSearchFilter : () => void
@@ -107,7 +107,7 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
         <>
         <form onSubmit={handleFormSubmit}>
             <Form formRows={formRows} formData={formData} handleInputChange={handleInputChange}/>
-            <div className="d-flex flex-wrap justify-content-between w-100">
+            <div className="d-flex flex-wrap justify-content-between w-100 mt-3">
                 <div>
                     <button type="reset" className="reset-button" onClick={handleReset}>Reset Filters</button>
                 </div>
@@ -124,13 +124,13 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
             </div>
         </form>
          <div id="filter-pill" className="d-flex justify-content-end flex-wrap selected-filter">
-         {selectedFilters.map((filter, index) => (
-             <div key={index} className="d-flex custom-pill align-items-center">
-                {filter && `${filter.label} : ${filter.value}`}
-                 <div className="d-flex align-items-center x-mark" onClick={() => handleRemoveFilter(filter)}><XmarkIcon/></div>
-             </div>
-         ))}
-     </div>
+            {selectedFilters.map((filter, index) => (
+                <div key={index} className="d-flex custom-pill align-items-center">
+                    {filter && `${filter.label} : ${filter.value}`}
+                    <div className="d-flex align-items-center x-mark" onClick={() => handleRemoveFilter(filter)}><XmarkIcon/></div>
+                </div>
+            ))}
+        </div>
      </>
     );
 }

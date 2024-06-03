@@ -1,8 +1,8 @@
 .section-details-header
 {
-    display: flex;
-    flex-direction: column;
-    gap: var(--layout-margin-small);
+    /* display: flex;
+    flex-direction: column; */
+    /* gap: var(--layout-margin-small); */
 }
 
 .section-container
@@ -14,9 +14,9 @@
     opacity: 0px;
     background: var(--surface-background-white);
     border: 1px solid var(--surface-border-light);
-    display: flex;
+    /* display: flex; */
     /* justify-content: space-between; */
-    flex-direction: column;
+    /* flex-direction: column; */
 }
 
 
@@ -44,7 +44,7 @@
     line-height: 36px;
     text-align: left;
     color: var(--typography-color-primary);
-}
+} 
 
 
 .summary-details-header

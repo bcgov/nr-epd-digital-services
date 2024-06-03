@@ -12,6 +12,7 @@ import { fetchRecentViews } from "./DashboardSlice";
 import { UserType } from "../../helpers/requests/userType";
 import "./Dashboard.css";
 import PageContainer from "../../components/simple/PageContainer";
+import Widget from "../../components/widget/Widget";
 
 interface DashboardWidgetProps {
   title?: string;
@@ -19,6 +20,7 @@ interface DashboardWidgetProps {
   columns: any[];
   loading: RequestStatus;
   data: any[];
+  allowRowsSelect?:boolean;
   onButtonClick?: () => void;
 }
 
@@ -28,33 +30,16 @@ const DashboardTableWidget: React.FC<DashboardWidgetProps> = ({
   columns,
   loading,
   data,
+  allowRowsSelect,
   onButtonClick,
 }) => (
-  <div className="d-flex flex-column dashboard-widget-container">
-    <h4 className="dashboard-lbl">{title}</h4>
-    {buttonText && onButtonClick && (
-      <div>
-        <button
-          className="dashboard-btn"
-          type="button"
-          onClick={onButtonClick}
-          aria-label={buttonText}
-        >
-          <span className="btn-lbl">{buttonText}</span>
-        </button>
-      </div>
-    )}
-    <div>
-      <Table
-        label={title ?? ""}
-        isLoading={loading}
-        columns={columns}
-        data={data}
-        showPageOptions={false}      
-        allowRowsSelect={true}
-      />
-    </div>
-  </div>
+  <Widget title={title} tableColumns={columns} tableData={data} tableIsLoading={loading} allowRowsSelect={allowRowsSelect}>
+    { buttonText && onButtonClick && 
+      <button className="dashboard-btn" type="button" onClick={onButtonClick} aria-label={buttonText} >
+        <span className="btn-lbl">{buttonText}</span>
+      </button>
+     }
+  </Widget>
 );
 
 const Dashboard = () => {
@@ -91,6 +76,7 @@ const Dashboard = () => {
         columns={recentViewedColumns}
         loading={loading}
         data={data}
+        allowRowsSelect={true}
       />
       <DashboardTableWidget
         title={
@@ -109,6 +95,7 @@ const Dashboard = () => {
         loading={loading}
         data={data}
         onButtonClick={handleButtonClick}
+        allowRowsSelect={userType === UserType.Internal}
       />
     </PageContainer>
   );

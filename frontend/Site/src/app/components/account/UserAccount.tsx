@@ -32,7 +32,8 @@ const UserAccount = ( props : any) =>{
             aria-controls="account-menu"
             aria-labelledby="user-account-label" onClick={toggleButton}>
                     {/* Profile image */}
-                    <img src={user.profileImage} alt="User profile image." className="account-image"  aria-hidden="true"/>
+                    <img src={user.profileImage} alt="User profile image." className="account-image"  aria-hidden="true"   role="img"
+        aria-label="User profile image"/>
                     {/* User name */}
                     <div className="p-3">{user.name}</div>
                     <div id="account-dropdown" className="account-custom-toggle-mobile align-item-center" aria-label="Account Menu Button">
@@ -77,7 +78,8 @@ const UserAccount = ( props : any) =>{
                         <div className="account-custom-label">Logged in as:</div>
                         <div className="account-username py-3">
                             {/* Profile image */}
-                            <img src={user.profileImage} alt="User profile image." className="account-image me-3"/>
+                            <img src={user.profileImage} alt="User profile image." className="account-image me-3"   role="img"
+        aria-label="User profile image"/>
 
                             {/* User name */}
                             <span>{user.name}</span>

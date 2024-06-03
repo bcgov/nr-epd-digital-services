@@ -18,14 +18,12 @@ import Table from "../../components/table/Table";
 import { RequestStatus } from "../../helpers/requests/status";
 import SummaryForm from "./SummaryForm";
 import PanelWithUpDown from "../../components/simple/PanelWithUpDown";
-import {
-  fetchSitesDetails,
-  selectSiteDetails,
-  trackChanges,
+import { fetchSitesDetails, selectSiteDetails,  trackChanges,
   trackedChanges,
-  clearTrackChanges,
-} from "../site/dto/SiteSlice";
+  clearTrackChanges, } from "../site/dto/SiteSlice";
 import { AppDispatch } from "../../Store";
+import Notations from "./notations/Notations";
+import NavigationPills from "../../components/navigation/navigationpills/NavigationPills";
 import ModalDialog from "../../components/modaldialog/ModalDialog";
 import {
   CancelButton,
@@ -47,6 +45,7 @@ const initialParcelIds = [
   12123123, 123123, 12312312, 1231231, 23, 123123123123, 123123213, 1123123,
 ];
 
+
 const SiteDetails = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -62,6 +61,55 @@ const SiteDetails = () => {
   const [parcelIds, setParcelIds] = useState(initialParcelIds);
   const [showLocationDetails, setShowLocationDetails] = useState(true);
   const [showParcelDetails, setShowParcelDetails] = useState(true);
+  const items = ['Component 1', 'Component 2', 'Component 3'];
+  const components = [<></>];
+
+  const data = [
+    {
+      notation: 2,
+      participants: 1,
+      associatedSites: 1,
+      documents: 1,
+      landUses: 5,
+      parcelDescription: 10,
+    },
+  ];
+
+  const activityData = [
+    {
+      activity: "some activity",
+      user: "Midhun",
+      timeStamp: "23-04-1989 00:11:11",
+    },
+  ];
+
+  const activityColumns: TableColumn[] = [
+    {
+      id: 1,
+      displayName: "Activity",
+      active: true,
+      graphQLPropertyName: "activity",
+    },
+    {
+      id: 2,
+      displayName: "User",
+      active: true,
+      graphQLPropertyName: "user",
+    },
+    {
+      id: 3,
+      displayName: "Time Stamp",
+      active: true,
+      graphQLPropertyName: "timeStamp",
+    },
+    {
+      id: 4,
+      displayName: "SR",
+      active: true,
+      graphQLPropertyName: "id",
+      displayType: ColumnType.Checkbox,
+    },
+  ];
 
   // Handlers
   const onClickBackButton = () => navigate(-1);
@@ -102,8 +150,7 @@ const SiteDetails = () => {
     setEditSiteDetailsObject(details);
   }, [details]);
 
-  // Column Definitions
-  const columns = [
+  const columns: TableColumn[] = [
     {
       id: 1,
       displayName: "Documents",
@@ -111,19 +158,19 @@ const SiteDetails = () => {
       graphQLPropertyName: "documents",
     },
     {
-      id: 2,
+      id: 1,
       displayName: "Land Uses",
       active: true,
       graphQLPropertyName: "landUses",
     },
     {
-      id: 3,
+      id: 1,
       displayName: "Associated Sites",
       active: true,
       graphQLPropertyName: "associatedSites",
     },
     {
-      id: 4,
+      id: 1,
       displayName: "Notations",
       active: true,
       graphQLPropertyName: "notation",
@@ -135,54 +182,16 @@ const SiteDetails = () => {
       graphQLPropertyName: "participants",
     },
     {
-      id: 6,
+      id: 1,
       displayName: "Parcel Description",
       active: true,
       graphQLPropertyName: "parcelDescription",
     },
   ];
 
-  const activityColumns = [
-    {
-      id: 1,
-      displayName: "Activity",
-      active: true,
-      graphQLPropertyName: "activity",
-    },
-    { id: 2, displayName: "User", active: true, graphQLPropertyName: "user" },
-    {
-      id: 3,
-      displayName: "Time Stamp",
-      active: true,
-      graphQLPropertyName: "timeStamp",
-    },
-    {
-      id: 4,
-      displayName: "SR",
-      active: true,
-      graphQLPropertyName: "id",
-      displayType: ColumnType.Checkbox,
-    },
-  ];
+  
 
-  const data = [
-    {
-      notation: 2,
-      participants: 1,
-      associatedSites: 1,
-      documents: 1,
-      landUses: 5,
-      parcelDescription: 10,
-    },
-  ];
-
-  const activityData = [
-    {
-      activity: "some activity",
-      user: "Midhun",
-      timeStamp: "23-04-1989 00:11:11",
-    },
-  ];
+  
 
   return (
     <PageContainer role="details">
@@ -254,9 +263,26 @@ const SiteDetails = () => {
             </Fragment>
           )}
         </div>
+        {/* <div className="d-flex gap-2">
+          <button className="d-flex btn-cart align-items-center" onClick={()=>{setEdit(!edit)}}>
+            <span className="btn-cart-lbl" > Edit</span>
+          </button>
+          <button className="d-flex btn-cart align-items-center">
+            <ShoppingCartIcon className="btn-icon" />
+            <span className="btn-cart-lbl"> Add to Cart</span>
+          </button>
+          <button className="d-flex btn-folio align-items-center">
+            <FolderPlusIcon className="btn-folio-icon" />
+            <span className="btn-folio-lbl"> Add to Folio</span>
+            <DropdownIcon className="btn-folio-icon" />
+          </button>
+        </div> */}
       </div>
 
       <div className="section-details-header row">
+      <div>
+        <NavigationPills items={items} components={components} />
+      </div>
         <div>
           <CustomLabel label="Site ID:" labelType="b-h5" />
           <CustomLabel label="18326" labelType="r-h5" />
@@ -265,40 +291,43 @@ const SiteDetails = () => {
           <CustomLabel label="29292 quadra, victoria" labelType="b-h1" />
         </div>
       </div>
-
-      <PanelWithUpDown label="Location Details">
-        <div className="row">
-          <div className="col-12 col-lg-6">
-            <Map callback={() => {}} initLocation={location} readOnly={true} />
-          </div>
-          <div className="col-12 col-lg-6">
-            <SummaryForm
-              sitesDetails={editSiteDetailsObject}
-              edit={edit}
-              changeHandler={handleInputChange}
-            />
-          </div>
+      <PanelWithUpDown label="Location Details" secondChild = {
+        (<div className="row w-100">
+        <div className="col-12 col-lg-6">
+          <Map callback={() => {}} initLocation={location} readOnly={true} />
         </div>
-      </PanelWithUpDown>
+        <div className="col-12 col-lg-6">
+          <SummaryForm
+            sitesDetails={editSiteDetailsObject}
+            edit={edit}
+            changeHandler={handleInputChange}
+          />
+        </div>
+      </div>)
+         }
+      />
+     <PanelWithUpDown label="Parcel ID(s)" secondChild={
+       !edit ? (
+        <div>{parcelIds.join(", ")}</div>
+      ) : (
+        <div className="parcel-edit-div">
+          {parcelIds.map((pid) => (
+            <CustomPillButton
+              key={pid}
+              label={pid}
+              clickHandler={() => handleParcelIdDelete(pid)}
+            />
+          ))}
+        </div>
+      )
+      }/>
 
-      <PanelWithUpDown label="Parcel IDs">
-        {!edit ? (
-          <div>{parcelIds.join(", ")}</div>
-        ) : (
-          <div className="parcel-edit-div">
-            {parcelIds.map((pid) => (
-              <CustomPillButton
-                key={pid}
-                label={pid}
-                clickHandler={() => handleParcelIdDelete(pid)}
-              />
-            ))}
-          </div>
-        )}
-      </PanelWithUpDown>
-
-      <div className="summary-details-border">
-        <span className="summary-details-header">Summary of details types</span>
+      <div className="">
+        <div className="summary-details-border">
+          <span className="summary-details-header">
+            Summary of details types
+          </span>
+        </div>
         <div className="col-12">
           <Table
             label="Search Results"
@@ -326,6 +355,7 @@ const SiteDetails = () => {
           />
         </div>
       </div>
+      <Notations/>
     </PageContainer>
   );
 };
