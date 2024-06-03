@@ -7,6 +7,7 @@ import { RequestStatus } from "../../../helpers/requests/status";
 import { SiteResultDto } from "./Site";
 import { GRAPHQL } from "../../../helpers/endpoints";
 import { act } from "react-dom/test-utils";
+import { useActionData } from "react-router-dom";
 
 const initialState: SiteState = {
   sites: [],
@@ -23,7 +24,8 @@ const initialState: SiteState = {
   siteDetailsFetchStatus:  RequestStatus.idle,
   siteDetailsDeleteStatus:  RequestStatus.idle,
   siteDetailsAddedStatus:  RequestStatus.idle,  
-  siteDetailsUpdateStatus: RequestStatus.idle
+  siteDetailsUpdateStatus: RequestStatus.idle,
+  changeTracker: []
 };
 
 
@@ -153,7 +155,29 @@ const siteSlice = createSlice({
        newState.currentPage = action.payload.currentPage;
        newState.pageSize = action.payload.pageSize;
        return newState;
-    }
+    },
+    trackChanges:(state,action) => {
+      console.log("tracking change",state,action);
+      const newState = {
+        ...state,
+        changeTracker: [...state.changeTracker, action.payload]
+      };
+
+      console.log("tracking change 2 ",newState);
+      
+      return newState;
+    },    
+    clearTrackChanges:(state,action) => {
+      console.log("tracking change",state,action);
+      const newState = {
+        ...state,
+        changeTracker: []
+      };
+
+      console.log("tracking change 2 ",newState);
+      
+      return newState;
+    }   
   },  
   extraReducers(builder) {
     builder      
@@ -199,10 +223,11 @@ export const currentPageSelection = (state: any) => state.sites.currentPage;
 export const resultsCount = (state:any) => state.sites.resultsCount;
 export const siteDetailsLoadingState =  (state: any) => state.sites.fetchSitesDetails;
 export const selectSiteDetails = (state: any) => state.sites.siteDetails;
+export const trackedChanges = (state: any) => state.sites.changeTracker;
 
 
 export const {
-    siteAdded , resetSites , setFetchLoadingState , updatePageSizeSetting, updateSearchQuery
+    siteAdded , resetSites , setFetchLoadingState , updatePageSizeSetting, updateSearchQuery , trackChanges , clearTrackChanges
 } = siteSlice.actions;
 
 export default siteSlice.reducer;

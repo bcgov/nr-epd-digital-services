@@ -27,6 +27,16 @@
     color: var(--typography-color-primary);
 }
 
+.custom-bold-label
+{
+
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 21.01px;
+    text-align: left;
+
+}
+
 
 
 

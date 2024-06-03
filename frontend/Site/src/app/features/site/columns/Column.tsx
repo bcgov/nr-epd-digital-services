@@ -16,6 +16,7 @@ const Column:React.FC<ColumnProps> = ({toggleColumnSelectionForDisplay,columns,r
 
   const filterColumnsByGroup = (groupId:number) =>
   {
+       console.log("filterColumnsByGroup", 2, columns.filter(item=>item.groupId === groupId && item.dynamicColumn === false));
        return columns.filter(item=>item.groupId === groupId && item.dynamicColumn === false);
   }
 

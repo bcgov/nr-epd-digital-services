@@ -26,7 +26,8 @@ import {
     FaAngleLeft,
     FaAngleRight,
     FaChevronDown,
-    FaChevronUp
+    FaChevronUp,
+    FaFloppyDisk 
     } from "react-icons/fa6";
 
  
@@ -58,3 +59,4 @@ import {
   export const AngleRight = FaAngleRight;
   export const ChevronDown = FaChevronDown;
   export const ChevronUp = FaChevronUp;
+  export const FloppyDisk = FaFloppyDisk ;

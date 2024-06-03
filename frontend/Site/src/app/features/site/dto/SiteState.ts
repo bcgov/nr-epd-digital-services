@@ -1,3 +1,4 @@
+import { ChangeTracker } from "../../../components/common/IChangeType";
 import { RequestStatus } from "../../../helpers/requests/status";
 import { SiteResultDto, Sites } from "./Site"
 
@@ -18,4 +19,5 @@ export class SiteState
     siteDetailsDeleteStatus:string =  RequestStatus.idle;
     siteDetailsAddedStatus:string =  RequestStatus.idle;   
     siteDetailsUpdateStatus:string  = RequestStatus.idle;
+    changeTracker: ChangeTracker[] = [];
 }

@@ -63,7 +63,7 @@ const TextInput: React.FC<InputProps> =  ({label, placeholder, type, value, vali
                 <input
                     type={type}
                     id={inputTxtId}
-                    className={`form-control custom-input ${error && 'error'}`}
+                    className={`form-control custom-input ${customInputTextCss} ${error && 'error'}`}
                     placeholder={placeholder}
                     value={value ?? ''}
                     onChange={handleTextInputChange}

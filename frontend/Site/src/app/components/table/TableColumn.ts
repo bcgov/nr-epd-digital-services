@@ -29,6 +29,9 @@ export enum ColumnSize{
       public linkRedirectionURL?: string,
       public dynamicColumn?: boolean,
       public columnSize?: ColumnSize,
-    ) {}
+    ) {
+
+      this.dynamicColumn = dynamicColumn ?? false;
+    }
   }
   

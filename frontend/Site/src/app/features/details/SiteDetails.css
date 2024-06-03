@@ -120,3 +120,17 @@
     text-align: center;
     color: var(--typography-color-primary, #2D2D2D);
 }
+
+
+.parcel-edit-div
+{
+    display: flex;
+    gap: var(--layout-margin-small);
+}
+
+
+.justify-align-center
+{
+    justify-content: center;
+    align-items: center;
+}

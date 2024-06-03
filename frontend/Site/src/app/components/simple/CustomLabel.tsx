@@ -13,6 +13,8 @@ const CustomLabel: FC<HeadingProps> = ({ label, labelType }) => {
     return <span className="custom-header-bold-h5">{label}</span>;
   } else if (labelType === "r-h5") {
     return <span className="custom-label-regular-h5">{label}</span>;
+  } else if (labelType === "c-b") {
+    return <span className="custom-bold-label">{label}</span>;
   } else {
     return <span className="custom-header-h5">{label}</span>;
   }

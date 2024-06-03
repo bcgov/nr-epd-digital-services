@@ -6,11 +6,11 @@ import "./SummaryForm.css"
 
 interface SummaryFormProps{
     sitesDetails: Sites,
-    edit: boolean
+    edit: boolean,
+    changeHandler:(graphQLPropertyName: any, value: String | [Date, Date])=>void
 }
 
-const SummaryForm:FC<SummaryFormProps> = ({sitesDetails, edit}) => {
-    console.log("sitesDetails",sitesDetails)
+const SummaryForm:FC<SummaryFormProps> = ({sitesDetails, edit, changeHandler}) => { 
   const formRows: IFormField[][] = [
     [
       {
@@ -18,7 +18,7 @@ const SummaryForm:FC<SummaryFormProps> = ({sitesDetails, edit}) => {
         label: "Site ID",
         placeholder: 'Separate IDs by a comma (",")',
         graphQLPropertyName: "id",
-        value: sitesDetails?.id,
+        value: "",
         validation: {
           pattern: /^[0-9,\s]*$/,
           customMessage: "Site ID can only contain numbers and commas",
@@ -103,6 +103,8 @@ const SummaryForm:FC<SummaryFormProps> = ({sitesDetails, edit}) => {
                 "Longitude Degrees can only contain numbers and decimal points",
             },
             allowNumbersOnly: true,
+            customLabelCss: 'custom-lbl-text',
+            customInputTextCss:'custom-input-text',
           },
           {
             type: FormFieldType.Text,
@@ -140,6 +142,8 @@ const SummaryForm:FC<SummaryFormProps> = ({sitesDetails, edit}) => {
         placeholder: "Site Address",
         graphQLPropertyName: "addrLine_1",
         value: sitesDetails?.address,
+        customLabelCss: 'custom-lbl-text',
+        customInputTextCss:'custom-input-text',
       },
       {
         type: FormFieldType.Text,
@@ -147,6 +151,8 @@ const SummaryForm:FC<SummaryFormProps> = ({sitesDetails, edit}) => {
         placeholder: "Region",
         graphQLPropertyName: "region",
         value: "",
+        customLabelCss: 'custom-lbl-text',
+        customInputTextCss:'custom-input-text',
       },
     ],
     [
@@ -156,6 +162,8 @@ const SummaryForm:FC<SummaryFormProps> = ({sitesDetails, edit}) => {
         placeholder: "Common Name",
         graphQLPropertyName: "commonName",
         value: "",
+        customLabelCss: 'custom-lbl-text',
+        customInputTextCss:'custom-input-text',
       },
     ],
     [
@@ -165,6 +173,8 @@ const SummaryForm:FC<SummaryFormProps> = ({sitesDetails, edit}) => {
         placeholder: "Location Description",
         graphQLPropertyName: "generalDescription",
         value: "",
+        customLabelCss: 'custom-lbl-text',
+        customInputTextCss:'custom-input-text',
       },
     ],
     [
@@ -174,6 +184,8 @@ const SummaryForm:FC<SummaryFormProps> = ({sitesDetails, edit}) => {
         placeholder: "Site Risk Classification",
         graphQLPropertyName: "siteRiskCode",
         value: "",
+        customLabelCss: 'custom-lbl-text',
+        customInputTextCss:'custom-input-text',
       },
     ],
   ];
@@ -182,12 +194,16 @@ const SummaryForm:FC<SummaryFormProps> = ({sitesDetails, edit}) => {
     [key: string]: any | [Date, Date];
   }>({});
 
+
+
+
+
   return (
     <form onSubmit={() => {}}>
-      <Form editMode={edit}
+            <Form editMode={edit}
         formRows={formRows}
         formData={sitesDetails}
-        handleInputChange={() => {}}
+        handleInputChange={changeHandler}
       />
     </form>
   );
