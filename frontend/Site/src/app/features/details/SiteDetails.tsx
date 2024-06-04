@@ -28,6 +28,7 @@ import {
 import { AppDispatch } from "../../Store";
 import Notations from "./notations/Notations";
 import NavigationPills from "../../components/navigation/navigationpills/NavigationPills";
+import { navComponents, navItems } from "../../components/navigation/navigationpills/NavigationPillsConfig";
 import ModalDialog from "../../components/modaldialog/ModalDialog";
 import {
   CancelButton,
@@ -53,6 +54,14 @@ const initialParcelIds = [
 const SiteDetails = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const onClickBackButton = () => {
+    navigate(-1);
+  };
+
+  const [showLocationDetails, SetShowLocationDetails] = useState(false);
+  const [showParcelDetails, SetShowParcelDetails] = useState(false);
+
+
   const { id } = useParams();
 
   const details = useSelector(selectSiteDetails);
@@ -63,9 +72,7 @@ const SiteDetails = () => {
   const [edit, setEdit] = useState(false);
   const [save, setSave] = useState(false);
   const [parcelIds, setParcelIds] = useState(initialParcelIds);
-  const [showLocationDetails, setShowLocationDetails] = useState(true);
-  const [showParcelDetails, setShowParcelDetails] = useState(true);
-  const items = ["Component 1", "Component 2", "Component 3"];
+  const items = ['Component 1', 'Component 2', 'Component 3'];
   const components = [<></>];
 
   const data = [
@@ -173,12 +180,10 @@ const SiteDetails = () => {
         customInputTextCss: "custom-input-text",
         tableMode: true,
       },
-      //displayType: ColumnType.Checkbox,
     },
   ];
 
-  // Handlers
-  const onClickBackButton = () => navigate(-1);
+
 
   const handleInputChange = (graphQLPropertyName: any, value: any) => {
     const trackerLabel = getTrackerLabel(graphQLPropertyName);
@@ -438,10 +443,8 @@ const SiteDetails = () => {
       </div>
 
       <div className="section-details-header row">
+        
         <div>
-          <NavigationPills items={items} components={components} />
-        </div>
-        {/* <div>
           <CustomLabel label="Site ID:" labelType="b-h5" />
           <CustomLabel label={editSiteDetailsObject.id} labelType="r-h5" />
         </div>
@@ -449,26 +452,21 @@ const SiteDetails = () => {
           <CustomLabel label={editSiteDetailsObject.addrLine_1 +","+editSiteDetailsObject.addrLine_2+","+editSiteDetailsObject.addrLine_3} labelType="b-h1" />
         </div> */}
       </div>
-      <PanelWithUpDown
-        label="Location Details"
-        secondChild={
-          <div className="row w-100">
-            <div className="col-12 col-lg-6">
-              <Map
-                callback={() => {}}
-                initLocation={location}
-                readOnly={true}
-              />
-            </div>
-            <div className="col-12 col-lg-6">
-              <SummaryForm
-                sitesDetails={editSiteDetailsObject}
-                edit={edit}
-                changeHandler={handleInputChange}
-              />
-            </div>
-          </div>
-        }
+      <NavigationPills items={navItems} components={navComponents}/>
+      <PanelWithUpDown label="Location Details" secondChild = {
+        (<div className="row w-100">
+        <div className="col-12 col-lg-6">
+          <Map callback={() => {}} initLocation={location} readOnly={true} />
+        </div>
+        <div className="col-12 col-lg-6">
+          <SummaryForm
+            sitesDetails={editSiteDetailsObject}
+            edit={edit}
+            changeHandler={handleInputChange}
+          />
+        </div>
+      </div>)
+         }
       />
       <PanelWithUpDown
         label="Parcel ID(s)"
@@ -528,7 +526,7 @@ const SiteDetails = () => {
           />
         </div>
       </div>
-      <Notations />
+     
     </PageContainer>
   );
 };

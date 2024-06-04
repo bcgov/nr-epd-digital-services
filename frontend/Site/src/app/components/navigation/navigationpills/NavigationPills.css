@@ -1,16 +1,20 @@
 
   
-  .pill {
-    padding: 10px 20px;
-    background-color: lightgray;
-    border-radius: var(--layout-border-radius-medium);
-    margin-right: 5px;
+  .custom-nav-pill {
+    padding: var(--layout-padding-xsmall) var(--layout-padding-small) var(--layout-padding-xsmall) var(--layout-padding-small);
+    border-radius: var(--surface-border-radius-medium);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    text-align: center;
     text-decoration: none;
-    color: black;
-    cursor: pointer;
   }
   
-  .pill.active {
-    background-color: dodgerblue;
-    color: white;
+  .custom-nav-pill.active {
+    background: var(--surface-primary-default, #053662);
+    color: var(--typography-color-primary-invert, #FFFFFF);
+  }
+
+  .custom-nav-pill.disabled {
+    color: var(--typography-color-disabled);
   }

@@ -7,8 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../Store";
 import { fetchSites } from "../dto/SiteSlice";
 import Form from "../../../components/form/Form";
+import { flattenFormRows, formatDateRange } from "../../../helpers/utility";
 import { FormFieldType, IFormField } from "../../../components/input-controls/IFormField";
-import { formatDateRange } from "../../../helpers/utility";
+
 
 interface childProps {
     cancelSearchFilter : () => void
@@ -27,26 +28,7 @@ const SiteFilterForm : React.FC<childProps> = ({cancelSearchFilter}) => {
         }));
     };
 
-    const flattenFormRows = (arr: IFormField[][]): IFormField[] => {
-        const flattened: IFormField[] = [];
-        
-        const flatten = (arr: IFormField[][]): void => {
-            for (const item of arr) {
-                for (const field of item) {
-                    if (field.type === FormFieldType.Group && field.children) {
-                        flattened.push(field);
-                        flatten([field.children]);
-                    } else {
-                        flattened.push(field);
-                    }
-                }
-            }
-        }
-    
-        flatten(arr);
-        return flattened;
-    }
-
+  
     const handleFormSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         const filteredFormData: { [key: string]: string } = {};

@@ -1,11 +1,9 @@
-import React, { ReactEventHandler, useState } from "react";
+import React, { useState } from "react";
 import PanelWithUpDown from "../../../components/simple/PanelWithUpDown";
-import LabelComponent from "../LabelComponent";
 import Form from "../../../components/form/Form";
-import { notationColumnInternal, notationFormRowsInternal, notationFormRowExternal, notationFormRowsFirstChild, notationSortBy, notationColumnExternal } from "./NotationsConfig";
+import { notationColumnInternal, notationFormRowsInternal, notationFormRowExternal, notationFormRowsFirstChild, notationColumnExternal } from "./NotationsConfig";
 import './Notations.css';
 import Widget from "../../../components/widget/Widget";
-import { IWidget } from "../../../components/widget/IWidget";
 import { RequestStatus } from "../../../helpers/requests/status";
 import { UserType } from "../../../helpers/requests/userType";
 import { AppDispatch } from "../../../Store";
@@ -13,6 +11,13 @@ import { useDispatch } from "react-redux";
 import { CircleXMarkIcon, MagnifyingGlassIcon, Plus, UserMinus, UserPlus } from "../../../components/common/icon";
 import { INotations } from "./INotations";
 import { UserMode } from "../../../helpers/requests/userMode";
+import { ChangeTracker, IChangeType } from "../../../components/common/IChangeType";
+import { trackChanges } from "../../site/dto/SiteSlice";
+import { flattenFormRows, formatDateRange } from "../../../helpers/utility";
+import { IFormField } from "../../../components/form/IForm";
+import Search from "../../site/Search";
+import SearchInput from "../../../components/search/SearchInput";
+import Sort from "../../../components/sort/Sort";
 
 const dummyData = [
     {
@@ -58,8 +63,8 @@ const Notations: React.FC<INotations> = ({
     user,
   }) => {
 
-    const [userType, setUserType] = useState<UserType>(UserType.Internal);
-    const [viewMode, setViewMode] = useState(UserMode.EditMode);
+    const [userType, setUserType] = useState<UserType>(UserType.External);
+    const [viewMode, setViewMode] = useState(UserMode.Default);
 
     const [formData, setFormData] =  useState<{ [key: string]: any | [Date, Date] }>({});
     const [loading, setLoading] = useState<RequestStatus>(RequestStatus.loading);
@@ -84,7 +89,6 @@ const Notations: React.FC<INotations> = ({
             value.toLowerCase().includes(searchTerm.trim().toLowerCase())
         )
       );
-      console.log(filtered)
       // setData(filtered);
     };
 
@@ -105,6 +109,14 @@ const Notations: React.FC<INotations> = ({
           ...prevData,
           [graphQLPropertyName]:value 
       }));
+    
+      const flattedArr = flattenFormRows(notationFormRowsInternal)
+      const currLabel = flattedArr && flattedArr.find(row => row.graphQLPropertyName === graphQLPropertyName);
+      const tracker = new ChangeTracker(
+        IChangeType.Modified,
+        "Notations: " + currLabel?.label ?? ''
+      );
+      dispatch(trackChanges(tracker.toPlainObject()));
     };
 
     const handleSortChange = (graphQLPropertyName: any, value: String | [Date, Date] ) => {
@@ -112,10 +124,10 @@ const Notations: React.FC<INotations> = ({
         ...prevData,
         [graphQLPropertyName]:value 
       }));
-      sortItems (value);
+      sortItems (value, data);
     }
 
-    const sortItems = (sortBy:any) => {
+    const sortItems = (sortBy:any, data:any) => {
       let sorted = [...data];
       switch (sortBy) {
         case 'newToOld':
@@ -132,66 +144,49 @@ const Notations: React.FC<INotations> = ({
     };
 
     const handleOnAddNotation = () => {
-      // alert("Add Notation Click");
-      setViewMode(UserMode.SrMode);
+      alert("Add Notation Click");
+      // setViewMode(UserMode.SrMode);
     };
 
     return (
       <>
           <div className="row ">
-          { userType == UserType.Internal && (viewMode == UserMode.EditMode || viewMode == UserMode.SrMode) &&
+          { userType === UserType.Internal && (viewMode === UserMode.EditMode || viewMode === UserMode.SrMode) &&
             <div className="col-lg-6 col-md-12 py-4">
-              <button className={`d-flex align-items-center ${viewMode == UserMode.EditMode ? `btn-add-notation` : `btn-add-notation-disable`} `} disabled= { viewMode == UserMode.SrMode } onClick={handleOnAddNotation}
+              <button className={`d-flex align-items-center ${viewMode === UserMode.EditMode ? `btn-add-notation` : `btn-add-notation-disable`} `} disabled= { viewMode === UserMode.SrMode } onClick={handleOnAddNotation}
                aria-label="Add Notation">
                   <Plus className="btn-notation-icon"/>
                   <span>Add Notation</span>
               </button>
             </div>
           }
-            <div className={`${userType == UserType.Internal && (viewMode == UserMode.EditMode || viewMode == UserMode.SrMode) ? `col-lg-6 col-md-12` : `col-lg-12`}`}>
+            <div className={`${userType === UserType.Internal && (viewMode === UserMode.EditMode || viewMode === UserMode.SrMode) ? `col-lg-6 col-md-12` : `col-lg-12`}`}>
               <div className="row align-items-center justify-content-between p-0">
-                <div className={`mb-3 ${userType == UserType.Internal ? (viewMode == UserMode.EditMode || viewMode == UserMode.SrMode) ? `col` : `col-lg-8 col-md-12` : `col-xxl-8 col-xl-8 col-lg-8 col-md-12 col-sm-12 col-xs-12`}`}>
-                  <label className="form-label custom-search-label">Search Site Registry</label>
-                      <div className="d-flex align-items-center justify-content-center w-100 position-relative">
-                          <input
-                            aria-label="Search input "
-                            onChange={(event) => {handleSearchChange(event)}}
-                            value={searchTerm}
-                            type="text"
-                            className={`form-control custom-search ${searchTerm.length > 0 ? 'ps-2' : 'ps-5'}`}
-                          />
-                          {
-                            searchTerm.length <= 0  
-                              ? 
-                              <span className="search-icon custom-icon position-absolute px-2"><MagnifyingGlassIcon/></span>
-                              :  
-                              <span className="clear-icon custom-icon position-absolute px-2"><CircleXMarkIcon  onClick={clearSearch} /></span>
-                          }
-                      </div>
-                  </div>            
-                <div className={`${userType == UserType.Internal ? (viewMode == UserMode.EditMode || viewMode == UserMode.SrMode) ? `col` : `col-lg-4 col-md-12` : `col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-xs-12`}`}>
-                  <Form formRows={notationSortBy} formData={sortByValue} editMode={true} handleInputChange={handleSortChange}
-                  aria-label="Sort By Form"/> 
+                <div className={`mb-3 ${userType === UserType.Internal ? (viewMode === UserMode.EditMode || viewMode === UserMode.SrMode) ? `col` : `col-lg-8 col-md-12` : `col-xxl-8 col-xl-8 col-lg-8 col-md-12 col-sm-12 col-xs-12`}`}>
+                  <SearchInput label={'Search'} searchTerm={searchTerm} clearSearch={clearSearch} handleSearchChange={handleSearchChange}/>
+                </div>            
+                <div className={`${userType === UserType.Internal ? (viewMode === UserMode.EditMode || viewMode === UserMode.SrMode) ? `col` : `col-lg-4 col-md-12` : `col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-xs-12`}`}>
+                  <Sort formData={sortByValue} editMode={true} handleSortChange={handleSortChange} /> 
                 </div>
               </div>
             </div>
           </div>
       
         <PanelWithUpDown 
-              firstChild= { 
+              firstChild = { 
                   <div className="w-100">
-                    <Form formRows={notationFormRowsFirstChild} formData={formData} editMode={viewMode == UserMode.EditMode} handleInputChange={handleInputChange}
+                    <Form formRows = {notationFormRowsFirstChild} formData = {formData} editMode = {viewMode === UserMode.EditMode} handleInputChange={handleInputChange}
                      aria-label="Sort Notation Form"/>
-                   { userType == UserType.Internal && <span className="sr-time-stamp">{srTimeStamp}</span> }
+                   { userType === UserType.Internal && <span className="sr-time-stamp">{srTimeStamp}</span> }
                   </div>
                   }
-              secondChild= { 
+              secondChild = { 
                   <div className="w-100">
-                      <Form formRows={ userType == UserType.External ? notationFormRowExternal : notationFormRowsInternal } formData={formData} editMode={viewMode == UserMode.EditMode} handleInputChange={handleInputChange}
+                      <Form formRows={ userType === UserType.External ? notationFormRowExternal : notationFormRowsInternal } formData={formData} editMode={viewMode === UserMode.EditMode} handleInputChange={handleInputChange}
                       aria-label="Sort Notation Form"/>
-                      <Widget title={'Notation'} tableColumns={ userType == UserType.Internal ? notationColumnInternal : notationColumnExternal} tableData={data} tableIsLoading={loading} allowRowsSelect={viewMode == UserMode.EditMode}
-                      aria-label="Notation Widget" hideTable={false} hideTitle={false}>
-                       { userType == UserType.Internal &&
+                      <Widget title={'Notation'} tableColumns={ userType === UserType.Internal ? notationColumnInternal : notationColumnExternal} tableData={data} tableIsLoading={loading} allowRowsSelect={viewMode === UserMode.EditMode}
+                      aria-label="Notation Widget" hideTable = { false } hideTitle = { false }>
+                       { userType === UserType.Internal &&
                           <div className="d-flex gap-2">
                             <button className=" d-flex align-items-center notation-btn" type="button" onClick={handleAddParticipant} aria-label={'Add Participant'} >
                                 <UserPlus className="btn-user-icon"/>
@@ -204,7 +199,7 @@ const Notations: React.FC<INotations> = ({
                           </div>
                         }
                       </Widget>
-                     { userType == UserType.Internal && <p className="sr-time-stamp">{srTimeStamp}</p>}
+                     { userType === UserType.Internal && <p className="sr-time-stamp">{srTimeStamp}</p>}
                   </div>
                 }
           />
