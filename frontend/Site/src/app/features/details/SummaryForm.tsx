@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { FormFieldType, IFormField } from "../../components/form/IForm";
+import { FormFieldType, IFormField } from "../../components/input-controls/IFormField";
 import Form from "../../components/form/Form";
 import { Sites } from "../site/dto/Site";
 import "./SummaryForm.css"

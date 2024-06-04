@@ -1,4 +1,5 @@
-import { TableColumn , ColumnType, ColumnSize } from "../../../components/table/TableColumn";
+import { FormFieldType } from "../../../components/input-controls/IFormField";
+import { TableColumn , ColumnSize } from "../../../components/table/TableColumn";
 
 const getSiteSearchResultsColumns = () => {
   const columns: TableColumn[] = [
@@ -13,7 +14,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       true,
-      ColumnType.Text
+      getColumnType("Site ID","id","")    
     ),
     new TableColumn(
       6,
@@ -25,7 +26,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       true,
-      ColumnType.Text,
+      getColumnType("Site Address","addrLine_1,addrLine_2,addrLine_3","")  ,
       "site/details/",
       false,
       ColumnSize.Triple
@@ -43,7 +44,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       true,
-      ColumnType.Text
+      getColumnType("City","city","")  
     ),
     new TableColumn(
       2,
@@ -55,7 +56,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       false,
-      ColumnType.Text
+      getColumnType("Site Remediation Status","srStatus","")  
     ),
     new TableColumn(
       3,
@@ -67,7 +68,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       false,
-      ColumnType.Text
+      getColumnType("Site Risk code","siteRiskCode","")  
     ),
     new TableColumn(
       4,
@@ -79,7 +80,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       false,
-      ColumnType.Text
+      getColumnType("General Description","generalDescription","")  
     ),
     new TableColumn(
       5,
@@ -91,7 +92,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       false,
-      ColumnType.Text
+      getColumnType("Common Name","commonName","")  
     ),
     new TableColumn(
       8,
@@ -103,7 +104,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       false,
-      ColumnType.Text
+      getColumnType("Latitude","latdeg","")  
     ),
     new TableColumn(
       9,
@@ -115,7 +116,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       false,
-      ColumnType.Text
+      getColumnType("Latitude(D,M,S)","latDegrees,latMinutes,latSeconds","")  
     ),
     new TableColumn(
       10,
@@ -127,7 +128,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       false,
-      ColumnType.Text
+      getColumnType("Longitude","longdeg","")  
     ),
     new TableColumn(
       11,
@@ -139,7 +140,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       false,
-      ColumnType.Text
+      getColumnType("Longitude(D,M,S)","longDegrees,longMinutes,longSeconds","") 
     ),
     new TableColumn(
       12,
@@ -151,7 +152,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       false,
-      ColumnType.Text
+      getColumnType("Lat/Long Reliability","latlongReliabilityFlag","") 
     ),
     new TableColumn(
       13,
@@ -163,7 +164,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       false,
-      ColumnType.Text
+      getColumnType("Created By","whoCreated","") 
     ),
     new TableColumn(
       14,
@@ -175,7 +176,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       false,
-      ColumnType.Text
+      getColumnType("Date Created","whenCreated","") 
     ),
     new TableColumn(
       15,
@@ -187,7 +188,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       false,
-      ColumnType.Text
+      getColumnType("Last Updated","whenCreated","") 
     ),
     new TableColumn(
       16,
@@ -199,7 +200,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       false,
-      ColumnType.Text
+      getColumnType("Consultant Submitted","consultantSubmitted","") 
     ),
     new TableColumn(
       17,
@@ -211,7 +212,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       true,
-      ColumnType.Link,
+      getColumnType("View","id","") ,
       "site/map/",
       true
     ),
@@ -225,15 +226,45 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       true,
-      ColumnType.Link,
+      getLinkColumnType("Details","id","","site/details/"),
       "site/details/",
-      true
+      true,      
     ),
   ];
 
   return columns;
 };
 
+
+const getColumnType = (label:string, propertyName:string, value:string) =>
+{
+  return   {
+    type: FormFieldType.Label,
+    label: label,       
+    graphQLPropertyName: propertyName,
+    value:value,      
+    customLabelCss: "custom-lbl-text",
+    customInputTextCss: "custom-input-text",
+    tableMode: true,
+  }
+}
+
+const getLinkColumnType = (label:string, propertyName:string, value:string, href:string) =>
+  {
+    return   {
+      type: FormFieldType.Link,
+      label: label,       
+      graphQLPropertyName: propertyName,
+      value:value,      
+      customLabelCss: "custom-lbl-text",
+      customInputTextCss: "custom-input-text",
+      tableMode: true,
+      href: href
+    }
+  }
+
 export { getSiteSearchResultsColumns };
+
+export const B: any =1 ;
 
 

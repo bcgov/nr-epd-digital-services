@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../Store";
 import { fetchSites } from "../dto/SiteSlice";
 import Form from "../../../components/form/Form";
-import { FormFieldType, IFormField } from "../../../components/form/IForm";
+import { FormFieldType, IFormField } from "../../../components/input-controls/IFormField";
 import { formatDateRange } from "../../../helpers/utility";
 
 interface childProps {

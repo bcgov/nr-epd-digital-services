@@ -13,14 +13,18 @@ import {
   FolderPlusIcon,
   ShoppingCartIcon,
 } from "../../components/common/icon";
-import { ColumnType, TableColumn } from "../../components/table/TableColumn";
+import { TableColumn } from "../../components/table/TableColumn";
 import Table from "../../components/table/Table";
 import { RequestStatus } from "../../helpers/requests/status";
 import SummaryForm from "./SummaryForm";
 import PanelWithUpDown from "../../components/simple/PanelWithUpDown";
-import { fetchSitesDetails, selectSiteDetails,  trackChanges,
+import {
+  fetchSitesDetails,
+  selectSiteDetails,
+  trackChanges,
   trackedChanges,
-  clearTrackChanges, } from "../site/dto/SiteSlice";
+  clearTrackChanges,
+} from "../site/dto/SiteSlice";
 import { AppDispatch } from "../../Store";
 import Notations from "./notations/Notations";
 import NavigationPills from "../../components/navigation/navigationpills/NavigationPills";
@@ -39,12 +43,12 @@ import {
 import Map from "../../../../node_modules/react-parcelmap-bc/dist/Map";
 
 import "./SiteDetails.css"; // Ensure this import is correct
+import { FormFieldType } from "../../components/input-controls/IFormField";
 
 // State Initializations
 const initialParcelIds = [
   12123123, 123123, 12312312, 1231231, 23, 123123123123, 123123213, 1123123,
 ];
-
 
 const SiteDetails = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -61,7 +65,7 @@ const SiteDetails = () => {
   const [parcelIds, setParcelIds] = useState(initialParcelIds);
   const [showLocationDetails, setShowLocationDetails] = useState(true);
   const [showParcelDetails, setShowParcelDetails] = useState(true);
-  const items = ['Component 1', 'Component 2', 'Component 3'];
+  const items = ["Component 1", "Component 2", "Component 3"];
   const components = [<></>];
 
   const data = [
@@ -77,6 +81,7 @@ const SiteDetails = () => {
 
   const activityData = [
     {
+      id: 1,
       activity: "some activity",
       user: "Midhun",
       timeStamp: "23-04-1989 00:11:11",
@@ -89,25 +94,86 @@ const SiteDetails = () => {
       displayName: "Activity",
       active: true,
       graphQLPropertyName: "activity",
+      displayType: {
+        type: FormFieldType.Text,
+        label: "Site ID",
+        placeholder: 'Separate IDs by a comma (",")',
+        graphQLPropertyName: "activity",
+        value: "",
+
+        allowNumbersOnly: true,
+        colSize: "col-lg-6 col-md-6 col-sm-12",
+        customLabelCss: "custom-lbl-text",
+        customInputTextCss: "custom-input-text",
+        tableMode: true,
+      },
     },
     {
       id: 2,
       displayName: "User",
       active: true,
       graphQLPropertyName: "user",
+      displayType: {
+        type: FormFieldType.Text,
+        label: "Site ID",
+        placeholder: 'Separate IDs by a comma (",")',
+        graphQLPropertyName: "user",
+        value: "",
+        validation: {
+          pattern: /^[0-9,\s]*$/,
+          customMessage: "Site ID can only contain numbers and commas",
+        },
+        allowNumbersOnly: true,
+        colSize: "col-lg-6 col-md-6 col-sm-12",
+        customLabelCss: "custom-lbl-text",
+        customInputTextCss: "custom-input-text",
+        tableMode: true,
+      },
     },
     {
       id: 3,
       displayName: "Time Stamp",
       active: true,
       graphQLPropertyName: "timeStamp",
+      displayType: {
+        type: FormFieldType.Text,
+        label: "Site ID",
+        placeholder: 'Separate IDs by a comma (",")',
+        graphQLPropertyName: "timeStamp",
+        value: "",
+        validation: {
+          pattern: /^[0-9,\s]*$/,
+          customMessage: "Site ID can only contain numbers and commas",
+        },
+        allowNumbersOnly: true,
+        colSize: "col-lg-6 col-md-6 col-sm-12",
+        customLabelCss: "custom-lbl-text",
+        customInputTextCss: "custom-input-text",
+        tableMode: true,
+      },
     },
     {
       id: 4,
       displayName: "SR",
       active: true,
       graphQLPropertyName: "id",
-      displayType: ColumnType.Checkbox,
+      displayType: {
+        type: FormFieldType.Text,
+        label: "Site ID",
+        placeholder: 'Separate IDs by a comma (",")',
+        graphQLPropertyName: "id",
+        value: "",
+        validation: {
+          pattern: /^[0-9,\s]*$/,
+          customMessage: "Site ID can only contain numbers and commas",
+        },
+        allowNumbersOnly: true,
+        colSize: "col-lg-6 col-md-6 col-sm-12",
+        customLabelCss: "custom-lbl-text",
+        customInputTextCss: "custom-input-text",
+        tableMode: true,
+      },
+      //displayType: ColumnType.Checkbox,
     },
   ];
 
@@ -156,42 +222,134 @@ const SiteDetails = () => {
       displayName: "Documents",
       active: true,
       graphQLPropertyName: "documents",
+      displayType: {
+        type: FormFieldType.Text,
+        label: "Site ID",
+        placeholder: 'Separate IDs by a comma (",")',
+        graphQLPropertyName: "id",
+        value: "",
+        validation: {
+          pattern: /^[0-9,\s]*$/,
+          customMessage: "Site ID can only contain numbers and commas",
+        },
+        allowNumbersOnly: true,
+        colSize: "col-lg-6 col-md-6 col-sm-12",
+        customLabelCss: "custom-lbl-text",
+        customInputTextCss: "custom-input-text",
+        tableMode: true,
+      },
     },
     {
-      id: 1,
+      id: 2,
       displayName: "Land Uses",
       active: true,
       graphQLPropertyName: "landUses",
+      displayType: {
+        type: FormFieldType.Text,
+        label: "Site ID",
+        placeholder: 'Separate IDs by a comma (",")',
+        graphQLPropertyName: "id",
+        value: "",
+        validation: {
+          pattern: /^[0-9,\s]*$/,
+          customMessage: "Site ID can only contain numbers and commas",
+        },
+        allowNumbersOnly: true,
+        colSize: "col-lg-6 col-md-6 col-sm-12",
+        customLabelCss: "custom-lbl-text",
+        customInputTextCss: "custom-input-text",
+        tableMode: true,
+      },
     },
     {
-      id: 1,
+      id: 3,
       displayName: "Associated Sites",
       active: true,
       graphQLPropertyName: "associatedSites",
+      displayType: {
+        type: FormFieldType.Text,
+        label: "Site ID",
+        placeholder: 'Separate IDs by a comma (",")',
+        graphQLPropertyName: "id",
+        value: "",
+        validation: {
+          pattern: /^[0-9,\s]*$/,
+          customMessage: "Site ID can only contain numbers and commas",
+        },
+        allowNumbersOnly: true,
+        colSize: "col-lg-6 col-md-6 col-sm-12",
+        customLabelCss: "custom-lbl-text",
+        customInputTextCss: "custom-input-text",
+        tableMode: true,
+      },
     },
     {
-      id: 1,
+      id: 4,
       displayName: "Notations",
       active: true,
       graphQLPropertyName: "notation",
+      displayType: {
+        type: FormFieldType.Text,
+        label: "Site ID",
+        placeholder: 'Separate IDs by a comma (",")',
+        graphQLPropertyName: "id",
+        value: "",
+        validation: {
+          pattern: /^[0-9,\s]*$/,
+          customMessage: "Site ID can only contain numbers and commas",
+        },
+        allowNumbersOnly: true,
+        colSize: "col-lg-6 col-md-6 col-sm-12",
+        customLabelCss: "custom-lbl-text",
+        customInputTextCss: "custom-input-text",
+        tableMode: true,
+      },
     },
     {
       id: 5,
       displayName: "Participants",
       active: true,
       graphQLPropertyName: "participants",
+      displayType: {
+        type: FormFieldType.Text,
+        label: "Site ID",
+        placeholder: 'Separate IDs by a comma (",")',
+        graphQLPropertyName: "id",
+        value: "",
+        validation: {
+          pattern: /^[0-9,\s]*$/,
+          customMessage: "Site ID can only contain numbers and commas",
+        },
+        allowNumbersOnly: true,
+        colSize: "col-lg-6 col-md-6 col-sm-12",
+        customLabelCss: "custom-lbl-text",
+        customInputTextCss: "custom-input-text",
+        tableMode: true,
+      },
     },
     {
-      id: 1,
+      id: 6,
       displayName: "Parcel Description",
       active: true,
       graphQLPropertyName: "parcelDescription",
+      displayType: {
+        type: FormFieldType.Text,
+        label: "Site ID",
+        placeholder: 'Separate IDs by a comma (",")',
+        graphQLPropertyName: "id",
+        value: "",
+        validation: {
+          pattern: /^[0-9,\s]*$/,
+          customMessage: "Site ID can only contain numbers and commas",
+        },
+        allowNumbersOnly: true,
+        colSize: "col-lg-6 col-md-6 col-sm-12",
+        customLabelCss: "custom-lbl-text",
+        customInputTextCss: "custom-input-text",
+        tableMode: true,
+      },
     },
   ];
-
-  
-
-  
 
   return (
     <PageContainer role="details">
@@ -280,47 +438,56 @@ const SiteDetails = () => {
       </div>
 
       <div className="section-details-header row">
-      <div>
-        <NavigationPills items={items} components={components} />
-      </div>
         <div>
+          <NavigationPills items={items} components={components} />
+        </div>
+        {/* <div>
           <CustomLabel label="Site ID:" labelType="b-h5" />
-          <CustomLabel label="18326" labelType="r-h5" />
+          <CustomLabel label={editSiteDetailsObject.id} labelType="r-h5" />
         </div>
         <div>
-          <CustomLabel label="29292 quadra, victoria" labelType="b-h1" />
-        </div>
+          <CustomLabel label={editSiteDetailsObject.addrLine_1 +","+editSiteDetailsObject.addrLine_2+","+editSiteDetailsObject.addrLine_3} labelType="b-h1" />
+        </div> */}
       </div>
-      <PanelWithUpDown label="Location Details" secondChild = {
-        (<div className="row w-100">
-        <div className="col-12 col-lg-6">
-          <Map callback={() => {}} initLocation={location} readOnly={true} />
-        </div>
-        <div className="col-12 col-lg-6">
-          <SummaryForm
-            sitesDetails={editSiteDetailsObject}
-            edit={edit}
-            changeHandler={handleInputChange}
-          />
-        </div>
-      </div>)
-         }
+      <PanelWithUpDown
+        label="Location Details"
+        secondChild={
+          <div className="row w-100">
+            <div className="col-12 col-lg-6">
+              <Map
+                callback={() => {}}
+                initLocation={location}
+                readOnly={true}
+              />
+            </div>
+            <div className="col-12 col-lg-6">
+              <SummaryForm
+                sitesDetails={editSiteDetailsObject}
+                edit={edit}
+                changeHandler={handleInputChange}
+              />
+            </div>
+          </div>
+        }
       />
-     <PanelWithUpDown label="Parcel ID(s)" secondChild={
-       !edit ? (
-        <div>{parcelIds.join(", ")}</div>
-      ) : (
-        <div className="parcel-edit-div">
-          {parcelIds.map((pid) => (
-            <CustomPillButton
-              key={pid}
-              label={pid}
-              clickHandler={() => handleParcelIdDelete(pid)}
-            />
-          ))}
-        </div>
-      )
-      }/>
+      <PanelWithUpDown
+        label="Parcel ID(s)"
+        secondChild={
+          !edit ? (
+            <div>{parcelIds.join(", ")}</div>
+          ) : (
+            <div className="parcel-edit-div">
+              {parcelIds.map((pid) => (
+                <CustomPillButton
+                  key={pid}
+                  label={pid}
+                  clickHandler={() => handleParcelIdDelete(pid)}
+                />
+              ))}
+            </div>
+          )
+        }
+      />
 
       <div className="">
         <div className="summary-details-border">
@@ -337,6 +504,8 @@ const SiteDetails = () => {
             totalResults={data.length}
             allowRowsSelect={false}
             showPageOptions={false}
+            changeHandler={() => {}}
+            editMode={false}
           />
         </div>
       </div>
@@ -352,10 +521,14 @@ const SiteDetails = () => {
             totalResults={activityData.length}
             allowRowsSelect={false}
             showPageOptions={false}
+            changeHandler={(eventRecord) => {
+              console.log(eventRecord);
+            }}
+            editMode={edit}
           />
         </div>
       </div>
-      <Notations/>
+      <Notations />
     </PageContainer>
   );
 };

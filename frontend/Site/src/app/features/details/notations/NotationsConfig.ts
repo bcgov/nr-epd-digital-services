@@ -1,5 +1,5 @@
-import { FormFieldType, IFormField } from "../../../components/form/IForm";
-import { ColumnSize, ColumnType, TableColumn } from "../../../components/table/TableColumn";
+import { FormFieldType, IFormField } from "../../../components/input-controls/IFormField";
+import { ColumnSize,  TableColumn } from "../../../components/table/TableColumn";
 import avatar from '../../../images/avatar.png';
 
 // When user type is Internal and can be any mode (Edit/SR)
@@ -323,7 +323,22 @@ export const notationColumnInternal: TableColumn[] = [
       displayName: "Role",
       active: true,
       graphQLPropertyName: "role",
-      displayType: ColumnType.DropDown,
+      displayType:{
+        type: FormFieldType.Label,
+        label: "Site ID",
+        placeholder: 'Separate IDs by a comma (",")',
+        graphQLPropertyName: "id",
+        value: "",
+        validation: {
+          pattern: /^[0-9,\s]*$/,
+          customMessage: "Site ID can only contain numbers and commas",
+        },
+        allowNumbersOnly: true,
+        colSize: "col-lg-6 col-md-6 col-sm-12",
+        customLabelCss: "custom-lbl-text",
+        customInputTextCss: "custom-input-text",
+        tableMode: true,
+      },
       columnSize: ColumnSize.Default
     },
     {
@@ -331,7 +346,22 @@ export const notationColumnInternal: TableColumn[] = [
       displayName: "Participant Name",
       active: true,
       graphQLPropertyName: "participantName",
-      displayType: ColumnType.TextBox,
+      displayType:{
+        type: FormFieldType.Label,
+        label: "Site ID",
+        placeholder: 'Separate IDs by a comma (",")',
+        graphQLPropertyName: "id",
+        value: "",
+        validation: {
+          pattern: /^[0-9,\s]*$/,
+          customMessage: "Site ID can only contain numbers and commas",
+        },
+        allowNumbersOnly: true,
+        colSize: "col-lg-6 col-md-6 col-sm-12",
+        customLabelCss: "custom-lbl-text",
+        customInputTextCss: "custom-input-text",
+        tableMode: true,
+      },
       columnSize: ColumnSize.Triple
     },
     {
@@ -339,7 +369,22 @@ export const notationColumnInternal: TableColumn[] = [
       displayName: "SR",
       active: true,
       graphQLPropertyName: "sr",
-      displayType: ColumnType.Checkbox,
+      displayType: {
+        type: FormFieldType.Label,
+        label: "Site ID",
+        placeholder: 'Separate IDs by a comma (",")',
+        graphQLPropertyName: "id",
+        value: "",
+        validation: {
+          pattern: /^[0-9,\s]*$/,
+          customMessage: "Site ID can only contain numbers and commas",
+        },
+        allowNumbersOnly: true,
+        colSize: "col-lg-6 col-md-6 col-sm-12",
+        customLabelCss: "custom-lbl-text",
+        customInputTextCss: "custom-input-text",
+        tableMode: true,
+      },
       columnSize: ColumnSize.Default
     },
 ];
@@ -350,7 +395,22 @@ export const notationColumnExternal: TableColumn[] = [
       displayName: "Role",
       active: true,
       graphQLPropertyName: "role",
-      displayType: ColumnType.DropDown,
+      displayType:{
+        type: FormFieldType.DropDown,
+        label: "Site ID",
+        placeholder: 'Separate IDs by a comma (",")',
+        graphQLPropertyName: "id",
+        value: "",
+        validation: {
+          pattern: /^[0-9,\s]*$/,
+          customMessage: "Site ID can only contain numbers and commas",
+        },
+        allowNumbersOnly: true,
+        colSize: "col-lg-6 col-md-6 col-sm-12",
+        customLabelCss: "custom-lbl-text",
+        customInputTextCss: "custom-input-text",
+        tableMode: true,
+      },
       columnSize: ColumnSize.Default
     },
     {
@@ -358,7 +418,22 @@ export const notationColumnExternal: TableColumn[] = [
       displayName: "Participant Name",
       active: true,
       graphQLPropertyName: "participantName",
-      displayType: ColumnType.TextBox,
+      displayType: {
+        type: FormFieldType.Label,
+        label: "Site ID",
+        placeholder: 'Separate IDs by a comma (",")',
+        graphQLPropertyName: "id",
+        value: "",
+        validation: {
+          pattern: /^[0-9,\s]*$/,
+          customMessage: "Site ID can only contain numbers and commas",
+        },
+        allowNumbersOnly: true,
+        colSize: "col-lg-6 col-md-6 col-sm-12",
+        customLabelCss: "custom-lbl-text",
+        customInputTextCss: "custom-input-text",
+        tableMode: true,
+      },
       columnSize: ColumnSize.Triple
     },
 ];

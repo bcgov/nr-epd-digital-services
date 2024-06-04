@@ -1,4 +1,4 @@
-import { FormFieldType, IFormField } from "../../../components/form/IForm";
+import { FormFieldType, IFormField } from "../../../components/input-controls/IFormField";
 
 
 export const formRows: IFormField[][] = [

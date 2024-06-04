@@ -31,6 +31,8 @@ const Widget: React.FC<IWidget> = ({
               data={tableData}
               showPageOptions={false}
               allowRowsSelect={allowRowsSelect}
+              changeHandler={()=>{}}
+              editMode={false}
             />
           </div>
         }

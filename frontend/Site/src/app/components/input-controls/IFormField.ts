@@ -4,10 +4,12 @@ export enum FormFieldType {
     DropDown = 'dropdown',
     Date =  'date',
     Group = 'group',
+    Label = 'label',
+    Link = 'link'
 }
 
 export interface IFormField {
-    type: FormFieldType.Text | FormFieldType.DropDown | FormFieldType.Date | FormFieldType.Group;
+    type: FormFieldType.Text | FormFieldType.DropDown | FormFieldType.Date | FormFieldType.Group | FormFieldType.Label | FormFieldType.Link;
     label: string;
     placeholder?: string;
     colSize?: string;
@@ -29,4 +31,6 @@ export interface IFormField {
         pattern?: RegExp;
         customMessage?: string;
     };
+    tableMode?:boolean;
+    href?:string
 }

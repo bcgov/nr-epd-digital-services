@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { SpinnerIcon, SortIcon } from "../common/icon";
 import { RequestStatus } from "../../helpers/requests/status";
-import { TableColumn, ColumnType } from "./TableColumn";
+import { TableColumn } from "./TableColumn";
 import "./Table.css";
 import Pagination from "./pagination/Pagination";
 import TableHeader from "./header/TableHeader";
@@ -19,6 +19,8 @@ interface TableProps {
   resultsPerPage?: number;
   showPageOptions? : boolean;
   allowRowsSelect? : boolean;
+  changeHandler:(eventRecord:any)=>void,
+  editMode: boolean
 }
 
 const Table: FC<TableProps> = ({
@@ -32,7 +34,9 @@ const Table: FC<TableProps> = ({
   currentPage,
   resultsPerPage,
   showPageOptions,
-  allowRowsSelect
+  allowRowsSelect,
+  changeHandler,
+  editMode
 }) => {
   
 
@@ -43,7 +47,7 @@ const Table: FC<TableProps> = ({
           <thead aria-label={`${label} Header`}>
             <TableHeader columns={columns} allowRowsSelect={allowRowsSelect ?? false} />
           </thead>
-            <TableBody isLoading={isLoading} columns={columns} data={data} allowRowsSelect={allowRowsSelect ?? false} />
+            <TableBody isLoading={isLoading} columns={columns} data={data} allowRowsSelect={allowRowsSelect ?? false} changeHandler={changeHandler} editMode={editMode} />
         </table>
       </div>
       <div>

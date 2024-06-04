@@ -4,7 +4,7 @@ import "./SearchResults.css";
 import { loadingState } from "./dto/SiteSlice";
 import { RequestStatus } from "../../helpers/requests/status";
 import { useSelector } from "react-redux";
-import { TableColumn, ColumnType } from "../../components/table/TableColumn";
+import { TableColumn } from "../../components/table/TableColumn";
 import Pagination from "../../components/table/pagination/Pagination";
 import Table from "../../components/table/Table";
 
@@ -55,6 +55,8 @@ const SearchResults: FC<ColumnProps> = ({
       currentPage={currentPage}
       resultsPerPage={resultsPerPage}
       allowRowsSelect={true}
+      changeHandler={()=>{}}
+      editMode={false}
     ></Table>
   );
 };
