@@ -86,6 +86,7 @@ const SiteDetails = () => {
     {
       case UserMode.EditMode :
        setEdit(!edit);
+       dispatch(updateSiteDetailsMode(SiteDetailsMode.EditMode));
        break;
       case UserMode.SrMode :
        // setEdit(!edit); // need to do thing as per SR Mode
@@ -144,30 +145,23 @@ const SiteDetails = () => {
         <div className="d-flex gap-2 justify-align-center">
           {( !edit && viewMode === UserMode.EditMode && userType === UserType.Internal) && <Actions label="Action" items={ActionItems} onItemClick={handleItemClick} /> }
           {( edit && viewMode === UserMode.EditMode && userType === UserType.Internal) && (
-            <div className="d-flex gap-3 align-items-center">
-          {!edit && (
-            <button
-              className="d-flex btn-cart align-items-center"
-              onClick={() => { dispatch(updateSiteDetailsMode(SiteDetailsMode.EditMode)); setEdit(!edit)}}
-            >
-              <span className="btn-cart-lbl">Edit</span>
-            </button>
-          )}
-          {edit && (
-            <Fragment>
-              <CustomLabel labelType="c-b" label="Edit Mode" />
-              <SaveButton clickHandler={() => setSave(true)} />
-              <CancelButton
-                clickHandler={() => {
-                  dispatch(updateSiteDetailsMode(SiteDetailsMode.ViewOnlyMode));
-              <CancelButton clickHandler={() => {
-                  dispatch(clearTrackChanges({}));
-                  setEditSiteDetailsObject(details);
-                  setSave(false);
-                  setEdit(false);
-                }}
-              />
-            </div>
+          <div className="d-flex gap-3 align-items-center">
+            {edit && (
+              <>
+                <CustomLabel labelType="c-b" label="Edit Mode" />
+                <SaveButton clickHandler={() => setSave(true)} />
+                <CancelButton clickHandler={() => {
+                    dispatch(updateSiteDetailsMode(SiteDetailsMode.ViewOnlyMode));
+                    dispatch(clearTrackChanges({}));
+                    setEditSiteDetailsObject(details);
+                    setSave(false);
+                    setEdit(false);
+                  }}
+                />
+              </>
+            )}
+            
+          </div>
           )}
           { (!edit && viewMode === UserMode.Default && userType === UserType.External) &&
             <>
@@ -183,16 +177,6 @@ const SiteDetails = () => {
             </>
           }
         </div>
-      </div>
-
-      <div className="section-details-header row">
-        {/* <div>
-          <CustomLabel label="Site ID:" labelType="b-h5" />
-          <CustomLabel label={editSiteDetailsObject.id} labelType="r-h5" />
-        </div>
-        <div>
-          <CustomLabel label={editSiteDetailsObject.addrLine_1 +","+editSiteDetailsObject.addrLine_2+","+editSiteDetailsObject.addrLine_3} labelType="b-h1" />
-        </div> */}
       </div>
       <NavigationPills items={navItems} components={navComponents} />
     </PageContainer>
