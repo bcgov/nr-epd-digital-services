@@ -129,7 +129,7 @@ const SiteDetails = () => {
           {!edit && (
             <button
               className="d-flex btn-cart align-items-center"
-              onClick={() => { dispatch(updateSiteDetailsMode(SiteDetailsMode.edit)); setEdit(!edit)}}
+              onClick={() => { dispatch(updateSiteDetailsMode(SiteDetailsMode.EditMode)); setEdit(!edit)}}
             >
               <span className="btn-cart-lbl">Edit</span>
             </button>
@@ -140,7 +140,7 @@ const SiteDetails = () => {
               <SaveButton clickHandler={() => setSave(true)} />
               <CancelButton
                 clickHandler={() => {
-                  dispatch(updateSiteDetailsMode(SiteDetailsMode.normal));
+                  dispatch(updateSiteDetailsMode(SiteDetailsMode.ViewOnlyMode));
                   dispatch(clearTrackChanges({}));
                   setEditSiteDetailsObject(details);
                   setSave(false);
