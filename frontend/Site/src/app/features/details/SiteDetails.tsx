@@ -145,8 +145,21 @@ const SiteDetails = () => {
           {( !edit && viewMode === UserMode.EditMode && userType === UserType.Internal) && <Actions label="Action" items={ActionItems} onItemClick={handleItemClick} /> }
           {( edit && viewMode === UserMode.EditMode && userType === UserType.Internal) && (
             <div className="d-flex gap-3 align-items-center">
+          {!edit && (
+            <button
+              className="d-flex btn-cart align-items-center"
+              onClick={() => { dispatch(updateSiteDetailsMode(SiteDetailsMode.EditMode)); setEdit(!edit)}}
+            >
+              <span className="btn-cart-lbl">Edit</span>
+            </button>
+          )}
+          {edit && (
+            <Fragment>
               <CustomLabel labelType="c-b" label="Edit Mode" />
               <SaveButton clickHandler={() => setSave(true)} />
+              <CancelButton
+                clickHandler={() => {
+                  dispatch(updateSiteDetailsMode(SiteDetailsMode.ViewOnlyMode));
               <CancelButton clickHandler={() => {
                   dispatch(clearTrackChanges({}));
                   setEditSiteDetailsObject(details);

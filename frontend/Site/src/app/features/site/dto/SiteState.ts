@@ -21,5 +21,5 @@ export class SiteState
     siteDetailsAddedStatus:string =  RequestStatus.idle;   
     siteDetailsUpdateStatus:string  = RequestStatus.idle;
     changeTracker: ChangeTracker[] = [];
-    siteDetailsMode: SiteDetailsMode = SiteDetailsMode.normal;
+    siteDetailsMode: SiteDetailsMode = SiteDetailsMode.ViewOnlyMode;
 }

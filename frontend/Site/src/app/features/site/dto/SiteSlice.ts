@@ -27,7 +27,7 @@ const initialState: SiteState = {
   siteDetailsAddedStatus: RequestStatus.idle,
   siteDetailsUpdateStatus: RequestStatus.idle,
   changeTracker: [],
-  siteDetailsMode: SiteDetailsMode.normal,
+  siteDetailsMode: SiteDetailsMode.ViewOnlyMode,
 };
 
 export const fetchSitesDetails = createAsyncThunk(

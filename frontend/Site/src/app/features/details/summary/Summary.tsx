@@ -23,7 +23,7 @@ const Summary = () => {
     const detailsMode = useSelector(siteDetailsMode);
 
     useEffect(() => {
-        if (detailsMode === SiteDetailsMode.edit) {
+        if (detailsMode === SiteDetailsMode.EditMode) {
           setEdit(true);
         } else {
           setEdit(false);
@@ -333,11 +333,13 @@ const Summary = () => {
               />
             </div>
             <div className="col-12 col-lg-6">
+            {editSiteDetailsObject != null &&
               <SummaryForm
                 sitesDetails={editSiteDetailsObject}
                 edit={edit}
                 changeHandler={handleInputChange}
               />
+            }
             </div>
           </div>
         }

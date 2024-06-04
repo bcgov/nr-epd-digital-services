@@ -407,7 +407,7 @@ export const notationColumnExternal: TableColumn[] = [
         type: FormFieldType.Label,
         label: "Site ID",
         placeholder: 'Separate IDs by a comma (",")',
-        graphQLPropertyName: "id",
+        graphQLPropertyName: "participantName",
         value: "",
         validation: {
           pattern: /^[0-9,\s]*$/,
