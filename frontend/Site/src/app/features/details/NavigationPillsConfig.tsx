@@ -1,4 +1,5 @@
-import Notations from "../../../features/details/notations/Notations";
+import Notations from "./notations/Notations";
+import Summary from "./summary/Summary";
 
 export const navItems: string[] = [
     'Summary',
@@ -12,7 +13,7 @@ export const navItems: string[] = [
 ];
 
 export const navComponents: JSX.Element[] = [
-        <></>, 
+        <Summary/>, 
         <Notations/>,
         <></>,
         <></>,
