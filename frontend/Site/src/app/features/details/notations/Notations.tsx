@@ -62,8 +62,8 @@ const Notations: React.FC<INotations> = ({
     user,
   }) => {
 
-    const [userType, setUserType] = useState<UserType>(UserType.External);
-    const [viewMode, setViewMode] = useState(UserMode.Default);
+    const [userType, setUserType] = useState<UserType>(UserType.Internal);
+    const [viewMode, setViewMode] = useState(UserMode.EditMode);
 
     const [formData, setFormData] =  useState<{ [key: string]: any | [Date, Date] }>({});
     const [loading, setLoading] = useState<RequestStatus>(RequestStatus.loading);
@@ -184,7 +184,7 @@ const Notations: React.FC<INotations> = ({
                       <Form formRows={ userType === UserType.External ? notationFormRowExternal : notationFormRowsInternal } formData={formData} editMode={viewMode === UserMode.EditMode} handleInputChange={handleInputChange}
                       aria-label="Sort Notation Form"/>
                       <Widget title={'Notation'} tableColumns={ userType === UserType.Internal ? notationColumnInternal : notationColumnExternal} tableData={data} tableIsLoading={loading} allowRowsSelect={viewMode === UserMode.EditMode}
-                      aria-label="Notation Widget" hideTable = { false } hideTitle = { false }>
+                      aria-label="Notation Widget" hideTable = { false } hideTitle = { false } editMode={viewMode === UserMode.EditMode}>
                        { userType === UserType.Internal &&
                           <div className="d-flex gap-2">
                             <button className=" d-flex align-items-center notation-btn" type="button" onClick={handleAddParticipant} aria-label={'Add Participant'} >

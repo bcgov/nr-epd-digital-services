@@ -45,10 +45,19 @@ import {
 import "./SiteDetails.css"; // Ensure this import is correct
 import { FormFieldType } from "../../components/input-controls/IFormField";
 import { SiteDetailsMode } from "./dto/SiteDetailsMode";
+import { UserType } from "../../helpers/requests/userType";
+import { UserMode } from "../../helpers/requests/userMode";
+import Actions from "../../components/action/Actions";
+import { ActionItems } from "../../components/action/ActionsConfig";
 
 const SiteDetails = () => {
  
   const [edit, setEdit] = useState(false);
+  const [showLocationDetails, SetShowLocationDetails] = useState(false);
+  const [showParcelDetails, SetShowParcelDetails] = useState(false);
+  const [save, setSave] = useState(false);
+  const [userType, setUserType] = useState<UserType>(UserType.Internal);
+  const [viewMode, setViewMode] = useState(UserMode.EditMode);
 
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -56,19 +65,12 @@ const SiteDetails = () => {
     navigate(-1);
   };
 
-  const [showLocationDetails, SetShowLocationDetails] = useState(false);
-  const [showParcelDetails, SetShowParcelDetails] = useState(false);
-
   const { id } = useParams();
 
   const details = useSelector(selectSiteDetails);
   const [editSiteDetailsObject, setEditSiteDetailsObject] = useState(details);
   const savedChanges = useSelector(trackedChanges);
 
-  const [save, setSave] = useState(false);
-
-  const items = ["Component 1", "Component 2", "Component 3"];
-  const components = [<></>];
 
   // Effects
   useEffect(() => {
@@ -78,6 +80,23 @@ const SiteDetails = () => {
   useEffect(() => {
     setEditSiteDetailsObject(details);
   }, [details]);
+
+  const handleItemClick = (value: string) => {
+    switch(value)
+    {
+      case UserMode.EditMode :
+       setEdit(!edit);
+       break;
+      case UserMode.SrMode :
+       // setEdit(!edit); // need to do thing as per SR Mode
+       break;
+      case UserMode.DeleteMode :
+       // setEdit(!edit); // need to do things as per Delete Mode
+       break;
+      default:
+       break;
+    }
+ };
 
   return (
     <PageContainer role="details">
@@ -118,52 +137,39 @@ const SiteDetails = () => {
       )}
 
       <div className="d-flex justify-content-between">
-        <button
-          className="d-flex btn-back align-items-center"
-          onClick={onClickBackButton}
-        >
+        <button className="d-flex btn-back align-items-center" onClick={onClickBackButton}>
           <AngleLeft className="btn-icon" />
           <span className="btn-back-lbl">Back to</span>
         </button>
         <div className="d-flex gap-2 justify-align-center">
-          {!edit && (
-            <button
-              className="d-flex btn-cart align-items-center"
-              onClick={() => { dispatch(updateSiteDetailsMode(SiteDetailsMode.edit)); setEdit(!edit)}}
-            >
-              <span className="btn-cart-lbl">Edit</span>
-            </button>
-          )}
-          {edit && (
-            <Fragment>
+          {( !edit && viewMode === UserMode.EditMode && userType === UserType.Internal) && <Actions label="Action" items={ActionItems} onItemClick={handleItemClick} /> }
+          {( edit && viewMode === UserMode.EditMode && userType === UserType.Internal) && (
+            <div className="d-flex gap-3 align-items-center">
               <CustomLabel labelType="c-b" label="Edit Mode" />
               <SaveButton clickHandler={() => setSave(true)} />
-              <CancelButton
-                clickHandler={() => {
-                  dispatch(updateSiteDetailsMode(SiteDetailsMode.normal));
+              <CancelButton clickHandler={() => {
                   dispatch(clearTrackChanges({}));
                   setEditSiteDetailsObject(details);
                   setSave(false);
                   setEdit(false);
                 }}
               />
-            </Fragment>
+            </div>
           )}
+          { (!edit && viewMode === UserMode.Default && userType === UserType.External) &&
+            <>
+              <button className="d-flex btn-cart align-items-center">
+                <ShoppingCartIcon className="btn-icon" />
+                <span className="btn-cart-lbl"> Add to Cart</span>
+              </button>
+              <button className="d-flex btn-folio align-items-center">
+                <FolderPlusIcon className="btn-folio-icon" />
+                <span className="btn-folio-lbl"> Add to Folio</span>
+                <DropdownIcon className="btn-folio-icon" />
+              </button>
+            </>
+          }
         </div>
-        {/* <div className="d-flex gap-2">
-          <button className="d-flex btn-cart align-items-center" onClick={()=>{setEdit(!edit)}}>
-            <span className="btn-cart-lbl" > Edit</span>
-          </button>
-          <button className="d-flex btn-cart align-items-center">
-            <ShoppingCartIcon className="btn-icon" />
-            <span className="btn-cart-lbl"> Add to Cart</span>
-          </button>
-          <button className="d-flex btn-folio align-items-center">
-            <FolderPlusIcon className="btn-folio-icon" />
-            <span className="btn-folio-lbl"> Add to Folio</span>
-            <DropdownIcon className="btn-folio-icon" />
-          </button>
-        </div> */}
       </div>
 
       <div className="section-details-header row">

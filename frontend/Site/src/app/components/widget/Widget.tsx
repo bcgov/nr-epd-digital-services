@@ -13,6 +13,7 @@ const Widget: React.FC<IWidget> = ({
     allowRowsSelect,
     hideTable,
     hideTitle,
+    editMode,
 }) => {
     return(
         <div className={`d-flex flex-column widget-container`}>
@@ -32,7 +33,7 @@ const Widget: React.FC<IWidget> = ({
               showPageOptions={false}
               allowRowsSelect={allowRowsSelect}
               changeHandler={()=>{}}
-              editMode={false}
+              editMode={editMode ?? false}
             />
           </div>
         }

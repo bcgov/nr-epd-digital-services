@@ -10,4 +10,5 @@ export interface IWidget {
     allowRowsSelect?:boolean;
     hideTable?:boolean;
     hideTitle?:boolean;
+    editMode?:boolean;
 }

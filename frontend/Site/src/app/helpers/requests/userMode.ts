@@ -1,5 +1,6 @@
 export enum UserMode {
     Default = 'Default',
     EditMode = 'Edit',
-    SrMode = 'SR'
+    SrMode = 'SR',
+    DeleteMode = 'Delete'
 }
