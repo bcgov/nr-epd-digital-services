@@ -15,7 +15,7 @@ interface InputProps extends IFormField {
 export const Link:React.FC<InputProps> = ({label, placeholder, type, value, validation, allowNumbersOnly, isEditing, customLabelCss, customInputTextCss, customEditLabelCss, customEditInputTextCss, onChange, tableMode, href})=> {
     return (  
     <td className="table-border-light content-text">
-    <RouterLink to={href+value} aria-label={`${label + " " + value}`}>
+    <RouterLink to={href+value} className={`${customInputTextCss ?? ''}`} aria-label={`${label + " " + value}`}>
       {value}
     </RouterLink>
   </td>)

@@ -444,7 +444,7 @@ const SiteDetails = () => {
 
       <div className="section-details-header row">
         
-        <div>
+        {/* <div>
           <CustomLabel label="Site ID:" labelType="b-h5" />
           <CustomLabel label={editSiteDetailsObject.id} labelType="r-h5" />
         </div>

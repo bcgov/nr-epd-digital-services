@@ -13,6 +13,7 @@
 .table-border-light {
     border: 1px solid;
     border-color: var(--surface-border-light);
+    background-color: var(--surface-background-white) !important;
 }
 
 
