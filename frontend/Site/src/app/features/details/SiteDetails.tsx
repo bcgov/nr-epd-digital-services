@@ -140,6 +140,7 @@ const SiteDetails = () => {
               <SaveButton clickHandler={() => setSave(true)} />
               <CancelButton
                 clickHandler={() => {
+                  dispatch(updateSiteDetailsMode(SiteDetailsMode.normal));
                   dispatch(clearTrackChanges({}));
                   setEditSiteDetailsObject(details);
                   setSave(false);
