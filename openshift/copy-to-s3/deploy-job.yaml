@@ -18,14 +18,14 @@ objects:
         template:
           spec:
             volumes:
-              - name: foi-bkup-shared-pvc
+              - name: epd-bkup-shared-pvc
                 persistentVolumeClaim:
-                  claimName: foi-bkup-shared-pvc
+                  claimName: epd-bkup-shared-pvc
             containers:
               - name: backup-to-s3
                 image: image-registry.openshift-image-registry.svc:5000/****-tools/backup-to-s3:latest
                 volumeMounts:
-                  - name: foi-bkup-shared-pvc
+                  - name: epd-bkup-shared-pvc
                     mountPath: /backups/
                 args:
                 env:
