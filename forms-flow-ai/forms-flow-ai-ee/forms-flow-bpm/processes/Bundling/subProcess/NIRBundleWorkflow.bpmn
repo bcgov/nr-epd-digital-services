@@ -607,6 +607,16 @@ execution.setVariable("applicationStatus", "Rejected");
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted' || action == 'Approved' }</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1ua4w6m" name="Need Info" sourceRef="Activity_06nypz0" targetRef="Task_05ulff4">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('nirBundleStatus', "SIA Returned");</camunda:script>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+          <camunda:field name="fields">
+            <camunda:string>["applicationId", "applicationStatus", "nirBundleStatus"]</camunda:string>
+          </camunda:field>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0unffch" name="Owner Submits" sourceRef="Activity_1ozfgid" targetRef="Gateway_1qaboft" />
