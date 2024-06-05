@@ -110,10 +110,17 @@ const Notations: React.FC<INotations> = ({
     };
 
     const handleInputChange = (graphQLPropertyName: any, value: String | [Date, Date]) => {
-      setFormData((prevData) => ({
+      if(viewMode === SiteDetailsMode.SRMode)
+      {
+        console.log({[graphQLPropertyName]:value})
+      }
+      else
+      {
+        setFormData((prevData) => ({
           ...prevData,
           [graphQLPropertyName]:value 
       }));
+      }
     
       const flattedArr = flattenFormRows(notationFormRowsInternal)
       const currLabel = flattedArr && flattedArr.find(row => row.graphQLPropertyName === graphQLPropertyName);
@@ -180,18 +187,18 @@ const Notations: React.FC<INotations> = ({
         <PanelWithUpDown 
               firstChild = { 
                   <div className="w-100">
-                    <Form formRows = {notationFormRowsFirstChild} formData = {formData} editMode = {viewMode === SiteDetailsMode.EditMode} handleInputChange={handleInputChange}
+                    <Form formRows = {notationFormRowsFirstChild} formData = {formData} editMode = {viewMode === SiteDetailsMode.EditMode} srMode= { viewMode === SiteDetailsMode.SRMode } handleInputChange={handleInputChange}
                      aria-label="Sort Notation Form"/>
                    { userType === UserType.Internal && <span className="sr-time-stamp">{srTimeStamp}</span> }
                   </div>
                   }
               secondChild = { 
                   <div className="w-100">
-                      <Form formRows={ userType === UserType.External ? notationFormRowExternal : notationFormRowsInternal } formData={formData} editMode={viewMode === SiteDetailsMode.EditMode} handleInputChange={handleInputChange}
+                      <Form formRows={ userType === UserType.External ? notationFormRowExternal : notationFormRowsInternal } formData={formData} editMode={viewMode === SiteDetailsMode.EditMode}  srMode= { viewMode === SiteDetailsMode.SRMode } handleInputChange={handleInputChange}
                       aria-label="Sort Notation Form"/>
-                      <Widget title={'Notation'} tableColumns={ userType === UserType.Internal ? notationColumnInternal : notationColumnExternal} tableData={data} tableIsLoading={loading} allowRowsSelect={viewMode === SiteDetailsMode.EditMode}
+                      <Widget title={'Notation Participants'} tableColumns={ userType === UserType.Internal ? notationColumnInternal : notationColumnExternal} tableData={data} tableIsLoading={loading} allowRowsSelect={viewMode === SiteDetailsMode.EditMode}
                       aria-label="Notation Widget" hideTable = { false } hideTitle = { false }>
-                       { userType === UserType.Internal &&
+                       { viewMode === SiteDetailsMode.EditMode && userType === UserType.Internal &&
                           <div className="d-flex gap-2">
                             <button className=" d-flex align-items-center notation-btn" type="button" onClick={handleAddParticipant} aria-label={'Add Participant'} >
                                 <UserPlus className="btn-user-icon"/>
@@ -202,6 +209,11 @@ const Notations: React.FC<INotations> = ({
                                 <span className={`${!btnDisabled ? `notation-btn-lbl` : `notation-btn-lbl-disabled`}`}>{'Remove Participant'}</span>
                             </button>
                           </div>
+                        }
+                        { viewMode === SiteDetailsMode.SRMode && userType === UserType.Internal &&
+                          <button className={`d-flex align-items-center ${!btnDisabled ? `notation-btn` : `notation-btn-disable`}`} disabled={btnDisabled} type="button" onClick={handleRemoveParticipant} aria-label={'Set SR Visibility'} >
+                            <span className={`${!btnDisabled ? `notation-btn-lbl` : `notation-btn-lbl-disabled`}`}>{'Set SR Visibility'}</span>
+                          </button>
                         }
                       </Widget>
                      { userType === UserType.Internal && <p className="sr-time-stamp">{srTimeStamp}</p>}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IFormField } from "./IFormField";
+import { FormFieldType, IFormField } from "./IFormField";
 import avatar from '../../images/avatar.png';
 import { formatDateRange } from "../../helpers/utility";
 import { DateRangePicker } from 'rsuite';
@@ -62,6 +62,10 @@ export const TextInput: React.FC<InputProps> =  ({label, placeholder, type, valu
         }
     }
 
+    const handleCheckBoxChange = (isChecked: boolean) => {
+        onChange(isChecked); 
+    };
+
     // Replace any spaces in the label with underscores to create a valid id
     const inputTxtId = label.replace(/\s+/g, '_');
 
@@ -95,25 +99,28 @@ export const TextInput: React.FC<InputProps> =  ({label, placeholder, type, valu
                     {
                      !tableMode && 
                         <>
-                            {/* <input type="checkbox" id={`${inputTxtId}_checkbox`} className="form-check-input" onChange={handleCheckboxChange} /> */}
+                            { 
+                                srMode &&
+                                <CheckBoxInput type={FormFieldType.Checkbox} label={inputTxtId} isLabel = {false} onChange={handleCheckBoxChange}/>
+                            }
                             <label htmlFor={inputTxtId} className={`${!isEditing ? customLabelCss ?? '' : `form-label ${ customEditLabelCss ?? 'custom-label'}`}`}>
                                 {label}
                             </label>
                         </>
                     }
-                   {  isEditing ? 
-                        <input
-                            type={type}
-                            id={inputTxtId}
-                            className={`form-control custom-input ${ customEditInputTextCss ?? 'custom-input-text'}  ${error && 'error'}`}
-                            placeholder={placeholder}
-                            value={value ?? ''}
-                            onChange={handleTextInputChange}
-                            aria-label={label} // Accessibility
-                            required = {error ? true : false}
-                        />
-                        :
-
+                    {  
+                        isEditing ? 
+                            <input
+                                type={type}
+                                id={inputTxtId}
+                                className={`form-control custom-input ${ customEditInputTextCss ?? 'custom-input-text'}  ${error && 'error'}`}
+                                placeholder={placeholder}
+                                value={value ?? ''}
+                                onChange={handleTextInputChange}
+                                aria-label={label} // Accessibility
+                                required = {error ? true : false}
+                            />
+                        : 
                         <p className={`${customInputTextCss ?? ''}`}>{value}</p>
                     }
                     {error && <div className="text-danger p-1 small">{error}</div>}
@@ -124,7 +131,7 @@ export const TextInput: React.FC<InputProps> =  ({label, placeholder, type, valu
     
 }
 
-export const Dropdown: React.FC<InputProps> = ({ label, placeholder, options, value, isEditing, isImage, customLabelCss, customInputTextCss, customEditLabelCss, customEditInputTextCss, onChange }) => {
+export const Dropdown: React.FC<InputProps> = ({ label, placeholder, options, value, isEditing, srMode, isImage, customLabelCss, customInputTextCss, customEditLabelCss, customEditInputTextCss, onChange }) => {
 
     // Replace any spaces in the label with underscores to create a valid id
     const drdownId = label.replace(/\s+/g, '_');
@@ -137,9 +144,17 @@ export const Dropdown: React.FC<InputProps> = ({ label, placeholder, options, va
         onChange(selectedOption);
     };
 
+    const handleCheckBoxChange = (isChecked: boolean) => {
+        onChange(isChecked); 
+    };
+
     const isFirstOptionGrey = value === '';
     return(
         <div className="mb-3">
+            { 
+                srMode &&
+                <CheckBoxInput type={FormFieldType.Checkbox} label={drdownId} isLabel = {false} onChange={handleCheckBoxChange}/>
+            }
             {/* Create a label for the dropdown using the form-label class */}
             <label htmlFor={drdownId} className={`${!isEditing ? customLabelCss ?? '' :  `form-label ${ customEditLabelCss ?? 'custom-label'}`}`}>
                 {label}
@@ -175,7 +190,7 @@ export const Dropdown: React.FC<InputProps> = ({ label, placeholder, options, va
     );
 }
 
-export const GroupInput: React.FC<InputProps> = ({label, children, isEditing, customLabelCss, customInputTextCss, customEditLabelCss, customEditInputTextCss,}) =>{
+export const GroupInput: React.FC<InputProps> = ({label, children, isEditing, srMode, customLabelCss, customInputTextCss, customEditLabelCss, customEditInputTextCss, onChange}) =>{
     const [error, setError] = useState<string | null>(null);
     let currentConcatenatedValue;
 
@@ -223,8 +238,16 @@ export const GroupInput: React.FC<InputProps> = ({label, children, isEditing, cu
         }
     };
 
+    const handleCheckBoxChange = (isChecked: boolean) => {
+        onChange(isChecked); 
+    };
+
     return(
         <div className="mb-3"> {/* Container for the group input */}
+            { 
+                srMode &&
+                <CheckBoxInput type={FormFieldType.Checkbox} label={''} isLabel = {false} onChange={handleCheckBoxChange}/>
+            }
             {/* Label for the group input */}
             <label className={`${!isEditing ? customLabelCss ?? '' :  `form-label ${ customEditLabelCss ?? 'custom-label'}`}`}>{label}</label>
             
@@ -254,17 +277,24 @@ export const GroupInput: React.FC<InputProps> = ({label, children, isEditing, cu
     );
 }
 
-export const DateInput: React.FC<InputProps> = ({ label, placeholder, value, isEditing, customLabelCss, customInputTextCss, customEditLabelCss, customEditInputTextCss, onChange }) => {
+export const DateInput: React.FC<InputProps> = ({ label, placeholder, value, isEditing, srMode, customLabelCss, customInputTextCss, customEditLabelCss, customEditInputTextCss, onChange }) => {
     let dateRangeValue;
     if(value.length > 0)
     {
         dateRangeValue = formatDateRange(value);
     }
-    
+
+    const handleCheckBoxChange = (isChecked: boolean) => {
+        onChange(isChecked); 
+    };
     // Replace any spaces in the label with underscores to create a valid id
     const dateRangeId = label.replace(/\s+/g, '_');
     return (
     <div className="mb-3">
+         { 
+            srMode &&
+            <CheckBoxInput type={FormFieldType.Checkbox} label={dateRangeId} isLabel = {false} onChange={handleCheckBoxChange}/>
+        }
         <label htmlFor={dateRangeId} className={`${!isEditing ? customLabelCss ?? '' :  `form-label ${ customEditLabelCss ?? 'custom-label'}`}`}>{label}</label>
         { isEditing ? 
             <DateRangePicker 
@@ -285,3 +315,31 @@ export const DateInput: React.FC<InputProps> = ({ label, placeholder, value, isE
         
     </div>
 )};
+
+export const CheckBoxInput:  React.FC<InputProps> = ({ label, isLabel, isChecked, customLabelCss, customEditLabelCss, customEditInputTextCss, isEditing, type, value, onChange }) => {
+    const inputTxtId = label.replace(/\s+/g, '_');
+    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        onChange(e.target.checked); // Toggle the checked state and pass it to the parent component
+    };
+    
+      return (
+        <div className="d-inline mb-3">
+            <div className="d-inline form-check p-0">
+            <input
+                id={inputTxtId}
+                type={type}
+                className={`form-check-input custom-checkbox ${ customEditInputTextCss ?? 'custom-input-text'}`}
+                checked={isChecked}
+                aria-label={label} // Accessibility
+                onChange={handleCheckboxChange}
+            />
+           { 
+                isLabel && 
+                <label htmlFor={inputTxtId} className={`${!isEditing ? customLabelCss ?? '' : `px-1 form-label ${ customEditLabelCss ?? 'custom-label'}`}`}>
+                        {label}
+                </label>
+            }
+            </div>
+        </div>
+      );
+}

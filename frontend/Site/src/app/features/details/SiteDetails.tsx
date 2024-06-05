@@ -57,7 +57,7 @@ const SiteDetails = () => {
   const [showParcelDetails, SetShowParcelDetails] = useState(false);
   const [save, setSave] = useState(false);
   const [userType, setUserType] = useState<UserType>(UserType.Internal);
-  const [viewMode, setViewMode] = useState(UserMode.EditMode);
+  const [viewMode, setViewMode] = useState(SiteDetailsMode.ViewOnlyMode);
 
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -71,8 +71,11 @@ const SiteDetails = () => {
   const [editSiteDetailsObject, setEditSiteDetailsObject] = useState(details);
   const savedChanges = useSelector(trackedChanges);
 
+  const mode = useSelector(siteDetailsMode);
+  useEffect(()=> {
+    setViewMode(mode);
+  }, [mode]);
 
-  // Effects
   useEffect(() => {
     dispatch(fetchSitesDetails({ siteId: id ?? "" }));
   }, [id]);
@@ -85,25 +88,35 @@ const SiteDetails = () => {
     switch(value)
     {
       case UserMode.EditMode :
-       setEdit(!edit);
+       setEdit(true);
+       setViewMode(SiteDetailsMode.EditMode);
        dispatch(updateSiteDetailsMode(SiteDetailsMode.EditMode));
        break;
       case UserMode.SrMode :
-       // setEdit(!edit); // need to do thing as per SR Mode
+       setEdit(true);
+       setViewMode(SiteDetailsMode.SRMode);
+       dispatch(updateSiteDetailsMode(SiteDetailsMode.SRMode));
        break;
       case UserMode.DeleteMode :
-       // setEdit(!edit); // need to do things as per Delete Mode
        break;
       default:
        break;
     }
  };
 
+  const handleCancelButton = () => {
+    dispatch(updateSiteDetailsMode(SiteDetailsMode.ViewOnlyMode));
+    dispatch(clearTrackChanges({}));
+    setEditSiteDetailsObject(details);
+    setSave(false);
+    setEdit(false);
+  }
   return (
     <PageContainer role="details">
       {save && (
         <ModalDialog
           closeHandler={() => {
+            dispatch(updateSiteDetailsMode(SiteDetailsMode.ViewOnlyMode));
             setEdit(false);
             setSave(false);
           }}
@@ -143,27 +156,17 @@ const SiteDetails = () => {
           <span className="btn-back-lbl">Back to</span>
         </button>
         <div className="d-flex gap-2 justify-align-center">
-          {( !edit && viewMode === UserMode.EditMode && userType === UserType.Internal) && <Actions label="Action" items={ActionItems} onItemClick={handleItemClick} /> }
-          {( edit && viewMode === UserMode.EditMode && userType === UserType.Internal) && (
-          <div className="d-flex gap-3 align-items-center">
-            {edit && (
+          {(!edit && viewMode === SiteDetailsMode.ViewOnlyMode && userType === UserType.Internal) && <Actions label="Action" items={ActionItems} onItemClick={handleItemClick} /> }
+            <div className="d-flex gap-3 align-items-center">
+            {edit && userType === UserType.Internal &&
               <>
-                <CustomLabel labelType="c-b" label="Edit Mode" />
+                <CustomLabel labelType="c-b" label={`${ viewMode === SiteDetailsMode.SRMode ? 'SR Mode' : 'Edit Mode'}`} />
                 <SaveButton clickHandler={() => setSave(true)} />
-                <CancelButton clickHandler={() => {
-                    dispatch(updateSiteDetailsMode(SiteDetailsMode.ViewOnlyMode));
-                    dispatch(clearTrackChanges({}));
-                    setEditSiteDetailsObject(details);
-                    setSave(false);
-                    setEdit(false);
-                  }}
-                />
+                <CancelButton clickHandler={handleCancelButton} />
               </>
-            )}
-            
+            }
           </div>
-          )}
-          { (!edit && viewMode === UserMode.Default && userType === UserType.External) &&
+          { (!edit && viewMode === SiteDetailsMode.ViewOnlyMode && userType === UserType.External) &&
             <>
               <button className="d-flex btn-cart align-items-center">
                 <ShoppingCartIcon className="btn-icon" />

@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import './Form.css';
-import { CalendarIcon, DropdownIcon, XmarkIcon } from '../common/icon';
 import 'rsuite/DateRangePicker/styles/index.css';
 import { FormFieldType, IFormField } from "../input-controls/IFormField";
-import { DateInput, Dropdown ,GroupInput,TextInput, } from "../input-controls/InputControls";
+import { CheckBoxInput, DateInput, Dropdown ,GroupInput,TextInput, } from "../input-controls/InputControls";
  
 
 interface IFormRendererProps {
@@ -53,6 +52,7 @@ const Form: React.FC<IFormRendererProps>  = ({ formRows, formData, editMode, srM
                                     type={field.type}
                                     isEditing={editMode ?? true}
                                     isImage = {field.isImage}
+                                    srMode = {srMode ?? false}
                                 />
                             )}
                             {field.type === FormFieldType.Date && (
@@ -67,6 +67,7 @@ const Form: React.FC<IFormRendererProps>  = ({ formRows, formData, editMode, srM
                                     onChange={(value) => handleInputChange(field.graphQLPropertyName, value)}
                                     type={field.type}
                                     isEditing={editMode ?? true}
+                                    srMode = {srMode ?? false}
                                 />
                             )}
                             {field.type === FormFieldType.Group && (
@@ -87,10 +88,23 @@ const Form: React.FC<IFormRendererProps>  = ({ formRows, formData, editMode, srM
                                     type={field.type}
                                     value={formData[field.label] || ''}
                                     isEditing={editMode ?? true}
+                                    srMode = {srMode ?? false}
                                     customLabelCss = {field.customLabelCss}
                                     customInputTextCss={field.customInputTextCss}
                                     customEditLabelCss = {field.customEditLabelCss}
                                     customEditInputTextCss={field.customEditInputTextCss}
+                                />
+                            )}
+                            {field.type === FormFieldType.Checkbox && (
+                                <CheckBoxInput
+                                    type={field.type}
+                                    label = {field.label}
+                                    isLabel = {field.isLabel ?? true}
+                                    customLabelCss={field.customLabelCss}
+                                    customEditLabelCss={field.customEditLabelCss}
+                                    customEditInputTextCss={field.customEditInputTextCss}
+                                    isEditing={editMode ?? true}
+                                    onChange={(value) => handleInputChange(field.graphQLPropertyName, value)}
                                 />
                             )}
                         </div>

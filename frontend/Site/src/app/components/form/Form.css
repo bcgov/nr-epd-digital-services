@@ -85,3 +85,7 @@
         height: 27px;
         width: 27px;
 }
+
+.custom-checkbox[type="checkbox"]:checked {
+    background:#313132;
+}

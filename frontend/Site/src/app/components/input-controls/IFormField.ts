@@ -5,12 +5,14 @@ export enum FormFieldType {
     Date =  'date',
     Group = 'group',
     Label = 'label',
-    Link = 'link'
+    Link = 'link',
+    Checkbox = 'checkbox',
 }
 
 export interface IFormField {
-    type: FormFieldType.Text | FormFieldType.DropDown | FormFieldType.Date | FormFieldType.Group | FormFieldType.Label | FormFieldType.Link;
+    type: FormFieldType.Text | FormFieldType.DropDown | FormFieldType.Date | FormFieldType.Group | FormFieldType.Label | FormFieldType.Link | FormFieldType.Checkbox;
     label: string;
+    isLabel?: boolean;
     placeholder?: string;
     colSize?: string;
     customLabelCss?:string;
@@ -20,7 +22,8 @@ export interface IFormField {
     graphQLPropertyName?: string,
     allowNumbersOnly?: boolean; 
     options?: {key :string, value: string, imageUrl?: any}[];
-    value: any;
+    value?: any;
+    isChecked?: boolean;
     children?: IFormField[];
     suffix?: string;
     isImage?: boolean;
