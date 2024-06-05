@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PanelWithUpDown from "../../../components/simple/PanelWithUpDown";
 import Form from "../../../components/form/Form";
 import { notationColumnInternal, notationFormRowsInternal, notationFormRowExternal, notationFormRowsFirstChild, notationColumnExternal } from "./NotationsConfig";
@@ -63,7 +63,7 @@ const Notations: React.FC<INotations> = ({
     user,
   }) => {
 
-    const [userType, setUserType] = useState<UserType>(UserType.External);
+    const [userType, setUserType] = useState<UserType>(UserType.Internal);
     const [viewMode, setViewMode] = useState(SiteDetailsMode.ViewOnlyMode);
 
     const [formData, setFormData] =  useState<{ [key: string]: any | [Date, Date] }>({});
@@ -92,6 +92,10 @@ const Notations: React.FC<INotations> = ({
       );
       // setData(filtered);
     };
+
+    useEffect(()=> {
+        setViewMode(mode);
+    }, [mode]);
 
     const clearSearch = () => {
       setSearchTerm('');

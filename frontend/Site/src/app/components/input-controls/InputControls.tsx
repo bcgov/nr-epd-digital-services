@@ -9,6 +9,7 @@ import { Link as RouterLink } from "react-router-dom";
 interface InputProps extends IFormField {
     children?: InputProps[];
     isEditing?: boolean;
+    srMode?: boolean;
     onChange: (value: any) => void;    
 }
 
@@ -28,7 +29,7 @@ export const Label:React.FC<InputProps> = ({label, placeholder, type, value, val
  </td>)
 }
  
-export const TextInput: React.FC<InputProps> =  ({label, placeholder, type, value, validation, allowNumbersOnly, isEditing, customLabelCss, customInputTextCss, customEditLabelCss, customEditInputTextCss, onChange, tableMode})=> {
+export const TextInput: React.FC<InputProps> =  ({label, placeholder, type, value, validation, allowNumbersOnly, isEditing, srMode, customLabelCss, customInputTextCss, customEditLabelCss, customEditInputTextCss, onChange, tableMode})=> {
 
     const [error, setError] = useState<string | null>(null);
 
@@ -91,10 +92,15 @@ export const TextInput: React.FC<InputProps> =  ({label, placeholder, type, valu
         {
             return (      
                 <div className="mb-3">
-                    {tableMode ? null :(
-                    <label htmlFor={inputTxtId} className={`${!isEditing ? customLabelCss ?? '' : `form-label ${ customEditLabelCss ?? 'custom-label'}`}`}>
-                        {label}
-                    </label>)}
+                    {
+                     !tableMode && 
+                        <>
+                            {/* <input type="checkbox" id={`${inputTxtId}_checkbox`} className="form-check-input" onChange={handleCheckboxChange} /> */}
+                            <label htmlFor={inputTxtId} className={`${!isEditing ? customLabelCss ?? '' : `form-label ${ customEditLabelCss ?? 'custom-label'}`}`}>
+                                {label}
+                            </label>
+                        </>
+                    }
                    {  isEditing ? 
                         <input
                             type={type}
@@ -107,6 +113,7 @@ export const TextInput: React.FC<InputProps> =  ({label, placeholder, type, valu
                             required = {error ? true : false}
                         />
                         :
+
                         <p className={`${customInputTextCss ?? ''}`}>{value}</p>
                     }
                     {error && <div className="text-danger p-1 small">{error}</div>}

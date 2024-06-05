@@ -10,12 +10,13 @@ interface IFormRendererProps {
     formRows: IFormField[][]; // Define the type of formRows according to your application
     formData: { [key: string]: any | [Date, Date] };
     editMode?: boolean;
+    srMode?: boolean;
     handleInputChange:  (graphQLPropertyName: any, value: string | [Date, Date]) => void;
 }
 
 
 
-const Form: React.FC<IFormRendererProps>  = ({ formRows, formData, editMode, handleInputChange }) => {
+const Form: React.FC<IFormRendererProps>  = ({ formRows, formData, editMode, srMode, handleInputChange }) => {
     return(<>
      {formRows.map((row, rowIndex) => (
                 <div key={rowIndex} className="row">
@@ -35,7 +36,7 @@ const Form: React.FC<IFormRendererProps>  = ({ formRows, formData, editMode, han
                                     validation={field.validation}
                                     allowNumbersOnly={field.allowNumbersOnly}
                                     isEditing={editMode ?? true}
-                                    
+                                    srMode = {srMode ?? false}
                                 />
                             )}
                             {field.type === FormFieldType.DropDown && (
