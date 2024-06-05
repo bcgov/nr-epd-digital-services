@@ -293,3 +293,13 @@ div.search-parent
     flex-direction: column;
     gap: var(--layout-margin-xlarge);
 }
+
+.link-for-table
+{
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: left;
+    color: var(--surface-primary-default);
+    text-decoration: none;
+}

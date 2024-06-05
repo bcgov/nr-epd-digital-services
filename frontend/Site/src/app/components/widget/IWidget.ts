@@ -11,4 +11,5 @@ export interface IWidget {
     hideTable?:boolean;
     hideTitle?:boolean;
     editMode?:boolean;
+    changeHandler:(event:any)=>void;
 }

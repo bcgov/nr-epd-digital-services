@@ -212,7 +212,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       1,
       true,
-      getColumnType("View","id","") ,
+      getLinkColumnType("Map","id","","site/map/") ,
       "site/map/",
       true
     ),
@@ -228,6 +228,7 @@ const getSiteSearchResultsColumns = () => {
       true,
       getLinkColumnType("Details","id","","site/details/"),
       "site/details/",
+    
       true,      
     ),
   ];
@@ -256,8 +257,8 @@ const getLinkColumnType = (label:string, propertyName:string, value:string, href
       label: label,       
       graphQLPropertyName: propertyName,
       value:value,      
-      customLabelCss: "custom-lbl-text",
-      customInputTextCss: "custom-input-text",
+      customLabelCss: "link-for-table",
+      customInputTextCss: "link-for-table",
       tableMode: true,
       href: href
     }

@@ -9,7 +9,7 @@ import {
 } from "../../../components/common/IChangeType";
 import { AppDispatch } from "../../../Store";
 import { useDispatch, useSelector } from "react-redux";
-import { selectSiteDetails, siteDetailsMode, trackChanges } from "../../site/dto/SiteSlice";
+import { resetSiteDetails, selectSiteDetails, siteDetailsMode, trackChanges } from "../../site/dto/SiteSlice";
 import { RequestStatus } from "../../../helpers/requests/status";
 import { FormFieldType } from "../../../components/input-controls/IFormField";
 import { TableColumn } from "../../../components/table/TableColumn";
@@ -20,13 +20,56 @@ import { SiteDetailsMode } from "../dto/SiteDetailsMode";
 
 const Summary = () => {
 
+  setTimeout(() => {
+    let address = document.getElementsByTagName('h3');
+    address.length > 0 && address[0] && address[0].remove();
+   }, 1000); 
+
+  setTimeout(() => {
+    let address = document.getElementsByTagName('h3');
+    address.length > 0 && address[0] && address[0].remove();
+   }, 2000); 
+  
+   setTimeout(() => {
+    let address = document.getElementsByTagName('h3');
+    address.length > 0 && address[0] && address[0].remove();
+   }, 3000); 
+
+
     const detailsMode = useSelector(siteDetailsMode);
+
+    
+    
+    const details = useSelector(selectSiteDetails);
+
+    const [editSiteDetailsObject, setEditSiteDetailsObject] = useState(details);
+   
+    const resetDetails = useSelector(resetSiteDetails);  
+    useEffect(()=>{
+
+        if(resetDetails)
+        {
+            setEditSiteDetailsObject(details);
+        }
+
+    },[resetDetails])
+
+    const [edit, setEdit] = useState(false);
+  
+    const [srMode, setSRMode] = useState(false);
 
     useEffect(() => {
         if (detailsMode === SiteDetailsMode.EditMode) {
           setEdit(true);
-        } else {
+          setSRMode(false);
+        } 
+        else if (detailsMode === SiteDetailsMode.SRMode) {
+            setSRMode(true);
+            setEdit(false);
+          }
+        else {
           setEdit(false);
+          setSRMode(false);
         }
       }, [detailsMode]);
     
@@ -36,15 +79,19 @@ const Summary = () => {
     12123123, 123123, 12312312, 1231231, 23, 123123123123, 123123213, 1123123,
   ];
 
-  const [edit, setEdit] = useState(true);
+
 
   const [location, setLocation] = useState([48.46762, -123.25458]);
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const details = useSelector(selectSiteDetails);
 
-  const [editSiteDetailsObject, setEditSiteDetailsObject] = useState(details);
+
+  useEffect(()=>{
+    let address = document.getElementsByTagName('h3');
+    address.length > 0 && address[0] && address[0].remove();
+    setEditSiteDetailsObject(details);
+  },[details])
 
   const [parcelIds, setParcelIds] = useState(initialParcelIds);
 
@@ -59,14 +106,30 @@ const Summary = () => {
 
   const handleInputChange = (graphQLPropertyName: any, value: any) => {
     const trackerLabel = getTrackerLabel(graphQLPropertyName);
-    const tracker = new ChangeTracker(
-      IChangeType.Modified,
-      "Site Location Details " + trackerLabel
-    );
-    dispatch(trackChanges(tracker.toPlainObject()));
+    if(detailsMode === SiteDetailsMode.SRMode)
+    {
+        const tracker = new ChangeTracker(
+            IChangeType.Modified,
+            "Site Location Details SR Mode For " + trackerLabel
+          );
+          dispatch(trackChanges(tracker.toPlainObject()));
+          console.log({[graphQLPropertyName]:value})
+    }
+    else
+    {
+        const tracker = new ChangeTracker(
+            IChangeType.Modified,
+            "Site Location Details " + trackerLabel
+          );
+          dispatch(trackChanges(tracker.toPlainObject()));
+          const newState = { ...editSiteDetailsObject, [graphQLPropertyName]: value };
+          setEditSiteDetailsObject(newState);
+    }
+    
+   
+   
 
-    const newState = { ...editSiteDetailsObject, [graphQLPropertyName]: value };
-    setEditSiteDetailsObject(newState);
+   
   };
 
   const handleParcelIdDelete = (pid: any) => {
@@ -78,8 +141,8 @@ const Summary = () => {
 
   const data = [
     {
-      notation: 2,
-      participants: 1,
+      notation: 1,
+      participants: 3,
       associatedSites: 1,
       documents: 1,
       landUses: 5,
@@ -97,6 +160,50 @@ const Summary = () => {
   ];
 
   const columns: TableColumn[] = [
+    {
+      id: 4,
+      displayName: "Notations",
+      active: true,
+      graphQLPropertyName: "notation",
+      displayType: {
+        type: FormFieldType.Text,
+        label: "Site ID",
+        placeholder: 'Separate IDs by a comma (",")',
+        graphQLPropertyName: "id",
+        value: "",
+        validation: {
+          pattern: /^[0-9,\s]*$/,
+          customMessage: "Site ID can only contain numbers and commas",
+        },
+        allowNumbersOnly: true,
+        colSize: "col-lg-6 col-md-6 col-sm-12",
+        customLabelCss: "custom-lbl-text",
+        customInputTextCss: "custom-input-text",
+        tableMode: true,
+      },
+    },
+    {
+      id: 5,
+      displayName: "Participants",
+      active: true,
+      graphQLPropertyName: "participants",
+      displayType: {
+        type: FormFieldType.Text,
+        label: "Site ID",
+        placeholder: 'Separate IDs by a comma (",")',
+        graphQLPropertyName: "id",
+        value: "",
+        validation: {
+          pattern: /^[0-9,\s]*$/,
+          customMessage: "Site ID can only contain numbers and commas",
+        },
+        allowNumbersOnly: true,
+        colSize: "col-lg-6 col-md-6 col-sm-12",
+        customLabelCss: "custom-lbl-text",
+        customInputTextCss: "custom-input-text",
+        tableMode: true,
+      },
+    },
     {
       id: 1,
       displayName: "Documents",
@@ -163,50 +270,8 @@ const Summary = () => {
         tableMode: true,
       },
     },
-    {
-      id: 4,
-      displayName: "Notations",
-      active: true,
-      graphQLPropertyName: "notation",
-      displayType: {
-        type: FormFieldType.Text,
-        label: "Site ID",
-        placeholder: 'Separate IDs by a comma (",")',
-        graphQLPropertyName: "id",
-        value: "",
-        validation: {
-          pattern: /^[0-9,\s]*$/,
-          customMessage: "Site ID can only contain numbers and commas",
-        },
-        allowNumbersOnly: true,
-        colSize: "col-lg-6 col-md-6 col-sm-12",
-        customLabelCss: "custom-lbl-text",
-        customInputTextCss: "custom-input-text",
-        tableMode: true,
-      },
-    },
-    {
-      id: 5,
-      displayName: "Participants",
-      active: true,
-      graphQLPropertyName: "participants",
-      displayType: {
-        type: FormFieldType.Text,
-        label: "Site ID",
-        placeholder: 'Separate IDs by a comma (",")',
-        graphQLPropertyName: "id",
-        value: "",
-        validation: {
-          pattern: /^[0-9,\s]*$/,
-          customMessage: "Site ID can only contain numbers and commas",
-        },
-        allowNumbersOnly: true,
-        colSize: "col-lg-6 col-md-6 col-sm-12",
-        customLabelCss: "custom-lbl-text",
-        customInputTextCss: "custom-input-text",
-        tableMode: true,
-      },
-    },
+   
+    
     {
       id: 6,
       displayName: "Parcel Description",
@@ -337,6 +402,7 @@ const Summary = () => {
               <SummaryForm
                 sitesDetails={editSiteDetailsObject}
                 edit={edit}
+                srMode={srMode}
                 changeHandler={handleInputChange}
               />
             }
@@ -398,7 +464,7 @@ const Summary = () => {
             changeHandler={(eventRecord) => {
               console.log(eventRecord);
             }}
-            editMode={edit}
+            editMode={false}
           />
         </div>
       </div>

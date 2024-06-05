@@ -1,17 +1,18 @@
+import { SiteDetailsMode } from "../../features/details/dto/SiteDetailsMode";
 import { UserMode } from "../../helpers/requests/userMode";
 import { DropdownItem } from "./IActions";
 
 export const ActionItems: DropdownItem[] = [
     {
         label:'Edit Mode',
-        value: UserMode.EditMode
+        value: SiteDetailsMode.EditMode
     },
     {
         label:'SR Mode',
-        value: UserMode.SrMode
+        value: SiteDetailsMode.SRMode
     },
     {
         label:'Delete',
-        value: UserMode.DeleteMode
+        value: SiteDetailsMode.ViewOnlyMode
     },
 ]

@@ -87,17 +87,20 @@ const SiteDetails = () => {
   const handleItemClick = (value: string) => {
     switch(value)
     {
-      case UserMode.EditMode :
+      case SiteDetailsMode.EditMode :
        setEdit(true);
        setViewMode(SiteDetailsMode.EditMode);
        dispatch(updateSiteDetailsMode(SiteDetailsMode.EditMode));
        break;
-      case UserMode.SrMode :
+      case SiteDetailsMode.SRMode :
        setEdit(true);
        setViewMode(SiteDetailsMode.SRMode);
        dispatch(updateSiteDetailsMode(SiteDetailsMode.SRMode));
        break;
-      case UserMode.DeleteMode :
+      case SiteDetailsMode.ViewOnlyMode :
+       setEdit(false);
+       setViewMode(SiteDetailsMode.ViewOnlyMode);
+       dispatch(updateSiteDetailsMode(SiteDetailsMode.ViewOnlyMode));
        break;
       default:
        break;
@@ -107,7 +110,7 @@ const SiteDetails = () => {
   const handleCancelButton = () => {
     dispatch(updateSiteDetailsMode(SiteDetailsMode.ViewOnlyMode));
     dispatch(clearTrackChanges({}));
-    setEditSiteDetailsObject(details);
+    //setEditSiteDetailsObject(details);
     setSave(false);
     setEdit(false);
   }
@@ -115,10 +118,14 @@ const SiteDetails = () => {
     <PageContainer role="details">
       {save && (
         <ModalDialog
-          closeHandler={() => {
-            dispatch(updateSiteDetailsMode(SiteDetailsMode.ViewOnlyMode));
-            setEdit(false);
+          closeHandler={(response) => {
+           
             setSave(false);
+            if(response)
+              {
+                dispatch(updateSiteDetailsMode(SiteDetailsMode.ViewOnlyMode));
+                setEdit(false);
+              }
           }}
         >
           {savedChanges.length > 0 ? (
@@ -156,7 +163,12 @@ const SiteDetails = () => {
           <span className="btn-back-lbl">Back to</span>
         </button>
         <div className="d-flex gap-2 justify-align-center">
+
+          {/* For Action Dropdown*/}
           {(!edit && viewMode === SiteDetailsMode.ViewOnlyMode && userType === UserType.Internal) && <Actions label="Action" items={ActionItems} onItemClick={handleItemClick} /> }
+           
+           
+          {/* For Edit / SR Dropdown*/}
             <div className="d-flex gap-3 align-items-center">
             {edit && userType === UserType.Internal &&
               <>
@@ -166,6 +178,8 @@ const SiteDetails = () => {
               </>
             }
           </div>
+          
+          {/* For Cart /Folio Controls*/}
           { (!edit && viewMode === SiteDetailsMode.ViewOnlyMode && userType === UserType.External) &&
             <>
               <button className="d-flex btn-cart align-items-center">
@@ -179,6 +193,15 @@ const SiteDetails = () => {
               </button>
             </>
           }
+        </div>
+      </div>
+      <div className="section-details-header row">
+        <div>
+          <CustomLabel label="Site ID: " labelType="b-h5" />
+          <CustomLabel label="1" labelType="r-h5" />
+        </div>
+        <div>
+          <CustomLabel label="2929 Fort" labelType="b-h1" />
         </div>
       </div>
       <NavigationPills items={navItems} components={navComponents} />

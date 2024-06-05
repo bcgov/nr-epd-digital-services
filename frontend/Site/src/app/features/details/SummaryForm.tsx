@@ -7,10 +7,11 @@ import "./SummaryForm.css"
 interface SummaryFormProps{
     sitesDetails: Sites,
     edit: boolean,
+    srMode: boolean,
     changeHandler:(graphQLPropertyName: any, value: String | [Date, Date])=>void
 }
 
-const SummaryForm:FC<SummaryFormProps> = ({sitesDetails, edit, changeHandler}) => { 
+const SummaryForm:FC<SummaryFormProps> = ({sitesDetails, edit,srMode, changeHandler}) => { 
   const formRows: IFormField[][] = [
     [
       {
@@ -200,7 +201,7 @@ const SummaryForm:FC<SummaryFormProps> = ({sitesDetails, edit, changeHandler}) =
 
   return (
     <form onSubmit={() => {}}>
-            <Form editMode={edit}
+            <Form editMode={edit} srMode={srMode}
         formRows={formRows}
         formData={sitesDetails}
         handleInputChange={changeHandler}

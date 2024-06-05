@@ -11,8 +11,9 @@ export const notationFormRowsInternal: IFormField[][] = [
             placeholder: 'Notation Type',
             graphQLPropertyName: 'notationType',
             options: [
-                { key: 'type1', value: 'Type 1'},
-                { key: 'type2', value: 'Type 2'}
+                { key: 'type1', value: 'CERTIFICATE OF COMPLIANCE ISSUED USING RISK BASED STANDARDS'},
+                 { key: 'type2', value: 'WASTE MANAGEMENT APPROVAL ISSUED'},
+                 { key: 'type2', value: 'RISK ASSESSMENT SUBMITTED'}
             ],
             value: '',
             colSize: 'col-lg-5 col-md-7 col-sm-11 col-10',
@@ -54,8 +55,8 @@ export const notationFormRowsInternal: IFormField[][] = [
             placeholder: 'Notation Class',
             graphQLPropertyName: 'notationClass',
             options: [
-                { key: 'class1', value: 'Class 1'},
-                { key: 'class2', value: 'Class 2'}
+                { key: 'class1', value: 'ENVIRONMENTAL MANAGEMENT ACT: GENERAL'},
+                // { key: 'class2', value: 'Class 2'}
             ],
             value: '',
             colSize: 'col-lg-5 col-md-6 col-sm-12',
@@ -82,8 +83,8 @@ export const notationFormRowsInternal: IFormField[][] = [
             placeholder: 'Ministry Contact',
             graphQLPropertyName: 'ministryContact',
             options: [
-                { key: 'contact1', value: 'Ministry Contact 1', imageUrl: avatar},
-                { key: 'contact2', value: 'Ministry Contact 2', imageUrl: avatar}
+                { key: 'contact1', value: 'Alex', imageUrl: avatar},
+                { key: 'contact2', value: 'John', imageUrl: avatar}
             ],
             value: '',
             isImage: true,
@@ -309,20 +310,23 @@ export const notationColumnInternal: TableColumn[] = [
       active: true,
       graphQLPropertyName: "role",
       displayType:{
-        type: FormFieldType.Label,
-        label: "Site ID",
-        placeholder: 'Separate IDs by a comma (",")',
-        graphQLPropertyName: "id",
+        type: FormFieldType.DropDown,
+        label: "Text",        
+        graphQLPropertyName: "role",
         value: "",
-        validation: {
-          pattern: /^[0-9,\s]*$/,
-          customMessage: "Site ID can only contain numbers and commas",
-        },
+        options: [
+            {key:'CSAP', value:'CSAP'},
+            {key:'CSSATEAM', value:'CSSA TEAM'},
+            {key:'SDM', value:'SDM'},
+            {key:'SITEOWNER', value:'SITE OWNER'}
+        ],
         allowNumbersOnly: true,
         colSize: "col-lg-6 col-md-6 col-sm-12",
         customLabelCss: "custom-lbl-text",
         customInputTextCss: "custom-input-text",
         tableMode: true,
+        placeholder:'Please select the role'
+       
       },
       columnSize: ColumnSize.Default
     },
@@ -332,15 +336,12 @@ export const notationColumnInternal: TableColumn[] = [
       active: true,
       graphQLPropertyName: "participantName",
       displayType:{
-        type: FormFieldType.Label,
-        label: "Site ID",
-        placeholder: 'Separate IDs by a comma (",")',
-        graphQLPropertyName: "id",
+        type: FormFieldType.Text,
+        label: "Participant Name",
+        placeholder: 'Please enter ',
+        graphQLPropertyName: "participantName",
         value: "",
-        validation: {
-          pattern: /^[0-9,\s]*$/,
-          customMessage: "Site ID can only contain numbers and commas",
-        },
+        
         allowNumbersOnly: true,
         colSize: "col-lg-6 col-md-6 col-sm-12",
         customLabelCss: "custom-lbl-text",
@@ -355,19 +356,11 @@ export const notationColumnInternal: TableColumn[] = [
       active: true,
       graphQLPropertyName: "sr",
       displayType: {
-        type: FormFieldType.Label,
-        label: "Site ID",
-        placeholder: 'Separate IDs by a comma (",")',
-        graphQLPropertyName: "id",
-        value: "",
-        validation: {
-          pattern: /^[0-9,\s]*$/,
-          customMessage: "Site ID can only contain numbers and commas",
-        },
-        allowNumbersOnly: true,
-        colSize: "col-lg-6 col-md-6 col-sm-12",
-        customLabelCss: "custom-lbl-text",
-        customInputTextCss: "custom-input-text",
+        type: FormFieldType.Checkbox,
+        label: "SR",
+        placeholder: '',
+        graphQLPropertyName: "sr",
+        value: "",      
         tableMode: true,
       },
       columnSize: ColumnSize.Default
