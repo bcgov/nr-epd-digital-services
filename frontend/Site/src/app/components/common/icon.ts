@@ -26,8 +26,14 @@ import {
     FaAngleLeft,
     FaAngleRight,
     FaChevronDown,
-    FaChevronUp
+    FaChevronUp,
+    FaFloppyDisk,
+    FaUserMinus,
+    FaUserPlus,
+    FaPlus,
     } from "react-icons/fa6";
+
+    import { BsFillPinMapFill } from "react-icons/bs";
 
  
   export const ShoppingCartIcon = FaCartShopping;
@@ -58,3 +64,8 @@ import {
   export const AngleRight = FaAngleRight;
   export const ChevronDown = FaChevronDown;
   export const ChevronUp = FaChevronUp;
+  export const FloppyDisk = FaFloppyDisk ;
+  export const UserPlus = FaUserPlus;
+  export const UserMinus = FaUserMinus;
+  export const Plus = FaPlus;
+  export const FillPinMapFill = BsFillPinMapFill;

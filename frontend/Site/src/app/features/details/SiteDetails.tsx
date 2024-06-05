@@ -1,263 +1,187 @@
+import React, { Fragment, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 import CustomLabel from "../../components/simple/CustomLabel";
 import PageContainer from "../../components/simple/PageContainer";
-import "./SiteDetails.css";
 import LabelComponent from "./LabelComponent";
-import { ChevronDown, ChevronUp } from "../../components/common/icon";
 import {
+  ChevronDown,
+  ChevronUp,
   AngleLeft,
   DropdownIcon,
   FolderPlusIcon,
   ShoppingCartIcon,
 } from "../../components/common/icon";
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { ColumnType, TableColumn } from "../../components/table/TableColumn";
+import { TableColumn } from "../../components/table/TableColumn";
 import Table from "../../components/table/Table";
 import { RequestStatus } from "../../helpers/requests/status";
-import userEvent from "@testing-library/user-event";
 import SummaryForm from "./SummaryForm";
 import PanelWithUpDown from "../../components/simple/PanelWithUpDown";
-import { fetchSitesDetails, selectSiteDetails } from "../site/dto/SiteSlice";
-import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchSitesDetails,
+  selectSiteDetails,
+  trackChanges,
+  trackedChanges,
+  clearTrackChanges,
+  siteDetailsMode,
+  updateSiteDetailsMode,
+} from "../site/dto/SiteSlice";
 import { AppDispatch } from "../../Store";
+import Notations from "./notations/Notations";
+import NavigationPills from "../../components/navigation/navigationpills/NavigationPills";
+import { navComponents, navItems } from "./NavigationPillsConfig";
+import ModalDialog from "../../components/modaldialog/ModalDialog";
+import {
+  CancelButton,
+  CustomPillButton,
+  SaveButton,
+} from "../../components/simple/CustomButtons";
+import {
+  ChangeTracker,
+  IChangeType,
+} from "../../components/common/IChangeType";
+
+import "./SiteDetails.css"; // Ensure this import is correct
+import { FormFieldType } from "../../components/input-controls/IFormField";
+import { SiteDetailsMode } from "./dto/SiteDetailsMode";
+import { UserType } from "../../helpers/requests/userType";
+import { UserMode } from "../../helpers/requests/userMode";
+import Actions from "../../components/action/Actions";
+import { ActionItems } from "../../components/action/ActionsConfig";
 
 const SiteDetails = () => {
+ 
+  const [edit, setEdit] = useState(false);
+  const [showLocationDetails, SetShowLocationDetails] = useState(false);
+  const [showParcelDetails, SetShowParcelDetails] = useState(false);
+  const [save, setSave] = useState(false);
+  const [userType, setUserType] = useState<UserType>(UserType.Internal);
+  const [viewMode, setViewMode] = useState(SiteDetailsMode.ViewOnlyMode);
 
   const dispatch = useDispatch<AppDispatch>();
-  const details = useSelector(selectSiteDetails);
   const navigate = useNavigate();
   const onClickBackButton = () => {
     navigate(-1);
   };
 
+  const { id } = useParams();
 
-  const [edit,SetEdit]= useState(false);
+  const details = useSelector(selectSiteDetails);
+  const [editSiteDetailsObject, setEditSiteDetailsObject] = useState(details);
+  const savedChanges = useSelector(trackedChanges);
 
-  const {id} = useParams();
+  const mode = useSelector(siteDetailsMode);
+  useEffect(()=> {
+    setViewMode(mode);
+  }, [mode]);
 
-  useEffect(()=>{
-    console.log("id",id)
-    dispatch(fetchSitesDetails({siteId: id ?? ""}));
-  },[id]);
+  useEffect(() => {
+    dispatch(fetchSitesDetails({ siteId: id ?? "" }));
+  }, [id]);
 
+  useEffect(() => {
+    setEditSiteDetailsObject(details);
+  }, [details]);
 
-  useEffect(()=>{
-    console.log("details",details)
-  },[details])
-
- 
-
-
-  const [showLocationDetails, SetShowLocationDetails] = useState(true);
-  const [showParcelDetails, SetShowParcelDetails] = useState(true);
-
-  const data = [
+  const handleItemClick = (value: string) => {
+    switch(value)
     {
-      notation: 2,
-      participants: 1,
-      associatedSites: 1,
-      documents: 1,
-      landUses: 5,
-      parcelDescription: 10,
-    },
-  ];
+      case UserMode.EditMode :
+       setEdit(true);
+       setViewMode(SiteDetailsMode.EditMode);
+       dispatch(updateSiteDetailsMode(SiteDetailsMode.EditMode));
+       break;
+      case UserMode.SrMode :
+       setEdit(true);
+       setViewMode(SiteDetailsMode.SRMode);
+       dispatch(updateSiteDetailsMode(SiteDetailsMode.SRMode));
+       break;
+      case UserMode.DeleteMode :
+       break;
+      default:
+       break;
+    }
+ };
 
-  const activityData = [
-    {
-      activity: "some activity",
-      user: "Midhun",
-      timeStamp: "23-04-1989 00:11:11",
-    },
-  ];
-
-  const activityColumns: TableColumn[] = [
-    {
-      id: 1,
-      displayName: "Activity",
-      active: true,
-      graphQLPropertyName: "activity",
-    },
-    {
-      id: 2,
-      displayName: "User",
-      active: true,
-      graphQLPropertyName: "user",
-    },
-    {
-      id: 3,
-      displayName: "Time Stamp",
-      active: true,
-      graphQLPropertyName: "timeStamp",
-    },
-    {
-      id: 4,
-      displayName: "SR",
-      active: true,
-      graphQLPropertyName: "id",
-      displayType: ColumnType.Checkbox,
-    },
-  ];
-
-  const columns: TableColumn[] = [
-    {
-      id: 1,
-      displayName: "Documents",
-      active: true,
-      graphQLPropertyName: "documents",
-    },
-    {
-      id: 2,
-      displayName: "Land Uses",
-      active: true,
-      graphQLPropertyName: "landUses",
-    },
-    {
-      id: 3,
-      displayName: "Associated Sites",
-      active: true,
-      graphQLPropertyName: "associatedSites",
-    },
-    {
-      id: 4,
-      displayName: "Notations",
-      active: true,
-      graphQLPropertyName: "notation",
-    },
-    {
-      id: 5,
-      displayName: "Partipants",
-      active: true,
-      graphQLPropertyName: "participants",
-    },
-    {
-      id: 6,
-      displayName: "Parcel Description",
-      active: true,
-      graphQLPropertyName: "parcelDescription",
-    },
-  ];
-
+  const handleCancelButton = () => {
+    dispatch(updateSiteDetailsMode(SiteDetailsMode.ViewOnlyMode));
+    dispatch(clearTrackChanges({}));
+    setEditSiteDetailsObject(details);
+    setSave(false);
+    setEdit(false);
+  }
   return (
-    <PageContainer role="deatils">
-      <div className="d-flex justify-content-between">
-        <button
-          className="d-flex btn-back align-items-center"
-          onClick={onClickBackButton}
+    <PageContainer role="details">
+      {save && (
+        <ModalDialog
+          closeHandler={() => {
+            dispatch(updateSiteDetailsMode(SiteDetailsMode.ViewOnlyMode));
+            setEdit(false);
+            setSave(false);
+          }}
         >
-          <AngleLeft className="btn-icon" />
-          <span className="btn-back-lbl"> Back to</span>
-        </button>
-        <div className="d-flex gap-2">
-          <button className="d-flex btn-cart align-items-center" onClick={()=>{SetEdit(!edit)}}>
-            <span className="btn-cart-lbl" > Edit</span>
-          </button>
-          <button className="d-flex btn-cart align-items-center">
-            <ShoppingCartIcon className="btn-icon" />
-            <span className="btn-cart-lbl"> Add to Cart</span>
-          </button>
-          <button className="d-flex btn-folio align-items-center">
-            <FolderPlusIcon className="btn-folio-icon" />
-            <span className="btn-folio-lbl"> Add to Folio</span>
-            <DropdownIcon className="btn-folio-icon" />
-          </button>
-        </div>
-      </div>
-      <div className="section-details-header row">
-        <div>
-          <CustomLabel label="Site ID:" labelType="b-h5"></CustomLabel>
-          <CustomLabel label="18326" labelType="r-h5"></CustomLabel>
-        </div>
-        <div>
-          <CustomLabel
-            label="29292 quadra, victoria"
-            labelType="b-h1"
-          ></CustomLabel>
-        </div>
-      </div>
-      <PanelWithUpDown label="Location Details">
-        <div className="row">
-          <div className="col-6">Map</div>
-          <div className="col-6">
-            <SummaryForm sitesDetails={details} edit={edit} />
-            {/* <div className="row">
-              <div className="col-12">
-                <LabelComponent name="Site ID" value="14532" />
+          {savedChanges.length > 0 ? (
+            <React.Fragment>
+              <div>
+                <span className="custom-modal-data-text">
+                  The following fields will be updated:
+                </span>
               </div>
-            </div>
-            <div className="row">
-              <div className="col-6">
-                <LabelComponent name="Latitude" value="101" />
+              <div>
+                <ul className="custom-modal-data-text">
+                  {savedChanges.map((item: any) => (
+                    <li key={item.label}>
+                      {IChangeType[item.changeType]} {item.label}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <div className="col-6">
-                <LabelComponent name="Longitude" value="200" />
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <div>
+                <span className="custom-modal-data-text">
+                  No changes to save
+                </span>
               </div>
-            </div>
-            <div className="row">
-              <div className="col-6">
-                <LabelComponent name="Address" value="101" />
-              </div>
-              <div className="col-6">
-                <LabelComponent name="Region" value="200" />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-12">
-                <LabelComponent name="Common Name" value="ssss" />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-12">
-                <LabelComponent name="Location Description" value="ssss" />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-12">
-                <LabelComponent name="Site Risk Classification" value="ssss" />
-              </div>
-            </div> */}
-          </div>
-        </div>
-      </PanelWithUpDown>
-      <PanelWithUpDown label="Parcel IDs">
-        <span>
-          12123123, 123123,12312312,1231231,23,123123123123,123123213,1123123
-        </span>
-      </PanelWithUpDown>
+            </React.Fragment>
+          )}
+        </ModalDialog>
+      )}
 
-      <div className="">
-        <div className="summary-details-border">
-          <span className="summary-details-header">
-            Summary of details types
-          </span>
-        </div>
-        <div className="col-12">
-          <Table
-            label="Search Results"
-            isLoading={RequestStatus.success}
-            columns={columns}
-            data={data}
-            totalResults={data.length}
-            allowRowsSelect={false}
-            showPageOptions={false}
-          ></Table>
-        </div>
-      </div>
-      <div className="">
-        <div className="summary-details-border">
-          <span className="summary-details-header">Activity Log</span>
-        </div>
-        <div className="col-12">
-          <Table
-            label="Search Results"
-            isLoading={RequestStatus.success}
-            columns={activityColumns}
-            data={activityData}
-            totalResults={data.length}
-            allowRowsSelect={false}
-            showPageOptions={false}
-          ></Table>
+      <div className="d-flex justify-content-between">
+        <button className="d-flex btn-back align-items-center" onClick={onClickBackButton}>
+          <AngleLeft className="btn-icon" />
+          <span className="btn-back-lbl">Back to</span>
+        </button>
+        <div className="d-flex gap-2 justify-align-center">
+          {(!edit && viewMode === SiteDetailsMode.ViewOnlyMode && userType === UserType.Internal) && <Actions label="Action" items={ActionItems} onItemClick={handleItemClick} /> }
+            <div className="d-flex gap-3 align-items-center">
+            {edit && userType === UserType.Internal &&
+              <>
+                <CustomLabel labelType="c-b" label={`${ viewMode === SiteDetailsMode.SRMode ? 'SR Mode' : 'Edit Mode'}`} />
+                <SaveButton clickHandler={() => setSave(true)} />
+                <CancelButton clickHandler={handleCancelButton} />
+              </>
+            }
+          </div>
+          { (!edit && viewMode === SiteDetailsMode.ViewOnlyMode && userType === UserType.External) &&
+            <>
+              <button className="d-flex btn-cart align-items-center">
+                <ShoppingCartIcon className="btn-icon" />
+                <span className="btn-cart-lbl"> Add to Cart</span>
+              </button>
+              <button className="d-flex btn-folio align-items-center">
+                <FolderPlusIcon className="btn-folio-icon" />
+                <span className="btn-folio-lbl"> Add to Folio</span>
+                <DropdownIcon className="btn-folio-icon" />
+              </button>
+            </>
+          }
         </div>
       </div>
+      <NavigationPills items={navItems} components={navComponents} />
     </PageContainer>
   );
 };

@@ -43,9 +43,9 @@ const Search = () => {
   const [displayColumn, SetDisplayColumns] = useState(false);
   const [displayFilters, SetDisplayFilters] = useState(false);
 
-  const columns = getSiteSearchResultsColumns();
-  const [columnsToDisplay, setColumnsToDisplay] = useState<TableColumn[]>([
-    ...columns,
+   const columns = getSiteSearchResultsColumns();
+   const [columnsToDisplay, setColumnsToDisplay] = useState<TableColumn[]>([
+     ...columns,
   ]);
   const [showMobileTableMenu, SetShowMobileTableMenu] = useState(false);
 
@@ -224,7 +224,7 @@ const Search = () => {
                     displayColumn ? "active" : ""
                   } `}
                   onClick={() => {
-                    console.log(columns);
+                    // console.log(columns);
                     SetDisplayColumns(!displayColumn);
                     SetDisplayFilters(false);
                   }}
@@ -265,7 +265,7 @@ const Search = () => {
                     <div
                       className={`table-actions-items`}
                       onClick={() => {
-                        console.log(columns);
+                        // console.log(columns);
                         SetDisplayColumns(!displayColumn);
                         SetDisplayFilters(false);
                       }}

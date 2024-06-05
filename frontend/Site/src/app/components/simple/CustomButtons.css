@@ -1,0 +1,55 @@
+.custom-save-btn
+  {
+    padding: var(--layout-padding-small) var(--layout-padding-medium) var(--layout-padding-small) var(--layout-padding-medium);
+    gap: var(--layout-margin-small);
+    border-radius: var(--layout-border-width-medium);
+    opacity: 0px;
+    display: flex;
+    background: var(--surface-primary-default);
+    color: white;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .custom-cancel-btn
+  {
+    padding: var(--layout-padding-small) var(--layout-padding-medium) var(--layout-padding-small) var(--layout-padding-medium);
+    gap: var(--layout-margin-small);
+    border-radius: var(--layout-border-width-medium);
+    opacity: 0px;
+    display: flex;
+    background: var(---surface-background-white);
+    color: #2D2D2D;
+    border:0px;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+  .custom-pill-button
+  {
+    background: var(--surface-primary-default);
+    padding: var(--layout-padding-xsmall) var(--layout-padding-small) var(--layout-padding-xsmall) var(--layout-padding-medium);
+    /* width: 106px; */
+    color: var(--surface-background-white);
+    border-radius: 16px;
+    gap: var(--layout-margin-xsmall);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 160px;
+    flex-wrap: wrap;
+  }
+
+  .custom-pill-button-label
+  {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    text-align: left;
+  }
+
+  .custom-pill-close-btn
+  {
+    font-size: 12px;
+  }

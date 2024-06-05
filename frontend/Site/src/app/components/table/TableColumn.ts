@@ -1,11 +1,13 @@
-export enum ColumnType {
-    Link,
-    Text,
-    TextBox,
-    DropDown,
-    Checkbox,
-    Calender
-  }
+import { IFormField } from "../input-controls/IFormField";
+
+// export enum ColumnType {
+//     Link,
+//     Text,
+//     TextBox,
+//     DropDown,
+//     Checkbox,
+//     Calender
+//   }
 
 export enum ColumnSize{
   Default,
@@ -25,10 +27,13 @@ export enum ColumnSize{
       public isDefault?: boolean,
       public sortOrder?: number,
       public isChecked?: boolean,
-      public displayType?: ColumnType,   
+      public displayType?:IFormField,   
       public linkRedirectionURL?: string,
       public dynamicColumn?: boolean,
       public columnSize?: ColumnSize,
-    ) {}
+    ) {
+
+      this.dynamicColumn = dynamicColumn ?? false;
+    }
   }
   

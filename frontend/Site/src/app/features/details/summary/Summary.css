@@ -1,0 +1,6 @@
+.summary-section-details
+{
+    gap: var(--layout-margin-xxlarge);
+    display: flex;
+    flex-direction: column;
+}

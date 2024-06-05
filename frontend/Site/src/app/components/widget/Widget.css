@@ -1,0 +1,14 @@
+.widget-container {
+    gap: var(--layout-margin-medium);
+  }
+
+  .widget-lbl {
+    padding: var(--layout-padding-small) 0px var(--layout-padding-small) 0px;
+    border-bottom: 1px solid var(--surface-border-light, #d8d8d8);
+    color: var(--typography-color-primary);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: left;
+  }
+  

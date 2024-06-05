@@ -1,0 +1,40 @@
+.custom-action-btn {
+    border-radius: var(--surface-border-radius-medium);
+    background: var(--surface-primary-default, #1E5189) !important;
+    padding: var(--layout-padding-small) var(--layout-padding-medium) var(--layout-padding-small) var(--layout-padding-medium);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: center;
+    color: var(--typography-color-primary-invert, #FFFFFF) !important;
+}
+
+.custom-action-btn:hover {
+    border: 3px solid var(--surface-color-primary-activeBorder, #2E5DD7) !important;
+}
+
+.custom-action-menu {
+    border-radius: var(--surface-border-radius-medium) !important;
+    padding: var(--layout-padding-medium) 0px var(--layout-padding-medium) 0px !important;
+    background-color: var(--surface-background-white) !important;
+    box-shadow: var(--surface-shadow-medium);
+    border: none !important;
+}
+
+.custom-action-item {
+    display: flex !important;
+    padding: var(--layout-padding-small) var(--layout-padding-medium) var(--layout-padding-small) var(--layout-padding-medium) !important;
+    gap: var(--layout-margin-medium) ;
+    font-family: BC Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 27.01px;
+    text-align: left;
+    color: var(--typography-color-primary) !important;
+}
+
+.custom-action-item:hover {
+    background: var(--surface-color-secondary-hover, #EDEBE9) !important;
+    color: var(--typography-color-secondary, #474543) !important;
+  }
+  

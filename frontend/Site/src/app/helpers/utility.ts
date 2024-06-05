@@ -3,6 +3,37 @@ import { API } from "./endpoints";
 import axios from "axios";
 import { User } from "oidc-client-ts";
 import { getClientSettings } from "../auth/UserManagerSetting";
+import { format } from "date-fns";
+import { FormFieldType, IFormField } from "../components/input-controls/IFormField";
+
+
+  
+export const formatDateRange = (range: [Date, Date]) => {
+    const [startDate, endDate] = range;
+    const formattedStartDate = format(startDate, 'MMMM do, yyyy');
+    const formattedEndDate = format(endDate, 'MMMM do, yyyy');
+    return `${formattedStartDate} - ${formattedEndDate}`;
+};
+
+export const flattenFormRows = (arr: IFormField[][]): IFormField[] => {
+  const flattened: IFormField[] = [];
+  
+  const flatten = (arr: IFormField[][]): void => {
+      for (const item of arr) {
+          for (const field of item) {
+              if (field.type === FormFieldType.Group && field.children) {
+                  flattened.push(field);
+                  flatten([field.children]);
+              } else {
+                  flattened.push(field);
+              }
+          }
+      }
+  }
+
+  flatten(arr);
+  return flattened;
+}
 
 export function getUser() {
   const oidcStorage = sessionStorage.getItem(

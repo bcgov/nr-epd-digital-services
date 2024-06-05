@@ -1,4 +1,6 @@
+import { ChangeTracker } from "../../../components/common/IChangeType";
 import { RequestStatus } from "../../../helpers/requests/status";
+import { SiteDetailsMode } from "../../details/dto/SiteDetailsMode";
 import { SiteResultDto, Sites } from "./Site"
 
 export class SiteState 
@@ -18,4 +20,6 @@ export class SiteState
     siteDetailsDeleteStatus:string =  RequestStatus.idle;
     siteDetailsAddedStatus:string =  RequestStatus.idle;   
     siteDetailsUpdateStatus:string  = RequestStatus.idle;
+    changeTracker: ChangeTracker[] = [];
+    siteDetailsMode: SiteDetailsMode = SiteDetailsMode.ViewOnlyMode;
 }

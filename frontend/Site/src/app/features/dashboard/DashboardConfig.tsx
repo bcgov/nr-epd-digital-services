@@ -1,4 +1,36 @@
-import { ColumnSize, ColumnType, TableColumn } from "../../components/table/TableColumn";
+import { FormFieldType } from "../../components/input-controls/IFormField";
+import { ColumnSize,  TableColumn } from "../../components/table/TableColumn";
+
+
+
+const getColumnType = (label:string, propertyName:string, value:string) =>
+  {
+    return   {
+      type: FormFieldType.Label,
+      label: label,       
+      graphQLPropertyName: propertyName,
+      value:value,      
+      customLabelCss: "custom-lbl-text",
+      customInputTextCss: "custom-input-text",
+      tableMode: true,
+    }
+  }
+  
+  const getLinkColumnType = (label:string, propertyName:string, value:string, href:string) =>
+    {
+      return   {
+        type: FormFieldType.Link,
+        label: label,       
+        graphQLPropertyName: propertyName,
+        value:value,      
+        customLabelCss: "custom-lbl-text",
+        customInputTextCss: "custom-input-text",
+        tableMode: true,
+        href: href
+      }
+    }
+  
+
 
 export const recentViewedColumns: TableColumn[] = [
   {
@@ -6,28 +38,28 @@ export const recentViewedColumns: TableColumn[] = [
     displayName: "Site ID",
     active: true,
     graphQLPropertyName: "siteId",
-    displayType: ColumnType.Link,
+    displayType: getColumnType("Site ID","siteId","")
   },
   {
     id: 2,
     displayName: "Site Address",
     active: true,
     graphQLPropertyName: "address",
-    displayType: ColumnType.Text,
+    displayType: getColumnType("Site ID","siteId",""),
   },
   {
     id: 3,
     displayName: "City",
     active: true,
     graphQLPropertyName: "city",
-    displayType: ColumnType.Text,
+    displayType: getColumnType("City","city",""),
   },
   {
     id: 4,
     displayName: "General Description",
     active: true,
     graphQLPropertyName: "generalDescription",
-    displayType: ColumnType.Text,
+    displayType: getColumnType("General Description","generalDescription",""),
     columnSize: ColumnSize.Triple
   },
   {
@@ -35,14 +67,14 @@ export const recentViewedColumns: TableColumn[] = [
     displayName: "Last Updates",
     active: true,
     graphQLPropertyName: "whenUpdated",
-    displayType: ColumnType.Text,
+    displayType: getColumnType("Last Updates","whenUpdated",""),
   },
   {
     id: 6,
     displayName: "Map",
     active: true,
     graphQLPropertyName: "siteId",
-    displayType: ColumnType.Link,
+    displayType: getLinkColumnType("Map","siteId","",'site/map/'),
     linkRedirectionURL: 'site/map/',
   },
   {
@@ -50,7 +82,7 @@ export const recentViewedColumns: TableColumn[] = [
     displayName: "Details",
     active: true,
     graphQLPropertyName: "siteId",
-    displayType: ColumnType.Link,
+    displayType: getLinkColumnType("Details","siteId","",'site/map/'),
     linkRedirectionURL: 'site/details/',
   },
  
@@ -62,14 +94,14 @@ export const recentFoliosColumns: TableColumn[] = [
     displayName: "Folio ID",
     active: true,
     graphQLPropertyName: "siteId",
-    displayType: ColumnType.Link,
+    displayType: getColumnType("Folio ID","siteId",""),
   },
   {
     id: 2,
     displayName: "Description",
     active: true,
     graphQLPropertyName: "address",
-    displayType: ColumnType.Text,
+    displayType: getColumnType("Description","address",""),
     columnSize: ColumnSize.Triple
   },
   {
@@ -77,14 +109,14 @@ export const recentFoliosColumns: TableColumn[] = [
     displayName: "Last Modified",
     active: true,
     graphQLPropertyName: "city",
-    displayType: ColumnType.Text,
+    displayType: getColumnType("Last Modified","city",""),
   },
   {
     id: 4,
     displayName: "Details",
     active: true,
     graphQLPropertyName: "siteId",
-    displayType: ColumnType.Link,
+    displayType: getLinkColumnType("Details","siteId","","site/details/"),
     linkRedirectionURL: 'site/details/',
   },
 ];
@@ -95,28 +127,28 @@ export const recentAssignedColumn: TableColumn[] = [
     displayName: "Site ID",
     active: true,
     graphQLPropertyName: "siteId",
-    displayType: ColumnType.Link,
+    displayType: getColumnType("Site ID","siteId",""),
   },
   {
     id: 2,
     displayName: "Site Address",
     active: true,
     graphQLPropertyName: "address",
-    displayType: ColumnType.Text,
+    displayType: getColumnType("Site Address","address",""),
   },
   {
     id: 3,
     displayName: "City",
     active: true,
     graphQLPropertyName: "city",
-    displayType: ColumnType.Text,
+    displayType: getColumnType("City","city",""),
   },
   {
     id: 4,
     displayName: "General Description",
     active: true,
     graphQLPropertyName: "generalDescription",
-    displayType: ColumnType.Text,
+    displayType: getColumnType("General Description","generalDescription",""),
     columnSize: ColumnSize.Triple
   },
   {
@@ -124,14 +156,14 @@ export const recentAssignedColumn: TableColumn[] = [
     displayName: "Last Updates",
     active: true,
     graphQLPropertyName: "whenUpdated",
-    displayType: ColumnType.Text,
+    displayType: getColumnType("Last Updates","whenUpdated",""),
   },
   {
     id: 6,
     displayName: "Map",
     active: true,
     graphQLPropertyName: "siteId",
-    displayType: ColumnType.Link,
+    displayType: getLinkColumnType("Map","whenUpdated","",'site/map/'),
     linkRedirectionURL: 'site/map/',
   },
   {
@@ -139,7 +171,7 @@ export const recentAssignedColumn: TableColumn[] = [
     displayName: "Details",
     active: true,
     graphQLPropertyName: "siteId",
-    displayType: ColumnType.Link,
+    displayType: getLinkColumnType("Details","whenUpdated","",'site/details/'),
     linkRedirectionURL: 'site/details/',
   },
 ];
