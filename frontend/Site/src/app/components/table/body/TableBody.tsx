@@ -4,7 +4,7 @@ import { RequestStatus } from "../../../helpers/requests/status";
 import { TableColumn } from "../TableColumn";
 
 import { FormFieldType, IFormField } from "../../input-controls/IFormField";
-import { Label, TextInput , Link } from "../../input-controls/InputControls";
+import { Label, TextInput , Link ,Dropdown,CheckBoxInput } from "../../input-controls/InputControls";
 import { ChangeTracker } from "../../common/IChangeType";
 
 interface TableBodyProps {
@@ -123,6 +123,50 @@ const TableBody: FC<TableBodyProps> = ({
             />
           );
         }
+        else if(field.type === FormFieldType.DropDown)
+          {
+            return (
+              <Dropdown 
+                label={field.label}
+                customLabelCss={field.customLabelCss}
+                customInputTextCss={field.customInputTextCss}
+                customEditLabelCss={field.customEditLabelCss}
+                customEditInputTextCss={field.customEditInputTextCss}
+                placeholder={field.placeholder}
+                value={value}
+                onChange={(value) => tableRecordChangeHandler(rowKey,field.graphQLPropertyName, value)}
+                type={field.type}
+                validation={field.validation}
+                allowNumbersOnly={field.allowNumbersOnly}
+                isEditing={editMode ?? true}
+                tableMode={field.tableMode ?? false}
+                href={field.href}
+                options={field.options}
+              />
+            );
+          }
+          else if(field.type === FormFieldType.Checkbox)
+            {
+              return (
+                <CheckBoxInput 
+                  label={field.label}
+                  customLabelCss={field.customLabelCss}
+                  customInputTextCss={field.customInputTextCss}
+                  customEditLabelCss={field.customEditLabelCss}
+                  customEditInputTextCss={field.customEditInputTextCss}
+                  placeholder={field.placeholder}
+                  value={value}
+                  onChange={(value) => tableRecordChangeHandler(rowKey,field.graphQLPropertyName, value)}
+                  type={field.type}
+                  validation={field.validation}
+                  allowNumbersOnly={field.allowNumbersOnly}
+                  isEditing={editMode ?? true}
+                  tableMode={field.tableMode ?? false}
+                  href={field.href}
+                  options={field.options}
+                />
+              );
+            }
   };
 
   const getValue = (rowIndex: number, propertyName: string) => {
@@ -155,7 +199,7 @@ const TableBody: FC<TableBodyProps> = ({
       column.displayType,
       column.displayName,
       cellValue ?? "",
-      columnIndex + rowIndex,
+      rowIndex,
       column.linkRedirectionURL ?? "",
       changeHandler,
       editMode

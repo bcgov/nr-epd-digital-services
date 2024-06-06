@@ -12,50 +12,44 @@ import { CircleXMarkIcon, MagnifyingGlassIcon, Plus, UserMinus, UserPlus } from 
 import { INotations } from "./INotations";
 // import { SiteDetailsMode } from "../../../helpers/requests/SiteDetailsMode";
 import { ChangeTracker, IChangeType } from "../../../components/common/IChangeType";
-import { siteDetailsMode, trackChanges } from "../../site/dto/SiteSlice";
+import { resetSiteDetails, siteDetailsMode, trackChanges } from "../../site/dto/SiteSlice";
 import { flattenFormRows, formatDateRange } from "../../../helpers/utility";
 import Search from "../../site/Search";
 import SearchInput from "../../../components/search/SearchInput";
 import Sort from "../../../components/sort/Sort"; 
 import SiteDetails from "../SiteDetails";
 import { SiteDetailsMode } from "../dto/SiteDetailsMode";
+import { setDate } from "date-fns";
 
 const dummyData = [
-    {
-      id: 1,
-      role: ["Admin", "User", "Guest"],
-      participantName: "John Doe",
-      sr: true,
-      date: new Date('2024-05-01')
-    },
+    // {
+    //   id: 1,
+    //   role: ["Admin", "User", "Guest"],
+    //   participantName: "John Doe",
+    //   sr: true,
+    //   date: new Date('2024-05-01')
+    // },
     {
       id: 2,
-      role: "User",
+      role: "CSAP",
       participantName: "Jane Smith",
       sr: false,
       date: new Date('2024-05-05')
     },
     {
       id:3,
-      role: "Guest",
+      role: "SDM",
       participantName: "Alex Johnson",
       sr: true,
       date: new Date('2024-05-03')
     },
     {
       id:4,
-      role: "Moderator",
+      role: "CSSATEAM",
       participantName: "Chris Lee",
       sr: false,
       date: new Date('2024-05-03')
-    },
-    {
-      id:5,
-      role: "User",
-      participantName: "Patricia Brown",
-      sr: true,
-      date: new Date('2024-05-05')
-    },
+    }
   ];
 
 
@@ -102,12 +96,33 @@ const Notations: React.FC<INotations> = ({
     };
 
     const handleAddParticipant = () => {
-        alert('handleAddParticipant click');
+
+      setData([...data , {
+        id:0,
+        role: "",
+        participantName: "",
+        sr: true,
+        date: new Date()
+      }])
+
+        //alert('handleAddParticipant click');
+        
     };
 
     const handleRemoveParticipant = () => {
         alert('handleRemoveParticipant click');
     };
+
+    const resetDetails = useSelector(resetSiteDetails);  
+    useEffect(()=>{
+
+        if(resetDetails)
+        {
+          setFormData({})
+          setData(dummyData);
+        }
+
+    },[resetDetails]);
 
     const handleInputChange = (graphQLPropertyName: any, value: String | [Date, Date]) => {
       if(viewMode === SiteDetailsMode.SRMode)
@@ -160,6 +175,21 @@ const Notations: React.FC<INotations> = ({
       // setViewMode(SiteDetailsMode.SRMode);
     };
 
+    const changeHandler = (event:any) => {
+
+      let existingRecords = [...data];
+
+      let index = existingRecords.findIndex(obj => obj.id === event.row.id);
+
+      
+      existingRecords[index][event.property] = event.value;
+
+      setData([...existingRecords]);
+
+      //event
+      console.log(event);
+    }
+
     return (
       <>
           <div className="row ">
@@ -196,8 +226,8 @@ const Notations: React.FC<INotations> = ({
                   <div className="w-100">
                       <Form formRows={ userType === UserType.External ? notationFormRowExternal : notationFormRowsInternal } formData={formData} editMode={viewMode === SiteDetailsMode.EditMode}  srMode= { viewMode === SiteDetailsMode.SRMode } handleInputChange={handleInputChange}
                       aria-label="Sort Notation Form"/>
-                      <Widget title={'Notation Participants'} tableColumns={ userType === UserType.Internal ? notationColumnInternal : notationColumnExternal} tableData={data} tableIsLoading={loading} allowRowsSelect={viewMode === SiteDetailsMode.EditMode}
-                      aria-label="Notation Widget" hideTable = { false } hideTitle = { false }>
+                      <Widget changeHandler={changeHandler} title={'Notation Participants'} tableColumns={ userType === UserType.Internal ? notationColumnInternal : notationColumnExternal} tableData={data} tableIsLoading={loading} allowRowsSelect={viewMode === SiteDetailsMode.EditMode}
+                      aria-label="Notation Widget" hideTable = { false } hideTitle = { false } editMode={ viewMode === SiteDetailsMode.EditMode && userType === UserType.Internal}>
                        { viewMode === SiteDetailsMode.EditMode && userType === UserType.Internal &&
                           <div className="d-flex gap-2">
                             <button className=" d-flex align-items-center notation-btn" type="button" onClick={handleAddParticipant} aria-label={'Add Participant'} >

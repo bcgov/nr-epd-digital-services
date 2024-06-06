@@ -24,6 +24,11 @@ interface DashboardWidgetProps {
   onButtonClick?: () => void;
 }
 
+const changeHandler = (event:any) => {
+  console.log(event);
+}
+
+
 const DashboardTableWidget: React.FC<DashboardWidgetProps> = ({
   title,
   buttonText,
@@ -33,7 +38,7 @@ const DashboardTableWidget: React.FC<DashboardWidgetProps> = ({
   allowRowsSelect,
   onButtonClick,
 }) => (
-  <Widget title={title} tableColumns={columns} tableData={data} tableIsLoading={loading} allowRowsSelect={allowRowsSelect}>
+  <Widget changeHandler={changeHandler} title={title} tableColumns={columns} tableData={data} tableIsLoading={loading} allowRowsSelect={allowRowsSelect}>
     { buttonText && onButtonClick && 
       <button className="dashboard-btn" type="button" onClick={onButtonClick} aria-label={buttonText} >
         <span className="btn-lbl">{buttonText}</span>

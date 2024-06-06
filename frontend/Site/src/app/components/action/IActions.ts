@@ -1,8 +1,9 @@
-import { UserMode } from "../../helpers/requests/userMode";
+import { SiteDetailsMode } from "../../features/details/dto/SiteDetailsMode";
+
 
 export interface DropdownItem {
     label: string;
-    value: UserMode;
+    value: SiteDetailsMode;
 }
 
 export interface IActions {

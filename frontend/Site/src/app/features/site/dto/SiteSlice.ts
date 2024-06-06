@@ -28,6 +28,7 @@ const initialState: SiteState = {
   siteDetailsUpdateStatus: RequestStatus.idle,
   changeTracker: [],
   siteDetailsMode: SiteDetailsMode.ViewOnlyMode,
+  resetSiteDetails: false,
 };
 
 export const fetchSitesDetails = createAsyncThunk(
@@ -165,20 +166,31 @@ const siteSlice = createSlice({
     },
     trackChanges: (state, action) => {
       console.log("tracking change", state, action);
-      const newState = {
-        ...state,
-        changeTracker: [...state.changeTracker, action.payload],
-      };
 
-      console.log("tracking change 2 ", newState);
+     let recordExists =   state.changeTracker.filter((tracked)=>{
+         return tracked.changeType === action.payload.changeType && tracked.label === action.payload.label
+      })
 
-      return newState;
+      if (recordExists.length === 0) {
+        const newState = {
+          ...state,
+          changeTracker: [...state.changeTracker, action.payload],
+          resetSiteDetails: false,
+        };
+        return newState;
+      } else {
+        const newState = {
+          ...state,
+        };
+        return newState;
+      }
     },
     clearTrackChanges: (state, action) => {
       console.log("tracking change", state, action);
       const newState = {
         ...state,
         changeTracker: [],
+        resetSiteDetails: true,
       };
 
       console.log("tracking change 2 ", newState);
@@ -240,6 +252,7 @@ export const siteDetailsLoadingState = (state: any) =>
 export const selectSiteDetails = (state: any) => state.sites.siteDetails;
 export const trackedChanges = (state: any) => state.sites.changeTracker;
 export const siteDetailsMode = (state: any) => state.sites.siteDetailsMode;
+export const resetSiteDetails = (state: any) => state.sites.resetSiteDetails;
 
 export const {
   siteAdded,
@@ -249,7 +262,7 @@ export const {
   updateSearchQuery,
   trackChanges,
   clearTrackChanges,
-  updateSiteDetailsMode
+  updateSiteDetailsMode,
 } = siteSlice.actions;
 
 export default siteSlice.reducer;
