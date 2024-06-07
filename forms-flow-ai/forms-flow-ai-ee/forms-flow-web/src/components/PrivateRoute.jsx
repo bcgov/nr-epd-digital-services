@@ -243,10 +243,17 @@ const PrivateRoute = React.memo((props) => {
               <Route
                 path={[`${BASE_ROUTE}form`, `${BASE_ROUTE}bundle`]}
                 component={Form}
+              />
+            )}
+
+            {/* {ENABLE_FORMS_MODULE && userRoles.includes(STAFF_REVIEWER) && (
+              <Route
+                path={[`${BASE_ROUTE}form`, `${BASE_ROUTE}bundle`]}
+                component={Form}
               >
                 <Redirect exact to="/403" />
               </Route>
-            )}
+            )} */}
 
             {ENABLE_FORMS_MODULE && !userRoles.includes(STAFF_REVIEWER) && (
               <Route
