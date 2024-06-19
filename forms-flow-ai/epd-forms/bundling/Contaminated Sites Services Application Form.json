@@ -9311,7 +9311,7 @@
                                                     "components": [
                                                         {
                                                             "key": "simplephonenumber",
-                                                            "type": "phoneNumber",
+                                                            "type": "textfield",
                                                             "input": true,
                                                             "label": "Phone Number",
                                                             "validate": {
@@ -9323,7 +9323,8 @@
                                                                 "unique": false,
                                                                 "minLength": "",
                                                                 "maxLength": "",
-                                                                "pattern": ""
+                                                                "pattern": "^\\+?[0-9\\-().\\s]{10,17}$",
+                                                                "customMessage": "Please enter a valid phone number"
                                                             },
                                                             "tableView": true,
                                                             "hideOnChildrenHidden": false,
@@ -9379,13 +9380,12 @@
                                                             "allowMultipleMasks": false,
                                                             "addons": [],
                                                             "mask": false,
-                                                            "inputType": "tel",
+                                                            "inputType": "text",
                                                             "inputFormat": "plain",
-                                                            "inputMask": "(999) 999-9999",
+                                                            "inputMask": "",
                                                             "displayMask": "",
                                                             "spellcheck": true,
                                                             "truncateMultipleSpaces": false,
-                                                            "inputMode": "decimal",
                                                             "id": "ew16xg"
                                                         }
                                                     ],
