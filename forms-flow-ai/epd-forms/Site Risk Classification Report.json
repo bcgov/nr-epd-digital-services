@@ -12726,11 +12726,6 @@
                             "disabled": false,
                             "tableView": false,
                             "modalEdit": false,
-                            "defaultValue": {
-                                "nA": false,
-                                "no": false,
-                                "yes": false
-                            },
                             "values": [
                                 {
                                     "label": "Yes",
@@ -12748,6 +12743,7 @@
                                     "shortcut": ""
                                 }
                             ],
+                            "dataType": "",
                             "persistent": true,
                             "protected": false,
                             "dbIndex": false,
@@ -12765,21 +12761,18 @@
                                 "custom": "",
                                 "customPrivate": false,
                                 "json": "",
-                                "maxSelectedCount": 1,
                                 "strictDateValidation": false,
                                 "multiple": false,
                                 "unique": false
                             },
                             "errorLabel": "",
-                            "minSelectedCountMessage": "",
-                            "maxSelectedCountMessage": "",
                             "errors": "",
                             "key": "ExposurePathwaysAreTheRiskCriteriaForAnyExposurePathwayExceeded",
                             "tags": [],
                             "properties": {},
                             "conditional": {
-                                "show": "",
-                                "when": "",
+                                "show": null,
+                                "when": null,
                                 "eq": "",
                                 "json": ""
                             },
@@ -12794,9 +12787,8 @@
                                 "width": "",
                                 "height": ""
                             },
-                            "type": "selectboxes",
+                            "type": "radio",
                             "input": true,
-                            "inputType": "checkbox",
                             "placeholder": "",
                             "prefix": "",
                             "suffix": "",
@@ -12810,8 +12802,10 @@
                             "showWordCount": false,
                             "allowMultipleMasks": false,
                             "addons": [],
+                            "inputType": "radio",
                             "fieldSet": false,
-                            "id": "exktlas"
+                            "id": "exktlas",
+                            "defaultValue": ""
                         },
                         {
                             "key": "ifYesWhichExposurePathwaysIndicateHighRisk",
