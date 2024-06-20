@@ -5536,7 +5536,7 @@
               "label": "Site ID",
               "tableView": true,
               "key": "siteId",
-              "type": "textfield",
+              "type": "number",
               "input": true,
               "placeholder": "",
               "prefix": "",
@@ -5577,9 +5577,10 @@
                 "strictDateValidation": false,
                 "multiple": false,
                 "unique": false,
-                "minLength": "",
-                "maxLength": "",
-                "pattern": ""
+                "min": "",
+                "max": "",
+                "step": "any",
+                "integer": ""
               },
               "conditional": {
                 "show": null,
@@ -5601,11 +5602,11 @@
               "allowMultipleMasks": false,
               "addons": [],
               "mask": false,
-              "inputType": "text",
+              "delimiter": false,
+              "requireDecimal": false,
               "inputFormat": "plain",
               "inputMask": "",
               "displayMask": "",
-              "spellcheck": true,
               "truncateMultipleSpaces": false,
               "id": "e18b1p9"
             },

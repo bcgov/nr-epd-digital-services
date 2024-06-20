@@ -3225,9 +3225,8 @@
                                         {
                                             "id": "edxg7z8",
                                             "key": "siteIdNumber",
-                                            "case": "",
                                             "mask": false,
-                                            "type": "textfield",
+                                            "type": "number",
                                             "input": true,
                                             "label": "Site ID Number",
                                             "hidden": false,
@@ -3253,20 +3252,20 @@
                                             "validate": {
                                                 "custom": "",
                                                 "unique": false,
-                                                "pattern": "",
                                                 "multiple": false,
                                                 "required": false,
-                                                "maxLength": "",
-                                                "minLength": "",
+                                                "max": "",
+                                                "min": "",
                                                 "customMessage": "",
                                                 "customPrivate": false,
-                                                "strictDateValidation": false
+                                                "strictDateValidation": false,
+                                                "step": "any",
+                                                "integer": ""
                                             },
                                             "autofocus": false,
                                             "encrypted": false,
                                             "hideLabel": false,
                                             "inputMask": "",
-                                            "inputType": "text",
                                             "modalEdit": false,
                                             "protected": false,
                                             "refreshOn": "",
@@ -3275,7 +3274,8 @@
                                             "errorLabel": "",
                                             "persistent": true,
                                             "properties": {},
-                                            "spellcheck": true,
+                                            "delimiter": false,
+                                            "requireDecimal": false,
                                             "validateOn": "change",
                                             "clearOnHide": true,
                                             "conditional": {
@@ -18382,7 +18382,7 @@
                                                     "components": [
                                                         {
                                                             "key": "siteId",
-                                                            "type": "textfield",
+                                                            "type": "number",
                                                             "input": true,
                                                             "label": "Site ID",
                                                             "tableView": false,
@@ -18425,9 +18425,10 @@
                                                                 "strictDateValidation": false,
                                                                 "multiple": false,
                                                                 "unique": false,
-                                                                "minLength": "",
-                                                                "maxLength": "",
-                                                                "pattern": ""
+                                                                "min": "",
+                                                                "max": "",
+                                                                "step": "any",
+                                                                "integer": ""
                                                             },
                                                             "conditional": {
                                                                 "show": null,
@@ -18449,11 +18450,11 @@
                                                             "allowMultipleMasks": false,
                                                             "addons": [],
                                                             "mask": false,
-                                                            "inputType": "text",
                                                             "inputFormat": "plain",
                                                             "inputMask": "",
                                                             "displayMask": "",
-                                                            "spellcheck": true,
+                                                            "delimiter": false,
+                                                            "requireDecimal": "",
                                                             "truncateMultipleSpaces": false,
                                                             "id": "es2czy"
                                                         }

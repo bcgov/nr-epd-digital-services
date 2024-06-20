@@ -17333,12 +17333,12 @@
                                     "validate": {
                                         "custom": "",
                                         "unique": false,
-                                        "pattern": "",
+                                        "pattern": "^[0-9 ,]+$",
                                         "multiple": false,
                                         "required": false,
                                         "maxLength": "",
                                         "minLength": "",
-                                        "customMessage": "",
+                                        "customMessage": "Please enter only numbers",
                                         "customPrivate": false,
                                         "strictDateValidation": false
                                     },
