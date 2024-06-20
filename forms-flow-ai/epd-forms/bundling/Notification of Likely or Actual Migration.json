@@ -9221,7 +9221,7 @@
                                             "components": [
                                                 {
                                                     "key": "s6-maximumConcentration",
-                                                    "type": "textfield",
+                                                    "type": "number",
                                                     "input": true,
                                                     "label": "Maximum Concentration",
                                                     "validate": {
@@ -9231,9 +9231,10 @@
                                                         "strictDateValidation": false,
                                                         "multiple": false,
                                                         "unique": false,
-                                                        "minLength": "",
-                                                        "maxLength": "",
-                                                        "pattern": ""
+                                                        "min": "",
+                                                        "max": "",
+                                                        "step": "any",
+                                                        "integer": ""
                                                     },
                                                     "tableView": false,
                                                     "hideOnChildrenHidden": false,
@@ -9289,11 +9290,11 @@
                                                     "allowMultipleMasks": false,
                                                     "addons": [],
                                                     "mask": false,
-                                                    "inputType": "text",
                                                     "inputFormat": "plain",
                                                     "inputMask": "",
                                                     "displayMask": "",
-                                                    "spellcheck": true,
+                                                    "delimiter": false,
+                                                    "requireDecimal": false,
                                                     "truncateMultipleSpaces": false,
                                                     "id": "edc8jqf"
                                                 }
