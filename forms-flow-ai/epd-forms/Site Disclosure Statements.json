@@ -5536,7 +5536,7 @@
               "label": "Site ID",
               "tableView": true,
               "key": "siteId",
-              "type": "textfield",
+              "type": "number",
               "input": true,
               "placeholder": "",
               "prefix": "",
@@ -5577,9 +5577,10 @@
                 "strictDateValidation": false,
                 "multiple": false,
                 "unique": false,
-                "minLength": "",
-                "maxLength": "",
-                "pattern": ""
+                "min": "",
+                "max": "",
+                "step": "any",
+                "integer": ""
               },
               "conditional": {
                 "show": null,
@@ -5601,11 +5602,11 @@
               "allowMultipleMasks": false,
               "addons": [],
               "mask": false,
-              "inputType": "text",
+              "delimiter": false,
+              "requireDecimal": false,
               "inputFormat": "plain",
               "inputMask": "",
               "displayMask": "",
-              "spellcheck": true,
               "truncateMultipleSpaces": false,
               "id": "e18b1p9"
             },
@@ -11421,7 +11422,7 @@
                       "widget": {
                         "type": "input"
                       },
-                      "inputMask": "(999) 999-9999",
+                      "inputMask": "",
                       "displayMask": "",
                       "allowMultipleMasks": false,
                       "customClass": "",
@@ -11452,7 +11453,7 @@
                       "validateOn": "change",
                       "validate": {
                         "required": false,
-                        "customMessage": "",
+                        "customMessage": "Please enter a valid phone number",
                         "custom": "",
                         "customPrivate": false,
                         "json": "",
@@ -11461,7 +11462,7 @@
                         "unique": false,
                         "minLength": "",
                         "maxLength": "",
-                        "pattern": ""
+                        "pattern": "^\\+?[0-9\\-().\\s]{10,17}$"
                       },
                       "unique": false,
                       "errorLabel": "",
@@ -11488,7 +11489,7 @@
                         "width": "",
                         "height": ""
                       },
-                      "type": "phoneNumber",
+                      "type": "textfield",
                       "input": true,
                       "hideOnChildrenHidden": false,
                       "refreshOn": "",
@@ -11496,8 +11497,7 @@
                       "showCharCount": false,
                       "showWordCount": false,
                       "addons": [],
-                      "inputType": "tel",
-                      "inputMode": "decimal",
+                      "inputType": "text",
                       "id": "e9n4kfn",
                       "defaultValue": "",
                       "inputMaskPlaceholderChar": ""
