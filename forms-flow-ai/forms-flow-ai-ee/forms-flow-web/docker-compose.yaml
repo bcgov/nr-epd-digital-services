@@ -4,6 +4,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - ssh_prv_key=${SSH_PRV_KEY}
+        - ssh_pub_key=${SSH_PUB_KEY}
     ports:
       - "3004:8080"
     tty: true
