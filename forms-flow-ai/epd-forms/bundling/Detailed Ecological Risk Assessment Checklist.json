@@ -1972,7 +1972,7 @@
                         "eq": "",
                         "json": ""
                     },
-                    "customConditional": "\n\nshow = false;\n\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\nconst groups = UserDetails[\"groups\"];\nif((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\n{\n   if(data.deraNotes && data.deraNotes.filter((x)=>x.commentFor==='external').length > 0)\n      show = true;\n   else\n      show = false;\n}\nelse\n{\n  show = true;\n}\n\n\nvar addButton = document.querySelector(\"button[ref=editgrid-deraNotes-addRow]\");\nif(addButton!==null && addButton !== undefined)\n{\naddButton.addEventListener('click',\n(e)=>{\n\t\tif( groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\n\t\t{\n\t\t  var internalRadio = document.querySelectorAll(\"input[value='internal'][type='radio']\");\n\t\t  for (let i = 0; i < internalRadio.length; i++) {\n\t\t\tinternalRadio[i].parentElement.remove();\n\t\t  }\n\t\t}\n})\n}\nconst emptyElements = [];\nconst elements = document.getElementsByClassName(\"list-group-item\");\nfor (let i = 0; i < elements.length; i++) {\nconst element = elements[i];\n\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\n \n}\n\n\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\n\nif(b.groups.includes(\"/formsflow/formsflow-client\"))\n{\n  console.log('client here');\n\tif(document.querySelector(\"[ref='editgrid-deraNotes-addRow']\") != null)\n\t{\n\t\tdocument.querySelector(\"[ref='editgrid-deraNotes-addRow']\").remove();\n\t}\n\nvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\nif(editButtons!=null)\n{\n\tfor(i=0;i<editButtons.length;i++)\t\n\t{\n\t\teditButtons[i].remove();\n\t}\n}\nvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\nif(removeButtons !=null)\n{\n\tfor(i=0;i<removeButtons.length;i++){\n\t\tremoveButtons[i].remove();\n\t}\n}\n\n}",
+                    "customConditional": "show = false;\r\n\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst groups = UserDetails?UserDetails[\"groups\"]:[];\r\nif(!UserDetails){\r\n  show = false;\r\n}\r\nelse \r\n{\r\nif((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\r\n{\r\n   if(data.deraNotes && data.deraNotes.filter((x)=>x.commentFor==='external').length > 0)\r\n      show = true;\r\n   else\r\n      show = false;\r\n}\r\nelse\r\n{\r\n  show = true;\r\n}\r\n\r\n\r\nvar addButton = document.querySelector(\"button[ref=editgrid-deraNotes-addRow]\");\r\nif(addButton!==null && addButton !== undefined)\r\n{\r\naddButton.addEventListener('click',\r\n(e)=>{\r\n\t\tif( groups.includes(\"/formsflow/formsflow-reviewer/csap\") || groups.includes(\"/formsflow/formsflow-reviewer/csap-society\"))\r\n\t\t{\r\n\t\t  var internalRadio = document.querySelectorAll(\"input[value='internal'][type='radio']\");\r\n\t\t  for (let i = 0; i < internalRadio.length; i++) {\r\n\t\t\tinternalRadio[i].parentElement.remove();\r\n\t\t  }\r\n\t\t}\r\n})\r\n}\r\nconst emptyElements = [];\r\nconst elements = document.getElementsByClassName(\"list-group-item\");\r\nfor (let i = 0; i < elements.length; i++) {\r\nconst element = elements[i];\r\n\r\nif(element.querySelectorAll('div.row').length===0){(element).remove() }\r\n \r\n}\r\n\r\n\r\nvar b =JSON.parse(localStorage.getItem('UserDetails'))\r\n\r\nif(b.groups.includes(\"/formsflow/formsflow-client\"))\r\n{\r\n  console.log('client here');\r\n\tif(document.querySelector(\"[ref='editgrid-deraNotes-addRow']\") != null)\r\n\t{\r\n\t\tdocument.querySelector(\"[ref='editgrid-deraNotes-addRow']\").remove();\r\n\t}\r\n\r\nvar editButtons = document.querySelectorAll('button.btn.btn-default.btn-light.btn-sm.editRow');\r\nif(editButtons!=null)\r\n{\r\n\tfor(i=0;i<editButtons.length;i++)\t\r\n\t{\r\n\t\teditButtons[i].remove();\r\n\t}\r\n}\r\nvar removeButtons = document.querySelectorAll('button.btn.btn-danger.btn-sm.removeRow');\r\nif(removeButtons !=null)\r\n{\r\n\tfor(i=0;i<removeButtons.length;i++){\r\n\t\tremoveButtons[i].remove();\r\n\t}\r\n}\r\n\r\n}\r\n}",
                     "logic": [],
                     "attributes": {},
                     "overlay": {
@@ -2074,7 +2074,7 @@
                                             "wysiwyg": false,
                                             "editor": "",
                                             "fixedSize": true,
-                                            "id": "edmt22r"
+                                            "id": "e995mk"
                                         }
                                     ],
                                     "width": 4,
@@ -2166,7 +2166,7 @@
                                             "addons": [],
                                             "inputType": "radio",
                                             "fieldSet": false,
-                                            "id": "e0eb0iv"
+                                            "id": "eivzgui"
                                         }
                                     ],
                                     "offset": 0,
@@ -2253,7 +2253,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "e1hnrn"
+                                            "id": "e4t3cab"
                                         }
                                     ],
                                     "size": "md",
@@ -2340,7 +2340,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "enl2x3k"
+                                            "id": "ecfnum"
                                         }
                                     ],
                                     "size": "md",
@@ -2427,7 +2427,7 @@
                                             "displayMask": "",
                                             "spellcheck": true,
                                             "truncateMultipleSpaces": false,
-                                            "id": "equorg9"
+                                            "id": "elf9nya"
                                         }
                                     ],
                                     "size": "md",
@@ -2502,7 +2502,7 @@
                             "tree": false,
                             "lazyLoad": false,
                             "autoAdjust": false,
-                            "id": "ezf9zqu"
+                            "id": "em2iwekk"
                         }
                     ],
                     "placeholder": "",
@@ -2521,7 +2521,7 @@
                     "tree": true,
                     "lazyLoad": false,
                     "defaultOpen": false,
-                    "id": "ejclam"
+                    "id": "elztzm"
                 },
                 {
                     "id": "ecmxmh",
@@ -5701,7 +5701,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eh8z2bfa00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eh8z2bfa00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "panel",
                                     "tags": [],
                                     "tree": false,
@@ -36551,7 +36551,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eof79400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eof79400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
