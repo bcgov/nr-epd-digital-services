@@ -28,21 +28,21 @@ ENV FORMFLOW_SOURCE_REPO_BRANCH epd-ff-ee-5.2.0
 # use the value to set the ENV var default
 ENV FORMFLOW_SOURCE_REPO_URL git@github.com:AOT-Technologies/forms-flow-ai-ee.git
 
-#RUN mkdir -p /root/.ssh && \
-#  chmod 0700 /root/.ssh && \
-#  echo "    IdentityFile ~/.ssh/id_rsa" >> /etc/ssh/ssh_config
+RUN mkdir -p /root/.ssh && \
+    chmod 0700 /root/.ssh && \
+    echo "    IdentityFile ~/.ssh/id_rsa" >> /etc/ssh/ssh_config
 
 RUN echo "$ssh_prv_key" |  sed 's/\\n/\n/g'  > /root/.ssh/id_rsa && \
     echo "$ssh_pub_key" |  sed 's/\\n/\n/g' > /root/.ssh/id_rsa.pub && \
     chmod 600 /root/.ssh/id_rsa && \
     chmod 600 /root/.ssh/id_rsa.pub
 
-COPY id_rsa_epd /root/.ssh/id_rsa
-COPY id_rsa_epd.pub /root/.ssh/id_rsa.pub
+#COPY id_rsa_epd /root/.ssh/id_rsa
+#COPY id_rsa_epd.pub /root/.ssh/id_rsa.pub
 
-RUN chmod 600 /root/.ssh/id_rsa
+#RUN chmod 600 /root/.ssh/id_rsa
 
-RUN chmod 600 /root/.ssh/id_rsa.pub
+#RUN chmod 600 /root/.ssh/id_rsa.pub
 
 RUN mkdir -p /root/.ssh && ssh-keyscan github.com >> /root/.ssh/known_hosts
 
