@@ -429,7 +429,7 @@ execution.setVariable('isSrcrResubmitted', false);</camunda:script>
       <bpmn:sequenceFlow id="Flow_1ixkifd" name="Accepted" sourceRef="Gateway_0wyokmr" targetRef="Activity_15ke6f4">
         <bpmn:extensionElements>
           <camunda:executionListener event="take">
-            <camunda:script scriptFormat="javascript">execution.setVariable('srcrBundleStatus', "srcrCaseworkerAccepted");</camunda:script>
+            <camunda:script scriptFormat="javascript">execution.setVariable('srcrBundleStatus', "Caseworker Accepted SRCR Form");</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
             <camunda:field name="fields">
@@ -501,7 +501,7 @@ execution.setVariable('isSrcrResubmitted', false);</camunda:script>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.RequestStateListener" event="take" />
           <camunda:executionListener event="take">
             <camunda:script scriptFormat="javascript">execution.setVariable('bundleUrl', execution.getVariable('formUrl'));
-execution.setVariable('srcrBundleStatus', "srcrSdmApproved");</camunda:script>
+execution.setVariable('srcrBundleStatus', "SDM Approved SRCR Form");</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
             <camunda:field name="fields">
@@ -587,7 +587,7 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
       <bpmn:sequenceFlow id="Flow_0qz0c7u" name="Accepted" sourceRef="Gateway_102i3iq" targetRef="Gateway_0ynmdzk">
         <bpmn:extensionElements>
           <camunda:executionListener event="take">
-            <camunda:script scriptFormat="javascript">execution.setVariable('srcrBundleStatus', "srcrSrcoAccepted");</camunda:script>
+            <camunda:script scriptFormat="javascript">execution.setVariable('srcrBundleStatus', "SRCO Accepted SRCR Form");</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
             <camunda:field name="fields">
@@ -858,7 +858,7 @@ system.out.println ("isSentFromSociety "+execution.getVariable('isSentFromSociet
       <bpmn:sequenceFlow id="Flow_0f731f5" name="Accepted" sourceRef="Gateway_11ub1p6" targetRef="Activity_0ufkuud">
         <bpmn:extensionElements>
           <camunda:executionListener event="take">
-            <camunda:script scriptFormat="javascript">execution.setVariable('bundleStatus', "deraCaseworkerAccepted");</camunda:script>
+            <camunda:script scriptFormat="javascript">execution.setVariable('bundleStatus', "Caseworker Accepted DERA Form");</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
             <camunda:field name="fields">
@@ -941,7 +941,7 @@ execution.setVariable('bundleStatus', "deraSdmReturned");</camunda:script>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.RequestStateListener" event="take" />
           <camunda:executionListener event="take">
             <camunda:script scriptFormat="javascript">execution.setVariable('bundleUrl', execution.getVariable('formUrl'));
-execution.setVariable('bundleStatus', "deraSdmApproved");</camunda:script>
+execution.setVariable('bundleStatus', "SDM Approved DERA Form");</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
             <camunda:field name="fields">
@@ -1218,7 +1218,7 @@ system.out.println ("isSentFromSociety "+execution.getVariable('isSentFromSociet
       <bpmn:sequenceFlow id="Flow_08gusn0" name="Accepted" sourceRef="Gateway_0t96cp0" targetRef="Activity_0008wmd">
         <bpmn:extensionElements>
           <camunda:executionListener event="take">
-            <camunda:script scriptFormat="javascript">execution.setVariable('soscBundleStatus', "soscCaseworkerAccepted");</camunda:script>
+            <camunda:script scriptFormat="javascript">execution.setVariable('soscBundleStatus', "Caseworker Accepted SoSC Form");</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
             <camunda:field name="fields">
@@ -1302,7 +1302,7 @@ execution.setVariable('soscBundleStatus', "soscSdmReturned");</camunda:script>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.RequestStateListener" event="take" />
           <camunda:executionListener event="take">
             <camunda:script scriptFormat="javascript">execution.setVariable('bundleUrl', execution.getVariable('formUrl'));
-execution.setVariable('soscBundleStatus', "soscSdmApproved");</camunda:script>
+execution.setVariable('soscBundleStatus', "SDM Approved SoSC Form");</camunda:script>
           </camunda:executionListener>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
             <camunda:field name="fields">
@@ -1433,7 +1433,7 @@ execution.setVariable('bundleStatus', "deraSdmReturned");</camunda:script>
     <bpmn:sequenceFlow id="Flow_07eueok" name="Approved/Rejected" sourceRef="Gateway_1lbpcug" targetRef="Activity_0q5r5d4">
       <bpmn:extensionElements>
         <camunda:executionListener event="take">
-          <camunda:script scriptFormat="javascript">execution.setVariable('bundleStatus', "deraSdmApproved");</camunda:script>
+          <camunda:script scriptFormat="javascript">execution.setVariable('bundleStatus', "SDM Approved DERA Form");</camunda:script>
         </camunda:executionListener>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
           <camunda:field name="fields">
@@ -1470,6 +1470,16 @@ execution.setVariable('bundleStatus', "deraSdmReturned");</camunda:script>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${riskclassification  == 'exempt' &amp;&amp;  isSoscAvailable==false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0kw2jbo" name="Accepted" sourceRef="Gateway_0o9l3lp" targetRef="Activity_15e3ho6">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('bundleStatus', "Caseworker Accepted DERA Form");</camunda:script>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+          <camunda:field name="fields">
+            <camunda:expression>["applicationId", "applicationStatus", "bundleStatus"]</camunda:expression>
+          </camunda:field>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1phkhb3" name="SRCR Status" sourceRef="Activity_1bhbq4y" targetRef="Gateway_0jk8i7p" />
@@ -1820,7 +1830,11 @@ system.out.println ("isSentFromSociety "+ execution.getVariable('isSentFromSocie
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${typeOfReview== 'directToMinistryApplication'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0gb2oz2" name="Accepted" sourceRef="Gateway_15p5urd" targetRef="Activity_08ykdar">
-      <bpmn:extensionElements />
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('bundleStatus', "CSAP Society Accepted");</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0wr0mei" sourceRef="Gateway_17raw62" targetRef="Activity_08ykdar">
@@ -1892,7 +1906,11 @@ system.out.println ("isSentFromSociety "+ execution.getVariable('isSentFromSocie
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${typeOfReview!= 'directToMinistryApplication'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0kfjdmp" name="Accepted" sourceRef="Gateway_04o747e" targetRef="Activity_1ao3zkj">
-      <bpmn:extensionElements />
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('bundleStatus', "Approved Professional Accepted");</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0543g25" sourceRef="Gateway_17raw62" targetRef="Activity_1ao3zkj">
@@ -1911,6 +1929,11 @@ system.out.println ("isSentFromSociety "+ execution.getVariable('isSentFromSocie
     <bpmn:sequenceFlow id="Flow_0b418rv" sourceRef="Activity_1uc1xs1" targetRef="Gateway_0p70jh9" />
     <bpmn:sequenceFlow id="Flow_0ohuh4k" sourceRef="Activity_15772wo" targetRef="Gateway_17raw62" />
     <bpmn:sequenceFlow id="Flow_1tu4hj7" name="Accepted" sourceRef="Gateway_0oobb3z" targetRef="Activity_0vo5rls">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('bundleStatus', "CSSA Team Accepted");</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0gcqir8" sourceRef="Activity_0vo5rls" targetRef="Gateway_0nmz6ta" />
@@ -1919,7 +1942,7 @@ system.out.println ("isSentFromSociety "+ execution.getVariable('isSentFromSocie
       <bpmn:extensionElements>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormBPMFilteredDataPipelineListener" event="take" />
         <camunda:executionListener event="take">
-          <camunda:script scriptFormat="javascript">execution.setVariable('bundleStatus', "cssaMgrAccepted");</camunda:script>
+          <camunda:script scriptFormat="javascript">execution.setVariable('bundleStatus', "CSSA Manager Accepted");</camunda:script>
         </camunda:executionListener>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
           <camunda:field name="fields">

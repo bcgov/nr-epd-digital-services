@@ -7,7 +7,6 @@ export class AppService {
     return 'Hello World!';
   }
   confirmFormSubmission(formRequest: Request): any {
-   
     return formRequest;
   }
 }
