@@ -23,7 +23,7 @@
                     "key": "applicationDocuments",
                     "tags": [],
                     "properties": {},
-                    "customConditional": "if( data.applicationStatus!=\"New\" && data.applicationStatus!=\"\" && data.applicationStatus!=null)\r\n{\r\n\tconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\tconst groups = UserDetails[\"groups\"];\r\n\tif((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\r\n\t{\r\n\t\tshow = true;\r\n\t}\r\n\telse\r\n\t{\r\n\t\tshow= false;\r\n\t}\t\r\n}\r\nelse\r\n{\r\n  \tshow= false;\r\n}\r\n",
+                    "customConditional": "if( data.applicationStatus!=\"New\" && data.applicationStatus!=\"\" && data.applicationStatus!=null)\r\n{\r\n\tconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n\tconst groups = UserDetails[\"groups\"];\r\n\tif((groups.includes(\"/formsflow/formsflow-client\") || groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")))\r\n\t{\r\n\t\tshow = true;\r\n\t}\r\n\telse\r\n\t{\r\n\t\tshow= false;\r\n\t}\t\r\n}\r\nelse\r\n{\r\n  \tshow= false;\r\n}\r\nshow= false;\r\n",
                     "conditional": {
                         "json": "",
                         "show": null,
@@ -111,7 +111,7 @@
                             "properties": {},
                             "allowMultipleMasks": false,
                             "addons": [],
-                            "id": "eysc1rn"
+                            "id": "eubf1mi"
                         }
                     ],
                     "placeholder": "",
@@ -152,7 +152,7 @@
                     "addons": [],
                     "tree": false,
                     "lazyLoad": false,
-                    "id": "ex53k8l"
+                    "id": "eaeiceg"
                 },
                 {
                     "label": "Text Area",
@@ -5701,7 +5701,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eh8z2bfa00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eh8z2bfa00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "panel",
                                     "tags": [],
                                     "tree": false,
@@ -36551,7 +36551,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eof79400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eof79400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
