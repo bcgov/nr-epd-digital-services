@@ -4,8 +4,8 @@
       "title": "Summary of Site Condition",
       "display": "form",
       "type": "form",
-      "name": "soscBundleForm",
-      "path": "soscbundleform",
+      "name": "sosc1BundleForm",
+      "path": "sosc1bundleform",
       "tags": ["common"],
       "components": [
         {
