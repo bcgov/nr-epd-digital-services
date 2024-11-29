@@ -48,7 +48,7 @@ COPY ./processes /tmp/src/main/resources/processes
 RUN mvn -s /usr/share/maven/ref/settings-docker.xml package -P default
 
 # Final custom slim java image (for apk command see 17-jdk-alpine-slim)
-FROM openjdk:17-jdk-alpine
+FROM --platform=linux/x86_64 openjdk:17-jdk-alpine
 
 ENV JAVA_VERSION=17-ea+14
 ENV JAVA_HOME=/opt/java/openjdk-17\
