@@ -7,12 +7,12 @@ WORKDIR ${APP_ROOT}
 
 # NPM Permission Fix
 RUN mkdir -p /.npm
-RUN chown -R 1001:0 /.npm
+RUN chown -R 1005690000:0 /.npm
 
 # Install Application
 COPY . ${APP_ROOT}
-RUN chown -R 1001:0 ${APP_ROOT}
-USER 1001
+RUN chown -R 1005690000:0 ${APP_ROOT}
+USER 1005690000
 WORKDIR ${APP_ROOT}/app
 RUN npm ci --omit=dev
 
