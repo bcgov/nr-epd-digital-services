@@ -1,0 +1,40 @@
+.drawer-container.MuiDrawer-root > .MuiPaper-root {
+  transition:
+    max-height 225ms,
+    height 225ms,
+    transform 225ms cubic-bezier(0, 0, 0.2, 1);
+
+  border-top: none;
+  position: absolute;
+  background-color: var(--surface-color-background-light);
+  box-shadow: var(--surface-shadow-medium);
+  overflow-y: hidden;
+}
+
+.drawer-header {
+  display: flex;
+  height: 69px;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--layout-padding-large);
+  border-bottom: 1px solid var(--surface-color-border-light);
+
+  font-size: var(--typography-font-size-body);
+  font-weight: var(--typography-font-weights-bold);
+}
+
+.drawer-header .resize-handle {
+  width: 40px;
+  height: 4px;
+  border-radius: 8px;
+  background-color: var(--surface-color-brand-gray-60);
+  position: absolute;
+  top: 6px;
+  left: calc(50% - 20px);
+  cursor: grab;
+}
+
+.drawer-body {
+  padding: var(--layout-padding-large);
+  overflow-y: auto;
+}

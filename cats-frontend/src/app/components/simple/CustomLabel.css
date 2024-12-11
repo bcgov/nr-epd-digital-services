@@ -1,0 +1,30 @@
+.custom-header-bold-h1 {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 49.03px;
+  text-align: left;
+  color: var(--typography-color-primary);
+}
+
+.custom-header-bold-h5 {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 34px;
+  text-align: left;
+  color: var(--typography-color-primary);
+}
+
+.custom-label-regular-h5 {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 34px;
+  text-align: left;
+  color: var(--typography-color-primary);
+}
+
+.custom-bold-label {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 21.01px;
+  text-align: left;
+}
