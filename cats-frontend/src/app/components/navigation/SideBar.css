@@ -3,7 +3,7 @@
   --side-bar-padding-medium: var(--layout-padding-medium);
   --side-bar-background-color: #ffffff;
   --side-bar-shadow: 0px 3.2px 7.2px 0px rgba(0, 0, 0, 0.13);
-  --current-path-background-color: #053662;
+  --current-path-background-color: var(--surface-primary-default);
   --side-bar-text-color: var(--surface-primary-default);
   --side-bar-text-hover-color: #ffffff;
 }
@@ -14,17 +14,20 @@
   background: var(--side-bar-background-color);
   box-shadow: var(--side-bar-shadow);
   top: 65px;
-  padding: var(--layout-padding-large) var(--layout-padding-medium)
-    var(--layout-padding-large) var(--layout-padding-medium);
+  padding: var(--layout-padding-large) var(--layout-padding-large)
+    var(--layout-padding-large) var(--layout-padding-large);
   justify-content: space-between;
   min-height: calc(100vh - 65px) !important;
   border-right: 1px solid var(--surface-border-light, #d8d8d8);
+  min-width: 84px;
+  z-index: 9999;
+  max-width: 128px;
 }
 
 .side-bar:hover {
-  width: 160px;
-  z-index: 1000;
+  width: 240px;
   position: sticky;
+  max-width: 240px;
 }
 
 .side-bar:hover .sideBar-Nav {
@@ -64,8 +67,7 @@
 .sideBar-NavItem {
   height: 40px;
   padding: var(--layout-padding-small);
-  border-radius: var(--layout-padding-small);
-  cursor: pointer;
+  cursor: default;
   display: flex;
   align-items: center;
   gap: 5px;
@@ -142,4 +144,30 @@
 .cart-items-number {
   display: block;
   text-decoration: none;
+}
+
+.sidebar-menu-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.side-bar:hover .sidebar-menu-group {
+  align-items: flex-start;
+  width: 100%;
+}
+
+.side-bar:hover .currentPath {
+  justify-content: flex-start;
+}
+
+.side-bar:hover .sideBar-menu-item-hover:hover {
+  background: var(--surface-primary-hover);
+  width: 100%;
+}
+
+.side-bar:hover .sideBar-menu-item-hover:hover .sideBar-Icon,
+.side-bar:hover .sideBar-menu-item-hover:hover .sideBarDisplayText {
+  color: white !important;
 }

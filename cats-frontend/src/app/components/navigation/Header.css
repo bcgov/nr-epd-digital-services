@@ -1,25 +1,29 @@
 header {
-  background-color: #053662;
-  border-bottom: 2px solid #f8ba47;
+  /* background-color: #053662; */
+  border-bottom: 1px solid var(--surface-color-border-light, #d8d8d8);
   /* padding: 0 65px 0 65px; */
-  padding: 10px var(--layout-padding-xlarge) 11px var(--layout-padding-xlarge) !important;
-  color: #fff;
+  padding: 0px var(--layout-padding-xlarge) 0px var(--layout-padding-xlarge) !important;
+  color: var(--typography-color-link);
   display: flex;
   height: 65px;
   top: 0px;
   width: 100%;
   z-index: 99999 !important;
+  background-color: #ffffff;
 }
 
 .logo {
-  height: 41px;
+  height: 54px;
 }
 
 header h1 {
-  font-family: 'BCSans';
+  font-family: "BCSans";
   font-weight: normal; /* 400 */
   margin: 5px 5px 0 18px;
   visibility: hidden;
+  font-size: 24px;
+  border-left: 1px solid var(--surface-color-border-light);
+  padding-left: 24px;
 }
 
 header .banner {
@@ -30,12 +34,12 @@ header .banner {
   /* border-style: dotted;
     border-width: 1px;
     border-color: lightgrey; */
-  padding-left: 24px;
+  /* padding-left: 24px; */
 }
 
-header .siteName {
+/* header .siteName {
   margin-left: 24px;
-}
+} */
 
 header .other {
   display: flex;
@@ -62,7 +66,7 @@ header .other {
 }
 
 .bars-button {
-  color: var(--typography-color-primary-invert);
+  color: var(#2d2d2d);
   font-size: 21px;
   font-weight: 900;
   line-height: 21px;
@@ -85,13 +89,21 @@ header .other {
 
 @media screen and (max-width: 599px) {
   header h1 {
-    display: none;
+    font-size: 24px;
+    visibility: visible;
+    display: flex;
+    padding-left: 12px;
+    margin: 0px;
+  }
+
+  .logo {
+    height: 44px;
   }
 }
 
 @media screen and (min-width: 600px) and (max-width: 899px) {
   header h1 {
-    font-size: calc(5px + 2vw);
+    font-size: 24px;
     visibility: visible;
     display: flex;
   }
@@ -99,7 +111,7 @@ header .other {
 
 @media screen and (min-width: 900px) {
   header h1 {
-    font-size: 2em;
+    font-size: 24px;
     visibility: visible;
     display: flex;
   }
@@ -147,9 +159,21 @@ header .other {
   .navbar-for-small-device {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
   }
 
   .header-right-corner-section {
     gap: var(--layout-padding-small);
+    align-self: flex-end;
   }
+}
+
+.custom-toggler {
+  border: 1px solid var(--surface-border-dark);
+  border-radius: 0px;
+}
+
+.no-link-style {
+  text-decoration: none !important;
+  color: var(--typography-color-link) !important;
 }

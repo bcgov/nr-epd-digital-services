@@ -1,13 +1,11 @@
-import './App.css';
-import Header from './app/components/navigation/Header';
-import {
-  Outlet,
-} from 'react-router-dom';
-import '@bcgov/bc-sans/css/BCSans.css';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import SideBar from './app/components/navigation/SideBar';
-import '@bcgov/bc-sans/css/BCSans.css';
+import "./App.css";
+import Header from "./app/components/navigation/Header";
+import { Outlet } from "react-router-dom";
+import "@bcgov/bc-sans/css/BCSans.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import SideBar from "./app/components/navigation/SideBar";
+import "@bcgov/bc-sans/css/BCSans.css";
 
 function App() {
   // const routes:RouteObject[] = [
