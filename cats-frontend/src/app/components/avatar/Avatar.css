@@ -1,0 +1,15 @@
+.avatar-image {
+  border-radius: 100px;
+  height: 44px;
+  width: 44px;
+  border: 1px solid var(--surface-border-light, #d8d8d8);
+  background: var(--surface-brand-blue-10, #f1f8fe);
+}
+
+.avatar-txt {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 30.61px;
+  text-align: center;
+  color: var(--typography-color-secondary, #474543);
+}

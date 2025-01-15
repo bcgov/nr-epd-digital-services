@@ -1,0 +1,62 @@
+.custom-nav-carousel-left-icon {
+  background-image: url(../../../images/carousel-left-button.svg) !important;
+  padding: var(--layout-padding-xsmall) var(--layout-padding-small)
+    var(--layout-padding-xsmall) var(--layout-padding-small) !important;
+  color: var(--typography-color-primary, #2d2d2d);
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 16px;
+}
+
+.custom-nav-carousel-right-icon {
+  background-image: url(../../../images/carousel-right-button.svg) !important;
+  background-position: left center !important;
+  padding: var(--layout-padding-xsmall) var(--layout-padding-small)
+    var(--layout-padding-xsmall) var(--layout-padding-small) !important;
+  color: var(--typography-color-primary, #2d2d2d);
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 16px;
+}
+
+@media screen and (max-width: 786px) {
+  .custom-nav-btn {
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  .custom-nav-pill {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .custom-nav-carousel-left-icon {
+    background-image: url(../../../images/carousel-left-button.svg) !important;
+    padding: var(--layout-padding-xsmall) var(--layout-padding-small)
+      var(--layout-padding-xsmall) var(--layout-padding-small) !important;
+    color: var(--typography-color-primary, #2d2d2d);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+  }
+
+  .custom-nav-carousel-right-icon {
+    background-image: url(../../../images/carousel-right-button.svg) !important;
+    background-position: left center !important;
+    padding: var(--layout-padding-xsmall) var(--layout-padding-small)
+      var(--layout-padding-xsmall) var(--layout-padding-small) !important;
+    color: var(--typography-color-primary, #2d2d2d);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+  }
+
+  .custom-nav-action-menu {
+    border-radius: var(--surface-border-radius-medium) !important;
+    padding: var(--layout-padding-medium) 0px var(--layout-padding-medium) 0px !important;
+    background-color: var(--surface-background-white) !important;
+    box-shadow: var(--surface-shadow-medium);
+    border: none !important;
+    width: 100%;
+  }
+}
