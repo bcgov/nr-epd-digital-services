@@ -1,21 +1,20 @@
 // import Landing from "../features/landing/Landing"
-import { createBrowserRouter } from 'react-router-dom';
-import { QueryParamProvider } from 'use-query-params';
-import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
+import { createBrowserRouter } from "react-router-dom";
+import { QueryParamProvider } from "use-query-params";
+import { ReactRouter6Adapter } from "use-query-params/adapters/react-router-6";
 
-import Dashboard from '../features/dashboard/Dashboard';
-import App from '../../App';
-import {
-  getLoggedInUserType
-} from '../helpers/utility';
+import Dashboard from "../features/dashboard/Dashboard";
+import App from "../../App";
+import { getLoggedInUserType } from "../helpers/utility";
+
+import Search from "../features/people/Search";
 
 const roleBasedRoutes: any = {
   client: [
-    { path: '/', element: <Dashboard /> },
+    { path: "/", element: <Dashboard /> },
+    { path: "/people", element: <Search /> },
   ],
-  internal: [
-    { path: '/dashboard', element: <Dashboard /> },
-  ],
+  internal: [{ path: "/dashboard", element: <Dashboard /> }],
 };
 
 // Create routes based on the user's role
@@ -36,6 +35,6 @@ const createRoutesForRole = (role: string) => [
 ];
 
 const userType = getLoggedInUserType();
-const siteRouter = createBrowserRouter(createRoutesForRole('client'));
+const siteRouter = createBrowserRouter(createRoutesForRole("client"));
 
 export default siteRouter;

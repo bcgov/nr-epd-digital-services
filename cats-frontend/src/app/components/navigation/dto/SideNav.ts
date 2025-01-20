@@ -1,4 +1,4 @@
-import { IconType } from 'react-icons/lib';
+import { IconType } from "react-icons/lib";
 import {
   HouseIcon,
   MagnifyingGlassIcon,
@@ -9,8 +9,8 @@ import {
   BookIcon,
   ShoppingCartIcon,
   ListCheckIcon,
-} from '../../common/icon';
-import { UserRoleType } from '../../../helpers/utility';
+} from "../../common/icon";
+import { UserRoleType } from "../../../helpers/utility";
 
 /**
  * Class representing a sidebar navigation item.
@@ -37,7 +37,7 @@ export class SideNav {
     public icon: IconType | null,
     public linkTo: string,
     public children: SideNav[] = [],
-    public lowerSection: boolean = false,
+    public lowerSection: boolean = false
   ) {
     // Increment the static counter and assign it to the instance ID
     this.id = ++SideNav.idCounter;
@@ -51,7 +51,7 @@ const createSideNav = (
   icon: IconType | null,
   linkTo: string,
   children: SideNav[] = [],
-  lowerSection: boolean = false,
+  lowerSection: boolean = false
 ) =>
   new SideNav(displayText, hasChildren, icon, linkTo, children, lowerSection);
 
@@ -71,49 +71,15 @@ const icons = {
 // Refactored role-based navigation lists using a Record type
 const roleBasedSideBarList: Record<string, SideNav[]> = {
   client: [
-    createSideNav('Dashboard', true, icons.dashboard, '/dashboard'),
-    createSideNav('Search', true, null, '/', [
-      createSideNav('Text Search', false, icons.textSearch, '/search'),
-      createSideNav('Map Search', false, icons.mapLocation, '/map'),
+    createSideNav("Manage", true, null, "/", [
+      createSideNav("People", false, icons.folios, "/people"),
+      createSideNav("Organizations", false, icons.purchases, "/purchases"),
     ]),
-    createSideNav('Resources', true, null, '/', [
-      createSideNav('Tools', false, icons.tools, '/tools'),
-      createSideNav('Reference', false, icons.reference, '/review'),
-    ]),
-    createSideNav('Account', true, null, '/', [
-      createSideNav('Folios', false, icons.folios, '/folios'),
-      createSideNav('Purchases', false, icons.purchases, '/purchases'),
-    ]),
-    createSideNav('Cart', false, icons.cart, '/site/cart', [], true),
+    createSideNav("Cart", false, icons.cart, "/site/cart", [], true),
   ],
-  internal: [
-    createSideNav('Dashboard', true, icons.dashboard, '/dashboard'),
-    createSideNav('Search', true, null, '/', [
-      createSideNav('Text Search', false, icons.textSearch, '/search'),
-      createSideNav('Map Search', false, icons.mapLocation, '/map'),
-    ]),
-    createSideNav('Resources', true, null, '/', [
-      createSideNav('Tools', false, icons.tools, '/tools'),
-      createSideNav('Reference', false, icons.reference, '/ref'),
-    ]),
-  ],
-  sr: [
-    createSideNav('Dashboard', true, icons.dashboard, '/dashboard'),
-    createSideNav('Search', true, null, '/', [
-      createSideNav('Text Search', false, icons.textSearch, '/search'),
-      createSideNav('Map Search', false, icons.mapLocation, '/map'),
-    ]),
-    createSideNav('SR', true, null, '/', [
-      createSideNav('Reference', false, icons.srReference, '/review'),
-    ]),
-  ],
-  public: [
-    createSideNav('Search', true, null, '/', [
-      createSideNav('Text Search', false, icons.textSearch, '/search'),
-      createSideNav('Map Search', false, icons.mapLocation, '/map'),
-    ]),
-    createSideNav('Cart', false, icons.cart, '/site/cart', [], true),
-  ],
+  internal: [],
+  sr: [],
+  public: [],
 };
 
 /**

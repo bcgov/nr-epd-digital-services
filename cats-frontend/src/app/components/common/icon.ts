@@ -44,7 +44,8 @@ import {
   FaListCheck,
   FaDrawPolygon,
   FaMapPin,
-} from 'react-icons/fa6';
+  FaTrash,
+} from "react-icons/fa6";
 
 import {
   BsFillPinMapFill,
@@ -52,8 +53,8 @@ import {
   BsExclamationCircle,
   BsExclamationTriangle,
   BsXLg,
-} from 'react-icons/bs';
-import { BiSolidFilePdf } from 'react-icons/bi';
+} from "react-icons/bs";
+import { BiSolidFilePdf } from "react-icons/bi";
 
 export const ShoppingCartIcon = FaCartShopping;
 export const FolderPlusIcon = FaFolderPlus;
@@ -106,3 +107,4 @@ export const FindMe = FaLocationCrosshairs;
 export const ListCheckIcon = FaListCheck;
 export const DrawPolygon = FaDrawPolygon;
 export const MapPin = FaMapPin;
+export const PlainTrashIcon = FaTrash;
