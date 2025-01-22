@@ -51,40 +51,19 @@ parameters:
   description: "The Keycloak client ID"
   value: epd-web
 objects:
-# ConfigMap created by sakthi for testing - DONOT push
 - apiVersion: v1
   kind: ConfigMap
   metadata:
     name: ${NAME}-config
   data:
     config.js: |
-      // runtime-config.js vars
       window["_env_"] = {
         "REACT_APP_NODE_ENV": "production",
         "REACT_APP_AUTH_AUTHORITY": "https://epd-keycloak-${ENV}.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/",
         "REACT_APP_AUTH_CLIENT_ID": "${REACT_APP_AUTH_CLIENT_ID}",
         "REACT_APP_AUTH_REDIRECT_URI": "https://epd-frontend-${ENV}.apps.silver.devops.gov.bc.ca/dashboard",
         "REACT_APP_AUTH_LOGOUT_REDIRECT_URI": "https://logontest7.gov.bc.ca/clp-cgi/logoff.cgi?retnow=1&returl=https://epd-keycloak-${ENV}.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/protocol/openid-connect/logout?post_logout_redirect_uri=https://epd-frontend-${ENV}.apps.silver.devops.gov.bc.ca",
-        "REACT_APP_AUTH_RESPONSE_TYPE": "code",
-        "REACT_APP_AUTH_SCOPE": "openid profile",
-        "REACT_APP_BACKEND_API": "https://epd-backend-gateway-${ENV}.apps.silver.devops.gov.bc.ca",
-        "REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS": "true",
-        "REACT_APP_AUTH_LOAD_USER_INFO": "true",
-        "REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT": "true",
-        "REACT_APP_FORMSFLOW_WEB_URL": "https://forms-flow-web-root-config-${ENV}.apps.silver.devops.gov.bc.ca/",
-        "REACT_APP_CUSTOM_MAP_URL": "https://epd-frontend-${ENV}.apps.silver.devops.gov.bc.ca/map",
-        "REACT_APP_BACKEND_USERS_API": "https://epd-backend-users-${ENV}.apps.silver.devops.gov.bc.ca/",
-        "REACT_APP_BCBOX_BASE_URL": "https://common-object-management-service-coms-custom-e38158-${ENV}.apps.silver.devops.gov.bc.ca",
-        "REACT_APP_BCBOX_APP_URL": "https://bcbox-e38158-${ENV}.apps.silver.devops.gov.bc.ca",
-        "REACT_APP_BCBOX_BUCKET_URL": "/api/v1/bucket",
-        "REACT_APP_BCBOX_FIND_USER_ENDPOINT": "api/v1/user?email=",
-        "REACT_APP_BCBOX_SET_USER_PERMISSION": "/api/v1/permission/bucket/",
-        "REACT_APP_BCBOX_FILE_UPLOAD_ENDPOINT": "api/v1/object?bucketId=",
-        "REACT_APP_COMS_ENDPOINT": "https://nrs.objectstore.gov.bc.ca",
-        "REACT_APP_COMS_BUCKET": "${REACT_APP_COMS_BUCKET}",
-        "REACT_APP_COMS_ACCESS_KEY_ID": "${REACT_APP_COMS_ACCESS_KEY_ID}",
-        "REACT_APP_COMS_ACCESS_KEY": "${REACT_APP_COMS_ACCESS_KEY}",
-        "REACT_APP_COMS_ACCESS_REGION": "ca-central-1"
+        "REACT_APP_BACKEND_API": "https://epd-backend-gateway-${ENV}.apps.silver.devops.gov.bc.ca"
       }
 - apiVersion: v1
   kind: ImageStream
@@ -102,56 +81,31 @@ objects:
         name: ${REGISTRY}/${PROMOTE}:${IMAGE_TAG}
       referencePolicy:
         type: Local
-- apiVersion: v1
-  kind: DeploymentConfig
+- apiVersion: apps/v1
+  kind: Deployment
   metadata:
     labels:
       app: ${NAME}-${COMPONENT}
     name: ${NAME}-${COMPONENT}
   spec:
     replicas: 1
-    triggers:
-    - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-        - ${NAME}-${COMPONENT}
-        from:
-          kind: ImageStreamTag
-          name: ${NAME}-${COMPONENT}:${IMAGE_TAG}
     selector:
-      deploymentconfig: ${NAME}-${COMPONENT}
+      matchLabels:
+        app: ${NAME}-${COMPONENT}
     strategy:
-      type: Rolling
+      type: RollingUpdate
     template:
       metadata:
         labels:
           app: ${NAME}-${COMPONENT}
-          deploymentconfig: ${NAME}-${COMPONENT}
       spec:
         containers:
-        - image: " "
+        - image: "${REGISTRY}/${PROMOTE}:${IMAGE_TAG}"
           imagePullPolicy: Always
           name: ${NAME}-${COMPONENT}
           env:
           - name: REACT_APP_AUTH_REDIRECT_URI
             value: https://${NAME}-frontend-${ENV}.${DOMAIN}
-          - name: REACT_APP_COMS_BUCKET
-            valueFrom:
-              secretKeyRef:
-                name: ${NAME}-bc-box
-                key: REACT_APP_COMS_BUCKET
-          - name: REACT_APP_COMS_ACCESS_KEY_ID
-            valueFrom:
-              secretKeyRef:
-                name: ${NAME}-bc-box
-                key: REACT_APP_COMS_ACCESS_KEY_ID
-          - name: REACT_APP_COMS_ACCESS_KEY
-            valueFrom:
-              secretKeyRef:
-                name: ${NAME}-bc-box
-                key: REACT_APP_COMS_ACCESS_KEY
           ports:
           - containerPort: ${{CONTAINER_PORT}}
             protocol: TCP
@@ -164,16 +118,14 @@ objects:
               memory: ${MEMORY_LIMIT}
           readinessProbe:
             httpGet:
+              path: /
               port: ${{CONTAINER_PORT}}
               scheme: HTTP
             initialDelaySeconds: 10
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 30
-            successThreshold: 1
           livenessProbe:
-            successThreshold: 1
-            failureThreshold: 3
             httpGet:
               path: /
               port: ${{CONTAINER_PORT}}
@@ -181,13 +133,6 @@ objects:
             initialDelaySeconds: 60
             periodSeconds: 30
             timeoutSeconds: 5
-          volumeMounts:
-          - name: ${NAME}-config
-            mountPath: /usr/share/nginx/html/config/
-        volumes:
-        - name: ${NAME}-config
-          configMap:
-            name: ${NAME}-config
 - apiVersion: v1
   kind: Service
   metadata:
@@ -201,7 +146,7 @@ objects:
       port: 80
       targetPort: ${{CONTAINER_PORT}}
     selector:
-      deploymentconfig: ${NAME}-${COMPONENT}
+      app: ${NAME}-${COMPONENT}
 - apiVersion: route.openshift.io/v1
   kind: Route
   metadata:
@@ -225,8 +170,8 @@ objects:
     name: "${NAME}-${COMPONENT}"
   spec:
     scaleTargetRef:
-      apiVersion: apps.openshift.io/v1
-      kind: DeploymentConfig
+      apiVersion: apps/v1
+      kind: Deployment
       name: "${NAME}-${COMPONENT}"
     minReplicas: ${{MIN_REPLICAS}}
     maxReplicas: ${{MAX_REPLICAS}}
