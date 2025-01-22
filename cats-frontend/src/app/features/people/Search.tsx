@@ -281,6 +281,7 @@ const Search = () => {
               { label: "Excel", value: "excel" },
             ]}
             onItemClick={() => {}}
+            toggleButtonVariant="secondary"
           />
           {/* <Button variant="secondary" onClick={() => {}}>
             Import / Export

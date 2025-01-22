@@ -1,20 +1,21 @@
-import { ReactNode } from 'react';
-import { RequestStatus } from '../../helpers/requests/status';
+import { ReactNode } from "react";
+import { RequestStatus } from "../../helpers/requests/status";
 
 export enum FormFieldType {
-  Text = 'text',
-  TextArea = 'textarea',
-  Search = 'search',
-  DropDown = 'dropdown',
-  DropDownWithSearch = 'dropdownWithSearch',
-  Date = 'date',
-  DateRange = 'daterange',
-  Group = 'group',
-  Label = 'label',
-  Link = 'link',
-  Checkbox = 'checkbox',
-  DeleteIcon = 'deleteIcon',
-  IconButton = 'iconbutton',
+  Text = "text",
+  TextArea = "textarea",
+  Search = "search",
+  DropDown = "dropdown",
+  DropDownWithSearch = "dropdownWithSearch",
+  Date = "date",
+  DateRange = "daterange",
+  Group = "group",
+  Label = "label",
+  Link = "link",
+  Checkbox = "checkbox",
+  DeleteIcon = "deleteIcon",
+  IconButton = "iconbutton",
+  Icon = "icon",
 }
 
 export interface IFormField {
@@ -31,7 +32,8 @@ export interface IFormField {
     | FormFieldType.DropDownWithSearch
     | FormFieldType.DeleteIcon
     | FormFieldType.IconButton
-    | FormFieldType.Search;
+    | FormFieldType.Search
+    | FormFieldType.Icon;
   label: string;
   isLabel?: boolean;
   placeholder?: string;

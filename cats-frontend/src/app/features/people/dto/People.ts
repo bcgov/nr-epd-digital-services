@@ -1,18 +1,22 @@
 export class Peoples {
   id: number;
-  peopleId: number;
+  firstName: string;
+  lastName: string;
   address: string;
-  city: string;
-  region: string;
+  email: string;
+  taxExempt: boolean;
+  active: boolean;
   lastUpdatedDate: string;
 
   constructor() {
     this.id = 0;
-    this.peopleId = 0;
+    this.firstName = "";
     this.address = "";
-    this.city = "";
-    this.region = "";
+    this.lastName = "";
+    this.email = "";
     this.lastUpdatedDate = "";
+    this.taxExempt = false;
+    this.active = false;
   }
 }
 

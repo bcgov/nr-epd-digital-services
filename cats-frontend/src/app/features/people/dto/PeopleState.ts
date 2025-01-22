@@ -5,7 +5,7 @@ import { UserType } from "../../../helpers/requests/userType";
 import { PeopleResultDto, Peoples } from "./People";
 
 export class PeopleState {
-  peoples: PeopleResultDto[] = [];
+  peoples: Peoples[] = [];
   error: string = "";
   fetchStatus: string = RequestStatus.idle;
   deleteStatus: string = RequestStatus.idle;
