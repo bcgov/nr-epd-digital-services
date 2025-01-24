@@ -83,8 +83,8 @@ objects:
         name: ${REGISTRY}/${INIT_IMAGE}:${IMAGE_TAG}
       referencePolicy:
         type: Local
-- apiVersion: apps/v1
-  kind: Deployment
+- apiVersion: v1
+  kind: DeploymentConfig
   metadata:
     labels:
       app: ${NAME}-${COMPONENT}
@@ -102,16 +102,14 @@ objects:
           kind: ImageStreamTag
           name: ${NAME}-${COMPONENT}:${IMAGE_TAG}
     selector:
-      matchLabels:
-        app: ${NAME}-${COMPONENT}
-        deployment: ${NAME}-${COMPONENT}
+      deploymentconfig: ${NAME}-${COMPONENT}
     strategy:
-      type: RollingUpdate
+      type: Rolling
     template:
       metadata:
         labels:
           app: ${NAME}-${COMPONENT}
-          deployment: ${NAME}-${COMPONENT}
+          deploymentconfig: ${NAME}-${COMPONENT}
       spec:
         containers:
         - image: " "
@@ -283,7 +281,7 @@ objects:
       port: 80
       targetPort: ${{CONTAINER_PORT}}
     selector:
-      deployment: ${NAME}-${COMPONENT}
+      deploymentconfig: ${NAME}-${COMPONENT}
 - apiVersion: route.openshift.io/v1
   kind: Route
   metadata:
@@ -307,8 +305,8 @@ objects:
     name: "${NAME}-${COMPONENT}"
   spec:
     scaleTargetRef:
-      apiVersion: apps/v1
-      kind: Deployment
+      apiVersion: apps.openshift.io/v1
+      kind: DeploymentConfig
       name: "${NAME}-${COMPONENT}"
     minReplicas: ${{MIN_REPLICAS}}
     maxReplicas: ${{MAX_REPLICAS}}
