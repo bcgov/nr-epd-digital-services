@@ -102,7 +102,9 @@ objects:
           kind: ImageStreamTag
           name: ${NAME}-${COMPONENT}:${IMAGE_TAG}
     selector:
-      deployment: ${NAME}-${COMPONENT}
+      matchLabels:
+        app: ${NAME}-${COMPONENT}
+        deployment: ${NAME}-${COMPONENT}
     strategy:
       type: RollingUpdate
     template:
