@@ -71,11 +71,11 @@ spec:
           protocol: TCP
         resources:
           requests:
-            cpu: ${CPU_REQUEST}
-            memory: ${MEMORY_REQUEST}
+            cpu: "100m"
+            memory: "128Mi"
           limits:
-            cpu: ${CPU_LIMIT}
-            memory: ${MEMORY_LIMIT}
+            cpu: "200m"
+            memory: "256Mi"
         readinessProbe:
           httpGet:
             path: /
@@ -164,13 +164,12 @@ spec:
               key: KEYCLOCK_APP_SECRET
         resources:
           limits:
-            cpu: 100m
-            memory: 150Mi
+            cpu: "100m"
+            memory: "150Mi"
           requests:
-            cpu: 50m
-            memory: 50Mi
+            cpu: "50m"
+            memory: "50Mi"
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -186,7 +185,6 @@ spec:
   selector:
     app: ${NAME}-${COMPONENT}
 ---
-
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
@@ -205,7 +203,6 @@ spec:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
 ---
-
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
