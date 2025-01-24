@@ -83,7 +83,7 @@ objects:
         name: ${REGISTRY}/${INIT_IMAGE}:${IMAGE_TAG}
       referencePolicy:
         type: Local
-- apiVersion: v1
+- apiVersion: apps/v1
   kind: Deployment
   metadata:
     labels:
@@ -305,7 +305,7 @@ objects:
     name: "${NAME}-${COMPONENT}"
   spec:
     scaleTargetRef:
-      apiVersion: v1
+      apiVersion: apps/v1
       kind: Deployment
       name: "${NAME}-${COMPONENT}"
     minReplicas: ${{MIN_REPLICAS}}
