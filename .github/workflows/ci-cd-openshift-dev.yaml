@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - 'dev'
-      - 'feat/srs-535' #test2
+      - 'feat/srs-535' #push deployment change
                              
     paths:
       - 'backend/**'
