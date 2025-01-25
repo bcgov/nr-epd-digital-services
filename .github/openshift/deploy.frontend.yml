@@ -132,16 +132,6 @@ objects:
     name: ${NAME}-${COMPONENT}
   spec:
     replicas: 1
-    triggers:
-    - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-        - ${NAME}-${COMPONENT}
-        from:
-          kind: ImageStreamTag
-          name: ${NAME}-${COMPONENT}:${IMAGE_TAG}
     selector:
       matchLabels:
         app: ${NAME}-${COMPONENT}
