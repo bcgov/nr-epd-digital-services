@@ -5,7 +5,7 @@ metadata:
 labels:
   app: ${NAME}-${COMPONENT}
   app.kubernetes.io/part-of: ${NAME}-${COMPONENT}
-  parameters:
+parameters:
   - name: NAME
     description: Module name
     value: epd
