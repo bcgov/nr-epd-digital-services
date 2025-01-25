@@ -2,10 +2,6 @@ apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: ${NAME}
-  annotations:
-    description: "EPD Digital Services"
-    tags: "EPD"
-    iconClass: icon-js
 labels:
   app: ${NAME}-${COMPONENT}
   app.kubernetes.io/part-of: ${NAME}-${COMPONENT}
@@ -128,7 +124,7 @@ objects:
         name: ${REGISTRY}/${PROMOTE}:${IMAGE_TAG}
       referencePolicy:
         type: Local
-- apiVersion: v1
+- apiVersion: apps/v1
   kind: Deployment
   metadata:
     labels:
@@ -155,7 +151,6 @@ objects:
       metadata:
         labels:
           app: ${NAME}-${COMPONENT}
-          # deploymentconfig: ${NAME}-${COMPONENT}
       spec:
         containers:
         - image: " "
@@ -208,10 +203,8 @@ objects:
             initialDelaySeconds: 60
             periodSeconds: 30
             timeoutSeconds: 5
-          #Added for configMap mount  
           volumeMounts:
           - name: ${NAME}-config
-            #readOnly: true
             mountPath: /usr/share/nginx/html/config/
         volumes:
         - name: ${NAME}-config
@@ -256,8 +249,6 @@ objects:
     scaleTargetRef:
       apiVersion: apps/v1
       kind: Deployment
-      metadata:
-      labels:
       name: "${NAME}-${COMPONENT}"
     minReplicas: ${{MIN_REPLICAS}}
     maxReplicas: ${{MAX_REPLICAS}}
