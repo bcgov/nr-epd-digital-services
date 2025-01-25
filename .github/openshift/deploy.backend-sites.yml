@@ -2,54 +2,50 @@ apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: ${NAME}
-  annotations:
-    description: "EPD backend-sites"
-    tags: "epd-backend"
-    iconClass: icon-js
 labels:
   app: ${NAME}-${COMPONENT}
   app.kubernetes.io/part-of: ${NAME}-${COMPONENT}
 parameters:
-- name: NAME
-  description: Module name
-  value: epd
-- name: COMPONENT
-  description: Component name
-  value: backend-sites
-- name: IMAGE_TAG
-  description: Image tag to use
-  value: latest
-- name: DOMAIN
-  value: apps.silver.devops.gov.bc.ca
-- name: CPU_REQUEST
-  value: "125m"
-- name: MEMORY_REQUEST
-  value: "150Mi"
-- name: CPU_LIMIT
-  value: "275m"
-- name: MEMORY_LIMIT
-  value: "450Mi"
-- name: MIN_REPLICAS
-  description: The minimum amount of replicas
-  value: "1"
-- name: MAX_REPLICAS
-  description: The maximum amount of replicas
-  value: "3"
-- name: CONTAINER_PORT
-  description: The port on which the application will be accessible
-  required: true
-- name: REGISTRY
-  description: Container registry to import from (internal is image-registry.openshift-image-registry.svc:5000)
-  value: ghcr.io
-- name: PROMOTE
-  description: Image (namespace/name:tag) to promote/import
-  value: bcgov/nr-epd-digital-services/backend/sites
-- name: INIT_IMAGE
-  description: Image (namespace/name:tag) to promote/import
-  value: bcgov/nr-epd-digital-services/backend/sites-migration
-- name: ENV
-  description: The Environment on which it is deployed
-  required: true
+  - name: NAME
+    description: Module name
+    value: epd
+  - name: COMPONENT
+    description: Component name
+    value: backend-sites
+  - name: IMAGE_TAG
+    description: Image tag to use
+    value: latest
+  - name: DOMAIN
+    value: apps.silver.devops.gov.bc.ca
+  - name: CPU_REQUEST
+    value: "125m"
+  - name: MEMORY_REQUEST
+    value: "150Mi"
+  - name: CPU_LIMIT
+    value: "275m"
+  - name: MEMORY_LIMIT
+    value: "450Mi"
+  - name: MIN_REPLICAS
+    description: The minimum amount of replicas
+    value: "1"
+  - name: MAX_REPLICAS
+    description: The maximum amount of replicas
+    value: "3"
+  - name: CONTAINER_PORT
+    description: The port on which the application will be accessible
+    required: true
+  - name: REGISTRY
+    description: Container registry to import from (internal is image-registry.openshift-image-registry.svc:5000)
+    value: ghcr.io
+  - name: PROMOTE
+    description: Image (namespace/name:tag) to promote/import
+    value: bcgov/nr-epd-digital-services/backend/sites
+  - name: INIT_IMAGE
+    description: Image (namespace/name:tag) to promote/import
+    value: bcgov/nr-epd-digital-services/backend/sites-migration
+  - name: ENV
+    description: The Environment on which it is deployed
+    required: true
 objects:
 - apiVersion: v1
   kind: ImageStream

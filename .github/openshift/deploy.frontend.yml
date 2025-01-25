@@ -6,46 +6,46 @@ labels:
   app: ${NAME}-${COMPONENT}
   app.kubernetes.io/part-of: ${NAME}-${COMPONENT}
 parameters:
-- name: NAME
-  description: Module name
-  value: epd
-- name: COMPONENT
-  description: Component name
-  value: frontend
-- name: IMAGE_TAG
-  description: Image tag to use
-  value: latest
-- name: DOMAIN
-  value: apps.silver.devops.gov.bc.ca
-- name: CPU_REQUEST
-  value: "25m"
-- name: MEMORY_REQUEST
-  value: "50Mi"
-- name: CPU_LIMIT
-  value: "75m"
-- name: MEMORY_LIMIT
-  value: "150Mi"
-- name: MIN_REPLICAS
-  description: The minimum amount of replicas
-  value: "1"
-- name: MAX_REPLICAS
-  description: The maximum amount of replicas
-  value: "3"
-- name: CONTAINER_PORT
-  description: The port on which the application will be accessible
-  required: true
-- name: REGISTRY
-  description: Container registry to import from (internal is image-registry.openshift-image-registry.svc:5000)
-  value: ghcr.io
-- name: PROMOTE
-  description: Image (namespace/name:tag) to promote/import
-  value: bcgov/nr-epd-digital-services/frontend
-- name: ENV
-  description: The Environment on which it is deployed
-  required: true
-- name: REACT_APP_AUTH_CLIENT_ID
-  description: "The keycloak client id"
-  value: epd-web
+  - name: NAME
+    description: Module name
+    value: epd
+  - name: COMPONENT
+    description: Component name
+    value: frontend
+  - name: IMAGE_TAG
+    description: Image tag to use
+    value: latest
+  - name: DOMAIN
+    value: apps.silver.devops.gov.bc.ca
+  - name: CPU_REQUEST
+    value: "25m"
+  - name: MEMORY_REQUEST
+    value: "50Mi"
+  - name: CPU_LIMIT
+    value: "75m"
+  - name: MEMORY_LIMIT
+    value: "150Mi"
+  - name: MIN_REPLICAS
+    description: The minimum amount of replicas
+    value: "1"
+  - name: MAX_REPLICAS
+    description: The maximum amount of replicas
+    value: "3"
+  - name: CONTAINER_PORT
+    description: The port on which the application will be accessible
+    required: true
+  - name: REGISTRY
+    description: Container registry to import from (internal is image-registry.openshift-image-registry.svc:5000)
+    value: ghcr.io
+  - name: PROMOTE
+    description: Image (namespace/name:tag) to promote/import
+    value: bcgov/nr-epd-digital-services/frontend
+  - name: ENV
+    description: The Environment on which it is deployed
+    required: true
+  - name: REACT_APP_AUTH_CLIENT_ID
+    description: "The keycloak client id"
+    value: epd-web
 objects:
 # ConfigMap created by sakthi for testing - DONOT push
 - apiVersion: v1

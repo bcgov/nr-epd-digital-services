@@ -2,10 +2,6 @@ apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: ${NAME}
-  annotations:
-    description: "EPD Digital Services"
-    tags: "EPD"
-    iconClass: icon-js
 labels:
   app: ${NAME}-${COMPONENT}
   app.kubernetes.io/part-of: ${NAME}-${COMPONENT}
