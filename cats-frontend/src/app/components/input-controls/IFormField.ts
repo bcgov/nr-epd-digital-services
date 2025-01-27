@@ -15,11 +15,14 @@ export enum FormFieldType {
   Checkbox = 'checkbox',
   DeleteIcon = 'deleteIcon',
   IconButton = 'iconbutton',
+  Switch = 'switch',
+  Email = 'email',
 }
 
 export interface IFormField {
   type:
     | FormFieldType.Text
+    | FormFieldType.Email
     | FormFieldType.DropDown
     | FormFieldType.Date
     | FormFieldType.Group
@@ -31,7 +34,8 @@ export interface IFormField {
     | FormFieldType.DropDownWithSearch
     | FormFieldType.DeleteIcon
     | FormFieldType.IconButton
-    | FormFieldType.Search;
+    | FormFieldType.Search
+    | FormFieldType.Switch;
   label: string;
   isLabel?: boolean;
   placeholder?: string;
@@ -53,6 +57,7 @@ export interface IFormField {
   customIcon?: ReactNode;
   isChecked?: boolean;
   isDateRange?: boolean;
+  dateFormat?:string;
   children?: IFormField[];
   isChildLabel?: boolean;
   isDisabled?: boolean;
@@ -74,4 +79,6 @@ export interface IFormField {
   textAreaRow?: number;
   textAreaColoum?: number;
   handleSearch?: (event: any) => void;
+  componentName?: string;
+  labelPosition?: "left" | "right";
 }

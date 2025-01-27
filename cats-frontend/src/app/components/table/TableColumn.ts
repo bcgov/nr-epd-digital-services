@@ -33,6 +33,7 @@ export class TableColumn {
     public dynamicColumn?: boolean,
     public columnSize?: ColumnSize,
     public stickyCol?: boolean,
+    public customHeaderCss?: string,
   ) {
     this.dynamicColumn = dynamicColumn ?? false;
   }

@@ -262,6 +262,7 @@ const TableBody: FC<TableBodyProps> = ({
           href={field.href}
           customLinkValue={field.customLinkValue}
           customIcon={field.customIcon}
+          componentName={field.componentName}
         />
       );
     } else if (field.type === FormFieldType.DropDown) {
@@ -335,6 +336,7 @@ const TableBody: FC<TableBodyProps> = ({
           isEditing={editMode ?? true}
           tableMode={field.tableMode ?? false}
           stickyCol={field.stickyCol}
+          dateFormat={field.dateFormat}
         />
       );
     } else if (field.type === FormFieldType.TextArea) {
@@ -486,7 +488,7 @@ const TableBody: FC<TableBodyProps> = ({
       <React.Fragment key={rowIndex}>
         <tr data-testid="table-row" key={rowIndex}>
           {allowRowsSelect && (
-            <td className="table-border-light content-text positionSticky align-content-center">
+            <td className="table-border-light content-text positionSticky align-content-center checkbox-column">
               <input
                 id={getValue(rowIndex, idColumnName)}
                 type="checkbox"
