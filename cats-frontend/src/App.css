@@ -43,12 +43,72 @@
 }
 
 * {
-  font-family: "BCSans" !important;
+  font-family: "Noto Sans" !important;
 }
 
 @media screen and (max-width: 768px) {
   .display-from-medium {
     display: none !important;
+  }
+}
+
+
+/* Ensure the parent container takes up the full height of the screen */
+.container {
+  display: flex;
+  width: 100%;
+  height: 100vh; /* Make sure the container takes full viewport height */
+  max-width: none; /* Remove any max-width constraints */
+  padding: 0;    /* Remove padding */
+  margin: 0;     /* Remove margin */
+}
+
+/* Sidebar styles */
+.sidebar-container {
+  width: 128px; /* Initial width */
+  transition: width 0.3s ease; /* Smooth transition for width */
+  height: 100%; /* Ensure full height of the sidebar */
+  cursor: pointer;
+  background: var(--side-bar-background-color);
+  box-shadow: var(--side-bar-shadow);
+  border-right: 1px solid var(--surface-border-light, #d8d8d8);
+  /* min-width: 84px; */
+  max-width: 240px;
+}
+
+.sidebar-container.expanded {
+  width: 240px; /* Expanded width on hover/click */
+}
+
+/* Main content styles */
+.main-content-container {
+  flex-grow: 1;
+  transition: margin-left 0.3s ease; /* Smooth transition for margin */
+  height: 100%; /* Ensure full height of the main content */
+}
+
+/* Ensure the layout is responsive */
+@media (max-width: 768px) {
+  .sidebar-container {
+    width: 80px; /* Smaller sidebar on mobile */
+  }
+
+  .sidebar-container.expanded {
+    width: 160px; /* Expanded sidebar on mobile */
+  }
+
+  .main-content-container {
+    margin-left: 0;
+  }
+
+  .main-content-container.shifted {
+    margin-left: 160px; /* Adjust shift for mobile */
+  }
+}
+
+@media (max-width: 1024px) {
+  .sidebar-container.expanded {
+    width: 240px;
   }
 }
 
@@ -117,3 +177,5 @@
   --map-button-font-size-large: 18px;
   --map-button-font-size-medium: 16px;
 }
+
+
