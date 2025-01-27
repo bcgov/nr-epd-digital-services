@@ -68,9 +68,6 @@
   overflow-x: scroll;
 }
 
-.table th {
-  min-width: 100px;
-}
 
 @media (min-width: 576px) {
   .positionSticky {
