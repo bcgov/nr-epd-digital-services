@@ -38,15 +38,15 @@ export const serializeDate = (data: any) => {
   return serializedData;
 };
 
-export const formatDateRange = (range: [Date, Date]) => {
+export const formatDateRange = (range: [Date, Date], dateFormate: string = 'MMMM do, yyyy') => {
   const [startDate, endDate] = range;
-  const formattedStartDate = format(startDate, 'MMMM do, yyyy');
-  const formattedEndDate = format(endDate, 'MMMM do, yyyy');
+  const formattedStartDate = format(startDate, dateFormate);
+  const formattedEndDate = format(endDate, dateFormate);
   return `${formattedStartDate} - ${formattedEndDate}`;
 };
 
-export const formatDate = (date: Date) => {
-  const formattedDate = format(date, 'MMMM do, yyyy');
+export const formatDate = (date: Date, dateFormate: string = 'MMMM do, yyyy') => {
+  const formattedDate = format(date, dateFormate);
   return `${formattedDate}`;
 };
 
