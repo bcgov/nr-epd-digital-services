@@ -74,40 +74,29 @@ export const fetchPeoples = createAsyncThunk(
     },
     { getState }
   ) => {
-    return {
-      peoples: [
-        {
-          firstName: "Midhun",
-          id: 1,
-          lastName: "Murali",
-          address: "2929 quadra",
-          email: "midhun.murali@aot-technologies.com",
-          taxExempt: true,
-          active: true,
-          lastUpdatedDate: "Dec/30",
-        },
-      ],
-      count: 1,
-    };
-
+    console.log(args.searchParam, args.page, args.pageSize);
+    const response = await getAxiosInstance().post(GRAPHQL, {
+      query: print(graphQlPeopleQuery()),
+      variables: {
+        searchParam: args.searchParam,
+        page: args.page ?? 1,
+        pageSize: args.pageSize ?? 5,
+      },
+    });
+    console.log("result search peoples", response.data);
+    return response.data?.data?.searchPeople;
+    // Dummy data
     // return {
     //   peoples: [
     //     {
-    //       peoples: [
-    //         {
-    //           firstName: "Midhun",
-    //           id: 1,
-    //           lastName: "Murali",
-    //           address: "2929 quadra",
-    //           email: "midhun.murali@aot-technologies.com",
-    //           taxExempt: false,
-    //           active: true,
-    //           lastUpdatedDate: "Dec/30",
-    //         },
-    //       ],
-    //       page: "",
-    //       count: "",
-    //       pageSize: "",
+    //       firstName: "Midhun",
+    //       id: 1,
+    //       lastName: "Murali",
+    //       address: "2929 quadra",
+    //       email: "midhun.murali@aot-technologies.com",
+    //       taxExempt: true,
+    //       active: true,
+    //       lastUpdatedDate: "Dec/30",
     //     },
     //   ],
     //   count: 1,

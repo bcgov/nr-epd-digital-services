@@ -37,13 +37,13 @@ const getPeopleSearchResultsColumns = () => {
       7,
       "Address",
       true,
-      "address",
+      "addressLine1",
       2,
       false,
       true,
       1,
       true,
-      getColumnType("Address", "address", "")
+      getColumnType("Address", "addressLine1", "")
     ),
     new TableColumn(
       2,
@@ -61,25 +61,25 @@ const getPeopleSearchResultsColumns = () => {
       3,
       "Active",
       true,
-      "active",
+      "isActive",
       1,
       false,
       true,
       1,
       true,
-      getIconColumnType("Active", "active", "")
+      getIconColumnType("Active", "isActive", "")
     ),
     new TableColumn(
       4,
       "Tax Exempt",
       true,
-      "taxExempt",
+      "isTaxExempt",
       1,
       false,
       true,
       1,
       true,
-      getIconColumnType("Tax Exempt", "taxExempt", "")
+      getIconColumnType("Tax Exempt", "isTaxExempt", "")
     ),
     // new TableColumn(
     //   5,
