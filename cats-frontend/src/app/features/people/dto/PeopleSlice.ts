@@ -9,7 +9,7 @@ import {
 } from "../graphql/People";
 import { PeopleState } from "./PeopleState";
 import { RequestStatus } from "../../../helpers/requests/status";
-import { PeopleResultDto } from "./People";
+import { PeopleResultDto, Peoples } from "./People";
 import { GRAPHQL } from "../../../helpers/endpoints";
 //import { PeopleDetailsMode } from '../../details/dto/PeopleDetailsMode';
 import { UserType } from "../../../helpers/requests/userType";
@@ -74,10 +74,33 @@ export const fetchPeoples = createAsyncThunk(
     },
     { getState }
   ) => {
-    return {
-      peoples: [],
-      count: 0,
-    };
+    console.log(args.searchParam, args.page, args.pageSize);
+    const response = await getAxiosInstance().post(GRAPHQL, {
+      query: print(graphQlPeopleQuery()),
+      variables: {
+        searchParam: args.searchParam,
+        page: args.page ?? 1,
+        pageSize: args.pageSize ?? 5,
+      },
+    });
+    console.log("result search peoples", response.data);
+    return response.data?.data?.searchPeople;
+    // Dummy data
+    // return {
+    //   peoples: [
+    //     {
+    //       firstName: "Midhun",
+    //       id: 1,
+    //       lastName: "Murali",
+    //       address: "2929 quadra",
+    //       email: "midhun.murali@aot-technologies.com",
+    //       taxExempt: true,
+    //       active: true,
+    //       lastUpdatedDate: "Dec/30",
+    //     },
+    //   ],
+    //   count: 1,
+    // };
   }
 );
 
@@ -131,7 +154,7 @@ const peopleSlice = createSlice({
     },
     peopleAdded: {
       reducer(state, action) {
-        const updatedArr: PeopleResultDto[] = [state.peoples, action.payload];
+        const updatedArr: Peoples[] = [state.peoples, action.payload];
         state.peoples = updatedArr;
       },
       prepare(name: string, email: string): any {
@@ -242,7 +265,9 @@ const peopleSlice = createSlice({
   },
 });
 
-export const selectAllPeoples = (state: any) => state.peoples.peoples;
+export const selectAllPeoples = (state: any) => {
+  return state.peoples.peoples;
+};
 export const loadingState = (state: any) => state.peoples.fetchStatus;
 export const currentPageSelection = (state: any) => state.peoples.currentPage;
 export const currentPageSize = (state: any) => state.peoples.pageSize;

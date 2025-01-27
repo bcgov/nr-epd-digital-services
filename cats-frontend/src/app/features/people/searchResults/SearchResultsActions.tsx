@@ -52,12 +52,14 @@ export const SearchResultsActions: FC<SearchResultsActionsProps> = ({
     <div className="search-result-actions">
       {!isUserOfType(UserRoleType.INTERNAL) && (
         <Actions
-          label="Import / Export"
+          label="Set Active Status"
           items={[
             { label: "PDF", value: "pdf" },
             { label: "Excel", value: "excel" },
           ]}
           onItemClick={() => {}}
+          toggleButtonVariant="secondary"
+          disable={selectedRows.length === 0}
         />
       )}
 

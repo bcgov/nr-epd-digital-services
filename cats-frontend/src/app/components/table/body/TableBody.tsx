@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
-import { SpinnerIcon } from '../../common/icon';
-import { RequestStatus } from '../../../helpers/requests/status';
-import { TableColumn } from '../TableColumn';
+import React, { FC, useEffect, useState } from "react";
+import { SpinnerIcon } from "../../common/icon";
+import { RequestStatus } from "../../../helpers/requests/status";
+import { TableColumn } from "../TableColumn";
 
-import { FormFieldType } from '../../input-controls/IFormField';
+import { FormFieldType } from "../../input-controls/IFormField";
 import {
   Label,
   TextInput,
@@ -16,8 +16,9 @@ import {
   DeleteIcon,
   IconButton,
   SearchCustomInput,
-} from '../../input-controls/InputControls';
-import { get } from '../utils';
+  Icon,
+} from "../../input-controls/InputControls";
+import { get } from "../utils";
 
 interface TableBodyProps {
   isLoading: RequestStatus;
@@ -77,15 +78,15 @@ const TableBody: FC<TableBodyProps> = ({
       SetSelectedRowsId((prevItems) => ({
         ...prevItems,
         [currentPage]: (prevItems[currentPage] || []).filter(
-          (item) => !rowsIds.includes(item),
+          (item) => !rowsIds.includes(item)
         ),
       }));
     }
 
     if (allRowsSelectedEventFlag) {
       changeHandler({
-        id: 'select_all',
-        property: 'select_all',
+        id: "select_all",
+        property: "select_all",
         value: data,
         selected: allRowsSelected,
       });
@@ -103,14 +104,14 @@ const TableBody: FC<TableBodyProps> = ({
       SetSelectedRowsId((prevItems) => ({
         ...prevItems,
         [currentPage]: (prevItems[currentPage] || []).filter(
-          (item) => item !== id,
+          (item) => item !== id
         ),
       }));
 
       removePageFromAllRowsSelected();
     }
 
-    tableRecordChangeHandler(rowIndex, 'select_row', isChecked);
+    tableRecordChangeHandler(rowIndex, "select_row", isChecked);
   };
 
   const isChecked = (id: string) => {
@@ -141,7 +142,7 @@ const TableBody: FC<TableBodyProps> = ({
     rowKey: number,
     propertyName: any,
     value: any,
-    isDeleteRow?: boolean,
+    isDeleteRow?: boolean
   ) => {
     const changeRecord = {
       row: getDataRow(rowKey),
@@ -164,7 +165,7 @@ const TableBody: FC<TableBodyProps> = ({
     href: string,
     changeHandler: any,
     editMode: boolean,
-    columnIndex: number,
+    columnIndex: number
   ) => {
     if (field.type === FormFieldType.Text) {
       return (
@@ -301,7 +302,7 @@ const TableBody: FC<TableBodyProps> = ({
           customEditInputTextCss={field.customEditInputTextCss}
           customPlaceholderCss={field.customPlaceholderCss}
           placeholder={field.placeholder}
-          isChecked={value === 'true' ? true : false}
+          isChecked={value === "true" ? true : false}
           // value={value}
           onChange={(value) =>
             tableRecordChangeHandler(rowKey, field.graphQLPropertyName, value)
@@ -407,7 +408,7 @@ const TableBody: FC<TableBodyProps> = ({
               rowKey,
               field.graphQLPropertyName,
               value,
-              true,
+              true
             )
           }
           type={field.type}
@@ -419,6 +420,29 @@ const TableBody: FC<TableBodyProps> = ({
     } else if (field.type === FormFieldType.IconButton) {
       return (
         <IconButton
+          key={columnIndex}
+          label={field.label}
+          customLabelCss={field.customLabelCss}
+          customInputTextCss={field.customInputTextCss}
+          customEditLabelCss={field.customEditLabelCss}
+          customEditInputTextCss={field.customEditInputTextCss}
+          placeholder={field.placeholder}
+          options={field.options || []}
+          value={value}
+          onChange={(value) =>
+            tableRecordChangeHandler(rowKey, field.graphQLPropertyName, value)
+          }
+          type={field.type}
+          isEditing={editMode ?? true}
+          tableMode={field.tableMode ?? false}
+          stickyCol={field.stickyCol}
+          customLinkValue={field.customLinkValue}
+          customIcon={field.customIcon}
+        />
+      );
+    } else if (field.type === FormFieldType.Icon) {
+      return (
+        <Icon
           key={columnIndex}
           label={field.label}
           customLabelCss={field.customLabelCss}
@@ -453,30 +477,30 @@ const TableBody: FC<TableBodyProps> = ({
   const renderTableCell = (
     column: TableColumn,
     rowIndex: number,
-    columnIndex: number,
+    columnIndex: number
   ) => {
-    if (isNaN(rowIndex)) return '';
+    if (isNaN(rowIndex)) return "";
 
     if (data[rowIndex] === undefined) {
-      return '';
+      return "";
     }
 
     const cellValue =
       column.graphQLPropertyName &&
       column.graphQLPropertyName
-        .split(',')
+        .split(",")
         .map((graphQLPropertyName) => getValue(rowIndex, graphQLPropertyName))
-        .join(' ');
+        .join(" ");
 
     return getTableCellHtml(
       column.displayType,
       column.displayName,
-      cellValue ?? '',
+      cellValue ?? "",
       rowIndex,
-      column.linkRedirectionURL ?? '',
+      column.linkRedirectionURL ?? "",
       changeHandler,
       editMode,
-      columnIndex,
+      columnIndex
     );
   };
 
@@ -498,7 +522,7 @@ const TableBody: FC<TableBodyProps> = ({
                   handleSelectTableRow(
                     event.target.checked,
                     checkboxId,
-                    rowIndex,
+                    rowIndex
                   );
                 }}
                 checked={rowChecked || false}

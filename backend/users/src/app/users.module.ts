@@ -11,13 +11,20 @@ import { OrganizationTypeService } from './services/organizationType.service';
 import { OrganizationTypeResolver } from './resolvers/organizationType.resolver';
 import { UserController } from './controllers/user.controller';
 import { KeycloakService } from './services/keycloak.service';
+import { People } from './entities/people';
+import { PeopleResolver } from './resolvers/people.resolver';
+import { PeopleService } from './services/people.service';
 
 /**
  * Module for wrapping all functionalities in user microserivce
  */
 @Module({
-  imports: [TypeOrmModule.forFeature([ExternalUser, Region, OrganizationType])],
+  imports: [
+    TypeOrmModule.forFeature([ExternalUser, Region, OrganizationType, People]),
+  ],
   providers: [
+    PeopleResolver,
+    PeopleService,
     ExternalUserResolver,
     ExternalUserService,
     RegionResolver,
