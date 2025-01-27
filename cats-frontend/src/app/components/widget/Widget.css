@@ -21,11 +21,7 @@
   margin-bottom: 0;
 }
 
-.widget-table-container {
-  max-height: var(--max-height);
-  overflow: var(--overflow);
-}
-
-.widget-table-conatiner-overflow {
-  overflow: var(--overflow);
+.widget-required-field::after {
+  content: ' *';
+  color: red;
 }
