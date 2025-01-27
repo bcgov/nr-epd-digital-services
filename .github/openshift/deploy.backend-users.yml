@@ -79,33 +79,21 @@ objects:
         name: ${REGISTRY}/${INIT_IMAGE}:${IMAGE_TAG}
       referencePolicy:
         type: Local
-- apiVersion: v1
-  kind: DeploymentConfig
+- apiVersion: apps/v1
+  kind: Deployment
   metadata:
     labels:
       app: ${NAME}-${COMPONENT}
     name: ${NAME}-${COMPONENT}
   spec:
     replicas: 1
-    triggers:
-    - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-        - ${NAME}-${COMPONENT}
-        from:
-          kind: ImageStreamTag
-          name: ${NAME}-${COMPONENT}:${IMAGE_TAG}
     selector:
-      deploymentconfig: ${NAME}-${COMPONENT}
-    strategy:
-      type: Rolling
+      matchLabels:
+        app: ${NAME}-${COMPONENT}
     template:
       metadata:
         labels:
           app: ${NAME}-${COMPONENT}
-          deploymentconfig: ${NAME}-${COMPONENT}
       spec:
         containers:
         - image: " "
@@ -184,7 +172,7 @@ objects:
               memory: ${MEMORY_LIMIT}
           readinessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: ${{CONTAINER_PORT}}
               scheme: HTTP
             initialDelaySeconds: 10
@@ -196,17 +184,13 @@ objects:
             successThreshold: 1
             failureThreshold: 3
             httpGet:
-              path: /
+              path: /healthz
               port: ${{CONTAINER_PORT}}
               scheme: HTTP
             initialDelaySeconds: 10
             periodSeconds: 30
             timeoutSeconds: 5
         initContainers:
-        # - name: init-${NAME}-backend-users-typeorm-migrations
-        #   image: image-registry.openshift-image-registry.svc:5000/${NAME}-${COMPONENT}:${IMAGE_TAG}
-        #   command: ['sh', '-c', 'initContainer.sh']
-        #  ${NAME}-${COMPONENT}:${IMAGE_TAG}
         - name: epd-db-migration
           image: "image-registry.openshift-image-registry.svc:5000/e38158-${ENV}/${NAME}-${COMPONENT}-migration:${IMAGE_TAG}"
           env:
@@ -272,7 +256,7 @@ objects:
       port: 80
       targetPort: ${{CONTAINER_PORT}}
     selector:
-      deploymentconfig: ${NAME}-${COMPONENT}
+      app: ${NAME}-${COMPONENT}
 - apiVersion: route.openshift.io/v1
   kind: Route
   metadata:
@@ -296,8 +280,8 @@ objects:
     name: "${NAME}-${COMPONENT}"
   spec:
     scaleTargetRef:
-      apiVersion: apps.openshift.io/v1
-      kind: DeploymentConfig
+      apiVersion: apps/v1
+      kind: Deployment
       name: "${NAME}-${COMPONENT}"
     minReplicas: ${{MIN_REPLICAS}}
     maxReplicas: ${{MAX_REPLICAS}}

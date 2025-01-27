@@ -45,12 +45,11 @@ objects:
       POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
       POSTGRES_ADMIN_USERNAME: postgres
       POSTGRES_ADMIN_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
-  - kind: ConfigMap 
-    apiVersion: v1 
+  - kind: ConfigMap
+    apiVersion: v1
     metadata:
       name: ${NAME}-${COMPONENT}
     data:
-      # Configuration values can be set as key-value properties
       POSTGRESQL_HOST: epd-database
       POSTGRESQL_PORT: "5432"
       POSTGRES_DATABASE: epd_dev
@@ -78,43 +77,30 @@ objects:
       lookupPolicy:
         local: false
       tags:
-      - name: ${IMAGE_TAG}
-        from:
-          kind: DockerImage
-          name: ${REGISTRY}/${PROMOTE}
-        referencePolicy:
-          type: Local
-  - kind: DeploymentConfig
-    apiVersion: v1
+        - name: ${IMAGE_TAG}
+          from:
+            kind: DockerImage
+            name: ${REGISTRY}/${PROMOTE}
+          referencePolicy:
+            type: Local
+  - kind: Deployment
+    apiVersion: apps/v1
     metadata:
       name: ${NAME}-${COMPONENT}
       labels:
         app: ${NAME}
     spec:
       replicas: 1
-      triggers:
-      - type: ConfigChange
-      - type: ImageChange
-        imageChangeParams:
-          automatic: true
-          containerNames:
-          - ${NAME}
-          from:
-            kind: ImageStreamTag
-            name: ${NAME}-${COMPONENT}:${IMAGE_TAG}
       selector:
-        deploymentconfig: ${NAME}-${COMPONENT}
+        matchLabels:
+          app: ${NAME}-${COMPONENT}
       strategy:
         type: Recreate
-        recreateParams:
-          timeoutSeconds: 600
-        activeDeadlineSeconds: 21600
+        rollingUpdate: null
       template:
         metadata:
-          name: ${NAME}-${COMPONENT}
           labels:
             app: ${NAME}
-            deploymentconfig: ${NAME}-${COMPONENT}
         spec:
           volumes:
             - name: ${NAME}-${COMPONENT}
@@ -130,11 +116,6 @@ objects:
                 exec:
                   command:
                     - /opt/crunchy/bin/postgres/readiness.sh
-                    # - bash
-                    # - '-c'
-                    # - >-
-                    #   psql -q -d
-                    #   $POSTGRESQL_DATABASE -c 'SELECT 1'
                 failureThreshold: 5
                 initialDelaySeconds: 30
                 periodSeconds: 15
@@ -143,11 +124,6 @@ objects:
                 exec:
                   command:
                     - /opt/crunchy/bin/postgres/liveness.sh
-                    # - bash
-                    # - '-c'
-                    # - >-
-                    #   psql -q -d
-                    #   $POSTGRESQL_DATABASE -c 'SELECT 1'
                 failureThreshold: 5
                 initialDelaySeconds: 30
                 periodSeconds: 15
@@ -213,11 +189,6 @@ objects:
                     configMapKeyRef:
                       name: ${NAME}-database
                       key: APPLICATION_MICROSERVICE_ENDPOINT
-                - name: PGHOST
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${NAME}-${COMPONENT}
-                      key: PGHOST
               volumeMounts:
                 - name: ${NAME}-${COMPONENT}
                   mountPath: "/pgdata"
@@ -242,6 +213,6 @@ objects:
           protocol: TCP
           targetPort: 5432
       selector:
-        deploymentconfig: ${NAME}-${COMPONENT}
+        app: ${NAME}-${COMPONENT}
       sessionAffinity: None
       type: ClusterIP
