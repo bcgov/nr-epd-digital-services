@@ -128,7 +128,6 @@ objects:
                   memory: ${MEMORY_LIMIT}
               readinessProbe:
                 httpGet:
-                  path: /
                   port: ${{CONTAINER_PORT}}
                   scheme: HTTP
                 initialDelaySeconds: 10

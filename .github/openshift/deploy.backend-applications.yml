@@ -156,7 +156,6 @@ objects:
                   memory: ${MEMORY_LIMIT}
               readinessProbe:
                 httpGet:
-                  path: /health
                   port: ${{CONTAINER_PORT}}
                   scheme: HTTP
                 initialDelaySeconds: 10
@@ -168,7 +167,7 @@ objects:
                 successThreshold: 1
                 failureThreshold: 3
                 httpGet:
-                  path: /health
+                  path: /
                   port: ${{CONTAINER_PORT}}
                   scheme: HTTP
                 initialDelaySeconds: 10
