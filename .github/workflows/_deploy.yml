@@ -61,7 +61,7 @@ jobs:
 
           # ImageStream and DeploymentConfig names
           IS_LIST=$(jq -rn "${TEMPLATE} | .items[] | select(.kind==\"ImageStream\") | .metadata.name")
-          DC=$(jq -rn "${TEMPLATE} | .items[] | select(.kind==\"DeploymentConfig\") | .metadata.name")
+          DEPLOYMENT=$(jq -rn "${TEMPLATE} | .items[] | select(.kind==\"DeploymentConfig\") | .metadata.name")
 
           # Clean previous images
           # Loop through the ImageStream names and delete each one
@@ -78,7 +78,7 @@ jobs:
           fi
 
           # Follow any active rollouts (see deploymentconfigs)
-          oc rollout status dc/${DC} -w
+          oc rollout status deployment/${DEPLOYMENT} -w
 
       - name: Deployment Verification
         run: |
