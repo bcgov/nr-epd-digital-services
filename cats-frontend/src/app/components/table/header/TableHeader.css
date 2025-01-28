@@ -20,8 +20,7 @@
 }
 
 .checkbox-column {
-  min-width: 10px !important;
-  width: 10px !important;
+  width: 0% !important;
 }
 
 .checkbox-color:hover,
