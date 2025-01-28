@@ -4,12 +4,14 @@
     line-height: 65.38px;
     color: var(--typography-color-primary, #2D2D2D);
 }
+
 .custom-people-lbl {
     font-size: 12px;
     font-weight: 700;
     line-height: 18px;
     color: var(--typography-color-secondary, #474543);
 }
+
 .custom-people-edit-lbl {
     font-size: 12px;
     font-weight: 400;
@@ -31,6 +33,7 @@ a.custom-people-edit-lbl {
     line-height: 27.01px;
     color: var(--typography-color-primary, #2D2D2D);
 }
+
 .custom-people-edit-txt {
     font-size: 16px;
     font-weight: 400;
@@ -45,44 +48,4 @@ a.custom-people-edit-lbl {
 .custom-note-tbl-header {
     text-align: center;
     vertical-align: middle; 
-}
-
-
-/* Header */
-
-.custom-person-header {
-    padding: var(--layout-margin-large) var(--layout-margin-xxlarge)
-      0 var(--layout-margin-xxlarge);
-    gap: var(--layout-margin-xxlarge);
-}
-.custom-person-sticky-header {
-    position: -webkit-sticky; /* For Safari */
-    position: sticky;
-    z-index: 999 !important;
-    top: 65px;
-    left: 128px;
-    padding: var(--layout-margin-large) var(--layout-margin-xxlarge)
-      var(--layout-margin-large) var(--layout-margin-xxlarge);
-    gap: var(--layout-margin-xxlarge);
-    background: var(--surface-background-white, #ffffff);
-    border-bottom: 1px solid var(--surface-border-light, #d8d8d8);
-}
-
-@media (max-width: 768px) {
-    .custom-person-sticky-header {
-      align-items: flex-start !important;
-    }
-}
-
-.custom-person-sticky-header-lbl {
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 21.01px;
-    text-align: left;
-    color: var(--typography-color-primary, #2d2d2d);
-}
-
-.custom-person-sticky-header-lbl > div > span {
-    font-weight: 400;
-    padding-left: 8px;
 }

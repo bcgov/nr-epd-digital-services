@@ -18,6 +18,7 @@ import CustomLabel from "../../../components/simple/CustomLabel";
 import { CancelButton, SaveButton } from "../../../components/simple/CustomButtons";
 import { ActionItems } from "../../../components/action/ActionsConfig";
 import { UserAction } from "../../../helpers/requests/UserAction";
+import NavigationBar from "../../../components/navigation-bar/NavigationBar";
 
 const personFormData = {
     end_date: false,
@@ -154,7 +155,6 @@ const Person = () => {
         });
     };
 
-    useEffect(() => { console.log(formData)}, [formData])
     const handleDeleteNotes = (particIsDelete: boolean = false) => {
         if (particIsDelete) 
         {
@@ -204,71 +204,67 @@ const Person = () => {
       }
     };
 
+    const navigationBarChildern = <>
+        { viewMode === UserMode.Default &&
+          userType === UserType.STAFF &&
+           (
+            <Actions
+              label="Actions"
+              items={ActionItems}
+              onItemClick={handleItemClick}
+            />
+          )
+        }
+        <div className="gap-3 align-items-center d-none d-md-flex d-lg-flex d-xl-flex">
+          {viewMode === UserMode.EditMode && 
+            userType === UserType.STAFF && 
+          (
+            <>
+              <CustomLabel labelType="c-b" label={`${'Edit Mode'}`}/>
+              <SaveButton clickHandler={() => handleItemClick(UserAction.SAVE)}/>
+              <CancelButton variant="secondary" clickHandler={() => handleItemClick(UserAction.CANCEL)} />
+            </>
+          )}
+        </div>
+        {viewMode === UserMode.EditMode && (
+          <div className="d-flex d-md-none d-lg-none d-xl-none">
+            <Actions
+              label="Actions"
+              items={[
+                {
+                  label: UserAction.SAVE,
+                  value: UserAction.SAVE,
+                },
+                {
+                  label: UserAction.CANCEL,
+                  value: UserAction.CANCEL,
+                },
+              ]}
+              onItemClick={handleItemClick}
+            />
+          </div>
+        )} 
+    </>
+
+    const navigationBarText = <>
+       {  Object.keys(formData).length > 0 
+          ?
+          isVisible && <div className="d-flex align-items-center">Viewing: <span>{formData?.first_name + ' ' + formData?.last_name}</span></div>
+          :
+          <span>Create New Person</span>
+       }
+    </>
+    
     return (
       <>
-      <div className={`d-flex justify-content-between align-items-center ${isVisible ? 'custom-person-sticky-header' : 'custom-person-header'} w-100`}>
-        <div className="d-flex gap-4 flex-wrap align-items-center">
-          <Button variant="secondary" onClick={onClickBackButton}>
-            <AngleLeft />
-            Back to {fromScreen}
-          </Button>
-          <div className="d-flex flex-wrap align-items-center pe-3 custom-person-sticky-header-lbl">
-          {
-            Object.keys(formData).length > 0 
-            ?
-            isVisible && <div className="d-flex align-items-center">Viewing: <span>{formData?.first_name + ' ' + formData?.last_name}</span></div>
-            :
-            <span>Create New Person</span>
-          }
-          </div>
-        </div>
-
-        <div className="d-flex gap-2 justify-align-center pe-2 position-relative">
-           {/* For Action Dropdown*/}
-           { viewMode === UserMode.Default &&
-                userType === UserType.STAFF &&
-                 (
-                  <Actions
-                    label="Actions"
-                    items={ActionItems}
-                    onItemClick={handleItemClick}
-                  />
-                )}
-
-              {/* For Edit */}
-              <div className="gap-3 align-items-center d-none d-md-flex d-lg-flex d-xl-flex">
-                {viewMode === UserMode.EditMode && 
-                  userType === UserType.STAFF && 
-                (
-                  <>
-                    <CustomLabel labelType="c-b" label={`${'Edit Mode'}`}/>
-                    <SaveButton clickHandler={() => handleItemClick(UserAction.SAVE)}
-                      // isDisabled={savedChanges?.length > 0 ? false : true}
-                    />
-                    <CancelButton variant="secondary" clickHandler={() => handleItemClick(UserAction.CANCEL)} />
-                  </>
-                )}
-              </div>
-              {viewMode === UserMode.EditMode && (
-                <div className="d-flex d-md-none d-lg-none d-xl-none">
-                  <Actions
-                    label="Actions"
-                    items={[
-                      {
-                        label: UserAction.SAVE,
-                        value: UserAction.SAVE,
-                      },
-                      {
-                        label: UserAction.CANCEL,
-                        value: UserAction.CANCEL,
-                      },
-                    ]}
-                    onItemClick={handleItemClick}
-                  />
-                </div>
-              )}
-        </div>
-      </div>
+        <NavigationBar 
+          isVisible={isVisible} 
+          onClickBackButton = {onClickBackButton}
+          backButtonProps={ { variant:"secondary"} } 
+          backButtonText={`Back to ${fromScreen}`}
+          navigationBarText={navigationBarText}
+          childern={navigationBarChildern}
+        />
         <PageContainer role="Person">
             <div className="custom-person-name">
               { 
