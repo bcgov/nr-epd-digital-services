@@ -9,6 +9,7 @@ import {
   updateSearchQuery,
   updatePageSizeSetting,
   resultsCount,
+  updatePeopleStatus,
 } from "./dto/PeopleSlice";
 
 import { AppDispatch } from "../../Store";
@@ -42,6 +43,7 @@ const Search = () => {
   const currSearchVal = useSelector((state: any) => state.peoples);
   const currentPageInState = useSelector(currentPageSelection);
   const currentPageSizeInState = useSelector(currentPageSize);
+  const updatePeopleStatusInState = useSelector(updatePeopleStatus);
   const totalRecords = useSelector(resultsCount);
   const [noUserAction, setUserAction] = useState(true);
 
@@ -71,12 +73,16 @@ const Search = () => {
   };
 
   useEffect(() => {
+    console.log("selectedRows", selectedRows);
+  }, [selectedRows]);
+
+  useEffect(() => {
     if (currSearchVal.searchQuery !== "") {
       dispatch(
         fetchPeoples({ searchParam: currSearchVal.searchQuery ?? searchText })
       );
     }
-  }, [currentPageInState]);
+  }, [currentPageInState, updatePeopleStatusInState]);
 
   useEffect(() => {
     if (currSearchVal.searchQuery !== "") {
@@ -144,6 +150,7 @@ const Search = () => {
   };
 
   const changeHandler = (event: any) => {
+    console.log("select_row");
     if (event && event.property === "select_row") {
       if (event.value) {
         const index = selectedRows.findIndex((r: any) => r.id === event.row.id);

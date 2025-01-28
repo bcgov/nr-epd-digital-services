@@ -6,6 +6,7 @@ import {
   graphqlPeopleDetailsQuery,
   graphqlPeopleDetailsQueryForLoggedIn,
   graphQlPeopleQueryForAuthenticatedUsers,
+  updatePerson,
 } from "../graphql/People";
 import { PeopleState } from "./PeopleState";
 import { RequestStatus } from "../../../helpers/requests/status";
@@ -63,6 +64,19 @@ export const fetchPeoplesDetails = createAsyncThunk(
   }
 );
 
+export const updatePeople = createAsyncThunk(
+  "updatePeople",
+  async (input: any[]) => {
+    const request = await getAxiosInstance().post(GRAPHQL, {
+      query: print(updatePerson()),
+      variables: {
+        input: input,
+      },
+    });
+    return request.data;
+  }
+);
+
 export const fetchPeoples = createAsyncThunk(
   "peoples/fetchPeoples",
   async (
@@ -83,7 +97,7 @@ export const fetchPeoples = createAsyncThunk(
         pageSize: args.pageSize ?? 5,
       },
     });
-    console.log("result search peoples", response.data);
+    console.log("result search peoples new", response.data);
     return response.data?.data?.searchPeople;
     // Dummy data
     // return {
@@ -261,6 +275,25 @@ const peopleSlice = createSlice({
         const newState = { ...state };
         newState.peopleDetailsFetchStatus = RequestStatus.failed;
         return newState;
+      })
+      .addCase(updatePeople.pending, (state, action) => {
+        const newState = { ...state };
+        console.log("updatePeople", action);
+        newState.updateStatus = RequestStatus.loading;
+        return newState;
+      })
+      .addCase(updatePeople.fulfilled, (state, action) => {
+        const newState = { ...state };
+        console.log("updatePeople", action);
+        // newState.peopleDetails = action.payload;
+        newState.updateStatus = RequestStatus.success;
+        return newState;
+      })
+      .addCase(updatePeople.rejected, (state, action) => {
+        const newState = { ...state };
+        console.log("updatePeople", action);
+        newState.updateStatus = RequestStatus.failed;
+        return newState;
       });
   },
 });
@@ -269,6 +302,7 @@ export const selectAllPeoples = (state: any) => {
   return state.peoples.peoples;
 };
 export const loadingState = (state: any) => state.peoples.fetchStatus;
+export const updatePeopleStatus = (state: any) => state.peoples.updateStatus;
 export const currentPageSelection = (state: any) => state.peoples.currentPage;
 export const currentPageSize = (state: any) => state.peoples.pageSize;
 export const resultsCount = (state: any) => state.peoples.resultsCount;

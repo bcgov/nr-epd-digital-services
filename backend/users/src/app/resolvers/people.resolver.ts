@@ -5,6 +5,7 @@ import { Public } from 'nest-keycloak-connect';
 import { CreatePersonInput } from '../dto/createPersonInput';
 import { NotFoundException } from '@nestjs/common';
 import { SearchPeopleResponse } from '../dto/reponse/fetchSearchPeople';
+import { UpdateExternalUserResponse } from '../dto/reponse/updateExternalUserResponse';
 
 @Public()
 @Resolver(() => People)
@@ -42,13 +43,18 @@ export class PeopleResolver {
     }
   }
 
-  @Mutation(() => People, { name: 'updatePerson' })
-  async updatePerson(
-    @Args('id') id: string,
-    @Args('input') input: CreatePersonInput,
+  @Mutation(() => UpdateExternalUserResponse, { name: 'updatePerson' })
+  async updatePersons(
+    @Args('input', { type: () => [CreatePersonInput] })
+    input: [CreatePersonInput],
   ) {
     try {
-      return await this.peopleService.update(id, input);
+      const result = await this.peopleService.update(input);
+      const repsonse: UpdateExternalUserResponse = {
+        recordUpdated: result,
+        httpStatusCode: 200,
+      };
+      return repsonse;
     } catch (error) {
       throw new Error(`Failed to update person: ${error.message}`);
     }

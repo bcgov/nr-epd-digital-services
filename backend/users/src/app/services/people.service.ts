@@ -49,9 +49,19 @@ export class PeopleService {
     return this.peopleRepository.save(person);
   }
 
-  async update(id: string, input: CreatePersonInput) {
-    const person = await this.findOne(id);
-    return this.peopleRepository.save({ ...person, ...input });
+  async update(input: CreatePersonInput[]) {
+    try {
+      for (const x of input) {
+        const person = await this.findOne(x.id);
+        const updatedPerson = { ...person, ...x };
+        console.log(updatedPerson);
+        await this.peopleRepository.save(updatedPerson);
+      }
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   }
 
   async delete(id: string) {
