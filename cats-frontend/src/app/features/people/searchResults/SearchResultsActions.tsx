@@ -73,18 +73,16 @@ export const SearchResultsActions: FC<SearchResultsActionsProps> = ({
 
   return (
     <div className="search-result-actions">
-      {!isUserOfType(UserRoleType.INTERNAL) && (
-        <Actions
-          label="Set Active Status"
-          items={[
-            { label: "Active", value: "Active" },
-            { label: "Inactive", value: "Inactive" },
-          ]}
-          onItemClick={handleActiveStatusChange}
-          toggleButtonVariant="secondary"
-          disable={selectedRows.length === 0}
-        />
-      )}
+      <Actions
+        label="Set Active Status"
+        items={[
+          { label: "Active", value: "Active" },
+          { label: "Inactive", value: "Inactive" },
+        ]}
+        onItemClick={handleActiveStatusChange}
+        toggleButtonVariant="secondary"
+        disable={selectedRows.length === 0}
+      />
 
       <Button
         variant="secondary"

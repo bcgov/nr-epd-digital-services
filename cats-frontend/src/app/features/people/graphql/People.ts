@@ -199,7 +199,7 @@ export const bulkAproveRejectChangesQL = () => gql`
 export const updatePerson = () => gql`
   mutation updatePerson($input: [CreatePersonInput!]!) {
     updatePerson(input: $input) {
-      firstName
+      recordUpdated
     }
   }
 `;

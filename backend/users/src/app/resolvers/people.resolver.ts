@@ -1,14 +1,14 @@
 import { Query, Resolver, Mutation, Args, Int } from '@nestjs/graphql';
 import { People } from '../entities/people';
 import { PeopleService } from '../services/people.service';
-import { Public } from 'nest-keycloak-connect';
+import { AuthenticatedUser, Public, Resource } from 'nest-keycloak-connect';
 import { CreatePersonInput } from '../dto/createPersonInput';
 import { NotFoundException } from '@nestjs/common';
 import { SearchPeopleResponse } from '../dto/reponse/fetchSearchPeople';
 import { UpdateExternalUserResponse } from '../dto/reponse/updateExternalUserResponse';
 
-@Public()
 @Resolver(() => People)
+@Resource('user-service')
 export class PeopleResolver {
   constructor(private readonly peopleService: PeopleService) {}
 
@@ -71,24 +71,22 @@ export class PeopleResolver {
   }
 
   /**
-   * Find sites where search parameter matches a site id or address
+   * Find sites where search parameter matches people name or address
    * @param searchParam search parameter
    * @param page page number
    * @param pageSize size of the page
-   * @returns sites where id or address matches the search param along with pagination params
+   * @returns people where id or address matches the search param along with pagination params
    */
   @Query(() => SearchPeopleResponse, { name: 'searchPeople' })
-  async searchSites(
-    //@AuthenticatedUser() userInfo,
+  async searchPeople(
+    @AuthenticatedUser() userInfo,
     @Args('searchParam', { type: () => String }) searchParam: string,
     @Args('page', { type: () => Int }) page: number,
     @Args('pageSize', { type: () => Int }) pageSize: number,
     //@Args('filters', { type: () => SiteFilters }) filters: SiteFilters,
   ) {
-    //this.sitesLogger.log('SiteResolver.searchSites() start ');
-
-    return await this.peopleService.searchSites(
-      //userInfo,
+    return await this.peopleService.searchPeople(
+      userInfo,
       searchParam,
       page,
       pageSize,

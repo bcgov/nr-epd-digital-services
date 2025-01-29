@@ -15,6 +15,7 @@ import { GRAPHQL } from "../../../helpers/endpoints";
 //import { PeopleDetailsMode } from '../../details/dto/PeopleDetailsMode';
 import { UserType } from "../../../helpers/requests/userType";
 import Search from "../Search";
+import { error } from "console";
 
 const initialState: PeopleState = {
   peoples: [],
@@ -98,7 +99,10 @@ export const fetchPeoples = createAsyncThunk(
       },
     });
     console.log("result search peoples new", response.data);
-    return response.data?.data?.searchPeople;
+
+    if (response.data?.errors?.length > 0) {
+      throw response.data?.errors[0];
+    } else return response.data?.data?.searchPeople;
     // Dummy data
     // return {
     //   peoples: [
