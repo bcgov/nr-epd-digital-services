@@ -8,11 +8,13 @@ import App from "../../App";
 import { getLoggedInUserType } from "../helpers/utility";
 
 import Search from "../features/people/Search";
+import Person from "../features/people/person/Person";
 
 const roleBasedRoutes: any = {
   client: [
     { path: "/", element: <Dashboard /> },
     { path: "/people", element: <Search /> },
+    { path: "/people/Person", element: <Person /> },
   ],
   internal: [{ path: "/dashboard", element: <Dashboard /> }],
 };
