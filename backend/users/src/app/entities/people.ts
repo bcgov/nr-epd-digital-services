@@ -12,6 +12,10 @@ export class People {
   @Column({ name: 'first_name' })
   firstName: string;
 
+  @Field(() => String, { nullable: true})
+  @Column({ name: 'middle_name', nullable: true })
+  middleName: string;
+
   @Field(() => String)
   @Column({ name: 'last_name' })
   lastName: string;

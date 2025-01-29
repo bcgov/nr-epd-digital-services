@@ -14,6 +14,7 @@ const roleBasedRoutes: any = {
   client: [
     { path: "/", element: <Dashboard /> },
     { path: "/people", element: <Search /> },
+    { path: "/people/:id/Person", element: <Person /> },
     { path: "/people/Person", element: <Person /> },
   ],
   internal: [{ path: "/dashboard", element: <Dashboard /> }],
