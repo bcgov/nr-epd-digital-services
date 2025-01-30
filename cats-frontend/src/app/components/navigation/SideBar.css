@@ -51,34 +51,44 @@
   align-items: flex-start;
 }
 
+/* Add margin to space out icon and text */
 .sideBar-NavItem {
   height: 40px;
   padding: var(--layout-padding-small);
   cursor: default;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 10px; /* This adds spacing between the icon and the text */
+  justify-content: center; /* Center the icon and text */
+  position: relative; /* Allow positioning of text */
+  transition: background-color 0.3s ease; /* Smooth background-color transition */
 }
 
+.side-bar:hover .sideBar-NavItem{
+  gap: 0px;
+  justify-content: flex-start;
+}
+
+/* Initially hide the text */
+.side-bar .sideBarDisplayText {
+  display: block; /* Ensure the text is inline */
+  text-decoration: none;
+  opacity: 0; /* Initially hide the text */
+  visibility: hidden; /* Initially hide the text */
+  position: absolute; /* Position text absolutely to avoid affecting layout */
+  left: 0; /* Align text to the left of the icon */
+  margin-left: 23px; /* Space between the icon and text */
+  transition: opacity 0.3s ease, visibility 0s 0.3s; /* Smooth opacity transition */
+}
+
+/* On hover, show the text and make it visible */
 .side-bar:hover .sideBarDisplayText {
-  display: block;
-  text-decoration: none !important;
+  opacity: 1; /* Make text visible */
+  visibility: visible; /* Ensure text takes up space */
+  transition: opacity 0.3s ease, visibility 0s 0s; /* Smooth transition */
 }
 
-.sideBarDisplayText {
-  display: none;
-}
-
-.sideBar-NavLabel {
-  font-family: 'BCSans';
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 21px;
-  letter-spacing: 0em;
-  text-align: center;
-  color: #474543;
-}
-
+/* Icon styling */
 .sideBar-Icon {
   font-size: 16px;
   font-weight: 900;
@@ -86,8 +96,10 @@
   letter-spacing: 0em;
   text-align: left;
   color: var(--surface-primary-default);
+  transition: color 0.3s ease; /* Smooth transition for icon color */
 }
 
+/* Text styling */
 .nav-section-bold-label {
   font-family: 'BCSans';
   font-size: 14px;
@@ -109,6 +121,7 @@
   border-radius: 0px;
   width: 40px;
   justify-content: center;
+  transition: width 0.3s ease; /* Smooth transition for width */
 }
 
 .currentPath .sideBar-Icon,
@@ -120,6 +133,7 @@
   width: 100%;
 }
 
+/* Hover effects for the side bar text and icon */
 .sideBarDisplayText:hover {
   color: var(--surface-primary-default) !important;
 }
@@ -138,6 +152,7 @@
   flex-direction: column;
   gap: 8px;
   align-items: center;
+  transition: all 0.3s ease;
 }
 
 .side-bar:hover .sidebar-menu-group {
@@ -157,4 +172,5 @@
 .side-bar:hover .sideBar-menu-item-hover:hover .sideBar-Icon,
 .side-bar:hover .sideBar-menu-item-hover:hover .sideBarDisplayText {
   color: white !important;
+  transition: color 0.3s ease; /* Smooth transition for label color */
 }

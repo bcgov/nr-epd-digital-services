@@ -58,7 +58,7 @@ const Person = () => {
  
   // Custom hooks for creating/updating person
   //  const { createNewPerson, loading: createLoading, error: createError } = useCreatePerson();
-  //  const { updateExistingPerson, loading: updateLoading, error: updateError } = useUpdatePerson();
+  const { updateExistingPerson, loading: updateLoading, error: updateError } = useUpdatePerson();
  
   const [isVisible, setIsVisible] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
@@ -115,6 +115,7 @@ const Person = () => {
   }, []);
 
   const handleInputChange = (graphQLPropertyName: any, value: String | [Date, Date]) => {
+    console.log('graphQLPropertyName -->', graphQLPropertyName, 'value -->', value)
      setFormData({...formData, [graphQLPropertyName]: value})
   };
   
@@ -147,16 +148,17 @@ const Person = () => {
 
   const handleAddNotes = () =>{
       const newNote = {
-            note_date: new Date(),
-            psn_id: '12345',
-            displayName:'abc',
-            note_text: 'This is a sample description for the note.',
-            note_id: v4(),
-          };
+        note_date: new Date(),
+        psn_id: '12345',
+        displayName:'abc',
+        note_text: 'This is a sample description for the note.',
+        note_id: v4(),
+      };
       setNoteData((prevData) => [newNote, ...prevData])
   }
 
   const handleTableSort = (row: any, ascDir: any) => {
+    debugger;
       let property = row['graphQLPropertyName'];
       setNoteData((prevData) => {
         // Create a shallow copy of the previous data
@@ -196,16 +198,18 @@ const Person = () => {
         case UserMode.Default:
           setViewMode(UserMode.Default);
           break;
-        case UserAction.SAVE:
-          // if (id) {
-          //   // If `id` exists, update the person
-          //   await updateExistingPerson(id, name, age, address);
-          // } else {
+        case UserAction.SAVE: // Save the changes
+          // need to ask Anton how to use generated.ts for graphql type safe.
+          if (id) {
+            setLoading(updateLoading); // Set loading to true
+            // await updateExistingPerson(id, formData).then((response) => { console.log('response -->', response) }).catch((error) => { console.log('error -->', error) });
+          } 
+          // else {
           //   // If no `id`, create a new person
           //   await createNewPerson(name, age, address);
           // }
           break;
-        case UserAction.CANCEL:
+        case UserAction.CANCEL: // Cancel the changes
           setViewMode(UserMode.Default);
           break;
         default:

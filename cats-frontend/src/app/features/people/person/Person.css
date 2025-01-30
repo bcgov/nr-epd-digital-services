@@ -18,6 +18,9 @@
 }
 
 a.custom-people-edit-lbl {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
     gap: var(--layout-margin-xsmall);
     align-items: center;
     justify-content: center;
