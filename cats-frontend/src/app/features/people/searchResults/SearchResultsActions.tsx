@@ -35,8 +35,8 @@ export const SearchResultsActions: FC<SearchResultsActionsProps> = ({
   const handleActiveStatusChange = (event: any) => {
     const loggedInUser = getUser();
     console.log("event", event, selectedRows);
-    if (loggedInUser != null) {
-      //auth.signinRedirect({ extraQueryParams: { kc_idp_hint: "bceid" } });
+    if (loggedInUser === null) {
+      auth.signinRedirect({ extraQueryParams: { kc_idp_hint: "idir" } });
     } else {
       const updatePeopleInput = selectedRows.map((row) => {
         return {

@@ -6,11 +6,15 @@ import { CreatePersonInput } from '../dto/createPersonInput';
 import { NotFoundException } from '@nestjs/common';
 import { SearchPeopleResponse } from '../dto/reponse/fetchSearchPeople';
 import { UpdateExternalUserResponse } from '../dto/reponse/updateExternalUserResponse';
+import { LoggerService } from '../logger/logger.service';
 
 @Resolver(() => People)
 @Resource('user-service')
 export class PeopleResolver {
-  constructor(private readonly peopleService: PeopleService) {}
+  constructor(
+    private readonly peopleService: PeopleService,
+    private readonly loggerSerivce: LoggerService,
+  ) {}
 
   @Query(() => [People], { name: 'findAllPeople' })
   async findAll() {
@@ -85,6 +89,7 @@ export class PeopleResolver {
     @Args('pageSize', { type: () => Int }) pageSize: number,
     //@Args('filters', { type: () => SiteFilters }) filters: SiteFilters,
   ) {
+    this.loggerSerivce.log('searchPeople start');
     return await this.peopleService.searchPeople(
       userInfo,
       searchParam,

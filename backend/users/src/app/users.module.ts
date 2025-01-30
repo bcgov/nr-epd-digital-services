@@ -14,7 +14,7 @@ import { KeycloakService } from './services/keycloak.service';
 import { People } from './entities/people';
 import { PeopleResolver } from './resolvers/people.resolver';
 import { PeopleService } from './services/people.service';
-
+import { LoggerService } from './logger/logger.service';
 /**
  * Module for wrapping all functionalities in user microserivce
  */
@@ -32,6 +32,7 @@ import { PeopleService } from './services/people.service';
     OrganizationTypeResolver,
     OrganizationTypeService,
     KeycloakService,
+    LoggerService,
   ],
   controllers: [UserController],
 })
