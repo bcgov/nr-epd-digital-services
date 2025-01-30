@@ -2,10 +2,6 @@ apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: ${NAME}
-  annotations:
-    description: "Greenfield Template"
-    tags: "gfp"
-    iconClass: icon-js
 objects:
   - apiVersion: networking.k8s.io/v1
     kind: NetworkPolicy
