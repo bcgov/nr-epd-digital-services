@@ -12,7 +12,7 @@ import { WaterUse } from './waterUse.entity';
 @Index('idx_app_water_use_application_id', ['applicationId'], {})
 @Index('pk_app_water_use', ['id'], { unique: true })
 @Index('idx_app_water_use_water_use_id', ['waterUseId'], {})
-@Entity('app_water_use', { schema: 'cats' })
+@Entity('app_water_use')
 export class AppWaterUse {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

@@ -8,7 +8,7 @@ import {
 import { AppStatus } from './appStatus.entity';
 
 @Index('pk_status_type', ['id'], { unique: true })
-@Entity('status_type', { schema: 'cats' })
+@Entity('status_type')
 export class StatusType {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

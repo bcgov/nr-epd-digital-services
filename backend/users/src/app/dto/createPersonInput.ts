@@ -2,8 +2,8 @@ import { Field, InputType } from '@nestjs/graphql';
 
 @InputType('CreatePersonInput')
 export class CreatePersonInput {
-  @Field(() => String, { nullable: true })
-  id: string;
+  @Field(() => Number, { nullable: true })
+  id: number;
 
   @Field(() => String)
   firstName: string;
@@ -21,10 +21,10 @@ export class CreatePersonInput {
   loginUserName: string;
 
   @Field(() => String)
-  addressLine1: string;
+  address_1: string;
 
   @Field(() => String, { nullable: true })
-  addressLine2?: string;
+  address_2?: string;
 
   @Field(() => String)
   city: string;

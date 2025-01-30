@@ -7,96 +7,83 @@ import {
 } from 'typeorm';
 import { AppParticipant } from './appParticipant.entity';
 import { Timesheet } from './timesheet.entity';
+import { Field, ObjectType } from '@nestjs/graphql';
 
+@ObjectType()
 @Index('pk_person', ['id'], { unique: true })
-@Entity('person', { schema: 'cats' })
+@Entity('person')
 export class Person {
+  @Field()
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
 
-  @Column('character varying', { name: 'first_name', length: 50 })
+  @Field()
   firstName: string;
 
-  @Column('character varying', {
-    name: 'middle_name',
-    nullable: true,
-    length: 50,
-  })
+  @Field()
   middleName: string | null;
 
-  @Column('character varying', { name: 'last_name', length: 50 })
+  @Field()
   lastName: string;
 
-  @Column('boolean', { name: 'is_tax_exempt' })
+  @Field()
   isTaxExempt: boolean;
 
-  @Column('boolean', { name: 'is_env_consultant' })
+  @Field()
   isEnvConsultant: boolean;
 
-  @Column('character varying', {
-    name: 'login_user_name',
-    nullable: true,
-    length: 20,
-  })
+  @Field()
   loginUserName: string | null;
 
-  @Column('character varying', {
-    name: 'address_1',
-    nullable: true,
-    length: 50,
-  })
+  @Field()
   address_1: string | null;
 
-  @Column('character varying', {
-    name: 'address_2',
-    nullable: true,
-    length: 50,
-  })
+  @Field()
   address_2: string | null;
 
-  @Column('character varying', { name: 'city', nullable: true, length: 50 })
+  @Field()
   city: string | null;
 
-  @Column('character varying', { name: 'prov', nullable: true, length: 2 })
+  @Field()
   prov: string | null;
 
-  @Column('character varying', { name: 'country', nullable: true, length: 50 })
+  @Field()
   country: string | null;
 
-  @Column('character varying', { name: 'postal', nullable: true, length: 15 })
+  @Field()
   postal: string | null;
 
-  @Column('character varying', { name: 'phone', nullable: true, length: 50 })
+  @Field()
   phone: string | null;
 
-  @Column('character varying', { name: 'mobile', nullable: true, length: 50 })
+  @Field()
   mobile: string | null;
 
-  @Column('character varying', { name: 'fax', nullable: true, length: 50 })
+  @Field()
   fax: string | null;
 
-  @Column('character varying', { name: 'email', nullable: true, length: 100 })
+  @Field()
   email: string | null;
 
-  @Column('boolean', { name: 'is_active' })
+  @Field()
   isActive: boolean;
 
-  @Column('integer', { name: 'row_version_count' })
+  @Field()
   rowVersionCount: number;
 
-  @Column('character varying', { name: 'created_by', length: 20 })
+  @Field()
   createdBy: string;
 
-  @Column('timestamp without time zone', { name: 'created_datetime' })
+  @Field()
   createdDatetime: Date;
 
-  @Column('character varying', { name: 'updated_by', length: 20 })
+  @Field()
   updatedBy: string;
 
-  @Column('timestamp without time zone', { name: 'updated_datetime' })
+  @Field()
   updatedDatetime: Date;
 
-  @Column('bytea', { name: 'ts' })
+  @Field()
   ts: Buffer;
 
   @OneToMany(() => AppParticipant, (appParticipant) => appParticipant.person)

@@ -10,7 +10,9 @@ import { Application } from './application.entity';
 import { Organization } from './organization.entity';
 import { ParticipantRole } from './participantRole.entity';
 import { Person } from './person.entity';
+import { Field, ObjectType } from '@nestjs/graphql';
 
+@ObjectType()
 @Index('idx_app_participant_application_id', ['applicationId'], {})
 @Index(
   'uidx_application_id_participant_role_id',
@@ -21,48 +23,49 @@ import { Person } from './person.entity';
 @Index('idx_app_participant_organization_id', ['organizationId'], {})
 @Index('idx_app_participant_participant_role_id', ['participantRoleId'], {})
 @Index('idx_app_participant_person_id', ['personId'], {})
-@Entity('app_participant', { schema: 'cats' })
+@Entity('app_participant')
 export class AppParticipant {
+  @Field()
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
 
-  @Column('integer', { name: 'application_id' })
+  @Field()
   applicationId: number;
 
-  @Column('integer', { name: 'person_id' })
+  @Field()
   personId: number;
 
-  @Column('integer', { name: 'participant_role_id' })
+  @Field()
   participantRoleId: number;
 
-  @Column('integer', { name: 'organization_id', nullable: true })
+  @Field()
   organizationId: number | null;
 
-  @Column('boolean', { name: 'is_main_participant' })
+  @Field()
   isMainParticipant: boolean;
 
-  @Column('date', { name: 'effective_start_date' })
+  @Field()
   effectiveStartDate: string;
 
-  @Column('date', { name: 'effective_end_date', nullable: true })
+  @Field()
   effectiveEndDate: string | null;
 
-  @Column('integer', { name: 'row_version_count' })
+  @Field()
   rowVersionCount: number;
 
-  @Column('character varying', { name: 'created_by', length: 20 })
+  @Field()
   createdBy: string;
 
-  @Column('timestamp without time zone', { name: 'created_date_time' })
+  @Field()
   createdDateTime: Date;
 
-  @Column('character varying', { name: 'updated_by', length: 20 })
+  @Field()
   updatedBy: string;
 
-  @Column('timestamp without time zone', { name: 'updated_date_time' })
+  @Field()
   updatedDateTime: Date;
 
-  @Column('bytea', { name: 'ts' })
+  @Field()
   ts: Buffer;
 
   @ManyToOne(() => Application, (application) => application.appParticipants)

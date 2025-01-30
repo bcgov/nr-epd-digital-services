@@ -1,30 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Brackets } from 'typeorm';
-import { People } from '../entities/people';
 import { CreatePersonInput } from '../dto/createPersonInput';
-import { SearchPeopleResponse } from '../dto/reponse/fetchSearchPeople';
+import { SearchPersonResponse } from '../dto/reponse/fetchSearchPerson';
+import { Person } from '../entities/person.entity';
 
 @Injectable()
-export class PeopleService {
+export class PersonService {
   constructor(
-    @InjectRepository(People)
-    private readonly peopleRepository: Repository<People>,
+    @InjectRepository(Person)
+    private readonly personRepository: Repository<Person>,
   ) {}
 
-  /** Fetch all people records */
-  async findAll(): Promise<People[]> {
+  /** Fetch all person records */
+  async findAll(): Promise<Person[]> {
     try {
-      return await this.peopleRepository.find();
+      return await this.personRepository.find();
     } catch (error) {
-      throw new Error(`Failed to fetch people: ${error.message}`);
+      throw new Error(`Failed to fetch person: ${error.message}`);
     }
   }
 
   /** Find a person by ID */
-  async findOne(id: string): Promise<People> {
+  async findOne(id: number): Promise<Person> {
     try {
-      return await this.peopleRepository.findOneOrFail({ where: { id } });
+      return await this.personRepository.findOneBy({ id: id });
     } catch (error) {
       throw new Error(`Failed to find person with id ${id}: ${error.message}`);
     }
@@ -33,7 +33,7 @@ export class PeopleService {
   /** Remove a person by ID */
   async remove(id: number): Promise<void> {
     try {
-      await this.peopleRepository.delete(id);
+      await this.personRepository.delete(id);
     } catch (error) {
       throw new Error(
         `Failed to remove person with id ${id}: ${error.message}`,
@@ -42,22 +42,22 @@ export class PeopleService {
   }
 
   /** Create a new person record */
-  async create(input: CreatePersonInput): Promise<People> {
+  async create(input: CreatePersonInput): Promise<Person> {
     try {
-      const person = this.peopleRepository.create({
+      const person = this.personRepository.create({
         ...input,
         createdBy: 'system', // Placeholder, replace with actual user context
-        createdDateTime: new Date(),
+        createdDatetime: new Date(),
         updatedBy: 'system',
-        updatedDateTime: new Date(),
+        updatedDatetime: new Date(),
       });
-      return await this.peopleRepository.save(person);
+      return await this.personRepository.save(person);
     } catch (error) {
       throw new Error(`Failed to create person: ${error.message}`);
     }
   }
 
-  /** Update existing people records */
+  /** Update existing person records */
   async update(input: CreatePersonInput[]): Promise<boolean> {
     try {
       for (const data of input) {
@@ -67,11 +67,11 @@ export class PeopleService {
           ...data,
           updatedDateTime: new Date(),
         };
-        await this.peopleRepository.save(updatedPerson);
+        await this.personRepository.save(updatedPerson);
       }
       return true;
     } catch (error) {
-      console.error(`Error updating people: ${error.message}`);
+      console.error(`Error updating person: ${error.message}`);
       return false;
     }
   }
@@ -79,7 +79,7 @@ export class PeopleService {
   /** Delete a person record by ID */
   async delete(id: string): Promise<void> {
     try {
-      await this.peopleRepository.delete(id);
+      await this.personRepository.delete(id);
     } catch (error) {
       throw new Error(
         `Failed to delete person with id ${id}: ${error.message}`,
@@ -87,56 +87,56 @@ export class PeopleService {
     }
   }
 
-  /** Search people based on a search parameter */
-  async searchPeople(
+  /** Search person based on a search parameter */
+  async searchPerson(
     userInfo: any,
     searchParam: string,
     page: number,
     pageSize: number,
-  ): Promise<SearchPeopleResponse> {
+  ): Promise<SearchPersonResponse> {
     try {
-      const response = new SearchPeopleResponse();
-      const query = this.peopleRepository.createQueryBuilder('people');
+      const response = new SearchPersonResponse();
+      const query = this.personRepository.createQueryBuilder('person');
 
       query.andWhere(
         new Brackets((qb) => {
-          qb.where('CAST(people.id AS TEXT) LIKE :searchParam', {
+          qb.where('CAST(person.id AS TEXT) LIKE :searchParam', {
             searchParam: `%${searchParam}%`,
           })
-            .orWhere('LOWER(people.first_name) LIKE LOWER(:searchParam)', {
+            .orWhere('LOWER(person.first_name) LIKE LOWER(:searchParam)', {
               searchParam: `%${searchParam.toLowerCase()}%`,
             })
-            .orWhere('LOWER(people.last_name) LIKE LOWER(:searchParam)', {
+            .orWhere('LOWER(person.last_name) LIKE LOWER(:searchParam)', {
               searchParam: `%${searchParam.toLowerCase()}%`,
             })
-            .orWhere('LOWER(people.email) LIKE LOWER(:searchParam)', {
+            .orWhere('LOWER(person.email) LIKE LOWER(:searchParam)', {
               searchParam: `%${searchParam.toLowerCase()}%`,
             })
-            .orWhere('LOWER(people.city) LIKE LOWER(:searchParam)', {
+            .orWhere('LOWER(person.city) LIKE LOWER(:searchParam)', {
               searchParam: `%${searchParam.toLowerCase()}%`,
             })
-            .orWhere('LOWER(people.province) LIKE LOWER(:searchParam)', {
+            .orWhere('LOWER(person.province) LIKE LOWER(:searchParam)', {
               searchParam: `%${searchParam.toLowerCase()}%`,
             })
-            .orWhere('LOWER(people.postal_code) LIKE LOWER(:searchParam)', {
+            .orWhere('LOWER(person.postal_code) LIKE LOWER(:searchParam)', {
               searchParam: `%${searchParam.toLowerCase()}%`,
             });
         }),
       );
 
-      const [peopleList, count] = await query
+      const [personList, count] = await query
         .skip((page - 1) * pageSize)
         .take(pageSize)
         .getManyAndCount();
 
-      response.peoples = peopleList || [];
+      response.persons = personList || [];
       response.count = count || 0;
       response.page = page;
       response.pageSize = pageSize;
 
       return response;
     } catch (error) {
-      throw new Error(`Failed to search people: ${error.message}`);
+      throw new Error(`Failed to search person: ${error.message}`);
     }
   }
 }

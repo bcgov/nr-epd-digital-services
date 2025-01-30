@@ -8,11 +8,12 @@ import {
 } from 'typeorm';
 import { Application } from './application.entity';
 import { LandUse } from './landUse.entity';
-
+import { ObjectType } from '@nestjs/graphql';
+@ObjectType()
 @Index('idx_app_land_use_application_id', ['applicationId'], {})
 @Index('pk_app_land_use', ['id'], { unique: true })
 @Index('idx_app_land_use_land_use_id', ['landUseId'], {})
-@Entity('app_land_use', { schema: 'cats' })
+@Entity('app_land_use')
 export class AppLandUse {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
