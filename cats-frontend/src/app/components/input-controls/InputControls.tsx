@@ -69,6 +69,7 @@ export const Link: React.FC<InputProps> = ({
       className={`d-flex pt-1 ${customInputTextCss ?? ''}`}
       aria-label={`${label + ' ' + value}`}
       state={{ from: componentName ?? '' }}
+      onClick={onChange}
     >
       {customIcon && customIcon}{" "}
       <span className="ps-1">{customLinkValue ?? value}</span>
@@ -209,7 +210,7 @@ export const TextInput: React.FC<InputProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (validation?.required) {
+    if (validation?.required || validation?.pattern) {
       setError(null);
       validateInput(value);
     }
@@ -233,7 +234,7 @@ export const TextInput: React.FC<InputProps> = ({
 
   const handleTextInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
-    if (validation?.required) {
+    if (validation?.required || validation?.pattern) {  
       validateInput(inputValue);
     }
 
@@ -244,10 +245,6 @@ export const TextInput: React.FC<InputProps> = ({
     } else {
       onChange(inputValue);
     }
-  };
-
-  const handleCheckBoxChange = (isChecked: boolean) => {
-    onChange(isChecked);
   };
 
   // Replace any spaces in the label with underscores to create a valid id
@@ -1226,11 +1223,14 @@ export const SearchCustomInput: React.FC<InputProps> = ({
   customErrorCss,
   customInfoMessage,
   customMenuMessage,
+  searchCustomInputContainerCss,
+  searchCustomInputMenuCss,
   stickyCol,
   isLoading,
   onChange,
   tableMode,
   isDisabled,
+  isSearchCustomInputIcon = true,
 }) => {
   const ContainerElement = tableMode ? "td" : "div";
   const [error, setError] = useState<string | null>(null);
@@ -1395,7 +1395,7 @@ export const SearchCustomInput: React.FC<InputProps> = ({
     if (isOpen) {
       adjustMenuPosition();
     }
-  }, [options]);
+  }, [options]); 
 
   const inputTxtId = label.replace(/\s+/g, "_") + "_" + v4();
   return (
@@ -1415,7 +1415,7 @@ export const SearchCustomInput: React.FC<InputProps> = ({
         </label>
       )}
       {isEditing ? (
-        <div className="d-flex align-items-center justify-content-center w-100 ">
+        <div className={`d-flex align-items-center justify-content-center w-100 ${searchCustomInputContainerCss ?? ""}`}>
           <input
             ref={inputRef}
             type={type}
@@ -1432,26 +1432,28 @@ export const SearchCustomInput: React.FC<InputProps> = ({
             required={error ? true : false}
             disabled={isDisabled}
           />
-          <div className="d-flex align-items-center justify-content-center position-relative custom-search-box-container ">
-            {value.length <= 0 ? (
-              <span
-                id="right-icon"
-                data-testid="right-icon"
-                className={`${customRightIconCss ?? 'custom-search-icon-position custom-search-icon position-absolute px-2'}`}
-              >
-                <MagnifyingGlassIcon />
-              </span>
-            ) : (
-              <span
-                data-testid="left-icon"
-                id="left-icon"
-                className={`${customLeftIconCss ?? 'custom-clear-icon-position custom-search-icon position-absolute px-2'}`}
-                onClick={closeSearch}
-              >
-                <CircleXMarkIcon />
-              </span>
-            )}
-          </div>
+          { isSearchCustomInputIcon &&
+            <div className={"d-flex align-items-center justify-content-center position-relative custom-search-box-container "}>
+              {value.length <= 0 ? (
+                <span
+                  id="right-icon"
+                  data-testid="right-icon"
+                  className={`${customRightIconCss ?? 'custom-search-icon-position custom-search-icon position-absolute px-2'}`}
+                >
+                  <MagnifyingGlassIcon />
+                </span>
+              ) : (
+                <span
+                  data-testid="left-icon"
+                  id="left-icon"
+                  className={`${customLeftIconCss ?? 'custom-clear-icon-position custom-search-icon position-absolute px-2'}`}
+                  onClick={closeSearch}
+                >
+                  <CircleXMarkIcon />
+                </span>
+              )}
+            </div>
+          }
 
           {/* Dropdown menu */}
           {options && options?.length >= 0 && isOpen && (
@@ -1461,7 +1463,7 @@ export const SearchCustomInput: React.FC<InputProps> = ({
                 menuPosition === 'bottom'
                   ? 'custom-search-input-menu-bottom'
                   : 'custom-search-input-menu-top'
-              }`}
+              } ${searchCustomInputMenuCss ?? ''}`}
               style={menuPositionStyle}
               role="menu"
               aria-labelledby="search-input-dropdown"
@@ -1514,7 +1516,7 @@ export const SearchCustomInput: React.FC<InputProps> = ({
                   </div>
                 ))
               ) : (
-                <div className="p-2">{customInfoMessage}</div>
+                customInfoMessage && <div className="p-2">{customInfoMessage}</div>
               )}
             </div>
           )}

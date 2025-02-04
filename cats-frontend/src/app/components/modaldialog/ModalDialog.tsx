@@ -16,6 +16,7 @@ interface ModalDialogCloseHandlerProps {
   dicardBtnLabel?: string;
   headerLabel?: string;
   customHeaderCss?: string;
+  customHeaderTextCss?: string;
   customFooterCss?: string;
   discardOption?: boolean;
   errorOption?: boolean;
@@ -32,6 +33,7 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
   errorOption,
   headerLabel,
   customHeaderCss,
+  customHeaderTextCss,
   customFooterCss,
 }) => {
   saveBtnLabel = saveBtnLabel ?? '';
@@ -61,9 +63,9 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
     <div>
       {open && (
         <ModalDialogWrapper closeHandler={handleClose}>
-          <div className="custom-modal-header">
+          <div className={`${customHeaderCss || 'custom-modal-header'}`}>
             <span
-              className={`${customHeaderCss || 'custom-modal-header-text'}`}
+              className={`${customHeaderTextCss || 'custom-modal-header-text'}`}
             >
               {headerLabel || displayLabel}
             </span>
