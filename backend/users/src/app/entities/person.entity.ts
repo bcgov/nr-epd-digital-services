@@ -11,7 +11,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Index('pk_person', ['id'], { unique: true })
-@Entity('person', { schema: 'cats' })
+@Entity('person')
 export class Person {
   @Field(() => Number)
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
@@ -120,13 +120,13 @@ export class Person {
   @Column('timestamp without time zone', { name: 'updated_datetime' })
   updatedDatetime: Date;
 
-  // @Field(() => String)
-  // @Column('bytea', { name: 'ts' })
-  // ts: Buffer;
+  @Field(() => String)
+  @Column('bytea', { name: 'ts' })
+  ts: Buffer;
 
-  // @OneToMany(() => AppParticipant, (appParticipant) => appParticipant.person)
-  // appParticipants: AppParticipant[];
+  @OneToMany(() => AppParticipant, (appParticipant) => appParticipant.person)
+  appParticipants: AppParticipant[];
 
-  // @OneToMany(() => Timesheet, (timesheet) => timesheet.person)
-  // timesheets: Timesheet[];
+  @OneToMany(() => Timesheet, (timesheet) => timesheet.person)
+  timesheets: Timesheet[];
 }

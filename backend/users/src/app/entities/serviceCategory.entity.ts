@@ -16,7 +16,7 @@ import { ServiceServiceCategory } from './serviceServiceCategory.entity';
   ['serviceCategoryTypeId'],
   {},
 )
-@Entity('service_category', { schema: 'cats' })
+@Entity('service_category')
 export class ServiceCategory {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

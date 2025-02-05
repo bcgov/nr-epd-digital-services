@@ -1,7 +1,7 @@
 import { Column, Entity, Index } from 'typeorm';
 
 @Index('pk_system_setting', ['id'], { unique: true })
-@Entity('system_setting', { schema: 'cats' })
+@Entity('system_setting')
 export class SystemSetting {
   @Column('smallint', { primary: true, name: 'id' })
   id: number;

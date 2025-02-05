@@ -8,7 +8,7 @@ import {
 import { AppVapourUse } from './appVapourUse.entity';
 
 @Index('pk_vapour_use', ['id'], { unique: true })
-@Entity('vapour_use', { schema: 'cats' })
+@Entity('vapour_use')
 export class VapourUse {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

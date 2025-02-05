@@ -8,7 +8,7 @@ import {
 import { Application } from './application.entity';
 
 @Index('pk_site_type', ['id'], { unique: true })
-@Entity('site_type', { schema: 'cats' })
+@Entity('site_type')
 export class SiteType {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
