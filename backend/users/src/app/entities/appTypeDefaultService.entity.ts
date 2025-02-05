@@ -12,7 +12,7 @@ import { Service } from './service.entity';
 @Index('idx_app_type_default_service_app_type_id', ['appTypeId'], {})
 @Index('pk_app_type_default_service', ['id'], { unique: true })
 @Index('idx_app_type_default_service_service_id', ['serviceId'], {})
-@Entity('app_type_default_service')
+@Entity('app_type_default_service', { schema: 'cats' })
 export class AppTypeDefaultService {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

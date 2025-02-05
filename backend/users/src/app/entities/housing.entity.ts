@@ -12,7 +12,7 @@ import { YesNoCode } from './yesNoCode.entity';
 import { HousingApplicationXref } from './housingApplicationXref.entity';
 
 @Index('pk_housing', ['id'], { unique: true })
-@Entity('housing')
+@Entity('housing', { schema: 'cats' })
 export class Housing {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

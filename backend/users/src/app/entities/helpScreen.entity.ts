@@ -4,7 +4,7 @@ import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 @Index('udx_help_screen_screen_identifier_code', ['screenIdentifierCode'], {
   unique: true,
 })
-@Entity('help_screen')
+@Entity('help_screen', { schema: 'cats' })
 export class HelpScreen {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

@@ -8,7 +8,7 @@ import {
 import { Housing } from './housing.entity';
 
 @Index('pk_yes_no_code', ['id'], { unique: true })
-@Entity('yes_no_code')
+@Entity('yes_no_code', { schema: 'cats' })
 export class YesNoCode {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

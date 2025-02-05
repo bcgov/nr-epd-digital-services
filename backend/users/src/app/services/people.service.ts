@@ -109,16 +109,16 @@ export class PersonService {
             .orWhere('LOWER(person.last_name) LIKE LOWER(:searchParam)', {
               searchParam: `%${searchParam.toLowerCase()}%`,
             })
-            .orWhere('LOWER(person.email) LIKE LOWER(:searchParam)', {
-              searchParam: `%${searchParam.toLowerCase()}%`,
-            })
+            // .orWhere('LOWER(person.email) LIKE LOWER(:searchParam)', {
+            //   searchParam: `%${searchParam.toLowerCase()}%`,
+            // })
             .orWhere('LOWER(person.city) LIKE LOWER(:searchParam)', {
               searchParam: `%${searchParam.toLowerCase()}%`,
             })
-            .orWhere('LOWER(person.province) LIKE LOWER(:searchParam)', {
+            .orWhere('LOWER(person.prov) LIKE LOWER(:searchParam)', {
               searchParam: `%${searchParam.toLowerCase()}%`,
             })
-            .orWhere('LOWER(person.postal_code) LIKE LOWER(:searchParam)', {
+            .orWhere('LOWER(person.postal) LIKE LOWER(:searchParam)', {
               searchParam: `%${searchParam.toLowerCase()}%`,
             });
         }),

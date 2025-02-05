@@ -16,7 +16,7 @@ import { TimesheetDetail } from './timesheetDetail.entity';
 @Index('pk_timesheet', ['id'], { unique: true })
 @Index('idx_timesheet_person_id', ['personId'], {})
 @Index('idx_timesheet_week_start_date', ['weekStartDate'], {})
-@Entity('timesheet')
+@Entity('timesheet', { schema: 'cats' })
 export class Timesheet {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
@@ -59,9 +59,9 @@ export class Timesheet {
   @JoinColumn([{ name: 'application_id', referencedColumnName: 'id' }])
   application: Application;
 
-  @ManyToOne(() => Person, (person) => person.timesheets)
-  @JoinColumn([{ name: 'person_id', referencedColumnName: 'id' }])
-  person: Person;
+  // @ManyToOne(() => Person, (person) => person.timesheets)
+  // @JoinColumn([{ name: 'person_id', referencedColumnName: 'id' }])
+  // person: Person;
 
   @ManyToOne(() => TimesheetWeek, (timesheetWeek) => timesheetWeek.timesheets)
   @JoinColumn([{ name: 'week_start_date', referencedColumnName: 'startDate' }])

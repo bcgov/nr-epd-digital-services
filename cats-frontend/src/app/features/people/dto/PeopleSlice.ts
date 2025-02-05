@@ -102,23 +102,7 @@ export const fetchPeoples = createAsyncThunk(
 
     if (response.data?.errors?.length > 0) {
       throw response.data?.errors[0];
-    } else return response.data?.data?.searchPeople;
-    // Dummy data
-    // return {
-    //   peoples: [
-    //     {
-    //       firstName: "Midhun",
-    //       id: 1,
-    //       lastName: "Murali",
-    //       address: "2929 quadra",
-    //       email: "midhun.murali@aot-technologies.com",
-    //       taxExempt: true,
-    //       active: true,
-    //       lastUpdatedDate: "Dec/30",
-    //     },
-    //   ],
-    //   count: 1,
-    // };
+    } else return response.data?.data?.searchPerson;
   }
 );
 
@@ -256,7 +240,7 @@ const peopleSlice = createSlice({
       .addCase(fetchPeoples.fulfilled, (state, action) => {
         const newState = { ...state };
         newState.fetchStatus = RequestStatus.success;
-        newState.peoples = action.payload.peoples;
+        newState.peoples = action.payload.persons;
         newState.resultsCount = action.payload.count;
         return newState;
       })

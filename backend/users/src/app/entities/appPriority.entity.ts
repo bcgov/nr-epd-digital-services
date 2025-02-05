@@ -12,7 +12,7 @@ import { Priority } from './priority.entity';
 @Index('idx_app_priority_application_id', ['applicationId'], {})
 @Index('pk_app_priority', ['id'], { unique: true })
 @Index('idx_app_priority_priority_id', ['priorityId'], {})
-@Entity('app_priority')
+@Entity('app_priority', { schema: 'cats' })
 export class AppPriority {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

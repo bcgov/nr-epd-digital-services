@@ -2,34 +2,34 @@ import gql from "graphql-tag";
 
 export const graphQlPeopleQuery = () => {
   return gql`
-    query searchPeoples($searchParam: String!, $page: Int!, $pageSize: Int!) {
-      searchPeople(
+    query searchPerson($searchParam: String!, $page: Int!, $pageSize: Int!) {
+      searchPerson(
         searchParam: $searchParam
         page: $page
         pageSize: $pageSize
       ) {
-        peoples {
+        persons {
           id
           firstName
           lastName
           isTaxExempt
           isEnvConsultant
           loginUserName
-          addressLine1
-          addressLine2
+          address_1
+          address_2
           city
-          province
+          prov
+          email
           country
-          postalCode
+          postal
           phone
           mobile
           fax
-          email
           isActive
           createdBy
-          createdDateTime
+          createdDatetime
           updatedBy
-          updatedDateTime
+          updatedDatetime
         }
         count
         page

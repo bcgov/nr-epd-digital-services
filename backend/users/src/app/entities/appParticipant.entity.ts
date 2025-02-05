@@ -10,9 +10,7 @@ import { Application } from './application.entity';
 import { Organization } from './organization.entity';
 import { ParticipantRole } from './participantRole.entity';
 import { Person } from './person.entity';
-import { Field, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
 @Index('idx_app_participant_application_id', ['applicationId'], {})
 @Index(
   'uidx_application_id_participant_role_id',
@@ -23,49 +21,48 @@ import { Field, ObjectType } from '@nestjs/graphql';
 @Index('idx_app_participant_organization_id', ['organizationId'], {})
 @Index('idx_app_participant_participant_role_id', ['participantRoleId'], {})
 @Index('idx_app_participant_person_id', ['personId'], {})
-@Entity('app_participant')
+@Entity('app_participant', { schema: 'cats' })
 export class AppParticipant {
-  @Field()
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
 
-  @Field()
+  @Column('integer', { name: 'application_id' })
   applicationId: number;
 
-  @Field()
+  @Column('integer', { name: 'person_id' })
   personId: number;
 
-  @Field()
+  @Column('integer', { name: 'participant_role_id' })
   participantRoleId: number;
 
-  @Field()
+  @Column('integer', { name: 'organization_id', nullable: true })
   organizationId: number | null;
 
-  @Field()
+  @Column('boolean', { name: 'is_main_participant' })
   isMainParticipant: boolean;
 
-  @Field()
+  @Column('date', { name: 'effective_start_date' })
   effectiveStartDate: string;
 
-  @Field()
+  @Column('date', { name: 'effective_end_date', nullable: true })
   effectiveEndDate: string | null;
 
-  @Field()
+  @Column('integer', { name: 'row_version_count' })
   rowVersionCount: number;
 
-  @Field()
+  @Column('character varying', { name: 'created_by', length: 20 })
   createdBy: string;
 
-  @Field()
+  @Column('timestamp without time zone', { name: 'created_date_time' })
   createdDateTime: Date;
 
-  @Field()
+  @Column('character varying', { name: 'updated_by', length: 20 })
   updatedBy: string;
 
-  @Field()
+  @Column('timestamp without time zone', { name: 'updated_date_time' })
   updatedDateTime: Date;
 
-  @Field()
+  @Column('bytea', { name: 'ts' })
   ts: Buffer;
 
   @ManyToOne(() => Application, (application) => application.appParticipants)
@@ -83,7 +80,7 @@ export class AppParticipant {
   @JoinColumn([{ name: 'participant_role_id', referencedColumnName: 'id' }])
   participantRole: ParticipantRole;
 
-  @ManyToOne(() => Person, (person) => person.appParticipants)
-  @JoinColumn([{ name: 'person_id', referencedColumnName: 'id' }])
-  person: Person;
+  // @ManyToOne(() => Person, (person) => person.appParticipants)
+  // @JoinColumn([{ name: 'person_id', referencedColumnName: 'id' }])
+  // person: Person;
 }

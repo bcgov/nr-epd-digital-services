@@ -540,9 +540,9 @@ const TableBody: FC<TableBodyProps> = ({
 
   return (
     <tbody>
-      {data.length === 0
+      {data?.length === 0
         ? renderNoResultsFound()
-        : data.map((item: any, index: number) => renderTableRow(index))}
+        : data?.map((item: any, index: number) => renderTableRow(index))}
     </tbody>
   );
 };

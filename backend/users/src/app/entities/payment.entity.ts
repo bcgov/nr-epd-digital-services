@@ -12,7 +12,7 @@ import { PaymentMethod } from './paymentMethod.entity';
 @Index('pk_payment', ['id'], { unique: true })
 @Index('idx_payment_invoice_id', ['invoiceId'], {})
 @Index('idx_payment_payment_method_id', ['paymentMethodId'], {})
-@Entity('payment')
+@Entity('payment', { schema: 'cats' })
 export class Payment {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
