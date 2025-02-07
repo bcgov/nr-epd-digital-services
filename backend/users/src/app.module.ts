@@ -7,7 +7,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './app/users.module';
+import { CatsModule } from './app/cats.module';
 import {
   AuthGuard,
   KeycloakConnectModule,
@@ -33,7 +33,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       }),
       // Secret key of the client taken from keycloak server
     }),
-    UsersModule,
+    CatsModule,
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({

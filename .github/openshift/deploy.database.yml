@@ -2,13 +2,9 @@ apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: ${NAME}
-  annotations:
-    description: "EPD Digital Services"
-    tags: "EPD"
-    iconClass: icon-js
-labels:
-  app: ${NAME}-${COMPONENT}
-  app.kubernetes.io/part-of: ${NAME}-${COMPONENT}
+  labels:
+    app: ${NAME}-${COMPONENT}
+    app.kubernetes.io/part-of: ${NAME}-${COMPONENT}
 parameters:
   - name: NAME
     description: Product name
@@ -19,17 +15,17 @@ parameters:
   - name: IMAGE_TAG
     description: Image tag to use
     value: latest
-  - description: Password for the PostgreSQL connection user.
+  - name: POSTGRES_DB_PASSWORD
+    description: Password for the PostgreSQL connection user.
     from: "[a-zA-Z0-9]{16}"
     generate: expression
-    name: POSTGRES_DB_PASSWORD
-  - description: Password for the PostgreSQL Admin connection user.
+  - name: POSTGRES_ADMIN_PASSWORD
+    description: Password for the PostgreSQL Admin connection user.
     from: "[a-zA-Z0-9]{16}"
     generate: expression
-    name: POSTGRES_ADMIN_PASSWORD
-  - description: Volume space available for data, e.g. 512Mi, 2Gi.
+  - name: DB_PVC_SIZE
+    description: Volume space available for data, e.g. 512Mi, 2Gi.
     displayName: Database Volume Capacity
-    name: DB_PVC_SIZE
     required: true
     value: "512Mi"
   - name: REGISTRY
@@ -37,6 +33,7 @@ parameters:
   - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
     value: crunchydata/crunchy-postgres-gis:ubi8-14.7-3.1-0
+
 objects:
   - apiVersion: v1
     kind: Secret
@@ -49,16 +46,17 @@ objects:
       POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
       POSTGRES_ADMIN_USERNAME: postgres
       POSTGRES_ADMIN_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
-  - kind: ConfigMap 
-    apiVersion: v1 
+
+  - kind: ConfigMap
+    apiVersion: v1
     metadata:
       name: ${NAME}-${COMPONENT}
     data:
-      # Configuration values can be set as key-value properties
       POSTGRESQL_HOST: epd-database
       POSTGRESQL_PORT: "5432"
       POSTGRES_DATABASE: epd_dev
       POSTGRES_DB_SCHEMA: epd_users
+
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
@@ -72,6 +70,7 @@ objects:
         requests:
           storage: "${DB_PVC_SIZE}"
       storageClassName: netapp-file-standard
+
   - kind: ImageStream
     apiVersion: v1
     metadata:
@@ -82,43 +81,31 @@ objects:
       lookupPolicy:
         local: false
       tags:
-      - name: ${IMAGE_TAG}
-        from:
-          kind: DockerImage
-          name: ${REGISTRY}/${PROMOTE}
-        referencePolicy:
-          type: Local
-  - kind: DeploymentConfig
-    apiVersion: v1
+        - name: ${IMAGE_TAG}
+          from:
+            kind: DockerImage
+            name: ${REGISTRY}/${PROMOTE}
+          referencePolicy:
+            type: Local
+
+  - kind: Deployment
+    apiVersion: apps/v1
     metadata:
       name: ${NAME}-${COMPONENT}
       labels:
         app: ${NAME}
     spec:
       replicas: 1
-      triggers:
-      - type: ConfigChange
-      - type: ImageChange
-        imageChangeParams:
-          automatic: true
-          containerNames:
-          - ${NAME}
-          from:
-            kind: ImageStreamTag
-            name: ${NAME}-${COMPONENT}:${IMAGE_TAG}
       selector:
-        deploymentconfig: ${NAME}-${COMPONENT}
+        matchLabels:
+          app: ${NAME}-${COMPONENT}
       strategy:
         type: Recreate
-        recreateParams:
-          timeoutSeconds: 600
-        activeDeadlineSeconds: 21600
+        rollingUpdate: null
       template:
         metadata:
-          name: ${NAME}-${COMPONENT}
           labels:
             app: ${NAME}
-            deploymentconfig: ${NAME}-${COMPONENT}
         spec:
           volumes:
             - name: ${NAME}-${COMPONENT}
@@ -134,11 +121,6 @@ objects:
                 exec:
                   command:
                     - /opt/crunchy/bin/postgres/readiness.sh
-                    # - bash
-                    # - '-c'
-                    # - >-
-                    #   psql -q -d
-                    #   $POSTGRESQL_DATABASE -c 'SELECT 1'
                 failureThreshold: 5
                 initialDelaySeconds: 30
                 periodSeconds: 15
@@ -147,11 +129,6 @@ objects:
                 exec:
                   command:
                     - /opt/crunchy/bin/postgres/liveness.sh
-                    # - bash
-                    # - '-c'
-                    # - >-
-                    #   psql -q -d
-                    #   $POSTGRESQL_DATABASE -c 'SELECT 1'
                 failureThreshold: 5
                 initialDelaySeconds: 30
                 periodSeconds: 15
@@ -217,11 +194,6 @@ objects:
                     configMapKeyRef:
                       name: ${NAME}-database
                       key: APPLICATION_MICROSERVICE_ENDPOINT
-                - name: PGHOST
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${NAME}-${COMPONENT}
-                      key: PGHOST
               volumeMounts:
                 - name: ${NAME}-${COMPONENT}
                   mountPath: "/pgdata"
@@ -232,6 +204,7 @@ objects:
           terminationGracePeriodSeconds: 30
           dnsPolicy: ClusterFirst
           schedulerName: default-scheduler
+
   - apiVersion: v1
     kind: Service
     metadata:
@@ -246,6 +219,6 @@ objects:
           protocol: TCP
           targetPort: 5432
       selector:
-        deploymentconfig: ${NAME}-${COMPONENT}
+        app: ${NAME}-${COMPONENT}
       sessionAffinity: None
       type: ClusterIP

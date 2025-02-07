@@ -23,7 +23,7 @@
     "typeorm:run-migrations": "npm run typeorm migration:run -- -d ./typeOrm.config.ts",
     "typeorm:generate-migration": "npm run typeorm -- -d ./typeOrm.config.ts migration:generate ./src/migrations/master-script",
     "typeorm:create-migration": "npm run typeorm -- migration:create ./src/migrations/master-script",
-    "typeorm:revert-migration": "npm run typeorm -- -d ./typeOrm.config.ts migration:revert"  
+    "typeorm:revert-migration": "npm run typeorm -- -d ./typeOrm.config.ts migration:revert"
   },
   "dependencies": {
     "@apollo/federation": "^0.37.1",
@@ -43,7 +43,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.3.10"
+    "typeorm": "^0.3.10",
+    "cls-rtracer": "^2.6.3"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

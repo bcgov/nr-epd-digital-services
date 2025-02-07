@@ -14,6 +14,7 @@ import {
 } from "../../../components/common/icon";
 import { downloadCSV } from "../../../helpers/csvExport/csvExport";
 import Actions from "../../../components/action/Actions";
+import { updatePeople } from "../dto/PeopleSlice";
 // import { addCartItem, resetCartItemAddedStatus } from '../../cart/CartSlice';
 
 interface SearchResultsActionsProps {
@@ -31,18 +32,40 @@ export const SearchResultsActions: FC<SearchResultsActionsProps> = ({
     }
   };
 
-  const handleAddToShoppingCart = () => {
+  const handleActiveStatusChange = (event: any) => {
     const loggedInUser = getUser();
+    console.log("event", event, selectedRows);
     if (loggedInUser === null) {
-      auth.signinRedirect({ extraQueryParams: { kc_idp_hint: "bceid" } });
+      auth.signinRedirect({ extraQueryParams: { kc_idp_hint: "idir" } });
     } else {
-      const cartItems = selectedRows.map((row) => {
+      const updatePeopleInput = selectedRows.map((row) => {
         return {
-          siteId: row.id,
-          price: 200.11,
+          id: row.id,
+          firstName: row.firstName,
+          lastName: row.lastName,
+          isTaxExempt: row.isTaxExempt,
+          isEnvConsultant: row.isEnvConsultant,
+          loginUserName: row.loginUserName,
+          addressLine1: row.addressLine1,
+          addressLine2: row.addressLine2,
+          city: row.city,
+          province: row.province,
+          country: row.country,
+          postalCode: row.postalCode,
+          phone: null,
+          mobile: null,
+          fax: null,
+          email: row.email,
+          isActive: event === "Active" ? true : false,
         };
       });
-
+      dispatch(updatePeople(updatePeopleInput)).unwrap();
+      // const cartItems = selectedRows.map((row) => {
+      //   return {
+      //     siteId: row.id,
+      //     price: 200.11,
+      //   };
+      // });
       // dispatch(resetCartItemAddedStatus(null));
       // dispatch(addCartItem(cartItems)).unwrap();
     }
@@ -50,18 +73,16 @@ export const SearchResultsActions: FC<SearchResultsActionsProps> = ({
 
   return (
     <div className="search-result-actions">
-      {!isUserOfType(UserRoleType.INTERNAL) && (
-        <Actions
-          label="Set Active Status"
-          items={[
-            { label: "PDF", value: "pdf" },
-            { label: "Excel", value: "excel" },
-          ]}
-          onItemClick={() => {}}
-          toggleButtonVariant="secondary"
-          disable={selectedRows.length === 0}
-        />
-      )}
+      <Actions
+        label="Set Active Status"
+        items={[
+          { label: "Active", value: "Active" },
+          { label: "Inactive", value: "Inactive" },
+        ]}
+        onItemClick={handleActiveStatusChange}
+        toggleButtonVariant="secondary"
+        disable={selectedRows.length === 0}
+      />
 
       <Button
         variant="secondary"
