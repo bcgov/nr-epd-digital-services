@@ -36,6 +36,7 @@
     "@nestjs/typeorm": "^10.0.2",
     "apollo-server-express": "^3.10.2",
     "class-transformer": "^0.5.1",
+    "cls-rtracer": "^2.6.3",
     "graphql": "^16.6.0",
     "keycloak-connect": "^18.0.2",
     "nest-keycloak-connect": "^1.9.0",
@@ -44,7 +45,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "typeorm": "^0.3.10",
-    "cls-rtracer": "^2.6.3"
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

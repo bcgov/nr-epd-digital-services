@@ -325,7 +325,7 @@ const Person = () => {
     </>
 
     const navigationBarText = <>
-       {  Object.keys(formData).length > 0 
+       {  formData && Object.keys(formData).length > 0 
           ?
           isVisible && <div className="d-flex align-items-center">Viewing: <span>{formData?.first_name + ' ' + formData?.last_name}</span></div>
           :
@@ -346,7 +346,7 @@ const Person = () => {
         <PageContainer role="Person">
             <div className="custom-person-name">
               { 
-                Object.keys(formData).length > 0 
+                formData && Object.keys(formData).length > 0 
                 ?
                 formData?.first_name + ' ' + formData?.last_name
                 :
@@ -354,20 +354,20 @@ const Person = () => {
               }
             </div>
             <Widget title={'Contact Information'} hideTable = {true} customWidgetCss="custom-widget">
-                <Form editMode={viewMode === UserMode.EditMode} formRows={contactInformationForm} formData={formData} handleInputChange={(graphQLPropertyName, value) =>
+                <Form editMode={viewMode === UserMode.EditMode} formRows={contactInformationForm} formData={formData ?? {}} handleInputChange={(graphQLPropertyName, value) =>
               handleInputChange(graphQLPropertyName, value)} />
             </Widget>
             <Widget title={'Address'} hideTable = {true} customWidgetCss="custom-widget">
-                <Form editMode={viewMode === UserMode.EditMode} formRows={addressForm} formData={formData} handleInputChange={(graphQLPropertyName, value) =>
+                <Form editMode={viewMode === UserMode.EditMode} formRows={addressForm} formData={formData ?? {}} handleInputChange={(graphQLPropertyName, value) =>
               handleInputChange(graphQLPropertyName, value)} />
             </Widget>
             <Widget  
                 currentPage={1} 
                 allowRowsSelect={true}
                 tableColumns={noteColumns}
-                tableData={noteData ?? []} 
+                tableData={notes ?? []} 
                 // tableIsLoading={status ?? RequestStatus.idle}
-                changeHandler={(event) => handleTableChange(formData.psn_id, event)} 
+                changeHandler={(event) => handleTableChange(event)} 
                 sortHandler={(row, ascDir) => { handleTableSort(row, ascDir)}}
                 title={'Notes'} 
                 aria-label="Manage Person Widget"
