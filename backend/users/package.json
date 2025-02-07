@@ -23,7 +23,7 @@
     "typeorm:run-migrations": "npm run typeorm migration:run -- -d ./typeOrm.config.ts",
     "typeorm:generate-migration": "npm run typeorm -- -d ./typeOrm.config.ts migration:generate ./src/migrations/master-script",
     "typeorm:create-migration": "npm run typeorm -- migration:create ./src/migrations/master-script",
-    "typeorm:revert-migration": "npm run typeorm -- -d ./typeOrm.config.ts migration:revert"  
+    "typeorm:revert-migration": "npm run typeorm -- -d ./typeOrm.config.ts migration:revert"
   },
   "dependencies": {
     "@apollo/federation": "^0.37.1",
@@ -36,6 +36,7 @@
     "@nestjs/typeorm": "^10.0.2",
     "apollo-server-express": "^3.10.2",
     "class-transformer": "^0.5.1",
+    "cls-rtracer": "^2.6.3",
     "graphql": "^16.6.0",
     "keycloak-connect": "^18.0.2",
     "nest-keycloak-connect": "^1.9.0",
@@ -43,7 +44,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.3.10"
+    "typeorm": "^0.3.10",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

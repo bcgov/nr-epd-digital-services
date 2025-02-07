@@ -123,7 +123,7 @@ export const Icon: React.FC<InputProps> = ({
   stickyCol,
   href,
 }) => {
-  if (value) {
+  if (value === "true" || value === true) {
     return renderTableCell(
       <div className={`${customInputTextCss ?? ""}`}>
         {customIcon && customIcon}{" "}

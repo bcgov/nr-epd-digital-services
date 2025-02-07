@@ -4,7 +4,8 @@
   background-color: var(--surface-background-white) !important;
   box-shadow: var(--surface-shadow-medium);
   border: none !important;
-  width: 17rem;
+  /* width: 17rem; */
+  /* width: 100%; */
 }
 
 .custom-action-item {

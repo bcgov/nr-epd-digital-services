@@ -11,6 +11,7 @@
     "@bcgov/design-tokens": "^2.0.1",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@mui/material": "^6.4.1",
     "@reduxjs/toolkit": "^1.8.5",
     "axios": "^1.7.7",
     "bootstrap": "^5.2.2",
@@ -43,7 +44,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "concurrently \"SET PORT=3001 & react-scripts start\" \"--watch\"",
+    "start": "concurrently \"SET PORT=3000 & react-scripts start\" \"--watch\"",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@react-parcelmap-bc)/\"  ",
     "eject": "react-scripts eject",

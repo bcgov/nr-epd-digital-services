@@ -4,12 +4,14 @@
     line-height: 65.38px;
     color: var(--typography-color-primary, #2D2D2D);
 }
+
 .custom-people-lbl {
     font-size: 12px;
     font-weight: 700;
     line-height: 18px;
     color: var(--typography-color-secondary, #474543);
 }
+
 .custom-people-edit-lbl {
     font-size: 12px;
     font-weight: 400;
@@ -34,6 +36,7 @@ a.custom-people-edit-lbl {
     line-height: 27.01px;
     color: var(--typography-color-primary, #2D2D2D);
 }
+
 .custom-people-edit-txt {
     font-size: 16px;
     font-weight: 400;

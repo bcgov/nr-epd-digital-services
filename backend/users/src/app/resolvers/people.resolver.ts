@@ -1,29 +1,35 @@
 import { Query, Resolver, Mutation, Args, Int } from '@nestjs/graphql';
-import { People } from '../entities/people';
-import { PeopleService } from '../services/people.service';
-import { Public } from 'nest-keycloak-connect';
+
+import { AuthenticatedUser, Public, Resource } from 'nest-keycloak-connect';
 import { CreatePersonInput } from '../dto/createPersonInput';
 import { NotFoundException } from '@nestjs/common';
-import { SearchPeopleResponse } from '../dto/reponse/fetchSearchPeople';
+import { SearchPersonResponse } from '../dto/reponse/fetchSearchPerson';
+import { UpdateExternalUserResponse } from '../dto/reponse/updateExternalUserResponse';
+import { LoggerService } from '../logger/logger.service';
+import { PersonService } from '../services/people.service';
+import { Person } from '../entities/person.entity';
 
-@Public()
-@Resolver(() => People)
-export class PeopleResolver {
-  constructor(private readonly peopleService: PeopleService) {}
+@Resolver(() => Person)
+@Resource('user-service')
+export class PersonResolver {
+  constructor(
+    private readonly personService: PersonService,
+    private readonly loggerSerivce: LoggerService,
+  ) {}
 
-  @Query(() => [People], { name: 'findAllPeople' })
+  @Query(() => [Person], { name: 'findAllPerson' })
   async findAll() {
     try {
-      return await this.peopleService.findAll();
+      return await this.personService.findAll();
     } catch (error) {
-      throw new Error(`Failed to fetch people: ${error.message}`);
+      throw new Error(`Failed to fetch person: ${error.message}`);
     }
   }
 
-  @Query(() => People, { name: 'findPersonById' })
-  async findOne(@Args('id') id: string) {
+  @Query(() => Person, { name: 'findPersonById' })
+  async findOne(@Args('id') id: number) {
     try {
-      const person = await this.peopleService.findOne(id);
+      const person = await this.personService.findOne(id);
       if (!person) {
         throw new NotFoundException(`Person with ID ${id} not found`);
       }
@@ -33,22 +39,27 @@ export class PeopleResolver {
     }
   }
 
-  @Mutation(() => People, { name: 'createPerson' })
+  @Mutation(() => Person, { name: 'createPerson' })
   async createPerson(@Args('input') input: CreatePersonInput) {
     try {
-      return await this.peopleService.create(input);
+      return await this.personService.create(input);
     } catch (error) {
       throw new Error(`Failed to create person: ${error.message}`);
     }
   }
 
-  @Mutation(() => People, { name: 'updatePerson' })
-  async updatePerson(
-    @Args('id') id: string,
-    @Args('input') input: CreatePersonInput,
+  @Mutation(() => UpdateExternalUserResponse, { name: 'updatePerson' })
+  async updatePersons(
+    @Args('input', { type: () => [CreatePersonInput] })
+    input: [CreatePersonInput],
   ) {
     try {
-      return await this.peopleService.update(id, input);
+      const result = await this.personService.update(input);
+      const repsonse: UpdateExternalUserResponse = {
+        recordUpdated: result,
+        httpStatusCode: 200,
+      };
+      return repsonse;
     } catch (error) {
       throw new Error(`Failed to update person: ${error.message}`);
     }
@@ -57,7 +68,7 @@ export class PeopleResolver {
   @Mutation(() => Boolean, { name: 'deletePerson' })
   async deletePerson(@Args('id') id: string) {
     try {
-      await this.peopleService.delete(id);
+      await this.personService.delete(id);
       return true;
     } catch (error) {
       throw new Error(`Failed to delete person: ${error.message}`);
@@ -65,24 +76,23 @@ export class PeopleResolver {
   }
 
   /**
-   * Find sites where search parameter matches a site id or address
+   * Find sites where search parameter matches person name or address
    * @param searchParam search parameter
    * @param page page number
    * @param pageSize size of the page
-   * @returns sites where id or address matches the search param along with pagination params
+   * @returns person where id or address matches the search param along with pagination params
    */
-  @Query(() => SearchPeopleResponse, { name: 'searchPeople' })
-  async searchSites(
-    //@AuthenticatedUser() userInfo,
+  @Query(() => SearchPersonResponse, { name: 'searchPerson' })
+  async searchPerson(
+    @AuthenticatedUser() userInfo,
     @Args('searchParam', { type: () => String }) searchParam: string,
     @Args('page', { type: () => Int }) page: number,
     @Args('pageSize', { type: () => Int }) pageSize: number,
     //@Args('filters', { type: () => SiteFilters }) filters: SiteFilters,
   ) {
-    //this.sitesLogger.log('SiteResolver.searchSites() start ');
-
-    return await this.peopleService.searchSites(
-      //userInfo,
+    this.loggerSerivce.log('searchPerson start');
+    return await this.personService.searchPerson(
+      userInfo,
       searchParam,
       page,
       pageSize,
