@@ -1,0 +1,75 @@
+name: CATS PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review] # ready for review is not included by default, More than one activity type triggers this event. For information about each activity type, see "Webhook events and payloads." By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened. To trigger workflows by different activity types, use the types keyword. For more information, see "Workflow syntax for GitHub Actions."
+    branches:
+      - dev # this is the default branch and not main
+      - srs-605
+
+
+concurrency:
+  # Cancel in progress for PR open and close
+  group: ${{ github.event.number }}
+  cancel-in-progress: true
+
+jobs:
+  # https://github.com/bcgov-nr/action-builder-ghcr
+  builds:
+    name: Builds
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        package: [cats-backend, cats-frontend, cats-backend-migration]
+        include:
+          - package: cats-backend
+            build_file: ./cats-backend/Dockerfile
+            build_context: cats-backend
+          - package: cats-backend-migration
+            build_file: ./cats-backend/Dockerfile.migrations
+            build_context: cats-backend
+          - package: cats-frontend
+            build_file: ./cats-frontend/Dockerfile
+            build_context: cats-frontend
+    timeout-minutes: 10
+    steps:
+      - uses: bcgov-nr/action-builder-ghcr@v2.2.0
+        with:
+          package: ${{ matrix.package }}
+          tag: ${{ github.event.number }}
+          tag_fallback: latest
+          triggers: ('${{ matrix.package }}/')
+          build_file: ${{ matrix.build_file }}
+          build_context: ${{ matrix.build_context }}
+
+  deploy_db:
+    name: Deploys Database
+    if: ${{ ! github.event.pull_request.draft }}
+    uses: ./.github/workflows/.dbdeployer.yml
+    secrets: inherit
+    with:
+      triggers: ('charts/crunchy/')
+      values: 'values-dev.yaml'
+      app_values:  'values-pr.yaml' # PR specific values file.
+    # https://github.com/bcgov/quickstart-openshift-helpers
+  deploys:
+    name: Deploys
+    if: ${{ ! github.event.pull_request.draft }}
+    needs: [builds, deploy_db]
+    uses: ./.github/workflows/.deployer.yml
+    secrets: inherit
+    with:
+      triggers: ('cats-backend/' 'cats-frontend/' 'charts/' '.github/workflows/')
+      values: 'values-pr.yaml' # PR specific values file.
+      db_user: cats-${{ github.event.number }}
+      timeout-minutes: 60
+
+  results:
+    name: PR Results
+    needs: [builds, deploys]
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - if: contains(needs.*.result, 'failure')
+        run: echo "At least one job has failed." && exit 1
+      - run: echo "Success!"

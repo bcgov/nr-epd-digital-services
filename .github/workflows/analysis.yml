@@ -1,0 +1,75 @@
+name: Analysis
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review, converted_to_draft]
+  schedule:
+    - cron: "0 11 * * 0" # 3 AM PST = 12 PM UDT, runs sundays
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  #TODO add the Unit TEST with sonar, sample https://github.com/bcgov/quickstart-openshift/blob/main/.github/workflows/analysis.yml#L17-L58
+
+  tests:
+    name: Unit Tests
+    # TODO - Re-enable below before submitting PR, jsut have it disabled while I work via draft.
+    # if: ${{ ! github.event.pull_request.draft }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    strategy:
+      matrix:
+        dir: [cats-backend, cats-frontend]
+        include:
+          - dir: cats-backend
+            token: SONAR_TOKEN_BACKEND
+          - dir: cats-frontend
+            token: SONAR_TOKEN_FRONTEND
+    steps:
+      - uses: bcgov/action-test-and-analyse@v1.2.1
+        env:
+          LOG_LEVEL: info
+          LOG_FILE_LOCATION: /tmp/sites-%DATE%.log
+        with:
+          commands: |
+            npm ci
+            npm run test:cov
+          dir: ${{ matrix.dir }}
+          node_version: "22"
+          sonar_args: >
+             -Dsonar.exclusions=**/coverage/**,**/node_modules/**,**/*spec.ts,**/migrations/**,**/*test.tsx,**/*test.ts
+             -Dsonar.organization=bcgov-sonarcloud
+             -Dsonar.projectKey=bcgov-sonarcloud_nr-site-registry-${{ matrix.dir }}
+             -Dsonar.sources=src
+             -Dsonar.tests.inclusions=**/*spec.ts
+             -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
+             -Dsonar.cpd.exclusions=**/migrations/**
+          sonar_token: ${{ secrets[matrix.token] }}
+          
+
+  results:
+    name: Analysis Results
+    needs: [tests]
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - if: contains(needs.*.result, 'failure')
+        run: echo "At least one job has failed." && exit 1
+      - run: echo "Success!"
