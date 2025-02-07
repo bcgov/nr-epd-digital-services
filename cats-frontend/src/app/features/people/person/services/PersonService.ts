@@ -7,12 +7,12 @@ import { CREATE_PERSON, GET_PERSON_BY_ID, UPDATE_PERSON_BY_ID } from "../graphql
 export const fetchPerson = async (id: string) => {
     try
     {
-        // Call the GraphQL query to fetch the person by ID
-        const response = await getAxiosInstance().post(GRAPHQL, {
-            query: print(GET_PERSON_BY_ID),
-            variables: { id: id },
-        });
-        return response.data.data.findPersonById; // Return the person data
+      // Call the GraphQL query to fetch the person by ID
+      const response = await getAxiosInstance().post(GRAPHQL, {
+          query: print(GET_PERSON_BY_ID),
+          variables: { id: id },
+      });
+      return response?.data?.data?.findPersonById; // Return the person data
     }
     catch(error)
     {

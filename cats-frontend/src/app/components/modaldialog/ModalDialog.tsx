@@ -6,6 +6,7 @@ import {
   DiscardButton,
   SaveButton,
 } from '../simple/CustomButtons';
+import { ButtonVariant } from '../button/Button';
 
 interface ModalDialogCloseHandlerProps {
   closeHandler: (save: any) => void;
@@ -20,6 +21,12 @@ interface ModalDialogCloseHandlerProps {
   customFooterCss?: string;
   discardOption?: boolean;
   errorOption?: boolean;
+  cancelButtonVariant?: ButtonVariant;
+  saveButtonVariant?: ButtonVariant;
+  discardButtonVariant?: ButtonVariant;
+  cancelButtonDisabled?: boolean;
+  saveButtonDisabled?: boolean;
+  discardButtonDisabled?: boolean;
 }
 
 const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
@@ -35,6 +42,12 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
   customHeaderCss,
   customHeaderTextCss,
   customFooterCss,
+  saveButtonVariant,
+  cancelButtonVariant,
+  discardButtonVariant,
+  discardButtonDisabled,
+  cancelButtonDisabled,
+  saveButtonDisabled,
 }) => {
   saveBtnLabel = saveBtnLabel ?? '';
   cancelBtnLabel = cancelBtnLabel ?? '';
@@ -78,31 +91,35 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
           {!discardOption && !errorOption && (
             <div className={`${customFooterCss || 'custom-modal-actions-footer'}`}>
               <CancelButton
-                variant="tertiary"
+                variant={cancelButtonVariant ?? "tertiary"}
                 clickHandler={handleClose}
                 label={cancelBtnLabel}
+                isDisabled = {cancelButtonDisabled}
               />
-              <SaveButton variant='primary' clickHandler={handleSave} label={saveBtnLabel} />
+              <SaveButton variant={saveButtonVariant ??'primary'} clickHandler={handleSave} label={saveBtnLabel} isDisabled = {saveButtonDisabled}/>
             </div>
           )}
           {discardOption && (
             <div className={`${customFooterCss || 'custom-modal-actions-footer'}`}>
               <CancelButton
-                variant="tertiary"
+                variant={cancelButtonVariant ??"tertiary"}
                 clickHandler={handleClose}
                 label={cancelBtnLabel}
+                isDisabled = {cancelButtonDisabled}
               />
               <DiscardButton
                 clickHandler={handleDiscard}
                 label={dicardBtnLabel}
                 showIcon={false}
+                variant={discardButtonVariant}
+                isDisabled = {discardButtonDisabled}
               />
-              <SaveButton clickHandler={handleSave} label={saveBtnLabel} />
+              <SaveButton clickHandler={handleSave} label={saveBtnLabel} variant={saveButtonVariant} isDisabled={saveButtonDisabled} />
             </div>
           )}
           {errorOption && (
             <div className={`${customFooterCss || 'custom-modal-actions-footer'}`}>
-              <CancelButton clickHandler={handleClose} label={cancelBtnLabel} />
+              <CancelButton clickHandler={handleClose} label={cancelBtnLabel} variant={cancelButtonVariant} isDisabled={cancelButtonDisabled}/>
             </div>
           )}
         </ModalDialogWrapper>

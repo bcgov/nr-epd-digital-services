@@ -47,20 +47,28 @@ const noteColumnsData = [
     }
 ];
   
+export type NoteTypes = 'Edit Note' | 'New Note' | 'View Note'; 
+
 const Person = () => {
+
   const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
   const location = useLocation();
   const fromScreen = location.state?.from || ""; // Default to "Unknown Screen" if no state is passed
   const user = getUser();
-  
+  const initialNote = {
+    noteDate: new Date(),
+    noteUser: user?.profile?.name ?? '',
+    noteDescription: '',
+    noteId: v4(),
+  };
   // Custom hooks for creating/updating person
   //  const { createNewPerson, loading: createLoading, error: createError } = useCreatePerson();
   const { updateExistingPerson, loading: updateLoading, error: updateError } = useUpdatePerson();
   const [personName, setPersonName]= useState('');
   const [isVisible, setIsVisible] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
-  const [note, setNote] = useState({ isNotesModal: false, noteData: {} });
+  const [note, setNote] = useState({ isNotesModal: false, noteData: initialNote, noteType: 'View Note' as NoteTypes });
   const [userType, setUserType] = useState<UserType>(UserType.STAFF);
   const [viewMode, setViewMode] = useState(UserMode.Default);
   const [formData, setFormData] = useState<{ [key: string]: any } | null>(null);
@@ -80,13 +88,21 @@ const Person = () => {
       const getPersonData = async () => {
         try {
           const personData = await fetchPerson(id);
-          setPersonName((personData?.firstName ?? '') + ' ' + (personData?.middleName ?? '') + ' ' + (personData?.lastName ?? ''));
-          setFormData(personData);
-        } catch (err) {
+          if(personData === null || personData === undefined)
+          {
+            setError('Person not found');
+          }
+          else
+         {
+            setPersonName((personData?.firstName ?? '') + ' ' + (personData?.middleName ?? '') + ' ' + (personData?.lastName ?? ''));
+            setFormData(personData);
+            setLoading(false);
+          }
+        } 
+        catch (err) 
+        {
           setError('Failed to load person data');
-        } finally {
-          setLoading(false);
-        }
+        } 
       };
       getPersonData();
     }
@@ -94,6 +110,8 @@ const Person = () => {
     {
       setLoading(false);
       setFormData({})
+      setNotes([]);
+      setViewMode(UserMode.EditMode);
     }
   }, [])
 
@@ -205,18 +223,12 @@ const Person = () => {
     }
     if (event.property.includes('edit')) 
     {
-      setNote({isNotesModal: true, noteData: event.row});
+      setNote({isNotesModal: true, noteData: event.row, noteType: 'Edit Note'});
     }
   }
 
   const handleAddNotes = () =>{
-    const newNote = {
-      noteDate: new Date(),
-      noteUser: user?.profile?.name ?? '',
-      noteDescription: '',
-      noteId: v4(),
-    };
-    setNote({isNotesModal: true, noteData: newNote});
+    setNote({isNotesModal: true, noteData: initialNote, noteType: 'New Note'});
   }
 
   const handleTableSort = (row: any, ascDir: any) => {
@@ -259,17 +271,30 @@ const Person = () => {
           break;
         case UserAction.SAVE: // Save the changes
           // need to ask Anton how to use generated.ts for graphql type safe.
-          if (id) {
+          if (id) 
+          {
             setLoading(updateLoading); // Set loading to true
             await updateExistingPerson(id, formData).then((response) => { console.log('response -->', response) }).catch((error) => { console.log('error -->', error) });
           } 
-          // else {
-          //   // If no `id`, create a new person
-          //   await createNewPerson(name, age, address);
-          // }
+          else 
+          {
+            alert('Create new person');
+            navigate(-1);
+            // If no `id`, create a new person
+            // await createNewPerson(name, age, address);
+          }
           break;
         case UserAction.CANCEL: // Cancel the changes
-          setViewMode(UserMode.Default);
+          if (id) 
+          {
+            setViewMode(UserMode.Default);
+          } 
+          else 
+          {
+            setFormData(null);
+            setNotes([]);
+            navigate(-1);
+          }
           break;
         default:
           break;
@@ -277,9 +302,9 @@ const Person = () => {
   };
 
   {/* Use the LoadingOverlay component */}
-  if (loading)
+  if (loading && !!id) {
     return <LoadingOverlay loading={loading} />
-
+  }
 
   return (
     <>
@@ -291,9 +316,9 @@ const Person = () => {
         </Button>
         <div className="d-flex flex-wrap align-items-center pe-3 custom-person-sticky-header-lbl">
         {
-          Object.keys(formData ?? {})?.length > 0 
+          personName?.length > 0 
           ?
-          isVisible && <div className="d-flex align-items-center">Viewing: <span>{(formData?.firstName ?? '') + ' ' + (formData?.middleName ?? '') + ' ' + (formData?.lastName ?? '')}</span></div>
+          isVisible && <div className="d-flex align-items-center">Viewing: <span>{personName}</span></div>
           :
           <span>Create New Person</span>
         }
@@ -316,7 +341,7 @@ const Person = () => {
                 userType === UserType.STAFF && 
               (
                 <>
-                  <CustomLabel labelType="c-b" label={`${'Edit Mode'}`}/>
+                  {id && <CustomLabel labelType="c-b" label={`${'Edit Mode'}`}/>}
                   <SaveButton clickHandler={() => handleItemClick(UserAction.SAVE)}
                     // isDisabled={savedChanges?.length > 0 ? false : true}
                   />
@@ -346,13 +371,7 @@ const Person = () => {
     </div>
       <PageContainer role="Person">
           <div className="custom-person-name">
-            { 
-              Object.keys(formData ?? {}).length > 0 
-              ?
-              personName
-              :
-              'New Person'
-            }
+            {(!isVisible && (personName.length > 0 ? personName : 'New Person')) || ''}
           </div>
           <Widget title={'Contact Information'} hideTable = {true} customWidgetCss="custom-widget">
               <Form editMode={viewMode === UserMode.EditMode} formRows={contactInformationForm} formData={formData ?? {}} handleInputChange={(graphQLPropertyName, value) =>
@@ -375,18 +394,18 @@ const Person = () => {
               primaryKeycolumnName="noteId">
               { userType === UserType.STAFF && (
                   <div className="d-flex gap-2 flex-wrap">
-                  <Button variant="secondary" onClick={handleAddNotes}>
-                      <UserPlus />
-                      New Note
-                  </Button>
-                  <Button
-                      variant="secondary"
-                      onClick={() => handleDeleteNotes()}
-                      disabled={selectedRows.length <= 0}
-                  >
-                      <TrashCanIcon />
-                      Delete Selected
-                  </Button>
+                    <Button variant="secondary" onClick={handleAddNotes}>
+                        <UserPlus />
+                        New Note
+                    </Button>
+                    <Button
+                        variant="secondary"
+                        onClick={() => handleDeleteNotes()}
+                        disabled={selectedRows.length <= 0}
+                    >
+                        <TrashCanIcon />
+                        Delete Selected
+                    </Button>
                   </div>
                )}
           </Widget>
@@ -406,14 +425,15 @@ const Person = () => {
           )}
           {note?.isNotesModal && (
               <ModalDialog
-                headerLabel="Edit Note"
+                headerLabel={note?.noteType}
+                saveButtonDisabled={note?.noteData?.noteDescription?.length <= 0}
                 closeHandler={(response) => {
                     if (response) {
                       console.log('response -->', response)
                       alert('Note updated successfully');
                       //call update note api and update the notes state.
                     }
-                    setNote({isNotesModal: false, noteData: {}}); // Reset the note state
+                    setNote({isNotesModal: false, noteData: initialNote, noteType:'View Note'}); // Reset the note state
                 }}
               >
                 <Form editMode={true} formRows={noteForm} formData={note?.noteData ?? {}} handleInputChange={(graphQLPropertyName, value) => handleNoteChange(graphQLPropertyName, value)} />

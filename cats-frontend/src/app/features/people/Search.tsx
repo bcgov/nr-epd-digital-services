@@ -34,6 +34,8 @@ import { SearchResultsFilters } from "./searchResults/SearchResultsFilters";
 import { SearchResultsActions } from "./searchResults/SearchResultsActions";
 import { Button } from "../../components/button/Button";
 import Actions from "../../components/action/Actions";
+import { useNavigate } from "react-router-dom";
+import { from } from "@apollo/client";
 
 const Search = () => {
   const [searchText, setSearchText] = useState("");
@@ -57,6 +59,7 @@ const Search = () => {
     [key: string]: any | [Date, Date];
   }>({});
 
+  const navigate = useNavigate();
   const toggleColumnSelectionForDisplay = (column: TableColumn) => {
     const index = columnsToDisplay.findIndex((item) => item.id === column.id);
 
@@ -269,7 +272,9 @@ const Search = () => {
       <div className="search-container">
         <h1 className="search-text-label">Manage People</h1>
         <div className="manage-people">
-          <Button onClick={() => {}}>
+          <Button onClick={() => { 
+            navigate("/people/person", { state: { from: 'Manage People' }});
+          }}>
             <Plus />
             New Person Profile
           </Button>

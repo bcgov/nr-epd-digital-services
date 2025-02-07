@@ -14,10 +14,15 @@ const roleBasedRoutes: any = {
   client: [
     { path: "/", element: <Dashboard /> },
     { path: "/people", element: <Search /> },
-    { path: "/people/:id/Person", element: <Person /> },
-    { path: "/people/Person", element: <Person /> },
+    { path: "/people/:id/person", element: <Person /> },
+    { path: "/people/person", element: <Person /> },
   ],
-  internal: [{ path: "/dashboard", element: <Dashboard /> }],
+  internal: [
+    { path: "/dashboard", element: <Dashboard /> },
+    { path: "/people", element: <Search /> },
+    { path: "/people/:id/person", element: <Person /> },
+    { path: "/people/person", element: <Person /> },
+  ],
 };
 
 // Create routes based on the user's role

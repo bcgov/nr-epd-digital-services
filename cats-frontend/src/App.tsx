@@ -10,12 +10,6 @@ import { useState } from "react";
 function App() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
 
-  // Handle mouse enter and leave to control sidebar expansion
-  const handleMouseEnter = () => setIsSidebarExpanded(true);
-  const handleMouseLeave = () => setIsSidebarExpanded(false);
-
-
-
   // Toggle sidebar expand/collapse on hover or click
   const handleSidebarToggle = () => {
     setIsSidebarExpanded((prevState) => !prevState);
