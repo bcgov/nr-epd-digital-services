@@ -97,7 +97,7 @@ export class PersonService {
     try {
       const response = new SearchPersonResponse();
       const query = this.personRepository.createQueryBuilder('person');
-
+      query.andWhere('is_deleted is not true');
       query.andWhere(
         new Brackets((qb) => {
           qb.where('CAST(person.id AS TEXT) LIKE :searchParam', {
