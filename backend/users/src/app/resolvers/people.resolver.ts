@@ -2,7 +2,7 @@ import { Query, Resolver, Mutation, Args, Int } from '@nestjs/graphql';
 
 import { AuthenticatedUser, Public, Resource } from 'nest-keycloak-connect';
 import { CreatePersonInput } from '../dto/createPersonInput';
-import { NotFoundException } from '@nestjs/common';
+import { HttpStatus, NotFoundException } from '@nestjs/common';
 import { SearchPersonResponse } from '../dto/reponse/fetchSearchPerson';
 import { UpdateExternalUserResponse } from '../dto/reponse/updateExternalUserResponse';
 import { LoggerService } from '../logger/logger.service';
@@ -20,6 +20,7 @@ export class PersonResolver {
   @Query(() => [Person], { name: 'findAllPerson' })
   async findAll() {
     try {
+      this.loggerSerivce.log('findAllPerson start');
       return await this.personService.findAll();
     } catch (error) {
       throw new Error(`Failed to fetch person: ${error.message}`);
@@ -29,6 +30,7 @@ export class PersonResolver {
   @Query(() => Person, { name: 'findPersonById' })
   async findOne(@Args('id') id: number) {
     try {
+      this.loggerSerivce.log('findPersonById start' + id.toString());
       const person = await this.personService.findOne(id);
       if (!person) {
         throw new NotFoundException(`Person with ID ${id} not found`);
@@ -42,6 +44,7 @@ export class PersonResolver {
   @Mutation(() => Person, { name: 'createPerson' })
   async createPerson(@Args('input') input: CreatePersonInput) {
     try {
+      this.loggerSerivce.log('createPerson start' + JSON.stringify(input));
       return await this.personService.create(input);
     } catch (error) {
       throw new Error(`Failed to create person: ${error.message}`);
@@ -54,24 +57,15 @@ export class PersonResolver {
     input: [CreatePersonInput],
   ) {
     try {
+      this.loggerSerivce.log('updatePersons start' + JSON.stringify(input));
       const result = await this.personService.update(input);
       const repsonse: UpdateExternalUserResponse = {
         recordUpdated: result,
-        httpStatusCode: 200,
+        httpStatusCode: HttpStatus.OK,
       };
       return repsonse;
     } catch (error) {
       throw new Error(`Failed to update person: ${error.message}`);
-    }
-  }
-
-  @Mutation(() => Boolean, { name: 'deletePerson' })
-  async deletePerson(@Args('id') id: string) {
-    try {
-      await this.personService.delete(id);
-      return true;
-    } catch (error) {
-      throw new Error(`Failed to delete person: ${error.message}`);
     }
   }
 
@@ -90,7 +84,9 @@ export class PersonResolver {
     @Args('pageSize', { type: () => Int }) pageSize: number,
     //@Args('filters', { type: () => SiteFilters }) filters: SiteFilters,
   ) {
-    this.loggerSerivce.log('searchPerson start');
+    this.loggerSerivce.log(
+      'searchPerson start ' + searchParam + ' ' + page + ' ' + pageSize,
+    );
     return await this.personService.searchPerson(
       userInfo,
       searchParam,
