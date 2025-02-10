@@ -130,8 +130,8 @@ export class Person {
   // ts?: Buffer;
 
   @OneToMany(() => AppParticipant, (appParticipant) => appParticipant.person)
-  appParticipants: AppParticipant[];
+  appParticipants?: AppParticipant[];
 
   @OneToMany(() => Timesheet, (timesheet) => timesheet.person)
-  timesheets: Timesheet[];
+  timesheets?: Timesheet[];
 }

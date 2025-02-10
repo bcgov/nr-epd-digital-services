@@ -3,10 +3,13 @@ import { Repository } from 'typeorm';
 import { Person } from '../entities/person.entity';
 import { CreatePersonInput } from '../dto/createPersonInput';
 import { SearchPersonResponse } from '../dto/reponse/fetchSearchPerson';
+import { LoggerService } from '../logger/logger.service';
+import { log } from 'console';
 
 describe('PersonService', () => {
   let personService: PersonService;
   let personRepository: Repository<Person>;
+  let loggerSerivce: LoggerService;
 
   beforeEach(() => {
     personRepository = {
@@ -22,7 +25,8 @@ describe('PersonService', () => {
         getManyAndCount: jest.fn(),
       }),
     } as any;
-    personService = new PersonService(personRepository);
+    loggerSerivce = new LoggerService();
+    personService = new PersonService(personRepository, loggerSerivce);
   });
 
   it('should find all persons', async () => {
