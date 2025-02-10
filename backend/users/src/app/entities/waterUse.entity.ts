@@ -8,7 +8,7 @@ import {
 import { AppWaterUse } from './appWaterUse.entity';
 
 @Index('pk_water_use', ['id'], { unique: true })
-@Entity('water_use', { schema: 'cats' })
+@Entity('water_use')
 export class WaterUse {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

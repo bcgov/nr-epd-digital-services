@@ -10,7 +10,7 @@ import { Application } from './application.entity';
 import { Housing } from './housing.entity';
 
 @Index('pk_housing_application_xref', ['id'], { unique: true })
-@Entity('housing_application_xref', { schema: 'cats' })
+@Entity('housing_application_xref')
 export class HousingApplicationXref {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

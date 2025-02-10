@@ -16,7 +16,7 @@ import { StatusType } from './statusType.entity';
 })
 @Index('pk_app_status', ['id'], { unique: true })
 @Index('idx_app_status_status_type_id', ['statusTypeId'], {})
-@Entity('app_status', { schema: 'cats' })
+@Entity('app_status')
 export class AppStatus {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

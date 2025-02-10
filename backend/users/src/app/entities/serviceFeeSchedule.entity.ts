@@ -10,7 +10,7 @@ import { Service } from './service.entity';
 
 @Index('pk_service_fee_schedule', ['id'], { unique: true })
 @Index('idx_service_fee_schedule_service_id', ['serviceId'], {})
-@Entity('service_fee_schedule', { schema: 'cats' })
+@Entity('service_fee_schedule')
 export class ServiceFeeSchedule {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

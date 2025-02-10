@@ -8,7 +8,7 @@ import {
 import { AppLandUse } from './appLandUse.entity';
 
 @Index('pk_land_use', ['id'], { unique: true })
-@Entity('land_use', { schema: 'cats' })
+@Entity('land_use')
 export class LandUse {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

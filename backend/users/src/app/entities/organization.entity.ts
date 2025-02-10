@@ -8,7 +8,7 @@ import {
 import { AppParticipant } from './appParticipant.entity';
 
 @Index('pk_organization', ['id'], { unique: true })
-@Entity('organization', { schema: 'cats' })
+@Entity('organization')
 export class Organization {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

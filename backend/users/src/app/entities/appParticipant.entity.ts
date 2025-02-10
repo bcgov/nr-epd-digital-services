@@ -21,7 +21,7 @@ import { Person } from './person.entity';
 @Index('idx_app_participant_organization_id', ['organizationId'], {})
 @Index('idx_app_participant_participant_role_id', ['participantRoleId'], {})
 @Index('idx_app_participant_person_id', ['personId'], {})
-@Entity('app_participant', { schema: 'cats' })
+@Entity('app_participant')
 export class AppParticipant {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

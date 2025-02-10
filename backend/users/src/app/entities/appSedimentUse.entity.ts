@@ -12,7 +12,7 @@ import { SedimentUse } from './sedimentUse.entity';
 @Index('idx_app_sediment_use_application_id', ['applicationId'], {})
 @Index('pk_app_sediment_use', ['id'], { unique: true })
 @Index('idx_app_sediment_use_sediment_use_id', ['sedimentUseId'], {})
-@Entity('app_sediment_use', { schema: 'cats' })
+@Entity('app_sediment_use')
 export class AppSedimentUse {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

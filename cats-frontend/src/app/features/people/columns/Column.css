@@ -1,0 +1,21 @@
+.column-item {
+  display: flex;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: left;
+  color: var(--typography-color-primary);
+  height: 40px;
+  align-items: center;
+}
+
+.column-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-margin-large);
+}
+
+.checkbox-color {
+  accent-color: var(--icons-icons-info) !important;
+}

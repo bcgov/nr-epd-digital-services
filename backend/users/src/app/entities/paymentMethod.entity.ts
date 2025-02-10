@@ -8,7 +8,7 @@ import {
 import { Payment } from './payment.entity';
 
 @Index('pk_payment_method', ['id'], { unique: true })
-@Entity('payment_method', { schema: 'cats' })
+@Entity('payment_method')
 export class PaymentMethod {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

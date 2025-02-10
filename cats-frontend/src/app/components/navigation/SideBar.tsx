@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import './SideBar.css';
-import SideNav, { getSideBarNavList } from './dto/SideNav';
-import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from 'react-oidc-context';
-import { getLoggedInUserType } from '../../helpers/utility';
+import React, { useEffect, useState } from "react";
+import "./SideBar.css";
+import SideNav, { getSideBarNavList } from "./dto/SideNav";
+import { Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useAuth } from "react-oidc-context";
+import { AppDispatch } from "../../Store";
+import { getLoggedInUserType, showNotification } from "../../helpers/utility";
 
 function SideBar() {
+  const dispatch = useDispatch<AppDispatch>();
   const { user } = useAuth();
   const location = useLocation();
 
@@ -19,15 +22,18 @@ function SideBar() {
   const renderMenuOption = (item: any, tabIndex: number) => {
     const isCurrentPath = location.pathname === item.linkTo;
     const hasIcon = item.icon;
+    const isCartLink = item.linkTo.includes("cart");
+    const displayCount = "0";
 
+    const linkContent = isCartLink ? displayCount : item.displayText;
     const isParentGroup: boolean = item.displayText && !item.icon;
     return (
       <section
         tabIndex={tabIndex}
         aria-label={item.displayText}
         aria-roledescription="menu"
-        role={isParentGroup ? 'group' : 'menuitem'}
-        className={`sideBar-NavItem ${isCurrentPath && hasIcon ? 'currentPath' : ''}`}
+        role={isParentGroup ? "group" : "menuitem"}
+        className={`sideBar-NavItem ${isCurrentPath && hasIcon ? "currentPath" : ""} ${isParentGroup === false ? "sideBar-menu-item-hover" : ""}`}
         key={item.id} // Use a unique key based on the item id
       >
         <div className="d-flex align-items-center">
@@ -38,6 +44,16 @@ function SideBar() {
               className="pb-1"
             >
               <item.icon className="sideBar-Icon" />
+            </Link>
+          )}
+          {linkContent && hasIcon && (
+            <Link
+              to={item.linkTo}
+              className={`sideBarDisplayText ${isCartLink ? "cart-items-number" : ""} nav-section-bold-label nav-color-primary-default ps-2`}
+              aria-label={item.displayText}
+              role="menuitem"
+            >
+              {linkContent}
             </Link>
           )}
         </div>
@@ -60,19 +76,19 @@ function SideBar() {
         {navList
           .filter((item: any) => !item.lowerSection)
           .map((item: any, index: number) => (
-            <React.Fragment key={item.id}>
-              {' '}
+            <div className="sidebar-menu-group" key={item.id}>
+              {" "}
               {/* Use item.id for a unique key */}
               {renderMenuOption(item, index + 1)}
               {item.children &&
                 item.children.map((child: any) => (
                   <React.Fragment key={child.id}>
-                    {' '}
+                    {" "}
                     {/* Ensure each child has a unique key */}
                     {renderMenuOption(child, index + 1)}
                   </React.Fragment>
                 ))}
-            </React.Fragment>
+            </div>
           ))}
       </div>
 
@@ -80,19 +96,19 @@ function SideBar() {
         {navList
           .filter((item: any) => item.lowerSection)
           .map((item: any, index: number) => (
-            <React.Fragment key={item.id}>
-              {' '}
+            <div className="sidebar-menu-group" key={item.id}>
+              {" "}
               {/* Use item.id for a unique key */}
               {renderMenuOption(item, index + 1)}
               {item.children &&
                 item.children.map((child: any) => (
                   <React.Fragment key={child.id}>
-                    {' '}
+                    {" "}
                     {/* Ensure each child has a unique key */}
                     {renderMenuOption(child, index + 1)}
                   </React.Fragment>
                 ))}
-            </React.Fragment>
+            </div>
           ))}
       </div>
     </div>
