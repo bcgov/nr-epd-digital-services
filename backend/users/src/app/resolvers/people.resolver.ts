@@ -2,64 +2,99 @@ import { Query, Resolver, Mutation, Args, Int } from '@nestjs/graphql';
 
 import { AuthenticatedUser, Public, Resource } from 'nest-keycloak-connect';
 import { CreatePersonInput } from '../dto/createPersonInput';
-import { NotFoundException } from '@nestjs/common';
+import { HttpCode, HttpStatus, NotFoundException, UsePipes } from '@nestjs/common';
 import { SearchPersonResponse } from '../dto/reponse/fetchSearchPerson';
 import { UpdateExternalUserResponse } from '../dto/reponse/updateExternalUserResponse';
 import { LoggerService } from '../logger/logger.service';
 import { PersonService } from '../services/people.service';
 import { Person } from '../entities/person.entity';
+import { ViewPerson } from '../dto/person/viewPerson.dto';
+import { GenericResponseProvider } from '../dto/reponse/genericResponseProvider';
+import { PersonResponse } from '../dto/reponse/person/personResponse';
+import { CreatePerson } from '../dto/person/createPerson.dto';
+import { UpdatePerson } from '../dto/person/updatePerson.dto';
 
-@Resolver(() => Person)
+@Resolver(() => ViewPerson)
 @Resource('user-service')
 export class PersonResolver {
   constructor(
     private readonly personService: PersonService,
     private readonly loggerSerivce: LoggerService,
+    private readonly personResponse: GenericResponseProvider<ViewPerson[]>
   ) {}
 
-  @Query(() => [Person], { name: 'findAllPerson' })
+  @Query(() => PersonResponse, { name: 'findAllPerson' })
   async findAll() {
     try {
-      return await this.personService.findAll();
+      const result = await this.personService.findAll();
+      if(result?.length > 0) {
+        this.loggerSerivce.log('PersonResolver.findAll() RES:200 end');
+        return this.personResponse.createResponse('Person records fetched successfully', HttpStatus.OK, true, result);
+      }
+      else
+      {
+        this.loggerSerivce.log('PersonResolver.findAll() RES:404 end');
+        return this.personResponse.createResponse('No person records found', HttpStatus.NOT_FOUND, false, []);
+      }
     } catch (error) {
       throw new Error(`Failed to fetch person: ${error.message}`);
     }
   }
 
-  @Query(() => Person, { name: 'findPersonById' })
+  @Query(() => PersonResponse, { name: 'findPersonById' })
   async findOne(@Args('id') id: number) {
     try {
-      const person = await this.personService.findOne(id);
-      if (!person) {
-        throw new NotFoundException(`Person with ID ${id} not found`);
+      const result = await this.personService.findOne(id);
+      if(result) {
+        this.loggerSerivce.log(
+          'PersonResolver.findOne() RES:200 end',
+        );
+        return this.personResponse.createResponse('Person record fetched successfully', HttpStatus.OK, true, [result]);
       }
-      return person;
+      else
+      {
+        this.loggerSerivce.log( 'PersonResolver.findOne() RES:404 end');
+        return this.personResponse.createResponse('No person records found', HttpStatus.NOT_FOUND, false, []);
+      }
     } catch (error) {
       throw new Error(`Failed to find person: ${error.message}`);
     }
   }
 
-  @Mutation(() => Person, { name: 'createPerson' })
-  async createPerson(@Args('input') input: CreatePersonInput) {
+  @Mutation(() => PersonResponse, { name: 'createPerson' })
+  async createPerson(@Args('person') person: CreatePerson,  @AuthenticatedUser() userInfo: any) {
     try {
-      return await this.personService.create(input);
+      const result = await this.personService.create(person, userInfo);
+      if(result) {
+        this.loggerSerivce.log('PersonResolver.createPerson() RES:201 end');
+        return this.personResponse.createResponse('Person created successfully', HttpStatus.CREATED, true);
+      }
+      else
+      {
+        this.loggerSerivce.log('PersonResolver.createPerson() RES:400 end');
+        return this.personResponse.createResponse('Person not created', HttpStatus.BAD_REQUEST, false);
+      }
     } catch (error) {
       throw new Error(`Failed to create person: ${error.message}`);
     }
   }
 
-  @Mutation(() => UpdateExternalUserResponse, { name: 'updatePerson' })
+  @Mutation(() => PersonResponse, { name: 'updatePerson' })
   async updatePersons(
-    @Args('input', { type: () => [CreatePersonInput] })
-    input: [CreatePersonInput],
+    @Args('input', { type: () => [UpdatePerson] })input: [UpdatePerson],
+    @AuthenticatedUser() userInfo: any,
   ) {
     try {
-      const result = await this.personService.update(input);
-      const repsonse: UpdateExternalUserResponse = {
-        recordUpdated: result,
-        httpStatusCode: 200,
-      };
-      return repsonse;
+      const result = await this.personService.update(input, userInfo);
+      if(result) {
+        this.loggerSerivce.log('PersonResolver.updatePerson() RES:200 end');
+        return this.personResponse.createResponse('Person updated successfully', HttpStatus.OK, true);
+      }
+      else
+      {
+        this.loggerSerivce.log('PersonResolver.updatePerson() RES:400 end');
+        return this.personResponse.createResponse('Person not updated', HttpStatus.BAD_REQUEST, false);
+      }
     } catch (error) {
       throw new Error(`Failed to update person: ${error.message}`);
     }

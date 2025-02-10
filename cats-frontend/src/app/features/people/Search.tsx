@@ -280,7 +280,7 @@ const Search = () => {
         <h1 className="search-text-label">Manage People</h1>
         <div className="manage-people">
           <Button onClick={() => { 
-            navigate("/people/person", { state: { from: 'Manage People' }});
+            navigate("/person", { state: { from: 'Manage People' }});
           }}>
             <Plus />
             New Person Profile

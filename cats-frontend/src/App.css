@@ -43,7 +43,7 @@
 }
 
 * {
-  font-family: "BCSans" !important;
+  font-family: "Noto Sans" !important;
 }
 
 @media screen and (max-width: 768px) {
@@ -82,7 +82,6 @@
 .main-content-container {
   flex-grow: 1;
   transition: margin-left 0.3s ease; /* Smooth transition for margin */
-  height: 100%; /* Ensure full height of the main content */
 }
 
 /* Ensure the layout is responsive */

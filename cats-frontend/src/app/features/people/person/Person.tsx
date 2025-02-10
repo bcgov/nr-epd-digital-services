@@ -6,7 +6,7 @@ import { addressForm, contactInformationForm, noteColumns, noteForm } from "./Pe
 import { UserType } from "../../../helpers/requests/userType";
 import { UserMode } from "../../../helpers/requests/userMode";
 import { Button } from "../../../components/button/Button";
-import { AngleLeft, TrashCanIcon, UserPlus } from "../../../components/common/icon";
+import { TrashCanIcon, UserPlus } from "../../../components/common/icon";
 import './Person.css';
 import { v4 } from "uuid";
 import { getUser, resultCache, sortArray, updateFields } from "../../../helpers/utility";
@@ -63,17 +63,17 @@ const Person = () => {
     noteDescription: '',
     noteId: v4(),
   };
-  // Custom hooks for creating/updating person
-  //  const { createNewPerson, loading: createLoading, error: createError } = useCreatePerson();
-  const { updateExistingPerson, loading: updateLoading, error: updateError } = useUpdatePerson();
+
+  const { createNewPerson, loading: createLoading} = useCreatePerson();
+  const { updateExistingPerson, loading: updateLoading} = useUpdatePerson();
   const [personName, setPersonName]= useState('');
   const [isVisible, setIsVisible] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [note, setNote] = useState({ isNotesModal: false, noteData: initialNote, noteType: 'View Note' as NoteTypes });
+  const [notes, setNotes] = useState<{ [key: string]: any }[]>(noteColumnsData ?? []);
   const [userType, setUserType] = useState<UserType>(UserType.STAFF);
   const [viewMode, setViewMode] = useState(UserMode.Default);
   const [formData, setFormData] = useState<{ [key: string]: any } | null>(null);
-  const [notes, setNotes] = useState<{ [key: string]: any }[]>(noteColumnsData ?? []);
   const [selectedRows, setSelectedRows] = useState<{noteId: any;}[]>([]);
   const [loading, setLoading] = useState(true); // To handle loading state
   const [error, setError] = useState<string | null>(null);
@@ -83,29 +83,29 @@ const Person = () => {
     navigate(-1);
   };
 
+  const getPersonData = async (id:any) => {
+    try {
+      const personData = await fetchPerson(id);
+      if(personData === null || personData === undefined)
+      {
+        setError('Person not found');
+      }
+      else
+     {
+        setPersonName((personData?.firstName ?? '') + ' ' + (personData?.middleName ?? '') + ' ' + (personData?.lastName ?? ''));
+        setFormData(personData);
+        setLoading(false);
+      }
+    } 
+    catch (err) 
+    {
+      setError('Failed to load person data');
+    } 
+  };
   useEffect(()=>{
     if(id)
     {
-      const getPersonData = async () => {
-        try {
-          const personData = await fetchPerson(id);
-          if(personData === null || personData === undefined)
-          {
-            setError('Person not found');
-          }
-          else
-         {
-            setPersonName((personData?.firstName ?? '') + ' ' + (personData?.middleName ?? '') + ' ' + (personData?.lastName ?? ''));
-            setFormData(personData);
-            setLoading(false);
-          }
-        } 
-        catch (err) 
-        {
-          setError('Failed to load person data');
-        } 
-      };
-      getPersonData();
+      getPersonData(id);
     }
     else
     {
@@ -275,14 +275,32 @@ const Person = () => {
           if (id) 
           {
             setLoading(updateLoading); // Set loading to true
-            await updateExistingPerson(id, formData).then((response) => { console.log('response -->', response) }).catch((error) => { console.log('error -->', error) });
+            updateExistingPerson([formData]).then((response) => {
+              if(response?.success)
+              {
+                setViewMode(UserMode.Default);
+                getPersonData(id);
+              }
+            })
+            .catch((error) => { 
+              console.error('Error updating person:', error);
+              setError('Failed to update person');
+            });
           } 
           else 
           {
-            alert('Create new person');
-            navigate(-1);
-            // If no `id`, create a new person
-            // await createNewPerson(name, age, address);
+            setLoading(createLoading); // Set loading to true
+            createNewPerson(formData).then((response) => {
+              if(response)
+              {
+                setViewMode(UserMode.Default);
+                navigate(-1);
+              }
+            })
+            .catch((error) => { 
+              console.error('Error Create person:', error);
+              setError('Failed to update person');
+            });
           }
           break;
         case UserAction.CANCEL: // Cancel the changes
@@ -304,7 +322,7 @@ const Person = () => {
 
   {/* Use the LoadingOverlay component */}
   if (loading && !!id) {
-    return <LoadingOverlay loading={loading} />
+    return <LoadingOverlay loading={loading}  />
   }
 
     const navigationBarChildern = <>
@@ -350,12 +368,13 @@ const Person = () => {
     </>
 
     const navigationBarText = <>
-       {  formData && Object.keys(formData).length > 0 
-          ?
-          isVisible && <div className="d-flex align-items-center">Viewing: <span>{formData?.first_name + ' ' + formData?.last_name}</span></div>
-          :
-          <span>Create New Person</span>
-       }
+      {  
+        personName?.length > 0
+        ?
+        isVisible && <div className="d-flex align-items-center">Viewing: <span>{personName}</span></div>
+        :
+        <span>Create New Person</span>
+      }
     </>
     
     return (
@@ -370,36 +389,29 @@ const Person = () => {
         />
         <PageContainer role="Person">
             <div className="custom-person-name">
-              { 
-                formData && Object.keys(formData).length > 0 
-                ?
-                formData?.first_name + ' ' + formData?.last_name
-                :
-                'New Person'
-              }
+              {(!isVisible && (personName.length > 0 ? personName : 'New Person')) || ''}
             </div>
             <Widget title={'Contact Information'} hideTable = {true} customWidgetCss="custom-widget">
-                <Form editMode={viewMode === UserMode.EditMode} formRows={contactInformationForm} formData={formData ?? {}} handleInputChange={(graphQLPropertyName, value) =>
-              handleInputChange(graphQLPropertyName, value)} />
-            </Widget>
-            <Widget title={'Address'} hideTable = {true} customWidgetCss="custom-widget">
-                <Form editMode={viewMode === UserMode.EditMode} formRows={addressForm} formData={formData ?? {}} handleInputChange={(graphQLPropertyName, value) =>
-              handleInputChange(graphQLPropertyName, value)} />
-            </Widget>
-            <Widget  
-                currentPage={1} 
-                allowRowsSelect={true}
-                tableColumns={noteColumns}
-                tableData={notes ?? []} 
-                // tableIsLoading={status ?? RequestStatus.idle}
-                changeHandler={(event) => handleTableChange(event)} 
-                sortHandler={(row, ascDir) => { handleTableSort(row, ascDir)}}
-                title={'Notes'} 
-                aria-label="Manage Person Widget"
-                primaryKeycolumnName="note_id">
-
-                { userType === UserType.STAFF && (
-                    <div className="d-flex gap-2 flex-wrap">
+              <Form editMode={viewMode === UserMode.EditMode} formRows={contactInformationForm} formData={formData ?? {}} handleInputChange={(graphQLPropertyName, value) =>
+            handleInputChange(graphQLPropertyName, value)} />
+          </Widget>
+          <Widget title={'Address'} hideTable = {true} customWidgetCss="custom-widget">
+              <Form editMode={viewMode === UserMode.EditMode} formRows={addrForm} formData={formData ?? {}} handleInputChange={(graphQLPropertyName, value) =>
+            handleInputChange(graphQLPropertyName, value)} />
+          </Widget>
+          <Widget  
+              currentPage={1} 
+              allowRowsSelect={true}
+              tableColumns={noteColumns}
+              tableData={notes ?? []} 
+              // tableIsLoading={status ?? RequestStatus.idle}
+              changeHandler={handleTableChange} 
+              sortHandler={(row, ascDir) => { handleTableSort(row, ascDir)}}
+              title={'Notes'} 
+              aria-label="Manage Person Widget"
+              primaryKeycolumnName="noteId">
+              { userType === UserType.STAFF && (
+                  <div className="d-flex gap-2 flex-wrap">
                     <Button variant="secondary" onClick={handleAddNotes}>
                         <UserPlus />
                         New Note
@@ -412,23 +424,50 @@ const Person = () => {
                         <TrashCanIcon />
                         Delete Selected
                     </Button>
-                    </div>
-                 )}
-            </Widget>
-            {isDelete && (
-                <ModalDialog
-                key={v4()}
-                label={`Are you sure you want to delete note(s) ?`}
+                  </div>
+               )}
+          </Widget>
+          {isDelete && (
+              <ModalDialog
+              key={v4()}
+              label={`Are you sure you want to delete note(s) ?`}
+              closeHandler={(response) => {
+                  if (response) {
+                  if (isDelete) {
+                      handleDeleteNotes(response);
+                  }
+                  }
+                  setIsDelete(false);
+              }}
+              />
+          )}
+          {note?.isNotesModal && (
+              <ModalDialog
+                headerLabel={note?.noteType}
+                saveButtonDisabled={note?.noteData?.noteDescription?.length <= 0}
                 closeHandler={(response) => {
                     if (response) {
-                    if (isDelete) {
-                        handleDeleteNotes(response);
+                      if(note.noteType === 'New Note')
+                      {
+                        setNotes((prev) => [...prev, note.noteData]);
+                      }
+                      if(note.noteType === 'Edit Note')
+                      {
+                        setNotes((prev) => prev.map((item) => {
+                          if(item.noteId === note?.noteData?.noteId)
+                          {
+                            return note.noteData;
+                          }
+                          return item;
+                        }));
+                      }
                     }
-                    }
-                    setIsDelete(false);
+                    setNote({isNotesModal: false, noteData: initialNote, noteType:'View Note'}); // Reset the note state
                 }}
-                />
-            )}
+              >
+                <Form editMode={true} formRows={noteForm} formData={note?.noteData ?? {}} handleInputChange={(graphQLPropertyName, value) => handleNoteChange(graphQLPropertyName, value)} />
+              </ModalDialog>
+          )}
         </PageContainer>
       </>
     )

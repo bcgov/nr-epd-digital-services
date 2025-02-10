@@ -14,14 +14,14 @@ const roleBasedRoutes: any = {
   client: [
     { path: "/", element: <Dashboard /> },
     { path: "/people", element: <Search /> },
-    { path: "/people/:id/person", element: <Person /> },
-    { path: "/people/person", element: <Person /> },
+    { path: "/person/:id", element: <Person /> },
+    { path: "/person", element: <Person /> },
   ],
   internal: [
     { path: "/dashboard", element: <Dashboard /> },
     { path: "/people", element: <Search /> },
-    { path: "/people/:id/person", element: <Person /> },
-    { path: "/people/person", element: <Person /> },
+    { path: "/person/:id", element: <Person /> },
+    { path: "/person", element: <Person /> },
   ],
 };
 

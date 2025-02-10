@@ -4,6 +4,8 @@ import { Repository, Brackets } from 'typeorm';
 import { CreatePersonInput } from '../dto/createPersonInput';
 import { SearchPersonResponse } from '../dto/reponse/fetchSearchPerson';
 import { Person } from '../entities/person.entity';
+import { CreatePerson } from '../dto/person/createPerson.dto';
+import { UpdatePerson } from '../dto/person/updatePerson.dto';
 
 @Injectable()
 export class PersonService {
@@ -13,7 +15,8 @@ export class PersonService {
   ) {}
 
   /** Fetch all person records */
-  async findAll(): Promise<Person[]> {
+  async findAll()
+  {
     try {
       return await this.personRepository.find();
     } catch (error) {
@@ -22,7 +25,8 @@ export class PersonService {
   }
 
   /** Find a person by ID */
-  async findOne(id: number): Promise<Person> {
+  async findOne(id: number)
+  {
     try {
       return await this.personRepository.findOneBy({ id: id });
     } catch (error) {
@@ -42,14 +46,13 @@ export class PersonService {
   }
 
   /** Create a new person record */
-  async create(input: CreatePersonInput): Promise<Person> {
+  async create(input: CreatePerson, userInfo: any)
+  {
     try {
       const person = this.personRepository.create({
         ...input,
-        createdBy: 'system', // Placeholder, replace with actual user context
+        createdBy: userInfo ? userInfo.givenName : '',
         createdDatetime: new Date(),
-        updatedBy: 'system',
-        updatedDatetime: new Date(),
       });
       return await this.personRepository.save(person);
     } catch (error) {
@@ -58,13 +61,15 @@ export class PersonService {
   }
 
   /** Update existing person records */
-  async update(input: CreatePersonInput[]): Promise<boolean> {
+  async update(input: UpdatePerson[], userInfo: any)
+  {
     try {
       for (const data of input) {
         const person = await this.findOne(data.id);
         const updatedPerson = {
           ...person,
           ...data,
+          updatedBy: userInfo ? userInfo.givenName : '',
           updatedDateTime: new Date(),
         };
         await this.personRepository.save(updatedPerson);

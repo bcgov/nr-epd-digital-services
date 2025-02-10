@@ -134,7 +134,7 @@ const personForm: { [key: string]: IFormField } = {
   address1: {
     type: FormFieldType.Search,
     label: 'Address Line 1',
-    graphQLPropertyName: 'addressLine1',
+    graphQLPropertyName: 'address_1',
     customMenuMessage: <span>Please select the address line 1: </span>,
     value: '',
     options: null,
@@ -151,7 +151,7 @@ const personForm: { [key: string]: IFormField } = {
   address2: {
     type: FormFieldType.Search,
     label: 'Address Line 2',
-    graphQLPropertyName: 'addressLine2',
+    graphQLPropertyName: 'address_2',
     value: '',
     customMenuMessage: <span>Please select the address line 2: </span>,
     options: null,
@@ -179,7 +179,7 @@ const personForm: { [key: string]: IFormField } = {
   province: {
     type: FormFieldType.Text,
     label: 'Province',
-    graphQLPropertyName: 'province',
+    graphQLPropertyName: 'prov',
     value: '',
     colSize: 'col-lg-4 col-md-6 col-sm-12',
     customLabelCss:'custom-people-lbl',
@@ -201,7 +201,7 @@ const personForm: { [key: string]: IFormField } = {
   postalCode: {
       type: FormFieldType.Text,
       label: 'Postal Code',
-      graphQLPropertyName: 'postalCode',
+      graphQLPropertyName: 'postal',
       value: '',
       colSize: 'col-lg-4 col-md-6 col-sm-12',
       customLabelCss:'custom-people-lbl',

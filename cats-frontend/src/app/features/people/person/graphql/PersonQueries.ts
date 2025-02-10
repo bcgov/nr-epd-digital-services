@@ -1,27 +1,35 @@
 import gql from 'graphql-tag';
 
 export const GET_PERSON_BY_ID = gql`
-  query findPersonById($id: String!) 
+  query findPersonById($id: Float!) 
   {
     findPersonById(id: $id)
     {
-      id
-      isActive
-      isTaxExempt
-      firstName
-      middleName
-      lastName
-      phone
-      mobile
-      fax
-      email
-      loginUserName
-      addressLine1
-      addressLine2
-      city
-      province
-      country
-      postalCode
+      message
+      httpStatusCode
+      success
+      timestamp
+      data
+      {
+        id
+        firstName
+        middleName
+        lastName
+        isTaxExempt
+        loginUserName
+        address_1
+        address_2
+        city
+        prov
+        email
+        country
+        postal
+        phone
+        mobile
+        fax
+        isActive
+      }
+      
     }
   }
 `;
@@ -29,53 +37,27 @@ export const GET_PERSON_BY_ID = gql`
 
 
 export const UPDATE_PERSON_BY_ID = gql`
-  mutation updatePerson($id: String!, $input: CreatePersonInput!)
+  mutation updatePerson($input: [UpdatePerson!]!)
   {
-    updatePerson(id: $id, input: $input)
+    updatePerson(input: $input)
     {
-      id
-      isActive
-      isTaxExempt
-      firstName
-      middleName
-      lastName
-      phone
-      mobile
-      fax
-      email
-      loginUserName
-      addressLine1
-      addressLine2
-      city
-      province
-      country
-      postalCode
+     	message
+      httpStatusCode
+      success
+      timestamp
     }
   }
 `;
 
 export const CREATE_PERSON = gql`
-  mutation createPerson($input: CreatePersonInput!)
+  mutation createPerson($person: CreatePerson!)
   {
-    createPerson(input: $input)
+    createPerson(person: $person)
     {
-      id
-      isActive
-      isTaxExempt
-      firstName
-      middleName
-      lastName
-      phone
-      mobile
-      fax
-      email
-      loginUserName
-      addressLine1
-      addressLine2
-      city
-      province
-      country
-      postalCode
+      message
+      httpStatusCode
+      success
+      timestamp
     }
   }
 `;

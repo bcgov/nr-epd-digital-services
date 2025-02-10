@@ -1,11 +1,10 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-
-import { Person } from '../../entities/person.entity';
+import { ViewPerson } from '../person/viewPerson.dto';
 
 @ObjectType()
 export class SearchPersonResponse {
-  @Field(() => [Person])
-  persons: Person[];
+  @Field(() => [ViewPerson])
+  persons: ViewPerson[];
 
   @Field()
   count: number;

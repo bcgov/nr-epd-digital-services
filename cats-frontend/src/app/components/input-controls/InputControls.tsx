@@ -215,7 +215,7 @@ export const TextInput: React.FC<InputProps> = ({
     }
   }, []);
 
-  const validateInput = (inputValue: string) => {
+  const validateInput = (inputValue: any) => {
     if (validation) {
       if (validation?.pattern && !validation.pattern?.test(inputValue)) {
         setError(validation.customMessage || '');
@@ -238,8 +238,8 @@ export const TextInput: React.FC<InputProps> = ({
     }
 
     if (allowNumbersOnly) {
-      if (validateInput(inputValue)) {
-        onChange(parseFloat(inputValue)); // Update parent component state only if validation passes
+      if (validateInput(parseFloat(inputValue))) {
+        onChange(inputValue); // Update parent component state only if validation passes
       }
     } else {
       onChange(inputValue);
