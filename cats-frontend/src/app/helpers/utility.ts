@@ -174,9 +174,9 @@ export const showNotification = (
 };
 
 export enum UserRoleType {
-  CLIENT = "client",
   INTERNAL = "internal",
   SR = "sr",
+  default = "not-logged-in",
 }
 
 export const isUserOfType = (roleType: UserRoleType) => {
@@ -185,18 +185,6 @@ export const isUserOfType = (roleType: UserRoleType) => {
   if (user !== null) {
     const userRoles: any = user.profile?.role;
     switch (roleType) {
-      case "client":
-        const externalUserRole =
-          process.env.REACT_APP_SITE_EXTERNAL_USER_ROLE ||
-          ((window as any)._env_ &&
-            (window as any)._env_.REACT_APP_SITE_EXTERNAL_USER_ROLE) ||
-          "site-external-user";
-
-        if (userRoles.includes(externalUserRole)) {
-          return true;
-        } else {
-          return false;
-        }
       case "internal":
         const internalUserRole =
           process.env.REACT_APP_SITE_INTERNAL_USER_ROLE ||
@@ -210,29 +198,25 @@ export const isUserOfType = (roleType: UserRoleType) => {
           return false;
         }
       case "sr":
-        const srUserRole =
-          //  process.env?.REACT_APP_SITE_REGISTRAR_USER_ROLE
-          // ?? ((window as any)?._env_?.REACT_APP_SITE_REGISTRAR_USER_ROLE) ??
-          "site-site-registrar";
+        return false;
+      // const srUserRole =
+      //   //  process.env?.REACT_APP_SITE_REGISTRAR_USER_ROLE
+      //   // ?? ((window as any)?._env_?.REACT_APP_SITE_REGISTRAR_USER_ROLE) ??
+      //   "site-site-registrar";
 
-        if (userRoles.includes(srUserRole)) {
-          return true;
-        } else {
-          return false;
-        }
+      // if (userRoles.includes(srUserRole)) {
+      //   return true;
+      // } else {
+      //   return false;
+      // }
     }
   }
 };
 
 export const getLoggedInUserType = () => {
-  console.log("user type");
-  return isUserOfType(UserRoleType.CLIENT)
-    ? UserRoleType.CLIENT
-    : isUserOfType(UserRoleType.SR)
-      ? UserRoleType.SR
-      : isUserOfType(UserRoleType.INTERNAL)
-        ? UserRoleType.INTERNAL
-        : UserRoleType.CLIENT;
+  return isUserOfType(UserRoleType.INTERNAL)
+    ? UserRoleType.INTERNAL
+    : UserRoleType.default;
 };
 
 export const isUserRoleInternalUser = () => {};

@@ -2,7 +2,7 @@ import { Query, Resolver, Mutation, Args, Int } from '@nestjs/graphql';
 
 import { AuthenticatedUser, Public, Resource } from 'nest-keycloak-connect';
 import { CreatePersonInput } from '../dto/createPersonInput';
-import { HttpCode, HttpStatus, NotFoundException, UsePipes } from '@nestjs/common';
+import { HttpStatus, HttpCode, HttpStatus, NotFoundException, UsePipes } from '@nestjs/common';
 import { SearchPersonResponse } from '../dto/reponse/fetchSearchPerson';
 import { UpdateExternalUserResponse } from '../dto/reponse/updateExternalUserResponse';
 import { LoggerService } from '../logger/logger.service';
@@ -100,16 +100,6 @@ export class PersonResolver {
     }
   }
 
-  @Mutation(() => Boolean, { name: 'deletePerson' })
-  async deletePerson(@Args('id') id: string) {
-    try {
-      await this.personService.delete(id);
-      return true;
-    } catch (error) {
-      throw new Error(`Failed to delete person: ${error.message}`);
-    }
-  }
-
   /**
    * Find sites where search parameter matches person name or address
    * @param searchParam search parameter
@@ -125,7 +115,9 @@ export class PersonResolver {
     @Args('pageSize', { type: () => Int }) pageSize: number,
     //@Args('filters', { type: () => SiteFilters }) filters: SiteFilters,
   ) {
-    this.loggerSerivce.log('searchPerson start');
+    this.loggerSerivce.log(
+      'searchPerson start ' + searchParam + ' ' + page + ' ' + pageSize,
+    );
     return await this.personService.searchPerson(
       userInfo,
       searchParam,

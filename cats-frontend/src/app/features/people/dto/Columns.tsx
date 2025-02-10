@@ -37,13 +37,13 @@ const getPeopleSearchResultsColumns = () => {
       7,
       "Address",
       true,
-      "addressLine1",
+      "address_1,address_2",
       2,
       false,
       true,
       1,
       true,
-      getColumnType("Address", "addressLine1", "")
+      getColumnType("Address", "address_1,address_2", "")
     ),
     new TableColumn(
       2,

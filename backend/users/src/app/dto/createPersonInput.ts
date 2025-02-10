@@ -68,6 +68,9 @@ export class CreatePersonInput {
   // @Field(() => String, { nullable: true })  // nullable: true
   // updatedBy: string | null;
 
-  // @Field(() => Date, { nullable: true })  // nullable: true
-  // updatedDatetime: Date | null;
+  @Field(() => Date)
+  updatedDatetime: Date;
+
+  @Field(() => Boolean, { nullable: true })
+  isDeleted?: boolean;
 }

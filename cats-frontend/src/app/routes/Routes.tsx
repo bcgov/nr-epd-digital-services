@@ -12,7 +12,7 @@ import Person from "../features/people/person/Person";
 
 const roleBasedRoutes: any = {
   client: [
-    { path: "/", element: <Dashboard /> },
+    { path: "/", element: <Search /> },
     { path: "/people", element: <Search /> },
     { path: "/person/:id", element: <Person /> },
     { path: "/person", element: <Person /> },

@@ -36,8 +36,3 @@
   text-decoration: none;
   color: var(--surface-color-primary-default, #053662);
 }
-
-.custom-manage-people-icon {
-  text-align: center;
-  color: var(--icons-color-primary);
-}
