@@ -36,21 +36,16 @@ jobs:
 
   tests:
     name: Unit Tests
-    runs-on: ubuntu-latest  # Ensure a runner is specified
+    uses: ./.github/workflows/_code-cov.yml
     strategy:
       matrix:
         component: [backend/applications, backend/gateway, backend/users, frontend]
-    steps:
-      - uses: actions/checkout@v3  # Ensure repo is checked out
-      - name: Run Code Coverage Workflow
-        uses: ./.github/workflows/_code-cov.yml
-        with:
-          component: ${{ matrix.component }}
-          lcov_file: ${{ matrix.component }}/coverage/lcov.info
-          test_cmd: npm run test:cov
-        env:
-          LOG_LEVEL: info
-          LOG_FILE_LOCATION: /tmp/sites-%DATE%.log
+    secrets:
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      component: ${{ matrix.component }}
+      lcov_file: ${{ matrix.component }}/coverage/lcov.info
+      test_cmd: npm run test:cov
 
   sonarcloud:
     name: Static Analysis
