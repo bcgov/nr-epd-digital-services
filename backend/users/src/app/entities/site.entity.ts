@@ -10,7 +10,7 @@ import { Application } from './application.entity';
 import { Region } from './region.entity';
 
 @Index('pk_site', ['id'], { unique: true })
-@Entity('site', { schema: 'cats' })
+@Entity('site')
 export class Site {
   @Column('integer', { primary: true, name: 'id' })
   id: number;

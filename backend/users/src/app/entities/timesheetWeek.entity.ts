@@ -3,7 +3,7 @@ import { Timesheet } from './timesheet.entity';
 
 @Index('idx_timesheet_week_end_date', ['endDate'], {})
 @Index('pk_timesheet_week', ['startDate'], { unique: true })
-@Entity('timesheet_week', { schema: 'cats' })
+@Entity('timesheet_week')
 export class TimesheetWeek {
   @Column('date', { primary: true, name: 'start_date' })
   startDate: string;

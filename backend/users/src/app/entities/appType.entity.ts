@@ -9,7 +9,7 @@ import { AppTypeDefaultService } from './appTypeDefaultService.entity';
 import { Application } from './application.entity';
 
 @Index('pk_app_type', ['id'], { unique: true })
-@Entity('app_type', { schema: 'cats' })
+@Entity('app_type')
 export class AppType {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

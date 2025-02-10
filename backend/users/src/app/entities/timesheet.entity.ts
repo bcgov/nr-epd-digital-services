@@ -16,7 +16,7 @@ import { TimesheetDetail } from './timesheetDetail.entity';
 @Index('pk_timesheet', ['id'], { unique: true })
 @Index('idx_timesheet_person_id', ['personId'], {})
 @Index('idx_timesheet_week_start_date', ['weekStartDate'], {})
-@Entity('timesheet', { schema: 'cats' })
+@Entity('timesheet')
 export class Timesheet {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

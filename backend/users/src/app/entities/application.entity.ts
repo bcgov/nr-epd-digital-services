@@ -36,7 +36,7 @@ import { Timesheet } from './timesheet.entity';
 @Index('idx_application_review_process_id', ['reviewProcessId'], {})
 @Index('idx_application_risk_id', ['riskId'], {})
 @Index('idx_application_site_id', ['siteId'], {})
-@Entity('application', { schema: 'cats' })
+@Entity('application')
 export class Application {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

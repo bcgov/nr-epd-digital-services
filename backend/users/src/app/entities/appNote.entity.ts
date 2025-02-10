@@ -10,7 +10,7 @@ import { Application } from './application.entity';
 
 @Index('idx_app_note_application_id', ['applicationId'], {})
 @Index('pk_app_note', ['id'], { unique: true })
-@Entity('app_note', { schema: 'cats' })
+@Entity('app_note')
 export class AppNote {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;

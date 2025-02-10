@@ -1,0 +1,97 @@
+.SITE-Button {
+  border: none;
+  border-radius: var(--surface-border-radius-medium);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--layout-padding-small);
+  font: var(--typography-regular-body);
+  padding-left: var(--layout-padding-medium);
+  padding-right: var(--layout-padding-medium);
+}
+
+.SITE-Button:disabled {
+  cursor: not-allowed;
+}
+.SITE-Button:focus:not(:focus-visible) {
+  outline: solid var(--layout-border-width-medium) var(--surface-primary-active);
+}
+
+/* Sizes */
+.SITE-Button.small {
+  min-height: 24px;
+  /* font rule below is equivalent to --typography-regular-label variable in BC Design Tokens library v3.1.0
+   We are on v2.1.0 and this variable has a different font size and line height */
+  font: 400 0.75rem/1.125rem 'BC Sans';
+  padding-left: var(--layout-padding-small);
+  padding-right: var(--layout-padding-small);
+}
+.SITE-Button.medium {
+  min-height: 40px;
+}
+
+/* Variant - Primary */
+.SITE-Button.primary {
+  background: var(--surface-primary-default);
+  border: 1px solid var(--surface-primary-default);
+  color: var(--typography-color-primary-invert);
+}
+.SITE-Button.primary:disabled {
+  background-color: var(--surface-primary-disabled);
+  color: var(--typography-color-disabled);
+  border-color: var(--surface-primary-disabled);
+}
+.SITE-Button.primary:hover:not(:disabled) {
+  background-color: var(--surface-color-primary-hover);
+}
+.SITE-Button.primary:focus {
+  background-color: var(--surface-color-primary-hover);
+}
+
+/* Variant - Secondary */
+.SITE-Button.secondary {
+  background-color: var(--surface-secondary-default);
+  border: 1px solid var(--surface-border-dark);
+  color: var(--typography-color-primary);
+}
+.SITE-Button.secondary:disabled {
+  background-color: var(--surface-secondary-disabled);
+  border-color: var(--surface-secondary-disabled);
+  color: var(--typography-color-disabled);
+}
+.SITE-Button.secondary:hover:not(:disabled) {
+  background-color: var(--surface-secondary-hover);
+}
+
+/* Variant - Tertiary */
+.SITE-Button.tertiary {
+  background-color: var(--surface-color-default);
+  color: var(--typography-color-primary);
+}
+.SITE-Button.tertiary:disabled {
+  background-color: var(--surface-tertiary-default);
+  color: var(--typography-color-disabled);
+}
+.SITE-Button.tertiary:hover:not(:disabled) {
+  background-color: var(--surface-tertiary-hover);
+}
+
+.SITE-Button.btn-icon {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--surface-primary-default);
+}
+.SITE-Button.btn-icon:hover:not(:disabled) {
+  background-color: var(--surface-color-brand-blue-20);
+}
+.SITE-Button.btn-icon:focus {
+  background-color: var(--surface-color-brand-blue-20);
+  border: 1px solid var(--surface-color-primary-active-border);
+}
+.SITE-Button.btn-icon.btn-active {
+  background: var(--surface-color-primary-default);
+  color: var(--typography-color-primary-invert);
+}
+.SITE-Button.btn-icon.btn-active:hover {
+  background: var(--surface-color-primary-default);
+}

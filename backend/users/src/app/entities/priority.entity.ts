@@ -8,7 +8,7 @@ import {
 import { AppPriority } from './appPriority.entity';
 
 @Index('pk_priority', ['id'], { unique: true })
-@Entity('priority', { schema: 'cats' })
+@Entity('priority')
 export class Priority {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
