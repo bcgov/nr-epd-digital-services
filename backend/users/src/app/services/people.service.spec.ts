@@ -1,32 +1,56 @@
 import { PersonService } from './people.service';
 import { Repository } from 'typeorm';
 import { Person } from '../entities/person.entity';
-import { CreatePersonInput } from '../dto/createPersonInput';
-import { SearchPersonResponse } from '../dto/reponse/fetchSearchPerson';
 import { LoggerService } from '../logger/logger.service';
-import { log } from 'console';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Test, TestingModule } from '@nestjs/testing';
+import { SearchPersonResponse } from '../dto/reponse/fetchSearchPerson';
+import { CreatePersonInput } from '../dto/createPersonInput';
 
 describe('PersonService', () => {
   let personService: PersonService;
   let personRepository: Repository<Person>;
-  let loggerSerivce: LoggerService;
+  let loggerService: LoggerService;
 
-  beforeEach(() => {
-    personRepository = {
-      find: jest.fn(),
-      findOneBy: jest.fn(),
-      delete: jest.fn(),
-      create: jest.fn(),
-      save: jest.fn(),
-      createQueryBuilder: jest.fn().mockReturnValue({
-        andWhere: jest.fn().mockReturnThis(),
-        skip: jest.fn().mockReturnThis(),
-        take: jest.fn().mockReturnThis(),
-        getManyAndCount: jest.fn(),
-      }),
-    } as any;
-    loggerSerivce = new LoggerService();
-    personService = new PersonService(personRepository, loggerSerivce);
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        PersonService,
+        LoggerService,
+        {
+          provide: getRepositoryToken(Person),
+          useValue: {
+            find: jest.fn(),
+            findOneBy: jest.fn(),
+            delete: jest.fn(),
+            create: jest.fn(),
+            save: jest.fn(),
+            createQueryBuilder: jest.fn().mockReturnValue({
+              andWhere: jest.fn().mockReturnThis(),
+              skip: jest.fn().mockReturnThis(),
+              take: jest.fn().mockReturnThis(),
+              getManyAndCount: jest.fn(),
+            }),
+          }, // Mock the repository method you will use
+        },
+      ],
+    }).compile();
+
+    personService = module.get<PersonService>(PersonService);
+    personRepository = module.get<Repository<Person>>(
+      getRepositoryToken(Person),
+    ); // If you need direct access to the repo
+    loggerService = module.get<LoggerService>(LoggerService);
+  });
+
+  it('should find all persons', async () => {
+    // Mock the repository's find method
+    (personRepository.find as jest.Mock).mockResolvedValue([
+      { id: 1, firstName: 'John' },
+    ]);
+
+    const result = await personService.findAll();
+    expect(result).toEqual([{ id: 1, firstName: 'John' }]);
   });
 
   it('should find all persons', async () => {
