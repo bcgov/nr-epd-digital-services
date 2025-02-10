@@ -34,18 +34,18 @@ jobs:
       img_fallback: prod
       triggers: ${{ matrix.triggers }}
 
-  # tests:
-  #   name: Unit Tests
-  #   uses: ./.github/workflows/_code-cov.yml
-  #   strategy:
-  #     matrix:
-  #       component: [backend/applications, backend/gateway, backend/users, frontend]
-  #   secrets:
-  #     gh_token: ${{ secrets.GITHUB_TOKEN }}
-  #   with:
-  #     component: ${{ matrix.component }}
-  #     lcov_file: ${{ matrix.component }}/coverage/lcov.info
-  #     test_cmd: npm run test:cov
+  tests:
+    name: Unit Tests
+    uses: ./.github/workflows/_code-cov.yml
+    strategy:
+      matrix:
+        component: [backend/applications, backend/gateway, backend/users, frontend]
+    secrets:
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      component: ${{ matrix.component }}
+      lcov_file: ${{ matrix.component }}/coverage/lcov.info
+      test_cmd: npm run test:cov
 
   sonarcloud:
     name: Static Analysis

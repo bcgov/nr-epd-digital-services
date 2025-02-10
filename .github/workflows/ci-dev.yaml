@@ -37,9 +37,6 @@ jobs:
       component: ${{ matrix.component }}
       lcov_file: ${{ matrix.component }}/coverage/lcov.info
       test_cmd: npm run test:cov
-    env:
-      LOG_LEVEL: info
-      LOG_FILE_LOCATION: /tmp/sites-%DATE%.log
   sonarcloud:
     name: Static Analysis
     needs:
