@@ -1,0 +1,259 @@
+{{- if .Values.backend.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "backend.fullname" . }}
+  labels:
+    {{- include "backend.labels" . | nindent 4 }}
+spec:
+  strategy:
+    type: {{ .Values.backend.deploymentStrategy }}
+  {{- if not .Values.backend.autoscaling.enabled }}
+  replicas: {{ .Values.backend.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "backend.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+      labels:
+        {{- include "backend.labels" . | nindent 8 }}
+    spec:
+      {{- if .Values.backend.podSecurityContext }}
+      securityContext:
+        {{- toYaml .Values.backend.podSecurityContext | nindent 12 }}
+      {{- end }}
+      initContainers: # The container that will do the initial database seed and migrations.
+        - name: {{ include "backend.fullname" . }}-init
+          image: "{{.Values.global.registry}}/{{.Values.global.repository}}/backend-migration:{{ .Values.global.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ default "Always" .Values.backend.imagePullPolicy }}
+          env:
+            - name: POSTGRES_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+            - name: POSTGRES_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: user
+                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+            - name: POSTGRES_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  key: dbname
+                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+            - name: POSTGRES_DB_SCHEMA
+              value: {{ .Values.global.config.schemaName }}
+            - name: POSTGRESQL_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: host
+                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+            - name: POSTGRESQL_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: port
+                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+            - name: POSTGRES_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: postgres-crunchy-pguser-postgres
+            - name: POSTGRES_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: user
+                  name: postgres-crunchy-pguser-postgres
+          resources: # this is optional
+            requests:
+              cpu: {{ .Values.backend.resources.requests.cpu }}
+              memory: {{ .Values.backend.resources.requests.memory }}
+        {{- if .Values.global.config.seed.enabled }}
+        - name: {{ include "backend.fullname" . }}-seed
+          image: "artifacts.developer.gov.bc.ca/github-docker-remote/bcgov/nr-containers/alpine:3.20" # here we just need a prebuilt image with psql and shell, just use postgres alpine image
+          imagePullPolicy: {{ default "Always" .Values.backend.imagePullPolicy }}
+          command: ["/bin/sh"]
+          args: ["-c", "sh /mnt/scripts/seed.sh"]
+          volumeMounts:
+            - mountPath: /mnt/sql
+              name: seed-data-mount
+            - mountPath: /mnt/scripts
+              name: seed-data-scripts
+          env:
+            - name: SEED_ENABLED
+              value: {{.Values.global.config.seed.enabled | quote}}
+            - name: POSTGRES_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+            - name: POSTGRES_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: user
+                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+            - name: POSTGRES_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  key: dbname
+                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+            - name: POSTGRES_DB_SCHEMA
+              value: {{ .Values.global.config.schemaName }}
+            - name: POSTGRESQL_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: host
+                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+            - name: POSTGRESQL_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: port
+                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+            - name: POSTGRES_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: postgres-crunchy-pguser-postgres
+            - name: POSTGRES_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: user
+                  name: postgres-crunchy-pguser-postgres
+            - name: SEED_DATA_PATH
+              value: "/mnt/sql/data_migration.sql"
+          resources: # this is optional
+            requests:
+              cpu: {{ .Values.backend.resources.requests.cpu }}
+              memory: {{ .Values.backend.resources.requests.memory }}
+        {{- end }}
+      containers:
+        - name: {{ include "backend.fullname" . }}
+          {{- if .Values.backend.securityContext }}
+          securityContext:
+            {{- toYaml .Values.backend.securityContext | nindent 12 }}
+          {{- end }}
+          image: "{{.Values.global.registry}}/{{.Values.global.repository}}/backend:{{ .Values.global.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ default "Always" .Values.backend.imagePullPolicy }}
+          envFrom:
+            - secretRef:
+                name: {{.Release.Name}}-backend
+          env:
+            - name: LOG_LEVEL
+              value: "info"
+            - name: LOG_FILE_LOCATION
+              value: "/logs/sites-%DATE%.log"
+            - name: LOG_FILE_MAX_SIZE
+              value: "25m"
+            - name: LOG_FILE_MAX_FILES
+              value: "7d"
+            - name: PORT
+              value: {{ .Values.backend.service.targetPort | quote }}
+            - name: GRAPHQL_SCHEMA_FILE_PATH
+              value: "/graphql/schema.graphql"
+            - name: POSTGRES_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+            - name: POSTGRES_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: user
+                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+            - name: POSTGRES_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  key: dbname
+                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+            - name: POSTGRES_DB_SCHEMA
+              value: {{ .Values.global.config.schemaName }}
+            - name: POSTGRESQL_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: host
+                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+            - name: POSTGRESQL_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: port
+                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+            - name: POSTGRES_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: postgres-crunchy-pguser-postgres
+            - name: POSTGRES_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: user
+                  name: postgres-crunchy-pguser-postgres
+          ports:
+            - name: http
+              containerPort: {{ .Values.backend.service.targetPort }}
+              protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.backend.service.targetPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 2
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 30
+          livenessProbe:
+            successThreshold: 1
+            failureThreshold: 3
+            tcpSocket:
+              port: {{ .Values.backend.service.targetPort }}
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 5
+          resources: # this is optional
+            requests:
+              cpu: {{ .Values.backend.resources.requests.cpu }}
+              memory: {{ .Values.backend.resources.requests.memory }}
+          volumeMounts:
+            - mountPath: /logs
+              name: log-storage
+            - mountPath: /graphql
+              name: graphql-storage
+            - mountPath: /mnt/sql
+              name: seed-data-mount
+      volumes:
+        - name: log-storage
+          emptyDir: {}
+        - name: graphql-storage
+          emptyDir: {}
+        - name: seed-data-mount
+          persistentVolumeClaim:
+            claimName: nr-ora2pg-sql
+        - name: seed-data-scripts
+          configMap:
+            name: {{ template "backend.fullname" . }}-scripts
+
+      {{- with .Values.backend.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.backend.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values:
+                      - {{ include "backend.fullname" . }}
+                  - key: app.kubernetes.io/instance
+                    operator: In
+                    values:
+                      - {{ .Release.Name }}
+              topologyKey: "kubernetes.io/hostname"
+
+{{- end }}

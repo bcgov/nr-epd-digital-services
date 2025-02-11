@@ -1,0 +1,52 @@
+{{- if .Values.backend.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "backend.fullname" . }}-scripts
+  labels:
+      {{- include "backend.labels" . | nindent 4 }}
+data:
+  seed.sh: |
+    #!/bin/bash
+    # This file is responsible to populate the database with seed data. it is expected to run as second init container after migrations are run.
+    #
+    if [ ! "$POSTGRESQL_HOST" ];
+    then
+    echo 'Sourcing from .env'
+    . ./.env
+    else
+    echo 'Environment variables set...'
+    fi
+
+    # check if psql is present in container  or not
+    if ! command -v psql &> /dev/null
+    then
+    echo "psql could not be found"
+    exit 1
+    fi
+
+    # check if seed is enabled or not SEED_ENABLED should be true
+    if [ "$SEED_ENABLED" != "true" ]; then
+    echo "Seed data is not enabled. Exiting."
+    exit 0
+    fi
+
+    echo "SEED DATA PATH :: $SEED_DATA_PATH"
+    # check if seed data path is set or not
+    if [ -z "$SEED_DATA_PATH" ]; then
+    echo "SEED_DATA_PATH is not set. Exiting."
+    exit 0
+    fi
+
+    # check if sites table has any rows or not. if seed is already done, even if it is enabled, here it checks and skips seeding again.
+    if [ "$(PGPASSWORD="$POSTGRES_ADMIN_PASSWORD" psql -h "$POSTGRESQL_HOST" -d "$POSTGRES_DATABASE" -U "$POSTGRES_ADMIN_USERNAME" -t -c "SELECT count(*) FROM sites.sites;")" -gt 0 ]; then
+      echo "Seed data already loaded. Exiting."
+      exit 0
+    fi
+
+    echo "Seed data set, seed is enabled, and db is blank, loading data."
+    PGPASSWORD="$POSTGRES_ADMIN_PASSWORD" psql -h "$POSTGRESQL_HOST" -d "$POSTGRES_DATABASE" -U "$POSTGRES_ADMIN_USERNAME" -f "$SEED_DATA_PATH"
+    echo "Seed data successfully loaded."
+    exit 0
+
+{{- end }}
