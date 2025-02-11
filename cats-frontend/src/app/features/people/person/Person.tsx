@@ -18,6 +18,7 @@ import CustomLabel from "../../../components/simple/CustomLabel";
 import { CancelButton, SaveButton } from "../../../components/simple/CustomButtons";
 import { ActionItems } from "../../../components/action/ActionsConfig";
 import { UserAction } from "../../../helpers/requests/UserAction";
+import NavigationBar from "../../../components/navigation-bar/NavigationBar";
 import { usePerson } from "./hooks/usePerson";
 import { useCreatePerson } from "./hooks/useCreatePerson";
 import { useUpdatePerson } from "./hooks/useUpdatePerson";
@@ -170,23 +171,21 @@ const Person = () => {
       });
   };
 
-  useEffect(() => { console.log('formData -->', formData)}, [formData])
-
-  const handleDeleteNotes = (particIsDelete: boolean = false) => {
-      if (particIsDelete) 
-      {
-          // Filter out participants based on selectedRows for formData
-          const filteredNotes = noteData.filter((note: any) => !selectedRows.some((row) => row.noteId === note.note_id && row.psnId === note.psn_id));
-          setNoteData(filteredNotes);
-          // Clear selectedRows state
-          setSelectedRows([]);
-          setIsDelete(false);
-      } 
-      else 
-      {
-          setIsDelete(true);
-      }
-  }
+    const handleDeleteNotes = (particIsDelete: boolean = false) => {
+        if (particIsDelete) 
+        {
+            // Filter out participants based on selectedRows for formData
+            const filteredNotes = noteData.filter((note: any) => !selectedRows.some((row) => row.noteId === note.note_id && row.psnId === note.psn_id));
+            setNoteData(filteredNotes);
+            // Clear selectedRows state
+            setSelectedRows([]);
+            setIsDelete(false);
+        } 
+        else 
+        {
+            setIsDelete(true);
+        }
+    }
 
   const handleItemClick = async (value: string) => {
       switch (value) {
@@ -218,132 +217,131 @@ const Person = () => {
     return <LoadingOverlay loading={loading} />
 
 
-  return (
-    <>
-    <div className={`d-flex justify-content-between align-items-center ${isVisible ? 'custom-person-sticky-header' : 'custom-person-header'} w-100`}>
-      <div className="d-flex gap-4 flex-wrap align-items-center">
-        <Button variant="secondary" onClick={onClickBackButton}>
-          <AngleLeft />
-          Back to {fromScreen}
-        </Button>
-        <div className="d-flex flex-wrap align-items-center pe-3 custom-person-sticky-header-lbl">
-        {
-          Object.keys(formData ?? {})?.length > 0 
+    const navigationBarChildern = <>
+        { viewMode === UserMode.Default &&
+          userType === UserType.STAFF &&
+           (
+            <Actions
+              label="Actions"
+              items={ActionItems}
+              onItemClick={handleItemClick}
+            />
+          )
+        }
+        <div className="gap-3 align-items-center d-none d-md-flex d-lg-flex d-xl-flex">
+          {viewMode === UserMode.EditMode && 
+            userType === UserType.STAFF && 
+          (
+            <>
+              <CustomLabel labelType="c-b" label={`${'Edit Mode'}`}/>
+              <SaveButton clickHandler={() => handleItemClick(UserAction.SAVE)}/>
+              <CancelButton variant="secondary" clickHandler={() => handleItemClick(UserAction.CANCEL)} />
+            </>
+          )}
+        </div>
+        {viewMode === UserMode.EditMode && (
+          <div className="d-flex d-md-none d-lg-none d-xl-none">
+            <Actions
+              label="Actions"
+              items={[
+                {
+                  label: UserAction.SAVE,
+                  value: UserAction.SAVE,
+                },
+                {
+                  label: UserAction.CANCEL,
+                  value: UserAction.CANCEL,
+                },
+              ]}
+              onItemClick={handleItemClick}
+            />
+          </div>
+        )} 
+    </>
+
+    const navigationBarText = <>
+       {  Object.keys(formData).length > 0 
           ?
-          isVisible && <div className="d-flex align-items-center">Viewing: <span>{(formData?.firstName ?? '') + ' ' + (formData?.middleName ?? '') + ' ' + (formData?.lastName ?? '')}</span></div>
+          isVisible && <div className="d-flex align-items-center">Viewing: <span>{formData?.first_name + ' ' + formData?.last_name}</span></div>
           :
           <span>Create New Person</span>
-        }
-        </div>
-      </div>
-      <div className="d-flex gap-2 justify-align-center pe-2 position-relative">
-         {/* For Action Dropdown*/}
-         { viewMode === UserMode.Default &&
-              userType === UserType.STAFF &&
-               (
-                <Actions
-                  label="Actions"
-                  items={ActionItems}
-                  onItemClick={handleItemClick}
-                />
-              )}
-            {/* For Edit */}
-            <div className="gap-3 align-items-center d-none d-md-flex d-lg-flex d-xl-flex">
-              {viewMode === UserMode.EditMode && 
-                userType === UserType.STAFF && 
-              (
-                <>
-                  <CustomLabel labelType="c-b" label={`${'Edit Mode'}`}/>
-                  <SaveButton clickHandler={() => handleItemClick(UserAction.SAVE)}
-                    // isDisabled={savedChanges?.length > 0 ? false : true}
-                  />
-                  <CancelButton variant="secondary" clickHandler={() => handleItemClick(UserAction.CANCEL)} />
-                </>
-              )}
-            </div>
-            {viewMode === UserMode.EditMode && (
-              <div className="d-flex d-md-none d-lg-none d-xl-none">
-                <Actions
-                  label="Actions"
-                  items={[
-                    {
-                      label: UserAction.SAVE,
-                      value: UserAction.SAVE,
-                    },
-                    {
-                      label: UserAction.CANCEL,
-                      value: UserAction.CANCEL,
-                    },
-                  ]}
-                  onItemClick={handleItemClick}
-                />
-              </div>
-            )}
-      </div>
-    </div>
-      <PageContainer role="Person">
-          <div className="custom-person-name">
-            { 
-              Object.keys(formData ?? {}).length > 0 
-              ?
-              (formData?.firstName ?? '') + ' ' + (formData?.middleName ?? '') + ' ' + (formData?.lastName ?? '')
-              :
-              'New Person'
-            }
-          </div>
-          <Widget title={'Contact Information'} hideTable = {true} customWidgetCss="custom-widget">
-              <Form editMode={viewMode === UserMode.EditMode} formRows={contactInformationForm} formData={formData ?? {}} handleInputChange={(graphQLPropertyName, value) =>
-            handleInputChange(graphQLPropertyName, value)} />
-          </Widget>
-          <Widget title={'Address'} hideTable = {true} customWidgetCss="custom-widget">
-              <Form editMode={viewMode === UserMode.EditMode} formRows={addressForm} formData={formData ?? {}} handleInputChange={(graphQLPropertyName, value) =>
-            handleInputChange(graphQLPropertyName, value)} />
-          </Widget>
-          <Widget  
-              currentPage={1} 
-              allowRowsSelect={true}
-              tableColumns={noteColumns}
-              tableData={noteData ?? []} 
-              // tableIsLoading={status ?? RequestStatus.idle}
-              changeHandler={(event) => handleTableChange(formData?.psn_id, event)} 
-              sortHandler={(row, ascDir) => { handleTableSort(row, ascDir)}}
-              title={'Notes'} 
-              aria-label="Manage Person Widget"
-              primaryKeycolumnName="note_id">
-              { userType === UserType.STAFF && (
-                  <div className="d-flex gap-2 flex-wrap">
-                  <Button variant="secondary" onClick={handleAddNotes}>
-                      <UserPlus />
-                      New Note
-                  </Button>
-                  <Button
-                      variant="secondary"
-                      onClick={() => handleDeleteNotes()}
-                      disabled={selectedRows.length <= 0}
-                  >
-                      <TrashCanIcon />
-                      Delete Selected
-                  </Button>
-                  </div>
-               )}
-          </Widget>
-          {isDelete && (
-              <ModalDialog
-              key={v4()}
-              label={`Are you sure you want to delete note(s) ?`}
-              closeHandler={(response) => {
-                  if (response) {
-                  if (isDelete) {
-                      handleDeleteNotes(response);
-                  }
-                  }
-                  setIsDelete(false);
-              }}
-              />
-          )}
-      </PageContainer>
+       }
     </>
-  )
+    
+    return (
+      <>
+        <NavigationBar 
+          isVisible={isVisible} 
+          onClickBackButton = {onClickBackButton}
+          backButtonProps={ { variant:"secondary"} } 
+          backButtonText={`Back to ${fromScreen}`}
+          navigationBarText={navigationBarText}
+          childern={navigationBarChildern}
+        />
+        <PageContainer role="Person">
+            <div className="custom-person-name">
+              { 
+                Object.keys(formData).length > 0 
+                ?
+                formData?.first_name + ' ' + formData?.last_name
+                :
+                'New Person'
+              }
+            </div>
+            <Widget title={'Contact Information'} hideTable = {true} customWidgetCss="custom-widget">
+                <Form editMode={viewMode === UserMode.EditMode} formRows={contactInformationForm} formData={formData} handleInputChange={(graphQLPropertyName, value) =>
+              handleInputChange(graphQLPropertyName, value)} />
+            </Widget>
+            <Widget title={'Address'} hideTable = {true} customWidgetCss="custom-widget">
+                <Form editMode={viewMode === UserMode.EditMode} formRows={addressForm} formData={formData} handleInputChange={(graphQLPropertyName, value) =>
+              handleInputChange(graphQLPropertyName, value)} />
+            </Widget>
+            <Widget  
+                currentPage={1} 
+                allowRowsSelect={true}
+                tableColumns={noteColumns}
+                tableData={noteData ?? []} 
+                // tableIsLoading={status ?? RequestStatus.idle}
+                changeHandler={(event) => handleTableChange(formData.psn_id, event)} 
+                sortHandler={(row, ascDir) => { handleTableSort(row, ascDir)}}
+                title={'Notes'} 
+                aria-label="Manage Person Widget"
+                primaryKeycolumnName="note_id">
+
+                { userType === UserType.STAFF && (
+                    <div className="d-flex gap-2 flex-wrap">
+                    <Button variant="secondary" onClick={handleAddNotes}>
+                        <UserPlus />
+                        New Note
+                    </Button>
+                    <Button
+                        variant="secondary"
+                        onClick={() => handleDeleteNotes()}
+                        disabled={selectedRows.length <= 0}
+                    >
+                        <TrashCanIcon />
+                        Delete Selected
+                    </Button>
+                    </div>
+                 )}
+            </Widget>
+            {isDelete && (
+                <ModalDialog
+                key={v4()}
+                label={`Are you sure you want to delete note(s) ?`}
+                closeHandler={(response) => {
+                    if (response) {
+                    if (isDelete) {
+                        handleDeleteNotes(response);
+                    }
+                    }
+                    setIsDelete(false);
+                }}
+                />
+            )}
+        </PageContainer>
+      </>
+    )
 }
 
 export default Person;

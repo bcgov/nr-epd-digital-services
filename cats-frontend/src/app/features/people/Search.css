@@ -244,3 +244,8 @@ div.search-parent {
   display: flex;
   gap: var(--layout-margin-small);
 }
+
+.custom-manage-people-icon {
+  text-align: center;
+  color: var(--icons-color-primary);
+}

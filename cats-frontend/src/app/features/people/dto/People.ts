@@ -1,22 +1,38 @@
 export class Peoples {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
+  isTaxExempt: boolean;
   address: string;
   email: string;
-  taxExempt: boolean;
-  active: boolean;
+  isActive: boolean;
   lastUpdatedDate: string;
+  isEnvConsultant: boolean;
+  loginUserName: string;
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  province: string;
+  country: string;
+  postalCode: string;
 
   constructor() {
-    this.id = 0;
+    this.id = "";
     this.firstName = "";
     this.address = "";
     this.lastName = "";
     this.email = "";
     this.lastUpdatedDate = "";
-    this.taxExempt = false;
-    this.active = false;
+    this.isTaxExempt = false;
+    this.isEnvConsultant = false;
+    this.isActive = false;
+    this.loginUserName = "";
+    this.addressLine1 = "";
+    this.addressLine2 = "";
+    this.city = "";
+    this.province = "";
+    this.country = "";
+    this.postalCode = "";
   }
 }
 

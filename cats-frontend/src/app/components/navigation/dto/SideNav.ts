@@ -70,15 +70,12 @@ const icons = {
 
 // Refactored role-based navigation lists using a Record type
 const roleBasedSideBarList: Record<string, SideNav[]> = {
-  client: [
+  internal: [
     createSideNav("Manage", true, null, "/", [
       createSideNav("People", false, icons.folios, "/people"),
       createSideNav("Organizations", false, icons.purchases, "/purchases"),
     ]),
-    createSideNav("Cart", false, icons.cart, "/site/cart", [], true),
   ],
-  internal: [],
-  sr: [],
   public: [],
 };
 

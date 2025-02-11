@@ -6,6 +6,7 @@ import {
   graphqlPeopleDetailsQuery,
   graphqlPeopleDetailsQueryForLoggedIn,
   graphQlPeopleQueryForAuthenticatedUsers,
+  updatePerson,
 } from "../graphql/People";
 import { PeopleState } from "./PeopleState";
 import { RequestStatus } from "../../../helpers/requests/status";
@@ -14,6 +15,7 @@ import { GRAPHQL } from "../../../helpers/endpoints";
 //import { PeopleDetailsMode } from '../../details/dto/PeopleDetailsMode';
 import { UserType } from "../../../helpers/requests/userType";
 import Search from "../Search";
+import { error } from "console";
 
 const initialState: PeopleState = {
   peoples: [],
@@ -63,6 +65,19 @@ export const fetchPeoplesDetails = createAsyncThunk(
   }
 );
 
+export const updatePeople = createAsyncThunk(
+  "updatePeople",
+  async (input: any[]) => {
+    const request = await getAxiosInstance().post(GRAPHQL, {
+      query: print(updatePerson()),
+      variables: {
+        input: input,
+      },
+    });
+    return request.data;
+  }
+);
+
 export const fetchPeoples = createAsyncThunk(
   "peoples/fetchPeoples",
   async (
@@ -74,7 +89,6 @@ export const fetchPeoples = createAsyncThunk(
     },
     { getState }
   ) => {
-    console.log(args.searchParam, args.page, args.pageSize);
     const response = await getAxiosInstance().post(GRAPHQL, {
       query: print(graphQlPeopleQuery()),
       variables: {
@@ -83,24 +97,10 @@ export const fetchPeoples = createAsyncThunk(
         pageSize: args.pageSize ?? 5,
       },
     });
-    console.log("result search peoples", response.data);
-    return response.data?.data?.searchPeople;
-    // Dummy data
-    // return {
-    //   peoples: [
-    //     {
-    //       firstName: "Midhun",
-    //       id: 1,
-    //       lastName: "Murali",
-    //       address: "2929 quadra",
-    //       email: "midhun.murali@aot-technologies.com",
-    //       taxExempt: true,
-    //       active: true,
-    //       lastUpdatedDate: "Dec/30",
-    //     },
-    //   ],
-    //   count: 1,
-    // };
+
+    if (response.data?.errors?.length > 0) {
+      throw response.data?.errors[0];
+    } else return response.data?.data?.searchPerson;
   }
 );
 
@@ -238,7 +238,7 @@ const peopleSlice = createSlice({
       .addCase(fetchPeoples.fulfilled, (state, action) => {
         const newState = { ...state };
         newState.fetchStatus = RequestStatus.success;
-        newState.peoples = action.payload.peoples;
+        newState.peoples = action.payload.persons;
         newState.resultsCount = action.payload.count;
         return newState;
       })
@@ -261,6 +261,21 @@ const peopleSlice = createSlice({
         const newState = { ...state };
         newState.peopleDetailsFetchStatus = RequestStatus.failed;
         return newState;
+      })
+      .addCase(updatePeople.pending, (state, action) => {
+        const newState = { ...state };
+        newState.updateStatus = RequestStatus.loading;
+        return newState;
+      })
+      .addCase(updatePeople.fulfilled, (state, action) => {
+        const newState = { ...state };
+        newState.updateStatus = RequestStatus.success;
+        return newState;
+      })
+      .addCase(updatePeople.rejected, (state, action) => {
+        const newState = { ...state };
+        newState.updateStatus = RequestStatus.failed;
+        return newState;
       });
   },
 });
@@ -269,6 +284,7 @@ export const selectAllPeoples = (state: any) => {
   return state.peoples.peoples;
 };
 export const loadingState = (state: any) => state.peoples.fetchStatus;
+export const updatePeopleStatus = (state: any) => state.peoples.updateStatus;
 export const currentPageSelection = (state: any) => state.peoples.currentPage;
 export const currentPageSize = (state: any) => state.peoples.pageSize;
 export const resultsCount = (state: any) => state.peoples.resultsCount;

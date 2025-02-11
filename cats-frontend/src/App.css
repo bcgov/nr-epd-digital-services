@@ -43,7 +43,7 @@
 }
 
 * {
-  font-family: "Noto Sans" !important;
+  font-family: "BCSans" !important;
 }
 
 @media screen and (max-width: 768px) {
@@ -52,15 +52,13 @@
   }
 }
 
-
 /* Ensure the parent container takes up the full height of the screen */
 .container {
   display: flex;
   width: 100%;
-  height: 100vh; /* Make sure the container takes full viewport height */
   max-width: none; /* Remove any max-width constraints */
-  padding: 0;    /* Remove padding */
-  margin: 0;     /* Remove margin */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margin */
 }
 
 /* Sidebar styles */
@@ -177,5 +175,3 @@
   --map-button-font-size-large: 18px;
   --map-button-font-size-medium: 16px;
 }
-
-

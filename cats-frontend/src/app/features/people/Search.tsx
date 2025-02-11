@@ -9,6 +9,7 @@ import {
   updateSearchQuery,
   updatePageSizeSetting,
   resultsCount,
+  updatePeopleStatus,
 } from "./dto/PeopleSlice";
 
 import { AppDispatch } from "../../Store";
@@ -27,21 +28,28 @@ import {
 import { TableColumn } from "../../components/table/TableColumn";
 import { getPeopleSearchResultsColumns } from "./dto/Columns";
 import PageContainer from "../../components/simple/PageContainer";
-import { flattenFormRows, formatDateRange } from "../../helpers/utility";
+import {
+  flattenFormRows,
+  formatDateRange,
+  getUser,
+} from "../../helpers/utility";
 import FilterPills from "./filters/FilterPills";
 import { formRows } from "./dto/PeopleFilterConfig";
 import { SearchResultsFilters } from "./searchResults/SearchResultsFilters";
 import { SearchResultsActions } from "./searchResults/SearchResultsActions";
 import { Button } from "../../components/button/Button";
 import Actions from "../../components/action/Actions";
+import { useAuth } from "react-oidc-context";
 
 const Search = () => {
+  const auth = useAuth();
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch<AppDispatch>();
   const peoples = useSelector(selectAllPeoples);
   const currSearchVal = useSelector((state: any) => state.peoples);
   const currentPageInState = useSelector(currentPageSelection);
   const currentPageSizeInState = useSelector(currentPageSize);
+  const updatePeopleStatusInState = useSelector(updatePeopleStatus);
   const totalRecords = useSelector(resultsCount);
   const [noUserAction, setUserAction] = useState(true);
 
@@ -70,13 +78,15 @@ const Search = () => {
     }
   };
 
+  useEffect(() => {}, [selectedRows]);
+
   useEffect(() => {
     if (currSearchVal.searchQuery !== "") {
       dispatch(
         fetchPeoples({ searchParam: currSearchVal.searchQuery ?? searchText })
       );
     }
-  }, [currentPageInState]);
+  }, [currentPageInState, updatePeopleStatusInState]);
 
   useEffect(() => {
     if (currSearchVal.searchQuery !== "") {
@@ -100,6 +110,10 @@ const Search = () => {
   };
 
   useEffect(() => {
+    const loggedInUser = getUser();
+    if (loggedInUser === null) {
+      auth.signinRedirect({ extraQueryParams: { kc_idp_hint: "idir" } });
+    }
     if (currSearchVal.searchQuery !== "") {
       setUserAction(false);
       setSearchText(currSearchVal.searchQuery);
