@@ -44,20 +44,11 @@ const renderTableCell = (
 
 export const Link: React.FC<InputProps> = ({
   label,
-  placeholder,
-  type,
   value,
-  validation,
-  allowNumbersOnly,
-  isEditing,
-  customLabelCss,
   customInputTextCss,
-  customEditLabelCss,
-  customEditInputTextCss,
   customLinkValue,
   customIcon,
   onChange,
-  tableMode,
   stickyCol,
   href,
   componentName

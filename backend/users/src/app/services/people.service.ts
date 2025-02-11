@@ -124,6 +124,12 @@ export class PersonService {
             .orWhere('LOWER(person.prov) LIKE LOWER(:searchParam)', {
               searchParam: `%${searchParam.toLowerCase()}%`,
             })
+            .orWhere('LOWER(person.address_1) LIKE LOWER(:searchParam)', {
+              searchParam: `%${searchParam.toLowerCase()}%`,
+            })
+            .orWhere('LOWER(person.address_2) LIKE LOWER(:searchParam)', {
+              searchParam: `%${searchParam.toLowerCase()}%`,
+            })
             .orWhere('LOWER(person.postal) LIKE LOWER(:searchParam)', {
               searchParam: `%${searchParam.toLowerCase()}%`,
             });

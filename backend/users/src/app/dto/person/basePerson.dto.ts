@@ -99,4 +99,8 @@ export class BasePerson {
   @Field({defaultValue: false})
   @IsBoolean()
   isActive: boolean;
+
+  @Field({defaultValue: false})
+  @IsBoolean()
+  isDeleted?: boolean;
 }

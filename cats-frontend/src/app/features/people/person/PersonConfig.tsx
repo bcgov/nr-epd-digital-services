@@ -344,6 +344,9 @@ export const noteColumns: TableColumn[] = [
         tableMode: true,
         href: '#',
         customIcon: <PencilIcon />,
+        // Give the previous screen name only in case when on click of link modal will pop up if you will move to 
+        // another page give current page name to show previous screen name on back button.
+        componentName:'Manage People' 
       },
       columnSize: ColumnSize.XtraSmall,
       dynamicColumn: true,

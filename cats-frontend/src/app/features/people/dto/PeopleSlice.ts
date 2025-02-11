@@ -89,12 +89,13 @@ export const fetchPeoples = createAsyncThunk(
     },
     { getState }
   ) => {
+    const state: any = getState();
     const response = await getAxiosInstance().post(GRAPHQL, {
       query: print(graphQlPeopleQuery()),
       variables: {
         searchParam: args.searchParam,
-        page: args.page ?? 1,
-        pageSize: args.pageSize ?? 5,
+        page: state.peoples.currentPage ?? 1,
+        pageSize: state.peoples.pageSize ?? 5,
       },
     });
 

@@ -1,13 +1,9 @@
 import { Query, Resolver, Mutation, Args, Int } from '@nestjs/graphql';
-
 import { AuthenticatedUser, Public, Resource } from 'nest-keycloak-connect';
-import { CreatePersonInput } from '../dto/createPersonInput';
-import { HttpStatus, HttpCode, HttpStatus, NotFoundException, UsePipes } from '@nestjs/common';
+import { HttpStatus} from '@nestjs/common';
 import { SearchPersonResponse } from '../dto/reponse/fetchSearchPerson';
-import { UpdateExternalUserResponse } from '../dto/reponse/updateExternalUserResponse';
 import { LoggerService } from '../logger/logger.service';
 import { PersonService } from '../services/people.service';
-import { Person } from '../entities/person.entity';
 import { ViewPerson } from '../dto/person/viewPerson.dto';
 import { GenericResponseProvider } from '../dto/reponse/genericResponseProvider';
 import { PersonResponse } from '../dto/reponse/person/personResponse';

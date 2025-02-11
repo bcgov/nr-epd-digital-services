@@ -197,9 +197,14 @@ export const bulkAproveRejectChangesQL = () => gql`
 `;
 
 export const updatePerson = () => gql`
-  mutation updatePerson($input: [CreatePersonInput!]!) {
-    updatePerson(input: $input) {
-      recordUpdated
+  mutation updatePerson($input: [UpdatePerson!]!)
+  {
+    updatePerson(input: $input)
+    {
+     	message
+      httpStatusCode
+      success
+      timestamp
     }
   }
 `;

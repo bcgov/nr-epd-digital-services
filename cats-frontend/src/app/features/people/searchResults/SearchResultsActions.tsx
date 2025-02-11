@@ -50,10 +50,7 @@ export const SearchResultsActions: FC<SearchResultsActionsProps> = ({
             fax: row.fax,
             email: row.email,
             isActive: false,
-            rowVersionCount: 1,
-            createdBy: "",
             updatedBy: "",
-            createdDatetime: new Date(),
             updatedDatetime: new Date(),
             isDeleted: true,
           };
@@ -65,7 +62,6 @@ export const SearchResultsActions: FC<SearchResultsActionsProps> = ({
 
   const handleActiveStatusChange = (event: any) => {
     const loggedInUser = getUser();
-    console.log("event", event, selectedRows);
     if (loggedInUser === null) {
       auth.signinRedirect({ extraQueryParams: { kc_idp_hint: "idir" } });
     } else {
@@ -89,10 +85,7 @@ export const SearchResultsActions: FC<SearchResultsActionsProps> = ({
           fax: row.fax,
           email: row.email,
           isActive: event === "Active" ? true : false,
-          rowVersionCount: 1,
-          createdBy: "",
           updatedBy: "",
-          createdDatetime: new Date(),
           updatedDatetime: new Date(),
         };
       });

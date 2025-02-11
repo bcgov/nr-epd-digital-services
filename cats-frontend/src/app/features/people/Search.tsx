@@ -113,10 +113,10 @@ const Search = () => {
   };
 
   useEffect(() => {
-    const loggedInUser = getUser();
-    if (loggedInUser === null) {
-      auth.signinRedirect({ extraQueryParams: { kc_idp_hint: "idir" } });
-    }
+    // const loggedInUser = getUser();
+    // if (loggedInUser === null) {
+    //   auth.signinRedirect({ extraQueryParams: { kc_idp_hint: "idir" } });
+    // }
     if (currSearchVal.searchQuery !== "") {
       setUserAction(false);
       setSearchText(currSearchVal.searchQuery);

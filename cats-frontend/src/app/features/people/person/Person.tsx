@@ -19,7 +19,6 @@ import { CancelButton, SaveButton } from "../../../components/simple/CustomButto
 import { ActionItems } from "../../../components/action/ActionsConfig";
 import { UserAction } from "../../../helpers/requests/UserAction";
 import NavigationBar from "../../../components/navigation-bar/NavigationBar";
-import { usePerson } from "./hooks/usePerson";
 import { useCreatePerson } from "./hooks/useCreatePerson";
 import { useUpdatePerson } from "./hooks/useUpdatePerson";
 import { fetchPerson } from "./services/PersonService";
@@ -102,6 +101,7 @@ const Person = () => {
       setError('Failed to load person data');
     } 
   };
+  
   useEffect(()=>{
     if(id)
     {
