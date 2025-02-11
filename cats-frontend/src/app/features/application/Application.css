@@ -1,0 +1,22 @@
+.tabs {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    border-bottom: 1px solid #ccc;
+}
+
+.tabs li {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.tabs li.active {
+    border-bottom: 2px solid #000;
+    font-weight: bold;
+}
+
+.tab-content {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-top: none;
+}

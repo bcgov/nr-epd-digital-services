@@ -23,6 +23,9 @@ const Application: React.FC = () => {
 
   return (
     <div>
+      <button onClick={() => (window.location.href = "/applications")}>
+        Back
+      </button>
       <h1>Application Component</h1>
       <ul className="tabs">
         {tabs.map((tab) => (

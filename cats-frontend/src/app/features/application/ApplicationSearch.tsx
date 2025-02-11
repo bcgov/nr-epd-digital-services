@@ -112,6 +112,7 @@ const ApplicationSearch: React.FC = () => {
 
   return (
     <div>
+      <h1>Application Search</h1>
       <input
         aria-label="Search Applications"
         placeholder="Search Applications"
