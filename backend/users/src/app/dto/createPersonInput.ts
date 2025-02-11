@@ -70,4 +70,7 @@ export class CreatePersonInput {
 
   @Field(() => Date)
   updatedDatetime: Date;
+
+  @Field(() => Boolean, { nullable: true })
+  isDeleted?: boolean;
 }

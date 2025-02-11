@@ -89,7 +89,6 @@ export const fetchPeoples = createAsyncThunk(
     },
     { getState }
   ) => {
-    console.log(args.searchParam, args.page, args.pageSize);
     const response = await getAxiosInstance().post(GRAPHQL, {
       query: print(graphQlPeopleQuery()),
       variables: {
@@ -98,7 +97,6 @@ export const fetchPeoples = createAsyncThunk(
         pageSize: args.pageSize ?? 5,
       },
     });
-    console.log("result search peoples new", response.data);
 
     if (response.data?.errors?.length > 0) {
       throw response.data?.errors[0];
@@ -266,20 +264,16 @@ const peopleSlice = createSlice({
       })
       .addCase(updatePeople.pending, (state, action) => {
         const newState = { ...state };
-        console.log("updatePeople", action);
         newState.updateStatus = RequestStatus.loading;
         return newState;
       })
       .addCase(updatePeople.fulfilled, (state, action) => {
         const newState = { ...state };
-        console.log("updatePeople", action);
-        // newState.peopleDetails = action.payload;
         newState.updateStatus = RequestStatus.success;
         return newState;
       })
       .addCase(updatePeople.rejected, (state, action) => {
         const newState = { ...state };
-        console.log("updatePeople", action);
         newState.updateStatus = RequestStatus.failed;
         return newState;
       });

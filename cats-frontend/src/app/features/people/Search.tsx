@@ -28,15 +28,21 @@ import {
 import { TableColumn } from "../../components/table/TableColumn";
 import { getPeopleSearchResultsColumns } from "./dto/Columns";
 import PageContainer from "../../components/simple/PageContainer";
-import { flattenFormRows, formatDateRange } from "../../helpers/utility";
+import {
+  flattenFormRows,
+  formatDateRange,
+  getUser,
+} from "../../helpers/utility";
 import FilterPills from "./filters/FilterPills";
 import { formRows } from "./dto/PeopleFilterConfig";
 import { SearchResultsFilters } from "./searchResults/SearchResultsFilters";
 import { SearchResultsActions } from "./searchResults/SearchResultsActions";
 import { Button } from "../../components/button/Button";
 import Actions from "../../components/action/Actions";
+import { useAuth } from "react-oidc-context";
 
 const Search = () => {
+  const auth = useAuth();
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch<AppDispatch>();
   const peoples = useSelector(selectAllPeoples);
@@ -72,9 +78,7 @@ const Search = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("selectedRows", selectedRows);
-  }, [selectedRows]);
+  useEffect(() => {}, [selectedRows]);
 
   useEffect(() => {
     if (currSearchVal.searchQuery !== "") {
@@ -106,6 +110,10 @@ const Search = () => {
   };
 
   useEffect(() => {
+    const loggedInUser = getUser();
+    if (loggedInUser === null) {
+      auth.signinRedirect({ extraQueryParams: { kc_idp_hint: "idir" } });
+    }
     if (currSearchVal.searchQuery !== "") {
       setUserAction(false);
       setSearchText(currSearchVal.searchQuery);
@@ -150,7 +158,6 @@ const Search = () => {
   };
 
   const changeHandler = (event: any) => {
-    console.log("select_row");
     if (event && event.property === "select_row") {
       if (event.value) {
         const index = selectedRows.findIndex((r: any) => r.id === event.row.id);

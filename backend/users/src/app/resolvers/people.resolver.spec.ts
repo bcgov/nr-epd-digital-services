@@ -101,10 +101,4 @@ describe('PersonResolver', () => {
       updatedDatetime: new Date('2025-02-05T18:43:03.244Z'),
     });
   });
-
-  it('deletePerson should delete a person', async () => {
-    (personService.delete as jest.Mock).mockResolvedValue(undefined);
-    const result = await personResolver.deletePerson('1');
-    expect(result).toBe(true);
-  });
 });

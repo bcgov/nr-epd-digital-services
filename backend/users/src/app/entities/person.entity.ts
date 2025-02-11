@@ -101,6 +101,10 @@ export class Person {
   isActive: boolean;
 
   @Field(() => String)
+  @Column('boolean', { name: 'is_deleted', nullable: true })
+  isDeleted?: boolean;
+
+  @Field(() => String)
   @Column('integer', { name: 'row_version_count' })
   rowVersionCount: number;
 
@@ -120,13 +124,14 @@ export class Person {
   @Column('timestamp without time zone', { name: 'updated_datetime' })
   updatedDatetime: Date;
 
-  @Field(() => String)
-  @Column('bytea', { name: 'ts' })
-  ts: Buffer;
+  // Comment out for now, not sure if we need this
+  // @Field(() => String)
+  // @Column('bytea', { name: 'ts', nullable: true })
+  // ts?: Buffer;
 
   @OneToMany(() => AppParticipant, (appParticipant) => appParticipant.person)
-  appParticipants: AppParticipant[];
+  appParticipants?: AppParticipant[];
 
   @OneToMany(() => Timesheet, (timesheet) => timesheet.person)
-  timesheets: Timesheet[];
+  timesheets?: Timesheet[];
 }
