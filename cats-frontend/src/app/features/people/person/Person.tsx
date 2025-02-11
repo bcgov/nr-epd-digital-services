@@ -262,7 +262,7 @@ const Person = () => {
           // need to ask Anton how to use generated.ts for graphql type safe.
           if (id) {
             setLoading(updateLoading); // Set loading to true
-            await updateExistingPerson(id, formData).then((response) => { console.log('response -->', response) }).catch((error) => { console.log('error -->', error) });
+            await updateExistingPerson(id, formData).then((response) => { }).catch((error) => { console.error('error -->', error) });
           } 
           // else {
           //   // If no `id`, create a new person
