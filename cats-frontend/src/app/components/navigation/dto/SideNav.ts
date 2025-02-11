@@ -74,6 +74,7 @@ const roleBasedSideBarList: Record<string, SideNav[]> = {
     createSideNav("Manage", true, null, "/", [
       createSideNav("People", false, icons.folios, "/people"),
       createSideNav("Organizations", false, icons.purchases, "/purchases"),
+      createSideNav("Application", false, icons.folios, "/application"),
     ]),
   ],
   public: [],
