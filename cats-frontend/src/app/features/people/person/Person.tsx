@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Widget from "../../../components/widget/Widget";
 import Form from "../../../components/form/Form";
 import PageContainer from "../../../components/simple/PageContainer";
@@ -24,56 +24,35 @@ import { useUpdatePerson } from "./hooks/useUpdatePerson";
 import { fetchPerson } from "./services/PersonService";
 import LoadingOverlay from "../../../components/loader/LoadingOverlay";
 import { getAddress } from "../../../helpers/geocoder";
+import { useFetchNotes } from "./hooks/useFetchNotes";
+import { useUpdateNote } from "./hooks/useUpdateNotes";
+import { useCreateNote } from "./hooks/useCreateNote";
+import { useDeleteNote } from "./hooks/useDeleteNote";
 
-
-const noteColumnsData = [
-    {
-      noteDate:  new Date(),
-      noteUser: 'abc',
-      noteDescription: 'This is a sample description for the note 1.',
-      noteId: 'abc123',
-    },
-    {
-      noteDate:  new Date(),
-      noteUser: 'abc',
-      noteDescription: 'This is a sample description for the note 2.',
-      noteId: 'abc124',
-    },
-    {
-      noteDate:  new Date(),
-      noteUser: 'abc',
-      noteDescription: 'This is a sample description for the note 3.',
-      noteId: 'abc125',
-    }
-];
-  
 export type NoteTypes = 'Edit Note' | 'New Note' | 'View Note'; 
 
 const Person = () => {
-
+  const user = getUser();
+  const initialNote = { noteDescription: '', id: '', date: new Date(), user: user?.profile?.given_name};
   const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
   const location = useLocation();
   const fromScreen = location.state?.from || ""; // Default to "Unknown Screen" if no state is passed
-  const user = getUser();
-  const initialNote = {
-    noteDate: new Date(),
-    noteUser: user?.profile?.name ?? '',
-    noteDescription: '',
-    noteId: v4(),
-  };
-
+  const { notes: notesData, loading: notesLoading, error: notesError } = useFetchNotes(id ?? '');
+  const { updateExistingNote } = useUpdateNote();
+  const { createNewNote } = useCreateNote();
+  const { deleteExistingNote } = useDeleteNote();
   const { createNewPerson, loading: createLoading} = useCreatePerson();
   const { updateExistingPerson, loading: updateLoading} = useUpdatePerson();
   const [personName, setPersonName]= useState('');
   const [isVisible, setIsVisible] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
-  const [note, setNote] = useState({ isNotesModal: false, noteData: initialNote, noteType: 'View Note' as NoteTypes });
-  const [notes, setNotes] = useState<{ [key: string]: any }[]>(noteColumnsData ?? []);
+  const [note, setNote] = useState({ isNotesModal: false, noteData: initialNote , noteType: 'View Note' as NoteTypes });
+  const [notes, setNotes] = useState<{ [key: string]: any }[]>([]);
   const [userType, setUserType] = useState<UserType>(UserType.STAFF);
   const [viewMode, setViewMode] = useState(UserMode.Default);
   const [formData, setFormData] = useState<{ [key: string]: any } | null>(null);
-  const [selectedRows, setSelectedRows] = useState<{noteId: any;}[]>([]);
+  const [selectedRows, setSelectedRows] = useState<{id: any;}[]>([]);
   const [loading, setLoading] = useState(true); // To handle loading state
   const [error, setError] = useState<string | null>(null);
   const [addrForm, setAddrForm] = useState(addressForm);
@@ -102,6 +81,18 @@ const Person = () => {
     } 
   };
   
+  useEffect(() => {
+    if(notesData && notesData?.length > 0)
+    {
+      setNotes(notesData);
+    }
+    if(notesError && notesError?.trim().length > 0)
+    {
+      setError(notesError);
+    }
+
+  }, [notesLoading, notesError]);
+
   useEffect(()=>{
     if(id)
     {
@@ -208,7 +199,7 @@ const Person = () => {
         {
           setSelectedRows((prevSelectedRows) => [
             ...prevSelectedRows,
-            ...rows.map((row: any) => ({noteId: row.noteId})),
+            ...rows.map((row: any) => ({id: row.id})),
           ]);
         } 
         else 
@@ -217,7 +208,7 @@ const Person = () => {
             prevSelectedRows.filter(
               (selectedRow) =>
                 !rows.some(
-                  (row: any) =>selectedRow.noteId === row.note_id),
+                  (row: any) =>selectedRow.id === row.id),
             ),
           );
         }
@@ -249,8 +240,11 @@ const Person = () => {
   const handleDeleteNotes = (particIsDelete: boolean = false) => {
       if (particIsDelete) 
       {
+        // delete can delete list of notes.
+          // deleteExistingNote()
+          // .
           // Filter out participants based on selectedRows for formData
-          const filteredNotes = notes.filter((note: any) => !selectedRows.some((row) => row.noteId === note.noteId));
+          const filteredNotes = notes.filter((note: any) => !selectedRows.some((row) => row.id === note.id));
           setNotes(filteredNotes);
           // Clear selectedRows state
           setSelectedRows([]);
@@ -341,7 +335,7 @@ const Person = () => {
             userType === UserType.STAFF && 
           (
             <>
-              <CustomLabel labelType="c-b" label={`${'Edit Mode'}`}/>
+              {id && <CustomLabel labelType="c-b" label={`${'Edit Mode'}`}/>}
               <SaveButton clickHandler={() => handleItemClick(UserAction.SAVE)}/>
               <CancelButton variant="secondary" clickHandler={() => handleItemClick(UserAction.CANCEL)} />
             </>
@@ -399,34 +393,37 @@ const Person = () => {
               <Form editMode={viewMode === UserMode.EditMode} formRows={addrForm} formData={formData ?? {}} handleInputChange={(graphQLPropertyName, value) =>
             handleInputChange(graphQLPropertyName, value)} />
           </Widget>
-          <Widget  
-              currentPage={1} 
-              allowRowsSelect={true}
-              tableColumns={noteColumns}
-              tableData={notes ?? []} 
-              // tableIsLoading={status ?? RequestStatus.idle}
-              changeHandler={handleTableChange} 
-              sortHandler={(row, ascDir) => { handleTableSort(row, ascDir)}}
-              title={'Notes'} 
-              aria-label="Manage Person Widget"
-              primaryKeycolumnName="noteId">
-              { userType === UserType.STAFF && (
-                  <div className="d-flex gap-2 flex-wrap">
-                    <Button variant="secondary" onClick={handleAddNotes}>
-                        <UserPlus />
-                        New Note
-                    </Button>
-                    <Button
-                        variant="secondary"
-                        onClick={() => handleDeleteNotes()}
-                        disabled={selectedRows.length <= 0}
-                    >
-                        <TrashCanIcon />
-                        Delete Selected
-                    </Button>
-                  </div>
-               )}
-          </Widget>
+          {
+            id  && 
+              <Widget  
+                currentPage={1} 
+                allowRowsSelect={true}
+                tableColumns={noteColumns}
+                tableData={notes ?? []} 
+                // tableIsLoading={status ?? RequestStatus.idle}
+                changeHandler={handleTableChange} 
+                sortHandler={(row, ascDir) => { handleTableSort(row, ascDir)}}
+                title={'Notes'} 
+                aria-label="Manage Person Widget"
+                primaryKeycolumnName="id">
+                { userType === UserType.STAFF && (
+                    <div className="d-flex gap-2 flex-wrap">
+                      <Button variant="secondary" onClick={handleAddNotes}>
+                          <UserPlus />
+                          New Note
+                      </Button>
+                      <Button
+                          variant="secondary"
+                          onClick={() => handleDeleteNotes()}
+                          disabled={selectedRows.length <= 0}
+                      >
+                          <TrashCanIcon />
+                          Delete Selected
+                      </Button>
+                    </div>
+                )}
+              </Widget>
+          }
           {isDelete && (
               <ModalDialog
               key={v4()}
@@ -449,17 +446,55 @@ const Person = () => {
                     if (response) {
                       if(note.noteType === 'New Note')
                       {
-                        setNotes((prev) => [...prev, note.noteData]);
+                        if(id)
+                        {
+                          const newNote = {
+                            personId: parseFloat(id),
+                            noteDescription: note?.noteData?.noteDescription
+                          };
+                          createNewNote(newNote)
+                          .then((response) => {
+                            if(response?.success)
+                            {
+                              setNotes((prev) => [...prev, response.data[0]]);
+                            }
+                            else
+                            {
+                              setError('Failed to create new note!!');
+                            }
+                          })
+                          .catch((err) => {
+                            console.error('Error create note:', err);
+                            setError('Failed to create note');
+                          });
+
+                        }
                       }
                       if(note.noteType === 'Edit Note')
                       {
-                        setNotes((prev) => prev.map((item) => {
-                          if(item.noteId === note?.noteData?.noteId)
+                        const {id: noteId, noteDescription} = note.noteData
+                        updateExistingNote(noteId, {noteDescription})
+                        .then((response) => {
+                          if(response?.success)
                           {
-                            return note.noteData;
+                            const result = response?.data[0];
+                            setNotes((prev) => prev.map((item) => {
+                              if(item.id === result?.id)
+                              {
+                                return result;
+                              }
+                              return item;
+                            }));
                           }
-                          return item;
-                        }));
+                          else
+                          {
+                            setError('Failed to update exsitig note!!');
+                          }
+                        })
+                        .catch((err) => {
+                          console.error('Error update note:', err);
+                          setError('Failed to update note');
+                        });
                       }
                     }
                     setNote({isNotesModal: false, noteData: initialNote, noteType:'View Note'}); // Reset the note state
