@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { deleteNote } from '../services/NoteService';
+import { deletePersonNote } from '../services/NoteService';
 
 // Import the delete note function from the service
 export const useDeleteNote = () => {
@@ -12,7 +12,7 @@ export const useDeleteNote = () => {
     setLoading(true); // Set loading to true
     setError(null); // Reset the error
     try {
-      const result = await deleteNote(id); // Call the service to delete a new note
+      const result = await deletePersonNote(id); // Call the service to delete a new note
       setResponse(result); // Store the deleted note in state
       return result;
     } 

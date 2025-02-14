@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { createNote } from '../services/NoteService';
+import { createPersonNote } from '../services/NoteService';
 
 // Import the create note function from the service
 export const useCreateNote = () => {
@@ -12,7 +12,7 @@ export const useCreateNote = () => {
     setLoading(true); // Set loading to true
     setError(null); // Reset the error
     try {
-      const newNote = await createNote(note); // Call the service to create a new note
+      const newNote = await createPersonNote(note); // Call the service to create a new note
       setResponse(newNote); // Store the created note in state
       return newNote;
     } 

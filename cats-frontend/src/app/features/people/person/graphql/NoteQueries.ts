@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 
 export const GET_NOTES_BY_PERSON_ID = gql`
-  query getNotesByPersonId($id: Float!) 
+  query getPersonNotesByPersonId($id: Float!) 
   {
-    getNotesByPersonId(id: $id)
+    getPersonNotesByPersonId(id: $id)
     {
       message
       httpStatusCode
@@ -23,9 +23,9 @@ export const GET_NOTES_BY_PERSON_ID = gql`
 
 
 export const UPDATE_NOTE_BY_ID = gql`
-  mutation updateNote($id: String!, $note: UpdateNote!)
+  mutation updatePersonNote($id: String!, $note: UpdatePersonNote!)
   {
-    updateNote(id: $id, note: $note)
+    updatePersonNote(id: $id, note: $note)
     {
         message
         httpStatusCode
@@ -43,9 +43,9 @@ export const UPDATE_NOTE_BY_ID = gql`
 `;
 
 export const CREATE_NOTE = gql`
-  mutation createNote($note: CreateNote!)
+  mutation createPersonNote($note: CreatePersonNote!)
   {
-    createNote(note: $note)
+    createPersonNote(note: $note)
     {
       message
       httpStatusCode
@@ -63,9 +63,9 @@ export const CREATE_NOTE = gql`
 `;
 
 export const DELETE_NOTES_BY_ID = gql`
-  query deleteNote($ids: [String!]!) 
+  query deletePersonNote($ids: [String!]!) 
   {
-    deleteNote(ids: $ids)
+    deletePersonNote(ids: $ids)
     {
       message
       httpStatusCode

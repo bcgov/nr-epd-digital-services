@@ -3,7 +3,7 @@ import { GRAPHQL } from "../../../../helpers/endpoints";
 import { getAxiosInstance } from "../../../../helpers/utility";
 import { CREATE_NOTE, DELETE_NOTES_BY_ID, GET_NOTES_BY_PERSON_ID, UPDATE_NOTE_BY_ID } from "../graphql/NoteQueries";
 
-export const fetchNotes = async (id: string) => {
+export const fetchPeronNotes = async (id: string) => {
     try
     {
       // Call the GraphQL query to fetch the notes by person id
@@ -11,7 +11,7 @@ export const fetchNotes = async (id: string) => {
           query: print(GET_NOTES_BY_PERSON_ID),
           variables: { id: parseFloat(id) },
       });
-      const result = response?.data?.data?.getNotesByPersonId; // Return the notes data
+      const result = response?.data?.data?.getPersonNotesByPersonId; // Return the notes data
       if(result?.success)
       {
         return result?.data
@@ -29,7 +29,7 @@ export const fetchNotes = async (id: string) => {
 }
 
 // Update an existing note
-export const updateNote = async (id: string, note: any) => {
+export const updatePersonNote = async (id: string, note: any) => {
   try {
     // Call the GraphQL mutation to update the note
     const response = await getAxiosInstance().post(GRAPHQL, {
@@ -39,7 +39,7 @@ export const updateNote = async (id: string, note: any) => {
             note: note,
         },
     });
-    const result = response?.data?.data?.updateNote; // Return the note data
+    const result = response?.data?.data?.updatePersonNote; // Return the note data
     if(result?.success)
     {
       return result;
@@ -58,7 +58,7 @@ export const updateNote = async (id: string, note: any) => {
 };
 
 // Create a new note
-export const createNote = async (note: any) => {
+export const createPersonNote = async (note: any) => {
     try {
         // Call the GraphQL mutation to create a new note
         const request = await getAxiosInstance().post(GRAPHQL, {
@@ -67,7 +67,7 @@ export const createNote = async (note: any) => {
               note: note,
             },
         });
-        const result = request?.data?.data?.createNote; // Return the created note
+        const result = request?.data?.data?.createPersonNote; // Return the created note
         if(result?.success)
         {
           return result;
@@ -85,7 +85,7 @@ export const createNote = async (note: any) => {
     }
 };
 
-export const deleteNote = async (id: string) => {
+export const deletePersonNote = async (id: string) => {
     try
     {
       // Call the GraphQL query to delete the note by id
@@ -93,7 +93,7 @@ export const deleteNote = async (id: string) => {
           query: print(DELETE_NOTES_BY_ID),
           variables: { id: id },
       });
-      const result = response?.data?.data?.deleteNote; // Return the status
+      const result = response?.data?.data?.deletePersonNote; // Return the status
       if(result?.success)
       {
         return result

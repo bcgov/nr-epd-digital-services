@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { updateNote } from '../services/NoteService';
+import { updatePersonNote } from '../services/NoteService';
 
 // Hook to update an existing note
 export const useUpdateNote = () => {
@@ -12,7 +12,7 @@ export const useUpdateNote = () => {
     setLoading(true); // Set loading to true
     setError(null); // Reset the error
     try {
-      const updatedNote = await updateNote(id, note); // Call the service to update the note
+      const updatedNote = await updatePersonNote(id, note); // Call the service to update the note
       setResponse(updatedNote); // Store the updated note in state
       return updatedNote;
     } 

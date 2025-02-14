@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchNotes } from '../services/NoteService';
+import { fetchPeronNotes } from '../services/NoteService';
 
 export const useFetchNotes = (id: string) => {
   const [notes, setNotes] = useState<[] | null>(null); // State variable to store the notes data
@@ -13,7 +13,7 @@ export const useFetchNotes = (id: string) => {
       {
         if(id)
         {
-            const notesData = await fetchNotes(id); // Call the service to fetch notes data
+            const notesData = await fetchPeronNotes(id); // Call the service to fetch notes data
             setNotes(notesData); // Store the notes data in state
         }
       }
