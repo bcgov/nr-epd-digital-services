@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { CreatePersonNote } from "src/app/dto/note/createPersonNote.dto";
+import { DeletePersonNote } from "src/app/dto/note/deletePersonNote.dto";
 import { UpdatePersonNote } from "src/app/dto/note/updatePersonNote.dto";
 import { PersonNote } from "src/app/entities/personNote.entity";
 import { LoggerService } from "src/app/logger/logger.service";
@@ -187,7 +188,7 @@ export class PersonNoteService {
         }
     }
     
-    async deletePersonNote(noteIds: string[], user: any) {
+    async deletePersonNote(notes: DeletePersonNote[], user: any) {
         // Early return if the user is not authorized to perform this action (e.g., only IDIR users are allowed)
         if (user?.identity_provider !== UserTypeEum.IDIR) 
         {
@@ -195,18 +196,18 @@ export class PersonNoteService {
             throw new HttpException('Only users with IDIR identity provider are allowed to delete notes', HttpStatus.FORBIDDEN);
         }
     
-        this.loggerSerivce.debug(`Attempting to delete note(s) with ID(s): ${noteIds} by user: ${user?.givenName}`);
+        this.loggerSerivce.debug(`Attempting to delete note(s) with ID(s): ${notes} by user: ${user?.givenName}`);
     
         // Perform bulk delete operation regardless of the number of IDs in the array
-        const results = await Promise.all(noteIds.map(async (noteId) => {
+        const results = await Promise.all(notes.map(async (personNote) => {
             try {
                 // Retrieve the note to be deleted
-                const note = await this.personNoteRepository.findOne({ where: { id: noteId, deletedDatetime: IsNull() } });
+                const note = await this.personNoteRepository.findOne({ where: { id: personNote.id, deletedDatetime: IsNull() } });
     
                 if (!note) 
                 {
                     // If no note is found, log a warning and continue with the next
-                    this.loggerSerivce.warn(`Note with ID: ${noteId} not found for user: ${user?.givenName}`);
+                    this.loggerSerivce.warn(`Note with ID: ${personNote.id} not found for user: ${user?.givenName}`);
                     return false;
                 }
     
@@ -219,13 +220,13 @@ export class PersonNoteService {
                 if (result) 
                 {
                     // Log the successful deletion
-                    this.loggerSerivce.log(`Note with ID: ${noteId} successfully deleted by user: ${user?.givenName}`);
+                    this.loggerSerivce.log(`Note with ID: ${personNote.id} successfully deleted by user: ${user?.givenName}`);
                     return true;
                 } 
                 else 
                 {
                     // Log the unsuccessful deletion
-                    this.loggerSerivce.log(`Note with ID: ${noteId} is not successfully deleted by user: ${user?.givenName}`);
+                    this.loggerSerivce.log(`Note with ID: ${personNote.id} is not successfully deleted by user: ${user?.givenName}`);
                     return false;
                 }
             } 

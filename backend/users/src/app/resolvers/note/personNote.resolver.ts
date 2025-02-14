@@ -9,6 +9,7 @@ import { ViewPersonNote } from 'src/app/dto/note/viewPersonNote.dto';
 import { PersonNoteResponse } from 'src/app/dto/reponse/note/personNoteResponse';
 import { CreatePersonNote } from 'src/app/dto/note/createPersonNote.dto';
 import { UpdatePersonNote } from 'src/app/dto/note/updatePersonNote.dto';
+import { DeletePersonNote } from 'src/app/dto/note/deletePersonNote.dto';
 
 @Resolver(() => ViewPersonNote)
 @Resource('user-service')
@@ -107,8 +108,8 @@ export class PersonNoteResolver {
 
     @Mutation(() => PersonNoteResponse, { name: 'deletePersonNote' })
     @UsePipes(new GenericValidationPipe())
-    async deletePersonNote( @Args('ids', {type: () => [String]}) ids: string[],  @AuthenticatedUser() user: any) {
-        const result = await this.personNoteService.deletePersonNote(ids, user);
+    async deletePersonNote( @Args('notes', {type: () => [DeletePersonNote]}) notes: DeletePersonNote[],  @AuthenticatedUser() user: any) {
+        const result = await this.personNoteService.deletePersonNote(notes, user);
         if (result) {
             this.loggerService.log('PersonNoteResolver.deletePersonNote() RES:200 end');
             return this.personNoteResponse.createResponse(

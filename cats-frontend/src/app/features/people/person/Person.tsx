@@ -240,15 +240,28 @@ const Person = () => {
   const handleDeleteNotes = (particIsDelete: boolean = false) => {
       if (particIsDelete) 
       {
-        // delete can delete list of notes.
-          // deleteExistingNote()
-          // .
-          // Filter out participants based on selectedRows for formData
-          const filteredNotes = notes.filter((note: any) => !selectedRows.some((row) => row.id === note.id));
-          setNotes(filteredNotes);
-          // Clear selectedRows state
-          setSelectedRows([]);
-          setIsDelete(false);
+          // delete can delete list of notes.
+          deleteExistingNote(selectedRows)
+          .then((response) => {
+            if(response?.success)
+            {
+              // Filter out participants based on selectedRows for formData
+              const filteredNotes = notes.filter((note: any) => !selectedRows.some((row) => row.id === note.id));
+              // console.log(filteredNotes)
+              setNotes(filteredNotes);
+              // Clear selectedRows state
+              setSelectedRows([]);
+              setIsDelete(false);
+            }
+            else
+            {
+              setError('Failed to delete note!!');
+            }
+          })
+          .catch((err) => {
+            console.error('Error delete note:', err);
+            setError('Failed to delete note');
+          });
       } 
       else 
       {
@@ -309,6 +322,8 @@ const Person = () => {
             navigate(-1);
           }
           break;
+        case UserAction.DELETE:
+          console.log('delete person')
         default:
           break;
       }

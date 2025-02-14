@@ -8,11 +8,11 @@ export const useDeleteNote = () => {
   const [response, setResponse] = useState(null); // State variable to store the note data
 
   // Function to delete a new note
-  const deleteExistingNote = async (id: string) => {
+  const deleteExistingNote = async (notes: any) => {
     setLoading(true); // Set loading to true
     setError(null); // Reset the error
     try {
-      const result = await deletePersonNote(id); // Call the service to delete a new note
+      const result = await deletePersonNote(notes); // Call the service to delete a new note
       setResponse(result); // Store the deleted note in state
       return result;
     } 

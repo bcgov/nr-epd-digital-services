@@ -63,9 +63,9 @@ export const CREATE_NOTE = gql`
 `;
 
 export const DELETE_NOTES_BY_ID = gql`
-  query deletePersonNote($ids: [String!]!) 
+  mutation deletePersonNote($notes: [DeletePersonNote!]!) 
   {
-    deletePersonNote(ids: $ids)
+    deletePersonNote(notes: $notes)
     {
       message
       httpStatusCode

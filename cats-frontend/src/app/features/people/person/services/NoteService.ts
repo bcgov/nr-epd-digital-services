@@ -85,13 +85,13 @@ export const createPersonNote = async (note: any) => {
     }
 };
 
-export const deletePersonNote = async (id: string) => {
+export const deletePersonNote = async (notes: any) => {
     try
     {
       // Call the GraphQL query to delete the note by id
       const response = await getAxiosInstance().post(GRAPHQL, {
           query: print(DELETE_NOTES_BY_ID),
-          variables: { id: id },
+          variables: { notes },
       });
       const result = response?.data?.data?.deletePersonNote; // Return the status
       if(result?.success)
