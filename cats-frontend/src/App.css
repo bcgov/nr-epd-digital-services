@@ -43,7 +43,7 @@
 }
 
 * {
-  font-family: "BC Sans";
+  font-family: "BC Sans", "Helvetica Neue", Arial, sans-serif;
 }
 
 @media screen and (max-width: 768px) {
