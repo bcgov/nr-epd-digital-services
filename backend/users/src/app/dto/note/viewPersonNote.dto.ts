@@ -1,9 +1,9 @@
 import { InputType, Field, ObjectType } from '@nestjs/graphql';
 import { IsOptional, IsString, IsUUID } from 'class-validator';
-import { BaseNote } from './baseNote.dto';
+import { BasePersonNote } from './basePersonNote.dto';
 
 @ObjectType()
-export class ViewNote extends BaseNote {
+export class ViewPersonNote extends BasePersonNote {
   
   @Field()
   @IsUUID()

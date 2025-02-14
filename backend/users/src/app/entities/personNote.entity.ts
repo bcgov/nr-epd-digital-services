@@ -2,8 +2,8 @@ import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } 
 import { Person } from './person.entity'; // Import the Person entity for the relationship
 
 @Index('pk_note', ['id'], { unique: true })
-@Entity('note')
-export class Note {
+@Entity('person_note')
+export class PersonNote {
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
   id: string; // UUID as the primary key (this will be a string)
 
