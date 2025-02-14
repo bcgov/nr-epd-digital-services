@@ -17,7 +17,6 @@ header {
 }
 
 header h1 {
-  font-family: "BCSans";
   font-weight: normal; /* 400 */
   margin: 5px 5px 0 18px;
   visibility: hidden;

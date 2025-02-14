@@ -48,12 +48,10 @@
 
 .textSearch {
   height: 65px !important;
-
   margin: var(--layoutmarginsmall) !important;
   border-radius: var(--layout-margin-xsmall) !important;
   border: 1px solid;
   border-color: var(--support-support-border-color-info) !important;
-  font-family: "BCSans" !important;
   font-size: 18px !important;
   font-weight: 400 !important;
   line-height: 32px !important;
@@ -99,7 +97,6 @@ input.textSearch::-webkit-input-placeholder {
 }
 
 .search-text-label {
-  font-family: "BCSans";
   font-weight: 700;
   line-height: 1.5;
   font-size: 48px;
@@ -125,7 +122,6 @@ input.textSearch::-webkit-input-placeholder {
   font-size: 24px;
   line-height: 40px;
   font-weight: 700;
-  font-family: "BCSans";
 }
 
 .table-actions-items {
@@ -138,7 +134,6 @@ input.textSearch::-webkit-input-placeholder {
   border: 0px 0px 1px 0px;
   align-items: center;
   display: flex;
-  font-family: "BCSans";
   font-size: 16px;
   font-weight: 400;
   line-height: 18px;
