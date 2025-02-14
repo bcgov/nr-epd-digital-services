@@ -52,6 +52,9 @@ import { PaymentMethod } from './entities/paymentMethod.entity';
 import { Organization } from './entities/organization.entity';
 import { ParticipantRole } from './entities/participantRole.entity';
 import { GenericResponseProvider } from './dto/reponse/genericResponseProvider';
+import { Note } from './entities/note.entity';
+import { NoteResolver } from './resolvers/note/note.resolver';
+import { NoteService } from './services/note/note.service';
 /**
  * Module for wrapping all functionalities in user microserivce
  */
@@ -104,9 +107,10 @@ import { GenericResponseProvider } from './dto/reponse/genericResponseProvider';
       PaymentMethod,
       Organization,
       ParticipantRole,
+      Note,
     ]),
   ],
-  providers: [PersonResolver, PersonService, KeycloakService, LoggerService, GenericResponseProvider],
+  providers: [PersonResolver, PersonService, NoteResolver, NoteService, KeycloakService, LoggerService, GenericResponseProvider],
   controllers: [UserController],
 })
 export class CatsModule { }

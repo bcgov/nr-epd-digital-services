@@ -6,5 +6,5 @@ import { IsNotEmpty, IsUUID } from 'class-validator';
 @InputType()
 export class CreateNote extends BaseNote {
     @Field()
-    personId: string; // ID of the person related to this note
+    personId: number; // ID of the person related to this note
 }

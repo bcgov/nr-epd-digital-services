@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { AppParticipant } from './appParticipant.entity';
 import { Timesheet } from './timesheet.entity';
-// import { Note } from './note.entity';
+import { Note } from './note.entity';
 
 @Index('pk_person', ['id'], { unique: true })
 @Entity('person')
@@ -110,4 +110,7 @@ export class Person {
 
   @OneToMany(() => Timesheet, (timesheet) => timesheet.person)
   timesheets?: Timesheet[];
+
+  @OneToMany(() => Note, (note) => note.person)
+  notes?: Note[];
 }
