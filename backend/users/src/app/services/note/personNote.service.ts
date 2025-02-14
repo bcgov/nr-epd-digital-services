@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { CreatePersonNote } from "src/app/dto/note/createPersonNote.dto";
-import { DeletePersonNote } from "src/app/dto/note/deletePersonNote.dto";
-import { UpdatePersonNote } from "src/app/dto/note/updatePersonNote.dto";
-import { PersonNote } from "src/app/entities/personNote.entity";
-import { LoggerService } from "src/app/logger/logger.service";
-import { UserTypeEum } from "src/app/utilities/enums/userType";
+import { CreatePersonNote } from "../../../app/dto/note/createPersonNote.dto";
+import { DeletePersonNote } from "../../../app/dto/note/deletePersonNote.dto";
+import { UpdatePersonNote } from "../../../app/dto/note/updatePersonNote.dto";
+import { PersonNote } from "../../../app/entities/personNote.entity";
+import { LoggerService } from "../../../app/logger/logger.service";
+import { UserTypeEum } from "../../../app/utilities/enums/userType";
 import { IsNull, Repository } from "typeorm";
 
 @Injectable()
