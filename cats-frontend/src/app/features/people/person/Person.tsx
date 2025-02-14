@@ -46,7 +46,8 @@ const Person = () => {
   const { updateExistingPerson, loading: updateLoading} = useUpdatePerson();
   const [personName, setPersonName]= useState('');
   const [isVisible, setIsVisible] = useState(false);
-  const [isDelete, setIsDelete] = useState(false);
+  const [isDeleteNote, setIsDeleteNote] = useState(false);
+  const [isDeletePerson, setIsDeletePerson] = useState(false);
   const [note, setNote] = useState({ isNotesModal: false, noteData: initialNote , noteType: 'View Note' as NoteTypes });
   const [notes, setNotes] = useState<{ [key: string]: any }[]>([]);
   const [userType, setUserType] = useState<UserType>(UserType.STAFF);
@@ -81,6 +82,32 @@ const Person = () => {
     } 
   };
   
+  const updatePerson = async (person: any) => {
+    try {
+      const response = await updateExistingPerson([person]);
+      return response?.success;  // Return the success value
+    } 
+    catch (error) 
+    {
+      console.error('Error updating person:', error);
+      setError('Failed to update person');
+      return false; // Or you can return a default value indicating failure
+    }
+  };
+
+  const deleteNotes = async (notes: any) => {
+    try{
+      const response = await deleteExistingNote(notes);
+      return response?.success;
+    }
+    catch(error)
+    {
+      console.error('Error delete note:', error);
+      setError('Failed to delete note');
+      return false;
+    }
+  };
+
   useEffect(() => {
     if(notesData && notesData?.length > 0)
     {
@@ -237,35 +264,26 @@ const Person = () => {
       });
   };
 
-  const handleDeleteNotes = (particIsDelete: boolean = false) => {
+  const handleDeleteNotes = async (particIsDelete: boolean = false) => {
       if (particIsDelete) 
       {
-          // delete can delete list of notes.
-          deleteExistingNote(selectedRows)
-          .then((response) => {
-            if(response?.success)
+          const result = await deleteNotes(selectedRows);
+          if(result)
             {
-              // Filter out participants based on selectedRows for formData
+              // Filter out notes based on selectedRows for formData
               const filteredNotes = notes.filter((note: any) => !selectedRows.some((row) => row.id === note.id));
-              // console.log(filteredNotes)
               setNotes(filteredNotes);
-              // Clear selectedRows state
               setSelectedRows([]);
-              setIsDelete(false);
+              setIsDeleteNote(false);
             }
             else
             {
               setError('Failed to delete note!!');
             }
-          })
-          .catch((err) => {
-            console.error('Error delete note:', err);
-            setError('Failed to delete note');
-          });
       } 
       else 
       {
-          setIsDelete(true);
+          setIsDeleteNote(true);
       }
   }
 
@@ -282,17 +300,12 @@ const Person = () => {
           if (id) 
           {
             setLoading(updateLoading); // Set loading to true
-            updateExistingPerson([formData]).then((response) => {
-              if(response?.success)
-              {
-                setViewMode(UserMode.Default);
-                getPersonData(id);
-              }
-            })
-            .catch((error) => { 
-              console.error('Error updating person:', error);
-              setError('Failed to update person');
-            });
+            const result = await updatePerson(formData);
+            if(result)
+            {
+              setViewMode(UserMode.Default);
+              getPersonData(id);
+            }
           } 
           else 
           {
@@ -323,7 +336,7 @@ const Person = () => {
           }
           break;
         case UserAction.DELETE:
-          console.log('delete person')
+          setIsDeletePerson(true);
         default:
           break;
       }
@@ -439,17 +452,37 @@ const Person = () => {
                 )}
               </Widget>
           }
-          {isDelete && (
+          {(isDeleteNote || isDeletePerson) && (
               <ModalDialog
               key={v4()}
-              label={`Are you sure you want to delete note(s) ?`}
-              closeHandler={(response) => {
+              label={`Are you sure you want to delete ${isDeleteNote ? 'note(s)' : 'person'}  ?`}
+              closeHandler={async (response) => {
                   if (response) {
-                  if (isDelete) {
-                      handleDeleteNotes(response);
+                    if (isDeleteNote) 
+                    {
+                        handleDeleteNotes(response);
+                    }
+                    if(isDeletePerson)
+                    {
+                      const deletePerson = await updatePerson({...formData, isDeleted: true});
+                      if(deletePerson)
+                      {
+                        const noteIds = notes?.map((note) => ({id: note.id}));
+                        const result = await deleteNotes(noteIds);
+                        if(result)
+                        {
+                          setViewMode(UserMode.Default);
+                          navigate('/people');
+                        }
+                        else
+                        {
+                          await updatePerson({...formData, isDeleted: false});
+                        }
+                      }
+                    }
                   }
-                  }
-                  setIsDelete(false);
+                  setIsDeleteNote(false);
+                  setIsDeletePerson(false);
               }}
               />
           )}

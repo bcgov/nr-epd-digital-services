@@ -26,7 +26,7 @@ export class PersonNoteService {
                 // Log the condition where the identity_provider matches IDIR
                 this.loggerSerivce.debug(`Identity provider is IDIR for user: ${user?.givenName}`);
                 
-                const notes = await this.personNoteRepository.findBy({ personId, deletedDatetime: IsNull()});
+                const notes = await this.personNoteRepository.findBy({ personId, deletedDatetime: IsNull(), deletedBy: IsNull()});
     
                 if (notes?.length > 0) {
                     this.loggerSerivce.log(`Found ${notes.length} notes for personId: ${personId}`);
@@ -202,7 +202,7 @@ export class PersonNoteService {
         const results = await Promise.all(notes.map(async (personNote) => {
             try {
                 // Retrieve the note to be deleted
-                const note = await this.personNoteRepository.findOne({ where: { id: personNote.id, deletedDatetime: IsNull() } });
+                const note = await this.personNoteRepository.findOne({ where: { id: personNote.id, deletedDatetime: IsNull(), deletedBy: IsNull() } });
     
                 if (!note) 
                 {
