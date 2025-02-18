@@ -63,3 +63,69 @@
     width: 100%;
   }
 }
+
+:root {
+  --layout-margin-xsmall: 4px;
+  --layout-margin-small: 8px;
+  --layout-margin-medium: 16px;
+  --layout-margin-large: 24px;
+  --layout-margin-xlarge: 32px;
+  --layout-margin-xxlarge: 40px;
+  --layout-margin-huge: 56px;
+  --layout-padding-xsmall: 4px;
+  --layout-padding-small: 8px;
+  --layout-padding-medium: 16px;
+  --layout-padding-large: 24px;
+  --layout-border-radius-medium: 4px;
+
+  --header-height: 64px;
+  --footer-height: 64px;
+
+  --surface-color-primary-active-border: #2e5dd7;
+  --surface-color-primary-default: #053662;
+  --surface-color-primary-hover: #1e5189;
+  --surface-color-secondary-hover: #edebe9;
+  --surface-color-background-white: #ffffff;
+  --surface-color-background-light: #faf9f8;
+  --surface-color-border-light: #d8d8d8;
+  --surface-color-border-hover: #b8b8b8;
+  --surface-color-border-medium: #898785;
+  --surface-color-border-dark: #353433;
+  --surface-color-brand-gray-10: #faf9f8;
+  --surface-color-brand-gray-20: #f3f2f1;
+  --surface-color-brand-gray-30: #eceae8;
+  --surface-color-brand-gray-60: #c6c5c3;
+  --surface-color-brand-gray-80: #605e5c;
+  --surface-color-brand-gray-white: #fff;
+  --surface-color-brand-gold-50: #fcc85d;
+  --surface-color-brand-gold-60: #f8ba47;
+  --surface-color-brand-blue-20: #d8eafd;
+  --surface-color-brand-blue-70: #5595d9;
+  --surface-color-brand-blue-100: #053662;
+
+  --support-border-color-success: #42814a;
+  --support-surface-color-info: #f7f9fc;
+  --support-border-color-info: #053662;
+
+  --icons-color-primary: #2d2d2d;
+  --icons-color-secondary: #474543;
+  --icons-color-info: #053662;
+  --icons-color-success: #42814a;
+  --icons-color-disabled: #9f9d9c;
+
+  --typography-color-primary: #2d2d2d;
+  --typography-color-primary-invert: #fff;
+  --typography-color-secondary: #474543;
+  --typography-color-link: #255a90;
+  --typography-color-disabled: #9f9d9c;
+
+  --box-shadow-small: 0 0.6px 1.8px 0 rgba(0, 0, 0, 0.1),
+    0 3.2px 7.2px 0 rgba(0, 0, 0, 0.13);
+
+  --map-button-height-large: 64px;
+  --map-button-height-medium: 40px;
+  --map-button-padding-large: 16px 24px;
+  --map-button-padding-medium: 8px 16px;
+  --map-button-font-size-large: 18px;
+  --map-button-font-size-medium: 16px;
+}
