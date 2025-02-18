@@ -134,7 +134,6 @@ const NavigationPills: React.FC<INavigationPills> = ({
         {components &&
           activeTabKey !== '' &&
           components?.map((tabComponent: { value: string, component: React.ReactNode }, index: number) => {
-            console.log("nupur -type of tabComponent: ", typeof(tabComponent));
             return tabComponent.value === activeTabKey ? (
               <div key={index}>{tabComponent.component}</div>
             ) : null;
