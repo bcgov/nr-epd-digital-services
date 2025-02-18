@@ -378,6 +378,32 @@
           <text>"epd-support@gov.bc.ca"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0ll7m2g">
+        <inputEntry id="UnaryTests_1l43csg">
+          <text>"task_assign"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1gap5lk">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mx2eg6">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03vfyj8">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0sx8mm0">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_09fz0zv">
+          <text>"Task Assigned"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0lnfrxt">
+          <text>"templates/task_assign.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ldepns">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
