@@ -371,13 +371,13 @@ input::placeholder {
 
 /* Selected */
 .custom-switch[data-selected] > .indicator {
-  background: var(--Theme-blue-30, #C1DDFC);
+  background: var(--surface-brand-blue-30, #C1DDFC);
 }
 
 .custom-switch[data-selected] > .indicator::before {
   transform: translateX(100%);
-  background: var(--Theme-blue-100, #013366); 
-  border: 1px solid var(--Theme-blue-70, #5595D9); 
+  background: var(--surface-brand-blue-100, #053662); 
+  border: 1px solid var(--surface-brand-blue-70, #5595D9); 
 }
 
 /* Hover */
@@ -386,15 +386,15 @@ input::placeholder {
 }
 
 .custom-switch[data-hovered][data-selected] > .indicator {
-  background-color: var(--Theme-blue-30, #C1DDFC);
+  background-color: var(--surface-brand-blue-30, #C1DDFC);
 }
 
 .custom-switch[data-hovered] > .indicator::before {
-    border: 1px solid var(--surface-color-brand-gray-60, #C6C5C3);
+    border: 1px solid var(--surface-brand-gray-60, #C6C5C3);
 }
 
 .custom-switch[data-hovered][data-selected] > .indicator::before {
-  border: 1px solid var(--Theme-blue-70, #5595D9); 
+  border: 1px solid var(--surface-brand-blue-70, #5595D9); 
 }
 
 /* Focused */
@@ -415,7 +415,7 @@ input::placeholder {
 }
 
 .custom-switch[data-disabled] > .indicator::before {
-  background-color: var(--theme-gray-10);
+  background-color: var(--surface-brand-gray-10);
   border: var(--layout-border-width-medium) solid
     var(--surface-color-border-default);
 }
