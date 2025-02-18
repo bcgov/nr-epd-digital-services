@@ -28,9 +28,9 @@ describe('Person Component', () => {
     fetchPerson.mockResolvedValueOnce(mockPersonData);
 
     render(
-      <MemoryRouter initialEntries={['/people/1/person']}>
+      <MemoryRouter initialEntries={['/person/1']}>
         <Routes>
-          <Route path="/people/:id/person" element={<Person />} />
+          <Route path="/person/:id" element={<Person />} />
         </Routes>
       </MemoryRouter>
     );
@@ -44,9 +44,9 @@ describe('Person Component', () => {
     fetchPerson.mockResolvedValueOnce(null); // Mock to simulate loading
 
     render(
-      <MemoryRouter initialEntries={['/people/1/person']}>
+      <MemoryRouter initialEntries={['/person/1']}>
         <Routes>
-          <Route path="/people/:id/person" element={<Person />} />
+          <Route path="/person/:id" element={<Person />} />
         </Routes>
       </MemoryRouter>
     );
@@ -55,15 +55,23 @@ describe('Person Component', () => {
   });
 
 
-  it('opens the note modal when Add Notes is clicked', () => {
+  it('opens the note modal when Add Notes is clicked', async () => {
+    const mockPersonData = { firstName: 'John', middleName: 'Doe', lastName: 'Smith' };
+    fetchPerson.mockResolvedValueOnce(mockPersonData);
+
     render(
-      <MemoryRouter>
-        <Person />
+      <MemoryRouter initialEntries={['/person/1']}>
+        <Routes>
+          <Route path="/person/:id" element={<Person />} />
+        </Routes>
       </MemoryRouter>
     );
 
-    fireEvent.click(screen.getByText(/New Note/i)); // assuming button contains this text
-    const modalElements = screen.getAllByText('New Note');
-    expect(modalElements.length).toBeGreaterThan(0); // Ensure at least one "New Note" is found
+    await waitFor(() => {
+      expect(screen.getByText('John Doe Smith')).toBeInTheDocument();
+      fireEvent.click(screen.getByText(/New Note/i)); // assuming button contains this text
+      const modalElements = screen.getAllByText('New Note');
+      expect(modalElements.length).toBeGreaterThan(0); // Ensure at least one "New Note" is found
+    });
   });
 });
