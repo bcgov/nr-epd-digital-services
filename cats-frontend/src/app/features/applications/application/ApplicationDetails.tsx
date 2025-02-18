@@ -8,16 +8,17 @@ import Actions from "../../../components/action/Actions";
 import PageContainer from "../../../components/simple/PageContainer";
 import NavigationPills from "../../../components/navigation/navigationpills/NavigationPills";
 import CustomLabel from "../../../components/simple/CustomLabel";
-import { AppActionBtn, AppDetailsMode } from "./dto/AppDetailsMode";
 import { ActionItems } from "../../../components/action/ActionsConfig";
 import {
   CancelButton,
   SaveButton,
 } from "../../../components/simple/CustomButtons";
+import { UserMode } from "../../../helpers/requests/userMode";
+import { UserAction } from "../../../helpers/requests/UserAction";
 
 const ApplicationDetails = () => {
   const [edit, setEdit] = useState(false);
-  const [viewMode, setViewMode] = useState(AppDetailsMode.ViewMode);
+  const [viewMode, setViewMode] = useState(UserMode.Default);
   const [isVisible, setIsVisible] = useState(false);
   const [save, setSave] = useState(false);
   const navComponents = getNavComponents(true);
@@ -52,15 +53,15 @@ const ApplicationDetails = () => {
   const handleItemClick = async (value: string) => {
     console.log("nupur - handleItemClick value is: ", value);
     switch (value) {
-      case AppDetailsMode.ViewMode:
+      case UserMode.Default:
         setEdit(false);
-        setViewMode(AppDetailsMode.ViewMode);
+        setViewMode(UserMode.Default);
         break;
-      case AppDetailsMode.EditMode:
+      case UserMode.EditMode:
         setEdit(true);
-        setViewMode(AppDetailsMode.EditMode);
+        setViewMode(UserMode.EditMode);
         break;
-      case AppActionBtn.SAVE:
+      case UserAction.SAVE:
         setSave(true);
         break;
       default:
@@ -89,7 +90,7 @@ const ApplicationDetails = () => {
           </div>
           <div className="d-flex gap-2 justify-align-center pe-2 position-relative">
             {/* For Action Dropdown*/}
-            {!edit && viewMode === AppDetailsMode.ViewMode && (
+            {!edit && viewMode === UserMode.Default && (
               <Actions
                 label="Actions"
                 items={ActionItems}
@@ -103,16 +104,16 @@ const ApplicationDetails = () => {
                 <>
                   <CustomLabel
                     labelType="c-b"
-                    label={AppDetailsMode.EditMode}
+                    label={UserMode.EditMode}
                   />
                   <SaveButton
                     variant="secondary"
-                    clickHandler={() => handleItemClick(AppActionBtn.SAVE)}
+                    clickHandler={() => handleItemClick(UserAction.SAVE)}
                     // isDisabled={savedChanges?.length > 0 ? false : true}
                   />
                   <CancelButton
                     clickHandler={() => {
-                      handleItemClick(AppActionBtn.CANCEL);
+                      handleItemClick(UserAction.CANCEL);
                     }}
                   />
                 </>
@@ -148,7 +149,7 @@ const ApplicationDetails = () => {
             </Button>
             <div className="d-flex gap-2 justify-align-center pe-2 pos-relative">
               {/* For Action Dropdown*/}
-              {!edit && viewMode === AppDetailsMode.ViewMode && (
+              {!edit && viewMode === UserMode.Default && (
                 <Actions
                   label="Actions"
                   items={ActionItems}
@@ -161,20 +162,20 @@ const ApplicationDetails = () => {
                   <>
                     <CustomLabel
                       labelType="c-b"
-                      label={AppDetailsMode.EditMode}
+                      label={UserMode.EditMode}
                     />
                     <SaveButton
                       variant="secondary"
-                      clickHandler={() => handleItemClick(AppActionBtn.SAVE)}
+                      clickHandler={() => handleItemClick(UserAction.SAVE)}
                     />
                     <CancelButton
-                      clickHandler={() => handleItemClick(AppActionBtn.CANCEL)}
+                      clickHandler={() => handleItemClick(UserAction.CANCEL)}
                     />
                   </>
                 )}
               </div>
 
-              {viewMode === AppDetailsMode.EditMode && (
+              {viewMode === UserMode.EditMode && (
                 <div className="d-flex d-md-none d-lg-none d-xl-none">
                   <Actions
                     label="Actions"

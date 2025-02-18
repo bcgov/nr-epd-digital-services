@@ -9,11 +9,9 @@ const NavigationPills: React.FC<INavigationPills> = ({
   components,
   isDisable,
 }) => {
-  const [activeTabKey, setactiveTabKey] = useState<string>('');
+  const [activeTabKey, setactiveTabKey] = useState<string>(components[0].value);
 
   const location = useLocation();
-
-  //const isMobileScreen = useMediaQuery('(max-width: 786px)');
 
   useEffect(() => {
     if (location?.search !== '') {
@@ -38,15 +36,6 @@ const NavigationPills: React.FC<INavigationPills> = ({
 
     return currentComponentIndex;
   }, [components, activeTabKey]);
-
-  useEffect(() => {
-    if (
-      (activeTabKey === '' && components.length > 0) ||
-      getCurrentElementIndex() === -1
-    ) {
-      handlePillClick(components[0].value);
-    }
-  }, [activeTabKey, components, getCurrentElementIndex]);
 
   const isActiveTabFirstPosition = () => {
     return getCurrentElementIndex() === 0;
@@ -144,7 +133,8 @@ const NavigationPills: React.FC<INavigationPills> = ({
       <div className="mt-4">
         {components &&
           activeTabKey !== '' &&
-          components?.map((tabComponent: any, index: number) => {
+          components?.map((tabComponent: { value: string, component: React.ReactNode }, index: number) => {
+            console.log("nupur -type of tabComponent: ", typeof(tabComponent));
             return tabComponent.value === activeTabKey ? (
               <div key={index}>{tabComponent.component}</div>
             ) : null;
