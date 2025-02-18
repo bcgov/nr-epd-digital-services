@@ -64,31 +64,24 @@
   transition: background-color 0.3s ease; /* Smooth background-color transition */
 }
 
-.side-bar:hover .sideBar-NavItem{
-  gap: 0px;
-  justify-content: flex-start;
-}
-
-/* Initially hide the text */
-.side-bar .sideBarDisplayText {
-  display: block; /* Ensure the text is inline */
-  text-decoration: none;
-  opacity: 0; /* Initially hide the text */
-  visibility: hidden; /* Initially hide the text */
-  position: absolute; /* Position text absolutely to avoid affecting layout */
-  left: 0; /* Align text to the left of the icon */
-  margin-left: 23px; /* Space between the icon and text */
-  transition: opacity 0.3s ease, visibility 0s 0.3s; /* Smooth opacity transition */
-}
-
-/* On hover, show the text and make it visible */
 .side-bar:hover .sideBarDisplayText {
-  opacity: 1; /* Make text visible */
-  visibility: visible; /* Ensure text takes up space */
-  transition: opacity 0.3s ease, visibility 0s 0s; /* Smooth transition */
+  display: block;
+  text-decoration: none !important;
 }
 
-/* Icon styling */
+.sideBarDisplayText {
+  display: none;
+}
+
+.sideBar-NavLabel {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: #474543;
+}
+
 .sideBar-Icon {
   font-size: 16px;
   font-weight: 900;
@@ -101,7 +94,6 @@
 
 /* Text styling */
 .nav-section-bold-label {
-  font-family: 'BCSans';
   font-size: 14px;
   font-weight: 700;
   line-height: 21.01px;
