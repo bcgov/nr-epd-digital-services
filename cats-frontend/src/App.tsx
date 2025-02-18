@@ -8,26 +8,20 @@ import '@bcgov/bc-sans/css/BC_Sans.css'
 import { useState } from "react";
 
 function App() {
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
-
-  // Toggle sidebar expand/collapse on hover or click
-  const handleSidebarToggle = () => {
-    setIsSidebarExpanded((prevState) => !prevState);
-  };
-
   return (
     <div className="container-fluid p-0">
-      <Header />
-      <div className="container m-0 p-0">
-        <div className={`sidebar-container display-from-medium ${isSidebarExpanded ? "expanded" : ""}`} onMouseEnter={handleSidebarToggle} onMouseLeave={handleSidebarToggle}>
-            <SideBar />
-        </div>
-        <div className={`p-0 main-content-container ${isSidebarExpanded ? "shifted" : ""}`}>
-          <Outlet />
-        </div>
+    <Header />
+    <div className="row m-0 p-0">
+      <div className="d-none d-md-block p-0 position-fixed sidebar-container">
+        <SideBar />
       </div>
-      <ToastContainer />
+      <div className="col p-0 content-container">
+        <Outlet />
+      </div>
     </div>
+
+    <ToastContainer />
+  </div>
   );
 }
 

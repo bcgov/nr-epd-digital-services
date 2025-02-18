@@ -43,134 +43,23 @@
 }
 
 * {
-  font-family: "Noto Sans" !important;
+  font-family: 'BCSans' !important;
 }
 
-@media screen and (max-width: 768px) {
-  .display-from-medium {
-    display: none !important;
-  }
-}
-
-/* Ensure the parent container takes up the full height of the screen */
-.container {
-  display: flex;
-  width: 100%;
-  max-width: none; /* Remove any max-width constraints */
-  padding: 0; /* Remove padding */
-  margin: 0; /* Remove margin */
-}
-
-/* Sidebar styles */
 .sidebar-container {
-  width: 128px; /* Initial width */
-  transition: width 0.9s ease; /* Smooth transition for width */
-  height: 100%; /* Ensure full height of the sidebar */
-  cursor: pointer;
-  background: var(--side-bar-background-color);
-  box-shadow: var(--side-bar-shadow);
-  border-right: 1px solid var(--surface-border-light, #d8d8d8);
-  /* min-width: 84px; */
-  max-width: 240px;
+  width: var(--sidebar-default-width);
+  z-index: 100;
 }
 
-.sidebar-container.expanded {
-  width: 240px; /* Expanded width on hover/click */
+.content-container {
+  margin-left: var(--sidebar-default-width);
+  width: calc(100% - var(--sidebar-default-width));
 }
 
-/* Main content styles */
-.main-content-container {
-  flex-grow: 1;
-  transition: margin-left 0.3s ease; /* Smooth transition for margin */
-}
-
-/* Ensure the layout is responsive */
+/* 768px is bootstrap's medium breakpoint */
 @media (max-width: 768px) {
-  .sidebar-container {
-    width: 80px; /* Smaller sidebar on mobile */
-  }
-
-  .sidebar-container.expanded {
-    width: 160px; /* Expanded sidebar on mobile */
-  }
-
-  .main-content-container {
+  .content-container {
     margin-left: 0;
+    width: 100%;
   }
-
-  .main-content-container.shifted {
-    margin-left: 160px; /* Adjust shift for mobile */
-  }
-}
-
-@media (max-width: 1024px) {
-  .sidebar-container.expanded {
-    width: 240px;
-  }
-}
-
-:root {
-  --layout-margin-xsmall: 4px;
-  --layout-margin-small: 8px;
-  --layout-margin-medium: 16px;
-  --layout-margin-large: 24px;
-  --layout-margin-xlarge: 32px;
-  --layout-margin-xxlarge: 40px;
-  --layout-margin-huge: 56px;
-  --layout-padding-xsmall: 4px;
-  --layout-padding-small: 8px;
-  --layout-padding-medium: 16px;
-  --layout-padding-large: 24px;
-  --layout-border-radius-medium: 4px;
-
-  --header-height: 64px;
-  --footer-height: 64px;
-
-  --surface-color-primary-active-border: #2e5dd7;
-  --surface-color-primary-default: #053662;
-  --surface-color-primary-hover: #1e5189;
-  --surface-color-secondary-hover: #edebe9;
-  --surface-color-background-white: #ffffff;
-  --surface-color-background-light: #faf9f8;
-  --surface-color-border-light: #d8d8d8;
-  --surface-color-border-hover: #b8b8b8;
-  --surface-color-border-medium: #898785;
-  --surface-color-border-dark: #353433;
-  --surface-color-brand-gray-10: #faf9f8;
-  --surface-color-brand-gray-20: #f3f2f1;
-  --surface-color-brand-gray-30: #eceae8;
-  --surface-color-brand-gray-60: #c6c5c3;
-  --surface-color-brand-gray-80: #605e5c;
-  --surface-color-brand-gray-white: #fff;
-  --surface-color-brand-gold-50: #fcc85d;
-  --surface-color-brand-gold-60: #f8ba47;
-  --surface-color-brand-blue-20: #d8eafd;
-  --surface-color-brand-blue-70: #5595d9;
-  --surface-color-brand-blue-100: #053662;
-
-  --support-border-color-success: #42814a;
-  --support-surface-color-info: #f7f9fc;
-  --support-border-color-info: #053662;
-
-  --icons-color-primary: #2d2d2d;
-  --icons-color-secondary: #474543;
-  --icons-color-info: #053662;
-  --icons-color-success: #42814a;
-  --icons-color-disabled: #9f9d9c;
-
-  --typography-color-primary: #2d2d2d;
-  --typography-color-primary-invert: #fff;
-  --typography-color-secondary: #474543;
-  --typography-color-link: #255a90;
-  --typography-color-disabled: #9f9d9c;
-
-  --box-shadow-small: 0 0.6px 1.8px 0 rgba(0, 0, 0, 0.1),
-    0 3.2px 7.2px 0 rgba(0, 0, 0, 0.13);
-
-  --map-button-height-large: 64px;
-  --map-button-height-medium: 40px;
-  --map-button-padding-large: 16px 24px;
-  --map-button-padding-medium: 8px 16px;
-  --map-button-font-size-large: 18px;
-  --map-button-font-size-medium: 16px;
 }
