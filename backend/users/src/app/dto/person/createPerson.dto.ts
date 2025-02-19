@@ -9,7 +9,4 @@ export class CreatePerson extends BasePerson {
   
     @Field({nullable: true})
     createdDatetime: Date;
-  
-    // @Field({ nullable: true })
-    // ts: Buffer | null;
 }

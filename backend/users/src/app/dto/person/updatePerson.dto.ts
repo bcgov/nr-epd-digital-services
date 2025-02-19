@@ -14,8 +14,4 @@ export class UpdatePerson extends BasePerson {
     @Field({ nullable: true })
     @IsOptional()
     updatedDatetime: Date | null;
-  
-    // @Field({ nullable: true })
-    // @IsOptional()
-    // ts: Buffer | null;
 }

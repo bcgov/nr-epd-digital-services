@@ -296,7 +296,6 @@ const Person = () => {
           setViewMode(UserMode.Default);
           break;
         case UserAction.SAVE: // Save the changes
-          // need to ask Anton how to use generated.ts for graphql type safe.
           if (id) 
           {
             setLoading(updateLoading); // Set loading to true

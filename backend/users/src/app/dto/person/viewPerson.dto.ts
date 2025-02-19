@@ -20,7 +20,4 @@ export class ViewPerson extends BasePerson {
 
   @Field({ nullable: true })
   updatedDatetime: Date | null;
-
-//   @Field({ nullable: true })
-//   ts: Buffer | null;
 }
