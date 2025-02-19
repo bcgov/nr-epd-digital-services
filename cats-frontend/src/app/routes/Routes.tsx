@@ -9,6 +9,7 @@ import { getLoggedInUserType } from "../helpers/utility";
 
 import Search from "../features/people/Search";
 import Person from "../features/people/person/Person";
+import ApplicationDetails from "../features/applications/application/ApplicationDetails";
 
 const roleBasedRoutes: any = {
   client: [
@@ -16,6 +17,7 @@ const roleBasedRoutes: any = {
     { path: "/people", element: <Search /> },
     { path: "/person/:id", element: <Person /> },
     { path: "/person", element: <Person /> },
+    { path: "/application", element: <ApplicationDetails /> },
   ],
   internal: [
     { path: "/dashboard", element: <Dashboard /> },
