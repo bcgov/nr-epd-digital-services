@@ -12,11 +12,6 @@ import { ParticipantRole } from './participantRole.entity';
 import { Person } from './person.entity';
 
 @Index('idx_app_participant_application_id', ['applicationId'], {})
-@Index(
-  'uidx_application_id_participant_role_id',
-  ['applicationId', 'participantRoleId'],
-  { unique: true },
-)
 @Index('pk_app_participant', ['id'], { unique: true })
 @Index('idx_app_participant_organization_id', ['organizationId'], {})
 @Index('idx_app_participant_participant_role_id', ['participantRoleId'], {})
