@@ -7,7 +7,7 @@ const personForm: { [key: string]: IFormField } = {
   active: {
     type:FormFieldType.Switch,
     label: 'Active',
-    graphQLPropertyName:'end_date',
+    graphQLPropertyName:'isActive',
     value:'',
     colSize: 'col-lg-4 col-md-6 col-sm-12',
     customLabelCss:'custom-people-lbl',
@@ -17,7 +17,7 @@ const personForm: { [key: string]: IFormField } = {
   taxExempt: {
     type:FormFieldType.Switch,
     label: 'Tax Exempt',
-    graphQLPropertyName:'gst_exempt',
+    graphQLPropertyName:'isTaxExempt',
     value:'',
     colSize: 'col-lg-4 col-md-6 col-sm-12',
     customLabelCss:'custom-people-lbl',
@@ -27,7 +27,7 @@ const personForm: { [key: string]: IFormField } = {
   firstName: {
       type: FormFieldType.Text,
       label: 'First Name',
-      graphQLPropertyName: 'first_name',
+      graphQLPropertyName: 'firstName',
       value: '',
       colSize: 'col-lg-4 col-md-6 col-sm-12',
       customLabelCss:'custom-people-lbl',
@@ -38,7 +38,7 @@ const personForm: { [key: string]: IFormField } = {
   middleName: {
       type: FormFieldType.Text,
       label: 'Middle Name',
-      graphQLPropertyName: 'middle_name',
+      graphQLPropertyName: 'middleName',
       value: '',
       customLabelCss:'custom-people-lbl',
       colSize: 'col-lg-4 col-md-6 col-sm-12',
@@ -49,7 +49,7 @@ const personForm: { [key: string]: IFormField } = {
   lastName: {
       type: FormFieldType.Text,
       label: 'Last Name',
-      graphQLPropertyName: 'last_name',
+      graphQLPropertyName: 'lastName',
       value: '',
       colSize: 'col-lg-4 col-md-6 col-sm-12',
       customLabelCss:'custom-people-lbl',
@@ -60,7 +60,7 @@ const personForm: { [key: string]: IFormField } = {
   phone: {
       type: FormFieldType.Text,
       label: 'Phone',
-      graphQLPropertyName: 'tel',
+      graphQLPropertyName: 'phone',
       value: '',
       colSize: 'col-lg-4 col-md-6 col-sm-12',
       customLabelCss:'custom-people-lbl',
@@ -71,7 +71,7 @@ const personForm: { [key: string]: IFormField } = {
   cell: {
       type: FormFieldType.Text,
       label: 'Cell',
-      graphQLPropertyName: 'cel',
+      graphQLPropertyName: 'mobile',
       value: '',
       colSize: 'col-lg-4 col-md-6 col-sm-12',
       customLabelCss:'custom-people-lbl',
@@ -104,7 +104,7 @@ const personForm: { [key: string]: IFormField } = {
   idir: {
       type: FormFieldType.Text,
       label: 'IDIR',
-      graphQLPropertyName: 'idir',
+      graphQLPropertyName: 'loginUserName',
       value: '',
       colSize: 'col-lg-4 col-md-6 col-sm-12',
       customLabelCss:'custom-people-lbl',
@@ -115,7 +115,7 @@ const personForm: { [key: string]: IFormField } = {
   address1: {
       type: FormFieldType.Text,
       label: 'Address Line 1',
-      graphQLPropertyName: 'address1',
+      graphQLPropertyName: 'addressLine1',
       value: '',
       colSize: 'col-lg-4 col-md-6 col-sm-12',
       customLabelCss:'custom-people-lbl',
@@ -126,7 +126,7 @@ const personForm: { [key: string]: IFormField } = {
   address2: {
       type: FormFieldType.Text,
       label: 'Address Line 2',
-      graphQLPropertyName: 'address2',
+      graphQLPropertyName: 'addressLine2',
       value: '',
       colSize: 'col-lg-4 col-md-6 col-sm-12',
       customLabelCss:'custom-people-lbl',
@@ -188,7 +188,7 @@ const personForm: { [key: string]: IFormField } = {
   postalCode: {
       type: FormFieldType.Text,
       label: 'Postal Code',
-      graphQLPropertyName: 'postal_code',
+      graphQLPropertyName: 'postalCode',
       value: '',
       colSize: 'col-lg-4 col-md-6 col-sm-12',
       customLabelCss:'custom-people-lbl',
