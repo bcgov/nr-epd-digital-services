@@ -66,7 +66,12 @@ const personForm: { [key: string]: IFormField } = {
       customLabelCss:'custom-people-lbl',
       customEditLabelCss:'custom-people-edit-lbl',
       customInputTextCss:'custom-people-txt',
-      customEditInputTextCss:'custom-people-edit-txt'
+      customEditInputTextCss:'custom-people-edit-txt',
+      allowNumbersOnly: true,
+      validation: {
+        pattern: /^\d{0,10}$/,
+        customMessage: 'Phone number must be digits and cannot be more than 10 digits',
+      },
   },
   cell: {
       type: FormFieldType.Text,
@@ -77,7 +82,12 @@ const personForm: { [key: string]: IFormField } = {
       customLabelCss:'custom-people-lbl',
       customEditLabelCss:'custom-people-edit-lbl',
       customInputTextCss:'custom-people-txt',
-      customEditInputTextCss:'custom-people-edit-txt'
+      customEditInputTextCss:'custom-people-edit-txt',
+      allowNumbersOnly: true,
+      validation: {
+        pattern: /^\d{0,10}$/,
+        customMessage: 'Cell number must be digits and cannot be more than 10 digits',
+      },
   },
   fax: {
       type: FormFieldType.Text,
@@ -88,7 +98,12 @@ const personForm: { [key: string]: IFormField } = {
       customLabelCss:'custom-people-lbl',
       customEditLabelCss:'custom-people-edit-lbl',
       customInputTextCss:'custom-people-txt',
-      customEditInputTextCss:'custom-people-edit-txt'
+      customEditInputTextCss:'custom-people-edit-txt',
+      allowNumbersOnly: true,
+      validation: {
+        pattern: /^\d{0,10}$/,
+        customMessage: 'Fax number must be digits and cannot be more than 10 digits',
+      },
   },
   email: {
       type: FormFieldType.Text,
@@ -99,7 +114,11 @@ const personForm: { [key: string]: IFormField } = {
       customLabelCss:'custom-people-lbl',
       customEditLabelCss:'custom-people-edit-lbl',
       customInputTextCss:'custom-people-txt',
-      customEditInputTextCss:'custom-people-edit-txt'
+      customEditInputTextCss:'custom-people-edit-txt',
+      validation: {
+        pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+        customMessage: 'Valid email is required',
+      },
   },
   idir: {
       type: FormFieldType.Text,
@@ -113,37 +132,43 @@ const personForm: { [key: string]: IFormField } = {
       customEditInputTextCss:'custom-people-edit-txt'
   },
   address1: {
-      type: FormFieldType.Text,
-      label: 'Address Line 1',
-      graphQLPropertyName: 'addressLine1',
-      value: '',
-      colSize: 'col-lg-4 col-md-6 col-sm-12',
-      customLabelCss:'custom-people-lbl',
-      customEditLabelCss:'custom-people-edit-lbl',
-      customInputTextCss:'custom-people-txt',
-      customEditInputTextCss:'custom-people-edit-txt'
+    type: FormFieldType.Search,
+    label: 'Address Line 1',
+    graphQLPropertyName: 'addressLine1',
+    customMenuMessage: <span>Please select the address line 1: </span>,
+    value: '',
+    options: null,
+    colSize: 'col-lg-4 col-md-6 col-sm-12',
+    customLabelCss:'custom-people-lbl',
+    customEditLabelCss:'custom-people-edit-lbl',
+    customInputTextCss:'custom-people-txt',
+    customEditInputTextCss:'custom-people-edit-txt',
+    searchCustomInputContainerCss: 'custom-search-input-container',
+    searchCustomInputMenuCss: 'custom-search-input-menu',
+    customInfoMessage: null,
+    isSearchCustomInputIcon: false,
   },
   address2: {
-      type: FormFieldType.Text,
-      label: 'Address Line 2',
-      graphQLPropertyName: 'addressLine2',
-      value: '',
-      colSize: 'col-lg-4 col-md-6 col-sm-12',
-      customLabelCss:'custom-people-lbl',
-      customEditLabelCss:'custom-people-edit-lbl',
-      customInputTextCss:'custom-people-txt',
-      customEditInputTextCss:'custom-people-edit-txt'
+    type: FormFieldType.Search,
+    label: 'Address Line 2',
+    graphQLPropertyName: 'addressLine2',
+    value: '',
+    customMenuMessage: <span>Please select the address line 2: </span>,
+    options: null,
+    colSize: 'col-lg-4 col-md-6 col-sm-12',
+    customLabelCss:'custom-people-lbl',
+    customEditLabelCss:'custom-people-edit-lbl',
+    customInputTextCss:'custom-people-txt',
+    customEditInputTextCss:'custom-people-edit-txt',
+    searchCustomInputContainerCss: 'custom-search-input-container',
+    searchCustomInputMenuCss: 'custom-search-input-menu',
+    customInfoMessage: null,
+    isSearchCustomInputIcon: false,
   },
   city: {
-      type: FormFieldType.DropDown,
+      type: FormFieldType.Text,
       label: 'City',
-      placeholder: 'Select City',
       graphQLPropertyName: 'city',
-      options: [
-        { key: 'City1', value: 'City1' },
-        { key: 'City2', value: 'City2' },
-        { key: 'City3', value: 'City3' },
-      ],
       value: '',
       colSize: 'col-lg-4 col-md-6 col-sm-12',
       customLabelCss:'custom-people-lbl',
@@ -152,15 +177,9 @@ const personForm: { [key: string]: IFormField } = {
       customEditInputTextCss:'custom-people-edit-txt'
   },
   province: {
-    type: FormFieldType.DropDown,
+    type: FormFieldType.Text,
     label: 'Province',
-    placeholder: 'Select Province',
     graphQLPropertyName: 'province',
-    options: [
-      { key: 'Province1', value: 'Province1' },
-      { key: 'Province2', value: 'Province2' },
-      { key: 'Province3', value: 'Province3' },
-    ],
     value: '',
     colSize: 'col-lg-4 col-md-6 col-sm-12',
     customLabelCss:'custom-people-lbl',
@@ -169,15 +188,9 @@ const personForm: { [key: string]: IFormField } = {
     customEditInputTextCss:'custom-people-edit-txt'
   },
   country: {
-    type: FormFieldType.DropDown,
+    type: FormFieldType.Text,
     label: 'Country',
-    placeholder: 'Select Country',
     graphQLPropertyName: 'country',
-    options: [
-      { key: 'Country1', value: 'Country1' },
-      { key: 'Country2', value: 'Country2' },
-      { key: 'Country3', value: 'Country3' },
-    ],
     value: '',
     colSize: 'col-lg-4 col-md-6 col-sm-12',
     customLabelCss:'custom-people-lbl',
@@ -195,6 +208,38 @@ const personForm: { [key: string]: IFormField } = {
       customEditLabelCss:'custom-people-edit-lbl',
       customInputTextCss:'custom-people-txt',
       customEditInputTextCss:'custom-people-edit-txt'
+  },
+  noteDate:{
+    type: FormFieldType.Date,
+    label: 'Date',
+    placeholder: 'EE, MMM dd, yyyy',
+    dateFormat:'EE, MMM dd, yyyy',
+    graphQLPropertyName: 'noteDate',
+    value: '',
+    colSize: 'col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12',
+    customEditLabelCss: 'custom-note-modal-edit-label',
+    customEditInputTextCss: 'custom-note-modal-edit-input .rs-input .rs-input-group-addon',
+    isDisabled: true,
+  },
+  noteUser:{
+    type: FormFieldType.Text,
+    label: 'User',
+    graphQLPropertyName: 'noteUser',
+    value: '',
+    colSize: 'col-lg-6 col-md-6 col-sm-12',
+    customEditLabelCss: 'custom-note-modal-edit-label',
+    customEditInputTextCss: 'custom-note-modal-edit-input',
+    isDisabled: true,
+  },
+  noteDescription: {
+    type: FormFieldType.TextArea,
+    label:'Note',
+    graphQLPropertyName: 'noteDescription',
+    value: '',
+    colSize: 'col-lg-12 col-md-12 col-sm-12',
+    customEditLabelCss: 'custom-note-modal-edit-label',
+    customEditInputTextCss: 'custom-note-modal-edit-input',
+    textAreaRow: 3,
   },
 }
 
@@ -226,99 +271,61 @@ export const addressForm: IFormField[][] = [
     ]
 ];
 
+export const noteForm: IFormField[][] = [
+    [
+      personForm['noteDate'],
+      personForm['noteUser'],
+      personForm['noteDescription'],
+    ]
+];
+
 export const noteColumns: TableColumn[] = [
     {
         id: 1,
         displayName: 'Date',
         active: true,
-        graphQLPropertyName: 'note_date',
+        graphQLPropertyName: 'noteDate',
         columnSize: ColumnSize.Small,
         displayType: {
           type: FormFieldType.Date,
           dateFormat:'EE, MMM dd, yyyy',
-          graphQLPropertyName: 'note_date',
+          graphQLPropertyName: 'noteDate',
           label: '',
-        //   placeholder: 'MM/DD/YY',
           value: '',
           colSize: 'col-lg-6 col-md-6 col-sm-12',
-        //   customLabelCss: 'custom-participant-lbl-text',
           customInputTextCss: 'custom-people-edit-lbl',
-        //   customEditLabelCss: 'custom-participant-edit-label',
-        //   customEditInputTextCss:
-        //     'custom-participant-edit-input .rs.input .rs-input-group-addon',
-        // customLabelCss:'custom-people-lbl',
-        // customEditLabelCss:'custom-people-edit-lbl',
           tableMode: true,
-        //   validation: {
-        //     required: true,
-        //     customMessage: 'Start Date is required.',
-        //   },
         },
     },
     {
       id: 2,
       displayName: 'User',
       active: true,
-      graphQLPropertyName: 'psn_id',
+      graphQLPropertyName: 'noteUser',
       columnSize: ColumnSize.Small,
       displayType: {
-        type: FormFieldType.DropDownWithSearch,
+        type: FormFieldType.Text,
         label: '',
-        isLabel: false,
-        graphQLPropertyName: 'psn_id',
-        placeholder: 'Please enter User Name.',
-        isLoading: RequestStatus.idle,
+        graphQLPropertyName: 'noteUser',
         value: '',
-        options: [
-          {
-            key: '12345',
-            value:'abcd',
-          },
-          {
-            key: '12346',
-            value:'abce',
-          },
-          {
-            key: '12347',
-            value:'abcf',
-          },
-        ],
-        filteredOptions: [],
         colSize: 'col-lg-6 col-md-6 col-sm-12',
-        // customLabelCss: 'custom-participant-lbl-text',
         customInputTextCss: 'custom-people-edit-lbl',
-        // customEditLabelCss: 'custom-participant-edit-label',
-        // customEditInputTextCss: 'custom-participant-edit-input',
-        // customPlaceholderCss: 'custom-participant-search-placeholder',
-        // customLabelCss:'custom-people-lbl',
-        // customEditLabelCss:'custom-people-edit-lbl',
-        customMenuMessage: <span>Please select user name:</span>,
         tableMode: true,
-        handleSearch: () => {},
-        // validation: {
-        //   required: true,
-        //   customMessage: 'Participant Name is required.',
-        // },
       },
     },
     {
         id: 3,
         displayName: 'Description',
         active: true,
-        graphQLPropertyName: 'note_text',
+        graphQLPropertyName: 'noteDescription',
         columnSize: ColumnSize.Triple,
         displayType: {
           type: FormFieldType.Text,
           label: '',
-          graphQLPropertyName: 'note_text',
+          graphQLPropertyName: 'noteDescription',
           value: '',
           colSize: 'col-lg-12 col-md-12 col-sm-12',
-        //   customLabelCss: 'custom-participant-lbl-text',
           customInputTextCss: 'custom-people-edit-lbl',
-        //   customEditLabelCss: 'custom-participant-edit-label',
-        //   customEditInputTextCss: 'custom-participant-edit-input',
-          // customLabelCss:'custom-people-lbl',
-          // customEditLabelCss:'custom-people-edit-lbl',
           tableMode: true,
         },
     },
@@ -326,16 +333,14 @@ export const noteColumns: TableColumn[] = [
       id: 4,
       displayName: 'Actions',
       active: true,
-      graphQLPropertyName: 'note_id',
+      graphQLPropertyName: 'edit',
       displayType: {
         type: FormFieldType.Link,
         label: 'Edit',
-        graphQLPropertyName: 'note_id',
+        graphQLPropertyName: 'edit',
         value: '',
         customLinkValue: 'Edit',
         customInputTextCss: 'custom-people-edit-lbl',
-        // customLabelCss:'custom-people-lbl',
-        // customEditLabelCss:'custom-people-edit-lbl',
         tableMode: true,
         href: '#',
         customIcon: <PencilIcon />,
@@ -343,7 +348,6 @@ export const noteColumns: TableColumn[] = [
       columnSize: ColumnSize.XtraSmall,
       dynamicColumn: true,
       customHeaderCss:'custom-note-tbl-header',
-      linkRedirectionURL: '#',
     },
 ];
   

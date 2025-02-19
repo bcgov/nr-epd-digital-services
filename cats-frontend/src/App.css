@@ -64,7 +64,7 @@
 /* Sidebar styles */
 .sidebar-container {
   width: 128px; /* Initial width */
-  transition: width 0.3s ease; /* Smooth transition for width */
+  transition: width 0.9s ease; /* Smooth transition for width */
   height: 100%; /* Ensure full height of the sidebar */
   cursor: pointer;
   background: var(--side-bar-background-color);
