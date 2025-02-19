@@ -19,9 +19,8 @@ import { CancelButton, SaveButton } from "../../../components/simple/CustomButto
 import { ActionItems } from "../../../components/action/ActionsConfig";
 import { UserAction } from "../../../helpers/requests/UserAction";
 import NavigationBar from "../../../components/navigation-bar/NavigationBar";
-import NavigationBar from "../../../components/navigation-bar/NavigationBar";
 import { usePerson } from "./hooks/usePerson";
-import { useCreatePerson } from "./hooks/useCreatePerson";
+// import { useCreatePerson } from "./hooks/useCreatePerson";
 import { useUpdatePerson } from "./hooks/useUpdatePerson";
 import { fetchPerson } from "./services/PersonService";
 import LoadingOverlay from "../../../components/loader/LoadingOverlay";
@@ -58,7 +57,7 @@ const Person = () => {
   
   // Custom hooks for creating/updating person
   //  const { createNewPerson, loading: createLoading, error: createError } = useCreatePerson();
-  const { updateExistingPerson, loading: updateLoading, error: updateError } = useUpdatePerson();
+  // const { updateExistingPerson, loading: updateLoading, error: updateError } = useUpdatePerson();
   const [personName, setPersonName]= useState('');
   const [isVisible, setIsVisible] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
@@ -262,8 +261,8 @@ const Person = () => {
         case UserAction.SAVE: // Save the changes
           // need to ask Anton how to use generated.ts for graphql type safe.
           if (id) {
-            setLoading(updateLoading); // Set loading to true
-            await updateExistingPerson(id, formData).then((response) => { }).catch((error) => { console.error('error -->', error) });
+            // setLoading(updateLoading); // Set loading to true
+            // await updateExistingPerson(id, formData).then((response) => { }).catch((error) => { console.error('error -->', error) });
           } 
           // else {
           //   // If no `id`, create a new person
