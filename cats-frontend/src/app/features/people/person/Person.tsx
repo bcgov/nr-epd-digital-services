@@ -177,9 +177,9 @@ const Person = () => {
 
 
   const handleInputChange = (graphQLPropertyName: any, value: String | [Date, Date]) => {
-    if((graphQLPropertyName === 'addressLine1' || graphQLPropertyName === 'addressLine2') && value.toString().trim().length > 0)
+    if((graphQLPropertyName === 'address_1' || graphQLPropertyName === 'address_2') && value.toString().trim().length > 0)
     {
-      const indexToUpdate = addrForm.findIndex((row) => row.some((field) => (field.graphQLPropertyName === 'addressLine1' || field.graphQLPropertyName === 'addressLine2')));
+      const indexToUpdate = addrForm.findIndex((row) => row.some((field) => (field.graphQLPropertyName === graphQLPropertyName)));
       let addr: any = null;
       fetchAddresses(value as string).then((response) => {
         if(response?.length > 0)
