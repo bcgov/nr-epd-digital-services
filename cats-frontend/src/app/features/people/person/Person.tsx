@@ -19,6 +19,7 @@ import { CancelButton, SaveButton } from "../../../components/simple/CustomButto
 import { ActionItems } from "../../../components/action/ActionsConfig";
 import { UserAction } from "../../../helpers/requests/UserAction";
 import NavigationBar from "../../../components/navigation-bar/NavigationBar";
+import NavigationBar from "../../../components/navigation-bar/NavigationBar";
 import { usePerson } from "./hooks/usePerson";
 import { useCreatePerson } from "./hooks/useCreatePerson";
 import { useUpdatePerson } from "./hooks/useUpdatePerson";
