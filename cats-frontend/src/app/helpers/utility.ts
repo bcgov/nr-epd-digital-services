@@ -84,6 +84,8 @@ export const flattenFormRows = (arr: IFormField[][]): IFormField[] => {
   return flattened;
 };
 
+// This should only be used outside of the <AuthContext> component tree (redux slice, axios calls, etc)
+// In React components, use `const {user} = useAuth()`
 export function getUser() {
   const oidcStorage = sessionStorage.getItem(
     `oidc.user:` +

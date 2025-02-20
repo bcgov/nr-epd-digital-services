@@ -45,15 +45,22 @@ const authLink = setContext((_, { headers }) => {
   cache: new InMemoryCache(),
 });*/
 
+// This is a required callback for proper auth experience. From the `react-oidc-context` docs:
+// "You must provide an implementation of onSigninCallback to oidcConfig to remove the payload from the URL upon successful login.
+// Otherwise if you refresh the page and the payload is still there, signinSilent - which handles renewing your token - won't work.""
+const onSigninCallback = () => {
+  window.history.replaceState({}, document.title, window.location.pathname);
+};
+
 const authOptions: UserManagerSettings = getClientSettings();
 root.render(
   <React.StrictMode>
-    <AuthProvider {...authOptions}>
+    <AuthProvider {...authOptions} onSigninCallback={onSigninCallback}>
       <Provider store={store}>
         <RouterProvider router={siteRouter} />
       </Provider>
     </AuthProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
