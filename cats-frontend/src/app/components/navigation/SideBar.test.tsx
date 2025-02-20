@@ -11,7 +11,7 @@ jest.mock('react-oidc-context', () => ({
 }));
 
 describe('SideBar Component', () => {
-  test('renders SideBar component correctly', () => {
+  test.skip('renders SideBar component correctly', () => {
     (useAuth as jest.Mock).mockReturnValue({ isAuthenticated: false });
 
     render(

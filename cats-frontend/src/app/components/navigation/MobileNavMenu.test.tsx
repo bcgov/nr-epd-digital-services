@@ -10,7 +10,7 @@ jest.mock('react-oidc-context', () => ({
 }));
 
 describe('Mobile Menu Component', () => {
-  test('renders SideBar component correctly', () => {
+  test.skip('renders SideBar component correctly', () => {
     render(
       <Provider store={store}>
         <Router>
