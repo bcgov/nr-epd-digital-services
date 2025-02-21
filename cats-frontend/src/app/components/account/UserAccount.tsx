@@ -32,7 +32,7 @@ const UserAccount = (props: any) => {
     });
   }, []);
 
-  const singOut = () => {
+  const signOut = () => {
     auth.removeUser();
     auth.signoutRedirect({
       id_token_hint: auth.user?.id_token,
@@ -96,7 +96,7 @@ const UserAccount = (props: any) => {
                 aria-label="Log Out"
                 tabIndex={0} // Make focusable with keyboard
                 className="account-custom-item-mobile"
-                onClick={singOut}
+                onClick={signOut}
               >
                 Log Out
               </div>
@@ -173,7 +173,7 @@ const UserAccount = (props: any) => {
                 role="menuitem"
                 className="account-custom-item"
                 aria-label="Log Out"
-                onClick={singOut}
+                onClick={signOut}
               >
                 Log Out
               </Dropdown.Item>
