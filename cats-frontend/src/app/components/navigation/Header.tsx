@@ -1,20 +1,17 @@
-import "@bcgov/design-tokens/css/variables.css";
 import logo from "../../../app/images/logos/logo-banner.png";
 
 import "./Header.css";
-import moon from "../../images/moon.png";
 import { BarsIcon } from "../common/icon";
 import { useState } from "react";
 import MobileNavMenu from "./MobileNavMenu";
-import LanguageSwitcher from "../language/LanguageSwitcher";
 import UserAccount from "../account/UserAccount";
 import { LoginDropdown } from "../login/LoginDropdown";
-import { getUser } from "../../helpers/utility";
+import { useAuth } from "react-oidc-context";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const user = getUser();
+  const auth = useAuth()
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -48,8 +45,8 @@ const Header = () => {
         {/* <div className="d-sm-none d-md-flex d-none">       
         <img src={moon} alt="Moon image for theme." />
       </div> */}
-        {user == null && LoginDropdown("Sign in")}
-        {!isOpen && user !== null && <UserAccount mobileView={isOpen} />}
+        {!auth.isAuthenticated && <LoginDropdown title="Sign in" />}
+        {!isOpen && auth.isAuthenticated && <UserAccount mobileView={isOpen} />}
       </div>
       <div
         role="menu"
