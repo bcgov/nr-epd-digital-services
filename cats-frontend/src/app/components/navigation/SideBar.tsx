@@ -1,23 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./SideBar.css";
-import SideNav, { getSideBarNavList } from "./dto/SideNav";
+import { getSideBarNavList } from "./dto/SideNav";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useAuth } from "react-oidc-context";
 import { AppDispatch } from "../../Store";
 import { getLoggedInUserType, showNotification } from "../../helpers/utility";
 
 function SideBar() {
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useAuth();
   const location = useLocation();
 
-  // Specify the type for navList as SideNav[]
-  const [navList, setNavList] = useState<SideNav[]>([]);
-
-  useEffect(() => {
-    setNavList(getSideBarNavList(getLoggedInUserType()));
-  }, [user]);
+  const navList = getSideBarNavList(getLoggedInUserType());
 
   const renderMenuOption = (item: any, tabIndex: number) => {
     const isCurrentPath = location.pathname === item.linkTo;
