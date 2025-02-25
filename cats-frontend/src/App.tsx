@@ -26,10 +26,7 @@ function App() {
 
   return (
     <div className="container-fluid p-0">
-      <Header
-      
-      
-      />
+      <Header />
       <div className="container m-0 p-0">
         <div
           className={`sidebar-container display-from-medium ${isSidebarExpanded ? 'expanded' : ''}`}
