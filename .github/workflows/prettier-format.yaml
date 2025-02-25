@@ -28,4 +28,4 @@ jobs:
       
       - name: Formatting issues found
         if: failure()
-        run: echo "Code formatting check failed. Try running `npm run format` in the project that caused the error and commit your changes"
+        run: echo "\033[33mCode formatting check failed. Try running npm run format in the project that caused the error and commit your changes\033[0m"
