@@ -23,5 +23,5 @@ jobs:
         uses: creyD/prettier_action@v4.3
         with:
           prettier_options: --check ./cats-frontend/src/**/*.{js,ts,jsx,tsx,json,css} --ignore-path ./cats-frontend/.prettierignore --config ./cats-frontend/.prettierrc
-          # only_changed: True
+          only_changed: True
           dry: True
