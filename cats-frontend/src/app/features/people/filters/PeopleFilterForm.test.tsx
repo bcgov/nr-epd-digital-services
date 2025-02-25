@@ -3,38 +3,40 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import PeopleFilterForm from "./PeopleFilterForm";
 
 // Mocking the Form component
-jest.mock("../../../components/form/Form", () => {
-  return function MockForm(props) {
-    return (
-      <div>
-        {props.formRows.map((row, index) => (
-          <div key={index}>
-            {row.map((field) => (
-              <input
-                key={field.graphQLPropertyName}
-                data-testid={field.graphQLPropertyName}
-                value={props.formData[field.graphQLPropertyName] || ""}
-                onChange={(e) =>
-                  props.handleInputChange(
-                    field.graphQLPropertyName,
-                    e.target.value
-                  )
-                }
-                placeholder={field.placeholder}
-              />
-            ))}
-          </div>
-        ))}
-      </div>
-    );
+vi.mock("../../../components/form/Form", () => {
+  return {
+    default: function MockForm(props) {
+      return (
+        <div>
+          {props.formRows.map((row, index) => (
+            <div key={index}>
+              {row.map((field) => (
+                <input
+                  key={field.graphQLPropertyName}
+                  data-testid={field.graphQLPropertyName}
+                  value={props.formData[field.graphQLPropertyName] || ""}
+                  onChange={(e) =>
+                    props.handleInputChange(
+                      field.graphQLPropertyName,
+                      e.target.value
+                    )
+                  }
+                  placeholder={field.placeholder}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      );
+    },
   };
 });
 
 describe("PeopleFilterForm", () => {
-  const mockOnInputChange = jest.fn();
-  const mockOnSubmit = jest.fn();
-  const mockOnReset = jest.fn();
-  const mockCancelSearchFilter = jest.fn();
+  const mockOnInputChange = vi.fn();
+  const mockOnSubmit = vi.fn();
+  const mockOnReset = vi.fn();
+  const mockCancelSearchFilter = vi.fn();
 
   const formData = {
     id: "",
@@ -52,7 +54,7 @@ describe("PeopleFilterForm", () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("renders the form with initial data", () => {

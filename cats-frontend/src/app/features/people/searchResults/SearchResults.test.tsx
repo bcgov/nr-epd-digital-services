@@ -33,7 +33,7 @@ describe("SearchResults Component", () => {
           pageChange={() => {}}
           columns={[]}
           totalRecords={0}
-          changeHandler={jest.fn}
+          changeHandler={vi.fn}
         />
       </Provider>
     );
@@ -61,7 +61,7 @@ describe("SearchResults Component", () => {
             pageChange={(currentPage, resultsPerPage) => {}}
             columns={getPeopleSearchResultsColumns()}
             totalRecords={0}
-            changeHandler={jest.fn}
+            changeHandler={vi.fn}
           />
         ),
         path: "/",
@@ -73,7 +73,7 @@ describe("SearchResults Component", () => {
         <RouterProvider router={router} />
       </Provider>
     );
-    const peopleIdLink = screen.getByText("View");
+    const peopleIdLink = screen.getByText("Details");
     expect(peopleIdLink).toBeInTheDocument();
   });
 
@@ -94,9 +94,9 @@ describe("SearchResults Component", () => {
           <SearchResults
             data={mockData}
             columns={getPeopleSearchResultsColumns()}
-            pageChange={jest.fn}
+            pageChange={vi.fn()}
             totalRecords={0}
-            changeHandler={jest.fn}
+            changeHandler={vi.fn()}
           />
         ),
         path: "/",
@@ -134,9 +134,9 @@ describe("SearchResults Component", () => {
           <SearchResults
             data={mockData}
             columns={columns}
-            pageChange={jest.fn}
+            pageChange={vi.fn()}
             totalRecords={0}
-            changeHandler={jest.fn}
+            changeHandler={vi.fn}
           />
         ),
         path: "/",
@@ -147,7 +147,7 @@ describe("SearchResults Component", () => {
         <RouterProvider router={router} />
       </Provider>
     );
-    const peopleIdLink = screen.getByText("View");
+    const peopleIdLink = screen.getByText("Details");
     expect(peopleIdLink).toBeInTheDocument();
   });
 });

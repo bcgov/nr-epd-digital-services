@@ -5,8 +5,37 @@ networks:
     driver: bridge
 
 services:
+  frontend:
+    container_name: frontend
+    entrypoint:
+      - "sh"
+      - "-c"
+      - "npm i && npm run start"
+    environment:
+      - WATCHPACK_POLLING=true
+      - NODE_ENV=development
+      - BACKEND_URL=backend
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:4000" ]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    hostname: frontend
+    image: node:14
+    links:
+      - graphqlgateway
+    ports:
+      - "4000:3000"
+      - "35729:35729"
+    volumes:
+      - ./frontend:/app:z
+      - /app/node_modules
+    working_dir: "/app"
   database:
     user: postgres
+    ports:
+      - "6000:5432"
     networks:
       - app-tier
     container_name: database
@@ -15,6 +44,10 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: default
     hostname: database
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
     image: postgis/postgis:15-3.3
     restart: always
     healthcheck:
@@ -164,33 +197,7 @@ services:
       - /app/node_modules
     working_dir: "/app"
 
-frontend:
-  container_name: frontend
-  entrypoint:
-    - "sh"
-    - "-c"
-    - "npm i && npm run start"
-  environment:
-    - WATCHPACK_POLLING=true
-    - NODE_ENV=development
-    - BACKEND_URL=backend
-  healthcheck:
-    test: [ "CMD", "curl", "-f", "http://localhost:4000" ]
-    interval: 1m30s
-    timeout: 10s
-    retries: 3
-    start_period: 40s
-  hostname: frontend
-  image: node:14
-  links:
-    - graphqlgateway
-  ports:
-    - "4000:3000"
-    - "35729:35729"
-  volumes:
-    - ./frontend:/app:z
-    - /app/node_modules
-  working_dir: "/app"
+
 
 userapi_doc:
   container_name: userapi_doc

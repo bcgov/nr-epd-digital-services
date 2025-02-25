@@ -1,5 +1,3 @@
 export const GRAPHQL = '/graphql';
-
-export const API: string =
-  process.env.REACT_APP_BACKEND_API ||
-  ((window as any)._env_ && (window as any)._env_.REACT_APP_BACKEND_API);
+export const API = import.meta.env.VITE_BACKEND_API;
+export const GEOCODER_API = import.meta.env.VITE_GEOCODER_API;
