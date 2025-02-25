@@ -90,7 +90,7 @@ export class UserController {
   }
 
   /**
-   * Add user to a group in Keycloak.
+   * Add user to a specific approving authority group in Keycloak.
    * @param addUserToGroupDto - Object containing userId.
    * @returns Object indicating success status and message.
    */
@@ -136,7 +136,7 @@ export class UserController {
         return result;
       }
     } catch (error) {
-      console.log('addUserToGroup error', error);
+      console.log('addUserToGroupForMuncipalUsers error', error);
       // Handle errors
       if (error.response && error.response.data && error.response.data.error) {
         // If Keycloak returns an error message, throw a Bad Request exception with the error message
