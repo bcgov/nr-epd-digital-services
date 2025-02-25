@@ -19,7 +19,8 @@ jobs:
       - name: Prettify code
         uses: creyD/prettier_action@v4.3
         with:
-          # working_directory: ./cats-frontend
-          prettier_options: --check /home/runner/work/nr-epd-digital-services/nr-epd-digital-services/cats-frontend/src/**/*.{js,ts,jsx,tsx,json,css}
+          working_directory: /home/runner/work/nr-epd-digital-services/nr-epd-digital-services/cats-frontend
+          # prettier_options: --check /home/runner/work/nr-epd-digital-services/nr-epd-digital-services/cats-frontend/src/**/*.{js,ts,jsx,tsx,json,css}
+          prettier_options: --check ./src/**/*.{js,ts,jsx,tsx,json,css}
           only_changed: True
           dry: True
