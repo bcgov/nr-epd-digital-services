@@ -54,6 +54,9 @@ authUrl;</camunda:script>
       <bpmn:incoming>Flow_0cog7s9</bpmn:incoming>
       <bpmn:outgoing>Flow_1v2p747</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
+var catsAppURL=system.getenv('CATS_APP_URL');
+system.out.println("catsAppURL: " + catsAppURL);
+execution.setVariable("appURL", catsAppURL);
 
 system.out.println("updated token: " + token);
 system.out.println("updated category: " + category);
