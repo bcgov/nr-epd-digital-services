@@ -23,16 +23,19 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    KeycloakConnectModule.registerAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        authServerUrl: config.get('KEYCLOCK_AUTH_URL'),
-        realm: config.get('KEYCLOCK_REALM'),
-        clientId: config.get('KEYCLOCK_CLIENT_ID'),
-        secret: config.get('KEYCLOCK_SECRET'),
-      }),
-      // Secret key of the client taken from keycloak server
-    }),
+    ...(process.env.NODE_ENV !== 'development'
+      ? [
+          KeycloakConnectModule.registerAsync({
+            inject: [ConfigService],
+            useFactory: (config: ConfigService) => ({
+              authServerUrl: config.get('KEYCLOCK_AUTH_URL'),
+              realm: config.get('KEYCLOCK_REALM'),
+              clientId: config.get('KEYCLOCK_CLIENT_ID'),
+              secret: config.get('KEYCLOCK_SECRET'),
+            }),
+          }),
+        ]
+      : []),
     CatsModule,
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
@@ -65,18 +68,22 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   controllers: [AppController],
   providers: [
     AppService,
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: ResourceGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RoleGuard,
-    },
+    ...(process.env.NODE_ENV !== 'development'
+      ? [
+          {
+            provide: APP_GUARD,
+            useClass: AuthGuard,
+          },
+          {
+            provide: APP_GUARD,
+            useClass: ResourceGuard,
+          },
+          {
+            provide: APP_GUARD,
+            useClass: RoleGuard,
+          },
+        ]
+      : []),
   ],
 })
 export class AppModule {}
