@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Widget from "../../../components/widget/Widget";
 import Form from "../../../components/form/Form";
 import PageContainer from "../../../components/simple/PageContainer";
-import { addressForm, contactInformationForm, noteColumns } from "./PersonConfig";
+import { addressForm, contactInformationForm, noteColumns, noteForm } from "./PersonConfig";
 import { UserType } from "../../../helpers/requests/userType";
 import { UserMode } from "../../../helpers/requests/userMode";
 import { Button } from "../../../components/button/Button";
 import { AngleLeft, TrashCanIcon, UserPlus } from "../../../components/common/icon";
 import './Person.css';
 import { v4 } from "uuid";
-import { sortArray } from "../../../helpers/utility";
+import { getUser, resultCache, sortArray, updateFields } from "../../../helpers/utility";
 import { RequestStatus } from "../../../helpers/requests/status";
 import ModalDialog from "../../../components/modaldialog/ModalDialog";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -20,33 +20,31 @@ import { ActionItems } from "../../../components/action/ActionsConfig";
 import { UserAction } from "../../../helpers/requests/UserAction";
 import NavigationBar from "../../../components/navigation-bar/NavigationBar";
 import { usePerson } from "./hooks/usePerson";
-import { useCreatePerson } from "./hooks/useCreatePerson";
+// import { useCreatePerson } from "./hooks/useCreatePerson";
 import { useUpdatePerson } from "./hooks/useUpdatePerson";
 import { fetchPerson } from "./services/PersonService";
 import LoadingOverlay from "../../../components/loader/LoadingOverlay";
+import { getAddress } from "../../../helpers/geocoder";
 
 
 const noteColumnsData = [
     {
-      note_date:  new Date(),
-      psn_id: '12345',
-      displayName:'abc',
-      note_text: 'This is a sample description for the note 1.',
-      note_id: 'abc123',
+      noteDate:  new Date(),
+      noteUser: 'abc',
+      noteDescription: 'This is a sample description for the note 1.',
+      noteId: 'abc123',
     },
     {
-      note_date:  new Date(),
-      psn_id: '12346',
-      displayName:'abc',
-      note_text: 'This is a sample description for the note 2.',
-      note_id: 'abc124',
+      noteDate:  new Date(),
+      noteUser: 'abc',
+      noteDescription: 'This is a sample description for the note 2.',
+      noteId: 'abc124',
     },
     {
-      note_date:  new Date(),
-      psn_id: '12347',
-      displayName:'abc',
-      note_text: 'This is a sample description for the note 3.',
-      note_id: 'abc125',
+      noteDate:  new Date(),
+      noteUser: 'abc',
+      noteDescription: 'This is a sample description for the note 3.',
+      noteId: 'abc125',
     }
 ];
   
@@ -55,21 +53,23 @@ const Person = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const fromScreen = location.state?.from || ""; // Default to "Unknown Screen" if no state is passed
-
- 
+  const user = getUser();
+  
   // Custom hooks for creating/updating person
   //  const { createNewPerson, loading: createLoading, error: createError } = useCreatePerson();
-  //  const { updateExistingPerson, loading: updateLoading, error: updateError } = useUpdatePerson();
- 
+  // const { updateExistingPerson, loading: updateLoading, error: updateError } = useUpdatePerson();
+  const [personName, setPersonName]= useState('');
   const [isVisible, setIsVisible] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
+  const [note, setNote] = useState({ isNotesModal: false, noteData: {} });
   const [userType, setUserType] = useState<UserType>(UserType.STAFF);
   const [viewMode, setViewMode] = useState(UserMode.Default);
   const [formData, setFormData] = useState<{ [key: string]: any } | null>(null);
-  const [noteData, setNoteData] = useState<{ [key: string]: any }[]>(noteColumnsData ?? []);
-  const [selectedRows, setSelectedRows] = useState<{noteId: any; psnId: any;}[]>([]);
+  const [notes, setNotes] = useState<{ [key: string]: any }[]>(noteColumnsData ?? []);
+  const [selectedRows, setSelectedRows] = useState<{noteId: any;}[]>([]);
   const [loading, setLoading] = useState(true); // To handle loading state
   const [error, setError] = useState<string | null>(null);
+  const [addrForm, setAddrForm] = useState(addressForm);
 
   const onClickBackButton = () => {
     navigate(-1);
@@ -81,6 +81,7 @@ const Person = () => {
       const getPersonData = async () => {
         try {
           const personData = await fetchPerson(id);
+          setPersonName((personData?.firstName ?? '') + ' ' + (personData?.middleName ?? '') + ' ' + (personData?.lastName ?? ''));
           setFormData(personData);
         } catch (err) {
           setError('Failed to load person data');
@@ -115,51 +116,113 @@ const Person = () => {
     };
   }, []);
 
+
+  const fetchAddresses = useCallback(async (searchParam: string) => {
+    if (searchParam.trim()) {
+      try {
+        // Check cache first
+        if (resultCache[searchParam]) {
+          return resultCache[searchParam];
+        }
+        const response = await getAddress(searchParam);
+
+        // Store result in cache if successful
+        if (response?.features?.length > 0) {
+          resultCache[searchParam] = response?.features;
+          return response?.features;
+        }
+      } catch (error) {
+        console.error('Error fetching address:', error);
+        return [];
+      }
+    }
+    return [];
+  }, []);
+
+
   const handleInputChange = (graphQLPropertyName: any, value: String | [Date, Date]) => {
-     setFormData({...formData, [graphQLPropertyName]: value})
+    if((graphQLPropertyName === 'addressLine1' || graphQLPropertyName === 'addressLine2') && value.toString().trim().length > 0)
+    {
+      const indexToUpdate = addrForm.findIndex((row) => row.some((field) => (field.graphQLPropertyName === 'addressLine1' || field.graphQLPropertyName === 'addressLine2')));
+      let addr: any = null;
+      fetchAddresses(value as string).then((response) => {
+        if(response?.length > 0)
+        {
+          addr = response?.map((feature: any) => {
+            return {
+              key: feature?.properties?.fullAddress,
+              value: feature?.properties?.fullAddress,
+            };
+          });
+        
+        }
+        else
+        {
+          addr = null;
+        }
+        setAddrForm((prev) =>
+          updateFields(prev, {
+            indexToUpdate,
+            updates: {
+              isLoading: RequestStatus.success,
+              options: addr,
+              customInfoMessage: '',
+            },
+          }),
+        );
+      }).catch((err) => {
+        console.error(`Error: ${err.message}`, err.response?.data);
+      });
+    }
+    setFormData({...formData, [graphQLPropertyName]: value})
   };
   
-  const handleTableChange = (psnId: any, event: any) => {
-      if ( event.property.includes('select_all') ||  event.property.includes('select_row')) {
-          let rows = event.property === 'select_row' ? [event.row] : event.value;
-          let isTrue = event.property === 'select_row' ? event.value : event.selected;
-          if (isTrue) {
-            setSelectedRows((prevSelectedRows) => [
-              ...prevSelectedRows,
-              ...rows.map((row: any) => ({
-                  psnId: row.psn_id,
-                  noteId: row.note_id,
-              })),
-            ]);
-          } else {
-            setSelectedRows((prevSelectedRows) =>
-              prevSelectedRows.filter(
-                (selectedRow) =>
-                  !rows.some(
-                    (row: any) =>
-                      selectedRow.psnId === row.psn_id &&
-                      selectedRow.noteId === row.note_id,
-                  ),
-              ),
-            );
-          }
-      }
+  const handleNoteChange = (graphQLPropertyName: any, value: String | [Date, Date]) => {
+    setNote({...note, noteData: {...note.noteData, [graphQLPropertyName]: value}});
+  };
+
+  const handleTableChange = (event: any) => {
+    if ( event.property.includes('select_all') ||  event.property.includes('select_row')) 
+    {
+        let rows = event.property === 'select_row' ? [event.row] : event.value;
+        let isTrue = event.property === 'select_row' ? event.value : event.selected;
+        if (isTrue)
+        {
+          setSelectedRows((prevSelectedRows) => [
+            ...prevSelectedRows,
+            ...rows.map((row: any) => ({noteId: row.noteId})),
+          ]);
+        } 
+        else 
+        {
+          setSelectedRows((prevSelectedRows) =>
+            prevSelectedRows.filter(
+              (selectedRow) =>
+                !rows.some(
+                  (row: any) =>selectedRow.noteId === row.note_id),
+            ),
+          );
+        }
+    }
+    if (event.property.includes('edit')) 
+    {
+      setNote({isNotesModal: true, noteData: event.row});
+    }
   }
 
   const handleAddNotes = () =>{
-      const newNote = {
-            note_date: new Date(),
-            psn_id: '12345',
-            displayName:'abc',
-            note_text: 'This is a sample description for the note.',
-            note_id: v4(),
-          };
-      setNoteData((prevData) => [newNote, ...prevData])
+    const newNote = {
+      noteDate: new Date(),
+      noteUser: user?.profile?.name ?? '',
+      noteDescription: '',
+      noteId: v4(),
+    };
+    setNote({isNotesModal: true, noteData: newNote});
   }
 
   const handleTableSort = (row: any, ascDir: any) => {
       let property = row['graphQLPropertyName'];
-      setNoteData((prevData) => {
+      setNotes((prevData) => {
         // Create a shallow copy of the previous data
         let updatedNotes = [...prevData];
   
@@ -171,21 +234,21 @@ const Person = () => {
       });
   };
 
-    const handleDeleteNotes = (particIsDelete: boolean = false) => {
-        if (particIsDelete) 
-        {
-            // Filter out participants based on selectedRows for formData
-            const filteredNotes = noteData.filter((note: any) => !selectedRows.some((row) => row.noteId === note.note_id && row.psnId === note.psn_id));
-            setNoteData(filteredNotes);
-            // Clear selectedRows state
-            setSelectedRows([]);
-            setIsDelete(false);
-        } 
-        else 
-        {
-            setIsDelete(true);
-        }
-    }
+  const handleDeleteNotes = (particIsDelete: boolean = false) => {
+      if (particIsDelete) 
+      {
+          // Filter out participants based on selectedRows for formData
+          const filteredNotes = notes.filter((note: any) => !selectedRows.some((row) => row.noteId === note.noteId));
+          setNotes(filteredNotes);
+          // Clear selectedRows state
+          setSelectedRows([]);
+          setIsDelete(false);
+      } 
+      else 
+      {
+          setIsDelete(true);
+      }
+  }
 
   const handleItemClick = async (value: string) => {
       switch (value) {
@@ -195,16 +258,18 @@ const Person = () => {
         case UserMode.Default:
           setViewMode(UserMode.Default);
           break;
-        case UserAction.SAVE:
-          // if (id) {
-          //   // If `id` exists, update the person
-          //   await updateExistingPerson(id, name, age, address);
-          // } else {
+        case UserAction.SAVE: // Save the changes
+          // need to ask Anton how to use generated.ts for graphql type safe.
+          if (id) {
+            // setLoading(updateLoading); // Set loading to true
+            // await updateExistingPerson(id, formData).then((response) => { }).catch((error) => { console.error('error -->', error) });
+          } 
+          // else {
           //   // If no `id`, create a new person
           //   await createNewPerson(name, age, address);
           // }
           break;
-        case UserAction.CANCEL:
+        case UserAction.CANCEL: // Cancel the changes
           setViewMode(UserMode.Default);
           break;
         default:
@@ -260,7 +325,7 @@ const Person = () => {
     </>
 
     const navigationBarText = <>
-       {  Object.keys(formData).length > 0 
+       {  formData && Object.keys(formData).length > 0 
           ?
           isVisible && <div className="d-flex align-items-center">Viewing: <span>{formData?.first_name + ' ' + formData?.last_name}</span></div>
           :
@@ -281,7 +346,7 @@ const Person = () => {
         <PageContainer role="Person">
             <div className="custom-person-name">
               { 
-                Object.keys(formData).length > 0 
+                formData && Object.keys(formData).length > 0 
                 ?
                 formData?.first_name + ' ' + formData?.last_name
                 :
@@ -289,20 +354,20 @@ const Person = () => {
               }
             </div>
             <Widget title={'Contact Information'} hideTable = {true} customWidgetCss="custom-widget">
-                <Form editMode={viewMode === UserMode.EditMode} formRows={contactInformationForm} formData={formData} handleInputChange={(graphQLPropertyName, value) =>
+                <Form editMode={viewMode === UserMode.EditMode} formRows={contactInformationForm} formData={formData ?? {}} handleInputChange={(graphQLPropertyName, value) =>
               handleInputChange(graphQLPropertyName, value)} />
             </Widget>
             <Widget title={'Address'} hideTable = {true} customWidgetCss="custom-widget">
-                <Form editMode={viewMode === UserMode.EditMode} formRows={addressForm} formData={formData} handleInputChange={(graphQLPropertyName, value) =>
+                <Form editMode={viewMode === UserMode.EditMode} formRows={addressForm} formData={formData ?? {}} handleInputChange={(graphQLPropertyName, value) =>
               handleInputChange(graphQLPropertyName, value)} />
             </Widget>
             <Widget  
                 currentPage={1} 
                 allowRowsSelect={true}
                 tableColumns={noteColumns}
-                tableData={noteData ?? []} 
+                tableData={notes ?? []} 
                 // tableIsLoading={status ?? RequestStatus.idle}
-                changeHandler={(event) => handleTableChange(formData.psn_id, event)} 
+                changeHandler={(event) => handleTableChange(event)} 
                 sortHandler={(row, ascDir) => { handleTableSort(row, ascDir)}}
                 title={'Notes'} 
                 aria-label="Manage Person Widget"

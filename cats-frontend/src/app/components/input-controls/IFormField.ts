@@ -17,13 +17,11 @@ export enum FormFieldType {
   IconButton = "iconbutton",
   Icon = "icon",
   Switch = 'switch',
-  Email = 'email',
 }
 
 export interface IFormField {
   type:
     | FormFieldType.Text
-    | FormFieldType.Email
     | FormFieldType.DropDown
     | FormFieldType.Date
     | FormFieldType.Group
@@ -50,9 +48,11 @@ export interface IFormField {
   customLeftIconCss?: string;
   customRightIconCss?: string;
   customErrorCss?: string;
+  searchCustomInputContainerCss?: string;
+  searchCustomInputMenuCss?: string;
   graphQLPropertyName?: string;
   allowNumbersOnly?: boolean;
-  options?: { key: string; value: string; imageUrl?: any }[];
+  options?: { key: string; value: string; imageUrl?: any }[] | null;
   filteredOptions?: { key: string; value: string }[];
   value?: any;
   customLinkValue?: any;
@@ -83,4 +83,5 @@ export interface IFormField {
   handleSearch?: (event: any) => void;
   componentName?: string;
   labelPosition?: "left" | "right";
+  isSearchCustomInputIcon?: boolean;
 }

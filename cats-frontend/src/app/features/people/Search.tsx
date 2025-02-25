@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./Search.css";
-import "@bcgov/design-tokens/css/variables.css";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchPeoples,
@@ -109,17 +108,6 @@ const Search = () => {
     );
   };
 
-  useEffect(() => {
-    const loggedInUser = getUser();
-    if (loggedInUser === null) {
-      auth.signinRedirect({ extraQueryParams: { kc_idp_hint: "idir" } });
-    }
-    if (currSearchVal.searchQuery !== "") {
-      setUserAction(false);
-      setSearchText(currSearchVal.searchQuery);
-      dispatch(fetchPeoples({ searchParam: currSearchVal.searchQuery }));
-    }
-  }, []);
 
   // useEffect(() => {
   //   fetchPeoples(searchText);
