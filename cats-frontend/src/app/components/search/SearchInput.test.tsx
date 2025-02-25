@@ -1,12 +1,12 @@
-import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import SearchInput from "./SearchInput";
-import { Provider } from "react-redux";
-import configureStore, { MockStore } from "redux-mock-store";
-import thunk from "redux-thunk";
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import SearchInput from './SearchInput';
+import { Provider } from 'react-redux';
+import configureStore, { MockStore } from 'redux-mock-store';
+import thunk from 'redux-thunk';
 
 const mockStore = configureStore([thunk]);
-describe("SearchInput", () => {
+describe('SearchInput', () => {
   let store: MockStore;
 
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe("SearchInput", () => {
     });
   });
 
-  it("renders without crashing", () => {
+  it('renders without crashing', () => {
     const handleSearchChange = vi.fn();
     const clearSearch = vi.fn();
     render(
@@ -26,13 +26,13 @@ describe("SearchInput", () => {
           clearSearch={clearSearch}
           handleSearchChange={handleSearchChange}
         />
-      </Provider>
+      </Provider>,
     );
-    const searchInput = screen.getByLabelText("Search");
+    const searchInput = screen.getByLabelText('Search');
     expect(searchInput).toBeInTheDocument();
   });
 
-  it("displays label if provided", () => {
+  it('displays label if provided', () => {
     const handleSearchChange = vi.fn();
     const clearSearch = vi.fn();
     render(
@@ -43,13 +43,13 @@ describe("SearchInput", () => {
           clearSearch={clearSearch}
           handleSearchChange={handleSearchChange}
         />
-      </Provider>
+      </Provider>,
     );
-    const searchInputLabel = screen.getByText("Search");
+    const searchInputLabel = screen.getByText('Search');
     expect(searchInputLabel).toBeInTheDocument();
   });
 
-  it("invokes handleSearchChange on input change", () => {
+  it('invokes handleSearchChange on input change', () => {
     const handleSearchChange = vi.fn();
     const clearSearch = vi.fn();
     render(
@@ -60,14 +60,14 @@ describe("SearchInput", () => {
           clearSearch={clearSearch}
           handleSearchChange={handleSearchChange}
         />
-      </Provider>
+      </Provider>,
     );
-    const searchInput = screen.getByLabelText("Search");
-    fireEvent.change(searchInput, { target: { value: "test" } });
+    const searchInput = screen.getByLabelText('Search');
+    fireEvent.change(searchInput, { target: { value: 'test' } });
     expect(handleSearchChange).toHaveBeenCalledTimes(1);
   });
 
-  it("displays search icon when searchTerm is empty", () => {
+  it('displays search icon when searchTerm is empty', () => {
     const handleSearchChange = vi.fn();
     const clearSearch = vi.fn();
     const { container } = render(
@@ -78,13 +78,13 @@ describe("SearchInput", () => {
           clearSearch={clearSearch}
           handleSearchChange={handleSearchChange}
         />
-      </Provider>
+      </Provider>,
     );
-    const searchIcon = container.querySelector("#search-icon");
+    const searchIcon = container.querySelector('#search-icon');
     expect(searchIcon).toBeInTheDocument();
   });
 
-  it("displays clear icon when searchTerm is not empty", () => {
+  it('displays clear icon when searchTerm is not empty', () => {
     const handleSearchChange = vi.fn();
     const clearSearch = vi.fn();
     const { container } = render(
@@ -95,13 +95,13 @@ describe("SearchInput", () => {
           clearSearch={clearSearch}
           handleSearchChange={handleSearchChange}
         />
-      </Provider>
+      </Provider>,
     );
-    const clearIcon = container.querySelector("#clear-icon");
+    const clearIcon = container.querySelector('#clear-icon');
     expect(clearIcon).toBeInTheDocument();
   });
 
-  it("invokes clearSearch function when clear icon is clicked", () => {
+  it('invokes clearSearch function when clear icon is clicked', () => {
     const handleSearchChange = vi.fn();
     const clearSearch = vi.fn();
     const { container } = render(
@@ -112,9 +112,9 @@ describe("SearchInput", () => {
           clearSearch={clearSearch}
           handleSearchChange={handleSearchChange}
         />
-      </Provider>
+      </Provider>,
     );
-    const clearIcon = container.querySelector("#clear-icon");
+    const clearIcon = container.querySelector('#clear-icon');
     fireEvent.click(clearIcon);
     expect(clearSearch).toHaveBeenCalledTimes(1);
   });

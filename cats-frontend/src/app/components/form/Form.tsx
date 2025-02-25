@@ -74,7 +74,9 @@ const Form: React.FC<IFormRendererProps> = ({
                   customEditInputTextCss={field.customEditInputTextCss}
                   customPlaceholderCss={field.customPlaceholderCss}
                   searchCustomInputMenuCss={field.searchCustomInputMenuCss}
-                  searchCustomInputContainerCss={field.searchCustomInputContainerCss}
+                  searchCustomInputContainerCss={
+                    field.searchCustomInputContainerCss
+                  }
                   placeholder={field.placeholder}
                   value={formData[field.graphQLPropertyName ?? ''] || ''}
                   onChange={(value) =>

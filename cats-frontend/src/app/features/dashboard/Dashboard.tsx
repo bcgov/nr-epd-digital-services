@@ -18,7 +18,7 @@ interface DashboardWidgetProps {
   onButtonClick?: () => void;
 }
 
-const changeHandler = (event: any) => { };
+const changeHandler = (event: any) => {};
 
 const DashboardTableWidget: React.FC<DashboardWidgetProps> = ({
   title,

@@ -13,14 +13,10 @@ export const usePerson = (id: string) => {
       try {
         const personData = await fetchPerson(id); // Call the service to fetch person data
         setPerson(personData); // Store the person data in state
-      }
-      catch (err) 
-      {
+      } catch (err) {
         // Log the error and set the error message
         setError('Failed to load person data');
-      } 
-      finally 
-      {
+      } finally {
         // Set loading to false
         setLoading(false);
       }

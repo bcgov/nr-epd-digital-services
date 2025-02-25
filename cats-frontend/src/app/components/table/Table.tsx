@@ -111,8 +111,7 @@ const Table: FC<TableProps> = ({
     isCurrentPageAllRowsSelected();
   }, [currentPage]);
 
-  const parentSortHandler =
-    sortHandler ?? (() => {});
+  const parentSortHandler = sortHandler ?? (() => {});
 
   let tableSortHandler = (row: any, ascSort: any) => {
     SetCurrentSortColumn(row.graphQLPropertyName);

@@ -1,9 +1,9 @@
-import { SigninRedirectArgs } from "oidc-client-ts";
-import { useEffect, useMemo, useState } from "react";
-import { useAuth, hasAuthParams } from "react-oidc-context";
+import { SigninRedirectArgs } from 'oidc-client-ts';
+import { useEffect, useMemo, useState } from 'react';
+import { useAuth, hasAuthParams } from 'react-oidc-context';
 
 const signInParams: SigninRedirectArgs = {
-  extraQueryParams: { kc_idp_hint: "idir" },
+  extraQueryParams: { kc_idp_hint: 'idir' },
 };
 
 export const useAutoSignin = () => {

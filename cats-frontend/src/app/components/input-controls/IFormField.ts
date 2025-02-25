@@ -1,21 +1,21 @@
-import { ReactNode } from "react";
-import { RequestStatus } from "../../helpers/requests/status";
+import { ReactNode } from 'react';
+import { RequestStatus } from '../../helpers/requests/status';
 
 export enum FormFieldType {
-  Text = "text",
-  TextArea = "textarea",
-  Search = "search",
-  DropDown = "dropdown",
-  DropDownWithSearch = "dropdownWithSearch",
-  Date = "date",
-  DateRange = "daterange",
-  Group = "group",
-  Label = "label",
-  Link = "link",
-  Checkbox = "checkbox",
-  DeleteIcon = "deleteIcon",
-  IconButton = "iconbutton",
-  Icon = "icon",
+  Text = 'text',
+  TextArea = 'textarea',
+  Search = 'search',
+  DropDown = 'dropdown',
+  DropDownWithSearch = 'dropdownWithSearch',
+  Date = 'date',
+  DateRange = 'daterange',
+  Group = 'group',
+  Label = 'label',
+  Link = 'link',
+  Checkbox = 'checkbox',
+  DeleteIcon = 'deleteIcon',
+  IconButton = 'iconbutton',
+  Icon = 'icon',
   Switch = 'switch',
 }
 
@@ -59,7 +59,7 @@ export interface IFormField {
   customIcon?: ReactNode;
   isChecked?: boolean;
   isDateRange?: boolean;
-  dateFormat?:string;
+  dateFormat?: string;
   children?: IFormField[];
   isChildLabel?: boolean;
   isDisabled?: boolean;
@@ -82,6 +82,6 @@ export interface IFormField {
   textAreaColoum?: number;
   handleSearch?: (event: any) => void;
   componentName?: string;
-  labelPosition?: "left" | "right";
+  labelPosition?: 'left' | 'right';
   isSearchCustomInputIcon?: boolean;
 }
