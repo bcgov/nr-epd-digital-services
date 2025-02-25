@@ -3,29 +3,29 @@ import {
   getAxiosInstanceForCamunda,
   getAxiosInstanceForUsers,
 } from "../../helpers/utility";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
-import { USERS } from "../../helpers/endpoints";
 
 const TaskAssignment = () => {
   const auth = useAuth();
   const { taskId } = useParams();
-  const navigate = useNavigate();
 
   const API: string =
     process.env.REACT_APP_BACKEND_USERS_API ||
     ((window as any)._env_ &&
       (window as any)._env_.REACT_APP_BACKEND_USERS_API);
 
+  const FORMS_URL: string =
+    process.env.REACT_APP_FORMS_URL ||
+    ((window as any)._env_ && (window as any)._env_.REACT_APP_FORMS_URL);
+
   const assignTaskToUser = () => {
-    console.log(auth.user);
     getAxiosInstanceForCamunda()
       .post(taskId + "/claim", {
         userId: auth.user?.profile.preferred_username,
       })
       .then((response) => {
-        window.location.href =
-          "https://forms-flow-web-root-config-dev.apps.silver.devops.gov.bc.ca/";
+        window.location.href = FORMS_URL;
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -39,8 +39,9 @@ const TaskAssignment = () => {
       })
       .then((response) => {
         if (response.data.success) {
-          //console.log(response.data.message);
           assignTaskToUser();
+        } else {
+          alert("Please try again or contact support.");
         }
       })
       .catch((error) => {
