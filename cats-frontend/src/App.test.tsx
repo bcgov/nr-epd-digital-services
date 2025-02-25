@@ -5,10 +5,6 @@ import { useAuth } from 'react-oidc-context';
 import { store } from './app/Store';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-jest.mock('react-oidc-context', () => ({
-  useAuth: jest.fn(),
-}));
-
 const router = createBrowserRouter([
   {
     element: <App />,
@@ -17,7 +13,6 @@ const router = createBrowserRouter([
 ]);
 
 test('Renders Intro', () => {
-  (useAuth as jest.Mock).mockReturnValue({ isAuthenticated: false });
   render(
     <Provider store={store}>
       <RouterProvider router={router} />

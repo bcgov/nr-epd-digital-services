@@ -189,10 +189,7 @@ export const isUserOfType = (roleType: UserRoleType) => {
     switch (roleType) {
       case "internal":
         const internalUserRole =
-          process.env.REACT_APP_SITE_INTERNAL_USER_ROLE ||
-          ((window as any)._env_ &&
-            (window as any)._env_.REACT_APP_SITE_INTERNAL_USER_ROLE) ||
-          "site-internal-user";
+          import.meta.env.VITE_SITE_INTERNAL_USER_ROLE || "site-internal-user";
 
         if (userRoles.includes(internalUserRole)) {
           return true;
