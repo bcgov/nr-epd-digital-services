@@ -9,22 +9,15 @@ const Landing = () => {
   const { redirect, idp } = useParams();
 
   useEffect(() => {
-    console.log("auth", auth);
     if (
       auth != null &&
       !auth.isLoading &&
       redirect === "redirect" &&
       idp === "bceid"
     ) {
-      //auth.signinRedirect({ extraQueryParams: { kc_idp_hint: "bceid" } });
       auth.signinRedirect({ extraQueryParams: { kc_idp_hint: "bceid" } });
     }
   }, [auth, redirect, idp]);
-
-  // if (redirect === "redirect" && idp === "bceid") {
-  //   //auth.signinRedirect({ extraQueryParams: { kc_idp_hint: "bceid" } });
-  //   auth.signinRedirect({ extraQueryParams: { kc_idp_hint: "bceid" } });
-  // }
 
   return (
     <Container fluid className="mt-3" id="landing-container">

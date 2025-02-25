@@ -51,7 +51,6 @@ export const getAxiosInstanceForCamunda = () => {
     timeout: 1000,
     headers: {
       Authorization: "Bearer " + user?.access_token,
-      //requestID: generateRequestId(),
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
     },
