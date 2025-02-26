@@ -7,6 +7,7 @@ import { UserMode } from '../../../../../helpers/requests/userMode';
 import Widget from '../../../../../components/widget/Widget';
 import { Button } from '../../../../../components/button/Button';
 import { UserPlus } from '../../../../../components/common/icon';
+import App from '../../../../../../App';
 
 interface IParticipantTableProps {
   handleTableChange: (event: any) => void;
@@ -55,6 +56,33 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
 
   approveRejectHandler = approveRejectHandler ?? (() => {});
 
+  const AppParticipantsData = [
+    {
+      isMainParticipant:  true,
+      Name: 'Org1',
+      ParticipantRole: 'Client',
+      EffectiveStartDatete: '23rd June 2021',
+      EffectiveEndDate: '',
+      isMinistry: false,
+    },
+    {
+        isMainParticipant:  false,
+        Name: 'Org2',
+        ParticipantRole: 'Worker',
+        EffectiveStartDatete: '23rd June 2021',
+        EffectiveEndDate: '',
+        isMinistry: false,
+    },
+    {
+        isMainParticipant:  true,
+        Name: 'Org3',
+        ParticipantRole: 'CSA',
+        EffectiveStartDatete: '23rd June 2021',
+        EffectiveEndDate: '',
+        isMinistry: true,
+    },
+];
+
   return (
     <div>
       <Widget
@@ -65,16 +93,16 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         tableColumns={internalRow}
         tableData={formData}
         tableIsLoading={status ?? RequestStatus.idle}
-        allowRowsSelect={viewMode === UserMode.EditMode}
+        // allowRowsSelect={viewMode === UserMode.EditMode}
         aria-label="App Participant Widget"
         customLabelCss="custom-participant-widget-lbl"
         hideTable={false}
         hideTitle={hideLabelForWidget}
-        editMode={
-          viewMode === UserMode.EditMode &&
-          userType === UserType.Internal
-        }
-        hideWidgetCheckbox={true}
+        // editMode={
+        //   viewMode === UserMode.EditMode &&
+        //   userType === UserType.Internal
+        // }
+        hideWidgetCheckbox={false}
         primaryKeycolumnName="particRoleId"
         sortHandler={(row, ascDir) => {
           handleTableSort(row, ascDir);
