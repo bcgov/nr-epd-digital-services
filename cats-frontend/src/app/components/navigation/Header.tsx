@@ -1,17 +1,17 @@
-import logo from "../../../app/images/logos/logo-banner.png";
+import logo from '../../../app/images/logos/logo-banner.png';
 
-import "./Header.css";
-import { BarsIcon } from "../common/icon";
-import { useState } from "react";
-import MobileNavMenu from "./MobileNavMenu";
-import UserAccount from "../account/UserAccount";
-import { LoginDropdown } from "../login/LoginDropdown";
-import { useAuth } from "react-oidc-context";
+import './Header.css';
+import { BarsIcon } from '../common/icon';
+import { useState } from 'react';
+import MobileNavMenu from './MobileNavMenu';
+import UserAccount from '../account/UserAccount';
+import { LoginDropdown } from '../login/LoginDropdown';
+import { useAuth } from 'react-oidc-context';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const auth = useAuth()
+  const auth = useAuth();
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -35,7 +35,7 @@ const Header = () => {
           type="button"
           onClick={toggleNavbar}
           aria-label="menu for mobile/smaller devices"
-          aria-expanded={isOpen ? "true" : "false"}
+          aria-expanded={isOpen ? 'true' : 'false'}
           aria-controls="navbarMenu"
           aria-haspopup="true"
         >
@@ -51,7 +51,7 @@ const Header = () => {
       <div
         role="menu"
         className={`small-screen-menu mobile-menu ${
-          isOpen ? "show" : "d-none"
+          isOpen ? 'show' : 'd-none'
         }`}
         onClick={() => toggleNavbar()}
       >

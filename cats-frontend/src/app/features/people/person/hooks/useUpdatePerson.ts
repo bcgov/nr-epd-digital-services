@@ -14,14 +14,10 @@ export const useUpdatePerson = () => {
     try {
       const updatedPerson = await updatePerson(id, person); // Call the service to update the person
       setPerson(updatedPerson); // Store the updated person in state
-    } 
-    catch (err) 
-    {
+    } catch (err) {
       // Log the error and set the error message
       setError('Failed to update person');
-    } 
-    finally 
-    {
+    } finally {
       // Set loading to false
       setLoading(false);
     }

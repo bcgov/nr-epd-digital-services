@@ -38,7 +38,7 @@ const UserAccount = (props: any) => {
       id_token_hint: auth.user?.id_token,
     });
     auth.clearStaleState();
-  }
+  };
 
   if (props.mobileView) {
     return (

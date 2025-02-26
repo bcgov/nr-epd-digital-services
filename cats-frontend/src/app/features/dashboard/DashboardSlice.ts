@@ -18,9 +18,7 @@ const initialState: IDashboardState = {
 // Define the asynchronous thunk to fetch recent views from the backend
 export const fetchRecentViews = createAsyncThunk(
   'recentViews/fetchRecentViews',
-  async (userId: string) => {
-
-  },
+  async (userId: string) => {},
 );
 
 export const addRecentView = createAsyncThunk(
@@ -32,9 +30,7 @@ export const addRecentView = createAsyncThunk(
     city: string;
     generalDescription: string;
     whenUpdated: Date;
-  }) => {
-
-  },
+  }) => {},
 );
 
 // Define the recent views slice

@@ -1,26 +1,26 @@
-import { render, fireEvent } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import UserAccount from "./UserAccount";
-import avatar from "../../images/avatar.png";
-import { Provider } from "react-redux";
-import configureStore, { MockStore } from "redux-mock-store";
-import thunk from "redux-thunk";
+import { render, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import UserAccount from './UserAccount';
+import avatar from '../../images/avatar.png';
+import { Provider } from 'react-redux';
+import configureStore, { MockStore } from 'redux-mock-store';
+import thunk from 'redux-thunk';
 
-vi.mock("react-oidc-context", () => ({
+vi.mock('react-oidc-context', () => ({
   useAuth: () => ({
     user: {
       profile: {
-        given_name: "John",
-        family_name: "Doe",
-        preferred_username: "johndoe",
+        given_name: 'John',
+        family_name: 'Doe',
+        preferred_username: 'johndoe',
       },
-      id_token: "mock-id-token",
+      id_token: 'mock-id-token',
     },
   }),
 }));
 
 const mockStore = configureStore([thunk]);
-describe("UserAccount component", () => {
+describe('UserAccount component', () => {
   let store: MockStore;
 
   beforeEach(() => {
@@ -29,34 +29,34 @@ describe("UserAccount component", () => {
     });
   });
 
-  it("renders without crashing", () => {
+  it('renders without crashing', () => {
     render(
       <Provider store={store}>
         <UserAccount />
-      </Provider>
+      </Provider>,
     );
   });
 
-  it("toggles dropdown arrow on click", () => {
+  it('toggles dropdown arrow on click', () => {
     const { getByLabelText } = render(
       <Provider store={store}>
         <UserAccount />
-      </Provider>
+      </Provider>,
     );
-    const toggleButton = getByLabelText("Account Menu");
+    const toggleButton = getByLabelText('Account Menu');
     fireEvent.click(toggleButton);
-    expect(toggleButton).toHaveAttribute("aria-expanded", "true");
+    expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
   });
 
-  it("shows account menu when dropdown is expanded", () => {
+  it('shows account menu when dropdown is expanded', () => {
     const { getByLabelText, getByRole } = render(
       <Provider store={store}>
         <UserAccount />
-      </Provider>
+      </Provider>,
     );
-    const toggleButton = getByLabelText("Account Menu");
+    const toggleButton = getByLabelText('Account Menu');
     fireEvent.click(toggleButton);
-    const accountMenu = getByRole("menu", { name: "Account Menu" });
+    const accountMenu = getByRole('menu', { name: 'Account Menu' });
     expect(accountMenu).toBeInTheDocument();
   });
 });
