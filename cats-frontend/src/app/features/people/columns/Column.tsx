@@ -1,7 +1,7 @@
-import React from "react";
-import { TableColumn } from "../../../components/table/TableColumn";
-import "./Column.css";
-import { Button } from "../../../components/button/Button";
+import React from 'react';
+import { TableColumn } from '../../../components/table/TableColumn';
+import './Column.css';
+import { Button } from '../../../components/button/Button';
 
 interface ColumnProps {
   toggleColumnSelectionForDisplay: (item: TableColumn) => void;
@@ -18,7 +18,7 @@ const Column: React.FC<ColumnProps> = ({
 }) => {
   const filterColumnsByGroup = (groupId: number) => {
     return columns.filter(
-      (item) => item.groupId === groupId && item.dynamicColumn === false
+      (item) => item.groupId === groupId && item.dynamicColumn === false,
     );
   };
 
@@ -29,7 +29,7 @@ const Column: React.FC<ColumnProps> = ({
           type="checkbox"
           className="checkbox-color"
           aria-label={item.displayName}
-          aria-checked={item.isChecked ? "true" : "false"}
+          aria-checked={item.isChecked ? 'true' : 'false'}
           disabled={item.disabled}
           checked={item.isChecked}
           onChange={(e) => {

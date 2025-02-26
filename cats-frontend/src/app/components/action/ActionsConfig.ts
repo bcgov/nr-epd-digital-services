@@ -1,6 +1,6 @@
 import { UserMode } from '../../helpers/requests/userMode';
 import { DropdownItem } from './IActions';
-  
+
 export const ActionItems: DropdownItem[] = [
   {
     label: 'Edit Mode',
@@ -11,4 +11,3 @@ export const ActionItems: DropdownItem[] = [
     value: UserMode.DeleteMode,
   },
 ];
-  

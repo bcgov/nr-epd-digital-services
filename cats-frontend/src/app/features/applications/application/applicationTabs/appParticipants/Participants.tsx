@@ -1,7 +1,7 @@
 export const Participants = () => {
-    return (
-        <div>
-            <p>Participants page</p>
-        </div>
-    )
-}
+  return (
+    <div>
+      <p>Participants page</p>
+    </div>
+  );
+};
