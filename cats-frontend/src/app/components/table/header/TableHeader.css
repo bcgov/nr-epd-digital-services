@@ -1,6 +1,6 @@
 .table-header {
   border: 1px solid;
-  border-color: var(--surface-border-light);
+  border-color: var(--surface-color-border-default);
   height: 40px;
   margin-bottom: 10px;
 }
@@ -15,7 +15,7 @@
   border-right: 1px solid #d8d8d8;
   border-left: 1px solid #d8d8d8;
 
-  background: var(--surface-brand-gray-20) !important;
+  background: var(--theme-gray-20) !important;
 }
 
 .checkbox-column {
@@ -32,7 +32,7 @@
   line-height: 21.01px;
   font-weight: 900;
   height: 21px;
-  color: var(--icons-icons-disabled);
+  color: var(--icons-color-disabled);
   width: 9px;
   margin-left: 5px;
 }

@@ -12,8 +12,8 @@
   padding: var(--layout-margin-large) var(--layout-margin-xxlarge)
     var(--layout-margin-large) var(--layout-margin-xxlarge);
   gap: var(--layout-margin-xxlarge);
-  background: var(--surface-background-white, #ffffff);
-  border-bottom: 1px solid var(--surface-border-light, #d8d8d8);
+  background: var(--surface-color-background-white, #ffffff);
+  border-bottom: 1px solid var(--surface-color-border-default, #d8d8d8);
 }
 
 @media (max-width: 768px) {

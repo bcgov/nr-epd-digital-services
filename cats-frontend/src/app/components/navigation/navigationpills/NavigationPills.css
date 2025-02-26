@@ -52,9 +52,9 @@
   }
 
   .custom-nav-action-menu {
-    border-radius: var(--surface-border-radius-medium) !important;
+    border-radius: var(--layout-border-radius-medium) !important;
     padding: var(--layout-padding-medium) 0px var(--layout-padding-medium) 0px !important;
-    background-color: var(--surface-background-white) !important;
+    background-color: var(--surface-color-background-white) !important;
     box-shadow: var(--surface-shadow-medium);
     border: none !important;
     width: 100%;
