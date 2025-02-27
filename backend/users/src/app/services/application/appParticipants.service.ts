@@ -77,28 +77,7 @@ export class AppParticipantService {
         return [];
       } else {
         console.log('nupur - appParticpant service result is: ', result);
-      
-        // Transform the fetched site participants into the desired format
-        // const transformedObjects = result?.flatMap((item) =>
-        //   item.siteParticRoles.map((role) => ({
-        //     particRoleId: role.id,
-        //     id: item.id,
-        //     siteId: item.siteId,
-        //     psnorgId: item.psnorgId,
-        //     effectiveDate: new Date(item.effectiveDate).toISOString(),
-        //     endDate: item.endDate ? new Date(item.endDate).toISOString() : null,
-        //     note: item.note?.trim() || '', // Ensure note is trimmed and defaults to an empty string if null
-        //     displayName: item.psnorg?.displayName?.trim() || '', // Safely access displayName with default value
-        //     prCode: role.prCode.trim(),
-        //     description: role.prCode2?.description?.trim() || '', // Safely access description with default value
-        //     srValue:
-        //       item.srAction === SRApprovalStatusEnum.PUBLIC ||
-        //       role.srAction === SRApprovalStatusEnum.PUBLIC
-        //         ? true
-        //         : false,
-        //     srAction: role.srAction,
-        //   })),
-        //);
+    
         const transformedObjects = result.map((participant) => ({
             id: participant.id,
             applicationId: participant.applicationId,

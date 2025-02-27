@@ -23,27 +23,13 @@ export const Participants = () => {
     const [internalRow, setInternalRow] = useState(participantColumnInternal);
     const {appParticipants, loading, error} = useFetchAppParticipants(applicationId ?? '');
     useEffect(() => {
-        // if(id) {
-        //     const fetchParticipants = async (applicationId: number) => {
-        //         try {
-        //             console.log("nupur - id is : ", applicationId);
-        //             // Call the fetchAppParticpants function to get the participants by App ID
-        //             const participants = await fetchAppParticpants(applicationId);
-        //             setFormData(participants);
-        //         } catch (error) {
-        //             console.error('Error fetching participants:', error);
-        //         }
-        //     }
-        //     fetchParticipants(id);
-        // } else {
-        //     setFormData([]);
-        // }
-        if(appParticipants) {
+        if(appParticipants && appParticipants.length > 0) {
+            console.log("nupur - appParticipants is : ", appParticipants);
             setFormData(appParticipants);
         } else {    
             setFormData([]);
         }
-    },[]);
+    },[appParticipants]);
     
 
     return (

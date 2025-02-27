@@ -19,8 +19,8 @@ export const fetchAppParticpants = async (applicationId: number = 1) => {
             
         });
       
-        console.log("nupur - data is : ", response.data.data.getAppParticipantsByAppId.data[0]);
-        return response.data.data.getAppParticipantsByAppId.data[0]; // Return the person data
+        console.log("nupur - data is : ", response.data.data.getAppParticipantsByAppId.data);
+        return response.data.data.getAppParticipantsByAppId.data; // Return the person data
     }
     catch(error)
     {

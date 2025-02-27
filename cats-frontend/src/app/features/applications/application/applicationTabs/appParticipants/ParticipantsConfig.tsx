@@ -1,4 +1,4 @@
-import { PencilIcon } from "../../../../../components/common/icon";
+import { PencilIcon, TickIcon } from "../../../../../components/common/icon";
 import { FormFieldType } from "../../../../../components/input-controls/IFormField";
 import { ColumnSize, TableColumn } from "../../../../../components/table/TableColumn";
 import { RequestStatus } from "../../../../../helpers/requests/status";
@@ -23,6 +23,7 @@ export const GetConfig = () => {
           filteredOptions: [],
           colSize: 'col-lg-6 col-md-6 col-sm-12',
           customLabelCss: 'custom-participant-lbl-text',
+          customIcon: <TickIcon />,
           customInputTextCss: 'custom-participant-input-text',
           customEditLabelCss: 'custom-participant-edit-label',
           customEditInputTextCss: 'custom-participant-edit-input',
@@ -31,7 +32,7 @@ export const GetConfig = () => {
           tableMode: true,
           handleSearch: () => {},
           validation: {
-            required: true,
+            required: false,
             customMessage: 'Participant Name is required.',
           },
         },
@@ -105,7 +106,7 @@ export const GetConfig = () => {
         graphQLPropertyName: 'description',
         columnSize: ColumnSize.Small,
         displayType: {
-          type: FormFieldType.DropDown,
+          type: FormFieldType.Text,
           label: '',
           graphQLPropertyName: 'description',
         //   placeholder: 'Please select the role',
@@ -187,6 +188,7 @@ export const GetConfig = () => {
           value: '',
           options: [],
           filteredOptions: [],
+          customIcon: <TickIcon />,
           colSize: 'col-lg-6 col-md-6 col-sm-12',
           customLabelCss: 'custom-participant-lbl-text',
           customInputTextCss: 'custom-participant-input-text',
