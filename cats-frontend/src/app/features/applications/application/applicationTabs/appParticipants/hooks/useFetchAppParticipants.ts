@@ -9,23 +9,15 @@ export const useFetchAppParticipants = (applicationId: number) => {
   useEffect(() => {
     // Function to fetch app participants
     const getAppParticipants = async () => {
-      try 
-      {
-        if(applicationId)
-        {
-            const appParticipants = await fetchAppParticpants(applicationId); // Call the service to fetch app participants
-            console.log("nupur - appParticipants is : ", appParticipants);
-            setAppParticipants(appParticipants); // Store the participants data in state
+      try {
+        if (applicationId) {
+          const appParticipants = await fetchAppParticpants(applicationId); // Call the service to fetch app participants
+          setAppParticipants(appParticipants); // Store the participants data in state
         }
-      }
-      catch (err) 
-      {
+      } catch (err) {
         // Log the error and set the error message
-        console.error('nupur - Error fetching app participants:', err);
         setError('Failed to fetch app participants');
-      } 
-      finally 
-      {
+      } finally {
         // Set loading to false
         setLoading(false);
       }

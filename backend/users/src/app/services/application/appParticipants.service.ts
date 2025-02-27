@@ -13,8 +13,7 @@ export class AppParticipantService {
   constructor(
     @InjectRepository(AppParticipant)
     private readonly appParticsRepository: Repository<AppParticipant>,
-  ) 
-  {}
+  ) {}
 
   /**
    * Retrieves app participants for a given app ID and transforms the data into DTOs.
@@ -29,7 +28,7 @@ export class AppParticipantService {
     user: any,
   ): Promise<AppParticipantsDto[]> {
     try {
-     //TODO: have the logger statements
+      //TODO: have the logger statements
       let result = [];
       if (user?.identity_provider === 'idir') {
         if (showPending) {

@@ -74,15 +74,14 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
           handleTableSort(row, ascDir);
         }}
       >
-        {
-          userType === UserType.Internal && (
-            <div className="d-flex gap-2 flex-wrap">
-              <Button variant="secondary" onClick={handleAddParticipant}>
-                <Plus />
-                Add Participant
-              </Button>
-            </div>
-          )}
+        {userType === UserType.Internal && (
+          <div className="d-flex gap-2 flex-wrap">
+            <Button variant="secondary" onClick={handleAddParticipant}>
+              <Plus />
+              Add Participant
+            </Button>
+          </div>
+        )}
       </Widget>
     </div>
   );
