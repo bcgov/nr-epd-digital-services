@@ -13,7 +13,7 @@ export const getAppParticipantsByAppId = () => {
                     applicationId
                     isMainParticipant
                     name
-                    firstName
+                    fullName
                     description
                     effectiveStartDate
                     effectiveEndDate

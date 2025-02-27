@@ -25,6 +25,14 @@ export class AppParticipantsDto {
 
     @Field()
     @IsString()
+    lastName: string;
+
+    @Field()
+    @IsString()
+    fullName: string;
+
+    @Field()
+    @IsString()
     name: string;
 
     @Field()

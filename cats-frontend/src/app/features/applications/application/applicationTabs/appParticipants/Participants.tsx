@@ -9,22 +9,19 @@ import { useParams } from "react-router-dom"
 import { fetchAppParticpants } from "./services/Participants"
 import { set } from "date-fns"
 import { useFetchAppParticipants } from "./hooks/useFetchAppParticipants"
-import { el } from "date-fns/locale"
-
+import './Participants.css'
 
 export const Participants = () => {
-    //const { id } = useParams<{ id?: string }>();
-    const applicationId = 1;
+    //const { id } = useParams<{ id?: string }>();  //TODO when we have the applicationId available at ALL Applications page
+    const applicationId = 1; //hardcoded for now
     const {
         participantColumnInternal,
       } = GetConfig();
-    const [selectedRows, setSelectedRows] = useState<User[]>([])
     const [formData, setFormData] = useState<{ [key: string]: any | [Date, Date] }[]>([])
     const [internalRow, setInternalRow] = useState(participantColumnInternal);
     const {appParticipants, loading, error} = useFetchAppParticipants(applicationId ?? '');
     useEffect(() => {
         if(appParticipants && appParticipants.length > 0) {
-            console.log("nupur - appParticipants is : ", appParticipants);
             setFormData(appParticipants);
         } else {    
             setFormData([]);

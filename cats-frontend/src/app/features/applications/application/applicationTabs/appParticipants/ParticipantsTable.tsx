@@ -2,12 +2,10 @@ import React from 'react';
 import { TableColumn } from '../../../../../components/table/TableColumn';
 import { UserType } from '../../../../../helpers/requests/userType';
 import { RequestStatus } from '../../../../../helpers/requests/status';
-import { User } from 'oidc-client-ts';
 import { UserMode } from '../../../../../helpers/requests/userMode';
 import Widget from '../../../../../components/widget/Widget';
 import { Button } from '../../../../../components/button/Button';
-import { UserPlus } from '../../../../../components/common/icon';
-import App from '../../../../../../App';
+import { Plus, UserPlus } from '../../../../../components/common/icon';
 
 interface IParticipantTableProps {
   handleTableChange: (event: any) => void;
@@ -56,33 +54,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
 
   approveRejectHandler = approveRejectHandler ?? (() => {});
 
-  const AppParticipantsData = [
-    {
-      isMainParticipant:  true,
-      Name: 'Org1',
-      ParticipantRole: 'Client',
-      EffectiveStartDatete: '23rd June 2021',
-      EffectiveEndDate: '',
-      isMinistry: false,
-    },
-    {
-        isMainParticipant:  false,
-        Name: 'Org2',
-        ParticipantRole: 'Worker',
-        EffectiveStartDatete: '23rd June 2021',
-        EffectiveEndDate: '',
-        isMinistry: false,
-    },
-    {
-        isMainParticipant:  true,
-        Name: 'Org3',
-        ParticipantRole: 'CSA',
-        EffectiveStartDatete: '23rd June 2021',
-        EffectiveEndDate: '',
-        isMinistry: true,
-    },
-];
-
   return (
     <div>
       <Widget
@@ -93,15 +64,10 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         tableColumns={internalRow}
         tableData={formData}
         tableIsLoading={status ?? RequestStatus.idle}
-        // allowRowsSelect={viewMode === UserMode.EditMode}
         aria-label="App Participant Widget"
         customLabelCss="custom-participant-widget-lbl"
         hideTable={false}
         hideTitle={hideLabelForWidget}
-        // editMode={
-        //   viewMode === UserMode.EditMode &&
-        //   userType === UserType.Internal
-        // }
         hideWidgetCheckbox={false}
         primaryKeycolumnName="particRoleId"
         sortHandler={(row, ascDir) => {
@@ -112,7 +78,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
           userType === UserType.Internal && (
             <div className="d-flex gap-2 flex-wrap">
               <Button variant="secondary" onClick={handleAddParticipant}>
-                <UserPlus />
+                <Plus />
                 Add Participant
               </Button>
             </div>
