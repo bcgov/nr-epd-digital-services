@@ -51,6 +51,8 @@ import { Payment } from './entities/payment.entity';
 import { PaymentMethod } from './entities/paymentMethod.entity';
 import { Organization } from './entities/organization.entity';
 import { ParticipantRole } from './entities/participantRole.entity';
+import { ApplicationSearchResolver } from './resolvers/applicationSearch.resolver';
+import { ApplicationSearchService } from './services/applicationSearch.service';
 /**
  * Module for wrapping all functionalities in user microserivce
  */
@@ -105,7 +107,14 @@ import { ParticipantRole } from './entities/participantRole.entity';
       ParticipantRole,
     ]),
   ],
-  providers: [PersonResolver, PersonService, KeycloakService, LoggerService],
+  providers: [
+    PersonResolver,
+    PersonService,
+    ApplicationSearchResolver,
+    ApplicationSearchService,
+    KeycloakService,
+    LoggerService,
+  ],
   controllers: [UserController],
 })
-export class CatsModule { }
+export class CatsModule {}
