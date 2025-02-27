@@ -1,0 +1,8 @@
+.table-header-hr {
+  margin-top: 0px;
+}
+
+.align-items-center {
+  display: flex;
+  align-items: center;
+}
