@@ -4,7 +4,7 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
 import { AppParticipantService } from './appParticipants.service';
-import { AppParticipantsDto } from '../../dto/appParticipantsDto';
+import { ViewAppParticipantsDto } from '../../dto/appParticipants/baseAppParticipantsDto';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
@@ -49,7 +49,7 @@ describe('AppParticipantsService', () => {
 
       jest.spyOn(service, 'getAppParticipantsByAppId').mockResolvedValue(
         plainToInstance(
-          AppParticipantsDto,
+          ViewAppParticipantsDto,
           mockParticipants.map((participant) => ({
             name: participant.organization.name,
             description: participant.participantRole.description,
@@ -64,7 +64,7 @@ describe('AppParticipantsService', () => {
 
       const result = await service.getAppParticipantsByAppId(1, 'user');
       expect(result).toEqual(
-        plainToInstance(AppParticipantsDto, [
+        plainToInstance(ViewAppParticipantsDto, [
           {
             name: 'Org1',
             description: 'Role1',
