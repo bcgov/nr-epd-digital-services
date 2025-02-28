@@ -6,7 +6,8 @@ import { Repository } from 'typeorm';
 import { LoggerService } from '../../logger/logger.service';
 
 import { AppParticipant } from '../../entities/appParticipant.entity';
-import { AppParticipantsDto } from '../../dto/appParticipantsDto';
+import { ViewAppParticipantsDto } from 'src/app/dto/appParticipants/viewAppParticipantsDto';
+
 @Injectable()
 export class AppParticipantService {
   constructor(
@@ -24,7 +25,7 @@ export class AppParticipantService {
   async getAppParticipantsByAppId(
     applicationId: number,
     user: any,
-  ): Promise<AppParticipantsDto[]> {
+  ): Promise<ViewAppParticipantsDto[]> {
     try {
       //TODO: have the logger statements
       let result = [];
@@ -52,7 +53,7 @@ export class AppParticipantService {
         }));
 
         const appPartics = plainToInstance(
-          AppParticipantsDto,
+          ViewAppParticipantsDto,
           transformedObjects,
         );
         return appPartics;

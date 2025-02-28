@@ -2,14 +2,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppParticipantResolver } from './appParticipant.resolver';
 import { AppParticipantService } from '../services/application/appParticipants.service';
 import { GenericResponseProvider } from '../dto/reponse/genericResponseProvider';
-import { AppParticipantsDto } from '../dto/appParticipantsDto';
 
 import { HttpStatus } from '@nestjs/common';
+import { ViewAppParticipantsDto } from '../dto/appParticipants/viewAppParticipantsDto';
 
 describe('AppParticipantResolver', () => {
   let resolver: AppParticipantResolver;
   let appParticipantService: AppParticipantService;
-  let genericResponseProvider: GenericResponseProvider<AppParticipantsDto[]>;
+  let genericResponseProvider: GenericResponseProvider<ViewAppParticipantsDto[]>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -37,7 +37,7 @@ describe('AppParticipantResolver', () => {
       AppParticipantService,
     );
     genericResponseProvider = module.get<
-      GenericResponseProvider<AppParticipantsDto[]>
+      GenericResponseProvider<ViewAppParticipantsDto[]>
     >(GenericResponseProvider);
   });
 
