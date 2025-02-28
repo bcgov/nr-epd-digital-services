@@ -3,7 +3,6 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import './UserAccount.css';
 import { DropdownIcon, DropdownUpIcon } from '../common/icon';
 import { useAuth } from 'react-oidc-context';
-import { getUser } from '../../helpers/utility';
 import Avatar from '../avatar/Avatar';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../Store';
@@ -11,17 +10,11 @@ import { fetchRecentViews } from '../../features/dashboard/DashboardSlice';
 
 const UserAccount = (props: any) => {
   const dispatch = useDispatch<AppDispatch>();
-  const authRedirectUri =
-    ((window as any)._env_ &&
-      (window as any)._env_.REACT_APP_AUTH_LOGOUT_REDIRECT_URI) ||
-    process.env.REACT_APP_AUTH_LOGOUT_REDIRECT_URI ||
-    'http://localhost:4000/';
   const auth = useAuth();
-  const loggedInUser = getUser();
   // Sample user data
   const userObj = {
-    firstname: loggedInUser?.profile.given_name,
-    lastName: loggedInUser?.profile.family_name,
+    firstname: auth.user?.profile.given_name,
+    lastName: auth.user?.profile.family_name,
   };
 
   const [user, setUser] = useState(userObj);
@@ -32,12 +25,20 @@ const UserAccount = (props: any) => {
   };
 
   useEffect(() => {
-    dispatch(fetchRecentViews(loggedInUser?.profile.preferred_username ?? ''));
+    dispatch(fetchRecentViews(auth.user?.profile.preferred_username ?? ''));
     setUser({
-      firstname: loggedInUser?.profile.given_name,
-      lastName: loggedInUser?.profile.family_name,
+      firstname: auth.user?.profile.given_name,
+      lastName: auth.user?.profile.family_name,
     });
   }, []);
+
+  const signOut = () => {
+    auth.removeUser();
+    auth.signoutRedirect({
+      id_token_hint: auth.user?.id_token,
+    });
+    auth.clearStaleState();
+  };
 
   if (props.mobileView) {
     return (
@@ -95,11 +96,7 @@ const UserAccount = (props: any) => {
                 aria-label="Log Out"
                 tabIndex={0} // Make focusable with keyboard
                 className="account-custom-item-mobile"
-                onClick={() => {
-                  auth.removeUser().then(() => {
-                    window.location.href = authRedirectUri;
-                  });
-                }}
+                onClick={signOut}
               >
                 Log Out
               </div>
@@ -176,12 +173,7 @@ const UserAccount = (props: any) => {
                 role="menuitem"
                 className="account-custom-item"
                 aria-label="Log Out"
-                onClick={() => {
-                  auth.removeUser().then(() => {
-                    window.location.href = authRedirectUri;
-                    localStorage.removeItem('siteFilterPills');
-                  });
-                }}
+                onClick={signOut}
               >
                 Log Out
               </Dropdown.Item>

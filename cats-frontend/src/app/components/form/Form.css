@@ -339,7 +339,7 @@ input::placeholder {
   align-items: center;
   width: var(--layout-margin-xxlarge);
   height: var(--icons-size-medium);
-  background: var(--surface-color-brand-gray-30, #ECEAE8);
+  background: var(--surface-color-brand-gray-30, #eceae8);
   border-radius: var(--icons-size-medium);
   transition: all 200ms;
 }
@@ -352,13 +352,13 @@ input::placeholder {
 
 /* Indicator */
 .custom-switch > .indicator::before {
-  content: "";
+  content: '';
   display: block;
   box-sizing: border-box;
   width: var(--icons-size-medium);
   height: var(--icons-size-medium);
-  background: var(--surface-color-brand-gray-80, #605E5C);
-  border: 1px solid var(--surface-color-brand-gray-60, #C6C5C3);
+  background: var(--surface-color-brand-gray-80, #605e5c);
+  border: 1px solid var(--surface-color-brand-gray-60, #c6c5c3);
   border-radius: var(--icons-size-small);
   transition: all 200ms;
 }

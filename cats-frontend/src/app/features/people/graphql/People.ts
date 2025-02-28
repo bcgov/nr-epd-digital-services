@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const graphQlPeopleQuery = () => {
   return gql`
@@ -41,18 +41,18 @@ export const graphQlPeopleQuery = () => {
 
 export const graphQlPeopleQueryForAuthenticatedUsers = (filter: {}) => {
   const filterConditions = filter && Object.keys(filter);
-  let fieldsString = "";
-  let fieldsArgString = "";
-  let selectedInput = "";
+  let fieldsString = '';
+  let fieldsArgString = '';
+  let selectedInput = '';
 
   // Dynamically generate the fields part of the query
   if (filterConditions) {
     fieldsString = filterConditions
       .map((field) => `${field}: $${field}`)
-      .join(", ");
+      .join(', ');
     fieldsArgString = filterConditions
       .map((field) => `$${field}: String`)
-      .join(", ");
+      .join(', ');
   }
 
   return gql`

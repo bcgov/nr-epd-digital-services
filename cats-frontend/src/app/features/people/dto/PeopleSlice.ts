@@ -1,30 +1,30 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getAxiosInstance, getUser } from "../../../helpers/utility";
-import { print } from "graphql";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getAxiosInstance, getUser } from '../../../helpers/utility';
+import { print } from 'graphql';
 import {
   graphQlPeopleQuery,
   graphqlPeopleDetailsQuery,
   graphqlPeopleDetailsQueryForLoggedIn,
   graphQlPeopleQueryForAuthenticatedUsers,
   updatePerson,
-} from "../graphql/People";
-import { PeopleState } from "./PeopleState";
-import { RequestStatus } from "../../../helpers/requests/status";
-import { PeopleResultDto, Peoples } from "./People";
-import { GRAPHQL } from "../../../helpers/endpoints";
+} from '../graphql/People';
+import { PeopleState } from './PeopleState';
+import { RequestStatus } from '../../../helpers/requests/status';
+import { PeopleResultDto, Peoples } from './People';
+import { GRAPHQL } from '../../../helpers/endpoints';
 //import { PeopleDetailsMode } from '../../details/dto/PeopleDetailsMode';
-import { UserType } from "../../../helpers/requests/userType";
-import Search from "../Search";
-import { error } from "console";
+import { UserType } from '../../../helpers/requests/userType';
+import Search from '../Search';
+import { error } from 'console';
 
 const initialState: PeopleState = {
   peoples: [],
-  error: "",
+  error: '',
   fetchStatus: RequestStatus.idle,
   deleteStatus: RequestStatus.idle,
   addedStatus: RequestStatus.idle,
   updateStatus: RequestStatus.idle,
-  searchQuery: "",
+  searchQuery: '',
   currentPage: 1,
   pageSize: 10,
   resultsCount: 0,
@@ -40,7 +40,7 @@ const initialState: PeopleState = {
 };
 
 export const fetchPeoplesDetails = createAsyncThunk(
-  "peoples/fetchPeoplesDetails",
+  'peoples/fetchPeoplesDetails',
   async (args: { peopleId: string; showPending: Boolean }) => {
     try {
       const { peopleId } = args;
@@ -49,7 +49,7 @@ export const fetchPeoplesDetails = createAsyncThunk(
         query: print(
           user
             ? graphqlPeopleDetailsQueryForLoggedIn()
-            : graphqlPeopleDetailsQuery()
+            : graphqlPeopleDetailsQuery(),
         ),
         variables: {
           peopleId: args.peopleId,
@@ -62,11 +62,11 @@ export const fetchPeoplesDetails = createAsyncThunk(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 export const updatePeople = createAsyncThunk(
-  "updatePeople",
+  'updatePeople',
   async (input: any[]) => {
     const request = await getAxiosInstance().post(GRAPHQL, {
       query: print(updatePerson()),
@@ -75,11 +75,11 @@ export const updatePeople = createAsyncThunk(
       },
     });
     return request.data;
-  }
+  },
 );
 
 export const fetchPeoples = createAsyncThunk(
-  "peoples/fetchPeoples",
+  'peoples/fetchPeoples',
   async (
     args: {
       searchParam?: string;
@@ -87,7 +87,7 @@ export const fetchPeoples = createAsyncThunk(
       pageSize?: number;
       filter?: {};
     },
-    { getState }
+    { getState },
   ) => {
     const state: any = getState();
     const response = await getAxiosInstance().post(GRAPHQL, {
@@ -102,11 +102,11 @@ export const fetchPeoples = createAsyncThunk(
     if (response.data?.errors?.length > 0) {
       throw response.data?.errors[0];
     } else return response.data?.data?.searchPerson;
-  }
+  },
 );
 
 const peopleSlice = createSlice({
-  name: "peoples",
+  name: 'peoples',
   initialState,
 
   reducers: {

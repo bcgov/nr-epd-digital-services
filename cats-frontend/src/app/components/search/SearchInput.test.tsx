@@ -2,12 +2,12 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import SearchInput from './SearchInput';
 import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
+import configureStore, { MockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 const mockStore = configureStore([thunk]);
 describe('SearchInput', () => {
-  let store;
+  let store: MockStore;
 
   beforeEach(() => {
     store = mockStore({
@@ -16,11 +16,10 @@ describe('SearchInput', () => {
   });
 
   it('renders without crashing', () => {
-    const handleSearchChange = jest.fn();
-    const clearSearch = jest.fn();
+    const handleSearchChange = vi.fn();
+    const clearSearch = vi.fn();
     render(
       <Provider store={store}>
-        {' '}
         <SearchInput
           label="Search"
           searchTerm=""
@@ -34,11 +33,10 @@ describe('SearchInput', () => {
   });
 
   it('displays label if provided', () => {
-    const handleSearchChange = jest.fn();
-    const clearSearch = jest.fn();
+    const handleSearchChange = vi.fn();
+    const clearSearch = vi.fn();
     render(
       <Provider store={store}>
-        {' '}
         <SearchInput
           label="Search"
           searchTerm=""
@@ -52,11 +50,10 @@ describe('SearchInput', () => {
   });
 
   it('invokes handleSearchChange on input change', () => {
-    const handleSearchChange = jest.fn();
-    const clearSearch = jest.fn();
+    const handleSearchChange = vi.fn();
+    const clearSearch = vi.fn();
     render(
       <Provider store={store}>
-        {' '}
         <SearchInput
           label="Search"
           searchTerm=""
@@ -71,11 +68,10 @@ describe('SearchInput', () => {
   });
 
   it('displays search icon when searchTerm is empty', () => {
-    const handleSearchChange = jest.fn();
-    const clearSearch = jest.fn();
+    const handleSearchChange = vi.fn();
+    const clearSearch = vi.fn();
     const { container } = render(
       <Provider store={store}>
-        {' '}
         <SearchInput
           label="Search"
           searchTerm=""
@@ -89,11 +85,10 @@ describe('SearchInput', () => {
   });
 
   it('displays clear icon when searchTerm is not empty', () => {
-    const handleSearchChange = jest.fn();
-    const clearSearch = jest.fn();
+    const handleSearchChange = vi.fn();
+    const clearSearch = vi.fn();
     const { container } = render(
       <Provider store={store}>
-        {' '}
         <SearchInput
           label="Search"
           searchTerm="test"
@@ -107,11 +102,10 @@ describe('SearchInput', () => {
   });
 
   it('invokes clearSearch function when clear icon is clicked', () => {
-    const handleSearchChange = jest.fn();
-    const clearSearch = jest.fn();
+    const handleSearchChange = vi.fn();
+    const clearSearch = vi.fn();
     const { container } = render(
       <Provider store={store}>
-        {' '}
         <SearchInput
           label="Search"
           searchTerm="test"

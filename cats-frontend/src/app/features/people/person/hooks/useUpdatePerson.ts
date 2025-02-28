@@ -20,9 +20,7 @@ export const useUpdatePerson = () => {
     {
       // Log the error and set the error message
       setError('Failed to update person');
-    } 
-    finally 
-    {
+    } finally {
       // Set loading to false
       setLoading(false);
     }

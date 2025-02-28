@@ -1,7 +1,11 @@
-import { print } from "graphql";
-import { GRAPHQL } from "../../../../helpers/endpoints";
-import { getAxiosInstance } from "../../../../helpers/utility";
-import { CREATE_PERSON, GET_PERSON_BY_ID, UPDATE_PERSON_BY_ID } from "../graphql/PersonQueries";
+import { print } from 'graphql';
+import { GRAPHQL } from '../../../../helpers/endpoints';
+import { getAxiosInstance } from '../../../../helpers/utility';
+import {
+  CREATE_PERSON,
+  GET_PERSON_BY_ID,
+  UPDATE_PERSON_BY_ID,
+} from '../graphql/PersonQueries';
 
 // Fetch a person by ID
 export const fetchPerson = async (id: string) => {

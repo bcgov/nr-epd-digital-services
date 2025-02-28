@@ -1,14 +1,12 @@
-import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import Pagination from './Pagination';
-import { text } from 'stream/consumers';
 
 describe('Pagination Component', () => {
-  const selectPageMock = jest.fn(() => {});
-  const changeResultsPerPageMock = jest.fn();
+  const selectPageMock = vi.fn();
+  const changeResultsPerPageMock = vi.fn();
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('renders pagination correctly with multiple pages', () => {

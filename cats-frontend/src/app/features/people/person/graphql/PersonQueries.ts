@@ -34,8 +34,6 @@ export const GET_PERSON_BY_ID = gql`
   }
 `;
 
-
-
 export const UPDATE_PERSON_BY_ID = gql`
   mutation updatePerson($input: [UpdatePerson!]!)
   {
@@ -61,4 +59,3 @@ export const CREATE_PERSON = gql`
     }
   }
 `;
-

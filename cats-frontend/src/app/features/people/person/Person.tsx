@@ -132,7 +132,7 @@ const Person = () => {
       setNotes([]);
       setViewMode(UserMode.EditMode);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -151,7 +151,6 @@ const Person = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
 
   const fetchAddresses = useCallback(async (searchParam: string) => {
     if (searchParam.trim()) {
@@ -181,40 +180,44 @@ const Person = () => {
     {
       const indexToUpdate = addrForm.findIndex((row) => row.some((field) => (field.graphQLPropertyName === graphQLPropertyName)));
       let addr: any = null;
-      fetchAddresses(value as string).then((response) => {
-        if(response?.length > 0)
-        {
-          addr = response?.map((feature: any) => {
-            return {
-              key: feature?.properties?.fullAddress,
-              value: feature?.properties?.fullAddress,
-            };
-          });
-        
-        }
-        else
-        {
-          addr = null;
-        }
-        setAddrForm((prev) =>
-          updateFields(prev, {
-            indexToUpdate,
-            updates: {
-              isLoading: RequestStatus.success,
-              options: addr,
-              customInfoMessage: '',
-            },
-          }),
-        );
-      }).catch((err) => {
-        console.error(`Error: ${err.message}`, err.response?.data);
-      });
+      fetchAddresses(value as string)
+        .then((response) => {
+          if (response?.length > 0) {
+            addr = response?.map((feature: any) => {
+              return {
+                key: feature?.properties?.fullAddress,
+                value: feature?.properties?.fullAddress,
+              };
+            });
+          } else {
+            addr = null;
+          }
+          setAddrForm((prev) =>
+            updateFields(prev, {
+              indexToUpdate,
+              updates: {
+                isLoading: RequestStatus.success,
+                options: addr,
+                customInfoMessage: '',
+              },
+            }),
+          );
+        })
+        .catch((err) => {
+          console.error(`Error: ${err.message}`, err.response?.data);
+        });
     }
-    setFormData({...formData, [graphQLPropertyName]: value})
+    setFormData({ ...formData, [graphQLPropertyName]: value });
   };
-  
-  const handleNoteChange = (graphQLPropertyName: any, value: String | [Date, Date]) => {
-    setNote({...note, noteData: {...note.noteData, [graphQLPropertyName]: value}});
+
+  const handleNoteChange = (
+    graphQLPropertyName: any,
+    value: String | [Date, Date],
+  ) => {
+    setNote({
+      ...note,
+      noteData: { ...note.noteData, [graphQLPropertyName]: value },
+    });
   };
 
   const handleTableChange = (event: any) => {
@@ -244,24 +247,24 @@ const Person = () => {
     {
       setNote({isNotesModal: true, noteData: event.row, noteType: 'Edit Note'});
     }
-  }
+  };
 
   const handleAddNotes = () =>{
     setNote({isNotesModal: true, noteData: initialNote, noteType: 'New Note'});
   }
 
   const handleTableSort = (row: any, ascDir: any) => {
-      let property = row['graphQLPropertyName'];
-      setNotes((prevData) => {
-        // Create a shallow copy of the previous data
-        let updatedNotes = [...prevData];
-  
-        // Call the common sort function to sort the updatedNotes array
-        updatedNotes = sortArray(updatedNotes, property, ascDir);
-  
-        // Return the sorted array
-        return updatedNotes;
-      });
+    let property = row['graphQLPropertyName'];
+    setNotes((prevData) => {
+      // Create a shallow copy of the previous data
+      let updatedNotes = [...prevData];
+
+      // Call the common sort function to sort the updatedNotes array
+      updatedNotes = sortArray(updatedNotes, property, ascDir);
+
+      // Return the sorted array
+      return updatedNotes;
+    });
   };
 
   const handleDeleteNotes = async (particIsDelete: boolean = false) => {

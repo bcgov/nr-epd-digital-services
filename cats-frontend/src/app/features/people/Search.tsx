@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
-import "./Search.css";
-import "@bcgov/design-tokens/css/variables.css";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import './Search.css';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchPeoples,
   resetPeoples,
@@ -10,24 +9,24 @@ import {
   updatePageSizeSetting,
   resultsCount,
   updatePeopleStatus,
-} from "./dto/PeopleSlice";
+} from './dto/PeopleSlice';
 
-import { AppDispatch } from "../../Store";
+import { AppDispatch } from '../../Store';
 import {
   selectAllPeoples,
   currentPageSelection,
   currentPageSize,
-} from "./dto/PeopleSlice";
-import SearchResults from "./searchResults/SearchResults";
+} from './dto/PeopleSlice';
+import SearchResults from './searchResults/SearchResults';
 import {
   CircleXMarkIcon,
   MagnifyingGlassIcon,
   Plus,
-} from "../../components/common/icon";
+} from '../../components/common/icon';
 
-import { TableColumn } from "../../components/table/TableColumn";
-import { getPeopleSearchResultsColumns } from "./dto/Columns";
-import PageContainer from "../../components/simple/PageContainer";
+import { TableColumn } from '../../components/table/TableColumn';
+import { getPeopleSearchResultsColumns } from './dto/Columns';
+import PageContainer from '../../components/simple/PageContainer';
 import {
   flattenFormRows,
   formatDateRange,
@@ -45,7 +44,7 @@ import { from } from "@apollo/client";
 
 const Search = () => {
   const auth = useAuth();
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState('');
   const dispatch = useDispatch<AppDispatch>();
   const peoples = useSelector(selectAllPeoples);
   const currSearchVal = useSelector((state: any) => state.peoples);
@@ -84,17 +83,17 @@ const Search = () => {
   useEffect(() => {}, [selectedRows]);
 
   useEffect(() => {
-    if (currSearchVal.searchQuery !== "") {
+    if (currSearchVal.searchQuery !== '') {
       dispatch(
-        fetchPeoples({ searchParam: currSearchVal.searchQuery ?? searchText })
+        fetchPeoples({ searchParam: currSearchVal.searchQuery ?? searchText }),
       );
     }
   }, [currentPageInState, updatePeopleStatusInState]);
 
   useEffect(() => {
-    if (currSearchVal.searchQuery !== "") {
+    if (currSearchVal.searchQuery !== '') {
       dispatch(
-        fetchPeoples({ searchParam: currSearchVal.searchQuery ?? searchText })
+        fetchPeoples({ searchParam: currSearchVal.searchQuery ?? searchText }),
       );
     }
   }, [currentPageSizeInState]);
@@ -108,7 +107,7 @@ const Search = () => {
       updatePageSizeSetting({
         currentPage: pageRequested,
         pageSize: resultsCount,
-      })
+      }),
     );
   };
 
@@ -129,10 +128,10 @@ const Search = () => {
   // }, [dispatch,  searchText]);
 
   const handleClearSearch = () => {
-    setSearchText("");
+    setSearchText('');
     setUserAction(true);
     dispatch(resetPeoples(null));
-    dispatch(updateSearchQuery(""));
+    dispatch(updateSearchQuery(''));
   };
 
   const handleTextChange = (event: any) => {
@@ -149,7 +148,7 @@ const Search = () => {
           fetchPeoples({
             searchParam: event.target.value,
             filter: filterData,
-          })
+          }),
         );
       } else {
         dispatch(fetchPeoples({ searchParam: event.target.value }));
@@ -161,7 +160,7 @@ const Search = () => {
   };
 
   const changeHandler = (event: any) => {
-    if (event && event.property === "select_row") {
+    if (event && event.property === 'select_row') {
       if (event.value) {
         const index = selectedRows.findIndex((r: any) => r.id === event.row.id);
         if (index === -1) {
@@ -181,13 +180,13 @@ const Search = () => {
       //   // If row is not selected, add it
       //   SetSelectedRows([...selectedRows, event.row]);
       // }
-    } else if (event && event.property === "select_all") {
+    } else if (event && event.property === 'select_all') {
       const newRows = event.value;
       if (event.selected) {
         SetSelectedRows((prevArray) => {
           const existingIds = new Set(prevArray.map((obj) => obj.id));
           const uniqueRows = newRows.filter(
-            (row: any) => !existingIds.has(row.id)
+            (row: any) => !existingIds.has(row.id),
           );
           return [...prevArray, ...uniqueRows];
         });
@@ -216,17 +215,17 @@ const Search = () => {
     for (const [key, value] of Object.entries(formData)) {
       let currLabel =
         flattedArr && flattedArr.find((row) => row.graphQLPropertyName === key);
-      if (key === "whenCreated" || key === "whenUpdated") {
+      if (key === 'whenCreated' || key === 'whenUpdated') {
         let dateRangeValue = formatDateRange(value);
         filteredFormData[key] = value;
         filters.push({
           key,
           value: dateRangeValue,
-          label: currLabel?.label ?? "",
+          label: currLabel?.label ?? '',
         });
-      } else if (value.trim() !== "") {
+      } else if (value.trim() !== '') {
         filteredFormData[key] = value;
-        filters.push({ key, value, label: currLabel?.label ?? "" });
+        filters.push({ key, value, label: currLabel?.label ?? '' });
       }
     }
 
@@ -236,23 +235,23 @@ const Search = () => {
         fetchPeoples({
           searchParam: currSearchVal.searchQuery,
           filter: filteredFormData,
-        })
+        }),
       );
       setSelectedFilters(filters);
 
       // Save filter selections to local storage
-      localStorage.setItem("peopleFilterPills", JSON.stringify(filters));
+      localStorage.setItem('peopleFilterPills', JSON.stringify(filters));
     }
   };
 
   const handleReset = () => {
     setFormData({});
     setSelectedFilters([]);
-    localStorage.removeItem("peopleFilterPills");
+    localStorage.removeItem('peopleFilterPills');
   };
 
   useEffect(() => {
-    const storedFilters = localStorage.getItem("peopleFilterPills");
+    const storedFilters = localStorage.getItem('peopleFilterPills');
     if (storedFilters) {
       const parsedFilters = JSON.parse(storedFilters);
       const initialFormData: any = {};
@@ -272,13 +271,13 @@ const Search = () => {
         fetchPeoples({
           searchParam: currSearchVal.searchQuery,
           filter: newData,
-        })
+        }),
       );
       return newData;
     });
     let currFilter = selectedFilters.filter((item) => item.key !== filter.key);
     setSelectedFilters(currFilter);
-    localStorage.setItem("peopleFilterPills", JSON.stringify(currFilter));
+    localStorage.setItem('peopleFilterPills', JSON.stringify(currFilter));
   };
 
   return (
@@ -296,8 +295,8 @@ const Search = () => {
           <Actions
             label="Import / Export"
             items={[
-              { label: "PDF", value: "pdf" },
-              { label: "Excel", value: "excel" },
+              { label: 'PDF', value: 'pdf' },
+              { label: 'Excel', value: 'excel' },
             ]}
             onItemClick={() => {}}
             toggleButtonVariant="secondary"

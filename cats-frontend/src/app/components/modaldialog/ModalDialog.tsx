@@ -89,7 +89,9 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
           </div>
           {children && <div className="custom-modal-data">{children}</div>}
           {!discardOption && !errorOption && (
-            <div className={`${customFooterCss || 'custom-modal-actions-footer'}`}>
+            <div
+              className={`${customFooterCss || 'custom-modal-actions-footer'}`}
+            >
               <CancelButton
                 variant={cancelButtonVariant ?? "tertiary"}
                 clickHandler={handleClose}
@@ -100,7 +102,9 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
             </div>
           )}
           {discardOption && (
-            <div className={`${customFooterCss || 'custom-modal-actions-footer'}`}>
+            <div
+              className={`${customFooterCss || 'custom-modal-actions-footer'}`}
+            >
               <CancelButton
                 variant={cancelButtonVariant ??"tertiary"}
                 clickHandler={handleClose}

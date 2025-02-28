@@ -43,7 +43,7 @@
 }
 
 * {
-  font-family: "BC Sans", "Helvetica Neue", Arial, sans-serif;
+  font-family: 'BC Sans', 'Helvetica Neue', Arial, sans-serif;
 }
 
 .sidebar-container {
@@ -119,8 +119,8 @@
   --typography-color-link: #255a90;
   --typography-color-disabled: #9f9d9c;
 
-  --box-shadow-small: 0 0.6px 1.8px 0 rgba(0, 0, 0, 0.1),
-    0 3.2px 7.2px 0 rgba(0, 0, 0, 0.13);
+  --box-shadow-small:
+    0 0.6px 1.8px 0 rgba(0, 0, 0, 0.1), 0 3.2px 7.2px 0 rgba(0, 0, 0, 0.13);
 
   --map-button-height-large: 64px;
   --map-button-height-medium: 40px;

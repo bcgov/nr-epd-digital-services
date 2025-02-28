@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import {
-  getGeolocationPermission,
-} from '../app/helpers/utility';
-
+import { getGeolocationPermission } from '../app/helpers/utility';
 
 /**
  * Allows querying the browser permissions to see if the geolocation

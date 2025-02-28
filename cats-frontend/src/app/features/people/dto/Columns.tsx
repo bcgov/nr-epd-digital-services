@@ -1,85 +1,85 @@
-import { TickIcon } from "../../../components/common/icon";
-import { FormFieldType } from "../../../components/input-controls/IFormField";
-import { TableColumn, ColumnSize } from "../../../components/table/TableColumn";
-import { FillPinMapFill } from "../../../components/common/icon";
-import { ReactNode } from "react";
+import { TickIcon } from '../../../components/common/icon';
+import { FormFieldType } from '../../../components/input-controls/IFormField';
+import { TableColumn, ColumnSize } from '../../../components/table/TableColumn';
+import { FillPinMapFill } from '../../../components/common/icon';
+import { ReactNode } from 'react';
 
 const getPeopleSearchResultsColumns = () => {
   const columns: TableColumn[] = [
     {
       id: 1,
-      displayName: "First Name",
+      displayName: 'First Name',
       active: true,
-      graphQLPropertyName: "firstName",
+      graphQLPropertyName: 'firstName',
       groupId: 1,
       disabled: true,
       isDefault: true,
       sortOrder: 1,
       isChecked: true,
-      displayType: getColumnType("First Name", "firstName", ""),
+      displayType: getColumnType('First Name', 'firstName', ''),
       stickyCol: true,
     },
     new TableColumn(
       6,
-      "Last Name",
+      'Last Name',
       true,
-      "lastName",
+      'lastName',
       2,
       true,
       true,
       1,
       true,
-      getColumnType("Last Name", "lastName", ""),
-      "people/details/",
-      false
+      getColumnType('Last Name', 'lastName', ''),
+      'people/details/',
+      false,
     ),
     new TableColumn(
       7,
-      "Address",
+      'Address',
       true,
-      "address_1,address_2",
+      'address_1,address_2',
       2,
       false,
       true,
       1,
       true,
-      getColumnType("Address", "address_1,address_2", "")
+      getColumnType('Address', 'address_1,address_2', ''),
     ),
     new TableColumn(
       2,
-      "Email",
+      'Email',
       true,
-      "email",
+      'email',
       1,
       false,
       true,
       1,
       true,
-      getColumnType("Email", "email", "")
+      getColumnType('Email', 'email', ''),
     ),
     new TableColumn(
       3,
-      "Active",
+      'Active',
       true,
-      "isActive",
+      'isActive',
       1,
       false,
       true,
       1,
       true,
-      getIconColumnType("Active", "isActive", "")
+      getIconColumnType('Active', 'isActive', ''),
     ),
     new TableColumn(
       4,
-      "Tax Exempt",
+      'Tax Exempt',
       true,
-      "isTaxExempt",
+      'isTaxExempt',
       1,
       false,
       true,
       1,
       true,
-      getIconColumnType("Tax Exempt", "isTaxExempt", "")
+      getIconColumnType('Tax Exempt', 'isTaxExempt', ''),
     ),
     // new TableColumn(
     //   5,
@@ -222,9 +222,9 @@ const getPeopleSearchResultsColumns = () => {
 
     {
       id: 18,
-      displayName: "Actions",
+      displayName: 'Actions',
       active: true,
-      graphQLPropertyName: "id",
+      graphQLPropertyName: 'id',
       groupId: 4,
       disabled: true,
       isDefault: true,
@@ -251,15 +251,15 @@ const getPeopleSearchResultsColumns = () => {
 const getColumnTypeWithSticky = (
   label: string,
   propertyName: string,
-  value: string
+  value: string,
 ) => {
   return {
     type: FormFieldType.Label,
     label: label,
     graphQLPropertyName: propertyName,
     value: value,
-    customLabelCss: "custom-lbl-text",
-    customInputTextCss: "custom-input-text",
+    customLabelCss: 'custom-lbl-text',
+    customInputTextCss: 'custom-input-text',
     tableMode: true,
     stickyCol: true,
   };
@@ -271,8 +271,8 @@ const getColumnType = (label: string, propertyName: string, value: string) => {
     label: label,
     graphQLPropertyName: propertyName,
     value: value,
-    customLabelCss: "custom-lbl-text",
-    customInputTextCss: "custom-input-text",
+    customLabelCss: 'custom-lbl-text',
+    customInputTextCss: 'custom-input-text',
     tableMode: true,
     stickyCol: false,
   };
@@ -281,17 +281,17 @@ const getColumnType = (label: string, propertyName: string, value: string) => {
 const getIconColumnType = (
   label: string,
   propertyName: string,
-  value: string
+  value: string,
 ) => {
   return {
     type: FormFieldType.Icon,
-    label: "Tax Exempt",
-    graphQLPropertyName: "siteId",
-    value: "",
-    customLinkValue: "View",
-    customInputTextCss: "custom-manage-people-icon",
+    label: 'Tax Exempt',
+    graphQLPropertyName: 'siteId',
+    value: '',
+    customLinkValue: 'View',
+    customInputTextCss: 'custom-manage-people-icon',
     tableMode: true,
-    href: "site/map/",
+    href: 'site/map/',
     customIcon: <TickIcon />,
   };
 };
@@ -309,8 +309,8 @@ const getLinkColumnType = (
     label: label,
     graphQLPropertyName: propertyName,
     value: value,
-    customLabelCss: "link-for-table",
-    customInputTextCss: "link-for-table",
+    customLabelCss: 'link-for-table',
+    customInputTextCss: 'link-for-table',
     tableMode: true,
     stickyCol: true,
     href: href,
