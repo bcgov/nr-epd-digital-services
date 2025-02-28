@@ -11,7 +11,7 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@apollo/client": "^3.7.0",
+    "@apollo/client": "^3.13.1",
     "@bcgov/bc-sans": "^2.1.0",
     "@bcgov/design-tokens": "^2.0.1",
     "@emotion/react": "^11.10.4",
@@ -48,8 +48,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "vite",
-    "dev": "vite",
+    "start": "npm run dev",
+    "dev": "concurrently \"vite\" \"graphql-codegen --watch\"",
     "build": "vite build",
     "serve": "vite preview",
     "test": "vitest",
@@ -81,6 +81,7 @@
     "@graphql-codegen/cli": "^5.0.3",
     "@graphql-codegen/client-preset": "^4.4.0",
     "@graphql-codegen/introspection": "^4.0.3",
+    "@graphql-codegen/near-operation-file-preset": "^3.0.0",
     "@graphql-codegen/typescript-react-apollo": "^4.3.2",
     "@parcel/watcher": "^2.4.1",
     "@svgr/core": "^8.1.0",

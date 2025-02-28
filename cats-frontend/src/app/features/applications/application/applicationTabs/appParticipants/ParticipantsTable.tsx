@@ -6,16 +6,15 @@ import { UserMode } from '../../../../../helpers/requests/userMode';
 import Widget from '../../../../../components/widget/Widget';
 import { Button } from '../../../../../components/button/Button';
 import { Plus, UserPlus } from '../../../../../components/common/icon';
+import { GetAppParticipantsByAppIdQuery } from './hooks/Participants.generated';
 
 interface IParticipantTableProps {
   handleTableChange: (event: any) => void;
   handleWidgetCheckBox: (event: any) => void;
   internalRow: TableColumn[];
   userType: UserType;
-  formData: {
-    [key: string]: any;
-  }[];
-  status: RequestStatus;
+  formData: GetAppParticipantsByAppIdQuery['getAppParticipantsByAppId']['data'];
+  loading: boolean;
   viewMode: UserMode;
   handleTableSort: (row: any, ascDir: any) => void;
   handleAddParticipant: () => void;
@@ -38,7 +37,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   internalRow,
   userType,
   formData,
-  status,
+  loading,
   viewMode,
   handleTableSort,
   handleAddParticipant,
@@ -62,8 +61,8 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         handleCheckBoxChange={(event) => handleWidgetCheckBox(event)}
         title={'Participants'}
         tableColumns={internalRow}
-        tableData={formData}
-        tableIsLoading={status ?? RequestStatus.idle}
+        tableData={formData ?? []}
+        tableIsLoading={loading ? RequestStatus.loading : RequestStatus.idle}
         aria-label="App Participant Widget"
         customLabelCss="custom-participant-widget-lbl"
         hideTable={false}
