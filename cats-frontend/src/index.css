@@ -2,7 +2,7 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--surface-color-background-light, #faf9f8) !important;
+  background: var(--surface-color-background-light-gray, #faf9f8) !important;
 }
 
 code {

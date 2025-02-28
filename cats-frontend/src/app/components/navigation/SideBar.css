@@ -1,14 +1,3 @@
-:root {
-  --side-bar-padding-large: var(--layout-padding-large);
-  --side-bar-padding-medium: var(--layout-padding-medium);
-  --side-bar-background-color: #ffffff;
-  --side-bar-shadow: 0px 3.2px 7.2px 0px rgba(0, 0, 0, 0.13);
-  --current-path-background-color: var(--surface-primary-default);
-  --side-bar-text-color: var(--surface-primary-default);
-  --side-bar-text-hover-color: #ffffff;
-  --sidebar-default-width: 128px;
-}
-
 .side-bar {
   position: absolute;
   display: flex;
@@ -111,11 +100,11 @@
 }
 
 .nav-color-primary-default {
-  color: var(--surface-primary-default);
+  color: var(--surface-color-primary-default);
 }
 
 .currentPath {
-  background: var(--current-path-background-color);
+  background: var(--surface-color-primary-default);
   border-radius: 0px;
   width: 40px;
   justify-content: center;
@@ -131,11 +120,11 @@
 }
 
 .sideBarDisplayText:hover {
-  color: var(--surface-primary-default) !important;
+  color: var(--surface-color-primary-default) !important;
 }
 
 .currentPath .sideBarDisplayText:hover {
-  color: var(--side-bar-text-hover-color) !important;
+  color: var(--surface-color-menus-hover) !important;
 }
 
 .cart-items-number {
@@ -160,7 +149,7 @@
 }
 
 .side-bar:hover .sideBar-menu-item-hover:hover {
-  background: var(--surface-primary-hover);
+  background: var(--surface-color-primary-hover);
   width: 100%;
 }
 

@@ -7,8 +7,8 @@
 }
 
 .custom-input {
-  border: 1px solid var(--surface-color-border-light, #d8d8d8) !important;
-  background-color: var(--surface-background-white, #ffffff) !important;
+  border: 1px solid var(--surface-color-border-default, #d8d8d8) !important;
+  background-color: var(--surface-color-background-white, #ffffff) !important;
   padding: var(--layout-padding-small) var(--layout-padding-medium)
     var(--layout-padding-small) var(--layout-padding-medium) !important;
   border-radius: var(--layout-margin-xsmall) !important;
@@ -17,8 +17,8 @@
 .custom-input:disabled {
   cursor: not-allowed;
   opacity: 1;
-  background-color: var(--surface-secondary-disabled) !important;
-  border-color: var(--surface-secondary-disabled);
+  background-color: var(--surface-color-secondary-disabled) !important;
+  border-color: var(--surface-color-secondary-disabled);
   color: var(--typography-color-disabled);
 }
 
@@ -46,8 +46,8 @@ input.rs-date-range-input::placeholder {
 }
 
 .custom-date-range .rs-input-group {
-  border: 1px solid var(--surface-color-border-light, #d8d8d8) !important;
-  background-color: var(--surface-background-white) !important;
+  border: 1px solid var(--surface-color-border-default, #d8d8d8) !important;
+  background-color: var(--surface-color-background-white) !important;
   padding: 3px 0px 3px var(--layout-padding-medium);
   border-radius: var(--layout-margin-xsmall) !important;
 }
@@ -106,7 +106,7 @@ input.rs-date-range-input::placeholder {
   border-radius: 100px;
   height: 27px;
   width: 27px;
-  border: 1px solid var(--surface-border-light, #d8d8d8);
+  border: 1px solid var(--surface-color-border-default, #d8d8d8);
   background: var(--surface-brand-blue-10, #f1f8fe);
 }
 
@@ -137,7 +137,7 @@ input.rs-date-range-input::placeholder {
 }
 
 .custom-not-found {
-  color: var(--surface-primary-default, #053662);
+  color: var(--surface-color-primary-default, #053662);
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -179,8 +179,8 @@ input::placeholder {
 }
 
 .custom-search-input {
-  border: 1px solid var(--surface-color-border-light, #d8d8d8) !important;
-  background-color: var(--surface-background-white, #ffffff) !important;
+  border: 1px solid var(--surface-color-border-default, #d8d8d8) !important;
+  background-color: var(--surface-color-background-white, #ffffff) !important;
   padding: var(--layout-padding-small) var(--layout-padding-medium)
     var(--layout-padding-small) var(--layout-padding-medium) !important;
   border-radius: var(--layout-margin-xsmall) !important;
@@ -221,7 +221,7 @@ input::placeholder {
 }
 
 .custom-search-input-item:hover {
-  background-color: var(--surface-secondary-hover);
+  background-color: var(--surface-color-secondary-hover);
   color: var(--typography-color-secondary);
 }
 
@@ -253,10 +253,10 @@ input::placeholder {
   max-height: 220px;
   overflow-y: auto;
   overflow-x: hidden;
-  border-radius: var(--surface-border-radius-medium);
+  border-radius: var(--layout-border-radius-medium);
   padding: var(--layout-padding-medium) 0px var(--layout-padding-medium) 0px;
   box-shadow: var(--surface-shadow-medium);
-  background-color: var(--surface-background-white);
+  background-color: var(--surface-color-background-white);
   /* inset: 37% auto auto auto; */
   position: absolute;
   /* left: calc(100% - 295px); */
@@ -308,7 +308,7 @@ input::placeholder {
 .custom-dropdown-menu {
   padding: var(--layout-padding-medium) 0px var(--layout-margin-medium) 0px;
   gap: 8px;
-  border-radius: var(--surface-border-radius-medium);
+  border-radius: var(--layout-border-radius-medium);
   background: var(--surface-color-background-white, #ffffff);
   box-shadow: 0px 6.4px 14.4px 0px #00000021;
   box-shadow: 0px 1.2px 3.6px 0px #0000001a;
@@ -358,7 +358,7 @@ input::placeholder {
   width: var(--icons-size-medium);
   height: var(--icons-size-medium);
   background: var(--surface-color-brand-gray-80, #605e5c);
-  border: 1px solid var(--surface-color-brand-gray-60, #c6c5c3);
+  border: 1px solid var(--theme-gray-60, #c6c5c3);
   border-radius: var(--icons-size-small);
   transition: all 200ms;
 }
