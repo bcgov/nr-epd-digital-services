@@ -51,6 +51,9 @@ import { Payment } from './entities/payment.entity';
 import { PaymentMethod } from './entities/paymentMethod.entity';
 import { Organization } from './entities/organization.entity';
 import { ParticipantRole } from './entities/participantRole.entity';
+import { AppParticipantService } from './services/application/appParticipants.service';
+import { AppParticipantResolver } from './resolvers/appParticipant.resolver';
+import { GenericResponseProvider } from './dto/reponse/genericResponseProvider';
 import { GenericResponseProvider } from './dto/reponse/genericResponseProvider';
 import { PersonNote } from './entities/personNote.entity';
 import { PersonNoteResolver } from './resolvers/note/personNote.resolver';
@@ -110,7 +113,7 @@ import { PersonNoteService } from './services/note/personNote.service';
       PersonNote,
     ]),
   ],
-  providers: [PersonResolver, PersonService, PersonNoteResolver, PersonNoteService, KeycloakService, LoggerService, GenericResponseProvider],
+  providers: [PersonResolver, PersonService, AppParticipantService, AppParticipantResolver, GenericResponseProvider, PersonNoteResolver, PersonNoteService, KeycloakService, LoggerService, GenericResponseProvider],
   controllers: [UserController],
 })
 export class CatsModule { }

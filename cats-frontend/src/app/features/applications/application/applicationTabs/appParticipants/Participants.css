@@ -1,0 +1,29 @@
+.custom-participant-widget-lbl {
+  padding: var(--layout-padding-small) 0px var(--layout-padding-small) 0px;
+  border-bottom: 1px solid var(--surface-border-light, #d8d8d8);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 40px;
+  text-align: left;
+  color: var(--typography-color-primary, #2d2d2d);
+  margin-bottom: 0;
+}
+
+.common-text-style {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+}
+
+.common-icon-orientation {
+  text-align: center;
+}
+
+.custom-participant-lbl-text {
+  color: var(--typography-color-secondary, #474543);
+}
+
+.custom-participant-input-text {
+  color: var(--typography-color-primary, #2d2d2d);
+}
