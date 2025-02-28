@@ -5,9 +5,8 @@ import { plainToInstance } from 'class-transformer';
 import { Repository } from 'typeorm';
 import { LoggerService } from '../../logger/logger.service';
 
-import { AppParticipant } from 'src/app/entities/appParticipant.entity';
-import { AppParticipantsDto } from 'src/app/dto/appParticipantsDto';
-
+import { AppParticipant } from '../../entities/appParticipant.entity';
+import { AppParticipantsDto } from '../../dto/appParticipantsDto';
 @Injectable()
 export class AppParticipantService {
   constructor(
@@ -24,24 +23,16 @@ export class AppParticipantService {
    */
   async getAppParticipantsByAppId(
     applicationId: number,
-    showPending: boolean,
     user: any,
   ): Promise<AppParticipantsDto[]> {
     try {
       //TODO: have the logger statements
       let result = [];
       if (user?.identity_provider === 'idir') {
-        if (showPending) {
-          result = await this.appParticsRepository.find({
-            where: { applicationId },
-            relations: ['organization', 'participantRole', 'person'],
-          });
-        } else {
-          result = await this.appParticsRepository.find({
-            where: { applicationId },
-            relations: ['organization', 'participantRole', 'person'],
-          });
-        }
+        result = await this.appParticsRepository.find({
+          where: { applicationId },
+          relations: ['organization', 'participantRole', 'person'],
+        });
       }
 
       if (!result?.length) {
