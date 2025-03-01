@@ -1,6 +1,7 @@
-import { ReactNode } from 'react';
+import { NavComponent } from '../../../features/navigation/NavigationPillsConfig';
 
 export interface INavigationPills {
-  isDisable?: boolean;
-  components?: any;
+  disabled?: boolean;
+  components: NavComponent[];
+  tabSearchKey: string;
 }

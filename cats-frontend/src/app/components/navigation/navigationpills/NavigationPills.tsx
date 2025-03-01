@@ -1,32 +1,47 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import './NavigationPills.css';
 import { INavigationPills } from './INavigationPills';
-import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import Actions from '../../action/Actions';
 import { Button } from '../../button/Button';
 
 const NavigationPills: React.FC<INavigationPills> = ({
   components,
-  isDisable,
+  disabled = false,
+  tabSearchKey,
 }) => {
-  const [activeTabKey, setactiveTabKey] = useState<string>(components[0].value);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const location = useLocation();
+  const initialTab = useMemo(() => {
+    const tab = searchParams.get(tabSearchKey);
+    if (!tab) return components[0].value;
+    return (
+      components.find((item) => item.value === tab)?.value ||
+      components[0].value
+    );
+    // Only need the value set at the initial render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const [activeTabKey, setActiveTabKey] = useState<string>(initialTab);
 
   useEffect(() => {
-    if (location?.search !== '') {
-      const component = components.find(
-        (item: any) => item.value === location?.search.replace('?', ''),
-      );
+    const currentTab = searchParams.get(tabSearchKey);
+    if (currentTab) {
+      const component = components.find((item) => item.value === currentTab);
 
-      if (component !== null) {
-        handlePillClick(component.value);
+      if (component) {
+        setActiveTabKey(component.value);
       }
     }
-  }, [location, components]);
+  }, [components, searchParams, tabSearchKey]);
 
   const handlePillClick = (tabKey: string) => {
-    setactiveTabKey(tabKey);
+    setActiveTabKey(tabKey);
+    setSearchParams((params) => {
+      params.set(tabSearchKey, tabKey);
+      return params;
+    });
   };
 
   const getCurrentElementIndex = useCallback(() => {
@@ -58,10 +73,11 @@ const NavigationPills: React.FC<INavigationPills> = ({
   return (
     <div className="pt-5">
       <div className="d-flex d-xxl-flex d-xl-flex gap-2 d-none">
-        {components.map((item: any) => (
+        {components.map((item) => (
           <Button
+            key={item.value}
             size="small"
-            disabled={isDisable && item !== activeTabKey}
+            disabled={disabled && item.value !== activeTabKey}
             variant={item.value === activeTabKey ? 'primary' : 'tertiary'}
             onClick={() => handlePillClick(item.value)}
           >
@@ -75,12 +91,10 @@ const NavigationPills: React.FC<INavigationPills> = ({
             <Actions
               label="Select Page"
               items={components}
-              onItemClick={
-                isDisable ? () => {} : (value) => handlePillClick(value)
-              }
+              onItemClick={(value) => handlePillClick(value)}
               customCssToggleBtn={'custom-nav-btn'}
               customCssMenu={'custom-nav-action-menu'}
-              disable={isDisable}
+              disable={disabled}
               toggleButtonVariant={'secondary'}
               // toggleButtonSize={isMobileScreen ? 'medium' : 'small'}
             />
@@ -91,20 +105,19 @@ const NavigationPills: React.FC<INavigationPills> = ({
                 <span
                   className={`custom-nav-carousel-left-icon ${isActiveTabFirstPosition() ? 'd-none' : ''}`}
                   aria-hidden="true"
-                  onClick={
-                    isDisable
-                      ? () => {}
-                      : () =>
-                          !isActiveTabFirstPosition() &&
-                          handlePillClick(getPreviousElement())
+                  onClick={() =>
+                    !disabled &&
+                    !isActiveTabFirstPosition() &&
+                    handlePillClick(getPreviousElement())
                   }
                 ></span>
               </div>
               <div className="ps-3 pe-2 m-0 p-0 w-100 text-center">
                 {components.map(
-                  (tab: any) =>
+                  (tab) =>
                     tab.value === activeTabKey && (
                       <Button
+                        key={tab.value}
                         // size={isMobileScreen ? 'medium' : 'small'}
                         className="custom-nav-pill"
                       >
@@ -117,12 +130,10 @@ const NavigationPills: React.FC<INavigationPills> = ({
                 <span
                   className={`custom-nav-carousel-right-icon m-0 ${isActiveTabLastPosition() ? 'd-none' : ''}`}
                   aria-hidden="true"
-                  onClick={
-                    isDisable
-                      ? () => {}
-                      : () =>
-                          !isActiveTabLastPosition() &&
-                          handlePillClick(getNextElement())
+                  onClick={() =>
+                    !disabled &&
+                    !isActiveTabLastPosition() &&
+                    handlePillClick(getNextElement())
                   }
                 ></span>
               </div>
@@ -133,16 +144,11 @@ const NavigationPills: React.FC<INavigationPills> = ({
       <div className="mt-4">
         {components &&
           activeTabKey !== '' &&
-          components?.map(
-            (
-              tabComponent: { value: string; component: React.ReactNode },
-              index: number,
-            ) => {
-              return tabComponent.value === activeTabKey ? (
-                <div key={index}>{tabComponent.component}</div>
-              ) : null;
-            },
-          )}
+          components?.map((tabComponent) => {
+            return tabComponent.value === activeTabKey ? (
+              <div key={tabComponent.value}>{tabComponent.component}</div>
+            ) : null;
+          })}
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { AssociatedFiles } from '../applications/application/applicationTabs/appAssociatedFiles/AssociatedFiles';
 import { Details } from '../applications/application/applicationTabs/appDetails/Details';
 import { Housing } from '../applications/application/applicationTabs/appHousing/Housing';
@@ -7,7 +8,12 @@ import { Participants } from '../applications/application/applicationTabs/appPar
 import { Timesheets } from '../applications/application/applicationTabs/appTimesheets/Timesheets';
 import { Application } from '../applications/application/applicationTabs/application/Application';
 
-const mainNavComponents = [
+export type NavComponent = {
+  label: string;
+  value: string;
+  component: ReactNode;
+};
+const mainNavComponents: NavComponent[] = [
   { label: 'Application', value: 'application', component: <Application /> },
   { label: 'Details', value: 'details', component: <Details /> },
   { label: 'Participants', value: 'participants', component: <Participants /> },
