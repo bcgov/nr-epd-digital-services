@@ -1,44 +1,37 @@
 import ParticipantTable from './ParticipantsTable';
 import { UserMode } from '../../../../../helpers/requests/userMode';
 import { UserType } from '../../../../../helpers/requests/userType';
-import { RequestStatus } from '../../../../../helpers/requests/status';
-import { useEffect, useState } from 'react';
 import GetConfig from './ParticipantsConfig';
-import { useFetchAppParticipants } from './hooks/useFetchAppParticipants';
+import { useParams } from 'react-router-dom';
 import './Participants.css';
+import { useGetAppParticipantsByAppIdQuery } from './hooks/Participants.generated';
 
 export const Participants = () => {
   //const { id } = useParams<{ id?: string }>();  //TODO when we have the applicationId available at ALL Applications page
   const applicationId = 1; //hardcoded for now
   const { participantColumnInternal } = GetConfig();
-  const [formData, setFormData] = useState<
-    { [key: string]: any | [Date, Date] }[]
-  >([]);
-  const [internalRow, setInternalRow] = useState(participantColumnInternal);
-  const { appParticipants } = useFetchAppParticipants(applicationId ?? '');
-  useEffect(() => {
-    if (appParticipants && appParticipants.length > 0) {
-      setFormData(appParticipants);
-    } else {
-      setFormData([]);
-    }
-  }, [appParticipants]);
+
+  const { data, loading } = useGetAppParticipantsByAppIdQuery({
+    variables: {
+      applicationId,
+    },
+  });
 
   return (
     <div>
       <ParticipantTable
         handleTableChange={() => {}}
         handleWidgetCheckBox={() => {}}
-        internalRow={internalRow}
+        internalRow={participantColumnInternal}
         userType={UserType.Internal}
-        formData={formData}
-        status={RequestStatus.success}
+        formData={data?.getAppParticipantsByAppId.data}
         viewMode={UserMode.Default}
         handleTableSort={() => {}}
         handleAddParticipant={() => {}}
         selectedRows={[]}
         handleRemoveParticipant={() => {}}
         handleItemClick={() => {}}
+        loading={loading}
       />
     </div>
   );

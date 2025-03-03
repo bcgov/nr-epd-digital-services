@@ -1,1 +1,4 @@
 **/generated.ts
+**/*.generated.ts
+**/*.generated.tsx
+**/generated/types.ts

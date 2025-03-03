@@ -41,7 +41,7 @@
                    Please click to view the task assigned for <b>Application ID: ${applicationId}</b> by clicking on the below link. 
                 </p>
                 <p>
-                   https://localhost:3000/${taskId}
+                   ${appURL}/${taskId}
                 </p>
             </td>
         </tr>
