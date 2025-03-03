@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0e3v6wh" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.0.0">
-  <bpmn:process id="EmailNotification" name="Email Notification (Internal)" isExecutable="true" camunda:versionTag="1">
+  <bpmn:process id="EmailNotificationUpdated" name="Email Notification (Internal)" isExecutable="true" camunda:versionTag="1">
     <bpmn:sequenceFlow id="SequenceFlow_1hk7qik" sourceRef="StartEvent_1" targetRef="Activity_0nm63gf">
       <bpmn:extensionElements>
         <camunda:executionListener event="take">
@@ -185,9 +185,9 @@ execution.setVariable("host", host);</camunda:script>
       <bpmn:extensionElements />
     </bpmn:sequenceFlow>
   </bpmn:process>
-  <bpmn:message id="Message_1ap8yc0" name="Message_Email" />
+  <bpmn:message id="Message_1ap8yc0" name="Message_Email_Updated" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="EmailNotification">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="EmailNotificationUpdated">
       <bpmndi:BPMNEdge id="Flow_1uskeb8_di" bpmnElement="Flow_1uskeb8">
         <di:waypoint x="540" y="320" />
         <di:waypoint x="570" y="320" />
