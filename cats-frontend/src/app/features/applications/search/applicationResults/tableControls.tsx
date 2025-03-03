@@ -1,7 +1,8 @@
-import React from "react";
-import { Filter } from "../searchSlice";
-import { TableColumnsIcon } from "../../../../components/common/icon";
-import "./tableControls.css";
+import React from 'react';
+import { TableColumnsIcon } from '../../../../components/common/icon';
+import './tableControls.css';
+import { Button } from '../../../../components/button/Button';
+import { Filter } from '../Search';
 
 interface TableControlsProps {
   handleFilterChange: (filter: Filter) => void;
@@ -17,48 +18,44 @@ const TableControls: React.FC<TableControlsProps> = ({
   return (
     <div className="row">
       <div className="col text-right">
-        <div
+        <Button
+          variant="tertiary"
           onClick={() => handleFilterChange(Filter.All)}
-          role="button"
-          tabIndex={0}
-          className={filter === Filter.All ? "selected" : ""}
+          className={filter === Filter.All ? 'selected' : ''}
         >
           All
-        </div>
+        </Button>
       </div>
       <div className="col text-right">
-        <div
+        <Button
+          variant="tertiary"
           onClick={() => handleFilterChange(Filter.Assigned)}
-          role="button"
-          tabIndex={0}
-          className={filter === Filter.Assigned ? "selected" : ""}
+          className={filter === Filter.Assigned ? 'selected' : ''}
         >
           Assigned
-        </div>
+        </Button>
       </div>
       <div className="col text-right">
-        <div
+        <Button
+          variant="tertiary"
           onClick={() => handleFilterChange(Filter.Completed)}
-          role="button"
-          tabIndex={0}
-          className={filter === Filter.Completed ? "selected" : ""}
+          className={filter === Filter.Completed ? 'selected' : ''}
         >
           Completed
-        </div>
+        </Button>
       </div>
       <div className="col text-right columns-toggle">
-        <div
+        <Button
+          variant="tertiary"
           onClick={() => {
             toggleColumnSelect();
           }}
-          role="button"
-          tabIndex={0}
         >
           <span className="inline-flex">
             <TableColumnsIcon />
             <span>Columns</span>
           </span>
-        </div>
+        </Button>
       </div>
     </div>
   );
