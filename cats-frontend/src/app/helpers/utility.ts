@@ -11,7 +11,6 @@ import {
 import { RequestStatus } from './requests/status';
 import { notifyError, notifySuccess } from '../components/alert/Alert';
 import { TableColumn } from '../components/table/TableColumn';
-import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
 
 // Define the type for the result cache
 type ResultCache = {
@@ -124,22 +123,6 @@ export const getAxiosInstance = () => {
   });
 
   return instance;
-};
-
-export const getAuthenticatedApolloClient = () => {
-  const user = getUser();
-
-  const httpLink = new HttpLink({
-    uri: 'http://localhost:4005/graphql',
-    headers: {
-      Authorization: `Bearer ${user?.access_token}`,
-    },
-  });
-
-  return new ApolloClient({
-    link: httpLink,
-    cache: new InMemoryCache(),
-  });
 };
 
 //Searches for a specific search term in a object properties.
