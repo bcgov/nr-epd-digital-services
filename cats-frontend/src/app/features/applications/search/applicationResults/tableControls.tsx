@@ -51,7 +51,7 @@ const TableControls: React.FC<TableControlsProps> = ({
             toggleColumnSelect();
           }}
         >
-          <span className="inline-flex">
+          <span className="d-inline-flex">
             <TableColumnsIcon />
             <span>Columns</span>
           </span>
