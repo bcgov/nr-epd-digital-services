@@ -4,8 +4,8 @@ import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { HttpStatus, UsePipes } from '@nestjs/common';
 import { GenericResponseProvider } from '../../dto/reponse/genericResponseProvider';
 import { GenericValidationPipe } from '../../utils/validations/genericValidationPipe';
-import { AppParticipantsResponse } from '../../dto/reponse/applicationParticipant/AppParticipantsResponse';
 import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipantsDto';
+import { AppParticipantsResponse } from '../../dto/reponse/applicationParticipant/appParticipantsResponse';
 
 @Resolver(() => ViewAppParticipantsDto)
 export class AppParticipantResolver {
