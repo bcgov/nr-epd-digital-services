@@ -20,14 +20,11 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        package: [cats-backend, cats-frontend, cats-backend-migration]
+        package: [backend, cats-frontend ]
         include:
-          - package: cats-backend
-            build_file: ./cats-backend/Dockerfile
-            build_context: cats-backend
-          - package: cats-backend-migration
-            build_file: ./cats-backend/Dockerfile.migrations
-            build_context: cats-backend
+          - package: backend
+            build_file: ./backend-cats/Dockerfile
+            build_context: backend-cats
           - package: cats-frontend
             build_file: ./cats-frontend/Dockerfile
             build_context: cats-frontend
@@ -59,7 +56,7 @@ jobs:
     uses: ./.github/workflows/.deployer.yml
     secrets: inherit
     with:
-      triggers: ('cats-backend/' 'cats-frontend/' 'charts/' '.github/workflows/')
+      triggers: ('backend-cats/' 'cats-frontend/' 'charts/' '.github/workflows/')
       values: 'values-pr.yaml' # PR specific values file.
       db_user: cats-${{ github.event.number }}
       timeout-minutes: 60
