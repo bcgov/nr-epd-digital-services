@@ -1,82 +1,85 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../../Store";
-import PageContainer from "../../../components/simple/PageContainer";
-import SearchInput from "../../../components/search/SearchInput";
-import { RequestStatus } from "../../../helpers/requests/status";
-import { RootState } from "../../../Store";
-import {
-  fetchSearchResults,
-  setSearchTerm,
-  setResults,
-  setRequestStatus,
-  setColumns,
-  setFilter,
-  setPage,
-  setPageSize,
-  Filter,
-} from "./searchSlice";
-import ApplicationResultsTable from "./applicationResults/applicationResultsTable";
-import { TableColumn } from "../../../components/table/TableColumn";
+import React, { useEffect, useState, useCallback } from 'react';
+import PageContainer from '../../../components/simple/PageContainer';
+import SearchInput from '../../../components/search/SearchInput';
+import { RequestStatus } from '../../../helpers/requests/status';
+import { searchApplications } from './searchApplications';
+import ApplicationResultsTable from './applicationResults/applicationResultsTable';
+import { TableColumn } from '../../../components/table/TableColumn';
+import { applicationResultColumns } from './applicationResults/tableColumnConfig';
+import { ApplicationResultDto } from './applicationResults/applicationResultDto';
+import { debounce } from 'lodash';
+
+export enum Filter {
+  All = 'ALL',
+  Assigned = 'ASSIGNED',
+  Completed = 'COMPLETED',
+}
 
 const Search: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const searchTerm = useSelector(
-    (state: RootState) => state.applicationSearch.searchTerm
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [results, setResults] = useState<ApplicationResultDto[]>([]);
+  const [requestStatus, setRequestStatus] = useState(RequestStatus.idle);
+  const [columns, setColumns] = useState<TableColumn[]>(
+    applicationResultColumns,
   );
-  const results = useSelector(
-    (state: RootState) => state.applicationSearch.results
-  );
-  const requestStatus = useSelector(
-    (state: RootState) => state.applicationSearch.requestStatus
-  );
-  const columns = useSelector(
-    (state: RootState) => state.applicationSearch.columns
-  );
-  const page = useSelector((state: RootState) => state.applicationSearch.page);
-  const pageSize = useSelector(
-    (state: RootState) => state.applicationSearch.pageSize
-  );
-  const totalResults = useSelector(
-    (state: RootState) => state.applicationSearch.totalResults
-  );
-  const filter = useSelector(
-    (state: RootState) => state.applicationSearch.filter
-  );
+  const [filter, setFilter] = useState<Filter>(Filter.All);
+  const [page, setPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(5);
+  const [totalResults, setTotalResults] = useState<number>(0);
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSearchTerm(event.target.value));
-  };
+  const handleSearchChange = useCallback(
+    debounce((event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchTerm(event.target.value);
+    }, 300),
+    [],
+  );
 
   const clearSearch = () => {
-    dispatch(setSearchTerm(""));
-    dispatch(setResults([]));
+    setSearchTerm('');
+    setResults([]);
   };
 
   const handleColumnChange = (selectedColumns: TableColumn[]) => {
-    dispatch(setColumns(selectedColumns));
+    setColumns(selectedColumns);
   };
 
   const handleFilterChange = (filter: Filter) => {
-    dispatch(setFilter(filter));
+    setFilter(filter);
   };
 
   const handlePageChange = (newPage: number) => {
-    dispatch(setPage(newPage));
+    setPage(newPage);
   };
 
   const handlePageSizeChange = (newPageSize: number) => {
-    dispatch(setPageSize(newPageSize));
+    setPageSize(newPageSize);
   };
 
   useEffect(() => {
+    const fetchSearchResults = async () => {
+      setRequestStatus(RequestStatus.loading);
+      try {
+        const { applications, count } = await searchApplications(
+          searchTerm,
+          page,
+          pageSize,
+          filter,
+        );
+        setResults(applications);
+        setTotalResults(count);
+        setRequestStatus(RequestStatus.success);
+      } catch (error) {
+        setRequestStatus(RequestStatus.failed);
+      }
+    };
+
     if (searchTerm) {
-      dispatch(fetchSearchResults({ searchTerm, page, pageSize, filter }));
+      fetchSearchResults();
     } else {
-      dispatch(setResults([]));
-      dispatch(setRequestStatus(RequestStatus.idle));
+      setResults([]);
+      setRequestStatus(RequestStatus.idle);
     }
-  }, [searchTerm, page, pageSize, dispatch, filter]);
+  }, [searchTerm, page, pageSize, filter]);
 
   return (
     <PageContainer role="Search">
