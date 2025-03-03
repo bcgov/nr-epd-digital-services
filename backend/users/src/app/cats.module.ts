@@ -54,7 +54,7 @@ import { ParticipantRole } from './entities/participantRole.entity';
 import { ApplicationSearchResolver } from './resolvers/applicationSearch.resolver';
 import { ApplicationSearchService } from './services/applicationSearch.service';
 import { AppParticipantService } from './services/application/appParticipants.service';
-import { AppParticipantResolver } from './resolvers/appParticipant.resolver';
+import { AppParticipantResolver } from './resolvers/application/appParticipant.resolver';
 import { GenericResponseProvider } from './dto/reponse/genericResponseProvider';
 import { PersonNote } from './entities/personNote.entity';
 import { PersonNoteResolver } from './resolvers/note/personNote.resolver';

@@ -4,11 +4,11 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
 import { AppParticipantService } from './appParticipants.service';
-import { ViewAppParticipantsDto } from '../../dto/appParticipants/baseAppParticipantsDto';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
 import { AppParticipant } from '../../entities/appParticipant.entity';
+import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipantsDto';
 
 describe('AppParticipantsService', () => {
   let service: AppParticipantService;
