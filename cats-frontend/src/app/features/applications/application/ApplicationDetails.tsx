@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
-import { getNavComponents } from "../../navigation/NavigationPillsConfig";
-import { useAuth } from "react-oidc-context";
-import { Button } from "../../../components/button/Button";
-import { useNavigate } from "react-router-dom";
-import { AngleLeft } from "../../../components/common/icon";
-import Actions from "../../../components/action/Actions";
-import PageContainer from "../../../components/simple/PageContainer";
-import NavigationPills from "../../../components/navigation/navigationpills/NavigationPills";
-import CustomLabel from "../../../components/simple/CustomLabel";
-import { ActionItems } from "../../../components/action/ActionsConfig";
+import { useEffect, useState } from 'react';
+import { getNavComponents } from '../../navigation/NavigationPillsConfig';
+import { useAuth } from 'react-oidc-context';
+import { Button } from '../../../components/button/Button';
+import { useNavigate } from 'react-router-dom';
+import { AngleLeft } from '../../../components/common/icon';
+import Actions from '../../../components/action/Actions';
+import PageContainer from '../../../components/simple/PageContainer';
+import NavigationPills from '../../../components/navigation/navigationpills/NavigationPills';
+import CustomLabel from '../../../components/simple/CustomLabel';
+import { ActionItems } from '../../../components/action/ActionsConfig';
 import {
   CancelButton,
   SaveButton,
-} from "../../../components/simple/CustomButtons";
-import { UserMode } from "../../../helpers/requests/userMode";
-import { UserAction } from "../../../helpers/requests/UserAction";
+} from '../../../components/simple/CustomButtons';
+import { UserMode } from '../../../helpers/requests/userMode';
+import { UserAction } from '../../../helpers/requests/UserAction';
 
 const ApplicationDetails = () => {
   const [edit, setEdit] = useState(false);
@@ -31,9 +31,8 @@ const ApplicationDetails = () => {
   };
 
   useEffect(() => {
-    console.log("nupur - window.scrollY is: ", window.scrollY);
+    console.log('nupur - window.scrollY is: ', window.scrollY);
     const handleScroll = () => {
-      
       if (window.scrollY > 5) {
         // Adjust the scroll position as needed
         setIsVisible(true);
@@ -42,16 +41,16 @@ const ApplicationDetails = () => {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
 
     // Clean up the event listener on component unmount
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
   const handleItemClick = async (value: string) => {
-    console.log("nupur - handleItemClick value is: ", value);
+    console.log('nupur - handleItemClick value is: ', value);
     switch (value) {
       case UserMode.Default:
         setEdit(false);
@@ -79,12 +78,12 @@ const ApplicationDetails = () => {
               Back
             </Button>
             <div className="d-flex flex-wrap align-items-center gap-2 pe-3 custom-sticky-header-lbl">
-              <span className="custom-sticky-header-txt">{"1234567890"}</span>
+              <span className="custom-sticky-header-txt">{'1234567890'}</span>
               <span className="d-flex align-items-center justify-content-center px-2 custom-dot">
                 .
               </span>
               <div className="custom-sticky-header-lbl">
-                <span>{"1234-1456 Vancouver"}</span> 
+                <span>{'1234-1456 Vancouver'}</span>
               </div>
             </div>
           </div>
@@ -102,10 +101,7 @@ const ApplicationDetails = () => {
             <div className="gap-3 align-items-center d-none d-md-flex d-lg-flex d-xl-flex">
               {edit && (
                 <>
-                  <CustomLabel
-                    labelType="c-b"
-                    label={UserMode.EditMode}
-                  />
+                  <CustomLabel labelType="c-b" label={UserMode.EditMode} />
                   <SaveButton
                     variant="secondary"
                     clickHandler={() => handleItemClick(UserAction.SAVE)}
@@ -125,12 +121,12 @@ const ApplicationDetails = () => {
                   label="Actions"
                   items={[
                     {
-                      label: "Save",
-                      value: "save",
+                      label: 'Save',
+                      value: 'save',
                     },
                     {
-                      label: "Cancel",
-                      value: "cancel",
+                      label: 'Cancel',
+                      value: 'cancel',
                     },
                   ]}
                   onItemClick={handleItemClick}
@@ -160,10 +156,7 @@ const ApplicationDetails = () => {
               <div className="gap-3 align-items-center d-none d-md-flex d-lg-flex d-xl-flex">
                 {edit && (
                   <>
-                    <CustomLabel
-                      labelType="c-b"
-                      label={UserMode.EditMode}
-                    />
+                    <CustomLabel labelType="c-b" label={UserMode.EditMode} />
                     <SaveButton
                       variant="secondary"
                       clickHandler={() => handleItemClick(UserAction.SAVE)}
@@ -181,12 +174,12 @@ const ApplicationDetails = () => {
                     label="Actions"
                     items={[
                       {
-                        label: "Save",
-                        value: "save",
+                        label: 'Save',
+                        value: 'save',
                       },
                       {
-                        label: "Cancel",
-                        value: "cancel",
+                        label: 'Cancel',
+                        value: 'cancel',
                       },
                     ]}
                     onItemClick={handleItemClick}

@@ -1,9 +1,9 @@
-import React from "react";
-import { formRows } from "../dto/PeopleFilterConfig";
-import "./PeopleFilterForm.css";
-import "rsuite/DateRangePicker/styles/index.css";
-import Form from "../../../components/form/Form";
-import { Button } from "../../../components/button/Button";
+import React from 'react';
+import { formRows } from '../dto/PeopleFilterConfig';
+import './PeopleFilterForm.css';
+import 'rsuite/DateRangePicker/styles/index.css';
+import Form from '../../../components/form/Form';
+import { Button } from '../../../components/button/Button';
 
 interface PeopleFilterProps {
   formData: { [key: string]: any | [Date, Date] };

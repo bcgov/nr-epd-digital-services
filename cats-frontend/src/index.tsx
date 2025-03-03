@@ -19,15 +19,15 @@ import { getClientSettings } from './app/auth/UserManagerSetting';
 import { RouterProvider } from 'react-router-dom';
 import siteRouter from './app/routes/Routes';
 import { getUser } from './app/helpers/utility';
-//import { API, GRAPHQL } from './app/helpers/endpoints';
+import { API, GRAPHQL } from './app/helpers/endpoints';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLDivElement,
 );
 
-/*const httpLink = createHttpLink({
+const httpLink = createHttpLink({
   uri: `${API}${GRAPHQL}`,
-});*/
+});
 
 const authLink = setContext((_, { headers }) => {
   const user = getUser();
@@ -40,10 +40,10 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-/*const client = new ApolloClient({
+const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
-});*/
+});
 
 // This is a required callback for proper auth experience. From the `react-oidc-context` docs:
 // "You must provide an implementation of onSigninCallback to oidcConfig to remove the payload from the URL upon successful login.
@@ -56,11 +56,13 @@ const authOptions: UserManagerSettings = getClientSettings();
 root.render(
   <React.StrictMode>
     <AuthProvider {...authOptions} onSigninCallback={onSigninCallback}>
-      <Provider store={store}>
-        <RouterProvider router={siteRouter} />
-      </Provider>
+      <ApolloProvider client={client}>
+        <Provider store={store}>
+          <RouterProvider router={siteRouter} />
+        </Provider>
+      </ApolloProvider>
     </AuthProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function

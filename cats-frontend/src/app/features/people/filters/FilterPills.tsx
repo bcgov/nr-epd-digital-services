@@ -1,6 +1,6 @@
-import React from "react";
-import { XmarkIcon } from "../../../components/common/icon";
-import "./PeopleFilterForm.css";
+import React from 'react';
+import { XmarkIcon } from '../../../components/common/icon';
+import './PeopleFilterForm.css';
 
 export interface FilterPill {
   key: string;

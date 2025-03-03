@@ -7,8 +7,8 @@
 
 .table-border-light {
   border: 1px solid;
-  border-color: var(--surface-border-light);
-  background-color: var(--surface-background-white) !important;
+  border-color: var(--surface-color-border-default);
+  background-color: var(--surface-color-background-white) !important;
 }
 
 .fa-spin {
@@ -66,19 +66,18 @@
   overflow-x: scroll;
 }
 
-
 @media (min-width: 576px) {
   .positionSticky {
     position: sticky !important;
     /* left: 29px; */
-    background-color: var(--surface-background-white) !important;
+    background-color: var(--surface-color-background-white) !important;
     z-index: 1;
   }
 
   .table td:first-child {
     /* position: sticky; */
     left: 0;
-    background-color: var(--surface-background-white) !important;
+    background-color: var(--surface-color-background-white) !important;
     /* z-index: 1; */
   }
 
@@ -96,7 +95,7 @@
   .table td:nth-child(2) {
     /* position: sticky; */
     left: 29px;
-    background-color: var(--surface-background-white) !important;
+    background-color: var(--surface-color-background-white) !important;
   }
 
   .table th:nth-child(2) {
@@ -108,7 +107,7 @@
   .table td:last-child {
     /* position: sticky; */
     right: 0;
-    background-color: var(--surface-background-white) !important;
+    background-color: var(--surface-color-background-white) !important;
     /* z-index: 1; */
   }
 
@@ -121,7 +120,7 @@
   .table td:nth-last-child(2) {
     /* position: sticky; */
     right: 100px;
-    background-color: var(--surface-background-white) !important;
+    background-color: var(--surface-color-background-white) !important;
     /* z-index: 1; */
   }
 
@@ -187,9 +186,9 @@ table td {
   word-wrap: break-word; /* Allow word breaks */
   overflow-wrap: break-word; /* Alternative for newer browsers */
   word-break: break-all; /* Allow breaks within words */
-  background-color: var(--surface-background-white) !important;
+  background-color: var(--surface-color-background-white) !important;
   border: 1px solid;
-  border-color: var(--surface-border-light);
+  border-color: var(--surface-color-border-default);
 }
 
 /* table {

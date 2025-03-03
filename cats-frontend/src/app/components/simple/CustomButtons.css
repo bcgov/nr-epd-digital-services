@@ -1,9 +1,9 @@
 .custom-pill-button {
-  background: var(--surface-primary-default);
+  background: var(--surface-color-primary-default);
   padding: var(--layout-padding-xsmall) var(--layout-padding-small)
     var(--layout-padding-xsmall) var(--layout-padding-medium);
   /* width: 106px; */
-  color: var(--surface-background-white);
+  color: var(--surface-color-background-white);
   border-radius: 16px;
   gap: var(--layout-margin-xsmall);
   display: flex;

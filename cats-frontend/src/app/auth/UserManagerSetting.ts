@@ -1,4 +1,4 @@
-import { UserManagerSettings } from "oidc-client-ts";
+import { UserManagerSettings } from 'oidc-client-ts';
 
 export function getClientSettings(): UserManagerSettings {
   return {
@@ -9,8 +9,8 @@ export function getClientSettings(): UserManagerSettings {
     response_type: import.meta.env.VITE_AUTH_RESPONSE_TYPE,
     scope: import.meta.env.VITE_AUTH_SCOPE,
     filterProtocolClaims:
-      import.meta.env.VITE_AUTH_FILTER_PROTOCOL_CLAIMS === "true",
-    loadUserInfo: import.meta.env.VITE_AUTH_AUTHORITY === "true",
-    revokeTokensOnSignout: import.meta.env.VITE_AUTH_AUTHORITY === "true",
+      import.meta.env.VITE_AUTH_FILTER_PROTOCOL_CLAIMS === 'true',
+    loadUserInfo: import.meta.env.VITE_AUTH_AUTHORITY === 'true',
+    revokeTokensOnSignout: import.meta.env.VITE_AUTH_AUTHORITY === 'true',
   };
 }

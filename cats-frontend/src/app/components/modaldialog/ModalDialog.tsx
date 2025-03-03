@@ -76,17 +76,25 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
           </div>
           {children && <div className="custom-modal-data">{children}</div>}
           {!discardOption && !errorOption && (
-            <div className={`${customFooterCss || 'custom-modal-actions-footer'}`}>
+            <div
+              className={`${customFooterCss || 'custom-modal-actions-footer'}`}
+            >
               <CancelButton
                 variant="tertiary"
                 clickHandler={handleClose}
                 label={cancelBtnLabel}
               />
-              <SaveButton variant='primary' clickHandler={handleSave} label={saveBtnLabel} />
+              <SaveButton
+                variant="primary"
+                clickHandler={handleSave}
+                label={saveBtnLabel}
+              />
             </div>
           )}
           {discardOption && (
-            <div className={`${customFooterCss || 'custom-modal-actions-footer'}`}>
+            <div
+              className={`${customFooterCss || 'custom-modal-actions-footer'}`}
+            >
               <CancelButton
                 variant="tertiary"
                 clickHandler={handleClose}
@@ -101,7 +109,9 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
             </div>
           )}
           {errorOption && (
-            <div className={`${customFooterCss || 'custom-modal-actions-footer'}`}>
+            <div
+              className={`${customFooterCss || 'custom-modal-actions-footer'}`}
+            >
               <CancelButton clickHandler={handleClose} label={cancelBtnLabel} />
             </div>
           )}

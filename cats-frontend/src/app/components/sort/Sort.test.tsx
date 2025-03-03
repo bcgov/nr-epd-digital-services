@@ -1,14 +1,14 @@
-import React from "react";
-import { render, fireEvent, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import Sort from "./Sort";
-import { Provider } from "react-redux";
-import configureStore, { MockStore } from "redux-mock-store";
-import thunk from "redux-thunk";
-import { FormFieldType } from "../input-controls/IFormField";
+import React from 'react';
+import { render, fireEvent, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import Sort from './Sort';
+import { Provider } from 'react-redux';
+import configureStore, { MockStore } from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import { FormFieldType } from '../input-controls/IFormField';
 
 const mockStore = configureStore([thunk]);
-describe("Sort component", () => {
+describe('Sort component', () => {
   let store: MockStore;
 
   beforeEach(() => {
@@ -17,20 +17,20 @@ describe("Sort component", () => {
     });
   });
 
-  it("renders the Sort component", () => {
+  it('renders the Sort component', () => {
     const notationSortBy = [
       [
         {
           type: FormFieldType.DropDown,
-          label: "Sort By",
-          placeholder: "Sort by",
-          graphQLPropertyName: "sortBy",
+          label: 'Sort By',
+          placeholder: 'Sort by',
+          graphQLPropertyName: 'sortBy',
           options: [
-            { key: "newToOld", value: "Newest to Oldest" },
-            { key: "oldTonew", value: "Oldest to newest" },
+            { key: 'newToOld', value: 'Newest to Oldest' },
+            { key: 'oldTonew', value: 'Oldest to newest' },
           ],
-          value: "",
-          colSize: "col-lg-12 col-md-12 col-sm-12",
+          value: '',
+          colSize: 'col-lg-12 col-md-12 col-sm-12',
         },
       ],
     ];
@@ -40,37 +40,37 @@ describe("Sort component", () => {
 
     render(
       <Provider store={store}>
-        {" "}
+        {' '}
         <Sort
           formRows={notationSortBy}
           formData={formData}
           editMode={editMode}
           handleSortChange={handleSortChange}
         />
-      </Provider>
+      </Provider>,
     );
-    const sortByForm = screen.getByLabelText("Sort By");
+    const sortByForm = screen.getByLabelText('Sort By');
     expect(sortByForm).toBeInTheDocument();
   });
 
-  it("calls handleSortChange function when sort option is changed", () => {
+  it('calls handleSortChange function when sort option is changed', () => {
     const notationSortBy = [
       [
         {
           type: FormFieldType.DropDown,
-          label: "Sort By",
-          placeholder: "Sort by",
-          graphQLPropertyName: "sortBy",
+          label: 'Sort By',
+          placeholder: 'Sort by',
+          graphQLPropertyName: 'sortBy',
           options: [
-            { key: "newToOld", value: "Newest to Oldest" },
-            { key: "oldTonew", value: "Oldest to newest" },
+            { key: 'newToOld', value: 'Newest to Oldest' },
+            { key: 'oldTonew', value: 'Oldest to newest' },
           ],
-          value: "",
-          colSize: "col-lg-12 col-md-12 col-sm-12",
+          value: '',
+          colSize: 'col-lg-12 col-md-12 col-sm-12',
         },
       ],
     ];
-    const formData = { sortBy: "newToOld" };
+    const formData = { sortBy: 'newToOld' };
     const editMode = true;
     const handleSortChange = vi.fn();
 
@@ -82,13 +82,13 @@ describe("Sort component", () => {
           editMode={editMode}
           handleSortChange={handleSortChange}
         />
-      </Provider>
+      </Provider>,
     );
 
-    const sortByForm = screen.getByLabelText("Sort By");
+    const sortByForm = screen.getByLabelText('Sort By');
 
     // Simulate changing the sort option
-    fireEvent.change(sortByForm, { target: { value: "newToOld" } });
+    fireEvent.change(sortByForm, { target: { value: 'newToOld' } });
 
     // Ensure that handleSortChange is called with the correct value
     expect(handleSortChange).toHaveBeenCalledTimes(1);

@@ -133,11 +133,16 @@ const NavigationPills: React.FC<INavigationPills> = ({
       <div className="mt-4">
         {components &&
           activeTabKey !== '' &&
-          components?.map((tabComponent: { value: string, component: React.ReactNode }, index: number) => {
-            return tabComponent.value === activeTabKey ? (
-              <div key={index}>{tabComponent.component}</div>
-            ) : null;
-          })}
+          components?.map(
+            (
+              tabComponent: { value: string; component: React.ReactNode },
+              index: number,
+            ) => {
+              return tabComponent.value === activeTabKey ? (
+                <div key={index}>{tabComponent.component}</div>
+              ) : null;
+            },
+          )}
       </div>
     </div>
   );
