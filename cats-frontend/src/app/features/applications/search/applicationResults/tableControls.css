@@ -7,7 +7,7 @@
   padding-left: 8px;
 }
 
-.selected {
+.table-controls__button--selected {
   font-weight: bold;
   color: var(--surface-primary-default);
 }

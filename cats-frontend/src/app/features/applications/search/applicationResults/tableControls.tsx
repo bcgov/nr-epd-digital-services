@@ -21,7 +21,9 @@ const TableControls: React.FC<TableControlsProps> = ({
         <Button
           variant="tertiary"
           onClick={() => handleFilterChange(Filter.All)}
-          className={filter === Filter.All ? 'selected' : ''}
+          className={
+            filter === Filter.All ? 'table-controls__button--selected' : ''
+          }
         >
           All
         </Button>
@@ -30,7 +32,9 @@ const TableControls: React.FC<TableControlsProps> = ({
         <Button
           variant="tertiary"
           onClick={() => handleFilterChange(Filter.Assigned)}
-          className={filter === Filter.Assigned ? 'selected' : ''}
+          className={
+            filter === Filter.Assigned ? 'table-controls__button--selected' : ''
+          }
         >
           Assigned
         </Button>
@@ -39,7 +43,11 @@ const TableControls: React.FC<TableControlsProps> = ({
         <Button
           variant="tertiary"
           onClick={() => handleFilterChange(Filter.Completed)}
-          className={filter === Filter.Completed ? 'selected' : ''}
+          className={
+            filter === Filter.Completed
+              ? 'table-controls__button--selected'
+              : ''
+          }
         >
           Completed
         </Button>
