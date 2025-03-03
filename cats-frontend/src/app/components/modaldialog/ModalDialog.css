@@ -18,7 +18,7 @@
   max-width: 50%;
   position: relative;
   border-radius: var(--layout-border-width-medium);
-  background: var(--surface-background-white);
+  background: var(--surface-color-background-white);
 }
 
 .custom-modal-header {
@@ -39,8 +39,8 @@
   gap: var(--layout-margin-medium);
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--surface-border-light, #d8d8d8);
-  border-bottom: 1px solid var(--surface-border-light, #d8d8d8);
+  border-top: 1px solid var(--surface-color-border-default, #d8d8d8);
+  border-bottom: 1px solid var(--surface-color-border-default, #d8d8d8);
 }
 
 .custom-modal-header-text {

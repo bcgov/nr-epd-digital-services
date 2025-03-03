@@ -7,8 +7,8 @@
 }
 
 .dashboard-btn {
-  border: 1px solid var(--surface-border-dark, #353433);
-  border-radius: var(--surface-border-radius-medium);
+  border: 1px solid var(--surface-color-border-dark, #353433);
+  border-radius: var(--layout-border-radius-medium);
   padding: var(--layout-padding-small) var(--layout-padding-medium)
     var(--layout-padding-small) var(--layout-padding-medium);
   gap: var(--layout-margin-small);

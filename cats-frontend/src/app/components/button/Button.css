@@ -1,6 +1,6 @@
 .SITE-Button {
   border: none;
-  border-radius: var(--surface-border-radius-medium);
+  border-radius: var(--layout-border-radius-medium);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -14,7 +14,8 @@
   cursor: not-allowed;
 }
 .SITE-Button:focus:not(:focus-visible) {
-  outline: solid var(--layout-border-width-medium) var(--surface-primary-active);
+  outline: solid var(--layout-border-width-medium)
+    var(--surface-color-border-active);
 }
 
 /* Sizes */
@@ -32,14 +33,14 @@
 
 /* Variant - Primary */
 .SITE-Button.primary {
-  background: var(--surface-primary-default);
-  border: 1px solid var(--surface-primary-default);
+  background: var(--surface-color-primary-default);
+  border: 1px solid var(--surface-color-primary-default);
   color: var(--typography-color-primary-invert);
 }
 .SITE-Button.primary:disabled {
-  background-color: var(--surface-primary-disabled);
+  background-color: var(--surface-color-primary-disabled);
   color: var(--typography-color-disabled);
-  border-color: var(--surface-primary-disabled);
+  border-color: var(--surface-color-primary-disabled);
 }
 .SITE-Button.primary:hover:not(:disabled) {
   background-color: var(--surface-color-primary-hover);
@@ -50,43 +51,43 @@
 
 /* Variant - Secondary */
 .SITE-Button.secondary {
-  background-color: var(--surface-secondary-default);
-  border: 1px solid var(--surface-border-dark);
+  background-color: var(--surface-color-secondary-default);
+  border: 1px solid var(--surface-color-border-dark);
   color: var(--typography-color-primary);
 }
 .SITE-Button.secondary:disabled {
-  background-color: var(--surface-secondary-disabled);
-  border-color: var(--surface-secondary-disabled);
+  background-color: var(--surface-color-secondary-disabled);
+  border-color: var(--surface-color-secondary-disabled);
   color: var(--typography-color-disabled);
 }
 .SITE-Button.secondary:hover:not(:disabled) {
-  background-color: var(--surface-secondary-hover);
+  background-color: var(--surface-color-secondary-hover);
 }
 
 /* Variant - Tertiary */
 .SITE-Button.tertiary {
-  background-color: var(--surface-color-default);
+  background-color: var(--surface-color-tertiary-default);
   color: var(--typography-color-primary);
 }
 .SITE-Button.tertiary:disabled {
-  background-color: var(--surface-tertiary-default);
+  background-color: var(--surface-color-tertiary-disabled);
   color: var(--typography-color-disabled);
 }
 .SITE-Button.tertiary:hover:not(:disabled) {
-  background-color: var(--surface-tertiary-hover);
+  background-color: var(--surface-color-tertiary-hover);
 }
 
 .SITE-Button.btn-icon {
   background: transparent;
   border: 1px solid transparent;
-  color: var(--surface-primary-default);
+  color: var(--surface-color-primary-default);
 }
 .SITE-Button.btn-icon:hover:not(:disabled) {
-  background-color: var(--surface-color-brand-blue-20);
+  background-color: var(--theme-blue-20);
 }
 .SITE-Button.btn-icon:focus {
-  background-color: var(--surface-color-brand-blue-20);
-  border: 1px solid var(--surface-color-primary-active-border);
+  background-color: var(--theme-blue-20);
+  border: 1px solid var(--surface-color-border-active);
 }
 .SITE-Button.btn-icon.btn-active {
   background: var(--surface-color-primary-default);

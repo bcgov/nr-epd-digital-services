@@ -43,14 +43,14 @@
 }
 
 .mobile-nav-color-primary-default {
-  color: var(--surface-primary-default);
+  color: var(--surface-color-primary-default);
 }
 
 .mobile-nav-user-section {
   padding: var(--layout-margin-large) 0px var(--layout-margin-medium) 0px;
   gap: 16px;
   border: 1px 0px 0px 0px;
-  border-top: 1px solid var(--surface-border-light);
+  border-top: 1px solid var(--surface-color-border-default);
 }
 
 .displayLink {

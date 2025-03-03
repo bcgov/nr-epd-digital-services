@@ -53,6 +53,9 @@ import { Organization } from './entities/organization.entity';
 import { ParticipantRole } from './entities/participantRole.entity';
 import { ApplicationSearchResolver } from './resolvers/applicationSearch.resolver';
 import { ApplicationSearchService } from './services/applicationSearch.service';
+import { AppParticipantService } from './services/application/appParticipants.service';
+import { AppParticipantResolver } from './resolvers/appParticipant.resolver';
+import { GenericResponseProvider } from './dto/reponse/genericResponseProvider';
 /**
  * Module for wrapping all functionalities in user microserivce
  */
@@ -112,6 +115,9 @@ import { ApplicationSearchService } from './services/applicationSearch.service';
     PersonService,
     ApplicationSearchResolver,
     ApplicationSearchService,
+    AppParticipantService,
+    AppParticipantResolver,
+    GenericResponseProvider,
     KeycloakService,
     LoggerService,
   ],

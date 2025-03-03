@@ -56,18 +56,18 @@
 }
 
 .message-current {
-  background-color: var(--support-support-surface-color-success);
-  border: 1px solid var(--surface-support-border-color-success);
+  background-color: var(--support-surface-color-success);
+  border: 1px solid var(--support-border-color-success);
 }
 
 .message-outdated {
-  background-color: var(--support-support-surface-color-danger);
-  border: 1px solid var(--surface-support-border-color-danger);
+  background-color: var(--support-surface-color-danger);
+  border: 1px solid var(--support-border-color-danger);
 }
 
 .message-pending {
-  background-color: var(--support-support-surface-color-warning);
-  border: 1px solid var(--surface-support-border-color-warning);
+  background-color: var(--support-surface-color-warning);
+  border: 1px solid var(--support-border-color-warning);
 }
 
 .icon {
@@ -77,15 +77,15 @@
 }
 
 .icon-current {
-  color: var(--surface-icons-success);
+  color: var(--icons-color-success);
 }
 
 .icon-pending {
-  color: var(--surface-icons-warning);
+  color: var(--icons-color-warning);
 }
 
 .icon-outdated {
-  color: var(--surface-icons-danger);
+  color: var(--icons-color-danger);
 }
 
 .hidden {

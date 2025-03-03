@@ -3,7 +3,7 @@
   gap: 0px;
   border: 4px 0px 4px 0px;
   display: flex;
-  background: var(--surface-brand-gray-110);
+  background: var(--theme-gray-110);
   border-width: 4px 0px 4px 0px;
   border-style: solid;
   border-color: #f8ba47;
