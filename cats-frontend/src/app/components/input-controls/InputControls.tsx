@@ -18,7 +18,6 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 import { v4 } from 'uuid';
 import Dropdown from 'react-bootstrap/Dropdown';
-
 import SearchInput from '../search/SearchInput';
 import Avatar from '../avatar/Avatar';
 import { RequestStatus } from '../../helpers/requests/status';
@@ -51,20 +50,11 @@ const renderTableCell = (
 
 export const Link: React.FC<InputProps> = ({
   label,
-  placeholder,
-  type,
   value,
-  validation,
-  allowNumbersOnly,
-  isEditing,
-  customLabelCss,
   customInputTextCss,
-  customEditLabelCss,
-  customEditInputTextCss,
   customLinkValue,
   customIcon,
   onChange,
-  tableMode,
   stickyCol,
   href,
   componentName,
@@ -216,13 +206,16 @@ export const TextInput: React.FC<InputProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (validation?.required || validation?.pattern) {
+    if (
+      (validation?.required || validation?.pattern) &&
+      validation?.onLoadValidation
+    ) {
       setError(null);
       validateInput(value);
     }
   }, []);
 
-  const validateInput = (inputValue: string) => {
+  const validateInput = (inputValue: any) => {
     if (validation) {
       if (validation?.pattern && !validation.pattern?.test(inputValue)) {
         setError(validation.customMessage || '');
@@ -245,8 +238,8 @@ export const TextInput: React.FC<InputProps> = ({
     }
 
     if (allowNumbersOnly) {
-      if (validateInput(inputValue)) {
-        onChange(parseFloat(inputValue)); // Update parent component state only if validation passes
+      if (validateInput(parseFloat(inputValue))) {
+        onChange(inputValue); // Update parent component state only if validation passes
       }
     } else {
       onChange(inputValue);
@@ -327,7 +320,7 @@ export const DropdownInput: React.FC<InputProps> = ({
   const [selected, setSelected] = useState<boolean>(false);
 
   useEffect(() => {
-    if (validation?.required) {
+    if (validation?.required && validation?.onLoadValidation) {
       setError(null);
       validateInput(value);
     }
@@ -472,7 +465,8 @@ export const GroupInput: React.FC<InputProps> = ({
   let currentConcatenatedValue;
   useEffect(() => {
     children?.forEach((child) => {
-      if (child?.validation?.required) {
+      if (child?.validation?.required && child?.validation?.onLoadValidation) {
+        setError(null);
         validateInput(child?.value, child);
       }
     });
@@ -611,7 +605,8 @@ export const DateRangeInput: React.FC<InputProps> = ({
   const ContainerElement = tableMode ? 'td' : 'div';
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
-    if (validation?.required) {
+    if (validation?.required && validation?.onLoadValidation) {
+      setError(null);
       validateInput(value);
     }
   }, []);
@@ -742,12 +737,14 @@ export const DateInput: React.FC<InputProps> = ({
   if (value) {
     dateValue = formatDate(new Date(value), dateFormat);
   }
+
   const handleCheckBoxChange = (isChecked: boolean) => {
     onChange(isChecked);
   };
 
   useEffect(() => {
-    if (validation?.required) {
+    if (validation?.required && validation?.onLoadValidation) {
+      setError(null);
       validateInput(value);
     }
   }, []);
@@ -931,8 +928,10 @@ export const TextAreaInput: React.FC<InputProps> = ({
   const cols = textAreaColoum ?? undefined;
   const rows = textAreaRow ?? undefined;
   const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
-    if (validation?.required) {
+    if (validation?.required && validation?.onLoadValidation) {
+      setError(null);
       validateInput(value);
     }
   }, []);
@@ -1050,7 +1049,8 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
   const [isClear, setIsClear] = useState(false);
 
   useEffect(() => {
-    if (validation?.required) {
+    if (validation?.required && validation?.onLoadValidation) {
+      setError(null);
       validateInput(value);
     }
   }, []);
@@ -1261,7 +1261,8 @@ export const SearchCustomInput: React.FC<InputProps> = ({
   }, [isOpen]);
 
   useEffect(() => {
-    if (validation?.required) {
+    if (validation?.required && validation?.onLoadValidation) {
+      setError(null);
       validateInput(value.trim());
     }
   }, []);

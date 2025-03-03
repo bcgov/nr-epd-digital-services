@@ -14,8 +14,9 @@ import {
   ResourceGuard,
   RoleGuard,
 } from 'nest-keycloak-connect';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { CustomExceptionFilter } from './app/filters/customExceptionFilters';
 
 /**
  * Application Module Wrapping All Functionality For User Micro Service
@@ -76,6 +77,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     {
       provide: APP_GUARD,
       useClass: RoleGuard,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: CustomExceptionFilter,
     },
   ],
 })

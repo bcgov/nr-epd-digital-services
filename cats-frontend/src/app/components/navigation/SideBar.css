@@ -1,10 +1,21 @@
 .side-bar {
+  position: absolute;
   display: flex;
   flex-direction: column;
+  background: var(--side-bar-background-color);
+  box-shadow: var(--side-bar-shadow);
+  top: 65px;
   padding: var(--layout-padding-large) var(--layout-padding-large)
     var(--layout-padding-large) var(--layout-padding-large);
   justify-content: space-between;
   min-height: calc(100vh - 65px) !important;
+  border-right: 1px solid var(--surface-border-light, #d8d8d8);
+  width: var(--sidebar-default-width);
+}
+
+.side-bar:hover {
+  width: 240px;
+  max-width: 240px;
 }
 
 .side-bar:hover .sideBar-Nav {
@@ -41,17 +52,13 @@
   align-items: flex-start;
 }
 
-/* Add margin to space out icon and text */
 .sideBar-NavItem {
   height: 40px;
   padding: var(--layout-padding-small);
   cursor: default;
   display: flex;
   align-items: center;
-  gap: 10px; /* This adds spacing between the icon and the text */
-  justify-content: center; /* Center the icon and text */
-  position: relative; /* Allow positioning of text */
-  transition: background-color 0.3s ease; /* Smooth background-color transition */
+  gap: 5px;
 }
 
 .side-bar:hover .sideBarDisplayText {
@@ -78,11 +85,9 @@
   line-height: 24px;
   letter-spacing: 0em;
   text-align: left;
-  color: var(--surface-color-primary-default);
-  transition: color 0.3s ease; /* Smooth transition for icon color */
+  color: var(--surface-primary-default);
 }
 
-/* Text styling */
 .nav-section-bold-label {
   font-size: 14px;
   font-weight: 700;
@@ -103,7 +108,6 @@
   border-radius: 0px;
   width: 40px;
   justify-content: center;
-  transition: width 0.3s ease; /* Smooth transition for width */
 }
 
 .currentPath .sideBar-Icon,
@@ -115,7 +119,6 @@
   width: 100%;
 }
 
-/* Hover effects for the side bar text and icon */
 .sideBarDisplayText:hover {
   color: var(--surface-color-primary-default) !important;
 }
@@ -134,7 +137,6 @@
   flex-direction: column;
   gap: 8px;
   align-items: center;
-  transition: all 0.3s ease;
 }
 
 .side-bar:hover .sidebar-menu-group {
@@ -154,5 +156,4 @@
 .side-bar:hover .sideBar-menu-item-hover:hover .sideBar-Icon,
 .side-bar:hover .sideBar-menu-item-hover:hover .sideBarDisplayText {
   color: white !important;
-  transition: color 0.3s ease; /* Smooth transition for label color */
 }

@@ -11,36 +11,20 @@ import '@bcgov/design-tokens/css/variables.css';
 import '@bcgov/bc-sans/css/BC_Sans.css';
 
 function App() {
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
-
-  // Handle mouse enter and leave to control sidebar expansion
-  const handleMouseEnter = () => setIsSidebarExpanded(true);
-  const handleMouseLeave = () => setIsSidebarExpanded(false);
-
-  // Toggle sidebar expand/collapse on hover or click
-  const handleSidebarToggle = () => {
-    setIsSidebarExpanded((prevState) => !prevState);
-  };
-
   useAutoSignin();
 
   return (
     <div className="container-fluid p-0">
       <Header />
-      <div className="container m-0 p-0">
-        <div
-          className={`sidebar-container display-from-medium ${isSidebarExpanded ? 'expanded' : ''}`}
-          onMouseEnter={handleSidebarToggle}
-          onMouseLeave={handleSidebarToggle}
-        >
+      <div className="row m-0 p-0">
+        <div className="d-none d-md-block p-0 position-fixed sidebar-container">
           <SideBar />
         </div>
-        <div
-          className={`p-0 main-content-container ${isSidebarExpanded ? 'shifted' : ''}`}
-        >
+        <div className="col p-0 content-container">
           <Outlet />
         </div>
       </div>
+
       <ToastContainer />
     </div>
   );

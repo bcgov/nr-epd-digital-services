@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { LoggerService } from '../../logger/logger.service';
 
 import { AppParticipant } from '../../entities/appParticipant.entity';
-import { ViewAppParticipantsDto } from 'src/app/dto/appParticipants/viewAppParticipantsDto';
+import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipantsDto';
 
 @Injectable()
 export class AppParticipantService {

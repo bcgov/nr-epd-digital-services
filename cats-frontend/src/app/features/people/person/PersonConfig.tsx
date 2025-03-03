@@ -140,7 +140,7 @@ const personForm: { [key: string]: IFormField } = {
   address1: {
     type: FormFieldType.Search,
     label: 'Address Line 1',
-    graphQLPropertyName: 'addressLine1',
+    graphQLPropertyName: 'address_1',
     customMenuMessage: <span>Please select the address line 1: </span>,
     value: '',
     options: null,
@@ -157,7 +157,7 @@ const personForm: { [key: string]: IFormField } = {
   address2: {
     type: FormFieldType.Search,
     label: 'Address Line 2',
-    graphQLPropertyName: 'addressLine2',
+    graphQLPropertyName: 'address_2',
     value: '',
     customMenuMessage: <span>Please select the address line 2: </span>,
     options: null,
@@ -185,7 +185,7 @@ const personForm: { [key: string]: IFormField } = {
   province: {
     type: FormFieldType.Text,
     label: 'Province',
-    graphQLPropertyName: 'province',
+    graphQLPropertyName: 'prov',
     value: '',
     colSize: 'col-lg-4 col-md-6 col-sm-12',
     customLabelCss: 'custom-people-lbl',
@@ -207,7 +207,7 @@ const personForm: { [key: string]: IFormField } = {
   postalCode: {
     type: FormFieldType.Text,
     label: 'Postal Code',
-    graphQLPropertyName: 'postalCode',
+    graphQLPropertyName: 'postal',
     value: '',
     colSize: 'col-lg-4 col-md-6 col-sm-12',
     customLabelCss: 'custom-people-lbl',
@@ -220,7 +220,7 @@ const personForm: { [key: string]: IFormField } = {
     label: 'Date',
     placeholder: 'EE, MMM dd, yyyy',
     dateFormat: 'EE, MMM dd, yyyy',
-    graphQLPropertyName: 'noteDate',
+    graphQLPropertyName: 'date',
     value: '',
     colSize: 'col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12',
     customEditLabelCss: 'custom-note-modal-edit-label',
@@ -231,7 +231,7 @@ const personForm: { [key: string]: IFormField } = {
   noteUser: {
     type: FormFieldType.Text,
     label: 'User',
-    graphQLPropertyName: 'noteUser',
+    graphQLPropertyName: 'user',
     value: '',
     colSize: 'col-lg-6 col-md-6 col-sm-12',
     customEditLabelCss: 'custom-note-modal-edit-label',
@@ -288,12 +288,12 @@ export const noteColumns: TableColumn[] = [
     id: 1,
     displayName: 'Date',
     active: true,
-    graphQLPropertyName: 'noteDate',
+    graphQLPropertyName: 'date',
     columnSize: ColumnSize.Small,
     displayType: {
       type: FormFieldType.Date,
       dateFormat: 'EE, MMM dd, yyyy',
-      graphQLPropertyName: 'noteDate',
+      graphQLPropertyName: 'date',
       label: '',
       value: '',
       colSize: 'col-lg-6 col-md-6 col-sm-12',
@@ -305,12 +305,12 @@ export const noteColumns: TableColumn[] = [
     id: 2,
     displayName: 'User',
     active: true,
-    graphQLPropertyName: 'noteUser',
+    graphQLPropertyName: 'user',
     columnSize: ColumnSize.Small,
     displayType: {
       type: FormFieldType.Text,
       label: '',
-      graphQLPropertyName: 'noteUser',
+      graphQLPropertyName: 'user',
       value: '',
       colSize: 'col-lg-6 col-md-6 col-sm-12',
       customInputTextCss: 'custom-people-edit-lbl',
@@ -348,6 +348,9 @@ export const noteColumns: TableColumn[] = [
       tableMode: true,
       href: '#',
       customIcon: <PencilIcon />,
+      // Give the previous screen name only in case when on click of link modal will pop up if you will move to
+      // another page give current page name to show previous screen name on back button.
+      componentName: 'Manage People',
     },
     columnSize: ColumnSize.XtraSmall,
     dynamicColumn: true,

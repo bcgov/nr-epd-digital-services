@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Widget from '../../../components/widget/Widget';
 import Form from '../../../components/form/Form';
 import PageContainer from '../../../components/simple/PageContainer';
@@ -11,11 +11,7 @@ import {
 import { UserType } from '../../../helpers/requests/userType';
 import { UserMode } from '../../../helpers/requests/userMode';
 import { Button } from '../../../components/button/Button';
-import {
-  AngleLeft,
-  TrashCanIcon,
-  UserPlus,
-} from '../../../components/common/icon';
+import { TrashCanIcon, UserPlus } from '../../../components/common/icon';
 import './Person.css';
 import { v4 } from 'uuid';
 import {
@@ -36,55 +32,54 @@ import {
 import { ActionItems } from '../../../components/action/ActionsConfig';
 import { UserAction } from '../../../helpers/requests/UserAction';
 import NavigationBar from '../../../components/navigation-bar/NavigationBar';
-import { usePerson } from './hooks/usePerson';
-// import { useCreatePerson } from "./hooks/useCreatePerson";
+import { useCreatePerson } from './hooks/useCreatePerson';
 import { useUpdatePerson } from './hooks/useUpdatePerson';
 import { fetchPerson } from './services/PersonService';
 import LoadingOverlay from '../../../components/loader/LoadingOverlay';
 import { getAddress } from '../../../helpers/geocoder';
+import { useFetchNotes } from './hooks/useFetchNotes';
+import { useUpdateNote } from './hooks/useUpdateNotes';
+import { useCreateNote } from './hooks/useCreateNote';
+import { useDeleteNote } from './hooks/useDeleteNote';
 
-const noteColumnsData = [
-  {
-    noteDate: new Date(),
-    noteUser: 'abc',
-    noteDescription: 'This is a sample description for the note 1.',
-    noteId: 'abc123',
-  },
-  {
-    noteDate: new Date(),
-    noteUser: 'abc',
-    noteDescription: 'This is a sample description for the note 2.',
-    noteId: 'abc124',
-  },
-  {
-    noteDate: new Date(),
-    noteUser: 'abc',
-    noteDescription: 'This is a sample description for the note 3.',
-    noteId: 'abc125',
-  },
-];
+export type NoteTypes = 'Edit Note' | 'New Note' | 'View Note';
 
 const Person = () => {
+  const user = getUser();
+  const initialNote = {
+    noteDescription: '',
+    id: '',
+    date: new Date(),
+    user: user?.profile?.given_name,
+  };
   const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
   const location = useLocation();
   const fromScreen = location.state?.from || ''; // Default to "Unknown Screen" if no state is passed
-  const user = getUser();
-
-  // Custom hooks for creating/updating person
-  //  const { createNewPerson, loading: createLoading, error: createError } = useCreatePerson();
-  // const { updateExistingPerson, loading: updateLoading, error: updateError } = useUpdatePerson();
+  const {
+    notes: notesData,
+    loading: notesLoading,
+    error: notesError,
+  } = useFetchNotes(id ?? '');
+  const { updateExistingNote } = useUpdateNote();
+  const { createNewNote } = useCreateNote();
+  const { deleteExistingNote } = useDeleteNote();
+  const { createNewPerson, loading: createLoading } = useCreatePerson();
+  const { updateExistingPerson, loading: updateLoading } = useUpdatePerson();
   const [personName, setPersonName] = useState('');
   const [isVisible, setIsVisible] = useState(false);
-  const [isDelete, setIsDelete] = useState(false);
-  const [note, setNote] = useState({ isNotesModal: false, noteData: {} });
+  const [isDeleteNote, setIsDeleteNote] = useState(false);
+  const [isDeletePerson, setIsDeletePerson] = useState(false);
+  const [note, setNote] = useState({
+    isNotesModal: false,
+    noteData: initialNote,
+    noteType: 'View Note' as NoteTypes,
+  });
+  const [notes, setNotes] = useState<{ [key: string]: any }[]>([]);
   const [userType, setUserType] = useState<UserType>(UserType.STAFF);
   const [viewMode, setViewMode] = useState(UserMode.Default);
   const [formData, setFormData] = useState<{ [key: string]: any } | null>(null);
-  const [notes, setNotes] = useState<{ [key: string]: any }[]>(
-    noteColumnsData ?? [],
-  );
-  const [selectedRows, setSelectedRows] = useState<{ noteId: any }[]>([]);
+  const [selectedRows, setSelectedRows] = useState<{ id: any }[]>([]);
   const [loading, setLoading] = useState(true); // To handle loading state
   const [error, setError] = useState<string | null>(null);
   const [addrForm, setAddrForm] = useState(addressForm);
@@ -93,29 +88,66 @@ const Person = () => {
     navigate(-1);
   };
 
+  const getPersonData = async (id: any) => {
+    try {
+      const personData = await fetchPerson(id);
+      if (personData === null || personData === undefined) {
+        setError('Person not found');
+      } else {
+        setPersonName(
+          (personData?.firstName ?? '') +
+            ' ' +
+            (personData?.middleName ?? '') +
+            ' ' +
+            (personData?.lastName ?? ''),
+        );
+        setFormData(personData);
+        setLoading(false);
+      }
+    } catch (err) {
+      setError('Failed to load person data');
+    }
+  };
+
+  const updatePerson = async (person: any) => {
+    try {
+      const response = await updateExistingPerson([person]);
+      return response?.success; // Return the success value
+    } catch (error) {
+      console.error('Error updating person:', error);
+      setError('Failed to update person');
+      return false; // Or you can return a default value indicating failure
+    }
+  };
+
+  const deleteNotes = async (notes: any) => {
+    try {
+      const response = await deleteExistingNote(notes);
+      return response?.success;
+    } catch (error) {
+      console.error('Error delete note:', error);
+      setError('Failed to delete note');
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    if (notesData && notesData?.length > 0) {
+      setNotes(notesData);
+    }
+    if (notesError && notesError?.trim().length > 0) {
+      setError(notesError);
+    }
+  }, [notesLoading, notesError]);
+
   useEffect(() => {
     if (id) {
-      const getPersonData = async () => {
-        try {
-          const personData = await fetchPerson(id);
-          setPersonName(
-            (personData?.firstName ?? '') +
-              ' ' +
-              (personData?.middleName ?? '') +
-              ' ' +
-              (personData?.lastName ?? ''),
-          );
-          setFormData(personData);
-        } catch (err) {
-          setError('Failed to load person data');
-        } finally {
-          setLoading(false);
-        }
-      };
-      getPersonData();
+      getPersonData(id);
     } else {
       setLoading(false);
       setFormData({});
+      setNotes([]);
+      setViewMode(UserMode.EditMode);
     }
   }, []);
 
@@ -164,16 +196,12 @@ const Person = () => {
     value: String | [Date, Date],
   ) => {
     if (
-      (graphQLPropertyName === 'addressLine1' ||
-        graphQLPropertyName === 'addressLine2') &&
+      (graphQLPropertyName === 'address_1' ||
+        graphQLPropertyName === 'address_2') &&
       value.toString().trim().length > 0
     ) {
       const indexToUpdate = addrForm.findIndex((row) =>
-        row.some(
-          (field) =>
-            field.graphQLPropertyName === 'addressLine1' ||
-            field.graphQLPropertyName === 'addressLine2',
-        ),
+        row.some((field) => field.graphQLPropertyName === graphQLPropertyName),
       );
       let addr: any = null;
       fetchAddresses(value as string)
@@ -227,30 +255,32 @@ const Person = () => {
       if (isTrue) {
         setSelectedRows((prevSelectedRows) => [
           ...prevSelectedRows,
-          ...rows.map((row: any) => ({ noteId: row.noteId })),
+          ...rows.map((row: any) => ({ id: row.id })),
         ]);
       } else {
         setSelectedRows((prevSelectedRows) =>
           prevSelectedRows.filter(
             (selectedRow) =>
-              !rows.some((row: any) => selectedRow.noteId === row.note_id),
+              !rows.some((row: any) => selectedRow.id === row.id),
           ),
         );
       }
     }
     if (event.property.includes('edit')) {
-      setNote({ isNotesModal: true, noteData: event.row });
+      setNote({
+        isNotesModal: true,
+        noteData: event.row,
+        noteType: 'Edit Note',
+      });
     }
   };
 
   const handleAddNotes = () => {
-    const newNote = {
-      noteDate: new Date(),
-      noteUser: user?.profile?.name ?? '',
-      noteDescription: '',
-      noteId: v4(),
-    };
-    setNote({ isNotesModal: true, noteData: newNote });
+    setNote({
+      isNotesModal: true,
+      noteData: initialNote,
+      noteType: 'New Note',
+    });
   };
 
   const handleTableSort = (row: any, ascDir: any) => {
@@ -267,18 +297,22 @@ const Person = () => {
     });
   };
 
-  const handleDeleteNotes = (particIsDelete: boolean = false) => {
+  const handleDeleteNotes = async (particIsDelete: boolean = false) => {
     if (particIsDelete) {
-      // Filter out participants based on selectedRows for formData
-      const filteredNotes = notes.filter(
-        (note: any) => !selectedRows.some((row) => row.noteId === note.noteId),
-      );
-      setNotes(filteredNotes);
-      // Clear selectedRows state
-      setSelectedRows([]);
-      setIsDelete(false);
+      const result = await deleteNotes(selectedRows);
+      if (result) {
+        // Filter out notes based on selectedRows for formData
+        const filteredNotes = notes.filter(
+          (note: any) => !selectedRows.some((row) => row.id === note.id),
+        );
+        setNotes(filteredNotes);
+        setSelectedRows([]);
+        setIsDeleteNote(false);
+      } else {
+        setError('Failed to delete note!!');
+      }
     } else {
-      setIsDelete(true);
+      setIsDeleteNote(true);
     }
   };
 
@@ -291,19 +325,39 @@ const Person = () => {
         setViewMode(UserMode.Default);
         break;
       case UserAction.SAVE: // Save the changes
-        // need to ask Anton how to use generated.ts for graphql type safe.
         if (id) {
-          // setLoading(updateLoading); // Set loading to true
-          // await updateExistingPerson(id, formData).then((response) => { }).catch((error) => { console.error('error -->', error) });
+          setLoading(updateLoading); // Set loading to true
+          const result = await updatePerson(formData);
+          if (result) {
+            setViewMode(UserMode.Default);
+            getPersonData(id);
+          }
+        } else {
+          setLoading(createLoading); // Set loading to true
+          createNewPerson(formData)
+            .then((response) => {
+              if (response) {
+                setViewMode(UserMode.Default);
+                navigate(-1);
+              }
+            })
+            .catch((error) => {
+              console.error('Error Create person:', error);
+              setError('Failed to update person');
+            });
         }
-        // else {
-        //   // If no `id`, create a new person
-        //   await createNewPerson(name, age, address);
-        // }
         break;
       case UserAction.CANCEL: // Cancel the changes
-        setViewMode(UserMode.Default);
+        if (id) {
+          setViewMode(UserMode.Default);
+        } else {
+          setFormData(null);
+          setNotes([]);
+          navigate(-1);
+        }
         break;
+      case UserAction.DELETE:
+        setIsDeletePerson(true);
       default:
         break;
     }
@@ -312,7 +366,9 @@ const Person = () => {
   {
     /* Use the LoadingOverlay component */
   }
-  if (loading) return <LoadingOverlay loading={loading} />;
+  if (loading && !!id) {
+    return <LoadingOverlay loading={loading} />;
+  }
 
   const navigationBarChildern = (
     <>
@@ -326,7 +382,7 @@ const Person = () => {
       <div className="gap-3 align-items-center d-none d-md-flex d-lg-flex d-xl-flex">
         {viewMode === UserMode.EditMode && userType === UserType.STAFF && (
           <>
-            <CustomLabel labelType="c-b" label={`${'Edit Mode'}`} />
+            {id && <CustomLabel labelType="c-b" label={`${'Edit Mode'}`} />}
             <SaveButton clickHandler={() => handleItemClick(UserAction.SAVE)} />
             <CancelButton
               variant="secondary"
@@ -358,11 +414,10 @@ const Person = () => {
 
   const navigationBarText = (
     <>
-      {formData && Object.keys(formData).length > 0 ? (
+      {personName?.length > 0 ? (
         isVisible && (
           <div className="d-flex align-items-center">
-            Viewing:{' '}
-            <span>{formData?.first_name + ' ' + formData?.last_name}</span>
+            Viewing: <span>{personName}</span>
           </div>
         )
       ) : (
@@ -383,9 +438,9 @@ const Person = () => {
       />
       <PageContainer role="Person">
         <div className="custom-person-name">
-          {formData && Object.keys(formData).length > 0
-            ? formData?.first_name + ' ' + formData?.last_name
-            : 'New Person'}
+          {(!isVisible &&
+            (personName.length > 0 ? personName : 'New Person')) ||
+            ''}
         </div>
         <Widget
           title={'Contact Information'}
@@ -408,57 +463,143 @@ const Person = () => {
         >
           <Form
             editMode={viewMode === UserMode.EditMode}
-            formRows={addressForm}
+            formRows={addrForm}
             formData={formData ?? {}}
             handleInputChange={(graphQLPropertyName, value) =>
               handleInputChange(graphQLPropertyName, value)
             }
           />
         </Widget>
-        <Widget
-          currentPage={1}
-          allowRowsSelect={true}
-          tableColumns={noteColumns}
-          tableData={notes ?? []}
-          // tableIsLoading={status ?? RequestStatus.idle}
-          changeHandler={(event) => handleTableChange(event)}
-          sortHandler={(row, ascDir) => {
-            handleTableSort(row, ascDir);
-          }}
-          title={'Notes'}
-          aria-label="Manage Person Widget"
-          primaryKeycolumnName="note_id"
-        >
-          {userType === UserType.STAFF && (
-            <div className="d-flex gap-2 flex-wrap">
-              <Button variant="secondary" onClick={handleAddNotes}>
-                <UserPlus />
-                New Note
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={() => handleDeleteNotes()}
-                disabled={selectedRows.length <= 0}
-              >
-                <TrashCanIcon />
-                Delete Selected
-              </Button>
-            </div>
-          )}
-        </Widget>
-        {isDelete && (
+        {id && (
+          <Widget
+            currentPage={1}
+            allowRowsSelect={true}
+            tableColumns={noteColumns}
+            tableData={notes ?? []}
+            // tableIsLoading={status ?? RequestStatus.idle}
+            changeHandler={handleTableChange}
+            sortHandler={(row, ascDir) => {
+              handleTableSort(row, ascDir);
+            }}
+            title={'Notes'}
+            aria-label="Manage Person Widget"
+            primaryKeycolumnName="id"
+          >
+            {userType === UserType.STAFF && (
+              <div className="d-flex gap-2 flex-wrap">
+                <Button variant="secondary" onClick={handleAddNotes}>
+                  <UserPlus />
+                  New Note
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => handleDeleteNotes()}
+                  disabled={selectedRows.length <= 0}
+                >
+                  <TrashCanIcon />
+                  Delete Selected
+                </Button>
+              </div>
+            )}
+          </Widget>
+        )}
+        {(isDeleteNote || isDeletePerson) && (
           <ModalDialog
             key={v4()}
-            label={`Are you sure you want to delete note(s) ?`}
-            closeHandler={(response) => {
+            label={`Are you sure you want to delete ${isDeleteNote ? 'note(s)' : 'person'}  ?`}
+            closeHandler={async (response) => {
               if (response) {
-                if (isDelete) {
+                if (isDeleteNote) {
                   handleDeleteNotes(response);
                 }
+                if (isDeletePerson) {
+                  const deletePerson = await updatePerson({
+                    ...formData,
+                    isDeleted: true,
+                  });
+                  if (deletePerson) {
+                    const noteIds = notes?.map((note) => ({ id: note.id }));
+                    const result = await deleteNotes(noteIds);
+                    if (result) {
+                      setViewMode(UserMode.Default);
+                      navigate('/people');
+                    } else {
+                      await updatePerson({ ...formData, isDeleted: false });
+                    }
+                  }
+                }
               }
-              setIsDelete(false);
+              setIsDeleteNote(false);
+              setIsDeletePerson(false);
             }}
           />
+        )}
+        {note?.isNotesModal && (
+          <ModalDialog
+            headerLabel={note?.noteType}
+            saveButtonDisabled={note?.noteData?.noteDescription?.length <= 0}
+            closeHandler={(response) => {
+              if (response) {
+                if (note.noteType === 'New Note') {
+                  if (id) {
+                    const newNote = {
+                      personId: parseFloat(id),
+                      noteDescription: note?.noteData?.noteDescription,
+                    };
+                    createNewNote(newNote)
+                      .then((response) => {
+                        if (response?.success) {
+                          setNotes((prev) => [...prev, response.data[0]]);
+                        } else {
+                          setError('Failed to create new note!!');
+                        }
+                      })
+                      .catch((err) => {
+                        console.error('Error create note:', err);
+                        setError('Failed to create note');
+                      });
+                  }
+                }
+                if (note.noteType === 'Edit Note') {
+                  const { id: noteId, noteDescription } = note.noteData;
+                  updateExistingNote(noteId, { noteDescription })
+                    .then((response) => {
+                      if (response?.success) {
+                        const result = response?.data[0];
+                        setNotes((prev) =>
+                          prev.map((item) => {
+                            if (item.id === result?.id) {
+                              return result;
+                            }
+                            return item;
+                          }),
+                        );
+                      } else {
+                        setError('Failed to update exsitig note!!');
+                      }
+                    })
+                    .catch((err) => {
+                      console.error('Error update note:', err);
+                      setError('Failed to update note');
+                    });
+                }
+              }
+              setNote({
+                isNotesModal: false,
+                noteData: initialNote,
+                noteType: 'View Note',
+              }); // Reset the note state
+            }}
+          >
+            <Form
+              editMode={true}
+              formRows={noteForm}
+              formData={note?.noteData ?? {}}
+              handleInputChange={(graphQLPropertyName, value) =>
+                handleNoteChange(graphQLPropertyName, value)
+              }
+            />
+          </ModalDialog>
         )}
       </PageContainer>
     </>
