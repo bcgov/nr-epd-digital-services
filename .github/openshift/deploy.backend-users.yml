@@ -99,7 +99,7 @@ objects:
             app: ${NAME}-${COMPONENT}
         spec:
           containers:
-            - image: " "
+            - image: "${REGISTRY}/${PROMOTE}:${IMAGE_TAG}"
               imagePullPolicy: Always
               name: ${NAME}-${COMPONENT}
               env:
