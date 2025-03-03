@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Brackets } from 'typeorm';
-import { CreatePersonInput } from '../dto/createPersonInput';
-import { SearchPersonResponse } from '../dto/reponse/fetchSearchPerson';
-import { Person } from '../entities/person.entity';
-import { LoggerService } from '../logger/logger.service';
-import { CreatePerson } from '../dto/person/createPerson.dto';
-import { UpdatePerson } from '../dto/person/updatePerson.dto';
+import { SearchPersonResponse } from '../../dto/reponse/person/fetchSearchPerson';
+import { Person } from '../../entities/person.entity';
+import { LoggerService } from '../../logger/logger.service';
+import { CreatePerson } from '../../dto/person/createPerson.dto';
+import { UpdatePerson } from '../../dto/person/updatePerson.dto';
 
 @Injectable()
 export class PersonService {

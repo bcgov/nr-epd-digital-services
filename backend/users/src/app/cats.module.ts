@@ -4,8 +4,8 @@ import { UserController } from './controllers/user.controller';
 import { KeycloakService } from './services/keycloak.service';
 import { LoggerService } from './logger/logger.service';
 import { Person } from './entities/person.entity';
-import { PersonResolver } from './resolvers/people.resolver';
-import { PersonService } from './services/people.service';
+import { PersonResolver } from './resolvers/people/people.resolver';
+import { PersonService } from './services/people/people.service';
 import { Timesheet } from './entities/timesheet.entity';
 import { AppParticipant } from './entities/appParticipant.entity';
 import { Application } from './entities/application.entity';
@@ -55,7 +55,6 @@ import { ApplicationSearchResolver } from './resolvers/applicationSearch.resolve
 import { ApplicationSearchService } from './services/applicationSearch.service';
 import { AppParticipantService } from './services/application/appParticipants.service';
 import { AppParticipantResolver } from './resolvers/appParticipant.resolver';
-import { GenericResponseProvider } from './dto/reponse/genericResponseProvider';
 import { GenericResponseProvider } from './dto/reponse/genericResponseProvider';
 import { PersonNote } from './entities/personNote.entity';
 import { PersonNoteResolver } from './resolvers/note/personNote.resolver';
@@ -125,7 +124,7 @@ import { PersonNoteService } from './services/note/personNote.service';
     GenericResponseProvider,
     PersonNoteResolver, PersonNoteService, KeycloakService,
     LoggerService,
-  , GenericResponseProvider],
+  ],
   controllers: [UserController],
 })
 export class CatsModule {}
