@@ -1,15 +1,15 @@
-import { FC, useState } from "react";
+import { FC, useState } from 'react';
 import {
   BarsIcon,
   FilterIcon,
   TableColumnsIcon,
-} from "../../../components/common/icon";
+} from '../../../components/common/icon';
 
-import { Dropdown } from "react-bootstrap";
-import { Button } from "../../../components/button/Button";
-import Column from "../columns/Column";
-import type { TableColumn } from "../../../components/table/TableColumn";
-import SiteFilterForm from "../filters/PeopleFilterForm";
+import { Dropdown } from 'react-bootstrap';
+import { Button } from '../../../components/button/Button';
+import Column from '../columns/Column';
+import type { TableColumn } from '../../../components/table/TableColumn';
+import SiteFilterForm from '../filters/PeopleFilterForm';
 
 interface SearchResultsFiltersProps {
   columns: TableColumn[];
@@ -21,7 +21,7 @@ interface SearchResultsFiltersProps {
   onFiltersReset: () => void;
 }
 
-type PanelOption = "filters" | "columns" | null;
+type PanelOption = 'filters' | 'columns' | null;
 export const SearchResultsFilters: FC<SearchResultsFiltersProps> = ({
   columns,
   onColumnSelectionChange,
@@ -50,18 +50,18 @@ export const SearchResultsFilters: FC<SearchResultsFiltersProps> = ({
 
         <div className="table-actions d-none d-md-flex">
           <div
-            className={`table-actions-items ${panelToShow === "columns" ? "active" : ""} `}
+            className={`table-actions-items ${panelToShow === 'columns' ? 'active' : ''} `}
             onClick={() => {
-              togglePanel("columns");
+              togglePanel('columns');
             }}
           >
             <TableColumnsIcon />
             Columns
           </div>
           <div
-            className={`table-actions-items ${panelToShow === "filters" ? "active" : ""}`}
+            className={`table-actions-items ${panelToShow === 'filters' ? 'active' : ''}`}
             onClick={() => {
-              togglePanel("filters");
+              togglePanel('filters');
             }}
           >
             <FilterIcon />
@@ -74,14 +74,14 @@ export const SearchResultsFilters: FC<SearchResultsFiltersProps> = ({
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item
-              onClick={() => togglePanel("columns")}
+              onClick={() => togglePanel('columns')}
               className="d-flex align-items-center gap-2"
             >
               <TableColumnsIcon />
               <span>Columns</span>
             </Dropdown.Item>
             <Dropdown.Item
-              onClick={() => togglePanel("filters")}
+              onClick={() => togglePanel('filters')}
               className="d-flex align-items-center gap-2"
             >
               <TableColumnsIcon />
@@ -90,7 +90,7 @@ export const SearchResultsFilters: FC<SearchResultsFiltersProps> = ({
           </Dropdown.Menu>
         </Dropdown>
       </div>
-      {panelToShow === "columns" && (
+      {panelToShow === 'columns' && (
         <Column
           toggleColumnSelectionForDisplay={onColumnSelectionChange}
           columns={columns}
@@ -98,7 +98,7 @@ export const SearchResultsFilters: FC<SearchResultsFiltersProps> = ({
           close={() => togglePanel(null)}
         />
       )}
-      {panelToShow === "filters" && (
+      {panelToShow === 'filters' && (
         <SiteFilterForm
           formData={filtersFormData}
           onInputChange={onFiltersChange}

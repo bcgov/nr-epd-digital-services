@@ -2,7 +2,7 @@ import { Dropdown } from 'react-bootstrap';
 import { useAuth } from 'react-oidc-context';
 import './LoginDropdown.css';
 
-export const LoginDropdown = ({title}: {title: string}) => {
+export const LoginDropdown = ({ title }: { title: string }) => {
   const auth = useAuth();
   return (
     <Dropdown id="login-selector-dropdown">

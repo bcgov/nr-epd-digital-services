@@ -1,14 +1,14 @@
-import "./App.css";
-import Header from "./app/components/navigation/Header";
-import { Outlet } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import SideBar from "./app/components/navigation/SideBar";
-import { useState } from "react";
-import { useAutoSignin } from "./hooks/useAutoSignIn";
+import './App.css';
+import Header from './app/components/navigation/Header';
+import { Outlet } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import SideBar from './app/components/navigation/SideBar';
+import { useState } from 'react';
+import { useAutoSignin } from './hooks/useAutoSignIn';
 
-import "react-toastify/dist/ReactToastify.css";
-import "@bcgov/design-tokens/css/variables.css";
-import "@bcgov/bc-sans/css/BC_Sans.css";
+import 'react-toastify/dist/ReactToastify.css';
+import '@bcgov/design-tokens/css/variables.css';
+import '@bcgov/bc-sans/css/BC_Sans.css';
 
 function App() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
@@ -29,14 +29,14 @@ function App() {
       <Header />
       <div className="container m-0 p-0">
         <div
-          className={`sidebar-container display-from-medium ${isSidebarExpanded ? "expanded" : ""}`}
+          className={`sidebar-container display-from-medium ${isSidebarExpanded ? 'expanded' : ''}`}
           onMouseEnter={handleSidebarToggle}
           onMouseLeave={handleSidebarToggle}
         >
           <SideBar />
         </div>
         <div
-          className={`p-0 main-content-container ${isSidebarExpanded ? "shifted" : ""}`}
+          className={`p-0 main-content-container ${isSidebarExpanded ? 'shifted' : ''}`}
         >
           <Outlet />
         </div>

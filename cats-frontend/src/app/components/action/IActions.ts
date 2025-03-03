@@ -1,5 +1,5 @@
-import { ReactElement } from "react";
-import { ButtonSize, ButtonVariant } from "../button/Button";
+import { ReactElement } from 'react';
+import { ButtonSize, ButtonVariant } from '../button/Button';
 
 export interface DropdownItem {
   label: string;

@@ -1,4 +1,4 @@
-import { IconType } from "react-icons/lib";
+import { IconType } from 'react-icons/lib';
 import {
   HouseIcon,
   MagnifyingGlassIcon,
@@ -9,8 +9,8 @@ import {
   BookIcon,
   ShoppingCartIcon,
   ListCheckIcon,
-} from "../../common/icon";
-import { UserRoleType } from "../../../helpers/utility";
+} from '../../common/icon';
+import { UserRoleType } from '../../../helpers/utility';
 
 /**
  * Class representing a sidebar navigation item.
@@ -37,7 +37,7 @@ export class SideNav {
     public icon: IconType | null,
     public linkTo: string,
     public children: SideNav[] = [],
-    public lowerSection: boolean = false
+    public lowerSection: boolean = false,
   ) {
     // Increment the static counter and assign it to the instance ID
     this.id = ++SideNav.idCounter;
@@ -51,7 +51,7 @@ const createSideNav = (
   icon: IconType | null,
   linkTo: string,
   children: SideNav[] = [],
-  lowerSection: boolean = false
+  lowerSection: boolean = false,
 ) =>
   new SideNav(displayText, hasChildren, icon, linkTo, children, lowerSection);
 
@@ -71,10 +71,10 @@ const icons = {
 // Refactored role-based navigation lists using a Record type
 const roleBasedSideBarList: Record<string, SideNav[]> = {
   internal: [
-    createSideNav("Manage", true, null, "/", [
-      createSideNav("People", false, icons.folios, "/people"),
-      createSideNav("Organizations", false, icons.purchases, "/purchases"),
-      createSideNav("Application", false, icons.folios, "/application"),
+    createSideNav('Manage', true, null, '/', [
+      createSideNav('People', false, icons.folios, '/people'),
+      createSideNav('Organizations', false, icons.purchases, '/purchases'),
+      createSideNav('Application', false, icons.folios, '/application'),
     ]),
   ],
   public: [],

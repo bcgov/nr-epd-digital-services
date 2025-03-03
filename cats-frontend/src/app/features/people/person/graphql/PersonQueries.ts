@@ -1,10 +1,8 @@
 import gql from 'graphql-tag';
 
 export const GET_PERSON_BY_ID = gql`
-  query findPersonById($id: String!) 
-  {
-    findPersonById(id: $id)
-    {
+  query findPersonById($id: String!) {
+    findPersonById(id: $id) {
       id
       isActive
       isTaxExempt
@@ -26,13 +24,9 @@ export const GET_PERSON_BY_ID = gql`
   }
 `;
 
-
-
 export const UPDATE_PERSON_BY_ID = gql`
-  mutation updatePerson($id: String!, $input: CreatePersonInput!)
-  {
-    updatePerson(id: $id, input: $input)
-    {
+  mutation updatePerson($id: String!, $input: CreatePersonInput!) {
+    updatePerson(id: $id, input: $input) {
       id
       isActive
       isTaxExempt
@@ -55,10 +49,8 @@ export const UPDATE_PERSON_BY_ID = gql`
 `;
 
 export const CREATE_PERSON = gql`
-  mutation createPerson($input: CreatePersonInput!)
-  {
-    createPerson(input: $input)
-    {
+  mutation createPerson($input: CreatePersonInput!) {
+    createPerson(input: $input) {
       id
       isActive
       isTaxExempt
@@ -79,4 +71,3 @@ export const CREATE_PERSON = gql`
     }
   }
 `;
-
