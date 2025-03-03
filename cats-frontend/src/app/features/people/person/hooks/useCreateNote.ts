@@ -15,13 +15,9 @@ export const useCreateNote = () => {
       const newNote = await createPersonNote(note); // Call the service to create a new note
       setResponse(newNote); // Store the created note in state
       return newNote;
-    } 
-    catch (err) 
-    {
+    } catch (err) {
       setError('Failed to create note'); // Log the error and set the error message
-    } 
-    finally 
-    {
+    } finally {
       setLoading(false); // Set loading to false
     }
   };

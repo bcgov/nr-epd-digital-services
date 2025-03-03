@@ -16,9 +16,7 @@ export const useCreatePerson = () => {
       const newPerson = await createPerson(person); // Call the service to create a new person
       setResponse(newPerson); // Store the created person in state
       return newPerson;
-    } 
-    catch (err) 
-    {
+    } catch (err) {
       setError('Failed to create person'); // Log the error and set the error message
     } finally {
       setLoading(false); // Set loading to false

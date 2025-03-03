@@ -31,16 +31,16 @@ import {
   flattenFormRows,
   formatDateRange,
   getUser,
-} from "../../helpers/utility";
-import FilterPills from "./filters/FilterPills";
-import { formRows } from "./dto/PeopleFilterConfig";
-import { SearchResultsFilters } from "./searchResults/SearchResultsFilters";
-import { SearchResultsActions } from "./searchResults/SearchResultsActions";
-import { Button } from "../../components/button/Button";
-import Actions from "../../components/action/Actions";
-import { useAuth } from "react-oidc-context";
-import { useNavigate } from "react-router-dom";
-import { from } from "@apollo/client";
+} from '../../helpers/utility';
+import FilterPills from './filters/FilterPills';
+import { formRows } from './dto/PeopleFilterConfig';
+import { SearchResultsFilters } from './searchResults/SearchResultsFilters';
+import { SearchResultsActions } from './searchResults/SearchResultsActions';
+import { Button } from '../../components/button/Button';
+import Actions from '../../components/action/Actions';
+import { useAuth } from 'react-oidc-context';
+import { useNavigate } from 'react-router-dom';
+import { from } from '@apollo/client';
 
 const Search = () => {
   const auth = useAuth();
@@ -116,7 +116,7 @@ const Search = () => {
     // if (loggedInUser === null) {
     //   auth.signinRedirect({ extraQueryParams: { kc_idp_hint: "idir" } });
     // }
-    if (currSearchVal.searchQuery !== "") {
+    if (currSearchVal.searchQuery !== '') {
       setUserAction(false);
       setSearchText(currSearchVal.searchQuery);
       dispatch(fetchPeoples({ searchParam: currSearchVal.searchQuery }));
@@ -285,9 +285,11 @@ const Search = () => {
       <div className="search-container">
         <h1 className="search-text-label">Manage People</h1>
         <div className="manage-people">
-          <Button onClick={() => { 
-            navigate("/person", { state: { from: 'Manage People' }});
-          }}>
+          <Button
+            onClick={() => {
+              navigate('/person', { state: { from: 'Manage People' } });
+            }}
+          >
             <Plus />
             New Person Profile
           </Button>

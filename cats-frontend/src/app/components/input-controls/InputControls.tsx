@@ -14,10 +14,10 @@ import {
   MagnifyingGlassIcon,
   SpinnerIcon,
   TrashCanIcon,
-} from "../common/icon";
-import { Link as RouterLink } from "react-router-dom";
-import { v4 } from "uuid";
-import Dropdown from "react-bootstrap/Dropdown";
+} from '../common/icon';
+import { Link as RouterLink } from 'react-router-dom';
+import { v4 } from 'uuid';
+import Dropdown from 'react-bootstrap/Dropdown';
 import SearchInput from '../search/SearchInput';
 import Avatar from '../avatar/Avatar';
 import { RequestStatus } from '../../helpers/requests/status';
@@ -206,7 +206,10 @@ export const TextInput: React.FC<InputProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if ((validation?.required || validation?.pattern) && validation?.onLoadValidation) {
+    if (
+      (validation?.required || validation?.pattern) &&
+      validation?.onLoadValidation
+    ) {
       setError(null);
       validateInput(value);
     }

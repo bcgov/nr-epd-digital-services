@@ -15,14 +15,10 @@ export const useUpdateNote = () => {
       const updatedNote = await updatePersonNote(id, note); // Call the service to update the note
       setResponse(updatedNote); // Store the updated note in state
       return updatedNote;
-    } 
-    catch (err) 
-    {
+    } catch (err) {
       // Log the error and set the error message
       setError('Failed to update note');
-    } 
-    finally 
-    {
+    } finally {
       // Set loading to false
       setLoading(false);
     }

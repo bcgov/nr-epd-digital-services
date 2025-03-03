@@ -15,18 +15,18 @@ function App() {
 
   return (
     <div className="container-fluid p-0">
-    <Header />
-    <div className="row m-0 p-0">
-      <div className="d-none d-md-block p-0 position-fixed sidebar-container">
-        <SideBar />
+      <Header />
+      <div className="row m-0 p-0">
+        <div className="d-none d-md-block p-0 position-fixed sidebar-container">
+          <SideBar />
+        </div>
+        <div className="col p-0 content-container">
+          <Outlet />
+        </div>
       </div>
-      <div className="col p-0 content-container">
-        <Outlet />
-      </div>
-    </div>
 
-    <ToastContainer />
-  </div>
+      <ToastContainer />
+    </div>
   );
 }
 

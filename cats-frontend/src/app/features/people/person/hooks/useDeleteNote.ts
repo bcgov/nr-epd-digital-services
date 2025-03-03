@@ -15,13 +15,9 @@ export const useDeleteNote = () => {
       const result = await deletePersonNote(notes); // Call the service to delete a new note
       setResponse(result); // Store the deleted note in state
       return result;
-    } 
-    catch (err) 
-    {
+    } catch (err) {
       setError('Failed to delete note'); // Log the error and set the error message
-    } 
-    finally 
-    {
+    } finally {
       setLoading(false); // Set loading to false
     }
   };

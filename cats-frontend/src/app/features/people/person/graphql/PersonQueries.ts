@@ -1,16 +1,13 @@
 import gql from 'graphql-tag';
 
 export const GET_PERSON_BY_ID = gql`
-  query findPersonById($id: Float!) 
-  {
-    findPersonById(id: $id)
-    {
+  query findPersonById($id: Float!) {
+    findPersonById(id: $id) {
       message
       httpStatusCode
       success
       timestamp
-      data
-      {
+      data {
         id
         firstName
         middleName
@@ -29,17 +26,14 @@ export const GET_PERSON_BY_ID = gql`
         fax
         isActive
       }
-      
     }
   }
 `;
 
 export const UPDATE_PERSON_BY_ID = gql`
-  mutation updatePerson($input: [UpdatePerson!]!)
-  {
-    updatePerson(input: $input)
-    {
-     	message
+  mutation updatePerson($input: [UpdatePerson!]!) {
+    updatePerson(input: $input) {
+      message
       httpStatusCode
       success
       timestamp
@@ -48,10 +42,8 @@ export const UPDATE_PERSON_BY_ID = gql`
 `;
 
 export const CREATE_PERSON = gql`
-  mutation createPerson($person: CreatePerson!)
-  {
-    createPerson(person: $person)
-    {
+  mutation createPerson($person: CreatePerson!) {
+    createPerson(person: $person) {
       message
       httpStatusCode
       success

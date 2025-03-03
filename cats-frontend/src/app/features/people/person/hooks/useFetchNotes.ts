@@ -9,26 +9,20 @@ export const useFetchNotes = (id: string) => {
   useEffect(() => {
     // Function to fetch person data
     const getNotesData = async () => {
-      try 
-      {
-        if(id)
-        {
-            const notesData = await fetchPeronNotes(id); // Call the service to fetch notes data
-            setNotes(notesData); // Store the notes data in state
+      try {
+        if (id) {
+          const notesData = await fetchPeronNotes(id); // Call the service to fetch notes data
+          setNotes(notesData); // Store the notes data in state
         }
-      }
-      catch (err) 
-      {
+      } catch (err) {
         // Log the error and set the error message
         setError('Failed to load notes data');
-      } 
-      finally 
-      {
+      } finally {
         // Set loading to false
         setLoading(false);
       }
     };
-    
+
     getNotesData(); // Call the function to fetch notes data
   }, [id]);
 

@@ -13,17 +13,17 @@ import ApplicationDetails from '../features/applications/application/Application
 
 const roleBasedRoutes: any = {
   client: [
-    { path: "/", element: <Search /> },
-    { path: "/people", element: <Search /> },
-    { path: "/person/:id", element: <Person /> },
-    { path: "/person", element: <Person /> },
-    { path: "/application", element: <ApplicationDetails /> },
+    { path: '/', element: <Search /> },
+    { path: '/people', element: <Search /> },
+    { path: '/person/:id', element: <Person /> },
+    { path: '/person', element: <Person /> },
+    { path: '/application', element: <ApplicationDetails /> },
   ],
   internal: [
-    { path: "/dashboard", element: <Dashboard /> },
-    { path: "/people", element: <Search /> },
-    { path: "/person/:id", element: <Person /> },
-    { path: "/person", element: <Person /> },
+    { path: '/dashboard', element: <Dashboard /> },
+    { path: '/people', element: <Search /> },
+    { path: '/person/:id', element: <Person /> },
+    { path: '/person', element: <Person /> },
   ],
 };
 

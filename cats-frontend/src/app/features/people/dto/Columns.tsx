@@ -231,17 +231,16 @@ const getPeopleSearchResultsColumns = () => {
       sortOrder: 1,
       isChecked: true,
       displayType: getLinkColumnType(
-        "Details",
-        "id",
-        "",
-        "/person/",
-        "Details",
-        'Manage People'
+        'Details',
+        'id',
+        '',
+        '/person/',
+        'Details',
+        'Manage People',
       ),
       // linkRedirectionURL: "people/details/",
       dynamicColumn: true,
       stickyCol: true,
-      
     },
   ];
 
@@ -302,7 +301,7 @@ const getLinkColumnType = (
   value: string,
   href: string,
   customLabel?: string,
-  componentName?: string
+  componentName?: string,
 ) => {
   return {
     type: FormFieldType.Link,

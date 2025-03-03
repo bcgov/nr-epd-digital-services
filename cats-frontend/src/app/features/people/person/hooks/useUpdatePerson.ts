@@ -15,9 +15,7 @@ export const useUpdatePerson = () => {
       const updatedPerson = await updatePerson(person); // Call the service to update the person
       setResponse(updatedPerson); // Store the updated person in state
       return updatedPerson;
-    } 
-    catch (err) 
-    {
+    } catch (err) {
       // Log the error and set the error message
       setError('Failed to update person');
     } finally {

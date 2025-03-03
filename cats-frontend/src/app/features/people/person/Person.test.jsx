@@ -9,22 +9,25 @@ jest.mock('./services/PersonService', () => ({
 }));
 
 describe('Person Component', () => {
-
   afterEach(() => {
-    jest.clearAllMocks();  // Clears the mock state to prevent stale values
+    jest.clearAllMocks(); // Clears the mock state to prevent stale values
   });
 
   it('renders without crashing', () => {
     render(
       <MemoryRouter>
         <Person />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect(screen.getByText(/Create New Person/i)).toBeInTheDocument();
   });
 
   it('shows the correct title when a person is fetched', async () => {
-    const mockPersonData = { firstName: 'John', middleName: 'Doe', lastName: 'Smith' };
+    const mockPersonData = {
+      firstName: 'John',
+      middleName: 'Doe',
+      lastName: 'Smith',
+    };
     fetchPerson.mockResolvedValueOnce(mockPersonData);
 
     render(
@@ -32,7 +35,7 @@ describe('Person Component', () => {
         <Routes>
           <Route path="/person/:id" element={<Person />} />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await waitFor(() => {
@@ -48,15 +51,18 @@ describe('Person Component', () => {
         <Routes>
           <Route path="/person/:id" element={<Person />} />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(screen.getByTestId('loading-overlay')).toBeInTheDocument();
   });
 
-
   it('opens the note modal when Add Notes is clicked', async () => {
-    const mockPersonData = { firstName: 'John', middleName: 'Doe', lastName: 'Smith' };
+    const mockPersonData = {
+      firstName: 'John',
+      middleName: 'Doe',
+      lastName: 'Smith',
+    };
     fetchPerson.mockResolvedValueOnce(mockPersonData);
 
     render(
@@ -64,7 +70,7 @@ describe('Person Component', () => {
         <Routes>
           <Route path="/person/:id" element={<Person />} />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await waitFor(() => {

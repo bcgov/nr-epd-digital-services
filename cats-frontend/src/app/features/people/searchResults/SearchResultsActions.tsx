@@ -50,7 +50,7 @@ export const SearchResultsActions: FC<SearchResultsActionsProps> = ({
             fax: row.fax,
             email: row.email,
             isActive: false,
-            updatedBy: "",
+            updatedBy: '',
             updatedDatetime: new Date(),
             isDeleted: true,
           };
@@ -84,8 +84,8 @@ export const SearchResultsActions: FC<SearchResultsActionsProps> = ({
           mobile: row.mobile,
           fax: row.fax,
           email: row.email,
-          isActive: event === "Active" ? true : false,
-          updatedBy: "",
+          isActive: event === 'Active' ? true : false,
+          updatedBy: '',
           updatedDatetime: new Date(),
         };
       });
