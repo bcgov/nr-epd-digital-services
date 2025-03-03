@@ -208,10 +208,7 @@ const ApplicationDetails = () => {
           </div>
         </div>
 
-        <NavigationPills
-          components={navComponents}
-          tabSearchKey="applicationTab"
-        />
+        <NavigationPills components={navComponents} tabSearchKey="tab" />
       </PageContainer>
     </>
   );
