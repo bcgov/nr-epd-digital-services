@@ -1,16 +1,16 @@
 import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
+import configureStore, { MockStore } from 'redux-mock-store';
 import { render, screen, fireEvent } from '@testing-library/react';
 import FilterPills from './FilterPills';
 
 // Mocking the XmarkIcon component
-jest.mock('../../../components/common/icon', () => ({
+vi.mock('../../../components/common/icon', () => ({
   XmarkIcon: () => <div>XmarkIcon</div>,
 }));
 const mockStore = configureStore([]);
 describe('FilterPills', () => {
-  const onRemoveFilterMock = jest.fn();
-  let store;
+  const onRemoveFilterMock = vi.fn();
+  let store: MockStore;
   const filters = [
     { key: '1', value: 'Filter1Value', label: 'Filter1' },
     { key: '2', value: 'Filter2Value', label: 'Filter2' },

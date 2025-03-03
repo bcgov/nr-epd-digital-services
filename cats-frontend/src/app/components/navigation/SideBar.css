@@ -1,13 +1,3 @@
-:root {
-  --side-bar-padding-large: var(--layout-padding-large);
-  --side-bar-padding-medium: var(--layout-padding-medium);
-  --side-bar-background-color: #ffffff;
-  --side-bar-shadow: 0px 3.2px 7.2px 0px rgba(0, 0, 0, 0.13);
-  --current-path-background-color: var(--surface-primary-default);
-  --side-bar-text-color: var(--surface-primary-default);
-  --side-bar-text-hover-color: #ffffff;
-}
-
 .side-bar {
   display: flex;
   flex-direction: column;
@@ -51,13 +41,17 @@
   align-items: flex-start;
 }
 
+/* Add margin to space out icon and text */
 .sideBar-NavItem {
   height: 40px;
   padding: var(--layout-padding-small);
   cursor: default;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 10px; /* This adds spacing between the icon and the text */
+  justify-content: center; /* Center the icon and text */
+  position: relative; /* Allow positioning of text */
+  transition: background-color 0.3s ease; /* Smooth background-color transition */
 }
 
 .side-bar:hover .sideBarDisplayText {
@@ -70,7 +64,6 @@
 }
 
 .sideBar-NavLabel {
-  font-family: 'BCSans';
   font-size: 14px;
   font-weight: 700;
   line-height: 21px;
@@ -85,11 +78,12 @@
   line-height: 24px;
   letter-spacing: 0em;
   text-align: left;
-  color: var(--surface-primary-default);
+  color: var(--surface-color-primary-default);
+  transition: color 0.3s ease; /* Smooth transition for icon color */
 }
 
+/* Text styling */
 .nav-section-bold-label {
-  font-family: 'BCSans';
   font-size: 14px;
   font-weight: 700;
   line-height: 21.01px;
@@ -101,14 +95,15 @@
 }
 
 .nav-color-primary-default {
-  color: var(--surface-primary-default);
+  color: var(--surface-color-primary-default);
 }
 
 .currentPath {
-  background: var(--current-path-background-color);
+  background: var(--surface-color-primary-default);
   border-radius: 0px;
   width: 40px;
   justify-content: center;
+  transition: width 0.3s ease; /* Smooth transition for width */
 }
 
 .currentPath .sideBar-Icon,
@@ -120,12 +115,13 @@
   width: 100%;
 }
 
+/* Hover effects for the side bar text and icon */
 .sideBarDisplayText:hover {
-  color: var(--surface-primary-default) !important;
+  color: var(--surface-color-primary-default) !important;
 }
 
 .currentPath .sideBarDisplayText:hover {
-  color: var(--side-bar-text-hover-color) !important;
+  color: var(--surface-color-menus-hover) !important;
 }
 
 .cart-items-number {
@@ -138,6 +134,7 @@
   flex-direction: column;
   gap: 8px;
   align-items: center;
+  transition: all 0.3s ease;
 }
 
 .side-bar:hover .sidebar-menu-group {
@@ -150,11 +147,12 @@
 }
 
 .side-bar:hover .sideBar-menu-item-hover:hover {
-  background: var(--surface-primary-hover);
+  background: var(--surface-color-primary-hover);
   width: 100%;
 }
 
 .side-bar:hover .sideBar-menu-item-hover:hover .sideBar-Icon,
 .side-bar:hover .sideBar-menu-item-hover:hover .sideBarDisplayText {
   color: white !important;
+  transition: color 0.3s ease; /* Smooth transition for label color */
 }

@@ -2,7 +2,7 @@
   border-radius: 100px;
   height: 44px;
   width: 44px;
-  border: 1px solid var(--surface-border-light, #d8d8d8);
+  border: 1px solid var(--surface-color-border-default, #d8d8d8);
   background: var(--surface-brand-blue-10, #f1f8fe);
 }
 

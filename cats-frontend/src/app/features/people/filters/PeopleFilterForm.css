@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans');
 
 .selected-filter {
   gap: var(--layout-margin-xsmall);
@@ -7,9 +7,9 @@
   padding: var(--layout-padding-xsmall) var(--layout-padding-medium)
     var(--layout-padding-xsmall) var(--layout-padding-medium);
   border-radius: 16px;
-  background-color: var(--surface-primary-default);
+  background-color: var(--surface-color-primary-default);
   color: var(--typography-color-primary-invert);
-  font-family: "Noto Sans", sans-serif !important;
+  font-family: 'Noto Sans', sans-serif !important;
   font-size: 14px;
   font-weight: 400;
   line-height: 21px;
@@ -22,7 +22,7 @@
 }
 
 .custom-pill:hover {
-  background: var(--surface-primary-hover) !important;
+  background: var(--surface-color-primary-hover) !important;
 }
 
 .x-mark {

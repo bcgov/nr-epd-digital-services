@@ -1,29 +1,27 @@
-import { ReactNode } from "react";
-import { RequestStatus } from "../../helpers/requests/status";
+import { ReactNode } from 'react';
+import { RequestStatus } from '../../helpers/requests/status';
 
 export enum FormFieldType {
-  Text = "text",
-  TextArea = "textarea",
-  Search = "search",
-  DropDown = "dropdown",
-  DropDownWithSearch = "dropdownWithSearch",
-  Date = "date",
-  DateRange = "daterange",
-  Group = "group",
-  Label = "label",
-  Link = "link",
-  Checkbox = "checkbox",
-  DeleteIcon = "deleteIcon",
-  IconButton = "iconbutton",
-  Icon = "icon",
+  Text = 'text',
+  TextArea = 'textarea',
+  Search = 'search',
+  DropDown = 'dropdown',
+  DropDownWithSearch = 'dropdownWithSearch',
+  Date = 'date',
+  DateRange = 'daterange',
+  Group = 'group',
+  Label = 'label',
+  Link = 'link',
+  Checkbox = 'checkbox',
+  DeleteIcon = 'deleteIcon',
+  IconButton = 'iconbutton',
+  Icon = 'icon',
   Switch = 'switch',
-  Email = 'email',
 }
 
 export interface IFormField {
   type:
     | FormFieldType.Text
-    | FormFieldType.Email
     | FormFieldType.DropDown
     | FormFieldType.Date
     | FormFieldType.Group
@@ -50,16 +48,18 @@ export interface IFormField {
   customLeftIconCss?: string;
   customRightIconCss?: string;
   customErrorCss?: string;
+  searchCustomInputContainerCss?: string;
+  searchCustomInputMenuCss?: string;
   graphQLPropertyName?: string;
   allowNumbersOnly?: boolean;
-  options?: { key: string; value: string; imageUrl?: any }[];
+  options?: { key: string; value: string; imageUrl?: any }[] | null;
   filteredOptions?: { key: string; value: string }[];
   value?: any;
   customLinkValue?: any;
   customIcon?: ReactNode;
   isChecked?: boolean;
   isDateRange?: boolean;
-  dateFormat?:string;
+  dateFormat?: string;
   children?: IFormField[];
   isChildLabel?: boolean;
   isDisabled?: boolean;
@@ -82,5 +82,6 @@ export interface IFormField {
   textAreaColoum?: number;
   handleSearch?: (event: any) => void;
   componentName?: string;
-  labelPosition?: "left" | "right";
+  labelPosition?: 'left' | 'right';
+  isSearchCustomInputIcon?: boolean;
 }

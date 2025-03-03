@@ -73,12 +73,16 @@ const Form: React.FC<IFormRendererProps> = ({
                   customEditLabelCss={field.customEditLabelCss}
                   customEditInputTextCss={field.customEditInputTextCss}
                   customPlaceholderCss={field.customPlaceholderCss}
+                  searchCustomInputMenuCss={field.searchCustomInputMenuCss}
+                  searchCustomInputContainerCss={
+                    field.searchCustomInputContainerCss
+                  }
                   placeholder={field.placeholder}
                   value={formData[field.graphQLPropertyName ?? ''] || ''}
                   onChange={(value) =>
                     handleInputChange(field.graphQLPropertyName, value)
                   }
-                  options={field.options || []}
+                  options={field.options || null}
                   type={FormFieldType.Text}
                   validation={field.validation}
                   allowNumbersOnly={field.allowNumbersOnly}
@@ -88,6 +92,7 @@ const Form: React.FC<IFormRendererProps> = ({
                   customInfoMessage={field.customInfoMessage}
                   customMenuMessage={field.customMenuMessage}
                   isDisabled={field.isDisabled}
+                  isSearchCustomInputIcon={field.isSearchCustomInputIcon}
                 />
               )}
               {field.type === FormFieldType.TextArea && (

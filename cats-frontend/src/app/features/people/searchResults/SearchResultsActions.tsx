@@ -1,20 +1,20 @@
-import { FC } from "react";
-import { useAuth } from "react-oidc-context";
-import { useDispatch } from "react-redux";
+import { FC } from 'react';
+import { useAuth } from 'react-oidc-context';
+import { useDispatch } from 'react-redux';
 
-import { AppDispatch } from "../../../Store";
-import { Button } from "../../../components/button/Button";
-import { getUser, isUserOfType, UserRoleType } from "../../../helpers/utility";
+import { AppDispatch } from '../../../Store';
+import { Button } from '../../../components/button/Button';
+import { getUser, isUserOfType, UserRoleType } from '../../../helpers/utility';
 
 import {
   FileExportIcon,
   PlainTrashIcon,
   ShoppingCartIcon,
   TrashCanIcon,
-} from "../../../components/common/icon";
-import { downloadCSV } from "../../../helpers/csvExport/csvExport";
-import Actions from "../../../components/action/Actions";
-import { updatePeople } from "../dto/PeopleSlice";
+} from '../../../components/common/icon';
+import { downloadCSV } from '../../../helpers/csvExport/csvExport';
+import Actions from '../../../components/action/Actions';
+import { updatePeople } from '../dto/PeopleSlice';
 interface SearchResultsActionsProps {
   selectedRows: any[];
 }
@@ -28,12 +28,12 @@ export const SearchResultsActions: FC<SearchResultsActionsProps> = ({
     if (selectedRows.length > 0) {
       const loggedInUser = getUser();
       if (loggedInUser === null) {
-        auth.signinRedirect({ extraQueryParams: { kc_idp_hint: "idir" } });
+        auth.signinRedirect({ extraQueryParams: { kc_idp_hint: 'idir' } });
       } else {
         const updatePeopleInput = selectedRows.map((row) => {
           return {
             id: row.id,
-            middleName: "",
+            middleName: '',
             firstName: row.firstName,
             lastName: row.lastName,
             isTaxExempt: row.isTaxExempt,
@@ -51,8 +51,8 @@ export const SearchResultsActions: FC<SearchResultsActionsProps> = ({
             email: row.email,
             isActive: false,
             rowVersionCount: 1,
-            createdBy: "",
-            updatedBy: "",
+            createdBy: '',
+            updatedBy: '',
             createdDatetime: new Date(),
             updatedDatetime: new Date(),
             isDeleted: true,
@@ -65,14 +65,13 @@ export const SearchResultsActions: FC<SearchResultsActionsProps> = ({
 
   const handleActiveStatusChange = (event: any) => {
     const loggedInUser = getUser();
-    console.log("event", event, selectedRows);
     if (loggedInUser === null) {
-      auth.signinRedirect({ extraQueryParams: { kc_idp_hint: "idir" } });
+      auth.signinRedirect({ extraQueryParams: { kc_idp_hint: 'idir' } });
     } else {
       const updatePeopleInput = selectedRows.map((row) => {
         return {
           id: row.id,
-          middleName: "",
+          middleName: '',
           firstName: row.firstName,
           lastName: row.lastName,
           isTaxExempt: row.isTaxExempt,
@@ -88,10 +87,10 @@ export const SearchResultsActions: FC<SearchResultsActionsProps> = ({
           mobile: row.mobile,
           fax: row.fax,
           email: row.email,
-          isActive: event === "Active" ? true : false,
+          isActive: event === 'Active' ? true : false,
           rowVersionCount: 1,
-          createdBy: "",
-          updatedBy: "",
+          createdBy: '',
+          updatedBy: '',
           createdDatetime: new Date(),
           updatedDatetime: new Date(),
         };
@@ -105,8 +104,8 @@ export const SearchResultsActions: FC<SearchResultsActionsProps> = ({
       <Actions
         label="Set Active Status"
         items={[
-          { label: "Active", value: "Active" },
-          { label: "Inactive", value: "Inactive" },
+          { label: 'Active', value: 'Active' },
+          { label: 'Inactive', value: 'Inactive' },
         ]}
         onItemClick={handleActiveStatusChange}
         toggleButtonVariant="secondary"

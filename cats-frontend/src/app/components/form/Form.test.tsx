@@ -3,13 +3,13 @@ import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Form from './Form';
 import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
+import configureStore, { MockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { FormFieldType } from '../input-controls/IFormField';
 
 const mockStore = configureStore([thunk]);
 describe('Form component', () => {
-  let store;
+  let store: MockStore;
 
   beforeEach(() => {
     store = mockStore({
@@ -62,7 +62,7 @@ describe('Form component', () => {
     srStatus: 'Y',
   };
 
-  const handleInputChange = jest.fn();
+  const handleInputChange = vi.fn();
 
   it('renders without crashing', () => {
     render(

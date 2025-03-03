@@ -27,7 +27,7 @@ const Widget: React.FC<IWidget> = ({
   isRequired,
   widgetIschecked,
   hideWidgetCheckbox,
-  customWidgetCss
+  customWidgetCss,
 }) => {
   let widgetSortHandler = sortHandler ?? (() => {});
   const [widgetData, setWidgetData] = useState(tableData);
@@ -36,7 +36,9 @@ const Widget: React.FC<IWidget> = ({
   }, [tableData]);
 
   return (
-    <div className={`d-flex flex-column widget-container ${customWidgetCss}`}>
+    <div
+      className={`d-flex flex-column widget-container ${customWidgetCss ?? ''}`}
+    >
       {!hideTitle && title && (
         <div className="d-flex align-items-center">
           {srMode && !hideWidgetCheckbox && (

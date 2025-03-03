@@ -17,9 +17,9 @@
 
 .account-custom-menu {
   height: 231px;
-  border-radius: var(--surface-border-radius-medium) !important;
+  border-radius: var(--layout-border-radius-medium) !important;
   padding: var(--layout-padding-medium) 0px var(--layout-padding-medium) 0px !important;
-  background-color: var(--surface-background-white) !important;
+  background-color: var(--surface-color-background-white) !important;
   box-shadow: var(--surface-shadow-medium);
   inset: 16px 0px auto auto !important;
   border: none !important;
@@ -28,7 +28,7 @@
 
 .account-custom-item-first {
   padding: 0px var(--layout-margin-medium) 16px var(--layout-margin-medium) !important;
-  border-bottom: 1px solid var(--surface-color-border-light, #d8d8d8) !important;
+  border-bottom: 1px solid var(--surface-color-border-default, #d8d8d8) !important;
 }
 
 .account-custom-label {
@@ -53,7 +53,7 @@
   padding: var(--layout-padding-medium) 0px var(--layout-padding-medium) 0px !important;
 }
 .account-custom-item:hover {
-  background-color: var(--surface-secondary-hover) !important;
+  background-color: var(--surface-color-secondary-hover) !important;
   color: var(--typography-color-secondary) !important;
 }
 

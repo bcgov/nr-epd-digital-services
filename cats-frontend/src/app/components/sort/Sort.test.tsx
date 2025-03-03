@@ -3,13 +3,13 @@ import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Sort from './Sort';
 import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
+import configureStore, { MockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { FormFieldType } from '../input-controls/IFormField';
 
 const mockStore = configureStore([thunk]);
 describe('Sort component', () => {
-  let store;
+  let store: MockStore;
 
   beforeEach(() => {
     store = mockStore({
@@ -36,7 +36,7 @@ describe('Sort component', () => {
     ];
     const formData = {}; // Define your formData object here
     const editMode = true; // Define your editMode value here
-    const handleSortChange = jest.fn(); // Mock the handleSortChange function
+    const handleSortChange = vi.fn(); // Mock the handleSortChange function
 
     render(
       <Provider store={store}>
@@ -72,7 +72,7 @@ describe('Sort component', () => {
     ];
     const formData = { sortBy: 'newToOld' };
     const editMode = true;
-    const handleSortChange = jest.fn();
+    const handleSortChange = vi.fn();
 
     render(
       <Provider store={store}>

@@ -3,12 +3,25 @@ import '@testing-library/jest-dom';
 import UserAccount from './UserAccount';
 import avatar from '../../images/avatar.png';
 import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
+import configureStore, { MockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
+
+vi.mock('react-oidc-context', () => ({
+  useAuth: () => ({
+    user: {
+      profile: {
+        given_name: 'John',
+        family_name: 'Doe',
+        preferred_username: 'johndoe',
+      },
+      id_token: 'mock-id-token',
+    },
+  }),
+}));
 
 const mockStore = configureStore([thunk]);
 describe('UserAccount component', () => {
-  let store;
+  let store: MockStore;
 
   beforeEach(() => {
     store = mockStore({

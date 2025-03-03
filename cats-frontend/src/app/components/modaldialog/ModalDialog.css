@@ -14,14 +14,11 @@
 }
 
 .custom-modal-content {
-  /* padding: 20px; */
-  /* border: 1px solid #888; */
   width: 50%;
   max-width: 50%;
-  /* margin: auto;  */
   position: relative;
   border-radius: var(--layout-border-width-medium);
-  background: var(--surface-background-white);
+  background: var(--surface-color-background-white);
 }
 
 .custom-modal-header {
@@ -42,8 +39,8 @@
   gap: var(--layout-margin-medium);
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid grey;
-  border-top: 1px solid grey;
+  border-top: 1px solid var(--surface-color-border-default, #d8d8d8);
+  border-bottom: 1px solid var(--surface-color-border-default, #d8d8d8);
 }
 
 .custom-modal-header-text {

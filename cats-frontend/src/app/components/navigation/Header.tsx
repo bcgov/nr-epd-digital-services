@@ -1,20 +1,17 @@
-import "@bcgov/design-tokens/css/variables.css";
-import logo from "../../../app/images/logos/logo-banner.png";
+import logo from '../../../app/images/logos/logo-banner.png';
 
-import "./Header.css";
-import moon from "../../images/moon.png";
-import { BarsIcon } from "../common/icon";
-import { useState } from "react";
-import MobileNavMenu from "./MobileNavMenu";
-import LanguageSwitcher from "../language/LanguageSwitcher";
-import UserAccount from "../account/UserAccount";
-import { LoginDropdown } from "../login/LoginDropdown";
-import { getUser } from "../../helpers/utility";
+import './Header.css';
+import { BarsIcon } from '../common/icon';
+import { useState } from 'react';
+import MobileNavMenu from './MobileNavMenu';
+import UserAccount from '../account/UserAccount';
+import { LoginDropdown } from '../login/LoginDropdown';
+import { useAuth } from 'react-oidc-context';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const user = getUser();
+  const auth = useAuth();
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -38,7 +35,7 @@ const Header = () => {
           type="button"
           onClick={toggleNavbar}
           aria-label="menu for mobile/smaller devices"
-          aria-expanded={isOpen ? "true" : "false"}
+          aria-expanded={isOpen ? 'true' : 'false'}
           aria-controls="navbarMenu"
           aria-haspopup="true"
         >
@@ -48,13 +45,13 @@ const Header = () => {
         {/* <div className="d-sm-none d-md-flex d-none">       
         <img src={moon} alt="Moon image for theme." />
       </div> */}
-        {user == null && LoginDropdown("Sign in")}
-        {!isOpen && user !== null && <UserAccount mobileView={isOpen} />}
+        {!auth.isAuthenticated && <LoginDropdown title="Sign in" />}
+        {!isOpen && auth.isAuthenticated && <UserAccount mobileView={isOpen} />}
       </div>
       <div
         role="menu"
         className={`small-screen-menu mobile-menu ${
-          isOpen ? "show" : "d-none"
+          isOpen ? 'show' : 'd-none'
         }`}
         onClick={() => toggleNavbar()}
       >

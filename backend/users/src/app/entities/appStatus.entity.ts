@@ -11,9 +11,6 @@ import { Application } from './application.entity';
 import { StatusType } from './statusType.entity';
 
 @Index('idx_app_status_application_id', ['applicationId'], {})
-@Index('uidx_app_status_is_current_application_id', ['applicationId'], {
-  unique: true,
-})
 @Index('pk_app_status', ['id'], { unique: true })
 @Index('idx_app_status_status_type_id', ['statusTypeId'], {})
 @Entity('app_status')
