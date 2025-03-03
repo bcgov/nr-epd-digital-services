@@ -85,7 +85,7 @@ const NavigationPills: React.FC<INavigationPills> = ({
           </Button>
         ))}
       </div>
-      <div className="d-flex d-xl-none d-lg-flex d-md-flex d-sm-flex d-xs-flex justify-content-between align-items-center w-100">
+      <div className="d-flex d-xl-none justify-content-between align-items-center w-100">
         <div className="d-flex justify-content-between w-100 flex-column flex-sm-row">
           <div>
             <Actions
