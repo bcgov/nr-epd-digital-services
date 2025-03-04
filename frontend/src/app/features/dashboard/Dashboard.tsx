@@ -11,7 +11,10 @@ import "./Dashboard.css";
 import { SdmDashboard } from "./sdmDashboard/SdmDashboard";
 import { ReviewerDashoard } from "./reviewerDashboard/ReviewerDashoard";
 import { getSDMUserRole } from "../../helpers/envManager";
-import { getAxiosInstanceForComs, getAxiosInstanceForUsers } from "../../helpers/utility";
+import {
+  getAxiosInstanceForComs,
+  getAxiosInstanceForUsers,
+} from "../../helpers/utility";
 import { COMS, USERS } from "../../helpers/endpoints";
 
 const Dashboard = () => {
@@ -49,92 +52,108 @@ const Dashboard = () => {
     }
   }, [userIsProfileVerifiedValue]);
 
-
-  useEffect( () => {
-      if(auth.user?.profile.identity_provider === BCeID || auth.user?.profile.identity_provider === BCSC)
-      {
-          assignGroupToUser();
-          assignUserToBCbox();
-      }
+  useEffect(() => {
+    if (
+      auth.user?.profile.identity_provider === BCeID ||
+      auth.user?.profile.identity_provider === BCSC
+    ) {
+      assignGroupToUser();
+      assignUserToBCbox();
+    }
   }, []);
 
   const assignGroupToUser = () => {
-    getAxiosInstanceForUsers().post(USERS + '/addGroup', {
-      userId: auth.user?.profile.sub 
-    })
-    .then(response => {
-      if(response.data.success)
-      {
-        console.log(response.data.message);
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
-    
-  }
-  
-  const assignUserToBCbox = () => {
-    try{
-
-        // Get the user's identity ID from auth.user.profile.sub
-        const identityId = auth.user?.profile.sub;
-
-        if (!identityId) {
-          throw new Error('User identity ID is missing.');
+    getAxiosInstanceForUsers()
+      .post(USERS + "/addGroup", {
+        userId: auth.user?.profile.sub,
+      })
+      .then((response) => {
+        if (response.data.success) {
+          console.log(response.data.message);
         }
-        // Make the Axios GET request with value in the query string
-        getAxiosInstanceForComs().get(COMS, {
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
+  // const assignGroupToUser = () => {
+  //   getAxiosInstanceForUsers()
+  //     .post("/addGroup", {
+  //       userId: auth.user?.profile.sub,
+  //     })
+  //     .then((response) => {
+  //       if (response.data.success) {
+  //         console.log(response.data.message);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching data:", error);
+  //     });
+  // };
+
+  const assignUserToBCbox = () => {
+    try {
+      // Get the user's identity ID from auth.user.profile.sub
+      const identityId = auth.user?.profile.sub;
+
+      if (!identityId) {
+        throw new Error("User identity ID is missing.");
+      }
+      // Make the Axios GET request with value in the query string
+      getAxiosInstanceForComs()
+        .get(COMS, {
           params: {
-            identityId: auth.user?.profile.sub 
-          }
+            identityId: auth.user?.profile.sub,
+          },
         })
-        .then(response => {
-          if(response.data)
-          {
+        .then((response) => {
+          if (response.data) {
             console.info("Assign user to BCbox successfully.");
-          }
-          else {
-            throw new Error('Failed to assign user to BCbox.');
+          } else {
+            throw new Error("Failed to assign user to BCbox.");
           }
         })
-        .catch(error => {
+        .catch((error) => {
           // Handle errors
-          console.error('Error assigning user to BCbox:', error.message);
+          console.error("Error assigning user to BCbox:", error.message);
         });
-    }
-    catch (error: any) {
+    } catch (error: any) {
       // Handle errors
-      console.error('Error assigning user to BCbox:', error.message);
+      console.error("Error assigning user to BCbox:", error.message);
     }
-    
-  }
+  };
 
   const handleFormsflowWebRedirection = () => {
-    const formsFlowWebURL = process.env.REACT_APP_FORMSFLOW_WEB_URL || ((window as any)._env_ && (window as any)._env_.REACT_APP_FORMSFLOW_WEB_URL) || "";
-    const locationBeforeAuthRedirect = sessionStorage.getItem('locationBeforeAuthRedirect');
-    if(locationBeforeAuthRedirect!=="" && locationBeforeAuthRedirect !==null && locationBeforeAuthRedirect.indexOf("/fileupload")!== -1)
-    {
-
+    console.log("handleFormsflowWebRedirection");
+    const formsFlowWebURL =
+      process.env.REACT_APP_FORMSFLOW_WEB_URL ||
+      ((window as any)._env_ &&
+        (window as any)._env_.REACT_APP_FORMSFLOW_WEB_URL) ||
+      "";
+    const locationBeforeAuthRedirect = sessionStorage.getItem(
+      "locationBeforeAuthRedirect"
+    );
+    if (
+      locationBeforeAuthRedirect !== "" &&
+      locationBeforeAuthRedirect !== null &&
+      locationBeforeAuthRedirect.indexOf("/fileupload") !== -1
+    ) {
       window.location.assign(locationBeforeAuthRedirect);
+    } else {
+      window.location.assign(locationBeforeAuthRedirect ?? formsFlowWebURL);
     }
-    else
-    {
-      window.location.assign(formsFlowWebURL);
-    }
-
-  }
+  };
   //Automatically redirect to formsflow dashboard, don't render dashboard prototype
-  handleFormsflowWebRedirection()
+  handleFormsflowWebRedirection();
 
-  const validUserRole = (rolename:string)=>{
-    const realmRoles:string[] = auth.user?.profile.realmroles as string[];
-    if(realmRoles!=null && realmRoles.length > 0 )
-    {
+  const validUserRole = (rolename: string) => {
+    const realmRoles: string[] = auth.user?.profile.realmroles as string[];
+    if (realmRoles != null && realmRoles.length > 0) {
       return realmRoles.includes(rolename);
     }
     return false;
-  }
+  };
 
   return (
     <div className="container-fluid dashboard-content">
@@ -143,19 +162,21 @@ const Dashboard = () => {
           {auth.isLoading ? (
             <div>Loading User</div>
           ) : auth.user?.profile.identity_provider === "bceid" ? (
-          
             <div>
-            <h3>External User Dashboard</h3>
-            <div>
-            <input type="button" className="btn btn-success" value="View/Submit Application" onClick={()=>handleFormsflowWebRedirection()}></input>
-          </div>
-          </div> 
+              <h3>External User Dashboard</h3>
+              <div>
+                <input
+                  type="button"
+                  className="btn btn-success"
+                  value="View/Submit Application"
+                  onClick={() => handleFormsflowWebRedirection()}
+                ></input>
+              </div>
+            </div>
+          ) : validUserRole(getSDMUserRole()) ? (
+            <SdmDashboard></SdmDashboard>
           ) : (
-
-           validUserRole(getSDMUserRole()) ? (<SdmDashboard></SdmDashboard>):(
-              <ReviewerDashoard></ReviewerDashoard>
-           )
-                
+            <ReviewerDashoard></ReviewerDashoard>
           )}
         </div>
       </div>
@@ -164,4 +185,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
