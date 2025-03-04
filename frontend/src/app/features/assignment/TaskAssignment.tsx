@@ -5,6 +5,7 @@ import {
 } from "../../helpers/utility";
 import { useParams } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
+import { USERS } from "../../helpers/endpoints";
 
 const TaskAssignment = () => {
   const auth = useAuth();
@@ -34,7 +35,7 @@ const TaskAssignment = () => {
 
   const assignKeyCloakGroupToUser = () => {
     getAxiosInstanceForUsers()
-      .post(API + "/addUserToGroupForMuncipalUsers", {
+      .post(API + USERS + "/addUserToGroupForMuncipalUsers", {
         userId: auth.user?.profile.sub,
       })
       .then((response) => {
