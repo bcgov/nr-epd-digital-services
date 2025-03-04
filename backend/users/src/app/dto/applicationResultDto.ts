@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Person } from '../entities/person.entity';
+import { ViewPerson } from './person/viewPerson.dto';
 
 @ObjectType()
 export class ApplicationResultDto {
@@ -21,8 +22,8 @@ export class ApplicationResultDto {
   @Field()
   status: string;
 
-  @Field(() => [Person])
-  staffAssigned: Person[];
+  @Field(() => [ViewPerson])
+  staffAssigned: ViewPerson[];
 
   @Field()
   priority: string;
