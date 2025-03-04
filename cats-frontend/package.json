@@ -54,7 +54,7 @@
     "serve": "vite preview",
     "test": "vitest",
     "test:cov": "npm test -- --coverage",
-    "codegen": "graphql-codegen",
+    "codegen": "graphql-codegen --config ./codegen.mts",
     "format": "prettier --write \"./src/**/*.{js,ts,jsx,tsx,json,css}\""
   },
   "eslintConfig": {
