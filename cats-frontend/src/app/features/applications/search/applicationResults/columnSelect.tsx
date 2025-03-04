@@ -1,6 +1,6 @@
-import React from "react";
-import { TableColumn } from "../../../../components/table/TableColumn";
-import "./columnSelect.css";
+import React from 'react';
+import { TableColumn } from '../../../../components/table/TableColumn';
+import './columnSelect.css';
 
 interface ColumnSelectProps {
   columns: TableColumn[];
@@ -23,7 +23,7 @@ const ColumnSelect: React.FC<ColumnSelectProps> = ({
                 const updatedColumns = columns.map((col) =>
                   col.id === column.id
                     ? { ...col, isChecked: event.target.checked }
-                    : col
+                    : col,
                 );
                 handleColumnChange(updatedColumns);
               }}

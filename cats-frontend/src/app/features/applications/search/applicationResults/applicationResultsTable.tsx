@@ -1,9 +1,9 @@
-import React from "react";
-import { TableColumn } from "../../../../components/table/TableColumn";
-import Table from "../../../../components/table/Table";
-import { RequestStatus } from "../../../../helpers/requests/status";
-import TableHeader from "./TableHeader";
-import { Filter } from "../searchSlice";
+import React from 'react';
+import { TableColumn } from '../../../../components/table/TableColumn';
+import Table from '../../../../components/table/Table';
+import { RequestStatus } from '../../../../helpers/requests/status';
+import TableHeader from './TableHeader';
+import { Filter } from '../searchSlice';
 
 interface ApplicationResultsTableProps {
   columns: TableColumn[];

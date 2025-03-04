@@ -11,6 +11,6 @@
   align-items: center;
 }
 
-.column-select-grid input[type="checkbox"] {
+.column-select-grid input[type='checkbox'] {
   margin-right: 8px;
 }

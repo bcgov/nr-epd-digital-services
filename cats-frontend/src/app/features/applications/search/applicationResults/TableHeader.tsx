@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { TableColumn } from "../../../../components/table/TableColumn";
-import TableControls from "./tableControls";
-import ColumnSelect from "./columnSelect";
+import React, { useState } from 'react';
+import { TableColumn } from '../../../../components/table/TableColumn';
+import TableControls from './tableControls';
+import ColumnSelect from './columnSelect';
 import { ApplicationFilter } from '../../../../../generated/types';
 import './TableHeader.css'; // Import the new CSS file
 
