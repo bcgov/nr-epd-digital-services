@@ -2,11 +2,11 @@ import React from 'react';
 import { TableColumnsIcon } from '../../../../components/common/icon';
 import './tableControls.css';
 import { Button } from '../../../../components/button/Button';
-import { Filter } from '../Search';
+import { ApplicationFilter } from '../../../../../generated/types';
 
 interface TableControlsProps {
-  handleFilterChange: (filter: Filter) => void;
-  filter: Filter;
+  handleFilterChange: (filter: ApplicationFilter) => void;
+  filter: ApplicationFilter;
   toggleColumnSelect: () => void;
 }
 
@@ -20,9 +20,11 @@ const TableControls: React.FC<TableControlsProps> = ({
       <div className="col text-right">
         <Button
           variant="tertiary"
-          onClick={() => handleFilterChange(Filter.All)}
+          onClick={() => handleFilterChange(ApplicationFilter.All)}
           className={
-            filter === Filter.All ? 'table-controls__button--selected' : ''
+            filter === ApplicationFilter.All
+              ? 'table-controls__button--selected'
+              : ''
           }
         >
           All
@@ -31,20 +33,22 @@ const TableControls: React.FC<TableControlsProps> = ({
       <div className="col text-right">
         <Button
           variant="tertiary"
-          onClick={() => handleFilterChange(Filter.Assigned)}
+          onClick={() => handleFilterChange(ApplicationFilter.Unassigned)}
           className={
-            filter === Filter.Assigned ? 'table-controls__button--selected' : ''
+            filter === ApplicationFilter.Unassigned
+              ? 'table-controls__button--selected'
+              : ''
           }
         >
-          Assigned
+          Unassigned
         </Button>
       </div>
       <div className="col text-right">
         <Button
           variant="tertiary"
-          onClick={() => handleFilterChange(Filter.Completed)}
+          onClick={() => handleFilterChange(ApplicationFilter.Completed)}
           className={
-            filter === Filter.Completed
+            filter === ApplicationFilter.Completed
               ? 'table-controls__button--selected'
               : ''
           }

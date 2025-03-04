@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { TableColumn } from "../../../../components/table/TableColumn";
 import TableControls from "./tableControls";
 import ColumnSelect from "./columnSelect";
-import { Filter } from "../searchSlice";
-import "./TableHeader.css"; // Import the new CSS file
+import { ApplicationFilter } from '../../../../../generated/types';
+import './TableHeader.css'; // Import the new CSS file
 
 interface TableHeaderProps {
   columns: TableColumn[];
   handleColumnChange: (selectedColumns: TableColumn[]) => void;
-  handleFilterChange: (filter: Filter) => void;
-  filter: Filter;
+  handleFilterChange: (filter: ApplicationFilter) => void;
+  filter: ApplicationFilter;
 }
 
 const TableHeader: React.FC<TableHeaderProps> = ({

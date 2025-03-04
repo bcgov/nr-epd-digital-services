@@ -1,19 +1,16 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import debounce from 'lodash/debounce';
 import PageContainer from '../../../components/simple/PageContainer';
 import SearchInput from '../../../components/search/SearchInput';
 import { RequestStatus } from '../../../helpers/requests/status';
-import { searchApplications } from './searchApplications';
 import ApplicationResultsTable from './applicationResults/applicationResultsTable';
 import { TableColumn } from '../../../components/table/TableColumn';
 import { applicationResultColumns } from './applicationResults/tableColumnConfig';
-import { ApplicationResultDto } from './applicationResults/applicationResultDto';
-import { debounce } from 'lodash';
-
-export enum Filter {
-  All = 'ALL',
-  Assigned = 'ASSIGNED',
-  Completed = 'COMPLETED',
-}
+import {
+  ApplicationFilter,
+  ApplicationResultDto,
+} from '../../../../generated/types';
+import { useSearchApplicationsQuery } from './hooks/SearchApplications.generated';
 
 const Search: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -22,64 +19,60 @@ const Search: React.FC = () => {
   const [columns, setColumns] = useState<TableColumn[]>(
     applicationResultColumns,
   );
-  const [filter, setFilter] = useState<Filter>(Filter.All);
+  const [filter, setFilter] = useState<ApplicationFilter>(
+    ApplicationFilter.All,
+  );
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
   const [totalResults, setTotalResults] = useState<number>(0);
 
-  const handleSearchChange = useCallback(
-    debounce((event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchTerm(event.target.value);
-    }, 300),
+  const [searchParams, setSearchParams] = useState({
+    searchTerm: '',
+    page: 1,
+    pageSize: 5,
+    filter: ApplicationFilter.All,
+  });
+
+  const { data, error } = useSearchApplicationsQuery({
+    variables: {
+      searchParam: searchParams.searchTerm,
+      page: searchParams.page,
+      pageSize: searchParams.pageSize,
+      filter: searchParams.filter,
+    },
+  });
+
+  useEffect(() => {
+    if (data) {
+      setResults(data.searchApplications.applications);
+      setTotalResults(data.searchApplications.count);
+      setRequestStatus(RequestStatus.success);
+    } else if (error) {
+      setRequestStatus(RequestStatus.failed);
+    }
+  }, [data, error]);
+
+  const debouncedSearch = useCallback(
+    debounce(
+      (
+        searchTerm: string,
+        page: number,
+        pageSize: number,
+        filter: ApplicationFilter,
+      ) => {
+        setSearchParams({ searchTerm, page, pageSize, filter });
+        setRequestStatus(RequestStatus.loading);
+      },
+      300,
+    ),
     [],
   );
 
-  const clearSearch = () => {
-    setSearchTerm('');
-    setResults([]);
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchTerm = event.target.value;
+    setSearchTerm(searchTerm);
+    debouncedSearch(searchTerm, page, pageSize, filter);
   };
-
-  const handleColumnChange = (selectedColumns: TableColumn[]) => {
-    setColumns(selectedColumns);
-  };
-
-  const handleFilterChange = (filter: Filter) => {
-    setFilter(filter);
-  };
-
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handlePageSizeChange = (newPageSize: number) => {
-    setPageSize(newPageSize);
-  };
-
-  useEffect(() => {
-    const fetchSearchResults = async () => {
-      setRequestStatus(RequestStatus.loading);
-      try {
-        const { applications, count } = await searchApplications(
-          searchTerm,
-          page,
-          pageSize,
-          filter,
-        );
-        setResults(applications);
-        setTotalResults(count);
-        setRequestStatus(RequestStatus.success);
-      } catch (error) {
-        setRequestStatus(RequestStatus.failed);
-      }
-    };
-
-    if (searchTerm) {
-      fetchSearchResults();
-    } else {
-      setResults([]);
-      setRequestStatus(RequestStatus.idle);
-    }
-  }, [searchTerm, page, pageSize, filter]);
 
   return (
     <PageContainer role="Search">
@@ -87,19 +80,19 @@ const Search: React.FC = () => {
       <SearchInput
         searchTerm={searchTerm}
         handleSearchChange={handleSearchChange}
-        clearSearch={clearSearch}
+        clearSearch={() => setSearchTerm('')}
         placeHolderText="Search"
       />
       <ApplicationResultsTable
         columns={columns}
         results={results}
         requestStatus={requestStatus}
-        handleColumnChange={handleColumnChange}
-        handleFilterChange={handleFilterChange}
+        handleColumnChange={setColumns}
+        handleFilterChange={setFilter}
         page={page}
         pageSize={pageSize}
-        handlePageChange={handlePageChange}
-        handlePageSizeChange={handlePageSizeChange}
+        handlePageChange={setPage}
+        handlePageSizeChange={setPageSize}
         showPageOptions={true}
         totalResults={totalResults}
         filter={filter}
