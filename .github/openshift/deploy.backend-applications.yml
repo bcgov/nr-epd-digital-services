@@ -85,6 +85,9 @@ objects:
       labels:
         app: ${NAME}-${COMPONENT}
       name: ${NAME}-${COMPONENT}
+      annotations:
+        # Highlighted Change: Added image trigger annotation
+        image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"${NAME}-${COMPONENT}:${IMAGE_TAG}","namespace":"e38158-${ENV}"},"fieldPath":"spec.template.spec.containers[?(@.name==\"${NAME}-${COMPONENT}\")].image"}]'
     spec:
       replicas: 1
       selector:
