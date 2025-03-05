@@ -49,12 +49,13 @@
   },
   "scripts": {
     "start": "npm run dev",
-    "dev": "concurrently \"vite\" \"graphql-codegen --watch\"",
+    "dev": "concurrently \"vite\" \"npm run codegen:watch\"",
     "build": "vite build",
     "serve": "vite preview",
     "test": "vitest",
     "test:cov": "npm test -- --coverage",
     "codegen": "graphql-codegen --config ./codegen.mts",
+    "codegen:watch": "npm run codegen -- --watch",
     "format": "prettier --write \"./src/**/*.{js,ts,jsx,tsx,json,css}\""
   },
   "eslintConfig": {
