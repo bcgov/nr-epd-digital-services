@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - 'dev'
+      - 'srs-870-fixingenv'
      
                              
     paths:

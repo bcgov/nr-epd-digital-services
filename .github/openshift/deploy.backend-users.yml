@@ -173,7 +173,10 @@ objects:
                 - name: LOG_FILE_MAX_FILES
                   value: 7d
                 - name: KEYCLOCK_MASTER_REALM
-                  value: master
+                  valueFrom:
+                    secretKeyRef:
+                      name: keycloak
+                      key: KEYCLOCK_MASTER_REALM
                 - name: KEYCLOCK_USERNAME
                   valueFrom:
                     secretKeyRef:
@@ -194,11 +197,6 @@ objects:
                     secretKeyRef:
                       name: keycloak
                       key: KEYCLOCK_GRANT_TYPE
-                - name: KEYCLOCK_MASTER_REALM
-                  valueFrom:
-                    secretKeyRef:
-                      name: keycloak
-                      key: KEYCLOCK_MASTER_REALM
                 - name: LRS_APPROVING_AUTHORITY_GROUP_NAME
                   value: lrs-approving-authority
               ports:
