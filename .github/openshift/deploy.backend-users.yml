@@ -198,24 +198,24 @@ objects:
                 cpu: ${CPU_LIMIT}
                 memory: ${MEMORY_LIMIT}
             readinessProbe:
-                httpGet:
-                  port: ${{CONTAINER_PORT}}
-                  scheme: HTTP
-                initialDelaySeconds: 10
-                periodSeconds: 30
-                timeoutSeconds: 5
-                failureThreshold: 30
-                successThreshold: 1
+              httpGet:
+                port: ${{CONTAINER_PORT}}
+                scheme: HTTP
+              initialDelaySeconds: 10
+              periodSeconds: 30
+              timeoutSeconds: 5
+              failureThreshold: 30
+              successThreshold: 1
             livenessProbe:
-                successThreshold: 1
-                failureThreshold: 3
-                httpGet:
-                  path: /
-                  port: ${{CONTAINER_PORT}}
-                  scheme: HTTP
-                initialDelaySeconds: 10
-                periodSeconds: 30
-                timeoutSeconds: 5
+              successThreshold: 1
+              failureThreshold: 3
+              httpGet:
+                path: /
+                port: ${{CONTAINER_PORT}}
+                scheme: HTTP
+              initialDelaySeconds: 10
+              periodSeconds: 30
+              timeoutSeconds: 5
           initContainers:
           - name: epd-db-migration
             image: "image-registry.openshift-image-registry.svc:5000/e38158-${ENV}/${NAME}-${COMPONENT}-migration:${IMAGE_TAG}"
