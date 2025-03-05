@@ -89,7 +89,7 @@ objects:
         app: ${NAME}-${COMPONENT}
       name: ${NAME}-${COMPONENT}
       annotations:
-        # Added image trigger annotations
+        # Added image triggers
         image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"${NAME}-${COMPONENT}:${IMAGE_TAG}","namespace":"e38158-${ENV}"},"fieldPath":"spec.template.spec.containers[?(@.name==\"${NAME}-${COMPONENT}\")].image"}]'
     spec:
       replicas: 1
@@ -202,7 +202,7 @@ objects:
                 - name: LRS_APPROVING_AUTHORITY_GROUP_NAME
                   value: lrs-approving-authority
               ports:
-                - containerPort: ${{CONTAINER_PORT}}
+                - containerPort: ${CONTAINER_PORT}
                   protocol: TCP
               resources:
                 requests:
@@ -214,7 +214,7 @@ objects:
               readinessProbe:
                 httpGet:
                   path: /
-                  port: ${{CONTAINER_PORT}}
+                  port: ${CONTAINER_PORT}
                   scheme: HTTP
                 initialDelaySeconds: 10
                 periodSeconds: 30
@@ -226,7 +226,7 @@ objects:
                 failureThreshold: 3
                 httpGet:
                   path: /
-                  port: ${{CONTAINER_PORT}}
+                  port: ${CONTAINER_PORT}
                   scheme: HTTP
                 initialDelaySeconds: 10
                 periodSeconds: 30
@@ -296,7 +296,7 @@ objects:
         - name: ${CONTAINER_PORT}-tcp
           protocol: TCP
           port: 80
-          targetPort: ${{CONTAINER_PORT}}
+          targetPort: ${CONTAINER_PORT}
       selector:
         app: ${NAME}-${COMPONENT}
 
@@ -327,8 +327,8 @@ objects:
         apiVersion: apps/v1
         kind: Deployment
         name: "${NAME}-${COMPONENT}"
-      minReplicas: ${{MIN_REPLICAS}}
-      maxReplicas: ${{MAX_REPLICAS}}
+      minReplicas: ${MIN_REPLICAS}
+      maxReplicas: ${MAX_REPLICAS}
       metrics:
         - type: Resource
           resource:
