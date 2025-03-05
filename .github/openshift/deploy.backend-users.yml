@@ -163,6 +163,30 @@ objects:
                 configMapKeyRef:
                   name: keycloak-config
                   key: KEYCLOCK_REALM
+            - name: LOG_FILE_LOCATION
+              value: ./logs/sites-%DATE%.log
+            - name: LOG_FILE_MAX_SIZE
+              value: 25m
+            - name: LOG_FILE_MAX_FILES
+              value: 7d
+            - name: KEYCLOCK_MASTER_REALM
+              value: master
+            - name: KEYCLOCK_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak
+                  key: KEYCLOCK_USERNAME
+            - name: KEYCLOCK_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak
+                  key: KEYCLOCK_PASSWORD
+            - name: KEYCLOCK_ADMIN_CLIENT_ID
+              value: admin-cli
+            - name: KEYCLOCK_GRANT_TYPE
+              value: password
+            - name: LRS_APPROVING_AUTHORITY_GROUP_NAME
+              value: lrs-approving-authority
             ports:
             - containerPort: ${{CONTAINER_PORT}}
               protocol: TCP

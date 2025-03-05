@@ -81,7 +81,9 @@ objects:
           "REACT_APP_COMS_BUCKET": "${REACT_APP_COMS_BUCKET}",
           "REACT_APP_COMS_ACCESS_KEY_ID": "${REACT_APP_COMS_ACCESS_KEY_ID}",
           "REACT_APP_COMS_ACCESS_KEY": "${REACT_APP_COMS_ACCESS_KEY}",
-          "REACT_APP_COMS_ACCESS_REGION": "ca-central-1"
+          "REACT_APP_COMS_ACCESS_REGION": "ca-central-1",
+          "REACT_APP_CAMUNDA_API": "https://forms-flow-bpm-e38158-dev.apps.silver.devops.gov.bc.ca/camunda/engine-rest-ext/v1/task/",
+          "REACT_APP_FORMS_URL": "https://forms-flow-web-root-config-dev.apps.silver.devops.gov.bc.ca/"
         }
 
   # ImageStream
