@@ -7,6 +7,7 @@ import { LoggerService } from '../../logger/logger.service';
 
 import { AppParticipant } from '../../entities/appParticipant.entity';
 import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipantsDto';
+import { AppParticipantFilter } from 'src/app/dto/appParticipants/appParticipantFilter.enum';
 
 @Injectable()
 export class AppParticipantService {
@@ -25,10 +26,13 @@ export class AppParticipantService {
   async getAppParticipantsByAppId(
     applicationId: number,
     user: any,
+    filter: AppParticipantFilter
+    //filter: AppParticipantFilter
   ): Promise<ViewAppParticipantsDto[]> {
     try {
       //TODO: have the logger statements
       let result = [];
+      console.log('nupur - user:', user);
       if (user?.identity_provider === 'idir') {
         result = await this.appParticsRepository.find({
           where: { applicationId },
@@ -49,13 +53,21 @@ export class AppParticipantService {
           description: participant.participantRole.description,
           effectiveStartDate: participant.effectiveStartDate,
           effectiveEndDate: participant.effectiveEndDate,
-          isMinistry: participant.organization.isMinistry,
+          isMinistry: participant.participantRole.isMinistry,
         }));
 
+        let mainParticipants = [];
+        console.log('nupur - filter:', filter);
+        if (filter === AppParticipantFilter.MAIN) {
+            mainParticipants = transformedObjects.filter(
+            (participant) => participant.isMainParticipant === true,
+          );
+        }
         const appPartics = plainToInstance(
           ViewAppParticipantsDto,
-          transformedObjects,
+          filter === AppParticipantFilter.ALL ? transformedObjects : mainParticipants,
         );
+        console.log('nupur - appPartics:', appPartics);
         return appPartics;
       }
     } catch (error) {

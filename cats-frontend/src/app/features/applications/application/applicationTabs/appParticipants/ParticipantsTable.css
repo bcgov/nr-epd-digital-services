@@ -1,0 +1,23 @@
+.align-items-center {
+    display: flex;
+    align-items: center;
+  }
+
+  .widget-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .participants-title {
+    color: var(--typography-color-primary, #2d2d2d);
+    font-size: var(--typography-font-size-h4);
+    line-height: var(--typography-line-heights-regular, 24px);  
+    font-weight: var(--typography-font-weights-bold, 700);
+  }

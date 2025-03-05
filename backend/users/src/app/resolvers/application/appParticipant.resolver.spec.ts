@@ -5,6 +5,7 @@ import { GenericResponseProvider } from '../../dto/reponse/genericResponseProvid
 import { HttpStatus } from '@nestjs/common';
 import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipantsDto';
 import { AppParticipantResolver } from './appParticipant.resolver';
+import { AppParticipantFilter } from 'src/app/dto/appParticipants/appParticipantFilter.enum';
 
 describe('AppParticipantResolver', () => {
   let resolver: AppParticipantResolver;
@@ -81,6 +82,7 @@ describe('AppParticipantResolver', () => {
       const result = await resolver.getAppParticipantsByAppId(
         applicationId,
         user,
+        AppParticipantFilter.ALL
       );
 
       expect(
@@ -117,6 +119,7 @@ describe('AppParticipantResolver', () => {
       const result = await resolver.getAppParticipantsByAppId(
         applicationId,
         user,
+        AppParticipantFilter.ALL
       );
 
       expect(
