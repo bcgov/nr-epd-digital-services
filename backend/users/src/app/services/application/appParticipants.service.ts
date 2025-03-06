@@ -27,7 +27,6 @@ export class AppParticipantService {
     applicationId: number,
     user: any,
     filter: AppParticipantFilter
-    //filter: AppParticipantFilter
   ): Promise<ViewAppParticipantsDto[]> {
     try {
       //TODO: have the logger statements
@@ -57,7 +56,6 @@ export class AppParticipantService {
         }));
 
         let mainParticipants = [];
-        console.log('nupur - filter:', filter);
         if (filter === AppParticipantFilter.MAIN) {
             mainParticipants = transformedObjects.filter(
             (participant) => participant.isMainParticipant === true,

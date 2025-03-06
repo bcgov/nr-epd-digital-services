@@ -1,6 +1,6 @@
 import { Args, Int, Query, Resolver } from '@nestjs/graphql';
 import { AppParticipantService } from '../../services/application/appParticipants.service';
-import { AuthenticatedUser, Resource, Unprotected } from 'nest-keycloak-connect';
+import { AuthenticatedUser, Resource } from 'nest-keycloak-connect';
 import { HttpStatus, UsePipes } from '@nestjs/common';
 import { GenericResponseProvider } from '../../dto/reponse/genericResponseProvider';
 import { GenericValidationPipe } from '../../utils/validations/genericValidationPipe';
@@ -23,7 +23,6 @@ export class AppParticipantResolver {
   @UsePipes(new GenericValidationPipe()) // Apply generic validation pipe
   async getAppParticipantsByAppId(
     @Args('applicationId', { type: () => Int }) applicationId: number,
-    //@Args('pending', { type: () => Boolean, nullable: true }) pending: boolean,
     @AuthenticatedUser() user: any,
     @Args('filter', { type: () => AppParticipantFilter, nullable: true }) filter: AppParticipantFilter,
   ) {
