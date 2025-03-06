@@ -1,9 +1,67 @@
+import { start } from 'repl';
 import { PencilIcon, TickIcon } from '../../../../../components/common/icon';
-import { FormFieldType } from '../../../../../components/input-controls/IFormField';
+import { FormFieldType, IFormField } from '../../../../../components/input-controls/IFormField';
 import {
   ColumnSize,
   TableColumn,
 } from '../../../../../components/table/TableColumn';
+
+export const appParticipantsForm: { [key: string]: IFormField } = {
+  isMainParticipant: {
+    type: FormFieldType.Switch,
+    label: 'Main Participant',
+    graphQLPropertyName: 'isMainParticipant',
+    value: false,
+    colSize: 'col-lg-6 col-md-6 col-sm-12',
+    customLabelCss: 'custom-participant-lbl-text',
+  },
+  startDate: {
+    type: FormFieldType.Date,
+    label: 'Start Date',
+    graphQLPropertyName: 'effectiveStartDate',
+    value: '',
+    colSize: 'col-lg-6 col-md-6 col-sm-12',
+    customLabelCss: 'custom-participant-lbl-text',
+  },
+  endDate: {  
+    type: FormFieldType.Date,
+    label: 'End Date',
+    graphQLPropertyName: 'effectiveEndDate',
+    value: '',
+    colSize: 'col-lg-6 col-md-6 col-sm-12',
+    customLabelCss: 'custom-participant-lbl-text',
+  },
+  role: {
+    type: FormFieldType.DropDown,
+    label: 'Role',
+    graphQLPropertyName: 'description',
+    value: '',
+    colSize: 'col-lg-6 col-md-6 col-sm-12',
+    customLabelCss: 'custom-participant-lbl-text',
+  },
+  participantName: {
+    type: FormFieldType.DropDownWithSearch,
+    label: 'Person',
+    graphQLPropertyName: 'fullName',
+    value: '',
+    colSize: 'col-lg-6 col-md-6 col-sm-12',
+    customLabelCss: 'custom-participant-lbl-text',
+  },
+  organization: {
+    type: FormFieldType.DropDownWithSearch,
+    label: 'Organization',
+    graphQLPropertyName: 'name',
+    value: '',
+    colSize: 'col-lg-6 col-md-6 col-sm-12',
+    customLabelCss: 'custom-participant-lbl-text',
+  },
+};
+ 
+export const addAppParticipantsForm: IFormField[][] = [
+  [appParticipantsForm.isMainParticipant, appParticipantsForm.startDate],
+  [appParticipantsForm.endDate, appParticipantsForm.role],
+  [appParticipantsForm.participantName, appParticipantsForm.organization],
+];
 
 export const GetConfig = () => {
   const participantColumnInternal: TableColumn[] = [
