@@ -7,6 +7,7 @@ import { GenericValidationPipe } from '../../utils/validations/genericValidation
 import { AppParticipantsResponse } from '../../dto/reponse/applicationParticipant/appParticipantsResponse';
 import { AppParticipantFilter } from 'src/app/dto/appParticipants/appParticipantFilter.enum';
 import { ViewAppParticipantsDto } from 'src/app/dto/appParticipants/viewAppParticipants.dto';
+import { LoggerService } from 'src/app/logger/logger.service';
 
 
 @Resolver(() => ViewAppParticipantsDto)
@@ -17,6 +18,7 @@ export class AppParticipantResolver {
     private readonly genericResponseProvider: GenericResponseProvider<
       ViewAppParticipantsDto[]
     >,
+    private readonly loggerSerivce: LoggerService,
   ) {}
 
   @Query(() => AppParticipantsResponse, { name: 'getAppParticipantsByAppId' })
@@ -26,13 +28,13 @@ export class AppParticipantResolver {
     @AuthenticatedUser() user: any,
     @Args('filter', { type: () => AppParticipantFilter, nullable: true }) filter: AppParticipantFilter,
   ) {
-    console.log('nupur - AppParticipantResolver user:', user);
     const result = await this.appParticipantService.getAppParticipantsByAppId(
       applicationId,
       user,
       filter
     );
     if (result?.length > 0) {
+      this.loggerSerivce.log('AppParticipantResolver.getAppParticipantsByAppId() RES:200 end');
       return this.genericResponseProvider.createResponse(
         'Participants fetched successfully',
         HttpStatus.OK,
@@ -40,6 +42,7 @@ export class AppParticipantResolver {
         result,
       );
     } else {
+      this.loggerSerivce.log('AppParticipantResolver.getAppParticipantsByAppId() RES:404 end');
       return this.genericResponseProvider.createResponse(
         `Participants data not found for app id: ${applicationId}`,
         HttpStatus.NOT_FOUND,

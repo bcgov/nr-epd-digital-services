@@ -6,11 +6,11 @@ import { UserMode } from '../../../../../helpers/requests/userMode';
 import Widget from '../../../../../components/widget/Widget';
 import { Button } from '../../../../../components/button/Button';
 import { Plus, UserPlus } from '../../../../../components/common/icon';
-import { GetAppParticipantsByAppIdQuery } from './hooks/Participants.generated';
 import { AppParticipantsTableControls } from './AppParticipantsTableControls';
 import { AppParticipantFilter } from '../../../../../../generated/types';
 import './ParticipantsTable.css';
 import { set } from 'date-fns';
+import { GetAppParticipantsByAppIdQuery } from './graphql/Participants.generated';
 interface IParticipantTableProps {
   handleTableChange: (event: any) => void;
   handleWidgetCheckBox: (event: any) => void;

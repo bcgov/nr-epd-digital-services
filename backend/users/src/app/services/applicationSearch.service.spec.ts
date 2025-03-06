@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { ApplicationSearchService } from './applicationSearch.service';
 import { Application } from '../entities/application.entity';
 import { LoggerService } from '../logger/logger.service';
-import { ApplicationFilter } from '../dto/applicationFilter.enum';
+import { ApplicationFilter } from '../utilities/enums/applicationFilter.enum';
 import { ApplicationSearchResponse } from '../dto/reponse/applicationSearchResponse';
 
 describe('ApplicationSearchService', () => {

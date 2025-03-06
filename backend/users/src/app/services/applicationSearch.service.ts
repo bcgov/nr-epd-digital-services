@@ -4,7 +4,7 @@ import { Repository, Brackets } from 'typeorm';
 import { Application } from '../entities/application.entity';
 import { ApplicationSearchResponse } from '../dto/reponse/applicationSearchResponse';
 import { LoggerService } from '../logger/logger.service';
-import { ApplicationFilter } from '../dto/applicationFilter.enum';
+import { ApplicationFilter } from '../utilities/enums/applicationFilter.enum';
 
 @Injectable()
 export class ApplicationSearchService {

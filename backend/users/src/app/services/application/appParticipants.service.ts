@@ -8,12 +8,14 @@ import { AppParticipant } from '../../entities/appParticipant.entity';
 
 import { AppParticipantFilter } from 'src/app/dto/appParticipants/appParticipantFilter.enum';
 import { ViewAppParticipantsDto } from 'src/app/dto/appParticipants/viewAppParticipants.dto';
+import { LoggerService } from 'src/app/logger/logger.service';
 
 @Injectable()
 export class AppParticipantService {
   constructor(
     @InjectRepository(AppParticipant)
     private readonly appParticsRepository: Repository<AppParticipant>,
+    private readonly loggerSerivce: LoggerService,
   ) {}
 
   /**
@@ -29,9 +31,8 @@ export class AppParticipantService {
     filter: AppParticipantFilter
   ): Promise<ViewAppParticipantsDto[]> {
     try {
-      //TODO: have the logger statements
+      this.loggerSerivce.log('at service layer getAppParticipantsByAppId start');
       let result = [];
-      console.log('nupur - user:', user);
       if (user?.identity_provider === 'idir') {
         result = await this.appParticsRepository.find({
           where: { applicationId },
@@ -65,10 +66,10 @@ export class AppParticipantService {
           ViewAppParticipantsDto,
           filter === AppParticipantFilter.ALL ? transformedObjects : mainParticipants,
         );
-        console.log('nupur - appPartics:', appPartics);
         return appPartics;
       }
     } catch (error) {
+      this.loggerSerivce.log('at service layer getAppParticipantsByAppId error');
       throw new HttpException(
         `Failed to retrieve app participants by appId: ${applicationId}`,
         HttpStatus.NOT_FOUND,

@@ -4,7 +4,7 @@ import { UserType } from '../../../../../helpers/requests/userType';
 import GetConfig from './ParticipantsConfig';
 import './Participants.css';
 import { AppParticipantFilter } from '../../../../../../generated/types';
-import { useGetAppParticipantsByAppIdQuery } from './hooks/Participants.generated';
+import { useGetAppParticipantsByAppIdQuery } from './graphql/Participants.generated';
 import { useEffect, useState } from 'react';
 
 export const Participants = () => {
