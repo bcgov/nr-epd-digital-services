@@ -17,7 +17,7 @@ crunchy: # enable it for TEST and PROD, for PR based pipelines simply use single
     s3:
       enabled: true # if enabled, below must be provided, in dev environment, it's not necessary to enable s3.
       retention: 1 # one day backup in object store.
-      bucket: nrsitetst
+      bucket: friskies
       endpoint: nrs.objectstore.gov.bc.ca
       fullBackupSchedule: 0 9 * * * # full backup at GMT 9
       incrementalBackupSchedule: 0 0/4 * * * # every four hours

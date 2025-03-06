@@ -18,7 +18,7 @@ crunchy: # enable it for TEST and PROD, for PR based pipelines simply use single
     s3:
       enabled: true
       retention: 1 # one day backup in object store for test environment
-      bucket: nrsitetst
+      bucket: whiskas
       endpoint: nrs.objectstore.gov.bc.ca
       accessKey: ~
       secretKey: ~
