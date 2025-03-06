@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TableColumn } from '../../../../../components/table/TableColumn';
 import { UserType } from '../../../../../helpers/requests/userType';
 import { RequestStatus } from '../../../../../helpers/requests/status';
@@ -6,8 +6,11 @@ import { UserMode } from '../../../../../helpers/requests/userMode';
 import Widget from '../../../../../components/widget/Widget';
 import { Button } from '../../../../../components/button/Button';
 import { Plus, UserPlus } from '../../../../../components/common/icon';
-import { GetAppParticipantsByAppIdQuery } from './hooks/Participants.generated';
-
+import { AppParticipantsTableControls } from './AppParticipantsTableControls';
+import { AppParticipantFilter } from '../../../../../../generated/types';
+import './ParticipantsTable.css';
+import { set } from 'date-fns';
+import { GetAppParticipantsByAppIdQuery } from './graphql/Participants.generated';
 interface IParticipantTableProps {
   handleTableChange: (event: any) => void;
   handleWidgetCheckBox: (event: any) => void;
@@ -29,6 +32,8 @@ interface IParticipantTableProps {
   approveRejectHandler?: (value: boolean) => void;
   showApproveRejectSection?: boolean;
   hideLabelForWidget?: boolean;
+  handleFilterChange: (filter: AppParticipantFilter) => void;
+  filter: AppParticipantFilter;
 }
 
 const ParticipantTable: React.FC<IParticipantTableProps> = ({
@@ -47,19 +52,42 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   showApproveRejectSection,
   approveRejectHandler,
   hideLabelForWidget,
+  handleFilterChange,
+  filter,
 }) => {
   showApproveRejectSection = showApproveRejectSection ?? false;
   hideLabelForWidget = hideLabelForWidget ?? false;
 
   approveRejectHandler = approveRejectHandler ?? (() => {});
 
+  const [filterOption, setFilterOption] = useState<AppParticipantFilter>(
+    AppParticipantFilter.All,
+  );
+
+  const onFilterChange = (newFilter: AppParticipantFilter) => {
+    setFilterOption(newFilter);
+    handleFilterChange(newFilter);
+  };
+
   return (
-    <div>
+    <div className="widget-container">
+      <div className="widget-header">
+        <h4 className="participants-title">Participants</h4>
+
+        {userType === UserType.Internal && (
+          <div className="d-flex gap-2 flex-wrap">
+            <AppParticipantsTableControls
+              handleFilterChange={onFilterChange}
+              filter={filterOption}
+            />
+          </div>
+        )}
+      </div>
       <Widget
         currentPage={1}
         changeHandler={handleTableChange}
         handleCheckBoxChange={(event) => handleWidgetCheckBox(event)}
-        title={'Participants'}
+        title={''}
         tableColumns={internalRow}
         tableData={formData ?? []}
         tableIsLoading={loading ? RequestStatus.loading : RequestStatus.idle}
