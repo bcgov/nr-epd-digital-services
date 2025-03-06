@@ -3,11 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { plainToInstance } from 'class-transformer';
 
 import { Repository } from 'typeorm';
-import { LoggerService } from '../../logger/logger.service';
 
 import { AppParticipant } from '../../entities/appParticipant.entity';
-import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipantsDto';
+
 import { AppParticipantFilter } from 'src/app/dto/appParticipants/appParticipantFilter.enum';
+import { ViewAppParticipantsDto } from 'src/app/dto/appParticipants/viewAppParticipants.dto';
 
 @Injectable()
 export class AppParticipantService {

@@ -3,9 +3,9 @@ import { AppParticipantService } from '../../services/application/appParticipant
 import { GenericResponseProvider } from '../../dto/reponse/genericResponseProvider';
 
 import { HttpStatus } from '@nestjs/common';
-import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipantsDto';
 import { AppParticipantResolver } from './appParticipant.resolver';
 import { AppParticipantFilter } from 'src/app/dto/appParticipants/appParticipantFilter.enum';
+import { ViewAppParticipantsDto } from 'src/app/dto/appParticipants/viewAppParticipants.dto';
 
 describe('AppParticipantResolver', () => {
   let resolver: AppParticipantResolver;

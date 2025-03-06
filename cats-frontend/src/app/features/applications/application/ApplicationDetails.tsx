@@ -31,7 +31,6 @@ const ApplicationDetails = () => {
   };
 
   useEffect(() => {
-
     const handleScroll = () => {
       if (window.scrollY > 5) {
         // Adjust the scroll position as needed
