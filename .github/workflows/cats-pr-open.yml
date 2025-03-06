@@ -23,8 +23,8 @@ jobs:
         package: [backend, cats-frontend ]
         include:
           - package: backend
-            build_file: ./backend-cats/Dockerfile
-            build_context: backend-cats
+            build_file: ./backend/cats/Dockerfile
+            build_context: backend/cats
           - package: cats-frontend
             build_file: ./cats-frontend/Dockerfile
             build_context: cats-frontend
@@ -56,7 +56,7 @@ jobs:
     uses: ./.github/workflows/.deployer.yml
     secrets: inherit
     with:
-      triggers: ('backend-cats/' 'cats-frontend/' 'charts/' '.github/workflows/')
+      triggers: ('backend/cats/' 'cats-frontend/' 'charts/' '.github/workflows/')
       values: 'values-pr.yaml' # PR specific values file.
       db_user: cats-${{ github.event.number }}
       timeout-minutes: 60
