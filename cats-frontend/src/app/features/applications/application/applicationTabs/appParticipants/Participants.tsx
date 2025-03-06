@@ -7,25 +7,27 @@ import { AppParticipantFilter } from '../../../../../../generated/types';
 import { useGetAppParticipantsByAppIdQuery } from './hooks/Participants.generated';
 import { useEffect, useState } from 'react';
 
-
 export const Participants = () => {
   //const { id } = useParams<{ id?: string }>();  //TODO when we have the applicationId available at ALL Applications page
   const applicationId = 1; //hardcoded for now
- 
+
   const { participantColumnInternal } = GetConfig();
 
   const [data, setData] = useState<any>([]);
 
   const [loading, setLoading] = useState(false);
- 
-  const [filterOption, setFilterOption] = useState<AppParticipantFilter>(AppParticipantFilter.All);
-  
-  const { data: queryData, loading: queryLoading } = useGetAppParticipantsByAppIdQuery({
-    variables: {
-      applicationId,
-      filter: filterOption
-    },
-  });
+
+  const [filterOption, setFilterOption] = useState<AppParticipantFilter>(
+    AppParticipantFilter.All,
+  );
+
+  const { data: queryData, loading: queryLoading } =
+    useGetAppParticipantsByAppIdQuery({
+      variables: {
+        applicationId,
+        filter: filterOption,
+      },
+    });
 
   useEffect(() => {
     setData(queryData?.getAppParticipantsByAppId?.data);
@@ -34,7 +36,7 @@ export const Participants = () => {
 
   const updateFilter = (newFilter: AppParticipantFilter) => {
     setFilterOption(newFilter);
-  }
+  };
 
   return (
     <div>

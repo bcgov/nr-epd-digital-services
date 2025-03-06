@@ -60,8 +60,10 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
 
   approveRejectHandler = approveRejectHandler ?? (() => {});
 
-  const [filterOption, setFilterOption] = useState<AppParticipantFilter>(AppParticipantFilter.All);
-  
+  const [filterOption, setFilterOption] = useState<AppParticipantFilter>(
+    AppParticipantFilter.All,
+  );
+
   const onFilterChange = (newFilter: AppParticipantFilter) => {
     setFilterOption(newFilter);
     handleFilterChange(newFilter);
@@ -70,16 +72,17 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   return (
     <div className="widget-container">
       <div className="widget-header">
+        <h4 className="participants-title">Participants</h4>
 
-          <h4 className="participants-title">Participants</h4>
-        
-          {userType === UserType.Internal && (
-            <div className="d-flex gap-2 flex-wrap">
-              <AppParticipantsTableControls handleFilterChange={onFilterChange} filter={filterOption}/>
-            </div>
-          )}
-  
-        </div>
+        {userType === UserType.Internal && (
+          <div className="d-flex gap-2 flex-wrap">
+            <AppParticipantsTableControls
+              handleFilterChange={onFilterChange}
+              filter={filterOption}
+            />
+          </div>
+        )}
+      </div>
       <Widget
         currentPage={1}
         changeHandler={handleTableChange}
@@ -107,7 +110,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
           </div>
         )}
       </Widget>
-      </div>
+    </div>
   );
 };
 
