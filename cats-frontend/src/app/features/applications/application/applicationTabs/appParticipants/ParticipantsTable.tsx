@@ -69,6 +69,29 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     handleFilterChange(newFilter);
   };
 
+  const initialAppParticipantDetails = {
+    isMainParticipant: false,
+    startDate: new Date(),
+    endDate: new Date(),
+    role: '',
+    person: '',
+    organization: '',
+  }
+
+  const [appParticipant, setAppParticipant] = useState({
+    isAppParticipantModal: false,
+    appParticipantDetails: initialAppParticipantDetails,
+    appParticipantActionType: 'View AppParticipants' as AppParticipantsActionTypes,
+  });
+
+  handleAddParticipant = () => {
+    setAppParticipant({
+      isAppParticipantModal: true,
+      appParticipantDetails: initialAppParticipantDetails,
+      appParticipantActionType: 'Add Participant',
+    });
+  }
+
   return (
     <div className="widget-container">
       <div className="widget-header">
@@ -108,7 +131,15 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
             </Button>
           </div>
         )}
+        {appParticipant.isAppParticipantModal && (
+          <ModalDialog headerLabel={appParticipant.appParticipantActionType}
+          saveButtonDisabled={true}
+          closeHandler={()=>{}}
+        >
+          <Form editMode={true} formRows={addAppParticipantsForm} formData={appParticipant.appParticipantDetails} handleInputChange={()=>{}}></Form>
+        </ModalDialog>)}
       </Widget>
+
     </div>
   );
 };
