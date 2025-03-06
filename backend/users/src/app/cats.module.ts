@@ -4,8 +4,8 @@ import { UserController } from './controllers/user.controller';
 import { KeycloakService } from './services/keycloak.service';
 import { LoggerService } from './logger/logger.service';
 import { Person } from './entities/person.entity';
-import { PersonResolver } from './resolvers/people.resolver';
-import { PersonService } from './services/people.service';
+import { PersonResolver } from './resolvers/people/people.resolver';
+import { PersonService } from './services/people/people.service';
 import { Timesheet } from './entities/timesheet.entity';
 import { AppParticipant } from './entities/appParticipant.entity';
 import { Application } from './entities/application.entity';
@@ -51,9 +51,14 @@ import { Payment } from './entities/payment.entity';
 import { PaymentMethod } from './entities/paymentMethod.entity';
 import { Organization } from './entities/organization.entity';
 import { ParticipantRole } from './entities/participantRole.entity';
+import { ApplicationSearchResolver } from './resolvers/applicationSearch.resolver';
+import { ApplicationSearchService } from './services/applicationSearch.service';
 import { AppParticipantService } from './services/application/appParticipants.service';
-import { AppParticipantResolver } from './resolvers/appParticipant.resolver';
+import { AppParticipantResolver } from './resolvers/application/appParticipant.resolver';
 import { GenericResponseProvider } from './dto/reponse/genericResponseProvider';
+import { PersonNote } from './entities/personNote.entity';
+import { PersonNoteResolver } from './resolvers/note/personNote.resolver';
+import { PersonNoteService } from './services/note/personNote.service';
 /**
  * Module for wrapping all functionalities in user microserivce
  */
@@ -106,9 +111,20 @@ import { GenericResponseProvider } from './dto/reponse/genericResponseProvider';
       PaymentMethod,
       Organization,
       ParticipantRole,
+      PersonNote,
     ]),
   ],
-  providers: [PersonResolver, PersonService, AppParticipantService, AppParticipantResolver, GenericResponseProvider, KeycloakService, LoggerService],
+  providers: [
+    PersonResolver,
+    PersonService,
+    ApplicationSearchResolver,
+    ApplicationSearchService,
+    AppParticipantService,
+    AppParticipantResolver,
+    GenericResponseProvider,
+    PersonNoteResolver, PersonNoteService, KeycloakService,
+    LoggerService,
+  ],
   controllers: [UserController],
 })
-export class CatsModule { }
+export class CatsModule {}

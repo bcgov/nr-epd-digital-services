@@ -2,9 +2,9 @@ apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: ${NAME}
-labels:
-  app: ${NAME}-${COMPONENT}
-  app.kubernetes.io/part-of: ${NAME}-${COMPONENT}
+  labels:
+    app: ${NAME}-${COMPONENT}
+    app.kubernetes.io/part-of: ${NAME}-${COMPONENT}
 parameters:
   - name: NAME
     description: Module name
@@ -81,7 +81,9 @@ objects:
           "REACT_APP_COMS_BUCKET": "${REACT_APP_COMS_BUCKET}",
           "REACT_APP_COMS_ACCESS_KEY_ID": "${REACT_APP_COMS_ACCESS_KEY_ID}",
           "REACT_APP_COMS_ACCESS_KEY": "${REACT_APP_COMS_ACCESS_KEY}",
-          "REACT_APP_COMS_ACCESS_REGION": "ca-central-1"
+          "REACT_APP_COMS_ACCESS_REGION": "ca-central-1",
+          "REACT_APP_CAMUNDA_API": "https://forms-flow-bpm-e38158-dev.apps.silver.devops.gov.bc.ca/camunda/engine-rest-ext/v1/task/",
+          "REACT_APP_FORMS_URL": "https://forms-flow-web-root-config-dev.apps.silver.devops.gov.bc.ca/"
         }
 
   # ImageStream
@@ -109,6 +111,9 @@ objects:
       labels:
         app: ${NAME}-${COMPONENT}
       name: ${NAME}-${COMPONENT}
+      annotations:
+        # Added image triggers
+        image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"${NAME}-${COMPONENT}:${IMAGE_TAG}","namespace":"e38158-${ENV}"},"fieldPath":"spec.template.spec.containers[?(@.name==\"${NAME}-${COMPONENT}\")].image"}]'
     spec:
       replicas: 1
       selector:

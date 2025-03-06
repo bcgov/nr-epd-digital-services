@@ -58,15 +58,15 @@ export const SearchResultsFilters: FC<SearchResultsFiltersProps> = ({
             <TableColumnsIcon />
             Columns
           </div>
-          <div
-            className={`table-actions-items ${panelToShow === 'filters' ? 'active' : ''}`}
+          {/* <div
+            className={`table-actions-items ${panelToShow === "filters" ? "active" : ""}`}
             onClick={() => {
               togglePanel('filters');
             }}
           >
             <FilterIcon />
             Filters
-          </div>
+          </div> */}
         </div>
         <Dropdown className="d-flex d-md-none">
           <Dropdown.Toggle as={Button} variant="tertiary">

@@ -13,9 +13,14 @@ export const fetchPerson = async (id: string) => {
     // Call the GraphQL query to fetch the person by ID
     const response = await getAxiosInstance().post(GRAPHQL, {
       query: print(GET_PERSON_BY_ID),
-      variables: { id: id },
+      variables: { id: parseFloat(id) },
     });
-    return response.data.data.findPersonById; // Return the person data
+    const result = response?.data?.data?.findPersonById; // Return the person data
+    if (result?.success) {
+      return result?.data[0];
+    } else {
+      console.error(result?.message);
+    }
   } catch (error) {
     console.error('Error fetching person:', error);
     throw new Error('Failed to fetch person');
@@ -23,17 +28,21 @@ export const fetchPerson = async (id: string) => {
 };
 
 // Update an existing person
-export const updatePerson = async (id: string, person: any) => {
+export const updatePerson = async (person: any) => {
   try {
     // Call the GraphQL mutation to update the person
-    const request = await getAxiosInstance().post(GRAPHQL, {
+    const response = await getAxiosInstance().post(GRAPHQL, {
       query: print(UPDATE_PERSON_BY_ID),
       variables: {
-        id: id,
         input: person,
       },
     });
-    return request.data.data.updatePerson; // Return the updated person
+    const result = response?.data?.data?.updatePerson; // Return the person data
+    if (result?.success) {
+      return result;
+    } else {
+      console.error(result?.message);
+    }
   } catch (error) {
     // Log the error and throw an exception
     console.error('Error updating person:', error);
@@ -48,10 +57,15 @@ export const createPerson = async (person: any) => {
     const request = await getAxiosInstance().post(GRAPHQL, {
       query: print(CREATE_PERSON),
       variables: {
-        input: person,
+        person: person,
       },
     });
-    return request.data.data.createPerson; // Return the created person
+    const result = request?.data?.data?.createPerson; // Return the created person
+    if (result?.success) {
+      return result;
+    } else {
+      console.error(result?.message);
+    }
   } catch (error) {
     // Log the error and throw an exception
     console.error('Error creating person:', error);

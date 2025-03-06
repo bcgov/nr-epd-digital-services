@@ -1,0 +1,53 @@
+query SearchApplications(
+  $searchParam: String!
+  $page: Int!
+  $pageSize: Int!
+  $filter: ApplicationFilter!
+) {
+  searchApplications(
+    searchParam: $searchParam
+    page: $page
+    pageSize: $pageSize
+    filter: $filter
+  ) {
+    applications {
+      id
+      siteId
+      siteAddress
+      applicationType
+      lastUpdated
+      status
+      staffAssigned {
+        address_1
+        address_2
+        city
+        country
+        createdBy
+        createdDatetime
+        email
+        fax
+        firstName
+        id
+        isActive
+        isDeleted
+        isEnvConsultant
+        isTaxExempt
+        lastName
+        loginUserName
+        middleName
+        mobile
+        phone
+        postal
+        prov
+        rowVersionCount
+        updatedBy
+        updatedDatetime
+      }
+      priority
+      url
+    }
+    count
+    page
+    pageSize
+  }
+}

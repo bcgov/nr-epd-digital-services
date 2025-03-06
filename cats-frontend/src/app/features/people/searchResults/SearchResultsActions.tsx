@@ -50,10 +50,7 @@ export const SearchResultsActions: FC<SearchResultsActionsProps> = ({
             fax: row.fax,
             email: row.email,
             isActive: false,
-            rowVersionCount: 1,
-            createdBy: '',
             updatedBy: '',
-            createdDatetime: new Date(),
             updatedDatetime: new Date(),
             isDeleted: true,
           };
@@ -88,10 +85,7 @@ export const SearchResultsActions: FC<SearchResultsActionsProps> = ({
           fax: row.fax,
           email: row.email,
           isActive: event === 'Active' ? true : false,
-          rowVersionCount: 1,
-          createdBy: '',
           updatedBy: '',
-          createdDatetime: new Date(),
           updatedDatetime: new Date(),
         };
       });

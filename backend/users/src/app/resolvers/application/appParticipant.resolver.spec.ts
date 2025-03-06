@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppParticipantResolver } from './appParticipant.resolver';
-import { AppParticipantService } from '../services/application/appParticipants.service';
-import { GenericResponseProvider } from '../dto/reponse/genericResponseProvider';
+import { AppParticipantService } from '../../services/application/appParticipants.service';
+import { GenericResponseProvider } from '../../dto/reponse/genericResponseProvider';
 
 import { HttpStatus } from '@nestjs/common';
-import { ViewAppParticipantsDto } from '../dto/appParticipants/viewAppParticipantsDto';
+import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipantsDto';
+import { AppParticipantResolver } from './appParticipant.resolver';
 
 describe('AppParticipantResolver', () => {
   let resolver: AppParticipantResolver;

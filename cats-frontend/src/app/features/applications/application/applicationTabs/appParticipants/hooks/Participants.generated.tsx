@@ -8,7 +8,7 @@ export type GetAppParticipantsByAppIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetAppParticipantsByAppIdQuery = { __typename?: 'Query', getAppParticipantsByAppId: { __typename?: 'AppParticipantsResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'AppParticipantsDto', id: number, applicationId: number, isMainParticipant: boolean, name: string, fullName: string, description: string, effectiveStartDate: any, effectiveEndDate?: any | null, isMinistry: boolean }> | null } };
+export type GetAppParticipantsByAppIdQuery = { __typename?: 'Query', getAppParticipantsByAppId: { __typename?: 'AppParticipantsResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewAppParticipantsDto', id: number, applicationId: number, isMainParticipant: boolean, name: string, fullName: string, description: string, effectiveStartDate: any, effectiveEndDate?: any | null, isMinistry: boolean }> | null } };
 
 
 export const GetAppParticipantsByAppIdDocument = gql`

@@ -70,6 +70,7 @@ export interface IFormField {
   customMenuMessage?: ReactNode;
   validation?: {
     required?: boolean;
+    onLoadValidation?: boolean;
     minLength?: number;
     maxLength?: number;
     pattern?: RegExp;

@@ -1,3 +1,7 @@
+:root {
+  --sidebar-default-width: 128px;
+}
+
 .App {
   text-align: center;
 }
@@ -46,66 +50,20 @@
   font-family: 'BC Sans', 'Helvetica Neue', Arial, sans-serif;
 }
 
-@media screen and (max-width: 768px) {
-  .display-from-medium {
-    display: none !important;
-  }
-}
-
-/* Ensure the parent container takes up the full height of the screen */
-.container {
-  display: flex;
-  width: 100%;
-  max-width: none; /* Remove any max-width constraints */
-  padding: 0; /* Remove padding */
-  margin: 0; /* Remove margin */
-}
-
-/* Sidebar styles */
 .sidebar-container {
-  width: 128px; /* Initial width */
-  transition: width 0.9s ease; /* Smooth transition for width */
-  height: 100%; /* Ensure full height of the sidebar */
-  cursor: pointer;
-  background: var(--surface-color-secondary-default);
-  box-shadow: 0px 3.2px 7.2px 0px rgba(0, 0, 0, 0.13);
-  border-right: 1px solid var(--surface-color-border-default, #d8d8d8);
-  /* min-width: 84px; */
-  max-width: 240px;
+  width: var(--sidebar-default-width);
+  z-index: 100;
 }
 
-.sidebar-container.expanded {
-  width: 240px; /* Expanded width on hover/click */
+.content-container {
+  margin-left: var(--sidebar-default-width);
+  width: calc(100% - var(--sidebar-default-width));
 }
 
-/* Main content styles */
-.main-content-container {
-  flex-grow: 1;
-  transition: margin-left 0.3s ease; /* Smooth transition for margin */
-  height: 100%; /* Ensure full height of the main content */
-}
-
-/* Ensure the layout is responsive */
+/* 768px is bootstrap's medium breakpoint */
 @media (max-width: 768px) {
-  .sidebar-container {
-    width: 80px; /* Smaller sidebar on mobile */
-  }
-
-  .sidebar-container.expanded {
-    width: 160px; /* Expanded sidebar on mobile */
-  }
-
-  .main-content-container {
+  .content-container {
     margin-left: 0;
-  }
-
-  .main-content-container.shifted {
-    margin-left: 160px; /* Adjust shift for mobile */
-  }
-}
-
-@media (max-width: 1024px) {
-  .sidebar-container.expanded {
-    width: 240px;
+    width: 100%;
   }
 }

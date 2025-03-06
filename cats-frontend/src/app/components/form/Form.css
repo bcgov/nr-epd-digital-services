@@ -324,22 +324,6 @@ input::placeholder {
   color: red;
 }
 
-.form-switch .form-check-input:checked {
-  background: var(--theme-blue-30, #c1ddfc);
-
-  border-color: var(--theme-blue-100);
-  --bs-form-switch-bg: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'-4%20-4%208%208'%3E%3Ccircle%20r%3D'3'%20fill%3D'%23F8BA47'%2F%3E%3C%2Fsvg%3E");
-}
-
-.form-switch .form-check-input {
-  background: var(--theme-gray-30, #eceae8);
-
-  border-color: var(--theme-gray-60);
-  border: 1px solid var(--theme-gray-60, #c6c5c3);
-
-  --bs-form-switch-bg: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'-4%20-4%208%208'%3E%3Ccircle%20r%3D'3'%20fill%3D'%23605E5C'%2F%3E%3C%2Fsvg%3E");
-}
-
 /* Switch */
 .custom-switch {
   display: flex;
@@ -387,13 +371,13 @@ input::placeholder {
 
 /* Selected */
 .custom-switch[data-selected] > .indicator {
-  background: var(--theme-blue-30, #c1ddfc);
+  background: var(--surface-brand-blue-30, #c1ddfc);
 }
 
 .custom-switch[data-selected] > .indicator::before {
   transform: translateX(100%);
-  background: var(--Theme-blue-100, #013366);
-  border: 1px solid var(--Theme-blue-70, #5595d9);
+  background: var(--surface-brand-blue-100, #053662);
+  border: 1px solid var(--surface-brand-blue-70, #5595d9);
 }
 
 /* Hover */
@@ -402,15 +386,15 @@ input::placeholder {
 }
 
 .custom-switch[data-hovered][data-selected] > .indicator {
-  background-color: var(--theme-blue-30, #c1ddfc);
+  background-color: var(--surface-brand-blue-30, #c1ddfc);
 }
 
 .custom-switch[data-hovered] > .indicator::before {
-  border: 1px solid var(--theme-gray-60, #c6c5c3);
+  border: 1px solid var(--surface-brand-gray-60, #c6c5c3);
 }
 
 .custom-switch[data-hovered][data-selected] > .indicator::before {
-  border: 1px solid var(--Theme-blue-70, #5595d9);
+  border: 1px solid var(--surface-brand-blue-70, #5595d9);
 }
 
 /* Focused */
@@ -431,7 +415,7 @@ input::placeholder {
 }
 
 .custom-switch[data-disabled] > .indicator::before {
-  background-color: var(--theme-gray-10);
+  background-color: var(--surface-brand-gray-10);
   border: var(--layout-border-width-medium) solid
     var(--surface-color-border-default);
 }

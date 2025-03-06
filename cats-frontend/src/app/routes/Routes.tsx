@@ -10,16 +10,23 @@ import { getLoggedInUserType } from '../helpers/utility';
 import Search from '../features/people/Search';
 import Person from '../features/people/person/Person';
 import ApplicationDetails from '../features/applications/application/ApplicationDetails';
+import ApplicationSearch from '../features/applications/search/Search';
 
 const roleBasedRoutes: any = {
   client: [
     { path: '/', element: <Search /> },
     { path: '/people', element: <Search /> },
-    { path: '/people/:id/Person', element: <Person /> },
-    { path: '/people/Person', element: <Person /> },
-    { path: '/application', element: <ApplicationDetails /> },
+    { path: '/person/:id', element: <Person /> },
+    { path: '/person', element: <Person /> },
+    { path: '/applications', element: <ApplicationSearch /> },
+    { path: '/applications/:id', element: <ApplicationDetails /> },
   ],
-  internal: [{ path: '/dashboard', element: <Dashboard /> }],
+  internal: [
+    { path: '/dashboard', element: <Dashboard /> },
+    { path: '/people', element: <Search /> },
+    { path: '/person/:id', element: <Person /> },
+    { path: '/person', element: <Person /> },
+  ],
 };
 
 // Create routes based on the user's role

@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Brackets } from 'typeorm';
-import { CreatePersonInput } from '../dto/createPersonInput';
-import { SearchPersonResponse } from '../dto/reponse/fetchSearchPerson';
-import { Person } from '../entities/person.entity';
-import { LoggerService } from '../logger/logger.service';
+import { SearchPersonResponse } from '../../dto/reponse/person/fetchSearchPerson';
+import { Person } from '../../entities/person.entity';
+import { LoggerService } from '../../logger/logger.service';
+import { CreatePerson } from '../../dto/person/createPerson.dto';
+import { UpdatePerson } from '../../dto/person/updatePerson.dto';
 
 @Injectable()
 export class PersonService {
@@ -15,7 +16,8 @@ export class PersonService {
   ) {}
 
   /** Fetch all person records */
-  async findAll(): Promise<Person[]> {
+  async findAll()
+  {
     try {
       this.loggerSerivce.log('at service layer findAll start');
       return await this.personRepository.find();
@@ -25,7 +27,8 @@ export class PersonService {
   }
 
   /** Find a person by ID */
-  async findOne(id: number): Promise<Person> {
+  async findOne(id: number)
+  {
     try {
       this.loggerSerivce.log('at service layer findOne start');
       return await this.personRepository.findOneBy({ id: id });
@@ -35,15 +38,14 @@ export class PersonService {
   }
 
   /** Create a new person record */
-  async create(input: CreatePersonInput): Promise<Person> {
+  async create(input: CreatePerson, userInfo: any)
+  {
     try {
       this.loggerSerivce.log('at service layer create start');
       const person = this.personRepository.create({
         ...input,
-        createdBy: 'system', // Placeholder, replace with actual user context
+        createdBy: userInfo ? userInfo.givenName : '',
         createdDatetime: new Date(),
-        updatedBy: 'system',
-        updatedDatetime: new Date(),
       });
       this.loggerSerivce.log('at service layer create end');
       return await this.personRepository.save(person);
@@ -53,7 +55,8 @@ export class PersonService {
   }
 
   /** Update existing person records */
-  async update(input: CreatePersonInput[]): Promise<boolean> {
+  async update(input: UpdatePerson[], userInfo: any)
+  {
     try {
       this.loggerSerivce.log('at service layer update start');
       for (const data of input) {
@@ -61,6 +64,7 @@ export class PersonService {
         const updatedPerson = {
           ...person,
           ...data,
+          updatedBy: userInfo ? userInfo.givenName : '',
           updatedDateTime: new Date(),
         };
         await this.personRepository.save(updatedPerson);
@@ -117,6 +121,12 @@ export class PersonService {
               searchParam: `%${searchParam.toLowerCase()}%`,
             })
             .orWhere('LOWER(person.prov) LIKE LOWER(:searchParam)', {
+              searchParam: `%${searchParam.toLowerCase()}%`,
+            })
+            .orWhere('LOWER(person.address_1) LIKE LOWER(:searchParam)', {
+              searchParam: `%${searchParam.toLowerCase()}%`,
+            })
+            .orWhere('LOWER(person.address_2) LIKE LOWER(:searchParam)', {
               searchParam: `%${searchParam.toLowerCase()}%`,
             })
             .orWhere('LOWER(person.postal) LIKE LOWER(:searchParam)', {

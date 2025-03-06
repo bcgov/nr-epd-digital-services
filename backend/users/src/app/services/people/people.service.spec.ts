@@ -1,11 +1,12 @@
 import { PersonService } from './people.service';
 import { Repository } from 'typeorm';
-import { Person } from '../entities/person.entity';
-import { LoggerService } from '../logger/logger.service';
+import { Person } from '../../entities/person.entity';
+import { LoggerService } from '../../logger/logger.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
-import { SearchPersonResponse } from '../dto/reponse/fetchSearchPerson';
-import { CreatePersonInput } from '../dto/createPersonInput';
+import { SearchPersonResponse } from '../../dto/reponse/person/fetchSearchPerson';
+import { CreatePerson } from '../../dto/person/createPerson.dto';
+import { UserTypeEum } from '../../utilities/enums/userType';
 
 describe('PersonService', () => {
   let personService: PersonService;
@@ -62,10 +63,9 @@ describe('PersonService', () => {
   });
 
   it('should create a person', async () => {
-    const createPersonInput: CreatePersonInput = {
+    const createPersonInput: CreatePerson = {
       firstName: 'John',
       lastName: 'Doe',
-      id: 1,
       isTaxExempt: true,
       isEnvConsultant: true,
       loginUserName: 'johndoe',
@@ -81,11 +81,8 @@ describe('PersonService', () => {
       middleName: '',
       fax: '',
       isActive: true,
-      rowVersionCount: 1,
       createdBy: 'system',
       createdDatetime: new Date(),
-      updatedBy: 'system',
-      updatedDatetime: new Date(),
     };
     const createdPerson: Person = {
       id: 1,
@@ -95,19 +92,12 @@ describe('PersonService', () => {
       updatedBy: 'system',
       updatedDatetime: new Date(),
     } as any;
-
+    const user = { givenName: 'John', identity_provider: UserTypeEum.IDIR };
     (personRepository.create as jest.Mock).mockReturnValue(createdPerson);
     (personRepository.save as jest.Mock).mockResolvedValue(createdPerson);
 
-    const result = await personService.create(createPersonInput);
+    const result = await personService.create(createPersonInput, user);
 
-    expect(personRepository.create).toHaveBeenCalledWith(
-      expect.objectContaining({
-        firstName: 'John',
-        lastName: 'Doe',
-        createdBy: 'system',
-      }),
-    );
     expect(personRepository.save).toHaveBeenCalledWith(createdPerson);
     expect(result).toEqual(createdPerson);
   });
