@@ -9,7 +9,8 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AppParticipant } from '../../entities/appParticipant.entity';
 import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipants.dto';
-import { AppParticipantFilter } from 'src/app/dto/appParticipants/appParticipantFilter.enum';
+import { AppParticipantFilter } from 'src/app/utilities/enums/appParticipantFilter.enum';
+
 
 describe('AppParticipantsService', () => {
   let service: AppParticipantService;

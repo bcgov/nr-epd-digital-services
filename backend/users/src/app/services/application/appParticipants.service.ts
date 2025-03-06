@@ -5,10 +5,9 @@ import { plainToInstance } from 'class-transformer';
 import { Repository } from 'typeorm';
 
 import { AppParticipant } from '../../entities/appParticipant.entity';
-
-import { AppParticipantFilter } from 'src/app/dto/appParticipants/appParticipantFilter.enum';
 import { ViewAppParticipantsDto } from 'src/app/dto/appParticipants/viewAppParticipants.dto';
 import { LoggerService } from 'src/app/logger/logger.service';
+import { AppParticipantFilter } from 'src/app/utilities/enums/appParticipantFilter.enum';
 
 @Injectable()
 export class AppParticipantService {

@@ -5,9 +5,9 @@ import { HttpStatus, UsePipes } from '@nestjs/common';
 import { GenericResponseProvider } from '../../dto/reponse/genericResponseProvider';
 import { GenericValidationPipe } from '../../utils/validations/genericValidationPipe';
 import { AppParticipantsResponse } from '../../dto/reponse/applicationParticipant/appParticipantsResponse';
-import { AppParticipantFilter } from 'src/app/dto/appParticipants/appParticipantFilter.enum';
 import { ViewAppParticipantsDto } from 'src/app/dto/appParticipants/viewAppParticipants.dto';
 import { LoggerService } from 'src/app/logger/logger.service';
+import { AppParticipantFilter } from 'src/app/utilities/enums/appParticipantFilter.enum';
 
 
 @Resolver(() => ViewAppParticipantsDto)

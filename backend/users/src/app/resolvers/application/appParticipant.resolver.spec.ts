@@ -4,8 +4,8 @@ import { GenericResponseProvider } from '../../dto/reponse/genericResponseProvid
 
 import { HttpStatus } from '@nestjs/common';
 import { AppParticipantResolver } from './appParticipant.resolver';
-import { AppParticipantFilter } from 'src/app/dto/appParticipants/appParticipantFilter.enum';
 import { ViewAppParticipantsDto } from 'src/app/dto/appParticipants/viewAppParticipants.dto';
+import { AppParticipantFilter } from 'src/app/utilities/enums/appParticipantFilter.enum';
 
 describe('AppParticipantResolver', () => {
   let resolver: AppParticipantResolver;
