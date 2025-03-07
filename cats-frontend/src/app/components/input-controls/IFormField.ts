@@ -36,7 +36,7 @@ export interface IFormField {
     | FormFieldType.Search
     | FormFieldType.Icon
     | FormFieldType.Switch;
-  label: string;
+  label?: string;
   isLabel?: boolean;
   placeholder?: string;
   colSize?: string;

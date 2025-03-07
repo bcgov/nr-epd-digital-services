@@ -27,7 +27,6 @@ const config: CodegenConfig = {
       plugins: ['introspection'],
     },
   },
-  ignoreNoDocuments: true,
 };
 
 export default config;
