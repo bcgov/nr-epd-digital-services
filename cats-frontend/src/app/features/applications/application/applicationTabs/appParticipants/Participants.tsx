@@ -42,14 +42,12 @@ export const Participants = () => {
     <div>
       <ParticipantTable
         handleTableChange={() => {}}
-        handleWidgetCheckBox={() => {}}
         internalRow={participantColumnInternal}
         userType={UserType.Internal}
         formData={data}
         viewMode={UserMode.Default}
         handleTableSort={() => {}}
         handleAddParticipant={() => {}}
-        selectedRows={[]}
         handleRemoveParticipant={() => {}}
         handleItemClick={() => {}}
         loading={loading}

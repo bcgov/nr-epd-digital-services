@@ -14,7 +14,7 @@ export class AppParticipantService {
   constructor(
     @InjectRepository(AppParticipant)
     private readonly appParticsRepository: Repository<AppParticipant>,
-    private readonly loggerSerivce: LoggerService,
+    private readonly loggerService: LoggerService,
   ) {}
 
   /**
@@ -30,7 +30,7 @@ export class AppParticipantService {
     filter: AppParticipantFilter
   ): Promise<ViewAppParticipantsDto[]> {
     try {
-      this.loggerSerivce.log('at service layer getAppParticipantsByAppId start');
+      this.loggerService.log('at service layer getAppParticipantsByAppId start');
       let result = [];
       if (user?.identity_provider === 'idir') {
         result = await this.appParticsRepository.find({
@@ -68,7 +68,7 @@ export class AppParticipantService {
         return appPartics;
       }
     } catch (error) {
-      this.loggerSerivce.log('at service layer getAppParticipantsByAppId error');
+      this.loggerService.log('at service layer getAppParticipantsByAppId error');
       throw new HttpException(
         `Failed to retrieve app participants by appId: ${applicationId}`,
         HttpStatus.NOT_FOUND,
