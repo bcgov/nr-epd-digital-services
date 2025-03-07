@@ -18,7 +18,7 @@ jobs:
     uses: ./.github/workflows/_build.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/users, frontend]
+        component: [backend/applications, backend/cats, frontend]
         include:
           - component: backend/applications
             triggers: ('backend/applications/')
@@ -50,7 +50,7 @@ jobs:
     uses: ./.github/workflows/_deploy.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/users, database, frontend]
+        component: [backend/applications, backend/cats, database, frontend]
         include:
           - component: database
             overwrite: false
