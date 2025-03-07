@@ -1,10 +1,11 @@
 import React from 'react';
 import { IWidget } from './IWidget';
 import Table from '../table/Table';
-import './Widget.css';
 import { CheckBoxInput } from '../input-controls/InputControls';
 import { FormFieldType } from '../input-controls/IFormField';
 import { RequestStatus } from '../../helpers/requests/status';
+
+import styles from './Widget.module.css';
 
 const Widget: React.FC<IWidget> = ({
   title,
@@ -33,7 +34,7 @@ const Widget: React.FC<IWidget> = ({
 
   return (
     <div
-      className={`d-flex flex-column widget-container ${customWidgetCss ?? ''}`}
+      className={`d-flex flex-column ${styles.widgetContainer} ${customWidgetCss ?? ''}`}
     >
       {!hideTitle && title && (
         <div className="d-flex align-items-center">
@@ -49,7 +50,7 @@ const Widget: React.FC<IWidget> = ({
           )}
           <div className="w-100 me-1">
             <h4
-              className={`${customLabelCss ?? `widget-lbl`} ${isRequired ? 'widget-required-field' : ''}`}
+              className={`${customLabelCss ?? styles.widgetLabel} ${isRequired ? styles.widgetRequiredField : ''}`}
             >
               {title}
             </h4>

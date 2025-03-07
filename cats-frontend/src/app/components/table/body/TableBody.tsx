@@ -20,6 +20,8 @@ import {
 } from '../../input-controls/InputControls';
 import { get } from '../utils';
 
+import styles from './TableBody.module.css';
+
 interface TableBodyProps {
   isLoading: RequestStatus;
   columns: TableColumn[];
@@ -546,7 +548,7 @@ const TableBody: FC<TableBodyProps> = ({
   };
 
   return (
-    <tbody>
+    <tbody className={styles.tbodyBaseStyles}>
       {data?.length === 0
         ? renderNoResultsFound()
         : data?.map((item: any, index: number) => renderTableRow(index))}

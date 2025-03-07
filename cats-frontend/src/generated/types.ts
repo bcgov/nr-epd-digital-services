@@ -208,6 +208,11 @@ export type QueryGetApplicationHousingByApplicationIdArgs = {
 };
 
 
+export type QueryGetApplicationHousingByApplicationIdArgs = {
+  applicationId: Scalars['Int']['input'];
+};
+
+
 export type QueryGetPersonNotesByPersonIdArgs = {
   id: Scalars['Float']['input'];
 };
