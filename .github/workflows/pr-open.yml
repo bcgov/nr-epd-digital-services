@@ -25,6 +25,8 @@ jobs:
             triggers:  ('backend/users/')
           - component: frontend
             triggers: ('frontend/')
+          - component: cats-frontend
+            triggers: ('cats-frontend/')
 
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
