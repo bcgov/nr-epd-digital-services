@@ -15,7 +15,7 @@ jobs:
     uses: ./.github/workflows/_build.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/gateway, backend/users, frontend, cats-frontend]
+        component: [backend/applications, backend/gateway, backend/users, frontend]
         include:
           - component: backend/applications
             triggers: ('backend/applications/')
@@ -25,8 +25,6 @@ jobs:
             triggers:  ('backend/users/')
           - component: frontend
             triggers: ('frontend/')
-          - component: cats-frontend
-            triggers: ('cats-frontend/')
 
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
