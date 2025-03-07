@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { BaseAppParticipantsDto } from './baseAppParticipantsDto';
+import { BaseAppParticipantsDto } from './baseAppParticipants.dto';
 
 @ObjectType()
 export class ViewAppParticipantsDto extends BaseAppParticipantsDto {
