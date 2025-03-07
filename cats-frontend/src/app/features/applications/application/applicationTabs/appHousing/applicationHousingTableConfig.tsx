@@ -114,7 +114,7 @@ export const applicationHousingColumns: TableColumn[] = [
           );
         });
 
-        return <>{applicationLinks}</>;
+        return applicationLinks;
       }
       return value;
     },
