@@ -59,6 +59,8 @@ import { GenericResponseProvider } from './dto/reponse/genericResponseProvider';
 import { PersonNote } from './entities/personNote.entity';
 import { PersonNoteResolver } from './resolvers/note/personNote.resolver';
 import { PersonNoteService } from './services/note/personNote.service';
+import { ApplicationHousingService } from './services/application/applicationHousing.service';
+import { ApplicationHousingResolver } from './resolvers/application/applicationHousing.resolver';
 /**
  * Module for wrapping all functionalities in user microserivce
  */
@@ -122,8 +124,12 @@ import { PersonNoteService } from './services/note/personNote.service';
     AppParticipantService,
     AppParticipantResolver,
     GenericResponseProvider,
-    PersonNoteResolver, PersonNoteService, KeycloakService,
+    PersonNoteResolver,
+    PersonNoteService,
+    KeycloakService,
     LoggerService,
+    ApplicationHousingResolver,
+    ApplicationHousingService,
   ],
   controllers: [UserController],
 })
