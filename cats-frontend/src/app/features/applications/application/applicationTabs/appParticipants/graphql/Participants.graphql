@@ -1,5 +1,5 @@
-query getAppParticipantsByAppId($applicationId: Int!) {
-  getAppParticipantsByAppId(applicationId: $applicationId) {
+query getAppParticipantsByAppId($applicationId: Int!, $filter: AppParticipantFilter!) {
+  getAppParticipantsByAppId(applicationId: $applicationId, filter: $filter) {
     httpStatusCode
     success
     message

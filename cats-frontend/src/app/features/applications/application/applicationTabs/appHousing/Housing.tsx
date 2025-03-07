@@ -3,7 +3,7 @@ import { Button } from '../../../../../components/button/Button';
 import { Plus } from '../../../../../components/common/icon';
 import Widget from '../../../../../components/widget/Widget';
 import { RequestStatus } from '../../../../../helpers/requests/status';
-import { applicationHousingColumns } from './applicationHousingTableConfig';
+import { getApplicationHousingColumns } from './applicationHousingTableConfig';
 import { useGetApplicationHousingByApplicationIdQuery } from './Housing.generated';
 
 export const Housing = () => {
@@ -26,7 +26,7 @@ export const Housing = () => {
       primaryKeycolumnName="id"
       tableData={data?.getApplicationHousingByApplicationId.data || []}
       title={'Housing'}
-      tableColumns={applicationHousingColumns}
+      tableColumns={getApplicationHousingColumns()}
       tableIsLoading={loading ? RequestStatus.loading : RequestStatus.idle}
       changeHandler={tableChangeHandler}
     >

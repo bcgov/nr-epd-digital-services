@@ -1,5 +1,5 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { IsDate, IsString, isString } from 'class-validator';
+import { IsDate, IsString } from 'class-validator';
 
 @ObjectType()
 @InputType()
