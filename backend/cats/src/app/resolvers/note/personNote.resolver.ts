@@ -1,15 +1,15 @@
-import { LoggerService } from '../../../app/logger/logger.service';
-import { GenericResponseProvider } from '../../../app/dto/reponse/genericResponseProvider';
+import { LoggerService } from '../../logger/logger.service';
+import { GenericResponseProvider } from '../../dto/reponse/genericResponseProvider';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthenticatedUser, Resource } from 'nest-keycloak-connect';
-import { PersonNoteService } from '../../../app/services/note/personNote.service';
+import { PersonNoteService } from '../../services/note/personNote.service';
 import { HttpStatus, UsePipes } from '@nestjs/common';
-import { GenericValidationPipe } from '../../../app/utilities/validations/genericValidationPipe';
-import { ViewPersonNote } from '../../../app/dto/note/viewPersonNote.dto';
-import { PersonNoteResponse } from '../../../app/dto/reponse/note/personNoteResponse';
-import { CreatePersonNote } from '../../../app/dto/note/createPersonNote.dto';
-import { UpdatePersonNote } from '../../../app/dto/note/updatePersonNote.dto';
-import { DeletePersonNote } from '../../../app/dto/note/deletePersonNote.dto';
+import { GenericValidationPipe } from '../../utilities/validations/genericValidationPipe';
+import { ViewPersonNote } from '../../dto/note/viewPersonNote.dto';
+import { PersonNoteResponse } from '../../dto/reponse/note/personNoteResponse';
+import { CreatePersonNote } from '../../dto/note/createPersonNote.dto';
+import { UpdatePersonNote } from '../../dto/note/updatePersonNote.dto';
+import { DeletePersonNote } from '../../dto/note/deletePersonNote.dto';
 
 @Resolver(() => ViewPersonNote)
 @Resource('user-service')
