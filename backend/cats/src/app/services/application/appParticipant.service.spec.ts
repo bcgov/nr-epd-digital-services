@@ -10,16 +10,19 @@ import { Repository } from 'typeorm';
 import { AppParticipant } from '../../entities/appParticipant.entity';
 import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipants.dto';
 import { AppParticipantFilter } from '../../utilities/enums/appParticipantFilter.enum';
+import { LoggerService } from '../../logger/logger.service';
 
 
-describe.skip('AppParticipantsService', () => {
+describe('AppParticipantsService', () => {
   let service: AppParticipantService;
   let appParticsRepo: Repository<AppParticipant>;
+  let loggerService: LoggerService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AppParticipantService,
+        LoggerService,
         {
           provide: getRepositoryToken(AppParticipant),
           useValue: {
@@ -31,6 +34,7 @@ describe.skip('AppParticipantsService', () => {
 
     service = module.get<AppParticipantService>(AppParticipantService);
     appParticsRepo = module.get<Repository<AppParticipant>>(getRepositoryToken(AppParticipant));
+    loggerService = module.get<LoggerService>(LoggerService);
   });
 
   it('should be defined', () => {
