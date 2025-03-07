@@ -22,7 +22,11 @@ const YesNoCodeCell = ({ value }: { value: YesNoCodeInput }) => {
   return '';
 };
 
-export const applicationHousingColumns: TableColumn[] = [
+// This needs to be a function, at least for now
+// The href in the Actions column needs to be evaluated on component mount, not on app load
+// This makes sure that the user is not redirected back to the tab they loaded the app to originally
+// If this beocmes a problem, we should try using a tertiary button there instead
+export const getApplicationHousingColumns = (): TableColumn[] => [
   {
     id: 1,
     displayName: 'Service',
