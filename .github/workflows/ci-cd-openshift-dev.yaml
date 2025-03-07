@@ -49,7 +49,7 @@ jobs:
     uses: ./.github/workflows/_code-cov.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/users, frontend]
+        component: [backend/applications, backend/users, frontend, cats-frontend]
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
