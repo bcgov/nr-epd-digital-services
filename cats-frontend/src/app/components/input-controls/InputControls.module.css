@@ -3,5 +3,5 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  color: var(--surface-color-primary-default, #053662) !important;
+  color: var(--surface-color-primary-default, #053662);
 }
