@@ -6,11 +6,13 @@ import { HttpStatus } from '@nestjs/common';
 import { AppParticipantResolver } from './appParticipant.resolver';
 import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipants.dto';
 import { AppParticipantFilter } from '../../utilities/enums/appParticipantFilter.enum';
+import { LoggerService } from '../../logger/logger.service';
 
-describe.skip('AppParticipantResolver', () => {
+describe('AppParticipantResolver', () => {
   let resolver: AppParticipantResolver;
   let appParticipantService: AppParticipantService;
   let genericResponseProvider: GenericResponseProvider<ViewAppParticipantsDto[]>;
+  let loggerService: LoggerService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -30,6 +32,15 @@ describe.skip('AppParticipantResolver', () => {
             createResponse: jest.fn(),
           },
         },
+        {
+          provide: LoggerService,
+          useValue: {
+            log: jest.fn(),
+            error: jest.fn(),
+            warn: jest.fn(),
+            debug: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -37,6 +48,7 @@ describe.skip('AppParticipantResolver', () => {
     appParticipantService = module.get<AppParticipantService>(
       AppParticipantService,
     );
+    loggerService = module.get<LoggerService>(LoggerService);
     genericResponseProvider = module.get<
       GenericResponseProvider<ViewAppParticipantsDto[]>
     >(GenericResponseProvider);
@@ -71,6 +83,7 @@ describe.skip('AppParticipantResolver', () => {
       };
       const applicationId = 1;
       const user = { id: 'user1' };
+      const filter = AppParticipantFilter.ALL;
 
       jest
         .spyOn(appParticipantService, 'getAppParticipantsByAppId')
@@ -82,12 +95,12 @@ describe.skip('AppParticipantResolver', () => {
       const result = await resolver.getAppParticipantsByAppId(
         applicationId,
         user,
-        AppParticipantFilter.ALL
+        filter
       );
 
       expect(
         appParticipantService.getAppParticipantsByAppId,
-      ).toHaveBeenCalledWith(applicationId, user);
+      ).toHaveBeenCalledWith(applicationId, user, filter);
 
       expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
         'Participants fetched successfully',
@@ -108,6 +121,7 @@ describe.skip('AppParticipantResolver', () => {
       };
       const applicationId = 1;
       const user = { id: 'user1' };
+      const filter = AppParticipantFilter.ALL;
 
       jest
         .spyOn(appParticipantService, 'getAppParticipantsByAppId')
@@ -119,12 +133,12 @@ describe.skip('AppParticipantResolver', () => {
       const result = await resolver.getAppParticipantsByAppId(
         applicationId,
         user,
-        AppParticipantFilter.ALL
+        filter
       );
 
       expect(
         appParticipantService.getAppParticipantsByAppId,
-      ).toHaveBeenCalledWith(applicationId, user);
+      ).toHaveBeenCalledWith(applicationId, user, filter );
 
       expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
         'Participants data not found for app id: 1',

@@ -12,8 +12,8 @@ export const appParticipantsForm: { [key: string]: IFormField } = {
     label: 'Main Participant',
     graphQLPropertyName: 'isMainParticipant',
     value: false,
-    colSize: 'col-lg-6 col-md-6 col-sm-12',
-    customLabelCss: 'custom-participant-lbl-text',
+    colSize: 'col-lg-12 col-md-12 col-sm-12',
+   
   },
   startDate: {
     type: FormFieldType.Date,
@@ -21,7 +21,7 @@ export const appParticipantsForm: { [key: string]: IFormField } = {
     graphQLPropertyName: 'effectiveStartDate',
     value: '',
     colSize: 'col-lg-6 col-md-6 col-sm-12',
-    customLabelCss: 'custom-participant-lbl-text',
+  
   },
   endDate: {  
     type: FormFieldType.Date,
@@ -29,38 +29,38 @@ export const appParticipantsForm: { [key: string]: IFormField } = {
     graphQLPropertyName: 'effectiveEndDate',
     value: '',
     colSize: 'col-lg-6 col-md-6 col-sm-12',
-    customLabelCss: 'custom-participant-lbl-text',
+  
   },
   role: {
     type: FormFieldType.DropDown,
     label: 'Role',
     graphQLPropertyName: 'description',
     value: '',
-    colSize: 'col-lg-6 col-md-6 col-sm-12',
-    customLabelCss: 'custom-participant-lbl-text',
+    colSize: 'col-lg-12 col-md-12 col-sm-12',
+
   },
   participantName: {
     type: FormFieldType.DropDownWithSearch,
     label: 'Person',
     graphQLPropertyName: 'fullName',
     value: '',
-    colSize: 'col-lg-6 col-md-6 col-sm-12',
-    customLabelCss: 'custom-participant-lbl-text',
+    colSize: 'col-lg-12 col-md-12 col-sm-12',
+    
   },
   organization: {
     type: FormFieldType.DropDownWithSearch,
     label: 'Organization',
     graphQLPropertyName: 'name',
     value: '',
-    colSize: 'col-lg-6 col-md-6 col-sm-12',
-    customLabelCss: 'custom-participant-lbl-text',
+    colSize: 'col-lg-12 col-md-12 col-sm-12',
+  
   },
 };
  
 export const addAppParticipantsForm: IFormField[][] = [
-  [appParticipantsForm.isMainParticipant, appParticipantsForm.startDate],
-  [appParticipantsForm.endDate, appParticipantsForm.role],
-  [appParticipantsForm.participantName, appParticipantsForm.organization],
+  [appParticipantsForm.isMainParticipant], [appParticipantsForm.startDate,
+  appParticipantsForm.endDate], [appParticipantsForm.role],
+  [appParticipantsForm.participantName], [appParticipantsForm.organization],
 ];
 
 export const GetConfig = () => {

@@ -18,7 +18,7 @@ export class AppParticipantResolver {
     private readonly genericResponseProvider: GenericResponseProvider<
       ViewAppParticipantsDto[]
     >,
-    private readonly loggerSerivce: LoggerService,
+    private readonly loggerService: LoggerService,
   ) {}
 
   @Query(() => AppParticipantsResponse, { name: 'getAppParticipantsByAppId' })
@@ -34,7 +34,7 @@ export class AppParticipantResolver {
       filter
     );
     if (result?.length > 0) {
-      this.loggerSerivce.log('AppParticipantResolver.getAppParticipantsByAppId() RES:200 end');
+      this.loggerService.log('AppParticipantResolver.getAppParticipantsByAppId() RES:200 end');
       return this.genericResponseProvider.createResponse(
         'Participants fetched successfully',
         HttpStatus.OK,
@@ -42,7 +42,7 @@ export class AppParticipantResolver {
         result,
       );
     } else {
-      this.loggerSerivce.log('AppParticipantResolver.getAppParticipantsByAppId() RES:404 end');
+      this.loggerService.log('AppParticipantResolver.getAppParticipantsByAppId() RES:404 end');
       return this.genericResponseProvider.createResponse(
         `Participants data not found for app id: ${applicationId}`,
         HttpStatus.NOT_FOUND,
