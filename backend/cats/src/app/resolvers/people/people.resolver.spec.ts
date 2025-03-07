@@ -2,10 +2,10 @@ import { PersonResolver } from './people.resolver';
 import { PersonService } from '../../services/people/people.service';
 import { LoggerService } from '../../logger/logger.service';
 import { HttpStatus, NotFoundException } from '@nestjs/common';
-import { GenericResponseProvider } from '../../../app/dto/reponse/genericResponseProvider';
-import { PersonResponse } from '../../../app/dto/reponse/person/personResponse';
+import { GenericResponseProvider } from '../../dto/reponse/genericResponseProvider';
+import { PersonResponse } from '../../dto/reponse/person/personResponse';
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserTypeEum } from '../../../app/utilities/enums/userType';
+import { UserTypeEum } from '../../utilities/enums/userType';
 
 describe('PersonResolver', () => {
 

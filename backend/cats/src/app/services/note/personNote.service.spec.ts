@@ -1,9 +1,9 @@
 import { PersonNoteService } from './personNote.service';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { LoggerService } from '../../../app/logger/logger.service';
-import { PersonNote } from '../../../app/entities/personNote.entity';
-import { UserTypeEum } from '../../../app/utilities/enums/userType';
+import { LoggerService } from '../../logger/logger.service';
+import { PersonNote } from '../../entities/personNote.entity';
+import { UserTypeEum } from '../../utilities/enums/userType';
 
 describe('PersonNoteService', () => {
   let service: PersonNoteService;

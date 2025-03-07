@@ -11,7 +11,7 @@ parameters:
     value: epd
   - name: COMPONENT
     description: Component name
-    value: backend-users
+    value: backend-cats
   - name: IMAGE_TAG
     description: Image tag to use
     value: latest
@@ -39,10 +39,10 @@ parameters:
     value: ghcr.io
   - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
-    value: bcgov/nr-epd-digital-services/backend/users
+    value: bcgov/nr-epd-digital-services/backend/cats
   - name: INIT_IMAGE
     description: Image (namespace/name:tag) to promote/import
-    value: bcgov/nr-epd-digital-services/backend/users-migration
+    value: bcgov/nr-epd-digital-services/backend/cats-migration
   - name: ENV
     description: The Environment on which it is deployed
     required: true
