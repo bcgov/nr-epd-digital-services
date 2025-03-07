@@ -36,9 +36,9 @@ jobs:
           - 5432:5432
     strategy:
       matrix:
-        dir: [cats/backend, cats-frontend]
+        dir: [backend/cats, cats-frontend]
         include:
-          - dir: cats/backend
+          - dir: backend/cats
             token: SONAR_TOKEN_BACKEND
           - dir: cats-frontend
             token: SONAR_TOKEN_FRONTEND
