@@ -2,11 +2,12 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import Person from './Person';
 import { fetchPerson } from './services/PersonService';
+import { jest } from '@jest/globals';
 
 // Mocking the API call
-// jest.mock('./services/PersonService', () => ({
-//   fetchPerson: jest.fn(),
-// }));
+jest.mock('./services/PersonService', () => ({
+  fetchPerson: jest.fn(),
+}));
 
 describe.skip('Person Component', () => {
   afterEach(() => {
