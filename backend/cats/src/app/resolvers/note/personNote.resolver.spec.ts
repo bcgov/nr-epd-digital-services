@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PersonNoteResolver } from './personNote.resolver';
-import { PersonNoteService } from '../../../app/services/note/personNote.service';
+import { PersonNoteService } from '../../services/note/personNote.service';
 import { LoggerService } from '../../logger/logger.service';
-import { GenericResponseProvider } from '../../../app/dto/reponse/genericResponseProvider';
-import { PersonNoteResponse } from '../../../app/dto/reponse/note/personNoteResponse';
-import { CreatePersonNote } from '../../../app/dto/note/createPersonNote.dto';
-import { UpdatePersonNote } from '../../../app/dto/note/updatePersonNote.dto';
-import { DeletePersonNote } from '../../../app/dto/note/deletePersonNote.dto';
+import { GenericResponseProvider } from '../../dto/reponse/genericResponseProvider';
+import { PersonNoteResponse } from '../../dto/reponse/note/personNoteResponse';
+import { CreatePersonNote } from '../../dto/note/createPersonNote.dto';
+import { UpdatePersonNote } from '../../dto/note/updatePersonNote.dto';
+import { DeletePersonNote } from '../../dto/note/deletePersonNote.dto';
 import { HttpStatus } from '@nestjs/common';
 
 describe('PersonNoteResolver', () => {

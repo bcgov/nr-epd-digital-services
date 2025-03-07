@@ -15,14 +15,14 @@ jobs:
     uses: ./.github/workflows/_build.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/gateway, backend/users, frontend]
+        component: [backend/applications, backend/gateway, frontend]
         include:
           - component: backend/applications
             triggers: ('backend/applications/')
           - component: backend/gateway
             triggers: ('backend/gateway/')
-          - component: backend/users
-            triggers:  ('backend/users/')
+          # - component: backend/users
+          #   triggers:  ('backend/users/')
           - component: frontend
             triggers: ('frontend/')
 
@@ -39,7 +39,7 @@ jobs:
     uses: ./.github/workflows/_code-cov.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/gateway, backend/users, frontend]
+        component: [backend/applications, backend/gateway, frontend]
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
