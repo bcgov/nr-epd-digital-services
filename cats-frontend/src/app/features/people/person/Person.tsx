@@ -442,11 +442,7 @@ const Person = () => {
             (personName.length > 0 ? personName : 'New Person')) ||
             ''}
         </div>
-        <Widget
-          title={'Contact Information'}
-          hideTable={true}
-          customWidgetCss="custom-widget"
-        >
+        <Widget title={'Contact Information'} hideTable={true}>
           <Form
             editMode={viewMode === UserMode.EditMode}
             formRows={contactInformationForm}
@@ -456,11 +452,7 @@ const Person = () => {
             }
           />
         </Widget>
-        <Widget
-          title={'Address'}
-          hideTable={true}
-          customWidgetCss="custom-widget"
-        >
+        <Widget title={'Address'} hideTable={true}>
           <Form
             editMode={viewMode === UserMode.EditMode}
             formRows={addrForm}

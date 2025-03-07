@@ -27,6 +27,8 @@ import {
   SwitchProps as ReactAriaSwitchProps,
 } from 'react-aria-components';
 
+import styles from './InputControls.module.css';
+
 interface InputProps extends IFormField {
   children?: InputProps[];
   isEditing?: boolean;
@@ -62,7 +64,7 @@ export const Link: React.FC<InputProps> = ({
   return renderTableCell(
     <RouterLink
       to={href + value}
-      className={`d-flex pt-1 ${customInputTextCss ?? ''}`}
+      className={`d-flex pt-1 ${styles.baseTableLinkStyles} ${customInputTextCss ?? ''}`}
       aria-label={`${label + ' ' + value}`}
       state={{ from: componentName ?? '' }}
       onClick={onChange}

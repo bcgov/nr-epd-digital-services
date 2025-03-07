@@ -64,7 +64,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         tableData={formData ?? []}
         tableIsLoading={loading ? RequestStatus.loading : RequestStatus.idle}
         aria-label="App Participant Widget"
-        customLabelCss="custom-participant-widget-lbl"
         hideTable={false}
         hideTitle={hideLabelForWidget}
         hideWidgetCheckbox={false}
