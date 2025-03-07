@@ -8,12 +8,20 @@ import { Button } from '../../../../../components/button/Button';
 import { Plus, UserPlus } from '../../../../../components/common/icon';
 import { AppParticipantsTableControls } from './AppParticipantsTableControls';
 import { AppParticipantFilter } from '../../../../../../generated/types';
-import './ParticipantsTable.css';
-import { set } from 'date-fns';
 import { GetAppParticipantsByAppIdQuery } from './graphql/Participants.generated';
+import { addAppParticipantsForm } from './ParticipantsConfig';
+import ModalDialog from '../../../../../components/modaldialog/ModalDialog';
+import Form from '../../../../../components/form/Form';
+
+import './ParticipantsTable.css';
+
+export const AppParticipantsActionTypes = {
+  AddParticipant: 'Add Participant',
+  EditParticipant: 'Edit Participant',
+  ViewAppParticipants: 'View AppParticipants',
+};
 interface IParticipantTableProps {
   handleTableChange: (event: any) => void;
-  handleWidgetCheckBox: (event: any) => void;
   internalRow: TableColumn[];
   userType: UserType;
   formData: GetAppParticipantsByAppIdQuery['getAppParticipantsByAppId']['data'];
@@ -21,12 +29,6 @@ interface IParticipantTableProps {
   viewMode: UserMode;
   handleTableSort: (row: any, ascDir: any) => void;
   handleAddParticipant: () => void;
-  selectedRows: {
-    participantId: any;
-    psnorgId: any;
-    prCode: string;
-    particRoleId: string;
-  }[];
   handleRemoveParticipant: (particIsDelete?: boolean) => void;
   handleItemClick: (value: string) => void;
   approveRejectHandler?: (value: boolean) => void;
@@ -38,7 +40,6 @@ interface IParticipantTableProps {
 
 const ParticipantTable: React.FC<IParticipantTableProps> = ({
   handleTableChange,
-  handleWidgetCheckBox,
   internalRow,
   userType,
   formData,
@@ -46,7 +47,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   viewMode,
   handleTableSort,
   handleAddParticipant,
-  selectedRows,
   handleRemoveParticipant,
   handleItemClick,
   showApproveRejectSection,
@@ -81,7 +81,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   const [appParticipant, setAppParticipant] = useState({
     isAppParticipantModal: false,
     appParticipantDetails: initialAppParticipantDetails,
-    appParticipantActionType: 'View AppParticipants' as AppParticipantsActionTypes,
+    appParticipantActionType: AppParticipantsActionTypes.ViewAppParticipants,
   });
 
   handleAddParticipant = () => {
@@ -109,7 +109,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
       <Widget
         currentPage={1}
         changeHandler={handleTableChange}
-        handleCheckBoxChange={(event) => handleWidgetCheckBox(event)}
         title={''}
         tableColumns={internalRow}
         tableData={formData ?? []}
@@ -117,8 +116,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         aria-label="App Participant Widget"
         hideTable={false}
         hideTitle={hideLabelForWidget}
-        hideWidgetCheckbox={false}
-        primaryKeycolumnName="particRoleId"
+        // primaryKeycolumnName="particRoleId"
         sortHandler={(row, ascDir) => {
           handleTableSort(row, ascDir);
         }}
