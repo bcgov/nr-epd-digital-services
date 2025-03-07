@@ -18,6 +18,11 @@ export type Scalars = {
   link__Import: { input: any; output: any; }
 };
 
+export enum AppParticipantFilter {
+  All = 'ALL',
+  Main = 'MAIN'
+}
+
 export type AppParticipantsResponse = {
   __typename?: 'AppParticipantsResponse';
   data?: Maybe<Array<ViewAppParticipantsDto>>;
@@ -194,7 +199,7 @@ export type QueryFindPersonByIdArgs = {
 
 export type QueryGetAppParticipantsByAppIdArgs = {
   applicationId: Scalars['Int']['input'];
-  pending?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<AppParticipantFilter>;
 };
 
 

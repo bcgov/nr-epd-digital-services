@@ -5,6 +5,7 @@ import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type GetAppParticipantsByAppIdQueryVariables = Types.Exact<{
   applicationId: Types.Scalars['Int']['input'];
+  filter: Types.AppParticipantFilter;
 }>;
 
 
@@ -12,8 +13,8 @@ export type GetAppParticipantsByAppIdQuery = { __typename?: 'Query', getAppParti
 
 
 export const GetAppParticipantsByAppIdDocument = gql`
-    query getAppParticipantsByAppId($applicationId: Int!) {
-  getAppParticipantsByAppId(applicationId: $applicationId) {
+    query getAppParticipantsByAppId($applicationId: Int!, $filter: AppParticipantFilter!) {
+  getAppParticipantsByAppId(applicationId: $applicationId, filter: $filter) {
     httpStatusCode
     success
     message
@@ -46,6 +47,7 @@ export const GetAppParticipantsByAppIdDocument = gql`
  * const { data, loading, error } = useGetAppParticipantsByAppIdQuery({
  *   variables: {
  *      applicationId: // value for 'applicationId'
+ *      filter: // value for 'filter'
  *   },
  * });
  */

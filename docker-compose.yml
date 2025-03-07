@@ -34,8 +34,6 @@ services:
     working_dir: "/app"
   database:
     user: postgres
-    ports:
-      - "6000:5432"
     networks:
       - app-tier
     container_name: database
@@ -197,13 +195,11 @@ services:
       - /app/node_modules
     working_dir: "/app"
 
-
-
-userapi_doc:
-  container_name: userapi_doc
-  build:
-    context: ./backend/documentation/users
-    dockerfile: ./Dockerfile
-  restart: always
-  ports:
-    - "4001:4001"
+  userapi_doc:
+    container_name: userapi_doc
+    build:
+      context: ./backend/documentation/users
+      dockerfile: ./Dockerfile
+    restart: always
+    ports:
+      - "4001:4001"

@@ -2,9 +2,9 @@ apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: ${NAME}
-labels:
-  app: ${NAME}-${COMPONENT}
-  app.kubernetes.io/part-of: ${NAME}-${COMPONENT}
+  labels:
+    app: ${NAME}-${COMPONENT}
+    app.kubernetes.io/part-of: ${NAME}-${COMPONENT}
 parameters:
   - name: NAME
     description: Module name

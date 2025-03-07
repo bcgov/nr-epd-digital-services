@@ -31,7 +31,6 @@ const ApplicationDetails = () => {
   };
 
   useEffect(() => {
-    console.log('nupur - window.scrollY is: ', window.scrollY);
     const handleScroll = () => {
       if (window.scrollY > 5) {
         // Adjust the scroll position as needed
