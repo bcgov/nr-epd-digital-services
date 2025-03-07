@@ -4,13 +4,13 @@ import Person from './Person';
 import { fetchPerson } from './services/PersonService';
 
 // Mocking the API call
-jest.mock('./services/PersonService', () => ({
-  fetchPerson: jest.fn(),
+vi.mock('./services/PersonService', () => ({
+  fetchPerson: vi.fn(),
 }));
 
 describe('Person Component', () => {
   afterEach(() => {
-    jest.clearAllMocks(); // Clears the mock state to prevent stale values
+    vi.clearAllMocks();
   });
 
   it('renders without crashing', () => {
