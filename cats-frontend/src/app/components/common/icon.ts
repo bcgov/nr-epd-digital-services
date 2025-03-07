@@ -45,6 +45,7 @@ import {
   // FaDrawPolygon,
   // FaMapPin,
   FaTrash,
+  FaQuestion,
 } from 'react-icons/fa6';
 
 import {
@@ -108,3 +109,4 @@ export const ListCheckIcon = FaListCheck;
 // export const DrawPolygon = FaDrawPolygon;
 // export const MapPin = FaMapPin;
 export const PlainTrashIcon = FaTrash;
+export const QuestionMarkIcon = FaQuestion;

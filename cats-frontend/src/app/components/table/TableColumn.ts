@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { IFormField } from '../input-controls/IFormField';
 
 // export enum ColumnType {
@@ -34,6 +35,7 @@ export class TableColumn {
     public columnSize?: ColumnSize,
     public stickyCol?: boolean,
     public customHeaderCss?: string,
+    public renderCell?: (value: any) => ReactNode,
   ) {
     this.dynamicColumn = dynamicColumn ?? false;
   }

@@ -38,6 +38,21 @@ export enum ApplicationFilter {
   Unassigned = 'UNASSIGNED'
 }
 
+export type ApplicationHousingDto = {
+  __typename?: 'ApplicationHousingDto';
+  housing: HousingDto;
+  id: Scalars['Int']['output'];
+};
+
+export type ApplicationHousingResponse = {
+  __typename?: 'ApplicationHousingResponse';
+  data: Array<ApplicationHousingDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type ApplicationResultDto = {
   __typename?: 'ApplicationResultDto';
   applicationType: Scalars['String']['output'];
@@ -89,6 +104,26 @@ export type CreatePersonNote = {
 
 export type DeletePersonNote = {
   id: Scalars['String']['input'];
+};
+
+export type HousingDto = {
+  __typename?: 'HousingDto';
+  effectiveDate?: Maybe<Scalars['DateTime']['output']>;
+  expiryDate?: Maybe<Scalars['DateTime']['output']>;
+  housingType: HousingType;
+  id: Scalars['Int']['output'];
+  isIndigenousLed: YesNoCodeDto;
+  isRental: YesNoCodeDto;
+  isSocial: YesNoCodeDto;
+  numberOfUnits: Scalars['Int']['output'];
+  relatedApplications: Array<Scalars['Int']['output']>;
+};
+
+export type HousingType = {
+  __typename?: 'HousingType';
+  abbrev: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
 };
 
 export type Mutation = {
@@ -150,6 +185,7 @@ export type Query = {
   findAllPerson: PersonResponse;
   findPersonById: PersonResponse;
   getAppParticipantsByAppId: AppParticipantsResponse;
+  getApplicationHousingByApplicationId: ApplicationHousingResponse;
   getPersonNotesByPersonId: PersonNoteResponse;
   searchApplications: ApplicationSearchResponse;
   searchPerson: SearchPersonResponse;
@@ -164,6 +200,11 @@ export type QueryFindPersonByIdArgs = {
 export type QueryGetAppParticipantsByAppIdArgs = {
   applicationId: Scalars['Int']['input'];
   filter?: InputMaybe<AppParticipantFilter>;
+};
+
+
+export type QueryGetApplicationHousingByApplicationIdArgs = {
+  applicationId: Scalars['Int']['input'];
 };
 
 
@@ -275,6 +316,12 @@ export type ViewPersonNote = {
   id: Scalars['String']['output'];
   noteDescription: Scalars['String']['output'];
   user?: Maybe<Scalars['String']['output']>;
+};
+
+export type YesNoCodeDto = {
+  __typename?: 'YesNoCodeDto';
+  abbrev: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
 };
 
 export type _Service = {

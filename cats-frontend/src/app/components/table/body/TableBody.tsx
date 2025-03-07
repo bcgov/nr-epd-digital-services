@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, ReactNode, useEffect, useState } from 'react';
 import { SpinnerIcon } from '../../common/icon';
 import { RequestStatus } from '../../../helpers/requests/status';
 import { TableColumn } from '../TableColumn';
@@ -160,7 +160,7 @@ const TableBody: FC<TableBodyProps> = ({
   const getTableCellHtml = (
     field: any,
     displayName: string,
-    value: string,
+    value: string | ReactNode,
     rowKey: number,
     href: string,
     changeHandler: any,
@@ -485,12 +485,19 @@ const TableBody: FC<TableBodyProps> = ({
       return '';
     }
 
-    const cellValue =
-      column.graphQLPropertyName &&
-      column.graphQLPropertyName
-        .split(',')
-        .map((graphQLPropertyName) => getValue(rowIndex, graphQLPropertyName))
-        .join(' ');
+    let cellData: any = column.graphQLPropertyName
+      .split(',')
+      .map((graphQLPropertyName) => getValue(rowIndex, graphQLPropertyName));
+
+    let cellValue: string | ReactNode;
+
+    if (column.renderCell && typeof column.renderCell === 'function') {
+      cellValue = cellData.map((data: any, i: number) => (
+        <React.Fragment key={i}>{column.renderCell!(data)}</React.Fragment>
+      ));
+    } else {
+      cellValue = cellData.join(' ');
+    }
 
     return getTableCellHtml(
       column.displayType,

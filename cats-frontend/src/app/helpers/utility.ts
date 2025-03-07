@@ -3,7 +3,8 @@ import { API } from './endpoints';
 import axios from 'axios';
 import { User } from 'oidc-client-ts';
 import { getClientSettings } from '../auth/UserManagerSetting';
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
+import { UTCDate } from '@date-fns/utc';
 import {
   FormFieldType,
   IFormField,
@@ -40,20 +41,30 @@ export const serializeDate = (data: any) => {
 
 export const formatDateRange = (
   range: [Date, Date],
-  dateFormate: string = 'MMMM do, yyyy',
+  dateFormat: string = 'MMMM do, yyyy',
 ) => {
   const [startDate, endDate] = range;
-  const formattedStartDate = format(startDate, dateFormate);
-  const formattedEndDate = format(endDate, dateFormate);
+  const formattedStartDate = format(startDate, dateFormat);
+  const formattedEndDate = format(endDate, dateFormat);
   return `${formattedStartDate} - ${formattedEndDate}`;
 };
 
 export const formatDate = (
   date: Date,
-  dateFormate: string = 'MMMM do, yyyy',
+  dateFormat: string = 'MMMM do, yyyy',
 ) => {
-  const formattedDate = format(date, dateFormate);
-  return `${formattedDate}`;
+  if (isValid(date)) {
+    return format(date, dateFormat);
+  }
+  return '';
+};
+
+export const formatDateUTC = (
+  date: Date | string,
+  dateFormat: string = 'MMMM do, yyyy',
+) => {
+  const utcDate = new UTCDate(date);
+  return formatDate(utcDate, dateFormat);
 };
 
 /*

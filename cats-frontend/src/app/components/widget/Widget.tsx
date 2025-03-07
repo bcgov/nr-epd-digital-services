@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { IWidget } from './IWidget';
 import Table from '../table/Table';
 import './Widget.css';
@@ -30,10 +30,6 @@ const Widget: React.FC<IWidget> = ({
   customWidgetCss,
 }) => {
   let widgetSortHandler = sortHandler ?? (() => {});
-  const [widgetData, setWidgetData] = useState(tableData);
-  useEffect(() => {
-    setWidgetData(tableData);
-  }, [tableData]);
 
   return (
     <div
@@ -67,7 +63,7 @@ const Widget: React.FC<IWidget> = ({
             label={title ?? ''}
             isLoading={tableIsLoading ?? RequestStatus.idle}
             columns={tableColumns ?? []}
-            data={widgetData}
+            data={tableData ?? []}
             showPageOptions={showPageOptions}
             allowRowsSelect={allowRowsSelect}
             changeHandler={changeHandler ?? (() => {})}
