@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ApplicationSearchResolver } from './applicationSearch.resolver';
 import { ApplicationSearchService } from '../services/applicationSearch.service';
-import { ApplicationSearchResponse } from '../dto/reponse/applicationSearchResponse';
+import { ApplicationSearchResponse } from '../dto/response/applicationSearchResponse';
 import { ApplicationFilter } from '../utilities/enums/applicationFilter.enum';
 
 describe('ApplicationSearchResolver', () => {

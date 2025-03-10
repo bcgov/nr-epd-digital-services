@@ -1,12 +1,12 @@
 import { LoggerService } from '../../logger/logger.service';
-import { GenericResponseProvider } from '../../dto/reponse/genericResponseProvider';
+import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthenticatedUser, Resource } from 'nest-keycloak-connect';
 import { PersonNoteService } from '../../services/note/personNote.service';
 import { HttpStatus, UsePipes } from '@nestjs/common';
 import { GenericValidationPipe } from '../../utilities/validations/genericValidationPipe';
 import { ViewPersonNote } from '../../dto/note/viewPersonNote.dto';
-import { PersonNoteResponse } from '../../dto/reponse/note/personNoteResponse';
+import { PersonNoteResponse } from '../../dto/response/note/personNoteResponse';
 import { CreatePersonNote } from '../../dto/note/createPersonNote.dto';
 import { UpdatePersonNote } from '../../dto/note/updatePersonNote.dto';
 import { DeletePersonNote } from '../../dto/note/deletePersonNote.dto';

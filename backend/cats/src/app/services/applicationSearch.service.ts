@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Brackets } from 'typeorm';
 import { Application } from '../entities/application.entity';
-import { ApplicationSearchResponse } from '../dto/reponse/applicationSearchResponse';
+import { ApplicationSearchResponse } from '../dto/response/applicationSearchResponse';
 import { LoggerService } from '../logger/logger.service';
 import { ApplicationFilter } from '../utilities/enums/applicationFilter.enum';
 
