@@ -5,7 +5,7 @@ import { ApplicationSearchService } from './applicationSearch.service';
 import { Application } from '../entities/application.entity';
 import { LoggerService } from '../logger/logger.service';
 import { ApplicationFilter } from '../utilities/enums/applicationFilter.enum';
-import { ApplicationSearchResponse } from '../dto/reponse/applicationSearchResponse';
+import { ApplicationSearchResponse } from '../dto/response/applicationSearchResponse';
 
 describe('ApplicationSearchService', () => {
   let service: ApplicationSearchService;

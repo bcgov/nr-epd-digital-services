@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { LoggerService } from '../../logger/logger.service';
 import { ApplicationHousingService } from './applicationHousing.service';
 import { HousingApplicationXref } from '../../entities/housingApplicationXref.entity';
-import { ApplicationHousingResponse } from '../../dto/reponse/applicationHousingResponse';
+import { ApplicationHousingResponse } from '../../dto/response/applicationHousingResponse';
 import { Housing } from '../../entities/housing.entity';
 import { Application } from '../../entities/application.entity';
 

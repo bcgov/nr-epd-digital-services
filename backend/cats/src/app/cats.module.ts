@@ -55,7 +55,7 @@ import { ApplicationSearchResolver } from './resolvers/applicationSearch.resolve
 import { ApplicationSearchService } from './services/applicationSearch.service';
 import { AppParticipantService } from './services/application/appParticipants.service';
 import { AppParticipantResolver } from './resolvers/application/appParticipant.resolver';
-import { GenericResponseProvider } from './dto/reponse/genericResponseProvider';
+import { GenericResponseProvider } from './dto/response/genericResponseProvider';
 import { PersonNote } from './entities/personNote.entity';
 import { PersonNoteResolver } from './resolvers/note/personNote.resolver';
 import { PersonNoteService } from './services/note/personNote.service';

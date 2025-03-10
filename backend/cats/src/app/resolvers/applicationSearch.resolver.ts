@@ -1,6 +1,6 @@
 import { Resolver, Query, Args, Int } from '@nestjs/graphql';
 import { ApplicationSearchService } from '../services/applicationSearch.service';
-import { ApplicationSearchResponse } from '../dto/reponse/applicationSearchResponse';
+import { ApplicationSearchResponse } from '../dto/response/applicationSearchResponse';
 import { ApplicationFilter } from '../utilities/enums/applicationFilter.enum';
 
 @Resolver()
