@@ -1,4 +1,3 @@
-import { start } from 'repl';
 import { PencilIcon, TickIcon } from '../../../../../components/common/icon';
 import { FormFieldType, IFormField } from '../../../../../components/input-controls/IFormField';
 import {
@@ -12,8 +11,7 @@ export const appParticipantsForm: { [key: string]: IFormField } = {
     label: 'Main Participant',
     graphQLPropertyName: 'isMainParticipant',
     value: false,
-    colSize: 'col-lg-12 col-md-12 col-sm-12',
-   
+    colSize: 'col-lg-12 col-md-12 col-sm-12', 
   },
   startDate: {
     type: FormFieldType.Date,
@@ -21,7 +19,6 @@ export const appParticipantsForm: { [key: string]: IFormField } = {
     graphQLPropertyName: 'effectiveStartDate',
     value: '',
     colSize: 'col-lg-6 col-md-6 col-sm-12',
-  
   },
   endDate: {  
     type: FormFieldType.Date,
@@ -29,15 +26,14 @@ export const appParticipantsForm: { [key: string]: IFormField } = {
     graphQLPropertyName: 'effectiveEndDate',
     value: '',
     colSize: 'col-lg-6 col-md-6 col-sm-12',
-  
   },
   role: {
     type: FormFieldType.DropDown,
     label: 'Role',
+    options: [],
     graphQLPropertyName: 'description',
     value: '',
     colSize: 'col-lg-12 col-md-12 col-sm-12',
-
   },
   participantName: {
     type: FormFieldType.DropDownWithSearch,
@@ -45,7 +41,6 @@ export const appParticipantsForm: { [key: string]: IFormField } = {
     graphQLPropertyName: 'fullName',
     value: '',
     colSize: 'col-lg-12 col-md-12 col-sm-12',
-    
   },
   organization: {
     type: FormFieldType.DropDownWithSearch,
@@ -53,7 +48,6 @@ export const appParticipantsForm: { [key: string]: IFormField } = {
     graphQLPropertyName: 'name',
     value: '',
     colSize: 'col-lg-12 col-md-12 col-sm-12',
-  
   },
 };
  
