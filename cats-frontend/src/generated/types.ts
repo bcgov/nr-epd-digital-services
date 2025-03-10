@@ -210,6 +210,15 @@ export type MutationUpdatePersonNoteArgs = {
   note: UpdatePersonNote;
 };
 
+export type ParticipantsRolesResponse = {
+  __typename?: 'ParticipantsRolesResponse';
+  data?: Maybe<Array<ViewParticipantsRolesDto>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type PersonNoteResponse = {
   __typename?: 'PersonNoteResponse';
   data?: Maybe<Array<ViewPersonNote>>;
@@ -233,6 +242,7 @@ export type Query = {
   _service: _Service;
   findAllPerson: PersonResponse;
   findPersonById: PersonResponse;
+  getAllParticipantRoles: ParticipantsRolesResponse;
   getAppParticipantsByAppId: AppParticipantsResponse;
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
   getPersonNotesByPersonId: PersonNoteResponse;
@@ -343,6 +353,12 @@ export type ViewAppParticipantsDto = {
   isMinistry: Scalars['Boolean']['output'];
   lastName: Scalars['String']['output'];
   name: Scalars['String']['output'];
+};
+
+export type ViewParticipantsRolesDto = {
+  __typename?: 'ViewParticipantsRolesDto';
+  description: Scalars['String']['output'];
+  id: Scalars['Float']['output'];
 };
 
 export type ViewPerson = {

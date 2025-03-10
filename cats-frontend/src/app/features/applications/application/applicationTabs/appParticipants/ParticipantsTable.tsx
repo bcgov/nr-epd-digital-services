@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TableColumn } from '../../../../../components/table/TableColumn';
 import { UserType } from '../../../../../helpers/requests/userType';
 import { RequestStatus } from '../../../../../helpers/requests/status';
@@ -7,13 +7,25 @@ import Widget from '../../../../../components/widget/Widget';
 import { Button } from '../../../../../components/button/Button';
 import { Plus, UserPlus } from '../../../../../components/common/icon';
 import { AppParticipantsTableControls } from './AppParticipantsTableControls';
-import { AppParticipantFilter } from '../../../../../../generated/types';
-import { GetAppParticipantsByAppIdQuery } from './graphql/Participants.generated';
-import { addAppParticipantsForm } from './ParticipantsConfig';
+import {
+  AppParticipantFilter,
+  ViewParticipantsRolesDto,
+} from '../../../../../../generated/types';
+import {
+  GetAppParticipantsByAppIdQuery,
+  useGetParticipantRolesQuery,
+} from './graphql/Participants.generated';
+
 import ModalDialog from '../../../../../components/modaldialog/ModalDialog';
 import Form from '../../../../../components/form/Form';
 
 import './ParticipantsTable.css';
+import { updateFields } from '../../../../../helpers/utility';
+import { useNavigate } from 'react-router-dom';
+import {
+  addAppParticipantsForm,
+  appParticipantsForm,
+} from './ParticipantsConfig';
 
 export const AppParticipantsActionTypes = {
   AddParticipant: 'Add Participant',
@@ -24,7 +36,7 @@ interface IParticipantTableProps {
   handleTableChange: (event: any) => void;
   internalRow: TableColumn[];
   userType: UserType;
-  formData: GetAppParticipantsByAppIdQuery['getAppParticipantsByAppId']['data'];
+  appParticsData: GetAppParticipantsByAppIdQuery['getAppParticipantsByAppId']['data'];
   loading: boolean;
   viewMode: UserMode;
   handleTableSort: (row: any, ascDir: any) => void;
@@ -42,7 +54,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   handleTableChange,
   internalRow,
   userType,
-  formData,
+  appParticsData,
   loading,
   viewMode,
   handleTableSort,
@@ -60,6 +72,8 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
 
   approveRejectHandler = approveRejectHandler ?? (() => {});
 
+  const [appParticsForm, setAppParticsForm] = useState(addAppParticipantsForm);
+
   const [filterOption, setFilterOption] = useState<AppParticipantFilter>(
     AppParticipantFilter.All,
   );
@@ -69,6 +83,25 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     handleFilterChange(newFilter);
   };
 
+  const [roles, setRoles] = useState<
+    { key: string; value: string }[] | undefined
+  >(undefined);
+
+  const [role, setRole] = useState<string | null>(null);
+  const [options, setOptions] = useState<any>([]);
+
+  const { data } = useGetParticipantRolesQuery();
+  useEffect(() => {
+    if(data) {
+      const fetchedRoles = data?.getAllParticipantRoles.data?.map((role) => ({
+        key: role.id.toString(),
+        value: role.description,
+      }));
+      setRoles(fetchedRoles);
+      appParticipantsForm.role.options = fetchedRoles;
+    }
+  },[data]);
+
   const initialAppParticipantDetails = {
     isMainParticipant: false,
     startDate: new Date(),
@@ -76,7 +109,9 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     role: '',
     person: '',
     organization: '',
-  }
+  };
+
+  const [formData, setFormData] = useState(initialAppParticipantDetails);
 
   const [appParticipant, setAppParticipant] = useState({
     isAppParticipantModal: false,
@@ -88,9 +123,32 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     setAppParticipant({
       isAppParticipantModal: true,
       appParticipantDetails: initialAppParticipantDetails,
-      appParticipantActionType: 'Add Participant',
+      appParticipantActionType: AppParticipantsActionTypes.AddParticipant,
     });
-  }
+  };
+
+  const handleFormChange = (
+    graphQLPropertyName: any,
+    value: String | [Date, Date],
+  ) => {
+    if (graphQLPropertyName === 'description') {
+      const indexToUpdate = appParticsForm.findIndex((row) =>
+        row.some((field) => field.graphQLPropertyName === graphQLPropertyName),
+      );
+      setAppParticsForm((prev) =>
+        updateFields(prev, {
+          indexToUpdate,
+          updates: {
+            isLoading: RequestStatus.success,
+            options: roles,
+            customInfoMessage: '',
+          },
+        }),
+      );
+    }
+
+    setFormData({ ...formData, [graphQLPropertyName]: value });
+  };
 
   return (
     <div className="widget-container">
@@ -111,7 +169,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         changeHandler={handleTableChange}
         title={''}
         tableColumns={internalRow}
-        tableData={formData ?? []}
+        tableData={appParticsData ?? []}
         tableIsLoading={loading ? RequestStatus.loading : RequestStatus.idle}
         aria-label="App Participant Widget"
         hideTable={false}
@@ -130,14 +188,22 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
           </div>
         )}
         {appParticipant.isAppParticipantModal && (
-          <ModalDialog headerLabel={appParticipant.appParticipantActionType}
-          saveButtonDisabled={true}
-          closeHandler={()=>{}}
-        >
-          <Form editMode={true} formRows={addAppParticipantsForm} formData={appParticipant.appParticipantDetails} handleInputChange={()=>{}}></Form>
-        </ModalDialog>)}
+          <ModalDialog
+            headerLabel={appParticipant.appParticipantActionType}
+            saveButtonDisabled={true}
+            closeHandler={() => {}}
+          >
+            <Form
+              //editMode={true}
+              formRows={addAppParticipantsForm}
+              formData={formData}
+              handleInputChange={(graphQLPropertyName, value) =>
+                handleFormChange(graphQLPropertyName, value)
+              }
+            />
+          </ModalDialog>
+        )}
       </Widget>
-
     </div>
   );
 };
