@@ -8,6 +8,8 @@ import { AppParticipant } from '../../entities/appParticipant.entity';
 import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipants.dto';
 import { LoggerService } from '../../logger/logger.service';
 import { AppParticipantFilter } from '../../utilities/enums/appParticipantFilter.enum';
+import { ParticipantRole } from 'src/app/entities/participantRole.entity';
+import { ViewParticipantsRolesDto } from 'src/app/dto/appParticipants/viewParticipantsRoles.dto';
 
 @Injectable()
 export class AppParticipantService {
@@ -15,6 +17,9 @@ export class AppParticipantService {
     @InjectRepository(AppParticipant)
     private readonly appParticsRepository: Repository<AppParticipant>,
     private readonly loggerService: LoggerService,
+    
+    @InjectRepository(ParticipantRole)
+    private readonly participantRoleRepository: Repository<ParticipantRole>
   ) {}
 
   /**
@@ -71,6 +76,19 @@ export class AppParticipantService {
       this.loggerService.log('at service layer getAppParticipantsByAppId error');
       throw new HttpException(
         `Failed to retrieve app participants by appId: ${applicationId}`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
+
+  async getAllParticipantRoles() : Promise<ViewParticipantsRolesDto[]> {
+    try {
+      this.loggerService.log('at service layer getAllParticipantRoles start');
+      return await this.participantRoleRepository.find();
+    } catch (error) {
+      this.loggerService.log('at service layer getAllParticipantRoles error');
+      throw new HttpException(
+        `Failed to retrieve participant roles`,
         HttpStatus.NOT_FOUND,
       );
     }

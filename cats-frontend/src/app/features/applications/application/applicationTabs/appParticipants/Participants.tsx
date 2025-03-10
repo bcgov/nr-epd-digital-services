@@ -4,7 +4,7 @@ import { UserType } from '../../../../../helpers/requests/userType';
 import GetConfig from './ParticipantsConfig';
 import './Participants.css';
 import { AppParticipantFilter } from '../../../../../../generated/types';
-import { useGetAppParticipantsByAppIdQuery } from './graphql/Participants.generated';
+import { useGetAppParticipantsByAppIdQuery, useGetParticipantRolesQuery } from './graphql/Participants.generated';
 import { useEffect, useState } from 'react';
 
 export const Participants = () => {
@@ -44,7 +44,7 @@ export const Participants = () => {
         handleTableChange={() => {}}
         internalRow={participantColumnInternal}
         userType={UserType.Internal}
-        formData={data}
+        appParticsData={data}
         viewMode={UserMode.Default}
         handleTableSort={() => {}}
         handleAddParticipant={() => {}}
