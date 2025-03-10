@@ -8,6 +8,8 @@ import { AppParticipantsResponse } from '../../dto/response/applicationParticipa
 import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipants.dto';
 import { LoggerService } from '../../logger/logger.service';
 import { AppParticipantFilter } from '../../utilities/enums/appParticipantFilter.enum';
+import { ParticipantsRolesResponse } from 'src/app/dto/reponse/applicationParticipant/participantRolesResponse';
+import { ViewParticipantsRolesDto } from 'src/app/dto/appParticipants/viewParticipantsRoles.dto';
 
 
 @Resolver(() => ViewAppParticipantsDto)
@@ -19,6 +21,8 @@ export class AppParticipantResolver {
       ViewAppParticipantsDto[]
     >,
     private readonly loggerService: LoggerService,
+    private readonly participantRolesResponseProvider: GenericResponseProvider<
+      ViewParticipantsRolesDto[]>
   ) {}
 
   @Query(() => AppParticipantsResponse, { name: 'getAppParticipantsByAppId' })
@@ -51,4 +55,29 @@ export class AppParticipantResolver {
       );
     }
   }
+
+  @Query(() => ParticipantsRolesResponse, { name: 'getAllParticipantRoles'})
+  @UsePipes(new GenericValidationPipe())
+  async getAllParticipantRoles(
+    @AuthenticatedUser() user: any) {
+    const result = await this.appParticipantService.getAllParticipantRoles();
+    if ( result?.length > 0) {
+      this.loggerService.log('AppParticipantResolver.getAllParticipantRoles() RES:200 end');
+      return this.participantRolesResponseProvider.createResponse(
+        'Participant roles fetched successfully',
+        HttpStatus.OK,
+        true,
+        result,
+      );
+    } else {
+      this.loggerService.log('AppParticipantResolver.getAllParticipantRoles() RES:404 end');
+      return this.participantRolesResponseProvider.createResponse(
+        'Participant roles data not found',
+        HttpStatus.NOT_FOUND,
+        false,
+        result,
+      );
+    }
+  }
+  
 }
