@@ -198,7 +198,7 @@ services:
   userapi_doc:
     container_name: userapi_doc
     build:
-      context: ./backend/documentation/cats
+      context: ./backend/documentation/users
       dockerfile: ./Dockerfile
     restart: always
     ports:
