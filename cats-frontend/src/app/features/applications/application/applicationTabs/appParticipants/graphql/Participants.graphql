@@ -30,3 +30,29 @@ query getParticipantRoles {
     }
   }
 }
+
+query getParticipantNames($searchParam: String!) {
+  getAllParticipantNames(searchParam: $searchParam) {
+    httpStatusCode
+    success
+    message
+    timestamp
+    data {
+      id
+      fullName
+    }
+  }
+}
+
+query getOrganizations($searchParam: String!) {
+  getOrganizations(searchParam: $searchParam) {
+    httpStatusCode
+    success
+    message
+    timestamp
+    data {
+      id
+      name
+    }
+  }
+}

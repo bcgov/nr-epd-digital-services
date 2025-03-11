@@ -104,8 +104,8 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
 
   const initialAppParticipantDetails = {
     isMainParticipant: false,
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: new Date().toString(),
+    endDate: new Date().toString(),
     role: '',
     person: '',
     organization: '',
@@ -194,7 +194,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
             closeHandler={() => {}}
           >
             <Form
-              //editMode={true}
               formRows={addAppParticipantsForm}
               formData={formData}
               handleInputChange={(graphQLPropertyName, value) =>
