@@ -8,8 +8,10 @@ import { AppParticipant } from '../../entities/appParticipant.entity';
 import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipants.dto';
 import { LoggerService } from '../../logger/logger.service';
 import { AppParticipantFilter } from '../../utilities/enums/appParticipantFilter.enum';
-import { ParticipantRole } from 'src/app/entities/participantRole.entity';
-import { ViewParticipantsRolesDto } from 'src/app/dto/appParticipants/viewParticipantsRoles.dto';
+import { ParticipantRole } from '../../entities/participantRole.entity';
+import { ViewParticipantsRolesDto } from '../../dto/appParticipants/viewParticipantsRoles.dto';
+import { Person } from 'src/app/entities/person.entity';
+import { Organization } from 'src/app/entities/organization.entity';
 
 @Injectable()
 export class AppParticipantService {
@@ -19,7 +21,13 @@ export class AppParticipantService {
     private readonly loggerService: LoggerService,
     
     @InjectRepository(ParticipantRole)
-    private readonly participantRoleRepository: Repository<ParticipantRole>
+    private readonly participantRoleRepository: Repository<ParticipantRole>,
+
+    @InjectRepository(Person)
+    private readonly personRepository: Repository<Person>,
+
+    @InjectRepository(Organization)
+    private readonly organizationRepository: Repository<Organization>,
   ) {}
 
   /**
@@ -81,6 +89,10 @@ export class AppParticipantService {
     }
   }
 
+  /**
+   * Retrieves all participant roles and transforms the data into DTOs.
+   * @returns An array of ParticipantRole objects containing participant roles.
+   */
   async getAllParticipantRoles() : Promise<ViewParticipantsRolesDto[]> {
     try {
       this.loggerService.log('at service layer getAllParticipantRoles start');
@@ -89,6 +101,54 @@ export class AppParticipantService {
       this.loggerService.log('at service layer getAllParticipantRoles error');
       throw new HttpException(
         `Failed to retrieve participant roles`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
+
+  /**
+   * 
+   * @param searchText: string 
+   * @returns An array of key value pairs containing the names of the participants. 
+   * @throws Error if there is an issue retrieving the data.
+   */
+  async getParticipantNames(searchParam: string) {
+    try {
+      this.loggerService.log('at service layer getParticipantNames start');
+
+      const persons = await this.personRepository.createQueryBuilder('person')
+      .where('person.firstName ILIKE :searchText', { searchParam: `%${searchParam}%` })
+      .orWhere('person.middleName ILIKE :searchText', { searchParam: `%${searchParam}%` })
+      .orWhere('person.lastName ILIKE :searchText', { searchParam: `%${searchParam}%` })
+      .getMany();
+      return persons|| [];
+    } catch (error) {
+      this.loggerService.log('Error occured to fetch ParticipantNames');
+      throw new HttpException(
+        `Failed to retrieve participant names`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
+
+  /**
+   * 
+   * @param searchText: string 
+   * @returns An array of key value pairs containing the names of the organizations.
+   * @throws Error if there is an issue retrieving the data.
+   */
+  async getOrganizationNames(searchParam: string) {
+    try {
+      this.loggerService.log('at service layer getOrganizationNames start');
+
+      const organizations = await this.organizationRepository.createQueryBuilder('organization')
+      .where('organization.name ILIKE :searchText', { searchParam: `%${searchParam}%` })
+      .getMany();
+      return organizations || [];
+    } catch (error) {
+      this.loggerService.log('Error occured to fetch OrganizationNames');
+      throw new HttpException(
+        `Failed to retrieve organization names`,
         HttpStatus.NOT_FOUND,
       );
     }
