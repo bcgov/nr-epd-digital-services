@@ -11,7 +11,7 @@ export type SearchApplicationsQueryVariables = Types.Exact<{
 }>;
 
 
-export type SearchApplicationsQuery = { __typename?: 'Query', searchApplications: { __typename?: 'ApplicationSearchResponse', count: number, page: number, pageSize: number, applications: Array<{ __typename?: 'ApplicationResultDto', id: string, siteId: string, siteAddress: string, applicationType: string, lastUpdated: string, status: string, priority: string, url: string, staffAssigned: Array<{ __typename?: 'ViewPerson', address_1?: string | null, address_2?: string | null, city?: string | null, country?: string | null, createdBy: string, createdDatetime: any, email?: string | null, fax?: string | null, firstName: string, id: number, isActive: boolean, isDeleted: boolean, isEnvConsultant?: boolean | null, isTaxExempt: boolean, lastName: string, loginUserName?: string | null, middleName?: string | null, mobile?: string | null, phone?: string | null, postal?: string | null, prov?: string | null, rowVersionCount: number, updatedBy?: string | null, updatedDatetime?: any | null }> }> } };
+export type SearchApplicationsQuery = { __typename?: 'Query', searchApplications: { __typename?: 'ApplicationSearchResponse', count?: number | null, page?: number | null, pageSize?: number | null, applications: Array<{ __typename?: 'ApplicationResultDto', id: string, siteId: string, siteAddress: string, applicationType: string, lastUpdated: string, status: string, priority: string, url: string, staffAssigned: Array<{ __typename?: 'ViewPerson', address_1?: string | null, address_2?: string | null, city?: string | null, country?: string | null, createdBy: string, createdDatetime: any, email?: string | null, fax?: string | null, firstName: string, id: number, isActive: boolean, isEnvConsultant?: boolean | null, isTaxExempt: boolean, lastName: string, loginUserName?: string | null, middleName?: string | null, mobile?: string | null, phone?: string | null, postal?: string | null, prov?: string | null, rowVersionCount: number, updatedBy?: string | null, updatedDatetime?: any | null }> }> } };
 
 
 export const SearchApplicationsDocument = gql`
@@ -41,7 +41,6 @@ export const SearchApplicationsDocument = gql`
         firstName
         id
         isActive
-        isDeleted
         isEnvConsultant
         isTaxExempt
         lastName
