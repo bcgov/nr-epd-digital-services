@@ -8,8 +8,11 @@ import { AppParticipantsResponse } from '../../dto/response/applicationParticipa
 import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipants.dto';
 import { LoggerService } from '../../logger/logger.service';
 import { AppParticipantFilter } from '../../utilities/enums/appParticipantFilter.enum';
-import { ParticipantsRolesResponse } from 'src/app/dto/reponse/applicationParticipant/participantRolesResponse';
-import { ViewParticipantsRolesDto } from 'src/app/dto/appParticipants/viewParticipantsRoles.dto';
+
+import { ViewParticipantsRolesDto } from '../../dto/appParticipants/viewParticipantsRoles.dto';
+import { ParticipantsRolesResponse } from '../../dto/response/applicationParticipant/participantRolesResponse';
+import { ViewParticipantNamesDto } from '../../dto/appParticipants/ViewParticipantNames.dto';
+import { ViewOrganizationsDto } from '../../dto/appParticipants/viewOrganization.dto';
 
 
 @Resolver(() => ViewAppParticipantsDto)
@@ -22,7 +25,11 @@ export class AppParticipantResolver {
     >,
     private readonly loggerService: LoggerService,
     private readonly participantRolesResponseProvider: GenericResponseProvider<
-      ViewParticipantsRolesDto[]>
+      ViewParticipantsRolesDto[]>,
+    private readonly personResponseProvider: GenericResponseProvider<
+      ViewParticipantNamesDto[]>,
+    private readonly organizationResponseProvider: GenericResponseProvider<
+      ViewOrganizationsDto[]>,
   ) {}
 
   @Query(() => AppParticipantsResponse, { name: 'getAppParticipantsByAppId' })
@@ -79,5 +86,30 @@ export class AppParticipantResolver {
       );
     }
   }
+
+  @Query(() => ViewParticipantNamesDto, { name: 'getParticipantNames'})
+  @UsePipes(new GenericValidationPipe())
+  async getParticipantNames(
+    @Args('searchParam', { type: () => String }) searchParam: string,
+    @AuthenticatedUser() user: any) {
+      const result = await this.appParticipantService.getParticipantNames(searchParam);
+      if (result?.length > 0) {
+        this.loggerService.log('AppParticipantResolver.getParticipantNames() RES:200 end');
+        return this.personResponseProvider.createResponse(
+          'Participant names fetched successfully',
+          HttpStatus.OK,
+          true,
+          result,
+        );
+      } else {
+        this.loggerService.log('AppParticipantResolver.getParticipantNames() RES:404 end');
+        return this.personResponseProvider.createResponse(
+          'Participant names data not found',
+          HttpStatus.NOT_FOUND,
+          false,
+          result,
+        );
+      }
+    }
   
 }
