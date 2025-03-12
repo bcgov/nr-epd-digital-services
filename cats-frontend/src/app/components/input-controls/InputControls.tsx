@@ -1117,6 +1117,8 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
     };
   }, []);
 
+  const modifiedLabelForSearch = `Search ${label}`;
+
   return (
     <ContainerElement
       className={`${tableMode ? 'table-border-light align-content-center' : 'mb-3'} ${tableMode && stickyCol ? 'position-sticky' : ''} `}
@@ -1152,7 +1154,7 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
           <Dropdown.Menu className="custom-dropdown-menu" ref={divRef}>
             <div className="mx-2">
               <SearchInput
-                label={'Search Staff'}
+                label={modifiedLabelForSearch}
                 searchTerm={searchTerm}
                 clearSearch={clearSearch}
                 handleSearchChange={handleSearchChange}
