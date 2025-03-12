@@ -1083,12 +1083,9 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
   const handler = handleSearch ?? ((e) => {});
   
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('InputControl - handleSearchChange');
     setFilteredOpts([]);
     const searchTerm = event.target.value;
-    console.log('InputControl - searchTerm', searchTerm);
     handler(searchTerm);
-    console.log('InputControl - handler', handler(searchTerm));
     setSearchTerm(searchTerm);
   };
 
