@@ -250,6 +250,7 @@ export const TextInput: React.FC<InputProps> = ({
 
   // Replace any spaces in the label with underscores to create a valid id
   const inputTxtId = label?.replace(/\s+/g, '_') + '_' + v4();
+  
   return (
     <ContainerElement
       className={`${tableMode ? 'table-border-light align-content-center ' : 'mb-3'} ${tableMode && stickyCol ? 'positionSticky' : ''} `}
@@ -1080,10 +1081,14 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
   };
 
   const handler = handleSearch ?? ((e) => {});
+  
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('InputControl - handleSearchChange');
     setFilteredOpts([]);
     const searchTerm = event.target.value;
+    console.log('InputControl - searchTerm', searchTerm);
     handler(searchTerm);
+    console.log('InputControl - handler', handler(searchTerm));
     setSearchTerm(searchTerm);
   };
 
@@ -1116,6 +1121,8 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
       document.removeEventListener('click', handleClickOutside);
     };
   }, []);
+
+  const modifiedLabelForSearch = `Search ${label}`;
 
   return (
     <ContainerElement
@@ -1152,7 +1159,7 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
           <Dropdown.Menu className="custom-dropdown-menu" ref={divRef}>
             <div className="mx-2">
               <SearchInput
-                label={'Search Staff'}
+                label={modifiedLabelForSearch}
                 searchTerm={searchTerm}
                 clearSearch={clearSearch}
                 handleSearchChange={handleSearchChange}
