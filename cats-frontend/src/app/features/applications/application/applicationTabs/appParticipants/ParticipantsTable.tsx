@@ -14,6 +14,7 @@ import {
 } from '../../../../../../generated/types';
 import {
   GetAppParticipantsByAppIdQuery,
+  GetParticipantNamesDocument,
   useGetParticipantNamesQuery,
   useGetParticipantRolesQuery,
 } from './graphql/Participants.generated';
@@ -22,11 +23,13 @@ import ModalDialog from '../../../../../components/modaldialog/ModalDialog';
 import Form from '../../../../../components/form/Form';
 
 import './ParticipantsTable.css';
-import { resultCache, updateFields } from '../../../../../helpers/utility';
+import { getAxiosInstance, resultCache, updateFields } from '../../../../../helpers/utility';
 import { useNavigate } from 'react-router-dom';
 
 import { set } from 'date-fns';
 import de from 'date-fns/esm/locale/de/index.js';
+import { print } from 'graphql';
+import { GRAPHQL } from '../../../../../helpers/endpoints';
 
 export const AppParticipantsActionTypes = {
   AddParticipant: 'Add Participant',
@@ -138,14 +141,19 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
           return resultCache[searchParam];
         }
 
-        const { data } = useGetParticipantNamesQuery({
-          variables: {searchParam},
-        });
+        // const { data } = useGetParticipantNamesQuery({
+        //   variables: {searchParam},
+        // });
 
+        const response = await getAxiosInstance().post(GRAPHQL, {
+          query: print(GetParticipantNamesDocument),
+          variables: { searchParam },
+        });
+        console.log(response)
         // Store result in cache if successful
-        if (data?.getParticipantNames.success) {
-          resultCache[searchParam] =data?.getParticipantNames.data;
-          return data?.getParticipantNames.data;
+        if (response?.data?.data?.getParticipantNames?.success) {
+          resultCache[searchParam] =response.data.data.getParticipantNames.data;
+          return response.data.data.getParticipantNames;
         }
       } catch (error) {
         console.error('Error fetching participant:', error);
@@ -168,12 +176,13 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
       const indexToUpdate = appParticsForm.findIndex((row) =>
         row.some((field) => field.graphQLPropertyName === "fullName"),
       );
+
       setAppParticsForm((prev) =>
         updateFields(prev, {
           indexToUpdate,
           updates: {
             isLoading: RequestStatus.success,
-            //options: participantNames,
+            options, 
             filteredOptions: [],
             handleSearch,
             customInfoMessage: <></>,
@@ -184,6 +193,34 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     [options],
   );
 
+  // useEffect(() => {
+  //   console.log(appParticsData)
+  //   const uniqueParticName= Array.from(
+  //     new Map(
+  //       appParticsData?.map((item: any) => [
+  //         item.id,
+  //         { key: item.id, value: item.name },
+  //       ]),
+  //     ).values(),
+  //   );
+  //   setOptions(uniqueParticName);
+  //   const indexToUpdate = appParticsForm.findIndex((row) =>
+  //     row.some((field) => field.graphQLPropertyName === "fullName"),
+  //   );
+
+  //   setAppParticsForm((prev) =>
+  //     updateFields(prev, {
+  //       indexToUpdate,
+  //       updates: {
+  //         isLoading: RequestStatus.success,
+  //         options: uniqueParticName,
+  //         filteredOptions: [],
+  //         handleSearch,
+  //         customInfoMessage: <></>,
+  //       },
+  //     }),
+  //   );
+  // }, [appParticsData])
  
   // useEffect(() => {
   //   if(searchParam) {
@@ -236,7 +273,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         // ) : (
         //   <></>
         // );
-
         setAppParticsForm((prev) =>
           updateFields(prev, {
             indexToUpdate,
@@ -390,7 +426,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
             closeHandler={() => {}}
           >
             <Form
-              formRows={addAppParticipantsForm}
+              formRows={appParticsForm}
               formData={formData}
               handleInputChange={(graphQLPropertyName, value) =>
                 handleFormChange(graphQLPropertyName, value)
