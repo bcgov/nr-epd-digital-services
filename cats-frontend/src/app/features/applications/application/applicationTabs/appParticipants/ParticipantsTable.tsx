@@ -102,37 +102,9 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
 
   const [role, setRole] = useState<string | null>(null);
   const [options, setOptions] = useState<any>([]);
-
-  //const { data } = useGetParticipantRolesQuery();
-
-  // useEffect(() => {
-  //   if(data) {
-  //     const fetchedRoles = data?.getAllParticipantRoles.data?.map((role) => ({
-  //       key: role.id.toString(),
-  //       value: role.description,
-  //     }));
-  //     setRoles(fetchedRoles);
-  //     appParticipantsForm.role.options = fetchedRoles;
-  //   }
-  // },[data]);
-
   
   const [searchParam, setSearchParam] = useState<string>('');
-
-
-  // const fetchParticipantNames = useCallback(async (searchParam: string) => {
-  //   const { data } = useGetParticipantNamesQuery({
-  //     variables: {searchParam},
-  //   });
-  //   const fetchedNames = data?.getParticipantNames.data?.map((participant) => ({
-  //     key: participant.id.toString(),
-  //     value: participant.fullName,
-  //   }));
-  //   setParticipantNames(fetchedNames);
-  //   appParticipantsForm.participantName.options = fetchedNames;
-  // }, []);
-
-
+  
   const fetchParticipantNames = useCallback(async (searchParam: string) => {
     if (searchParam.trim()) {
       try {
@@ -140,20 +112,15 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         if (resultCache[searchParam]) {
           return resultCache[searchParam];
         }
-
-        // const { data } = useGetParticipantNamesQuery({
-        //   variables: {searchParam},
-        // });
-
-        const response = await getAxiosInstance().post(GRAPHQL, {
+        // Store result in cache if successful
+        const personData = await getAxiosInstance().post(GRAPHQL, {
           query: print(GetParticipantNamesDocument),
           variables: { searchParam },
         });
-        console.log(response)
-        // Store result in cache if successful
-        if (response?.data?.data?.getParticipantNames?.success) {
-          resultCache[searchParam] =response.data.data.getParticipantNames.data;
-          return response.data.data.getParticipantNames;
+        console.log('PT: personData: ', personData);
+        if (personData?.data?.data?.getParticipantNames?.data) {  
+          resultCache[searchParam] =personData?.data?.data?.getParticipantNames?.data;
+          return personData?.data?.data?.getParticipantNames?.data;
         }
       } catch (error) {
         console.error('Error fetching participant:', error);
@@ -192,68 +159,18 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     },
     [options],
   );
-
-  // useEffect(() => {
-  //   console.log(appParticsData)
-  //   const uniqueParticName= Array.from(
-  //     new Map(
-  //       appParticsData?.map((item: any) => [
-  //         item.id,
-  //         { key: item.id, value: item.name },
-  //       ]),
-  //     ).values(),
-  //   );
-  //   setOptions(uniqueParticName);
-  //   const indexToUpdate = appParticsForm.findIndex((row) =>
-  //     row.some((field) => field.graphQLPropertyName === "fullName"),
-  //   );
-
-  //   setAppParticsForm((prev) =>
-  //     updateFields(prev, {
-  //       indexToUpdate,
-  //       updates: {
-  //         isLoading: RequestStatus.success,
-  //         options: uniqueParticName,
-  //         filteredOptions: [],
-  //         handleSearch,
-  //         customInfoMessage: <></>,
-  //       },
-  //     }),
-  //   );
-  // }, [appParticsData])
- 
-  // useEffect(() => {
-  //   if(searchParam) {
-  //     fetchParticipantNames(searchParam);
-  //     const indexToUpdate = appParticsForm.findIndex((row) =>
-  //       row.some((field) => field.graphQLPropertyName === "fullName"),
-  //     );
-      
-  //     setAppParticsForm((prev) =>
-  //       updateFields(prev, {
-  //         indexToUpdate,
-  //         updates: {
-  //           isLoading: RequestStatus.success,
-  //           //options: participantNames,
-  //           filteredOptions: participantNames,
-  //           handleSearch,
-  //           customInfoMessage: '',
-  //         },
-  //       }),
-  //     );
-  //   }
-  // }, [searchParam, options]);
+    
+  
     
   useEffect(() => {
     if (searchParam) {
       const timeoutId = setTimeout(async () => {
-        debugger;
-        const res = await fetchParticipantNames(searchParam);
-        
+      const res = await fetchParticipantNames(searchParam);
+      
 
-        const indexToUpdate = appParticsForm.findIndex((row) =>
-                row.some((field) => field.graphQLPropertyName === "fullName"),
-              );
+      const indexToUpdate = appParticsForm.findIndex((row) =>
+              row.some((field) => field.graphQLPropertyName === "fullName"),
+            );
         // const infoMsg = !res.success ? (
         //   <div className="px-2">
         //     <img
@@ -337,7 +254,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     );
   }, [appParticipant.isAppParticipantModal]); 
   
-  
+
   const handleFormChange = (
     graphQLPropertyName: any,
     value: String | [Date, Date],

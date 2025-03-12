@@ -119,11 +119,12 @@ export class AppParticipantService {
       this.loggerService.log('at service layer getParticipantNames start');
 
       const persons = await this.personRepository.createQueryBuilder('person')
-      .where('person.firstName ILIKE :searchText', { searchParam: `%${searchParam}%` })
-      .orWhere('person.middleName ILIKE :searchText', { searchParam: `%${searchParam}%` })
-      .orWhere('person.lastName ILIKE :searchText', { searchParam: `%${searchParam}%` })
+      .where('person.firstName ILIKE :searchParam', { searchParam: `%${searchParam}%` })
+      .orWhere('person.middleName ILIKE :searchParam', { searchParam: `%${searchParam}%` })
+      .orWhere('person.lastName ILIKE :searchParam', { searchParam: `%${searchParam}%` })
       .getMany();
 
+      console.log('nupur - persons', persons);
       if (!persons?.length) {
         return [];
       } else {
