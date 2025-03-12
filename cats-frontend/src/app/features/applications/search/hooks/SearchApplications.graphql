@@ -29,7 +29,6 @@ query SearchApplications(
         firstName
         id
         isActive
-        isDeleted
         isEnvConsultant
         isTaxExempt
         lastName

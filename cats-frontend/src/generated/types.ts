@@ -69,9 +69,13 @@ export type ApplicationResultDto = {
 export type ApplicationSearchResponse = {
   __typename?: 'ApplicationSearchResponse';
   applications: Array<ApplicationResultDto>;
-  count: Scalars['Int']['output'];
-  page: Scalars['Int']['output'];
-  pageSize: Scalars['Int']['output'];
+  count?: Maybe<Scalars['Float']['output']>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  page?: Maybe<Scalars['Float']['output']>;
+  pageSize?: Maybe<Scalars['Float']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
 };
 
 export type CreatePerson = {
@@ -200,11 +204,6 @@ export type QueryFindPersonByIdArgs = {
 export type QueryGetAppParticipantsByAppIdArgs = {
   applicationId: Scalars['Int']['input'];
   filter?: InputMaybe<AppParticipantFilter>;
-};
-
-
-export type QueryGetApplicationHousingByApplicationIdArgs = {
-  applicationId: Scalars['Int']['input'];
 };
 
 

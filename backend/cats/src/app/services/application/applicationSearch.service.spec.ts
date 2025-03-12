@@ -2,10 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ApplicationSearchService } from './applicationSearch.service';
-import { Application } from '../entities/application.entity';
-import { LoggerService } from '../logger/logger.service';
-import { ApplicationFilter } from '../utilities/enums/applicationFilter.enum';
-import { ApplicationSearchResponse } from '../dto/response/applicationSearchResponse';
+import { Application } from '../../entities/application.entity';
+import { LoggerService } from '../../logger/logger.service';
+import { ApplicationFilter } from '../../utilities/enums/applicationFilter.enum';
+import { ApplicationSearchResult } from '../../dto/response/applicationSearchResponse';
 
 describe('ApplicationSearchService', () => {
   let service: ApplicationSearchService;
@@ -24,6 +24,7 @@ describe('ApplicationSearchService', () => {
           provide: LoggerService,
           useValue: {
             log: jest.fn(),
+            error: jest.fn(),
           },
         },
       ],
@@ -69,14 +70,16 @@ describe('ApplicationSearchService', () => {
       filter,
     );
 
-    expect(result).toBeInstanceOf(ApplicationSearchResponse);
+    expect(result).toBeInstanceOf(ApplicationSearchResult);
     expect(result.applications.length).toBe(1);
     expect(result.count).toBe(1);
-    expect(loggerService.log).toHaveBeenCalledWith(
-      `Searching applications with param: ${searchParam}, page: ${page}, pageSize: ${pageSize}, filter: ${filter}`,
+    expect(loggerService.log).toHaveBeenNthCalledWith(
+      1,
+      `ApplicationSearchService: searchParam: ${searchParam}, page: ${page}, pageSize: ${pageSize}, filter: ${filter}.`,
     );
-    expect(loggerService.log).toHaveBeenCalledWith(
-      'Application search completed',
+    expect(loggerService.log).toHaveBeenNthCalledWith(
+      2,
+      'ApplicationSearchService: 1 applications found.',
     );
   });
 
@@ -87,11 +90,18 @@ describe('ApplicationSearchService', () => {
       orWhere: jest.fn().mockReturnThis(),
       skip: jest.fn().mockReturnThis(),
       take: jest.fn().mockReturnThis(),
-      getManyAndCount: jest.fn().mockRejectedValue(new Error('Test error')),
+      getManyAndCount: jest.fn().mockImplementation(() => {
+        throw new Error('Test error');
+      }),
     } as any);
 
-    await expect(
-      service.searchApplications('test', 1, 10, ApplicationFilter.UNASSIGNED),
-    ).rejects.toThrow('Failed to search applications: Test error');
+    const result = await service.searchApplications(
+      'test query',
+      1,
+      10,
+      ApplicationFilter.ALL,
+    );
+    expect(result).toBeInstanceOf(ApplicationSearchResult);
+    expect(result.error).toBe('Test error');
   });
 });
