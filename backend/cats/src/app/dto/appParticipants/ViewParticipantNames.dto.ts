@@ -13,4 +13,7 @@ export class ViewParticipantNamesDto {
 
   @Field()
   lastName: string;
+  
+  @Field()
+  fullName: string; 
 }

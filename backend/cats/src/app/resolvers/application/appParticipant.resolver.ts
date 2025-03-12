@@ -13,7 +13,8 @@ import { ViewParticipantsRolesDto } from '../../dto/appParticipants/viewParticip
 import { ParticipantsRolesResponse } from '../../dto/response/applicationParticipant/participantRolesResponse';
 import { ViewParticipantNamesDto } from '../../dto/appParticipants/ViewParticipantNames.dto';
 import { ViewOrganizationsDto } from '../../dto/appParticipants/viewOrganization.dto';
-
+import { ParticipantNamesResponse } from 'src/app/dto/response/applicationParticipant/participantNamesResponse';
+import { OrganizationsResponse } from 'src/app/dto/response/applicationParticipant/organizationsResponse';
 
 @Resolver(() => ViewAppParticipantsDto)
 @Resource('user-service')
@@ -25,11 +26,14 @@ export class AppParticipantResolver {
     >,
     private readonly loggerService: LoggerService,
     private readonly participantRolesResponseProvider: GenericResponseProvider<
-      ViewParticipantsRolesDto[]>,
+      ViewParticipantsRolesDto[]
+    >,
     private readonly personResponseProvider: GenericResponseProvider<
-      ViewParticipantNamesDto[]>,
+      ViewParticipantNamesDto[]
+    >,
     private readonly organizationResponseProvider: GenericResponseProvider<
-      ViewOrganizationsDto[]>,
+      ViewOrganizationsDto[]
+    >,
   ) {}
 
   @Query(() => AppParticipantsResponse, { name: 'getAppParticipantsByAppId' })
@@ -37,15 +41,18 @@ export class AppParticipantResolver {
   async getAppParticipantsByAppId(
     @Args('applicationId', { type: () => Int }) applicationId: number,
     @AuthenticatedUser() user: any,
-    @Args('filter', { type: () => AppParticipantFilter, nullable: true }) filter: AppParticipantFilter,
+    @Args('filter', { type: () => AppParticipantFilter, nullable: true })
+    filter: AppParticipantFilter,
   ) {
     const result = await this.appParticipantService.getAppParticipantsByAppId(
       applicationId,
       user,
-      filter
+      filter,
     );
     if (result?.length > 0) {
-      this.loggerService.log('AppParticipantResolver.getAppParticipantsByAppId() RES:200 end');
+      this.loggerService.log(
+        'AppParticipantResolver.getAppParticipantsByAppId() RES:200 end',
+      );
       return this.genericResponseProvider.createResponse(
         'Participants fetched successfully',
         HttpStatus.OK,
@@ -53,7 +60,9 @@ export class AppParticipantResolver {
         result,
       );
     } else {
-      this.loggerService.log('AppParticipantResolver.getAppParticipantsByAppId() RES:404 end');
+      this.loggerService.log(
+        'AppParticipantResolver.getAppParticipantsByAppId() RES:404 end',
+      );
       return this.genericResponseProvider.createResponse(
         `Participants data not found for app id: ${applicationId}`,
         HttpStatus.NOT_FOUND,
@@ -63,13 +72,14 @@ export class AppParticipantResolver {
     }
   }
 
-  @Query(() => ParticipantsRolesResponse, { name: 'getAllParticipantRoles'})
+  @Query(() => ParticipantsRolesResponse, { name: 'getAllParticipantRoles' })
   @UsePipes(new GenericValidationPipe())
-  async getAllParticipantRoles(
-    @AuthenticatedUser() user: any) {
+  async getAllParticipantRoles(@AuthenticatedUser() user: any) {
     const result = await this.appParticipantService.getAllParticipantRoles();
-    if ( result?.length > 0) {
-      this.loggerService.log('AppParticipantResolver.getAllParticipantRoles() RES:200 end');
+    if (result?.length > 0) {
+      this.loggerService.log(
+        'AppParticipantResolver.getAllParticipantRoles() RES:200 end',
+      );
       return this.participantRolesResponseProvider.createResponse(
         'Participant roles fetched successfully',
         HttpStatus.OK,
@@ -77,7 +87,9 @@ export class AppParticipantResolver {
         result,
       );
     } else {
-      this.loggerService.log('AppParticipantResolver.getAllParticipantRoles() RES:404 end');
+      this.loggerService.log(
+        'AppParticipantResolver.getAllParticipantRoles() RES:404 end',
+      );
       return this.participantRolesResponseProvider.createResponse(
         'Participant roles data not found',
         HttpStatus.NOT_FOUND,
@@ -87,29 +99,67 @@ export class AppParticipantResolver {
     }
   }
 
-  @Query(() => ViewParticipantNamesDto, { name: 'getParticipantNames'})
+  @Query(() => ParticipantNamesResponse, { name: 'getParticipantNames' })
   @UsePipes(new GenericValidationPipe())
   async getParticipantNames(
     @Args('searchParam', { type: () => String }) searchParam: string,
-    @AuthenticatedUser() user: any) {
-      const result = await this.appParticipantService.getParticipantNames(searchParam);
-      if (result?.length > 0) {
-        this.loggerService.log('AppParticipantResolver.getParticipantNames() RES:200 end');
-        return this.personResponseProvider.createResponse(
-          'Participant names fetched successfully',
-          HttpStatus.OK,
-          true,
-          result,
-        );
-      } else {
-        this.loggerService.log('AppParticipantResolver.getParticipantNames() RES:404 end');
-        return this.personResponseProvider.createResponse(
-          'Participant names data not found',
-          HttpStatus.NOT_FOUND,
-          false,
-          result,
-        );
-      }
+    @AuthenticatedUser() user: any,
+  ) {
+    const result = await this.appParticipantService.getParticipantNames(
+      searchParam,
+    );
+    if (result?.length > 0) {
+      this.loggerService.log(
+        'AppParticipantResolver.getParticipantNames() RES:200 end',
+      );
+      return this.personResponseProvider.createResponse(
+        'Participant names fetched successfully',
+        HttpStatus.OK,
+        true,
+        result,
+      );
+    } else {
+      this.loggerService.log(
+        'AppParticipantResolver.getParticipantNames() RES:404 end',
+      );
+      return this.personResponseProvider.createResponse(
+        'Participant names data not found',
+        HttpStatus.NOT_FOUND,
+        false,
+        result,
+      );
     }
-  
+  }
+
+  @Query(() => OrganizationsResponse, { name: 'getOrganizations' })
+  @UsePipes(new GenericValidationPipe())
+  async getOrganizations(
+    @Args('searchParam', { type: () => String }) searchParam: string,
+    @AuthenticatedUser() user: any,
+  ) {
+    const result = await this.appParticipantService.getOrganizations(
+      searchParam,
+    );
+    if (result?.length > 0) {
+      this.loggerService.log(
+        'AppParticipantResolver.getParticipantNames() RES:200 end',
+      );
+      return this.organizationResponseProvider.createResponse(
+        'Participant names fetched successfully',
+        HttpStatus.OK,
+        true,
+        result,
+      );
+    } else {
+      this.loggerService.log(
+        'AppParticipantResolver.getParticipantNames() RES:404 end',
+      );
+      return this.organizationResponseProvider.createResponse(
+        'Participant names data not found',
+        HttpStatus.NOT_FOUND,
+        false,
+        result,
+      );
+    }
+  }
 }
