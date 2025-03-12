@@ -76,7 +76,7 @@ services:
     volumes:
       - ./backend/cats:/app:z
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:4005" ]
+      test: [ "CMD", "wget", "--spider", "http://localhost:4005" ]
       interval: 1m30s
       timeout: 10s
       retries: 3
