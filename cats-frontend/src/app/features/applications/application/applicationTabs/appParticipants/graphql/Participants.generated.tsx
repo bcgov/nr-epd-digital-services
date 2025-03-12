@@ -16,6 +16,20 @@ export type GetParticipantRolesQueryVariables = Types.Exact<{ [key: string]: nev
 
 export type GetParticipantRolesQuery = { __typename?: 'Query', getAllParticipantRoles: { __typename?: 'ParticipantsRolesResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewParticipantsRolesDto', id: number, description: string }> | null } };
 
+export type GetParticipantNamesQueryVariables = Types.Exact<{
+  searchParam: Types.Scalars['String']['input'];
+}>;
+
+
+export type GetParticipantNamesQuery = { __typename?: 'Query', getParticipantNames: { __typename?: 'ParticipantNamesResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewParticipantNamesDto', id: number, fullName: string }> | null } };
+
+export type GetOrganizationsQueryVariables = Types.Exact<{
+  searchParam: Types.Scalars['String']['input'];
+}>;
+
+
+export type GetOrganizationsQuery = { __typename?: 'Query', getOrganizations: { __typename?: 'OrganizationsResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewOrganizationsDto', id: number, name: string }> | null } };
+
 
 export const GetAppParticipantsByAppIdDocument = gql`
     query getAppParticipantsByAppId($applicationId: Int!, $filter: AppParticipantFilter!) {
@@ -118,3 +132,97 @@ export type GetParticipantRolesQueryHookResult = ReturnType<typeof useGetPartici
 export type GetParticipantRolesLazyQueryHookResult = ReturnType<typeof useGetParticipantRolesLazyQuery>;
 export type GetParticipantRolesSuspenseQueryHookResult = ReturnType<typeof useGetParticipantRolesSuspenseQuery>;
 export type GetParticipantRolesQueryResult = Apollo.QueryResult<GetParticipantRolesQuery, GetParticipantRolesQueryVariables>;
+export const GetParticipantNamesDocument = gql`
+    query getParticipantNames($searchParam: String!) {
+  getParticipantNames(searchParam: $searchParam) {
+    httpStatusCode
+    success
+    message
+    timestamp
+    data {
+      id
+      fullName
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetParticipantNamesQuery__
+ *
+ * To run a query within a React component, call `useGetParticipantNamesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetParticipantNamesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetParticipantNamesQuery({
+ *   variables: {
+ *      searchParam: // value for 'searchParam'
+ *   },
+ * });
+ */
+export function useGetParticipantNamesQuery(baseOptions: Apollo.QueryHookOptions<GetParticipantNamesQuery, GetParticipantNamesQueryVariables> & ({ variables: GetParticipantNamesQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetParticipantNamesQuery, GetParticipantNamesQueryVariables>(GetParticipantNamesDocument, options);
+      }
+export function useGetParticipantNamesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetParticipantNamesQuery, GetParticipantNamesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetParticipantNamesQuery, GetParticipantNamesQueryVariables>(GetParticipantNamesDocument, options);
+        }
+export function useGetParticipantNamesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetParticipantNamesQuery, GetParticipantNamesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetParticipantNamesQuery, GetParticipantNamesQueryVariables>(GetParticipantNamesDocument, options);
+        }
+export type GetParticipantNamesQueryHookResult = ReturnType<typeof useGetParticipantNamesQuery>;
+export type GetParticipantNamesLazyQueryHookResult = ReturnType<typeof useGetParticipantNamesLazyQuery>;
+export type GetParticipantNamesSuspenseQueryHookResult = ReturnType<typeof useGetParticipantNamesSuspenseQuery>;
+export type GetParticipantNamesQueryResult = Apollo.QueryResult<GetParticipantNamesQuery, GetParticipantNamesQueryVariables>;
+export const GetOrganizationsDocument = gql`
+    query getOrganizations($searchParam: String!) {
+  getOrganizations(searchParam: $searchParam) {
+    httpStatusCode
+    success
+    message
+    timestamp
+    data {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetOrganizationsQuery__
+ *
+ * To run a query within a React component, call `useGetOrganizationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrganizationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOrganizationsQuery({
+ *   variables: {
+ *      searchParam: // value for 'searchParam'
+ *   },
+ * });
+ */
+export function useGetOrganizationsQuery(baseOptions: Apollo.QueryHookOptions<GetOrganizationsQuery, GetOrganizationsQueryVariables> & ({ variables: GetOrganizationsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOrganizationsQuery, GetOrganizationsQueryVariables>(GetOrganizationsDocument, options);
+      }
+export function useGetOrganizationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrganizationsQuery, GetOrganizationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOrganizationsQuery, GetOrganizationsQueryVariables>(GetOrganizationsDocument, options);
+        }
+export function useGetOrganizationsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetOrganizationsQuery, GetOrganizationsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetOrganizationsQuery, GetOrganizationsQueryVariables>(GetOrganizationsDocument, options);
+        }
+export type GetOrganizationsQueryHookResult = ReturnType<typeof useGetOrganizationsQuery>;
+export type GetOrganizationsLazyQueryHookResult = ReturnType<typeof useGetOrganizationsLazyQuery>;
+export type GetOrganizationsSuspenseQueryHookResult = ReturnType<typeof useGetOrganizationsSuspenseQuery>;
+export type GetOrganizationsQueryResult = Apollo.QueryResult<GetOrganizationsQuery, GetOrganizationsQueryVariables>;

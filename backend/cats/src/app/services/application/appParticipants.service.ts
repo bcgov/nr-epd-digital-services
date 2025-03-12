@@ -10,8 +10,10 @@ import { LoggerService } from '../../logger/logger.service';
 import { AppParticipantFilter } from '../../utilities/enums/appParticipantFilter.enum';
 import { ParticipantRole } from '../../entities/participantRole.entity';
 import { ViewParticipantsRolesDto } from '../../dto/appParticipants/viewParticipantsRoles.dto';
-import { Person } from 'src/app/entities/person.entity';
-import { Organization } from 'src/app/entities/organization.entity';
+import { Person } from '../../entities/person.entity';
+import { Organization } from '../../entities/organization.entity';
+import { ViewParticipantNamesDto } from '../../dto/appParticipants/ViewParticipantNames.dto';
+import { ViewOrganizationsDto } from '../../dto/appParticipants/viewOrganization.dto';
 
 @Injectable()
 export class AppParticipantService {
@@ -112,7 +114,7 @@ export class AppParticipantService {
    * @returns An array of key value pairs containing the names of the participants. 
    * @throws Error if there is an issue retrieving the data.
    */
-  async getParticipantNames(searchParam: string) {
+  async getParticipantNames(searchParam: string): Promise<ViewParticipantNamesDto[]> {
     try {
       this.loggerService.log('at service layer getParticipantNames start');
 
@@ -121,7 +123,21 @@ export class AppParticipantService {
       .orWhere('person.middleName ILIKE :searchText', { searchParam: `%${searchParam}%` })
       .orWhere('person.lastName ILIKE :searchText', { searchParam: `%${searchParam}%` })
       .getMany();
-      return persons|| [];
+
+      if (!persons?.length) {
+        return [];
+      } else {
+        const transformedObjects = persons.map((person) => ({
+          id: person.id,
+          firstName: person.firstName,
+          middleName: person.middleName,
+          lastName: person.lastName,
+          fullName: person.firstName + ' ' + person.middleName + ' ' + person.lastName,
+        }));
+
+        return plainToInstance(ViewParticipantNamesDto, transformedObjects);
+      }
+      //return persons|| [];
     } catch (error) {
       this.loggerService.log('Error occured to fetch ParticipantNames');
       throw new HttpException(
@@ -137,14 +153,23 @@ export class AppParticipantService {
    * @returns An array of key value pairs containing the names of the organizations.
    * @throws Error if there is an issue retrieving the data.
    */
-  async getOrganizationNames(searchParam: string) {
+  async getOrganizations(searchParam: string): Promise<ViewOrganizationsDto[]> {
     try {
       this.loggerService.log('at service layer getOrganizationNames start');
 
       const organizations = await this.organizationRepository.createQueryBuilder('organization')
       .where('organization.name ILIKE :searchText', { searchParam: `%${searchParam}%` })
       .getMany();
-      return organizations || [];
+      if (!organizations?.length) {
+        return [];
+      } else {
+        const transformedObjects = organizations.map((organization) => ({
+          id: organization.id,
+          name: organization.name,
+        }));
+
+        return plainToInstance(ViewOrganizationsDto, transformedObjects);
+      }
     } catch (error) {
       this.loggerService.log('Error occured to fetch OrganizationNames');
       throw new HttpException(

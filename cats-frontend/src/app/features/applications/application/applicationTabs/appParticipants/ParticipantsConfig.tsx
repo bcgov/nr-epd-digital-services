@@ -4,66 +4,82 @@ import {
   ColumnSize,
   TableColumn,
 } from '../../../../../components/table/TableColumn';
-
-export const appParticipantsForm: { [key: string]: IFormField } = {
-  isMainParticipant: {
-    type: FormFieldType.Switch,
-    label: 'Main Participant',
-    graphQLPropertyName: 'isMainParticipant',
-    value: false,
-    colSize: 'col-lg-12 col-md-12 col-sm-12', 
-  },
-  startDate: {
-    type: FormFieldType.Date,
-    label: 'Start Date',
-    graphQLPropertyName: 'effectiveStartDate',
-    value: '',
-    colSize: 'col-lg-6 col-md-6 col-sm-12',
-    // placeholder: 'EE, MMM dd, yyyy',
-    // dateFormat: 'EE, MMM dd, yyyy',
-    isDisabled: false,
-  },
-  endDate: {  
-    type: FormFieldType.Date,
-    label: 'End Date',
-    graphQLPropertyName: 'effectiveEndDate',
-    value: '',
-    // placeholder: 'EE, MMM dd, yyyy',
-    // dateFormat: 'EE, MMM dd, yyyy',
-    colSize: 'col-lg-6 col-md-6 col-sm-12',
-    isDisabled: false,
-  },
-  role: {
-    type: FormFieldType.DropDown,
-    label: 'Role',
-    options: [],
-    graphQLPropertyName: 'description',
-    value: '',
-    colSize: 'col-lg-12 col-md-12 col-sm-12',
-  },
-  participantName: {
-    type: FormFieldType.DropDownWithSearch,
-    label: 'Person',
-    graphQLPropertyName: 'fullName',
-    value: '',
-    colSize: 'col-lg-12 col-md-12 col-sm-12',
-  },
-  organization: {
-    type: FormFieldType.DropDownWithSearch,
-    label: 'Organization',
-    graphQLPropertyName: 'name',
-    value: '',
-    colSize: 'col-lg-12 col-md-12 col-sm-12',
-  },
-};
- 
-export const addAppParticipantsForm: IFormField[][] = [
-  [appParticipantsForm.isMainParticipant], [appParticipantsForm.startDate,
-  appParticipantsForm.endDate], [appParticipantsForm.role],
-  [appParticipantsForm.participantName], [appParticipantsForm.organization],
-];
+import { RequestStatus } from '../../../../../helpers/requests/status';
+import { useGetParticipantRolesQuery } from './graphql/Participants.generated';
 
 export const GetConfig = () => {
+  const { data } = useGetParticipantRolesQuery();
+  const fetchedRoles = data?.getAllParticipantRoles.data?.map((role) => ({
+    key: role.id.toString(),
+    value: role.description,
+  }));
+
+  const appParticipantsForm: { [key: string]: IFormField } = {
+    isMainParticipant: {
+      type: FormFieldType.Switch,
+      label: 'Main Participant',
+      graphQLPropertyName: 'isMainParticipant',
+      value: false,
+      colSize: 'col-lg-12 col-md-12 col-sm-12', 
+    },
+    startDate: {
+      type: FormFieldType.Date,
+      label: 'Start Date',
+      graphQLPropertyName: 'effectiveStartDate',
+      value: '',
+      colSize: 'col-lg-6 col-md-6 col-sm-12',
+      // placeholder: 'EE, MMM dd, yyyy',
+      // dateFormat: 'EE, MMM dd, yyyy',
+      isDisabled: false,
+    },
+    endDate: {  
+      type: FormFieldType.Date,
+      label: 'End Date',
+      graphQLPropertyName: 'effectiveEndDate',
+      value: '',
+      // placeholder: 'EE, MMM dd, yyyy',
+      // dateFormat: 'EE, MMM dd, yyyy',
+      colSize: 'col-lg-6 col-md-6 col-sm-12',
+      isDisabled: false,
+    },
+    role: {
+      type: FormFieldType.DropDown,
+      label: 'Role',
+      options: fetchedRoles || [],
+      graphQLPropertyName: 'description',
+      value: '',
+      colSize: 'col-lg-12 col-md-12 col-sm-12',
+    },
+    participantName: {
+      type: FormFieldType.DropDownWithSearch,
+      label: 'Person',
+      graphQLPropertyName: 'fullName',
+      value: '',
+      placeholder: 'Search by name',
+      options: [{key:"1", value: "Nick"}],
+      filteredOptions:[{key:"1", value: "Nick"}],
+      handleSearch: () => {},
+      colSize: 'col-lg-12 col-md-12 col-sm-12',
+      isLoading: RequestStatus.idle,
+    },
+    organization: {
+      type: FormFieldType.DropDownWithSearch,
+      label: 'Organization',
+      graphQLPropertyName: 'name',
+      value: '',
+      options: [],
+      filteredOptions: [],
+      handleSearch: () => {},
+      colSize: 'col-lg-12 col-md-12 col-sm-12',
+    },
+  };
+   
+  const addAppParticipantsForm: IFormField[][] = [
+    [appParticipantsForm.isMainParticipant], [appParticipantsForm.startDate,
+    appParticipantsForm.endDate], [appParticipantsForm.role],
+    [appParticipantsForm.participantName], [appParticipantsForm.organization],
+  ];
+  
   const participantColumnInternal: TableColumn[] = [
     {
       id: 1,
@@ -210,6 +226,7 @@ export const GetConfig = () => {
   ];
 
   return {
+    addAppParticipantsForm,
     participantColumnInternal,
   };
 };
