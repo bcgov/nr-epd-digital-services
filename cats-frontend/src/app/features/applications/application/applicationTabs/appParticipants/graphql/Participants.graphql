@@ -32,7 +32,7 @@ query getParticipantRoles {
 }
 
 query getParticipantNames($searchParam: String!) {
-  getAllParticipantNames(searchParam: $searchParam) {
+  getParticipantNames(searchParam: $searchParam) {
     httpStatusCode
     success
     message
