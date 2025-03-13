@@ -193,7 +193,7 @@ const Person = () => {
 
   const handleInputChange = (
     graphQLPropertyName: any,
-    value: String | [Date, Date],
+    value: String | [Date, Date] | { key: string; value: string },
   ) => {
     if (
       (graphQLPropertyName === 'address_1' ||
@@ -236,7 +236,7 @@ const Person = () => {
 
   const handleNoteChange = (
     graphQLPropertyName: any,
-    value: String | [Date, Date],
+    value: String | [Date, Date] | { key: string; value: string },
   ) => {
     setNote({
       ...note,

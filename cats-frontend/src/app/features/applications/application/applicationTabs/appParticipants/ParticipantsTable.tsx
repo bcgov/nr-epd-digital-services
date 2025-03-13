@@ -285,9 +285,9 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
 
   const handleFormChange = (
     graphQLPropertyName: any,
-    value: String | [Date, Date],
+    value: String | [Date, Date] | { key: string; value: string },
   ) => {
-    //console.log('PT: handleFormChange: ', graphQLPropertyName, value);
+    console.log('PT: handleFormChange: ', graphQLPropertyName, value);
     setFormData({...formData, [graphQLPropertyName]: value });
     console.log('PT: formData: ', formData);
   };
