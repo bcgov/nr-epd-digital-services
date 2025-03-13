@@ -1118,6 +1118,11 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
   }, []);
 
   const modifiedLabelForSearch = `Search ${label}`;
+  //This is to handle the case where the value is an object and sent as a key value pair. If this is not taken care of then
+  // {value ? options?.find((opt) => opt.key === value)?.value : placeholder} below will not work and the option will not get selected in the dropdown
+  if (value && typeof value === 'object' && 'key' in value) {
+    value = value.key;
+  }
 
   return (
     <ContainerElement
