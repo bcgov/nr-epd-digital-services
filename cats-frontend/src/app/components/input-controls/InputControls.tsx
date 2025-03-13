@@ -1058,7 +1058,7 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
     }
   }, []);
 
-  const validateInput = (inputValue: string) => {
+  const validateInput = (inputValue: any) => {
     if (validation) {
       if (validation?.required && !inputValue) {
         setError(validation?.customMessage || ' ');
@@ -1120,7 +1120,10 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
   }, []);
 
   const modifiedLabelForSearch = `Search ${label}`;
-
+  
+  if (typeof value === 'object' && 'key' in value) {
+    value = value.key;
+  }
   return (
     <ContainerElement
       className={`${tableMode ? 'table-border-light align-content-center' : 'mb-3'} ${tableMode && stickyCol ? 'position-sticky' : ''} `}
