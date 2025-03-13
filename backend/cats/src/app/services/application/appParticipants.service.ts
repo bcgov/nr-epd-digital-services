@@ -14,6 +14,7 @@ import { Person } from '../../entities/person.entity';
 import { Organization } from '../../entities/organization.entity';
 import { ViewParticipantNamesDto } from '../../dto/appParticipants/ViewParticipantNames.dto';
 import { ViewOrganizationsDto } from '../../dto/appParticipants/viewOrganization.dto';
+import { DropdownDto } from 'src/app/dto/dropdown.dto';
 
 @Injectable()
 export class AppParticipantService {
@@ -114,7 +115,7 @@ export class AppParticipantService {
    * @returns An array of key value pairs containing the names of the participants. 
    * @throws Error if there is an issue retrieving the data.
    */
-  async getParticipantNames(searchParam: string): Promise<ViewParticipantNamesDto[]> {
+  async getParticipantNames(searchParam: string): Promise<DropdownDto[]> {
     try {
       this.loggerService.log('at service layer getParticipantNames start');
 
@@ -129,14 +130,17 @@ export class AppParticipantService {
         return [];
       } else {
         const transformedObjects = persons.map((person) => ({
-          id: person.id,
-          firstName: person.firstName,
-          middleName: person.middleName,
-          lastName: person.lastName,
-          fullName: person.firstName + ' ' + person.middleName + ' ' + person.lastName,
+          // id: person.id,
+          // firstName: person.firstName,
+          // middleName: person.middleName,
+          // lastName: person.lastName,
+          // fullName: person.firstName + ' ' + person.middleName + ' ' + person.lastName,
+          key: person.id.toString(),
+          value: person.firstName + ' ' + person.middleName + ' ' + person.lastName
         }));
 
-        return plainToInstance(ViewParticipantNamesDto, transformedObjects);
+        return transformedObjects;
+        //return plainToInstance(ViewParticipantNamesDto, transformedObjects);
       }
       //return persons|| [];
     } catch (error) {

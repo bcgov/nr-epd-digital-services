@@ -143,6 +143,22 @@ export type DeletePersonNote = {
   id: Scalars['String']['input'];
 };
 
+export type DropdownDto = {
+  __typename?: 'DropdownDto';
+  key: Scalars['String']['output'];
+  metaData: Scalars['String']['output'];
+  value: Scalars['String']['output'];
+};
+
+export type DropdownResponse = {
+  __typename?: 'DropdownResponse';
+  data?: Maybe<Array<DropdownDto>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type HousingDto = {
   __typename?: 'HousingDto';
   effectiveDate?: Maybe<Scalars['DateTime']['output']>;
@@ -213,15 +229,6 @@ export type OrganizationsResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
-export type ParticipantNamesResponse = {
-  __typename?: 'ParticipantNamesResponse';
-  data?: Maybe<Array<ViewParticipantNamesDto>>;
-  httpStatusCode?: Maybe<Scalars['Int']['output']>;
-  message?: Maybe<Scalars['String']['output']>;
-  success?: Maybe<Scalars['Boolean']['output']>;
-  timestamp?: Maybe<Scalars['String']['output']>;
-};
-
 export type ParticipantsRolesResponse = {
   __typename?: 'ParticipantsRolesResponse';
   data?: Maybe<Array<ViewParticipantsRolesDto>>;
@@ -258,7 +265,7 @@ export type Query = {
   getAppParticipantsByAppId: AppParticipantsResponse;
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
   getOrganizations: OrganizationsResponse;
-  getParticipantNames: ParticipantNamesResponse;
+  getParticipantNames: DropdownResponse;
   getPersonNotesByPersonId: PersonNoteResponse;
   searchApplications: ApplicationSearchResponse;
   searchPerson: SearchPersonResponse;
@@ -371,15 +378,6 @@ export type ViewOrganizationsDto = {
   __typename?: 'ViewOrganizationsDto';
   id: Scalars['Float']['output'];
   name: Scalars['String']['output'];
-};
-
-export type ViewParticipantNamesDto = {
-  __typename?: 'ViewParticipantNamesDto';
-  firstName: Scalars['String']['output'];
-  fullName: Scalars['String']['output'];
-  id: Scalars['Float']['output'];
-  lastName: Scalars['String']['output'];
-  middleName: Scalars['String']['output'];
 };
 
 export type ViewParticipantsRolesDto = {
