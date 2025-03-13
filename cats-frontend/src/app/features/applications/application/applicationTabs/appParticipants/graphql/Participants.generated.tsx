@@ -21,7 +21,7 @@ export type GetParticipantNamesQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetParticipantNamesQuery = { __typename?: 'Query', getParticipantNames: { __typename?: 'ParticipantNamesResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewParticipantNamesDto', id: number, fullName: string }> | null } };
+export type GetParticipantNamesQuery = { __typename?: 'Query', getParticipantNames: { __typename?: 'DropdownResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'DropdownDto', key: string, value: string }> | null } };
 
 export type GetOrganizationsQueryVariables = Types.Exact<{
   searchParam: Types.Scalars['String']['input'];
@@ -140,8 +140,8 @@ export const GetParticipantNamesDocument = gql`
     message
     timestamp
     data {
-      id
-      fullName
+      key
+      value
     }
   }
 }

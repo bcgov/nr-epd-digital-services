@@ -15,6 +15,7 @@ import { ViewParticipantNamesDto } from '../../dto/appParticipants/ViewParticipa
 import { ViewOrganizationsDto } from '../../dto/appParticipants/viewOrganization.dto';
 import { ParticipantNamesResponse } from 'src/app/dto/response/applicationParticipant/participantNamesResponse';
 import { OrganizationsResponse } from 'src/app/dto/response/applicationParticipant/organizationsResponse';
+import { DropdownDto, DropdownResponse } from 'src/app/dto/dropdown.dto';
 
 @Resolver(() => ViewAppParticipantsDto)
 @Resource('user-service')
@@ -29,7 +30,7 @@ export class AppParticipantResolver {
       ViewParticipantsRolesDto[]
     >,
     private readonly personResponseProvider: GenericResponseProvider<
-      ViewParticipantNamesDto[]
+      DropdownDto[]
     >,
     private readonly organizationResponseProvider: GenericResponseProvider<
       ViewOrganizationsDto[]
@@ -99,7 +100,7 @@ export class AppParticipantResolver {
     }
   }
 
-  @Query(() => ParticipantNamesResponse, { name: 'getParticipantNames' })
+  @Query(() => DropdownResponse, { name: 'getParticipantNames' })
   @UsePipes(new GenericValidationPipe())
   async getParticipantNames(
     @Args('searchParam', { type: () => String }) searchParam: string,
