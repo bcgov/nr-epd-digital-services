@@ -1,3 +1,4 @@
+import { get } from 'http';
 import { PencilIcon, TickIcon } from '../../../../../components/common/icon';
 import { FormFieldType, IFormField } from '../../../../../components/input-controls/IFormField';
 import {
@@ -7,13 +8,19 @@ import {
 import { RequestStatus } from '../../../../../helpers/requests/status';
 import { useGetParticipantRolesQuery } from './graphql/Participants.generated';
 
-export const GetConfig = () => {
+
+export const getRolesConfig = () => {
   const { data } = useGetParticipantRolesQuery();
+  //console.log("roles data" , data);
   const fetchedRoles = data?.getAllParticipantRoles.data?.map((role) => ({
     key: role.id.toString(),
     value: role.description,
   }));
+  return fetchedRoles;
+};
 
+export const GetConfig = () => {
+  const getRoles = getRolesConfig();
   const appParticipantsForm: { [key: string]: IFormField } = {
     isMainParticipant: {
       type: FormFieldType.Switch,
@@ -28,8 +35,8 @@ export const GetConfig = () => {
       graphQLPropertyName: 'effectiveStartDate',
       value: '',
       colSize: 'col-lg-6 col-md-6 col-sm-12',
-      // placeholder: 'EE, MMM dd, yyyy',
-      // dateFormat: 'EE, MMM dd, yyyy',
+      placeholder: 'EE, MMM dd, yyyy',
+      dateFormat: 'EE, MMM dd, yyyy',
       isDisabled: false,
     },
     endDate: {  
@@ -37,15 +44,15 @@ export const GetConfig = () => {
       label: 'End Date',
       graphQLPropertyName: 'effectiveEndDate',
       value: '',
-      // placeholder: 'EE, MMM dd, yyyy',
-      // dateFormat: 'EE, MMM dd, yyyy',
+      placeholder: 'EE, MMM dd, yyyy',
+      dateFormat: 'EE, MMM dd, yyyy',
       colSize: 'col-lg-6 col-md-6 col-sm-12',
       isDisabled: false,
     },
     role: {
       type: FormFieldType.DropDown,
       label: 'Role',
-      options: fetchedRoles || [],
+      options: getRoles,
       graphQLPropertyName: 'description',
       value: '',
       colSize: 'col-lg-12 col-md-12 col-sm-12',
@@ -71,6 +78,7 @@ export const GetConfig = () => {
       label: 'Organization',
       graphQLPropertyName: 'name',
       value: '',
+      placeholder: 'Search by organization',
       options: [],
       filteredOptions: [],
       handleSearch: () => {},
@@ -83,6 +91,7 @@ export const GetConfig = () => {
     appParticipantsForm.endDate], [appParticipantsForm.role],
     [appParticipantsForm.participantName], [appParticipantsForm.organization],
   ];
+  //console.log("nupur - addAppParticipantsForm", addAppParticipantsForm);
   
   const participantColumnInternal: TableColumn[] = [
     {

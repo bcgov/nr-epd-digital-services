@@ -38,8 +38,8 @@ query getParticipantNames($searchParam: String!) {
     message
     timestamp
     data {
-      id
-      fullName
+      key
+      value
     }
   }
 }
