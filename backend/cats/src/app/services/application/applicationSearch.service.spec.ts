@@ -4,8 +4,10 @@ import { Repository } from 'typeorm';
 import { ApplicationSearchService } from './applicationSearch.service';
 import { Application } from '../../entities/application.entity';
 import { LoggerService } from '../../logger/logger.service';
-import { ApplicationFilter } from '../../utilities/enums/applicationFilter.enum';
+import { Filter } from '../../utilities/enums/application/filter.enum';
 import { ApplicationSearchResult } from '../../dto/response/applicationSearchResponse';
+import { SortByField } from '../../utilities/enums/application/sortByField.enum';
+import { SortByDirection } from '../../utilities/enums/application/sortByDirection.enum';
 
 describe('ApplicationSearchService', () => {
   let service: ApplicationSearchService;
@@ -45,7 +47,9 @@ describe('ApplicationSearchService', () => {
     const searchParam = 'test';
     const page = 1;
     const pageSize = 10;
-    const filter = ApplicationFilter.UNASSIGNED;
+    const filter = Filter.UNASSIGNED;
+    const sortBy = SortByField.ID;
+    const sortByDir = SortByDirection.ASC;
 
     const mockApplication = new Application();
     mockApplication.id = 1;
@@ -60,6 +64,7 @@ describe('ApplicationSearchService', () => {
       orWhere: jest.fn().mockReturnThis(),
       skip: jest.fn().mockReturnThis(),
       take: jest.fn().mockReturnThis(),
+      orderBy: jest.fn().mockReturnThis(),
       getManyAndCount: jest.fn().mockResolvedValue([[mockApplication], 1]),
     } as any);
 
@@ -68,6 +73,8 @@ describe('ApplicationSearchService', () => {
       page,
       pageSize,
       filter,
+      sortBy,
+      sortByDir,
     );
 
     expect(result).toBeInstanceOf(ApplicationSearchResult);
@@ -75,7 +82,7 @@ describe('ApplicationSearchService', () => {
     expect(result.count).toBe(1);
     expect(loggerService.log).toHaveBeenNthCalledWith(
       1,
-      `ApplicationSearchService: searchParam: ${searchParam}, page: ${page}, pageSize: ${pageSize}, filter: ${filter}.`,
+      `ApplicationSearchService: searchParam: ${searchParam}, page: ${page}, pageSize: ${pageSize}, filter: ${filter}, sortBy: ${sortBy}, sortByDir: ${sortByDir}.`,
     );
     expect(loggerService.log).toHaveBeenNthCalledWith(
       2,
@@ -90,6 +97,7 @@ describe('ApplicationSearchService', () => {
       orWhere: jest.fn().mockReturnThis(),
       skip: jest.fn().mockReturnThis(),
       take: jest.fn().mockReturnThis(),
+      orderBy: jest.fn().mockReturnThis(),
       getManyAndCount: jest.fn().mockImplementation(() => {
         throw new Error('Test error');
       }),
@@ -99,7 +107,9 @@ describe('ApplicationSearchService', () => {
       'test query',
       1,
       10,
-      ApplicationFilter.ALL,
+      Filter.ALL,
+      SortByField.ID,
+      SortByDirection.ASC,
     );
     expect(result).toBeInstanceOf(ApplicationSearchResult);
     expect(result.error).toBe('Test error');

@@ -2,8 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ApplicationSearchResolver } from './applicationSearch.resolver';
 import { ApplicationSearchService } from '../../services/application/applicationSearch.service';
 import { ApplicationSearchResult } from '../../dto/response/applicationSearchResponse';
-import { ApplicationFilter } from '../../utilities/enums/applicationFilter.enum';
+import { Filter } from '../../utilities/enums/application/filter.enum';
 import { LoggerService } from '../../logger/logger.service';
+import { SortByDirection } from '../../utilities/enums/application/sortByDirection.enum';
+import { SortByField } from '../../utilities/enums/application/sortByField.enum';
 
 describe('ApplicationSearchResolver', () => {
   let resolver: ApplicationSearchResolver;
@@ -40,7 +42,9 @@ describe('ApplicationSearchResolver', () => {
       const searchParam = 'test';
       const page = 1;
       const pageSize = 10;
-      const filter = ApplicationFilter.ALL;
+      const filter = Filter.ALL;
+      const sortBy = SortByField.ID;
+      const sortByDir = SortByDirection.ASC;
       const result: ApplicationSearchResult = {
         applications: [],
         count: 4,
@@ -65,6 +69,8 @@ describe('ApplicationSearchResolver', () => {
         page,
         pageSize,
         filter,
+        sortBy,
+        sortByDir,
       );
 
       expect(response).toStrictEqual(expectedResponse);
@@ -73,9 +79,11 @@ describe('ApplicationSearchResolver', () => {
         page,
         pageSize,
         filter,
+        sortBy,
+        sortByDir,
       );
       expect(loggerService.log).toHaveBeenCalledWith(
-        `ApplicationSearchResolver: searchParam: ${searchParam}, page: ${page}, pageSize: ${pageSize}, filter: ${filter}.`,
+        `ApplicationSearchResolver: searchParam: ${searchParam}, page: ${page}, pageSize: ${pageSize}, filter: ${filter}, sortBy: ${sortBy}, sortByDir: ${sortByDir}.`,
       );
       expect(loggerService.log).toHaveBeenCalledWith(
         `ApplicationSearchResolver: ${result.count} applications found.`,
@@ -86,7 +94,9 @@ describe('ApplicationSearchResolver', () => {
       const searchParam = 'test';
       const page = 1;
       const pageSize = 10;
-      const filter = ApplicationFilter.ALL;
+      const filter = Filter.ALL;
+      const sortBy = SortByField.ID;
+      const sortByDir = SortByDirection.ASC;
       const errorResult: ApplicationSearchResult = {
         error: 'Some error',
         applications: [],
@@ -102,6 +112,8 @@ describe('ApplicationSearchResolver', () => {
         page,
         pageSize,
         filter,
+        sortBy,
+        sortByDir,
       );
 
       expect(response.success).toBe(false);

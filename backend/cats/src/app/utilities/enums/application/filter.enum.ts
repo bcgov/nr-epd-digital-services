@@ -1,11 +1,11 @@
 import { registerEnumType } from '@nestjs/graphql';
 
-export enum ApplicationFilter {
+export enum Filter {
   ALL = 'all',
   UNASSIGNED = 'unassigned',
   COMPLETED = 'completed',
 }
 
-registerEnumType(ApplicationFilter, {
+registerEnumType(Filter, {
   name: 'ApplicationFilter',
 });

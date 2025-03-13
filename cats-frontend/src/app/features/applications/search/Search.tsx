@@ -9,6 +9,8 @@ import { applicationResultColumns } from './applicationResults/tableColumnConfig
 import {
   ApplicationFilter,
   ApplicationResultDto,
+  ApplicationSortByDirection,
+  ApplicationSortByField,
 } from '../../../../generated/types';
 import { useSearchApplicationsQuery } from './hooks/SearchApplications.generated';
 
@@ -25,12 +27,20 @@ const Search: React.FC = () => {
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
   const [totalResults, setTotalResults] = useState<number>(0);
+  const [sortBy, setSortBy] = useState<ApplicationSortByField>(
+    ApplicationSortByField.Id,
+  );
+  const [sortByDir, setSortByDir] = useState<ApplicationSortByDirection>(
+    ApplicationSortByDirection.Asc,
+  );
 
   const [searchParams, setSearchParams] = useState({
     searchTerm: '',
     page: 1,
     pageSize: 5,
     filter: ApplicationFilter.All,
+    sortBy: ApplicationSortByField.Id,
+    sortByDir: ApplicationSortByDirection.Asc,
   });
 
   const { data, error } = useSearchApplicationsQuery({
@@ -39,13 +49,15 @@ const Search: React.FC = () => {
       page: searchParams.page,
       pageSize: searchParams.pageSize,
       filter: searchParams.filter,
+      sortBy: searchParams.sortBy,
+      sortByDir: searchParams.sortByDir,
     },
   });
 
   useEffect(() => {
     if (data) {
       setResults(data.searchApplications.applications);
-      setTotalResults(data.searchApplications.count);
+      setTotalResults(data.searchApplications?.count || 0);
       setRequestStatus(RequestStatus.success);
     } else if (error) {
       setRequestStatus(RequestStatus.failed);
@@ -59,8 +71,17 @@ const Search: React.FC = () => {
         page: number,
         pageSize: number,
         filter: ApplicationFilter,
+        sortBy: ApplicationSortByField,
+        sortByDir: ApplicationSortByDirection,
       ) => {
-        setSearchParams({ searchTerm, page, pageSize, filter });
+        setSearchParams({
+          searchTerm,
+          page,
+          pageSize,
+          filter,
+          sortBy,
+          sortByDir,
+        });
         setRequestStatus(RequestStatus.loading);
       },
       300,
@@ -71,7 +92,46 @@ const Search: React.FC = () => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchTerm = event.target.value;
     setSearchTerm(searchTerm);
-    debouncedSearch(searchTerm, page, pageSize, filter);
+    debouncedSearch(searchTerm, page, pageSize, filter, sortBy, sortByDir);
+  };
+
+  const handleFilterChange = (filter: ApplicationFilter) => {
+    setFilter(filter);
+    debouncedSearch(searchTerm, page, pageSize, filter, sortBy, sortByDir);
+  };
+
+  const handleSortChange = (column: TableColumn, ascending: boolean) => {
+    let newSortBy = ApplicationSortByField.Id;
+    let newSortByDir = ascending
+      ? ApplicationSortByDirection.Asc
+      : ApplicationSortByDirection.Desc;
+    switch (column.graphQLPropertyName) {
+      case 'id':
+        newSortBy = ApplicationSortByField.Id;
+        break;
+      case 'siteId':
+        newSortBy = ApplicationSortByField.SiteId;
+        break;
+      case 'siteAddress':
+        newSortBy = ApplicationSortByField.SiteAddress;
+        break;
+      case 'applicationType':
+        newSortBy = ApplicationSortByField.ApplicationType;
+        break;
+      case 'lastUpdated':
+        newSortBy = ApplicationSortByField.LastUpdated;
+        break;
+      case 'status':
+        newSortBy = ApplicationSortByField.Status;
+        break;
+      case 'priority':
+        newSortBy = ApplicationSortByField.Priority;
+        break;
+    }
+
+    setSortBy(newSortBy);
+    setSortByDir(newSortByDir);
+    debouncedSearch(searchTerm, page, pageSize, filter, sortBy, sortByDir);
   };
 
   return (
@@ -88,7 +148,7 @@ const Search: React.FC = () => {
         results={results}
         requestStatus={requestStatus}
         handleColumnChange={setColumns}
-        handleFilterChange={setFilter}
+        handleFilterChange={handleFilterChange}
         page={page}
         pageSize={pageSize}
         handlePageChange={setPage}
@@ -96,6 +156,7 @@ const Search: React.FC = () => {
         showPageOptions={true}
         totalResults={totalResults}
         filter={filter}
+        sortHandler={handleSortChange}
       />
     </PageContainer>
   );
