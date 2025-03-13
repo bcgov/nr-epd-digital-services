@@ -1,6 +1,6 @@
 import { ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common';
 import { CustomExceptionFilter } from './customExceptionFilters';
-import { GenericResponse } from '../dto/reponse/genericResponse';
+import { GenericResponse } from '../dto/response/genericResponse';
 
 describe('CustomExceptionFilter', () => {
   let customExceptionFilter: CustomExceptionFilter;

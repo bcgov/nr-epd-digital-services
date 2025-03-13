@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppParticipantService } from '../../services/application/appParticipants.service';
-import { GenericResponseProvider } from '../../dto/reponse/genericResponseProvider';
+import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
 
 import { HttpStatus } from '@nestjs/common';
 import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipantsDto';

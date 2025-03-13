@@ -1,12 +1,12 @@
 import { Query, Resolver, Mutation, Args, Int } from '@nestjs/graphql';
 import { AuthenticatedUser, Public, Resource } from 'nest-keycloak-connect';
 import { HttpStatus} from '@nestjs/common';
-import { SearchPersonResponse } from '../../dto/reponse/person/fetchSearchPerson';
+import { SearchPersonResponse } from '../../dto/response/person/fetchSearchPerson';
 import { LoggerService } from '../../logger/logger.service';
 import { PersonService } from '../../services/people/people.service';
 import { ViewPerson } from '../../dto/person/viewPerson.dto';
-import { GenericResponseProvider } from '../../dto/reponse/genericResponseProvider';
-import { PersonResponse } from '../../dto/reponse/person/personResponse';
+import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
+import { PersonResponse } from '../../dto/response/person/personResponse';
 import { CreatePerson } from '../../dto/person/createPerson.dto';
 import { UpdatePerson } from '../../dto/person/updatePerson.dto';
 

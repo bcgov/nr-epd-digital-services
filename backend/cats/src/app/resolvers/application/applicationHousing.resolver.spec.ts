@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ApplicationHousingResolver } from './applicationHousing.resolver';
 import { ApplicationHousingService } from '../../services/application/applicationHousing.service';
-import { GenericResponseProvider } from '../../dto/reponse/genericResponseProvider';
+import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
 
 describe('ApplicationHousinghResolver', () => {
   let resolver: ApplicationHousingResolver;

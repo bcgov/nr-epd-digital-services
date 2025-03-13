@@ -1,10 +1,10 @@
 import { Args, Int, Query, Resolver } from '@nestjs/graphql';
 import { HttpStatus, UsePipes } from '@nestjs/common';
-import { GenericResponseProvider } from '../../dto/reponse/genericResponseProvider';
+import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
 import { GenericValidationPipe } from '../../utils/validations/genericValidationPipe';
 import { ApplicationHousingDto } from '../../dto/applicationHousingDto';
 import { ApplicationHousingService } from '../../services/application/applicationHousing.service';
-import { ApplicationHousingResponse } from '../../dto/reponse/applicationHousingResponse';
+import { ApplicationHousingResponse } from '../../dto/response/applicationHousingResponse';
 
 @Resolver(() => ApplicationHousingDto)
 export class ApplicationHousingResolver {

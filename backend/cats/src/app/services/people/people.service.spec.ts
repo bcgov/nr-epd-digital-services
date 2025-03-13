@@ -4,7 +4,7 @@ import { Person } from '../../entities/person.entity';
 import { LoggerService } from '../../logger/logger.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
-import { SearchPersonResponse } from '../../dto/reponse/person/fetchSearchPerson';
+import { SearchPersonResponse } from '../../dto/response/person/fetchSearchPerson';
 import { CreatePerson } from '../../dto/person/createPerson.dto';
 import { UserTypeEum } from '../../utilities/enums/userType';
 

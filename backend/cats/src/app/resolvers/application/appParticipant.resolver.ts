@@ -2,10 +2,13 @@ import { Args, Int, Query, Resolver } from '@nestjs/graphql';
 import { AppParticipantService } from '../../services/application/appParticipants.service';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { HttpStatus, UsePipes } from '@nestjs/common';
-import { GenericResponseProvider } from '../../dto/reponse/genericResponseProvider';
+import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
 import { GenericValidationPipe } from '../../utils/validations/genericValidationPipe';
-import { AppParticipantsResponse } from '../../dto/reponse/applicationParticipant/appParticipantsResponse';
-import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipantsDto';
+import { AppParticipantsResponse } from '../../dto/response/applicationParticipant/appParticipantsResponse';
+import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipants.dto';
+import { LoggerService } from '../../logger/logger.service';
+import { AppParticipantFilter } from '../../utilities/enums/appParticipantFilter.enum';
+
 
 @Resolver(() => ViewAppParticipantsDto)
 export class AppParticipantResolver {

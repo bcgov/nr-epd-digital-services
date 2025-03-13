@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Brackets } from 'typeorm';
-import { SearchPersonResponse } from '../../dto/reponse/person/fetchSearchPerson';
+import { SearchPersonResponse } from '../../dto/response/person/fetchSearchPerson';
 import { Person } from '../../entities/person.entity';
 import { LoggerService } from '../../logger/logger.service';
 import { CreatePerson } from '../../dto/person/createPerson.dto';

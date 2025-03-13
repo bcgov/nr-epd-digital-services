@@ -247,7 +247,7 @@ export const TextInput: React.FC<InputProps> = ({
   };
 
   // Replace any spaces in the label with underscores to create a valid id
-  const inputTxtId = label.replace(/\s+/g, '_') + '_' + v4();
+  const inputTxtId = label?.replace(/\s+/g, '_') + '_' + v4();
   return (
     <ContainerElement
       className={`${tableMode ? 'table-border-light align-content-center ' : 'mb-3'} ${tableMode && stickyCol ? 'positionSticky' : ''} `}
@@ -316,7 +316,7 @@ export const DropdownInput: React.FC<InputProps> = ({
   const [error, setError] = useState<string | null>(null);
   const ContainerElement = tableMode ? 'td' : 'div';
   // Replace any spaces in the label with underscores to create a valid id
-  const drdownId = label.replace(/\s+/g, '_') + '_' + v4();
+  const drdownId = label?.replace(/\s+/g, '_') + '_' + v4();
   const [selected, setSelected] = useState<boolean>(false);
 
   useEffect(() => {
@@ -516,7 +516,7 @@ export const GroupInput: React.FC<InputProps> = ({
   const handleCheckBoxChange = (isChecked: boolean) => {
     onChange(isChecked);
   };
-  const groupId = label.replace(/\s+/g, '_') + '_' + v4();
+  const groupId = label?.replace(/\s+/g, '_') + '_' + v4();
   return (
     <div className="mb-3">
       {' '}
@@ -536,7 +536,7 @@ export const GroupInput: React.FC<InputProps> = ({
       <div className="row" id={groupId}>
         {isEditing ? (
           children?.map((child, index) => {
-            const grpId = child.label.replace(/\s+/g, '_') + '_' + v4();
+            const grpId = child?.label?.replace(/\s+/g, '_') + '_' + v4();
             return (
               <div key={index} className="col">
                 {isChildLabel && (
@@ -648,7 +648,7 @@ export const DateRangeInput: React.FC<InputProps> = ({
   };
 
   // Replace any spaces in the label with underscores to create a valid id
-  const dateRangeId = label.replace(/\s+/g, '_') + '_' + v4();
+  const dateRangeId = label?.replace(/\s+/g, '_') + '_' + v4();
   return (
     <ContainerElement
       className={tableMode ? 'table-border-light align-content-center' : 'mb-3'}
@@ -776,7 +776,7 @@ export const DateInput: React.FC<InputProps> = ({
   };
 
   // Replace any spaces in the label with underscores to create a valid id
-  const dateRangeId = label.replace(/\s+/g, '_') + '_' + v4();
+  const dateRangeId = label?.replace(/\s+/g, '_') + '_' + v4();
   return (
     <ContainerElement
       className={tableMode ? 'table-border-light align-content-center' : 'mb-3'}
@@ -854,7 +854,7 @@ export const CheckBoxInput: React.FC<InputProps> = ({
   srMode,
 }) => {
   const ContainerElement = tableMode ? 'td' : 'div';
-  const inputTxtId = label.replace(/\s+/g, '_') + '_' + v4();
+  const inputTxtId = label?.replace(/\s+/g, '_') + '_' + v4();
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.checked); // Toggle the checked state and pass it to the parent component
   };
@@ -923,7 +923,7 @@ export const TextAreaInput: React.FC<InputProps> = ({
   isDisabled,
   customErrorCss,
 }) => {
-  const textAreaId = label.replace(/\s+/g, '_') + '_' + v4();
+  const textAreaId = label?.replace(/\s+/g, '_') + '_' + v4();
   const ContainerElement = tableMode ? 'td' : 'div';
   const cols = textAreaColoum ?? undefined;
   const rows = textAreaRow ?? undefined;
@@ -1042,7 +1042,7 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
   const [error, setError] = useState<string | null>(null);
   const divRef = useRef<HTMLDivElement>(null);
   const ContainerElement = tableMode ? 'td' : 'div';
-  const drdownId = label.replace(/\s+/g, '_') + '_' + v4();
+  const drdownId = label?.replace(/\s+/g, '_') + '_' + v4();
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filteredOpts, setFilteredOpts] =
     useState<{ key: any; value: any }[]>(filteredOptions);
@@ -1115,6 +1115,8 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
     };
   }, []);
 
+  const modifiedLabelForSearch = `Search ${label}`;
+
   return (
     <ContainerElement
       className={`${tableMode ? 'table-border-light align-content-center' : 'mb-3'} ${tableMode && stickyCol ? 'position-sticky' : ''} `}
@@ -1150,7 +1152,7 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
           <Dropdown.Menu className="custom-dropdown-menu" ref={divRef}>
             <div className="mx-2">
               <SearchInput
-                label={'Search Staff'}
+                label={modifiedLabelForSearch}
                 searchTerm={searchTerm}
                 clearSearch={clearSearch}
                 handleSearchChange={handleSearchChange}
@@ -1404,7 +1406,7 @@ export const SearchCustomInput: React.FC<InputProps> = ({
     }
   }, [options]);
 
-  const inputTxtId = label.replace(/\s+/g, '_') + '_' + v4();
+  const inputTxtId = label?.replace(/\s+/g, '_') + '_' + v4();
   return (
     <ContainerElement
       className={`${tableMode ? 'table-border-light align-content-center ' : 'mb-3'} ${tableMode && stickyCol ? 'positionSticky' : ''} `}
@@ -1589,7 +1591,7 @@ export const SwitchInput: React.FC<InputProps> = ({
     }
     onChange(checked);
   };
-  const inputTxtId = label.replace(/\s+/g, '_') + '_' + v4();
+  const inputTxtId = label?.replace(/\s+/g, '_') + '_' + v4();
   const lbl = (
     <label
       htmlFor={label}

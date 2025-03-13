@@ -58,14 +58,14 @@ services:
     volumes:
       - /pgdata
 
-  users:
+  cats:
     networks:
       - app-tier
     build:
-      context: backend/users
+      context: backend/cats
       dockerfile: ./local.Dockerfile
-    container_name: users
-    hostname: users
+    container_name: cats
+    hostname: cats
     links:
       - database
     ports:
@@ -76,7 +76,7 @@ services:
     expose:
       - 4005
     volumes:
-      - ./backend/users:/app:z
+      - ./backend/cats:/app:z
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:4005" ]
       interval: 1m30s
@@ -172,9 +172,9 @@ services:
       POSTGRESQL_USER: default
       POSTGRESQL_PASSWORD: default
       POSTGRESQL_DATABASE: default
-      USERS_MICROSERVICE: http://users:4005
+      CATS_MICROSERVICE: http://cats:4005
       SITE_MICROSERVICE: http://sites:4007
-      USERS_MICROSERVICE_ENDPOINT: http://users:4005/graphql
+      CATS_MICROSERVICE_ENDPOINT: http://cats:4005/graphql
       SITE_MICROSERVICE_ENDPOINT: http://sites:4007/graphql
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:4010" ]
@@ -190,7 +190,7 @@ services:
     ports:
       - "4010:4010"
     depends_on:
-      - "users"
+      - "cats"
       - "sites"
     volumes:
       - ./backend/gateway:/app:z
