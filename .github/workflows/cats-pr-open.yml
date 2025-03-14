@@ -5,7 +5,10 @@ on:
     types: [opened, synchronize, reopened, ready_for_review] # ready for review is not included by default, More than one activity type triggers this event. For information about each activity type, see "Webhook events and payloads." By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened. To trigger workflows by different activity types, use the types keyword. For more information, see "Workflow syntax for GitHub Actions."
     branches:
       - dev # this is the default branch and not main
-      - srs-605 # test update 
+      #- srs-605 #test branch
+    paths:
+      - 'backend/cats/**'
+      - 'cats-frontend/**'  
 
 
 concurrency:

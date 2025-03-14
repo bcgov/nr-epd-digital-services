@@ -28,28 +28,28 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Migrations
-        env:
-          POSTGRES_DB_PASSWORD: default
-          POSTGRES_DB_USERNAME: postgres
-          POSTGRES_DATABASE: postgres
-          POSTGRESQL_HOST: 127.0.0.1
-          POSTGRESQL_PORT: 5432
-          POSTGRES_ADMIN_USERNAME: postgres
-          POSTGRES_ADMIN_PASSWORD: default
-          POSTGRES_DB_SCHEMA: cats
-        shell: bash
-        run: |
-            docker run --network host \
-            -e POSTGRES_DB_PASSWORD=default \
-            -e POSTGRES_DB_USERNAME=postgres \
-            -e POSTGRES_DATABASE=postgres \
-            -e POSTGRESQL_HOST=127.0.0.1 \
-            -e POSTGRESQL_PORT=5432 \
-            -e POSTGRES_ADMIN_USERNAME=postgres \
-            -e POSTGRES_ADMIN_PASSWORD=default \
-            -e POSTGRES_DB_SCHEMA=cats \
-            ghcr.io/bcgov/nr-epd-digital-services/cats-backend-migration:test
+      # - name: Migrations
+      #   env:
+      #     POSTGRES_DB_PASSWORD: default
+      #     POSTGRES_DB_USERNAME: postgres
+      #     POSTGRES_DATABASE: postgres
+      #     POSTGRESQL_HOST: 127.0.0.1
+      #     POSTGRESQL_PORT: 5432
+      #     POSTGRES_ADMIN_USERNAME: postgres
+      #     POSTGRES_ADMIN_PASSWORD: default
+      #     POSTGRES_DB_SCHEMA: cats
+      #   shell: bash
+      #   run: |
+      #       docker run --network host \
+      #       -e POSTGRES_DB_PASSWORD=default \
+      #       -e POSTGRES_DB_USERNAME=postgres \
+      #       -e POSTGRES_DATABASE=postgres \
+      #       -e POSTGRESQL_HOST=127.0.0.1 \
+      #       -e POSTGRESQL_PORT=5432 \
+      #       -e POSTGRES_ADMIN_USERNAME=postgres \
+      #       -e POSTGRES_ADMIN_PASSWORD=default \
+      #       -e POSTGRES_DB_SCHEMA=cats \
+      #       ghcr.io/bcgov/nr-epd-digital-services/cats-backend-migration:test
 
       - name: Create Output Folder
         run: |
