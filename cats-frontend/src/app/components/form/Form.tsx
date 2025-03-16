@@ -24,7 +24,7 @@ interface IFormRendererProps {
   srMode?: boolean;
   handleInputChange: (
     graphQLPropertyName: any,
-    value: string | [Date, Date] | { key: string; value: string },
+    value: string | [Date, Date],
   ) => void;
 }
 

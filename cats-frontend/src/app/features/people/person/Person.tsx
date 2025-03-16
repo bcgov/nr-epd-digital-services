@@ -236,7 +236,7 @@ const Person = () => {
 
   const handleNoteChange = (
     graphQLPropertyName: any,
-    value: String | [Date, Date] | { key: string; value: string },
+    value: String | [Date, Date],
   ) => {
     setNote({
       ...note,

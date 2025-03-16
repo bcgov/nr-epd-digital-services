@@ -33,7 +33,7 @@ export class AppParticipantResolver {
       DropdownDto[]
     >,
     private readonly organizationResponseProvider: GenericResponseProvider<
-      ViewOrganizationsDto[]
+      DropdownDto[]
     >,
   ) {}
 
@@ -132,7 +132,7 @@ export class AppParticipantResolver {
     }
   }
 
-  @Query(() => OrganizationsResponse, { name: 'getOrganizations' })
+  @Query(() => DropdownResponse, { name: 'getOrganizations' })
   @UsePipes(new GenericValidationPipe())
   async getOrganizations(
     @Args('searchParam', { type: () => String }) searchParam: string,
