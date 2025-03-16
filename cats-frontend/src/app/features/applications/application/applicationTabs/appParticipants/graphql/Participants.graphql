@@ -51,8 +51,8 @@ query getOrganizations($searchParam: String!) {
     message
     timestamp
     data {
-      id
-      name
+      key
+      value
     }
   }
 }

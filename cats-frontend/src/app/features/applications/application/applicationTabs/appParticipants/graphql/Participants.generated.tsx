@@ -28,7 +28,7 @@ export type GetOrganizationsQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetOrganizationsQuery = { __typename?: 'Query', getOrganizations: { __typename?: 'OrganizationsResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewOrganizationsDto', id: number, name: string }> | null } };
+export type GetOrganizationsQuery = { __typename?: 'Query', getOrganizations: { __typename?: 'DropdownResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'DropdownDto', key: string, value: string }> | null } };
 
 
 export const GetAppParticipantsByAppIdDocument = gql`
@@ -187,8 +187,8 @@ export const GetOrganizationsDocument = gql`
     message
     timestamp
     data {
-      id
-      name
+      key
+      value
     }
   }
 }
