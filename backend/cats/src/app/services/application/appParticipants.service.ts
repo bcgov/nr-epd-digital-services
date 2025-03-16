@@ -158,7 +158,7 @@ export class AppParticipantService {
    * @returns An array of key value pairs containing the names of the organizations.
    * @throws Error if there is an issue retrieving the data.
    */
-  async getOrganizations(searchParam: string): Promise<ViewOrganizationsDto[]> {
+  async getOrganizations(searchParam: string): Promise<DropdownDto[]> {
     try {
       this.loggerService.log('at service layer getOrganizationNames start');
 
@@ -173,7 +173,7 @@ export class AppParticipantService {
           name: organization.name,
         }));
 
-        return plainToInstance(ViewOrganizationsDto, transformedObjects);
+        return plainToInstance(DropdownDto, transformedObjects);
       }
     } catch (error) {
       this.loggerService.log('Error occured to fetch OrganizationNames');
