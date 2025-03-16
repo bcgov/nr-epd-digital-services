@@ -99,9 +99,11 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     { key: string; value: string }[] | undefined
   >(undefined);
 
-  const [participantNames, setParticipantNames] = useState<
-    { key: string; value: string }[] | undefined
-  >(undefined);
+  // const [participantNames, setParticipantNames] = useState<
+  //   { key: string; value: string }[] | undefined
+  // >(undefined);
+
+  const [participantNames, setParticipantNames] = useState<{ key: string; value: string }[] | undefined>(undefined);
 
   const [role, setRole] = useState<string | null>(null);
   const [options, setOptions] = useState(rolesConfig);
@@ -140,9 +142,21 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         });
        // console.log('PT: personData: ', personData);
         if (personData?.data?.data?.getParticipantNames?.data) {  
+          console.log('PT: ND: personData: ', personData?.data?.data?.getParticipantNames?.data);
+          // const getParticipantNames = personData?.data?.data?.getParticipantNames?.data?.map((participant: any) => (
+          //  {
+          //   key: participant.id.toString(),
+          //   value: participant.fullName,
+          // }));
+          //console.log('PT: ND: fetchParticipantNames: ', fetchParticipantNames);
+          //setParticipantNames(getParticipantNames);
           resultCache[searchParam] = personData?.data?.data?.getParticipantNames?.data;
+          //resultCache[searchParam] = getParticipantNames;
           setOptions(personData?.data?.data?.getParticipantNames?.data);
+          //setOptions(getParticipantNames);
+          //console.log("ND: participant names inside fetchParticipantNames: ", options, ": ", participantNames);
           return personData?.data?.data?.getParticipantNames?.data;
+          //return getParticipantNames;
         }
         
       } catch (error) {
@@ -196,6 +210,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
       const indexToUpdate = appParticsForm.findIndex((row) =>
               row.some((field) => field.graphQLPropertyName === "fullName"),
             );
+            
         // const infoMsg = !res.success ? (
         //   <div className="px-2">
         //     <img
@@ -215,6 +230,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         // ) : (
         //   <></>
         // );
+        console.log('PT: ND: res: ', res);
         setAppParticsForm((prev) =>
           updateFields(prev, {
             indexToUpdate,
@@ -247,7 +263,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     const indexToUpdate = appParticsForm.findIndex((row) =>
       row.some((field) => field.graphQLPropertyName === "description"),
     );
-    
+    console.log('ND: rolesConfig: ', rolesConfig);
     setAppParticsForm((prev) =>
       updateFields(prev, {
         indexToUpdate,
@@ -267,7 +283,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     const indexToUpdate = appParticsForm.findIndex((row) =>
       row.some((field) => field.graphQLPropertyName === "fullName"),
     );
-    
+    console.log('ND: participantNames: ', participantNames);
     setAppParticsForm((prev) =>
       updateFields(prev, {
         indexToUpdate,
@@ -285,12 +301,16 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
 
   const handleFormChange = (
     graphQLPropertyName: any,
-    value: String | [Date, Date] | { key: string; value: string },
+    value: String | [Date, Date],
   ) => {
     console.log('PT: handleFormChange: ', graphQLPropertyName, value);
+    if(value && typeof value === 'object' && 'key' in value) {
+      value = (value as { key: string }).key;
+      console.log('PT: handleFormChange: value: ', value);
+    }
     setFormData({...formData, [graphQLPropertyName]: value });
     console.log('PT: formData: ', formData);
-  };
+  };;
 
   return (
     <div className="widget-container">
