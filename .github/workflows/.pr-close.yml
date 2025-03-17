@@ -1,0 +1,222 @@
+name: .PR Close
+
+on:
+  workflow_call:
+    inputs:
+      ### Typical / recommended
+      cleanup:
+        description: 'Type of cleanup; e.g. helm or label'
+        required: false
+        type: string
+      environment:
+        description: Environment name; omit for PRs
+        required: false
+        type: string
+      oc_server:
+        default: https://api.silver.devops.gov.bc.ca:6443
+        description: 'OpenShift server'
+        required: false
+        type: string
+      packages:
+        description: 'Space-separated list of packages to promote'
+        required: false
+        type: string
+      remove_pvc:
+        required: false
+        default: data-${{ github.event.repository.name }}-${{ github.event.number }}-bitnami-pg-0
+        type: string
+        description: 'Comma separated list of PVCs to remove'
+
+      ### Usually a bad idea / not recommended
+      merge_branch:
+        description: 'Merge target branch'
+        required: false
+        type: string
+        default: ${{ github.event.repository.default_branch }}
+      organization:
+        description: 'GitHub organization; e.g. bcgov'
+        default: ${{ github.repository_owner }}
+        required: false
+        type: string
+      repository:
+        description: 'GitHub repository, e.g. quickstart-openshift'
+        default: ${{ github.event.repository.name }}
+        required: false
+        type: string
+      tag_promote:
+        description: 'Tag to promote to; e.g. latest, test, demo or prod'
+        default: test
+        required: false
+        type: string
+      target:
+        description: 'Target; e.g. PR number, test or prod'
+        default: ${{ github.event.number }}
+        required: false
+        type: string
+
+    secrets:
+      oc_namespace:
+        description: 'OpenShift namespace'
+        required: false
+      oc_token:
+        description: 'OpenShift token'
+        required: false
+
+jobs:
+  vars:
+    if: inputs.packages != ''
+    runs-on: ubuntu-24.04
+    outputs:
+      packages: ${{ steps.packages.outputs.packages }}
+    steps:
+      - id: packages
+        run: |
+          # Convert packages to JSON array for job matrix
+          echo "packages=$(jq -cn '$ARGS.positional' --args ${{ inputs.packages }})" >> $GITHUB_OUTPUT
+
+      - run: |
+          # Diagnostic vars
+          echo "packages=$(jq -cn '$ARGS.positional' --args ${{ inputs.packages }})"
+          echo "github.event.pull_request.merged=${{ github.event.pull_request.merged }}"
+          echo "github.event.pull_request.base.ref=${{ github.event.pull_request.base.ref }}"
+          echo "inputs.merge_branch=${{ inputs.merge_branch }}"
+          echo "retag check:"
+          echo "  github.event.pull_request.merged == true && github.event.pull_request.base.ref == inputs.merge_branch"
+          echo "  => ${{ github.event.pull_request.merged == true }} && ${{ github.event.pull_request.base.ref == inputs.merge_branch }}"
+          echo "  => ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == inputs.merge_branch }}"
+
+  retags:
+    name: Retags
+    if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == inputs.merge_branch }}
+    needs: vars
+    runs-on: ubuntu-24.04
+    permissions:
+      packages: write
+    strategy:
+      matrix:
+        package: ${{ fromJson(needs.vars.outputs.packages) }}
+    timeout-minutes: 1
+    steps:
+      - uses: shrink/actions-docker-registry-tag@v4
+        with:
+          registry: ghcr.io
+          repository: ${{ inputs.organization }}/${{ inputs.repository }}/${{ matrix.package }}
+          target: ${{ inputs.target }}
+          tags: ${{ inputs.tag_promote }}
+
+      - run: |
+          # Verify tagging
+          INSPECT="docker manifest inspect ghcr.io/${{ inputs.organization }}/${{ inputs.repository }}/${{ matrix.package }}"
+          SOURCE=$(${INSPECT}:${{ inputs.tag_promote }} | jq -r '.manifests[] | select(.platform.architecture=="amd64") | .digest')
+          TARGET=$(${INSPECT}:${{ inputs.target }} | jq -r '.manifests[] | select(.platform.architecture=="amd64") | .digest')
+          echo "SOURCE: ${SOURCE}"
+          echo "TARGET: ${TARGET}"
+          if [ "${SOURCE}" != "${TARGET}" ]; then
+            echo "ERROR: Tagging failed!"
+            echo "RETRY=true" >> $GITHUB_ENV
+          else
+            echo "ERROR: Tagging success!"
+            echo "RETRY=false" >> $GITHUB_ENV
+          fi
+
+      - uses: shrink/actions-docker-registry-tag@v4
+        if: env.RETRY == 'true'
+        with:
+          registry: ghcr.io
+          repository: ${{ inputs.organization }}/${{ inputs.repository }}/${{ matrix.package }}
+          target: ${{ inputs.target }}
+          tags: ${{ inputs.tag_promote }}
+
+      - if: env.RETRY == 'true'
+        run: |
+          # Verify tagging after retry
+          INSPECT="docker manifest inspect ghcr.io/${{ inputs.organization }}/${{ inputs.repository }}/${{ matrix.package }}"
+          SOURCE=$(${INSPECT}:${{ inputs.tag_promote }} | jq -r '.manifests[] | select(.platform.architecture=="amd64") | .digest')
+          TARGET=$(${INSPECT}:${{ inputs.target }} | jq -r '.manifests[] | select(.platform.architecture=="amd64") | .digest')
+          if [ "${SOURCE}" != "${TARGET}" ]; then
+            echo "ERROR: Tagging failed!"
+            exit 1
+          fi
+
+  # Clean up OpenShift when PR closed, no conditions
+  cleanup:
+    name: OpenShift
+    if: inputs.cleanup == 'helm' || inputs.cleanup == 'label'
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      # OC setup
+      - uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: "4"
+
+      # OC Login
+      - run: |
+          # OC Login
+          oc login --token=${{ secrets.oc_token }} --server=${{ inputs.oc_server }}
+          oc project ${{ secrets.oc_namespace }} # Safeguard!
+
+      # Cleanup for Helm deployments
+      - name: Helm
+        if: inputs.cleanup == 'helm'
+        env:
+          release: ${{ inputs.repository }}-${{ inputs.target }}
+        run: |
+          # Helm cleanup steps
+
+          # If found, then remove
+          helm status ${{ env.release }} && helm uninstall --no-hooks ${{ env.release }} || \
+            echo "Not found: ${{ env.release }}"
+
+      # Cleanup for OpenShift template deployments, uses labels
+      - name: Label
+        if: inputs.cleanup == 'label'
+        run: |
+          # OC Template cleanup steps
+
+          # Remove old build runs, build pods and deployment pods
+          oc delete all,cm,pvc,secret -l app=${{ inputs.repository }}-${{ inputs.target }}
+
+      # Remove PVCs from OpenShift when PR closed
+      - name: Remove PVCs
+        if: inputs.remove_pvc
+        run: |
+          # Remove PVCs
+          echo "${{ inputs.remove_pvc }}" | while IFS= read -r pvc; do
+              oc delete pvc ${pvc//,/} || echo "Not found: ${pvc//,/}"
+          done
+
+      - name: Remove PR user and database from crunchy.
+        shell: bash
+        run: |
+          # check if postgres-crunchy exists or else exit
+          oc get PostgresCluster/postgres-crunchy || exit 0
+          # Remove the user from the crunchy cluster yaml and apply the changes
+          USER_TO_REMOVE='{"databases":["site-${{ github.event.number }}"],"name":"site-${{ github.event.number }}"}'
+          
+          echo 'getting current users from crunchy'
+          CURRENT_USERS=$(oc get PostgresCluster/postgres-crunchy -o json | jq '.spec.users')
+          echo "${CURRENT_USERS}"
+          
+          # Remove the user from the list, 
+          UPDATED_USERS=$(echo "$CURRENT_USERS" | jq --argjson user "$USER_TO_REMOVE" 'map(select(. != $user))')
+
+          PATCH_JSON=$(jq -n --argjson users "$UPDATED_USERS" '{"spec": {"users": $users}}')
+          oc patch PostgresCluster/postgres-crunchy --type=merge -p "$PATCH_JSON"
+          
+          # get primary crunchy pod and remove the role and db
+          CRUNCHY_PG_PRIMARY_POD_NAME=$(oc get pods -l postgres-operator.crunchydata.com/role=master -o json | jq -r '.items[0].metadata.name')
+          
+          echo "${CRUNCHY_PG_PRIMARY_POD_NAME}"
+          # Terminate all connections to the database before trying terminate
+          oc exec "${CRUNCHY_PG_PRIMARY_POD_NAME}" -- psql -c "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'site-${{ github.event.number }}' AND pid <> pg_backend_pid();"
+          
+          # Drop the database and role
+          oc exec "${CRUNCHY_PG_PRIMARY_POD_NAME}" -- psql -c "DROP DATABASE \"site-${{ github.event.number }}\" --cascade" 
+          
+          oc exec "${CRUNCHY_PG_PRIMARY_POD_NAME}" -- psql -c "DROP ROLE \"site-${{ github.event.number }}\" --cascade" 
+          
+          echo "Database and Role for PR is cleaned."
+          
+          exit 0
