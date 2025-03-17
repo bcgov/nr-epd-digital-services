@@ -6,9 +6,9 @@ on:
     branches:
       - dev # this is the default branch and not main
       #- srs-605 #test branch
-    paths:
-      - 'backend/cats/**'
-      - 'cats-frontend/**'  
+    # paths:
+    #   - 'backend/cats/**'
+    #   - 'cats-frontend/**'  
 
 
 concurrency:
