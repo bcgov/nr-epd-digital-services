@@ -280,7 +280,7 @@ export type QueryGetApplicationHousingByApplicationIdArgs = {
 
 
 export type QueryGetOrganizationsArgs = {
-  searchParam: Scalars['String']['input'];
+  searchParamForOrg: Scalars['String']['input'];
 };
 
 

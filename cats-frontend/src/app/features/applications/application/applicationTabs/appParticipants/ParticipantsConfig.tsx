@@ -68,29 +68,33 @@ export const GetConfig = () => {
       isLabel: false,
       options: [],
       filteredOptions: [],
-      colSize: 'col-lg-6 col-md-6 col-sm-12',
+      handleSearch: () => {},
+      colSize: 'col-lg-12 col-md-12 col-sm-12',
       customMenuMessage: <span>Please select participant name:</span>,
       tableMode: true,
-      handleSearch: () => {},
-      
     },
     organization: {
       type: FormFieldType.DropDownWithSearch,
       label: 'Organization',
       graphQLPropertyName: 'name',
+      isLoading: RequestStatus.idle,
       value: '',
       placeholder: 'Search by organization',
       options: [],
       filteredOptions: [],
       handleSearch: () => {},
+      tableMode: true,
+      customMenuMessage: <span>Please select organization name:</span>,
       colSize: 'col-lg-12 col-md-12 col-sm-12',
     },
   };
    
   const addAppParticipantsForm: IFormField[][] = [
-    [appParticipantsForm.isMainParticipant], [appParticipantsForm.startDate,
-    appParticipantsForm.endDate], [appParticipantsForm.role],
-    [appParticipantsForm.participantName], [appParticipantsForm.organization],
+    [appParticipantsForm.isMainParticipant],
+    [appParticipantsForm.startDate, appParticipantsForm.endDate],
+    [appParticipantsForm.role],
+    [appParticipantsForm.participantName],
+    [appParticipantsForm.organization]
   ];
   //console.log("nupur - addAppParticipantsForm", addAppParticipantsForm);
   

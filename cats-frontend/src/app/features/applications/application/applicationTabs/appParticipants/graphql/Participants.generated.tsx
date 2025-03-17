@@ -24,7 +24,7 @@ export type GetParticipantNamesQueryVariables = Types.Exact<{
 export type GetParticipantNamesQuery = { __typename?: 'Query', getParticipantNames: { __typename?: 'DropdownResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'DropdownDto', key: string, value: string }> | null } };
 
 export type GetOrganizationsQueryVariables = Types.Exact<{
-  searchParam: Types.Scalars['String']['input'];
+  searchParamForOrg: Types.Scalars['String']['input'];
 }>;
 
 
@@ -180,8 +180,8 @@ export type GetParticipantNamesLazyQueryHookResult = ReturnType<typeof useGetPar
 export type GetParticipantNamesSuspenseQueryHookResult = ReturnType<typeof useGetParticipantNamesSuspenseQuery>;
 export type GetParticipantNamesQueryResult = Apollo.QueryResult<GetParticipantNamesQuery, GetParticipantNamesQueryVariables>;
 export const GetOrganizationsDocument = gql`
-    query getOrganizations($searchParam: String!) {
-  getOrganizations(searchParam: $searchParam) {
+    query getOrganizations($searchParamForOrg: String!) {
+  getOrganizations(searchParamForOrg: $searchParamForOrg) {
     httpStatusCode
     success
     message
@@ -206,7 +206,7 @@ export const GetOrganizationsDocument = gql`
  * @example
  * const { data, loading, error } = useGetOrganizationsQuery({
  *   variables: {
- *      searchParam: // value for 'searchParam'
+ *      searchParamForOrg: // value for 'searchParamForOrg'
  *   },
  * });
  */
