@@ -135,11 +135,11 @@ export class AppParticipantResolver {
   @Query(() => DropdownResponse, { name: 'getOrganizations' })
   @UsePipes(new GenericValidationPipe())
   async getOrganizations(
-    @Args('searchParam', { type: () => String }) searchParam: string,
+    @Args('searchParamForOrg', { type: () => String }) searchParamForOrg: string,
     @AuthenticatedUser() user: any,
   ) {
     const result = await this.appParticipantService.getOrganizations(
-      searchParam,
+      searchParamForOrg,
     );
     if (result?.length > 0) {
       this.loggerService.log(
