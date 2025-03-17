@@ -4,9 +4,6 @@ on:
   pull_request:
     branches:
       - "**"
-    paths:
-      - 'backend/**'
-      - 'frontend/**' 
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -40,7 +37,7 @@ jobs:
     uses: ./.github/workflows/_code-cov.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/gateway, frontend]
+        component: [backend/applications, backend/gateway, backend/cats, frontend, cats-frontend]
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
