@@ -1,0 +1,46 @@
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+#-- global variables, can be accessed by sub-charts.
+global:
+  registry: ghcr.io
+  autoscaling: false
+  secrets:
+    enabled: true
+    persist: false
+    keycloakSecret: ~
+    keycloakRealm: ~
+    keycloakClientID: ~
+    keycloakAuthURL: ~
+  config:
+    seed:
+      enabled: true # TODO -> when test is successfully deployed, make PR/Dev env always cloned , so seed happens in TEST env
+#-- the components of the application, backend.
+backend:
+  #-- enable or disable backend
+  enabled: true
+  #-- the deployment strategy, can be "Recreate" or "RollingUpdate"
+  deploymentStrategy: Recreate
+  pdb:
+    enabled: false
+  resources:
+    requests:
+      cpu: 50m
+      memory: 150Mi
+
+frontend:
+  enabled: true
+  deploymentStrategy: Recreate
+  pdb:
+    enabled: false # enable it in PRODUCTION for having pod disruption budget.
+  config:
+    REACT_APP_BACKEND_API: ~
+    REACT_APP_AUTH_AUTHORITY: "https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/"
+    REACT_APP_AUTH_CLIENT_ID: "site-web"
+    REACT_APP_AUTH_REDIRECT_URI: ~
+    REACT_APP_AUTH_LOGOUT_REDIRECT_URI: ~
+    REACT_APP_AUTH_RESPONSE_TYPE: "code"
+    REACT_APP_AUTH_SCOPE: "openid profile"
+    REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS: "true"
+    REACT_APP_AUTH_LOAD_USER_INFO: "true"
+    REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT: "true"
+

@@ -1,0 +1,64 @@
+name: .Schema Spy
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        type: string
+        required: false
+        default: dev
+jobs:
+  generate-schema-spy:
+    name: Generate SchemaSpy Documentation
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgis/postgis:16-3.4
+        env:
+          POSTGRES_DB: cats
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: default
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      # - name: Migrations
+      #   env:
+      #     POSTGRES_DB_PASSWORD: default
+      #     POSTGRES_DB_USERNAME: postgres
+      #     POSTGRES_DATABASE: postgres
+      #     POSTGRESQL_HOST: 127.0.0.1
+      #     POSTGRESQL_PORT: 5432
+      #     POSTGRES_ADMIN_USERNAME: postgres
+      #     POSTGRES_ADMIN_PASSWORD: default
+      #     POSTGRES_DB_SCHEMA: cats
+      #   shell: bash
+      #   run: |
+      #       docker run --network host \
+      #       -e POSTGRES_DB_PASSWORD=default \
+      #       -e POSTGRES_DB_USERNAME=postgres \
+      #       -e POSTGRES_DATABASE=postgres \
+      #       -e POSTGRESQL_HOST=127.0.0.1 \
+      #       -e POSTGRESQL_PORT=5432 \
+      #       -e POSTGRES_ADMIN_USERNAME=postgres \
+      #       -e POSTGRES_ADMIN_PASSWORD=default \
+      #       -e POSTGRES_DB_SCHEMA=cats \
+      #       ghcr.io/bcgov/nr-epd-digital-services/cats-backend-migration:test
+
+      - name: Create Output Folder
+        run: |
+          mkdir output
+          chmod a+rwx -R output
+      - name: Run Schemaspy
+        run: docker run --network host -v "$PWD/output:/output" schemaspy/schemaspy:6.2.4 -t pgsql11 -db postgres -host 127.0.0.1 -port 5432 -u postgres -p default -schemas cats
+      - name: Deploy to Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: output
+          target-folder: schemaspy/cats
