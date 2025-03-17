@@ -28,7 +28,7 @@ jobs:
           - package: backend
             build_file: ./backend/cats/Dockerfile
             build_context: backend/cats
-          - package: cats-frontend
+          - package:  
             build_file: ./cats-frontend/Dockerfile
             build_context: cats-frontend
     timeout-minutes: 10
