@@ -1,33 +1,31 @@
-# Build Stage
+# "build-stage", based on Node.js, to build and compile the frontend
+# pull official base image
 FROM node:22-alpine AS build
 
-# Set working directory
+# set working directory
 WORKDIR /app
 
-# Add `/app/node_modules/.bin` to $PATH
-ENV PATH="/app/node_modules/.bin:$PATH"
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH=/app/node_modules/.bin:$PATH
 
-# Copy package files and install dependencies
-COPY package.json package-lock.json ./
+# install app dependencies
+COPY package.json ./
+COPY package-lock.json ./
+
+# Switching to `npm ci` from `npm install` for consistent builds
 RUN npm ci --silent
+RUN npm install react-scripts@3.4.1 -g --silent
 
-# Copy the entire app source
-COPY . . 
+# create and set user permissions to app folder
+RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
 
-# Build the application
+# add app files
+COPY . ./
 RUN npm run build
 
-# Debugging: List files in the build directory
-RUN ls -la /app/build
-
-# Deploy Stage
+# Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
 FROM nginx:alpine AS deploy
-
-# Copy built files from the build stage
+RUN mkdir /app
 COPY --from=build /app/build /usr/share/nginx/html
-
-# Copy custom Nginx configuration if needed
 COPY nginx.conf /etc/nginx/nginx.conf
-
-# Start Nginx server
 CMD ["nginx", "-g", "daemon off;"]
