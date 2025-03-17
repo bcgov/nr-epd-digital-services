@@ -154,26 +154,27 @@ export class AppParticipantService {
 
   /**
    * 
-   * @param searchText: string 
+   * @param searchParamForOrg: string 
    * @returns An array of key value pairs containing the names of the organizations.
    * @throws Error if there is an issue retrieving the data.
    */
-  async getOrganizations(searchParam: string): Promise<DropdownDto[]> {
+  async getOrganizations(searchParamForOrg: string): Promise<DropdownDto[]> {
     try {
       this.loggerService.log('at service layer getOrganizationNames start');
 
       const organizations = await this.organizationRepository.createQueryBuilder('organization')
-      .where('organization.name ILIKE :searchText', { searchParam: `%${searchParam}%` })
+      .where('organization.name ILIKE :searchParamForOrg', { searchParamForOrg: `%${searchParamForOrg}%` })
       .getMany();
       if (!organizations?.length) {
         return [];
       } else {
         const transformedObjects = organizations.map((organization) => ({
-          id: organization.id,
-          name: organization.name,
+          key: organization.id.toString(),
+          value: organization.name,
         }));
-
-        return plainToInstance(DropdownDto, transformedObjects);
+      return transformedObjects;
+        // console.log('nupur - Org - transformedObjects: ', transformedObjects);
+        // return plainToInstance(DropdownDto, transformedObjects);
       }
     } catch (error) {
       this.loggerService.log('Error occured to fetch OrganizationNames');

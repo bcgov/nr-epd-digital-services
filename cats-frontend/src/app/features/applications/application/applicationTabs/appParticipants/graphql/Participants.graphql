@@ -44,8 +44,8 @@ query getParticipantNames($searchParam: String!) {
   }
 }
 
-query getOrganizations($searchParam: String!) {
-  getOrganizations(searchParam: $searchParam) {
+query getOrganizations($searchParamForOrg: String!) {
+  getOrganizations(searchParamForOrg: $searchParamForOrg) {
     httpStatusCode
     success
     message
