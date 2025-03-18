@@ -3,12 +3,16 @@ query SearchApplications(
   $page: Int!
   $pageSize: Int!
   $filter: ApplicationFilter!
+  $sortBy: ApplicationSortByField!
+  $sortByDir: ApplicationSortByDirection!
 ) {
   searchApplications(
     searchParam: $searchParam
     page: $page
     pageSize: $pageSize
     filter: $filter
+    sortBy: $sortBy
+    sortByDir: $sortByDir
   ) {
     applications {
       id
@@ -18,29 +22,8 @@ query SearchApplications(
       lastUpdated
       status
       staffAssigned {
-        address_1
-        address_2
-        city
-        country
-        createdBy
-        createdDatetime
-        email
-        fax
         firstName
-        id
-        isActive
-        isEnvConsultant
-        isTaxExempt
         lastName
-        loginUserName
-        middleName
-        mobile
-        phone
-        postal
-        prov
-        rowVersionCount
-        updatedBy
-        updatedDatetime
       }
       priority
       url

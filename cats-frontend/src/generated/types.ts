@@ -61,9 +61,15 @@ export type ApplicationResultDto = {
   priority: Scalars['String']['output'];
   siteAddress: Scalars['String']['output'];
   siteId: Scalars['String']['output'];
-  staffAssigned: Array<ViewPerson>;
+  staffAssigned: Array<ApplicationResultPersonDto>;
   status: Scalars['String']['output'];
   url: Scalars['String']['output'];
+};
+
+export type ApplicationResultPersonDto = {
+  __typename?: 'ApplicationResultPersonDto';
+  firstName: Scalars['String']['output'];
+  lastName: Scalars['String']['output'];
 };
 
 export type ApplicationSearchResponse = {
@@ -77,6 +83,21 @@ export type ApplicationSearchResponse = {
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
 };
+
+export enum ApplicationSortByDirection {
+  Asc = 'ASC',
+  Desc = 'DESC'
+}
+
+export enum ApplicationSortByField {
+  ApplicationType = 'APPLICATION_TYPE',
+  Id = 'ID',
+  LastUpdated = 'LAST_UPDATED',
+  Priority = 'PRIORITY',
+  SiteAddress = 'SITE_ADDRESS',
+  SiteId = 'SITE_ID',
+  Status = 'STATUS'
+}
 
 export type CreatePerson = {
   address_1?: InputMaybe<Scalars['String']['input']>;
@@ -222,6 +243,8 @@ export type QuerySearchApplicationsArgs = {
   page: Scalars['Int']['input'];
   pageSize: Scalars['Int']['input'];
   searchParam: Scalars['String']['input'];
+  sortBy?: InputMaybe<ApplicationSortByField>;
+  sortByDir?: InputMaybe<ApplicationSortByDirection>;
 };
 
 

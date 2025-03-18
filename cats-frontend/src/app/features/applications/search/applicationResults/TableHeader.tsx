@@ -3,7 +3,7 @@ import { TableColumn } from '../../../../components/table/TableColumn';
 import TableControls from './tableControls';
 import ColumnSelect from './columnSelect';
 import { ApplicationFilter } from '../../../../../generated/types';
-import './TableHeader.css'; // Import the new CSS file
+import './TableHeader.css';
 
 interface TableHeaderProps {
   columns: TableColumn[];

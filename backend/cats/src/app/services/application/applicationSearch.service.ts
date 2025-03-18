@@ -4,7 +4,9 @@ import { Repository, Brackets } from 'typeorm';
 import { Application } from '../../entities/application.entity';
 import { ApplicationSearchResult } from '../../dto/response/applicationSearchResponse';
 import { LoggerService } from '../../logger/logger.service';
-import { ApplicationFilter } from '../../utilities/enums/applicationFilter.enum';
+import { Filter } from '../../utilities/enums/application/filter.enum';
+import { SortByDirection } from '../../utilities/enums/application/sortByDirection.enum';
+import { SortByField } from '../../utilities/enums/application/sortByField.enum';
 
 @Injectable()
 export class ApplicationSearchService {
@@ -18,10 +20,12 @@ export class ApplicationSearchService {
     searchParam: string,
     page: number,
     pageSize: number,
-    filter: ApplicationFilter,
+    filter: Filter,
+    sortBy: SortByField,
+    sortByDir: SortByDirection,
   ): Promise<ApplicationSearchResult> {
     this.loggerService.log(
-      `ApplicationSearchService: searchParam: ${searchParam}, page: ${page}, pageSize: ${pageSize}, filter: ${filter}.`,
+      `ApplicationSearchService: searchParam: ${searchParam}, page: ${page}, pageSize: ${pageSize}, filter: ${filter}, sortBy: ${sortBy}, sortByDir: ${sortByDir}.`,
     );
 
     const result = new ApplicationSearchResult();
@@ -79,12 +83,17 @@ export class ApplicationSearchService {
       }),
     );
 
-    if (filter === ApplicationFilter.UNASSIGNED) {
+    if (filter === Filter.UNASSIGNED) {
       query.andWhere('appParticipant.personId IS NULL');
-    } else if (filter === ApplicationFilter.COMPLETED) {
+    } else if (filter === Filter.COMPLETED) {
       query.andWhere('statusType.abbrev = :completedStatus', {
         completedStatus: 'Closed',
       });
+    }
+
+    if (sortBy) {
+      const direction = sortByDir === SortByDirection.DESC ? 'DESC' : 'ASC';
+      query.orderBy(`application.${sortBy}`, direction);
     }
 
     let applicationList: Application[] = [];

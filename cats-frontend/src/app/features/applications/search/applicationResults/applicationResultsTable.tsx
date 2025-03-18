@@ -3,21 +3,22 @@ import { TableColumn } from '../../../../components/table/TableColumn';
 import Table from '../../../../components/table/Table';
 import { RequestStatus } from '../../../../helpers/requests/status';
 import TableHeader from './TableHeader';
-import { Filter } from '../searchSlice';
+import { ApplicationFilter } from '../../../../../generated/types';
 
 interface ApplicationResultsTableProps {
   columns: TableColumn[];
   results: any[];
   requestStatus: RequestStatus;
   handleColumnChange: (selectedColumns: TableColumn[]) => void;
-  handleFilterChange: (filter: Filter) => void;
+  handleFilterChange: (filter: ApplicationFilter) => void;
   page: number;
   pageSize: number;
   handlePageChange: (newPage: number) => void;
   handlePageSizeChange: (newPageSize: number) => void;
   showPageOptions: boolean;
   totalResults: number;
-  filter: Filter;
+  filter: ApplicationFilter;
+  sortHandler: (column: TableColumn, ascending: boolean) => void;
 }
 
 const ApplicationResultsTable: React.FC<ApplicationResultsTableProps> = ({
@@ -33,6 +34,7 @@ const ApplicationResultsTable: React.FC<ApplicationResultsTableProps> = ({
   showPageOptions,
   totalResults,
   filter,
+  sortHandler,
 }) => {
   return (
     <div>
@@ -56,6 +58,7 @@ const ApplicationResultsTable: React.FC<ApplicationResultsTableProps> = ({
         changeResultsPerPage={handlePageSizeChange}
         showPageOptions={showPageOptions}
         totalResults={totalResults}
+        sortHandler={sortHandler}
       />
     </div>
   );

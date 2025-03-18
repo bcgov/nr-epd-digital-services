@@ -4,9 +4,11 @@ import {
   ApplicationSearchResponse,
   ApplicationSearchResult,
 } from '../../dto/response/applicationSearchResponse';
-import { ApplicationFilter } from '../../utilities/enums/applicationFilter.enum';
+import { Filter } from '../../utilities/enums/application/filter.enum';
 import { HttpStatus } from '@nestjs/common';
 import { LoggerService } from '../../logger/logger.service';
+import { SortByDirection } from '../../utilities/enums/application/sortByDirection.enum';
+import { SortByField } from '../../utilities/enums/application/sortByField.enum';
 
 @Resolver()
 export class ApplicationSearchResolver {
@@ -20,11 +22,15 @@ export class ApplicationSearchResolver {
     @Args('searchParam') searchParam: string,
     @Args({ name: 'page', type: () => Int }) page: number,
     @Args({ name: 'pageSize', type: () => Int }) pageSize: number,
-    @Args({ name: 'filter', type: () => ApplicationFilter })
-    filter: ApplicationFilter,
+    @Args({ name: 'filter', type: () => Filter })
+    filter: Filter,
+    @Args({ name: 'sortBy', type: () => SortByField, nullable: true })
+    sortBy?: SortByField,
+    @Args({ name: 'sortByDir', type: () => SortByDirection, nullable: true })
+    sortByDir?: SortByDirection,
   ): Promise<ApplicationSearchResponse> {
     this.loggerService.log(
-      `ApplicationSearchResolver: searchParam: ${searchParam}, page: ${page}, pageSize: ${pageSize}, filter: ${filter}.`,
+      `ApplicationSearchResolver: searchParam: ${searchParam}, page: ${page}, pageSize: ${pageSize}, filter: ${filter}, sortBy: ${sortBy}, sortByDir: ${sortByDir}.`,
     );
     const result: ApplicationSearchResult =
       await this.applicationSearchService.searchApplications(
@@ -32,6 +38,8 @@ export class ApplicationSearchResolver {
         page,
         pageSize,
         filter,
+        sortBy,
+        sortByDir,
       );
     if (!result || result.error) {
       this.loggerService.error(

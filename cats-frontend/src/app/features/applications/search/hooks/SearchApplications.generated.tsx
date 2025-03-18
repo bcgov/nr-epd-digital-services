@@ -8,19 +8,23 @@ export type SearchApplicationsQueryVariables = Types.Exact<{
   page: Types.Scalars['Int']['input'];
   pageSize: Types.Scalars['Int']['input'];
   filter: Types.ApplicationFilter;
+  sortBy: Types.ApplicationSortByField;
+  sortByDir: Types.ApplicationSortByDirection;
 }>;
 
 
-export type SearchApplicationsQuery = { __typename?: 'Query', searchApplications: { __typename?: 'ApplicationSearchResponse', count?: number | null, page?: number | null, pageSize?: number | null, applications: Array<{ __typename?: 'ApplicationResultDto', id: string, siteId: string, siteAddress: string, applicationType: string, lastUpdated: string, status: string, priority: string, url: string, staffAssigned: Array<{ __typename?: 'ViewPerson', address_1?: string | null, address_2?: string | null, city?: string | null, country?: string | null, createdBy: string, createdDatetime: any, email?: string | null, fax?: string | null, firstName: string, id: number, isActive: boolean, isEnvConsultant?: boolean | null, isTaxExempt: boolean, lastName: string, loginUserName?: string | null, middleName?: string | null, mobile?: string | null, phone?: string | null, postal?: string | null, prov?: string | null, rowVersionCount: number, updatedBy?: string | null, updatedDatetime?: any | null }> }> } };
+export type SearchApplicationsQuery = { __typename?: 'Query', searchApplications: { __typename?: 'ApplicationSearchResponse', count?: number | null, page?: number | null, pageSize?: number | null, applications: Array<{ __typename?: 'ApplicationResultDto', id: string, siteId: string, siteAddress: string, applicationType: string, lastUpdated: string, status: string, priority: string, url: string, staffAssigned: Array<{ __typename?: 'ApplicationResultPersonDto', firstName: string, lastName: string }> }> } };
 
 
 export const SearchApplicationsDocument = gql`
-    query SearchApplications($searchParam: String!, $page: Int!, $pageSize: Int!, $filter: ApplicationFilter!) {
+    query SearchApplications($searchParam: String!, $page: Int!, $pageSize: Int!, $filter: ApplicationFilter!, $sortBy: ApplicationSortByField!, $sortByDir: ApplicationSortByDirection!) {
   searchApplications(
     searchParam: $searchParam
     page: $page
     pageSize: $pageSize
     filter: $filter
+    sortBy: $sortBy
+    sortByDir: $sortByDir
   ) {
     applications {
       id
@@ -30,29 +34,8 @@ export const SearchApplicationsDocument = gql`
       lastUpdated
       status
       staffAssigned {
-        address_1
-        address_2
-        city
-        country
-        createdBy
-        createdDatetime
-        email
-        fax
         firstName
-        id
-        isActive
-        isEnvConsultant
-        isTaxExempt
         lastName
-        loginUserName
-        middleName
-        mobile
-        phone
-        postal
-        prov
-        rowVersionCount
-        updatedBy
-        updatedDatetime
       }
       priority
       url
@@ -80,6 +63,8 @@ export const SearchApplicationsDocument = gql`
  *      page: // value for 'page'
  *      pageSize: // value for 'pageSize'
  *      filter: // value for 'filter'
+ *      sortBy: // value for 'sortBy'
+ *      sortByDir: // value for 'sortByDir'
  *   },
  * });
  */
