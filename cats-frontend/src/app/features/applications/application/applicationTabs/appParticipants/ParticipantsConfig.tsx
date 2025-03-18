@@ -117,6 +117,7 @@ export const GetConfig = () => {
         customInputTextCss: 'common-icon-orientation',
         tableMode: true,
       },
+      dynamicColumn: true,
     },
     {
       id: 2,
@@ -132,6 +133,10 @@ export const GetConfig = () => {
         value: '',
         colSize: 'col-lg-6 col-md-6 col-sm-12',
         tableMode: true,
+        validation: {
+          required: true,
+          customMessage: 'Participant Name is required.',
+        },
       },
       dynamicColumn: true,
     },
@@ -165,7 +170,12 @@ export const GetConfig = () => {
         value: '',
         colSize: 'col-lg-6 col-md-6 col-sm-12',
         tableMode: true,
+        validation: {
+          required: true,
+          customMessage: 'Role is required.',
+        },
       },
+      dynamicColumn: true,
     },
 
     {
@@ -183,6 +193,10 @@ export const GetConfig = () => {
         value: '',
         colSize: 'col-lg-6 col-md-6 col-sm-12',
         tableMode: true,
+        validation: {
+          required: true,
+          customMessage: 'Participant Name is required.',
+        },
       },
     },
     {

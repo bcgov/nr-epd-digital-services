@@ -15,6 +15,8 @@ import { Organization } from '../../entities/organization.entity';
 import { ViewParticipantNamesDto } from '../../dto/appParticipants/ViewParticipantNames.dto';
 import { ViewOrganizationsDto } from '../../dto/appParticipants/viewOrganization.dto';
 import { DropdownDto } from 'src/app/dto/dropdown.dto';
+import { createAppParticipantDto } from '../../dto/appParticipants/createAppParticipant.dto';
+import { UserTypeEum } from 'src/app/utilities/enums/userType';
 
 @Injectable()
 export class AppParticipantService {
@@ -120,9 +122,9 @@ export class AppParticipantService {
       this.loggerService.log('at service layer getParticipantNames start');
 
       const persons = await this.personRepository.createQueryBuilder('person')
-      .where('person.firstName ILIKE :searchParam', { searchParam: `%${searchParam}%` })
-      .orWhere('person.middleName ILIKE :searchParam', { searchParam: `%${searchParam}%` })
-      .orWhere('person.lastName ILIKE :searchParam', { searchParam: `%${searchParam}%` })
+      .where('person.firstName ILIKE :searchParam', { searchParam: `${searchParam}%` })
+      .orWhere('person.middleName ILIKE :searchParam', { searchParam: `${searchParam}%` })
+      .orWhere('person.lastName ILIKE :searchParam', { searchParam: `${searchParam}%` })
       .getMany();
 
       console.log('nupur - persons', persons);
@@ -130,19 +132,12 @@ export class AppParticipantService {
         return [];
       } else {
         const transformedObjects = persons.map((person) => ({
-          // id: person.id,
-          // firstName: person.firstName,
-          // middleName: person.middleName,
-          // lastName: person.lastName,
-          // fullName: person.firstName + ' ' + person.middleName + ' ' + person.lastName,
           key: person.id.toString(),
-          value: person.firstName + ' ' + person.middleName + ' ' + person.lastName
+          value: (person.firstName || '') + ' ' + (person.middleName || '') + ' ' + (person.lastName || '')
         }));
 
         return transformedObjects;
-        //return plainToInstance(ViewParticipantNamesDto, transformedObjects);
       }
-      //return persons|| [];
     } catch (error) {
       this.loggerService.log('Error occured to fetch ParticipantNames');
       throw new HttpException(
@@ -170,11 +165,9 @@ export class AppParticipantService {
       } else {
         const transformedObjects = organizations.map((organization) => ({
           key: organization.id.toString(),
-          value: organization.name,
+          value: organization.name || '',
         }));
       return transformedObjects;
-        // console.log('nupur - Org - transformedObjects: ', transformedObjects);
-        // return plainToInstance(DropdownDto, transformedObjects);
       }
     } catch (error) {
       this.loggerService.log('Error occured to fetch OrganizationNames');
@@ -184,4 +177,59 @@ export class AppParticipantService {
       );
     }
   }
+
+  async addAppParticipant(createAppParticipant: createAppParticipantDto, user: any) {
+   this.loggerService.log('at service layer addAppParticipant start');
+
+    try {
+        // Log the input parameters for better traceability
+        this.loggerService.debug(`createAppParticipant: ${JSON.stringify(createAppParticipant)}`);
+
+        // Check if the user identity_provider is 'IDIR'
+        if (user?.identity_provider === UserTypeEum.IDIR) {
+            this.loggerService.debug(`User with username: ${user?.givenName} is using IDIR identity provider.`);
+            
+            // Create the new note only if the identity provider is IDIR
+            const newAppParticipant = this.appParticsRepository.create({
+                // applicationId: createAppParticipant.applicationId,
+                // personId: createAppParticipant.personId,
+                // participantRoleId: createAppParticipant.participantRoleId,
+                // organizationId: createAppParticipant.organizationId,
+                ...createAppParticipant,
+                createdBy: user?.givenName,
+                createdDateTime: new Date(),
+            });
+
+            // Save the new note
+            const savedAppParticipant = await this.appParticsRepository.save(newAppParticipant);
+
+            if (savedAppParticipant) {
+                this.loggerService.log(`App Participant created successfully with ID: ${savedAppParticipant.id}`);
+                return savedAppParticipant;
+            } 
+            else 
+            {
+                this.loggerService.warn('Failed to create App Participant');
+                return null;
+            }
+        } 
+        else 
+        {
+            // If the identity provider is not IDIR, log a warning and prevent note creation
+            this.loggerService.warn(`App Participation creation blocked: User ${user?.givenName} is not using IDIR identity provider.`);
+            throw new HttpException('Only users with IDIR identity provider are allowed to create notes', HttpStatus.FORBIDDEN);
+        }
+    } 
+    catch (err) 
+    {
+        // Log the error with the exception details
+        this.loggerService.error('Exception occurred in AppParticipantService.createAppParticipant()', JSON.stringify(err));
+        throw new HttpException('Failed to add app Participant', HttpStatus.BAD_REQUEST);
+    } 
+    finally 
+    {
+        // Log the end of the method
+        this.loggerService.log('AppParticipantService.createAppParticipant() end');
+    }
+}
 }
