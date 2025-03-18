@@ -24,7 +24,7 @@ import ModalDialog from '../../../../../components/modaldialog/ModalDialog';
 import Form from '../../../../../components/form/Form';
 
 import './ParticipantsTable.css';
-import { getAxiosInstance, resultCache, updateFields } from '../../../../../helpers/utility';
+import { getAxiosInstance, resultCache, sortArray, updateFields } from '../../../../../helpers/utility';
 import { useNavigate } from 'react-router-dom';
 
 import { add, set } from 'date-fns';
@@ -122,7 +122,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     organization: '',
   };
 
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] =  useState<{ [key: string]: any }[]>([]);
 
   const [appParticipant, setAppParticipant] = useState({
     isAppParticipantModal: false,
@@ -435,7 +435,19 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     }
     setFormData({...formData, [graphQLPropertyName]: value });
     console.log('PT: formData: ', formData);
-  };;
+  };
+
+  const handleSort = (row: any, ascDir: any) => {
+    console.log('PT: handleSort: ', row, ascDir);
+    let property = row['graphQLPropertyName'];
+    setFormData((prevData) => {
+      let data = [ ...prevData ];
+      data = sortArray(data, property, ascDir);
+      console.log('PT: handleSort: data: ', data);
+      return data;
+    });
+    handleTableSort(row, ascDir);
+  }
 
   return (
     <div className="widget-container">
@@ -461,9 +473,8 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         aria-label="App Participant Widget"
         hideTable={false}
         hideTitle={hideLabelForWidget}
-        // primaryKeycolumnName="particRoleId"
         sortHandler={(row, ascDir) => {
-          handleTableSort(row, ascDir);
+          handleSort(row, ascDir);
         }}
       >
         {userType === UserType.Internal && (
@@ -486,8 +497,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
               handleInputChange={(graphQLPropertyName, value) =>
                 handleFormChange(graphQLPropertyName, value)}
               //handleSearch = {(event, graphQLPropertyName) => handleSearch(event, graphQLPropertyName)}
-            
-              
             />
           </ModalDialog>
         )}
