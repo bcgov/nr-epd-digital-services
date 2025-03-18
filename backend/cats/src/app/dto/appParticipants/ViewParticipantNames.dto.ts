@@ -8,7 +8,7 @@ export class ViewParticipantNamesDto {
   @Field()
   firstName: string;
 
-  @Field()
+  @Field(({ nullable: true }))
   middleName: string;
 
   @Field()
