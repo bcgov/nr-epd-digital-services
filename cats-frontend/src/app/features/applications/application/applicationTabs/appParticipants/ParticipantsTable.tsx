@@ -438,7 +438,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
       console.log('PT: handleFormChange: value: ', value);
     }
     setFormData({...formData, [graphQLPropertyName]: value });
-    console.log('PT: formData: ', formData);
+    console.log('PT: handleFormChange formData: ', formData);
   };
 
   // const handleSort = (row: any, ascDir: any) => {
@@ -509,7 +509,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         {appParticipant.isAppParticipantModal && (
           <ModalDialog
             headerLabel={appParticipant.appParticipantActionType}
-            saveButtonDisabled={formData.fullName === '' || formData.description === '' || formData.effectiveStartDate === ''}
+            saveButtonDisabled={formData.fullName === '' || formData.name === '' || formData.description === ''}
             //closeHandler={() => {}}
             closeHandler={(response) => {
               console.log('PT: closeHandler: ', response);
