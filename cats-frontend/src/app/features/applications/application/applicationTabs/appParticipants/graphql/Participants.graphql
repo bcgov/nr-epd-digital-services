@@ -56,3 +56,14 @@ query getOrganizations($searchParamForOrg: String!) {
     }
   }
 }
+
+
+mutation createAppParticipant($newAppParticipant: CreateAppParticipantDto!) {
+  createAppParticipant(newAppParticipant: $newAppParticipant) {
+    message
+    httpStatusCode
+    success
+    timestamp
+  }
+}
+

@@ -30,6 +30,13 @@ export type GetOrganizationsQueryVariables = Types.Exact<{
 
 export type GetOrganizationsQuery = { __typename?: 'Query', getOrganizations: { __typename?: 'DropdownResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'DropdownDto', key: string, value: string }> | null } };
 
+export type CreateAppParticipantMutationVariables = Types.Exact<{
+  newAppParticipant: Types.CreateAppParticipantDto;
+}>;
+
+
+export type CreateAppParticipantMutation = { __typename?: 'Mutation', createAppParticipant: { __typename?: 'AppParticipantsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null } };
+
 
 export const GetAppParticipantsByAppIdDocument = gql`
     query getAppParticipantsByAppId($applicationId: Int!, $filter: AppParticipantFilter!) {
@@ -226,3 +233,39 @@ export type GetOrganizationsQueryHookResult = ReturnType<typeof useGetOrganizati
 export type GetOrganizationsLazyQueryHookResult = ReturnType<typeof useGetOrganizationsLazyQuery>;
 export type GetOrganizationsSuspenseQueryHookResult = ReturnType<typeof useGetOrganizationsSuspenseQuery>;
 export type GetOrganizationsQueryResult = Apollo.QueryResult<GetOrganizationsQuery, GetOrganizationsQueryVariables>;
+export const CreateAppParticipantDocument = gql`
+    mutation createAppParticipant($newAppParticipant: CreateAppParticipantDto!) {
+  createAppParticipant(newAppParticipant: $newAppParticipant) {
+    message
+    httpStatusCode
+    success
+    timestamp
+  }
+}
+    `;
+export type CreateAppParticipantMutationFn = Apollo.MutationFunction<CreateAppParticipantMutation, CreateAppParticipantMutationVariables>;
+
+/**
+ * __useCreateAppParticipantMutation__
+ *
+ * To run a mutation, you first call `useCreateAppParticipantMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAppParticipantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAppParticipantMutation, { data, loading, error }] = useCreateAppParticipantMutation({
+ *   variables: {
+ *      newAppParticipant: // value for 'newAppParticipant'
+ *   },
+ * });
+ */
+export function useCreateAppParticipantMutation(baseOptions?: Apollo.MutationHookOptions<CreateAppParticipantMutation, CreateAppParticipantMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateAppParticipantMutation, CreateAppParticipantMutationVariables>(CreateAppParticipantDocument, options);
+      }
+export type CreateAppParticipantMutationHookResult = ReturnType<typeof useCreateAppParticipantMutation>;
+export type CreateAppParticipantMutationResult = Apollo.MutationResult<CreateAppParticipantMutation>;
+export type CreateAppParticipantMutationOptions = Apollo.BaseMutationOptions<CreateAppParticipantMutation, CreateAppParticipantMutationVariables>;
