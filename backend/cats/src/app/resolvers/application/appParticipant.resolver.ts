@@ -1,4 +1,4 @@
-import { Args, Int, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AppParticipantService } from '../../services/application/appParticipants.service';
 import { AuthenticatedUser, Resource } from 'nest-keycloak-connect';
 import { HttpStatus, UsePipes } from '@nestjs/common';
@@ -16,6 +16,7 @@ import { ViewOrganizationsDto } from '../../dto/appParticipants/viewOrganization
 import { ParticipantNamesResponse } from 'src/app/dto/response/applicationParticipant/participantNamesResponse';
 import { OrganizationsResponse } from 'src/app/dto/response/applicationParticipant/organizationsResponse';
 import { DropdownDto, DropdownResponse } from 'src/app/dto/dropdown.dto';
+import { CreateAppParticipantDto } from '../../dto/appParticipants/createAppParticipant.dto';
 
 @Resolver(() => ViewAppParticipantsDto)
 @Resource('user-service')
@@ -25,6 +26,9 @@ export class AppParticipantResolver {
     private readonly genericResponseProvider: GenericResponseProvider<
       ViewAppParticipantsDto[]
     >,
+    private readonly createAppParticipantResponseProvider: GenericResponseProvider<
+    CreateAppParticipantDto[]
+  >,
     private readonly loggerService: LoggerService,
     private readonly participantRolesResponseProvider: GenericResponseProvider<
       ViewParticipantsRolesDto[]
@@ -162,5 +166,31 @@ export class AppParticipantResolver {
         result,
       );
     }
+  }
+
+  @Mutation(() => AppParticipantsResponse, { name: 'createAppParticipant' })
+  @UsePipes(new GenericValidationPipe())
+  async createAppParticipant(
+      @Args('newAppParticipant', { type: () => CreateAppParticipantDto }) newAppParticipant: CreateAppParticipantDto,
+      @AuthenticatedUser() user: any
+  ) {
+      const result = await this.appParticipantService.createAppParticipant(newAppParticipant, user);
+      if (result) {
+          this.loggerService.log('AppParticipantResolver.createAppParticipant() RES:201 end');
+          return this.createAppParticipantResponseProvider.createResponse(
+              'App participant added successfully',
+              HttpStatus.CREATED,
+              true
+          );
+      } 
+      else 
+      {
+          this.loggerService.log('PersonNoteResolver.createPersonNote() RES:400 end');
+          return this.genericResponseProvider.createResponse(
+              'Failed to add app participant',
+              HttpStatus.BAD_REQUEST,
+              false,
+          );
+      }
   }
 }

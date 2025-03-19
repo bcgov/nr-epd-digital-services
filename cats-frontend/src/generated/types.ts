@@ -96,6 +96,18 @@ export type ApplicationSearchResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type CreateAppParticipantDto = {
+  applicationId: Scalars['Float']['input'];
+  createdBy?: InputMaybe<Scalars['String']['input']>;
+  createdDateTime?: InputMaybe<Scalars['DateTime']['input']>;
+  effectiveEndDate?: InputMaybe<Scalars['DateTime']['input']>;
+  effectiveStartDate: Scalars['DateTime']['input'];
+  isMainParticipant: Scalars['Boolean']['input'];
+  organizationId?: InputMaybe<Scalars['Float']['input']>;
+  participantRoleId: Scalars['Float']['input'];
+  personId: Scalars['Float']['input'];
+};
+
 export enum ApplicationSortByDirection {
   Asc = 'ASC',
   Desc = 'DESC'
@@ -181,12 +193,18 @@ export type HousingType = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createAppParticipant: AppParticipantsResponse;
   addHousingToApplication: ApplicationHousingResponse;
   createPerson: PersonResponse;
   createPersonNote: PersonNoteResponse;
   deletePersonNote: PersonNoteResponse;
   updatePerson: PersonResponse;
   updatePersonNote: PersonNoteResponse;
+};
+
+
+export type MutationCreateAppParticipantArgs = {
+  newAppParticipant: CreateAppParticipantDto;
 };
 
 
@@ -353,6 +371,8 @@ export type UpdatePersonNote = {
 export type ViewAppParticipantsDto = {
   __typename?: 'ViewAppParticipantsDto';
   applicationId: Scalars['Float']['output'];
+  createdBy: Scalars['String']['output'];
+  createdDateTime: Scalars['DateTime']['output'];
   description: Scalars['String']['output'];
   effectiveEndDate?: Maybe<Scalars['DateTime']['output']>;
   effectiveStartDate: Scalars['DateTime']['output'];
@@ -363,6 +383,12 @@ export type ViewAppParticipantsDto = {
   isMinistry: Scalars['Boolean']['output'];
   lastName: Scalars['String']['output'];
   name: Scalars['String']['output'];
+  organizationId?: Maybe<Scalars['Float']['output']>;
+  participantRoleId: Scalars['Float']['output'];
+  personId: Scalars['Float']['output'];
+  rowVersionCount: Scalars['Float']['output'];
+  updatedBy?: Maybe<Scalars['String']['output']>;
+  updatedDateTime?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type ViewParticipantsRolesDto = {
