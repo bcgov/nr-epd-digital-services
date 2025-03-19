@@ -39,11 +39,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "vite",
+    "build": "vite build",
     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@react-parcelmap-bc)/\"  ",
     "eject": "react-scripts eject",
-    "test:cov": "npm test -- --coverage"
+    "test:cov": "npm test -- --coverage",
+    "dev": "vite"
   },
   "eslintConfig": {
     "extends": [
@@ -67,10 +68,15 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@types/jest": "^29.2.0",
     "@types/leaflet": "^1.9.3",
-    "@types/node": "^18.11.3",
+    "@types/node": "^22.13.4",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "react-test-renderer": "^18.2.0",
-    "typescript": "^4.8.4"
+    "typescript": "^4.8.4",
+    "@svgr/core": "^8.1.0",
+    "@svgr/plugin-jsx": "^8.1.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.1.0",
+    "vite-tsconfig-paths": "^4.3.2"
   }
 }
