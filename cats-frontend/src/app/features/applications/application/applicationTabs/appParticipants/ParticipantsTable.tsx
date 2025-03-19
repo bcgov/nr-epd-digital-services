@@ -13,9 +13,11 @@ import {
   ViewParticipantsRolesDto,
 } from '../../../../../../generated/types';
 import {
+  CreateAppParticipantDocument,
   GetAppParticipantsByAppIdQuery,
   GetOrganizationsDocument,
   GetParticipantNamesDocument,
+  useCreateAppParticipantMutation,
   useGetParticipantNamesQuery,
   useGetParticipantRolesQuery,
 } from './graphql/Participants.generated';
@@ -33,6 +35,7 @@ import { print } from 'graphql';
 import { GRAPHQL } from '../../../../../helpers/endpoints';
 import { getRoles } from '@testing-library/react';
 import { ro } from 'date-fns/locale';
+import { useMutation } from '@apollo/client';
 
 export const AppParticipantsActionTypes = {
   AddParticipant: 'Add Participant',
@@ -111,7 +114,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   
   const [searchParam, setSearchParam] = useState<string>('');
   const [searchParamForOrg, setSearchParamForOrg] = useState<string>('');
-  
    
   const initialAppParticipantDetails = {
     isMainParticipant: false,
@@ -122,7 +124,8 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     organization: '',
   };
 
-  const [formData, setFormData] =  useState<{ [key: string]: any }[]>([]);
+  //const [formData, setFormData] =  useState<{ [key: string]: any }[]>([]);
+  const [formData, setFormData] = useState<{ [key: string]: any }>({});
 
   const [appParticipant, setAppParticipant] = useState({
     isAppParticipantModal: false,
@@ -359,6 +362,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
  
 
   handleAddParticipant = () => {
+    console.log('PT: handleAddParticipant: formdata: ', formData);
     setAppParticipant({
       isAppParticipantModal: true,
       appParticipantDetails: initialAppParticipantDetails,
@@ -437,17 +441,34 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     console.log('PT: formData: ', formData);
   };
 
-  const handleSort = (row: any, ascDir: any) => {
-    console.log('PT: handleSort: ', row, ascDir);
-    let property = row['graphQLPropertyName'];
-    setFormData((prevData) => {
-      let data = [ ...prevData ];
-      data = sortArray(data, property, ascDir);
-      console.log('PT: handleSort: data: ', data);
-      return data;
-    });
-    handleTableSort(row, ascDir);
-  }
+  // const handleSort = (row: any, ascDir: any) => {
+  //   console.log('PT: handleSort: ', row, ascDir);
+  //   let property = row['graphQLPropertyName'];
+  //   setFormData((prevData) => {
+  //     let data = [ ...prevData ];
+  //     data = sortArray(data, property, ascDir);
+  //     return data;
+  //   });
+  //   handleTableSort(row, ascDir);
+  // }
+
+  const [createAppParticiant] = useCreateAppParticipantMutation();
+
+
+  const handleAddAppParticipant = async (newParticipant: any) => {
+    console.log('PT: handleAddAppParticipant: ', newParticipant);
+    try {
+      const response = await createAppParticiant({
+        variables: {
+          newAppParticipant: newParticipant,
+        },
+      });
+      //const result = await createAppParticipantMutation();
+      console.log('Participant added:', response);
+    } catch (err) {
+      console.error('Error adding participant:', err);
+    }
+  };
 
   return (
     <div className="widget-container">
@@ -474,7 +495,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         hideTable={false}
         hideTitle={hideLabelForWidget}
         sortHandler={(row, ascDir) => {
-          handleSort(row, ascDir);
+          handleTableSort(row, ascDir);
         }}
       >
         {userType === UserType.Internal && (
@@ -488,8 +509,41 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         {appParticipant.isAppParticipantModal && (
           <ModalDialog
             headerLabel={appParticipant.appParticipantActionType}
-            saveButtonDisabled={true}
-            closeHandler={() => {}}
+            saveButtonDisabled={formData.fullName === '' || formData.description === '' || formData.effectiveStartDate === ''}
+            //closeHandler={() => {}}
+            closeHandler={(response) => {
+              console.log('PT: closeHandler: ', response);
+              if (response) {
+                if (appParticipant.appParticipantActionType === AppParticipantsActionTypes.AddParticipant) {
+                 // if (id) {
+                    const newAppParticipant = {
+                      applicationId: 1,
+                      isMainParticipant: formData.isMainParticipant,
+                      personId: parseFloat(formData.fullName),
+                      organizationId: parseFloat(formData.name),
+                      participantRoleId: parseFloat(formData.description),
+                      effectiveStartDate: formData.effectiveStartDate,
+                      effectiveEndDate: formData.effectiveEndDate,
+                    };
+                    handleAddAppParticipant(newAppParticipant)
+                      .then((response) => {
+                        if (response !== null) {
+                          console.log('Participant added:', response);
+                        }
+                      })
+                      .catch((err) => {
+                        console.error('Error create note:', err);
+                        //setError('Failed to create note');
+                      });
+                 // }
+                }
+              }
+              setAppParticipant({
+                isAppParticipantModal: false,
+                appParticipantDetails: initialAppParticipantDetails,
+                appParticipantActionType: AppParticipantsActionTypes.ViewAppParticipants,
+              });
+            }}
           >
             <Form
               formRows={appParticsForm}
@@ -497,6 +551,8 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
               handleInputChange={(graphQLPropertyName, value) =>
                 handleFormChange(graphQLPropertyName, value)}
               //handleSearch = {(event, graphQLPropertyName) => handleSearch(event, graphQLPropertyName)}
+            
+              
             />
           </ModalDialog>
         )}

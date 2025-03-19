@@ -15,7 +15,7 @@ import { Organization } from '../../entities/organization.entity';
 import { ViewParticipantNamesDto } from '../../dto/appParticipants/ViewParticipantNames.dto';
 import { ViewOrganizationsDto } from '../../dto/appParticipants/viewOrganization.dto';
 import { DropdownDto } from 'src/app/dto/dropdown.dto';
-import { createAppParticipantDto } from '../../dto/appParticipants/createAppParticipant.dto';
+import { CreateAppParticipantDto } from '../../dto/appParticipants/createAppParticipant.dto';
 import { UserTypeEum } from 'src/app/utilities/enums/userType';
 
 @Injectable()
@@ -55,6 +55,7 @@ export class AppParticipantService {
           where: { applicationId },
           relations: ['organization', 'participantRole', 'person'],
         });
+        console.log('nupurdixit - result', result);
       }
 
       if (!result?.length) {
@@ -66,7 +67,7 @@ export class AppParticipantService {
           isMainParticipant: participant.isMainParticipant,
           fullName:
             participant.person.firstName + ' ' + participant.person.lastName,
-          name: participant.organization.name,
+          name: participant.organization?.name || '',
           description: participant.participantRole.description,
           effectiveStartDate: participant.effectiveStartDate,
           effectiveEndDate: participant.effectiveEndDate,
@@ -127,7 +128,6 @@ export class AppParticipantService {
       .orWhere('person.lastName ILIKE :searchParam', { searchParam: `${searchParam}%` })
       .getMany();
 
-      console.log('nupur - persons', persons);
       if (!persons?.length) {
         return [];
       } else {
@@ -178,43 +178,47 @@ export class AppParticipantService {
     }
   }
 
-  async addAppParticipant(createAppParticipant: createAppParticipantDto, user: any) {
+  async createAppParticipant(newAppParticipant: CreateAppParticipantDto, user: any) {
    this.loggerService.log('at service layer addAppParticipant start');
-
+    console.log('nupurdixit - createAppParticipant', newAppParticipant);
     try {
         // Log the input parameters for better traceability
-        this.loggerService.debug(`createAppParticipant: ${JSON.stringify(createAppParticipant)}`);
+        this.loggerService.debug(`createAppParticipant: ${JSON.stringify(newAppParticipant)}`);
 
         // Check if the user identity_provider is 'IDIR'
         if (user?.identity_provider === UserTypeEum.IDIR) {
             this.loggerService.debug(`User with username: ${user?.givenName} is using IDIR identity provider.`);
-            
+            console.log('nupurdixit - newAppParticipant', newAppParticipant);
             // Create the new note only if the identity provider is IDIR
-            const newAppParticipant = this.appParticsRepository.create({
+            const createdAppParticipant = this.appParticsRepository.create({
                 // applicationId: createAppParticipant.applicationId,
                 // personId: createAppParticipant.personId,
                 // participantRoleId: createAppParticipant.participantRoleId,
                 // organizationId: createAppParticipant.organizationId,
-                ...createAppParticipant,
+                ...newAppParticipant,
                 createdBy: user?.givenName,
                 createdDateTime: new Date(),
             });
 
-            // Save the new note
-            const savedAppParticipant = await this.appParticsRepository.save(newAppParticipant);
 
+            // Save the new note
+            console.log('nupurdixit - createdAppParticipant', createdAppParticipant);
+            const savedAppParticipant = await this.appParticsRepository.save(createdAppParticipant);
+            console.log('nupurdixit - savedAppParticipant', savedAppParticipant);
             if (savedAppParticipant) {
                 this.loggerService.log(`App Participant created successfully with ID: ${savedAppParticipant.id}`);
                 return savedAppParticipant;
             } 
             else 
             {
+              console.log('nupurdixit - newAppParticipant error adding', newAppParticipant);
                 this.loggerService.warn('Failed to create App Participant');
                 return null;
             }
         } 
         else 
         {
+          
             // If the identity provider is not IDIR, log a warning and prevent note creation
             this.loggerService.warn(`App Participation creation blocked: User ${user?.givenName} is not using IDIR identity provider.`);
             throw new HttpException('Only users with IDIR identity provider are allowed to create notes', HttpStatus.FORBIDDEN);

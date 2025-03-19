@@ -9,18 +9,18 @@ export class ViewAppParticipantsDto extends BaseAppParticipantsDto {
   @Field()
   applicationId: number;
 
-  @Field()
+  @Field({ nullable: true })
   rowVersionCount: number | null;
 
   @Field()
   createdBy: string;
 
   @Field()
-  createdDatetime: Date;
+  createdDateTime: Date;
 
   @Field({ nullable: true })
   updatedBy: string | null;
 
   @Field({ nullable: true })
-  updatedDatetime: Date | null;
+  updatedDateTime: Date | null;
 }
