@@ -3,7 +3,7 @@ name: Dev Merge - Deploy to TEST
 on:
   push:
     branches:
-      - main
+      - srs-605-testbranch
 
 concurrency:
   # Cancel in progress for PR open and close
