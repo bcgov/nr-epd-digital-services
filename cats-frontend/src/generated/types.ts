@@ -102,7 +102,7 @@ export type CreateAppParticipantDto = {
   createdDateTime?: InputMaybe<Scalars['DateTime']['input']>;
   effectiveEndDate?: InputMaybe<Scalars['DateTime']['input']>;
   effectiveStartDate: Scalars['DateTime']['input'];
-  isMainParticipant: Scalars['Boolean']['input'];
+  isMainParticipant?: InputMaybe<Scalars['Boolean']['input']>;
   organizationId?: InputMaybe<Scalars['Float']['input']>;
   participantRoleId: Scalars['Float']['input'];
   personId: Scalars['Float']['input'];
@@ -386,7 +386,7 @@ export type ViewAppParticipantsDto = {
   organizationId?: Maybe<Scalars['Float']['output']>;
   participantRoleId: Scalars['Float']['output'];
   personId: Scalars['Float']['output'];
-  rowVersionCount: Scalars['Float']['output'];
+  rowVersionCount?: Maybe<Scalars['Float']['output']>;
   updatedBy?: Maybe<Scalars['String']['output']>;
   updatedDateTime?: Maybe<Scalars['DateTime']['output']>;
 };
