@@ -189,31 +189,46 @@ export class AppParticipantService {
         if (user?.identity_provider === UserTypeEum.IDIR) {
             this.loggerService.debug(`User with username: ${user?.givenName} is using IDIR identity provider.`);
             console.log('nupurdixit - newAppParticipant', newAppParticipant);
-            // Create the new note only if the identity provider is IDIR
-            const createdAppParticipant = this.appParticsRepository.create({
-                // applicationId: createAppParticipant.applicationId,
-                // personId: createAppParticipant.personId,
-                // participantRoleId: createAppParticipant.participantRoleId,
-                // organizationId: createAppParticipant.organizationId,
-                ...newAppParticipant,
-                createdBy: user?.givenName,
-                createdDateTime: new Date(),
-            });
+
+            // Check if the participant already exists, also  we want to ignore this check where organizationId is null
+            // because we can have multiple participants with same personId and participantRoleId but different organizationId
+            let existingParticipant = null;
+            if (newAppParticipant.organizationId) {
+              existingParticipant =  this.appParticsRepository.findOne({
+                where: {
+                  personId: newAppParticipant.personId,
+                  participantRoleId: newAppParticipant.participantRoleId,
+                  organizationId: newAppParticipant.organizationId,
+                },
+              });
+            }
+            
+            console.log('nupurdixit - existingParticipant', existingParticipant);
+            if (existingParticipant) {
+              console.log('nupurdixit - existingParticipant error adding', existingParticipant);
+              throw new HttpException('Participant already exists', HttpStatus.BAD_REQUEST);
+            } else {
+              const createdAppParticipant = this.appParticsRepository.create({
+                  ...newAppParticipant,
+                  createdBy: user?.givenName,
+                  createdDateTime: new Date(),
+              });
 
 
-            // Save the new note
-            console.log('nupurdixit - createdAppParticipant', createdAppParticipant);
-            const savedAppParticipant = await this.appParticsRepository.save(createdAppParticipant);
-            console.log('nupurdixit - savedAppParticipant', savedAppParticipant);
-            if (savedAppParticipant) {
-                this.loggerService.log(`App Participant created successfully with ID: ${savedAppParticipant.id}`);
-                return savedAppParticipant;
-            } 
-            else 
-            {
-              console.log('nupurdixit - newAppParticipant error adding', newAppParticipant);
-                this.loggerService.warn('Failed to create App Participant');
-                return null;
+              // Save the new note
+              console.log('nupurdixit - createdAppParticipant', createdAppParticipant);
+              const savedAppParticipant = await this.appParticsRepository.save(createdAppParticipant);
+              console.log('nupurdixit - savedAppParticipant', savedAppParticipant);
+              if (savedAppParticipant) {
+                  this.loggerService.log(`App Participant created successfully with ID: ${savedAppParticipant.id}`);
+                  return savedAppParticipant;
+              } 
+              else 
+              {
+                console.log('nupurdixit - newAppParticipant error adding', newAppParticipant);
+                  this.loggerService.warn('Failed to create App Participant');
+                  return null;
+              }
             }
         } 
         else 
