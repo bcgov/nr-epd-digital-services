@@ -127,9 +127,8 @@ const Dashboard = () => {
   const handleFormsflowWebRedirection = () => {
     console.log("handleFormsflowWebRedirection");
     const formsFlowWebURL =
-      process.env.REACT_APP_FORMSFLOW_WEB_URL ||
-      ((window as any)._env_ &&
-        (window as any)._env_.REACT_APP_FORMSFLOW_WEB_URL) ||
+      import.meta.env.VITE_FORMSFLOW_WEB_URL ||
+      ((window as any)._env_ && (window as any)._env_.VITE_FORMSFLOW_WEB_URL) ||
       "";
     const locationBeforeAuthRedirect = sessionStorage.getItem(
       "locationBeforeAuthRedirect"
