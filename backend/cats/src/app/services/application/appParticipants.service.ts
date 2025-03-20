@@ -194,7 +194,7 @@ export class AppParticipantService {
             // because we can have multiple participants with same personId and participantRoleId but different organizationId
             let existingParticipant = null;
             if (newAppParticipant.organizationId) {
-              existingParticipant =  this.appParticsRepository.findOne({
+              existingParticipant = await this.appParticsRepository.findOne({
                 where: {
                   personId: newAppParticipant.personId,
                   participantRoleId: newAppParticipant.participantRoleId,

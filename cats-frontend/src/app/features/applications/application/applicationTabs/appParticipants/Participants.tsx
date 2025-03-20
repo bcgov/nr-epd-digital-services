@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 
 export const Participants = () => {
   //const { id } = useParams<{ id?: string }>();  //TODO when we have the applicationId available at ALL Applications page
-  const applicationId = 1; //hardcoded for now
+  const applicationId = 2; //hardcoded for now
 
   const { participantColumnInternal } = GetConfig();
 
