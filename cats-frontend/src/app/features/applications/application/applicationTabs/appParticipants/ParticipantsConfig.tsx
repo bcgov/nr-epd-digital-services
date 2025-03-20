@@ -39,6 +39,10 @@ export const GetConfig = () => {
       placeholder: 'EE, MMM dd, yyyy',
       dateFormat: 'EE, MMM dd, yyyy',
       isDisabled: false,
+      validation: {
+        required: true,
+        customMessage: 'Start Date is required.',
+      },
     },
     endDate: {  
       type: FormFieldType.Date,
@@ -57,6 +61,10 @@ export const GetConfig = () => {
       graphQLPropertyName: 'description',
       value: '',
       colSize: 'col-lg-12 col-md-12 col-sm-12',
+      validation: {
+        required: true,
+        customMessage: 'Role is required.',
+      },
     },
     participantName: {
       label: 'Person',
@@ -72,6 +80,10 @@ export const GetConfig = () => {
       colSize: 'col-lg-12 col-md-12 col-sm-12',
       customMenuMessage: <span>Please select participant name:</span>,
       tableMode: true,
+      validation: {
+        required: true,
+        customMessage: 'Participant Name is required.',
+      },
     },
     organization: {
       type: FormFieldType.DropDownWithSearch,
