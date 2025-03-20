@@ -120,11 +120,11 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
    
   const initialAppParticipantDetails = {
     isMainParticipant: false,
-    startDate: new Date().toString(),
-    endDate: new Date().toString(),
-    role: '',
-    person: '',
-    organization: '',
+    effectiveStartDate: '',
+    effectiveEndDate: '',
+    description: '',
+    fullName: '',
+    name: '',
   };
 
   //const [formData, setFormData] =  useState<{ [key: string]: any }[]>([]);
@@ -196,51 +196,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     }
     return [];
   }, []);
-
-    // Handle search action
-  // const handleSearch = useCallback(
-  //   (value: any, graphQLPropertyName?: string) => {
-  //     console.log('PT: handleSearch: ', value);
-  //     //setSearchParam(value.trim());
-  //     // setSearchParamForOrg(value.trim());
-  //     console.log('PT: handleSearch: graphQLPropertyName: ', graphQLPropertyName);
-  //     const trimmedValue = value.trim();
-  //     console.log('PT: addAppParticipantsForm row: ', appParticsForm.findIndex((row) => console.log('PT: row: ', row)));
-
-  //     if (
-  //       (graphQLPropertyName === 'fullName' && trimmedValue.length > 0)
-  //     ) {
-  //       setSearchParam(trimmedValue);
-  //       setSearchParamForOrg('');
-  //     } else if (graphQLPropertyName === 'name' && trimmedValue.length > 0) {
-  //       setSearchParamForOrg(trimmedValue);
-  //       setSearchParam('');
-  //     }
-  //       const indexToUpdate = appParticsForm.findIndex((row) =>
-  //         row.some((field) => field.graphQLPropertyName === graphQLPropertyName),
-  //       );
-  //       console.log('PT: searchParamForOrg ', searchParamForOrg);
-  //       console.log('PT: searchParam ', searchParam);
-  //       // console.log('PT:  HS - indexToUpdate: ', indexToUpdate);
-  //       // console.log('PT: HS - options: ', options);
-    
-  //       setAppParticsForm((prev) =>
-  //         updateFields(prev, {
-  //           indexToUpdate,
-  //           updates: {
-  //             isLoading: RequestStatus.success,
-  //             //options: rolesConfig, 
-  //             filteredOptions: [],
-  //             handleSearch,
-  //             customInfoMessage: <></>,
-  //           },
-  //         }),
-  //       );
-  //     }
-  
-  //   ,[options],
-  // );
-    
 
   const handleSearchForOrg = useCallback(
     (value: any, graphQLPropertyName?: string) => {
@@ -442,8 +397,10 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
       value = (value as { key: string }).key;
       console.log('PT: handleFormChange: value: ', value);
     }
-    setFormData({...formData, [graphQLPropertyName]: value });
-    console.log('PT: handleFormChange formData: ', formData);
+    //setFormData({...formData, [graphQLPropertyName]: value });
+    setAppParticipant({...appParticipant, 
+      appParticipantDetails: {...appParticipant.appParticipantDetails, [graphQLPropertyName]: value}});
+    console.log('PT: handleFormChange formData: ', appParticipant.appParticipantDetails);
   };
 
   // const handleSort = (row: any, ascDir: any) => {
@@ -514,21 +471,23 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         {appParticipant.isAppParticipantModal && (
           <ModalDialog
             headerLabel={appParticipant.appParticipantActionType}
-            saveButtonDisabled={formData.fullName === '' || formData.name === '' || formData.description === ''}
+            saveButtonDisabled={appParticipant.appParticipantDetails.fullName === '' ||appParticipant.appParticipantDetails.description === ''||appParticipant.appParticipantDetails.effectiveStartDate === ''}
             //closeHandler={() => {}}
+            
             closeHandler={(response) => {
               console.log('PT: closeHandler: ', response);
               if (response) {
                 if (appParticipant.appParticipantActionType === AppParticipantsActionTypes.AddParticipant) {
                  // if (id) {
+                 console.log('PT: appParticipant.appParticipantDetails before inserting: ', appParticipant.appParticipantDetails);
                     const newAppParticipant = {
                       applicationId: 2,
-                      isMainParticipant: formData.isMainParticipant,
-                      personId: parseFloat(formData.fullName),
-                      organizationId: parseFloat(formData.name),
-                      participantRoleId: parseFloat(formData.description),
-                      effectiveStartDate: formData.effectiveStartDate,
-                      effectiveEndDate: formData.effectiveEndDate,
+                      isMainParticipant: appParticipant.appParticipantDetails.isMainParticipant,
+                      personId: parseFloat(appParticipant.appParticipantDetails.fullName),
+                      organizationId: parseFloat(appParticipant.appParticipantDetails.name),
+                      participantRoleId: parseFloat(appParticipant.appParticipantDetails.description),
+                      effectiveStartDate: appParticipant.appParticipantDetails.effectiveStartDate,
+                      effectiveEndDate: appParticipant.appParticipantDetails.effectiveEndDate || null,
                     };
                     handleAddAppParticipant(newAppParticipant)
                       .then((response) => {
@@ -552,7 +511,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
           >
             <Form
               formRows={appParticsForm}
-              formData={formData}
+              formData={appParticipant?.appParticipantDetails??{}}
               handleInputChange={(graphQLPropertyName, value) =>
                 handleFormChange(graphQLPropertyName, value)}
               //handleSearch = {(event, graphQLPropertyName) => handleSearch(event, graphQLPropertyName)}
