@@ -96,18 +96,6 @@ export type ApplicationSearchResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
-export type CreateAppParticipantDto = {
-  applicationId: Scalars['Float']['input'];
-  createdBy?: InputMaybe<Scalars['String']['input']>;
-  createdDateTime?: InputMaybe<Scalars['DateTime']['input']>;
-  effectiveEndDate?: InputMaybe<Scalars['DateTime']['input']>;
-  effectiveStartDate: Scalars['DateTime']['input'];
-  isMainParticipant?: InputMaybe<Scalars['Boolean']['input']>;
-  organizationId?: InputMaybe<Scalars['Float']['input']>;
-  participantRoleId: Scalars['Float']['input'];
-  personId: Scalars['Float']['input'];
-};
-
 export enum ApplicationSortByDirection {
   Asc = 'ASC',
   Desc = 'DESC'
@@ -122,6 +110,18 @@ export enum ApplicationSortByField {
   SiteId = 'SITE_ID',
   Status = 'STATUS'
 }
+
+export type CreateAppParticipantDto = {
+  applicationId: Scalars['Float']['input'];
+  createdBy?: InputMaybe<Scalars['String']['input']>;
+  createdDateTime?: InputMaybe<Scalars['DateTime']['input']>;
+  effectiveEndDate?: InputMaybe<Scalars['DateTime']['input']>;
+  effectiveStartDate: Scalars['DateTime']['input'];
+  isMainParticipant?: InputMaybe<Scalars['Boolean']['input']>;
+  organizationId?: InputMaybe<Scalars['Float']['input']>;
+  participantRoleId: Scalars['Float']['input'];
+  personId: Scalars['Float']['input'];
+};
 
 export type CreatePerson = {
   address_1?: InputMaybe<Scalars['String']['input']>;
