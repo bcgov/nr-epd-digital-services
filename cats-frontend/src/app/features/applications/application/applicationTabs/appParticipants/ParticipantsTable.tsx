@@ -99,6 +99,9 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     handleFilterChange(newFilter);
   };
 
+  const SEARCH_PREFIX_FOR_PERSON = 'person-';
+  const SEARCH_PREFIX_FOR_ORG = 'org-';
+
   const [roles, setRoles] = useState<
     { key: string; value: string }[] | undefined
   >(undefined);
@@ -134,11 +137,12 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   });
 
   const fetchParticipantNames = useCallback(async (searchParam: string) => {
+    const cacheKey = SEARCH_PREFIX_FOR_PERSON + searchParam; //This is required to distinguish between person and organization search
     if (searchParam.trim()) {
       try {
         // Check cache first
-        if (resultCache[searchParam]) {
-          return resultCache[searchParam];
+        if (resultCache[cacheKey]) {
+          return resultCache[cacheKey];
         }
         // Store result in cache if successful
         const personData = await getAxiosInstance().post(GRAPHQL, {
@@ -148,7 +152,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
        // console.log('PT: personData: ', personData);
         if (personData?.data?.data?.getParticipantNames?.data) {  
           console.log('PT: ND: personData: ', personData?.data?.data?.getParticipantNames?.data);
-          resultCache[searchParam] = personData?.data?.data?.getParticipantNames?.data;
+          resultCache[cacheKey] = personData?.data?.data?.getParticipantNames?.data;
           setOptions(personData?.data?.data?.getParticipantNames?.data);
           return personData?.data?.data?.getParticipantNames?.data;
         }
@@ -163,13 +167,14 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
 
 
   const fetchOrganizationNames = useCallback(async (searchParamForOrg: string) => {
+    const cacheKey = SEARCH_PREFIX_FOR_ORG + searchParamForOrg;
     console.log("inside fetchOrganizationNames");
     if (searchParamForOrg.trim()) {
       try {
         // Check cache first
-        if (resultCache[searchParamForOrg]) {
+    if (resultCache[cacheKey]) {
           console.log('PT: ND: resultCache[searchParamForOrg]: ', resultCache[searchParamForOrg]);
-          return resultCache[searchParamForOrg];
+          return resultCache[cacheKey];
         }
         // Store result in cache if successful
         const orgData = await getAxiosInstance().post(GRAPHQL, {
@@ -179,7 +184,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         console.log('PT: ND: orgData before null check: ', orgData);
         if (orgData?.data?.data?.getOrganizations?.data) {  
           console.log('PT: ND: orgdata: ', orgData?.data?.data?.getOrganizations.data);
-          resultCache[searchParamForOrg] = orgData?.data?.data?.getOrganizations?.data;
+          resultCache[cacheKey] = orgData?.data?.data?.getOrganizations?.data;
           setOptions(orgData?.data?.data?.getOrganizations?.data);
           return orgData?.data?.data?.getOrganizations?.data;
         }
@@ -328,7 +333,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
               isLoading: RequestStatus.success,
               options,
               filteredOptions:
-                res.data ?? resultCache[searchParam] ?? [],
+                res.data ?? resultCache[SEARCH_PREFIX_FOR_PERSON + searchParam] ?? [],
               customInfoMessage: <></>,
               handleSearch: handleSearchForParticipant,
             },
@@ -347,7 +352,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
               isLoading: RequestStatus.success,
               options,
               filteredOptions:
-                res.data ?? resultCache[searchParamForOrg] ?? [],
+                res.data ?? resultCache[SEARCH_PREFIX_FOR_ORG + searchParamForOrg] ?? [],
               customInfoMessage: <></>,
               handleSearch: handleSearchForOrg,
             },
@@ -517,7 +522,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
                 if (appParticipant.appParticipantActionType === AppParticipantsActionTypes.AddParticipant) {
                  // if (id) {
                     const newAppParticipant = {
-                      applicationId: 1,
+                      applicationId: 2,
                       isMainParticipant: formData.isMainParticipant,
                       personId: parseFloat(formData.fullName),
                       organizationId: parseFloat(formData.name),
