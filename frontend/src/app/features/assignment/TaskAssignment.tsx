@@ -12,13 +12,12 @@ const TaskAssignment = () => {
   const { taskId } = useParams();
 
   const API: string =
-    process.env.REACT_APP_BACKEND_USERS_API ||
-    ((window as any)._env_ &&
-      (window as any)._env_.REACT_APP_BACKEND_USERS_API);
+    import.meta.env.VITE_BACKEND_USERS_API ||
+    ((window as any)._env_ && (window as any)._env_.VITE_BACKEND_USERS_API);
 
   const FORMS_URL: string =
-    process.env.REACT_APP_FORMS_URL ||
-    ((window as any)._env_ && (window as any)._env_.REACT_APP_FORMS_URL);
+    import.meta.env.VITE_FORMS_URL ||
+    ((window as any)._env_ && (window as any)._env_.VITE_FORMS_URL);
 
   const assignTaskToUser = () => {
     getAxiosInstanceForCamunda()

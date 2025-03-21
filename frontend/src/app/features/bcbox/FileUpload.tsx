@@ -30,34 +30,32 @@ export const FileUpload = () => {
   console.log(auth);
 
   const bcBoxAPPUI =
-    process.env.REACT_APP_BCBOX_APP_URL ||
-    ((window as any)._env_ && (window as any)._env_.REACT_APP_BCBOX_APP_URL);
+    import.meta.env.VITE_BCBOX_APP_URL ||
+    ((window as any)._env_ && (window as any)._env_.VITE_BCBOX_APP_URL);
 
   const bcBoxBaseURL =
-    process.env.REACT_APP_BCBOX_BASE_URL ||
-    ((window as any)._env_ && (window as any)._env_.REACT_APP_BCBOX_BASE_URL);
+    import.meta.env.VITE_BCBOX_BASE_URL ||
+    ((window as any)._env_ && (window as any)._env_.VITE_BCBOX_BASE_URL);
   const bcBoxBucketURL =
-    process.env.REACT_APP_BCBOX_BUCKET_URL ||
-    ((window as any)._env_ && (window as any)._env_.REACT_APP_BCBOX_BUCKET_URL);
+    import.meta.env.VITE_BCBOX_BUCKET_URL ||
+    ((window as any)._env_ && (window as any)._env_.VITE_BCBOX_BUCKET_URL);
   const token = getUser()?.access_token;
 
   const accessKeyId =
-    process.env.REACT_APP_COMS_ACCESS_KEY_ID ||
-    ((window as any)._env_ &&
-      (window as any)._env_.REACT_APP_COMS_ACCESS_KEY_ID);
+    import.meta.env.VITE_COMS_ACCESS_KEY_ID ||
+    ((window as any)._env_ && (window as any)._env_.VITE_COMS_ACCESS_KEY_ID);
   const bucket =
-    process.env.REACT_APP_COMS_BUCKET ||
-    ((window as any)._env_ && (window as any)._env_.REACT_APP_COMS_BUCKET);
+    import.meta.env.VITE_COMS_BUCKET ||
+    ((window as any)._env_ && (window as any)._env_.VITE_COMS_BUCKET);
   const comsEndPoint =
-    process.env.REACT_APP_COMS_ENDPOINT ||
-    ((window as any)._env_ && (window as any)._env_.REACT_APP_COMS_ENDPOINT);
+    import.meta.env.VITE_COMS_ENDPOINT ||
+    ((window as any)._env_ && (window as any)._env_.VITE_COMS_ENDPOINT);
   const comsAccessKey =
-    process.env.REACT_APP_COMS_ACCESS_KEY ||
-    ((window as any)._env_ && (window as any)._env_.REACT_APP_COMS_ACCESS_KEY);
+    import.meta.env.VITE_COMS_ACCESS_KEY ||
+    ((window as any)._env_ && (window as any)._env_.VITE_COMS_ACCESS_KEY);
   const comsAccessRegion =
-    process.env.REACT_APP_COMS_ACCESS_REGION ||
-    ((window as any)._env_ &&
-      (window as any)._env_.REACT_APP_COMS_ACCESS_REGION);
+    import.meta.env.VITE_COMS_ACCESS_REGION ||
+    ((window as any)._env_ && (window as any)._env_.VITE_COMS_ACCESS_REGION);
 
   const axiosInstance = axios.create({
     baseURL: bcBoxBaseURL,
