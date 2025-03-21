@@ -37,12 +37,12 @@ export class AppParticipant {
   isMainParticipant: boolean;
 
   @Column('date', { name: 'effective_start_date' })
-  effectiveStartDate: string;
+  effectiveStartDate: Date;
 
   @Column('date', { name: 'effective_end_date', nullable: true })
-  effectiveEndDate: string | null;
+  effectiveEndDate: Date | null;
 
-  @Column('integer', { name: 'row_version_count' })
+  @Column('integer', { name: 'row_version_count', nullable: true })
   rowVersionCount: number;
 
   @Column('character varying', { name: 'created_by', length: 20 })
@@ -51,13 +51,13 @@ export class AppParticipant {
   @Column('timestamp without time zone', { name: 'created_date_time' })
   createdDateTime: Date;
 
-  @Column('character varying', { name: 'updated_by', length: 20 })
+  @Column('character varying', { name: 'updated_by', length: 20, nullable: true })
   updatedBy: string;
 
-  @Column('timestamp without time zone', { name: 'updated_date_time' })
+  @Column('timestamp without time zone', { name: 'updated_date_time', nullable: true })
   updatedDateTime: Date;
 
-  @Column('bytea', { name: 'ts' })
+  @Column('bytea', { name: 'ts', nullable: true })
   ts: Buffer;
 
   @ManyToOne(() => Application, (application) => application.appParticipants)
