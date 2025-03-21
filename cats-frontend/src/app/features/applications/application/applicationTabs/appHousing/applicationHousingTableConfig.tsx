@@ -62,7 +62,7 @@ export const getApplicationHousingColumns = (): TableColumn[] => [
     id: 3,
     displayName: 'Indigenous Led',
     active: true,
-    graphQLPropertyName: 'housing.isSocial.abbrev',
+    graphQLPropertyName: 'housing.isIndigenousLed.abbrev',
     displayType: { type: FormFieldType.Label },
     dynamicColumn: true,
     renderCell: (value: any) => {
@@ -71,7 +71,7 @@ export const getApplicationHousingColumns = (): TableColumn[] => [
   },
   {
     id: 4,
-    displayName: '# Units',
+    displayName: '# of Units',
     active: true,
     graphQLPropertyName: 'housing.numberOfUnits',
     displayType: { type: FormFieldType.Label },
