@@ -8,7 +8,7 @@ import {
 } from '../../dto/applicationHousing.dto';
 import { ApplicationHousingService } from '../../services/application/applicationHousing.service';
 import { ApplicationHousingResponse } from '../../dto/response/applicationHousingResponse';
-import { AuthenticatedUser, Unprotected } from 'nest-keycloak-connect';
+import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AddHousingInputDto } from '../../dto/applicationHousing.dto';
 
 @Resolver(() => ApplicationHousingDto)
@@ -43,7 +43,6 @@ export class ApplicationHousingResolver {
   @Mutation(() => ApplicationHousingResponse, {
     name: 'addHousingToApplication',
   })
-  @Unprotected()
   @UsePipes(new GenericValidationPipe())
   async addHousingToApplication(
     @Args('input') input: AddHousingInputDto,
@@ -65,7 +64,6 @@ export class ApplicationHousingResolver {
   @Mutation(() => ApplicationHousingResponse, {
     name: 'updateApplicationHousing',
   })
-  @Unprotected()
   @UsePipes(new GenericValidationPipe())
   async updateApplicationHousing(
     @Args('input') input: UpdateHousingInputDto,
