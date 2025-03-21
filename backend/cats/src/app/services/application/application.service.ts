@@ -9,7 +9,7 @@ import { CreateApplication } from '../../dto/application/createApplication.dto';
 @Injectable()
 export class ApplicationService {
   constructor(
-    @InjectRepository(AppParticipant)
+    @InjectRepository(Application)
     private readonly applicationRepository: Repository<Application>,
     private readonly loggerService: LoggerService,
   ) { }
@@ -23,13 +23,15 @@ export class ApplicationService {
         `Attempting to create application with srs app id: ${createApplication?.srsApplicationId}`,
       );
 
-      const newApplication = this.applicationRepository.create({
+      const newApplication = await this.applicationRepository.create({
         siteId: createApplication.siteId,
         srsApplicationId: createApplication.srsApplicationId,
         appTypeId: createApplication.appTypeId,
         rowVersionCount: 1,
         createdBy: 'SYSTEM',
+        updatedBy: 'SYSTEM',
         createdDateTime: new Date(),
+        updatedDateTime: new Date(),
         receivedDate: createApplication.receivedDate.toISOString()
       });
       // Save the new application
@@ -56,7 +58,7 @@ export class ApplicationService {
         'Exception occurred in ApplicationService.createApplication()',
         JSON.stringify(err),
       );
-      throw new HttpException('Failed to create note', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Failed to create application', HttpStatus.BAD_REQUEST);
     } finally {
       // Log the end of the method
       this.loggerService.log('ApplicationService.createApplication() end');

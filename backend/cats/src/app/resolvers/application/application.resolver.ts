@@ -1,14 +1,15 @@
 import { LoggerService } from '../../logger/logger.service';
 import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
-import { Args, Mutation } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { HttpStatus, UsePipes } from '@nestjs/common';
 import { GenericValidationPipe } from '../../utilities/validations/genericValidationPipe';
 import { ApplicationService } from '../../services/application/application.service';
-import { CreateApplication } from 'src/app/dto/application/createApplication.dto';
+import { CreateApplication } from '../../dto/application/createApplication.dto';
 import { ViewApplication } from '../../dto/application/viewApplication.dto';
 import { ApplicationResponse } from '../../dto/response/application/applicationResponse';
 import { Unprotected } from 'nest-keycloak-connect';
 
+@Resolver()
 export class ApplicationResolver {
     constructor(
         private readonly applicationService: ApplicationService,
@@ -27,6 +28,7 @@ export class ApplicationResolver {
     ) {
         this.loggerService.log('ApplicationResolver.createApplication() start');
         const result = await this.applicationService.createApplication(application);
+
         if (result) {
             this.loggerService.log(
                 'ApplicationResolver.createApplication() RES:201 end',

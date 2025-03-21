@@ -84,7 +84,7 @@ export class Application {
   @Column('timestamp without time zone', { name: 'updated_date_time' })
   updatedDateTime: Date;
 
-  @Column('bytea', { name: 'ts' })
+  @Column('bytea', { name: 'ts', nullable: true })
   ts: Buffer;
 
   @Column('character varying', {

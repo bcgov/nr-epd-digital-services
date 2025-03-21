@@ -20,7 +20,7 @@ describe('ApplicationResolver', () => {
         {
           provide: ApplicationService,
           useValue: {
-            CreateApplication: jest.fn(),
+            createApplication: jest.fn(),
           },
         },
         {
@@ -74,7 +74,7 @@ describe('ApplicationResolver', () => {
     };
 
     const expectedResult = {
-      message: 'Application successfully',
+      message: 'Application created successfully',
       httpStatusCode: HttpStatus.CREATED,
       success: true,
       data: [createdApplication],
@@ -85,7 +85,7 @@ describe('ApplicationResolver', () => {
     const result = await resolver.createApplication(createApplicationDto);
 
     expect(result).toEqual(expectedResult);
-    expect(applicationService.createApplication).toHaveBeenCalledWith(createApplicationDto, { identity_provider: 'IDIR' });
+    expect(applicationService.createApplication).toHaveBeenCalledWith(createApplicationDto);
     expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
       'Application created successfully',
       HttpStatus.CREATED,
