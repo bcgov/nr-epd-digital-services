@@ -26,3 +26,11 @@ query getApplicationHousingByApplicationId($applicationId: Int!) {
     }
   }
 }
+
+mutation addHousingToApplication($input: AddHousingInputDto!) {
+  addHousingToApplication(input: $input) {
+    data {
+      id
+    }
+  }
+}

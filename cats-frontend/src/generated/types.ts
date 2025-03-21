@@ -169,6 +169,7 @@ export type Mutation = {
   createPerson: PersonResponse;
   createPersonNote: PersonNoteResponse;
   deletePersonNote: PersonNoteResponse;
+  updateApplicationHousing: ApplicationHousingResponse;
   updatePerson: PersonResponse;
   updatePersonNote: PersonNoteResponse;
 };
@@ -191,6 +192,11 @@ export type MutationCreatePersonNoteArgs = {
 
 export type MutationDeletePersonNoteArgs = {
   notes: Array<DeletePersonNote>;
+};
+
+
+export type MutationUpdateApplicationHousingArgs = {
+  input: UpdateHousingInputDto;
 };
 
 
@@ -282,6 +288,18 @@ export type SearchPersonResponse = {
   persons: Array<ViewPerson>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type UpdateHousingInputDto = {
+  applicationHousingId: Scalars['Int']['input'];
+  effectiveDate?: InputMaybe<Scalars['DateTime']['input']>;
+  expiryDate?: InputMaybe<Scalars['DateTime']['input']>;
+  housingTypeId?: InputMaybe<Scalars['Int']['input']>;
+  isIndigenousLed?: InputMaybe<Scalars['Boolean']['input']>;
+  isRental?: InputMaybe<Scalars['Boolean']['input']>;
+  isSocial?: InputMaybe<Scalars['Boolean']['input']>;
+  numberOfUnits?: InputMaybe<Scalars['Int']['input']>;
+  relatedApplicationIds?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
 export type UpdatePerson = {

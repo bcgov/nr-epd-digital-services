@@ -3,17 +3,53 @@ import { Button } from '../../../../../components/button/Button';
 import { Plus } from '../../../../../components/common/icon';
 import Widget from '../../../../../components/widget/Widget';
 import { RequestStatus } from '../../../../../helpers/requests/status';
-import { getApplicationHousingColumns } from './applicationHousingTableConfig';
-import { useGetApplicationHousingByApplicationIdQuery } from './Housing.generated';
+import {
+  getApplicationHousingColumns,
+  housingForm,
+} from './applicationHousingTableConfig';
+import {
+  useGetApplicationHousingByApplicationIdQuery,
+  useAddHousingToApplicationMutation,
+} from './Housing.generated';
+import { useState } from 'react';
+import ModalDialog from '../../../../../components/modaldialog/ModalDialog';
+import Form from '../../../../../components/form/Form';
+
+const initialHousingModalState = () => ({
+  isOpen: false,
+  housingData: {
+    housingType: '',
+    numberOfUnits: '',
+    effectiveDate: '',
+    expiryDate: '',
+    isRental: false,
+    isSocial: false,
+    isIndigenousLed: false,
+    relatedApplications: '',
+  },
+});
 
 export const Housing = () => {
   const { id = '' } = useParams();
   const applicationId = parseInt(id, 10);
 
-  const { data, loading } = useGetApplicationHousingByApplicationIdQuery({
+  const [housingModal, setHousingModal] = useState(initialHousingModalState());
+
+  const {
+    data,
+    loading,
+    refetch: refetchHousingTableData,
+  } = useGetApplicationHousingByApplicationIdQuery({
     variables: { applicationId },
     skip: !applicationId,
   });
+
+  const [addHousingToApplication, { loading: addHousingLoading }] =
+    useAddHousingToApplicationMutation({
+      onCompleted: () => {
+        refetchHousingTableData();
+      },
+    });
 
   const tableChangeHandler = (event: any) => {
     if (event.property === 'edit') {
@@ -21,21 +57,89 @@ export const Housing = () => {
     }
   };
 
+  const addHousingToApplicationHandler = () => {
+    const {
+      housingData: {
+        housingType,
+        numberOfUnits,
+        effectiveDate,
+        expiryDate,
+        isRental,
+        isSocial,
+        isIndigenousLed,
+        relatedApplications,
+      },
+    } = housingModal;
+
+    addHousingToApplication({
+      variables: {
+        input: {
+          applicationId,
+          effectiveDate: effectiveDate ? new Date(effectiveDate) : null,
+          expiryDate: expiryDate ? new Date(expiryDate) : null,
+          housingTypeId: parseInt(housingType, 10),
+          numberOfUnits: parseInt(numberOfUnits, 10),
+          isRental: isRental,
+          isSocial: isSocial,
+          isIndigenousLed: isIndigenousLed,
+          relatedApplicationIds: relatedApplications
+            .split(',')
+            .map((id) => parseInt(id, 10))
+            .filter(Boolean),
+        },
+      },
+    });
+  };
+
+  const handleInputChange = (graphQLPropertyName: string, value: any) => {
+    setHousingModal({
+      ...housingModal,
+      housingData: {
+        ...housingModal.housingData,
+        [graphQLPropertyName]: value,
+      },
+    });
+  };
+
   return (
-    <Widget
-      primaryKeycolumnName="id"
-      tableData={data?.getApplicationHousingByApplicationId.data || []}
-      title={'Housing'}
-      tableColumns={getApplicationHousingColumns()}
-      tableIsLoading={loading ? RequestStatus.loading : RequestStatus.idle}
-      changeHandler={tableChangeHandler}
-    >
-      <div className="d-flex gap-2 flex-wrap">
-        <Button variant="secondary">
-          <Plus />
-          New Housing Type
-        </Button>
-      </div>
-    </Widget>
+    <>
+      <Widget
+        primaryKeycolumnName="id"
+        tableData={data?.getApplicationHousingByApplicationId.data || []}
+        title={'Housing'}
+        tableColumns={getApplicationHousingColumns()}
+        tableIsLoading={loading ? RequestStatus.loading : RequestStatus.idle}
+        changeHandler={tableChangeHandler}
+      >
+        <div className="d-flex gap-2 flex-wrap">
+          <Button
+            variant="secondary"
+            disabled={addHousingLoading}
+            onClick={() => setHousingModal({ ...housingModal, isOpen: true })}
+          >
+            <Plus />
+            New Housing Type
+          </Button>
+        </div>
+      </Widget>
+      {housingModal.isOpen && (
+        <ModalDialog
+          headerLabel={'Add Housing'}
+          closeHandler={(saved) => {
+            setHousingModal(initialHousingModalState());
+            if (saved) {
+              addHousingToApplicationHandler();
+            }
+          }}
+        >
+          <Form
+            editMode={true}
+            formRows={housingForm}
+            formData={housingModal.housingData}
+            handleInputChange={handleInputChange}
+          />
+        </ModalDialog>
+      )}
+    </>
   );
 };
