@@ -6,7 +6,7 @@ import {
   DiscardButton,
   SaveButton,
 } from '../simple/CustomButtons';
-import { ButtonVariant } from '../button/Button';
+import { Button, ButtonVariant } from '../button/Button';
 
 interface ModalDialogCloseHandlerProps {
   closeHandler: (save: any) => void;
@@ -82,10 +82,14 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
             >
               {headerLabel || displayLabel}
             </span>
-            <XmarkIcon
+            <Button
+              variant="tertiary"
               className="custom-modal-header-close"
               onClick={handleClose}
-            ></XmarkIcon>
+              disabled={cancelButtonDisabled}
+            >
+              <XmarkIcon />
+            </Button>
           </div>
           {children && <div className="custom-modal-data">{children}</div>}
           {!discardOption && !errorOption && (

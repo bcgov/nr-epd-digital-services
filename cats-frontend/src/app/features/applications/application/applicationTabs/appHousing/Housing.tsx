@@ -45,11 +45,7 @@ export const Housing = () => {
   });
 
   const [addHousingToApplication, { loading: addHousingLoading }] =
-    useAddHousingToApplicationMutation({
-      onCompleted: () => {
-        refetchHousingTableData();
-      },
-    });
+    useAddHousingToApplicationMutation();
 
   const tableChangeHandler = (event: any) => {
     if (event.property === 'edit') {
@@ -88,6 +84,10 @@ export const Housing = () => {
             .filter(Boolean),
         },
       },
+      onCompleted: () => {
+        setHousingModal(initialHousingModalState());
+        refetchHousingTableData();
+      },
     });
   };
 
@@ -125,11 +125,14 @@ export const Housing = () => {
       {housingModal.isOpen && (
         <ModalDialog
           headerLabel={'Add Housing'}
+          saveButtonDisabled={addHousingLoading}
+          cancelButtonDisabled={addHousingLoading}
           closeHandler={(saved) => {
-            setHousingModal(initialHousingModalState());
-            if (saved) {
-              addHousingToApplicationHandler();
+            if (!saved) {
+              return setHousingModal(initialHousingModalState());
             }
+
+            addHousingToApplicationHandler();
           }}
         >
           <Form
