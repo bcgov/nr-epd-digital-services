@@ -52,7 +52,9 @@ export interface IFormField {
   searchCustomInputMenuCss?: string;
   graphQLPropertyName?: string;
   allowNumbersOnly?: boolean;
-  options?: { key: string; value: string; imageUrl?: any }[] | null;
+  options?:
+    | { key: string | number; value: string | number; imageUrl?: any }[]
+    | null;
   filteredOptions?: { key: string; value: string }[];
   value?: any;
   customLinkValue?: any;

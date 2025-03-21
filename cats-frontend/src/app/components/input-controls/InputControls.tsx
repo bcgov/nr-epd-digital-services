@@ -203,6 +203,7 @@ export const TextInput: React.FC<InputProps> = ({
   stickyCol,
   onChange,
   tableMode,
+  customInfoMessage,
 }) => {
   const ContainerElement = tableMode ? 'td' : 'div';
   const [error, setError] = useState<string | null>(null);
@@ -291,6 +292,11 @@ export const TextInput: React.FC<InputProps> = ({
         >
           {error}
         </span>
+      )}
+      {customInfoMessage && (
+        <div className="custom-search-input-item-label pt-2">
+          {customInfoMessage}
+        </div>
       )}
     </ContainerElement>
   );
@@ -385,13 +391,15 @@ export const DropdownInput: React.FC<InputProps> = ({
               ? 'custom-disabled-option'
               : 'custom-primary-option'
           }  ${error && 'error'}`}
-          value={value.trim() ?? ''}
+          value={value.toString().trim() ?? ''}
           onChange={handleSelectChange}
           aria-label={label}
           disabled={isDisabled}
         >
           <option
             value=""
+            disabled
+            hidden
             className={`custom-disabled-option  ${customPlaceholderCss ?? ''}`}
           >
             {placeholder}

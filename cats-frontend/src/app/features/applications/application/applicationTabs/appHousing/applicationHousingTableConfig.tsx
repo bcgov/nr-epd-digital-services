@@ -4,7 +4,10 @@ import {
   QuestionMarkIcon,
   TickIcon,
 } from '../../../../../components/common/icon';
-import { FormFieldType } from '../../../../../components/input-controls/IFormField';
+import {
+  FormFieldType,
+  IFormField,
+} from '../../../../../components/input-controls/IFormField';
 import {
   ColumnSize,
   TableColumn,
@@ -141,4 +144,67 @@ export const getApplicationHousingColumns = (): TableColumn[] => [
     dynamicColumn: true,
     columnSize: ColumnSize.XtraSmall,
   },
+];
+
+const housingFormFields: { [key: string]: IFormField } = {
+  housingType: {
+    type: FormFieldType.DropDown,
+    label: 'Housing Type',
+    graphQLPropertyName: 'housingType',
+    placeholder: 'Select Housing Type',
+    options: [
+      // TODO: This is hard-coded for now, will fetch from the API later
+      { key: 1, value: 'Single-Family' },
+      { key: 2, value: 'Multi-Family <10' },
+      { key: 3, value: 'Multi-Family 10-49' },
+      { key: 4, value: 'Multi-Family 50-500' },
+      { key: 5, value: 'Multi-Family >500' },
+      { key: 6, value: 'All' },
+      { key: 7, value: 'No or Unknown' },
+    ],
+    colSize: 'col-lg-6 col-md-6 col-sm-12',
+  },
+  numberOfUnits: {
+    type: FormFieldType.Text,
+    label: '# of Units',
+    graphQLPropertyName: 'numberOfUnits',
+    allowNumbersOnly: true,
+    validation: {
+      pattern: /^[0-9]*$/,
+      customMessage: 'Number of Units must be a positive integer',
+    },
+    colSize: 'col-lg-6 col-md-6 col-sm-12',
+  },
+  effectiveDate: {
+    type: FormFieldType.Date,
+    label: 'Effective Date',
+    placeholder: 'EE MMM dd yyyy',
+    dateFormat: 'EE MMM dd yyyy',
+    graphQLPropertyName: 'effectiveDate',
+    colSize: 'col-lg-6 col-md-6 col-sm-12',
+  },
+  expiryDate: {
+    type: FormFieldType.Date,
+    label: 'Expiry Date',
+    placeholder: 'EE MMM dd yyyy',
+    dateFormat: 'EE MMM dd yyyy',
+    graphQLPropertyName: 'expiryDate',
+    colSize: 'col-lg-6 col-md-6 col-sm-12',
+  },
+
+  // TODO: Add checkboxes for rental, social, indigenous led fields
+
+  realatedApplications: {
+    type: FormFieldType.Text,
+    label: 'Related Application(s)',
+    graphQLPropertyName: 'relatedApplications',
+    customInfoMessage:
+      'Related Application(s) must be a comma-separated list of application IDs',
+  },
+};
+
+export const housingForm: IFormField[][] = [
+  [housingFormFields['housingType'], housingFormFields['numberOfUnits']],
+  [housingFormFields['effectiveDate'], housingFormFields['expiryDate']],
+  [housingFormFields['realatedApplications']],
 ];
