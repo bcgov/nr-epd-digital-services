@@ -18,6 +18,18 @@ export type Scalars = {
   link__Import: { input: any; output: any; }
 };
 
+export type AddHousingInputDto = {
+  applicationId: Scalars['Int']['input'];
+  effectiveDate: Scalars['DateTime']['input'];
+  expiryDate?: InputMaybe<Scalars['DateTime']['input']>;
+  housingTypeId: Scalars['Int']['input'];
+  isIndigenousLed?: InputMaybe<Scalars['Boolean']['input']>;
+  isRental?: InputMaybe<Scalars['Boolean']['input']>;
+  isSocial?: InputMaybe<Scalars['Boolean']['input']>;
+  numberOfUnits: Scalars['Int']['input'];
+  relatedApplicationIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
 export enum AppParticipantFilter {
   All = 'ALL',
   Main = 'MAIN'
@@ -153,11 +165,17 @@ export type HousingType = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addHousingToApplication: ApplicationHousingResponse;
   createPerson: PersonResponse;
   createPersonNote: PersonNoteResponse;
   deletePersonNote: PersonNoteResponse;
   updatePerson: PersonResponse;
   updatePersonNote: PersonNoteResponse;
+};
+
+
+export type MutationAddHousingToApplicationArgs = {
+  input: AddHousingInputDto;
 };
 
 
