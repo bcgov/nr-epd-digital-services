@@ -1,0 +1,9 @@
+# PROD specific overrides
+backend:
+  pdb:
+    enabled: true
+
+frontend:
+  pdb:
+    enabled: true # enable it in PRODUCTION for having pod disruption budget.
+

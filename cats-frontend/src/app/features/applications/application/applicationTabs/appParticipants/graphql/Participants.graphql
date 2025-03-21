@@ -1,0 +1,19 @@
+query getAppParticipantsByAppId($applicationId: Int!, $filter: AppParticipantFilter!) {
+  getAppParticipantsByAppId(applicationId: $applicationId, filter: $filter) {
+    httpStatusCode
+    success
+    message
+    timestamp
+    data {
+      id
+      applicationId
+      isMainParticipant
+      name
+      fullName
+      description
+      effectiveStartDate
+      effectiveEndDate
+      isMinistry
+    }
+  }
+}

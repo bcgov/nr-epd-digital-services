@@ -1,0 +1,39 @@
+.toast-error {
+  width: 500px;
+}
+
+.toast-success {
+  width: 100%;
+}
+
+.Toastify__toast-container--bottom-right {
+  right: 5em;
+}
+
+.Toastify__toast-container--top-center {
+  z-index: 100001;
+}
+.custom {
+  display: flex;
+  gap: var(--layout-margin-medium);
+  flex-direction: column;
+}
+
+.custom-border {
+  border-bottom: 1px solid var(--support-support-border-color-danger, #ce3e39);
+}
+
+.error-heading {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 36px;
+  color: var(--typography-color-primary, #2d2d2d);
+}
+
+.error-text {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 27.01px;
+  text-align: left;
+  color: var(--typography-color-primary, #2d2d2d);
+}

@@ -10,10 +10,14 @@ import { useSelector } from "react-redux";
 import { ExternalUser } from "../../features/users/dto/ExternalUser";
 
 const Header = () => {
-  const authRedirectUri = ((window as any)._env_ && (window as any)._env_.REACT_APP_AUTH_LOGOUT_REDIRECT_URI ) || process.env.REACT_APP_AUTH_LOGOUT_REDIRECT_URI || 'http://localhost:4000/'
+  const authRedirectUri =
+    ((window as any)._env_ &&
+      (window as any)._env_.VITE_AUTH_LOGOUT_REDIRECT_URI) ||
+    import.meta.env.VITE_AUTH_LOGOUT_REDIRECT_URI ||
+    "http://localhost:4000/";
   const auth = useAuth();
   const navigate = useNavigate();
-  const savedExternalUser:ExternalUser = useSelector(getExternalUser);
+  const savedExternalUser: ExternalUser = useSelector(getExternalUser);
   return (
     <header className="navbar fixed-top">
       <div className="banner">
@@ -24,8 +28,12 @@ const Header = () => {
       </div>
       {auth.isAuthenticated ? (
         <Dropdown>
-          <Dropdown.Toggle id="logged-in-toggle">           
-            {savedExternalUser? savedExternalUser.firstName.toUpperCase() +' ' + savedExternalUser.lastName.toUpperCase() :  auth.user?.profile.name }
+          <Dropdown.Toggle id="logged-in-toggle">
+            {savedExternalUser
+              ? savedExternalUser.firstName.toUpperCase() +
+                " " +
+                savedExternalUser.lastName.toUpperCase()
+              : auth.user?.profile.name}
           </Dropdown.Toggle>
           <Dropdown.Menu>
             {auth.user?.profile.identity_provider === "bceid" && ( //Only BCEID/Public Users should be able to edit their profile
@@ -51,7 +59,7 @@ const Header = () => {
               as="button"
               onClick={() => {
                 auth.removeUser().then(() => {
-                  window.location.href = authRedirectUri
+                  window.location.href = authRedirectUri;
                 });
               }}
             >

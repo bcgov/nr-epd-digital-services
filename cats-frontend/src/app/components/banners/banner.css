@@ -1,0 +1,97 @@
+.status-banner-container {
+  margin-bottom: var(--layout-margin-medium);
+}
+
+.status-banner-message {
+  border-radius: var(--layout-border-width-large);
+  margin-right: var(--layout-margin-large);
+  white-space: nowrap;
+}
+
+.status-message {
+  font-weight: normal;
+  color: var(--typography-color-secondary);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  text-align: left;
+  padding-right: var(--layout-padding-medium);
+}
+
+.status-message-details {
+  border-radius: var(--layout-border-width-large);
+  flex-direction: column;
+  margin-bottom: var(--layout-margin-medium);
+  padding: var(--layout-padding-medium);
+  flex-wrap: wrap;
+}
+
+.detail-message-1 {
+  margin: var(--layout-margin-large) var(--layout-margin-small)
+    var(--layout-margin-large) var(--layout-margin-medium);
+}
+
+.detail-message-wrapper {
+  padding: var(--layout-padding-small) var(--layout-padding-small)
+    var(--layout-padding-large) var(--layout-padding-medium);
+}
+
+.detail-message-2 {
+  margin: var(--layout-margin-medium) var(--layout-margin-large)
+    var(--layout-margin-small) var(--layout-margin-small);
+}
+
+.detail-message-3 {
+  font-weight: bold;
+  color: var(--typography-color-link);
+}
+
+.snapshot {
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 27.01px;
+  text-align: left;
+  color: var(--typography-color-disabled, #9f9d9c);
+}
+
+.message-current {
+  background-color: var(--support-surface-color-success);
+  border: 1px solid var(--support-border-color-success);
+}
+
+.message-outdated {
+  background-color: var(--support-surface-color-danger);
+  border: 1px solid var(--support-border-color-danger);
+}
+
+.message-pending {
+  background-color: var(--support-surface-color-warning);
+  border: 1px solid var(--support-border-color-warning);
+}
+
+.icon {
+  font-size: 18px;
+  padding-left: var(--layout-padding-small);
+  margin-left: var(--layout-margin-medium);
+}
+
+.icon-current {
+  color: var(--icons-color-success);
+}
+
+.icon-pending {
+  color: var(--icons-color-warning);
+}
+
+.icon-outdated {
+  color: var(--icons-color-danger);
+}
+
+.hidden {
+  display: none;
+}
+
+.inline-block {
+  display: inline-block;
+}

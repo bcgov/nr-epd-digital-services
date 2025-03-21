@@ -378,6 +378,136 @@
           <text>"epd-support@gov.bc.ca"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0ll7m2g">
+        <inputEntry id="UnaryTests_1l43csg">
+          <text>"task_assign"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1gap5lk">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mx2eg6">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03vfyj8">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0sx8mm0">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_09fz0zv">
+          <text>"Task Assigned"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0lnfrxt">
+          <text>"templates/task_assign.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ldepns">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ypz8vw">
+        <inputEntry id="UnaryTests_1qpmuac">
+          <text>"sds_response_1"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1v18x4d">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_19892q9">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1yej3h0">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1fyetcy">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0l3v1ze">
+          <text>"Site Disclosure Statement Received"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_10ak83t">
+          <text>"templates/sds_response_1.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1gfnxkr">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_05r21tq">
+        <inputEntry id="UnaryTests_1k5zugo">
+          <text>"sds_response_2"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0s44w5f">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07ea23i">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0l50d3f">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0jiuos0">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0f2as1f">
+          <text>"Site Disclosure Statement Received"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0803s6x">
+          <text>"templates/sds_response_2.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_04xcdpi">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_12azim2">
+        <inputEntry id="UnaryTests_1nszgqz">
+          <text>"sds_response_3"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ij1pud">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ihvits">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0iodmpg">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1f1pq2c">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0bs8clj">
+          <text>"Site Disclosure Statement Received"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0rxcgbz">
+          <text>"templates/sds_response_3.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0gwr1ot">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_04b39xg">
+        <inputEntry id="UnaryTests_0ui6je7">
+          <text>"sds_response_4"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1wcapae">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1n4b60w">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_070krhi">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1efhpuv">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1pef1ua">
+          <text>"Site Disclosure Statement Received"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1gg85je">
+          <text>"templates/sds_response_4.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0kgpids">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

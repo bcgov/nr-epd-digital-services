@@ -1,0 +1,31 @@
+name: Prettier Format
+
+on:
+  pull_request:
+    branches: [dev]
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cats-frontend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+          persist-credentials: false
+
+      - name: CATS-Frontend Prettify code
+        uses: creyD/prettier_action@v4.3
+        with:
+          prettier_options: --check ./cats-frontend/src/**/*.{js,ts,jsx,tsx,json,css} --ignore-path ./cats-frontend/.prettierignore --config ./cats-frontend/.prettierrc
+          only_changed: True
+          dry: True
+      
+      - name: Formatting issues found
+        if: failure()
+        run: echo "::warning::Code formatting check failed. Try running npm run format in the project that caused the error and commit your changes"

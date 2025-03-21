@@ -1,0 +1,69 @@
+:root {
+  --sidebar-default-width: 128px;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#landing-container {
+  /* 58px = height of footer (48px) plus 10px for centering */
+  min-height: calc(100vh - 58px);
+}
+
+* {
+  font-family: 'BC Sans', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.sidebar-container {
+  width: var(--sidebar-default-width);
+  z-index: 100;
+}
+
+.content-container {
+  margin-left: var(--sidebar-default-width);
+  width: calc(100% - var(--sidebar-default-width));
+}
+
+/* 768px is bootstrap's medium breakpoint */
+@media (max-width: 768px) {
+  .content-container {
+    margin-left: 0;
+    width: 100%;
+  }
+}

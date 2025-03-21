@@ -1,0 +1,35 @@
+query SearchApplications(
+  $searchParam: String!
+  $page: Int!
+  $pageSize: Int!
+  $filter: ApplicationFilter!
+  $sortBy: ApplicationSortByField!
+  $sortByDir: ApplicationSortByDirection!
+) {
+  searchApplications(
+    searchParam: $searchParam
+    page: $page
+    pageSize: $pageSize
+    filter: $filter
+    sortBy: $sortBy
+    sortByDir: $sortByDir
+  ) {
+    applications {
+      id
+      siteId
+      siteAddress
+      applicationType
+      lastUpdated
+      status
+      staffAssigned {
+        firstName
+        lastName
+      }
+      priority
+      url
+    }
+    count
+    page
+    pageSize
+  }
+}

@@ -136,19 +136,19 @@ jobs:
           tags: ghcr.io/${{ github.repository }}/${{ inputs.component }}:${{ inputs.img_build }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          # if: inputs.component == 'backend/users-migration'
-          # file: ./backend/users/Dockerfile-migrations-openshift
+      #     # if: inputs.component == 'backend/users-migration'
+      #     # file: ./backend/users/Dockerfile-migrations-openshift
 
-      - name: Build and push Migration image for users
-        if: steps.check.outputs.build == 'true' && inputs.component == 'backend/users'
+      - name: Build and push Migration image for cats
+        if: steps.check.outputs.build == 'true' && inputs.component == 'backend/cats'
         uses: docker/build-push-action@v3.1.1
         with:
           context: ./${{ inputs.component }}/
           push: true
-          tags: ghcr.io/${{ github.repository }}/backend/users-migration:${{ inputs.img_build }}
+          tags: ghcr.io/${{ github.repository }}/backend/cats-migration:${{ inputs.img_build }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          file: ./backend/users/Dockerfile-migrations-openshift
+          file: ./backend/cats/Dockerfile-migrations-openshift
 
       - name: Build and push Migration image for applications
         if: steps.check.outputs.build == 'true' && inputs.component == 'backend/applications'
@@ -161,14 +161,14 @@ jobs:
           cache-to: type=gha,mode=max
           file: ./backend/applications/Dockerfile-migrations-openshift
 
-      - name: Build and push Migration image for Sites
-        if: steps.check.outputs.build == 'true' && inputs.component == 'backend/sites'
-        uses: docker/build-push-action@v3.1.1
-        with:
-            context: ./${{ inputs.component }}/
-            push: true
-            tags: ghcr.io/${{ github.repository }}/backend/sites-migration:${{ inputs.img_build }}
-            cache-from: type=gha
-            cache-to: type=gha,mode=max
-            file: ./backend/sites/Dockerfile-migrations-openshift
+      # - name: Build and push Migration image for Sites
+      #   if: steps.check.outputs.build == 'true' && inputs.component == 'backend/sites'
+      #   uses: docker/build-push-action@v3.1.1
+      #   with:
+      #       context: ./${{ inputs.component }}/
+      #       push: true
+      #       tags: ghcr.io/${{ github.repository }}/backend/sites-migration:${{ inputs.img_build }}
+      #       cache-from: type=gha
+      #       cache-to: type=gha,mode=max
+      #       file: ./backend/sites/Dockerfile-migrations-openshift
           

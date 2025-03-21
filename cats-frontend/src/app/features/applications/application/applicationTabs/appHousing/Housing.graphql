@@ -1,0 +1,28 @@
+query getApplicationHousingByApplicationId($applicationId: Int!) {
+  getApplicationHousingByApplicationId(applicationId: $applicationId) {
+    data {
+      id
+      housing {
+        id
+        numberOfUnits
+        effectiveDate
+        expiryDate
+        isRental {
+          abbrev
+        }
+        isSocial {
+          abbrev
+        }
+        isIndigenousLed {
+          abbrev
+        }
+        housingType {
+          id
+          description
+          abbrev
+        }
+        relatedApplications
+      }
+    }
+  }
+}
