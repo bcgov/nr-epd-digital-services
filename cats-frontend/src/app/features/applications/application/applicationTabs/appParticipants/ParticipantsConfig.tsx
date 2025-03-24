@@ -1,13 +1,15 @@
 import { get } from 'http';
 import { PencilIcon, TickIcon } from '../../../../../components/common/icon';
-import { FormFieldType, IFormField } from '../../../../../components/input-controls/IFormField';
+import {
+  FormFieldType,
+  IFormField,
+} from '../../../../../components/input-controls/IFormField';
 import {
   ColumnSize,
   TableColumn,
 } from '../../../../../components/table/TableColumn';
 import { RequestStatus } from '../../../../../helpers/requests/status';
 import { useGetParticipantRolesQuery } from './graphql/Participants.generated';
-
 
 export const getRolesConfig = () => {
   const { data } = useGetParticipantRolesQuery();
@@ -27,7 +29,7 @@ export const GetConfig = () => {
       label: 'Main Participant',
       graphQLPropertyName: 'isMainParticipant',
       value: false,
-      colSize: 'col-lg-12 col-md-12 col-sm-12', 
+      colSize: 'col-lg-12 col-md-12 col-sm-12',
     },
     startDate: {
       type: FormFieldType.Date,
@@ -43,7 +45,7 @@ export const GetConfig = () => {
         customMessage: 'Start Date is required.',
       },
     },
-    endDate: {  
+    endDate: {
       type: FormFieldType.Date,
       label: 'End Date',
       graphQLPropertyName: 'effectiveEndDate',
@@ -99,13 +101,13 @@ export const GetConfig = () => {
       colSize: 'col-lg-12 col-md-12 col-sm-12',
     },
   };
-   
+
   const addAppParticipantsForm: IFormField[][] = [
     [appParticipantsForm.isMainParticipant],
     [appParticipantsForm.startDate, appParticipantsForm.endDate],
     [appParticipantsForm.role],
     [appParticipantsForm.participantName],
-    [appParticipantsForm.organization]
+    [appParticipantsForm.organization],
   ];
 
   const participantColumnInternal: TableColumn[] = [
