@@ -45,9 +45,7 @@ export class ApplicationSearchService {
       .leftJoinAndSelect('application.appStatus', 'appStatus')
       .leftJoinAndSelect('appStatus.statusType', 'statusType')
       .leftJoinAndSelect('application.appPriorities', 'appPriority')
-      .leftJoinAndSelect('appPriority.priority', 'priority')
-      .andWhere('appStatus.isCurrent = true')
-      .andWhere('appPriority.isCurrent = true');
+      .leftJoinAndSelect('appPriority.priority', 'priority');
     query.andWhere(
       new Brackets((qb) => {
         qb.where('CAST(application.id AS TEXT) LIKE :searchParam', {
