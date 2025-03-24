@@ -11,12 +11,11 @@ import { useGetParticipantRolesQuery } from './graphql/Participants.generated';
 
 export const getRolesConfig = () => {
   const { data } = useGetParticipantRolesQuery();
-  //console.log("roles data" , data);
   const fetchedRoles = data?.getAllParticipantRoles.data?.map((role) => ({
     key: role.id.toString(),
     value: role.description,
   }));
-  //console.log("roles fetchedRoles" , fetchedRoles);
+
   return fetchedRoles;
 };
 
@@ -108,8 +107,7 @@ export const GetConfig = () => {
     [appParticipantsForm.participantName],
     [appParticipantsForm.organization]
   ];
-  //console.log("nupur - addAppParticipantsForm", addAppParticipantsForm);
-  
+
   const participantColumnInternal: TableColumn[] = [
     {
       id: 1,
