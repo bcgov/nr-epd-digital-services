@@ -10,16 +10,12 @@ import { AppParticipantsTableControls } from './AppParticipantsTableControls';
 import GetConfig, { getRolesConfig } from './ParticipantsConfig';
 import {
   AppParticipantFilter,
-  ViewParticipantsRolesDto,
 } from '../../../../../../generated/types';
 import {
-  CreateAppParticipantDocument,
   GetAppParticipantsByAppIdQuery,
   GetOrganizationsDocument,
   GetParticipantNamesDocument,
   useCreateAppParticipantMutation,
-  useGetParticipantNamesQuery,
-  useGetParticipantRolesQuery,
 } from './graphql/Participants.generated';
 
 import ModalDialog from '../../../../../components/modaldialog/ModalDialog';
@@ -27,15 +23,9 @@ import Form from '../../../../../components/form/Form';
 
 import './ParticipantsTable.css';
 import { getAxiosInstance, resultCache, sortArray, updateFields } from '../../../../../helpers/utility';
-import { useNavigate } from 'react-router-dom';
 
-import { add, set } from 'date-fns';
-import de from 'date-fns/esm/locale/de/index.js';
 import { print } from 'graphql';
 import { GRAPHQL } from '../../../../../helpers/endpoints';
-import { getRoles } from '@testing-library/react';
-import { ro } from 'date-fns/locale';
-import { useMutation } from '@apollo/client';
 
 export const AppParticipantsActionTypes = {
   AddParticipant: 'Add Participant',

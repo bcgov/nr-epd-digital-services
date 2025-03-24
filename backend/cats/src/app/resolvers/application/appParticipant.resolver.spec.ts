@@ -7,11 +7,19 @@ import { AppParticipantResolver } from './appParticipant.resolver';
 import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipants.dto';
 import { AppParticipantFilter } from '../../utilities/enums/appParticipantFilter.enum';
 import { LoggerService } from '../../logger/logger.service';
+import { get } from 'http';
+import { DropdownDto, DropdownResponse } from '../../dto/dropdown.dto';
+import { Person } from 'src/app/entities/person.entity';
+import { CreateAppParticipantDto } from '../../dto/appParticipants/createAppParticipant.dto';
+import { AppParticipantsResponse } from 'src/app/dto/response/applicationParticipant/appParticipantsResponse';
+import { ViewAppParticipantEntityDto } from '../../dto/appParticipants/viewAppParticipantEntity.dto';
+import { add } from 'winston';
 
 describe('AppParticipantResolver', () => {
   let resolver: AppParticipantResolver;
   let appParticipantService: AppParticipantService;
   let genericResponseProvider: GenericResponseProvider<ViewAppParticipantsDto[]>;
+  let genericResponseProviderEntity: GenericResponseProvider<ViewAppParticipantEntityDto[]>;
   let loggerService: LoggerService;
 
   beforeEach(async () => {
@@ -24,6 +32,9 @@ describe('AppParticipantResolver', () => {
 
           useValue: {
             getAppParticipantsByAppId: jest.fn(),
+            getParticipantNames: jest.fn(), 
+            getOrganizations: jest.fn(),
+            createAppParticipant: jest.fn(),
           },
         },
         {
@@ -52,6 +63,11 @@ describe('AppParticipantResolver', () => {
     genericResponseProvider = module.get<
       GenericResponseProvider<ViewAppParticipantsDto[]>
     >(GenericResponseProvider);
+    genericResponseProviderEntity = module.get<
+    GenericResponseProvider<ViewAppParticipantEntityDto[]>
+  >(GenericResponseProvider);
+ 
+   
   });
 
   it('should be defined', () => {
@@ -73,6 +89,11 @@ describe('AppParticipantResolver', () => {
           isMainParticipant: true,
           name: 'Organization',
           isMinistry: false,
+          createdBy: 'user1',
+          createdDateTime: new Date('2021-01-01'),
+          updatedBy: 'user1',
+          updatedDateTime: new Date('2021-01-01'),
+          rowVersionCount: 1,
         },
       ];
       const mockResponse = {
@@ -149,4 +170,96 @@ describe('AppParticipantResolver', () => {
       expect(result).toEqual(mockResponse);
     });
   });
+
+  describe('getParticipantNames', () => {
+    it('should return participant names on search', async () => {
+      const searchParam = 'John';
+      const mockResult = [
+        { key: '1', value: 'John Doe' },
+      ];
+      const user = { id: 'user1' };
+      const expectedResponse: DropdownResponse = {
+        data: mockResult,
+        message: 'Participant names fetched successfully',
+        httpStatusCode: HttpStatus.OK,
+        success: true,
+      };
+  
+      jest.spyOn(appParticipantService, 'getParticipantNames').mockResolvedValue(mockResult);
+      const result = await resolver.getParticipantNames(searchParam, user);
+    
+      expect(appParticipantService.getParticipantNames).toHaveBeenCalledWith(searchParam);
+      expect(loggerService.log).toHaveBeenCalledWith('AppParticipantResolver.getParticipantNames() RES:200 end');
+    });
+  });
+
+  describe('getOrganizations', () => {
+    it('should return organization names on search', async () => {
+      const searchParam = 'Org';
+      const mockResult = [
+        { key: '1', value: 'Org1' },
+      ];
+      const user = { id: 'user1' };
+      const expectedResponse: DropdownResponse = {
+        data: mockResult,
+        message: 'Organization names fetched successfully',
+        httpStatusCode: HttpStatus.OK,
+        success: true,
+      };
+  
+      jest.spyOn(appParticipantService, 'getOrganizations').mockResolvedValue(mockResult);
+      const result = await resolver.getOrganizations(searchParam, user);
+    
+      expect(appParticipantService.getOrganizations).toHaveBeenCalledWith(searchParam);
+      expect(loggerService.log).toHaveBeenCalledWith('AppParticipantResolver.getOrganizations() RES:200 end');
+    });
+  });
+
+  describe ('createAppParticipant', () => {
+
+    it('should create a new participant successfully', async () => {
+      const input: CreateAppParticipantDto = {
+        applicationId: 1,
+        personId: 2,
+        participantRoleId: 3,
+        organizationId: 4,
+        isMainParticipant: true,
+        effectiveStartDate: new Date('2021-01-01'),
+        effectiveEndDate: new Date('2021-12-31'),
+        createdBy: 'system',
+        createdDateTime: new Date('2025-02-05T18:43:03.244Z'),
+      };
+
+      const addedParticipant: ViewAppParticipantEntityDto = {
+        id: 27912,
+        applicationId: 1,
+        personId: 2,
+        participantRoleId: 3,
+        organizationId: 4,
+        isMainParticipant: false,
+        effectiveStartDate: new Date('2021-01-01'),
+        createdBy: 'system',
+        createdDateTime:new Date('2025-02-05T18:43:03.244Z'),
+        effectiveEndDate: new Date('2021-12-31'),
+        rowVersionCount: null,
+        updatedBy: null,
+        updatedDateTime: null,
+      }
+
+      const expectedResponse = {
+        message: 'Participant created successfully',
+        httpStatusCode: HttpStatus.CREATED,
+        success: true,
+        data: [addedParticipant]
+      };
+
+      jest.spyOn(appParticipantService, 'createAppParticipant').mockResolvedValue(addedParticipant);
+      
+      (genericResponseProviderEntity.createResponse as jest.Mock).mockReturnValue(
+        addedParticipant,
+      );
+      const result = await resolver.createAppParticipant(input, { identity_provider: 'IDIR' });
+    });
+  });
+
 });

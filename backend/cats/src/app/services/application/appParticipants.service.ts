@@ -14,9 +14,11 @@ import { Person } from '../../entities/person.entity';
 import { Organization } from '../../entities/organization.entity';
 import { ViewParticipantNamesDto } from '../../dto/appParticipants/ViewParticipantNames.dto';
 import { ViewOrganizationsDto } from '../../dto/appParticipants/viewOrganization.dto';
-import { DropdownDto } from 'src/app/dto/dropdown.dto';
+import { DropdownDto } from '../../dto/dropdown.dto';
 import { CreateAppParticipantDto } from '../../dto/appParticipants/createAppParticipant.dto';
-import { UserTypeEum } from 'src/app/utilities/enums/userType';
+import { UserTypeEum } from '../../utilities/enums/userType';
+import { id } from 'cls-rtracer';
+import { application } from 'express';
 
 @Injectable()
 export class AppParticipantService {
@@ -221,7 +223,22 @@ export class AppParticipantService {
               console.log('nupurdixit - savedAppParticipant', savedAppParticipant);
               if (savedAppParticipant) {
                   this.loggerService.log(`App Participant created successfully with ID: ${savedAppParticipant.id}`);
-                  return savedAppParticipant;
+                  return {
+                    id: savedAppParticipant.id,
+                    applicationId: savedAppParticipant.applicationId,
+                    personId: savedAppParticipant.personId,
+                    participantRoleId: savedAppParticipant.participantRoleId,
+                    organizationId: savedAppParticipant.organizationId,
+                    isMainParticipant: savedAppParticipant.isMainParticipant,
+                    effectiveStartDate: savedAppParticipant.effectiveStartDate,
+                    effectiveEndDate: savedAppParticipant.effectiveEndDate,
+                    createdBy: savedAppParticipant.createdBy,
+                    createdDateTime: savedAppParticipant.createdDateTime,
+                    rowVersionCount: savedAppParticipant.rowVersionCount,
+                    updatedBy: savedAppParticipant.updatedBy,
+                    updatedDateTime: savedAppParticipant.updatedDateTime,
+                    //ts: savedAppParticipant.ts,
+                  };
               } 
               else 
               {
@@ -236,7 +253,7 @@ export class AppParticipantService {
           
             // If the identity provider is not IDIR, log a warning and prevent note creation
             this.loggerService.warn(`App Participation creation blocked: User ${user?.givenName} is not using IDIR identity provider.`);
-            throw new HttpException('Only users with IDIR identity provider are allowed to create notes', HttpStatus.FORBIDDEN);
+            throw new HttpException('Only users with IDIR identity provider are allowed to add participants', HttpStatus.FORBIDDEN);
         }
     } 
     catch (err) 

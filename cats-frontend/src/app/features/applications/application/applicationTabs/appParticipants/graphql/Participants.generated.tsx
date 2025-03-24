@@ -35,7 +35,7 @@ export type CreateAppParticipantMutationVariables = Types.Exact<{
 }>;
 
 
-export type CreateAppParticipantMutation = { __typename?: 'Mutation', createAppParticipant: { __typename?: 'AppParticipantsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null } };
+export type CreateAppParticipantMutation = { __typename?: 'Mutation', createAppParticipant: { __typename?: 'CreateAppParticipantsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null } };
 
 
 export const GetAppParticipantsByAppIdDocument = gql`
