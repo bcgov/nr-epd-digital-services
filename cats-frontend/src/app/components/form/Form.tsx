@@ -51,7 +51,7 @@ const Form: React.FC<IFormRendererProps> = ({
                   customEditInputTextCss={field.customEditInputTextCss}
                   customPlaceholderCss={field.customPlaceholderCss}
                   placeholder={field.placeholder}
-                  value={formData[field.graphQLPropertyName ?? ''] ?? ''}
+                  value={formData[field.graphQLPropertyName ?? ''] || ''}
                   onChange={(value) =>
                     handleInputChange(field.graphQLPropertyName, value)
                   }
