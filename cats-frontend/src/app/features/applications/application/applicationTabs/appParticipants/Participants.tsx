@@ -10,6 +10,7 @@ import {
 } from './graphql/Participants.generated';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { set } from 'date-fns';
 
 export const Participants = () => {
   const { id } = useParams<{ id?: string }>();
@@ -21,11 +22,13 @@ export const Participants = () => {
 
   const [loading, setLoading] = useState(false);
 
+  const [refreshParticipants, setRefreshParticipants] = useState(false);
+
   const [filterOption, setFilterOption] = useState<AppParticipantFilter>(
     AppParticipantFilter.All,
   );
 
-  const { data: queryData, loading: queryLoading } =
+  const { data: queryData, loading: queryLoading, refetch } =
     useGetAppParticipantsByAppIdQuery({
       variables: {
         applicationId,
@@ -34,9 +37,17 @@ export const Participants = () => {
     });
 
   useEffect(() => {
-    setData(queryData?.getAppParticipantsByAppId?.data);
+    const refetchData = async () => {
+      await refetch();
+      setData(queryData?.getAppParticipantsByAppId?.data);
     setLoading(queryLoading);
-  }, [filterOption, queryData, queryLoading]);
+    }
+    refetchData();
+  }, [filterOption, queryData, queryLoading, refreshParticipants]);
+
+  const handleRefreshParticipants = () => {
+    setRefreshParticipants(prev => !prev);
+  }
 
   const updateFilter = (newFilter: AppParticipantFilter) => {
     setFilterOption(newFilter);
@@ -57,6 +68,7 @@ export const Participants = () => {
         loading={loading}
         handleFilterChange={updateFilter}
         filter={filterOption}
+        handleRefreshParticipants={handleRefreshParticipants}
       />
     </div>
   );
