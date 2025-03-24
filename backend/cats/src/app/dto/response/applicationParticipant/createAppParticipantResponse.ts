@@ -4,7 +4,7 @@ import { ResponseDto } from '../response.dto';
 import { ViewAppParticipantEntityDto } from '../../appParticipants/viewAppParticipantEntity.dto';
 
 @ObjectType()
-export class AppParticipantsResponse extends ResponseDto {
-  @Field(() => [ViewAppParticipantsDto], { nullable: true })
-  data: ViewAppParticipantsDto[] | null;
+export class CreateAppParticipantsResponse extends ResponseDto {
+  @Field(() => [ViewAppParticipantEntityDto], { nullable: true })
+  data: ViewAppParticipantEntityDto[] | null;
 }
