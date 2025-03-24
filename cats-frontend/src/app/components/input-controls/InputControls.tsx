@@ -251,7 +251,6 @@ export const TextInput: React.FC<InputProps> = ({
 
   // Replace any spaces in the label with underscores to create a valid id
   const inputTxtId = label?.replace(/\s+/g, '_') + '_' + v4();
-  
   return (
     <ContainerElement
       className={`${tableMode ? 'table-border-light align-content-center ' : 'mb-3'} ${tableMode && stickyCol ? 'positionSticky' : ''} `}
@@ -1066,7 +1065,7 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
     }
   }, []);
 
-  const validateInput = (inputValue: any) => {
+  const validateInput = (inputValue: string) => {
     if (validation) {
       if (validation?.required && !inputValue) {
         setError(validation?.customMessage || ' ');
@@ -1089,7 +1088,6 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
   };
 
   const handler = handleSearch ?? ((e) => {});
-  
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilteredOpts([]);
     const searchTerm = event.target.value;
@@ -1129,9 +1127,6 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
 
   const modifiedLabelForSearch = `Search ${label}`;
   
-  // if (typeof value === 'object' && 'key' in value) {
-  //   value = value.key;
-  // }
   return (
     <ContainerElement
       className={`${tableMode ? 'table-border-light align-content-center' : 'mb-3'} ${tableMode && stickyCol ? 'position-sticky' : ''} `}
