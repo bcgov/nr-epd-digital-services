@@ -173,7 +173,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   const handleSearchForOrg = useCallback(
     (value: any, graphQLPropertyName?: string) => {
       setSearchParamForOrg(value.trim());
-  
+
       const indexToUpdate = appParticsForm.findIndex((row) =>
         row.some((field) => field.graphQLPropertyName === 'name'),
       );
@@ -200,7 +200,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
       const indexToUpdate = appParticsForm.findIndex((row) =>
         row.some((field) => field.graphQLPropertyName === 'fullName'),
       );
-      
+
       setAppParticsForm((prev) =>
         updateFields(prev, {
           indexToUpdate,
@@ -225,7 +225,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
           const indexToUpdate = appParticsForm.findIndex((row) =>
             row.some((field) => field.graphQLPropertyName === 'fullName'),
           );
-      
+
           setAppParticsForm((prev) =>
             updateFields(prev, {
               indexToUpdate,
@@ -281,7 +281,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     const indexToUpdate = appParticsForm.findIndex((row) =>
       row.some((field) => field.graphQLPropertyName === 'description'),
     );
-    
+
     setAppParticsForm((prev) =>
       updateFields(prev, {
         indexToUpdate,
@@ -338,11 +338,10 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     graphQLPropertyName: any,
     value: String | [Date, Date],
   ) => {
-    
     if (value && typeof value === 'object' && 'key' in value) {
       value = (value as { key: string }).key;
     }
-    
+
     setAppParticipant({
       ...appParticipant,
       appParticipantDetails: {
@@ -350,11 +349,10 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         [graphQLPropertyName]: value,
       },
     });
-    
   };
-  
+
   const [createAppParticiant] = useCreateAppParticipantMutation();
-  
+
   const handleAddAppParticipant = async (newParticipant: any) => {
     try {
       const response = await createAppParticiant({
@@ -412,14 +410,12 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
               appParticipant.appParticipantDetails.description === '' ||
               appParticipant.appParticipantDetails.effectiveStartDate === ''
             }
-
             closeHandler={(response) => {
               if (response) {
                 if (
                   appParticipant.appParticipantActionType ===
                   AppParticipantsActionTypes.AddParticipant
                 ) {
-                  
                   const newAppParticipant = {
                     applicationId: id ? Number(id) : 0,
                     isMainParticipant:
