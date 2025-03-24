@@ -64,6 +64,21 @@ mutation createAppParticipant($newAppParticipant: CreateAppParticipantDto!) {
     httpStatusCode
     success
     timestamp
+    data {
+      id
+      applicationId
+      personId
+      participantRoleId
+      organizationId
+      isMainParticipant
+      effectiveStartDate
+      effectiveEndDate
+      createdBy
+      createdDateTime
+      rowVersionCount
+      updatedBy
+      updatedDateTime
+    }
   }
 }
 
