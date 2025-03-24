@@ -11,12 +11,10 @@ import { AppParticipantFilter } from '../../utilities/enums/appParticipantFilter
 
 import { ViewParticipantsRolesDto } from '../../dto/appParticipants/viewParticipantsRoles.dto';
 import { ParticipantsRolesResponse } from '../../dto/response/applicationParticipant/participantRolesResponse';
-import { ViewParticipantNamesDto } from '../../dto/appParticipants/ViewParticipantNames.dto';
-import { ViewOrganizationsDto } from '../../dto/appParticipants/viewOrganization.dto';
-import { ParticipantNamesResponse } from 'src/app/dto/response/applicationParticipant/participantNamesResponse';
-import { OrganizationsResponse } from 'src/app/dto/response/applicationParticipant/organizationsResponse';
-import { DropdownDto, DropdownResponse } from 'src/app/dto/dropdown.dto';
+import { DropdownDto, DropdownResponse } from '../../dto/dropdown.dto';
 import { CreateAppParticipantDto } from '../../dto/appParticipants/createAppParticipant.dto';
+import { CreateAppParticipantsResponse } from '../../dto/response/applicationParticipant/createAppParticipantResponse';
+import { ViewAppParticipantEntityDto } from '../../dto/appParticipants/viewAppParticipantEntity.dto';
 
 @Resolver(() => ViewAppParticipantsDto)
 @Resource('user-service')
@@ -27,7 +25,7 @@ export class AppParticipantResolver {
       ViewAppParticipantsDto[]
     >,
     private readonly createAppParticipantResponseProvider: GenericResponseProvider<
-    CreateAppParticipantDto[]
+    ViewAppParticipantEntityDto[]
   >,
     private readonly loggerService: LoggerService,
     private readonly participantRolesResponseProvider: GenericResponseProvider<
@@ -147,20 +145,20 @@ export class AppParticipantResolver {
     );
     if (result?.length > 0) {
       this.loggerService.log(
-        'AppParticipantResolver.getParticipantNames() RES:200 end',
+        'AppParticipantResolver.getOrganizations() RES:200 end',
       );
       return this.organizationResponseProvider.createResponse(
-        'Participant names fetched successfully',
+        'Organization names fetched successfully',
         HttpStatus.OK,
         true,
         result,
       );
     } else {
       this.loggerService.log(
-        'AppParticipantResolver.getParticipantNames() RES:404 end',
+        'AppParticipantResolver.getOrganizations() RES:404 end',
       );
       return this.organizationResponseProvider.createResponse(
-        'Participant names data not found',
+        'Organization names data not found',
         HttpStatus.NOT_FOUND,
         false,
         result,
@@ -168,7 +166,7 @@ export class AppParticipantResolver {
     }
   }
 
-  @Mutation(() => AppParticipantsResponse, { name: 'createAppParticipant' })
+  @Mutation(() => CreateAppParticipantsResponse, { name: 'createAppParticipant' })
   @UsePipes(new GenericValidationPipe())
   async createAppParticipant(
       @Args('newAppParticipant', { type: () => CreateAppParticipantDto }) newAppParticipant: CreateAppParticipantDto,
@@ -180,7 +178,8 @@ export class AppParticipantResolver {
           return this.createAppParticipantResponseProvider.createResponse(
               'App participant added successfully',
               HttpStatus.CREATED,
-              true
+              true,
+              [result]
           );
       } 
       else 
@@ -190,6 +189,7 @@ export class AppParticipantResolver {
               'Failed to add app participant',
               HttpStatus.BAD_REQUEST,
               false,
+              null
           );
       }
   }
