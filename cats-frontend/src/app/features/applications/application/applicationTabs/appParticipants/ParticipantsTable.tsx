@@ -8,9 +8,7 @@ import { Button } from '../../../../../components/button/Button';
 import { Plus, UserPlus } from '../../../../../components/common/icon';
 import { AppParticipantsTableControls } from './AppParticipantsTableControls';
 import GetConfig, { getRolesConfig } from './ParticipantsConfig';
-import {
-  AppParticipantFilter,
-} from '../../../../../../generated/types';
+import { AppParticipantFilter } from '../../../../../../generated/types';
 import {
   GetAppParticipantsByAppIdQuery,
   GetOrganizationsDocument,
@@ -22,7 +20,12 @@ import ModalDialog from '../../../../../components/modaldialog/ModalDialog';
 import Form from '../../../../../components/form/Form';
 
 import './ParticipantsTable.css';
-import { getAxiosInstance, resultCache, sortArray, updateFields } from '../../../../../helpers/utility';
+import {
+  getAxiosInstance,
+  resultCache,
+  sortArray,
+  updateFields,
+} from '../../../../../helpers/utility';
 
 import { print } from 'graphql';
 import { GRAPHQL } from '../../../../../helpers/endpoints';
@@ -72,10 +75,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
 
   approveRejectHandler = approveRejectHandler ?? (() => {});
 
-  const {
-    addAppParticipantsForm,
-    participantColumnInternal,
-  } = GetConfig();
+  const { addAppParticipantsForm, participantColumnInternal } = GetConfig();
 
   const rolesConfig = getRolesConfig();
   const [appParticsForm, setAppParticsForm] = useState(addAppParticipantsForm);
@@ -92,22 +92,11 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   const SEARCH_PREFIX_FOR_PERSON = 'person-';
   const SEARCH_PREFIX_FOR_ORG = 'org-';
 
-  const [roles, setRoles] = useState<
-    { key: string; value: string }[] | undefined
-  >(undefined);
-
-  // const [participantNames, setParticipantNames] = useState<
-  //   { key: string; value: string }[] | undefined
-  // >(undefined);
-
-  const [participantNames, setParticipantNames] = useState<{ key: string; value: string }[] | undefined>(undefined);
-
-  const [role, setRole] = useState<string | null>(null);
   const [options, setOptions] = useState(rolesConfig);
-  
+
   const [searchParam, setSearchParam] = useState<string>('');
   const [searchParamForOrg, setSearchParamForOrg] = useState<string>('');
-   
+
   const initialAppParticipantDetails = {
     isMainParticipant: false,
     effectiveStartDate: '',
@@ -116,9 +105,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     fullName: '',
     name: '',
   };
-
-  //const [formData, setFormData] =  useState<{ [key: string]: any }[]>([]);
-  const [formData, setFormData] = useState<{ [key: string]: any }>({});
 
   const [appParticipant, setAppParticipant] = useState({
     isAppParticipantModal: false,
@@ -139,180 +125,149 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
           query: print(GetParticipantNamesDocument),
           variables: { searchParam },
         });
-       // console.log('PT: personData: ', personData);
-        if (personData?.data?.data?.getParticipantNames?.data) {  
-          console.log('PT: ND: personData: ', personData?.data?.data?.getParticipantNames?.data);
-          resultCache[cacheKey] = personData?.data?.data?.getParticipantNames?.data;
+
+        if (personData?.data?.data?.getParticipantNames?.data) {
+          resultCache[cacheKey] =
+            personData?.data?.data?.getParticipantNames?.data;
           setOptions(personData?.data?.data?.getParticipantNames?.data);
           return personData?.data?.data?.getParticipantNames?.data;
         }
-        
       } catch (error) {
-        console.error('Error fetching participant:', error);
         return [];
       }
     }
     return [];
   }, []);
 
+  const fetchOrganizationNames = useCallback(
+    async (searchParamForOrg: string) => {
+      const cacheKey = SEARCH_PREFIX_FOR_ORG + searchParamForOrg;
+      if (searchParamForOrg.trim()) {
+        try {
+          // Check cache first
+          if (resultCache[cacheKey]) {
+            return resultCache[cacheKey];
+          }
+          // Store result in cache if successful
+          const orgData = await getAxiosInstance().post(GRAPHQL, {
+            query: print(GetOrganizationsDocument),
+            variables: { searchParamForOrg },
+          });
 
-  const fetchOrganizationNames = useCallback(async (searchParamForOrg: string) => {
-    const cacheKey = SEARCH_PREFIX_FOR_ORG + searchParamForOrg;
-    console.log("inside fetchOrganizationNames");
-    if (searchParamForOrg.trim()) {
-      try {
-        // Check cache first
-    if (resultCache[cacheKey]) {
-          console.log('PT: ND: resultCache[searchParamForOrg]: ', resultCache[searchParamForOrg]);
-          return resultCache[cacheKey];
+          if (orgData?.data?.data?.getOrganizations?.data) {
+            resultCache[cacheKey] = orgData?.data?.data?.getOrganizations?.data;
+            setOptions(orgData?.data?.data?.getOrganizations?.data);
+            return orgData?.data?.data?.getOrganizations?.data;
+          }
+        } catch (error) {
+          return [];
         }
-        // Store result in cache if successful
-        const orgData = await getAxiosInstance().post(GRAPHQL, {
-          query: print(GetOrganizationsDocument),
-          variables: { searchParamForOrg },
-        });
-        console.log('PT: ND: orgData before null check: ', orgData);
-        if (orgData?.data?.data?.getOrganizations?.data) {  
-          console.log('PT: ND: orgdata: ', orgData?.data?.data?.getOrganizations.data);
-          resultCache[cacheKey] = orgData?.data?.data?.getOrganizations?.data;
-          setOptions(orgData?.data?.data?.getOrganizations?.data);
-          return orgData?.data?.data?.getOrganizations?.data;
-        }
-        
-      } catch (error) {
-        console.error('Error fetching participant:', error);
-        return [];
       }
-    }
-    return [];
-  }, []);
+      return [];
+    },
+    [],
+  );
 
   const handleSearchForOrg = useCallback(
     (value: any, graphQLPropertyName?: string) => {
-      console.log('PT: handleSearch: ', value);
-      //setSearchParam(value.trim());
       setSearchParamForOrg(value.trim());
-      console.log('PT: handleSearch: graphQLPropertyName: ', graphQLPropertyName);
-      const trimmedValue = value.trim();
-      console.log('PT: addAppParticipantsForm row: ', appParticsForm.findIndex((row) => console.log('PT: row: ', row)));
-
-     
-        const indexToUpdate = appParticsForm.findIndex((row) =>
-          row.some((field) => field.graphQLPropertyName === "name"),
-        );
-        console.log('PT: searchParamForOrg ', searchParamForOrg);
-        console.log('PT: searchParam ', searchParam);
-        // console.log('PT:  HS - indexToUpdate: ', indexToUpdate);
-        // console.log('PT: HS - options: ', options);
-    
-        setAppParticsForm((prev) =>
-          updateFields(prev, {
-            indexToUpdate,
-            updates: {
-              isLoading: RequestStatus.success,
-              //options: rolesConfig, 
-              filteredOptions: [],
-              handleSearch: handleSearchForOrg,
-              customInfoMessage: <></>,
-            },
-          }),
-        );
-      }
   
-    ,[options],
+      const indexToUpdate = appParticsForm.findIndex((row) =>
+        row.some((field) => field.graphQLPropertyName === 'name'),
+      );
+
+      setAppParticsForm((prev) =>
+        updateFields(prev, {
+          indexToUpdate,
+          updates: {
+            isLoading: RequestStatus.success,
+            filteredOptions: [],
+            handleSearch: handleSearchForOrg,
+            customInfoMessage: <></>,
+          },
+        }),
+      );
+    },
+
+    [options],
   );
-    
 
   const handleSearchForParticipant = useCallback(
     (value: any, graphQLPropertyName?: string) => {
-      console.log('PT: handleSearch: ', value);
       setSearchParam(value.trim());
-      // setSearchParamForOrg(value.trim());
-      console.log('PT: handleSearch: graphQLPropertyName: ', graphQLPropertyName);
-      const trimmedValue = value.trim();
-      console.log('PT: addAppParticipantsForm row: ', appParticsForm.findIndex((row) => console.log('PT: row: ', row)));
+      const indexToUpdate = appParticsForm.findIndex((row) =>
+        row.some((field) => field.graphQLPropertyName === 'fullName'),
+      );
+      
+      setAppParticsForm((prev) =>
+        updateFields(prev, {
+          indexToUpdate,
+          updates: {
+            isLoading: RequestStatus.success,
+            filteredOptions: [],
+            handleSearch: handleSearchForParticipant,
+            customInfoMessage: <></>,
+          },
+        }),
+      );
+    },
 
-     
-        const indexToUpdate = appParticsForm.findIndex((row) =>
-          row.some((field) => field.graphQLPropertyName === "fullName"),
-        );
-        console.log('PT: searchParamForOrg ', searchParamForOrg);
-        console.log('PT: searchParam ', searchParam);
-        // console.log('PT:  HS - indexToUpdate: ', indexToUpdate);
-        // console.log('PT: HS - options: ', options);
-    
-        setAppParticsForm((prev) =>
-          updateFields(prev, {
-            indexToUpdate,
-            updates: {
-              isLoading: RequestStatus.success,
-              //options: rolesConfig, 
-              filteredOptions: [],
-              handleSearch: handleSearchForParticipant,
-              customInfoMessage: <></>,
-            },
-          }),
-        );
-      }
-  
-    ,[options],
+    [options],
   );
-    
-  
-    
+
   useEffect(() => {
-    console.log('PT: ND: searchParam: ', searchParam);
-    console.log('PT: ND: searchParamForOrg: ', searchParamForOrg);
     if (searchParam || searchParamForOrg) {
       const timeoutId = setTimeout(async () => {
-      if (searchParam) {
-        const res = await fetchParticipantNames(searchParam);
-        const indexToUpdate = appParticsForm.findIndex((row) =>
-              row.some((field) => field.graphQLPropertyName === "fullName")
-            );
-        // console.log('PT: ND: res: ', res);
-        setAppParticsForm((prev) =>
-          updateFields(prev, {
-            indexToUpdate,
-            updates: {
-              isLoading: RequestStatus.success,
-              options,
-              filteredOptions:
-                res.data ?? resultCache[SEARCH_PREFIX_FOR_PERSON + searchParam] ?? [],
-              customInfoMessage: <></>,
-              handleSearch: handleSearchForParticipant,
-            },
-          }),
-        );
-      } else if(searchParamForOrg) {
-        const res = await fetchOrganizationNames(searchParamForOrg);
-        const indexToUpdate = appParticsForm.findIndex((row) =>
-          row.some((field) => field.graphQLPropertyName === "name")
-        );
+        if (searchParam) {
+          const res = await fetchParticipantNames(searchParam);
+          const indexToUpdate = appParticsForm.findIndex((row) =>
+            row.some((field) => field.graphQLPropertyName === 'fullName'),
+          );
+      
+          setAppParticsForm((prev) =>
+            updateFields(prev, {
+              indexToUpdate,
+              updates: {
+                isLoading: RequestStatus.success,
+                options,
+                filteredOptions:
+                  res.data ??
+                  resultCache[SEARCH_PREFIX_FOR_PERSON + searchParam] ??
+                  [],
+                customInfoMessage: <></>,
+                handleSearch: handleSearchForParticipant,
+              },
+            }),
+          );
+        } else if (searchParamForOrg) {
+          const res = await fetchOrganizationNames(searchParamForOrg);
+          const indexToUpdate = appParticsForm.findIndex((row) =>
+            row.some((field) => field.graphQLPropertyName === 'name'),
+          );
 
-        setAppParticsForm((prev) =>
-          updateFields(prev, {
-            indexToUpdate,
-            updates: {
-              isLoading: RequestStatus.success,
-              options,
-              filteredOptions:
-                res.data ?? resultCache[SEARCH_PREFIX_FOR_ORG + searchParamForOrg] ?? [],
-              customInfoMessage: <></>,
-              handleSearch: handleSearchForOrg,
-            },
-          }),
-        );
-      }
+          setAppParticsForm((prev) =>
+            updateFields(prev, {
+              indexToUpdate,
+              updates: {
+                isLoading: RequestStatus.success,
+                options,
+                filteredOptions:
+                  res.data ??
+                  resultCache[SEARCH_PREFIX_FOR_ORG + searchParamForOrg] ??
+                  [],
+                customInfoMessage: <></>,
+                handleSearch: handleSearchForOrg,
+              },
+            }),
+          );
+        }
       }, 300);
 
       return () => clearTimeout(timeoutId);
     }
   }, [searchParam, searchParamForOrg, options]);
- 
 
   handleAddParticipant = () => {
-    console.log('PT: handleAddParticipant: formdata: ', formData);
     setAppParticipant({
       isAppParticipantModal: true,
       appParticipantDetails: initialAppParticipantDetails,
@@ -322,9 +277,9 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
 
   useEffect(() => {
     const indexToUpdate = appParticsForm.findIndex((row) =>
-      row.some((field) => field.graphQLPropertyName === "description"),
+      row.some((field) => field.graphQLPropertyName === 'description'),
     );
-    console.log('ND: rolesConfig: and index ', rolesConfig, ":indexToUpdate: ", indexToUpdate);
+    
     setAppParticsForm((prev) =>
       updateFields(prev, {
         indexToUpdate,
@@ -337,13 +292,13 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         },
       }),
     );
-  }, [appParticipant.isAppParticipantModal]); 
-  
+  }, [appParticipant.isAppParticipantModal]);
+
   useEffect(() => {
     const indexToUpdate = appParticsForm.findIndex((row) =>
-      row.some((field) => field.graphQLPropertyName === "fullName"),
+      row.some((field) => field.graphQLPropertyName === 'fullName'),
     );
-    
+
     setAppParticsForm((prev) =>
       updateFields(prev, {
         indexToUpdate,
@@ -356,13 +311,13 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         },
       }),
     );
-  }, [appParticipant.isAppParticipantModal]); 
+  }, [appParticipant.isAppParticipantModal]);
 
   useEffect(() => {
     const indexToUpdate = appParticsForm.findIndex((row) =>
-      row.some((field) => field.graphQLPropertyName === "name"),
+      row.some((field) => field.graphQLPropertyName === 'name'),
     );
-    
+
     setAppParticsForm((prev) =>
       updateFields(prev, {
         indexToUpdate,
@@ -375,48 +330,37 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         },
       }),
     );
-  }, [appParticipant.isAppParticipantModal]); 
-
+  }, [appParticipant.isAppParticipantModal]);
 
   const handleFormChange = (
     graphQLPropertyName: any,
     value: String | [Date, Date],
   ) => {
-    console.log('PT: handleFormChange: ', graphQLPropertyName, value);
-    if(value && typeof value === 'object' && 'key' in value) {
+    
+    if (value && typeof value === 'object' && 'key' in value) {
       value = (value as { key: string }).key;
-      console.log('PT: handleFormChange: value: ', value);
     }
-    //setFormData({...formData, [graphQLPropertyName]: value });
-    setAppParticipant({...appParticipant, 
-      appParticipantDetails: {...appParticipant.appParticipantDetails, [graphQLPropertyName]: value}});
-    console.log('PT: handleFormChange formData: ', appParticipant.appParticipantDetails);
+    
+    setAppParticipant({
+      ...appParticipant,
+      appParticipantDetails: {
+        ...appParticipant.appParticipantDetails,
+        [graphQLPropertyName]: value,
+      },
+    });
+    
   };
-
-  // const handleSort = (row: any, ascDir: any) => {
-  //   console.log('PT: handleSort: ', row, ascDir);
-  //   let property = row['graphQLPropertyName'];
-  //   setFormData((prevData) => {
-  //     let data = [ ...prevData ];
-  //     data = sortArray(data, property, ascDir);
-  //     return data;
-  //   });
-  //   handleTableSort(row, ascDir);
-  // }
-
+  
   const [createAppParticiant] = useCreateAppParticipantMutation();
-
-
+  
   const handleAddAppParticipant = async (newParticipant: any) => {
-    console.log('PT: handleAddAppParticipant: ', newParticipant);
     try {
       const response = await createAppParticiant({
         variables: {
           newAppParticipant: newParticipant,
         },
       });
-      //const result = await createAppParticipantMutation();
-      console.log('Participant added:', response);
+      return response;
     } catch (err) {
       console.error('Error adding participant:', err);
     }
@@ -461,52 +405,63 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         {appParticipant.isAppParticipantModal && (
           <ModalDialog
             headerLabel={appParticipant.appParticipantActionType}
-            saveButtonDisabled={appParticipant.appParticipantDetails.fullName === '' ||appParticipant.appParticipantDetails.description === ''||appParticipant.appParticipantDetails.effectiveStartDate === ''}
-            //closeHandler={() => {}}
-            
+            saveButtonDisabled={
+              appParticipant.appParticipantDetails.fullName === '' ||
+              appParticipant.appParticipantDetails.description === '' ||
+              appParticipant.appParticipantDetails.effectiveStartDate === ''
+            }
+
             closeHandler={(response) => {
-              console.log('PT: closeHandler: ', response);
               if (response) {
-                if (appParticipant.appParticipantActionType === AppParticipantsActionTypes.AddParticipant) {
-                 // if (id) {
-                 console.log('PT: appParticipant.appParticipantDetails before inserting: ', appParticipant.appParticipantDetails);
-                    const newAppParticipant = {
-                      applicationId: 2,
-                      isMainParticipant: appParticipant.appParticipantDetails.isMainParticipant,
-                      personId: parseFloat(appParticipant.appParticipantDetails.fullName),
-                      organizationId: parseFloat(appParticipant.appParticipantDetails.name),
-                      participantRoleId: parseFloat(appParticipant.appParticipantDetails.description),
-                      effectiveStartDate: appParticipant.appParticipantDetails.effectiveStartDate,
-                      effectiveEndDate: appParticipant.appParticipantDetails.effectiveEndDate || null,
-                    };
-                    handleAddAppParticipant(newAppParticipant)
-                      .then((response) => {
-                        if (response !== null) {
-                          console.log('Participant added:', response);
-                        }
-                      })
-                      .catch((err) => {
-                        console.error('Error create note:', err);
-                        //setError('Failed to create note');
-                      });
-                 // }
+                if (
+                  appParticipant.appParticipantActionType ===
+                  AppParticipantsActionTypes.AddParticipant
+                ) {
+                  
+                  const newAppParticipant = {
+                    applicationId: appParticsData ? appParticsData[0].applicationId : 0,
+                    isMainParticipant:
+                      appParticipant.appParticipantDetails.isMainParticipant,
+                    personId: parseFloat(
+                      appParticipant.appParticipantDetails.fullName,
+                    ),
+                    organizationId: parseFloat(
+                      appParticipant.appParticipantDetails.name,
+                    ),
+                    participantRoleId: parseFloat(
+                      appParticipant.appParticipantDetails.description,
+                    ),
+                    effectiveStartDate:
+                      appParticipant.appParticipantDetails.effectiveStartDate,
+                    effectiveEndDate:
+                      appParticipant.appParticipantDetails.effectiveEndDate ||
+                      null,
+                  };
+                  handleAddAppParticipant(newAppParticipant)
+                    .then((response) => {
+                      if (response !== null) {
+                        console.log('Participant added:', response);
+                      }
+                    })
+                    .catch((err) => {
+                      console.error('Error create note:', err);
+                    });
                 }
               }
               setAppParticipant({
                 isAppParticipantModal: false,
                 appParticipantDetails: initialAppParticipantDetails,
-                appParticipantActionType: AppParticipantsActionTypes.ViewAppParticipants,
+                appParticipantActionType:
+                  AppParticipantsActionTypes.ViewAppParticipants,
               });
             }}
           >
             <Form
               formRows={appParticsForm}
-              formData={appParticipant?.appParticipantDetails??{}}
+              formData={appParticipant?.appParticipantDetails ?? {}}
               handleInputChange={(graphQLPropertyName, value) =>
-                handleFormChange(graphQLPropertyName, value)}
-              //handleSearch = {(event, graphQLPropertyName) => handleSearch(event, graphQLPropertyName)}
-            
-              
+                handleFormChange(graphQLPropertyName, value)
+              }
             />
           </ModalDialog>
         )}
