@@ -4,15 +4,6 @@ import { IsDate, IsString } from 'class-validator';
 @ObjectType()
 @InputType()
 export class BaseAppParticipantsDto {
-  // @Field()
-  // personId: number;
-
-  // @Field()
-  // participantRoleId: number;
-
-  // @Field({nullable: true} )
-  // organizationId: number | null;
-
   @Field({defaultValue: false})
   isMainParticipant: boolean;
 
