@@ -29,6 +29,7 @@ import {
 
 import { print } from 'graphql';
 import { GRAPHQL } from '../../../../../helpers/endpoints';
+import { useParams } from 'react-router-dom';
 
 export const AppParticipantsActionTypes = {
   AddParticipant: 'Add Participant',
@@ -76,6 +77,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   approveRejectHandler = approveRejectHandler ?? (() => {});
 
   const { addAppParticipantsForm, participantColumnInternal } = GetConfig();
+  const id = useParams().id;
 
   const rolesConfig = getRolesConfig();
   const [appParticsForm, setAppParticsForm] = useState(addAppParticipantsForm);
@@ -419,7 +421,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
                 ) {
                   
                   const newAppParticipant = {
-                    applicationId: appParticsData ? appParticsData[0].applicationId : 0,
+                    applicationId: id ? Number(id) : 0,
                     isMainParticipant:
                       appParticipant.appParticipantDetails.isMainParticipant,
                     personId: parseFloat(
