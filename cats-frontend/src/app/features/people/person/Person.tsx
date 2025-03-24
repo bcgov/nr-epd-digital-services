@@ -193,7 +193,7 @@ const Person = () => {
 
   const handleInputChange = (
     graphQLPropertyName: any,
-    value: String | [Date, Date] | { key: string; value: string },
+    value: String | [Date, Date],
   ) => {
     if (
       (graphQLPropertyName === 'address_1' ||
