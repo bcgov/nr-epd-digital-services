@@ -52,6 +52,7 @@ interface IParticipantTableProps {
   hideLabelForWidget?: boolean;
   handleFilterChange: (filter: AppParticipantFilter) => void;
   filter: AppParticipantFilter;
+  handleRefreshParticipants: () => void;
 }
 
 const ParticipantTable: React.FC<IParticipantTableProps> = ({
@@ -70,6 +71,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   hideLabelForWidget,
   handleFilterChange,
   filter,
+  handleRefreshParticipants,
 }) => {
   showApproveRejectSection = showApproveRejectSection ?? false;
   hideLabelForWidget = hideLabelForWidget ?? false;
@@ -437,8 +439,8 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
                   };
                   handleAddAppParticipant(newAppParticipant)
                     .then((response) => {
-                      if (response !== null) {
-                        console.log('Participant added:', response);
+                      if (response?.data?.createAppParticipant.success) {
+                        handleRefreshParticipants();
                       }
                     })
                     .catch((err) => {
