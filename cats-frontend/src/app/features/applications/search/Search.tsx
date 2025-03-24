@@ -3,7 +3,7 @@ import debounce from 'lodash/debounce';
 import PageContainer from '../../../components/simple/PageContainer';
 import SearchInput from '../../../components/search/SearchInput';
 import { RequestStatus } from '../../../helpers/requests/status';
-import ApplicationResultsTable from './applicationResults/applicationResultsTable';
+import ApplicationResultsTable from './applicationResults/table';
 import { TableColumn } from '../../../components/table/TableColumn';
 import { applicationResultColumns } from './applicationResults/tableColumnConfig';
 import {

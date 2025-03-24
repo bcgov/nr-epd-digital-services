@@ -46,6 +46,7 @@ import {
   // FaMapPin,
   FaTrash,
   FaQuestion,
+  FaFileLines,
 } from 'react-icons/fa6';
 
 import {
@@ -110,3 +111,4 @@ export const ListCheckIcon = FaListCheck;
 // export const MapPin = FaMapPin;
 export const PlainTrashIcon = FaTrash;
 export const QuestionMarkIcon = FaQuestion;
+export const FileLinesIcon = FaFileLines;
