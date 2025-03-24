@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 export const Participants = () => {
-  const { id = undefined } = useParams<{ id?: string }>(); 
+  const { id } = useParams<{ id?: string }>(); 
   const applicationId = id ? Number(id) : 0;
 
   const { participantColumnInternal } = GetConfig();
