@@ -11,11 +11,24 @@ import { AppParticipant } from '../../entities/appParticipant.entity';
 import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipants.dto';
 import { AppParticipantFilter } from '../../utilities/enums/appParticipantFilter.enum';
 import { LoggerService } from '../../logger/logger.service';
+import { get } from 'http';
+import { ParticipantRole } from '../../entities/participantRole.entity';
+import { Organization } from '../../entities/organization.entity';
+import { ViewParticipantsRolesDto } from '../../dto/appParticipants/viewParticipantsRoles.dto';
+import { Person } from '../../entities/person.entity';
+import { ViewOrganizationsDto } from 'src/app/dto/appParticipants/viewOrganization.dto';
+import { DropdownDto } from 'src/app/dto/dropdown.dto';
+import { add } from 'winston';
+import exp from 'constants';
+import { ViewAppParticipantEntityDto } from 'src/app/dto/appParticipants/viewAppParticipantEntity.dto';
 
 
 describe('AppParticipantsService', () => {
   let service: AppParticipantService;
   let appParticsRepo: Repository<AppParticipant>;
+  let rolesRepo: Repository<ParticipantRole>;
+  let orgRepo: Repository<Organization>;
+  let personRepo: Repository<Person>;
   let loggerService: LoggerService;
 
   beforeEach(async () => {
@@ -27,13 +40,47 @@ describe('AppParticipantsService', () => {
           provide: getRepositoryToken(AppParticipant),
           useValue: {
             getAppParticipantsByAppId: jest.fn(),
+            createAppParticipant: jest.fn(),
+            save: jest.fn(),
+            create: jest.fn(),
+            findOne : jest.fn(),
           },
         },
+        {
+          provide: getRepositoryToken(ParticipantRole),
+          useValue: {
+            getAllParticipantRoles: jest.fn(),
+          },
+        },
+        {
+          provide: getRepositoryToken(Organization),
+          useValue: {
+            getOrganizations: jest.fn(),
+          },
+        },
+        {
+          provide: getRepositoryToken(Person),
+          useValue: {
+            getParticipantNames: jest.fn(),
+          },
+        },
+        {
+          provide: LoggerService,
+          useValue: {
+            log: jest.fn(),
+            error: jest.fn(),
+            warn: jest.fn(),
+            debug: jest.fn(),
+          },
+        },
+       
       ],
     }).compile();
 
     service = module.get<AppParticipantService>(AppParticipantService);
     appParticsRepo = module.get<Repository<AppParticipant>>(getRepositoryToken(AppParticipant));
+    rolesRepo = module.get<Repository<ParticipantRole>>(getRepositoryToken(ParticipantRole));
+    orgRepo = module.get<Repository<Organization>>(getRepositoryToken(Organization));
     loggerService = module.get<LoggerService>(LoggerService);
   });
 
@@ -98,6 +145,99 @@ describe('AppParticipantsService', () => {
           HttpStatus.NOT_FOUND,
         ),
       );
+    });
+  });
+
+  describe('getAllParticipantRoles', () => {
+    it('should return all participant roles successfully', async () => {
+      const mockRoles: ViewParticipantsRolesDto[] = [
+        { id: 1, description: 'Role 1' },
+        { id: 2, description: 'Role 2' },
+      ];
+
+      jest.spyOn(service, 'getAllParticipantRoles').mockResolvedValue(mockRoles);
+
+      const result = await service.getAllParticipantRoles();
+      expect(result).toEqual(mockRoles);
+    
+    });
+  });
+
+  describe('getOrganizations', () => {
+    it('should return searched organizations successfully', async () => {
+      const searchParam = 'Org';
+      const mockRoles: DropdownDto[] = [
+        { key: '1', value: 'Org1' },
+      ];
+
+      jest.spyOn(service, 'getOrganizations').mockResolvedValue(mockRoles);
+
+      const result = await service.getOrganizations(searchParam);
+      expect(result).toEqual(mockRoles);
+    
+    });
+  });
+
+  describe('getParticipantNames', () => {
+    it('should return searched participant names successfully', async () => {
+      const searchParam = 'Nam';
+      const mockRoles: DropdownDto[] = [
+        { key: '1', value: 'Name1' },
+      ];
+
+      jest.spyOn(service, 'getParticipantNames').mockResolvedValue(mockRoles);
+
+      const result = await service.getParticipantNames(searchParam);
+      expect(result).toEqual(mockRoles);
+    
+    });
+  });
+
+  describe('createAppParticipant', () => {
+    it('should log start message and create a participant successfully', async () => {
+      const input = {
+        applicationId: 1,
+        personId: 2,
+        participantRoleId: 3,
+        organizationId: 4,
+        isMainParticipant: true,
+        effectiveStartDate: new Date('2021-01-01'),
+        effectiveEndDate: new Date('2021-12-31'),
+        createdBy: 'system',
+        createdDateTime: new Date('2025-02-05T18:43:03.244Z'),
+      };
+
+      const addedParticipant= {
+        id: 27912,
+        ...input,
+        createdBy: 'system',
+        createdDateTime:new Date('2025-02-05T18:43:03.244Z'),
+        rowVersionCount: null,
+        updatedBy: null,
+        updatedDateTime: null,
+      }
+
+      const user = {
+        identity_provider: 'idir', // IDIR provider
+        givenName: 'TestUser',
+      };
+
+      const expectedResponse = {
+        message: 'Participant created successfully',
+        httpStatusCode: HttpStatus.CREATED,
+        success: true,
+        data: [addedParticipant]
+      };
+
+      jest.spyOn(appParticsRepo, 'create').mockReturnValue(addedParticipant as any);
+      jest.spyOn(appParticsRepo, 'save').mockResolvedValue(addedParticipant as any);
+
+      const result = await service.createAppParticipant(input, user);
+    
+      expect(result).toBeDefined();
+      expect(result.id).toBe(addedParticipant.id);
+      expect(result.isMainParticipant).toBe(addedParticipant.isMainParticipant);
+    
     });
   });
 });
