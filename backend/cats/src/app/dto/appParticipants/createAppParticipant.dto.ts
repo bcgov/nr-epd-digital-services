@@ -2,9 +2,8 @@ import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsDate, IsString } from 'class-validator';
 import { BaseAppParticipantsDto } from './baseAppParticipants.dto';
 
-@ObjectType()
 @InputType()
-export class CreateAppParticipantDto {
+export class CreateAppParticipantDto extends BaseAppParticipantsDto{
     @Field()
     applicationId: number;
   
@@ -16,15 +15,6 @@ export class CreateAppParticipantDto {
   
     @Field({nullable: true} )
     organizationId: number | null;
-
-    @Field({defaultValue: false})
-    isMainParticipant: boolean;
-
-    @Field()
-    effectiveStartDate: Date;   
-
-    @Field({ nullable: true })
-    effectiveEndDate: Date | null;
 
     @Field({nullable:true})
     createdBy: string;
