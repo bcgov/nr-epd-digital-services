@@ -100,6 +100,16 @@ const Search: React.FC = () => {
     debouncedSearch(searchTerm, page, pageSize, filter, sortBy, sortByDir);
   };
 
+  const handlePageChange = (page: number) => {
+    setPage(page);
+    debouncedSearch(searchTerm, page, pageSize, filter, sortBy, sortByDir);
+  };
+
+  const handlePageSizeChange = (pageSize: number) => {
+    setPageSize(pageSize);
+    debouncedSearch(searchTerm, page, pageSize, filter, sortBy, sortByDir);
+  };
+
   const handleSortChange = (column: TableColumn, ascending: boolean) => {
     let newSortBy = ApplicationSortByField.Id;
     let newSortByDir = ascending
@@ -151,8 +161,8 @@ const Search: React.FC = () => {
         handleFilterChange={handleFilterChange}
         page={page}
         pageSize={pageSize}
-        handlePageChange={setPage}
-        handlePageSizeChange={setPageSize}
+        handlePageChange={handlePageChange}
+        handlePageSizeChange={handlePageSizeChange}
         showPageOptions={true}
         totalResults={totalResults}
         filter={filter}
