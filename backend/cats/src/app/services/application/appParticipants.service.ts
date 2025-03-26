@@ -182,7 +182,7 @@ export class AppParticipantService {
 
   async createAppParticipant(newAppParticipant: CreateAppParticipantDto, user: any) {
    this.loggerService.log('at service layer addAppParticipant start');
-    console.log('nupurdixit - createAppParticipant', newAppParticipant);
+    
     try {
         // Log the input parameters for better traceability
         this.loggerService.debug(`createAppParticipant: ${JSON.stringify(newAppParticipant)}`);
@@ -190,7 +190,6 @@ export class AppParticipantService {
         // Check if the user identity_provider is 'IDIR'
         if (user?.identity_provider === UserTypeEum.IDIR) {
             this.loggerService.debug(`User with username: ${user?.givenName} is using IDIR identity provider.`);
-            console.log('nupurdixit - newAppParticipant', newAppParticipant);
 
             // Check if the participant already exists, also  we want to ignore this check where organizationId is null
             // because we can have multiple participants with same personId and participantRoleId but different organizationId
@@ -205,9 +204,7 @@ export class AppParticipantService {
               });
             }
             
-            console.log('nupurdixit - existingParticipant', existingParticipant);
             if (existingParticipant) {
-              console.log('nupurdixit - existingParticipant error adding', existingParticipant);
               throw new HttpException('Participant already exists', HttpStatus.BAD_REQUEST);
             } else {
               const createdAppParticipant = this.appParticsRepository.create({
@@ -216,11 +213,9 @@ export class AppParticipantService {
                   createdDateTime: new Date(),
               });
 
-
-              // Save the new note
-              console.log('nupurdixit - createdAppParticipant', createdAppParticipant);
+              //savde the new participant
               const savedAppParticipant = await this.appParticsRepository.save(createdAppParticipant);
-              console.log('nupurdixit - savedAppParticipant', savedAppParticipant);
+              
               if (savedAppParticipant) {
                   this.loggerService.log(`App Participant created successfully with ID: ${savedAppParticipant.id}`);
                   return {
@@ -237,21 +232,18 @@ export class AppParticipantService {
                     rowVersionCount: savedAppParticipant.rowVersionCount,
                     updatedBy: savedAppParticipant.updatedBy,
                     updatedDateTime: savedAppParticipant.updatedDateTime,
-                    //ts: savedAppParticipant.ts,
                   };
               } 
               else 
               {
-                console.log('nupurdixit - newAppParticipant error adding', newAppParticipant);
-                  this.loggerService.warn('Failed to create App Participant');
-                  return null;
+                this.loggerService.warn('Failed to create App Participant');
+                return null;
               }
             }
         } 
         else 
         {
-          
-            // If the identity provider is not IDIR, log a warning and prevent note creation
+            // If the identity provider is not IDIR, log a warning and prevent participant creation
             this.loggerService.warn(`App Participation creation blocked: User ${user?.givenName} is not using IDIR identity provider.`);
             throw new HttpException('Only users with IDIR identity provider are allowed to add participants', HttpStatus.FORBIDDEN);
         }

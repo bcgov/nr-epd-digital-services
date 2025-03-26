@@ -20,8 +20,6 @@ export const Participants = () => {
 
   const [data, setData] = useState<any>([]);
 
-  const [loading, setLoading] = useState(false);
-
   const [refreshParticipants, setRefreshParticipants] = useState(false);
 
   const [filterOption, setFilterOption] = useState<AppParticipantFilter>(
@@ -40,11 +38,11 @@ export const Participants = () => {
     const refetchData = async () => {
       await refetch();
       setData(queryData?.getAppParticipantsByAppId?.data);
-    setLoading(queryLoading);
     }
     refetchData();
   }, [filterOption, queryData, queryLoading, refreshParticipants]);
 
+  //This takes care to refresh the participants after they are added
   const handleRefreshParticipants = () => {
     setRefreshParticipants(prev => !prev);
   }
@@ -65,7 +63,7 @@ export const Participants = () => {
         handleAddParticipant={() => {}}
         handleRemoveParticipant={() => {}}
         handleItemClick={() => {}}
-        loading={loading}
+        loading={queryLoading}
         handleFilterChange={updateFilter}
         filter={filterOption}
         handleRefreshParticipants={handleRefreshParticipants}
