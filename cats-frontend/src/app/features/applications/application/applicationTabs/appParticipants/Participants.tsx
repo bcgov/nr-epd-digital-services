@@ -6,11 +6,9 @@ import './Participants.css';
 import { AppParticipantFilter } from '../../../../../../generated/types';
 import {
   useGetAppParticipantsByAppIdQuery,
-  useGetParticipantRolesQuery,
 } from './graphql/Participants.generated';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { set } from 'date-fns';
 
 export const Participants = () => {
   const { id } = useParams<{ id?: string }>();
@@ -26,26 +24,29 @@ export const Participants = () => {
     AppParticipantFilter.All,
   );
 
-  const { data: queryData, loading: queryLoading, refetch } =
-    useGetAppParticipantsByAppIdQuery({
-      variables: {
-        applicationId,
-        filter: filterOption,
-      },
-    });
+  const {
+    data: queryData,
+    loading: queryLoading,
+    refetch,
+  } = useGetAppParticipantsByAppIdQuery({
+    variables: {
+      applicationId,
+      filter: filterOption,
+    },
+  });
 
   useEffect(() => {
     const refetchData = async () => {
       await refetch();
       setData(queryData?.getAppParticipantsByAppId?.data);
-    }
+    };
     refetchData();
   }, [filterOption, queryData, queryLoading, refreshParticipants]);
 
   //This takes care to refresh the participants after they are added
   const handleRefreshParticipants = () => {
-    setRefreshParticipants(prev => !prev);
-  }
+    setRefreshParticipants((prev) => !prev);
+  };
 
   const updateFilter = (newFilter: AppParticipantFilter) => {
     setFilterOption(newFilter);
