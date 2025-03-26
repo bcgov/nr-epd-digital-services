@@ -24,9 +24,7 @@ import ModalDialog from '../../../../../components/modaldialog/ModalDialog';
 import Form from '../../../../../components/form/Form';
 
 import './ParticipantsTable.css';
-import {
-  updateFields,
-} from '../../../../../helpers/utility';
+import { updateFields } from '../../../../../helpers/utility';
 
 import { useParams } from 'react-router-dom';
 

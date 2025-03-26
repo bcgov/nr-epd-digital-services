@@ -65,6 +65,15 @@ export type ApplicationHousingResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type ApplicationResponse = {
+  __typename?: 'ApplicationResponse';
+  data?: Maybe<Array<ViewApplication>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type ApplicationResultDto = {
   __typename?: 'ApplicationResultDto';
   applicationType: Scalars['String']['output'];
@@ -130,6 +139,14 @@ export type CreateAppParticipantsResponse = {
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type CreateApplication = {
+  appTypeId: Scalars['Float']['input'];
+  applicationId: Scalars['Float']['input'];
+  receivedDate: Scalars['DateTime']['input'];
+  siteId: Scalars['Float']['input'];
+  srsApplicationId: Scalars['Float']['input'];
 };
 
 export type CreatePerson = {
@@ -204,6 +221,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   addHousingToApplication: ApplicationHousingResponse;
   createAppParticipant: CreateAppParticipantsResponse;
+  createApplication: ApplicationResponse;
   createPerson: PersonResponse;
   createPersonNote: PersonNoteResponse;
   deletePersonNote: PersonNoteResponse;
@@ -220,6 +238,11 @@ export type MutationAddHousingToApplicationArgs = {
 
 export type MutationCreateAppParticipantArgs = {
   newAppParticipant: CreateAppParticipantDto;
+};
+
+
+export type MutationCreateApplicationArgs = {
+  application: CreateApplication;
 };
 
 
@@ -430,6 +453,11 @@ export type ViewAppParticipantsDto = {
   rowVersionCount?: Maybe<Scalars['Float']['output']>;
   updatedBy?: Maybe<Scalars['String']['output']>;
   updatedDateTime?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type ViewApplication = {
+  __typename?: 'ViewApplication';
+  id: Scalars['Float']['output'];
 };
 
 export type ViewParticipantsRolesDto = {

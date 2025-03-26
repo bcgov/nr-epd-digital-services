@@ -1,4 +1,3 @@
-import { get } from 'http';
 import { PencilIcon, TickIcon } from '../../../../../components/common/icon';
 import {
   FormFieldType,
@@ -9,20 +8,8 @@ import {
   TableColumn,
 } from '../../../../../components/table/TableColumn';
 import { RequestStatus } from '../../../../../helpers/requests/status';
-import { useGetParticipantRolesQuery } from './graphql/Participants.generated';
-
-export const getRolesConfig = () => {
-  const { data } = useGetParticipantRolesQuery();
-  const fetchedRoles = data?.getAllParticipantRoles.data?.map((role) => ({
-    key: role.id.toString(),
-    value: role.description,
-  }));
-
-  return fetchedRoles;
-};
 
 export const GetConfig = () => {
-  const getRoles = getRolesConfig();
   const appParticipantsForm: { [key: string]: IFormField } = {
     isMainParticipant: {
       type: FormFieldType.Switch,
@@ -58,7 +45,7 @@ export const GetConfig = () => {
     role: {
       type: FormFieldType.DropDown,
       label: 'Role',
-      options: getRoles,
+      options: [],
       graphQLPropertyName: 'description',
       value: '',
       colSize: 'col-lg-12 col-md-12 col-sm-12',
