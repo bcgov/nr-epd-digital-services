@@ -5,7 +5,7 @@ import GetConfig from './ParticipantsConfig';
 import './Participants.css';
 import { AppParticipantFilter } from '../../../../../../generated/types';
 import { useGetAppParticipantsByAppIdQuery } from './graphql/Participants.generated';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 export const Participants = () => {
@@ -13,10 +13,6 @@ export const Participants = () => {
   const applicationId = id ? Number(id) : 0;
 
   const { participantColumnInternal } = GetConfig();
-
-  const [data, setData] = useState<any>([]);
-
-  const [refreshParticipants, setRefreshParticipants] = useState(false);
 
   const [filterOption, setFilterOption] = useState<AppParticipantFilter>(
     AppParticipantFilter.All,
@@ -33,19 +29,6 @@ export const Participants = () => {
     },
   });
 
-  useEffect(() => {
-    const refetchData = async () => {
-      await refetch();
-      setData(queryData?.getAppParticipantsByAppId?.data);
-    };
-    refetchData();
-  }, [filterOption, queryData, queryLoading, refreshParticipants]);
-
-  //This takes care to refresh the participants after they are added
-  const handleRefreshParticipants = () => {
-    setRefreshParticipants((prev) => !prev);
-  };
-
   const updateFilter = (newFilter: AppParticipantFilter) => {
     setFilterOption(newFilter);
   };
@@ -56,7 +39,7 @@ export const Participants = () => {
         handleTableChange={() => {}}
         internalRow={participantColumnInternal}
         userType={UserType.Internal}
-        appParticsData={data}
+        appParticsData={queryData?.getAppParticipantsByAppId?.data || []}
         viewMode={UserMode.Default}
         handleTableSort={() => {}}
         handleAddParticipant={() => {}}
@@ -65,7 +48,7 @@ export const Participants = () => {
         loading={queryLoading}
         handleFilterChange={updateFilter}
         filter={filterOption}
-        handleRefreshParticipants={handleRefreshParticipants}
+        handleRefreshParticipants={refetch}
       />
     </div>
   );
