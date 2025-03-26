@@ -1084,7 +1084,6 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
     }
     setSearchTerm('');
     setFilteredOpts([]);
-    handler('');
   };
 
   const handler = handleSearch ?? ((e) => {});
@@ -1112,7 +1111,7 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
     if (divRef.current != null) {
       // Check if the clicked target is outside the div element
       if (divRef.current && !divRef.current.contains(event.target as Node)) {
-        clearSearch();
+        // clearSearch();
       }
     }
   };
