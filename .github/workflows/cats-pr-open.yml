@@ -6,9 +6,9 @@ on:
     branches:
       - srs-605NewUpdate # this is the default branch and not main
       #- srs-605 #test branch
-  push:
-    branches:
-      - srs-605NewUpdate  # test
+    # paths:
+    #   - 'backend/cats/**'
+    #   - 'cats-frontend/**'  
 
 
 concurrency:
