@@ -5,14 +5,15 @@ import { RequestStatus } from '../../../../../helpers/requests/status';
 import { UserMode } from '../../../../../helpers/requests/userMode';
 import Widget from '../../../../../components/widget/Widget';
 import { Button } from '../../../../../components/button/Button';
-import { Plus, UserPlus } from '../../../../../components/common/icon';
+import { Plus } from '../../../../../components/common/icon';
 import { AppParticipantsTableControls } from './AppParticipantsTableControls';
-import GetConfig, { getRolesConfig } from './ParticipantsConfig';
-import { AppParticipantFilter, CreateAppParticipantDto } from '../../../../../../generated/types';
+import GetConfig from './ParticipantsConfig';
+import {
+  AppParticipantFilter,
+  CreateAppParticipantDto,
+} from '../../../../../../generated/types';
 import {
   GetAppParticipantsByAppIdQuery,
-  GetOrganizationsDocument,
-  GetParticipantNamesDocument,
   useCreateAppParticipantMutation,
   useGetOrganizationsQuery,
   useGetParticipantNamesQuery,
@@ -24,16 +25,10 @@ import Form from '../../../../../components/form/Form';
 
 import './ParticipantsTable.css';
 import {
-  getAxiosInstance,
-  resultCache,
-  sortArray,
   updateFields,
 } from '../../../../../helpers/utility';
 
-import { print } from 'graphql';
-import { GRAPHQL } from '../../../../../helpers/endpoints';
 import { useParams } from 'react-router-dom';
-import { set } from 'date-fns';
 
 export const AppParticipantsActionTypes = {
   AddParticipant: 'Add Participant',
@@ -123,8 +118,8 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   const [options, setOptions] = useState(fetchedRoles);
 
   const handleSearchForOrg = useCallback(
-    (value: any, graphQLPropertyName?: string) => {
-      console.log("nupur - inside handleSearchForOrg value is: ", value);
+    (value: any) => {
+      console.log('nupur - inside handleSearchForOrg value is: ', value);
       setSearchParamForOrg(value.trim());
 
       const indexToUpdate = appParticsForm.findIndex((row) =>
@@ -148,8 +143,11 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   );
 
   const handleSearchForParticipant = useCallback(
-    (value: any, graphQLPropertyName?: string) => {
-      console.log("nupur - inside handleSearchForParticipant value is: ", value);
+    (value: any) => {
+      console.log(
+        'nupur - inside handleSearchForParticipant value is: ',
+        value,
+      );
       setSearchParam(value.trim());
       const indexToUpdate = appParticsForm.findIndex((row) =>
         row.some((field) => field.graphQLPropertyName === 'fullName'),
@@ -171,30 +169,42 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     [options],
   );
 
-  const {data: participantNamesData, refetch: refetchParticipants} = useGetParticipantNamesQuery({
-    variables: { searchParam },
-    skip: !appParticipant.isAppParticipantModal,
-    fetchPolicy: 'cache-and-network'
-  })
+  const { data: participantNamesData, refetch: refetchParticipants } =
+    useGetParticipantNamesQuery({
+      variables: { searchParam },
+      skip: !appParticipant.isAppParticipantModal,
+      fetchPolicy: 'cache-and-network',
+    });
 
-  const {data: orgNamesData, refetch: refetchOrg} = useGetOrganizationsQuery({
+  const { data: orgNamesData, refetch: refetchOrg } = useGetOrganizationsQuery({
     variables: { searchParamForOrg },
     skip: !appParticipant.isAppParticipantModal,
-    fetchPolicy: 'cache-and-network'
-  })
+    fetchPolicy: 'cache-and-network',
+  });
 
-  const [participantsNames, setParticipantsNames] = useState<{ __typename?: "DropdownDto" | undefined; key: string; value: string; }[] | null | undefined>();
-  const [orgNames, setOrgNames] = useState<{ __typename?: "DropdownDto" | undefined; key: string; value: string; }[] | null | undefined>();
+  const [participantsNames, setParticipantsNames] = useState<
+    | { __typename?: 'DropdownDto' | undefined; key: string; value: string }[]
+    | null
+    | undefined
+  >();
+  const [orgNames, setOrgNames] = useState<
+    | { __typename?: 'DropdownDto' | undefined; key: string; value: string }[]
+    | null
+    | undefined
+  >();
 
   useEffect(() => {
-    console.log("nupur - searchParam is: ", searchParam);
+    console.log('nupur - searchParam is: ', searchParam);
     if (searchParam || searchParamForOrg) {
       const timeoutId = setTimeout(async () => {
         if (searchParam) {
-          console.log("nupur - inside searchParam is: ", searchParam);
+          console.log('nupur - inside searchParam is: ', searchParam);
           setParticipantsNames(participantNamesData?.getParticipantNames?.data);
           setOptions(participantNamesData?.getParticipantNames?.data || []);
-          console.log("nupur - participant name: ", participantNamesData?.getParticipantNames?.data);
+          console.log(
+            'nupur - participant name: ',
+            participantNamesData?.getParticipantNames?.data,
+          );
           const indexToUpdate = appParticsForm.findIndex((row) =>
             row.some((field) => field.graphQLPropertyName === 'fullName'),
           );
@@ -205,7 +215,8 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
               updates: {
                 isLoading: RequestStatus.success,
                 options,
-                filteredOptions: participantNamesData?.getParticipantNames?.data ?? [],
+                filteredOptions:
+                  participantNamesData?.getParticipantNames?.data ?? [],
                 customInfoMessage: <></>,
                 handleSearch: handleSearchForParticipant,
               },
@@ -214,7 +225,10 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         } else if (searchParamForOrg) {
           setOrgNames(orgNamesData?.getOrganizations?.data);
           setOptions(orgNamesData?.getOrganizations?.data || []);
-          console.log("nupur - org names are: ", orgNamesData?.getOrganizations?.data);
+          console.log(
+            'nupur - org names are: ',
+            orgNamesData?.getOrganizations?.data,
+          );
           const indexToUpdate = appParticsForm.findIndex((row) =>
             row.some((field) => field.graphQLPropertyName === 'name'),
           );
@@ -236,7 +250,13 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
 
       return () => clearTimeout(timeoutId);
     }
-  }, [searchParam, searchParamForOrg, options, orgNamesData, participantNamesData]);
+  }, [
+    searchParam,
+    searchParamForOrg,
+    options,
+    orgNamesData,
+    participantNamesData,
+  ]);
 
   handleAddParticipant = () => {
     setAppParticipant({
@@ -258,7 +278,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
           isLoading: RequestStatus.success,
           options: fetchedRoles,
           filteredOptions: [],
-          //handleSearch,
           customInfoMessage: <></>,
         },
       }),
@@ -322,7 +341,9 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
 
   const [createAppParticiant] = useCreateAppParticipantMutation();
 
-  const handleAddAppParticipant = async (newParticipant: CreateAppParticipantDto) => {
+  const handleAddAppParticipant = async (
+    newParticipant: CreateAppParticipantDto,
+  ) => {
     try {
       const response = await createAppParticiant({
         variables: {
