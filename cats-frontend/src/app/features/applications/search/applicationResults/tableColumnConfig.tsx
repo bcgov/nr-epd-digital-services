@@ -3,6 +3,9 @@ import {
   TableColumn,
   ColumnSize,
 } from '../../../../components/table/TableColumn';
+import { formatDateUTC } from '../../../../helpers/utility';
+import StaffAssigned from './staffAssigned';
+import ApplicationResultsViewLink from './viewLink';
 
 export const applicationResultColumns: TableColumn[] = [
   {
@@ -89,6 +92,9 @@ export const applicationResultColumns: TableColumn[] = [
     columnSize: ColumnSize.Default,
     stickyCol: false,
     customHeaderCss: '',
+    renderCell: (value: any) => {
+      return formatDateUTC(value);
+    },
   },
   {
     id: 6,
@@ -109,13 +115,33 @@ export const applicationResultColumns: TableColumn[] = [
   },
   {
     id: 7,
+    displayName: 'Staff Assigned',
+    active: true,
+    graphQLPropertyName: 'staffAssigned',
+    groupId: 1,
+    disabled: false,
+    isDefault: true,
+    sortOrder: 7,
+    isChecked: true,
+    displayType: { type: FormFieldType.Label, label: 'Staff Assigned' },
+    linkRedirectionURL: undefined,
+    dynamicColumn: false,
+    columnSize: ColumnSize.Default,
+    stickyCol: false,
+    customHeaderCss: '',
+    renderCell: (value: any) => {
+      return <StaffAssigned staff={value} />;
+    },
+  },
+  {
+    id: 8,
     displayName: 'Priority',
     active: true,
     graphQLPropertyName: 'priority',
     groupId: 1,
     disabled: false,
     isDefault: true,
-    sortOrder: 7,
+    sortOrder: 8,
     isChecked: true,
     displayType: { type: FormFieldType.Label, label: 'Priority' },
     linkRedirectionURL: undefined,
@@ -125,14 +151,14 @@ export const applicationResultColumns: TableColumn[] = [
     customHeaderCss: '',
   },
   {
-    id: 8,
+    id: 9,
     displayName: 'View',
     active: true,
     graphQLPropertyName: 'url',
     groupId: 1,
     disabled: false,
     isDefault: true,
-    sortOrder: 7,
+    sortOrder: 9,
     isChecked: true,
     displayType: {
       type: FormFieldType.Link,
@@ -147,5 +173,8 @@ export const applicationResultColumns: TableColumn[] = [
     columnSize: ColumnSize.Default,
     stickyCol: false,
     customHeaderCss: '',
+    renderCell: (value: any) => {
+      return <ApplicationResultsViewLink url={value} />;
+    },
   },
 ];
