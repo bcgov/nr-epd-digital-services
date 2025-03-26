@@ -7,7 +7,7 @@ import Widget from '../../../../../components/widget/Widget';
 import { Button } from '../../../../../components/button/Button';
 import { Plus, UserPlus } from '../../../../../components/common/icon';
 import { AppParticipantsTableControls } from './AppParticipantsTableControls';
-import GetConfig, { getRolesConfig } from './ParticipantsConfig';
+import GetConfig from './ParticipantsConfig';
 import { AppParticipantFilter } from '../../../../../../generated/types';
 import {
   GetAppParticipantsByAppIdQuery,
@@ -16,6 +16,7 @@ import {
   useCreateAppParticipantMutation,
   useGetOrganizationsQuery,
   useGetParticipantNamesQuery,
+  useGetParticipantRolesQuery,
 } from './graphql/Participants.generated';
 
 import ModalDialog from '../../../../../components/modaldialog/ModalDialog';
@@ -84,7 +85,13 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   const { addAppParticipantsForm, participantColumnInternal } = GetConfig();
   const id = useParams().id;
 
-  const rolesConfig = getRolesConfig();
+  const { data } = useGetParticipantRolesQuery();
+  const fetchedRoles = data?.getAllParticipantRoles.data?.map((role) => ({
+    key: role.id.toString(),
+    value: role.description,
+  }));
+
+  //const rolesConfig = getRolesConfig();
   const [appParticsForm, setAppParticsForm] = useState(addAppParticipantsForm);
 
   const [filterOption, setFilterOption] = useState<AppParticipantFilter>(
@@ -99,7 +106,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   const SEARCH_PREFIX_FOR_PERSON = 'person-';
   const SEARCH_PREFIX_FOR_ORG = 'org-';
 
-  const [options, setOptions] = useState(rolesConfig);
+  const [options, setOptions] = useState(fetchedRoles);
 
   const [searchParam, setSearchParam] = useState<string>('');
   const [searchParamForOrg, setSearchParamForOrg] = useState<string>('');
@@ -119,62 +126,62 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     appParticipantActionType: AppParticipantsActionTypes.ViewAppParticipants,
   });
 
-  const fetchParticipantNames = useCallback(async (searchParam: string) => {
-    const cacheKey = SEARCH_PREFIX_FOR_PERSON + searchParam; //This is required to distinguish between person and organization search
-    if (searchParam.trim()) {
-      try {
-        // Check cache first
-        if (resultCache[cacheKey]) {
-          return resultCache[cacheKey];
-        }
-        // Store result in cache if successful
-        const personData = await getAxiosInstance().post(GRAPHQL, {
-          query: print(GetParticipantNamesDocument),
-          variables: { searchParam },
-        });
+  // const fetchParticipantNames = useCallback(async (searchParam: string) => {
+  //   const cacheKey = SEARCH_PREFIX_FOR_PERSON + searchParam; //This is required to distinguish between person and organization search
+  //   if (searchParam.trim()) {
+  //     try {
+  //       // Check cache first
+  //       if (resultCache[cacheKey]) {
+  //         return resultCache[cacheKey];
+  //       }
+  //       // Store result in cache if successful
+  //       const personData = await getAxiosInstance().post(GRAPHQL, {
+  //         query: print(GetParticipantNamesDocument),
+  //         variables: { searchParam },
+  //       });
 
-        if (personData?.data?.data?.getParticipantNames?.data) {
-          resultCache[cacheKey] =
-            personData?.data?.data?.getParticipantNames?.data;
-          setOptions(personData?.data?.data?.getParticipantNames?.data);
-          console.log("nupur - personData is: ", personData?.data?.data?.getParticipantNames?.data);
-          return personData?.data?.data?.getParticipantNames?.data;
-        }
-      } catch (error) {
-        return [];
-      }
-    }
-    return [];
-  }, []);
+  //       if (personData?.data?.data?.getParticipantNames?.data) {
+  //         resultCache[cacheKey] =
+  //           personData?.data?.data?.getParticipantNames?.data;
+  //         setOptions(personData?.data?.data?.getParticipantNames?.data);
+  //         console.log("nupur - personData is: ", personData?.data?.data?.getParticipantNames?.data);
+  //         return personData?.data?.data?.getParticipantNames?.data;
+  //       }
+  //     } catch (error) {
+  //       return [];
+  //     }
+  //   }
+  //   return [];
+  // }, []);
 
-  const fetchOrganizationNames = useCallback(
-    async (searchParamForOrg: string) => {
-      const cacheKey = SEARCH_PREFIX_FOR_ORG + searchParamForOrg;
-      if (searchParamForOrg.trim()) {
-        try {
-          // Check cache first
-          if (resultCache[cacheKey]) {
-            return resultCache[cacheKey];
-          }
-          // Store result in cache if successful
-          const orgData = await getAxiosInstance().post(GRAPHQL, {
-            query: print(GetOrganizationsDocument),
-            variables: { searchParamForOrg },
-          });
+  // const fetchOrganizationNames = useCallback(
+  //   async (searchParamForOrg: string) => {
+  //     const cacheKey = SEARCH_PREFIX_FOR_ORG + searchParamForOrg;
+  //     if (searchParamForOrg.trim()) {
+  //       try {
+  //         // Check cache first
+  //         if (resultCache[cacheKey]) {
+  //           return resultCache[cacheKey];
+  //         }
+  //         // Store result in cache if successful
+  //         const orgData = await getAxiosInstance().post(GRAPHQL, {
+  //           query: print(GetOrganizationsDocument),
+  //           variables: { searchParamForOrg },
+  //         });
 
-          if (orgData?.data?.data?.getOrganizations?.data) {
-            resultCache[cacheKey] = orgData?.data?.data?.getOrganizations?.data;
-            setOptions(orgData?.data?.data?.getOrganizations?.data);
-            return orgData?.data?.data?.getOrganizations?.data;
-          }
-        } catch (error) {
-          return [];
-        }
-      }
-      return [];
-    },
-    [],
-  );
+  //         if (orgData?.data?.data?.getOrganizations?.data) {
+  //           resultCache[cacheKey] = orgData?.data?.data?.getOrganizations?.data;
+  //           setOptions(orgData?.data?.data?.getOrganizations?.data);
+  //           return orgData?.data?.data?.getOrganizations?.data;
+  //         }
+  //       } catch (error) {
+  //         return [];
+  //       }
+  //     }
+  //     return [];
+  //   },
+  //   [],
+  // );
 
   const handleSearchForOrg = useCallback(
     (value: any, graphQLPropertyName?: string) => {
@@ -225,13 +232,13 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     [options],
   );
 
-  const {data: participantNamesData, refetch: refetchParticipants} = useGetParticipantNamesQuery({
+  const {data: participantNamesData} = useGetParticipantNamesQuery({
     variables: { searchParam },
     skip: !appParticipant.isAppParticipantModal,
     fetchPolicy: 'cache-and-network'
   })
 
-  const {data: orgNamesData, refetch: refetchOrg} = useGetOrganizationsQuery({
+  const {data: orgNamesData} = useGetOrganizationsQuery({
     variables: { searchParamForOrg },
     skip: !appParticipant.isAppParticipantModal,
     fetchPolicy: 'cache-and-network'
@@ -363,9 +370,8 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         indexToUpdate,
         updates: {
           isLoading: RequestStatus.success,
-          options: rolesConfig,
+          options: fetchedRoles,
           filteredOptions: [],
-          //handleSearch,
           customInfoMessage: <></>,
         },
       }),
