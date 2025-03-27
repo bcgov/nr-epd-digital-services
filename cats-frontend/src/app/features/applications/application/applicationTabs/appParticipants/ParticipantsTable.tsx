@@ -138,7 +138,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     graphQLPropertyName: any,
     value: String | [Date, Date],
   ) => {
-    console.log('graphQLPropertyName :', graphQLPropertyName, " , and value : ", value);
     if (value && typeof value === 'object' && 'key' in value) {
       value = (value as { key: string }).key;
     }
@@ -150,7 +149,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         [graphQLPropertyName]: value,
       },
     });
-    console.log('appParticipant :', appParticipant.appParticipantDetails);
   };
 
   const [createAppParticiant] = useCreateAppParticipantMutation();
