@@ -154,16 +154,17 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   const handleAddAppParticipant = async (
     newParticipant: CreateAppParticipantDto,
   ) => {
-    try {
-      const response = await createAppParticiant({
-        variables: {
-          newAppParticipant: newParticipant,
-        },
-      });
-      return response;
-    } catch (err) {
-      console.error('Error adding participant:', err);
-    }
+    return createAppParticiant({
+      variables: {
+        newAppParticipant: newParticipant,
+      },
+      onCompleted: () => {
+        handleRefreshParticipants();
+      },
+      onError: (err) => {
+        console.error('Error adding participant:', err);
+      },
+    });
   };
 
   return (
@@ -214,7 +215,8 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
               if (response) {
                 if (
                   appParticipant.appParticipantActionType ===
-                  AppParticipantsActionTypes.AddParticipant
+                    AppParticipantsActionTypes.AddParticipant &&
+                  id
                 ) {
                   const newAppParticipant = {
                     applicationId: id ? Number(id) : 0,
@@ -235,15 +237,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
                       appParticipant.appParticipantDetails.effectiveEndDate ||
                       null,
                   };
-                  handleAddAppParticipant(newAppParticipant)
-                    .then((response) => {
-                      if (response?.data?.createAppParticipant.success) {
-                        handleRefreshParticipants();
-                      }
-                    })
-                    .catch((err) => {
-                      console.error('Error create note:', err);
-                    });
+                  handleAddAppParticipant(newAppParticipant);
                 }
               }
               setAppParticipant({
