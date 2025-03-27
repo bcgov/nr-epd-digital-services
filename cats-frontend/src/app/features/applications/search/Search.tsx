@@ -92,7 +92,11 @@ const Search: React.FC = () => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchTerm = event.target.value;
     setSearchTerm(searchTerm);
-    debouncedSearch(searchTerm, page, pageSize, filter, sortBy, sortByDir);
+    // Reset page to 1 when searching, addresses an edge case where the user is
+    // on page 2 and searches for something that returns one page of results
+    // causing the table to show no results.
+    setPage(1);
+    debouncedSearch(searchTerm, 1, pageSize, filter, sortBy, sortByDir);
   };
 
   const handleFilterChange = (filter: ApplicationFilter) => {
