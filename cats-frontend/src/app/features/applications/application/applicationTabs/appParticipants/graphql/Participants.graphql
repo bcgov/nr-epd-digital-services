@@ -17,3 +17,68 @@ query getAppParticipantsByAppId($applicationId: Int!, $filter: AppParticipantFil
     }
   }
 }
+
+query getParticipantRoles {
+  getAllParticipantRoles {
+    httpStatusCode
+    success
+    message
+    timestamp
+    data {
+      id
+      description
+    }
+  }
+}
+
+query getParticipantNames($searchParam: String!) {
+  getParticipantNames(searchParam: $searchParam) {
+    httpStatusCode
+    success
+    message
+    timestamp
+    data {
+      key
+      value
+    }
+  }
+}
+
+query getOrganizations($searchParamForOrg: String!) {
+  getOrganizations(searchParamForOrg: $searchParamForOrg) {
+    httpStatusCode
+    success
+    message
+    timestamp
+    data {
+      key
+      value
+    }
+  }
+}
+
+
+mutation createAppParticipant($newAppParticipant: CreateAppParticipantDto!) {
+  createAppParticipant(newAppParticipant: $newAppParticipant) {
+    message
+    httpStatusCode
+    success
+    timestamp
+    data {
+      id
+      applicationId
+      personId
+      participantRoleId
+      organizationId
+      isMainParticipant
+      effectiveStartDate
+      effectiveEndDate
+      createdBy
+      createdDateTime
+      rowVersionCount
+      updatedBy
+      updatedDateTime
+    }
+  }
+}
+
