@@ -8,7 +8,11 @@ import {
   TableColumn,
 } from '../../../../../components/table/TableColumn';
 import { RequestStatus } from '../../../../../helpers/requests/status';
-import { GetOrganizationsQuery, GetParticipantNamesQuery, GetParticipantRolesQuery } from './graphql/Participants.generated';
+import {
+  GetOrganizationsQuery,
+  GetParticipantNamesQuery,
+  GetParticipantRolesQuery,
+} from './graphql/Participants.generated';
 
 const participantRoleField = (
   options: GetParticipantRolesQuery['getAllParticipantRoles']['data'],
@@ -99,7 +103,6 @@ export const getAppParticipantsFormFields = ({
   [participantNameField(participant)],
   [participantOrganizationField(organization)],
 ];
-
 
 const appParticipantsForm: { [key: string]: IFormField } = {
   isMainParticipant: {

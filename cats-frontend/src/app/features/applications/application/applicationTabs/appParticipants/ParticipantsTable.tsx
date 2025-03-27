@@ -27,7 +27,6 @@ import './ParticipantsTable.css';
 
 import { useParams } from 'react-router-dom';
 
-
 export const AppParticipantsActionTypes = {
   AddParticipant: 'Add Participant',
   EditParticipant: 'Edit Participant',
@@ -86,13 +85,12 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
 
   const { data: rolesData } = useGetParticipantRolesQuery();
 
-  const { data: participantNamesData } =
-    useGetParticipantNamesQuery({
-      variables: { searchParam },
-      skip: !searchParam.trim(),
-    });
+  const { data: participantNamesData } = useGetParticipantNamesQuery({
+    variables: { searchParam },
+    skip: !searchParam.trim(),
+  });
 
-  const { data: orgNamesData} = useGetOrganizationsQuery({
+  const { data: orgNamesData } = useGetOrganizationsQuery({
     variables: { searchParamForOrg },
     skip: !searchParamForOrg.trim(),
   });
@@ -106,7 +104,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
       options: participantNamesData?.getParticipantNames.data ?? [],
     },
     organization: {
-      setSearchParam : setSearchParamForOrg,
+      setSearchParam: setSearchParamForOrg,
       options: orgNamesData?.getOrganizations.data ?? [],
     },
   });
