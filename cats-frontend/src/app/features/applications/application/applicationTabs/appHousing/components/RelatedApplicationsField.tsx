@@ -1,5 +1,5 @@
 import { Dropdown } from 'react-bootstrap';
-import { useSearchApplicationsByIdQuery } from './Housing.generated';
+import { useSearchApplicationsByIdQuery } from '../Housing.generated';
 import { useCombobox } from 'downshift';
 import cx from 'classnames';
 
@@ -60,9 +60,13 @@ export function RelatedApplicationsField({
           <input
             className="form-control custom-input"
             value={value}
+            aria-describedby="value-entry-details"
             {...getInputProps()}
           />
         </div>
+        <span id="value-entry-details" className={styles.valueEntryDetails}>
+          Separate multiple Application IDs using a comma
+        </span>
       </div>
 
       <Dropdown.Menu

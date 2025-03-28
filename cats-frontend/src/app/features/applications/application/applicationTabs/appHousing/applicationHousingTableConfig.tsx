@@ -14,7 +14,7 @@ import {
 } from '../../../../../components/table/TableColumn';
 import { formatDateUTC } from '../../../../../helpers/utility';
 import { HousingTypeDto } from '../../../../../../generated/types';
-import { RelatedApplicationsField } from './relatedApplicationsField';
+import { RelatedApplicationsField } from './components/RelatedApplicationsField';
 
 type YesNoCodeInput = 'Y' | 'N' | 'U';
 const YesNoCodeCell = ({ value }: { value: YesNoCodeInput }) => {

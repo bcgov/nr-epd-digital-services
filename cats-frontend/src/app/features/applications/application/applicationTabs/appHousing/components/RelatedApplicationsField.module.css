@@ -2,9 +2,15 @@
   position: relative;
 }
 
+.valueEntryDetails {
+  font-size: var(--typography-font-size-label);
+  color: var(--typography-color-placeholder);
+  margin-top: var(--layout-margin-xsmall);
+}
+
 .dropdownMenu {
   width: 100%;
-  margin-top: var(--layout-margin-small);
+  margin-top: -18px;
   max-height: 400px;
   overflow-y: auto;
   gap: 100px;
