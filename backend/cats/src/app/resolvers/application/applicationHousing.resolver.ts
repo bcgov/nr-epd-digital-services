@@ -10,10 +10,7 @@ import { ApplicationHousingService } from '../../services/application/applicatio
 import { ApplicationHousingResponse } from '../../dto/response/applicationHousingResponse';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AddHousingInputDto } from '../../dto/applicationHousing.dto';
-import {
-  HousingTypeDto,
-  HousingTypeResponse,
-} from 'src/app/dto/housingType.dto';
+import { HousingTypeDto, HousingTypeResponse } from '../../dto/housingType.dto';
 
 @Resolver(() => ApplicationHousingDto)
 export class ApplicationHousingResolver {
