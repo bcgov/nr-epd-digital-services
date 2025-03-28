@@ -10,6 +10,10 @@ import { ApplicationHousingService } from '../../services/application/applicatio
 import { ApplicationHousingResponse } from '../../dto/response/applicationHousingResponse';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AddHousingInputDto } from '../../dto/applicationHousing.dto';
+import {
+  HousingTypeDto,
+  HousingTypeResponse,
+} from 'src/app/dto/housingType.dto';
 
 @Resolver(() => ApplicationHousingDto)
 export class ApplicationHousingResolver {
@@ -77,6 +81,22 @@ export class ApplicationHousingResolver {
 
     return this.genericResponseProvider.createResponse(
       'Housing updated successfully',
+      HttpStatus.OK,
+      true,
+      result,
+    );
+  }
+
+  @Query(() => HousingTypeResponse, {
+    name: 'getHousingTypes',
+  })
+  @UsePipes(new GenericValidationPipe())
+  async getHousingTypes() {
+    const result = await this.applicationHousingService.getHousingTypes();
+
+    const responseProvider = new GenericResponseProvider<HousingTypeDto[]>();
+    return responseProvider.createResponse(
+      'Housing types fetched successfully',
       HttpStatus.OK,
       true,
       result,

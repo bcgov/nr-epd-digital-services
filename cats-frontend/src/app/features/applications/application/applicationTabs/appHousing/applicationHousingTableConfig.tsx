@@ -13,6 +13,8 @@ import {
   TableColumn,
 } from '../../../../../components/table/TableColumn';
 import { formatDateUTC } from '../../../../../helpers/utility';
+import { HousingTypeDto } from '../../../../../../generated/types';
+import { RelatedApplicationsField } from './relatedApplicationsField';
 
 type YesNoCodeInput = 'Y' | 'N' | 'U';
 const YesNoCodeCell = ({ value }: { value: YesNoCodeInput }) => {
@@ -146,24 +148,35 @@ export const getApplicationHousingColumns = (): TableColumn[] => [
   },
 ];
 
-const housingFormFields: { [key: string]: IFormField } = {
-  housingType: {
-    type: FormFieldType.DropDown,
-    label: 'Housing Type',
-    graphQLPropertyName: 'housingType',
-    placeholder: 'Select Housing Type',
-    options: [
-      // TODO: This is hard-coded for now, will fetch from the API later
-      { key: 1, value: 'Single-Family' },
-      { key: 2, value: 'Multi-Family <10' },
-      { key: 3, value: 'Multi-Family 10-49' },
-      { key: 4, value: 'Multi-Family 50-500' },
-      { key: 5, value: 'Multi-Family >500' },
-      { key: 6, value: 'All' },
-      { key: 7, value: 'No or Unknown' },
-    ],
-    colSize: 'col-lg-6 col-md-6 col-sm-12',
-  },
+const getHousingTypeField = (housingTypes: HousingTypeDto[]): IFormField => ({
+  type: FormFieldType.DropDown,
+  label: 'Housing Type',
+  graphQLPropertyName: 'housingType',
+  placeholder: 'Select Housing Type',
+  options: housingTypes.map((type) => ({
+    key: type.id,
+    value: type.description,
+  })),
+  colSize: 'col-lg-6 col-md-6 col-sm-12',
+});
+
+const getRelatedApplicationsField = (
+  relatedApplicationsValue: string,
+  setRelatedApplicationsValue: (value: string) => void,
+): IFormField => ({
+  type: FormFieldType.Custom,
+  label: 'Related Application(s)',
+  renderField: (
+    <RelatedApplicationsField
+      value={relatedApplicationsValue}
+      onChange={setRelatedApplicationsValue}
+    />
+  ),
+});
+
+const housingFormFields: {
+  [key: string]: IFormField;
+} = {
   numberOfUnits: {
     type: FormFieldType.Text,
     label: '# of Units',
@@ -193,18 +206,23 @@ const housingFormFields: { [key: string]: IFormField } = {
   },
 
   // TODO: Add checkboxes for rental, social, indigenous led fields
-
-  realatedApplications: {
-    type: FormFieldType.Text,
-    label: 'Related Application(s)',
-    graphQLPropertyName: 'relatedApplications',
-    customInfoMessage:
-      'Related Application(s) must be a comma-separated list of application IDs',
-  },
 };
 
-export const housingForm: IFormField[][] = [
-  [housingFormFields['housingType'], housingFormFields['numberOfUnits']],
+export const getHousingFormFields = ({
+  housingTypes,
+  relatedApplicationsValue,
+  setRelatedApplicationsValue,
+}: {
+  housingTypes: HousingTypeDto[];
+  relatedApplicationsValue: string;
+  setRelatedApplicationsValue: (value: string) => void;
+}): IFormField[][] => [
+  [getHousingTypeField(housingTypes), housingFormFields['numberOfUnits']],
   [housingFormFields['effectiveDate'], housingFormFields['expiryDate']],
-  [housingFormFields['realatedApplications']],
+  [
+    getRelatedApplicationsField(
+      relatedApplicationsValue,
+      setRelatedApplicationsValue,
+    ),
+  ],
 ];

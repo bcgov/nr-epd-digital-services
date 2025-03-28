@@ -217,6 +217,20 @@ export type HousingType = {
   id: Scalars['Int']['output'];
 };
 
+export type HousingTypeDto = {
+  __typename?: 'HousingTypeDto';
+  abbrev?: Maybe<Scalars['String']['output']>;
+  description: Scalars['String']['output'];
+  displayOrder: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  isActive: Scalars['Boolean']['output'];
+};
+
+export type HousingTypeResponse = {
+  __typename?: 'HousingTypeResponse';
+  data: Array<HousingTypeDto>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addHousingToApplication: ApplicationHousingResponse;
@@ -311,10 +325,12 @@ export type Query = {
   getAllParticipantRoles: ParticipantsRolesResponse;
   getAppParticipantsByAppId: AppParticipantsResponse;
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
+  getHousingTypes: HousingTypeResponse;
   getOrganizations: DropdownResponse;
   getParticipantNames: DropdownResponse;
   getPersonNotesByPersonId: PersonNoteResponse;
   searchApplications: ApplicationSearchResponse;
+  searchApplicationsById: ApplicationSearchResponse;
   searchPerson: SearchPersonResponse;
 };
 
@@ -357,6 +373,11 @@ export type QuerySearchApplicationsArgs = {
   searchParam: Scalars['String']['input'];
   sortBy?: InputMaybe<ApplicationSortByField>;
   sortByDir?: InputMaybe<ApplicationSortByDirection>;
+};
+
+
+export type QuerySearchApplicationsByIdArgs = {
+  query: Scalars['String']['input'];
 };
 
 
