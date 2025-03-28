@@ -114,4 +114,81 @@ describe('ApplicationSearchService', () => {
     expect(result).toBeInstanceOf(ApplicationSearchResult);
     expect(result.error).toBe('Test error');
   });
+
+  describe('searchApplicationsById', () => {
+    it('should search applications by ID with default pagination', async () => {
+      const applicationId = '123';
+      const mockApplication = new Application();
+      mockApplication.id = 123;
+      mockApplication.siteId = 1;
+      mockApplication.updatedDateTime = new Date();
+      mockApplication.appParticipants = [];
+      mockApplication.appPriorities = [];
+
+      jest.spyOn(repository, 'createQueryBuilder').mockReturnValue({
+        leftJoinAndSelect: jest.fn().mockReturnThis(),
+        where: jest.fn().mockReturnThis(),
+        skip: jest.fn().mockReturnThis(),
+        take: jest.fn().mockReturnThis(),
+        getMany: jest.fn().mockResolvedValue([mockApplication]),
+      } as any);
+
+      const result = await service.searchApplicationsById(applicationId);
+
+      expect(result).toBeInstanceOf(ApplicationSearchResult);
+      expect(result.applications.length).toBe(1);
+      expect(result.applications[0].id).toBe('123');
+    });
+
+    it('should search applications by ID with custom pagination', async () => {
+      const applicationId = '123';
+      const page = 2;
+      const pageSize = 5;
+      const mockApplication = new Application();
+      mockApplication.id = 123;
+      mockApplication.siteId = 1;
+      mockApplication.updatedDateTime = new Date();
+      mockApplication.appParticipants = [];
+      mockApplication.appPriorities = [];
+
+      const queryBuilderMock = {
+        leftJoinAndSelect: jest.fn().mockReturnThis(),
+        where: jest.fn().mockReturnThis(),
+        skip: jest.fn().mockReturnThis(),
+        take: jest.fn().mockReturnThis(),
+        getMany: jest.fn().mockResolvedValue([mockApplication]),
+      };
+
+      jest
+        .spyOn(repository, 'createQueryBuilder')
+        .mockReturnValue(queryBuilderMock as any);
+
+      const result = await service.searchApplicationsById(
+        applicationId,
+        page,
+        pageSize,
+      );
+
+      expect(result).toBeInstanceOf(ApplicationSearchResult);
+      expect(queryBuilderMock.skip).toHaveBeenCalledWith((page - 1) * pageSize);
+      expect(queryBuilderMock.take).toHaveBeenCalledWith(pageSize);
+    });
+
+    it('should return empty result when no applications found', async () => {
+      const applicationId = '999';
+
+      jest.spyOn(repository, 'createQueryBuilder').mockReturnValue({
+        leftJoinAndSelect: jest.fn().mockReturnThis(),
+        where: jest.fn().mockReturnThis(),
+        skip: jest.fn().mockReturnThis(),
+        take: jest.fn().mockReturnThis(),
+        getMany: jest.fn().mockResolvedValue([]),
+      } as any);
+
+      const result = await service.searchApplicationsById(applicationId);
+
+      expect(result).toBeInstanceOf(ApplicationSearchResult);
+      expect(result.applications).toHaveLength(0);
+    });
+  });
 });

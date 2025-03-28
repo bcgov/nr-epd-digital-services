@@ -5,11 +5,12 @@ import Widget from '../../../../../components/widget/Widget';
 import { RequestStatus } from '../../../../../helpers/requests/status';
 import {
   getApplicationHousingColumns,
-  housingForm,
+  getHousingFormFields,
 } from './applicationHousingTableConfig';
 import {
   useGetApplicationHousingByApplicationIdQuery,
   useAddHousingToApplicationMutation,
+  useGetHousingTypesQuery,
 } from './Housing.generated';
 import { useState } from 'react';
 import ModalDialog from '../../../../../components/modaldialog/ModalDialog';
@@ -35,6 +36,10 @@ export const Housing = () => {
 
   const [housingModal, setHousingModal] = useState(initialHousingModalState());
 
+  const { data: housingTypesData } = useGetHousingTypesQuery({
+    skip: !applicationId || !housingModal.isOpen,
+  });
+
   const {
     data,
     loading,
@@ -42,6 +47,20 @@ export const Housing = () => {
   } = useGetApplicationHousingByApplicationIdQuery({
     variables: { applicationId },
     skip: !applicationId,
+  });
+
+  const housingForm = getHousingFormFields({
+    housingTypes: housingTypesData?.getHousingTypes.data || [],
+    relatedApplicationsValue: housingModal.housingData.relatedApplications,
+    setRelatedApplicationsValue: (value) => {
+      setHousingModal({
+        ...housingModal,
+        housingData: {
+          ...housingModal.housingData,
+          relatedApplications: value,
+        },
+      });
+    },
   });
 
   const [addHousingToApplication, { loading: addHousingLoading }] =

@@ -10,6 +10,18 @@ export type GetApplicationHousingByApplicationIdQueryVariables = Types.Exact<{
 
 export type GetApplicationHousingByApplicationIdQuery = { __typename?: 'Query', getApplicationHousingByApplicationId: { __typename?: 'ApplicationHousingResponse', data: Array<{ __typename?: 'ApplicationHousingDto', id: number, housing: { __typename?: 'HousingDto', id: number, numberOfUnits: number, effectiveDate?: any | null, expiryDate?: any | null, relatedApplications: Array<number>, isRental: { __typename?: 'YesNoCodeDto', abbrev: string }, isSocial: { __typename?: 'YesNoCodeDto', abbrev: string }, isIndigenousLed: { __typename?: 'YesNoCodeDto', abbrev: string }, housingType: { __typename?: 'HousingType', id: number, description: string, abbrev: string } } }> } };
 
+export type GetHousingTypesQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type GetHousingTypesQuery = { __typename?: 'Query', getHousingTypes: { __typename?: 'HousingTypeResponse', data: Array<{ __typename?: 'HousingTypeDto', id: number, abbrev?: string | null, description: string, isActive: boolean, displayOrder: number }> } };
+
+export type SearchApplicationsByIdQueryVariables = Types.Exact<{
+  query: Types.Scalars['String']['input'];
+}>;
+
+
+export type SearchApplicationsByIdQuery = { __typename?: 'Query', searchApplicationsById: { __typename?: 'ApplicationSearchResponse', applications: Array<{ __typename?: 'ApplicationResultDto', id: string, siteId: string, applicationType: string, siteAddress: string }> } };
+
 export type AddHousingToApplicationMutationVariables = Types.Exact<{
   input: Types.AddHousingInputDto;
 }>;
@@ -81,6 +93,96 @@ export type GetApplicationHousingByApplicationIdQueryHookResult = ReturnType<typ
 export type GetApplicationHousingByApplicationIdLazyQueryHookResult = ReturnType<typeof useGetApplicationHousingByApplicationIdLazyQuery>;
 export type GetApplicationHousingByApplicationIdSuspenseQueryHookResult = ReturnType<typeof useGetApplicationHousingByApplicationIdSuspenseQuery>;
 export type GetApplicationHousingByApplicationIdQueryResult = Apollo.QueryResult<GetApplicationHousingByApplicationIdQuery, GetApplicationHousingByApplicationIdQueryVariables>;
+export const GetHousingTypesDocument = gql`
+    query getHousingTypes {
+  getHousingTypes {
+    data {
+      id
+      abbrev
+      description
+      isActive
+      displayOrder
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetHousingTypesQuery__
+ *
+ * To run a query within a React component, call `useGetHousingTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetHousingTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetHousingTypesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetHousingTypesQuery(baseOptions?: Apollo.QueryHookOptions<GetHousingTypesQuery, GetHousingTypesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetHousingTypesQuery, GetHousingTypesQueryVariables>(GetHousingTypesDocument, options);
+      }
+export function useGetHousingTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetHousingTypesQuery, GetHousingTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetHousingTypesQuery, GetHousingTypesQueryVariables>(GetHousingTypesDocument, options);
+        }
+export function useGetHousingTypesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetHousingTypesQuery, GetHousingTypesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetHousingTypesQuery, GetHousingTypesQueryVariables>(GetHousingTypesDocument, options);
+        }
+export type GetHousingTypesQueryHookResult = ReturnType<typeof useGetHousingTypesQuery>;
+export type GetHousingTypesLazyQueryHookResult = ReturnType<typeof useGetHousingTypesLazyQuery>;
+export type GetHousingTypesSuspenseQueryHookResult = ReturnType<typeof useGetHousingTypesSuspenseQuery>;
+export type GetHousingTypesQueryResult = Apollo.QueryResult<GetHousingTypesQuery, GetHousingTypesQueryVariables>;
+export const SearchApplicationsByIdDocument = gql`
+    query searchApplicationsById($query: String!) {
+  searchApplicationsById(query: $query) {
+    applications {
+      id
+      siteId
+      applicationType
+      siteAddress
+    }
+  }
+}
+    `;
+
+/**
+ * __useSearchApplicationsByIdQuery__
+ *
+ * To run a query within a React component, call `useSearchApplicationsByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchApplicationsByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchApplicationsByIdQuery({
+ *   variables: {
+ *      query: // value for 'query'
+ *   },
+ * });
+ */
+export function useSearchApplicationsByIdQuery(baseOptions: Apollo.QueryHookOptions<SearchApplicationsByIdQuery, SearchApplicationsByIdQueryVariables> & ({ variables: SearchApplicationsByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchApplicationsByIdQuery, SearchApplicationsByIdQueryVariables>(SearchApplicationsByIdDocument, options);
+      }
+export function useSearchApplicationsByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchApplicationsByIdQuery, SearchApplicationsByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchApplicationsByIdQuery, SearchApplicationsByIdQueryVariables>(SearchApplicationsByIdDocument, options);
+        }
+export function useSearchApplicationsByIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<SearchApplicationsByIdQuery, SearchApplicationsByIdQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<SearchApplicationsByIdQuery, SearchApplicationsByIdQueryVariables>(SearchApplicationsByIdDocument, options);
+        }
+export type SearchApplicationsByIdQueryHookResult = ReturnType<typeof useSearchApplicationsByIdQuery>;
+export type SearchApplicationsByIdLazyQueryHookResult = ReturnType<typeof useSearchApplicationsByIdLazyQuery>;
+export type SearchApplicationsByIdSuspenseQueryHookResult = ReturnType<typeof useSearchApplicationsByIdSuspenseQuery>;
+export type SearchApplicationsByIdQueryResult = Apollo.QueryResult<SearchApplicationsByIdQuery, SearchApplicationsByIdQueryVariables>;
 export const AddHousingToApplicationDocument = gql`
     mutation addHousingToApplication($input: AddHousingInputDto!) {
   addHousingToApplication(input: $input) {
