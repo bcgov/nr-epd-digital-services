@@ -1,6 +1,7 @@
 .application-results__view-link {
-  padding-left: var(--layout-padding-small);
+  width: 100%;
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: var(--layout-margin-xsmall);
   text-decoration: none;
