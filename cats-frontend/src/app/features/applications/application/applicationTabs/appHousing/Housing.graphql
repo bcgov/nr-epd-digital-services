@@ -57,3 +57,11 @@ mutation addHousingToApplication($input: AddHousingInputDto!) {
     }
   }
 }
+
+mutation updateApplicationHousing($input: UpdateHousingInputDto!) {
+  updateApplicationHousing(input: $input) {
+    data {
+      id
+    }
+  }
+}

@@ -72,10 +72,11 @@ export function RelatedApplicationsField({
       <Dropdown.Menu
         show={isOpen && !!lastValue?.trim() && applications.length > 0}
         className={styles.dropdownMenu}
-        {...getMenuProps()}
+        {...getMenuProps({}, { suppressRefError: true })}
       >
         {applications.map((application, index) => (
           <div
+            key={application.id}
             className={cx(
               styles.dropdownMenuItem,
               highlightedIndex === index && styles.dropdownMenuItemHighlighted,

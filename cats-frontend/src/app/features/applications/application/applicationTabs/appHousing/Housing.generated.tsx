@@ -29,6 +29,13 @@ export type AddHousingToApplicationMutationVariables = Types.Exact<{
 
 export type AddHousingToApplicationMutation = { __typename?: 'Mutation', addHousingToApplication: { __typename?: 'ApplicationHousingResponse', data: Array<{ __typename?: 'ApplicationHousingDto', id: number }> } };
 
+export type UpdateApplicationHousingMutationVariables = Types.Exact<{
+  input: Types.UpdateHousingInputDto;
+}>;
+
+
+export type UpdateApplicationHousingMutation = { __typename?: 'Mutation', updateApplicationHousing: { __typename?: 'ApplicationHousingResponse', data: Array<{ __typename?: 'ApplicationHousingDto', id: number }> } };
+
 
 export const GetApplicationHousingByApplicationIdDocument = gql`
     query getApplicationHousingByApplicationId($applicationId: Int!) {
@@ -218,3 +225,38 @@ export function useAddHousingToApplicationMutation(baseOptions?: Apollo.Mutation
 export type AddHousingToApplicationMutationHookResult = ReturnType<typeof useAddHousingToApplicationMutation>;
 export type AddHousingToApplicationMutationResult = Apollo.MutationResult<AddHousingToApplicationMutation>;
 export type AddHousingToApplicationMutationOptions = Apollo.BaseMutationOptions<AddHousingToApplicationMutation, AddHousingToApplicationMutationVariables>;
+export const UpdateApplicationHousingDocument = gql`
+    mutation updateApplicationHousing($input: UpdateHousingInputDto!) {
+  updateApplicationHousing(input: $input) {
+    data {
+      id
+    }
+  }
+}
+    `;
+export type UpdateApplicationHousingMutationFn = Apollo.MutationFunction<UpdateApplicationHousingMutation, UpdateApplicationHousingMutationVariables>;
+
+/**
+ * __useUpdateApplicationHousingMutation__
+ *
+ * To run a mutation, you first call `useUpdateApplicationHousingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateApplicationHousingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateApplicationHousingMutation, { data, loading, error }] = useUpdateApplicationHousingMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateApplicationHousingMutation(baseOptions?: Apollo.MutationHookOptions<UpdateApplicationHousingMutation, UpdateApplicationHousingMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateApplicationHousingMutation, UpdateApplicationHousingMutationVariables>(UpdateApplicationHousingDocument, options);
+      }
+export type UpdateApplicationHousingMutationHookResult = ReturnType<typeof useUpdateApplicationHousingMutation>;
+export type UpdateApplicationHousingMutationResult = Apollo.MutationResult<UpdateApplicationHousingMutation>;
+export type UpdateApplicationHousingMutationOptions = Apollo.BaseMutationOptions<UpdateApplicationHousingMutation, UpdateApplicationHousingMutationVariables>;
