@@ -158,6 +158,10 @@ const getHousingTypeField = (housingTypes: HousingTypeDto[]): IFormField => ({
     value: type.description,
   })),
   colSize: 'col-lg-6 col-md-6 col-sm-12',
+  validation: {
+    required: true,
+    customMessage: 'Housing Type is required.',
+  },
 });
 
 const getRelatedApplicationsField = (
@@ -195,6 +199,10 @@ const housingFormFields: {
     dateFormat: 'EE MMM dd yyyy',
     graphQLPropertyName: 'effectiveDate',
     colSize: 'col-lg-6 col-md-6 col-sm-12',
+    validation: {
+      required: true,
+      customMessage: 'Effective Date is required.',
+    },
   },
   expiryDate: {
     type: FormFieldType.Date,
@@ -203,6 +211,10 @@ const housingFormFields: {
     dateFormat: 'EE MMM dd yyyy',
     graphQLPropertyName: 'expiryDate',
     colSize: 'col-lg-6 col-md-6 col-sm-12',
+    validation: {
+      required: true,
+      customMessage: 'Expiry Date is required.',
+    },
   },
 
   replaceFileRow: {

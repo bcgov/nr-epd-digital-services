@@ -196,6 +196,13 @@ export const Housing = () => {
   const dataSaveInProgress =
     addHousingLoading || updateApplicationHousingLoading;
 
+  const isFormValid = [
+    housingModal.housingData.housingType,
+    housingModal.housingData.numberOfUnits,
+    housingModal.housingData.effectiveDate,
+    housingModal.housingData.expiryDate,
+  ].every(Boolean);
+
   return (
     <>
       <Widget
@@ -227,7 +234,7 @@ export const Housing = () => {
           headerLabel={
             housingModal.mode === 'add' ? 'Add Housing' : 'Edit Housing'
           }
-          saveButtonDisabled={dataSaveInProgress}
+          saveButtonDisabled={dataSaveInProgress || !isFormValid}
           cancelButtonDisabled={dataSaveInProgress}
           closeHandler={(saved) => {
             if (!saved) {
