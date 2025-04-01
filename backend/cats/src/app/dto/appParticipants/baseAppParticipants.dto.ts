@@ -1,31 +1,11 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { IsDate, IsString } from 'class-validator';
+import { IsDate, IsOptional, IsString } from 'class-validator';
 
 @ObjectType()
 @InputType()
 export class BaseAppParticipantsDto {
-  @Field()
+  @Field({defaultValue: false})
   isMainParticipant: boolean;
-
-  @Field()
-  @IsString()
-  firstName: string;
-
-  @Field()
-  @IsString()
-  lastName: string;
-
-  @Field()
-  @IsString()
-  fullName: string;
-
-  @Field()
-  @IsString()
-  name: string;
-
-  @Field()
-  @IsString()
-  description: string;
 
   @Field()
   @IsDate()
@@ -33,8 +13,6 @@ export class BaseAppParticipantsDto {
 
   @Field({ nullable: true })
   @IsDate()
-  effectiveEndDate: Date;
-
-  @Field()
-  isMinistry: boolean;
+  @IsOptional()
+  effectiveEndDate?: Date | null;
 }
