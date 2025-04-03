@@ -8,6 +8,7 @@ import {
   ApplicationHousingDto,
   UpdateHousingInputDto,
 } from '../../dto/applicationHousing.dto';
+import { LoggerService } from '../../logger/logger.service';
 
 describe('ApplicationHousingResolver', () => {
   let resolver: ApplicationHousingResolver;
@@ -41,6 +42,7 @@ describe('ApplicationHousingResolver', () => {
             createResponse: jest.fn(),
           },
         },
+        LoggerService,
       ],
     }).compile();
 
