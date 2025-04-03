@@ -205,7 +205,31 @@ const housingFormFields: {
     colSize: 'col-lg-6 col-md-6 col-sm-12',
   },
 
-  // TODO: Add checkboxes for rental, social, indigenous led fields
+  replaceFileRow: {
+    type: FormFieldType.Group,
+    label: 'Replace File',
+    value: '',
+    children: [
+      {
+        type: FormFieldType.Checkbox,
+        label: 'Rental',
+        placeholder: 'Rental',
+        graphQLPropertyName: 'isRental',
+      },
+      {
+        type: FormFieldType.Checkbox,
+        label: 'Social',
+        placeholder: 'Social',
+        graphQLPropertyName: 'isSocial',
+      },
+      {
+        type: FormFieldType.Checkbox,
+        label: 'Indigenous Led',
+        placeholder: 'Indigenous Led',
+        graphQLPropertyName: 'isIndigenousLed',
+      },
+    ],
+  },
 };
 
 export const getHousingFormFields = ({
@@ -219,6 +243,7 @@ export const getHousingFormFields = ({
 }): IFormField[][] => [
   [getHousingTypeField(housingTypes), housingFormFields['numberOfUnits']],
   [housingFormFields['effectiveDate'], housingFormFields['expiryDate']],
+  [housingFormFields['replaceFileRow']],
   [
     getRelatedApplicationsField(
       relatedApplicationsValue,
