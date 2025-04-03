@@ -1,0 +1,31 @@
+.rowsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-margin-large);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--layout-margin-medium);
+}
+
+.rowGrid6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.rowGrid2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.cell label {
+  display: block;
+  font: var(--typography-bold-small-body);
+  color: var(--typography-color-secondary);
+  margin-bottom: var(--layout-margin-xsmall);
+}
+
+.cell div {
+  font: var(--typography-regular-body);
+  color: var(--typography-color-primary);
+}
