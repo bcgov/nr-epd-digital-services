@@ -85,7 +85,6 @@ export class ApplicationService {
         'housingApplicationXrefs',
         'appParticipants',
         'appParticipants.organization',
-        'appParticipants.person',
       ],
     });
 
@@ -108,8 +107,7 @@ export class ApplicationService {
     const isTaxExempt =
       application.appParticipants?.some(
         (participant) =>
-          participant.organization?.isTaxExempt ||
-          participant.person?.isTaxExempt,
+          participant.isMainParticipant && participant.organization.isTaxExempt,
       ) ?? false;
 
     return {
