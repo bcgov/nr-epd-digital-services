@@ -122,10 +122,8 @@ export class ApplicationService {
       siteType: application.siteType,
       reviewProcess: application.reviewProcess,
       priority: currentPriority || null,
-
-      // TODO
-      isHousing: application.housingApplicationXrefs?.length > 0, // TODO: Making an assumption here. Needs to be confirmed.
-      isTaxExempt: isTaxExempt, // TODO: Making an assumption here. Needs to be confirmed.
+      isHousing: application.housingApplicationXrefs?.length > 0,
+      isTaxExempt: isTaxExempt,
     };
   }
 }
