@@ -94,7 +94,6 @@ export class Application {
   })
   csapRefNumber: string | null;
 
-
   @Column('integer', { name: 'srs_application_id', nullable: true })
   srsApplicationId: number | null;
 
@@ -127,6 +126,9 @@ export class Application {
 
   @OneToOne(() => AppStatus, (appStatus) => appStatus.application)
   appStatus: AppStatus;
+
+  @OneToMany(() => AppStatus, (appStatus) => appStatus.application)
+  appStatuses: AppStatus[];
 
   @OneToMany(() => AppVapourUse, (appVapourUse) => appVapourUse.application)
   appVapourUses: AppVapourUse[];

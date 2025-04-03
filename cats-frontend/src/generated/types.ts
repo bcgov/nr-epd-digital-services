@@ -44,6 +44,15 @@ export type AppParticipantsResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type ApplicationDetailsResponse = {
+  __typename?: 'ApplicationDetailsResponse';
+  data?: Maybe<ViewApplicationDetails>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export enum ApplicationFilter {
   All = 'ALL',
   Completed = 'COMPLETED',
@@ -179,6 +188,13 @@ export type CreatePersonNote = {
 
 export type DeletePersonNote = {
   id: Scalars['String']['input'];
+};
+
+export type DetailField = {
+  __typename?: 'DetailField';
+  abbrev: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+  id: Scalars['Float']['output'];
 };
 
 export type DropdownDto = {
@@ -324,6 +340,7 @@ export type Query = {
   findPersonById: PersonResponse;
   getAllParticipantRoles: ParticipantsRolesResponse;
   getAppParticipantsByAppId: AppParticipantsResponse;
+  getApplicationById: ApplicationDetailsResponse;
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
   getHousingTypes: HousingTypeResponse;
   getOrganizations: DropdownResponse;
@@ -343,6 +360,11 @@ export type QueryFindPersonByIdArgs = {
 export type QueryGetAppParticipantsByAppIdArgs = {
   applicationId: Scalars['Int']['input'];
   filter?: InputMaybe<AppParticipantFilter>;
+};
+
+
+export type QueryGetApplicationByIdArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -479,6 +501,23 @@ export type ViewAppParticipantsDto = {
 export type ViewApplication = {
   __typename?: 'ViewApplication';
   id: Scalars['Float']['output'];
+};
+
+export type ViewApplicationDetails = {
+  __typename?: 'ViewApplicationDetails';
+  appType?: Maybe<DetailField>;
+  csapRefNumber?: Maybe<Scalars['String']['output']>;
+  currentStatus?: Maybe<DetailField>;
+  endDate?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['Float']['output'];
+  isHousing: Scalars['Boolean']['output'];
+  isTaxExempt: Scalars['Boolean']['output'];
+  outcome?: Maybe<DetailField>;
+  priority?: Maybe<DetailField>;
+  queuedDate?: Maybe<Scalars['DateTime']['output']>;
+  receivedDate: Scalars['DateTime']['output'];
+  reviewProcess?: Maybe<DetailField>;
+  siteType?: Maybe<DetailField>;
 };
 
 export type ViewParticipantsRolesDto = {

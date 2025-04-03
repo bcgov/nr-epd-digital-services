@@ -1,0 +1,31 @@
+query getApplicationById($applicationId: Int!) {
+  getApplicationById(id: $applicationId) {
+    data {
+      id
+      csapRefNumber
+      priority {
+        abbrev
+      }
+      isHousing
+      isTaxExempt
+      receivedDate
+      queuedDate
+      endDate
+      outcome {
+        description
+      }
+      appType {
+        description
+      }
+      currentStatus {
+        description
+      }
+      siteType {
+        description
+      }
+      reviewProcess {
+        description
+      }
+    }
+  }
+}

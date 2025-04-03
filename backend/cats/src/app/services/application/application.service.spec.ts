@@ -26,7 +26,6 @@ describe('ApplicationService', () => {
     service = new ApplicationService(repository, loggerService);
   });
 
-
   describe('createApplication', () => {
     it('should create an application', async () => {
       const createApplication = {
@@ -34,7 +33,7 @@ describe('ApplicationService', () => {
         srsApplicationId: 11,
         siteId: 123,
         appTypeId: 2,
-        receivedDate: new Date()
+        receivedDate: new Date(),
       };
 
       // Mock repository methods with the correct types
@@ -50,5 +49,11 @@ describe('ApplicationService', () => {
       expect(result).toBeDefined();
       expect(result.id).toBe(savedApplication.id);
     });
+  });
+
+  describe('findApplicationDetailsById', () => {
+    it.todo(
+      'More tests will be added here once the site details are added to the response',
+    );
   });
 });

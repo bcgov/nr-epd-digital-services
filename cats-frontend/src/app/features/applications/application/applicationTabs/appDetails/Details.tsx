@@ -1,8 +1,23 @@
 import styles from './Details.module.css';
 import cx from 'classnames';
+import { useParams } from 'react-router-dom';
 import CollapsiblePanel from '../../../../../components/simple/CollapsiblePanel';
+import { useGetApplicationByIdQuery } from './Details.generated';
+import { TickIcon } from '../../../../../components/common/icon';
+import { formatDateUTC } from '../../../../../helpers/utility';
 
 export const Details = () => {
+  const { id = '' } = useParams();
+  const applicationId = parseInt(id, 10);
+
+  const { data } = useGetApplicationByIdQuery({
+    variables: {
+      applicationId,
+    },
+    skip: !applicationId,
+  });
+
+  const application = data?.getApplicationById.data;
   return (
     <CollapsiblePanel
       defaultOpen={true}
@@ -12,64 +27,76 @@ export const Details = () => {
           <div className={cx(styles.row, styles.rowGrid6)}>
             <div className={styles.cell}>
               <label>Application ID</label>
-              <div>18326</div>
+              <div>{application?.id}</div>
             </div>
             <div className={styles.cell}>
               <label>CSAP Reference #</label>
-              <div>000000000000</div>
+              <div>{application?.csapRefNumber}</div>
             </div>
             <div className={styles.cell}>
               <label>Priority</label>
-              <div>1</div>
+              <div>{application?.priority?.abbrev}</div>
             </div>
             <div className={styles.cell}>
               <label>Housing</label>
-              <div>✓</div>
+              <div>{application?.isHousing && <TickIcon />}</div>
             </div>
             <div className={styles.cell}>
               <label>Tax Exempt</label>
-              <div>✓</div>
+              <div>{application?.isTaxExempt && <TickIcon />}</div>
             </div>
           </div>
 
           <div className={cx(styles.row, styles.rowGrid6)}>
             <div className={styles.cell}>
               <label>Received</label>
-              <div>Mon Jul 08 2024</div>
+              <div>
+                {application?.receivedDate
+                  ? formatDateUTC(application?.receivedDate, 'E MMM d, yyyy')
+                  : ''}
+              </div>
             </div>
             <div className={styles.cell}>
               <label>Queued</label>
-              <div>Mon Jul 08 2024</div>
+              <div>
+                {application?.queuedDate
+                  ? formatDateUTC(application?.queuedDate, 'E MMM d, yyyy')
+                  : ''}
+              </div>
             </div>
             <div className={styles.cell}>
               <label>Completed</label>
-              <div>Fri Nov 15 2024</div>
+              <div>
+                {application?.endDate
+                  ? formatDateUTC(application?.endDate, 'E MMM d, yyyy')
+                  : ''}
+              </div>
             </div>
             <div className={styles.cell}>
               <label>Outcome</label>
-              <div>Not Satisfactory</div>
+              <div>{application?.outcome?.description}</div>
             </div>
           </div>
 
           <div className={cx(styles.row, styles.rowGrid2)}>
             <div className={styles.cell}>
               <label>Application Type</label>
-              <div>Notice of Independent Remediation</div>
+              <div>{application?.appType?.description}</div>
             </div>
             <div className={styles.cell}>
               <label>Status</label>
-              <div>Review in Progress: Caseworker</div>
+              <div>{application?.currentStatus?.description}</div>
             </div>
           </div>
 
           <div className={styles.row}>
             <div className={styles.cell}>
               <label>Site Type</label>
-              <div>Lorem Ipsum Dolor Sit Amet</div>
+              <div>{application?.siteType?.description}</div>
             </div>
             <div className={styles.cell}>
               <label>Review Process</label>
-              <div>Ministry</div>
+              <div>{application?.reviewProcess?.description}</div>
             </div>
           </div>
         </div>
