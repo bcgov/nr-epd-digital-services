@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Brackets } from 'typeorm';
+import { Repository, Brackets, ILike } from 'typeorm';
 import { Application } from '../../entities/application.entity';
 import { ApplicationSearchResult } from '../../dto/response/applicationSearchResponse';
 import { LoggerService } from '../../logger/logger.service';
 import { Filter } from '../../utilities/enums/application/filter.enum';
 import { SortByDirection } from '../../utilities/enums/application/sortByDirection.enum';
 import { SortByField } from '../../utilities/enums/application/sortByField.enum';
+import { ApplicationResultDto } from 'src/app/dto/applicationResultDto';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class ApplicationSearchService {
@@ -130,6 +132,55 @@ export class ApplicationSearchService {
     this.loggerService.log(
       `ApplicationSearchService: ${result.count} applications found.`,
     );
+    return result;
+  }
+
+  async searchApplicationsById(
+    applicationId: string,
+    page: number = 1,
+    pageSize: number = 10,
+  ): Promise<ApplicationSearchResult> {
+    this.loggerService.log(
+      `ApplicationSearchService.searchApplicationsById: applicationId: ${applicationId}, page: ${page}, pageSize: ${pageSize}.`,
+    );
+    const result = new ApplicationSearchResult();
+
+    const query = this.applicationRepository.createQueryBuilder('application');
+    query
+      .leftJoinAndSelect('application.appParticipants', 'appParticipant')
+      .leftJoinAndSelect('appParticipant.person', 'person')
+      .leftJoinAndSelect('application.site', 'site')
+      .leftJoinAndSelect('application.appType', 'appType')
+      .leftJoinAndSelect('application.appStatus', 'appStatus')
+      .leftJoinAndSelect('appStatus.statusType', 'statusType')
+      .leftJoinAndSelect('application.appPriorities', 'appPriority')
+      .leftJoinAndSelect('appPriority.priority', 'priority');
+
+    query.skip((page - 1) * pageSize).take(pageSize);
+    query.where('CAST(application.id AS TEXT) LIKE :searchParam', {
+      searchParam: `%${applicationId}%`,
+    });
+
+    const applicationList = await query.getMany();
+
+    result.applications = applicationList.map((app) => ({
+      id: app.id.toString(),
+      siteId: app.siteId?.toString() || '',
+      siteAddress: app.site?.address || '',
+      applicationType: app.appType?.description || '',
+      lastUpdated: app.updatedDateTime.toISOString(),
+      status: app.appStatus?.statusType?.abbrev || '',
+      staffAssigned: app.appParticipants.map(
+        (participant) => participant.person,
+      ),
+      priority: app.appPriorities?.[0]?.priority?.abbrev || '',
+      url: app.id.toString(),
+    }));
+
+    this.loggerService.log(
+      `ApplicationSearchService.searchApplicationsById: ${result.applications.length} applications found.`,
+    );
+
     return result;
   }
 }

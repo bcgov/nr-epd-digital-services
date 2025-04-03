@@ -1,0 +1,47 @@
+.searchFieldContainer {
+  position: relative;
+}
+
+.valueEntryDetails {
+  font-size: var(--typography-font-size-label);
+  color: var(--typography-color-placeholder);
+  margin-top: var(--layout-margin-xsmall);
+}
+
+.dropdownMenu {
+  width: 100%;
+  margin-top: -18px;
+  max-height: 400px;
+  overflow-y: auto;
+  gap: 100px;
+}
+
+.dropdownMenuItem {
+  cursor: pointer;
+  padding: var(--layout-padding-medium) var(--layout-padding-large);
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-margin-small);
+  border-bottom: 1px solid var(--surface-color-border-default);
+}
+
+.dropdownMenuItemHighlighted {
+  background-color: var(--surface-color-menus-hover);
+}
+
+.menuItemRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.itemData {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-margin-xsmall);
+  label {
+    pointer-events: none;
+    font-weight: bold;
+    color: var(--typography-color-secondary);
+    font-size: var(--typography-font-size-label);
+  }
+}
