@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AppParticipant } from '../../entities/appParticipant.entity';
 import { LoggerService } from '../../logger/logger.service';
 import { Application } from '../../entities/application.entity';
 import { CreateApplication } from '../../dto/application/createApplication.dto';
+import { AppTypeService } from '../appType/appType.service';
 
 @Injectable()
 export class ApplicationService {
@@ -12,6 +12,7 @@ export class ApplicationService {
     @InjectRepository(Application)
     private readonly applicationRepository: Repository<Application>,
     private readonly loggerService: LoggerService,
+    private readonly appTypeService: AppTypeService,
   ) { }
 
   async createApplication(createApplication: CreateApplication) {
@@ -23,10 +24,12 @@ export class ApplicationService {
         `Attempting to create application with srs app id: ${createApplication?.srsApplicationId}`,
       );
 
+      const appTypeId = await this.appTypeService.getAppTypeByDescription(createApplication.appType);
+
       const newApplication = await this.applicationRepository.create({
         siteId: createApplication.siteId,
         srsApplicationId: createApplication.srsApplicationId,
-        appTypeId: createApplication.appTypeId,
+        appTypeId: appTypeId?.id,
         rowVersionCount: 1,
         createdBy: 'SYSTEM',
         updatedBy: 'SYSTEM',
@@ -34,6 +37,7 @@ export class ApplicationService {
         updatedDateTime: new Date(),
         receivedDate: createApplication.receivedDate.toISOString()
       });
+
       // Save the new application
       const savedApplication = await this.applicationRepository.save(
         newApplication,
