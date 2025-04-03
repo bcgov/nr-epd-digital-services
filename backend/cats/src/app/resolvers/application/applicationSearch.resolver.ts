@@ -71,4 +71,37 @@ export class ApplicationSearchResolver {
       } as ApplicationSearchResponse;
     }
   }
+
+  @Query(() => ApplicationSearchResponse)
+  async searchApplicationsById(
+    @Args('query') query: string,
+  ): Promise<ApplicationSearchResponse> {
+    this.loggerService.log(
+      `ApplicationSearchResolver.searchApplicationsById: ${query}.`,
+    );
+    const result: ApplicationSearchResult =
+      await this.applicationSearchService.searchApplicationsById(query);
+
+    if (!result || result.error) {
+      this.loggerService.error(
+        `ApplicationSearchResolver.searchApplicationsById: ${result.error}.`,
+        null,
+      );
+    }
+
+    this.loggerService.log(
+      `ApplicationSearchResolver.searchApplicationsById: ${result.applications.length} applications found.`,
+    );
+
+    return {
+      applications: result.applications,
+      message: '',
+      httpStatusCode: HttpStatus.OK,
+      success: true,
+      timestamp: new Date().toISOString(),
+      count: result.count,
+      page: result.page,
+      pageSize: result.pageSize,
+    } as ApplicationSearchResponse;
+  }
 }

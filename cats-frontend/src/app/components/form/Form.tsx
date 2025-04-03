@@ -42,6 +42,7 @@ const Form: React.FC<IFormRendererProps> = ({
         <div key={rowIndex} className="row">
           {row.map((field, colIndex) => (
             <div key={colIndex} className={field.colSize}>
+              {field.type === FormFieldType.Custom && field.renderField}
               {field.type === FormFieldType.Text && (
                 <TextInput
                   label={field.label}

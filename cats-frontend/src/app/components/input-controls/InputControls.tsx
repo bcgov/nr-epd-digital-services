@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { IFormField } from './IFormField';
+import { FormFieldType, IFormField } from './IFormField';
 import { formatDate, formatDateRange } from '../../helpers/utility';
 import { DatePicker, DateRangePicker } from 'rsuite';
 import {
@@ -528,7 +528,7 @@ export const GroupInput: React.FC<InputProps> = ({
   };
   const groupId = label?.replace(/\s+/g, '_') + '_' + v4();
   return (
-    <div className="mb-3">
+    <div>
       {' '}
       {/* Container for the group input */}
       {/* Label for the group input */}
@@ -547,6 +547,21 @@ export const GroupInput: React.FC<InputProps> = ({
         {isEditing ? (
           children?.map((child, index) => {
             const grpId = child?.label?.replace(/\s+/g, '_') + '_' + v4();
+
+            if (child.type === FormFieldType.Checkbox) {
+              return (
+                <div key={index} className="col">
+                  <CheckBoxInput
+                    label={child.label}
+                    isLabel
+                    type={FormFieldType.Checkbox}
+                    isChecked={child.value}
+                    onChange={child.onChange}
+                    wrapperClassName={'d-flex gap-2'}
+                  />
+                </div>
+              );
+            }
             return (
               <div key={index} className="col">
                 {isChildLabel && (
@@ -862,6 +877,8 @@ export const CheckBoxInput: React.FC<InputProps> = ({
   tableMode,
   stickyCol,
   srMode,
+  wrapperClassName,
+  isDisabled,
 }) => {
   const ContainerElement = tableMode ? 'td' : 'div';
   const inputTxtId = label?.replace(/\s+/g, '_') + '_' + v4();
@@ -869,30 +886,21 @@ export const CheckBoxInput: React.FC<InputProps> = ({
     onChange(e.target.checked); // Toggle the checked state and pass it to the parent component
   };
 
-  // const disableCheckBox = isEditing || srMode ? false : true;
-  const disableCheckBox = srMode ? false : true;
+  wrapperClassName = wrapperClassName ?? 'd-inline form-check p-0';
 
   return (
     <ContainerElement
       className={`${tableMode ? 'table-border-light align-content-center ' : 'd-inline mb-3'} ${tableMode && stickyCol ? 'positionSticky' : ''} `}
     >
-      <div
-        className={
-          tableMode
-            ? !disableCheckBox
-              ? 'p-0'
-              : ''
-            : 'd-inline form-check p-0'
-        }
-      >
+      <div className={wrapperClassName}>
         <input
           id={inputTxtId}
           data-testid={inputTxtId}
           type={type}
-          className={`form-check-input  ${customPlaceholderCss ?? ''} ${!disableCheckBox ? 'custom-checkbox' : 'custom-checkbox-viewMode'} ${
+          className={`form-check-input  ${customPlaceholderCss ?? ''} ${!isDisabled ? 'custom-checkbox' : 'custom-checkbox-viewMode'} ${
             customEditInputTextCss ?? 'custom-input-text'
           }`}
-          disabled={disableCheckBox}
+          disabled={isDisabled}
           checked={isChecked}
           aria-label={label} // Accessibility
           onChange={handleCheckboxChange}
