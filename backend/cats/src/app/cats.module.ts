@@ -63,6 +63,7 @@ import { ApplicationHousingService } from './services/application/applicationHou
 import { ApplicationHousingResolver } from './resolvers/application/applicationHousing.resolver';
 import { ApplicationResolver } from './resolvers/application/application.resolver';
 import { ApplicationService } from './services/application/application.service';
+import { AppTypeService } from './services/appType/appType.service';
 /**
  * Module for wrapping all functionalities in user microserivce
  */
@@ -134,6 +135,7 @@ import { ApplicationService } from './services/application/application.service';
     ApplicationHousingService,
     ApplicationResolver,
     ApplicationService,
+    AppTypeService,
   ],
   controllers: [UserController],
 })
