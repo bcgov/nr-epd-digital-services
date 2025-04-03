@@ -21,14 +21,15 @@ export class ApplicationService {
     try {
       // Log the input parameters for better traceability
       this.loggerService.debug(
-        `Attempting to create application with srs app id: ${createApplication?.srsApplicationId}`,
+        `Attempting to create application with srs form id: ${createApplication?.formId} ' and submission id: ${createApplication?.formId}`,
       );
 
       const appType = await this.appTypeService.getAppTypeByAbbrev(createApplication.appTypeAbbrev);
 
       const newApplication = await this.applicationRepository.create({
         siteId: createApplication.siteId,
-        srsApplicationId: createApplication.srsApplicationId,
+        formId: createApplication.formId,
+        submissionId: createApplication.submissionId,
         appTypeId: appType?.id,
         rowVersionCount: 1,
         createdBy: 'SYSTEM',
