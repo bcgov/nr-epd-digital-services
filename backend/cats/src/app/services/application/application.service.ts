@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AppParticipant } from '../../entities/appParticipant.entity';
 import { LoggerService } from '../../logger/logger.service';
 import { Application } from '../../entities/application.entity';
 import { CreateApplication } from '../../dto/application/createApplication.dto';
@@ -84,6 +83,9 @@ export class ApplicationService {
         'appPriorities',
         'appPriorities.priority',
         'housingApplicationXrefs',
+        'appParticipants',
+        'appParticipants.organization',
+        'appParticipants.person',
       ],
     });
 
@@ -103,6 +105,13 @@ export class ApplicationService {
       (status) => status.isCurrent,
     );
 
+    const isTaxExempt =
+      application.appParticipants?.some(
+        (participant) =>
+          participant.organization?.isTaxExempt ||
+          participant.person?.isTaxExempt,
+      ) ?? false;
+
     return {
       id: application.id,
       csapRefNumber: application.csapRefNumber,
@@ -118,7 +127,7 @@ export class ApplicationService {
 
       // TODO
       isHousing: application.housingApplicationXrefs?.length > 0, // TODO: Making an assumption here. Needs to be confirmed.
-      isTaxExempt: false, // TODO: Confirm where this should be coming from.
+      isTaxExempt: isTaxExempt, // TODO: Making an assumption here. Needs to be confirmed.
     };
   }
 }
