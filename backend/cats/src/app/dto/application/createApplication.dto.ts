@@ -12,7 +12,7 @@ export class CreateApplication {
     siteId: number; // site for which the application is created
 
     @Field()
-    appType: string; // the application type eg: SDS, SoSC etc
+    appTypeAbbrev: string; // the application type eg: SDS, SoSC etc
 
     @Field()
     receivedDate: Date; // date when application was submitted in SRS

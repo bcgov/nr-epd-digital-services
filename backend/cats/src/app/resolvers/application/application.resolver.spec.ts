@@ -64,7 +64,7 @@ describe('ApplicationResolver', () => {
     const createApplicationDto: CreateApplication = {
       srsApplicationId: 11,
       siteId: 123,
-      appType: 'CSR',
+      appTypeAbbrev: 'CSR',
       receivedDate: new Date()
     };
 
@@ -97,7 +97,7 @@ describe('ApplicationResolver', () => {
     const createApplicationDto: CreateApplication = {
       srsApplicationId: 11,
       siteId: 123,
-      appType: 'TEST',
+      appTypeAbbrev: 'TEST',
       receivedDate: new Date()
     };
 

@@ -50,20 +50,20 @@ describe('ApplicationService', () => {
       const mockCreateApplication = {
         srsApplicationId: 12345,
         siteId: 67890,
-        appType: 'CSR',
+        appTypeAbbrev: 'CSR',
         receivedDate: new Date(),
       };
 
       const mockAppType = { id: 1 };
       const mockNewApplication = { id: 1 };
 
-      appTypeService.getAppTypeByDescription = jest.fn().mockResolvedValue(mockAppType);
+      appTypeService.getAppTypeByAbbrev = jest.fn().mockResolvedValue(mockAppType);
       applicationRepository.create = jest.fn().mockReturnValue(mockNewApplication);
       applicationRepository.save = jest.fn().mockResolvedValue(mockNewApplication);
 
       const result = await applicationService.createApplication(mockCreateApplication);
 
-      expect(appTypeService.getAppTypeByDescription).toHaveBeenCalledWith('CSR');
+      expect(appTypeService.getAppTypeByAbbrev).toHaveBeenCalledWith('CSR');
       expect(applicationRepository.create).toHaveBeenCalled();
       expect(applicationRepository.save).toHaveBeenCalled();
       expect(result).toEqual({ id: 1 });

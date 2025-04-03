@@ -24,7 +24,7 @@ export class ApplicationService {
         `Attempting to create application with srs app id: ${createApplication?.srsApplicationId}`,
       );
 
-      const appTypeId = await this.appTypeService.getAppTypeByDescription(createApplication.appType);
+      const appTypeId = await this.appTypeService.getAppTypeByAbbrev(createApplication.appTypeAbbrev);
 
       const newApplication = await this.applicationRepository.create({
         siteId: createApplication.siteId,
