@@ -42,7 +42,13 @@ describe('ApplicationHousingResolver', () => {
             createResponse: jest.fn(),
           },
         },
-        LoggerService,
+        {
+          provide: LoggerService,
+          useValue: {
+            log: jest.fn(),
+            error: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
