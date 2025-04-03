@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { FileLinesIcon } from '../../../../components/common/icon';
 import './viewLink.css';
 
@@ -9,15 +10,10 @@ interface ViewLinkProps {
 const ApplicationResultsViewLink: React.FC<ViewLinkProps> = ({ url }) => {
   return (
     <>
-      <FileLinesIcon />
-      <a
-        className="application-results__view-link"
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <Link className="application-results__view-link" to={url}>
+        <FileLinesIcon />
         View
-      </a>
+      </Link>
     </>
   );
 };
