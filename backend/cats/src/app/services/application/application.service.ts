@@ -24,12 +24,12 @@ export class ApplicationService {
         `Attempting to create application with srs app id: ${createApplication?.srsApplicationId}`,
       );
 
-      const appTypeId = await this.appTypeService.getAppTypeByAbbrev(createApplication.appTypeAbbrev);
+      const appType = await this.appTypeService.getAppTypeByAbbrev(createApplication.appTypeAbbrev);
 
       const newApplication = await this.applicationRepository.create({
         siteId: createApplication.siteId,
         srsApplicationId: createApplication.srsApplicationId,
-        appTypeId: appTypeId?.id,
+        appTypeId: appType?.id,
         rowVersionCount: 1,
         createdBy: 'SYSTEM',
         updatedBy: 'SYSTEM',
