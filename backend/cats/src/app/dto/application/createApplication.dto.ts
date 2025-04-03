@@ -4,9 +4,10 @@ import { Field, InputType } from '@nestjs/graphql';
 @InputType()
 export class CreateApplication {
     @Field()
+    formId: string; // the formId in formsflow
 
     @Field()
-    srsApplicationId: number; // ID of the new application in SRS
+    submissionId: string; // the submission id in formsflow
 
     @Field()
     siteId: number; // site for which the application is created
