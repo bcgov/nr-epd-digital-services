@@ -15,7 +15,7 @@ import {
 } from '../../dto/applicationHousing.dto';
 import { HousingType } from '../../entities/housingType.entity';
 import { HousingTypeDto } from '../../dto/housingType.dto';
-
+import { LoggerService } from '../../logger/logger.service';
 @Injectable()
 export class ApplicationHousingService {
   constructor(
@@ -29,6 +29,7 @@ export class ApplicationHousingService {
     private readonly applicationRepository: Repository<Application>,
     @InjectRepository(HousingType)
     private readonly housingTypeRepository: Repository<HousingType>,
+    private readonly loggerService: LoggerService,
   ) {}
 
   async getApplicationHousingByApplicationId(
@@ -362,10 +363,17 @@ export class ApplicationHousingService {
   }
 
   async getHousingTypes(): Promise<HousingTypeDto[]> {
+    this.loggerService.log(
+      `ApplicationHousingService.getHousingTypes: Getting housing types.`,
+    );
     const housingTypes = await this.housingTypeRepository.find({
       where: { isActive: true },
       order: { displayOrder: 'ASC' },
     });
+
+    this.loggerService.log(
+      `ApplicationHousingService.getHousingTypes: ${housingTypes.length} housing types found.`,
+    );
 
     return plainToInstance(HousingTypeDto, housingTypes);
   }

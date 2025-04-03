@@ -140,6 +140,9 @@ export class ApplicationSearchService {
     page: number = 1,
     pageSize: number = 10,
   ): Promise<ApplicationSearchResult> {
+    this.loggerService.log(
+      `ApplicationSearchService.searchApplicationsById: applicationId: ${applicationId}, page: ${page}, pageSize: ${pageSize}.`,
+    );
     const result = new ApplicationSearchResult();
 
     const query = this.applicationRepository.createQueryBuilder('application');
@@ -173,6 +176,10 @@ export class ApplicationSearchService {
       priority: app.appPriorities?.[0]?.priority?.abbrev || '',
       url: app.id.toString(),
     }));
+
+    this.loggerService.log(
+      `ApplicationSearchService.searchApplicationsById: ${result.applications.length} applications found.`,
+    );
 
     return result;
   }

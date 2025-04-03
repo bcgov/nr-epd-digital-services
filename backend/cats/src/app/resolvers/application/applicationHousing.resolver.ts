@@ -1,5 +1,6 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { HttpStatus, UsePipes } from '@nestjs/common';
+import { LoggerService } from '../../logger/logger.service';
 import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
 import { GenericValidationPipe } from '../../utils/validations/genericValidationPipe';
 import {
@@ -19,6 +20,7 @@ export class ApplicationHousingResolver {
     private readonly genericResponseProvider: GenericResponseProvider<
       ApplicationHousingDto[]
     >,
+    private readonly loggerService: LoggerService,
   ) {}
 
   @Query(() => ApplicationHousingResponse, {
@@ -89,7 +91,14 @@ export class ApplicationHousingResolver {
   })
   @UsePipes(new GenericValidationPipe())
   async getHousingTypes() {
+    this.loggerService.log(
+      `ApplicationHousingResolver.getHousingTypes: Getting housing types.`,
+    );
     const result = await this.applicationHousingService.getHousingTypes();
+
+    this.loggerService.log(
+      `ApplicationHousingResolver.getHousingTypes: ${result.length} housing types found.`,
+    );
 
     const responseProvider = new GenericResponseProvider<HousingTypeDto[]>();
     return responseProvider.createResponse(

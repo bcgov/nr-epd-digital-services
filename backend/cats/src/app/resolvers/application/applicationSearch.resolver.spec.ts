@@ -181,7 +181,7 @@ describe('ApplicationSearchResolver', () => {
         timestamp: expect.any(String),
       });
       expect(loggerService.error).toHaveBeenCalledWith(
-        'ApplicationSearchResolver: searchApplicationsById: Application not found.',
+        'ApplicationSearchResolver.searchApplicationsById: Application not found.',
         null,
       );
     });
