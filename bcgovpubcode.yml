@@ -1,0 +1,67 @@
+---
+data_management_roles:
+  data_custodian: Karen Li
+  data_steward: Haley Sawyer
+  product_owner: Haley Sawyer
+product_external_dependencies:
+  common_components:
+    - BC-Address-Geocoder
+    - Common-Document-Generation-Service
+    - Design-System
+  identity_authorization:
+    - IDIR
+    - BceId
+    - Business-BceId
+    - BC-Services-Card
+    - BCGov-SSO-Keycloak
+  notification_standard:
+    - Common-Hosted-Email-Service
+  other_dependencies: FormsFlow AI Premium Standard
+product_information:
+  api_specifications: []
+  business_capabilities_standard:
+    - Compliance and Enforcement
+    - Environmental Protection
+    - Environmental Assessment
+    - First Nations Consultation
+    - Manage Object Storage Objects
+    - Performance Management
+    - Site Remediation
+    - Stakeholder Engagement
+  ministry:
+    - Environment and Parks
+  product_acronym: EPP
+  product_description: The technology platform for EPD Digital Services
+  product_name: Environmental Protection Platform
+  product_status: maturing
+  product_urls: []
+  program_area: Digital Services
+product_technology_information:
+  backend_frameworks:
+    - name: NestJS
+      version: 9.0.0
+    - name: NestJS
+      version: 9.2.1
+    - name: Express
+      version: 4.18.2
+  backend_languages_version:
+    - name: TypeScript
+      version: 4.7.4
+    - name: TypeScript
+      version: 5.2.2
+  ci_cd_tools:
+    - GitHub-Actions
+  data_storage_platforms:
+    - Postgresql
+  frontend_frameworks:
+    - name: React
+      version: 18.2.0
+  frontend_languages:
+    - name: TypeScript
+      version: 4.8.4
+  hosting_platforms:
+    - Private-Cloud-Openshift
+  other_tools: FormsFlow AI Premium Standard (5.2.0)
+  spatial_mapping_technologies:
+    - Leaflet
+version: 1

@@ -94,8 +94,15 @@ export class Application {
   })
   csapRefNumber: string | null;
 
-  @Column('integer', { name: 'srs_application_id', nullable: true })
-  srsApplicationId: number | null;
+  @Column('character varying', { name: 'form_id', length: 50, nullable: true })
+  formId: string | null;
+
+  @Column('character varying', {
+    name: 'submission_id',
+    length: 50,
+    nullable: true,
+  })
+  submissionId: string | null;
 
   @OneToMany(() => AppExpense, (appExpense) => appExpense.application)
   appExpenses: AppExpense[];

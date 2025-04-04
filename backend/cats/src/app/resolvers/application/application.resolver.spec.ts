@@ -62,10 +62,10 @@ describe('ApplicationResolver', () => {
 
   it('should create an application successfully', async () => {
     const createApplicationDto: CreateApplication = {
-      applicationId: 1,
-      srsApplicationId: 11,
+      formId: '67e70d854d238fa5ddcfc3b0',
+      submissionId: '54f678b8-963e-449c-a414-71a21b5e0b66',
       siteId: 123,
-      appTypeId: 2,
+      appTypeAbbrev: 'CSR',
       receivedDate: new Date()
     };
 
@@ -96,10 +96,10 @@ describe('ApplicationResolver', () => {
 
   it('should return an error when creation of application fails', async () => {
     const createApplicationDto: CreateApplication = {
-      applicationId: 1,
-      srsApplicationId: 11,
+      formId: '67e70d854d238fa5ddcfc3b0',
+      submissionId: '54f678b8-963e-449c-a414-71a21b5e0b66',
       siteId: 123,
-      appTypeId: 2,
+      appTypeAbbrev: 'TEST',
       receivedDate: new Date()
     };
 

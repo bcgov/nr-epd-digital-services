@@ -151,8 +151,7 @@ export type CreateAppParticipantsResponse = {
 };
 
 export type CreateApplication = {
-  appTypeId: Scalars['Float']['input'];
-  applicationId: Scalars['Float']['input'];
+  appTypeAbbrev: Scalars['String']['input'];
   receivedDate: Scalars['DateTime']['input'];
   siteId: Scalars['Float']['input'];
   srsApplicationId: Scalars['Float']['input'];

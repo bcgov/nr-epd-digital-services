@@ -64,6 +64,7 @@ import { ApplicationHousingResolver } from './resolvers/application/applicationH
 import { ApplicationResolver } from './resolvers/application/application.resolver';
 import { ApplicationService } from './services/application/application.service';
 import { ApplicationDetailsResolver } from './resolvers/application/applicationDetails.resolver';
+import { AppTypeService } from './services/appType/appType.service';
 /**
  * Module for wrapping all functionalities in user microserivce
  */
@@ -136,6 +137,7 @@ import { ApplicationDetailsResolver } from './resolvers/application/applicationD
     ApplicationResolver,
     ApplicationService,
     ApplicationDetailsResolver,
+    AppTypeService,
   ],
   controllers: [UserController],
 })
