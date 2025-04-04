@@ -850,14 +850,6 @@ export const DateInput: React.FC<InputProps> = ({
           {error}
         </span>
       )}
-      {error && (
-        <span
-          aria-label="error-message"
-          className={` ${customErrorCss ?? 'text-danger  py-2 mx-1 small'}`}
-        >
-          {error}
-        </span>
-      )}
     </ContainerElement>
   );
 };
