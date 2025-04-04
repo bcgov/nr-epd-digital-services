@@ -56,6 +56,8 @@ import {
   BsExclamationTriangle,
   BsXLg,
 } from 'react-icons/bs';
+
+import { FaExternalLinkAlt } from 'react-icons/fa';
 import { BiSolidFilePdf } from 'react-icons/bi';
 
 export const ShoppingCartIcon = FaCartShopping;
@@ -112,3 +114,4 @@ export const ListCheckIcon = FaListCheck;
 export const PlainTrashIcon = FaTrash;
 export const QuestionMarkIcon = FaQuestion;
 export const FileLinesIcon = FaFileLines;
+export const ExternalLink = FaExternalLinkAlt;
