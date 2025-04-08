@@ -37,46 +37,10 @@ export class UserController {
     @Body() addUserToGroupDto: AddUserToGroupDto,
   ): Promise<any> {
     try {
-<<<<<<< HEAD
-      const { userId } = addUserToGroupDto;
-
-      // Get access token from Keycloak
-      const accessToken = await this.keyCloakService.getToken();
-      if (!accessToken) {
-        throw new HttpException(
-          'Failed to get access token',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
-
-      // Find group ID by name
-      const groupName = 'formsflow-client'; // Assuming 'formflow-client' is the group name
-      const groupId = await this.keyCloakService.getGroupIdByName(
-        groupName,
-        accessToken,
-      );
-      if (!groupId) {
-        throw new HttpException(
-          `Group '${groupName}' not found`,
-          HttpStatus.NOT_FOUND,
-        );
-      }
-
-      // Add user to group
-      const result = await this.keyCloakService.addUserToGroup(
-        userId,
-        groupId,
-        accessToken,
-      );
-      if (result.success) {
-        return result;
-      }
-=======
       // Find group ID by name
       const groupName = 'formsflow-client'; // Assuming 'formflow-client' is the group name
 
       return this.processAddUserToGroupRequest(addUserToGroupDto, groupName);
->>>>>>> dev
     } catch (error) {
       console.log('addUserToGroup error', error);
       // Handle errors
@@ -107,8 +71,6 @@ export class UserController {
     @Body() addUserToGroupDto: AddUserToGroupDto,
   ): Promise<any> {
     try {
-<<<<<<< HEAD
-=======
       const groupName = this.configService.get<string>(
         'LRS_APPROVING_AUTHORITY_GROUP_NAME',
       ); // 'lrs-approving-authority'
@@ -167,7 +129,6 @@ export class UserController {
     groupName: string,
   ): Promise<any> {
     try {
->>>>>>> dev
       const { userId } = addUserToGroupDto;
 
       // Get access token from Keycloak
