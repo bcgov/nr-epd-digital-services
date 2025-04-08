@@ -3816,7 +3816,7 @@
                                                         "required": true,
                                                         "pattern": "",
                                                         "customMessage": "",
-                                                        "custom": "\nvar currentValue = input;\n\nif(currentValue!== '')\n{\n\n\nif( data.hiddenUserIdForFormSharing === '')\n{\n   valid = 'Unable to find user with provided email address';\n}\n\n\nfetch(localStorage.getItem('formsflow.ai.api.url')+'/user?memberOfGroup=formsflow%2Fformsflow-reviewer%2Fformsflow-client-reviewer',\n{'headers':{ 'authorization': 'Bearer '+localStorage.getItem('authToken')},'mode':'cors'})\n.then((p)=> {return p.json();}).\nthen((x)=>{\n    data.hiddenUserIdForFormSharing = '' ;\n x.data.find((y)=>{\n if( y.email=== currentValue ) \n { data.hiddenUserIdForFormSharing = y.username}\n\n })\n\n if(data.hiddenUserIdForFormSharing==='')\n {\n    valid = 'Unable to find user with provided email address';\n }\n else\n {\n    valid = true;\n }\n\n}).then(()=>{\n\n\n    var previousValue = localStorage.getItem(\"sdsHiddenUserIdForFormSharing\"); \n\n    if(previousValue != currentValue )\n    {\n\tlocalStorage.setItem(\"sdsHiddenUserIdForFormSharing\", currentValue);\n        instance.triggerChange();\n    }\n\t\n})\n\n}\n\n",
+                                                        "custom": "",
                                                         "customPrivate": false,
                                                         "json": "",
                                                         "minLength": "",
@@ -3864,7 +3864,7 @@
                                                     "addons": [],
                                                     "inputType": "email",
                                                     "inputMask": "",
-                                                    "id": "e00h8xm",
+                                                    "id": "ejqbw1c",
                                                     "defaultValue": ""
                                                 }
                                             ],
@@ -11053,7 +11053,7 @@
                         "height": ""
                     },
                     "type": "button",
-                    "custom": "if(data.section1BAgentCheckbox && data.hiddenUserIdForFormSharing==='')\r\n{\r\n    alert('Please provide valid user email id to share the form ');\r\n    \r\n    if(!form.checkValidity(null, false, null, true))\r\n    {\r\n      form.submit();\r\n    }\r\n    \r\n}\r\nelse if(data.section5DeclarationSectionLocalGovernmentPermits && data.approvingAuthorityEmailAddress === '')\r\n{\r\n    alert('Please provide approving authority email address ');\r\n    \r\n    if(!form.checkValidity(null, false, null, true))\r\n    {\r\n      form.submit();\r\n    }\r\n\r\n}\r\nelse if(data.section5DeclarationsCheckboxForeclosure || data.section5DeclarationsCheckboxDecommissioning || data.section5DeclarationsCheckboxCeasingOperations ||\r\n data.section5DeclarationSectionLocalGovernmentPermits || data.section5DeclarationSectionOilGas || data.section5DeclarationsCheckboxUnderOrder\r\n || data.section5DeclarationsCheckboxCCAAProceedings || data.section5DeclarationsCheckboxBIAProceedings)\r\n{\r\n\tif(data.siteId === '' || data.siteId === undefined  || data['Section2-LegallyTitled-Address'] === '' || data['Section2-LegallyTitled-Address'] === undefined\r\n || data['Section2-LegallyTitled-City'] === '' || data['Section2-LegallyTitled-City'] === undefined )\r\n\t{\r\n\t  alert('Please provide Site Id , address and city.');\r\n\t if(!form.checkValidity(null, false, null, true))\r\n   \t {\r\n      \t\tform.submit();\r\n    \t }\r\n\t}\r\n\telse\r\n\t{\r\n\t\tform.submit();\r\n\t}\r\n}\r\nelse\r\n{\r\n  form.submit();\r\n}",
+                    "custom": "if(data.section5DeclarationSectionLocalGovernmentPermits && data.approvingAuthorityEmailAddress === '')\r\n{\r\n    alert('Please provide approving authority email address ');\r\n    \r\n    if(!form.checkValidity(null, false, null, true))\r\n    {\r\n      form.submit();\r\n    }\r\n\r\n}\r\nelse if(data.section5DeclarationsCheckboxForeclosure || data.section5DeclarationsCheckboxDecommissioning || data.section5DeclarationsCheckboxCeasingOperations ||\r\n data.section5DeclarationSectionLocalGovernmentPermits || data.section5DeclarationSectionOilGas || data.section5DeclarationsCheckboxUnderOrder\r\n || data.section5DeclarationsCheckboxCCAAProceedings || data.section5DeclarationsCheckboxBIAProceedings)\r\n{\r\n\tif(data.siteId === '' || data.siteId === undefined  || data['Section2-LegallyTitled-Address'] === '' || data['Section2-LegallyTitled-Address'] === undefined\r\n || data['Section2-LegallyTitled-City'] === '' || data['Section2-LegallyTitled-City'] === undefined )\r\n\t{\r\n\t  alert('Please provide Site Id , address and city.');\r\n\t if(!form.checkValidity(null, false, null, true))\r\n   \t {\r\n      \t\tform.submit();\r\n    \t }\r\n\t}\r\n\telse\r\n\t{\r\n\t\tform.submit();\r\n\t}\r\n}\r\nelse\r\n{\r\n  form.submit();\r\n}",
                     "input": true,
                     "placeholder": "",
                     "prefix": "",
