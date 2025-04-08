@@ -100,9 +100,9 @@ export const flattenFormRows = (arr: IFormField[][]): IFormField[] => {
 export function getUser() {
   const oidcStorage = sessionStorage.getItem(
     `oidc.user:` +
-      getClientSettings().authority +
-      `:` +
-      getClientSettings().client_id,
+    getClientSettings().authority +
+    `:` +
+    getClientSettings().client_id,
   );
   if (!oidcStorage) {
     return null;
@@ -229,9 +229,9 @@ export const getLoggedInUserType = () => {
     : UserRoleType.default;
 };
 
-export const isUserRoleInternalUser = () => {};
+export const isUserRoleInternalUser = () => { };
 
-export const isUserRoleSiteRegistrar = () => {};
+export const isUserRoleSiteRegistrar = () => { };
 
 export const updateTableColumn = (
   columns: TableColumn[],
@@ -287,6 +287,14 @@ export const updateFields = (
     ...fieldArray.slice(indexToUpdate + 1),
   ];
 };
+
+export const bcBoxAppUrl = import.meta.env.VITE_BCBOX_APP_URL;
+export const getBcBoxBucketIdApiUrl = import.meta.env.VITE_BCBOX_BUCKET_URL;
+export const comsAccessKeyId = import.meta.env.VITE_COMS_ACCESS_KEY_ID;
+export const comsBcBoxBucketId = import.meta.env.VITE_COMS_BUCKET;
+export const comsEndPoint = import.meta.env.VITE_COMS_ENDPOINT;
+export const comsAccessRegion = import.meta.env.VITE_COMS_ACCESS_REGION;
+export const comsAccessKey = import.meta.env.VITE_COMS_ACCESS_KEY;
 
 type PermissionSuccessCallback = (state: PermissionState) => void;
 type PermissionErrorCallback = (error: Error) => void;

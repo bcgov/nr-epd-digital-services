@@ -3,7 +3,7 @@ import debounce from 'lodash/debounce';
 import PageContainer from '../../../components/simple/PageContainer';
 import SearchInput from '../../../components/search/SearchInput';
 import { RequestStatus } from '../../../helpers/requests/status';
-import ApplicationResultsTable from './applicationResults/applicationResultsTable';
+import ApplicationResultsTable from './applicationResults/table';
 import { TableColumn } from '../../../components/table/TableColumn';
 import { applicationResultColumns } from './applicationResults/tableColumnConfig';
 import {
@@ -92,11 +92,25 @@ const Search: React.FC = () => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchTerm = event.target.value;
     setSearchTerm(searchTerm);
-    debouncedSearch(searchTerm, page, pageSize, filter, sortBy, sortByDir);
+    // Reset page to 1 when searching, addresses an edge case where the user is
+    // on page 2 and searches for something that returns one page of results
+    // causing the table to show no results.
+    setPage(1);
+    debouncedSearch(searchTerm, 1, pageSize, filter, sortBy, sortByDir);
   };
 
   const handleFilterChange = (filter: ApplicationFilter) => {
     setFilter(filter);
+    debouncedSearch(searchTerm, page, pageSize, filter, sortBy, sortByDir);
+  };
+
+  const handlePageChange = (page: number) => {
+    setPage(page);
+    debouncedSearch(searchTerm, page, pageSize, filter, sortBy, sortByDir);
+  };
+
+  const handlePageSizeChange = (pageSize: number) => {
+    setPageSize(pageSize);
     debouncedSearch(searchTerm, page, pageSize, filter, sortBy, sortByDir);
   };
 
@@ -151,8 +165,8 @@ const Search: React.FC = () => {
         handleFilterChange={handleFilterChange}
         page={page}
         pageSize={pageSize}
-        handlePageChange={setPage}
-        handlePageSizeChange={setPageSize}
+        handlePageChange={handlePageChange}
+        handlePageSizeChange={handlePageSizeChange}
         showPageOptions={true}
         totalResults={totalResults}
         filter={filter}

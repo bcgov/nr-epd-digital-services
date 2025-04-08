@@ -37,10 +37,11 @@ export const CancelButton: React.FC<ButtonProps> = ({
   label,
   showIcon,
   variant,
+  isDisabled,
 }) => {
   showIcon = showIcon ?? true;
   return (
-    <Button variant={variant} onClick={clickHandler}>
+    <Button variant={variant} onClick={clickHandler} disabled={isDisabled}>
       {showIcon && <XmarkIcon />}
       {label && label !== '' ? label : 'Cancel'}
     </Button>

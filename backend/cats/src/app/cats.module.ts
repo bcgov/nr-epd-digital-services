@@ -61,6 +61,9 @@ import { PersonNoteResolver } from './resolvers/note/personNote.resolver';
 import { PersonNoteService } from './services/note/personNote.service';
 import { ApplicationHousingService } from './services/application/applicationHousing.service';
 import { ApplicationHousingResolver } from './resolvers/application/applicationHousing.resolver';
+import { ApplicationResolver } from './resolvers/application/application.resolver';
+import { ApplicationService } from './services/application/application.service';
+import { AppTypeService } from './services/appType/appType.service';
 /**
  * Module for wrapping all functionalities in user microserivce
  */
@@ -130,7 +133,10 @@ import { ApplicationHousingResolver } from './resolvers/application/applicationH
     LoggerService,
     ApplicationHousingResolver,
     ApplicationHousingService,
+    ApplicationResolver,
+    ApplicationService,
+    AppTypeService,
   ],
   controllers: [UserController],
 })
-export class CatsModule {}
+export class CatsModule { }

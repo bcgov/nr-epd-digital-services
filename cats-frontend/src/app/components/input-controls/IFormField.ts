@@ -17,29 +17,32 @@ export enum FormFieldType {
   IconButton = 'iconbutton',
   Icon = 'icon',
   Switch = 'switch',
+  Custom = 'custom',
 }
 
 export interface IFormField {
   type:
-    | FormFieldType.Text
-    | FormFieldType.DropDown
-    | FormFieldType.Date
-    | FormFieldType.Group
-    | FormFieldType.Label
-    | FormFieldType.Link
-    | FormFieldType.Checkbox
-    | FormFieldType.DateRange
-    | FormFieldType.TextArea
-    | FormFieldType.DropDownWithSearch
-    | FormFieldType.DeleteIcon
-    | FormFieldType.IconButton
-    | FormFieldType.Search
-    | FormFieldType.Icon
-    | FormFieldType.Switch;
+  | FormFieldType.Text
+  | FormFieldType.DropDown
+  | FormFieldType.Date
+  | FormFieldType.Group
+  | FormFieldType.Label
+  | FormFieldType.Link
+  | FormFieldType.Checkbox
+  | FormFieldType.DateRange
+  | FormFieldType.TextArea
+  | FormFieldType.DropDownWithSearch
+  | FormFieldType.DeleteIcon
+  | FormFieldType.IconButton
+  | FormFieldType.Search
+  | FormFieldType.Icon
+  | FormFieldType.Switch
+  | FormFieldType.Custom;
   label?: string;
   isLabel?: boolean;
   placeholder?: string;
   colSize?: string;
+  wrapperClassName?: string;
   customLabelCss?: string;
   customEditLabelCss?: string;
   customInputTextCss?: string;
@@ -52,7 +55,9 @@ export interface IFormField {
   searchCustomInputMenuCss?: string;
   graphQLPropertyName?: string;
   allowNumbersOnly?: boolean;
-  options?: { key: string; value: string; imageUrl?: any }[] | null;
+  options?:
+  | { key: string | number; value: string | number; imageUrl?: any }[]
+  | null;
   filteredOptions?: { key: string; value: string }[];
   value?: any;
   customLinkValue?: any;
@@ -85,4 +90,5 @@ export interface IFormField {
   componentName?: string;
   labelPosition?: 'left' | 'right';
   isSearchCustomInputIcon?: boolean;
+  renderField?: ReactNode;
 }

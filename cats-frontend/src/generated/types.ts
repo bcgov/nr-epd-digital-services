@@ -65,6 +65,15 @@ export type ApplicationHousingResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type ApplicationResponse = {
+  __typename?: 'ApplicationResponse';
+  data?: Maybe<Array<ViewApplication>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type ApplicationResultDto = {
   __typename?: 'ApplicationResultDto';
   applicationType: Scalars['String']['output'];
@@ -111,6 +120,34 @@ export enum ApplicationSortByField {
   Status = 'STATUS'
 }
 
+export type CreateAppParticipantDto = {
+  applicationId: Scalars['Float']['input'];
+  createdBy?: InputMaybe<Scalars['String']['input']>;
+  createdDateTime?: InputMaybe<Scalars['DateTime']['input']>;
+  effectiveEndDate?: InputMaybe<Scalars['DateTime']['input']>;
+  effectiveStartDate: Scalars['DateTime']['input'];
+  isMainParticipant?: InputMaybe<Scalars['Boolean']['input']>;
+  organizationId?: InputMaybe<Scalars['Float']['input']>;
+  participantRoleId: Scalars['Float']['input'];
+  personId: Scalars['Float']['input'];
+};
+
+export type CreateAppParticipantsResponse = {
+  __typename?: 'CreateAppParticipantsResponse';
+  data?: Maybe<Array<ViewAppParticipantEntityDto>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type CreateApplication = {
+  appTypeAbbrev: Scalars['String']['input'];
+  receivedDate: Scalars['DateTime']['input'];
+  siteId: Scalars['Float']['input'];
+  srsApplicationId: Scalars['Float']['input'];
+};
+
 export type CreatePerson = {
   address_1?: InputMaybe<Scalars['String']['input']>;
   address_2?: InputMaybe<Scalars['String']['input']>;
@@ -143,6 +180,22 @@ export type DeletePersonNote = {
   id: Scalars['String']['input'];
 };
 
+export type DropdownDto = {
+  __typename?: 'DropdownDto';
+  key: Scalars['String']['output'];
+  metaData: Scalars['String']['output'];
+  value: Scalars['String']['output'];
+};
+
+export type DropdownResponse = {
+  __typename?: 'DropdownResponse';
+  data?: Maybe<Array<DropdownDto>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type HousingDto = {
   __typename?: 'HousingDto';
   effectiveDate?: Maybe<Scalars['DateTime']['output']>;
@@ -163,12 +216,29 @@ export type HousingType = {
   id: Scalars['Int']['output'];
 };
 
+export type HousingTypeDto = {
+  __typename?: 'HousingTypeDto';
+  abbrev?: Maybe<Scalars['String']['output']>;
+  description: Scalars['String']['output'];
+  displayOrder: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  isActive: Scalars['Boolean']['output'];
+};
+
+export type HousingTypeResponse = {
+  __typename?: 'HousingTypeResponse';
+  data: Array<HousingTypeDto>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addHousingToApplication: ApplicationHousingResponse;
+  createAppParticipant: CreateAppParticipantsResponse;
+  createApplication: ApplicationResponse;
   createPerson: PersonResponse;
   createPersonNote: PersonNoteResponse;
   deletePersonNote: PersonNoteResponse;
+  updateApplicationHousing: ApplicationHousingResponse;
   updatePerson: PersonResponse;
   updatePersonNote: PersonNoteResponse;
 };
@@ -176,6 +246,16 @@ export type Mutation = {
 
 export type MutationAddHousingToApplicationArgs = {
   input: AddHousingInputDto;
+};
+
+
+export type MutationCreateAppParticipantArgs = {
+  newAppParticipant: CreateAppParticipantDto;
+};
+
+
+export type MutationCreateApplicationArgs = {
+  application: CreateApplication;
 };
 
 
@@ -194,6 +274,11 @@ export type MutationDeletePersonNoteArgs = {
 };
 
 
+export type MutationUpdateApplicationHousingArgs = {
+  input: UpdateHousingInputDto;
+};
+
+
 export type MutationUpdatePersonArgs = {
   input: Array<UpdatePerson>;
 };
@@ -202,6 +287,15 @@ export type MutationUpdatePersonArgs = {
 export type MutationUpdatePersonNoteArgs = {
   id: Scalars['String']['input'];
   note: UpdatePersonNote;
+};
+
+export type ParticipantsRolesResponse = {
+  __typename?: 'ParticipantsRolesResponse';
+  data?: Maybe<Array<ViewParticipantsRolesDto>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
 };
 
 export type PersonNoteResponse = {
@@ -227,10 +321,15 @@ export type Query = {
   _service: _Service;
   findAllPerson: PersonResponse;
   findPersonById: PersonResponse;
+  getAllParticipantRoles: ParticipantsRolesResponse;
   getAppParticipantsByAppId: AppParticipantsResponse;
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
+  getHousingTypes: HousingTypeResponse;
+  getOrganizations: DropdownResponse;
+  getParticipantNames: DropdownResponse;
   getPersonNotesByPersonId: PersonNoteResponse;
   searchApplications: ApplicationSearchResponse;
+  searchApplicationsById: ApplicationSearchResponse;
   searchPerson: SearchPersonResponse;
 };
 
@@ -251,6 +350,16 @@ export type QueryGetApplicationHousingByApplicationIdArgs = {
 };
 
 
+export type QueryGetOrganizationsArgs = {
+  searchParamForOrg: Scalars['String']['input'];
+};
+
+
+export type QueryGetParticipantNamesArgs = {
+  searchParam: Scalars['String']['input'];
+};
+
+
 export type QueryGetPersonNotesByPersonIdArgs = {
   id: Scalars['Float']['input'];
 };
@@ -263,6 +372,11 @@ export type QuerySearchApplicationsArgs = {
   searchParam: Scalars['String']['input'];
   sortBy?: InputMaybe<ApplicationSortByField>;
   sortByDir?: InputMaybe<ApplicationSortByDirection>;
+};
+
+
+export type QuerySearchApplicationsByIdArgs = {
+  query: Scalars['String']['input'];
 };
 
 
@@ -282,6 +396,18 @@ export type SearchPersonResponse = {
   persons: Array<ViewPerson>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type UpdateHousingInputDto = {
+  applicationHousingId: Scalars['Int']['input'];
+  effectiveDate?: InputMaybe<Scalars['DateTime']['input']>;
+  expiryDate?: InputMaybe<Scalars['DateTime']['input']>;
+  housingTypeId?: InputMaybe<Scalars['Int']['input']>;
+  isIndigenousLed?: InputMaybe<Scalars['Boolean']['input']>;
+  isRental?: InputMaybe<Scalars['Boolean']['input']>;
+  isSocial?: InputMaybe<Scalars['Boolean']['input']>;
+  numberOfUnits?: InputMaybe<Scalars['Int']['input']>;
+  relatedApplicationIds?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
 export type UpdatePerson = {
@@ -312,9 +438,28 @@ export type UpdatePersonNote = {
   noteDescription: Scalars['String']['input'];
 };
 
+export type ViewAppParticipantEntityDto = {
+  __typename?: 'ViewAppParticipantEntityDto';
+  applicationId: Scalars['Float']['output'];
+  createdBy: Scalars['String']['output'];
+  createdDateTime: Scalars['DateTime']['output'];
+  effectiveEndDate?: Maybe<Scalars['DateTime']['output']>;
+  effectiveStartDate: Scalars['DateTime']['output'];
+  id: Scalars['Float']['output'];
+  isMainParticipant: Scalars['Boolean']['output'];
+  organizationId?: Maybe<Scalars['Float']['output']>;
+  participantRoleId: Scalars['Float']['output'];
+  personId: Scalars['Float']['output'];
+  rowVersionCount?: Maybe<Scalars['Float']['output']>;
+  updatedBy?: Maybe<Scalars['String']['output']>;
+  updatedDateTime?: Maybe<Scalars['DateTime']['output']>;
+};
+
 export type ViewAppParticipantsDto = {
   __typename?: 'ViewAppParticipantsDto';
   applicationId: Scalars['Float']['output'];
+  createdBy: Scalars['String']['output'];
+  createdDateTime: Scalars['DateTime']['output'];
   description: Scalars['String']['output'];
   effectiveEndDate?: Maybe<Scalars['DateTime']['output']>;
   effectiveStartDate: Scalars['DateTime']['output'];
@@ -325,6 +470,20 @@ export type ViewAppParticipantsDto = {
   isMinistry: Scalars['Boolean']['output'];
   lastName: Scalars['String']['output'];
   name: Scalars['String']['output'];
+  rowVersionCount?: Maybe<Scalars['Float']['output']>;
+  updatedBy?: Maybe<Scalars['String']['output']>;
+  updatedDateTime?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type ViewApplication = {
+  __typename?: 'ViewApplication';
+  id: Scalars['Float']['output'];
+};
+
+export type ViewParticipantsRolesDto = {
+  __typename?: 'ViewParticipantsRolesDto';
+  description: Scalars['String']['output'];
+  id: Scalars['Float']['output'];
 };
 
 export type ViewPerson = {
