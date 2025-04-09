@@ -119,18 +119,34 @@ export const generateRequestId = () => {
   return nanoid();
 };
 
-export const getAxiosInstance = () => {
-  const user = getUser();
+export const getAxiosInstance = (URL?: string, customHeaders?: any) => {
+  const user = getUser(); // Get user info to get the access token
+  let requestHeaders: Record<string, string> = {
+    'Content-Type': 'application/json',
+  }
+
+  if(customHeaders)
+  {
+    requestHeaders = {
+      ...requestHeaders,
+      ...customHeaders
+    }
+  }
+  else
+  {
+    requestHeaders = {
+      Authorization: `Bearer ${user?.access_token || ''}`,
+    };
+  }
+  // Conditionally add requestID and Access-Control-Allow-Origin based on the URL
+  if (!URL) {
+    requestHeaders['requestID'] = generateRequestId(); // Generate a unique request ID
+    requestHeaders['Access-Control-Allow-Origin'] = '*'; // Allow all origins (CORS header)
+  }
 
   const instance = axios.create({
-    baseURL: API,
-    // timeout: 2000,
-    headers: {
-      Authorization: 'Bearer ' + user?.access_token,
-      requestID: generateRequestId(),
-      'Access-Control-Allow-Origin': '*',
-      'Content-Type': 'application/json',
-    },
+    baseURL: URL ?? API, // Use the provided URL or default to the API constant
+    headers: requestHeaders,
   });
 
   return instance;

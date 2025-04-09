@@ -1,3 +1,4 @@
+import { FileLinesIcon } from '../../../../components/common/icon';
 import { FormFieldType } from '../../../../components/input-controls/IFormField';
 import {
   TableColumn,
@@ -5,8 +6,7 @@ import {
 } from '../../../../components/table/TableColumn';
 import { formatDateUTC } from '../../../../helpers/utility';
 import StaffAssigned from './staffAssigned';
-import ApplicationResultsViewLink from './viewLink';
-
+import './table.css';
 export const applicationResultColumns: TableColumn[] = [
   {
     id: 1,
@@ -154,7 +154,7 @@ export const applicationResultColumns: TableColumn[] = [
     id: 9,
     displayName: 'View',
     active: true,
-    graphQLPropertyName: 'url',
+    graphQLPropertyName: 'id',
     groupId: 1,
     disabled: false,
     isDefault: true,
@@ -163,18 +163,18 @@ export const applicationResultColumns: TableColumn[] = [
     displayType: {
       type: FormFieldType.Link,
       label: 'View',
-      graphQLPropertyName: 'url',
+      graphQLPropertyName: 'id',
       value: '',
       tableMode: true,
-      href: '',
+      href: '/applications/',
+      customLinkValue: 'View',
+      customIcon:<FileLinesIcon />,
+      componentName:'Applications',
+      customInputTextCss:'application-results__view-link'
     },
-    linkRedirectionURL: undefined,
     dynamicColumn: false,
     columnSize: ColumnSize.Default,
     stickyCol: false,
     customHeaderCss: '',
-    renderCell: (value: any) => {
-      return <ApplicationResultsViewLink url={value} />;
-    },
   },
 ];
