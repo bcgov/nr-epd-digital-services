@@ -6,33 +6,28 @@ import './Participants.css';
 import { AppParticipantFilter } from '../../../../../../generated/types';
 import { useGetAppParticipantsByAppIdQuery } from './graphql/Participants.generated';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 export const Participants = () => {
-  //const { id } = useParams<{ id?: string }>();  //TODO when we have the applicationId available at ALL Applications page
-  const applicationId = 1; //hardcoded for now
+  const { id } = useParams<{ id?: string }>();
+  const applicationId = id ? Number(id) : 0;
 
   const { participantColumnInternal } = GetConfig();
-
-  const [data, setData] = useState<any>([]);
-
-  const [loading, setLoading] = useState(false);
 
   const [filterOption, setFilterOption] = useState<AppParticipantFilter>(
     AppParticipantFilter.All,
   );
 
-  const { data: queryData, loading: queryLoading } =
-    useGetAppParticipantsByAppIdQuery({
-      variables: {
-        applicationId,
-        filter: filterOption,
-      },
-    });
-
-  useEffect(() => {
-    setData(queryData?.getAppParticipantsByAppId?.data);
-    setLoading(queryLoading);
-  }, [filterOption, queryData, queryLoading]);
+  const {
+    data: queryData,
+    loading: queryLoading,
+    refetch,
+  } = useGetAppParticipantsByAppIdQuery({
+    variables: {
+      applicationId,
+      filter: filterOption,
+    },
+  });
 
   const updateFilter = (newFilter: AppParticipantFilter) => {
     setFilterOption(newFilter);
@@ -41,20 +36,19 @@ export const Participants = () => {
   return (
     <div>
       <ParticipantTable
-        handleTableChange={() => {}}
-        handleWidgetCheckBox={() => {}}
+        handleTableChange={() => { }}
         internalRow={participantColumnInternal}
         userType={UserType.Internal}
-        formData={data}
+        appParticsData={queryData?.getAppParticipantsByAppId?.data || []}
         viewMode={UserMode.Default}
-        handleTableSort={() => {}}
-        handleAddParticipant={() => {}}
-        selectedRows={[]}
-        handleRemoveParticipant={() => {}}
-        handleItemClick={() => {}}
-        loading={loading}
+        handleTableSort={() => { }}
+        handleAddParticipant={() => { }}
+        handleRemoveParticipant={() => { }}
+        handleItemClick={() => { }}
+        loading={queryLoading}
         handleFilterChange={updateFilter}
         filter={filterOption}
+        handleRefreshParticipants={refetch}
       />
     </div>
   );

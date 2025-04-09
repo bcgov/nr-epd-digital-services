@@ -1,5 +1,6 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { HttpStatus, UsePipes } from '@nestjs/common';
+import { LoggerService } from '../../logger/logger.service';
 import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
 import { GenericValidationPipe } from '../../utils/validations/genericValidationPipe';
 import {
@@ -10,6 +11,7 @@ import { ApplicationHousingService } from '../../services/application/applicatio
 import { ApplicationHousingResponse } from '../../dto/response/applicationHousingResponse';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { AddHousingInputDto } from '../../dto/applicationHousing.dto';
+import { HousingTypeDto, HousingTypeResponse } from '../../dto/housingType.dto';
 
 @Resolver(() => ApplicationHousingDto)
 export class ApplicationHousingResolver {
@@ -18,7 +20,8 @@ export class ApplicationHousingResolver {
     private readonly genericResponseProvider: GenericResponseProvider<
       ApplicationHousingDto[]
     >,
-  ) {}
+    private readonly loggerService: LoggerService,
+  ) { }
 
   @Query(() => ApplicationHousingResponse, {
     name: 'getApplicationHousingByApplicationId',
@@ -77,6 +80,29 @@ export class ApplicationHousingResolver {
 
     return this.genericResponseProvider.createResponse(
       'Housing updated successfully',
+      HttpStatus.OK,
+      true,
+      result,
+    );
+  }
+
+  @Query(() => HousingTypeResponse, {
+    name: 'getHousingTypes',
+  })
+  @UsePipes(new GenericValidationPipe())
+  async getHousingTypes() {
+    this.loggerService.log(
+      `ApplicationHousingResolver.getHousingTypes: Getting housing types.`,
+    );
+    const result = await this.applicationHousingService.getHousingTypes();
+
+    this.loggerService.log(
+      `ApplicationHousingResolver.getHousingTypes: ${result.length} housing types found.`,
+    );
+
+    const responseProvider = new GenericResponseProvider<HousingTypeDto[]>();
+    return responseProvider.createResponse(
+      'Housing types fetched successfully',
       HttpStatus.OK,
       true,
       result,

@@ -68,6 +68,10 @@ describe('ApplicationHousingService', () => {
           useClass: Repository,
         },
         {
+          provide: getRepositoryToken(HousingType),
+          useClass: Repository,
+        },
+        {
           provide: LoggerService,
           useValue: {
             log: jest.fn(),

@@ -84,7 +84,7 @@ export class Application {
   @Column('timestamp without time zone', { name: 'updated_date_time' })
   updatedDateTime: Date;
 
-  @Column('bytea', { name: 'ts' })
+  @Column('bytea', { name: 'ts', nullable: true })
   ts: Buffer;
 
   @Column('character varying', {
@@ -93,6 +93,12 @@ export class Application {
     length: 50,
   })
   csapRefNumber: string | null;
+
+  @Column('character varying', { name: 'form_id', length: 50, nullable: true })
+  formId: string | null;
+
+  @Column('character varying', { name: 'submission_id', length: 50, nullable: true })
+  submissionId: string | null;
 
   @OneToMany(() => AppExpense, (appExpense) => appExpense.application)
   appExpenses: AppExpense[];

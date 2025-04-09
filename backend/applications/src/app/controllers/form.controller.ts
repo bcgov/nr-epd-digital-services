@@ -3,12 +3,16 @@ import { Unprotected } from 'nest-keycloak-connect';
 import { SubmissionResponse } from '../dto/submissionResponse.dto';
 import { Form } from '../entities/form.entity';
 import { FormService } from '../services/form.service';
+import { CatsService } from '../services/cats.service';
 
 @Controller('form')
 //@Resource('application-service')
 @Unprotected()
 export class FormController {
-  constructor(private formService: FormService) { }
+  constructor(
+    private formService: FormService,
+    private catsService: CatsService
+  ) { }
 
   /**
    * Checks if table exists
@@ -67,6 +71,7 @@ export class FormController {
     const savedSubmission = await this.formService.create(formId, content.data);
     const submissionResponse: SubmissionResponse =
       this.transformResult(savedSubmission);
+    await this.catsService.submitToCats(content.data, savedSubmission.id, savedSubmission.formId);
     return submissionResponse;
   }
 

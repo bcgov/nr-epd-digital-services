@@ -26,3 +26,42 @@ query getApplicationHousingByApplicationId($applicationId: Int!) {
     }
   }
 }
+
+query getHousingTypes {
+  getHousingTypes {
+    data {
+      id
+      abbrev
+      description
+      isActive
+      displayOrder
+    }
+  }
+}
+
+query searchApplicationsById($query: String!) {
+  searchApplicationsById(query: $query) {
+    applications {
+      id
+      siteId
+      applicationType
+      siteAddress
+    }
+  }
+}
+
+mutation addHousingToApplication($input: AddHousingInputDto!) {
+  addHousingToApplication(input: $input) {
+    data {
+      id
+    }
+  }
+}
+
+mutation updateApplicationHousing($input: UpdateHousingInputDto!) {
+  updateApplicationHousing(input: $input) {
+    data {
+      id
+    }
+  }
+}

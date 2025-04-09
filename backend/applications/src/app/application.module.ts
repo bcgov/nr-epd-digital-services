@@ -7,6 +7,7 @@ import { ExternalUserResolver } from './resolvers/externalUser.resolver';
 import { FormController } from './controllers/form.controller';
 import { FormService } from './services/form.service';
 import { Form } from './entities/form.entity';
+import { CatsService } from './services/cats.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Application, Form])],
@@ -15,7 +16,8 @@ import { Form } from './entities/form.entity';
     ApplicationService,
     ExternalUserResolver,
     FormService,
+    CatsService,
   ],
   controllers: [FormController],
 })
-export class ApplicationModule {}
+export class ApplicationModule { }

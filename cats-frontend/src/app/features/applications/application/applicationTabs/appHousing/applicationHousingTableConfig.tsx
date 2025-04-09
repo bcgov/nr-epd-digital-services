@@ -4,12 +4,17 @@ import {
   QuestionMarkIcon,
   TickIcon,
 } from '../../../../../components/common/icon';
-import { FormFieldType } from '../../../../../components/input-controls/IFormField';
+import {
+  FormFieldType,
+  IFormField,
+} from '../../../../../components/input-controls/IFormField';
 import {
   ColumnSize,
   TableColumn,
 } from '../../../../../components/table/TableColumn';
 import { formatDateUTC } from '../../../../../helpers/utility';
+import { HousingTypeDto } from '../../../../../../generated/types';
+import { RelatedApplicationsField } from './components/RelatedApplicationsField';
 
 type YesNoCodeInput = 'Y' | 'N' | 'U';
 const YesNoCodeCell = ({ value }: { value: YesNoCodeInput }) => {
@@ -142,3 +147,119 @@ export const getApplicationHousingColumns = (): TableColumn[] => [
     columnSize: ColumnSize.XtraSmall,
   },
 ];
+
+const getHousingTypeField = (housingTypes: HousingTypeDto[]): IFormField => ({
+  type: FormFieldType.DropDown,
+  label: 'Housing Type',
+  graphQLPropertyName: 'housingType',
+  placeholder: 'Select Housing Type',
+  options: housingTypes.map((type) => ({
+    key: type.id,
+    value: type.description,
+  })),
+  colSize: 'col-lg-6 col-md-6 col-sm-12',
+  validation: {
+    required: true,
+    customMessage: 'Housing Type is required.',
+  },
+});
+
+const getRelatedApplicationsField = (
+  relatedApplicationsValue: string,
+  setRelatedApplicationsValue: (value: string) => void,
+): IFormField => ({
+  type: FormFieldType.Custom,
+  label: 'Related Application(s)',
+  renderField: (
+    <RelatedApplicationsField
+      value={relatedApplicationsValue}
+      onChange={setRelatedApplicationsValue}
+    />
+  ),
+});
+
+const housingFormFields: {
+  [key: string]: IFormField;
+} = {
+  numberOfUnits: {
+    type: FormFieldType.Text,
+    label: '# of Units',
+    graphQLPropertyName: 'numberOfUnits',
+    allowNumbersOnly: true,
+    validation: {
+      pattern: /^[0-9]*$/,
+      customMessage: 'Number of Units must be a positive integer',
+    },
+    colSize: 'col-lg-6 col-md-6 col-sm-12',
+  },
+  effectiveDate: {
+    type: FormFieldType.Date,
+    label: 'Effective Date',
+    placeholder: 'EE MMM dd yyyy',
+    dateFormat: 'EE MMM dd yyyy',
+    graphQLPropertyName: 'effectiveDate',
+    colSize: 'col-lg-6 col-md-6 col-sm-12',
+    validation: {
+      required: true,
+      customMessage: 'Effective Date is required.',
+    },
+  },
+  expiryDate: {
+    type: FormFieldType.Date,
+    label: 'Expiry Date',
+    placeholder: 'EE MMM dd yyyy',
+    dateFormat: 'EE MMM dd yyyy',
+    graphQLPropertyName: 'expiryDate',
+    colSize: 'col-lg-6 col-md-6 col-sm-12',
+    validation: {
+      required: true,
+      customMessage: 'Expiry Date is required.',
+    },
+  },
+
+  replaceFileRow: {
+    type: FormFieldType.Group,
+    label: 'Replace File',
+    value: '',
+    children: [
+      {
+        type: FormFieldType.Checkbox,
+        label: 'Rental',
+        placeholder: 'Rental',
+        graphQLPropertyName: 'isRental',
+      },
+      {
+        type: FormFieldType.Checkbox,
+        label: 'Social',
+        placeholder: 'Social',
+        graphQLPropertyName: 'isSocial',
+      },
+      {
+        type: FormFieldType.Checkbox,
+        label: 'Indigenous Led',
+        placeholder: 'Indigenous Led',
+        graphQLPropertyName: 'isIndigenousLed',
+      },
+    ],
+  },
+};
+
+export const getHousingFormFields = ({
+  housingTypes,
+  relatedApplicationsValue,
+  setRelatedApplicationsValue,
+}: {
+  housingTypes: HousingTypeDto[];
+  relatedApplicationsValue: string;
+  setRelatedApplicationsValue: (value: string) => void;
+}): IFormField[][] => [
+    [getHousingTypeField(housingTypes), housingFormFields['numberOfUnits']],
+    [housingFormFields['effectiveDate'], housingFormFields['expiryDate']],
+    [housingFormFields['replaceFileRow']],
+    [
+      getRelatedApplicationsField(
+        relatedApplicationsValue,
+        setRelatedApplicationsValue,
+      ),
+    ],
+  ];
