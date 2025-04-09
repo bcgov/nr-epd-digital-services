@@ -17,6 +17,7 @@ export enum FormFieldType {
   IconButton = 'iconbutton',
   Icon = 'icon',
   Switch = 'switch',
+  Custom = 'custom',
 }
 
 export interface IFormField {
@@ -35,11 +36,13 @@ export interface IFormField {
     | FormFieldType.IconButton
     | FormFieldType.Search
     | FormFieldType.Icon
-    | FormFieldType.Switch;
+    | FormFieldType.Switch
+    | FormFieldType.Custom;
   label?: string;
   isLabel?: boolean;
   placeholder?: string;
   colSize?: string;
+  wrapperClassName?: string;
   customLabelCss?: string;
   customEditLabelCss?: string;
   customInputTextCss?: string;
@@ -87,4 +90,5 @@ export interface IFormField {
   componentName?: string;
   labelPosition?: 'left' | 'right';
   isSearchCustomInputIcon?: boolean;
+  renderField?: ReactNode;
 }

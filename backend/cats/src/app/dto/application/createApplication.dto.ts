@@ -4,16 +4,16 @@ import { Field, InputType } from '@nestjs/graphql';
 @InputType()
 export class CreateApplication {
     @Field()
-    applicationId: number; // ID of the new application in CATS
+    formId: string; // the formId in formsflow
 
     @Field()
-    srsApplicationId: number; // ID of the new application in SRS
+    submissionId: string; // the submission id in formsflow
 
     @Field()
     siteId: number; // site for which the application is created
 
     @Field()
-    appTypeId: number; // the application type eg: SDS, SoSC etc
+    appTypeAbbrev: string; // the application type eg: SDS, SoSC etc
 
     @Field()
     receivedDate: Date; // date when application was submitted in SRS

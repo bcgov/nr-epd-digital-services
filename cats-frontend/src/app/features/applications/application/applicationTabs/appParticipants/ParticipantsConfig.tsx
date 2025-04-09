@@ -1,9 +1,154 @@
 import { PencilIcon, TickIcon } from '../../../../../components/common/icon';
-import { FormFieldType } from '../../../../../components/input-controls/IFormField';
+import {
+  FormFieldType,
+  IFormField,
+} from '../../../../../components/input-controls/IFormField';
 import {
   ColumnSize,
   TableColumn,
 } from '../../../../../components/table/TableColumn';
+import { RequestStatus } from '../../../../../helpers/requests/status';
+import {
+  GetOrganizationsQuery,
+  GetParticipantNamesQuery,
+  GetParticipantRolesQuery,
+} from './graphql/Participants.generated';
+
+const participantRoleField = (
+  options: GetParticipantRolesQuery['getAllParticipantRoles']['data'],
+): IFormField => ({
+  type: FormFieldType.DropDown,
+  label: 'Role',
+  options:
+    options?.map((role) => ({
+      key: role.id.toString(),
+      value: role.description,
+    })) ?? [],
+  graphQLPropertyName: 'description',
+  value: '',
+  colSize: 'col-lg-12 col-md-12 col-sm-12',
+  validation: {
+    required: true,
+    customMessage: 'Role is required.',
+  },
+});
+
+const participantNameField = ({
+  setSearchParam,
+  options,
+}: {
+  setSearchParam: (searchParam: string) => void;
+  options: GetParticipantNamesQuery['getParticipantNames']['data'];
+}): IFormField => ({
+  label: 'Person',
+  graphQLPropertyName: 'fullName',
+  placeholder: 'Search by name',
+  isLoading: RequestStatus.idle,
+  type: FormFieldType.DropDownWithSearch,
+  isLabel: false,
+  value: '',
+  filteredOptions: options ?? [],
+  options: options ?? [],
+  handleSearch: setSearchParam,
+  colSize: 'col-lg-12 col-md-12 col-sm-12',
+  customMenuMessage: <span>Please select participant name:</span>,
+  tableMode: true,
+  validation: {
+    required: true,
+    customMessage: 'Participant Name is required.',
+  },
+});
+
+const participantOrganizationField = ({
+  setSearchParam,
+  options,
+}: {
+  setSearchParam: (searchParam: string) => void;
+  options: GetOrganizationsQuery['getOrganizations']['data'];
+}): IFormField => ({
+  type: FormFieldType.DropDownWithSearch,
+  label: 'Organization',
+  graphQLPropertyName: 'name',
+  value: '',
+  isLoading: RequestStatus.idle,
+  placeholder: 'Search by organization',
+  filteredOptions: options ?? [],
+  options: options ?? [],
+  handleSearch: setSearchParam,
+  tableMode: true,
+  customMenuMessage: <span>Please select organization name:</span>,
+  colSize: 'col-lg-12 col-md-12 col-sm-12',
+});
+
+export const getAppParticipantsFormFields = ({
+  roles,
+  participant,
+  organization,
+}: {
+  roles: {
+    options: GetParticipantRolesQuery['getAllParticipantRoles']['data'];
+  };
+  participant: {
+    setSearchParam: (searchParam: string) => void;
+    options: GetParticipantNamesQuery['getParticipantNames']['data'];
+  };
+  organization: {
+    setSearchParam: (searchParam: string) => void;
+    options: GetOrganizationsQuery['getOrganizations']['data'];
+  };
+}): IFormField[][] => [
+  [appParticipantsForm.isMainParticipant],
+  [appParticipantsForm.startDate, appParticipantsForm.endDate],
+  [participantRoleField(roles.options)],
+  [participantNameField(participant)],
+  [participantOrganizationField(organization)],
+];
+
+const appParticipantsForm: { [key: string]: IFormField } = {
+  isMainParticipant: {
+    type: FormFieldType.Switch,
+    label: 'Main Participant',
+    graphQLPropertyName: 'isMainParticipant',
+    value: false,
+    colSize: 'col-lg-12 col-md-12 col-sm-12',
+  },
+  startDate: {
+    type: FormFieldType.Date,
+    label: 'Start Date',
+    graphQLPropertyName: 'effectiveStartDate',
+    value: '',
+    colSize: 'col-lg-6 col-md-6 col-sm-12',
+    placeholder: 'EE, MMM dd, yyyy',
+    dateFormat: 'EE, MMM dd, yyyy',
+    isDisabled: false,
+    validation: {
+      required: true,
+      customMessage: 'Start Date is required.',
+    },
+  },
+  endDate: {
+    type: FormFieldType.Date,
+    label: 'End Date',
+    graphQLPropertyName: 'effectiveEndDate',
+    value: '',
+    placeholder: 'EE, MMM dd, yyyy',
+    dateFormat: 'EE, MMM dd, yyyy',
+    colSize: 'col-lg-6 col-md-6 col-sm-12',
+    isDisabled: false,
+  },
+  role: {
+    type: FormFieldType.DropDown,
+    label: 'Role',
+    options: [],
+    graphQLPropertyName: 'description',
+    value: '',
+    colSize: 'col-lg-12 col-md-12 col-sm-12',
+    validation: {
+      required: true,
+      customMessage: 'Role is required.',
+    },
+  },
+};
 
 export const GetConfig = () => {
   const participantColumnInternal: TableColumn[] = [
@@ -25,6 +170,7 @@ export const GetConfig = () => {
         customInputTextCss: 'common-icon-orientation',
         tableMode: true,
       },
+      dynamicColumn: true,
     },
     {
       id: 2,
@@ -40,6 +186,10 @@ export const GetConfig = () => {
         value: '',
         colSize: 'col-lg-6 col-md-6 col-sm-12',
         tableMode: true,
+        validation: {
+          required: true,
+          customMessage: 'Participant Name is required.',
+        },
       },
       dynamicColumn: true,
     },
@@ -73,7 +223,12 @@ export const GetConfig = () => {
         value: '',
         colSize: 'col-lg-6 col-md-6 col-sm-12',
         tableMode: true,
+        validation: {
+          required: true,
+          customMessage: 'Role is required.',
+        },
       },
+      dynamicColumn: true,
     },
 
     {
@@ -86,11 +241,15 @@ export const GetConfig = () => {
         type: FormFieldType.Date,
         graphQLPropertyName: 'effectiveStartDate',
         label: '',
-        dateFormat: 'EE, MMM dd, yyyy',
-        placeholder: 'EE, MMM dd, yyyy',
+        dateFormat: 'EE MMM dd yyyy',
+        placeholder: 'EE MMM dd yyyy',
         value: '',
         colSize: 'col-lg-6 col-md-6 col-sm-12',
         tableMode: true,
+        validation: {
+          required: true,
+          customMessage: 'Participant Name is required.',
+        },
       },
     },
     {
@@ -104,7 +263,7 @@ export const GetConfig = () => {
         graphQLPropertyName: 'effectiveEndDate',
         label: '',
         dateFormat: 'EE MMM dd yyyy',
-        placeholder: 'EE, MMM dd, yyyy',
+        placeholder: 'EE MMM dd yyyy',
         value: '',
         colSize: 'col-lg-6 col-md-6 col-sm-12',
         tableMode: true,

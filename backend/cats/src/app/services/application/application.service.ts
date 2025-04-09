@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AppParticipant } from '../../entities/appParticipant.entity';
 import { LoggerService } from '../../logger/logger.service';
 import { Application } from '../../entities/application.entity';
 import { CreateApplication } from '../../dto/application/createApplication.dto';
+import { AppTypeService } from '../appType/appType.service';
 
 @Injectable()
 export class ApplicationService {
@@ -12,6 +12,7 @@ export class ApplicationService {
     @InjectRepository(Application)
     private readonly applicationRepository: Repository<Application>,
     private readonly loggerService: LoggerService,
+    private readonly appTypeService: AppTypeService,
   ) { }
 
   async createApplication(createApplication: CreateApplication) {
@@ -20,13 +21,16 @@ export class ApplicationService {
     try {
       // Log the input parameters for better traceability
       this.loggerService.debug(
-        `Attempting to create application with srs app id: ${createApplication?.srsApplicationId}`,
+        `Attempting to create application with srs form id: ${createApplication?.formId} ' and submission id: ${createApplication?.formId}`,
       );
+
+      const appType = await this.appTypeService.getAppTypeByAbbrev(createApplication.appTypeAbbrev);
 
       const newApplication = await this.applicationRepository.create({
         siteId: createApplication.siteId,
-        srsApplicationId: createApplication.srsApplicationId,
-        appTypeId: createApplication.appTypeId,
+        formId: createApplication.formId,
+        submissionId: createApplication.submissionId,
+        appTypeId: appType?.id,
         rowVersionCount: 1,
         createdBy: 'SYSTEM',
         updatedBy: 'SYSTEM',
@@ -34,6 +38,7 @@ export class ApplicationService {
         updatedDateTime: new Date(),
         receivedDate: createApplication.receivedDate.toISOString()
       });
+
       // Save the new application
       const savedApplication = await this.applicationRepository.save(
         newApplication,

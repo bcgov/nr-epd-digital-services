@@ -21,6 +21,7 @@
     "axios": "^1.7.7",
     "bootstrap": "^5.2.2",
     "date-fns": "4.1.0",
+    "downshift": "^9.0.9",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "keycloak-js": "^19.0.2",
