@@ -24,7 +24,7 @@ describe('ApplicationService', () => {
         },
         {
           provide: getRepositoryToken(Application), // ✅ Correctly mock Repository<Application>
-          useClass: Repository,  // ✅ This ensures it's treated as a repository
+          useClass: Repository, // ✅ This ensures it's treated as a repository
         },
         {
           provide: LoggerService,
@@ -40,10 +40,11 @@ describe('ApplicationService', () => {
 
     applicationService = module.get<ApplicationService>(ApplicationService);
     appTypeService = module.get<AppTypeService>(AppTypeService);
-    applicationRepository = module.get<Repository<Application>>(getRepositoryToken(Application)); // ✅ Correctly get repository
+    applicationRepository = module.get<Repository<Application>>(
+      getRepositoryToken(Application),
+    ); // ✅ Correctly get repository
     loggerService = module.get<LoggerService>(LoggerService);
   });
-
 
   describe('createApplication', () => {
     it('should create an application successfully', async () => {
@@ -58,16 +59,30 @@ describe('ApplicationService', () => {
       const mockAppType = { id: 1 };
       const mockNewApplication = { id: 1 };
 
-      appTypeService.getAppTypeByAbbrev = jest.fn().mockResolvedValue(mockAppType);
-      applicationRepository.create = jest.fn().mockReturnValue(mockNewApplication);
-      applicationRepository.save = jest.fn().mockResolvedValue(mockNewApplication);
+      appTypeService.getAppTypeByAbbrev = jest
+        .fn()
+        .mockResolvedValue(mockAppType);
+      applicationRepository.create = jest
+        .fn()
+        .mockReturnValue(mockNewApplication);
+      applicationRepository.save = jest
+        .fn()
+        .mockResolvedValue(mockNewApplication);
 
-      const result = await applicationService.createApplication(mockCreateApplication);
+      const result = await applicationService.createApplication(
+        mockCreateApplication,
+      );
 
       expect(appTypeService.getAppTypeByAbbrev).toHaveBeenCalledWith('CSR');
       expect(applicationRepository.create).toHaveBeenCalled();
       expect(applicationRepository.save).toHaveBeenCalled();
       expect(result).toEqual({ id: 1 });
     });
+  });
+
+  describe('findApplicationDetailsById', () => {
+    it.todo(
+      'More tests will be added here once the site details are added to the response',
+    );
   });
 });

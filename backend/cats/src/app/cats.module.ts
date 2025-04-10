@@ -63,6 +63,7 @@ import { ApplicationHousingService } from './services/application/applicationHou
 import { ApplicationHousingResolver } from './resolvers/application/applicationHousing.resolver';
 import { ApplicationResolver } from './resolvers/application/application.resolver';
 import { ApplicationService } from './services/application/application.service';
+import { ApplicationDetailsResolver } from './resolvers/application/applicationDetails.resolver';
 import { AppTypeService } from './services/appType/appType.service';
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -135,8 +136,9 @@ import { AppTypeService } from './services/appType/appType.service';
     ApplicationHousingService,
     ApplicationResolver,
     ApplicationService,
+    ApplicationDetailsResolver,
     AppTypeService,
   ],
   controllers: [UserController],
 })
-export class CatsModule { }
+export class CatsModule {}

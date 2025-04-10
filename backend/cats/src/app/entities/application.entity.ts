@@ -97,7 +97,11 @@ export class Application {
   @Column('character varying', { name: 'form_id', length: 50, nullable: true })
   formId: string | null;
 
-  @Column('character varying', { name: 'submission_id', length: 50, nullable: true })
+  @Column('character varying', {
+    name: 'submission_id',
+    length: 50,
+    nullable: true,
+  })
   submissionId: string | null;
 
   @OneToMany(() => AppExpense, (appExpense) => appExpense.application)
@@ -129,6 +133,9 @@ export class Application {
 
   @OneToOne(() => AppStatus, (appStatus) => appStatus.application)
   appStatus: AppStatus;
+
+  @OneToMany(() => AppStatus, (appStatus) => appStatus.application)
+  appStatuses: AppStatus[];
 
   @OneToMany(() => AppVapourUse, (appVapourUse) => appVapourUse.application)
   appVapourUses: AppVapourUse[];
