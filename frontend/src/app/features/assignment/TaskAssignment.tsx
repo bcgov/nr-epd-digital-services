@@ -74,7 +74,21 @@ const TaskAssignment = () => {
   };
 
   useEffect(() => {
-    assignKeyCloakGroupToUser();
+    console.log(auth, actualTaskId);
+    if (
+      auth.user?.profile.identity_provider === "bceid" &&
+      actualTaskId !== null
+    ) {
+      assignKeyCloakGroupToUser();
+    } else if (
+      auth.isAuthenticated &&
+      actualTaskId !== null &&
+      auth.user?.profile.identity_provider !== "bceid"
+    ) {
+      alert(
+        "You are not logged in using BCeID. Please close this window and try again using BCeID."
+      );
+    }
   }, [actualTaskId]);
 
   return <div className="mt-3 pt-5 container-fluid">Please wait ...</div>;
