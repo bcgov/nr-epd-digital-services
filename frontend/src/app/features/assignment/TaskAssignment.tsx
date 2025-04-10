@@ -79,6 +79,7 @@ const TaskAssignment = () => {
       auth.user?.profile.identity_provider === "bceid" &&
       actualTaskId !== null
     ) {
+      sessionStorage.removeItem("locationBeforeAuthRedirect");
       assignKeyCloakGroupToUser();
     } else if (
       auth.isAuthenticated &&
