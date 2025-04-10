@@ -75,7 +75,11 @@ export class UserController {
         'LRS_APPROVING_AUTHORITY_GROUP_NAME',
       ); // 'lrs-approving-authority'
 
-      return this.processAddUserToGroupRequest(addUserToGroupDto, groupName);
+      return this.processAddUserToGroupRequest(
+        addUserToGroupDto,
+        groupName,
+        true,
+      );
     } catch (error) {
       console.log('addUserToGroupForMuncipalUsers error', error);
       // Handle errors
@@ -104,7 +108,11 @@ export class UserController {
       // Find group ID by name
       const groupName = this.configService.get<string>('SITE_OWNER_GROUP_NAME'); // 'formsflow-client-reviewer'
 
-      return this.processAddUserToGroupRequest(addUserToGroupDto, groupName);
+      return this.processAddUserToGroupRequest(
+        addUserToGroupDto,
+        groupName,
+        true,
+      );
     } catch (error) {
       console.log('addUserToGroupForMuncipalUsers error', error);
       // Handle errors
@@ -127,6 +135,7 @@ export class UserController {
   private async processAddUserToGroupRequest(
     addUserToGroupDto: AddUserToGroupDto,
     groupName: string,
+    removeCamundaAdmin: boolean = false,
   ): Promise<any> {
     try {
       const { userId } = addUserToGroupDto;
@@ -138,6 +147,19 @@ export class UserController {
           'Failed to get access token',
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
+      }
+
+      if (removeCamundaAdmin) {
+        const groupId = await this.keyCloakService.getGroupIdByName(
+          'camunda-admin',
+          accessToken,
+        );
+        await this.keyCloakService.removeCamundaAdminGroup(
+          userId,
+          groupId,
+          accessToken,
+        );
+        console.log('removed camunda admin group');
       }
 
       const groupId = await this.keyCloakService.getGroupIdByName(
