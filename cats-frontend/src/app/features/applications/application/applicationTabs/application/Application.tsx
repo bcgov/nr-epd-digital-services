@@ -190,7 +190,7 @@ export const Application = () => {
                     options={{
                       hide: { submit: true },
                       noAlerts: false,
-                      readOnly: true, 
+                      readOnly: () => true, 
                       viewAsHtml: true
                     }}
                   />
@@ -231,7 +231,7 @@ export const Application = () => {
               options={{
                 hide: { submit: true },
                 noAlerts: false,
-                readOnly: true, 
+                readOnly: () => true, 
                 viewAsHtml: true
               }}
             />
