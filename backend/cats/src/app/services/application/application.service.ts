@@ -79,59 +79,86 @@ export class ApplicationService {
   async findApplicationDetailsById(
     id: number,
   ): Promise<ViewApplicationDetails> {
-    const application = await this.applicationRepository.findOne({
-      where: { id },
-      relations: [
-        'appType',
-        'outcome',
-        'reviewProcess',
-        'siteType',
-        'appStatuses',
-        'appStatuses.statusType',
-        'appPriorities',
-        'appPriorities.priority',
-        'housingApplicationXrefs',
-        'appParticipants',
-        'appParticipants.organization',
-      ],
-    });
+    this.loggerService.log(
+      'ApplicationService.findApplicationDetailsById() start',
+    );
 
-    if (!application) {
-      return null;
+    try {
+      this.loggerService.debug(`Fetching application details for ID: ${id}`);
+
+      const application = await this.applicationRepository.findOne({
+        where: { id },
+        relations: [
+          'appType',
+          'outcome',
+          'reviewProcess',
+          'siteType',
+          'appStatuses',
+          'appStatuses.statusType',
+          'appPriorities',
+          'appPriorities.priority',
+          'housingApplicationXrefs',
+          'appParticipants',
+          'appParticipants.organization',
+        ],
+      });
+
+      if (!application) {
+        this.loggerService.warn(`No application found with ID: ${id}`);
+        return null;
+      }
+
+      const currentPriority = application.appPriorities?.find(
+        (ap) => ap.isCurrent,
+      )?.priority;
+
+      const queuedStatus = application.appStatuses?.find(
+        (status) => status.statusType.abbrev === 'QUE',
+      );
+
+      const currentStatus = application.appStatuses?.find(
+        (status) => status.isCurrent,
+      );
+
+      const isTaxExempt =
+        application.appParticipants?.some(
+          (participant) =>
+            participant.isMainParticipant &&
+            participant.organization.isTaxExempt,
+        ) ?? false;
+
+      this.loggerService.log(
+        `Application details fetched successfully for ID: ${id}`,
+      );
+
+      return {
+        id: application.id,
+        csapRefNumber: application.csapRefNumber,
+        receivedDate: new Date(application.receivedDate),
+        endDate: application.endDate ? new Date(application.endDate) : null,
+        queuedDate: queuedStatus?.createdDateTime,
+        outcome: application.outcome,
+        appType: application.appType,
+        currentStatus: currentStatus?.statusType,
+        siteType: application.siteType,
+        reviewProcess: application.reviewProcess,
+        priority: currentPriority || null,
+        isHousing: application.housingApplicationXrefs?.length > 0,
+        isTaxExempt: isTaxExempt,
+      };
+    } catch (err) {
+      this.loggerService.error(
+        'Exception occurred in ApplicationService.findApplicationDetailsById()',
+        JSON.stringify(err),
+      );
+      throw new HttpException(
+        'Failed to fetch application details',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    } finally {
+      this.loggerService.log(
+        'ApplicationService.findApplicationDetailsById() end',
+      );
     }
-
-    const currentPriority = application.appPriorities?.find(
-      (ap) => ap.isCurrent,
-    )?.priority;
-
-    const queuedStatus = application.appStatuses?.find(
-      (status) => status.statusType.abbrev === 'QUE',
-    );
-
-    const currentStatus = application.appStatuses?.find(
-      (status) => status.isCurrent,
-    );
-
-    const isTaxExempt =
-      application.appParticipants?.some(
-        (participant) =>
-          participant.isMainParticipant && participant.organization.isTaxExempt,
-      ) ?? false;
-
-    return {
-      id: application.id,
-      csapRefNumber: application.csapRefNumber,
-      receivedDate: new Date(application.receivedDate),
-      endDate: application.endDate ? new Date(application.endDate) : null,
-      queuedDate: queuedStatus?.createdDateTime,
-      outcome: application.outcome,
-      appType: application.appType,
-      currentStatus: currentStatus?.statusType,
-      siteType: application.siteType,
-      reviewProcess: application.reviewProcess,
-      priority: currentPriority || null,
-      isHousing: application.housingApplicationXrefs?.length > 0,
-      isTaxExempt: isTaxExempt,
-    };
   }
 }
