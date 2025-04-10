@@ -152,9 +152,10 @@ export type CreateAppParticipantsResponse = {
 
 export type CreateApplication = {
   appTypeAbbrev: Scalars['String']['input'];
+  formId: Scalars['String']['input'];
   receivedDate: Scalars['DateTime']['input'];
   siteId: Scalars['Float']['input'];
-  srsApplicationId: Scalars['Float']['input'];
+  submissionId: Scalars['String']['input'];
 };
 
 export type CreatePerson = {
@@ -339,7 +340,7 @@ export type Query = {
   findPersonById: PersonResponse;
   getAllParticipantRoles: ParticipantsRolesResponse;
   getAppParticipantsByAppId: AppParticipantsResponse;
-  getApplicationById: ApplicationDetailsResponse;
+  getApplicationDetailsById: ApplicationDetailsResponse;
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
   getHousingTypes: HousingTypeResponse;
   getOrganizations: DropdownResponse;
@@ -362,7 +363,7 @@ export type QueryGetAppParticipantsByAppIdArgs = {
 };
 
 
-export type QueryGetApplicationByIdArgs = {
+export type QueryGetApplicationDetailsByIdArgs = {
   id: Scalars['Int']['input'];
 };
 

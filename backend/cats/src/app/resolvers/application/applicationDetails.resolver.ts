@@ -14,10 +14,12 @@ export class ApplicationDetailsResolver {
     private readonly applicationDetailsResponse: GenericResponseProvider<ViewApplicationDetails>,
   ) {}
 
-  @Query(() => ApplicationDetailsResponse, { name: 'getApplicationById' })
-  async getApplicationById(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => ApplicationDetailsResponse, {
+    name: 'getApplicationDetailsById',
+  })
+  async getApplicationDetailsById(@Args('id', { type: () => Int }) id: number) {
     this.loggerService.log(
-      'ApplicationDetailsResolver.getApplicationById() start',
+      'ApplicationDetailsResolver.getApplicationDetailsById() start',
     );
 
     try {
@@ -27,7 +29,7 @@ export class ApplicationDetailsResolver {
 
       if (result) {
         this.loggerService.log(
-          'ApplicationDetailsResolver.getApplicationById() RES:200 end',
+          'ApplicationDetailsResolver.getApplicationDetailsById() RES:200 end',
         );
         return this.applicationDetailsResponse.createResponse(
           'Application details retrieved successfully',
@@ -37,7 +39,7 @@ export class ApplicationDetailsResolver {
         );
       } else {
         this.loggerService.log(
-          'ApplicationDetailsResolver.getApplicationById() RES:404 end',
+          'ApplicationDetailsResolver.getApplicationDetailsById() RES:404 end',
         );
         return this.applicationDetailsResponse.createResponse(
           'Application not found',
@@ -48,7 +50,7 @@ export class ApplicationDetailsResolver {
       }
     } catch (error) {
       this.loggerService.error(
-        'ApplicationDetailsResolver.getApplicationById() error',
+        'ApplicationDetailsResolver.getApplicationDetailsById() error',
         error,
       );
       return this.applicationDetailsResponse.createResponse(

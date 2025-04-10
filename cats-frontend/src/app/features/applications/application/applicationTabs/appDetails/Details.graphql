@@ -1,5 +1,5 @@
-query getApplicationById($applicationId: Int!) {
-  getApplicationById(id: $applicationId) {
+query getApplicationDetailsById($applicationId: Int!) {
+  getApplicationDetailsById(id: $applicationId) {
     data {
       id
       csapRefNumber

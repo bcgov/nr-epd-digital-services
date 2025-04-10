@@ -2,7 +2,7 @@ import styles from './Details.module.css';
 import cx from 'classnames';
 import { useParams } from 'react-router-dom';
 import CollapsiblePanel from '../../../../../components/simple/CollapsiblePanel';
-import { useGetApplicationByIdQuery } from './Details.generated';
+import { useGetApplicationDetailsByIdQuery } from './Details.generated';
 import { TickIcon } from '../../../../../components/common/icon';
 import { formatDateUTC } from '../../../../../helpers/utility';
 
@@ -10,14 +10,14 @@ export const Details = () => {
   const { id = '' } = useParams();
   const applicationId = parseInt(id, 10);
 
-  const { data } = useGetApplicationByIdQuery({
+  const { data } = useGetApplicationDetailsByIdQuery({
     variables: {
       applicationId,
     },
     skip: !applicationId,
   });
 
-  const application = data?.getApplicationById.data;
+  const application = data?.getApplicationDetailsById.data;
   return (
     <CollapsiblePanel
       defaultOpen={true}
