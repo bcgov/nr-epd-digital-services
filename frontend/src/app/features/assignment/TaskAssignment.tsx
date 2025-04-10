@@ -74,7 +74,6 @@ const TaskAssignment = () => {
   };
 
   useEffect(() => {
-    console.log(auth, actualTaskId);
     if (
       auth.user?.profile.identity_provider === "bceid" &&
       actualTaskId !== null
