@@ -168,9 +168,9 @@ export const applicationResultColumns: TableColumn[] = [
       tableMode: true,
       href: '/applications/',
       customLinkValue: 'View',
-      customIcon:<FileLinesIcon />,
-      componentName:'Applications',
-      customInputTextCss:'application-results__view-link'
+      customIcon: <FileLinesIcon />,
+      componentName: 'Applications',
+      customInputTextCss: 'application-results__view-link',
     },
     dynamicColumn: false,
     columnSize: ColumnSize.Default,

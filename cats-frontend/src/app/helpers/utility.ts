@@ -123,17 +123,14 @@ export const getAxiosInstance = (URL?: string, customHeaders?: any) => {
   const user = getUser(); // Get user info to get the access token
   let requestHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
-  }
+  };
 
-  if(customHeaders)
-  {
+  if (customHeaders) {
     requestHeaders = {
       ...requestHeaders,
-      ...customHeaders
-    }
-  }
-  else
-  {
+      ...customHeaders,
+    };
+  } else {
     requestHeaders = {
       Authorization: `Bearer ${user?.access_token || ''}`,
     };
