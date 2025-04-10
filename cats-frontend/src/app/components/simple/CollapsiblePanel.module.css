@@ -1,0 +1,13 @@
+.panelContainer {
+  padding: var(--layout-padding-medium) var(--layout-margin-xxlarge)
+    var(--layout-padding-xlarge) var(--layout-margin-xxlarge);
+  gap: var(--layout-margin-large);
+  border-radius: var(--layout-border-width-medium);
+  border: 1px solid var(--surface-color-border-default);
+  background: var(--surface-color-background-white);
+}
+
+.panelLabel {
+  font: var(--typography-bold-h4);
+  color: var(--typography-color-primary);
+}
