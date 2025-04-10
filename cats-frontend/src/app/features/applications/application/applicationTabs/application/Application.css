@@ -234,3 +234,28 @@
   border-radius: 0px .35rem .35rem 0px !important;
   background-color: #e9ecef;
 }
+
+.error-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.error-title {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.error-details {
+  font-size: 1rem;
+  line-height: 1.5;
+}
