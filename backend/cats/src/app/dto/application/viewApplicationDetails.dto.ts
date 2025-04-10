@@ -52,4 +52,11 @@ export class ViewApplicationDetails {
 
   @Field(() => Boolean, { defaultValue: false })
   isTaxExempt: boolean;
+
+  @Field({ nullable: true })
+  formId: string | null;
+  
+  @Field({ nullable: true })
+  submissionId: string | null;
+  
 }
