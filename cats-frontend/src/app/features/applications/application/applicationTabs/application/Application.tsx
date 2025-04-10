@@ -7,6 +7,7 @@ import { getUser } from "../../../../../helpers/utility";
 import './Application.css'
 import PropTypes from "prop-types";
 import { SpinnerIcon } from "../../../../../components/common/icon";
+import { GetApplicationByIdQuery, useGetApplicationByIdQuery } from "./Application.generated";
 
 Form.propTypes = {
   options: PropTypes.shape({
@@ -14,89 +15,96 @@ Form.propTypes = {
   }),
 };
 
+type ApplicationDetails = GetApplicationByIdQuery['getApplicationDetailsById']['data'];
 
 export const Application = () => {
+  
   const userDetails = getUser();
   if (userDetails) {
     localStorage.setItem('UserDetails', JSON.stringify(userDetails?.profile));
   }
 
-  const { id: applicationId } = useParams<{ id?: string }>();
+  const { id } = useParams();
   const [formData, setFormData] = useState<any>({});  
   const [formJson, setFormJson] = useState<any>({});  
-  const [application, setApplication] = useState<any>(null);
+  const [formType, setFormType] = useState<string | null>(null);
   const [selectedForms, setSelectedForms] = useState<any[]>([]); 
   const [activeStep, setActiveStep] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch application data
-  const submissionId =  
-  //"82507662-445c-4ba6-b910-99327732dba1"; 
-"d522f979-5998-4b75-9a56-0de90946ab38";
-  const formId = 
-  //"652858d27f5004da00d5448d"; 
-   "652856b37f5004da00d5445f";
+  const applicationId = parseInt(id ?? '', 10);
+  const { data } = useGetApplicationByIdQuery({
+    variables: {
+      applicationId
+    },
+    skip: !applicationId,
+  });
+
+  const application: ApplicationDetails = data?.getApplicationDetailsById.data ?? null;
+  const formId = application?.formId ?? '';
+  const submissionId = application?.submissionId ?? '';
 
   useEffect(() => {
   if (!applicationId) return;
 
-  // Initial setup
   setIsLoading(true);
   setActiveStep(0);
-  setError(null);  // Clear any previous error   
+  setError(null);
 
   const fetchApplicationData = async () => {
       try {
-        const res = await getFormDetails(formId);  // Fetching application data (replace '770' with actual applicationId if needed)
-        if (res) {
-          setApplication(res?.data);
-          const {formType, id } = res?.data;
+          const res = await getFormDetails(formId);  // Fetching application data (replace '770' with actual applicationId if needed)
+          if (res) {
+            const {formType, id } = res?.data;
+            setFormType(formType);
 
-          // Fetch forms and data based on the form type
-          if (formType === 'bundle') {
-            const bundleForms: any = await getBundleForms(id);
-            const formPromises = bundleForms?.data?.map(async (form: any) => {
-              const formData = await getApplicationForm(form.formId);
-              return {
-                formId: form.formId,
-                formJson: formData?.data,
-              };
-            });
+             const formData = await getApplicationFormData(formId, submissionId);
+             setFormData(formData?.data);
 
-            const forms = await Promise.all(formPromises);
-            setSelectedForms(forms);
-            setFormJson(forms[0]?.formJson || {});  // Set the form JSON for the first form in the bundle
+            if (formType === 'bundle') {
+              const bundleForms: any = await getBundleForms(id);
+              const formPromises = bundleForms?.data?.map(async (form: any) => {
+                const formData = await getApplicationForm(form.formId);
+                return {
+                  formId: form.formId,
+                  formJson: formData?.data,
+                };
+              });
+  
+              const forms = await Promise.all(formPromises);
+              setSelectedForms(forms);
+              setFormJson(forms[0]?.formJson || {});  // Set the form JSON for the first form in the bundle
+            }
+  
+            if (formType !== 'bundle') {
+              const form = await getApplicationForm(formId);
+              setFormJson(form?.data);
+            }
           }
-
-          // Fetch form data for the single form if not a bundle
-          const formData = await getApplicationFormData(formId, submissionId);
-          setFormData(formData?.data);
-          
-
-          // If it's not a bundle, fetch the form directly
-          if (formType !== 'bundle') {
-            const form = await getApplicationForm(formId);
-            setFormJson(form?.data);
-          }
-        }
-      } catch (err) {
+      } 
+      catch (err) 
+      {
         console.error("Error fetching application data:", err);
         setError("Failed to load application data.");
-      } finally {
+      } 
+      finally 
+      {
         setIsLoading(false);
       }
-    };
+  };
 
+  if(application?.formId && application)
+  {
     fetchApplicationData();
+  }
 
-    return () => {
-      setIsLoading(false);
-      setError(null);
-    };
-  }, [applicationId]);  // The effect will run when applicationId changes.
+  return () => {
+    setIsLoading(false);
+    setError(null);
+  };
+  }, [application]);
 
-  // Ensure hooks are not conditionally called
   const handleStepClick = (index: number, e?: any) => {
     rippleEffect(e);
     setActiveStep(index);
@@ -155,12 +163,10 @@ export const Application = () => {
   if (error) {
     return <div className="application-container">{error}</div>;
   }
-
-
   
   return (
     <div className="application-container" id='main'>
-      {application?.formType === "bundle" ? (
+      {formType === "bundle" ? (
         <div className="py-2">
           <div className="application-container padding-bottom-3x mb-1">
               <div className="mb-3">

@@ -509,6 +509,7 @@ export type ViewApplicationDetails = {
   csapRefNumber?: Maybe<Scalars['String']['output']>;
   currentStatus?: Maybe<DetailField>;
   endDate?: Maybe<Scalars['DateTime']['output']>;
+  formId?: Maybe<Scalars['String']['output']>;
   id: Scalars['Float']['output'];
   isHousing: Scalars['Boolean']['output'];
   isTaxExempt: Scalars['Boolean']['output'];
@@ -518,16 +519,12 @@ export type ViewApplicationDetails = {
   receivedDate: Scalars['DateTime']['output'];
   reviewProcess?: Maybe<DetailField>;
   siteType?: Maybe<DetailField>;
+  submissionId?: Maybe<Scalars['String']['output']>;
 };
 
 export type ViewParticipantsRolesDto = {
   __typename?: 'ViewParticipantsRolesDto';
   description: Scalars['String']['output'];
-  id: Scalars['Float']['output'];
-};
-
-export type ViewApplication = {
-  __typename?: 'ViewApplication';
   id: Scalars['Float']['output'];
 };
 
