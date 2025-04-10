@@ -10,6 +10,17 @@ import { USERS } from "../../helpers/endpoints";
 const TaskAssignment = () => {
   const auth = useAuth();
   const { taskId } = useParams();
+  const [actualTaskId, setActualTaskId] = React.useState<string | null>(null);
+  const [userType, setUserType] = React.useState<string | null>(null);
+
+  useEffect(() => {
+    if (taskId) {
+      const containsUstp = taskId.includes("&ustp=so");
+      const cleanTaskId = containsUstp ? taskId.split("&ustp=so")[0] : taskId;
+      if (containsUstp) setUserType("so");
+      setActualTaskId(cleanTaskId);
+    }
+  }, [taskId]);
 
   const API: string =
     import.meta.env.VITE_BACKEND_USERS_API ||
@@ -21,7 +32,7 @@ const TaskAssignment = () => {
 
   const assignTaskToUser = () => {
     getAxiosInstanceForCamunda()
-      .post(taskId + "/claim", {
+      .post(actualTaskId + "/claim", {
         userId: auth.user?.profile.preferred_username,
       })
       .then((response) => {
@@ -33,8 +44,21 @@ const TaskAssignment = () => {
   };
 
   const assignKeyCloakGroupToUser = () => {
+    console.log("taskId", taskId);
+    let endPoint = "";
+
+    if (actualTaskId === undefined || actualTaskId === null) {
+      return;
+    }
+
+    if (userType === "so") {
+      endPoint = "/addUserToGroupForSiteOwners";
+    } else {
+      endPoint = "/addUserToGroupForMuncipalUsers";
+    }
+
     getAxiosInstanceForUsers()
-      .post(API + USERS + "/addUserToGroupForMuncipalUsers", {
+      .post(API + USERS + endPoint, {
         userId: auth.user?.profile.sub,
       })
       .then((response) => {
@@ -50,8 +74,22 @@ const TaskAssignment = () => {
   };
 
   useEffect(() => {
-    assignKeyCloakGroupToUser();
-  }, []);
+    if (
+      auth.user?.profile.identity_provider === "bceid" &&
+      actualTaskId !== null
+    ) {
+      sessionStorage.removeItem("locationBeforeAuthRedirect");
+      assignKeyCloakGroupToUser();
+    } else if (
+      auth.isAuthenticated &&
+      actualTaskId !== null &&
+      auth.user?.profile.identity_provider !== "bceid"
+    ) {
+      alert(
+        "You are not logged in using BCeID. Please close this window and try again using BCeID."
+      );
+    }
+  }, [actualTaskId]);
 
   return <div className="mt-3 pt-5 container-fluid">Please wait ...</div>;
 };
