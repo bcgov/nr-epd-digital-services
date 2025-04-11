@@ -1,12 +1,20 @@
 import { useEffect, useState } from 'react';
-import { Form, Errors } from 'react-formio';
+import { Form } from 'react-formio';
 import { useParams } from 'react-router-dom';
-import { getApplicationForm, getApplicationFormData, getBundleForms, getFormDetails } from './FormioEndpoints';
+import {
+  getApplicationForm,
+  getApplicationFormData,
+  getBundleForms,
+  getFormDetails,
+} from './FormioEndpoints';
 import { getUser } from '../../../../../helpers/utility';
 import './Application.css';
 import PropTypes from 'prop-types';
 import { SpinnerIcon } from '../../../../../components/common/icon';
-import { GetApplicationByIdQuery, useGetApplicationByIdQuery } from './Application.generated';
+import {
+  GetApplicationByIdQuery,
+  useGetApplicationByIdQuery,
+} from './Application.generated';
 
 Form.propTypes = {
   options: PropTypes.shape({
@@ -14,7 +22,8 @@ Form.propTypes = {
   }),
 };
 
-type ApplicationDetails = GetApplicationByIdQuery['getApplicationDetailsById']['data'];
+type ApplicationDetails =
+  GetApplicationByIdQuery['getApplicationDetailsById']['data'];
 
 type FormJson = {
   title?: string;
@@ -43,14 +52,19 @@ export const Application: React.FC<ApplicationProps> = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const applicationId = parseInt(id ?? '', 10);
-  const { data, loading: appLoading, error: appError } = useGetApplicationByIdQuery({
+  const {
+    data,
+    loading: appLoading,
+    error: appError,
+  } = useGetApplicationByIdQuery({
     variables: {
       applicationId,
     },
     skip: !applicationId,
   });
 
-  const application: ApplicationDetails = data?.getApplicationDetailsById.data ?? null;
+  const application: ApplicationDetails =
+    data?.getApplicationDetailsById.data ?? null;
   const formId = application?.formId ?? '';
   const submissionId = application?.submissionId ?? '';
 
@@ -111,7 +125,10 @@ export const Application: React.FC<ApplicationProps> = () => {
     };
   }, [appLoading, formId, submissionId, appError]);
 
-  const handleStepClick = (index: number, e?: React.MouseEvent<HTMLDivElement>) => {
+  const handleStepClick = (
+    index: number,
+    e?: React.MouseEvent<HTMLDivElement>,
+  ) => {
     rippleEffect(e);
     setActiveStep(index);
     const selectedForm = selectedForms[index];
@@ -206,7 +223,6 @@ export const Application: React.FC<ApplicationProps> = () => {
                 {formJson?.title}
               </h3>
               <div className="px-3 py-2">
-                <Errors errors={error} />
                 {formJson && formData && (
                   <Form
                     form={formJson}
@@ -247,7 +263,6 @@ export const Application: React.FC<ApplicationProps> = () => {
             {formJson?.title}
           </h3>
           <div>
-            <Errors errors={error} />
             {formJson && formData && (
               <Form
                 form={formJson}
