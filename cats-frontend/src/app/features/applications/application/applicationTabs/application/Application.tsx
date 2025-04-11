@@ -1,21 +1,12 @@
 import { useEffect, useState } from 'react';
-//@ts-ignore
 import { Form, Errors } from 'react-formio';
 import { useParams } from 'react-router-dom';
-import {
-  getApplicationForm,
-  getApplicationFormData,
-  getBundleForms,
-  getFormDetails,
-} from './FormioEndpoints';
+import { getApplicationForm, getApplicationFormData, getBundleForms, getFormDetails } from './FormioEndpoints';
 import { getUser } from '../../../../../helpers/utility';
 import './Application.css';
 import PropTypes from 'prop-types';
 import { SpinnerIcon } from '../../../../../components/common/icon';
-import {
-  GetApplicationByIdQuery,
-  useGetApplicationByIdQuery,
-} from './Application.generated';
+import { GetApplicationByIdQuery, useGetApplicationByIdQuery } from './Application.generated';
 
 Form.propTypes = {
   options: PropTypes.shape({
@@ -23,8 +14,7 @@ Form.propTypes = {
   }),
 };
 
-type ApplicationDetails =
-  GetApplicationByIdQuery['getApplicationDetailsById']['data'];
+type ApplicationDetails = GetApplicationByIdQuery['getApplicationDetailsById']['data'];
 
 type FormJson = {
   title?: string;
@@ -49,35 +39,34 @@ export const Application: React.FC<ApplicationProps> = () => {
   const [formType, setFormType] = useState<string | null>(null);
   const [selectedForms, setSelectedForms] = useState<ApplicationForm[]>([]);
   const [activeStep, setActiveStep] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const applicationId = parseInt(id ?? '', 10);
-  const { data } = useGetApplicationByIdQuery({
+  const { data, loading: appLoading, error: appError } = useGetApplicationByIdQuery({
     variables: {
       applicationId,
     },
     skip: !applicationId,
   });
 
-  const application: ApplicationDetails =
-    data?.getApplicationDetailsById.data ?? null;
+  const application: ApplicationDetails = data?.getApplicationDetailsById.data ?? null;
   const formId = application?.formId ?? '';
   const submissionId = application?.submissionId ?? '';
 
   useEffect(() => {
+    if (appLoading) return;
+
     if (!formId || !submissionId) {
       setError('Form details not found.');
       setIsLoading(false);
       return;
     }
 
-    setIsLoading(true);
-    setActiveStep(0);
-    setError(null);
-
     const fetchApplicationData = async () => {
       try {
+        setError(null);
+        setIsLoading(true);
         const res = await getFormDetails(formId);
         if (res) {
           const { formType, id } = res?.data;
@@ -120,12 +109,9 @@ export const Application: React.FC<ApplicationProps> = () => {
       setIsLoading(false);
       setError(null);
     };
-  }, [application, formId, submissionId]);
+  }, [appLoading, formId, submissionId, appError]);
 
-  const handleStepClick = (
-    index: number,
-    e?: React.MouseEvent<HTMLDivElement>,
-  ) => {
+  const handleStepClick = (index: number, e?: React.MouseEvent<HTMLDivElement>) => {
     rippleEffect(e);
     setActiveStep(index);
     const selectedForm = selectedForms[index];
