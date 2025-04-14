@@ -48,8 +48,9 @@ jobs:
           LOG_LEVEL: info
           LOG_FILE_LOCATION: /tmp/sites-%DATE%.log
         with:
+          # added --legacy-peer-deps to resolve peer dependency issues as react-formio, formio is not compatible with react 18 as of now.
           commands: |
-            npm ci
+            npm ci --legacy-peer-deps
             npm run test:cov
           dir: ${{ matrix.dir }}
           node_version: "22"
