@@ -1,0 +1,28 @@
+.applicationLbl {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--typography-color-primary, #2D2D2D);
+  }
+  
+  .applicationTypeLbl {
+    font-weight: 700;
+  }
+  
+  .applicationIdLbl {
+    font-weight: 400;
+  }
+  
+  .applicationAddressLbl {
+    font-weight: 400;
+    color: var(--typography-color-secondary, #474543);
+  }
+  
+
+.customDot {
+    font-family: Noto Sans;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--typography-color-disabled, #9F9D9C);
+}

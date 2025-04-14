@@ -16,9 +16,10 @@
   border-bottom: 1px solid var(--surface-color-border-default, #d8d8d8);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
   .custom-navigation-bar-sticky-header {
     align-items: flex-start !important;
+    gap: var(--layout-margin-medium);
   }
 }
 

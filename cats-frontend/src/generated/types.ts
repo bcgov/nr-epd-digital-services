@@ -517,6 +517,9 @@ export type ViewApplicationDetails = {
   queuedDate?: Maybe<Scalars['DateTime']['output']>;
   receivedDate: Scalars['DateTime']['output'];
   reviewProcess?: Maybe<DetailField>;
+  siteAddress: Scalars['String']['output'];
+  siteCity: Scalars['String']['output'];
+  siteId: Scalars['Float']['output'];
   siteType?: Maybe<DetailField>;
 };
 

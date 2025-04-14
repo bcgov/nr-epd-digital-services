@@ -17,6 +17,15 @@ export class ViewApplicationDetails {
   @Field()
   id: number;
 
+  @Field()
+  siteId: number;
+
+  @Field()
+  siteAddress: string;
+
+  @Field()
+  siteCity: string;
+
   @Field({ nullable: true })
   csapRefNumber: string;
 
@@ -52,4 +61,6 @@ export class ViewApplicationDetails {
 
   @Field(() => Boolean, { defaultValue: false })
   isTaxExempt: boolean;
+
+
 }
