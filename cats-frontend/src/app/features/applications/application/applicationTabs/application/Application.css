@@ -44,19 +44,6 @@
   padding: 2rem 6rem;
 }
 
-#loader {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  max-height: 65vh;
-  box-shadow:
-    0 3px 3px -2px rgba(0, 0, 0, 0.2),
-    0px 3px 4px 0px rgba(0, 0, 0, 0.14),
-    0px 1px 8px 0px rgba(0, 0, 0, 0.12);
-  background-color: gray;
-}
-
 .bg-default {
   background-color: #38598a;
   border: #38598a;

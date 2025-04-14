@@ -10,11 +10,11 @@ import {
 import { getUser } from '../../../../../helpers/utility';
 import './Application.css';
 import PropTypes from 'prop-types';
-import { SpinnerIcon } from '../../../../../components/common/icon';
 import {
   GetApplicationByIdQuery,
   useGetApplicationByIdQuery,
 } from './Application.generated';
+import LoadingOverlay from '../../../../../components/loader/LoadingOverlay';
 
 Form.propTypes = {
   options: PropTypes.shape({
@@ -175,11 +175,7 @@ export const Application: React.FC<ApplicationProps> = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="application-container" id="loader">
-        <SpinnerIcon className="fa-spin" />
-      </div>
-    );
+    return <LoadingOverlay loading={isLoading} />;
   }
 
   if (error) {
