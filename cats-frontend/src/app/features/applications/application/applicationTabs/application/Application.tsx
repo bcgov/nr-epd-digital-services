@@ -1,5 +1,4 @@
-//@ts-ignore
-import { Form } from 'react-formio';
+
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
@@ -10,24 +9,25 @@ import {
 } from './FormioEndpoints';
 import { getUser } from '../../../../../helpers/utility';
 import './Application.css';
-import PropTypes from 'prop-types';
 import {
   GetApplicationByIdQuery,
   useGetApplicationByIdQuery,
 } from './Application.generated';
 import LoadingOverlay from '../../../../../components/loader/LoadingOverlay';
-
-Form.propTypes = {
-  options: PropTypes.shape({
-    readOnly: PropTypes.func,
-  }),
-};
+import { Form } from '@formio/react';
 
 type ApplicationDetails =
   GetApplicationByIdQuery['getApplicationDetailsById']['data'];
 
 type FormJson = {
   title?: string;
+  components: any[]; 
+};
+
+type Submission = {
+  data: { [key: string]: any };
+  metadata?: { [key: string]: any };
+  state?: string;
 };
 
 interface ApplicationForm {
@@ -44,8 +44,12 @@ export const Application: React.FC<ApplicationProps> = () => {
   }
 
   const { id } = useParams<{ id: string }>();
-  const [formData, setFormData] = useState<Record<string, any>>({});
-  const [formJson, setFormJson] = useState<FormJson>({});
+  const [formData, setFormData] = useState<Submission>({
+    data: {},
+  });
+  const [formJson, setFormJson] = useState<FormJson>({
+    components: []
+  });
   const [formType, setFormType] = useState<string | null>(null);
   const [selectedForms, setSelectedForms] = useState<ApplicationForm[]>([]);
   const [activeStep, setActiveStep] = useState<number>(0);
@@ -88,7 +92,7 @@ export const Application: React.FC<ApplicationProps> = () => {
           setFormType(formType);
 
           const formData = await getApplicationFormData(formId, submissionId);
-          setFormData(formData?.data);
+          setFormData( prev => ({...prev, data: formData?.data?.data}));
 
           if (formType === 'bundle') {
             const bundleForms = await getBundleForms(id);
@@ -102,7 +106,7 @@ export const Application: React.FC<ApplicationProps> = () => {
 
             const forms = await Promise.all(formPromises);
             setSelectedForms(forms);
-            setFormJson(forms[0]?.formJson || {});
+            setFormJson(forms[0]?.formJson);
           }
 
           if (formType !== 'bundle') {
@@ -222,12 +226,12 @@ export const Application: React.FC<ApplicationProps> = () => {
               <div className="px-3 py-2">
                 {formJson && formData && (
                   <Form
-                    form={formJson}
+                    src={formJson}
                     submission={formData}
                     options={{
                       hide: { submit: true },
                       noAlerts: false,
-                      readOnly: () => true,
+                      readOnly: true,
                       viewAsHtml: true,
                     }}
                   />
@@ -262,12 +266,12 @@ export const Application: React.FC<ApplicationProps> = () => {
           <div>
             {formJson && formData && (
               <Form
-                form={formJson}
+                src={formJson}
                 submission={formData}
                 options={{
                   hide: { submit: true },
                   noAlerts: false,
-                  readOnly: () => true,
+                  readOnly: true,
                   viewAsHtml: true,
                 }}
               />
