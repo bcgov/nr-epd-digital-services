@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
@@ -21,7 +20,7 @@ type ApplicationDetails =
 
 type FormJson = {
   title?: string;
-  components: any[]; 
+  components: any[];
 };
 
 type Submission = {
@@ -48,7 +47,7 @@ export const Application: React.FC<ApplicationProps> = () => {
     data: {},
   });
   const [formJson, setFormJson] = useState<FormJson>({
-    components: []
+    components: [],
   });
   const [formType, setFormType] = useState<string | null>(null);
   const [selectedForms, setSelectedForms] = useState<ApplicationForm[]>([]);
@@ -92,7 +91,7 @@ export const Application: React.FC<ApplicationProps> = () => {
           setFormType(formType);
 
           const formData = await getApplicationFormData(formId, submissionId);
-          setFormData( prev => ({...prev, data: formData?.data?.data}));
+          setFormData((prev) => ({ ...prev, data: formData?.data?.data }));
 
           if (formType === 'bundle') {
             const bundleForms = await getBundleForms(id);
