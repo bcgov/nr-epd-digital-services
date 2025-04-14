@@ -51,11 +51,12 @@ jobs:
           key: coverage-${{ inputs.component }}-${{ github.run_number }}
           restore-keys: |
             coverage-${{ inputs.component }}-
-
+      
+      # added --legacy-peer-deps to resolve peer dependency issues as react-formio, formio is not compatible with react 18 as of now.
       - name: Tests
         run: |
           cd ${{ inputs.component }}
-          npm ci
+          npm ci --legacy-peer-deps
           ${{ inputs.test_cmd }}
 
       - name: Report code coverage
