@@ -17,6 +17,9 @@ export class ViewApplicationDetails {
   @Field()
   id: number;
 
+  @Field()
+  siteId: number;
+
   @Field({ nullable: true })
   csapRefNumber: string;
 

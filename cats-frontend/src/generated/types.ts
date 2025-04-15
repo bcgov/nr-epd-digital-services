@@ -346,6 +346,7 @@ export type Query = {
   getOrganizations: DropdownResponse;
   getParticipantNames: DropdownResponse;
   getPersonNotesByPersonId: PersonNoteResponse;
+  getSiteDetailsBySiteId: SiteDetailsResponse;
   searchApplications: ApplicationSearchResponse;
   searchApplicationsById: ApplicationSearchResponse;
   searchPerson: SearchPersonResponse;
@@ -388,6 +389,11 @@ export type QueryGetPersonNotesByPersonIdArgs = {
 };
 
 
+export type QueryGetSiteDetailsBySiteIdArgs = {
+  siteId: Scalars['String']['input'];
+};
+
+
 export type QuerySearchApplicationsArgs = {
   filter: ApplicationFilter;
   page: Scalars['Int']['input'];
@@ -419,6 +425,23 @@ export type SearchPersonResponse = {
   persons: Array<ViewPerson>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type SiteDataGraphQl = {
+  __typename?: 'SiteDataGraphQL';
+  addrLine_1?: Maybe<Scalars['String']['output']>;
+  addrLine_2?: Maybe<Scalars['String']['output']>;
+  addrLine_3?: Maybe<Scalars['String']['output']>;
+  addrLine_4?: Maybe<Scalars['String']['output']>;
+  commonName?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Float']['output'];
+  latdeg?: Maybe<Scalars['Float']['output']>;
+  longdeg?: Maybe<Scalars['Float']['output']>;
+};
+
+export type SiteDetailsResponse = {
+  __typename?: 'SiteDetailsResponse';
+  data?: Maybe<SiteDataGraphQl>;
 };
 
 export type UpdateHousingInputDto = {
@@ -517,6 +540,7 @@ export type ViewApplicationDetails = {
   queuedDate?: Maybe<Scalars['DateTime']['output']>;
   receivedDate: Scalars['DateTime']['output'];
   reviewProcess?: Maybe<DetailField>;
+  siteId: Scalars['Float']['output'];
   siteType?: Maybe<DetailField>;
 };
 

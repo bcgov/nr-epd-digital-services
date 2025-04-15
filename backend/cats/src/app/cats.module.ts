@@ -65,6 +65,9 @@ import { ApplicationResolver } from './resolvers/application/application.resolve
 import { ApplicationService } from './services/application/application.service';
 import { ApplicationDetailsResolver } from './resolvers/application/applicationDetails.resolver';
 import { AppTypeService } from './services/appType/appType.service';
+import { SiteResolver } from './resolvers/site/site.resolver';
+import { SiteService } from './services/site/site.service';
+import { SiteDetailsResponse } from './dto/siteDetails.dto';
 /**
  * Module for wrapping all functionalities in user microserivce
  */
@@ -138,6 +141,9 @@ import { AppTypeService } from './services/appType/appType.service';
     ApplicationService,
     ApplicationDetailsResolver,
     AppTypeService,
+    SiteResolver,
+    SiteService,
+    SiteDetailsResponse,
   ],
   controllers: [UserController],
 })
