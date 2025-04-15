@@ -13,7 +13,7 @@ COPY package.json ./
 COPY package-lock.json ./
 
 # Switching to `npm ci` from `npm install` for consistent builds
-RUN npm ci --legacy-peer-deps --silent
+RUN npm ci --silent
 RUN npm install react-scripts@3.4.1 -g --silent
 
 # create and set user permissions to app folder
