@@ -35,6 +35,7 @@ query getSiteDetailsBySiteId($siteId: String!) {
   getSiteDetailsBySiteId(siteId: $siteId) {
     data {
       id
+      latdeg
       longdeg
       commonName
       addrLine_1

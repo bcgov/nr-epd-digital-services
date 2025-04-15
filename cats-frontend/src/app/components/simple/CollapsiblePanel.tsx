@@ -1,17 +1,19 @@
 import { FC, ReactNode, useState } from 'react';
-import { ChevronDown, ChevronUp } from '../common/icon';
+import { ChevronDown, ChevronUp, SpinnerIcon } from '../common/icon';
 import styles from './CollapsiblePanel.module.css';
 import { Button } from '../button/Button';
 interface CollapsiblePanelProps {
   label: string | ReactNode;
   content: ReactNode;
   defaultOpen?: boolean;
+  loading?: boolean;
 }
 
 const CollapsiblePanel: FC<CollapsiblePanelProps> = ({
   label,
   content,
   defaultOpen = false,
+  loading = false,
 }) => {
   const [open, setOpen] = useState(defaultOpen);
   return (
@@ -30,7 +32,12 @@ const CollapsiblePanel: FC<CollapsiblePanelProps> = ({
         </div>
       )}
 
-      {open && content}
+      {open && !loading && content}
+      {open && loading && (
+        <div className="d-flex justify-content-center">
+          <SpinnerIcon data-testid="loading-spinner" className="fa-spin " />
+        </div>
+      )}
     </div>
   );
 };

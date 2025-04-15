@@ -29,3 +29,19 @@
   font: var(--typography-regular-body);
   color: var(--typography-color-primary);
 }
+
+.siteInfoContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--layout-margin-large);
+
+  @media (max-width: 992px) {
+    /* 992px - bootstrap's LG breakpoint */
+    grid-template-columns: 1fr;
+  }
+}
+
+.mapContainer {
+  height: 430px;
+  width: 100%;
+}
