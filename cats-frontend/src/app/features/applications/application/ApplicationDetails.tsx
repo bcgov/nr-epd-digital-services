@@ -166,7 +166,7 @@ const ApplicationDetails = () => {
   }
 
   return (
-    <>
+    <div className={styles.applicationDetailContainer}>
       <NavigationBar
         isVisible={isVisible}
         onClickBackButton={onClickBackButton}
@@ -176,15 +176,17 @@ const ApplicationDetails = () => {
         childern={navigationBarChildern}
       />
       <PageContainer role="details">
-          <div className={`section-details-header row ${isVisible ? 'invisible' : ''}`}>
-            <div>
-              <CustomLabel label={application?.id.toString() ?? ''} labelType="r-h5" />
-            </div>
-            <div>
-              <CustomLabel
-                label={application?.appType?.description ?? ''}
-                labelType="b-h1"
-              />
+          <div className={`gap-3 row ${isVisible ? 'invisible' : ''}`}>
+            <div className='d-flex flex-column gap-1 flex-wrap'>
+              <div>
+                <CustomLabel label={application?.id.toString() ?? ''} labelType="r-h5" />
+              </div>
+              <div>
+                <CustomLabel
+                  label={application?.appType?.description ?? ''}
+                  labelType="b-h1"
+                />
+              </div>
             </div>
             <div>
               <CustomLabel
@@ -195,7 +197,7 @@ const ApplicationDetails = () => {
           </div>
         <NavigationPills components={navComponents} tabSearchKey="tab" />
       </PageContainer>
-    </>
+    </div>
   );
 };
 

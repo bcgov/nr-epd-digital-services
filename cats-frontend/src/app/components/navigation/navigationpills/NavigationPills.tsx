@@ -71,7 +71,7 @@ const NavigationPills: React.FC<INavigationPills> = ({
   };
 
   return (
-    <div className="pt-5">
+    <div>
       <div className="d-flex d-xxl-flex d-xl-flex gap-2 d-none">
         {components.map((item) => (
           <Button
