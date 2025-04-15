@@ -13,6 +13,15 @@ import { Marker, TileLayer } from 'react-leaflet';
 import { MapContainer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
+import { Icon } from 'leaflet';
+import mapMarkerDefault from '../../../../../images/map_marker_default.png';
+
+const mapMarkerIcon = new Icon({
+  iconUrl: mapMarkerDefault,
+  iconSize: [50, 65],
+  iconAnchor: [25, 65],
+});
+
 export const Details = () => {
   const { id = '' } = useParams();
   const applicationId = parseInt(id, 10);
@@ -36,6 +45,11 @@ export const Details = () => {
     });
 
   const site = siteData?.getSiteDetailsBySiteId.data;
+
+  const siteCoordinates = {
+    lat: site?.latdeg || 0,
+    lng: site?.longdeg || 0,
+  };
 
   return (
     <div className="d-flex flex-column gap-3">
@@ -128,28 +142,18 @@ export const Details = () => {
         loading={siteDataLoading || !siteData}
         content={
           <div className={styles.siteInfoContainer}>
-            {site && (
-              <MapContainer
-                center={{
-                  lat: site.latdeg || 0,
-                  lng: site.longdeg || 0,
-                }}
-                zoom={14}
-                zoomControl={false}
-                className={styles.mapContainer}
-              >
-                <TileLayer
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <Marker
-                  position={{
-                    lat: site.latdeg || 0,
-                    lng: site.longdeg || 0,
-                  }}
-                />
-              </MapContainer>
-            )}
+            <MapContainer
+              center={siteCoordinates}
+              zoom={14}
+              zoomControl={false}
+              className={styles.mapContainer}
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={siteCoordinates} icon={mapMarkerIcon} />
+            </MapContainer>
 
             <div className={styles.rowsContainer}>
               <div className={styles.row}>
