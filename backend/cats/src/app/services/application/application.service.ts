@@ -133,6 +133,8 @@ export class ApplicationService {
 
       return {
         id: application.id,
+        formId: application.formId,
+        submissionId: application.submissionId,
         csapRefNumber: application.csapRefNumber,
         receivedDate: new Date(application.receivedDate),
         endDate: application.endDate ? new Date(application.endDate) : null,
