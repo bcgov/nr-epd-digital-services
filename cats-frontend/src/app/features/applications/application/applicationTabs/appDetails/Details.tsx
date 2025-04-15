@@ -6,7 +6,7 @@ import {
   useGetApplicationDetailsByIdQuery,
   useGetSiteDetailsBySiteIdQuery,
 } from './Details.generated';
-import { TickIcon } from '../../../../../components/common/icon';
+import { ExternalLink, TickIcon } from '../../../../../components/common/icon';
 import { formatDateUTC } from '../../../../../helpers/utility';
 import { formatCoordinate } from '../../../../../helpers/formatCoordinate/formatCoordinate';
 import { Marker, TileLayer } from 'react-leaflet';
@@ -15,6 +15,7 @@ import 'leaflet/dist/leaflet.css';
 
 import { Icon } from 'leaflet';
 import mapMarkerDefault from '../../../../../images/map_marker_default.png';
+import { Button } from '../../../../../components/button/Button';
 
 const mapMarkerIcon = new Icon({
   iconUrl: mapMarkerDefault,
@@ -141,7 +142,23 @@ export const Details = () => {
         }
       />
       <CollapsiblePanel
-        label="Site Information"
+        label={
+          <div className="d-flex gap-3 align-items-center">
+            <span>Site Information</span>
+            {application?.siteId && (
+              <a
+                href={`${import.meta.env.VITE_SITE_REGISTRY_URL}/site/details/${application?.siteId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="d-flex text-decoration-none"
+              >
+                <Button variant="secondary" size="small">
+                  View on Site Registry <ExternalLink />
+                </Button>
+              </a>
+            )}
+          </div>
+        }
         loading={siteDataLoading || !siteDataCalled}
         content={
           <div className={styles.siteInfoContainer}>
@@ -164,7 +181,16 @@ export const Details = () => {
               <div className={styles.row}>
                 <div className={styles.cell}>
                   <label>Site ID</label>
-                  <div>{site?.id}</div>
+                  <div>
+                    <a
+                      href={`${import.meta.env.VITE_SITE_REGISTRY_URL}/site/details/${site?.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.siteLink}
+                    >
+                      {site?.id} <ExternalLink />
+                    </a>
+                  </div>
                 </div>
               </div>
               <div className={styles.row}>
