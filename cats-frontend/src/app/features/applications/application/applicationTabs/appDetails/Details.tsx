@@ -36,13 +36,16 @@ export const Details = () => {
 
   const application = data?.getApplicationDetailsById.data;
 
-  const { data: siteData, loading: siteDataLoading } =
-    useGetSiteDetailsBySiteIdQuery({
-      variables: {
-        siteId: application?.siteId?.toString() || '',
-      },
-      skip: !application?.siteId,
-    });
+  const {
+    data: siteData,
+    loading: siteDataLoading,
+    called: siteDataCalled,
+  } = useGetSiteDetailsBySiteIdQuery({
+    variables: {
+      siteId: application?.siteId?.toString() || '',
+    },
+    skip: !application?.siteId,
+  });
 
   const site = siteData?.getSiteDetailsBySiteId.data;
 
@@ -139,21 +142,23 @@ export const Details = () => {
       />
       <CollapsiblePanel
         label="Site Information"
-        loading={siteDataLoading || !siteData}
+        loading={siteDataLoading || !siteDataCalled}
         content={
           <div className={styles.siteInfoContainer}>
-            <MapContainer
-              center={siteCoordinates}
-              zoom={14}
-              zoomControl={false}
-              className={styles.mapContainer}
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Marker position={siteCoordinates} icon={mapMarkerIcon} />
-            </MapContainer>
+            {siteData && (
+              <MapContainer
+                center={siteCoordinates}
+                zoom={14}
+                zoomControl={false}
+                className={styles.mapContainer}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Marker position={siteCoordinates} icon={mapMarkerIcon} />
+              </MapContainer>
+            )}
 
             <div className={styles.rowsContainer}>
               <div className={styles.row}>
