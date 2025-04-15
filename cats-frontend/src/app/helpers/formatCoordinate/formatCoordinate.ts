@@ -4,7 +4,7 @@
  * @returns Formatted string in the format "Xd Ym Zs" where X is degrees, Y is minutes, Z is seconds
  */
 export const formatCoordinate = (coord?: number | null): string => {
-  if (!coord) {
+  if (!coord && coord !== 0) {
     return '';
   }
 
