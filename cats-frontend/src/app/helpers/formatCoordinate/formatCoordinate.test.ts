@@ -6,7 +6,7 @@ describe('formatCoordinate', () => {
   });
 
   it('formats negative coordinates with degrees, minutes, and seconds', () => {
-    expect(formatCoordinate(-122.621989)).toBe('-122d 37m');
+    expect(formatCoordinate(-122.621989)).toBe('-122d 37m 19.16s');
   });
 
   it('formats coordinates with only degrees and minutes', () => {
