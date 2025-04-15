@@ -67,6 +67,8 @@ import { ApplicationDetailsResolver } from './resolvers/application/applicationD
 import { AppTypeService } from './services/appType/appType.service';
 import { InvoiceV2 } from './entities/invoiceV2.entity';
 import { InvoiceLineItem } from './entities/invoiceLineItem.entity';
+import { InvoiceResolver } from './resolvers/invoice/invoice.resolver';
+import { InvoiceService } from './services/invoice/invoice.service';
 /**
  * Module for wrapping all functionalities in user microserivce
  */
@@ -142,6 +144,8 @@ import { InvoiceLineItem } from './entities/invoiceLineItem.entity';
     ApplicationService,
     ApplicationDetailsResolver,
     AppTypeService,
+    InvoiceResolver,
+    InvoiceService,
   ],
   controllers: [UserController],
 })
