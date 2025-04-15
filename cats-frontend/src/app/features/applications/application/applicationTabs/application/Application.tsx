@@ -14,7 +14,7 @@ import {
 } from './Application.generated';
 import LoadingOverlay from '../../../../../components/loader/LoadingOverlay';
 import { Form } from '@formio/react';
-import '@formio/js/dist/formio.full.min.css'
+import '@formio/js/dist/formio.full.min.css';
 
 type ApplicationDetails =
   GetApplicationByIdQuery['getApplicationDetailsById']['data'];
