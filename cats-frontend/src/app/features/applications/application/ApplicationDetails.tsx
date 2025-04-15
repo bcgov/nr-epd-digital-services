@@ -41,10 +41,7 @@ const ApplicationDetails = () => {
     skip: !applicationId,
   });
 
-  const application =  data?.getApplicationDetailsById.data;
-
-
-
+  const application = data?.getApplicationDetailsById.data;
 
   const onClickBackButton = () => {
     navigate('/applications');
@@ -54,11 +51,14 @@ const ApplicationDetails = () => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY; // Get current scroll position
       const threshold = 50; // Set a custom threshold, for example, 100px
-      if(scrollPosition === 0 || scrollPosition === undefined || scrollPosition <= 5){
+      if (
+        scrollPosition === 0 ||
+        scrollPosition === undefined ||
+        scrollPosition <= 5
+      ) {
         setIsVisible(false);
         return;
       }
-
 
       if (scrollPosition > threshold && !isVisible) {
         setIsVisible(true); // Show header after scrolling past 100px
@@ -102,31 +102,31 @@ const ApplicationDetails = () => {
   const appDescription = application?.appType?.description ?? '';
   const { siteId, siteAddress, siteCity } = application || {};
   const parts: string[] = [];
-  
+
   // Add (siteId) — assuming it's a number or string
   if (siteId !== null && siteId !== undefined) {
     parts.push(`(${siteId})`);
   }
-  
+
   // Prepare address and city block
   const locationParts: string[] = [];
-  
+
   if (siteAddress && String(siteAddress).trim()) {
     locationParts.push(String(siteAddress).trim());
   }
-  
+
   if (siteCity && String(siteCity).trim()) {
     locationParts.push(String(siteCity).trim());
   }
-  
+
   // Join address + city with comma
   const siteLocation = locationParts.join(', ');
-  
+
   // Push to main parts array if location is present
   if (siteLocation) {
     parts.push(siteLocation);
   }
-  
+
   const siteDescription: string = parts.join(' ');
 
   const navigationBarChildern = (
@@ -171,35 +171,43 @@ const ApplicationDetails = () => {
     </>
   );
 
-  const showNavigationBar = isVisible && id
+  const showNavigationBar = isVisible && id;
 
-  const navigationBarText = (appId || appDescription || siteDescription) && showNavigationBar ? (
-    <div className="d-flex flex-column gap-1">
-      {
-        (appId || appDescription) && (
+  const navigationBarText =
+    (appId || appDescription || siteDescription) && showNavigationBar ? (
+      <div className="d-flex flex-column gap-1">
+        {(appId || appDescription) && (
           <div>
-            <span className={cx(styles.applicationIdLbl, styles.applicationLbl)}>{appId}</span>
+            <span
+              className={cx(styles.applicationIdLbl, styles.applicationLbl)}
+            >
+              {appId}
+            </span>
             <span className={cx(styles.customDot, 'px-2')}>•</span>
-            <span className={cx(styles.applicationTypeLbl, styles.applicationLbl)}>{appDescription}</span>
+            <span
+              className={cx(styles.applicationTypeLbl, styles.applicationLbl)}
+            >
+              {appDescription}
+            </span>
           </div>
-        )
-      }
-      {
-        siteDescription &&
-        <div>
-          <span className={cx(styles.applicationAddressLbl, styles.applicationLbl)}>
-            {siteDescription}
-          </span>
-        </div>
-      }
-    </div>
-  ) : null;
-
+        )}
+        {siteDescription && (
+          <div>
+            <span
+              className={cx(
+                styles.applicationAddressLbl,
+                styles.applicationLbl,
+              )}
+            >
+              {siteDescription}
+            </span>
+          </div>
+        )}
+      </div>
+    ) : null;
 
   if (loading) {
-    return (
-      <LoadingOverlay loading={loading}/>
-    );
+    return <LoadingOverlay loading={loading} />;
   }
 
   return (
@@ -218,10 +226,14 @@ const ApplicationDetails = () => {
             {(appId || appDescription) && (
               <div className="d-flex flex-column gap-1 flex-wrap">
                 {appId && <CustomLabel label={appId} labelType="r-h5" />}
-                {appDescription && <CustomLabel label={appDescription} labelType="b-h1" />}
+                {appDescription && (
+                  <CustomLabel label={appDescription} labelType="b-h1" />
+                )}
               </div>
             )}
-            {siteDescription && <CustomLabel label={siteDescription} labelType="r-h5" />}
+            {siteDescription && (
+              <CustomLabel label={siteDescription} labelType="r-h5" />
+            )}
           </div>
         )}
         <NavigationPills components={navComponents} tabSearchKey="tab" />

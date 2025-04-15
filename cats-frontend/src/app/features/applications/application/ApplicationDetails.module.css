@@ -1,14 +1,14 @@
 .applicationDetailContainer {
-  display:flex;
+  display: flex;
   flex-direction: column;
   gap: var(--layout-margin-xxlarge);
 }
 
 .applicationLbl {
-    font-family: 'Noto Sans', sans-serif;
-    font-size: 12px;
-    line-height: 18px;
-    color: var(--typography-color-primary, #2D2D2D);
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--typography-color-primary, #2d2d2d);
 }
 
 .applicationTypeLbl {
@@ -23,12 +23,11 @@
   font-weight: 400;
   color: var(--typography-color-secondary, #474543);
 }
-  
 
 .customDot {
-    font-family: Noto Sans;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
-    color: var(--typography-color-disabled, #9F9D9C);
+  font-family: Noto Sans;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--typography-color-disabled, #9f9d9c);
 }

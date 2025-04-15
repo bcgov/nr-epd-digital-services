@@ -9,7 +9,11 @@ const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ loading }) => {
   if (!loading) return null;
 
   return (
-    <div className={styles.overlay} data-testid="loading-overlay" aria-busy={loading}>
+    <div
+      className={styles.overlay}
+      data-testid="loading-overlay"
+      aria-busy={loading}
+    >
       <div className={styles.loader} data-testid="loader"></div>
     </div>
   );
