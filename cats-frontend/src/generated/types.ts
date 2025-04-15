@@ -427,21 +427,23 @@ export type SearchPersonResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
-export type SiteDataGraphQl = {
-  __typename?: 'SiteDataGraphQL';
+export type SiteDetailsDto = {
+  __typename?: 'SiteDetailsDTO';
   addrLine_1?: Maybe<Scalars['String']['output']>;
   addrLine_2?: Maybe<Scalars['String']['output']>;
   addrLine_3?: Maybe<Scalars['String']['output']>;
   addrLine_4?: Maybe<Scalars['String']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
   commonName?: Maybe<Scalars['String']['output']>;
-  id: Scalars['Float']['output'];
+  id: Scalars['String']['output'];
   latdeg?: Maybe<Scalars['Float']['output']>;
   longdeg?: Maybe<Scalars['Float']['output']>;
+  siteRiskCode?: Maybe<Scalars['String']['output']>;
 };
 
 export type SiteDetailsResponse = {
   __typename?: 'SiteDetailsResponse';
-  data?: Maybe<SiteDataGraphQl>;
+  data?: Maybe<SiteDetailsDto>;
 };
 
 export type UpdateHousingInputDto = {

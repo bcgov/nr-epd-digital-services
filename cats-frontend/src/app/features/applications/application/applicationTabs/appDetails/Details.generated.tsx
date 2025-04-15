@@ -15,7 +15,7 @@ export type GetSiteDetailsBySiteIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetSiteDetailsBySiteIdQuery = { __typename?: 'Query', getSiteDetailsBySiteId: { __typename?: 'SiteDetailsResponse', data?: { __typename?: 'SiteDataGraphQL', id: number, longdeg?: number | null, commonName?: string | null } | null } };
+export type GetSiteDetailsBySiteIdQuery = { __typename?: 'Query', getSiteDetailsBySiteId: { __typename?: 'SiteDetailsResponse', data?: { __typename?: 'SiteDetailsDTO', id: string, longdeg?: number | null, commonName?: string | null, addrLine_1?: string | null, addrLine_2?: string | null, addrLine_3?: string | null, addrLine_4?: string | null, city?: string | null, siteRiskCode?: string | null } | null } };
 
 
 export const GetApplicationDetailsByIdDocument = gql`
@@ -92,6 +92,13 @@ export const GetSiteDetailsBySiteIdDocument = gql`
       id
       longdeg
       commonName
+      addrLine_1
+      addrLine_2
+      addrLine_3
+      addrLine_4
+      city
+      commonName
+      siteRiskCode
     }
   }
 }
