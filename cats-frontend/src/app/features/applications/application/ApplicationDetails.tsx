@@ -98,6 +98,37 @@ const ApplicationDetails = () => {
     }
   };
 
+  const appId = application?.id?.toString() ?? '';
+  const appDescription = application?.appType?.description ?? '';
+  const { siteId, siteAddress, siteCity } = application || {};
+  const parts: string[] = [];
+  
+  // Add (siteId) — assuming it's a number or string
+  if (siteId !== null && siteId !== undefined) {
+    parts.push(`(${siteId})`);
+  }
+  
+  // Prepare address and city block
+  const locationParts: string[] = [];
+  
+  if (siteAddress && String(siteAddress).trim()) {
+    locationParts.push(String(siteAddress).trim());
+  }
+  
+  if (siteCity && String(siteCity).trim()) {
+    locationParts.push(String(siteCity).trim());
+  }
+  
+  // Join address + city with comma
+  const siteLocation = locationParts.join(', ');
+  
+  // Push to main parts array if location is present
+  if (siteLocation) {
+    parts.push(siteLocation);
+  }
+  
+  const siteDescription: string = parts.join(' ');
+
   const navigationBarChildern = (
     <>
       {viewMode === UserMode.Default && userType === UserType.STAFF && (
@@ -140,24 +171,30 @@ const ApplicationDetails = () => {
     </>
   );
 
-  const navigationBarText = (
-    <>
-      {id && application?.appType && application?.appType?.description?.length > 0
-        ? isVisible && (
+  const showNavigationBar = isVisible && id
+
+  const navigationBarText = (appId || appDescription || siteDescription) && showNavigationBar ? (
+    <div className="d-flex flex-column gap-1">
+      {
+        (appId || appDescription) && (
           <div>
-            <div className="d-flex align-items-center">
-              <span className={cx(styles.applicationIdLbl, styles.applicationLbl)}>{application?.id}</span>
-              <span className={cx(styles.customDot,'px-2')}>•</span>
-              <span className={cx(styles.applicationTypeLbl, styles.applicationLbl)}>{application?.appType?.description ?? ''}</span>
-            </div>
-            <div className="d-flex align-items-center">
-              <span className={cx(styles.applicationAddressLbl, styles.applicationLbl)}>{`(${application?.siteId ?? ''}) ${application?.siteAddress ?? ''}, ${application?.siteCity ?? ''}`}</span>
-            </div>
+            <span className={cx(styles.applicationIdLbl, styles.applicationLbl)}>{appId}</span>
+            <span className={cx(styles.customDot, 'px-2')}>•</span>
+            <span className={cx(styles.applicationTypeLbl, styles.applicationLbl)}>{appDescription}</span>
           </div>
-          )
-        : ''}
-    </>
-  );
+        )
+      }
+      {
+        siteDescription &&
+        <div>
+          <span className={cx(styles.applicationAddressLbl, styles.applicationLbl)}>
+            {siteDescription}
+          </span>
+        </div>
+      }
+    </div>
+  ) : null;
+
 
   if (loading) {
     return (
@@ -176,25 +213,17 @@ const ApplicationDetails = () => {
         childern={navigationBarChildern}
       />
       <PageContainer role="details">
+        {(appId || appDescription || siteDescription) && (
           <div className={`gap-3 row ${isVisible ? 'invisible' : ''}`}>
-            <div className='d-flex flex-column gap-1 flex-wrap'>
-              <div>
-                <CustomLabel label={application?.id.toString() ?? ''} labelType="r-h5" />
+            {(appId || appDescription) && (
+              <div className="d-flex flex-column gap-1 flex-wrap">
+                {appId && <CustomLabel label={appId} labelType="r-h5" />}
+                {appDescription && <CustomLabel label={appDescription} labelType="b-h1" />}
               </div>
-              <div>
-                <CustomLabel
-                  label={application?.appType?.description ?? ''}
-                  labelType="b-h1"
-                />
-              </div>
-            </div>
-            <div>
-              <CustomLabel
-                label={`(${application?.siteId ?? ''}) ${application?.siteAddress ?? ''}, ${application?.siteCity ?? ''}`}
-                labelType="r-h5"
-              />
-            </div>
+            )}
+            {siteDescription && <CustomLabel label={siteDescription} labelType="r-h5" />}
           </div>
+        )}
         <NavigationPills components={navComponents} tabSearchKey="tab" />
       </PageContainer>
     </div>
