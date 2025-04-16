@@ -11,6 +11,7 @@ import Search from '../features/people/Search';
 import Person from '../features/people/person/Person';
 import ApplicationDetails from '../features/applications/application/ApplicationDetails';
 import ApplicationSearch from '../features/applications/search/Search';
+import Assignment from '../features/assignment/Assignment';
 
 const roleBasedRoutes: any = {
   client: [
@@ -20,6 +21,7 @@ const roleBasedRoutes: any = {
     { path: '/person', element: <Person /> },
     { path: '/applications', element: <ApplicationSearch /> },
     { path: '/applications/:id', element: <ApplicationDetails /> },
+    { path: '/assignment/:id', element: <Assignment /> },
   ],
   internal: [
     { path: '/dashboard', element: <Dashboard /> },
