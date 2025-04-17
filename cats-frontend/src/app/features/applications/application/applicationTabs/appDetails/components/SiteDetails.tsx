@@ -16,6 +16,7 @@ import mapMarkerDefault from '@/images/map_marker_default.png';
 import { GetSiteDetailsBySiteIdQuery } from '../Details.generated';
 import { formatCoordinate } from '@/helpers/formatCoordinate/formatCoordinate';
 import styles from '../Details.module.css';
+import 'leaflet/dist/leaflet.css';
 
 const mapMarkerIcon = new Icon({
   iconUrl: mapMarkerDefault,
@@ -120,7 +121,6 @@ export const SiteDetails = ({
   };
   return (
     <CollapsiblePanel
-      defaultOpen={true}
       loading={loading}
       label={
         <div className="d-flex gap-3 align-items-center">

@@ -42,8 +42,8 @@ class SiteDetailsDTO {
   @Field()
   whenCreated: string;
 
-  @Field()
-  whenUpdated: string;
+  @Field({ nullable: true })
+  whenUpdated?: string;
 }
 
 @ObjectType()
