@@ -35,6 +35,21 @@ class SiteDetailsDTO {
 
   @Field({ nullable: true })
   siteRiskCode?: string;
+
+  @Field(() => [SiteAssocs], { name: 'associatedSites' })
+  siteAssocs?: SiteAssocs[];
+
+  @Field()
+  whenCreated: string;
+
+  @Field({ nullable: true })
+  whenUpdated?: string;
+}
+
+@ObjectType()
+class SiteAssocs {
+  @Field(() => SiteDetailsDTO, { name: 'associatedSite' })
+  siteIdAssociatedWith2: SiteDetailsDTO;
 }
 
 @ObjectType()

@@ -57,3 +57,12 @@
     text-decoration: underline;
   }
 }
+
+.siteDetailsHeader {
+  display: flex;
+  gap: var(--layout-margin-xsmall);
+  justify-content: flex-end;
+  margin: var(--layout-margin-small) 0px;
+  padding-bottom: var(--layout-padding-xsmall);
+  border-bottom: 1px solid var(--surface-color-border-default);
+}
