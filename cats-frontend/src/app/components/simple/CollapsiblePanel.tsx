@@ -2,6 +2,8 @@ import { FC, ReactNode, useState } from 'react';
 import { ChevronDown, ChevronUp, SpinnerIcon } from '../common/icon';
 import styles from './CollapsiblePanel.module.css';
 import { Button } from '../button/Button';
+import { LoadingSpinner } from '../loader/LoadingOverlay';
+
 interface CollapsiblePanelProps {
   label: string | ReactNode;
   content: ReactNode;
@@ -35,7 +37,7 @@ const CollapsiblePanel: FC<CollapsiblePanelProps> = ({
       {open && !loading && content}
       {open && loading && (
         <div className="d-flex justify-content-center">
-          <SpinnerIcon data-testid="loading-spinner" className="fa-spin " />
+          <LoadingSpinner />
         </div>
       )}
     </div>
