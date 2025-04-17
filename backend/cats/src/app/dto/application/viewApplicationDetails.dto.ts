@@ -20,6 +20,12 @@ export class ViewApplicationDetails {
   @Field()
   siteId: number;
 
+  @Field()
+  siteAddress: string;
+
+  @Field()
+  siteCity: string;
+
   @Field({ nullable: true })
   csapRefNumber: string;
 
@@ -58,8 +64,7 @@ export class ViewApplicationDetails {
 
   @Field({ nullable: true })
   formId: string | null;
-  
+
   @Field({ nullable: true })
   submissionId: string | null;
-  
 }

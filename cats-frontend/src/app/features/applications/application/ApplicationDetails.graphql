@@ -1,0 +1,13 @@
+query getHeaderDetailsByApplicationId($applicationId: Int!) {
+  getApplicationDetailsById(id: $applicationId) {
+    data {
+      id
+      siteId
+      siteAddress
+      siteCity
+      appType {
+        description
+      }
+    }
+  }
+}
