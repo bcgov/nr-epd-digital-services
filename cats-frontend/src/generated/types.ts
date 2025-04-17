@@ -247,6 +247,24 @@ export type HousingTypeResponse = {
   data: Array<HousingTypeDto>;
 };
 
+export type InvoiceByApplicationIdDto = {
+  __typename?: 'InvoiceByApplicationIdDto';
+  dueDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  issuedDate: Scalars['DateTime']['output'];
+  status: Scalars['String']['output'];
+  totalInCents: Scalars['Int']['output'];
+};
+
+export type InvoicesByApplicationIdResponse = {
+  __typename?: 'InvoicesByApplicationIdResponse';
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  invoices?: Maybe<Array<InvoiceByApplicationIdDto>>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addHousingToApplication: ApplicationHousingResponse;
@@ -343,6 +361,7 @@ export type Query = {
   getApplicationDetailsById: ApplicationDetailsResponse;
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
   getHousingTypes: HousingTypeResponse;
+  getInvoicesByApplicationId: InvoicesByApplicationIdResponse;
   getOrganizations: DropdownResponse;
   getParticipantNames: DropdownResponse;
   getPersonNotesByPersonId: PersonNoteResponse;
@@ -370,6 +389,11 @@ export type QueryGetApplicationDetailsByIdArgs = {
 
 
 export type QueryGetApplicationHousingByApplicationIdArgs = {
+  applicationId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetInvoicesByApplicationIdArgs = {
   applicationId: Scalars['Int']['input'];
 };
 
@@ -534,6 +558,7 @@ export type ViewApplicationDetails = {
   csapRefNumber?: Maybe<Scalars['String']['output']>;
   currentStatus?: Maybe<DetailField>;
   endDate?: Maybe<Scalars['DateTime']['output']>;
+  formId?: Maybe<Scalars['String']['output']>;
   id: Scalars['Float']['output'];
   isHousing: Scalars['Boolean']['output'];
   isTaxExempt: Scalars['Boolean']['output'];
@@ -544,6 +569,7 @@ export type ViewApplicationDetails = {
   reviewProcess?: Maybe<DetailField>;
   siteId: Scalars['Float']['output'];
   siteType?: Maybe<DetailField>;
+  submissionId?: Maybe<Scalars['String']['output']>;
 };
 
 export type ViewParticipantsRolesDto = {

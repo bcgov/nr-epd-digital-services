@@ -68,6 +68,11 @@ import { AppTypeService } from './services/appType/appType.service';
 import { SiteResolver } from './resolvers/site/site.resolver';
 import { SiteService } from './services/site/site.service';
 import { SiteDetailsResponse } from './dto/siteDetails.dto';
+import { InvoiceV2 } from './entities/invoiceV2.entity';
+import { InvoiceLineItem } from './entities/invoiceLineItem.entity';
+import { InvoiceResolver } from './resolvers/invoice/invoice.resolver';
+import { InvoiceService } from './services/invoice/invoice.service';
+
 /**
  * Module for wrapping all functionalities in user microserivce
  */
@@ -121,6 +126,8 @@ import { SiteDetailsResponse } from './dto/siteDetails.dto';
       Organization,
       ParticipantRole,
       PersonNote,
+      InvoiceV2,
+      InvoiceLineItem,
     ]),
   ],
   providers: [
@@ -144,6 +151,8 @@ import { SiteDetailsResponse } from './dto/siteDetails.dto';
     SiteResolver,
     SiteService,
     SiteDetailsResponse,
+    InvoiceResolver,
+    InvoiceService,
   ],
   controllers: [UserController],
 })
