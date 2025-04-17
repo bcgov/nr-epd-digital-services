@@ -10,9 +10,13 @@ const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ loading }) => {
 
   return (
     <div className="overlay" data-testid="loading-overlay" aria-busy={loading}>
-      <div className="loader" data-testid="loader"></div>
+      <LoadingSpinner />
     </div>
   );
+};
+
+export const LoadingSpinner = () => {
+  return <div className="loader" data-testid="loader"></div>;
 };
 
 export default LoadingOverlay;
