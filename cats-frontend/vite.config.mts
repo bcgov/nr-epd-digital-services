@@ -23,7 +23,7 @@ export default defineConfig(() => {
     plugins: [react(), tsconfigPaths(), sourcemapPlugin(), svgrPlugin()],
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, './src/app'),
+        '@cats': path.resolve(__dirname, './src/app'),
       },
     },
   };

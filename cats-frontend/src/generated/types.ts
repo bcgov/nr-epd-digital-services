@@ -445,7 +445,7 @@ export type SiteDetailsDto = {
   latdeg?: Maybe<Scalars['Float']['output']>;
   longdeg?: Maybe<Scalars['Float']['output']>;
   siteRiskCode?: Maybe<Scalars['String']['output']>;
-  whenCreated?: Maybe<Scalars['String']['output']>;
+  whenCreated: Scalars['String']['output'];
   whenUpdated?: Maybe<Scalars['String']['output']>;
 };
 
