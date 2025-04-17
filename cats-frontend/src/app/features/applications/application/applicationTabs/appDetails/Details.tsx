@@ -2,7 +2,10 @@ import styles from './Details.module.css';
 import cx from 'classnames';
 import { useParams } from 'react-router-dom';
 import CollapsiblePanel from '../../../../../components/simple/CollapsiblePanel';
-import { useGetApplicationDetailsByIdQuery } from './Details.generated';
+import {
+  useGetApplicationDetailsByIdQuery,
+  useGetSiteDetailsBySiteIdQuery,
+} from './Details.generated';
 import { TickIcon } from '../../../../../components/common/icon';
 import { formatDateUTC } from '../../../../../helpers/utility';
 
@@ -18,6 +21,18 @@ export const Details = () => {
   });
 
   const application = data?.getApplicationDetailsById.data;
+
+  const { data: siteData } = useGetSiteDetailsBySiteIdQuery({
+    variables: {
+      siteId: application?.siteId?.toString() || '',
+    },
+    skip: !application?.siteId,
+  });
+
+  const site = siteData?.getSiteDetailsBySiteId.data;
+
+  console.log(site);
+
   return (
     <CollapsiblePanel
       defaultOpen={true}

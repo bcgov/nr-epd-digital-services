@@ -23,7 +23,9 @@
     "typeorm:run-migrations": "npm run typeorm migration:run -- -d ./typeOrm.config.ts",
     "typeorm:generate-migration": "npm run typeorm -- -d ./typeOrm.config.ts migration:generate ./src/migrations/master-script",
     "typeorm:create-migration": "npm run typeorm -- migration:create ./src/migrations/master-script",
-    "typeorm:revert-migration": "npm run typeorm -- -d ./typeOrm.config.ts migration:revert"
+    "typeorm:revert-migration": "npm run typeorm -- -d ./typeOrm.config.ts migration:revert",
+    "codegen": "graphql-codegen --config ./codegen.mts",
+    "codegen:watch": "npm run codegen -- --watch"
   },
   "dependencies": {
     "@apollo/federation": "^0.37.1",
@@ -50,6 +52,13 @@
     "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.5",
+    "@graphql-codegen/introspection": "^4.0.3",
+    "@graphql-codegen/near-operation-file-preset": "^3.0.0",
+    "@graphql-codegen/typescript": "^4.1.6",
+    "@graphql-codegen/typescript-document-nodes": "^4.0.16",
+    "@graphql-codegen/typescript-graphql-request": "^6.2.0",
+    "@graphql-codegen/typescript-operations": "^4.6.0",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/schematics": "^9.0.0",
