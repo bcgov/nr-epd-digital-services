@@ -427,18 +427,26 @@ export type SearchPersonResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type SiteAssocs = {
+  __typename?: 'SiteAssocs';
+  associatedSite: SiteDetailsDto;
+};
+
 export type SiteDetailsDto = {
   __typename?: 'SiteDetailsDTO';
   addrLine_1?: Maybe<Scalars['String']['output']>;
   addrLine_2?: Maybe<Scalars['String']['output']>;
   addrLine_3?: Maybe<Scalars['String']['output']>;
   addrLine_4?: Maybe<Scalars['String']['output']>;
+  associatedSites: Array<SiteAssocs>;
   city?: Maybe<Scalars['String']['output']>;
   commonName?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
   latdeg?: Maybe<Scalars['Float']['output']>;
   longdeg?: Maybe<Scalars['Float']['output']>;
   siteRiskCode?: Maybe<Scalars['String']['output']>;
+  whenCreated?: Maybe<Scalars['String']['output']>;
+  whenUpdated?: Maybe<Scalars['String']['output']>;
 };
 
 export type SiteDetailsResponse = {

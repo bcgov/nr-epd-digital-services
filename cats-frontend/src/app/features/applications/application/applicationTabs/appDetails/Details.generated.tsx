@@ -15,9 +15,26 @@ export type GetSiteDetailsBySiteIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetSiteDetailsBySiteIdQuery = { __typename?: 'Query', getSiteDetailsBySiteId: { __typename?: 'SiteDetailsResponse', data?: { __typename?: 'SiteDetailsDTO', id: string, latdeg?: number | null, longdeg?: number | null, commonName?: string | null, addrLine_1?: string | null, addrLine_2?: string | null, addrLine_3?: string | null, addrLine_4?: string | null, city?: string | null, siteRiskCode?: string | null } | null } };
+export type GetSiteDetailsBySiteIdQuery = { __typename?: 'Query', getSiteDetailsBySiteId: { __typename?: 'SiteDetailsResponse', data?: { __typename?: 'SiteDetailsDTO', id: string, latdeg?: number | null, longdeg?: number | null, commonName?: string | null, addrLine_1?: string | null, addrLine_2?: string | null, addrLine_3?: string | null, addrLine_4?: string | null, city?: string | null, siteRiskCode?: string | null, whenUpdated?: string | null, associatedSites: Array<{ __typename?: 'SiteAssocs', associatedSite: { __typename?: 'SiteDetailsDTO', id: string, latdeg?: number | null, longdeg?: number | null, commonName?: string | null, addrLine_1?: string | null, addrLine_2?: string | null, addrLine_3?: string | null, addrLine_4?: string | null, city?: string | null, siteRiskCode?: string | null, whenUpdated?: string | null } }> } | null } };
 
+export type SiteDetailsFragment = { __typename?: 'SiteDetailsDTO', id: string, latdeg?: number | null, longdeg?: number | null, commonName?: string | null, addrLine_1?: string | null, addrLine_2?: string | null, addrLine_3?: string | null, addrLine_4?: string | null, city?: string | null, siteRiskCode?: string | null, whenUpdated?: string | null };
 
+export const SiteDetailsFragmentDoc = gql`
+    fragment SiteDetails on SiteDetailsDTO {
+  id
+  latdeg
+  longdeg
+  commonName
+  addrLine_1
+  addrLine_2
+  addrLine_3
+  addrLine_4
+  city
+  commonName
+  siteRiskCode
+  whenUpdated
+}
+    `;
 export const GetApplicationDetailsByIdDocument = gql`
     query getApplicationDetailsById($applicationId: Int!) {
   getApplicationDetailsById(id: $applicationId) {
@@ -89,21 +106,16 @@ export const GetSiteDetailsBySiteIdDocument = gql`
     query getSiteDetailsBySiteId($siteId: String!) {
   getSiteDetailsBySiteId(siteId: $siteId) {
     data {
-      id
-      latdeg
-      longdeg
-      commonName
-      addrLine_1
-      addrLine_2
-      addrLine_3
-      addrLine_4
-      city
-      commonName
-      siteRiskCode
+      ...SiteDetails
+      associatedSites {
+        associatedSite {
+          ...SiteDetails
+        }
+      }
     }
   }
 }
-    `;
+    ${SiteDetailsFragmentDoc}`;
 
 /**
  * __useGetSiteDetailsBySiteIdQuery__
