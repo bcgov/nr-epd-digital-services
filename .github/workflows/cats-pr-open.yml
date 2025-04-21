@@ -35,7 +35,7 @@ jobs:
             build_context: backend/cats
           - package: backend-migration
             build_file: ./backend/cats/Dockerfile-migrations-openshift
-            build_context: backend-migration
+            build_context: backend/cats
           - package: cats-frontend
             build_file: ./cats-frontend/Dockerfile
             build_context: cats-frontend
