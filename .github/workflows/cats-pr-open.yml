@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        package: [backend, backend-migration, cats-frontend ]
+        package: [backend, backend-migration, cats-frontend]
         include:
           - package: backend
             build_file: ./backend/cats/Dockerfile
