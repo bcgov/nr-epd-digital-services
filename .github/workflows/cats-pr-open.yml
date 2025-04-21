@@ -69,7 +69,7 @@ jobs:
       values: 'values-pr.yaml' # PR specific values file.
       # db_user: cats-${{ github.event.number }}
       db_user: cats-${{ github.event.pull_request.number || github.run_id }}
-      timeout-minutes: 60
+      timeout-minutes: 20
 
   results:
     name: PR Results
