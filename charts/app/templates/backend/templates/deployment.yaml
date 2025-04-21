@@ -48,10 +48,11 @@ spec:
             - name: POSTGRES_DB_SCHEMA
               value: {{ .Values.global.config.schemaName }}
             - name: POSTGRESQL_HOST
-              valueFrom:
-                secretKeyRef:
-                  key: host
-                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+              value: postgres-crunchy-pgbouncer
+              # valueFrom:
+              #   secretKeyRef:
+              #     key: host
+              #     name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
             - name: POSTGRESQL_PORT
               valueFrom:
                 secretKeyRef:
@@ -103,10 +104,11 @@ spec:
             - name: POSTGRES_DB_SCHEMA
               value: {{ .Values.global.config.schemaName }}
             - name: POSTGRESQL_HOST
-              valueFrom:
-                secretKeyRef:
-                  key: host
-                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+              value: postgres-crunchy-pgbouncer
+              # valueFrom:
+              #   secretKeyRef:
+              #     key: host
+              #     name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
             - name: POSTGRESQL_PORT
               valueFrom:
                 secretKeyRef:
@@ -171,10 +173,11 @@ spec:
             - name: POSTGRES_DB_SCHEMA
               value: {{ .Values.global.config.schemaName }}
             - name: POSTGRESQL_HOST
-              valueFrom:
-                secretKeyRef:
-                  key: host
-                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+              value: postgres-crunchy-pgbouncer
+              # valueFrom:
+              #   secretKeyRef:
+              #     key: host
+              #     name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
             - name: POSTGRESQL_PORT
               valueFrom:
                 secretKeyRef:
