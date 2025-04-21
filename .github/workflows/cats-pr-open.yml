@@ -11,9 +11,9 @@ on:
     #   - 'backend/cats/**'
     #   - 'cats-frontend/**'  
   # TODO: Delete below when done active dev, just left in for dev purpoess.
-  push:
-    branches:
-      - srs-605-cats-cicd
+  # push:
+  #   branches:
+  #     - srs-605-cats-cicd
 
 concurrency:
   # Cancel in progress for PR open and close
