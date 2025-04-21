@@ -28,11 +28,14 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        package: [backend, cats-frontend ]
+        package: [backend, backend-migration, cats-frontend ]
         include:
           - package: backend
             build_file: ./backend/cats/Dockerfile
             build_context: backend/cats
+          - package: backend-migration
+            build_file: ./backend/cats/Dockerfile-migrations-openshift
+            build_context: backend-migration
           - package: cats-frontend
             build_file: ./cats-frontend/Dockerfile
             build_context: cats-frontend
@@ -48,22 +51,22 @@ jobs:
           build_file: ${{ matrix.build_file }}
           build_context: ${{ matrix.build_context }}
 
-          # TODO - Re-enable this, just temporarily out so we can verify if issue is with this step or deploys step below
-  # deploy_db:
-  #   name: Deploys Database
-  #   if: ${{ ! github.event.pull_request.draft }}
-  #   uses: ./.github/workflows/.dbdeployer.yml
-  #   secrets: inherit
-  #   with:
-  #     triggers: ('charts/crunchy/')
-  #     values: 'values-dev.yaml'
-  #     app_values:  'values-pr.yaml' # PR specific values file.
-  #   # https://github.com/bcgov/quickstart-openshift-helpers
+  # TODO - Re-enable this, just temporarily out so we can verify if issue is with this step or deploys step below
+  deploy_db:
+    name: Deploys Database
+    if: ${{ ! github.event.pull_request.draft }}
+    uses: ./.github/workflows/.dbdeployer.yml
+    secrets: inherit
+    with:
+      triggers: ('charts/crunchy/')
+      values: 'values-dev.yaml'
+      app_values:  'values-pr.yaml' # PR specific values file.
+    # https://github.com/bcgov/quickstart-openshift-helpers
   deploys:
     name: Deploys
     if: ${{ ! github.event.pull_request.draft }}
-    # needs: [builds, deploy_db]
-    needs: [builds]
+    needs: [builds, deploy_db]
+    # needs: [builds]
     uses: ./.github/workflows/.deployer.yml
     secrets: inherit
     with:
