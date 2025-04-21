@@ -71,64 +71,64 @@ spec:
             requests:
               cpu: {{ .Values.backend.resources.requests.cpu }}
               memory: {{ .Values.backend.resources.requests.memory }}
-        {{- if .Values.global.config.seed.enabled }}
-        - name: {{ include "backend.fullname" . }}-seed
-          image: "artifacts.developer.gov.bc.ca/github-docker-remote/bcgov/nr-containers/alpine:3.20" # here we just need a prebuilt image with psql and shell, just use postgres alpine image
-          imagePullPolicy: {{ default "Always" .Values.backend.imagePullPolicy }}
-          command: ["/bin/sh"]
-          args: ["-c", "sh /mnt/scripts/seed.sh"]
-          volumeMounts:
-            - mountPath: /mnt/sql
-              name: seed-data-mount
-            - mountPath: /mnt/scripts
-              name: seed-data-scripts
-          env:
-            - name: SEED_ENABLED
-              value: {{.Values.global.config.seed.enabled | quote}}
-            - name: POSTGRES_DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: password
-                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
-            - name: POSTGRES_DB_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  key: user
-                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
-            - name: POSTGRES_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  key: dbname
-                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
-            - name: POSTGRES_DB_SCHEMA
-              value: {{ .Values.global.config.schemaName }}
-            - name: POSTGRESQL_HOST
-              valueFrom:
-                secretKeyRef:
-                  key: host
-                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
-            - name: POSTGRESQL_PORT
-              valueFrom:
-                secretKeyRef:
-                  key: port
-                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
-            - name: POSTGRES_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: password
-                  name: postgres-crunchy-pguser-postgres
-            - name: POSTGRES_ADMIN_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  key: user
-                  name: postgres-crunchy-pguser-postgres
-            - name: SEED_DATA_PATH
-              value: "/mnt/sql/data_migration.sql"
-          resources: # this is optional
-            requests:
-              cpu: {{ .Values.backend.resources.requests.cpu }}
-              memory: {{ .Values.backend.resources.requests.memory }}
-        {{- end }}
+        # {{- if .Values.global.config.seed.enabled }}
+        # - name: {{ include "backend.fullname" . }}-seed
+        #   image: "artifacts.developer.gov.bc.ca/github-docker-remote/bcgov/nr-containers/alpine:3.20" # here we just need a prebuilt image with psql and shell, just use postgres alpine image
+        #   imagePullPolicy: {{ default "Always" .Values.backend.imagePullPolicy }}
+        #   command: ["/bin/sh"]
+        #   args: ["-c", "sh /mnt/scripts/seed.sh"]
+        #   volumeMounts:
+        #     # - mountPath: /mnt/sql
+        #     #   name: seed-data-mount
+        #     # - mountPath: /mnt/scripts
+        #     #   name: seed-data-scripts
+        #   env:
+        #     # - name: SEED_ENABLED
+        #     #   value: {{.Values.global.config.seed.enabled | quote}}
+        #     - name: POSTGRES_DB_PASSWORD
+        #       valueFrom:
+        #         secretKeyRef:
+        #           key: password
+        #           name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+        #     - name: POSTGRES_DB_USERNAME
+        #       valueFrom:
+        #         secretKeyRef:
+        #           key: user
+        #           name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+        #     - name: POSTGRES_DATABASE
+        #       valueFrom:
+        #         secretKeyRef:
+        #           key: dbname
+        #           name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+        #     - name: POSTGRES_DB_SCHEMA
+        #       value: {{ .Values.global.config.schemaName }}
+        #     - name: POSTGRESQL_HOST
+        #       valueFrom:
+        #         secretKeyRef:
+        #           key: host
+        #           name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+        #     - name: POSTGRESQL_PORT
+        #       valueFrom:
+        #         secretKeyRef:
+        #           key: port
+        #           name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
+        #     - name: POSTGRES_ADMIN_PASSWORD
+        #       valueFrom:
+        #         secretKeyRef:
+        #           key: password
+        #           name: postgres-crunchy-pguser-postgres
+        #     - name: POSTGRES_ADMIN_USERNAME
+        #       valueFrom:
+        #         secretKeyRef:
+        #           key: user
+        #           name: postgres-crunchy-pguser-postgres
+        #     # - name: SEED_DATA_PATH
+        #     #   value: "/mnt/sql/data_migration.sql"
+        #   resources: # this is optional
+        #     requests:
+        #       cpu: {{ .Values.backend.resources.requests.cpu }}
+        #       memory: {{ .Values.backend.resources.requests.memory }}
+        # {{- end }}
       containers:
         - name: {{ include "backend.fullname" . }}
           {{- if .Values.backend.securityContext }}
@@ -219,19 +219,19 @@ spec:
               name: log-storage
             - mountPath: /graphql
               name: graphql-storage
-            - mountPath: /mnt/sql
-              name: seed-data-mount
+            # - mountPath: /mnt/sql
+            #   name: seed-data-mount
       volumes:
         - name: log-storage
           emptyDir: {}
         - name: graphql-storage
           emptyDir: {}
-        - name: seed-data-mount
-          persistentVolumeClaim:
-            claimName: nr-ora2pg-sql
-        - name: seed-data-scripts
-          configMap:
-            name: {{ template "backend.fullname" . }}-scripts
+        # - name: seed-data-mount
+        #   persistentVolumeClaim:
+        #     claimName: nr-ora2pg-sql
+        # - name: seed-data-scripts
+        #   configMap:
+        #     name: {{ template "backend.fullname" . }}-scripts
 
       {{- with .Values.backend.nodeSelector }}
       nodeSelector:
