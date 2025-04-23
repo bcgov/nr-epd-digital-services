@@ -42,16 +42,13 @@ jobs:
           build_file: ${{ matrix.build_file }}
           build_context: ${{ matrix.build_context }}
 
-  # TODO - Re-enable this, just temporarily out so we can verify if issue is with this step or deploys step below
   deploy_db:
     name: Deploys Database
     if: ${{ ! github.event.pull_request.draft }}
     uses: ./.github/workflows/.dbdeployer.yml
     secrets: inherit
     with:
-      # TODO - Revert here, just for now triggering of yaml change to force re-deploy.
-      # triggers: ('charts/crunchy/')
-      triggers: ('charts/crunchy/' '.github/workflows/cats-pr-open.yml')
+      triggers: ('charts/crunchy/')
       values: 'values-dev.yaml'
       app_values:  'values-pr.yaml' # PR specific values file.
     # https://github.com/bcgov/quickstart-openshift-helpers
