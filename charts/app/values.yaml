@@ -64,7 +64,6 @@ backend:
 frontend:
   # -- enable or disable a component deployment.
   enabled: true
-  imageName: cats-frontend
   # -- the deployment strategy, can be "Recreate" or "RollingUpdate"
   deploymentStrategy: RollingUpdate
 
