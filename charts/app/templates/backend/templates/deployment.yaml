@@ -78,13 +78,13 @@ spec:
           command: ["/bin/sh"]
           args: ["-c", "sh /mnt/scripts/seed.sh"]
           volumeMounts:
-            # - mountPath: /mnt/sql
-            #   name: seed-data-mount
-            # - mountPath: /mnt/scripts
-            #   name: seed-data-scripts
+            - mountPath: /mnt/sql
+              name: seed-data-mount
+            - mountPath: /mnt/scripts
+              name: seed-data-scripts
           env:
-            # - name: SEED_ENABLED
-            #   value: {{.Values.global.config.seed.enabled | quote}}
+            - name: SEED_ENABLED
+              value: {{.Values.global.config.seed.enabled | quote}}
             - name: POSTGRES_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -122,8 +122,8 @@ spec:
                 secretKeyRef:
                   key: user
                   name: postgres-crunchy-pguser-postgres
-            # - name: SEED_DATA_PATH
-            #   value: "/mnt/sql/data_migration.sql"
+            - name: SEED_DATA_PATH
+              value: "/mnt/sql/data_migration.sql"
           resources: # this is optional
             requests:
               cpu: {{ .Values.backend.resources.requests.cpu }}
@@ -219,19 +219,19 @@ spec:
               name: log-storage
             - mountPath: /graphql
               name: graphql-storage
-            # - mountPath: /mnt/sql
-            #   name: seed-data-mount
+            - mountPath: /mnt/sql
+              name: seed-data-mount
       volumes:
         - name: log-storage
           emptyDir: {}
         - name: graphql-storage
           emptyDir: {}
-        # - name: seed-data-mount
-        #   persistentVolumeClaim:
-        #     claimName: nr-ora2pg-sql
-        # - name: seed-data-scripts
-        #   configMap:
-        #     name: {{ template "backend.fullname" . }}-scripts
+        - name: seed-data-mount
+          persistentVolumeClaim:
+            claimName: nr-ora2pg-sql
+        - name: seed-data-scripts
+          configMap:
+            name: {{ template "backend.fullname" . }}-scripts
 
       {{- with .Values.backend.nodeSelector }}
       nodeSelector:
