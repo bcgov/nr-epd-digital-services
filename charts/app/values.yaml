@@ -19,8 +19,8 @@ global:
     keycloakAuthURL: ~
     persist: true
   config:
-    dbName: site # if updating this value, make sure this is updated `bitnami-pg: auth:     username: site , database: site in values-pr.yaml`
-    schemaName: sites
+    dbName: cats # if updating this value, make sure this is updated `bitnami-pg: auth:     username: site , database: site in values-pr.yaml`
+    schemaName: cats
     dbUser: ~ # either site or pr specific user.
     seed:
       enabled: false
