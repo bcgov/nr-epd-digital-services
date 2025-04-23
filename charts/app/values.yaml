@@ -53,7 +53,7 @@ backend:
     #-- the type of the service. it can be ClusterIP, NodePort, LoadBalancer, ExternalName. ClusterIP is the default and is recommended.
     type: ClusterIP
     port: 80 # this is the service port, where it will be exposed internal to the namespace.
-    targetPort: 3000 # this is container port where app listens on
+    targetPort: 4005 # this is container port where app listens on
   ingress:
     annotations:
       route.openshift.io/termination: "edge"
