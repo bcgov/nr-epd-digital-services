@@ -8,6 +8,7 @@ import {
 import { Application } from './application.entity';
 import { Person } from './person.entity';
 import { InvoiceLineItem } from './invoiceLineItem.entity';
+import { InvoiceStatus } from '../dto/invoice/invoice.dto';
 
 @Entity('invoice_v2')
 export class InvoiceV2 {
@@ -38,7 +39,7 @@ export class InvoiceV2 {
     enum: ['draft', 'sent', 'received', 'paid'],
     default: 'draft',
   })
-  status: string;
+  status: InvoiceStatus;
 
   @Column({ default: false })
   taxExempt: boolean;
@@ -54,6 +55,22 @@ export class InvoiceV2 {
 
   @Column('int')
   totalInCents: number;
+
+  @Column({ nullable: true })
+  createdBy: string;
+
+  @Column({ nullable: true })
+  updatedBy: string;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: Date;
 
   @OneToMany(() => InvoiceLineItem, (lineItem) => lineItem.invoice, {
     cascade: true,
