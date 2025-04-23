@@ -228,7 +228,7 @@ spec:
           emptyDir: {}
         - name: seed-data-mount
           persistentVolumeClaim:
-            claimName: nr-ora2pg-sql
+            claimName: nr-cats-dbdump-sql
         - name: seed-data-scripts
           configMap:
             name: {{ template "backend.fullname" . }}-scripts
