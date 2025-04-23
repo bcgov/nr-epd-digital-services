@@ -14,15 +14,12 @@ COPY package-lock.json ./
 
 # Switching to `npm ci` from `npm install` for consistent builds
 RUN npm ci --silent
-RUN npm install react-scripts@3.4.1 -g --silent
 
 # create and set user permissions to app folder
-RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
 
 # add app files
 COPY . ./
 RUN npm run build
-
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
 FROM nginx:alpine AS deploy
 RUN mkdir /app
