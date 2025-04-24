@@ -9,7 +9,6 @@ export class SiteResolver {
   constructor(
     private readonly siteService: SiteService,
     private readonly loggerService: LoggerService,
-    private readonly siteDetailsResponse: SiteDetailsResponse,
   ) {}
 
   @Query(() => SiteDetailsResponse, {
@@ -27,7 +26,7 @@ export class SiteResolver {
         this.loggerService.log(
           'SiteResolver.getSiteDetailsBySiteId() RES:200 end',
         );
-        return this.siteDetailsResponse.createResponse(
+        return new SiteDetailsResponse(
           'Site details retrieved successfully',
           HttpStatus.OK,
           true,
@@ -37,7 +36,7 @@ export class SiteResolver {
         this.loggerService.log(
           'SiteResolver.getSiteDetailsBySiteId() RES:404 end',
         );
-        return this.siteDetailsResponse.createResponse(
+        return new SiteDetailsResponse(
           'Site not found',
           HttpStatus.NOT_FOUND,
           false,
@@ -49,7 +48,7 @@ export class SiteResolver {
         'SiteResolver.getSiteDetailsBySiteId() error',
         error,
       );
-      return this.siteDetailsResponse.createResponse(
+      return new SiteDetailsResponse(
         'Error retrieving site details',
         HttpStatus.INTERNAL_SERVER_ERROR,
         false,

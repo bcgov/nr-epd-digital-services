@@ -28,6 +28,7 @@ describe('SiteService', () => {
           provide: LoggerService,
           useValue: {
             log: jest.fn(),
+            error: jest.fn(),
           },
         },
       ],

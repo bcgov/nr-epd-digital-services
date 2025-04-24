@@ -72,9 +72,10 @@ describe('SiteResolver', () => {
 
       expect(result).toEqual({
         message: 'Site details retrieved successfully',
-        statusCode: 200,
+        httpStatusCode: 200,
         success: true,
         data: mockSiteData,
+        timestamp: expect.any(String),
       });
     });
 
@@ -92,9 +93,10 @@ describe('SiteResolver', () => {
       expect(siteService.getSiteById).toHaveBeenCalledWith(mockSiteId);
       expect(result).toEqual({
         message: 'Site not found',
-        statusCode: 404,
+        httpStatusCode: 404,
         success: false,
         data: null,
+        timestamp: expect.any(String),
       });
     });
 
@@ -109,9 +111,10 @@ describe('SiteResolver', () => {
       expect(siteService.getSiteById).toHaveBeenCalledWith(mockSiteId);
       expect(result).toEqual({
         message: 'Error retrieving site details',
-        statusCode: 500,
+        httpStatusCode: 500,
         success: false,
         data: null,
+        timestamp: expect.any(String),
       });
     });
   });

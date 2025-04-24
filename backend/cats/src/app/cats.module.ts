@@ -150,7 +150,6 @@ import { InvoiceService } from './services/invoice/invoice.service';
     AppTypeService,
     SiteResolver,
     SiteService,
-    SiteDetailsResponse,
     InvoiceResolver,
     InvoiceService,
   ],

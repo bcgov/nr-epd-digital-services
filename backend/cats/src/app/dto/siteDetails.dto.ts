@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { GenericResponseProvider } from './response/genericResponseProvider';
 import { FindSiteBySiteIdQuery } from '../services/site/graphql/Site.generated';
+import { GenericResponse } from './response/genericResponse';
 
 type SiteData = NonNullable<FindSiteBySiteIdQuery['findSiteBySiteId']['data']>;
 
@@ -38,7 +38,7 @@ class SiteDetailsDTO {
 }
 
 @ObjectType()
-export class SiteDetailsResponse extends GenericResponseProvider<SiteDetailsDTO> {
+export class SiteDetailsResponse extends GenericResponse<SiteDetailsDTO> {
   @Field(() => SiteDetailsDTO, { nullable: true })
   data: SiteData;
 }
