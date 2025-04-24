@@ -93,6 +93,7 @@ export class ApplicationService {
           'outcome',
           'reviewProcess',
           'siteType',
+          'site',
           'appStatuses',
           'appStatuses.statusType',
           'appPriorities',
@@ -134,6 +135,10 @@ export class ApplicationService {
       return {
         id: application.id,
         siteId: application.siteId,
+        siteAddress: application.site.address,
+        siteCity: application.site.city,
+        formId: application.formId,
+        submissionId: application.submissionId,
         csapRefNumber: application.csapRefNumber,
         receivedDate: new Date(application.receivedDate),
         endDate: application.endDate ? new Date(application.endDate) : null,

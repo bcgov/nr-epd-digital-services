@@ -17,8 +17,13 @@ export class SiteService {
 
   async getSiteById(siteId: string) {
     this.loggerService.log('SiteService.getSiteById() start');
-    const siteData = await this.siteSdk.findSiteBySiteId({ siteId });
-    this.loggerService.log('SiteService.getSiteById() end');
-    return siteData;
+    try {
+      const siteData = await this.siteSdk.findSiteBySiteId({ siteId });
+      this.loggerService.log('SiteService.getSiteById() end');
+      return siteData;
+    } catch (error) {
+      this.loggerService.error(`Error in getSiteById: ${error.message}`, error);
+      throw error;
+    }
   }
 }

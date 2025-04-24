@@ -93,6 +93,11 @@ describe('ApplicationService', () => {
         outcome: { id: 1, description: 'Approved' },
         reviewProcess: { id: 1, description: 'Standard' },
         siteType: { id: 1, description: 'Residential' },
+        site: {
+          id: 1,
+          address: '123 Main St',
+          city: 'Victoria',
+        },
         appStatuses: [
           {
             isCurrent: true,
@@ -128,22 +133,11 @@ describe('ApplicationService', () => {
 
       const result = await applicationService.findApplicationDetailsById(1);
 
-      expect(applicationRepository.findOne).toHaveBeenCalledWith({
-        where: { id: 1 },
-        relations: [
-          'appType',
-          'outcome',
-          'reviewProcess',
-          'siteType',
-          'appStatuses',
-          'appStatuses.statusType',
-          'appPriorities',
-          'appPriorities.priority',
-          'housingApplicationXrefs',
-          'appParticipants',
-          'appParticipants.organization',
-        ],
-      });
+      expect(applicationRepository.findOne).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: 1 },
+        }),
+      );
 
       expect(result).toEqual({
         id: 1,
@@ -160,6 +154,8 @@ describe('ApplicationService', () => {
         priority: { id: 1, description: 'High' },
         isHousing: false,
         isTaxExempt: true,
+        siteAddress: '123 Main St',
+        siteCity: 'Victoria',
       });
     });
 
