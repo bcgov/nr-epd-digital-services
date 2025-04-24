@@ -67,7 +67,6 @@ import { ApplicationDetailsResolver } from './resolvers/application/applicationD
 import { AppTypeService } from './services/appType/appType.service';
 import { SiteResolver } from './resolvers/site/site.resolver';
 import { SiteService } from './services/site/site.service';
-import { SiteDetailsResponse } from './dto/siteDetails.dto';
 import { InvoiceV2 } from './entities/invoiceV2.entity';
 import { InvoiceLineItem } from './entities/invoiceLineItem.entity';
 import { InvoiceResolver } from './resolvers/invoice/invoice.resolver';

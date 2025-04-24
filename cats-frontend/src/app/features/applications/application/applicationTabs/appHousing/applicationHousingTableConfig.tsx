@@ -118,7 +118,7 @@ export const getApplicationHousingColumns = (): TableColumn[] => [
           return (
             <span key={id}>
               {i > 0 && ', '}
-              <Link to={`/application/${id}`}>{id}</Link>
+              <Link to={`/applications/${id}`}>{id}</Link>
             </span>
           );
         });

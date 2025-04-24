@@ -8,27 +8,40 @@ export type FindSiteBySiteIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type FindSiteBySiteIdQuery = { __typename?: 'Query', findSiteBySiteId: { __typename?: 'FetchSiteDetail', data?: { __typename?: 'Sites', id: string, longdeg?: number | null, latdeg?: number | null, addrLine_1: string, addrLine_2?: string | null, addrLine_3?: string | null, addrLine_4?: string | null, city: string, commonName: string, siteRiskCode: string } | null } };
+export type FindSiteBySiteIdQuery = { __typename?: 'Query', findSiteBySiteId: { __typename?: 'FetchSiteDetail', data?: { __typename?: 'Sites', id: string, longdeg?: number | null, latdeg?: number | null, addrLine_1: string, addrLine_2?: string | null, addrLine_3?: string | null, addrLine_4?: string | null, city: string, commonName: string, siteRiskCode: string, whenCreated: any, whenUpdated?: any | null, siteAssocs: Array<{ __typename?: 'SiteAssocs', siteIdAssociatedWith2: { __typename?: 'Sites', id: string, longdeg?: number | null, latdeg?: number | null, addrLine_1: string, addrLine_2?: string | null, addrLine_3?: string | null, addrLine_4?: string | null, city: string, commonName: string, siteRiskCode: string, whenCreated: any, whenUpdated?: any | null } }> } | null } };
 
+export type SiteDetailsFragment = { __typename?: 'Sites', id: string, longdeg?: number | null, latdeg?: number | null, addrLine_1: string, addrLine_2?: string | null, addrLine_3?: string | null, addrLine_4?: string | null, city: string, commonName: string, siteRiskCode: string, whenCreated: any, whenUpdated?: any | null };
 
+export const SiteDetailsFragmentDoc = gql`
+    fragment SiteDetails on Sites {
+  id
+  longdeg
+  latdeg
+  addrLine_1
+  addrLine_2
+  addrLine_3
+  addrLine_4
+  city
+  commonName
+  siteRiskCode
+  whenCreated
+  whenUpdated
+}
+    `;
 export const FindSiteBySiteIdDocument = gql`
     query findSiteBySiteId($siteId: String!) {
   findSiteBySiteId(siteId: $siteId) {
     data {
-      id
-      longdeg
-      latdeg
-      addrLine_1
-      addrLine_2
-      addrLine_3
-      addrLine_4
-      city
-      commonName
-      siteRiskCode
+      ...SiteDetails
+      siteAssocs {
+        siteIdAssociatedWith2 {
+          ...SiteDetails
+        }
+      }
     }
   }
 }
-    `;
+    ${SiteDetailsFragmentDoc}`;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
