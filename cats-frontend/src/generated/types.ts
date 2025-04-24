@@ -30,6 +30,18 @@ export type AddHousingInputDto = {
   relatedApplicationIds?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
+export type AppNoteDto = {
+  __typename?: 'AppNoteDto';
+  applicationId: Scalars['Int']['output'];
+  createdBy: Scalars['String']['output'];
+  createdDateTime: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  noteDate: Scalars['String']['output'];
+  noteText: Scalars['String']['output'];
+  updatedBy: Scalars['String']['output'];
+  updatedDateTime: Scalars['DateTime']['output'];
+};
+
 export enum AppParticipantFilter {
   All = 'ALL',
   Main = 'MAIN'
@@ -68,6 +80,15 @@ export type ApplicationHousingDto = {
 export type ApplicationHousingResponse = {
   __typename?: 'ApplicationHousingResponse';
   data: Array<ApplicationHousingDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type ApplicationNotesResponse = {
+  __typename?: 'ApplicationNotesResponse';
+  data: Array<AppNoteDto>;
   httpStatusCode?: Maybe<Scalars['Int']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
@@ -360,6 +381,7 @@ export type Query = {
   getAppParticipantsByAppId: AppParticipantsResponse;
   getApplicationDetailsById: ApplicationDetailsResponse;
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
+  getApplicationNotesByApplicationId: ApplicationNotesResponse;
   getHousingTypes: HousingTypeResponse;
   getInvoicesByApplicationId: InvoicesByApplicationIdResponse;
   getOrganizations: DropdownResponse;
@@ -389,6 +411,11 @@ export type QueryGetApplicationDetailsByIdArgs = {
 
 
 export type QueryGetApplicationHousingByApplicationIdArgs = {
+  applicationId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetApplicationNotesByApplicationIdArgs = {
   applicationId: Scalars['Int']['input'];
 };
 
