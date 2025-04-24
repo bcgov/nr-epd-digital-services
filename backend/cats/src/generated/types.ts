@@ -996,8 +996,10 @@ export type SiteAssocs = {
   note: Scalars['String']['output'];
   rwmFlag?: Maybe<Scalars['Float']['output']>;
   rwmNoteFlag?: Maybe<Scalars['Float']['output']>;
+  site: Sites;
   siteId: Scalars['String']['output'];
   siteIdAssociatedWith: Scalars['String']['output'];
+  siteIdAssociatedWith2: Sites;
   srAction?: Maybe<Scalars['String']['output']>;
   userAction?: Maybe<Scalars['String']['output']>;
   whenCreated: Scalars['DateTime']['output'];
