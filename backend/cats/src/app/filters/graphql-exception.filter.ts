@@ -16,6 +16,18 @@ export class GraphQLAuthExceptionFilter implements ExceptionFilter {
     host: ArgumentsHost,
   ) {
     const gqlHost = GqlArgumentsHost.create(host);
-    throw exception;
+    const errorResponse = {
+      message: exception.message,
+      extensions: {
+        code: exception instanceof UnauthorizedException ? 'UNAUTHORIZED' : 'FORBIDDEN',
+        exception: {
+          name: exception.name,
+          stacktrace: exception.stack,
+        },
+      },
+    };
+    throw new GraphQLError(errorResponse.message, {
+      extensions: errorResponse.extensions,
+    });
   }
 }
