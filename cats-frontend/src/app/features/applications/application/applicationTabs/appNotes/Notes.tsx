@@ -9,7 +9,12 @@ import { Button } from '@cats/components/button/Button';
 import { Plus } from '@cats/components/common/icon';
 import { RequestStatus } from '@cats/helpers/requests/status';
 import { getApplicationNotesColumns } from './applicationNotesTableConfig';
-
+import { useAuth } from 'react-oidc-context';
+import {
+  NoteModal,
+  initialNoteModalState,
+  NoteModalState,
+} from './components/NoteModal';
 export type Note =
   GetApplicationNotesByApplicationIdQuery['getApplicationNotesByApplicationId']['data'][number];
 
@@ -46,16 +51,21 @@ const sortNotes = (data: Note[], sortColumn: SortColumn | null) => {
 };
 
 export const Notes = () => {
+  const auth = useAuth();
   const { id: applicationId } = useParams();
-  const { data, loading } = useGetApplicationNotesByApplicationIdQuery({
-    variables: {
-      applicationId: parseInt(applicationId ?? '0', 10),
+  const { data, loading, refetch } = useGetApplicationNotesByApplicationIdQuery(
+    {
+      variables: {
+        applicationId: parseInt(applicationId ?? '0', 10),
+      },
+      skip: !applicationId,
     },
-    skip: !applicationId,
-  });
+  );
 
   const [selectedRows, setSelectedRows] = useState<Set<Note['id']>>(new Set());
-
+  const [noteModal, setNoteModal] = useState<NoteModalState>(
+    initialNoteModalState(),
+  );
   const [sortColumn, setSortColumn] = useState<SortColumn | null>(null);
   const tableSortHandler = (
     column: ReturnType<typeof getApplicationNotesColumns>[number],
@@ -83,6 +93,10 @@ export const Notes = () => {
     }
   };
 
+  if (!applicationId) {
+    return null;
+  }
+
   return (
     <div>
       <Widget
@@ -91,19 +105,49 @@ export const Notes = () => {
         tableData={sortedData}
         title={'Notes'}
         tableColumns={getApplicationNotesColumns({
-          onEdit: (row) => console.log(row, 'TODO'),
+          onEdit: (row) =>
+            setNoteModal({
+              isOpen: true,
+              mode: 'edit',
+              noteData: {
+                noteDate: row.noteDate,
+                noteText: row.noteText,
+                userName: row.updatedBy || row.createdBy,
+                noteId: row.id,
+              },
+            }),
         })}
         tableIsLoading={loading ? RequestStatus.loading : RequestStatus.idle}
         changeHandler={tableChangeHandler}
         sortHandler={tableSortHandler}
       >
         <div className="d-flex gap-2 flex-wrap">
-          <Button variant="secondary">
+          <Button
+            variant="secondary"
+            onClick={() => {
+              const initialState = initialNoteModalState();
+              setNoteModal({
+                ...initialState,
+                isOpen: true,
+                noteData: {
+                  ...initialState.noteData,
+                  userName: auth.user?.profile.name ?? '',
+                },
+              });
+            }}
+          >
             <Plus />
             New Note
           </Button>
         </div>
       </Widget>
+
+      <NoteModal
+        applicationId={parseInt(applicationId, 10)}
+        noteModal={noteModal}
+        setNoteModal={setNoteModal}
+        refetchTableData={refetch}
+      />
     </div>
   );
 };

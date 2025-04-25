@@ -1,5 +1,8 @@
 import { ColumnSize } from '@cats/components/table/TableColumn';
-import { FormFieldType } from '@cats/components/input-controls/IFormField';
+import {
+  FormFieldType,
+  IFormField,
+} from '@cats/components/input-controls/IFormField';
 import { TableColumn } from '@cats/components/table/TableColumn';
 import { formatDateUTC } from '@cats/helpers/utility';
 import { PencilIcon } from '@cats/components/common/icon';
@@ -55,4 +58,45 @@ export const getApplicationNotesColumns = ({
       );
     },
   },
+];
+
+const noteFormFields: {
+  [key: string]: IFormField;
+} = {
+  noteDate: {
+    type: FormFieldType.Date,
+    label: 'Date',
+    placeholder: 'EE MMM dd yyyy',
+    dateFormat: 'EE MMM dd yyyy',
+    graphQLPropertyName: 'noteDate',
+    colSize: 'col-lg-6 col-md-6 col-sm-12',
+    validation: {
+      required: true,
+      customMessage: 'Date is required.',
+    },
+  },
+  userName: {
+    type: FormFieldType.Text,
+    label: 'User',
+    placeholder: 'User',
+    graphQLPropertyName: 'userName',
+    colSize: 'col-lg-6 col-md-6 col-sm-12',
+    isDisabled: true,
+    validation: {
+      required: true,
+      customMessage: 'User is required.',
+    },
+  },
+
+  noteText: {
+    type: FormFieldType.TextArea,
+    label: 'Note',
+    placeholder: 'Note',
+    graphQLPropertyName: 'noteText',
+  },
+};
+
+export const getNoteFormFields = (): IFormField[][] => [
+  [noteFormFields['noteDate'], noteFormFields['userName']],
+  [noteFormFields['noteText']],
 ];

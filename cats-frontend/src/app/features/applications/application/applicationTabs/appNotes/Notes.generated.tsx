@@ -10,6 +10,24 @@ export type GetApplicationNotesByApplicationIdQueryVariables = Types.Exact<{
 
 export type GetApplicationNotesByApplicationIdQuery = { __typename?: 'Query', getApplicationNotesByApplicationId: { __typename?: 'ApplicationNotesResponse', data: Array<{ __typename?: 'AppNoteDto', id: number, applicationId: number, noteDate: string, noteText: string, createdBy: string, createdDateTime: any, updatedBy: string, updatedDateTime: any }> } };
 
+export type CreateApplicationNoteMutationVariables = Types.Exact<{
+  applicationId: Types.Scalars['Int']['input'];
+  noteDate: Types.Scalars['DateTime']['input'];
+  noteText: Types.Scalars['String']['input'];
+}>;
+
+
+export type CreateApplicationNoteMutation = { __typename?: 'Mutation', createApplicationNote: { __typename?: 'ApplicationNotesResponse', success?: boolean | null } };
+
+export type UpdateApplicationNoteMutationVariables = Types.Exact<{
+  noteId: Types.Scalars['Int']['input'];
+  noteDate: Types.Scalars['DateTime']['input'];
+  noteText: Types.Scalars['String']['input'];
+}>;
+
+
+export type UpdateApplicationNoteMutation = { __typename?: 'Mutation', updateApplicationNote: { __typename?: 'ApplicationNotesResponse', success?: boolean | null } };
+
 
 export const GetApplicationNotesByApplicationIdDocument = gql`
     query getApplicationNotesByApplicationId($applicationId: Int!) {
@@ -60,3 +78,77 @@ export type GetApplicationNotesByApplicationIdQueryHookResult = ReturnType<typeo
 export type GetApplicationNotesByApplicationIdLazyQueryHookResult = ReturnType<typeof useGetApplicationNotesByApplicationIdLazyQuery>;
 export type GetApplicationNotesByApplicationIdSuspenseQueryHookResult = ReturnType<typeof useGetApplicationNotesByApplicationIdSuspenseQuery>;
 export type GetApplicationNotesByApplicationIdQueryResult = Apollo.QueryResult<GetApplicationNotesByApplicationIdQuery, GetApplicationNotesByApplicationIdQueryVariables>;
+export const CreateApplicationNoteDocument = gql`
+    mutation createApplicationNote($applicationId: Int!, $noteDate: DateTime!, $noteText: String!) {
+  createApplicationNote(
+    applicationId: $applicationId
+    noteDate: $noteDate
+    noteText: $noteText
+  ) {
+    success
+  }
+}
+    `;
+export type CreateApplicationNoteMutationFn = Apollo.MutationFunction<CreateApplicationNoteMutation, CreateApplicationNoteMutationVariables>;
+
+/**
+ * __useCreateApplicationNoteMutation__
+ *
+ * To run a mutation, you first call `useCreateApplicationNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateApplicationNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createApplicationNoteMutation, { data, loading, error }] = useCreateApplicationNoteMutation({
+ *   variables: {
+ *      applicationId: // value for 'applicationId'
+ *      noteDate: // value for 'noteDate'
+ *      noteText: // value for 'noteText'
+ *   },
+ * });
+ */
+export function useCreateApplicationNoteMutation(baseOptions?: Apollo.MutationHookOptions<CreateApplicationNoteMutation, CreateApplicationNoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateApplicationNoteMutation, CreateApplicationNoteMutationVariables>(CreateApplicationNoteDocument, options);
+      }
+export type CreateApplicationNoteMutationHookResult = ReturnType<typeof useCreateApplicationNoteMutation>;
+export type CreateApplicationNoteMutationResult = Apollo.MutationResult<CreateApplicationNoteMutation>;
+export type CreateApplicationNoteMutationOptions = Apollo.BaseMutationOptions<CreateApplicationNoteMutation, CreateApplicationNoteMutationVariables>;
+export const UpdateApplicationNoteDocument = gql`
+    mutation updateApplicationNote($noteId: Int!, $noteDate: DateTime!, $noteText: String!) {
+  updateApplicationNote(noteId: $noteId, noteDate: $noteDate, noteText: $noteText) {
+    success
+  }
+}
+    `;
+export type UpdateApplicationNoteMutationFn = Apollo.MutationFunction<UpdateApplicationNoteMutation, UpdateApplicationNoteMutationVariables>;
+
+/**
+ * __useUpdateApplicationNoteMutation__
+ *
+ * To run a mutation, you first call `useUpdateApplicationNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateApplicationNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateApplicationNoteMutation, { data, loading, error }] = useUpdateApplicationNoteMutation({
+ *   variables: {
+ *      noteId: // value for 'noteId'
+ *      noteDate: // value for 'noteDate'
+ *      noteText: // value for 'noteText'
+ *   },
+ * });
+ */
+export function useUpdateApplicationNoteMutation(baseOptions?: Apollo.MutationHookOptions<UpdateApplicationNoteMutation, UpdateApplicationNoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateApplicationNoteMutation, UpdateApplicationNoteMutationVariables>(UpdateApplicationNoteDocument, options);
+      }
+export type UpdateApplicationNoteMutationHookResult = ReturnType<typeof useUpdateApplicationNoteMutation>;
+export type UpdateApplicationNoteMutationResult = Apollo.MutationResult<UpdateApplicationNoteMutation>;
+export type UpdateApplicationNoteMutationOptions = Apollo.BaseMutationOptions<UpdateApplicationNoteMutation, UpdateApplicationNoteMutationVariables>;

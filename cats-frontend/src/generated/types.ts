@@ -291,10 +291,12 @@ export type Mutation = {
   addHousingToApplication: ApplicationHousingResponse;
   createAppParticipant: CreateAppParticipantsResponse;
   createApplication: ApplicationResponse;
+  createApplicationNote: ApplicationNotesResponse;
   createPerson: PersonResponse;
   createPersonNote: PersonNoteResponse;
   deletePersonNote: PersonNoteResponse;
   updateApplicationHousing: ApplicationHousingResponse;
+  updateApplicationNote: ApplicationNotesResponse;
   updatePerson: PersonResponse;
   updatePersonNote: PersonNoteResponse;
 };
@@ -315,6 +317,13 @@ export type MutationCreateApplicationArgs = {
 };
 
 
+export type MutationCreateApplicationNoteArgs = {
+  applicationId: Scalars['Int']['input'];
+  noteDate: Scalars['DateTime']['input'];
+  noteText: Scalars['String']['input'];
+};
+
+
 export type MutationCreatePersonArgs = {
   person: CreatePerson;
 };
@@ -332,6 +341,13 @@ export type MutationDeletePersonNoteArgs = {
 
 export type MutationUpdateApplicationHousingArgs = {
   input: UpdateHousingInputDto;
+};
+
+
+export type MutationUpdateApplicationNoteArgs = {
+  noteDate: Scalars['DateTime']['input'];
+  noteId: Scalars['Int']['input'];
+  noteText: Scalars['String']['input'];
 };
 
 
