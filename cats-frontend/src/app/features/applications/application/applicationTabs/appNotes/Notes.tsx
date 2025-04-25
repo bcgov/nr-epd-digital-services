@@ -153,7 +153,7 @@ export const Notes = () => {
             }}
           >
             <TrashCanIcon />
-            Delete Notes
+            Delete Selected
           </Button>
         </div>
       </Widget>

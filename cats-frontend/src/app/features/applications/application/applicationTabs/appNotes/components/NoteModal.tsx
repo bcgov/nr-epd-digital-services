@@ -81,11 +81,18 @@ export const NoteModal: FC<NoteModalProps> = ({
 
   const loading = createNoteLoading || updateNoteLoading || deleteNoteLoading;
 
+  const modalHeaderLabel =
+    noteModal.mode === 'add'
+      ? 'New Note'
+      : noteModal.mode === 'edit'
+        ? 'Edit Note'
+        : 'Delete Note';
+
   return (
     <>
       {noteModal.isOpen && (
         <ModalDialog
-          headerLabel="New Note"
+          headerLabel={modalHeaderLabel}
           saveButtonDisabled={loading}
           cancelButtonDisabled={loading}
           saveBtnLabel={noteModal.mode === 'delete' ? 'Confirm' : 'Save Note'}
