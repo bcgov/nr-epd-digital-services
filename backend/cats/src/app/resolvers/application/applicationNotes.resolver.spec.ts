@@ -47,6 +47,13 @@ describe('ApplicationNotesResolver', () => {
     data: mockNoteData,
   };
 
+  const mockDeletedResponse = {
+    message: 'Application notes deleted successfully',
+    statusCode: HttpStatus.OK,
+    success: true,
+    data: mockNoteData,
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -57,6 +64,7 @@ describe('ApplicationNotesResolver', () => {
             getApplicationNotesByApplicationId: jest.fn(),
             createApplicationNote: jest.fn(),
             updateApplicationNote: jest.fn(),
+            deleteApplicationNotes: jest.fn(),
           },
         },
         {
@@ -208,6 +216,51 @@ describe('ApplicationNotesResolver', () => {
       ).rejects.toThrow(HttpException);
 
       expect(service.updateApplicationNote).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('deleteApplicationNotes', () => {
+    it('should call deleteApplicationNotes service method', async () => {
+      const noteIds = [1, 2];
+
+      jest
+        .spyOn(service, 'deleteApplicationNotes')
+        .mockResolvedValue(mockNoteData);
+      jest
+        .spyOn(responseProvider, 'createResponse')
+        .mockReturnValue(mockDeletedResponse);
+
+      const result = await resolver.deleteApplicationNotes(noteIds, mockUser);
+
+      expect(service.deleteApplicationNotes).toHaveBeenCalledWith(noteIds);
+      expect(responseProvider.createResponse).toHaveBeenCalledWith(
+        'Application notes deleted successfully',
+        HttpStatus.OK,
+        true,
+        mockNoteData,
+      );
+      expect(result).toEqual(mockDeletedResponse);
+    });
+
+    it('should throw an exception when no note IDs are provided', async () => {
+      const emptyNoteIds = [];
+
+      await expect(
+        resolver.deleteApplicationNotes(emptyNoteIds, mockUser),
+      ).rejects.toThrow(HttpException);
+
+      expect(service.deleteApplicationNotes).not.toHaveBeenCalled();
+    });
+
+    it('should throw an exception when user is not provided', async () => {
+      const noteIds = [1, 2];
+      const noUser = null;
+
+      await expect(
+        resolver.deleteApplicationNotes(noteIds, noUser),
+      ).rejects.toThrow(HttpException);
+
+      expect(service.deleteApplicationNotes).not.toHaveBeenCalled();
     });
   });
 });

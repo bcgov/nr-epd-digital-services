@@ -6,7 +6,7 @@ import {
 } from './Notes.generated';
 import Widget from '@cats/components/widget/Widget';
 import { Button } from '@cats/components/button/Button';
-import { Plus } from '@cats/components/common/icon';
+import { Plus, TrashCanIcon } from '@cats/components/common/icon';
 import { RequestStatus } from '@cats/helpers/requests/status';
 import { getApplicationNotesColumns } from './applicationNotesTableConfig';
 import { useAuth } from 'react-oidc-context';
@@ -62,7 +62,9 @@ export const Notes = () => {
     },
   );
 
-  const [selectedRows, setSelectedRows] = useState<Set<Note['id']>>(new Set());
+  const [selectedNoteIds, setSelectedNoteIds] = useState<Set<Note['id']>>(
+    new Set(),
+  );
   const [noteModal, setNoteModal] = useState<NoteModalState>(
     initialNoteModalState(),
   );
@@ -85,7 +87,7 @@ export const Notes = () => {
   const tableChangeHandler = (event: any) => {
     if (event.property === 'select_row') {
       const row = event.row as Note;
-      setSelectedRows((prev) => {
+      setSelectedNoteIds((prev) => {
         const ids = new Set(prev);
         ids.has(row.id) ? ids.delete(row.id) : ids.add(row.id);
         return ids;
@@ -139,6 +141,20 @@ export const Notes = () => {
             <Plus />
             New Note
           </Button>
+          <Button
+            variant="secondary"
+            disabled={selectedNoteIds.size === 0}
+            onClick={() => {
+              setNoteModal((prev) => ({
+                ...prev,
+                isOpen: true,
+                mode: 'delete',
+              }));
+            }}
+          >
+            <TrashCanIcon />
+            Delete Notes
+          </Button>
         </div>
       </Widget>
 
@@ -147,6 +163,7 @@ export const Notes = () => {
         noteModal={noteModal}
         setNoteModal={setNoteModal}
         refetchTableData={refetch}
+        selectedNoteIds={selectedNoteIds}
       />
     </div>
   );

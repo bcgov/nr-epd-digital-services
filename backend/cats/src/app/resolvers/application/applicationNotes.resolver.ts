@@ -156,4 +156,47 @@ export class ApplicationNotesResolver {
       result,
     );
   }
+
+  @Mutation(() => ApplicationNotesResponse, {
+    name: 'deleteApplicationNotes',
+  })
+  @UsePipes(new GenericValidationPipe())
+  async deleteApplicationNotes(
+    @Args('noteIds', { type: () => [Int] }) noteIds: number[],
+    @AuthenticatedUser() user: any,
+  ) {
+    const validationErrors = [];
+
+    if (!user) {
+      validationErrors.push('User is required');
+    }
+
+    if (!noteIds || noteIds.length === 0) {
+      validationErrors.push('At least one note ID is required');
+    }
+
+    if (validationErrors.length > 0) {
+      throw new HttpException(
+        { message: 'Validation failed', errors: validationErrors },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    this.loggerService.log(
+      `ApplicationNotesResolver.deleteApplicationNotes: Deleting notes with IDs ${noteIds.join(
+        ', ',
+      )}`,
+    );
+
+    const result = await this.applicationNotesService.deleteApplicationNotes(
+      noteIds,
+    );
+
+    return this.genericResponseProvider.createResponse(
+      'Application notes deleted successfully',
+      HttpStatus.OK,
+      true,
+      result,
+    );
+  }
 }

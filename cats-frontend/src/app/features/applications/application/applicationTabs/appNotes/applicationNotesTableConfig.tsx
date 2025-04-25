@@ -4,7 +4,7 @@ import {
   IFormField,
 } from '@cats/components/input-controls/IFormField';
 import { TableColumn } from '@cats/components/table/TableColumn';
-import { formatDateUTC } from '@cats/helpers/utility';
+import { formatDate } from '@cats/helpers/utility';
 import { PencilIcon } from '@cats/components/common/icon';
 import styles from './Notes.module.css';
 import type { Note } from './Notes';
@@ -22,7 +22,7 @@ export const getApplicationNotesColumns = ({
     displayType: { type: FormFieldType.Label },
     columnSize: ColumnSize.Small,
     renderCell: (value: Note['noteDate']) => {
-      return formatDateUTC(value, 'EEE MMM dd yyyy');
+      return formatDate(new Date(value), 'EEE MMM dd yyyy');
     },
   },
   {

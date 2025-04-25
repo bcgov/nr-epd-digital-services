@@ -24,3 +24,9 @@ mutation updateApplicationNote($noteId: Int!, $noteDate: DateTime!, $noteText: S
     success
   }
 }
+
+mutation deleteApplicationNotes($noteIds: [Int!]!) {
+  deleteApplicationNotes(noteIds: $noteIds) {
+    success
+  }
+}

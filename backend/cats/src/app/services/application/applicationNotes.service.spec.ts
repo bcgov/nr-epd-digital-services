@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { LoggerService } from '../../logger/logger.service';
 import { ApplicationNotesService } from './applicationNotes.service';
 import { AppNote } from '../../entities/appNote.entity';
@@ -31,6 +31,17 @@ describe('ApplicationNotesService', () => {
       applicationId: 123,
       noteDate: '2025-01-02',
       noteText: 'Test note 2',
+      rowVersionCount: 1,
+      createdBy: 'Test User',
+      createdDateTime: new Date(),
+      updatedBy: 'Test User',
+      updatedDateTime: new Date(),
+    },
+    {
+      id: 3,
+      applicationId: 456,
+      noteDate: '2025-01-03',
+      noteText: 'Test note for different application',
       rowVersionCount: 1,
       createdBy: 'Test User',
       createdDateTime: new Date(),
@@ -79,9 +90,10 @@ describe('ApplicationNotesService', () => {
       const result = await service.getApplicationNotesByApplicationId(123);
 
       expect(result).toBeDefined();
-      expect(result).toHaveLength(2);
+      expect(result).toHaveLength(3);
       expect(result[0].noteText).toBe('Test note 1');
       expect(result[1].noteText).toBe('Test note 2');
+      expect(result[2].noteText).toBe('Test note for different application');
       expect(appNoteRepository.find).toHaveBeenCalledWith(
         expect.objectContaining({
           where: {
@@ -135,7 +147,7 @@ describe('ApplicationNotesService', () => {
       );
 
       expect(result).toBeDefined();
-      expect(result.length).toBe(3);
+      expect(result.length).toBe(4);
       expect(appNoteRepository.create).toHaveBeenCalledWith(
         expect.objectContaining({
           applicationId,
@@ -257,6 +269,98 @@ describe('ApplicationNotesService', () => {
       await expect(
         service.updateApplicationNote(1, new Date(), 'Updated note', mockUser),
       ).rejects.toThrow(HttpException);
+    });
+  });
+
+  describe('deleteApplicationNotes', () => {
+    it('should delete specified notes and return remaining notes', async () => {
+      const noteIdsToDelete = [1];
+      const notesToDelete = [mockNotes[0]];
+      const remainingNotes = [mockNotes[1]];
+
+      jest
+        .spyOn(appNoteRepository, 'find')
+        .mockImplementation((options: any) => {
+          if (options.where && options.where.id) {
+            return Promise.resolve(notesToDelete);
+          } else {
+            return Promise.resolve(remainingNotes);
+          }
+        });
+
+      jest
+        .spyOn(appNoteRepository, 'remove')
+        .mockResolvedValue(notesToDelete as any);
+      jest
+        .spyOn(service, 'getApplicationNotesByApplicationId')
+        .mockResolvedValue(remainingNotes);
+
+      const result = await service.deleteApplicationNotes(noteIdsToDelete);
+
+      expect(result).toBeDefined();
+      expect(result).toHaveLength(1);
+      expect(result[0].id).toBe(2);
+      expect(appNoteRepository.find).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: In(noteIdsToDelete) },
+        }),
+      );
+      expect(appNoteRepository.remove).toHaveBeenCalledWith(notesToDelete);
+      expect(service.getApplicationNotesByApplicationId).toHaveBeenCalledWith(
+        123,
+      );
+    });
+
+    it('should throw an exception when no note IDs are provided', async () => {
+      await expect(service.deleteApplicationNotes([])).rejects.toThrow(
+        HttpException,
+      );
+    });
+
+    it('should throw an exception when no notes are found', async () => {
+      jest.spyOn(appNoteRepository, 'find').mockResolvedValue([]);
+
+      await expect(service.deleteApplicationNotes([999])).rejects.toThrow(
+        HttpException,
+      );
+    });
+
+    it('should throw an exception when notes belong to different applications', async () => {
+      jest
+        .spyOn(appNoteRepository, 'find')
+        .mockResolvedValue([mockNotes[0], mockNotes[2]]);
+
+      await expect(service.deleteApplicationNotes([1, 3])).rejects.toThrow(
+        HttpException,
+      );
+    });
+
+    it('should handle partial matches and delete found notes', async () => {
+      const foundNotes = [mockNotes[0]];
+
+      jest.spyOn(appNoteRepository, 'find').mockResolvedValue(foundNotes);
+      jest
+        .spyOn(appNoteRepository, 'remove')
+        .mockResolvedValue(foundNotes as any);
+      jest
+        .spyOn(service, 'getApplicationNotesByApplicationId')
+        .mockResolvedValue([mockNotes[1]]);
+
+      const result = await service.deleteApplicationNotes([1, 999]);
+
+      expect(result).toBeDefined();
+      expect(appNoteRepository.remove).toHaveBeenCalledWith(foundNotes);
+    });
+
+    it('should throw an exception when delete operation fails', async () => {
+      jest.spyOn(appNoteRepository, 'find').mockResolvedValue([mockNotes[0]]);
+      jest.spyOn(appNoteRepository, 'remove').mockImplementation(() => {
+        throw new Error('Database error');
+      });
+
+      await expect(service.deleteApplicationNotes([1])).rejects.toThrow(
+        HttpException,
+      );
     });
   });
 });

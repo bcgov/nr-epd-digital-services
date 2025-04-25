@@ -294,6 +294,7 @@ export type Mutation = {
   createApplicationNote: ApplicationNotesResponse;
   createPerson: PersonResponse;
   createPersonNote: PersonNoteResponse;
+  deleteApplicationNotes: ApplicationNotesResponse;
   deletePersonNote: PersonNoteResponse;
   updateApplicationHousing: ApplicationHousingResponse;
   updateApplicationNote: ApplicationNotesResponse;
@@ -331,6 +332,11 @@ export type MutationCreatePersonArgs = {
 
 export type MutationCreatePersonNoteArgs = {
   note: CreatePersonNote;
+};
+
+
+export type MutationDeleteApplicationNotesArgs = {
+  noteIds: Array<Scalars['Int']['input']>;
 };
 
 

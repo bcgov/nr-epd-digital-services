@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToInstance } from 'class-transformer';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 
 import { AppNote } from '../../entities/appNote.entity';
 import { Application } from '../../entities/application.entity';
@@ -153,6 +153,64 @@ export class ApplicationNotesService {
       );
       throw new HttpException(
         error.message || 'Failed to update application note',
+        error.status || HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  async deleteApplicationNotes(noteIds: number[]): Promise<AppNote[]> {
+    try {
+      this.loggerService.log(
+        `ApplicationNotesService.deleteApplicationNotes: Deleting notes with IDs ${noteIds.join(
+          ', ',
+        )}`,
+      );
+
+      if (!noteIds || noteIds.length === 0) {
+        throw new HttpException(
+          'At least one note ID is required',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const notesToDelete = await this.appNoteRepository.find({
+        where: { id: In(noteIds) },
+      });
+
+      if (notesToDelete.length === 0) {
+        throw new HttpException(
+          'None of the specified notes were found',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      const applicationId = notesToDelete[0].applicationId;
+      // Check if all notes belong to the same application
+      const multipleApplications = notesToDelete.some(
+        (note) => note.applicationId !== applicationId,
+      );
+
+      if (multipleApplications) {
+        throw new HttpException(
+          'All notes must belong to the same application',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      await this.appNoteRepository.remove(notesToDelete);
+
+      this.loggerService.log(
+        `ApplicationNotesService.deleteApplicationNotes: Successfully deleted ${notesToDelete.length} notes.`,
+      );
+
+      return this.getApplicationNotesByApplicationId(applicationId);
+    } catch (error) {
+      this.loggerService.error(
+        `ApplicationNotesService.deleteApplicationNotes: Error deleting notes`,
+        error,
+      );
+      throw new HttpException(
+        error.message || 'Failed to delete application notes',
         error.status || HttpStatus.BAD_REQUEST,
       );
     }

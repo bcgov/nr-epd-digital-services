@@ -4,19 +4,22 @@ import { FC } from 'react';
 import Form from '@cats/components/form/Form';
 import {
   useCreateApplicationNoteMutation,
+  useDeleteApplicationNotesMutation,
   useUpdateApplicationNoteMutation,
 } from '../Notes.generated';
+import { Note } from '../Notes';
 
 interface NoteModalProps {
   noteModal: NoteModalState;
   setNoteModal: (noteModal: NoteModalState) => void;
   applicationId: number;
   refetchTableData: () => void;
+  selectedNoteIds: Set<Note['id']>;
 }
 
 export type NoteModalState = {
   isOpen: boolean;
-  mode: 'add' | 'edit';
+  mode: 'add' | 'edit' | 'delete';
   noteData: {
     noteDate: string;
     noteText: string;
@@ -40,6 +43,7 @@ export const NoteModal: FC<NoteModalProps> = ({
   setNoteModal,
   applicationId,
   refetchTableData,
+  selectedNoteIds,
 }) => {
   const [createApplicationNote, { loading: createNoteLoading }] =
     useCreateApplicationNoteMutation({
@@ -57,6 +61,14 @@ export const NoteModal: FC<NoteModalProps> = ({
       },
     });
 
+  const [deleteApplicationNotes, { loading: deleteNoteLoading }] =
+    useDeleteApplicationNotesMutation({
+      onCompleted: () => {
+        refetchTableData();
+        setNoteModal(initialNoteModalState());
+      },
+    });
+
   const handleInputChange = (propetyName: string, value: any) => {
     setNoteModal({
       ...noteModal,
@@ -67,17 +79,7 @@ export const NoteModal: FC<NoteModalProps> = ({
     });
   };
 
-  const handleCreate = async () => {
-    await createApplicationNote({
-      variables: {
-        applicationId,
-        noteDate: noteModal.noteData.noteDate,
-        noteText: noteModal.noteData.noteText,
-      },
-    });
-  };
-
-  const loading = createNoteLoading;
+  const loading = createNoteLoading || updateNoteLoading || deleteNoteLoading;
 
   return (
     <>
@@ -86,6 +88,7 @@ export const NoteModal: FC<NoteModalProps> = ({
           headerLabel="New Note"
           saveButtonDisabled={loading}
           cancelButtonDisabled={loading}
+          saveBtnLabel={noteModal.mode === 'delete' ? 'Confirm' : 'Save Note'}
           closeHandler={(saved) => {
             if (!saved) {
               setNoteModal(initialNoteModalState());
@@ -111,14 +114,24 @@ export const NoteModal: FC<NoteModalProps> = ({
                 },
               });
             }
+
+            if (noteModal.mode === 'delete') {
+              deleteApplicationNotes({
+                variables: { noteIds: Array.from(selectedNoteIds) },
+              });
+            }
           }}
         >
-          <Form
-            editMode={true}
-            formRows={getNoteFormFields()}
-            formData={noteModal.noteData}
-            handleInputChange={handleInputChange}
-          />
+          {noteModal.mode === 'delete' ? (
+            <div>Are you sure you want to delete the selected notes?</div>
+          ) : (
+            <Form
+              editMode={true}
+              formRows={getNoteFormFields()}
+              formData={noteModal.noteData}
+              handleInputChange={handleInputChange}
+            />
+          )}
         </ModalDialog>
       )}
     </>
