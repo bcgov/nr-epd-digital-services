@@ -247,6 +247,24 @@ export type HousingTypeResponse = {
   data: Array<HousingTypeDto>;
 };
 
+export type InvoiceByApplicationIdDto = {
+  __typename?: 'InvoiceByApplicationIdDto';
+  dueDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  issuedDate: Scalars['DateTime']['output'];
+  status: Scalars['String']['output'];
+  totalInCents: Scalars['Int']['output'];
+};
+
+export type InvoicesByApplicationIdResponse = {
+  __typename?: 'InvoicesByApplicationIdResponse';
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  invoices?: Maybe<Array<InvoiceByApplicationIdDto>>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addHousingToApplication: ApplicationHousingResponse;
@@ -343,9 +361,11 @@ export type Query = {
   getApplicationDetailsById: ApplicationDetailsResponse;
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
   getHousingTypes: HousingTypeResponse;
+  getInvoicesByApplicationId: InvoicesByApplicationIdResponse;
   getOrganizations: DropdownResponse;
   getParticipantNames: DropdownResponse;
   getPersonNotesByPersonId: PersonNoteResponse;
+  getSiteDetailsBySiteId: SiteDetailsResponse;
   searchApplications: ApplicationSearchResponse;
   searchApplicationsById: ApplicationSearchResponse;
   searchPerson: SearchPersonResponse;
@@ -373,6 +393,11 @@ export type QueryGetApplicationHousingByApplicationIdArgs = {
 };
 
 
+export type QueryGetInvoicesByApplicationIdArgs = {
+  applicationId: Scalars['Int']['input'];
+};
+
+
 export type QueryGetOrganizationsArgs = {
   searchParamForOrg: Scalars['String']['input'];
 };
@@ -385,6 +410,11 @@ export type QueryGetParticipantNamesArgs = {
 
 export type QueryGetPersonNotesByPersonIdArgs = {
   id: Scalars['Float']['input'];
+};
+
+
+export type QueryGetSiteDetailsBySiteIdArgs = {
+  siteId: Scalars['String']['input'];
 };
 
 
@@ -419,6 +449,33 @@ export type SearchPersonResponse = {
   persons: Array<ViewPerson>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type SiteAssocs = {
+  __typename?: 'SiteAssocs';
+  associatedSite: SiteDetailsDto;
+};
+
+export type SiteDetailsDto = {
+  __typename?: 'SiteDetailsDTO';
+  addrLine_1?: Maybe<Scalars['String']['output']>;
+  addrLine_2?: Maybe<Scalars['String']['output']>;
+  addrLine_3?: Maybe<Scalars['String']['output']>;
+  addrLine_4?: Maybe<Scalars['String']['output']>;
+  associatedSites: Array<SiteAssocs>;
+  city?: Maybe<Scalars['String']['output']>;
+  commonName?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  latdeg?: Maybe<Scalars['Float']['output']>;
+  longdeg?: Maybe<Scalars['Float']['output']>;
+  siteRiskCode?: Maybe<Scalars['String']['output']>;
+  whenCreated: Scalars['String']['output'];
+  whenUpdated?: Maybe<Scalars['String']['output']>;
+};
+
+export type SiteDetailsResponse = {
+  __typename?: 'SiteDetailsResponse';
+  data?: Maybe<SiteDetailsDto>;
 };
 
 export type UpdateHousingInputDto = {

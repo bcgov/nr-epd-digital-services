@@ -1,0 +1,27 @@
+query findSiteBySiteId($siteId: String!) {
+  findSiteBySiteId(siteId: $siteId) {
+    data {
+      ...SiteDetails
+      siteAssocs {
+        siteIdAssociatedWith2 {
+          ...SiteDetails
+        }
+      }
+    }
+  }
+}
+
+fragment SiteDetails on Sites {
+  id
+  longdeg
+  latdeg
+  addrLine_1
+  addrLine_2
+  addrLine_3
+  addrLine_4
+  city
+  commonName
+  siteRiskCode
+  whenCreated
+  whenUpdated
+}
