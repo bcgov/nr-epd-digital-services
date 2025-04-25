@@ -69,12 +69,12 @@ export const NoteModal: FC<NoteModalProps> = ({
       },
     });
 
-  const handleInputChange = (propetyName: string, value: any) => {
+  const handleInputChange = (propertyName: string, value: any) => {
     setNoteModal({
       ...noteModal,
       noteData: {
         ...noteModal.noteData,
-        [propetyName]: value,
+        [propertyName]: value,
       },
     });
   };
