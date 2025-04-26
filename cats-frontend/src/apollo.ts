@@ -26,15 +26,14 @@ const authLink = setContext((_, { headers }) => {
 
 // Custom link to append operation name to the URI
 const operationNameLink = new ApolloLink((operation, forward) => {
-  let uri = `${API}${GRAPHQL}`;
+  const uri = new URL(`${API}${GRAPHQL}`);
   const operationName = operation.operationName;
 
-  // Append ?op=operationName or &op=operationName if there are already query params
-  const hasQuery = uri.includes('?');
-  uri = hasQuery ? `${uri}&op=${operationName}` : `${uri}?op=${operationName}`;
+  // Append the 'op' parameter using the URL object
+  uri.searchParams.append('op', operationName);
 
   operation.setContext(({ headers = {} }) => ({
-    uri,
+    uri: uri.toString(),
     headers,
   }));
   return forward(operation);
