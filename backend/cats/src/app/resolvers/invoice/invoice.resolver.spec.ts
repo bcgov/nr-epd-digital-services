@@ -3,6 +3,7 @@ import { InvoiceResolver } from './invoice.resolver';
 import { InvoiceService } from '../../services/invoice/invoice.service';
 import { LoggerService } from '../../logger/logger.service';
 import { InvoiceV2 } from '../../entities/invoiceV2.entity';
+import { InvoiceStatus } from '../../dto/invoice/invoice.dto';
 
 describe('InvoiceResolver', () => {
   let resolver: InvoiceResolver;
@@ -44,7 +45,7 @@ describe('InvoiceResolver', () => {
           subject: 'Invoice 1',
           issuedDate: new Date(),
           dueDate: new Date(),
-          status: 'PAID',
+          status: InvoiceStatus.DRAFT,
           recipient: null,
           invoiceId: null,
           taxExempt: false,
@@ -52,6 +53,10 @@ describe('InvoiceResolver', () => {
           gstInCents: 0,
           pstInCents: 0,
           totalInCents: 10000,
+          createdBy: 'test-user',
+          updatedBy: 'test-user',
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       ];
       jest
