@@ -1,8 +1,15 @@
-import { Resolver, Query, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Args, Int, Mutation } from '@nestjs/graphql';
 import { InvoiceService } from '../../services/invoice/invoice.service';
 import { InvoiceV2 } from '../../entities/invoiceV2.entity';
 import { InvoicesByApplicationIdResponse } from '../../dto/response/invoice/invoicesByApplicationIdResponse';
 import { LoggerService } from '../../logger/logger.service';
+import { CreateInvoiceResponse } from '../../dto/response/invoice/createInvoiceResponse';
+import {
+  InvoiceCreateDto,
+  InvoiceDto,
+  InvoiceStatus,
+} from '../../dto/invoice/invoice.dto';
+import { AuthenticatedUser } from 'nest-keycloak-connect';
 
 @Resolver()
 export class InvoiceResolver {
@@ -46,6 +53,70 @@ export class InvoiceResolver {
     }));
 
     response.httpStatusCode = 200;
+    response.success = true;
+    return response;
+  }
+
+  @Mutation(() => CreateInvoiceResponse)
+  async createInvoice(
+    @Args('invoiceData') invoiceData: InvoiceCreateDto,
+    @AuthenticatedUser() user: any,
+  ): Promise<CreateInvoiceResponse> {
+    this.loggerService.log(
+      `InvoiceResolver: createInvoice: invoiceData: ${JSON.stringify(
+        invoiceData,
+      )}`,
+    );
+    const response = new CreateInvoiceResponse();
+    let result: InvoiceV2;
+
+    try {
+      result = await this.invoiceService.createInvoice(invoiceData, user);
+    } catch (error) {
+      this.loggerService.error(
+        `InvoiceResolver: createInvoice: Error creating invoice: ${error.message}`,
+        null,
+      );
+      response.httpStatusCode = 500;
+      response.message = 'An error occurred while creating the invoice.';
+      response.success = false;
+      return response;
+    }
+
+    const createdInvoice: InvoiceDto = {
+      id: result.id,
+      applicationId: result.application?.id,
+      recipientId: result.recipient?.id,
+      invoiceId: result.invoiceId,
+      subject: result.subject,
+      issuedDate: result.issuedDate,
+      dueDate: result.dueDate,
+      status: result.status as InvoiceStatus,
+      taxExempt: result.taxExempt,
+      subtotalInCents: result.subtotalInCents,
+      gstInCents: result.gstInCents,
+      pstInCents: result.pstInCents,
+      createdAt: result.createdAt,
+      updatedAt: result.updatedAt,
+      createdBy: result.createdBy,
+      updatedBy: result.updatedBy,
+      totalInCents: result.totalInCents,
+      lineItems: result.lineItems.map((lineItem) => ({
+        id: lineItem.id,
+        type: lineItem.type,
+        description: lineItem.description,
+        quantity: lineItem.quantity,
+        unitPriceInCents: lineItem.unitPriceInCents,
+        totalInCents: lineItem.totalInCents,
+        createdAt: lineItem.createdAt,
+        updatedAt: lineItem.updatedAt,
+        createdBy: lineItem.createdBy,
+        updatedBy: lineItem.updatedBy,
+      })),
+    };
+
+    response.invoice = createdInvoice;
+    response.httpStatusCode = 201;
     response.success = true;
     return response;
   }
