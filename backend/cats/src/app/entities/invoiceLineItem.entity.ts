@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { InvoiceV2 } from './invoiceV2.entity';
+import { InvoiceLineItemType } from '../dto/invoice/invoiceLineItem.dto';
 
 @Entity('invoice_line_item')
 export class InvoiceLineItem {
@@ -10,7 +11,7 @@ export class InvoiceLineItem {
   invoice: InvoiceV2;
 
   @Column({ type: 'enum', enum: ['service', 'expense', 'timesheet'] })
-  type: string;
+  type: InvoiceLineItemType;
 
   @Column()
   description: string;
@@ -19,8 +20,24 @@ export class InvoiceLineItem {
   quantity: number;
 
   @Column('int')
-  unit_price_in_cents: number;
+  unitPriceInCents: number;
 
   @Column('int')
-  total_in_cents: number;
+  totalInCents: number;
+
+  @Column({ nullable: true })
+  createdBy: string;
+
+  @Column({ nullable: true })
+  updatedBy: string;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: Date;
 }
