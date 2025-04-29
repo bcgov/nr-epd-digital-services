@@ -78,7 +78,7 @@ export class InvoiceResolver {
         null,
       );
       response.httpStatusCode = 500;
-      response.message = 'An error occurred while creating the invoice.';
+      response.message = 'An error occurred while updating the invoice.';
       response.success = false;
       return response;
     }
@@ -121,7 +121,7 @@ export class InvoiceResolver {
     return response;
   }
 
-  @Mutation(() => InvoiceDto)
+  @Mutation(() => InvoiceResponse)
   async updateInvoice(
     @Args('id', { type: () => Int }) id: number,
     @Args('updateData') updateData: InvoiceInputDto,
@@ -142,7 +142,7 @@ export class InvoiceResolver {
         null,
       );
       response.httpStatusCode = 500;
-      response.message = 'An error occurred while creating the invoice.';
+      response.message = 'An error occurred while updating the invoice.';
       response.success = false;
       return response;
     }

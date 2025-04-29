@@ -220,7 +220,7 @@ describe('InvoiceResolver', () => {
       expect(result.success).toBe(false);
       expect(result.httpStatusCode).toBe(500);
       expect(result.message).toBe(
-        'An error occurred while creating the invoice.',
+        'An error occurred while updating the invoice.',
       );
     });
   });
