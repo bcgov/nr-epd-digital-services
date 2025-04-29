@@ -3,9 +3,9 @@ import { InvoiceService } from '../../services/invoice/invoice.service';
 import { InvoiceV2 } from '../../entities/invoiceV2.entity';
 import { InvoicesByApplicationIdResponse } from '../../dto/response/invoice/invoicesByApplicationIdResponse';
 import { LoggerService } from '../../logger/logger.service';
-import { CreateInvoiceResponse } from '../../dto/response/invoice/createInvoiceResponse';
+import { InvoiceResponse } from '../../dto/response/invoice/invoiceResponse';
 import {
-  InvoiceCreateDto,
+  InvoiceCreateDto as InvoiceInputDto,
   InvoiceDto,
   InvoiceStatus,
 } from '../../dto/invoice/invoice.dto';
@@ -57,17 +57,17 @@ export class InvoiceResolver {
     return response;
   }
 
-  @Mutation(() => CreateInvoiceResponse)
+  @Mutation(() => InvoiceResponse)
   async createInvoice(
-    @Args('invoiceData') invoiceData: InvoiceCreateDto,
+    @Args('invoiceData') invoiceData: InvoiceInputDto,
     @AuthenticatedUser() user: any,
-  ): Promise<CreateInvoiceResponse> {
+  ): Promise<InvoiceResponse> {
     this.loggerService.log(
       `InvoiceResolver: createInvoice: invoiceData: ${JSON.stringify(
         invoiceData,
       )}`,
     );
-    const response = new CreateInvoiceResponse();
+    const response = new InvoiceResponse();
     let result: InvoiceV2;
 
     try {
@@ -117,6 +117,69 @@ export class InvoiceResolver {
 
     response.invoice = createdInvoice;
     response.httpStatusCode = 201;
+    response.success = true;
+    return response;
+  }
+
+  @Mutation(() => InvoiceDto)
+  async updateInvoice(
+    @Args('id', { type: () => Int }) id: number,
+    @Args('updateData') updateData: InvoiceInputDto,
+    @AuthenticatedUser() user: any,
+  ): Promise<InvoiceResponse> {
+    this.loggerService.log(
+      `InvoiceResolver: updateInvoice: invoiceId: ${id}, updateData: ${JSON.stringify(
+        updateData,
+      )}`,
+    );
+    const response = new InvoiceResponse();
+    let result: InvoiceV2;
+    try {
+      result = await this.invoiceService.updateInvoice(id, updateData, user);
+    } catch (error) {
+      this.loggerService.error(
+        `InvoiceResolver: updateInvoice: Error updating invoice: ${error.message}`,
+        null,
+      );
+      response.httpStatusCode = 500;
+      response.message = 'An error occurred while creating the invoice.';
+      response.success = false;
+      return response;
+    }
+    const updatedInvoice: InvoiceDto = {
+      id: result.id,
+      applicationId: result.application?.id,
+      recipientId: result.recipient?.id,
+      invoiceId: result.invoiceId,
+      subject: result.subject,
+      issuedDate: result.issuedDate,
+      dueDate: result.dueDate,
+      status: result.status,
+      taxExempt: result.taxExempt,
+      subtotalInCents: result.subtotalInCents,
+      gstInCents: result.gstInCents,
+      pstInCents: result.pstInCents,
+      totalInCents: result.totalInCents,
+      createdBy: result.createdBy,
+      updatedBy: result.updatedBy,
+      createdAt: result.createdAt,
+      updatedAt: result.updatedAt,
+      lineItems: result.lineItems.map((lineItem) => ({
+        id: lineItem.id,
+        type: lineItem.type,
+        description: lineItem.description,
+        quantity: lineItem.quantity,
+        unitPriceInCents: lineItem.unitPriceInCents,
+        totalInCents: lineItem.totalInCents,
+        createdAt: lineItem.createdAt,
+        updatedAt: lineItem.updatedAt,
+        createdBy: lineItem.createdBy,
+        updatedBy: lineItem.updatedBy,
+      })),
+    };
+
+    response.invoice = updatedInvoice;
+    response.httpStatusCode = 200;
     response.success = true;
     return response;
   }
