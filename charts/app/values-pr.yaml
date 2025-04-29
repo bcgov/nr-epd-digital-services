@@ -14,6 +14,7 @@ global:
   config:
     seed:
       enabled: true
+    SITE_SERVICE_URL: "epd-backend-applications"
 #-- the components of the application, backend.
 backend:
   #-- enable or disable backend

@@ -153,6 +153,8 @@ spec:
               value: {{ .Values.backend.service.targetPort | quote }}
             - name: GRAPHQL_SCHEMA_FILE_PATH
               value: "/graphql/schema.graphql"
+            - name: SITE_SERVICE_URL
+              value: {{ .Values.global.config.SITE_SERVICE_URL | quote }}
             - name: POSTGRES_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
