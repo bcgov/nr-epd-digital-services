@@ -5,11 +5,12 @@ import { InvoicesByApplicationIdResponse } from '../../dto/response/invoice/invo
 import { LoggerService } from '../../logger/logger.service';
 import { InvoiceResponse } from '../../dto/response/invoice/invoiceResponse';
 import {
-  InvoiceCreateDto as InvoiceInputDto,
+  InvoiceInputDto as InvoiceInputDto,
   InvoiceDto,
   InvoiceStatus,
 } from '../../dto/invoice/invoice.dto';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
+import { ResponseDto } from '../../dto/response/response.dto';
 
 @Resolver()
 export class InvoiceResolver {
@@ -181,6 +182,31 @@ export class InvoiceResolver {
     response.invoice = updatedInvoice;
     response.httpStatusCode = 200;
     response.success = true;
+    return response;
+  }
+
+  @Mutation(() => ResponseDto)
+  async deleteInvoice(
+    @Args('id', { type: () => Int }) id: number,
+  ): Promise<ResponseDto> {
+    this.loggerService.log(`InvoiceResolver: deleteInvoice: invoiceId: ${id}`);
+    let response = new ResponseDto();
+    try {
+      await this.invoiceService.deleteInvoice(id);
+    } catch (error) {
+      this.loggerService.error(
+        `InvoiceResolver: deleteInvoice: Error deleting invoice: ${error.message}`,
+        null,
+      );
+      response.httpStatusCode = 500;
+      response.message = 'An error occurred while deleting the invoice.';
+      response.success = false;
+      return response;
+    }
+
+    response.httpStatusCode = 200;
+    response.success = true;
+    response.message = 'Invoice deleted successfully.';
     return response;
   }
 }

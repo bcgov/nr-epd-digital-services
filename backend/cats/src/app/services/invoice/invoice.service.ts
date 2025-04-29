@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { InvoiceV2 } from '../../entities/invoiceV2.entity';
 import { LoggerService } from '../../logger/logger.service';
-import { InvoiceCreateDto, InvoiceDto } from 'src/app/dto/invoice/invoice.dto';
+import { InvoiceInputDto } from '../../dto/invoice/invoice.dto';
 
 @Injectable()
 export class InvoiceService {
@@ -41,7 +41,7 @@ export class InvoiceService {
   }
 
   async createInvoice(
-    invoiceData: InvoiceCreateDto,
+    invoiceData: InvoiceInputDto,
     user: any,
   ): Promise<InvoiceV2> {
     this.loggerService.log(
@@ -69,7 +69,7 @@ export class InvoiceService {
 
   async updateInvoice(
     id: number,
-    updateData: InvoiceCreateDto,
+    updateData: InvoiceInputDto,
     user: any,
   ): Promise<InvoiceV2> {
     this.loggerService.log(`InvoiceService: updateInvoice: invoiceId: ${id}`);
@@ -94,5 +94,23 @@ export class InvoiceService {
     }
     this.loggerService.log(`InvoiceService: updateInvoice: Success.`);
     return updatedInvoice;
+  }
+
+  async deleteInvoice(id: number): Promise<boolean> {
+    this.loggerService.log(`InvoiceService: deleteInvoice: invoiceId: ${id}`);
+    try {
+      const result = await this.invoiceRepository.delete(id);
+      if (result.affected === 0) {
+        throw new Error(`Invoice with ID ${id} not found.`);
+      }
+      this.loggerService.log(`InvoiceService: deleteInvoice: Success.`);
+      return true;
+    } catch (error) {
+      this.loggerService.error(
+        `InvoiceService: deleteInvoice: Error deleting invoice: ${error.message}`,
+        null,
+      );
+      throw new Error(`Failed to delete invoice: ${error.message}`);
+    }
   }
 }
