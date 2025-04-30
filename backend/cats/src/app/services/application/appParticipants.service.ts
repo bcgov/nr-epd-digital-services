@@ -67,10 +67,18 @@ export class AppParticipantService {
           id: participant.id,
           applicationId: participant.applicationId,
           isMainParticipant: participant.isMainParticipant,
-          fullName:
-            participant.person.firstName + ' ' + participant.person.lastName,
-          name: participant.organization?.name || '',
-          description: participant.participantRole.description,
+          person: {
+            id: participant.person.id,
+            fullName: participant.person.firstName + ' ' + participant.person.lastName
+          },
+          organization: {
+            id: participant.organization?.id,
+            name: participant.organization?.name || '', 
+          },
+          participantRole: {
+            id: participant.participantRole.id,
+            description: participant.participantRole.description,
+          },
           effectiveStartDate: participant.effectiveStartDate,
           effectiveEndDate: participant.effectiveEndDate,
           isMinistry: participant.participantRole.isMinistry,

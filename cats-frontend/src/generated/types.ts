@@ -550,6 +550,9 @@ export type ViewAppParticipantsDto = {
   isMinistry: Scalars['Boolean']['output'];
   lastName: Scalars['String']['output'];
   name: Scalars['String']['output'];
+  organization?: Maybe<ViewOrganizationsDto>;
+  participantRole: ViewParticipantsRolesDto;
+  person: ViewParticipantNamesDto;
   rowVersionCount?: Maybe<Scalars['Float']['output']>;
   updatedBy?: Maybe<Scalars['String']['output']>;
   updatedDateTime?: Maybe<Scalars['DateTime']['output']>;
@@ -580,6 +583,21 @@ export type ViewApplicationDetails = {
   siteId: Scalars['Float']['output'];
   siteType?: Maybe<DetailField>;
   submissionId?: Maybe<Scalars['String']['output']>;
+};
+
+export type ViewOrganizationsDto = {
+  __typename?: 'ViewOrganizationsDto';
+  id?: Maybe<Scalars['Float']['output']>;
+  name: Scalars['String']['output'];
+};
+
+export type ViewParticipantNamesDto = {
+  __typename?: 'ViewParticipantNamesDto';
+  firstName: Scalars['String']['output'];
+  fullName: Scalars['String']['output'];
+  id: Scalars['Float']['output'];
+  lastName: Scalars['String']['output'];
+  middleName?: Maybe<Scalars['String']['output']>;
 };
 
 export type ViewParticipantsRolesDto = {
