@@ -66,4 +66,33 @@ export class InvoiceService {
     this.loggerService.log(`InvoiceService: createInvoice: Success.`);
     return invoice;
   }
+
+  async updateInvoice(
+    id: number,
+    updateData: InvoiceCreateDto,
+    user: any,
+  ): Promise<InvoiceV2> {
+    this.loggerService.log(`InvoiceService: updateInvoice: invoiceId: ${id}`);
+    let updatedInvoice: InvoiceV2;
+    try {
+      await this.invoiceRepository.update(id, {
+        ...updateData,
+        updatedBy: user.username,
+      });
+      updatedInvoice = await this.invoiceRepository.findOne({
+        where: { id: id },
+      });
+      if (!updatedInvoice) {
+        throw new Error(`Invoice with ID ${id} not found.`);
+      }
+    } catch (error) {
+      this.loggerService.error(
+        `InvoiceService: updateInvoice: Error updating invoice: ${error.message}`,
+        null,
+      );
+      throw new Error(`Failed to update invoice: ${error.message}`);
+    }
+    this.loggerService.log(`InvoiceService: updateInvoice: Success.`);
+    return updatedInvoice;
+  }
 }
