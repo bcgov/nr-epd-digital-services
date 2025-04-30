@@ -273,6 +273,7 @@ export type Mutation = {
   createPerson: PersonResponse;
   createPersonNote: PersonNoteResponse;
   deletePersonNote: PersonNoteResponse;
+  updateAppParticipant: UpdateAppParticipantsResponse;
   updateApplicationHousing: ApplicationHousingResponse;
   updatePerson: PersonResponse;
   updatePersonNote: PersonNoteResponse;
@@ -306,6 +307,11 @@ export type MutationCreatePersonNoteArgs = {
 
 export type MutationDeletePersonNoteArgs = {
   notes: Array<DeletePersonNote>;
+};
+
+
+export type MutationUpdateAppParticipantArgs = {
+  updateAppParticipant: UpdateAppParticipantDto;
 };
 
 
@@ -441,6 +447,22 @@ export type SearchPersonResponse = {
   page?: Maybe<Scalars['Float']['output']>;
   pageSize?: Maybe<Scalars['Float']['output']>;
   persons: Array<ViewPerson>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type UpdateAppParticipantDto = {
+  applicationId: Scalars['Float']['input'];
+  effectiveEndDate?: InputMaybe<Scalars['DateTime']['input']>;
+  effectiveStartDate: Scalars['DateTime']['input'];
+  id: Scalars['Float']['input'];
+};
+
+export type UpdateAppParticipantsResponse = {
+  __typename?: 'UpdateAppParticipantsResponse';
+  data?: Maybe<Array<ViewAppParticipantEntityDto>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
 };

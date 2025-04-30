@@ -15,6 +15,8 @@ import { DropdownDto, DropdownResponse } from '../../dto/dropdown.dto';
 import { CreateAppParticipantDto } from '../../dto/appParticipants/createAppParticipant.dto';
 import { CreateAppParticipantsResponse } from '../../dto/response/applicationParticipant/createAppParticipantResponse';
 import { ViewAppParticipantEntityDto } from '../../dto/appParticipants/viewAppParticipantEntity.dto';
+import { UpdateAppParticipantsResponse } from 'src/app/dto/response/applicationParticipant/updateAppParticipantResponse';
+import { UpdateAppParticipantDto } from 'src/app/dto/appParticipants/updateAppParticipant.dto';
 
 @Resolver(() => ViewAppParticipantsDto)
 @Resource('user-service')
@@ -25,8 +27,12 @@ export class AppParticipantResolver {
       ViewAppParticipantsDto[]
     >,
     private readonly createAppParticipantResponseProvider: GenericResponseProvider<
-    ViewAppParticipantEntityDto[]
-  >,
+      ViewAppParticipantEntityDto[]
+    >,
+
+    private readonly updateAppParticipantResponseProvider: GenericResponseProvider<
+      ViewAppParticipantEntityDto[]
+    >,
     private readonly loggerService: LoggerService,
     private readonly participantRolesResponseProvider: GenericResponseProvider<
       ViewParticipantsRolesDto[]
@@ -137,7 +143,8 @@ export class AppParticipantResolver {
   @Query(() => DropdownResponse, { name: 'getOrganizations' })
   @UsePipes(new GenericValidationPipe())
   async getOrganizations(
-    @Args('searchParamForOrg', { type: () => String }) searchParamForOrg: string,
+    @Args('searchParamForOrg', { type: () => String })
+    searchParamForOrg: string,
     @AuthenticatedUser() user: any,
   ) {
     const result = await this.appParticipantService.getOrganizations(
@@ -166,31 +173,75 @@ export class AppParticipantResolver {
     }
   }
 
-  @Mutation(() => CreateAppParticipantsResponse, { name: 'createAppParticipant' })
+  @Mutation(() => CreateAppParticipantsResponse, {
+    name: 'createAppParticipant',
+  })
   @UsePipes(new GenericValidationPipe())
   async createAppParticipant(
-      @Args('newAppParticipant', { type: () => CreateAppParticipantDto }) newAppParticipant: CreateAppParticipantDto,
-      @AuthenticatedUser() user: any
+    @Args('newAppParticipant', { type: () => CreateAppParticipantDto })
+    newAppParticipant: CreateAppParticipantDto,
+    @AuthenticatedUser() user: any,
   ) {
-      const result = await this.appParticipantService.createAppParticipant(newAppParticipant, user);
-      if (result) {
-          this.loggerService.log('AppParticipantResolver.createAppParticipant() RES:201 end');
-          return this.createAppParticipantResponseProvider.createResponse(
-              'App participant added successfully',
-              HttpStatus.CREATED,
-              true,
-              [result]
-          );
-      } 
-      else 
-      {
-          this.loggerService.log('PersonNoteResolver.createPersonNote() RES:400 end');
-          return this.genericResponseProvider.createResponse(
-              'Failed to add app participant',
-              HttpStatus.BAD_REQUEST,
-              false,
-              null
-          );
-      }
+    const result = await this.appParticipantService.createAppParticipant(
+      newAppParticipant,
+      user,
+    );
+    if (result) {
+      this.loggerService.log(
+        'AppParticipantResolver.createAppParticipant() RES:201 end',
+      );
+      return this.createAppParticipantResponseProvider.createResponse(
+        'App participant added successfully',
+        HttpStatus.CREATED,
+        true,
+        [result],
+      );
+    } else {
+      this.loggerService.log(
+        'AppParticipantResolver.createAppParticipant() RES:400 end',
+      );
+      return this.genericResponseProvider.createResponse(
+        'Failed to add app participant',
+        HttpStatus.BAD_REQUEST,
+        false,
+        null,
+      );
+    }
+  }
+
+  @Mutation(() => UpdateAppParticipantsResponse, {
+    name: 'updateAppParticipant',
+  })
+  @UsePipes(new GenericValidationPipe())
+  async updateAppParticipant(
+    @Args('updateAppParticipant', { type: () => UpdateAppParticipantDto })
+    updateAppParticipant: UpdateAppParticipantDto,
+    @AuthenticatedUser() user: any,
+  ) {
+    const result = await this.appParticipantService.updateAppParticipant(
+      updateAppParticipant,
+      user,
+    );
+    if (result) {
+      this.loggerService.log(
+        'AppParticipantResolver.updateAppParticipant() RES:201 end',
+      );
+      return this.updateAppParticipantResponseProvider.createResponse(
+        'App participant updated successfully',
+        HttpStatus.CREATED,
+        true,
+        [result],
+      );
+    } else {
+      this.loggerService.log(
+        'updateAppParticipant.updateAppParticipant() RES:400 end',
+      );
+      return this.genericResponseProvider.createResponse(
+        'Failed to update app participant',
+        HttpStatus.BAD_REQUEST,
+        false,
+        null,
+      );
+    }
   }
 }

@@ -11,6 +11,7 @@ import GetConfig, { getAppParticipantsFormFields } from './ParticipantsConfig';
 import {
   AppParticipantFilter,
   CreateAppParticipantDto,
+  UpdateAppParticipantDto,
 } from '../../../../../../generated/types';
 import {
   GetAppParticipantsByAppIdQuery,
@@ -18,6 +19,7 @@ import {
   useGetOrganizationsQuery,
   useGetParticipantNamesQuery,
   useGetParticipantRolesQuery,
+  useUpdateAppParticipantMutation,
 } from './graphql/Participants.generated';
 
 import ModalDialog from '../../../../../components/modaldialog/ModalDialog';
@@ -26,6 +28,10 @@ import Form from '../../../../../components/form/Form';
 import './ParticipantsTable.css';
 
 import { useParams } from 'react-router-dom';
+import { updateFields } from '../../../../../helpers/utility';
+import { g } from 'vitest/dist/chunks/suite.d.FvehnV49';
+import { is } from 'date-fns/locale';
+import { Update } from 'vite';
 
 export const AppParticipantsActionTypes = {
   AddParticipant: 'Add Participant',
@@ -84,6 +90,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
 
   const [searchParam, setSearchParam] = useState<string>('');
   const [searchParamForOrg, setSearchParamForOrg] = useState<string>('');
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const { data: rolesData } = useGetParticipantRolesQuery();
 
@@ -100,18 +107,24 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   const addAppParticipantsForm = getAppParticipantsFormFields({
     roles: {
       options: rolesData?.getAllParticipantRoles.data ?? [],
+      //isDisabled: AppParticipantsActionTypes.EditParticipant ? true : false,
+      
     },
     participant: {
       setSearchParam,
       options: participantNamesData?.getParticipantNames.data ?? [{key: editName?.id?.toString(), value: editName?.fullName}],
+      //setIsDisabled: isDisabled,
+      //isDisabled: AppParticipantsActionTypes.EditParticipant ? true : false,
     },
     organization: {
       setSearchParam: setSearchParamForOrg,
       options: orgNamesData?.getOrganizations.data as { key: string; value: string; }[] ?? [{key: editOrg?.id?.toString(), value: editOrg?.name}],
+      //isDisabled: AppParticipantsActionTypes.EditParticipant ? true : false,
     },
   });
 
   const initialAppParticipantDetails = {
+    id: '',
     isMainParticipant: false,
     effectiveStartDate: '',
     effectiveEndDate: '',
@@ -174,6 +187,23 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     });
   };
 
+  const [updateAppParticiant] = useUpdateAppParticipantMutation();
+  const handleUpdateAppParticipant = async (
+    updatedParticipant: UpdateAppParticipantDto,
+  ) => {
+    return updateAppParticiant({
+      variables: {
+        updateAppParticipant: updatedParticipant,
+      },
+      onCompleted: () => {
+        handleRefreshParticipants();
+      },
+      onError: (err) => {
+        console.error('Error updating participant:', err);
+      },
+    });
+  }
+
   const handleTableChange = (event: any) => {
     const appParticipantEditDetails = event.row;
     const appParticipantName = event.row.person as AppParticipantName;
@@ -181,11 +211,16 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     const appParticipantRole = event.row.participantRole as AppParticipantRole;
     
     if (event.property.includes('edit')) {
+      //setIsDisabled(true);
+      handleChangesForEdit('participantRole', {isDisabled: true});
+      handleChangesForEdit('person', {isDisabled: true});
+      handleChangesForEdit('organization', {isDisabled: true});
       setEditName(appParticipantName);
       setEditOrg(appParticipantOrganization);
       setAppParticipant({
         isAppParticipantModal: true,
         appParticipantDetails: {
+          id: appParticipantEditDetails.id,
           isMainParticipant: appParticipantEditDetails.isMainParticipant,
           effectiveStartDate: appParticipantEditDetails.effectiveStartDate,
           effectiveEndDate: appParticipantEditDetails.effectiveEndDate,
@@ -195,6 +230,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         },
         appParticipantActionType: AppParticipantsActionTypes.EditParticipant,
       });
+      console.log('nupur - updated appParticipant details', appParticipant);
     }
   };
 
@@ -218,12 +254,54 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         appParticipant.appParticipantDetails.effectiveEndDate ||
         null,
     }
+
+    const updatedAppParticipant = {
+      id: Number(appParticipant.appParticipantDetails.id),
+      applicationId: id ? Number(id) : 0,
+      effectiveStartDate:
+        appParticipant.appParticipantDetails.effectiveStartDate,
+      effectiveEndDate:
+        appParticipant.appParticipantDetails.effectiveEndDate
+    }
     if (appParticipant.appParticipantActionType === AppParticipantsActionTypes.AddParticipant && id) {
       handleAddAppParticipant(newAppParticipant);
     } else {
-      // Handle edit participant logic here
+      handleUpdateAppParticipant(updatedAppParticipant);
     }
   };
+
+  const handleChangesForEdit = (
+    graphQLPropertyName: any,
+    value: {},
+  ) => {
+    
+    console.log('nupur - handleChangesForEdit', graphQLPropertyName, value);
+      const indexToUpdate = addAppParticipantsForm.findIndex((row) =>
+        row.some((field) => field.graphQLPropertyName === graphQLPropertyName),
+      );
+      
+      console.log('nupur - indexToUpdate', indexToUpdate);
+      updateFields(addAppParticipantsForm, {
+        indexToUpdate,
+        updates: {
+          isDisabled: true
+        },
+      }),
+         
+      console.log('nupur - addAppParticipantsForm after update', addAppParticipantsForm);
+      setAppParticipant({
+        ...appParticipant,
+        appParticipantDetails: {
+          ...appParticipant.appParticipantDetails,
+          [graphQLPropertyName]: value,
+        },
+      });
+
+      console.log('nupur - appParticipant', appParticipant);
+      console.log('nupur - addAppParticipantsForm', addAppParticipantsForm);
+    //setFormData({ ...formData, [graphQLPropertyName]: value });
+  };
+
 
   return (
     <div className="widget-container">

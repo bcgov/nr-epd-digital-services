@@ -14,6 +14,7 @@ import { CreateAppParticipantDto } from '../../dto/appParticipants/createAppPart
 import { AppParticipantsResponse } from 'src/app/dto/response/applicationParticipant/appParticipantsResponse';
 import { ViewAppParticipantEntityDto } from '../../dto/appParticipants/viewAppParticipantEntity.dto';
 import { add } from 'winston';
+import { first, last } from 'rxjs';
 
 describe('AppParticipantResolver', () => {
   let resolver: AppParticipantResolver;
@@ -80,6 +81,21 @@ describe('AppParticipantResolver', () => {
         {
           id: 1,
           applicationId: 1,
+          organization: {
+            id: 1,
+            name: 'Organization',
+          },
+          person: {
+            id: 1,
+            firstName: 'John',
+            middleName: 'M',
+            lastName: 'Doe',
+            fullName: 'John M Doe',
+          },
+          participantRole: {
+            id: 1,
+            description: 'Participant',
+          },
           fullName: 'John Doe',
           firstName: 'John',
           lastName: 'Doe',

@@ -13,6 +13,9 @@ export class ViewAppParticipantsDto extends BaseAppParticipantsDto {
   @Field()
   applicationId: number;
 
+  @Field({defaultValue: false})
+  isMainParticipant: boolean;
+
   @Field()
   @IsString()
   firstName: string;
