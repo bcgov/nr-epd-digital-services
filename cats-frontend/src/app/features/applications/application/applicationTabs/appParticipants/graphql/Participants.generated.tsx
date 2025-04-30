@@ -9,7 +9,7 @@ export type GetAppParticipantsByAppIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetAppParticipantsByAppIdQuery = { __typename?: 'Query', getAppParticipantsByAppId: { __typename?: 'AppParticipantsResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewAppParticipantsDto', id: number, applicationId: number, isMainParticipant: boolean, name: string, fullName: string, description: string, effectiveStartDate: any, effectiveEndDate?: any | null, isMinistry: boolean }> | null } };
+export type GetAppParticipantsByAppIdQuery = { __typename?: 'Query', getAppParticipantsByAppId: { __typename?: 'AppParticipantsResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewAppParticipantsDto', id: number, applicationId: number, isMainParticipant: boolean, effectiveStartDate: any, effectiveEndDate?: any | null, isMinistry: boolean, organization?: { __typename?: 'ViewOrganizationsDto', id?: number | null, name: string } | null, person: { __typename?: 'ViewParticipantNamesDto', id: number, fullName: string }, participantRole: { __typename?: 'ViewParticipantsRolesDto', id: number, description: string } }> | null } };
 
 export type GetParticipantRolesQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
@@ -49,9 +49,18 @@ export const GetAppParticipantsByAppIdDocument = gql`
       id
       applicationId
       isMainParticipant
-      name
-      fullName
-      description
+      organization {
+        id
+        name
+      }
+      person {
+        id
+        fullName
+      }
+      participantRole {
+        id
+        description
+      }
       effectiveStartDate
       effectiveEndDate
       isMinistry

@@ -247,6 +247,24 @@ export type HousingTypeResponse = {
   data: Array<HousingTypeDto>;
 };
 
+export type InvoiceByApplicationIdDto = {
+  __typename?: 'InvoiceByApplicationIdDto';
+  dueDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  issuedDate: Scalars['DateTime']['output'];
+  status: Scalars['String']['output'];
+  totalInCents: Scalars['Int']['output'];
+};
+
+export type InvoicesByApplicationIdResponse = {
+  __typename?: 'InvoicesByApplicationIdResponse';
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  invoices?: Maybe<Array<InvoiceByApplicationIdDto>>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addHousingToApplication: ApplicationHousingResponse;
@@ -343,6 +361,7 @@ export type Query = {
   getApplicationDetailsById: ApplicationDetailsResponse;
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
   getHousingTypes: HousingTypeResponse;
+  getInvoicesByApplicationId: InvoicesByApplicationIdResponse;
   getOrganizations: DropdownResponse;
   getParticipantNames: DropdownResponse;
   getPersonNotesByPersonId: PersonNoteResponse;
@@ -369,6 +388,11 @@ export type QueryGetApplicationDetailsByIdArgs = {
 
 
 export type QueryGetApplicationHousingByApplicationIdArgs = {
+  applicationId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetInvoicesByApplicationIdArgs = {
   applicationId: Scalars['Int']['input'];
 };
 
@@ -493,6 +517,9 @@ export type ViewAppParticipantsDto = {
   isMinistry: Scalars['Boolean']['output'];
   lastName: Scalars['String']['output'];
   name: Scalars['String']['output'];
+  organization?: Maybe<ViewOrganizationsDto>;
+  participantRole: ViewParticipantsRolesDto;
+  person: ViewParticipantNamesDto;
   rowVersionCount?: Maybe<Scalars['Float']['output']>;
   updatedBy?: Maybe<Scalars['String']['output']>;
   updatedDateTime?: Maybe<Scalars['DateTime']['output']>;
@@ -523,6 +550,21 @@ export type ViewApplicationDetails = {
   siteId: Scalars['Float']['output'];
   siteType?: Maybe<DetailField>;
   submissionId?: Maybe<Scalars['String']['output']>;
+};
+
+export type ViewOrganizationsDto = {
+  __typename?: 'ViewOrganizationsDto';
+  id?: Maybe<Scalars['Float']['output']>;
+  name: Scalars['String']['output'];
+};
+
+export type ViewParticipantNamesDto = {
+  __typename?: 'ViewParticipantNamesDto';
+  firstName: Scalars['String']['output'];
+  fullName: Scalars['String']['output'];
+  id: Scalars['Float']['output'];
+  lastName: Scalars['String']['output'];
+  middleName?: Maybe<Scalars['String']['output']>;
 };
 
 export type ViewParticipantsRolesDto = {
