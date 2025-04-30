@@ -91,3 +91,27 @@ mutation createAppParticipant($newAppParticipant: CreateAppParticipantDto!) {
   }
 }
 
+mutation updateAppParticipant($updateAppParticipant: UpdateAppParticipantDto!) {
+  updateAppParticipant(updateAppParticipant: $updateAppParticipant) {
+    message
+    httpStatusCode
+    success
+    timestamp
+    data {
+      id
+      applicationId
+      personId
+      participantRoleId
+      organizationId
+      isMainParticipant
+      effectiveStartDate
+      effectiveEndDate
+      createdBy
+      createdDateTime
+      rowVersionCount
+      updatedBy
+      updatedDateTime
+    }
+  }
+}
+

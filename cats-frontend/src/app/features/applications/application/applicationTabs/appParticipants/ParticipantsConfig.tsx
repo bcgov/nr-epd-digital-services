@@ -1,3 +1,4 @@
+import { is } from 'date-fns/locale';
 import { PencilIcon, TickIcon } from '../../../../../components/common/icon';
 import {
   FormFieldType,
@@ -19,6 +20,7 @@ const participantRoleField = (
 ): IFormField => ({
   type: FormFieldType.DropDown,
   label: 'Role',
+  isDisabled: false,
   options:
     options?.map((role) => ({
       key: role.id.toString(),
@@ -41,6 +43,7 @@ const participantNameField = ({
   options: GetParticipantNamesQuery['getParticipantNames']['data'];
 }): IFormField => ({
   label: 'Person',
+  isDisabled: false,
   graphQLPropertyName: 'person',
   placeholder: 'Search by name',
   isLoading: RequestStatus.idle,
@@ -52,7 +55,7 @@ const participantNameField = ({
   handleSearch: setSearchParam,
   colSize: 'col-lg-12 col-md-12 col-sm-12',
   customMenuMessage: <span>Please select participant name:</span>,
-  tableMode: true,
+  //tableMode: true,
   validation: {
     required: true,
     customMessage: 'Participant Name is required.',
@@ -68,6 +71,7 @@ const participantOrganizationField = ({
 }): IFormField => ({
   type: FormFieldType.DropDownWithSearch,
   label: 'Organization',
+  isDisabled: false,
   graphQLPropertyName: 'organization',
   value: '',
   isLoading: RequestStatus.idle,
@@ -75,7 +79,7 @@ const participantOrganizationField = ({
   filteredOptions: options ?? [],
   options: options ?? [],
   handleSearch: setSearchParam,
-  tableMode: true,
+  //tableMode: true,
   customMenuMessage: <span>Please select organization name:</span>,
   colSize: 'col-lg-12 col-md-12 col-sm-12',
 });
@@ -136,18 +140,19 @@ const appParticipantsForm: { [key: string]: IFormField } = {
     colSize: 'col-lg-6 col-md-6 col-sm-12',
     isDisabled: false,
   },
-  role: {
-    type: FormFieldType.DropDown,
-    label: 'Role',
-    options: [],
-    graphQLPropertyName: 'participantRole',
-    value: '',
-    colSize: 'col-lg-12 col-md-12 col-sm-12',
-    validation: {
-      required: true,
-      customMessage: 'Role is required.',
-    },
-  },
+  // role: {
+  //   type: FormFieldType.DropDown,
+  //   label: 'Role',
+  //   options: [],
+  //   graphQLPropertyName: 'participantRole',
+  //   isDisabled: false,
+  //   value: '',
+  //   colSize: 'col-lg-12 col-md-12 col-sm-12',
+  //   validation: {
+  //     required: true,
+  //     customMessage: 'Role is required.',
+  //   },
+  // },
 };
 
 export const GetConfig = () => {
