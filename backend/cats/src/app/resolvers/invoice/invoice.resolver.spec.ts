@@ -19,6 +19,7 @@ describe('InvoiceResolver', () => {
           useValue: {
             getInvoicesByApplicationId: jest.fn(),
             updateInvoice: jest.fn(),
+            deleteInvoice: jest.fn(),
           },
         },
         {
@@ -221,6 +222,38 @@ describe('InvoiceResolver', () => {
       expect(result.httpStatusCode).toBe(500);
       expect(result.message).toBe(
         'An error occurred while updating the invoice.',
+      );
+    });
+  });
+
+  describe('deleteInvoice', () => {
+    it('should delete an invoice successfully', async () => {
+      jest.spyOn(invoiceService, 'deleteInvoice').mockResolvedValue(undefined);
+
+      const invoiceId = 1;
+      const result = await resolver.deleteInvoice(invoiceId);
+
+      expect(invoiceService.deleteInvoice).toHaveBeenCalledWith(invoiceId);
+      expect(result.success).toBe(true);
+      expect(result.httpStatusCode).toBe(200);
+      expect(result.message).toBe('Invoice deleted successfully.');
+    });
+
+    it('should handle errors when delete fails', async () => {
+      jest
+        .spyOn(invoiceService, 'deleteInvoice')
+        .mockRejectedValue(new Error('Service error'));
+
+      const invoiceId = 1;
+      const user = { id: 'test-user' };
+      const result = await resolver.deleteInvoice(invoiceId);
+
+      expect(invoiceService.deleteInvoice).toHaveBeenCalledWith(invoiceId);
+      expect(loggerService.error).toHaveBeenCalled();
+      expect(result.success).toBe(false);
+      expect(result.httpStatusCode).toBe(500);
+      expect(result.message).toBe(
+        'An error occurred while deleting the invoice.',
       );
     });
   });
