@@ -31,6 +31,7 @@ import Form from '../../../../../components/form/Form';
 import './ParticipantsTable.css';
 
 import { useParams } from 'react-router-dom';
+import App from '../../../../../../App';
 
 export const AppParticipantsActionTypes = {
   AddParticipant: 'Add Participant',
@@ -329,15 +330,16 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
               appParticipant.appParticipantDetails.effectiveStartDate === ''
             }
             closeHandler={(response) => {
-              if (!response) {
-                setAppParticipant({
-                  isAppParticipantModal: false,
-                  appParticipantDetails: initialAppParticipantDetails,
-                  appParticipantActionType:
-                    AppParticipantsActionTypes.ViewAppParticipants,
-                });
+              if (response) {
+                saveApplicationParticipantHandler();
               }
-              saveApplicationParticipantHandler();
+              setActionType(AppParticipantsActionTypes.ViewAppParticipants);
+              setAppParticipant({
+                isAppParticipantModal: false,
+                appParticipantDetails: initialAppParticipantDetails,
+                appParticipantActionType: actionType
+              });
+
             }}
           >
             <Form
