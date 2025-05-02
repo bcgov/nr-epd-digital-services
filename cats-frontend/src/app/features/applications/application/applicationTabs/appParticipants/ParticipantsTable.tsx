@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { act, useCallback, useEffect, useState } from 'react';
 import { TableColumn } from '../../../../../components/table/TableColumn';
 import { UserType } from '../../../../../helpers/requests/userType';
 import { RequestStatus } from '../../../../../helpers/requests/status';
@@ -7,7 +7,10 @@ import Widget from '../../../../../components/widget/Widget';
 import { Button } from '../../../../../components/button/Button';
 import { Plus } from '../../../../../components/common/icon';
 import { AppParticipantsTableControls } from './AppParticipantsTableControls';
-import GetConfig, { getAppParticipantsFormFields } from './ParticipantsConfig';
+import GetConfig, {
+  getAppParticipantsFormFields,
+  getEditAppParticipantsFormFields,
+} from './ParticipantsConfig';
 import {
   AppParticipantFilter,
   CreateAppParticipantDto,
@@ -28,18 +31,14 @@ import Form from '../../../../../components/form/Form';
 import './ParticipantsTable.css';
 
 import { useParams } from 'react-router-dom';
-import { updateFields } from '../../../../../helpers/utility';
-import { g } from 'vitest/dist/chunks/suite.d.FvehnV49';
-import { is } from 'date-fns/locale';
-import { Update } from 'vite';
 
 export const AppParticipantsActionTypes = {
   AddParticipant: 'Add Participant',
   EditParticipant: 'Edit Participant',
   ViewAppParticipants: 'View AppParticipants',
 };
+
 interface IParticipantTableProps {
-  //handleTableChange: (event: any) => void;
   internalRow: TableColumn[];
   userType: UserType;
   appParticsData: GetAppParticipantsByAppIdQuery['getAppParticipantsByAppId']['data'];
@@ -58,7 +57,6 @@ interface IParticipantTableProps {
 }
 
 const ParticipantTable: React.FC<IParticipantTableProps> = ({
-  //handleTableChange,
   internalRow,
   userType,
   appParticsData,
@@ -76,8 +74,14 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   handleRefreshParticipants,
 }) => {
   const id = useParams().id;
-  const [editName, setEditName] = useState<AppParticipantName>({id: 0, fullName: ''} as AppParticipantName);
-  const [editOrg, setEditOrg] = useState<AppParticipantOrganization>({id: 0, name: ''} as AppParticipantOrganization);
+  const [editName, setEditName] = useState<AppParticipantName>({
+    id: 0,
+    fullName: '',
+  } as AppParticipantName);
+  const [editOrg, setEditOrg] = useState<AppParticipantOrganization>({
+    id: 0,
+    name: '',
+  } as AppParticipantOrganization);
 
   const [filterOption, setFilterOption] = useState<AppParticipantFilter>(
     AppParticipantFilter.All,
@@ -90,7 +94,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
 
   const [searchParam, setSearchParam] = useState<string>('');
   const [searchParamForOrg, setSearchParamForOrg] = useState<string>('');
-  const [isDisabled, setIsDisabled] = useState(false);
 
   const { data: rolesData } = useGetParticipantRolesQuery();
 
@@ -104,22 +107,36 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     skip: !searchParamForOrg.trim(),
   });
 
+  const [actionType, setActionType] = useState(
+    AppParticipantsActionTypes.ViewAppParticipants,
+  );
+
   const addAppParticipantsForm = getAppParticipantsFormFields({
     roles: {
       options: rolesData?.getAllParticipantRoles.data ?? [],
-      //isDisabled: AppParticipantsActionTypes.EditParticipant ? true : false,
-      
     },
     participant: {
       setSearchParam,
-      options: participantNamesData?.getParticipantNames.data ?? [{key: editName?.id?.toString(), value: editName?.fullName}],
-      //setIsDisabled: isDisabled,
-      //isDisabled: AppParticipantsActionTypes.EditParticipant ? true : false,
+      options: participantNamesData?.getParticipantNames.data,
     },
     organization: {
       setSearchParam: setSearchParamForOrg,
-      options: orgNamesData?.getOrganizations.data as { key: string; value: string; }[] ?? [{key: editOrg?.id?.toString(), value: editOrg?.name}],
-      //isDisabled: AppParticipantsActionTypes.EditParticipant ? true : false,
+      options: orgNamesData?.getOrganizations.data,
+    },
+  });
+
+  const editAppParticipantsForm = getEditAppParticipantsFormFields({
+    roles: {
+      options: rolesData?.getAllParticipantRoles.data ?? [],
+    },
+    participant: {
+      options: [{ key: editName?.id?.toString(), value: editName?.fullName }],
+    },
+    organization: {
+      options: [{ key: editOrg?.id?.toString(), value: editOrg?.name }] as {
+        key: string;
+        value: string;
+      }[],
     },
   });
 
@@ -136,19 +153,22 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   const [appParticipant, setAppParticipant] = useState({
     isAppParticipantModal: false,
     appParticipantDetails: initialAppParticipantDetails,
-    appParticipantActionType: AppParticipantsActionTypes.ViewAppParticipants,
+    appParticipantActionType: actionType,
   });
- 
-  type AppParticipantData = NonNullable<GetAppParticipantsByAppIdQuery['getAppParticipantsByAppId']['data']>;
+
+  type AppParticipantData = NonNullable<
+    GetAppParticipantsByAppIdQuery['getAppParticipantsByAppId']['data']
+  >;
   type AppParticipantName = AppParticipantData[number]['person'];
   type AppParticipantOrganization = AppParticipantData[number]['organization'];
   type AppParticipantRole = AppParticipantData[number]['participantRole'];
 
   handleAddParticipant = () => {
+    setActionType(AppParticipantsActionTypes.AddParticipant);
     setAppParticipant({
       isAppParticipantModal: true,
       appParticipantDetails: initialAppParticipantDetails,
-      appParticipantActionType: AppParticipantsActionTypes.AddParticipant,
+      appParticipantActionType: actionType,
     });
   };
 
@@ -189,11 +209,11 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
 
   const [updateAppParticiant] = useUpdateAppParticipantMutation();
   const handleUpdateAppParticipant = async (
-    updatedParticipant: UpdateAppParticipantDto,
+    updateParticipant: UpdateAppParticipantDto,
   ) => {
     return updateAppParticiant({
       variables: {
-        updateAppParticipant: updatedParticipant,
+        updateAppParticipant: updateParticipant,
       },
       onCompleted: () => {
         handleRefreshParticipants();
@@ -202,21 +222,20 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         console.error('Error updating participant:', err);
       },
     });
-  }
+  };
 
   const handleTableChange = (event: any) => {
+    setActionType(AppParticipantsActionTypes.EditParticipant);
     const appParticipantEditDetails = event.row;
     const appParticipantName = event.row.person as AppParticipantName;
-    const appParticipantOrganization = event.row.organization as AppParticipantOrganization;
+    const appParticipantOrganization = event.row
+      .organization as AppParticipantOrganization;
     const appParticipantRole = event.row.participantRole as AppParticipantRole;
-    
+
     if (event.property.includes('edit')) {
-      //setIsDisabled(true);
-      handleChangesForEdit('participantRole', {isDisabled: true});
-      handleChangesForEdit('person', {isDisabled: true});
-      handleChangesForEdit('organization', {isDisabled: true});
       setEditName(appParticipantName);
       setEditOrg(appParticipantOrganization);
+
       setAppParticipant({
         isAppParticipantModal: true,
         appParticipantDetails: {
@@ -228,80 +247,42 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
           person: appParticipantName.id.toString(),
           organization: appParticipantOrganization?.id?.toString() ?? '',
         },
-        appParticipantActionType: AppParticipantsActionTypes.EditParticipant,
+        appParticipantActionType: actionType,
       });
-      console.log('nupur - updated appParticipant details', appParticipant);
     }
   };
 
   const saveApplicationParticipantHandler = () => {
-    const newAppParticipant = {
+    const input = {
       applicationId: id ? Number(id) : 0,
-      isMainParticipant:
-        appParticipant.appParticipantDetails.isMainParticipant,
-      personId: parseFloat(
-        appParticipant.appParticipantDetails.person,
-      ),
+      effectiveStartDate:
+        appParticipant.appParticipantDetails.effectiveStartDate,
+      effectiveEndDate:
+        appParticipant.appParticipantDetails.effectiveEndDate || null,
+    };
+
+    const newAppParticipant = {
+      isMainParticipant: appParticipant.appParticipantDetails.isMainParticipant,
+      personId: parseFloat(appParticipant.appParticipantDetails.person),
       organizationId: parseFloat(
         appParticipant.appParticipantDetails.organization,
       ),
       participantRoleId: parseFloat(
         appParticipant.appParticipantDetails.participantRole,
       ),
-      effectiveStartDate:
-        appParticipant.appParticipantDetails.effectiveStartDate,
-      effectiveEndDate:
-        appParticipant.appParticipantDetails.effectiveEndDate ||
-        null,
-    }
+      ...input,
+    };
 
-    const updatedAppParticipant = {
+    const updateAppParticipant = {
       id: Number(appParticipant.appParticipantDetails.id),
-      applicationId: id ? Number(id) : 0,
-      effectiveStartDate:
-        appParticipant.appParticipantDetails.effectiveStartDate,
-      effectiveEndDate:
-        appParticipant.appParticipantDetails.effectiveEndDate
-    }
-    if (appParticipant.appParticipantActionType === AppParticipantsActionTypes.AddParticipant && id) {
+      ...input,
+    };
+    if (actionType === AppParticipantsActionTypes.AddParticipant && id) {
       handleAddAppParticipant(newAppParticipant);
     } else {
-      handleUpdateAppParticipant(updatedAppParticipant);
+      handleUpdateAppParticipant(updateAppParticipant);
     }
   };
-
-  const handleChangesForEdit = (
-    graphQLPropertyName: any,
-    value: {},
-  ) => {
-    
-    console.log('nupur - handleChangesForEdit', graphQLPropertyName, value);
-      const indexToUpdate = addAppParticipantsForm.findIndex((row) =>
-        row.some((field) => field.graphQLPropertyName === graphQLPropertyName),
-      );
-      
-      console.log('nupur - indexToUpdate', indexToUpdate);
-      updateFields(addAppParticipantsForm, {
-        indexToUpdate,
-        updates: {
-          isDisabled: true
-        },
-      }),
-         
-      console.log('nupur - addAppParticipantsForm after update', addAppParticipantsForm);
-      setAppParticipant({
-        ...appParticipant,
-        appParticipantDetails: {
-          ...appParticipant.appParticipantDetails,
-          [graphQLPropertyName]: value,
-        },
-      });
-
-      console.log('nupur - appParticipant', appParticipant);
-      console.log('nupur - addAppParticipantsForm', addAppParticipantsForm);
-    //setFormData({ ...formData, [graphQLPropertyName]: value });
-  };
-
 
   return (
     <div className="widget-container">
@@ -341,7 +322,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         )}
         {appParticipant.isAppParticipantModal && (
           <ModalDialog
-            headerLabel={appParticipant.appParticipantActionType}
+            headerLabel={actionType}
             saveButtonDisabled={
               appParticipant.appParticipantDetails.person === '' ||
               appParticipant.appParticipantDetails.participantRole === '' ||
@@ -355,12 +336,16 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
                   appParticipantActionType:
                     AppParticipantsActionTypes.ViewAppParticipants,
                 });
-              } 
+              }
               saveApplicationParticipantHandler();
             }}
           >
             <Form
-              formRows={addAppParticipantsForm}
+              formRows={
+                actionType === AppParticipantsActionTypes.EditParticipant
+                  ? editAppParticipantsForm
+                  : addAppParticipantsForm
+              }
               formData={appParticipant?.appParticipantDetails ?? {}}
               handleInputChange={(graphQLPropertyName, value) =>
                 handleFormChange(graphQLPropertyName, value)

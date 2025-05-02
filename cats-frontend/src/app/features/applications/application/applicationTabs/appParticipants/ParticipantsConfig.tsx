@@ -55,7 +55,6 @@ const participantNameField = ({
   handleSearch: setSearchParam,
   colSize: 'col-lg-12 col-md-12 col-sm-12',
   customMenuMessage: <span>Please select participant name:</span>,
-  //tableMode: true,
   validation: {
     required: true,
     customMessage: 'Participant Name is required.',
@@ -79,7 +78,6 @@ const participantOrganizationField = ({
   filteredOptions: options ?? [],
   options: options ?? [],
   handleSearch: setSearchParam,
-  //tableMode: true,
   customMenuMessage: <span>Please select organization name:</span>,
   colSize: 'col-lg-12 col-md-12 col-sm-12',
 });
@@ -140,20 +138,87 @@ const appParticipantsForm: { [key: string]: IFormField } = {
     colSize: 'col-lg-6 col-md-6 col-sm-12',
     isDisabled: false,
   },
-  // role: {
-  //   type: FormFieldType.DropDown,
-  //   label: 'Role',
-  //   options: [],
-  //   graphQLPropertyName: 'participantRole',
-  //   isDisabled: false,
-  //   value: '',
-  //   colSize: 'col-lg-12 col-md-12 col-sm-12',
-  //   validation: {
-  //     required: true,
-  //     customMessage: 'Role is required.',
-  //   },
-  // },
 };
+
+const editParticipantRoleField = (
+  options: GetParticipantRolesQuery['getAllParticipantRoles']['data'],
+): IFormField => ({
+  type: FormFieldType.DropDown,
+  label: 'Role',
+  isDisabled: true,
+  options:
+    options?.map((role) => ({
+      key: role.id.toString(),
+      value: role.description,
+    })) ?? [],
+  graphQLPropertyName: 'participantRole',
+  value: '',
+  colSize: 'col-lg-12 col-md-12 col-sm-12',
+});
+
+const editParticipantNameField = ({
+  options,
+}: {
+  options: GetParticipantNamesQuery['getParticipantNames']['data'];
+}): IFormField => ({
+  label: 'Person',
+  isDisabled: true,
+  graphQLPropertyName: 'person',
+  isLoading: RequestStatus.idle,
+  type: FormFieldType.DropDownWithSearch,
+  isLabel: false,
+  value: '',
+  filteredOptions: options ?? [],
+  options: options ?? [],
+  colSize: 'col-lg-12 col-md-12 col-sm-12',
+});
+
+const editParticipantOrganizationField = ({
+  options,
+}: {
+  options: GetOrganizationsQuery['getOrganizations']['data'];
+}): IFormField => ({
+  type: FormFieldType.DropDownWithSearch,
+  label: 'Organization',
+  isDisabled: true,
+  graphQLPropertyName: 'organization',
+  value: '',
+  isLoading: RequestStatus.idle,
+  filteredOptions: options ?? [],
+  options: options ?? [],
+  colSize: 'col-lg-12 col-md-12 col-sm-12',
+});
+
+const isMainParticipantFieldForEdit: IFormField = {
+  type: FormFieldType.Switch,
+  label: 'Main Participant',
+  graphQLPropertyName: 'isMainParticipant',
+  value: false,
+  isDisabled: true,
+  colSize: 'col-lg-12 col-md-12 col-sm-12',
+};
+
+export const getEditAppParticipantsFormFields = ({
+  roles,
+  participant,
+  organization,
+}: {
+  roles: {
+    options: GetParticipantRolesQuery['getAllParticipantRoles']['data'];
+  };
+  participant: {
+    options: GetParticipantNamesQuery['getParticipantNames']['data'];
+  };
+  organization: {
+    options: GetOrganizationsQuery['getOrganizations']['data'];
+  };
+}): IFormField[][] => [
+  [isMainParticipantFieldForEdit],
+  [appParticipantsForm.startDate, appParticipantsForm.endDate],
+  [editParticipantRoleField(roles.options)],
+  [editParticipantNameField(participant)],
+  [editParticipantOrganizationField(organization)],
+];
 
 export const GetConfig = () => {
   const participantColumnInternal: TableColumn[] = [
