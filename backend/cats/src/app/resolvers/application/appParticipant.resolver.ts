@@ -15,8 +15,8 @@ import { DropdownDto, DropdownResponse } from '../../dto/dropdown.dto';
 import { CreateAppParticipantDto } from '../../dto/appParticipants/createAppParticipant.dto';
 import { CreateAppParticipantsResponse } from '../../dto/response/applicationParticipant/createAppParticipantResponse';
 import { ViewAppParticipantEntityDto } from '../../dto/appParticipants/viewAppParticipantEntity.dto';
-import { UpdateAppParticipantsResponse } from 'src/app/dto/response/applicationParticipant/updateAppParticipantResponse';
-import { UpdateAppParticipantDto } from 'src/app/dto/appParticipants/updateAppParticipant.dto';
+import { UpdateAppParticipantsResponse } from '../../dto/response/applicationParticipant/updateAppParticipantResponse';
+import { UpdateAppParticipantDto } from '../../dto/appParticipants/updateAppParticipant.dto';
 
 @Resolver(() => ViewAppParticipantsDto)
 @Resource('user-service')

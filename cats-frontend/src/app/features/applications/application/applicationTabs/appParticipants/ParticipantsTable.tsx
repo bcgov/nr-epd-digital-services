@@ -337,9 +337,8 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
               setAppParticipant({
                 isAppParticipantModal: false,
                 appParticipantDetails: initialAppParticipantDetails,
-                appParticipantActionType: actionType
+                appParticipantActionType: actionType,
               });
-
             }}
           >
             <Form

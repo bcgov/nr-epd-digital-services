@@ -16,11 +16,7 @@ import { ParticipantRole } from '../../entities/participantRole.entity';
 import { Organization } from '../../entities/organization.entity';
 import { ViewParticipantsRolesDto } from '../../dto/appParticipants/viewParticipantsRoles.dto';
 import { Person } from '../../entities/person.entity';
-import { ViewOrganizationsDto } from 'src/app/dto/appParticipants/viewOrganization.dto';
 import { DropdownDto } from 'src/app/dto/dropdown.dto';
-import { add } from 'winston';
-import exp from 'constants';
-import { ViewAppParticipantEntityDto } from 'src/app/dto/appParticipants/viewAppParticipantEntity.dto';
 
 
 describe('AppParticipantsService', () => {
@@ -28,7 +24,6 @@ describe('AppParticipantsService', () => {
   let appParticsRepo: Repository<AppParticipant>;
   let rolesRepo: Repository<ParticipantRole>;
   let orgRepo: Repository<Organization>;
-  let personRepo: Repository<Person>;
   let loggerService: LoggerService;
 
   beforeEach(async () => {
@@ -240,4 +235,54 @@ describe('AppParticipantsService', () => {
     
     });
   });
-});
+
+  describe('updateAppParticipant', () => {
+    it('should update a participant successfully', async () => {
+      const input = {
+        id: 1,
+        applicationId: 1,
+        effectiveStartDate: new Date('2021-01-01'),
+        effectiveEndDate: new Date('2021-12-31'),
+      };
+
+      const user = {
+        identity_provider: 'idir',
+        givenName: 'TestUser',
+      };
+  
+      const updatedParticipant = {
+        id: 1,
+        applicationId: 1,
+        personId: 2,
+        participantRoleId: 3,
+        organizationId: 4,
+        isMainParticipant: true,
+        effectiveStartDate: new Date('2021-01-01'),
+        effectiveEndDate: new Date('2021-12-31'),
+        createdBy: 'TestUser',
+        createdDateTime: new Date('2025-02-05T18:43:03.244Z'),
+        rowVersionCount: null,
+        updatedBy: 'TestUser',
+        updatedDateTime: new Date('2025-02-05T18:43:03.244Z'),
+      }
+
+      const expectedResponse = {
+        message: 'App Participant updated successfully with ID: 1',
+        httpStatusCode: HttpStatus.CREATED,
+        success: true,
+        timestamp: new Date(),
+        data: [updatedParticipant],
+      }
+      jest.spyOn(appParticsRepo, 'save').mockResolvedValue(updatedParticipant as any);
+
+      jest
+        .spyOn(appParticsRepo, 'findOne')
+        .mockResolvedValue([updatedParticipant] as any);
+  
+      const result = await service.updateAppParticipant(input, user);
+      expect(result).toBeDefined();
+    });
+    });
+  });
+  
+
