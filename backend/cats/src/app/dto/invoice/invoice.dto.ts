@@ -80,7 +80,7 @@ export class InvoiceDto {
 }
 
 @InputType()
-export class InvoiceCreateDto {
+export class InvoiceInputDto {
   @Field(() => Int)
   applicationId: number;
 
