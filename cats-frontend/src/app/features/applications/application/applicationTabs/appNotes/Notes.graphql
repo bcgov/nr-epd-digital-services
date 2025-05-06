@@ -1,0 +1,14 @@
+query getApplicationNotesByApplicationId($applicationId: Int!) {
+  getApplicationNotesByApplicationId(applicationId: $applicationId) {
+    data {
+      id
+      applicationId
+      noteDate
+      noteText
+      createdBy
+      createdDateTime
+      updatedBy
+      updatedDateTime
+    }
+  }
+}

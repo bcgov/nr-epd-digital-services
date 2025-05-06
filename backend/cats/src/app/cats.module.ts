@@ -71,7 +71,8 @@ import { InvoiceV2 } from './entities/invoiceV2.entity';
 import { InvoiceLineItem } from './entities/invoiceLineItem.entity';
 import { InvoiceResolver } from './resolvers/invoice/invoice.resolver';
 import { InvoiceService } from './services/invoice/invoice.service';
-
+import { ApplicationNotesResolver } from './resolvers/application/applicationNotes.resolver';
+import { ApplicationNotesService } from './services/application/applicationNotes.service';
 /**
  * Module for wrapping all functionalities in user microserivce
  */
@@ -151,6 +152,8 @@ import { InvoiceService } from './services/invoice/invoice.service';
     SiteService,
     InvoiceResolver,
     InvoiceService,
+    ApplicationNotesResolver,
+    ApplicationNotesService,
   ],
   controllers: [UserController],
 })

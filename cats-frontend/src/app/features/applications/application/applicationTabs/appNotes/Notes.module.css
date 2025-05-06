@@ -1,0 +1,12 @@
+.editNoteButton {
+  display: flex;
+  align-items: center;
+  gap: var(--layout-padding-small);
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  justify-content: center;
+  color: var(--theme-primary-blue);
+}
