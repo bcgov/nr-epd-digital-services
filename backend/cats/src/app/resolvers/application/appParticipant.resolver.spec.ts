@@ -11,9 +11,7 @@ import { get } from 'http';
 import { DropdownDto, DropdownResponse } from '../../dto/dropdown.dto';
 import { Person } from 'src/app/entities/person.entity';
 import { CreateAppParticipantDto } from '../../dto/appParticipants/createAppParticipant.dto';
-import { AppParticipantsResponse } from 'src/app/dto/response/applicationParticipant/appParticipantsResponse';
 import { ViewAppParticipantEntityDto } from '../../dto/appParticipants/viewAppParticipantEntity.dto';
-import { add } from 'winston';
 
 describe('AppParticipantResolver', () => {
   let resolver: AppParticipantResolver;
@@ -35,6 +33,7 @@ describe('AppParticipantResolver', () => {
             getParticipantNames: jest.fn(), 
             getOrganizations: jest.fn(),
             createAppParticipant: jest.fn(),
+            updateAppParticipant: jest.fn(),
           },
         },
         {
@@ -80,6 +79,21 @@ describe('AppParticipantResolver', () => {
         {
           id: 1,
           applicationId: 1,
+          organization: {
+            id: 1,
+            name: 'Organization',
+          },
+          person: {
+            id: 1,
+            firstName: 'John',
+            middleName: 'M',
+            lastName: 'Doe',
+            fullName: 'John M Doe',
+          },
+          participantRole: {
+            id: 1,
+            description: 'Participant',
+          },
           fullName: 'John Doe',
           firstName: 'John',
           lastName: 'Doe',
@@ -261,5 +275,55 @@ describe('AppParticipantResolver', () => {
       const result = await resolver.createAppParticipant(input, { identity_provider: 'IDIR' });
     });
   });
+
+  describe('updateAppParticipant', () => {
+    it('should update a participant successfully', async () => {
+      const input = {
+        id: 1,
+        applicationId: 1,
+        effectiveStartDate: new Date('2021-01-01'),
+        effectiveEndDate: new Date('2021-12-31'),
+      };
+
+      const user = {
+        identity_provider: 'idir',
+        givenName: 'TestUser',
+      };
+  
+      const updatedParticipant = {
+        id: 1,
+        applicationId: 1,
+        personId: 2,
+        participantRoleId: 3,
+        organizationId: 4,
+        isMainParticipant: true,
+        effectiveStartDate: new Date('2021-01-01'),
+        effectiveEndDate: new Date('2021-12-31'),
+        createdBy: 'TestUser',
+        createdDateTime: new Date('2025-02-05T18:43:03.244Z'),
+        rowVersionCount: null,
+        updatedBy: 'TestUser',
+        updatedDateTime: new Date('2025-02-05T18:43:03.244Z'),
+      }
+
+      const expectedResponse = {
+        message: 'App Participant updated successfully with ID: 1',
+        httpStatusCode: HttpStatus.CREATED,
+        success: true,
+        timestamp: new Date(),
+        data: [updatedParticipant],
+      }
+      jest.spyOn(appParticipantService, 'updateAppParticipant').mockResolvedValue(updatedParticipant as any);
+
+      (genericResponseProviderEntity.createResponse as jest.Mock).mockReturnValue(
+        expectedResponse,
+      );
+  
+      const result = await resolver.updateAppParticipant(input, user);
+      expect(result).toBeDefined();
+      expect(appParticipantService.updateAppParticipant).toHaveBeenCalledWith(input, user);
+      expect(loggerService.log).toHaveBeenCalledWith('AppParticipantResolver.updateAppParticipant() RES:201 end');
+    });
+    });
 
 });

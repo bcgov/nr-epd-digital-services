@@ -273,6 +273,7 @@ export type Mutation = {
   createPerson: PersonResponse;
   createPersonNote: PersonNoteResponse;
   deletePersonNote: PersonNoteResponse;
+  updateAppParticipant: UpdateAppParticipantsResponse;
   updateApplicationHousing: ApplicationHousingResponse;
   updatePerson: PersonResponse;
   updatePersonNote: PersonNoteResponse;
@@ -306,6 +307,11 @@ export type MutationCreatePersonNoteArgs = {
 
 export type MutationDeletePersonNoteArgs = {
   notes: Array<DeletePersonNote>;
+};
+
+
+export type MutationUpdateAppParticipantArgs = {
+  updateAppParticipant: UpdateAppParticipantDto;
 };
 
 
@@ -478,6 +484,22 @@ export type SiteDetailsResponse = {
   data?: Maybe<SiteDetailsDto>;
 };
 
+export type UpdateAppParticipantDto = {
+  applicationId: Scalars['Float']['input'];
+  effectiveEndDate?: InputMaybe<Scalars['DateTime']['input']>;
+  effectiveStartDate: Scalars['DateTime']['input'];
+  id: Scalars['Float']['input'];
+};
+
+export type UpdateAppParticipantsResponse = {
+  __typename?: 'UpdateAppParticipantsResponse';
+  data?: Maybe<Array<ViewAppParticipantEntityDto>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type UpdateHousingInputDto = {
   applicationHousingId: Scalars['Int']['input'];
   effectiveDate?: InputMaybe<Scalars['DateTime']['input']>;
@@ -550,6 +572,9 @@ export type ViewAppParticipantsDto = {
   isMinistry: Scalars['Boolean']['output'];
   lastName: Scalars['String']['output'];
   name: Scalars['String']['output'];
+  organization?: Maybe<ViewOrganizationsDto>;
+  participantRole: ViewParticipantsRolesDto;
+  person: ViewParticipantNamesDto;
   rowVersionCount?: Maybe<Scalars['Float']['output']>;
   updatedBy?: Maybe<Scalars['String']['output']>;
   updatedDateTime?: Maybe<Scalars['DateTime']['output']>;
@@ -580,6 +605,21 @@ export type ViewApplicationDetails = {
   siteId: Scalars['Float']['output'];
   siteType?: Maybe<DetailField>;
   submissionId?: Maybe<Scalars['String']['output']>;
+};
+
+export type ViewOrganizationsDto = {
+  __typename?: 'ViewOrganizationsDto';
+  id?: Maybe<Scalars['Float']['output']>;
+  name: Scalars['String']['output'];
+};
+
+export type ViewParticipantNamesDto = {
+  __typename?: 'ViewParticipantNamesDto';
+  firstName: Scalars['String']['output'];
+  fullName: Scalars['String']['output'];
+  id: Scalars['Float']['output'];
+  lastName: Scalars['String']['output'];
+  middleName?: Maybe<Scalars['String']['output']>;
 };
 
 export type ViewParticipantsRolesDto = {
