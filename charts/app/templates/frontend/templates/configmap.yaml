@@ -12,15 +12,22 @@ metadata:
   labels:
     {{- include "frontend.labels" . | nindent 4 }}
 data:
-  REACT_APP_BACKEND_API: {{ .Values.frontend.config.REACT_APP_BACKEND_API | default $REACT_APP_BACKEND_API | quote }}
-  REACT_APP_AUTH_AUTHORITY: {{ .Values.frontend.config.REACT_APP_AUTH_AUTHORITY | default $REACT_APP_AUTH_AUTHORITY | quote }}
-  REACT_APP_AUTH_CLIENT_ID: {{ .Values.frontend.config.REACT_APP_AUTH_CLIENT_ID | default $REACT_APP_AUTH_CLIENT_ID | quote }}
-  REACT_APP_AUTH_REDIRECT_URI: {{ .Values.frontend.config.REACT_APP_AUTH_REDIRECT_URI | default $REACT_APP_AUTH_REDIRECT_URI | quote }}
-  REACT_APP_AUTH_LOGOUT_REDIRECT_URI: {{ .Values.frontend.config.REACT_APP_AUTH_LOGOUT_REDIRECT_URI | default $REACT_APP_AUTH_LOGOUT_REDIRECT_URI | quote }}
-  REACT_APP_AUTH_RESPONSE_TYPE: {{ .Values.frontend.config.REACT_APP_AUTH_RESPONSE_TYPE | quote}}
-  REACT_APP_AUTH_SCOPE:  {{ .Values.frontend.config.REACT_APP_AUTH_SCOPE | quote}}
-  REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS:  {{ .Values.frontend.config.REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS | quote}}
-  REACT_APP_AUTH_LOAD_USER_INFO:  {{ .Values.frontend.config.REACT_APP_AUTH_LOAD_USER_INFO | quote}}
-  REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT:  {{ .Values.frontend.config.REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT | quote}}
-  config.js: "// runtime-config.js vars\n  window[\"_env_\"] =  {\n    \"REACT_APP_BACKEND_API\": \"{{ .Values.frontend.config.REACT_APP_BACKEND_API | default $REACT_APP_BACKEND_API }}\",\n    \"REACT_APP_AUTH_AUTHORITY\": \"{{ .Values.frontend.config.REACT_APP_AUTH_AUTHORITY | default $REACT_APP_AUTH_AUTHORITY  }}\",\n    \"REACT_APP_AUTH_CLIENT_ID\": \"{{ .Values.frontend.config.REACT_APP_AUTH_CLIENT_ID | default $REACT_APP_AUTH_CLIENT_ID }}\",\n    \"REACT_APP_AUTH_REDIRECT_URI\": \"{{ .Values.frontend.config.REACT_APP_AUTH_REDIRECT_URI | default $REACT_APP_AUTH_REDIRECT_URI }}\",            \n    \"REACT_APP_AUTH_LOGOUT_REDIRECT_URI\": \"{{ .Values.frontend.config.REACT_APP_AUTH_LOGOUT_REDIRECT_URI | default $REACT_APP_AUTH_LOGOUT_REDIRECT_URI }}\",\n    \"REACT_APP_AUTH_RESPONSE_TYPE\": \"code\",\n    \"REACT_APP_AUTH_SCOPE\": \"openid profile\",   \n    \"REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS\": \"true\",\n    \"REACT_APP_AUTH_LOAD_USER_INFO\": \"true\"  \n     }"
+  VITE_BACKEND_API: {{ .Values.frontend.config.REACT_APP_BACKEND_API | default $REACT_APP_BACKEND_API | quote }}
+  VITE_AUTH_AUTHORITY: {{ .Values.frontend.config.REACT_APP_AUTH_AUTHORITY | default $REACT_APP_AUTH_AUTHORITY | quote }}
+  VITE_AUTH_CLIENT_ID: {{ .Values.frontend.config.REACT_APP_AUTH_CLIENT_ID | default $REACT_APP_AUTH_CLIENT_ID | quote }}
+  VITE_AUTH_REDIRECT_URI: {{ .Values.frontend.config.REACT_APP_AUTH_REDIRECT_URI | default $REACT_APP_AUTH_REDIRECT_URI | quote }}
+  VITE_AUTH_LOGOUT_REDIRECT_URI: {{ .Values.frontend.config.REACT_APP_AUTH_LOGOUT_REDIRECT_URI | default $REACT_APP_AUTH_LOGOUT_REDIRECT_URI | quote }}
+  VITE_AUTH_RESPONSE_TYPE: {{ .Values.frontend.config.REACT_APP_AUTH_RESPONSE_TYPE | quote}}
+  VITE_AUTH_SCOPE:  {{ .Values.frontend.config.REACT_APP_AUTH_SCOPE | quote}}
+  VITE_AUTH_FILTER_PROTOCOL_CLAIMS:  {{ .Values.frontend.config.REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS | quote}}
+  VITE_AUTH_LOAD_USER_INFO:  {{ .Values.frontend.config.REACT_APP_AUTH_LOAD_USER_INFO | quote}}
+  VITE_AUTH_REVOKE_TOKENS_ON_SIGNOUT:  {{ .Values.frontend.config.REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT | quote}}
+  VITE_GEOCODER_API: {{ .Values.frontend.config.VITE_GEOCODER_API | quote }}
+  VITE_SITE_REGISTRAR_USER_ROLE: {{ .Values.frontend.config.VITE_SITE_REGISTRAR_USER_ROLE | quote }}
+  VITE_SITE_INTERNAL_USER_ROLE: {{ .Values.frontend.config.VITE_SITE_INTERNAL_USER_ROLE | quote }}
+  VITE_SITE_REGISTRY_URL: {{ .Values.frontend.config.VITE_SITE_REGISTRY_URL | quote }}
+  VITE_FORM_API: {{ .Values.frontend.config.VITE_FORM_API | quote }}
+  VITE_FORM_BACKEND_API: {{ .Values.frontend.config.VITE_FORM_BACKEND_API | quote }}
+  VITE_FORM_FLOW_API: {{ .Values.frontend.config.VITE_FORM_FLOW_API | quote }}
+  config.js: "// runtime-config.js vars\n  window[\"_env_\"] =  {\n    \"VITE_BACKEND_API\": \"{{ .Values.frontend.config.REACT_APP_BACKEND_API | default $REACT_APP_BACKEND_API }}\",\n    \"VITE_AUTH_AUTHORITY\": \"{{ .Values.frontend.config.REACT_APP_AUTH_AUTHORITY | default $REACT_APP_AUTH_AUTHORITY  }}\",\n    \"VITE_AUTH_CLIENT_ID\": \"{{ .Values.frontend.config.REACT_APP_AUTH_CLIENT_ID | default $REACT_APP_AUTH_CLIENT_ID }}\",\n    \"VITE_AUTH_REDIRECT_URI\": \"{{ .Values.frontend.config.REACT_APP_AUTH_REDIRECT_URI | default $REACT_APP_AUTH_REDIRECT_URI }}\",            \n    \"VITE_AUTH_LOGOUT_REDIRECT_URI\": \"{{ .Values.frontend.config.REACT_APP_AUTH_LOGOUT_REDIRECT_URI | default $REACT_APP_AUTH_LOGOUT_REDIRECT_URI }}\",\n    \"VITE_AUTH_RESPONSE_TYPE\": \"code\",\n    \"VITE_AUTH_SCOPE\": \"openid profile\",   \n    \"VITE_AUTH_FILTER_PROTOCOL_CLAIMS\": \"true\",\n    \"VITE_AUTH_LOAD_USER_INFO\": \"true\",\n    \"VITE_GEOCODER_API\": \"{{ .Values.frontend.config.VITE_GEOCODER_API }}\",\n    \"VITE_AUTH_REVOKE_TOKENS_ON_SIGNOUT\": \"{{ .Values.frontend.config.VITE_AUTH_REVOKE_TOKENS_ON_SIGNOUT }}\",\n    \"VITE_SITE_REGISTRAR_USER_ROLE\": \"{{ .Values.frontend.config.VITE_SITE_REGISTRAR_USER_ROLE }}\",\n    \"VITE_SITE_INTERNAL_USER_ROLE\": \"{{ .Values.frontend.config.VITE_SITE_INTERNAL_USER_ROLE }}\",\n    \"VITE_SITE_REGISTRY_URL\": \"{{ .Values.frontend.config.VITE_SITE_REGISTRY_URL }}\",\n    \"VITE_FORM_API\": \"{{ .Values.frontend.config.VITE_FORM_API }}\",\n    \"VITE_FORM_BACKEND_API\": \"{{ .Values.frontend.config.VITE_FORM_BACKEND_API }}\",\n    \"VITE_FORM_FLOW_API\": \"{{ .Values.frontend.config.VITE_FORM_FLOW_API }}\"  \n     }"
 {{- end }}

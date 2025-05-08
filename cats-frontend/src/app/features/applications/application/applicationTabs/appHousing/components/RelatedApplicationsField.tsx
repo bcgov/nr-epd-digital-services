@@ -2,8 +2,7 @@ import { Dropdown } from 'react-bootstrap';
 import { useSearchApplicationsByIdQuery } from '../Housing.generated';
 import { useCombobox } from 'downshift';
 import cx from 'classnames';
-
-import styles from './relatedApplicationsField.module.css';
+import styles from './RelatedApplicationsField.module.css';
 
 // Regex to split by commas with any number of spaces before or after
 const COMMA_SEPARATOR_REGEX = /\s*,\s*/;

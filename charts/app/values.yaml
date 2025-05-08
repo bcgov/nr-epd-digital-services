@@ -19,8 +19,8 @@ global:
     keycloakAuthURL: ~
     persist: true
   config:
-    dbName: site # if updating this value, make sure this is updated `bitnami-pg: auth:     username: site , database: site in values-pr.yaml`
-    schemaName: sites
+    dbName: cats # if updating this value, make sure this is updated `bitnami-pg: auth:     username: site , database: site in values-pr.yaml`
+    schemaName: cats
     dbUser: ~ # either site or pr specific user.
     seed:
       enabled: false
@@ -53,7 +53,7 @@ backend:
     #-- the type of the service. it can be ClusterIP, NodePort, LoadBalancer, ExternalName. ClusterIP is the default and is recommended.
     type: ClusterIP
     port: 80 # this is the service port, where it will be exposed internal to the namespace.
-    targetPort: 3000 # this is container port where app listens on
+    targetPort: 4005 # this is container port where app listens on
   ingress:
     annotations:
       route.openshift.io/termination: "edge"
@@ -102,5 +102,6 @@ frontend:
     REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS: "true"
     REACT_APP_AUTH_LOAD_USER_INFO: "true"
     REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT: "true"
+    VITE_GEOCODER_API: "https://geocoder.api.gov.bc.ca"
 
 

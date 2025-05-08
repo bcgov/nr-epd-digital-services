@@ -153,6 +153,8 @@ spec:
               value: {{ .Values.backend.service.targetPort | quote }}
             - name: GRAPHQL_SCHEMA_FILE_PATH
               value: "/graphql/schema.graphql"
+            - name: SITE_SERVICE_URL
+              value: {{ .Values.global.config.SITE_SERVICE_URL | quote }}
             - name: POSTGRES_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -228,7 +230,7 @@ spec:
           emptyDir: {}
         - name: seed-data-mount
           persistentVolumeClaim:
-            claimName: nr-ora2pg-sql
+            claimName: nr-cats-dbdump-sql
         - name: seed-data-scripts
           configMap:
             name: {{ template "backend.fullname" . }}-scripts
