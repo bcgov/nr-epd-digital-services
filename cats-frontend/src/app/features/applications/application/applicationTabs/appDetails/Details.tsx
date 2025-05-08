@@ -6,9 +6,14 @@ import { useGetApplicationDetailsByIdQuery } from './Details.generated';
 import { TickIcon } from '../../../../../components/common/icon';
 import { formatDateUTC } from '../../../../../helpers/utility';
 
-export const Details = () => {
+interface IDetailsProps {
+  applicationIdParam?: number;
+}
+
+export const Details: React.FC<IDetailsProps> = ({ applicationIdParam }) => {
   const { id = '' } = useParams();
-  const applicationId = parseInt(id, 10);
+  const applicationId =
+    id === '' ? (applicationIdParam ?? NaN) : parseInt(id, 10);
 
   const { data } = useGetApplicationDetailsByIdQuery({
     variables: {
@@ -22,6 +27,10 @@ export const Details = () => {
     <CollapsiblePanel
       defaultOpen={true}
       label="Application Information"
+      defaultCloseBtnPosition="left"
+      showBorder={applicationIdParam === undefined}
+      showPadding={applicationIdParam === undefined}
+      smallFont={!(applicationIdParam === undefined)}
       content={
         <div className={styles.rowsContainer}>
           <div className={cx(styles.row, styles.rowGrid6)}>

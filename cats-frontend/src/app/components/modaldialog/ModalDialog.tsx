@@ -27,6 +27,7 @@ interface ModalDialogCloseHandlerProps {
   cancelButtonDisabled?: boolean;
   saveButtonDisabled?: boolean;
   discardButtonDisabled?: boolean;
+  noFooterOptions?: boolean;
 }
 
 const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
@@ -48,6 +49,7 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
   discardButtonDisabled,
   cancelButtonDisabled,
   saveButtonDisabled,
+  noFooterOptions,
 }) => {
   saveBtnLabel = saveBtnLabel ?? '';
   cancelBtnLabel = cancelBtnLabel ?? '';
@@ -92,7 +94,7 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
             </Button>
           </div>
           {children && <div className="custom-modal-data">{children}</div>}
-          {!discardOption && !errorOption && (
+          {!noFooterOptions && !discardOption && !errorOption && (
             <div
               className={`${customFooterCss || 'custom-modal-actions-footer'}`}
             >
@@ -110,7 +112,7 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
               />
             </div>
           )}
-          {discardOption && (
+          {!noFooterOptions && discardOption && (
             <div
               className={`${customFooterCss || 'custom-modal-actions-footer'}`}
             >
@@ -135,7 +137,7 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
               />
             </div>
           )}
-          {errorOption && (
+          {!noFooterOptions && errorOption && (
             <div
               className={`${customFooterCss || 'custom-modal-actions-footer'}`}
             >

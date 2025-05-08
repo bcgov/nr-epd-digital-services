@@ -1,13 +1,23 @@
 .panelContainer {
-  padding: var(--layout-padding-medium) var(--layout-margin-xxlarge)
-    var(--layout-padding-xlarge) var(--layout-margin-xxlarge);
   gap: var(--layout-margin-large);
+  background: var(--surface-color-background-white);
+}
+
+.panelContainerBorder {
   border-radius: var(--layout-border-width-medium);
   border: 1px solid var(--surface-color-border-default);
-  background: var(--surface-color-background-white);
+}
+
+.panelContainerPadding {
+  padding: var(--layout-padding-medium) var(--layout-margin-xxlarge)
+    var(--layout-padding-xlarge) var(--layout-margin-xxlarge);
 }
 
 .panelLabel {
   font: var(--typography-bold-h4);
   color: var(--typography-color-primary);
+}
+
+.panelLabelSmall {
+  font-size: 18px;
 }

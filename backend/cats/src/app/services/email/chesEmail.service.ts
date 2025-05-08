@@ -1,0 +1,92 @@
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { ConfigService } from '@nestjs/config';
+import { firstValueFrom } from 'rxjs';
+import * as qs from 'qs';
+
+@Injectable()
+export class ChesEmailService {
+  private tokenUrl: string;
+  private emailUrl: string;
+  private clientId: string;
+  private clientSecret: string;
+  private fromAddress: string;
+
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly configService: ConfigService,
+  ) {
+    this.tokenUrl = this.configService.get<string>('CHES_TOKEN_URL');
+    this.emailUrl = this.configService.get<string>('CHES_EMAIL_URL');
+    this.clientId = this.configService.get<string>('CHES_CLIENT_ID');
+    this.clientSecret = this.configService.get<string>('CHES_CLIENT_SECRET');
+    this.fromAddress = this.configService.get<string>('CHES_EMAIL_FROM');
+  }
+
+  private async getAccessToken(): Promise<string> {
+    const data = qs.stringify({
+      grant_type: 'client_credentials',
+      client_id: this.clientId,
+      client_secret: this.clientSecret,
+    });
+
+    const headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+
+    try {
+      const response = await firstValueFrom(
+        this.httpService.post(this.tokenUrl, data, { headers }),
+      );
+      return response.data.access_token;
+    } catch (error) {
+      console.error(
+        'Access Token Error:',
+        error?.response?.data || error.message,
+      );
+      throw new HttpException(
+        'Failed to retrieve access token',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async sendEmail(to: string[], subject: string, body: string): Promise<void> {
+    try {
+      const token = await this.getAccessToken();
+
+      const payload = {
+        bcc: [],
+        bodyType: 'html',
+        body,
+        cc: [],
+        delayTS: 0,
+        encoding: 'utf-8',
+        from: this.fromAddress,
+        priority: 'normal',
+        subject,
+        to,
+        tag: '',
+        attachments: [],
+      };
+
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      await firstValueFrom(
+        this.httpService.post(this.emailUrl, payload, { headers }),
+      );
+      console.log('Email sent successfully');
+    } catch (error) {
+      console.error(
+        'Email Sending Error:',
+        error?.response?.data || error.message,
+      );
+      throw new HttpException(
+        'Failed to send email',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+}

@@ -6,17 +6,27 @@ interface CollapsiblePanelProps {
   label: string | ReactNode;
   content: ReactNode;
   defaultOpen?: boolean;
+  defaultCloseBtnPosition?: 'left' | 'right';
+  showBorder?: boolean;
+  showPadding?: boolean;
+  smallFont?: boolean;
 }
 
 const CollapsiblePanel: FC<CollapsiblePanelProps> = ({
   label,
   content,
   defaultOpen = false,
+  defaultCloseBtnPosition = 'right',
+  showBorder = true,
+  showPadding = true,
+  smallFont = false,
 }) => {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className={`d-flex flex-column ${styles.panelContainer}`}>
-      {label && (
+    <div
+      className={`d-flex flex-column ${styles.panelContainer} ${showBorder && styles.panelContainerBorder} ${showPadding && styles.panelContainerPadding}`}
+    >
+      {defaultCloseBtnPosition === 'right' && label && (
         <div className="d-flex justify-content-between">
           <div className={styles.panelLabel}>{label}</div>
           <Button
@@ -27,6 +37,27 @@ const CollapsiblePanel: FC<CollapsiblePanelProps> = ({
           >
             {open ? <ChevronUp /> : <ChevronDown />}
           </Button>
+        </div>
+      )}
+      {defaultCloseBtnPosition === 'left' && label && (
+        <div className="d-flex">
+          <Button
+            variant="tertiary"
+            onClick={() => setOpen(!open)}
+            aria-label={open ? 'Collapse section' : 'Expand section'}
+            aria-expanded={open}
+          >
+            {open ? <ChevronUp /> : <ChevronDown />}
+          </Button>
+          <div
+            className={
+              styles.panelLabel +
+              ' ' +
+              (smallFont ? styles.panelLabelSmall : '')
+            }
+          >
+            {label}
+          </div>
         </div>
       )}
 

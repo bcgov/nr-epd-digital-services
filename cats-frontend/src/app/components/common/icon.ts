@@ -47,6 +47,8 @@ import {
   FaTrash,
   FaQuestion,
   FaFileLines,
+  FaCircleExclamation,
+  FaTriangleExclamation,
 } from 'react-icons/fa6';
 
 import {
@@ -115,3 +117,5 @@ export const PlainTrashIcon = FaTrash;
 export const QuestionMarkIcon = FaQuestion;
 export const FileLinesIcon = FaFileLines;
 export const ExternalLink = FaExternalLinkAlt;
+export const CircleExclamation = FaCircleExclamation;
+export const ExclamationTriangleIcon = FaTriangleExclamation;
