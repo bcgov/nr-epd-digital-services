@@ -29,3 +29,40 @@
   font: var(--typography-regular-body);
   color: var(--typography-color-primary);
 }
+
+.siteInfoContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--layout-margin-large);
+
+  @media (max-width: 992px) {
+    /* 992px - bootstrap's LG breakpoint */
+    grid-template-columns: 1fr;
+  }
+}
+
+.mapContainer {
+  height: 430px;
+  width: 100%;
+}
+
+.siteLink {
+  text-decoration: none;
+  color: var(--typography-color-link);
+  display: flex;
+  align-items: center;
+  gap: var(--layout-margin-xsmall);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.siteDetailsHeader {
+  display: flex;
+  gap: var(--layout-margin-xsmall);
+  justify-content: flex-end;
+  margin: var(--layout-margin-small) 0px;
+  padding-bottom: var(--layout-padding-xsmall);
+  border-bottom: 1px solid var(--surface-color-border-default);
+}

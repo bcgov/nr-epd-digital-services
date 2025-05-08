@@ -4,8 +4,12 @@ import { BaseAppParticipantsDto } from './baseAppParticipants.dto';
 
 @InputType()
 export class CreateAppParticipantDto extends BaseAppParticipantsDto{
+    
     @Field()
     applicationId: number;
+
+    @Field({defaultValue: false})
+    isMainParticipant: boolean;
   
     @Field()
     personId: number;

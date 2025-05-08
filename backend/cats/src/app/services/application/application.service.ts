@@ -134,7 +134,7 @@ export class ApplicationService {
 
       return {
         id: application.id,
-        siteId: application.site.id,
+        siteId: application.siteId,
         siteAddress: application.site.address,
         siteCity: application.site.city,
         formId: application.formId,
@@ -142,7 +142,9 @@ export class ApplicationService {
         csapRefNumber: application.csapRefNumber,
         receivedDate: new Date(application.receivedDate),
         endDate: application.endDate ? new Date(application.endDate) : null,
-        queuedDate: queuedStatus?.createdDateTime,
+        queuedDate: queuedStatus?.createdDateTime
+          ? new Date(queuedStatus.createdDateTime)
+          : null,
         outcome: application.outcome,
         appType: application.appType,
         currentStatus: currentStatus?.statusType,

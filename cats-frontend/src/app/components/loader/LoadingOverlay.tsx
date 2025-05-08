@@ -19,4 +19,8 @@ const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ loading }) => {
   );
 };
 
+export const LoadingSpinner = () => {
+  return <div className="loader" data-testid="loader"></div>;
+};
+
 export default LoadingOverlay;

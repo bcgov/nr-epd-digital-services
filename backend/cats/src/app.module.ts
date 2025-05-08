@@ -17,6 +17,8 @@ import {
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CustomExceptionFilter } from './app/filters/customExceptionFilters';
+import { MockAuthGuard } from './app/guards/mock-auth.guard';
+import { GraphQLAuthExceptionFilter } from './app/filters/graphql-exception.filter';
 
 /**
  * Application Module Wrapping All Functionality For User Micro Service
@@ -68,7 +70,7 @@ import { CustomExceptionFilter } from './app/filters/customExceptionFilters';
     AppService,
     {
       provide: APP_GUARD,
-      useClass: AuthGuard,
+      useClass: process.env.MOCK_AUTH === 'true' ? MockAuthGuard : AuthGuard,
     },
     {
       provide: APP_GUARD,
@@ -81,6 +83,10 @@ import { CustomExceptionFilter } from './app/filters/customExceptionFilters';
     {
       provide: APP_FILTER,
       useClass: CustomExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: GraphQLAuthExceptionFilter,
     },
   ],
 })

@@ -64,8 +64,7 @@ export class ViewApplicationDetails {
 
   @Field({ nullable: true })
   formId: string | null;
-  
+
   @Field({ nullable: true })
   submissionId: string | null;
-  
 }
