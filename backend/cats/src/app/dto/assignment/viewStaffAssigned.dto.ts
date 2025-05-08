@@ -1,29 +1,30 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { IsString } from 'class-validator';
 import { ResponseDto } from '../response/response.dto';
+import { BaseStaffAssignedDto } from './baseStaffAssigned.dto';
 
 @ObjectType()
-export class ViewStaffAssignedDto {
+export class ViewStaffAssignedDto extends BaseStaffAssignedDto {
   @Field()
   id: number;
-
-  @Field()
-  applicationId: number;
 
   @Field({ nullable: true })
   currentCapacity: number | null;
 
-  @Field()
-  personId: number;
+  // @Field()
+  // applicationId: number;
 
-  @Field()
-  roleId: number;
+  // @Field()
+  // personId: number;
 
-  @Field()
-  startDate: Date;
+  // @Field()
+  // roleId: number;
 
-  @Field({ nullable: true })
-  endDate: Date;
+  // @Field()
+  // startDate: Date;
+
+  // @Field({ nullable: true })
+  // endDate: Date;
 }
 
 @ObjectType()

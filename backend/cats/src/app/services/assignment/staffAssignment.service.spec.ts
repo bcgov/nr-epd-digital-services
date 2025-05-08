@@ -174,7 +174,7 @@ describe('StaffAssignmentService', () => {
 
   it('should return empty array when no staff members are found', async () => {
     (personRepository.query as jest.Mock).mockResolvedValueOnce([]);
-    const result = await service.getAllAciveStaffMembersWithCurrentCapacity();
+    const result = await service.getAllActiveStaffMembersWithCurrentCapacity();
     expect(result).toEqual([]);
   });
 

@@ -21,7 +21,6 @@ const roleBasedRoutes: any = {
     { path: '/person', element: <Person /> },
     { path: '/applications', element: <ApplicationSearch /> },
     { path: '/applications/:id', element: <ApplicationDetails /> },
-    { path: '/assignment/:id', element: <Assignment /> },
   ],
   internal: [
     { path: '/dashboard', element: <Dashboard /> },

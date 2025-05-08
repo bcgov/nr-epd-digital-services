@@ -77,7 +77,6 @@ export class ChesEmailService {
       await firstValueFrom(
         this.httpService.post(this.emailUrl, payload, { headers }),
       );
-      console.log('Email sent successfully');
     } catch (error) {
       console.error(
         'Email Sending Error:',

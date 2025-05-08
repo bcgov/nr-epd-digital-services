@@ -24,7 +24,7 @@ describe('StaffAssignmentResolver', () => {
             getStaffByAppId: jest.fn(),
             updateStaffAssigned: jest.fn(),
             getApplicationServiceTypes: jest.fn(),
-            getAllAciveStaffMembersWithCurrentCapacity: jest.fn(),
+            getAllActiveStaffMembersWithCurrentCapacity: jest.fn(),
           },
         },
         {
@@ -197,31 +197,31 @@ describe('StaffAssignmentResolver', () => {
     expect(genericResponseProvider.createResponse).toHaveBeenCalledTimes(1);
   });
 
-  it('should return a successful response when getAllAciveStaffMembersWithCurrentCapacity returns a non-empty array', async () => {
+  it('should return a successful response when getAllActiveStaffMembersWithCurrentCapacity returns a non-empty array', async () => {
     const result = [{ id: 1, name: 'John Doe' }];
     (
-      service.getAllAciveStaffMembersWithCurrentCapacity as jest.Mock
+      service.getAllActiveStaffMembersWithCurrentCapacity as jest.Mock
     ).mockResolvedValue(result);
 
     (genericResponseProvider.createResponse as jest.Mock).mockReturnValue({
       message:
-        'getAllAciveStaffMembersWithCurrentCapacity fetched successfully',
+        'getAllActiveStaffMembersWithCurrentCapacity fetched successfully',
       httpStatusCode: 200,
       success: true,
       data: result,
     });
 
-    const response = await resolver.getAllAciveStaffMembers({} as any);
+    const response = await resolver.getAllActiveStaffMembers({} as any);
     expect(response).toEqual({
       message:
-        'getAllAciveStaffMembersWithCurrentCapacity fetched successfully',
+        'getAllActiveStaffMembersWithCurrentCapacity fetched successfully',
       httpStatusCode: HttpStatus.OK,
       success: true,
       data: result,
     });
     expect(loggerService.log).toHaveBeenCalledTimes(1);
     expect(loggerService.log).toHaveBeenCalledWith(
-      'AppParticipantResolver.getAllAciveStaffMembers() RES:200 end',
+      'AppParticipantResolver.getAllActiveStaffMembersWithCurrentCapacity() RES:200 end',
     );
   });
 });

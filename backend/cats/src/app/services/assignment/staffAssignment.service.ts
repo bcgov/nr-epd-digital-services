@@ -80,11 +80,13 @@ export class StaffAssignmentService {
     }
   }
 
-  async getAllAciveStaffMembersWithCurrentCapacity(
+  async getAllActiveStaffMembersWithCurrentCapacity(
     personId?: number,
   ): Promise<ViewStaffWithCapacityDTO[]> {
     try {
-      this.loggerService.log('at service layer getAllAciveStaffMembers start');
+      this.loggerService.log(
+        'at service layer getAllActiveStaffMembersWithCurrentCapacity start',
+      );
 
       const query = `
         SELECT   
@@ -135,9 +137,11 @@ GROUP BY
         return transformedObjects;
       }
     } catch (error) {
-      this.loggerService.log('Error occured to fetch getAllAciveStaffMembers');
+      this.loggerService.log(
+        'Error occured to fetch getAllActiveStaffMembersWithCurrentCapacity',
+      );
       throw new HttpException(
-        `Failed to retrieve getAllAciveStaffMembers`,
+        `Failed to retrieve getAllActiveStaffMembersWithCurrentCapacity`,
         HttpStatus.NOT_FOUND,
       );
     }
@@ -194,7 +198,7 @@ GROUP BY
         const staffAssignedArr = await Promise.all(
           result.map(async (staff): Promise<ViewStaffAssignedDto> => {
             const capacityResult =
-              await this.getAllAciveStaffMembersWithCurrentCapacity(
+              await this.getAllActiveStaffMembersWithCurrentCapacity(
                 staff.personId,
               );
             return {
