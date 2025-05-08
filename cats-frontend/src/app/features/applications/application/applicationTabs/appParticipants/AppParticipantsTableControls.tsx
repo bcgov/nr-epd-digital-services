@@ -4,7 +4,6 @@ import './AppParticipantsTableControls.css';
 
 import {
   AppParticipantFilter,
-  ApplicationFilter,
 } from '../../../../../../generated/types';
 import { Button } from '../../../../../components/button/Button';
 

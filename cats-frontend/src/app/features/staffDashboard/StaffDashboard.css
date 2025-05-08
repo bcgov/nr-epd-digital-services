@@ -1,0 +1,37 @@
+.custom-staff-edit-lbl {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    color: var(--typography-color-primary, #2d2d2d);
+}
+  
+a.custom-staff-edit-lbl {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  gap: var(--layout-margin-xsmall);
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--surface-color-primary-default, #053662);
+}
+
+.custom-tbl-header {
+  text-align: center;
+  vertical-align: middle;
+}
+  
+.custom-widget-container {
+ gap: var(--layout-margin-medium);
+}
+
+.progress {
+  height: 24px !important;
+  border-radius: var(--layout-border-radius-large) !important;
+
+}
+
+.progress .progress-bar {
+  border-radius: var(--layout-border-radius-large);
+}
+

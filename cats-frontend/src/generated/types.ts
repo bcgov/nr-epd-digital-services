@@ -53,12 +53,6 @@ export type ApplicationDetailsResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
-export enum ApplicationFilter {
-  All = 'ALL',
-  Completed = 'COMPLETED',
-  Unassigned = 'UNASSIGNED'
-}
-
 export type ApplicationHousingDto = {
   __typename?: 'ApplicationHousingDto';
   housing: HousingDto;
@@ -213,6 +207,13 @@ export type DropdownResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export enum Filter {
+  All = 'ALL',
+  Completed = 'COMPLETED',
+  Overcapacity = 'OVERCAPACITY',
+  Unassigned = 'UNASSIGNED'
+}
+
 export type HousingDto = {
   __typename?: 'HousingDto';
   effectiveDate?: Maybe<Scalars['DateTime']['output']>;
@@ -245,6 +246,24 @@ export type HousingTypeDto = {
 export type HousingTypeResponse = {
   __typename?: 'HousingTypeResponse';
   data: Array<HousingTypeDto>;
+};
+
+export type InvoiceByApplicationIdDto = {
+  __typename?: 'InvoiceByApplicationIdDto';
+  dueDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  issuedDate: Scalars['DateTime']['output'];
+  status: Scalars['String']['output'];
+  totalInCents: Scalars['Int']['output'];
+};
+
+export type InvoicesByApplicationIdResponse = {
+  __typename?: 'InvoicesByApplicationIdResponse';
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  invoices?: Maybe<Array<InvoiceByApplicationIdDto>>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
 };
 
 export type Mutation = {
@@ -343,9 +362,11 @@ export type Query = {
   getApplicationDetailsById: ApplicationDetailsResponse;
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
   getHousingTypes: HousingTypeResponse;
+  getInvoicesByApplicationId: InvoicesByApplicationIdResponse;
   getOrganizations: DropdownResponse;
   getParticipantNames: DropdownResponse;
   getPersonNotesByPersonId: PersonNoteResponse;
+  getStaffs: StaffResponse;
   searchApplications: ApplicationSearchResponse;
   searchApplicationsById: ApplicationSearchResponse;
   searchPerson: SearchPersonResponse;
@@ -373,6 +394,11 @@ export type QueryGetApplicationHousingByApplicationIdArgs = {
 };
 
 
+export type QueryGetInvoicesByApplicationIdArgs = {
+  applicationId: Scalars['Int']['input'];
+};
+
+
 export type QueryGetOrganizationsArgs = {
   searchParamForOrg: Scalars['String']['input'];
 };
@@ -388,8 +414,17 @@ export type QueryGetPersonNotesByPersonIdArgs = {
 };
 
 
+export type QueryGetStaffsArgs = {
+  filter?: InputMaybe<Filter>;
+  page: Scalars['Int']['input'];
+  pageSize: Scalars['Int']['input'];
+  sortBy?: InputMaybe<StaffSortByField>;
+  sortByDir?: InputMaybe<ApplicationSortByDirection>;
+};
+
+
 export type QuerySearchApplicationsArgs = {
-  filter: ApplicationFilter;
+  filter: Filter;
   page: Scalars['Int']['input'];
   pageSize: Scalars['Int']['input'];
   searchParam: Scalars['String']['input'];
@@ -420,6 +455,25 @@ export type SearchPersonResponse = {
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
 };
+
+export type StaffResponse = {
+  __typename?: 'StaffResponse';
+  count?: Maybe<Scalars['Float']['output']>;
+  data: Array<ViewStaff>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  page?: Maybe<Scalars['Float']['output']>;
+  pageSize?: Maybe<Scalars['Float']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export enum StaffSortByField {
+  Assignment = 'Assignment',
+  Id = 'ID',
+  Name = 'NAME',
+  Role = 'ROLE'
+}
 
 export type UpdateHousingInputDto = {
   applicationHousingId: Scalars['Int']['input'];
@@ -565,6 +619,15 @@ export type ViewPersonNote = {
   id: Scalars['String']['output'];
   noteDescription: Scalars['String']['output'];
   user?: Maybe<Scalars['String']['output']>;
+};
+
+export type ViewStaff = {
+  __typename?: 'ViewStaff';
+  assignments: Scalars['Float']['output'];
+  capacity: Scalars['Float']['output'];
+  id: Scalars['Float']['output'];
+  name: Scalars['String']['output'];
+  role: Scalars['String']['output'];
 };
 
 export type YesNoCodeDto = {

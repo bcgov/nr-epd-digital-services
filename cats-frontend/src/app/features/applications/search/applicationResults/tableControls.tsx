@@ -2,11 +2,11 @@ import React from 'react';
 import { TableColumnsIcon } from '../../../../components/common/icon';
 import './tableControls.css';
 import { Button } from '../../../../components/button/Button';
-import { ApplicationFilter } from '../../../../../generated/types';
+import { Filter } from '../../../../../generated/types';
 
 interface TableControlsProps {
-  handleFilterChange: (filter: ApplicationFilter) => void;
-  filter: ApplicationFilter;
+  handleFilterChange: (filter: Filter) => void;
+  filter: Filter;
   toggleColumnSelect: () => void;
 }
 
@@ -20,9 +20,9 @@ const TableControls: React.FC<TableControlsProps> = ({
       <div className="col text-right">
         <Button
           variant="tertiary"
-          onClick={() => handleFilterChange(ApplicationFilter.All)}
+          onClick={() => handleFilterChange(Filter.All)}
           className={
-            filter === ApplicationFilter.All
+            filter === Filter.All
               ? 'table-controls__button--selected'
               : ''
           }
@@ -33,9 +33,9 @@ const TableControls: React.FC<TableControlsProps> = ({
       <div className="col text-right">
         <Button
           variant="tertiary"
-          onClick={() => handleFilterChange(ApplicationFilter.Unassigned)}
+          onClick={() => handleFilterChange(Filter.Unassigned)}
           className={
-            filter === ApplicationFilter.Unassigned
+            filter === Filter.Unassigned
               ? 'table-controls__button--selected'
               : ''
           }
@@ -46,9 +46,9 @@ const TableControls: React.FC<TableControlsProps> = ({
       <div className="col text-right">
         <Button
           variant="tertiary"
-          onClick={() => handleFilterChange(ApplicationFilter.Completed)}
+          onClick={() => handleFilterChange(Filter.Completed)}
           className={
-            filter === ApplicationFilter.Completed
+            filter === Filter.Completed
               ? 'table-controls__button--selected'
               : ''
           }

@@ -35,7 +35,7 @@ export class TableColumn {
     public columnSize?: ColumnSize,
     public stickyCol?: boolean,
     public customHeaderCss?: string,
-    public renderCell?: (value: any) => ReactNode,
+    public renderCell?: (value: any, rowData?: any) => ReactNode,
   ) {
     this.dynamicColumn = dynamicColumn ?? false;
   }

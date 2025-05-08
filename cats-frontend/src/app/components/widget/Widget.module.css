@@ -3,8 +3,7 @@
 }
 
 .widgetLabel {
-  padding: var(--layout-padding-small) 0px var(--layout-padding-small) 0px;
-  border-bottom: 1px solid var(--surface-border-light, #d8d8d8);
+  
   font-weight: var(--typography-font-weights-bold);
   text-align: left;
   color: var(--typography-color-primary, #2d2d2d);
@@ -16,4 +15,9 @@
 .widgetRequiredField::after {
   content: ' *';
   color: red;
+}
+
+.widgetLblContainer {
+  padding: var(--layout-padding-small) 0px var(--layout-padding-small) 0px;
+  border-bottom: 1px solid var(--surface-border-light, #d8d8d8);
 }
