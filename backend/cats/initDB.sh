@@ -31,6 +31,9 @@ echo "init db complete"
 
 # run type orm migrations 
 npm run typeorm:run-migrations
+
+npm run seed:service-types
+
 echo "migrations completed"
 
 exit 0

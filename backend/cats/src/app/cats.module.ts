@@ -71,6 +71,11 @@ import { InvoiceV2 } from './entities/invoiceV2.entity';
 import { InvoiceLineItem } from './entities/invoiceLineItem.entity';
 import { InvoiceResolver } from './resolvers/invoice/invoice.resolver';
 import { InvoiceService } from './services/invoice/invoice.service';
+import { StaffAssignmentResolver } from './resolvers/application/staffAssigned.resolver';
+import { StaffAssignmentService } from './services/assignment/staffAssignment.service';
+import { ApplicationServiceType } from './entities/serviceType.entity';
+import { ChesEmailService } from './services/email/chesEmail.service';
+import { HttpModule, HttpService } from '@nestjs/axios';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -127,7 +132,9 @@ import { InvoiceService } from './services/invoice/invoice.service';
       PersonNote,
       InvoiceV2,
       InvoiceLineItem,
+      ApplicationServiceType,
     ]),
+    HttpModule,
   ],
   providers: [
     PersonResolver,
@@ -151,6 +158,10 @@ import { InvoiceService } from './services/invoice/invoice.service';
     SiteService,
     InvoiceResolver,
     InvoiceService,
+    StaffAssignmentResolver,
+    StaffAssignmentService,
+
+    ChesEmailService,
   ],
   controllers: [UserController],
 })
