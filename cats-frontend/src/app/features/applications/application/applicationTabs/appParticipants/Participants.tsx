@@ -36,7 +36,6 @@ export const Participants = () => {
   return (
     <div>
       <ParticipantTable
-        handleTableChange={() => {}}
         internalRow={participantColumnInternal}
         userType={UserType.Internal}
         appParticsData={queryData?.getAppParticipantsByAppId?.data || []}
