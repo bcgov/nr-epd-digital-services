@@ -417,6 +417,7 @@ const TableBody: FC<TableBodyProps> = ({
           isEditing={editMode ?? true}
           tableMode={field.tableMode ?? false}
           stickyCol={field.stickyCol}
+          customIcon={field.customIcon}
         />
       );
     } else if (field.type === FormFieldType.IconButton) {
@@ -491,13 +492,13 @@ const TableBody: FC<TableBodyProps> = ({
       .split(',')
       .map((graphQLPropertyName) => getValue(rowIndex, graphQLPropertyName));
 
-    let rowData = getDataRow(rowIndex);
-
     let cellValue: string | ReactNode;
 
     if (column.renderCell && typeof column.renderCell === 'function') {
       cellValue = cellData.map((data: any, i: number) => (
-        <React.Fragment key={i}>{column.renderCell!(data, rowData)}</React.Fragment>
+        <React.Fragment key={i}>
+          {column.renderCell!(data, data?.[rowIndex])}
+        </React.Fragment>
       ));
     } else {
       cellValue = cellData.join(' ');

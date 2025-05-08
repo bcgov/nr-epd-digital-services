@@ -13,6 +13,7 @@ import ApplicationDetails from '../features/applications/application/Application
 import ApplicationSearch from '../features/applications/search/Search';
 import StaffDashboard from '../features/staffDashboard/StaffDashboard';
 import ProtectedRoute from './ProtectedRoute';
+import Assignment from '../features/assignment/Assignment';
 
 const roleBasedRoutes: any = {
   client: [
@@ -23,6 +24,7 @@ const roleBasedRoutes: any = {
     { path: '/applications', element: <ApplicationSearch /> },
     { path: '/applications/:id', element: <ApplicationDetails /> },
     { path: '/staff', element: <ProtectedRoute element={<StaffDashboard />} /> },
+    { path: '/assignment/:id', element: <Assignment /> },
   ],
   internal: [
     { path: '/dashboard', element: <Dashboard /> },

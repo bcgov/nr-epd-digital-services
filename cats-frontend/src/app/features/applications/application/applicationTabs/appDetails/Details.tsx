@@ -11,9 +11,14 @@ import {
 } from './Details.generated';
 import styles from './Details.module.css';
 
-export const Details = () => {
+interface IDetailsProps {
+  applicationIdParam?: number;
+}
+
+export const Details: React.FC<IDetailsProps> = ({ applicationIdParam }) => {
   const { id = '' } = useParams();
-  const applicationId = parseInt(id, 10);
+  const applicationId =
+    id === '' ? (applicationIdParam ?? NaN) : parseInt(id, 10);
 
   const { data, loading: applicationDataLoading } =
     useGetApplicationDetailsByIdQuery({
@@ -44,6 +49,10 @@ export const Details = () => {
         defaultOpen={true}
         label="Application Information"
         loading={applicationDataLoading}
+        defaultCloseBtnPosition="left"
+        showBorder={applicationIdParam === undefined}
+        showPadding={applicationIdParam === undefined}
+        smallFont={!(applicationIdParam === undefined)}
         content={
           <div className={styles.rowsContainer}>
             <div className={cx(styles.row, styles.rowGrid6)}>

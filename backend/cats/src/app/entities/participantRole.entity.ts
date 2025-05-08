@@ -51,4 +51,7 @@ export class ParticipantRole {
     (appParticipant) => appParticipant.participantRole,
   )
   appParticipants: AppParticipant[];
+
+  @Column('integer', { name: 'assignment_factor', nullable: true })
+  assignmentFactor: number | null;
 }

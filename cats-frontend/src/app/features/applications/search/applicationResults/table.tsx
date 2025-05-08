@@ -19,6 +19,7 @@ interface ApplicationResultsTableProps {
   totalResults: number;
   filter: Filter;
   sortHandler: (column: TableColumn, ascending: boolean) => void;
+  changeHandler: (eventRecord: any) => void;
 }
 
 const ApplicationResultsTable: React.FC<ApplicationResultsTableProps> = ({
@@ -35,6 +36,7 @@ const ApplicationResultsTable: React.FC<ApplicationResultsTableProps> = ({
   totalResults,
   filter,
   sortHandler,
+  changeHandler,
 }) => {
   return (
     <div>
@@ -49,7 +51,7 @@ const ApplicationResultsTable: React.FC<ApplicationResultsTableProps> = ({
         isLoading={requestStatus}
         columns={columns.filter((column) => column.isChecked)}
         data={results}
-        changeHandler={() => {}}
+        changeHandler={changeHandler}
         editMode={false}
         idColumnName="id"
         currentPage={page}
