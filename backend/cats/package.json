@@ -25,12 +25,15 @@
     "typeorm:create-migration": "npm run typeorm -- migration:create ./src/migrations/master-script",
     "typeorm:revert-migration": "npm run typeorm -- -d ./typeOrm.config.ts migration:revert",
     "codegen": "graphql-codegen --config ./codegen.mts",
-    "codegen:watch": "npm run codegen -- --watch"
+    "codegen:watch": "npm run codegen -- --watch",   
+    "seed:service-types": "ts-node ./node_modules/@jorgebodega/typeorm-seeding/dist/cli.js seed -d ./typeOrm.config.ts ./src/seed/applicationServiceType.seed.ts"
   },
   "dependencies": {
     "@apollo/federation": "^0.37.1",
     "@apollo/subgraph": "^2.1.3",
+    "@jorgebodega/typeorm-seeding": "^7.1.0",
     "@nestjs/apollo": "^10.1.3",
+    "@nestjs/axios": "^1.0.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/graphql": "^10.1.3",

@@ -1,0 +1,51 @@
+mutation updateStaffAssigned(
+  $staffInput: [UpdateStaffAssignedDto!]!
+  $applicationServiceTypeId: Int!
+  $applicationId: Int!
+) {
+  updateStaffAssigned(
+    staffInput: $staffInput
+    applicationServiceTypeId: $applicationServiceTypeId
+    applicationId: $applicationId
+  ) {
+    message
+    httpStatusCode
+    success
+  }
+}
+
+query getStaffAssignedByAppId($applicationId: Int!) {
+  getStaffAssignedByAppId(applicationId: $applicationId) {
+    data {
+      applicationServiceTypeId
+      staffList {
+        id
+        applicationId
+        personId
+        roleId
+        startDate
+        endDate
+        currentCapacity
+      }
+    }
+  }
+}
+
+query getAllActiveStaffMembers {
+  getAllActiveStaffMembers {
+    data {
+      personId
+      personFullName
+      currentCapacity
+    }
+  }
+}
+
+query getApplicationServiceTypes {
+  getApplicationServiceTypes {
+    data {
+      key
+      value
+    }
+  }
+}

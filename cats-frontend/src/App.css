@@ -67,3 +67,7 @@
     width: 100%;
   }
 }
+
+.rs-picker-popup {
+  z-index: 9999 !important;
+}
