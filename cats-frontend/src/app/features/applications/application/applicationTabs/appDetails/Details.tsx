@@ -1,8 +1,8 @@
 import cx from 'classnames';
 import { useParams } from 'react-router-dom';
-import CollapsiblePanel from '@cats/components/simple/CollapsiblePanel';
-import { TickIcon } from '@cats/components/common/icon';
-import { formatDateUTC } from '@cats/helpers/utility';
+import CollapsiblePanel from '../../../../../components/simple/CollapsiblePanel';
+import { TickIcon } from '../../../../../components/common/icon';
+import { formatDateUTC } from '../../../../../helpers/utility';
 
 import { SiteDetails } from './components/SiteDetails';
 import {
