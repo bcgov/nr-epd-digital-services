@@ -10,23 +10,6 @@ export class UpdateStaffAssignedDto extends BaseStaffAssignedDto {
   @Field({ nullable: true })
   organizationId: number | null;
 
-  // @Field()
-  // applicationId: number;
-
-  // @Field()
-  // personId: number;
-
-  // @Field()
-  // roleId: number;
-
-  // @Field()
-  // @IsDate()
-  // startDate: Date;
-
-  // @Field({ nullable: true })
-  // @IsDate()
-  // endDate: Date;
-
   @Field()
   action: string;
 }

@@ -218,7 +218,7 @@ const Assignment: React.FC<AssignmentProps> = ({
 
   return (
     <div role="assign staff" className="assign-section">
-      <Details applicationIdParam={applicationId} />
+      <Details applicationIdParam={applicationId} showSiteDetails={false} />
       <CollapsiblePanel
         showBorder={false}
         showPadding={false}

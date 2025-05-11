@@ -10,21 +10,6 @@ export class ViewStaffAssignedDto extends BaseStaffAssignedDto {
 
   @Field({ nullable: true })
   currentCapacity: number | null;
-
-  // @Field()
-  // applicationId: number;
-
-  // @Field()
-  // personId: number;
-
-  // @Field()
-  // roleId: number;
-
-  // @Field()
-  // startDate: Date;
-
-  // @Field({ nullable: true })
-  // endDate: Date;
 }
 
 @ObjectType()

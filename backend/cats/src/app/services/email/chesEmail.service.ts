@@ -3,6 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
 import * as qs from 'qs';
+import { LoggerService } from '../../logger/logger.service';
 
 @Injectable()
 export class ChesEmailService {
@@ -15,6 +16,7 @@ export class ChesEmailService {
   constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
+    private readonly loggerService: LoggerService,
   ) {
     this.tokenUrl = this.configService.get<string>('CHES_TOKEN_URL');
     this.emailUrl = this.configService.get<string>('CHES_EMAIL_URL');
@@ -23,7 +25,8 @@ export class ChesEmailService {
     this.fromAddress = this.configService.get<string>('CHES_EMAIL_FROM');
   }
 
-  private async getAccessToken(): Promise<string> {
+  protected async getAccessToken(): Promise<string> {
+    this.loggerService.log('Getting Access Token');
     const data = qs.stringify({
       grant_type: 'client_credentials',
       client_id: this.clientId,
@@ -54,7 +57,7 @@ export class ChesEmailService {
   async sendEmail(to: string[], subject: string, body: string): Promise<void> {
     try {
       const token = await this.getAccessToken();
-
+      this.loggerService.log('Sending Email start');
       const payload = {
         bcc: [],
         bodyType: 'html',
@@ -74,10 +77,12 @@ export class ChesEmailService {
         Authorization: `Bearer ${token}`,
       };
 
-      await firstValueFrom(
-        this.httpService.post(this.emailUrl, payload, { headers }),
-      );
+      let result = this.httpService.post(this.emailUrl, payload, { headers });
+
+      await firstValueFrom(result);
+      this.loggerService.log('Sending Email end');
     } catch (error) {
+      this.loggerService.error('Email Sending Error', JSON.stringify(error));
       console.error(
         'Email Sending Error:',
         error?.response?.data || error.message,

@@ -15,9 +15,16 @@ import { DropdownDto } from '../../dto/dropdown.dto';
 import { Application } from '../../entities/application.entity';
 import { AppParticipant } from '../../entities/appParticipant.entity';
 import { AppParticipantService } from '../application/appParticipants.service';
-import { ApplicationServiceType } from '../../entities/serviceType.entity';
+import { ApplicationServiceType } from '../../entities/applicationServiceType.entity';
 import { ViewStaffWithCapacityDTO } from '../../dto/assignment/viewStaffWithCapacity';
 import { ChesEmailService } from '../email/chesEmail.service';
+import { Site } from 'src/app/entities/site.entity';
+import * as path from 'path';
+import * as fs from 'fs';
+import { SiteService } from '../site/site.service';
+import { ConfigService } from '@nestjs/config';
+import { Risk } from '../../entities/risk.entity';
+
 @Injectable()
 export class StaffAssignmentService {
   /**
@@ -46,9 +53,16 @@ export class StaffAssignmentService {
     @InjectRepository(ApplicationServiceType)
     private readonly applicationServiceTypeRepository: Repository<ApplicationServiceType>,
 
+    @InjectRepository(Risk)
+    private readonly siteRiskRepository: Repository<Risk>,
+
     private readonly appParticipantService: AppParticipantService,
 
     private readonly emailService: ChesEmailService,
+
+    private readonly siteService: SiteService,
+
+    private readonly configService: ConfigService,
   ) {}
 
   async getApplicationServiceTypes(): Promise<DropdownDto[]> {
@@ -80,6 +94,36 @@ export class StaffAssignmentService {
     }
   }
 
+  getStaffWithCurrentFactorsQuery = (personId: number) => `
+  SELECT   
+p.id, 
+p.first_name, 
+p.middle_name,
+p.last_name,     
+COALESCE(SUM(ast.assignment_factor), 0) 
++COALESCE(SUM(pr.assignment_factor), 0)
++COALESCE(  
+sum(CASE 
+WHEN rs.abbrev = 'H' THEN 3
+WHEN rs.abbrev is null THEN 0
+ELSE 1
+END),0) as current_factors
+FROM 
+cats.person p
+LEFT JOIN cats.app_participant a ON a.person_id = p.id AND (
+(CURRENT_DATE BETWEEN a.effective_start_date AND a.effective_end_date)
+OR (CURRENT_DATE >= a.effective_start_date AND a.effective_end_date IS NULL))
+LEFT JOIN cats.application app ON app.id = a.application_id 
+LEFT JOIN cats.application_service_type ast ON ast.id = app.application_service_type_id
+LEFT JOIN cats.participant_role pr ON pr.id = a.participant_role_id
+LEFT JOIN cats.risk rs ON rs.id = app.id
+WHERE 
+p.login_user_name is not null and p.is_active = true
+${personId ? 'AND p.id = $1' : ''}
+GROUP BY 
+p.id, p.first_name, p.middle_name, p.last_name
+`;
+
   async getAllActiveStaffMembersWithCurrentCapacity(
     personId?: number,
   ): Promise<ViewStaffWithCapacityDTO[]> {
@@ -88,35 +132,8 @@ export class StaffAssignmentService {
         'at service layer getAllActiveStaffMembersWithCurrentCapacity start',
       );
 
-      const query = `
-        SELECT   
-  p.id, 
-  p.first_name, 
-  p.middle_name,
-  p.last_name,     
-  COALESCE(SUM(ast.assignment_factor), 0) 
-  +COALESCE(SUM(pr.assignment_factor), 0)
-  +COALESCE(  
-  sum(CASE 
-    WHEN rs.abbrev = 'H' THEN 3
-    WHEN rs.abbrev is null THEN 0
-    ELSE 1
-  END),0) as current_factors
-FROM 
-  cats.person p
-LEFT JOIN cats.app_participant a ON a.person_id = p.id AND (
-(CURRENT_DATE BETWEEN a.effective_start_date AND a.effective_end_date)
-    OR (CURRENT_DATE >= a.effective_start_date AND a.effective_end_date IS NULL))
-LEFT JOIN cats.application app ON app.id = a.application_id 
-LEFT JOIN cats.application_service_type ast ON ast.id = app.application_service_type_id
-LEFT JOIN cats.participant_role pr ON pr.id = a.participant_role_id
-LEFT JOIN cats.risk rs ON rs.id = app.id
-WHERE 
-  p.login_user_name is not null and p.is_active = true
-   ${personId ? 'AND p.id = $1' : ''}
-GROUP BY 
-  p.id, p.first_name, p.middle_name, p.last_name
-      `;
+      const query = this.getStaffWithCurrentFactorsQuery(personId);
+
       const params = personId ? [personId] : [];
       const persons = await this.personRepository.query(query, params);
 
@@ -282,14 +299,64 @@ GROUP BY
                 user,
               );
 
-            this.emailService.sendEmail(
-              ['midhun.murali@aot-technologies.com'],
+            const role = await this.participantRoleRepository.findOne({
+              where: {
+                id: staff.roleId,
+              },
+            });
+
+            let site = null;
+
+            try {
+              site = await this.siteService.getSiteById(
+                application.siteId?.toString(),
+              );
+            } catch (error) {
+              this.loggerService.error(
+                `Error in getSiteById: ${error.message}`,
+                error,
+              );
+            }
+
+            let serviceType =
+              await this.applicationServiceTypeRepository.findOne({
+                where: {
+                  id: application.serviceTypeId.toString(),
+                },
+              });
+
+            let siteRisk = await this.siteRiskRepository.findOne({
+              where: {
+                id: application.riskId,
+              },
+            });
+
+            const testMode = this.configService.get('CATS_EMAIL_TEST_MODE');
+
+            let toEmailAddress = [];
+            if (testMode === 'true') {
+              toEmailAddress.push(
+                this.configService.get('CATS_TEST_EMAIL_ADDRESS'),
+              );
+            } else {
+              const person = await this.personRepository.findOne({
+                where: {
+                  id: staff.personId,
+                },
+              });
+              toEmailAddress.push(person.email);
+            }
+
+            await this.emailService.sendEmail(
+              toEmailAddress,
               'Application Assigned',
               this.generateAssignmentEmailTemplate(
-                staff.applicationId.toString(),
-                application.appDescription,
-                staff.startDate.toDateString(),
-                staff.endDate.toDateString(),
+                role.description,
+                serviceType.serviceName,
+                application,
+                result,
+                site,
+                siteRisk,
               ),
             );
           } else {
@@ -344,66 +411,51 @@ GROUP BY
   }
 
   generateAssignmentEmailTemplate(
-    applicationId: string,
-    applicationName: string,
-    startDate: string,
-    endDate: string,
+    role: string,
+    serviceRequested: string,
+    application: Application,
+    staff: any,
+    site: Site,
+    siteRisk: Risk,
   ): string {
-    return `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset="UTF-8" />
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 0;
-          }
-          .container {
-            background-color: #ffffff;
-            max-width: 600px;
-            margin: 30px auto;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-          }
-          h2 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-          }
-          p {
-            color: #34495e;
-            line-height: 1.6;
-          }
-          .label {
-            font-weight: bold;
-            color: #2c3e50;
-          }
-          .footer {
-            margin-top: 30px;
-            font-size: 12px;
-            color: #7f8c8d;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="container">
-          <h2>Application Assignment Notification</h2>
-          <p><span class="label">Application ID:</span> ${applicationId}</p>
-          <p><span class="label">Application Name:</span> ${applicationName}</p>
-          <p><span class="label">Assignment Start Date:</span> ${startDate}</p>
-          <p><span class="label">Assignment End Date:</span> ${endDate}</p>
-  
-          <p>If you have any questions or need further details, please contact your manager.</p>
-  
-          <div class="footer">
-            <p>This is an automated message. Please do not reply.</p>
-          </div>
-        </div>
-      </body>
-    </html>
-    `;
+    //const filePath = `${__dirname}/email-template/application-assignment-notification.html`;
+
+    const filePath = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      '..',
+      'src',
+      'app',
+      'services',
+      'assignment',
+      'email-template',
+      'application-assignment-notification.html',
+    );
+
+    let template = fs.readFileSync(filePath, 'utf8');
+
+    let applicationURL =
+      this.configService.get('CATS_APPLICATION_URL') + application?.id;
+
+    template = template
+      .replace(/\$\{role\}/g, role)
+      .replace(/\$\{applicationURL\}/g, applicationURL)
+      .replace(/\$\{site\.id\}/g, application.siteId?.toString())
+      .replace(/\$\{application\.id\}/g, application.id?.toString())
+      .replace(/\$\{serviceRequested\}/g, serviceRequested)
+      .replace(/\$\{site\.address\}/g, site?.address)
+      .replace(
+        /\$\{application\.createdDateTime\}/g,
+        application?.createdDateTime?.toDateString(),
+      )
+      .replace(
+        /\$\{staff\.effectiveStartDate\}/g,
+        staff?.effectiveStartDate?.toDateString(),
+      )
+      .replace(/\$\{application\.risk\}/g, siteRisk?.description);
+
+    return template;
   }
 }

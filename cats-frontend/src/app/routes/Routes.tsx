@@ -11,7 +11,6 @@ import Search from '../features/people/Search';
 import Person from '../features/people/person/Person';
 import ApplicationDetails from '../features/applications/application/ApplicationDetails';
 import ApplicationSearch from '../features/applications/search/Search';
-import Assignment from '../features/assignment/Assignment';
 
 const roleBasedRoutes: any = {
   client: [

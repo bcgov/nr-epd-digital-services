@@ -13,9 +13,13 @@ import styles from './Details.module.css';
 
 interface IDetailsProps {
   applicationIdParam?: number;
+  showSiteDetails?: boolean;
 }
 
-export const Details: React.FC<IDetailsProps> = ({ applicationIdParam }) => {
+export const Details: React.FC<IDetailsProps> = ({
+  applicationIdParam,
+  showSiteDetails = true,
+}) => {
   const { id = '' } = useParams();
   const applicationId =
     id === '' ? (applicationIdParam ?? NaN) : parseInt(id, 10);
@@ -133,11 +137,13 @@ export const Details: React.FC<IDetailsProps> = ({ applicationIdParam }) => {
           </div>
         }
       />
-      <SiteDetails
-        primarySite={site}
-        associatedSites={site?.associatedSites || []}
-        loading={siteDataLoading || !siteDataCalled}
-      />
+      {showSiteDetails && (
+        <SiteDetails
+          primarySite={site}
+          associatedSites={site?.associatedSites || []}
+          loading={siteDataLoading || !siteDataCalled}
+        />
+      )}
     </div>
   );
 };

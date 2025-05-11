@@ -71,9 +71,9 @@ import { InvoiceV2 } from './entities/invoiceV2.entity';
 import { InvoiceLineItem } from './entities/invoiceLineItem.entity';
 import { InvoiceResolver } from './resolvers/invoice/invoice.resolver';
 import { InvoiceService } from './services/invoice/invoice.service';
-import { StaffAssignmentResolver } from './resolvers/assignment/staffAssigned.resolver';
+import { StaffAssignmentResolver } from './resolvers/assignment/staffAssignment.resolver';
 import { StaffAssignmentService } from './services/assignment/staffAssignment.service';
-import { ApplicationServiceType } from './entities/serviceType.entity';
+import { ApplicationServiceType } from './entities/applicationServiceType.entity';
 import { ChesEmailService } from './services/email/chesEmail.service';
 import { HttpModule, HttpService } from '@nestjs/axios';
 

@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { StaffAssignmentResolver } from './staffAssigned.resolver';
+import { StaffAssignmentResolver } from './staffAssignment.resolver';
 import { StaffAssignmentService } from '../../services/assignment/staffAssignment.service';
 import { LoggerService } from '../../logger/logger.service';
 import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
@@ -7,6 +7,7 @@ import { ResponseDto } from '../../dto/response/response.dto';
 import { HttpStatus } from '@nestjs/common';
 import { UpdateStaffAssignedDto } from '../../dto/assignment/updateStaffAssigned.dto';
 import { DropdownResponse } from '../../dto/dropdown.dto';
+import { error } from 'console';
 
 describe('StaffAssignmentResolver', () => {
   let resolver: StaffAssignmentResolver;
@@ -31,6 +32,9 @@ describe('StaffAssignmentResolver', () => {
           provide: LoggerService,
           useValue: {
             log: jest.fn(),
+            error: jest.fn(),
+            warn: jest.fn(),
+            debug: jest.fn(),
           },
         },
         {
@@ -112,7 +116,7 @@ describe('StaffAssignmentResolver', () => {
       await resolver.getStaffAssignedByAppId(applicationId, user);
       fail('Expected error to be thrown');
     } catch (err) {
-      expect(err).toBe(error);
+      expect(err).toBeInstanceOf(Error);
     }
   });
 
@@ -188,7 +192,7 @@ describe('StaffAssignmentResolver', () => {
       data: result,
     });
 
-    const response = await resolver.getApplicationServiceTypes({} as any);
+    const response = await resolver.getApplicationServiceTypes();
 
     expect(response.data).toEqual(result);
     expect(response.httpStatusCode).toBe(HttpStatus.OK);
@@ -211,7 +215,7 @@ describe('StaffAssignmentResolver', () => {
       data: result,
     });
 
-    const response = await resolver.getAllActiveStaffMembers({} as any);
+    const response = await resolver.getAllActiveStaffMembers();
     expect(response).toEqual({
       message:
         'getAllActiveStaffMembersWithCurrentCapacity fetched successfully',
