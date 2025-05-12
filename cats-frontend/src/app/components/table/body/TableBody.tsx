@@ -494,8 +494,10 @@ const TableBody: FC<TableBodyProps> = ({
     let cellValue: string | ReactNode;
 
     if (column.renderCell && typeof column.renderCell === 'function') {
-      cellValue = cellData.map((data: any, i: number) => (
-        <React.Fragment key={i}>{column.renderCell!(data)}</React.Fragment>
+      cellValue = cellData.map((cellData: any, i: number) => (
+        <React.Fragment key={i}>
+          {column.renderCell!(cellData, data[rowIndex])}
+        </React.Fragment>
       ));
     } else {
       cellValue = cellData.join(' ');
