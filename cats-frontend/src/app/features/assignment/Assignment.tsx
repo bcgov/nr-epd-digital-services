@@ -1,22 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Details } from '../applications/application/applicationTabs/appDetails/Details';
 import CollapsiblePanel from '../../components/simple/CollapsiblePanel';
 import { DropdownInput } from '../../components/input-controls/InputControls';
 import { FormFieldType } from '../../components/input-controls/IFormField';
-import PageContainer from '../../components/simple/PageContainer';
 import GetConfig from './StaffTableConfig';
 import StaffTable from './StaffTable';
 import { RequestStatus } from '../../helpers/requests/status';
-import { Participants } from '../applications/application/applicationTabs/appParticipants/Participants';
-import { useParams } from 'react-router';
+import { useGetParticipantRolesQuery } from '../applications/application/applicationTabs/appParticipants/graphql/Participants.generated';
+
 import {
-  useGetAppParticipantsByAppIdQuery,
-  useGetParticipantNamesQuery,
-  useGetParticipantRolesQuery,
-} from '../applications/application/applicationTabs/appParticipants/graphql/Participants.generated';
-import { AppParticipantFilter } from '../../../generated/types';
-import {
-  useGetAllAciveStaffMembersQuery,
+  useGetAllActiveStaffMembersQuery,
   useGetApplicationServiceTypesQuery,
   useGetStaffAssignedByAppIdQuery,
   useUpdateStaffAssignedMutation,
@@ -25,7 +18,6 @@ import {
   UpdateDisplayTypeParams,
   updateTableColumn,
 } from '../../helpers/utility';
-import { ro } from 'date-fns/locale';
 import {
   CancelButton,
   SaveButton,
@@ -56,15 +48,13 @@ const Assignment: React.FC<AssignmentProps> = ({
 
   const [internalRow, setInternalRow] = useState(staffColumnInternal);
 
-  const [searchParam, setSearchParam] = useState<string>('');
-
   const { data: rolesData } = useGetParticipantRolesQuery();
 
   const {
     data: staffMemebersList,
     loading: staffMemebersLoading,
     refetch: staffMemebersRefetch,
-  } = useGetAllAciveStaffMembersQuery();
+  } = useGetAllActiveStaffMembersQuery();
 
   const { data: serviceTypesList } = useGetApplicationServiceTypesQuery();
 
@@ -97,10 +87,6 @@ const Assignment: React.FC<AssignmentProps> = ({
       setAssignmentServiceType(tempServiceType.toString());
     }
   }, [staffData]);
-
-  const [searchSiteParticipant, setSearchSiteParticipant] = useState('');
-
-  const [options, setOptions] = useState<{ key: any; value: any }[]>([]);
 
   const handleSave = () => {
     let tempStaffRecords = staffRecords.map((item) => {
@@ -155,7 +141,7 @@ const Assignment: React.FC<AssignmentProps> = ({
         ),
         updates: {
           isLoading: RequestStatus.success,
-          filteredOptions: staffMemebersList?.getAllAciveStaffMembers?.data
+          filteredOptions: staffMemebersList?.getAllActiveStaffMembers?.data
             ?.filter((item: any) => !existingStaffIds.includes(item.personId))
             ?.filter((item: any) =>
               item.personFullName.toLowerCase().includes(value.toLowerCase()),
@@ -171,27 +157,8 @@ const Assignment: React.FC<AssignmentProps> = ({
     );
   };
 
-  const handleRoleSearch = (value: any) => {
-    value.trim();
-    setInternalRow((prev) =>
-      updateTableColumn(prev, {
-        indexToUpdate: prev.findIndex(
-          (item) => item.displayType?.graphQLPropertyName === 'roleId',
-        ),
-        updates: {
-          isLoading: RequestStatus.success,
-          filteredOptions: roleList.filter((item) =>
-            item.value.toLowerCase().includes(value.toLowerCase()),
-          ),
-          handleSearch,
-          customInfoMessage: <></>,
-        },
-      }),
-    );
-  };
-
   const processStaffMemebersList = (staffMemebersList: any) => {
-    let options = staffMemebersList?.getAllAciveStaffMembers?.data?.map(
+    let options = staffMemebersList?.getAllActiveStaffMembers?.data?.map(
       (item: any) => ({
         key: item.personId.toString(),
         value: item.personFullName,
@@ -251,7 +218,7 @@ const Assignment: React.FC<AssignmentProps> = ({
 
   return (
     <div role="assign staff" className="assign-section">
-      <Details applicationIdParam={applicationId} />
+      <Details applicationIdParam={applicationId} showSiteDetails={false} />
       <CollapsiblePanel
         showBorder={false}
         showPadding={false}
@@ -325,7 +292,7 @@ const Assignment: React.FC<AssignmentProps> = ({
                         return { ...item, endDate: event.value };
                       } else if (event.property === 'personId') {
                         let selectedStaff =
-                          staffMemebersList?.getAllAciveStaffMembers?.data?.filter(
+                          staffMemebersList?.getAllActiveStaffMembers?.data?.filter(
                             (item: any) =>
                               item.personId.toString() === event.value.key,
                           );

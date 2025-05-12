@@ -467,7 +467,7 @@ export type Query = {
   _service: _Service;
   findAllPerson: PersonResponse;
   findPersonById: PersonResponse;
-  getAllAciveStaffMembers: ViewStaffWithCapacityResponse;
+  getAllActiveStaffMembers: ViewStaffWithCapacityResponse;
   getAllParticipantRoles: ParticipantsRolesResponse;
   getAppParticipantsByAppId: AppParticipantsResponse;
   getApplicationDetailsById: ApplicationDetailsResponse;
@@ -831,14 +831,6 @@ export type ViewPersonNote = {
   user?: Maybe<Scalars['String']['output']>;
 };
 
-export type ViewStaff = {
-  __typename?: 'ViewStaff';
-  assignments: Scalars['Float']['output'];
-  capacity: Scalars['Float']['output'];
-  id: Scalars['Float']['output'];
-  name: Scalars['String']['output'];
-};
-
 export type ViewStaffAssignedDto = {
   __typename?: 'ViewStaffAssignedDto';
   applicationId: Scalars['Float']['output'];
@@ -861,11 +853,9 @@ export type ViewStaffAssignedResponse = {
 
 export type ViewStaffWithCapacityDto = {
   __typename?: 'ViewStaffWithCapacityDTO';
-  capacity: Scalars['Float']['output'];
   currentCapacity?: Maybe<Scalars['Float']['output']>;
   personFullName: Scalars['String']['output'];
   personId: Scalars['Float']['output'];
-  role: Scalars['String']['output'];
 };
 
 export type ViewStaffWithCapacityResponse = {

@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { StaffAssignmentService } from './staffAssignment.service';
 import { Repository } from 'typeorm';
 import { LoggerService } from '../../logger/logger.service';
-import { ApplicationServiceType } from '../../entities/serviceType.entity';
+import { ApplicationServiceType } from '../../entities/applicationServiceType.entity';
 import { DropdownDto } from '../../dto/dropdown.dto';
 import { HttpException } from '@nestjs/common';
 import { AppParticipant } from '../../entities/appParticipant.entity';
@@ -18,6 +18,11 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { UserTypeEum } from '../../utilities/enums/userType';
 import { UpdateStaffAssignedDto } from '../../dto/assignment/updateStaffAssigned.dto';
 import { create } from 'domain';
+import { find } from 'rxjs';
+import * as fs from 'fs';
+import * as path from 'path';
+import { SiteService } from '../site/site.service';
+import { Risk } from '../../entities/risk.entity';
 
 describe('StaffAssignmentService', () => {
   let service: StaffAssignmentService;
@@ -30,6 +35,8 @@ describe('StaffAssignmentService', () => {
   let emailService: ChesEmailService;
   let participantRoleRepository: Repository<ParticipantRole>;
   let configService: ConfigService;
+  let siteService: SiteService;
+  let siteRiskRepository: Repository<Risk>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -38,12 +45,14 @@ describe('StaffAssignmentService', () => {
           provide: getRepositoryToken(AppParticipant),
           useValue: {
             find: jest.fn(),
+            findOne: jest.fn(),
           },
         },
         {
           provide: getRepositoryToken(ParticipantRole),
           useValue: {
             find: jest.fn(),
+            findOne: jest.fn(),
           },
         },
         {
@@ -51,6 +60,7 @@ describe('StaffAssignmentService', () => {
           useValue: {
             find: jest.fn(),
             query: jest.fn(),
+            findOne: jest.fn(),
           },
         },
         {
@@ -65,6 +75,13 @@ describe('StaffAssignmentService', () => {
           provide: getRepositoryToken(ApplicationServiceType),
           useValue: {
             find: jest.fn(),
+            findOne: jest.fn(),
+          },
+        },
+        {
+          provide: getRepositoryToken(Risk),
+          useValue: {
+            findOne: jest.fn(),
           },
         },
         {
@@ -100,6 +117,12 @@ describe('StaffAssignmentService', () => {
             sendEmail: jest.fn(),
           },
         },
+        {
+          provide: SiteService,
+          useValue: {
+            getSiteById: jest.fn(),
+          },
+        },
         StaffAssignmentService,
       ],
     }).compile();
@@ -118,6 +141,9 @@ describe('StaffAssignmentService', () => {
     personRepository = module.get<Repository<Person>>(
       getRepositoryToken(Person),
     );
+
+    siteRiskRepository = module.get<Repository<Risk>>(getRepositoryToken(Risk));
+
     appParticipantService = module.get<AppParticipantService>(
       AppParticipantService,
     );
@@ -126,6 +152,7 @@ describe('StaffAssignmentService', () => {
       getRepositoryToken(ParticipantRole),
     );
     configService = module.get<ConfigService>(ConfigService);
+    siteService = module.get<SiteService>(SiteService);
   });
 
   it('should return application service types successfully', async () => {
@@ -174,7 +201,7 @@ describe('StaffAssignmentService', () => {
 
   it('should return empty array when no staff members are found', async () => {
     (personRepository.query as jest.Mock).mockResolvedValueOnce([]);
-    const result = await service.getAllAciveStaffMembersWithCurrentCapacity();
+    const result = await service.getAllActiveStaffMembersWithCurrentCapacity();
     expect(result).toEqual([]);
   });
 
@@ -190,6 +217,13 @@ describe('StaffAssignmentService', () => {
     staffAssignment.id = 1;
     staffAssignment.applicationId = applicationId;
     staffAssignment.participantRoleId = participantRole.id;
+
+    const person = new Person();
+    person.id = staffAssignment.personId;
+    person.email = 'iN8fj@example.com';
+    (personRepository.find as jest.Mock).mockResolvedValue([person]);
+    (personRepository.findOne as jest.Mock).mockResolvedValue([person]);
+
     (applicationRepository.findOne as jest.Mock).mockResolvedValue(application);
     (participantRoleRepository.find as jest.Mock).mockResolvedValue([
       participantRole,
@@ -197,6 +231,7 @@ describe('StaffAssignmentService', () => {
     (staffAssignmentRepository.find as jest.Mock).mockResolvedValue([
       staffAssignment,
     ]);
+
     const result = await service.getStaffByAppId(applicationId, {});
     expect(result).toEqual({
       applicationServiceTypeId: application.serviceTypeId,
@@ -214,21 +249,43 @@ describe('StaffAssignmentService', () => {
     });
   });
 
-  it('should generate a valid email template with valid input parameters', () => {
-    const applicationId = '12345';
-    const applicationName = 'Test Application';
-    const startDate = '2022-01-01';
-    const endDate = '2022-01-31';
+  it('should generate email template with valid input parameters', () => {
+    const role = 'Test Role';
+    const serviceRequested = 'Test Service';
+    const application: any = {
+      siteId: 1,
+      id: 1,
+      createdDateTime: new Date(),
+      riskId: 1,
+    };
+    const staff = {
+      effectiveStartDate: new Date(),
+    };
+    const site: any = {
+      address: 'Test Address',
+      id: 1,
+    };
+
+    const siteRisk = new Risk();
+    siteRisk.id = 1;
+    siteRisk.description = 'Test Risk';
+
     const result = service.generateAssignmentEmailTemplate(
-      applicationId,
-      applicationName,
-      startDate,
-      endDate,
+      role,
+      serviceRequested,
+      application,
+      staff,
+      site,
+      siteRisk,
     );
-    expect(result).toContain(applicationId);
-    expect(result).toContain(applicationName);
-    expect(result).toContain(startDate);
-    expect(result).toContain(endDate);
+    expect(result).toContain(role);
+    expect(result).toContain(serviceRequested);
+    expect(result).toContain(application.siteId.toString());
+    expect(result).toContain(application.id.toString());
+    expect(result).toContain(site.address);
+    expect(result).toContain(application.createdDateTime.toDateString());
+    expect(result).toContain(staff.effectiveStartDate.toDateString());
+    expect(result).toContain(application.riskId.toString());
   });
 
   it('should update staff assigned with IDIR user', async () => {
@@ -251,6 +308,12 @@ describe('StaffAssignmentService', () => {
       givenName: 'Test User',
     };
 
+    const participantRole = new ParticipantRole();
+    participantRole.id = 1;
+    (participantRoleRepository.findOne as jest.Mock).mockResolvedValue(
+      participantRole,
+    );
+
     const application = new Application();
     application.id = applicationId;
     application.serviceTypeId = 1;
@@ -260,6 +323,20 @@ describe('StaffAssignmentService', () => {
       true,
     );
     (emailService.sendEmail as jest.Mock).mockResolvedValue(true);
+    (siteService.getSiteById as jest.Mock).mockResolvedValue({
+      address: 'Test Address',
+      id: 1,
+    });
+
+    const person = new Person();
+    person.id = 1;
+    person.email = 'iN8fj@example.com';
+    (personRepository.find as jest.Mock).mockResolvedValue([person]);
+    (personRepository.findOne as jest.Mock).mockResolvedValue([person]);
+
+    const serviceType = new ApplicationServiceType();
+    serviceType.id = application.serviceTypeId.toString();
+    (repository.findOne as jest.Mock).mockResolvedValue(serviceType);
 
     const result = await service.updateStaffAssigned(
       staffInput,

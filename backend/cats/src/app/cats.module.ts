@@ -135,7 +135,9 @@ import { HttpModule, HttpService } from '@nestjs/axios';
       InvoiceV2,
       InvoiceLineItem,
       ApplicationServiceType,
+      ApplicationServiceType,
     ]),
+    HttpModule,
     HttpModule,
   ],
   providers: [

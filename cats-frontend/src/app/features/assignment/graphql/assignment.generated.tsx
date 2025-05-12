@@ -19,10 +19,10 @@ export type GetStaffAssignedByAppIdQueryVariables = Types.Exact<{
 
 export type GetStaffAssignedByAppIdQuery = { __typename?: 'Query', getStaffAssignedByAppId: { __typename?: 'ViewStaffAssignedResponse', data?: { __typename?: 'StaffAssignedDto', applicationServiceTypeId?: number | null, staffList: Array<{ __typename?: 'ViewStaffAssignedDto', id: number, applicationId: number, personId: number, roleId: number, startDate: any, endDate?: any | null, currentCapacity?: number | null }> } | null } };
 
-export type GetAllAciveStaffMembersQueryVariables = Types.Exact<{ [key: string]: never; }>;
+export type GetAllActiveStaffMembersQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type GetAllAciveStaffMembersQuery = { __typename?: 'Query', getAllAciveStaffMembers: { __typename?: 'ViewStaffWithCapacityResponse', data?: Array<{ __typename?: 'ViewStaffWithCapacityDTO', personId: number, personFullName: string, currentCapacity?: number | null }> | null } };
+export type GetAllActiveStaffMembersQuery = { __typename?: 'Query', getAllActiveStaffMembers: { __typename?: 'ViewStaffWithCapacityResponse', data?: Array<{ __typename?: 'ViewStaffWithCapacityDTO', personId: number, personFullName: string, currentCapacity?: number | null }> | null } };
 
 export type GetApplicationServiceTypesQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
@@ -122,9 +122,9 @@ export type GetStaffAssignedByAppIdQueryHookResult = ReturnType<typeof useGetSta
 export type GetStaffAssignedByAppIdLazyQueryHookResult = ReturnType<typeof useGetStaffAssignedByAppIdLazyQuery>;
 export type GetStaffAssignedByAppIdSuspenseQueryHookResult = ReturnType<typeof useGetStaffAssignedByAppIdSuspenseQuery>;
 export type GetStaffAssignedByAppIdQueryResult = Apollo.QueryResult<GetStaffAssignedByAppIdQuery, GetStaffAssignedByAppIdQueryVariables>;
-export const GetAllAciveStaffMembersDocument = gql`
-    query getAllAciveStaffMembers {
-  getAllAciveStaffMembers {
+export const GetAllActiveStaffMembersDocument = gql`
+    query getAllActiveStaffMembers {
+  getAllActiveStaffMembers {
     data {
       personId
       personFullName
@@ -135,36 +135,36 @@ export const GetAllAciveStaffMembersDocument = gql`
     `;
 
 /**
- * __useGetAllAciveStaffMembersQuery__
+ * __useGetAllActiveStaffMembersQuery__
  *
- * To run a query within a React component, call `useGetAllAciveStaffMembersQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllAciveStaffMembersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetAllActiveStaffMembersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllActiveStaffMembersQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetAllAciveStaffMembersQuery({
+ * const { data, loading, error } = useGetAllActiveStaffMembersQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetAllAciveStaffMembersQuery(baseOptions?: Apollo.QueryHookOptions<GetAllAciveStaffMembersQuery, GetAllAciveStaffMembersQueryVariables>) {
+export function useGetAllActiveStaffMembersQuery(baseOptions?: Apollo.QueryHookOptions<GetAllActiveStaffMembersQuery, GetAllActiveStaffMembersQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllAciveStaffMembersQuery, GetAllAciveStaffMembersQueryVariables>(GetAllAciveStaffMembersDocument, options);
+        return Apollo.useQuery<GetAllActiveStaffMembersQuery, GetAllActiveStaffMembersQueryVariables>(GetAllActiveStaffMembersDocument, options);
       }
-export function useGetAllAciveStaffMembersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllAciveStaffMembersQuery, GetAllAciveStaffMembersQueryVariables>) {
+export function useGetAllActiveStaffMembersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllActiveStaffMembersQuery, GetAllActiveStaffMembersQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllAciveStaffMembersQuery, GetAllAciveStaffMembersQueryVariables>(GetAllAciveStaffMembersDocument, options);
+          return Apollo.useLazyQuery<GetAllActiveStaffMembersQuery, GetAllActiveStaffMembersQueryVariables>(GetAllActiveStaffMembersDocument, options);
         }
-export function useGetAllAciveStaffMembersSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAllAciveStaffMembersQuery, GetAllAciveStaffMembersQueryVariables>) {
+export function useGetAllActiveStaffMembersSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAllActiveStaffMembersQuery, GetAllActiveStaffMembersQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetAllAciveStaffMembersQuery, GetAllAciveStaffMembersQueryVariables>(GetAllAciveStaffMembersDocument, options);
+          return Apollo.useSuspenseQuery<GetAllActiveStaffMembersQuery, GetAllActiveStaffMembersQueryVariables>(GetAllActiveStaffMembersDocument, options);
         }
-export type GetAllAciveStaffMembersQueryHookResult = ReturnType<typeof useGetAllAciveStaffMembersQuery>;
-export type GetAllAciveStaffMembersLazyQueryHookResult = ReturnType<typeof useGetAllAciveStaffMembersLazyQuery>;
-export type GetAllAciveStaffMembersSuspenseQueryHookResult = ReturnType<typeof useGetAllAciveStaffMembersSuspenseQuery>;
-export type GetAllAciveStaffMembersQueryResult = Apollo.QueryResult<GetAllAciveStaffMembersQuery, GetAllAciveStaffMembersQueryVariables>;
+export type GetAllActiveStaffMembersQueryHookResult = ReturnType<typeof useGetAllActiveStaffMembersQuery>;
+export type GetAllActiveStaffMembersLazyQueryHookResult = ReturnType<typeof useGetAllActiveStaffMembersLazyQuery>;
+export type GetAllActiveStaffMembersSuspenseQueryHookResult = ReturnType<typeof useGetAllActiveStaffMembersSuspenseQuery>;
+export type GetAllActiveStaffMembersQueryResult = Apollo.QueryResult<GetAllActiveStaffMembersQuery, GetAllActiveStaffMembersQueryVariables>;
 export const GetApplicationServiceTypesDocument = gql`
     query getApplicationServiceTypes {
   getApplicationServiceTypes {

@@ -31,15 +31,10 @@ interface IParticipantTableProps {
 
 const StaffTable: React.FC<IParticipantTableProps> = ({
   handleTableChange,
-  handleWidgetCheckBox,
   tableColumnConfig,
   formData,
   status,
-  handleTableSort,
   handleAddParticipant,
-  selectedRows,
-  handleRemoveParticipant,
-  handleItemClick,
   showApproveRejectSection,
   approveRejectHandler,
   hideLabelForWidget,
@@ -54,7 +49,7 @@ const StaffTable: React.FC<IParticipantTableProps> = ({
       <Widget
         currentPage={1}
         changeHandler={handleTableChange}
-        handleCheckBoxChange={(event: any) => console.log}
+        handleCheckBoxChange={(event: any) => {}}
         title={'Assign Staff'}
         tableColumns={tableColumnConfig}
         tableData={formData}
@@ -68,9 +63,7 @@ const StaffTable: React.FC<IParticipantTableProps> = ({
         srMode={false}
         hideWidgetCheckbox={true}
         primaryKeycolumnName="particRoleId"
-        sortHandler={(row: any, ascDir: any) => {
-          //handleTableSort(row, ascDir);
-        }}
+        sortHandler={(row: any, ascDir: any) => {}}
       >
         <div className="d-flex gap-2 flex-wrap">
           <Button variant="secondary" onClick={handleAddParticipant}>

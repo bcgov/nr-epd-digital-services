@@ -59,7 +59,6 @@ export const GetConfig = () => {
       renderCell: (value: any, row: any) => {
         let variant = 'success';
         let Icon;
-        //value = 5;
         if (value >= 10) {
           variant = 'danger';
           Icon = CircleExclamation;
@@ -69,9 +68,6 @@ export const GetConfig = () => {
         }
         return (
           <div className="d-flex align-items-center justify-content-start gap-3 w-100">
-            {/* <span className="text-nowrap " style={{ width: '20px' }}>
-              {value}
-            </span> */}
             <ProgressBar
               className={`flex-grow-1`}
               variant={variant}
