@@ -69,7 +69,7 @@ export class StaffAssignmentResolver {
   @UsePipes(new GenericValidationPipe())
   async getAllAciveStaffMembers(@AuthenticatedUser() user: any) {
     const result =
-      await this.service.getAllAciveStaffMembersWithCurrentCapacity();
+      await this.service.getAllActiveStaffMembersWithCurrentCapacity();
     if (result?.length > 0) {
       this.loggerService.log(
         'StaffAssignmentResolver.getAllAciveStaffMembers() RES:200 end',
