@@ -1,13 +1,12 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { ViewStaff } from "src/app/dto/staff/viewStaff.dto";
-import { AppParticipant } from "src/app/entities/appParticipant.entity";
-import { Person } from "src/app/entities/person.entity";
-import { LoggerService } from "src/app/logger/logger.service";
-import { Filter } from "src/app/utilities/enums/application/filter.enum";
-import { SortByDirection } from "src/app/utilities/enums/application/sortByDirection.enum";
-import { SortBy } from "src/app/utilities/enums/staff/sortBy.enum";
-import { Repository } from "typeorm";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, DataSource } from 'typeorm';
+import { LoggerService } from 'src/app/logger/logger.service';
+import { Filter } from 'src/app/utilities/enums/application/filter.enum';
+import { SortByDirection } from 'src/app/utilities/enums/application/sortByDirection.enum';
+import { SortBy } from 'src/app/utilities/enums/staff/sortBy.enum';
+import { Person } from 'src/app/entities/person.entity';
+import { ViewStaff } from 'src/app/dto/staff/viewStaff.dto';
 
 @Injectable()
 export class StaffService {
@@ -15,6 +14,7 @@ export class StaffService {
     @InjectRepository(Person)
     private readonly staffRepository: Repository<Person>,
     private readonly loggerSerivce: LoggerService,
+    private readonly dataSource: DataSource,
   ) {}
 
   async getStaffs(
@@ -22,96 +22,106 @@ export class StaffService {
     pageSize: number,
     filter: Filter,
     sortBy: SortBy,
-    sortByDir: SortByDirection
+    sortByDir: SortByDirection,
   ) {
     try {
       this.loggerSerivce.log('StaffService: getStaffs start');
-      
+
       const capacity = 10;
       const offset = (page - 1) * pageSize;
+      let havingClause = '';
+      const assignmentExpr = `
+        COALESCE(SUM(ast.assignment_factor), 0)
+        + COALESCE(SUM(pr.assignment_factor), 0)
+        + COALESCE(SUM(CASE 
+            WHEN rs.abbrev = 'H' THEN 3
+            WHEN rs.abbrev IS NULL THEN 0
+            ELSE 1
+          END), 0)
+      `;
 
-      const result = {
+      if (filter === Filter.UNASSIGNED) {
+        havingClause = `HAVING ${assignmentExpr} = 0`;
+      } else if (filter === Filter.OVERCAPACITY) {
+        havingClause = `HAVING ${assignmentExpr} > ${capacity}`;
+      }
+
+      const baseQuery =  `
+        SELECT   
+          p.id, 
+          p.first_name, 
+          p.middle_name,
+          p.last_name,
+          TRIM(CONCAT(p.first_name, ' ', COALESCE(p.middle_name, ''), ' ', p.last_name)) AS name,
+          COALESCE(SUM(ast.assignment_factor), 0) 
+          + COALESCE(SUM(pr.assignment_factor), 0)
+          + COALESCE(SUM(CASE 
+            WHEN rs.abbrev = 'H' THEN 3
+            WHEN rs.abbrev IS NULL THEN 0
+            ELSE 1
+          END), 0) AS current_factors
+        FROM 
+          cats.person p
+        LEFT JOIN cats.app_participant a ON a.person_id = p.id AND (
+          (CURRENT_DATE BETWEEN a.effective_start_date AND a.effective_end_date)
+          OR (CURRENT_DATE >= a.effective_start_date AND a.effective_end_date IS NULL)
+        )
+        LEFT JOIN cats.application app ON app.id = a.application_id 
+        LEFT JOIN cats.application_service_type ast ON ast.id = app.application_service_type_id
+        LEFT JOIN cats.participant_role pr ON pr.id = a.participant_role_id
+        LEFT JOIN cats.risk rs ON rs.id = app.id
+        WHERE 
+          p.login_user_name IS NOT NULL 
+          AND p.is_active = TRUE
+        GROUP BY 
+          p.id, p.first_name, p.middle_name, p.last_name
+        ${havingClause}
+      `;
+      
+      // Sort mapping
+      const sortMap = {
+        [SortBy.ID]: 'p.id',
+        [SortBy.NAME]: 'name',
+        [SortBy.ASSIGNMENT]: 'current_factors',
+      };
+
+      const sortColumn = sortMap[sortBy] || 'name';
+      const sortDirection = sortByDir.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+
+      const finalQuery = `
+        ${baseQuery}
+        ORDER BY ${sortColumn} ${sortDirection}
+        LIMIT $1
+        OFFSET $2
+      `;
+     
+      const rawResults = await this.dataSource.query(finalQuery, [pageSize, offset]);
+
+      // Total count for pagination
+      const countQuery = `
+        SELECT COUNT(*) FROM (
+          ${baseQuery}
+        ) AS sub
+      `;
+      const countResult = await this.dataSource.query(countQuery);
+      const count = parseInt(countResult[0].count, 10);
+
+       const result = {
         page,
         pageSize,
-        count: 0,
-        data: [] as ViewStaff[],
+        count,
+        data: rawResults.map((row: any) => ({
+          id: row.id,
+          name: row.name,
+          assignments: Number(row.current_factors),
+          capacity,
+        })) as ViewStaff[],
       };
 
-      // Validate page and pageSize
-      if (pageSize <= 0 || page <= 0) return result;
-
-    // Build the query
-    //   const query = this.staffRepository
-    //     .createQueryBuilder("app_participant")
-    //     .select("person.id", "person_id")
-    //     .addSelect('MIN(app_participant.id)', 'app_participant_id')
-    //     .addSelect(
-    //       "TRIM(CONCAT(person.first_name, ' ', COALESCE(person.middle_name || '', ''), ' ', person.last_name))",
-    //       "full_name"
-    //     )
-    //     .addSelect("participant_role.description", "role_description")
-    //  // .addSelect("SUM(app_participant.size)", "sum_size")
-    //     .innerJoin("app_participant.person", "person")
-    //     .innerJoin("app_participant.participantRole", "participant_role")
-    //     .groupBy("person.id, person.first_name, person.middle_name, person.last_name, participant_role.description");
-
-
-
-        const query = this.staffRepository
-          .createQueryBuilder("person")
-          .select("person.id", "person_id")
-          .addSelect("MIN(app_participant.id)", "app_participant_id")
-          .addSelect(
-            "TRIM(CONCAT(person.first_name, ' ', COALESCE(person.middle_name || '', ''), ' ', person.last_name))",
-            "full_name"
-          )
-          .addSelect("participant_role.description", "role_description")
-          .addSelect("COUNT(app_participant.id)", "participant_count") // or use SUM if summing something else
-          .leftJoin("person.appParticipants", "app_participant")
-          .leftJoin("app_participant.participantRole", "participant_role")
-          .groupBy("person.id, person.first_name, person.middle_name, person.last_name, participant_role.description");
-
-      // Apply filters
-      //   if (filter === Filter.UNASSIGNED) {
-      //     query.having("SUM(app_participant.size) = 0");
-      //   } else if (filter === Filter.OVERCAPACITY) {
-      //     query.having(`SUM(app_participant.size) > ${capacity}`);
-      //   }
-
-      // Apply dynamic sorting
-      const sortFieldMap = {
-        [SortBy.ID]: 'app_participant_id',
-        [SortBy.NAME]: 'full_name',
-        [SortBy.ROLE]: 'role_description',
-     // [SortBy.Assignment]: 'sum_size',
-      };
-
-      const orderByField = sortFieldMap[sortBy] ?? 'full_name';
-      query.orderBy(orderByField, sortByDir.toUpperCase() as 'ASC' | 'DESC');
-
-      const [rawResults, countResults] = await Promise.all([
-        query.clone().limit(pageSize).offset(offset).getRawMany(),
-        query.getRawMany(), // for total count
-      ]);
-
-      // Set the count (total number of records)
-      result.count = countResults.length;
-
-      // Map raw results to the desired format
-      result.data = rawResults.map(row => ({
-        id: Number(row.app_participant_id),
-        name: row.full_name,
-        role: row?.role_description ?? '',
-        assignments:  row.participant_count, // Number(row.sum_size),
-        capacity,
-      }));
-
-      this.loggerSerivce.log(`StaffService: ${result.count} staff found.`);
+      this.loggerSerivce.log('StaffService: getStaffs end');
       return result;
-
-    } 
-    catch (error) 
-    {
+     
+    } catch (error) {
       this.loggerSerivce.error(`StaffService Error: ${error.message}`, error.stack);
       throw new Error(`Failed to fetch staff: ${error.message}`);
     }

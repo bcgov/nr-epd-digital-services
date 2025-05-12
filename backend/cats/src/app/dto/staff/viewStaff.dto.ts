@@ -9,9 +9,6 @@ export class ViewStaff {
     name: string;
 
     @Field()
-    role: string;
-
-    @Field()
     assignments: number;
 
     @Field()

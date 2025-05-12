@@ -3,8 +3,7 @@ import { registerEnumType } from '@nestjs/graphql';
 export enum SortBy {
   ID = 'id',
   NAME = 'name',
-  ROLE = 'role',
-  Assignment = 'applicationType',
+  ASSIGNMENT = 'assignment',
 }
 
 registerEnumType(SortBy, {

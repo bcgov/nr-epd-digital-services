@@ -1,139 +1,123 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "../../components/button/Button";
 import PageContainer from "../../components/simple/PageContainer";
 import Widget from "../../components/widget/Widget";
 import { AngleLeft, Plus } from "../../components/common/icon";
 import { sortArray } from "../../helpers/utility";
 import { debounce } from "lodash";
-import { ApplicationSortByDirection, Filter } from "../../../generated/types";
+import { ApplicationSortByDirection, Filter, StaffSortByField, ViewStaff } from "../../../generated/types";
 import "./StaffDashboard.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import FilterControls from "./FilterControls";
 import { StaffDashboardColumns } from "./StaffDashboardConfig";
+import { useGetStaffsQuery } from "./graphql/StaffDashboard.generated";
 
 const StaffDashboard = () => {
-  const data = [
-      {
-          id: 1,
-          name: 'John Doe',
-          role: 'Administrator',
-          assignments: 0,
-          capacity: 10,
-      },
-      {
-          id: 2,
-          name: 'Jane Doe',
-          role: 'Manager',
-          assignments: 3,
-          capacity:10,
-      },
-      {
-          id: 3,
-          name: 'George Doe',
-          role: 'Staff',
-          assignments:8,
-          capacity: 10,
-      },
-      {
-          id: 4,
-          name: 'Emily Doe',
-          role: 'Staff',
-          assignments: 10,
-          capacity: 10,
-      },
-      {
-          id: 5,
-          name: 'John kane',
-          role: 'Staff',
-          assignments: 15,
-          capacity: 10,
-      },
-  ];
+ const [staffs, setStaffs] = useState({
+  data: [] as ViewStaff[],
+  page: 1,
+  pageSize: 5,
+  totalResults: 0,
+  filter: Filter.All,
+  sortBy: StaffSortByField.Id,
+  sortByDir: ApplicationSortByDirection.Asc,
+});
 
+  
+  const { data, loading, error, refetch } = useGetStaffsQuery({
+    variables: {
+      page: staffs.page,
+      pageSize: staffs.pageSize,
+      filter: staffs.filter,
+      sortBy: staffs.sortBy,
+      sortByDir: staffs.sortByDir,
+    }
+  });
+
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+      setStaffs(prev => {
+        return {
+          ...prev,
+          data: data.getStaffs.data,
+          page: data.getStaffs.page || 1,
+          pageSize: data.getStaffs.pageSize || 5,
+          totalResults: data.getStaffs.count || 0,
+        };
+      });
+    }
+  }, [data, loading]);
   const navigate = useNavigate();
   const location = useLocation();
   const fromScreen = location.state?.from || '';
-  const [selectedRows, setSelectedRows] = useState<{ id: any }[]>([]);
-  const [staffs, setStaffs] = useState({
-      data: data,
-      page: 1,
-      pageSize: 5,
-      filter: Filter.All,
-      sortByDir: ApplicationSortByDirection.Asc,
-    });
-  const [page, setPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(5);
-  const [totalResults, setTotalResults] = useState<number>(0);
-  const [sortByDir, setSortByDir] = useState<ApplicationSortByDirection>(ApplicationSortByDirection.Asc);
-  const [filter, setFilter] = useState<Filter>(Filter.All);
   const [showFilterSelect, setShowFilterSelect] = useState(false);
     
   const toggleFilterSelect = () => {
     setShowFilterSelect(!showFilterSelect);
   };
+  
   const handleGoBack = () => {
     navigate(-1);
   };
 
-  const debouncedSearch = useCallback(
-    debounce(
-      (
-        data: any,
-        page: number,
-        pageSize: number,
-        filter: Filter,
-        sortByDir: ApplicationSortByDirection,
-      ) => {
-        setStaffs({
-          data,
-          page,
-          pageSize,
-          filter,
-          sortByDir,
-        });
-      },
-      300,
-    ),
-    [],
-  );
-
   const handlePageChange = (page: number) => {
-    setPage(page);
-    debouncedSearch( staffs.data, page, pageSize, filter, sortByDir);
+    setStaffs((prev) => ({ ...prev, page }));
   };
 
   const handlePageSizeChange = (pageSize: number) => {
-    setPageSize(pageSize);
-    debouncedSearch( staffs.data, page, pageSize, filter, sortByDir);
+    setStaffs((prev) => ({ ...prev, pageSize, page: 1 })); // reset page
   };
-  
+
   const handleFilterChange = (filter: Filter) => {
-    setFilter(filter);
-    debouncedSearch( staffs.data, page, pageSize, filter, sortByDir);
+    setStaffs((prev) => ({ ...prev, filter, page: 1 }));
+  };
+
+  const handleTableSort = (row: any, ascending: any) => {
+    let newSortByDir = ascending
+         ? ApplicationSortByDirection.Asc
+         : ApplicationSortByDirection.Desc;
+    let sortField = StaffSortByField.Name;
+    switch (row.graphQLPropertyName) {
+      case 'name':
+        sortField = StaffSortByField.Name;
+        break;
+      case 'assignments':
+        sortField = StaffSortByField.Assignment;
+        break;
+      default:
+        sortField = StaffSortByField.Id;
+        break;
+    }
+    setStaffs((prev) => ({
+      ...prev,
+      sortBy: sortField,
+      sortByDir: newSortByDir,
+    }));
   };
 
   const handleTableChange = (event: any) => {
-      if (
-        event.property.includes('select_all') ||
-        event.property.includes('select_row')
-      ) {
-        let rows = event.property === 'select_row' ? [event.row] : event.value;
-        let isTrue =
-          event.property === 'select_row' ? event.value : event.selected;
-        if (isTrue) {
-          setSelectedRows((prevSelectedRows) => [
-            ...prevSelectedRows,
-            ...rows.map((row: any) => ({ id: row.id })),
-          ]);
-        } else {
-          setSelectedRows((prevSelectedRows) =>
-            prevSelectedRows.filter(
-              (selectedRow) =>
-                !rows.some((row: any) => selectedRow.id === row.id),
-            ),
-          );
-        }
-      }
+      // if (
+      //   event.property.includes('select_all') ||
+      //   event.property.includes('select_row')
+      // ) {
+      //   let rows = event.property === 'select_row' ? [event.row] : event.value;
+      //   let isTrue =
+      //     event.property === 'select_row' ? event.value : event.selected;
+      //   if (isTrue) {
+      //     setSelectedRows((prevSelectedRows) => [
+      //       ...prevSelectedRows,
+      //       ...rows.map((row: any) => ({ id: row.id })),
+      //     ]);
+      //   } else {
+      //     setSelectedRows((prevSelectedRows) =>
+      //       prevSelectedRows.filter(
+      //         (selectedRow) =>
+      //           !rows.some((row: any) => selectedRow.id === row.id),
+      //       ),
+      //     );
+      //   }
+      // }
       if (event.property.includes('view')) {
        alert(
           `
@@ -147,17 +131,17 @@ const StaffDashboard = () => {
       }
   };
     
-  const handleTableSort = (row: any, ascDir: any) => {
-    let property = row['graphQLPropertyName'];
-    setStaffs((prevData) => {
-      // Create a shallow copy of the previous data
-      let updatedNotes = [...prevData?.data];
-      // Call the common sort function to sort the updatedNotes array
-      updatedNotes = sortArray(updatedNotes, property, ascDir);
-      // Return the sorted array
-      return { ...prevData, data: updatedNotes };
-    });
-  };
+  // const handleTableSort = (row: any, ascDir: any) => {
+  //   let property = row['graphQLPropertyName'];
+  //   setStaffs((prevData) => {
+  //     // Create a shallow copy of the previous data
+  //     let updatedNotes = [...prevData?.data];
+  //     // Call the common sort function to sort the updatedNotes array
+  //     updatedNotes = sortArray(updatedNotes, property, ascDir);
+  //     // Return the sorted array
+  //     return { ...prevData, data: updatedNotes };
+  //   });
+  // };
     
   return (
     <PageContainer role="staff">
@@ -169,10 +153,10 @@ const StaffDashboard = () => {
         </div>
         <Widget
           customWidgetCss={'custom-widget-container'}
-          allowRowsSelect={true}
+          allowRowsSelect={false}
           tableColumns={StaffDashboardColumns}
           tableData={staffs?.data ?? []}
-          // tableIsLoading={status ?? RequestStatus.idle}
+          // tableIsLoading={loading ?? RequestStatus.idle}
           changeHandler={handleTableChange}
           sortHandler={(row, ascDir) => { handleTableSort(row, ascDir); }}
           title={'Staff'}
@@ -181,10 +165,14 @@ const StaffDashboard = () => {
           showPageOptions={true}
           selectPage={handlePageChange}
           changeResultsPerPage={handlePageSizeChange}
-          currentPage={page}
-          resultsPerPage={pageSize}
-          totalResults={staffs?.data?.length ?? 0}
-          filter={<FilterControls toggleColumnSelect={toggleFilterSelect} handleFilterChange={handleFilterChange} filter={filter}/>} 
+          currentPage={staffs?.page ?? 1}
+          resultsPerPage={staffs?.pageSize ?? 5}
+          totalResults={staffs?.totalResults ?? 0}
+          filter={
+            <FilterControls 
+              toggleColumnSelect={toggleFilterSelect} 
+              handleFilterChange={handleFilterChange} 
+              filter={staffs.filter ?? {}}/>} 
         >
           <div className="d-flex gap-2 flex-wrap">
             <Button variant="secondary" onClick={() => {   navigate('/person', { state: { from: 'Staff' } });}}>

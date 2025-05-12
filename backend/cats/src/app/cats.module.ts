@@ -161,7 +161,7 @@ import { HttpModule, HttpService } from '@nestjs/axios';
     InvoiceResolver,
     InvoiceService,
     StaffResolver,
-    StaffService
+    StaffService,
     StaffAssignmentResolver,
     StaffAssignmentService,
     ChesEmailService,

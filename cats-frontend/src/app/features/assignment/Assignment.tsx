@@ -157,10 +157,10 @@ const Assignment: React.FC<AssignmentProps> = ({
           isLoading: RequestStatus.success,
           filteredOptions: staffMemebersList?.getAllAciveStaffMembers?.data
             ?.filter((item: any) => !existingStaffIds.includes(item.personId))
-            ?.filter((item) =>
+            ?.filter((item: any) =>
               item.personFullName.toLowerCase().includes(value.toLowerCase()),
             )
-            .map((item) => ({
+            .map((item: any) => ({
               key: item.personId.toString(),
               value: item.personFullName,
             })),
@@ -326,7 +326,7 @@ const Assignment: React.FC<AssignmentProps> = ({
                       } else if (event.property === 'personId') {
                         let selectedStaff =
                           staffMemebersList?.getAllAciveStaffMembers?.data?.filter(
-                            (item) =>
+                            (item: any) =>
                               item.personId.toString() === event.value.key,
                           );
 
