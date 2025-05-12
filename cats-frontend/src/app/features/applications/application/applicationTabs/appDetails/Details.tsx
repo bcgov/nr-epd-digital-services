@@ -1,8 +1,8 @@
 import cx from 'classnames';
 import { useParams } from 'react-router-dom';
-import CollapsiblePanel from '@cats/components/simple/CollapsiblePanel';
-import { TickIcon } from '@cats/components/common/icon';
-import { formatDateUTC } from '@cats/helpers/utility';
+import CollapsiblePanel from '../../../../../components/simple/CollapsiblePanel';
+import { TickIcon } from '../../../../../components/common/icon';
+import { formatDateUTC } from '../../../../../helpers/utility';
 
 import { SiteDetails } from './components/SiteDetails';
 import {
@@ -11,9 +11,18 @@ import {
 } from './Details.generated';
 import styles from './Details.module.css';
 
-export const Details = () => {
+interface IDetailsProps {
+  applicationIdParam?: number;
+  showSiteDetails?: boolean;
+}
+
+export const Details: React.FC<IDetailsProps> = ({
+  applicationIdParam,
+  showSiteDetails = true,
+}) => {
   const { id = '' } = useParams();
-  const applicationId = parseInt(id, 10);
+  const applicationId =
+    id === '' ? (applicationIdParam ?? NaN) : parseInt(id, 10);
 
   const { data, loading: applicationDataLoading } =
     useGetApplicationDetailsByIdQuery({
@@ -44,6 +53,10 @@ export const Details = () => {
         defaultOpen={true}
         label="Application Information"
         loading={applicationDataLoading}
+        defaultCloseBtnPosition="left"
+        showBorder={applicationIdParam === undefined}
+        showPadding={applicationIdParam === undefined}
+        smallFont={!(applicationIdParam === undefined)}
         content={
           <div className={styles.rowsContainer}>
             <div className={cx(styles.row, styles.rowGrid6)}>
@@ -124,11 +137,13 @@ export const Details = () => {
           </div>
         }
       />
-      <SiteDetails
-        primarySite={site}
-        associatedSites={site?.associatedSites || []}
-        loading={siteDataLoading || !siteDataCalled}
-      />
+      {showSiteDetails && (
+        <SiteDetails
+          primarySite={site}
+          associatedSites={site?.associatedSites || []}
+          loading={siteDataLoading || !siteDataCalled}
+        />
+      )}
     </div>
   );
 };

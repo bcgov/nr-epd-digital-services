@@ -29,6 +29,7 @@ import { SiteType } from './siteType.entity';
 import { HousingApplicationXref } from './housingApplicationXref.entity';
 import { Invoice } from './invoice.entity';
 import { Timesheet } from './timesheet.entity';
+import { ApplicationServiceType } from './applicationServiceType.entity';
 
 @Index('idx_application_app_type_id', ['appTypeId'], {})
 @Index('pk_application', ['id'], { unique: true })
@@ -186,4 +187,16 @@ export class Application {
 
   @OneToMany(() => Timesheet, (timesheet) => timesheet.application)
   timesheets: Timesheet[];
+
+  @Column('integer', { name: 'application_service_type_id', nullable: true })
+  serviceTypeId: number | null;
+
+  @ManyToOne(
+    () => ApplicationServiceType,
+    (serviceType) => serviceType.applications,
+  )
+  @JoinColumn([
+    { name: 'application_service_type_id', referencedColumnName: 'id' },
+  ])
+  serviceType: ApplicationServiceType;
 }

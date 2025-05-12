@@ -1,0 +1,43 @@
+.primary-icon-button {
+  color: var(--surface-color-primary-button-default);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.panelLabel {
+  font: var(--typography-bold-h4);
+  color: var(--typography-color-primary);
+  font-size: 18px;
+}
+
+.assignment-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-margin-medium);
+}
+
+.site-info-label {
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--typography-color-secondary);
+}
+
+.site-info-content-div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-margin-xsmall);
+  width: 25%;
+}
+
+.site-info-content {
+  display: flex;
+  flex-direction: row;
+  gap: var(--layout-margin-medium);
+}
+
+.assign-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-margin-large);
+}
