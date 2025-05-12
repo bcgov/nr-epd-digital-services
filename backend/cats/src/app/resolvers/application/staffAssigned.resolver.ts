@@ -64,15 +64,15 @@ export class StaffAssignmentResolver {
   }
 
   @Query(() => ViewStaffWithCapacityResponse, {
-    name: 'getAllAciveStaffMembers',
+    name: 'getAllActiveStaffMembers',
   })
   @UsePipes(new GenericValidationPipe())
-  async getAllAciveStaffMembers(@AuthenticatedUser() user: any) {
+  async getAllActiveStaffMembers(@AuthenticatedUser() user: any) {
     const result =
       await this.service.getAllActiveStaffMembersWithCurrentCapacity();
     if (result?.length > 0) {
       this.loggerService.log(
-        'StaffAssignmentResolver.getAllAciveStaffMembers() RES:200 end',
+        'StaffAssignmentResolver.getAllActiveStaffMembers() RES:200 end',
       );
       return this.staffResponseProvider.createResponse(
         'Participant names fetched successfully',
@@ -82,7 +82,7 @@ export class StaffAssignmentResolver {
       );
     } else {
       this.loggerService.log(
-        'StaffAssignmentResolver.getAllAciveStaffMembers() RES:404 end',
+        'StaffAssignmentResolver.getAllActiveStaffMembers() RES:404 end',
       );
       return this.staffResponseProvider.createResponse(
         'Participant names data not found',
