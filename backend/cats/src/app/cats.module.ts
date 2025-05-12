@@ -75,9 +75,9 @@ import { StaffResolver } from './resolvers/staff/staff.resolver';
 import { StaffService } from './services/staff/staff.service';
 import { StaffAssignmentResolver } from './resolvers/application/staffAssigned.resolver';
 import { StaffAssignmentService } from './services/assignment/staffAssignment.service';
-import { ApplicationServiceType } from './entities/serviceType.entity';
 import { ChesEmailService } from './services/email/chesEmail.service';
 import { HttpModule, HttpService } from '@nestjs/axios';
+import { ApplicationServiceType } from './entities/applicationServiceType.entity';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -134,7 +134,6 @@ import { HttpModule, HttpService } from '@nestjs/axios';
       PersonNote,
       InvoiceV2,
       InvoiceLineItem,
-      ApplicationServiceType,
       ApplicationServiceType,
     ]),
     HttpModule,
