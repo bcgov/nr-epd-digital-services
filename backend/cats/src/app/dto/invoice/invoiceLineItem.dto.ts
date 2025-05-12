@@ -51,7 +51,10 @@ export class InvoiceLineItemDto {
 }
 
 @InputType()
-export class InvoiceLineItemCreateDto {
+export class InvoiceLineItemInputDto {
+  @Field({ nullable: true }) // Optional for new line items
+  id?: number;
+
   @Field()
   type: InvoiceLineItemType;
 
@@ -66,4 +69,10 @@ export class InvoiceLineItemCreateDto {
 
   @Field(() => Int)
   totalInCents: number;
+
+  @Field({ nullable: true }) // Optional for new line items
+  createdBy?: string;
+
+  @Field({ nullable: true }) // Optional for new line items
+  createdAt?: Date;
 }
