@@ -11,12 +11,18 @@ global:
     keycloakRealm: ~
     keycloakClientID: ~
     keycloakAuthURL: ~
+    CHES_CLIENT_ID: ~
+    CHES_CLIENT_SECRET: ~
   config:
     seed:
       enabled: true
     SITE_SERVICE_URL: "epd-backend-applications"
     CATS_EMAIL_TEST_MODE: true
     CATS_TEST_EMAIL_ADDRESS: haley.sawyer@gov.bc.ca
+    CHES_TOKEN_URL: https://test.loginproxy.gov.bc.ca/auth/realms/comsvcauth/protocol/openid-connect/token
+    CHES_EMAIL_URL: https://ches-test.api.gov.bc.ca/api/v1/email
+    CHES_EMAIL_FROM: NOREPLYEPD@gov.bc.ca
+    CATS_APPLICATION_URL: http://localhost:3000/applications
 #-- the components of the application, backend.
 backend:
   #-- enable or disable backend
