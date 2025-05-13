@@ -199,22 +199,22 @@ spec:
             - name: KEYCLOCK_SECRET
               valueFrom:
                 secretKeyRef:
-                  key: KEYCLOAK_SECRET
+                  key: KEYCLOCK_SECRET
                   name: {{ .Release.Name }}-backend
             - name: KEYCLOCK_REALM
               valueFrom:
                 secretKeyRef:
-                  key: KEYCLOAK_REALM
+                  key: KEYCLOCK_REALM 
                   name: {{ .Release.Name }}-backend
             - name: KEYCLOCK_CLIENT_ID
               valueFrom:
                 secretKeyRef:
-                  key: KEYCLOAK_CLIENT_ID
+                  key: KEYCLOCK_CLIENT_ID
                   name: {{ .Release.Name }}-backend
             - name: KEYCLOCK_AUTH_URL
               valueFrom:
                 secretKeyRef:
-                  key: KEYCLOAK_AUTH_URL
+                  key: KEYCLOCK_AUTH_URL
                   name: {{ .Release.Name }}-backend
           ports:
             - name: http
