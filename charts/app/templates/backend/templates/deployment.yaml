@@ -196,26 +196,6 @@ spec:
               value: {{ .Values.global.config.CATS_EMAIL_TEST_MODE | quote }}
             - name: CATS_TEST_EMAIL_ADDRESS
               value: {{ .Values.global.config.CATS_TEST_EMAIL_ADDRESS | quote }}
-            # - name: KEYCLOCK_SECRET
-            #   valueFrom:
-            #     secretKeyRef:
-            #       key: KEYCLOCK_SECRET
-            #       name: {{ .Release.Name }}-backend
-            # - name: KEYCLOCK_REALM
-            #   valueFrom:
-            #     secretKeyRef:
-            #       key: KEYCLOCK_REALM 
-            #       name: {{ .Release.Name }}-backend
-            # - name: KEYCLOCK_CLIENT_ID
-            #   valueFrom:
-            #     secretKeyRef:
-            #       key: KEYCLOCK_CLIENT_ID
-            #       name: {{ .Release.Name }}-backend
-            # - name: KEYCLOCK_AUTH_URL
-            #   valueFrom:
-            #     secretKeyRef:
-            #       key: KEYCLOCK_AUTH_URL
-            #       name: {{ .Release.Name }}-backend
           ports:
             - name: http
               containerPort: {{ .Values.backend.service.targetPort }}
