@@ -196,6 +196,14 @@ spec:
               value: {{ .Values.global.config.CATS_EMAIL_TEST_MODE | quote }}
             - name: CATS_TEST_EMAIL_ADDRESS
               value: {{ .Values.global.config.CATS_TEST_EMAIL_ADDRESS | quote }}
+            - name: CHES_TOKEN_URL
+              value: {{ .Values.global.config.CHES_TOKEN_URL | quote }}
+            - name: CHES_EMAIL_URL
+              value: {{ .Values.global.config.CHES_EMAIL_URL | quote }}
+            - name: CHES_EMAIL_FROM
+              value: {{ .Values.global.config.CHES_EMAIL_FROM | quote }}
+            - name: CATS_APPLICATION_URL
+              value: {{ .Values.global.config.CATS_APPLICATION_URL | quote }}
           ports:
             - name: http
               containerPort: {{ .Values.backend.service.targetPort }}
