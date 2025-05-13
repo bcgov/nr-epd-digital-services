@@ -41,7 +41,7 @@ jobs:
 
           
   deploy_db:
-    name: Deploys Database
+    name: Deploys Database (test)
     uses: ./.github/workflows/.dbdeployer.yml
     secrets: inherit
     with:
@@ -50,9 +50,10 @@ jobs:
       # triggers: ('charts/crunchy/')
       values: 'values-dev.yaml'
       app_values:  'values-test.yaml' 
+      environment: test
     # https://github.com/bcgov/quickstart-openshift-helpers
   deploys:
-    name: Deploys
+    name: Deploys (test)
     needs: [builds, deploy_db]
     # needs: [builds]
     uses: ./.github/workflows/.deployer.yml
@@ -63,6 +64,7 @@ jobs:
       redirect_uri: https://logontest7.gov.bc.ca/clp-cgi/logoff.cgi?retnow=1&returl=https://epd-keycloak-test.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/protocol/openid-connect/logout?post_logout_redirect_uri=https://nr-epd-digital-services-${{ github.event.pull_request.number}}-frontend.apps.silver.devops.gov.bc.ca/
       db_user: cats-test
       timeout-minutes: 20
+      environment: test
   
   results:
     name: PR Results
