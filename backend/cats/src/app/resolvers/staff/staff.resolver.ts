@@ -7,8 +7,8 @@ import { ViewStaff } from "../../dto/staff/viewStaff.dto";
 import { LoggerService } from "../../logger/logger.service";
 import { StaffService } from "../../services/staff/staff.service";
 import { Filter } from "../../utilities/enums/application/filter.enum";
-import { SortByDirection } from "src/app/utilities/enums/application/sortByDirection.enum";
-import { SortBy } from "src/app/utilities/enums/staff/sortBy.enum";
+import { SortByDirection } from "../../utilities/enums/application/sortByDirection.enum";
+import { SortBy } from "../../utilities/enums/staff/sortBy.enum";
 
 @Resolver(() => ViewStaff)
 @Resource('user-service')

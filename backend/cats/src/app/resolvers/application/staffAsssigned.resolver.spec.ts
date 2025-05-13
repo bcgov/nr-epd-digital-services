@@ -221,7 +221,7 @@ describe('StaffAssignmentResolver', () => {
     });
     expect(loggerService.log).toHaveBeenCalledTimes(1);
     expect(loggerService.log).toHaveBeenCalledWith(
-      'AppParticipantResolver.getAllActiveStaffMembers() RES:200 end',
+      'StaffAssignmentResolver.getAllActiveStaffMembers() RES:200 end',
     );
   });
 });

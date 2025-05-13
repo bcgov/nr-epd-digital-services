@@ -1,18 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
-import { LoggerService } from 'src/app/logger/logger.service';
-import { Filter } from 'src/app/utilities/enums/application/filter.enum';
-import { SortByDirection } from 'src/app/utilities/enums/application/sortByDirection.enum';
-import { SortBy } from 'src/app/utilities/enums/staff/sortBy.enum';
-import { Person } from 'src/app/entities/person.entity';
-import { ViewStaff } from 'src/app/dto/staff/viewStaff.dto';
+import { LoggerService } from '../../logger/logger.service';
+import { Filter } from '../../utilities/enums/application/filter.enum';
+import { SortByDirection } from '../../utilities/enums/application/sortByDirection.enum';
+import { SortBy } from '../../utilities/enums/staff/sortBy.enum';
+import { Person } from '../../entities/person.entity';
+import { ViewStaff } from '../../dto/staff/viewStaff.dto';
 
 @Injectable()
 export class StaffService {
   constructor(
-    @InjectRepository(Person)
-    private readonly staffRepository: Repository<Person>,
     private readonly loggerSerivce: LoggerService,
     private readonly dataSource: DataSource,
   ) {}

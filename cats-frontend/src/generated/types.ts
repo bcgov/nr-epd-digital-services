@@ -634,10 +634,9 @@ export type StaffResponse = {
 };
 
 export enum StaffSortByField {
-  Assignment = 'Assignment',
+  Assignment = 'ASSIGNMENT',
   Id = 'ID',
-  Name = 'NAME',
-  Role = 'ROLE'
+  Name = 'NAME'
 }
 
 export type UpdateAppParticipantDto = {
@@ -829,6 +828,14 @@ export type ViewPersonNote = {
   id: Scalars['String']['output'];
   noteDescription: Scalars['String']['output'];
   user?: Maybe<Scalars['String']['output']>;
+};
+
+export type ViewStaff = {
+  __typename?: 'ViewStaff';
+  assignments: Scalars['Float']['output'];
+  capacity: Scalars['Float']['output'];
+  id: Scalars['Float']['output'];
+  name: Scalars['String']['output'];
 };
 
 export type ViewStaffAssignedDto = {

@@ -21,22 +21,6 @@ export const StaffDashboardColumns: TableColumn[] = [
       tableMode: true,
     },
   },
-  // {
-  //   id: 2,
-  //   displayName: 'Role',
-  //   active: true,
-  //   graphQLPropertyName: 'role',
-  //   columnSize: ColumnSize.Small,
-  //   displayType: {
-  //     type: FormFieldType.Text,
-  //     label: '',
-  //     graphQLPropertyName: 'role',
-  //     value: '',
-  //     colSize: 'col-lg-6 col-md-6 col-sm-12',
-  //     customInputTextCss: 'custom-staff-edit-lbl',
-  //     tableMode: true,
-  //   },
-  // },
   {
     id: 3,
     displayName: 'Assignments',
