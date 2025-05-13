@@ -23,7 +23,7 @@ export class InvoiceService {
     try {
       invoices = await this.invoiceRepository.find({
         where: { application: { id: applicationId } },
-        relations: ['line_items'],
+        relations: ['lineItems'],
       });
     } catch (error) {
       this.loggerService.error(
@@ -53,8 +53,15 @@ export class InvoiceService {
     try {
       invoice = await this.invoiceRepository.save({
         ...invoiceData,
-        createdBy: user.username,
-        updatedBy: user.username,
+        application: { id: invoiceData.applicationId },
+        recipient: { id: invoiceData.recipientId },
+        createdBy: user.name,
+        updatedBy: user.name,
+        lineItems: invoiceData.lineItems.map((item) => ({
+          ...item,
+          createdBy: user.name,
+          updatedBy: user.name,
+        })),
       });
     } catch (error) {
       this.loggerService.error(
@@ -75,12 +82,14 @@ export class InvoiceService {
     this.loggerService.log(`InvoiceService: updateInvoice: invoiceId: ${id}`);
     let updatedInvoice: InvoiceV2;
     try {
-      await this.invoiceRepository.update(id, {
+      await this.invoiceRepository.save({
         ...updateData,
+        id: id,
         updatedBy: user.username,
       });
       updatedInvoice = await this.invoiceRepository.findOne({
         where: { id: id },
+        relations: ['lineItems', 'application', 'recipient'],
       });
       if (!updatedInvoice) {
         throw new Error(`Invoice with ID ${id} not found.`);

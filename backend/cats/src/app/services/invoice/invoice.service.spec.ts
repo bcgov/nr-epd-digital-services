@@ -6,7 +6,7 @@ import { InvoiceV2 } from '../../entities/invoiceV2.entity';
 import { LoggerService } from '../../logger/logger.service';
 import { InvoiceInputDto, InvoiceStatus } from '../../dto/invoice/invoice.dto';
 import {
-  InvoiceLineItemCreateDto,
+  InvoiceLineItemInputDto,
   InvoiceLineItemType,
 } from '../../dto/invoice/invoiceLineItem.dto';
 import { InvoiceLineItem } from '../../entities/invoiceLineItem.entity';
@@ -76,7 +76,7 @@ describe('InvoiceService', () => {
 
       expect(repository.find).toHaveBeenCalledWith({
         where: { application: { id: applicationId } },
-        relations: ['line_items'],
+        relations: ['lineItems'],
       });
       expect(loggerService.log).toHaveBeenCalledWith(
         `InvoiceService: getInvoicesByApplicationId: applicationId: ${applicationId}`,
@@ -101,7 +101,7 @@ describe('InvoiceService', () => {
 
       expect(repository.find).toHaveBeenCalledWith({
         where: { application: { id: applicationId } },
-        relations: ['line_items'],
+        relations: ['lineItems'],
       });
       expect(loggerService.log).toHaveBeenCalledWith(
         `InvoiceService: getInvoicesByApplicationId: applicationId: ${applicationId}`,
@@ -115,7 +115,7 @@ describe('InvoiceService', () => {
 
   describe('createInvoice', () => {
     it('should create and return an invoice when repository succeeds', async () => {
-      const mockLineItemData: InvoiceLineItemCreateDto = {
+      const mockLineItemData: InvoiceLineItemInputDto = {
         type: InvoiceLineItemType.SERVICE,
         description: 'Consulting services',
         quantity: 2,
@@ -135,7 +135,13 @@ describe('InvoiceService', () => {
         gstInCents: 0,
         pstInCents: 0,
         totalInCents: 10000,
-        lineItems: [mockLineItemData],
+        lineItems: [
+          {
+            ...mockLineItemData,
+            createdBy: 'testUser',
+            createdAt: new Date(),
+          },
+        ],
       };
 
       const mockLineItem: InvoiceLineItem = {
@@ -163,13 +169,20 @@ describe('InvoiceService', () => {
       jest.spyOn(repository, 'save').mockResolvedValue(mockInvoice);
 
       const result = await service.createInvoice(mockInvoiceData, {
-        username: 'testUser',
+        name: 'testUser',
       });
 
       expect(repository.save).toHaveBeenCalledWith({
         ...mockInvoiceData,
+        application: { id: mockInvoiceData.applicationId },
+        recipient: { id: mockInvoiceData.recipientId },
         createdBy: 'testUser',
         updatedBy: 'testUser',
+        lineItems: mockInvoiceData.lineItems.map((item) => ({
+          ...item,
+          createdBy: 'testUser',
+          updatedBy: 'testUser',
+        })),
       });
       expect(loggerService.log).toHaveBeenCalledWith(
         `InvoiceService: createInvoice: invoiceData: ${JSON.stringify(
@@ -183,7 +196,7 @@ describe('InvoiceService', () => {
     });
 
     it('should log and throw an error when repository fails', async () => {
-      const mockLineItemData: InvoiceLineItemCreateDto = {
+      const mockLineItemData: InvoiceLineItemInputDto = {
         type: InvoiceLineItemType.SERVICE,
         description: 'Consulting services',
         quantity: 2,
@@ -210,13 +223,20 @@ describe('InvoiceService', () => {
       jest.spyOn(repository, 'save').mockRejectedValue(new Error(errorMessage));
 
       await expect(
-        service.createInvoice(mockInvoiceData, { username: 'testUser' }),
+        service.createInvoice(mockInvoiceData, { name: 'testUser' }),
       ).rejects.toThrow(`Failed to create invoice: ${errorMessage}`);
 
       expect(repository.save).toHaveBeenCalledWith({
         ...mockInvoiceData,
+        application: { id: mockInvoiceData.applicationId },
+        recipient: { id: mockInvoiceData.recipientId },
         createdBy: 'testUser',
         updatedBy: 'testUser',
+        lineItems: mockInvoiceData.lineItems.map((item) => ({
+          ...item,
+          createdBy: 'testUser',
+          updatedBy: 'testUser',
+        })),
       });
       expect(loggerService.log).toHaveBeenCalledWith(
         `InvoiceService: createInvoice: invoiceData: ${JSON.stringify(
@@ -229,6 +249,7 @@ describe('InvoiceService', () => {
       );
     });
   });
+
   describe('deleteInvoice', () => {
     it('should delete an invoice and return true when repository succeeds', async () => {
       const invoiceId = 1;
