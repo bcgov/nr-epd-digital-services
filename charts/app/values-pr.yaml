@@ -15,6 +15,8 @@ global:
     seed:
       enabled: true
     SITE_SERVICE_URL: "epd-backend-applications"
+    CATS_EMAIL_TEST_MODE: true
+    CATS_TEST_EMAIL_ADDRESS: haley.sawyer@gov.bc.ca
 #-- the components of the application, backend.
 backend:
   #-- enable or disable backend

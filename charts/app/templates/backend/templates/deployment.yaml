@@ -192,6 +192,10 @@ spec:
                 secretKeyRef:
                   key: user
                   name: postgres-crunchy-pguser-postgres
+            - name: CATS_EMAIL_TEST_MODE
+              value: {{ .Values.global.config.CATS_EMAIL_TEST_MODE | quote }}
+            - name: CATS_TEST_EMAIL_ADDRESS
+              value: {{ .Values.global.config.CATS_TEST_EMAIL_ADDRESS | quote }}
           ports:
             - name: http
               containerPort: {{ .Values.backend.service.targetPort }}
