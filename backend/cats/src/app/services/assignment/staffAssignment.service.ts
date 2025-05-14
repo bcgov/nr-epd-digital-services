@@ -24,6 +24,7 @@ import * as fs from 'fs';
 import { SiteService } from '../site/site.service';
 import { ConfigService } from '@nestjs/config';
 import { Risk } from '../../entities/risk.entity';
+import { StaffRoles } from './staffRoles.enum';
 
 @Injectable()
 export class StaffAssignmentService {
@@ -191,8 +192,13 @@ p.id, p.first_name, p.middle_name, p.last_name
 
       const requiredRolesForAssignment =
         await this.participantRoleRepository.find({
-          //where: [{ abbrev: 'CSWKR' }, { abbrev: 'SDM' }],
-          where: { abbrev: In(['CSWKR', 'SDM']) },
+          where: {
+            abbrev: In([
+              StaffRoles.CASE_WORKER,
+              StaffRoles.SDM,
+              StaffRoles.MENTOR,
+            ]),
+          },
         });
 
       const roleIds = requiredRolesForAssignment.map((role) => role.id);
@@ -277,111 +283,132 @@ p.id, p.first_name, p.middle_name, p.last_name
         application.serviceTypeId = applicationServiceTypeId;
         this.applicationRepository.save(application);
 
-        staffInput.map(async (staff) => {
-          if (staff.id === 0) {
-            const newStaffRecord = {
-              applicationId: staff.applicationId,
-              personId: staff.personId,
-              participantRoleId: staff.roleId,
-              organizationId: staff.organizationId,
-              effectiveStartDate: staff.startDate,
-              effectiveEndDate: staff.endDate,
-              createdBy: user?.givenName,
-              createdDateTime: new Date(),
-              updatedBy: user?.givenName,
-              updatedDateTime: new Date(),
-              isMainParticipant: false,
-            };
+        Promise.all(
+          staffInput.map(async (staff) => {
+            if (staff.id === 0) {
+              const newStaffRecord = {
+                applicationId: staff.applicationId,
+                personId: staff.personId,
+                participantRoleId: staff.roleId,
+                organizationId: staff.organizationId,
+                effectiveStartDate: staff.startDate,
+                effectiveEndDate: staff.endDate,
+                createdBy: user?.givenName,
+                createdDateTime: new Date(),
+                updatedBy: user?.givenName,
+                updatedDateTime: new Date(),
+                isMainParticipant: false,
+              };
 
-            const result =
-              await this.appParticipantService.createAppParticipant(
-                newStaffRecord,
-                user,
-              );
-
-            const role = await this.participantRoleRepository.findOne({
-              where: {
-                id: staff.roleId,
-              },
-            });
-
-            let site = null;
-
-            try {
-              site = await this.siteService.getSiteById(
-                application.siteId?.toString(),
-              );
-            } catch (error) {
-              this.loggerService.error(
-                `Error in getSiteById: ${error.message}`,
-                error,
-              );
-            }
-
-            let serviceType =
-              await this.applicationServiceTypeRepository.findOne({
+              const result =
+                await this.appParticipantService.createAppParticipant(
+                  newStaffRecord,
+                  user,
+                );
+            } else {
+              let existingStaff = await this.staffAssignmentRepository.findOne({
                 where: {
-                  id: application.serviceTypeId.toString(),
+                  id: staff.id,
+                  applicationId: staff.applicationId,
                 },
               });
 
-            let siteRisk = await this.siteRiskRepository.findOne({
-              where: {
-                id: application.riskId,
-              },
+              if (existingStaff) {
+                if (staff.action === 'delete') {
+                  await this.staffAssignmentRepository.delete(existingStaff.id);
+                } else {
+                  existingStaff.applicationId = staff.applicationId;
+                  existingStaff.personId = staff.personId;
+                  existingStaff.participantRoleId = staff.roleId;
+                  existingStaff.organizationId = staff.organizationId;
+                  existingStaff.effectiveStartDate = staff.startDate;
+                  existingStaff.effectiveEndDate = staff.endDate;
+                  existingStaff.updatedBy = user?.givenName;
+                  existingStaff.updatedDateTime = new Date();
+                  await this.staffAssignmentRepository.save(existingStaff);
+                }
+              }
+            }
+          }),
+        ).then(async () => {
+          const newStaffArr = staffInput.filter((staff) => staff.id === 0);
+          if (newStaffArr.length > 0) {
+            let staffList = await this.staffAssignmentRepository.find({
+              where: { applicationId: applicationId },
+              relations: ['person', 'participantRole'],
             });
+
+            const caseWorkerArr = await staffList.filter(
+              (staff) =>
+                staff.participantRole?.abbrev === StaffRoles.CASE_WORKER,
+            );
+
+            const sdmArr = await staffList.filter(
+              (staff) => staff.participantRole?.abbrev === StaffRoles.SDM,
+            );
+
+            const mentorArr = await staffList.filter(
+              (staff) => staff.participantRole?.abbrev === 'MNTR',
+            );
 
             const testMode = this.configService.get('CATS_EMAIL_TEST_MODE');
 
-            let toEmailAddress = [];
-            if (testMode === 'true') {
-              toEmailAddress.push(
-                this.configService.get('CATS_TEST_EMAIL_ADDRESS'),
-              );
-            } else {
-              const person = await this.personRepository.findOne({
+            newStaffArr.map(async (staff) => {
+              let toEmailAddress = [];
+              if (testMode === 'true') {
+                toEmailAddress.push(
+                  this.configService.get('CATS_TEST_EMAIL_ADDRESS'),
+                );
+              } else {
+                const person = await this.personRepository.findOne({
+                  where: {
+                    id: staff.personId,
+                  },
+                });
+                toEmailAddress.push(person.email);
+              }
+
+              const role = await this.participantRoleRepository.findOne({
                 where: {
-                  id: staff.personId,
+                  id: staff.roleId,
                 },
               });
-              toEmailAddress.push(person.email);
-            }
 
-            await this.emailService.sendEmail(
-              toEmailAddress,
-              'Application Assigned',
-              this.generateAssignmentEmailTemplate(
-                role.description,
-                serviceType.serviceName,
-                application,
-                result,
-                site,
-                siteRisk,
-              ),
-            );
-          } else {
-            let existingStaff = await this.staffAssignmentRepository.findOne({
-              where: {
-                id: staff.id,
-                applicationId: staff.applicationId,
-              },
-            });
+              let site = null;
 
-            if (existingStaff) {
-              if (staff.action === 'delete') {
-                await this.staffAssignmentRepository.delete(existingStaff.id);
-              } else {
-                existingStaff.applicationId = staff.applicationId;
-                existingStaff.personId = staff.personId;
-                existingStaff.participantRoleId = staff.roleId;
-                existingStaff.organizationId = staff.organizationId;
-                existingStaff.effectiveStartDate = staff.startDate;
-                existingStaff.effectiveEndDate = staff.endDate;
-                existingStaff.updatedBy = user?.givenName;
-                existingStaff.updatedDateTime = new Date();
-                await this.staffAssignmentRepository.save(existingStaff);
+              try {
+                site = await this.siteService.getSiteById(
+                  application.siteId?.toString(),
+                );
+              } catch (error) {
+                this.loggerService.error(
+                  `Error in getSiteById: ${error.message}`,
+                  error,
+                );
               }
-            }
+
+              let serviceType =
+                await this.applicationServiceTypeRepository.findOne({
+                  where: {
+                    id: application.serviceTypeId.toString(),
+                  },
+                });
+
+              await this.emailService.sendEmail(
+                toEmailAddress,
+                'Application Assigned',
+                this.generateAssignmentEmailTemplate(
+                  role.description,
+                  serviceType.serviceName,
+                  application,
+                  staff,
+                  site,
+                  caseWorkerArr,
+                  sdmArr,
+                  mentorArr,
+                ),
+              );
+            });
           }
         });
 
@@ -410,13 +437,22 @@ p.id, p.first_name, p.middle_name, p.last_name
     }
   }
 
+  getStaffListNameAsString(staff: AppParticipant[], roleName: string): string {
+    return staff
+      .filter((s) => s.participantRole.abbrev === roleName)
+      .map((s) => `<li>${s.person.firstName} ${s.person.lastName}</li>`)
+      .join('');
+  }
+
   generateAssignmentEmailTemplate(
     role: string,
     serviceRequested: string,
     application: Application,
     staff: any,
-    site: Site,
-    siteRisk: Risk,
+    site: any,
+    caseWorkerArr: AppParticipant[] = [],
+    sdmArr: AppParticipant[] = [],
+    mentorArr: AppParticipant[] = [],
   ): string {
     //const filePath = `${__dirname}/email-template/application-assignment-notification.html`;
 
@@ -445,16 +481,38 @@ p.id, p.first_name, p.middle_name, p.last_name
       .replace(/\$\{site\.id\}/g, application.siteId?.toString())
       .replace(/\$\{application\.id\}/g, application.id?.toString())
       .replace(/\$\{serviceRequested\}/g, serviceRequested)
-      .replace(/\$\{site\.address\}/g, site?.address)
       .replace(
-        /\$\{application\.createdDateTime\}/g,
+        /\$\{site\.address\}/g,
+        site?.findSiteBySiteId?.data?.addrLine_1 ||
+          '' + ' ' + site?.findSiteBySiteId?.data?.addrLine_2 ||
+          '' + ' ' + site?.findSiteBySiteId?.data?.addrLine_3 ||
+          '' + ' ' + site?.findSiteBySiteId?.data?.addrLine_4 ||
+          '',
+      )
+      .replace(
+        /\$\{application\.queueDate\}/g,
         application?.createdDateTime?.toDateString(),
       )
       .replace(
         /\$\{staff\.effectiveStartDate\}/g,
         staff?.effectiveStartDate?.toDateString(),
       )
-      .replace(/\$\{application\.risk\}/g, siteRisk?.description);
+      .replace(
+        /\$\{application\.risk\}/g,
+        site?.findSiteBySiteId?.data?.siteRiskCode,
+      )
+      .replace(
+        /\$\{caseWorkerList\}/g,
+        this.getStaffListNameAsString(caseWorkerArr, StaffRoles.CASE_WORKER),
+      )
+      .replace(
+        /\$\{sdmList\}/g,
+        this.getStaffListNameAsString(sdmArr, StaffRoles.SDM),
+      )
+      .replace(
+        /\$\{mentorList\}/g,
+        this.getStaffListNameAsString(mentorArr, StaffRoles.MENTOR),
+      );
 
     return template;
   }

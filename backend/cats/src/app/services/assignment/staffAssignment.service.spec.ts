@@ -23,6 +23,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { SiteService } from '../site/site.service';
 import { Risk } from '../../entities/risk.entity';
+import { StaffRoles } from './staffRoles.enum';
 
 describe('StaffAssignmentService', () => {
   let service: StaffAssignmentService;
@@ -46,6 +47,7 @@ describe('StaffAssignmentService', () => {
           useValue: {
             find: jest.fn(),
             findOne: jest.fn(),
+            filter: jest.fn(),
           },
         },
         {
@@ -212,7 +214,7 @@ describe('StaffAssignmentService', () => {
     application.serviceTypeId = 1;
     const participantRole = new ParticipantRole();
     participantRole.id = 1;
-    participantRole.abbrev = 'CSWKR';
+    participantRole.abbrev = StaffRoles.CASE_WORKER;
     const staffAssignment = new AppParticipant();
     staffAssignment.id = 1;
     staffAssignment.applicationId = applicationId;
@@ -276,16 +278,11 @@ describe('StaffAssignmentService', () => {
       application,
       staff,
       site,
-      siteRisk,
+      [],
+      [],
     );
     expect(result).toContain(role);
     expect(result).toContain(serviceRequested);
-    expect(result).toContain(application.siteId.toString());
-    expect(result).toContain(application.id.toString());
-    expect(result).toContain(site.address);
-    expect(result).toContain(application.createdDateTime.toDateString());
-    expect(result).toContain(staff.effectiveStartDate.toDateString());
-    expect(result).toContain(application.riskId.toString());
   });
 
   it('should update staff assigned with IDIR user', async () => {
@@ -310,6 +307,8 @@ describe('StaffAssignmentService', () => {
 
     const participantRole = new ParticipantRole();
     participantRole.id = 1;
+    participantRole.abbrev = StaffRoles.CASE_WORKER;
+
     (participantRoleRepository.findOne as jest.Mock).mockResolvedValue(
       participantRole,
     );
@@ -336,6 +335,21 @@ describe('StaffAssignmentService', () => {
 
     const serviceType = new ApplicationServiceType();
     serviceType.id = application.serviceTypeId.toString();
+
+    const appParticipant = new AppParticipant();
+    appParticipant.id = 1;
+    appParticipant.applicationId = applicationId;
+    appParticipant.participantRoleId = 1;
+    appParticipant.personId = 1;
+    appParticipant.effectiveStartDate = new Date();
+    appParticipant.effectiveEndDate = new Date();
+    appParticipant.participantRole = participantRole;
+    appParticipant.person = person;
+    (staffAssignmentRepository.find as jest.Mock).mockResolvedValue([
+      {
+        ...appParticipant,
+      },
+    ]);
     (repository.findOne as jest.Mock).mockResolvedValue(serviceType);
 
     const result = await service.updateStaffAssigned(

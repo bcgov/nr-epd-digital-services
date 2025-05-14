@@ -9,6 +9,9 @@ import {
 import { Application } from './application.entity';
 import { Region } from './region.entity';
 
+/**
+ *  DO NOT USE  - FETCH DATA FROM SITE SERVICE
+ */
 @Index('pk_site', ['id'], { unique: true })
 @Entity('site')
 export class Site {
