@@ -11,6 +11,8 @@ import {
 } from '../../dto/invoice/invoice.dto';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { ResponseDto } from '../../dto/response/response.dto';
+import { GenericValidationPipe } from '../../utilities/validations/genericValidationPipe';
+import { UsePipes } from '@nestjs/common';
 
 @Resolver()
 export class InvoiceResolver {
@@ -123,6 +125,7 @@ export class InvoiceResolver {
   }
 
   @Mutation(() => InvoiceResponse)
+  @UsePipes(new GenericValidationPipe())
   async updateInvoice(
     @Args('id', { type: () => Int }) id: number,
     @Args('updateData') updateData: InvoiceInputDto,

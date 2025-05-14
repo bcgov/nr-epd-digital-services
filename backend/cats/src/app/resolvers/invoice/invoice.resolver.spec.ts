@@ -3,7 +3,7 @@ import { InvoiceResolver } from './invoice.resolver';
 import { InvoiceService } from '../../services/invoice/invoice.service';
 import { LoggerService } from '../../logger/logger.service';
 import { InvoiceV2 } from '../../entities/invoiceV2.entity';
-import { InvoiceDto, InvoiceStatus } from '../../dto/invoice/invoice.dto';
+import { InvoiceInputDto, InvoiceStatus } from '../../dto/invoice/invoice.dto';
 
 describe('InvoiceResolver', () => {
   let resolver: InvoiceResolver;
@@ -130,8 +130,7 @@ describe('InvoiceResolver', () => {
         .spyOn(invoiceService, 'updateInvoice')
         .mockResolvedValue(mockUpdatedInvoice);
 
-      const updateData: InvoiceDto = {
-        id: 1,
+      const updateData: InvoiceInputDto = {
         applicationId: null,
         recipientId: null,
         invoiceId: null,
@@ -145,10 +144,6 @@ describe('InvoiceResolver', () => {
         pstInCents: 500,
         totalInCents: 21500,
         lineItems: [],
-        createdBy: 'test-user',
-        updatedBy: 'test-user',
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
 
       const user = { id: 'test-user' };
@@ -188,8 +183,7 @@ describe('InvoiceResolver', () => {
         .spyOn(invoiceService, 'updateInvoice')
         .mockRejectedValue(new Error('Service error'));
 
-      const updateData: InvoiceDto = {
-        id: 1,
+      const updateData: InvoiceInputDto = {
         applicationId: null,
         recipientId: null,
         invoiceId: null,
@@ -203,10 +197,6 @@ describe('InvoiceResolver', () => {
         pstInCents: 500,
         totalInCents: 21500,
         lineItems: [],
-        createdBy: 'test-user',
-        updatedBy: 'test-user',
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
 
       const user = { id: 'test-user' };
