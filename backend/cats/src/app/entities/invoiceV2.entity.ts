@@ -74,6 +74,7 @@ export class InvoiceV2 {
 
   @OneToMany(() => InvoiceLineItem, (lineItem) => lineItem.invoice, {
     cascade: true,
+    onDelete: 'CASCADE',
   })
   lineItems: InvoiceLineItem[];
 }

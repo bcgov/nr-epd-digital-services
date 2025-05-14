@@ -6,7 +6,7 @@ import {
   InputType,
 } from '@nestjs/graphql';
 import {
-  InvoiceLineItemCreateDto,
+  InvoiceLineItemInputDto,
   InvoiceLineItemDto,
 } from './invoiceLineItem.dto';
 
@@ -33,8 +33,8 @@ export class InvoiceDto {
   @Field(() => Int)
   recipientId: number;
 
-  @Field(() => Int)
-  invoiceId: number;
+  @Field(() => Int, { nullable: true })
+  invoiceId?: number;
 
   @Field(() => String)
   subject: string;
@@ -87,7 +87,7 @@ export class InvoiceInputDto {
   @Field(() => Int)
   recipientId: number;
 
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
   invoiceId: number;
 
   @Field(() => String)
@@ -117,14 +117,17 @@ export class InvoiceInputDto {
   @Field(() => Int)
   totalInCents: number;
 
-  @Field(() => [InvoiceLineItemCreateDto])
-  lineItems: InvoiceLineItemCreateDto[];
+  @Field(() => [InvoiceLineItemInputDto])
+  lineItems: InvoiceLineItemInputDto[];
 }
 
 @ObjectType()
 export class InvoiceByApplicationIdDto {
   @Field(() => Int)
   id: number;
+
+  @Field(() => String)
+  subject: string;
 
   @Field()
   issuedDate: Date;
