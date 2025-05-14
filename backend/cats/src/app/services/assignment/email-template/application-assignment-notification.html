@@ -2,70 +2,74 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Application Assignment Notification</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      color: #333;
-      line-height: 1.6;
-    }
-    .container {
-      width: 100%;
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 20px;
-      background: #f9f9f9;
-      border: 1px solid #ddd;
-    }
-    h2 {
-      color: #00529B;
-    }
-    .details {
-      background: #fff;
-      padding: 15px;
-      border: 1px solid #ccc;
-      margin-top: 10px;
-    }
-    .label {
-      font-weight: bold;
-    }
-    a {
-      color: #007BFF;
-      text-decoration: none;
-    }
-    .note {
-      margin-top: 20px;
-      font-size: 0.95em;
-      color: #555;
-    }
-  </style>
+  <title>New Application Assignment – Site ID ${site.id}</title>
 </head>
-<body>
-  <div class="container">
-    <h2>Application Assignment Notification</h2>
-    <p>
-      You have been assigned the following application as the <strong>${role}</strong>  
-    </p>
+<body style="font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 20px;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #ffffff; padding: 20px;">
+    <tr>
+      <td>
+        <h2 style="color: #333333;">New Application Assignment – Site ID ${site.id}</h2>
+        <p>You have been assigned the following application as the <strong>${role}</strong>. Please review the details below:</p>
+        
+        <p>🔗 <a href="${applicationURL}" style="color: #1a73e8;">Access the application file</a></p>
 
-    <p>You can find the hyperlink to the file <a href=${applicationURL}>here</a>.</p>
+        <h3 style="color: #555555;">Assignment Details</h3>
+        <table width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">
+          <tr>
+            <td style="width: 40%; font-weight: bold;">Site ID:</td>
+            <td>${site.id}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold;">Application #:</td>
+            <td>${application.id}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold;">Service Requested:</td>
+            <td>${serviceRequested}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold;">Address:</td>
+            <td>${site.address}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold;">Date Queued:</td>
+            <td>${application.queueDate}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold;">Date Assigned:</td>
+            <td>${staff.effectiveStartDate}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold;">Site Risk:</td>
+            <td>${application.risk}</td>
+          </tr>
+        </table>
 
-    <p>If you identify during your review or consideration of a file that you need an additional resource, please speak to your supervisor/manager for reassignment approval.</p>
+        <h3 style="color: #555555;">Roles</h3>
+        <span>  <strong>Casefile Reviewer:</strong></span>
+        <ul>
+          ${caseWorkerList}          
+        </ul>
+        <span>  <strong>SDM:</strong></span>
+        <ul>
+          ${sdmList}
+        </ul>
+         <span>  <strong>Mentor:</strong></span>
+        <ul>
+          ${mentorList}
+        </ul>
+        <h3 style="color: #555555;">Need Additional Resources?</h3>
+        <p>If, during your review, you determine that additional resources are needed:</p>
+        <ol>
+          <li>Please speak with your supervisor or manager to obtain reassignment approval.</li>
+          <li>Once approved, update the status in CATS to <strong>"Review in Progress: Additional Resources"</strong>.</li>
+          <li>Add a detailed note in CATS explaining why additional support or reassignment is being requested.</li>
+        </ol>
+        <p>The LRMT will then review these requests at the weekly meeting.</p>
 
-    <p>After approval, please update the status in CATS to "review in progress: additional resources" and add a detailed note in CATS as to why you are requesting reassignment or additional resources. LRMT will then discuss additional resources at the weekly meeting.</p>
-
-    <div class="details">
-      <p><span class="label">Site ID:</span> ${site.id}</p>
-      <p><span class="label">Application #:</span> ${application.id}</p>
-      <p><span class="label">Service Requested:</span> ${serviceRequested}</p>
-      <p><span class="label">Address:</span> ${site.address}</p>
-      <p><span class="label">Date Queued:</span> ${application.createdDateTime}</p>
-      <p><span class="label">Date Assigned:</span> ${staff.effectiveStartDate}</p>
-      <p><span class="label">Site Risk:</span> ${application.risk}</p>
-
-     
-    </div>
-
-    <p class="note"> Any questions, just ask.  If the different roles are too complicated for the system to differentiate and send specific emails to, we can just be general as say you have been assigned the following application.  In that case it would be good to have Roles in the list above showing who is the caseworker and who is the SDM or mentor.</p>
-  </div>
+        <p style="color: #888888; font-size: 12px;">This is an automated message. Please do not reply directly to this email.</p>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>
