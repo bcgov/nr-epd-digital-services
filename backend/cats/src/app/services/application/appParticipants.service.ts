@@ -248,7 +248,7 @@ export class AppParticipantService {
             HttpStatus.BAD_REQUEST,
           );
         } else {
-          const createdAppParticipant = this.appParticsRepository.create({
+          const createdAppParticipant = await this.appParticsRepository.create({
             ...newAppParticipant,
             createdBy: user?.givenName,
             createdDateTime: new Date(),
