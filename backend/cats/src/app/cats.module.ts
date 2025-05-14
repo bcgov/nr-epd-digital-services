@@ -137,7 +137,6 @@ import { ApplicationServiceType } from './entities/applicationServiceType.entity
       ApplicationServiceType,
     ]),
     HttpModule,
-    HttpModule,
   ],
   providers: [
     PersonResolver,
