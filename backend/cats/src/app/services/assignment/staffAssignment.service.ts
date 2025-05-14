@@ -25,6 +25,7 @@ import { SiteService } from '../site/site.service';
 import { ConfigService } from '@nestjs/config';
 import { Risk } from '../../entities/risk.entity';
 import { StaffRoles } from './staffRoles.enum';
+import { StaffRoles } from './staffRoles.enum';
 import { AppPriority } from 'src/app/entities/appPriority.entity';
 
 @Injectable()
@@ -447,6 +448,13 @@ p.id, p.first_name, p.middle_name, p.last_name
         'StaffAssignmentService.updateStaffAssigned() end',
       );
     }
+  }
+
+  getStaffListNameAsString(staff: AppParticipant[], roleName: string): string {
+    return staff
+      .filter((s) => s.participantRole.abbrev === roleName)
+      .map((s) => `<li>${s.person.firstName} ${s.person.lastName}</li>`)
+      .join('');
   }
 
   getStaffListNameAsString(staff: AppParticipant[], roleName: string): string {
