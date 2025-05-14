@@ -201,45 +201,45 @@ export const showNotification = (
 
 export enum UserRoleType {
   INTERNAL = 'internal',
-  SR = 'sr',
-  default = 'not-logged-in',
+  DEFAULT = 'not-logged-in',
+  CSSA_MANAGER = 'cssa-manager',
 }
 
 export const isUserOfType = (roleType: UserRoleType) => {
   const user = getUser();
-
   if (user !== null) {
     const userRoles: any = user.profile?.role;
     switch (roleType) {
       case 'internal':
-        const internalUserRole =
-          import.meta.env.VITE_SITE_INTERNAL_USER_ROLE || 'site-internal-user';
-
-        if (userRoles.includes(internalUserRole)) {
+        const internalUserRole = import.meta.env.VITE_SITE_INTERNAL_USER_ROLE || 'site-internal-user';
+        if (userRoles.includes(internalUserRole)) 
+        {
           return true;
-        } else {
+        }
+        else 
+        {
           return false;
         }
-      case 'sr':
-        return false;
-      // const srUserRole =
-      //   //  process.env?.REACT_APP_SITE_REGISTRAR_USER_ROLE
-      //   // ?? ((window as any)?._env_?.REACT_APP_SITE_REGISTRAR_USER_ROLE) ??
-      //   "site-site-registrar";
-
-      // if (userRoles.includes(srUserRole)) {
-      //   return true;
-      // } else {
-      //   return false;
-      // }
+      case 'cssa-manager':
+        const cssaManagerRole = import.meta.env.VITE_CATS_CSSA_MANAGER_ROLE;
+        if (userRoles.includes(cssaManagerRole)) 
+        {
+          return true;
+        } 
+        else 
+        {
+          return false;
+        }
     }
   }
+
+  return false;
 };
 
 export const getLoggedInUserType = () => {
   return isUserOfType(UserRoleType.INTERNAL)
     ? UserRoleType.INTERNAL
-    : UserRoleType.default;
+    : UserRoleType.DEFAULT;
 };
 
 export const isUserRoleInternalUser = () => {};

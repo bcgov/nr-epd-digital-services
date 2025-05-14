@@ -39,22 +39,33 @@ export class SideNav {
     public linkTo: string,
     public children: SideNav[] = [],
     public lowerSection: boolean = false,
+    public requiredRoles?: UserRoleType[], // New optional property to define allowed roles
+
   ) {
     // Increment the static counter and assign it to the instance ID
     this.id = ++SideNav.idCounter;
   }
 }
 
-// Helper function to create SideNav instances easily
-const createSideNav = (
-  displayText: string,
-  hasChildren: boolean,
-  icon: IconType | null,
-  linkTo: string,
-  children: SideNav[] = [],
-  lowerSection: boolean = false,
-) =>
-  new SideNav(displayText, hasChildren, icon, linkTo, children, lowerSection);
+// Helper function to create SideNav instances easily with object destructuring
+const createSideNav = ({
+  displayText,
+  hasChildren,
+  icon,
+  linkTo,
+  children = [],
+  lowerSection = false,
+  requiredRoles,  // Optional property for role-based access
+}: {
+  displayText: string;
+  hasChildren: boolean;
+  icon: IconType | null;
+  linkTo: string;
+  children?: SideNav[];
+  lowerSection?: boolean;
+  requiredRoles?: UserRoleType[];  // Role-based access control
+}) => new SideNav(displayText, hasChildren, icon, linkTo, children, lowerSection, requiredRoles);
+
 
 // Consolidated references to icon components for easy access
 const icons = {
@@ -73,12 +84,39 @@ const icons = {
 // Refactored role-based navigation lists using a Record type
 const roleBasedSideBarList: Record<string, SideNav[]> = {
   internal: [
-    createSideNav('Manage', true, null, '/', [
-      createSideNav('People', false, icons.folios, '/people'),
-      createSideNav('Organizations', false, icons.purchases, '/purchases'),
-      createSideNav('Applications', false, icons.folios, '/applications'),
-      createSideNav('Staff', false, icons.userTie, '/staff'),
-    ]),
+    createSideNav({
+        displayText: 'Manage',
+        hasChildren: true,
+        icon: null,
+        linkTo: '/',
+        children: [
+          createSideNav({
+            displayText: 'People',
+            hasChildren: false,
+            icon: icons.folios,
+            linkTo: '/people',
+          }),
+          createSideNav({
+            displayText: 'Organizations',
+            hasChildren: false,
+            icon: icons.purchases,
+            linkTo: '/purchases',
+          }),
+          createSideNav({
+            displayText: 'Applications',
+            hasChildren: false,
+            icon: icons.folios,
+            linkTo: '/applications',
+          }),
+         createSideNav({
+          displayText: 'Staff',
+          hasChildren: false,
+          icon: icons.userTie,
+          linkTo: '/staff',
+          requiredRoles: [UserRoleType.CSSA_MANAGER]  // Only 'CSSA Manager' can access
+        })
+      ]
+    }),
   ],
   public: [],
 };

@@ -418,7 +418,6 @@ const TableBody: FC<TableBodyProps> = ({
           tableMode={field.tableMode ?? false}
           stickyCol={field.stickyCol}
           customIcon={field.customIcon}
-          customIcon={field.customIcon}
         />
       );
     } else if (field.type === FormFieldType.IconButton) {

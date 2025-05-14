@@ -3,18 +3,25 @@ import './SideBar.css';
 import { getSideBarNavList } from './dto/SideNav';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../../Store';
-import { getLoggedInUserType, showNotification } from '../../helpers/utility';
+import { getLoggedInUserType, getUser, isUserOfType, showNotification, UserRoleType } from '../../helpers/utility';
 import { capitalize } from 'lodash';
 
 
 function SideBar() {
-  const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
-
   const navList = getSideBarNavList(getLoggedInUserType());
 
   const renderMenuOption = (item: any, tabIndex: number) => {
+    
+    // Check if the user has permission to view this menu item
+    const hasValidRole = item?.requiredRoles ? item?.requiredRoles.some((role: UserRoleType) => isUserOfType(role)) : true;
+
+    // If the role is not valid, don't render the item
+    if (!hasValidRole)
+    {
+      return null;
+    }
+
     const isCurrentPath = location.pathname === item.linkTo;
     const hasIcon = item.icon;
     const isCartLink = item.linkTo.includes('cart');
@@ -22,6 +29,8 @@ function SideBar() {
 
     const linkContent = isCartLink ? displayCount : item.displayText;
     const isParentGroup: boolean = item.displayText && !item.icon;
+
+    
     return (
       <section
         tabIndex={tabIndex}
