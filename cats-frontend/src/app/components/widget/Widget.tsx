@@ -53,10 +53,12 @@ const Widget: React.FC<IWidget> = ({
               isChecked={widgetIschecked}
             />
           )}
-          <div className={`${styles.widgetLblContainer} w-100 me-1 d-flex flex-wrap align-items-center justify-content-between`}>
+          <div
+            className={`${styles.widgetLblContainer} w-100 me-1 d-flex flex-wrap align-items-center justify-content-between`}
+          >
             <h4
               className={`${customLabelCss ?? styles.widgetLabel} ${isRequired ? styles.widgetRequiredField : ''}`}
-            > 
+            >
               {title}
             </h4>
             {filter}

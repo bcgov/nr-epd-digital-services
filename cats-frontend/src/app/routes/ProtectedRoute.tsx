@@ -9,16 +9,13 @@ export type ProtectedRouteProps = {
 
 function ProtectedRoute({ requiredRoles, element }: ProtectedRouteProps) {
   const auth = useAuth();
-  const isValidUser = requiredRoles.some(role => isUserOfType(role));
+  const isValidUser = requiredRoles.some((role) => isUserOfType(role));
   if (auth.isLoading) {
     return <div>loading</div>;
   }
-  if (auth.isAuthenticated && isValidUser) 
-  {
+  if (auth.isAuthenticated && isValidUser) {
     return element;
-  } 
-  else 
-  {
+  } else {
     sessionStorage.setItem('locationBeforeAuthRedirect', window.location.href);
     return <Navigate to={'/'} replace />;
   }

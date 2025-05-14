@@ -8,9 +8,13 @@ interface PageContainerProps {
   customContainerClass?: string;
 }
 
-const PageContainer: FC<PageContainerProps> = ({ role, customContainerClass, children }) => {
+const PageContainer: FC<PageContainerProps> = ({
+  role,
+  customContainerClass,
+  children,
+}) => {
   return (
-    <div className={clsx(customContainerClass ||'page-continer', )} role={role}>
+    <div className={clsx(customContainerClass || 'page-continer')} role={role}>
       {children}
     </div>
   );

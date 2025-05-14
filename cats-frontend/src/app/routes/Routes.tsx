@@ -21,18 +21,25 @@ const roleBasedRoutes: any = {
     { path: '/person', element: <Person /> },
     { path: '/applications', element: <ApplicationSearch /> },
     { path: '/applications/:id', element: <ApplicationDetails /> },
-    { path: '/staff', element: <ProtectedRoute requiredRoles={[UserRoleType.CSSA_MANAGER]} element={<StaffDashboard />} /> },
+    {
+      path: '/staff',
+      element: (
+        <ProtectedRoute
+          requiredRoles={[UserRoleType.CSSA_MANAGER]}
+          element={<StaffDashboard />}
+        />
+      ),
+    },
   ],
-
 };
 
 // Create routes based on the user's role
 const createRoutesForRole = (role: string) => [
   {
     element: (
-        <QueryParamProvider adapter={ReactRouter6Adapter}>
-          <App />
-        </QueryParamProvider>
+      <QueryParamProvider adapter={ReactRouter6Adapter}>
+        <App />
+      </QueryParamProvider>
     ),
     errorElement: <h1>Page not found</h1>,
     children: roleBasedRoutes[role]?.map((route: any) => ({
@@ -44,6 +51,8 @@ const createRoutesForRole = (role: string) => [
 ];
 
 const userType = getLoggedInUserType();
-const siteRouter = createBrowserRouter(createRoutesForRole(UserRoleType.INTERNAL));
+const siteRouter = createBrowserRouter(
+  createRoutesForRole(UserRoleType.INTERNAL),
+);
 
 export default siteRouter;

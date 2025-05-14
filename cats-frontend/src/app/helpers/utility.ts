@@ -211,23 +211,18 @@ export const isUserOfType = (roleType: UserRoleType) => {
     const userRoles: any = user.profile?.role;
     switch (roleType) {
       case 'internal':
-        const internalUserRole = import.meta.env.VITE_SITE_INTERNAL_USER_ROLE || 'site-internal-user';
-        if (userRoles.includes(internalUserRole)) 
-        {
+        const internalUserRole =
+          import.meta.env.VITE_SITE_INTERNAL_USER_ROLE || 'site-internal-user';
+        if (userRoles.includes(internalUserRole)) {
           return true;
-        }
-        else 
-        {
+        } else {
           return false;
         }
       case 'cssa-manager':
         const cssaManagerRole = import.meta.env.VITE_CATS_CSSA_MANAGER_ROLE;
-        if (userRoles.includes(cssaManagerRole)) 
-        {
+        if (userRoles.includes(cssaManagerRole)) {
           return true;
-        } 
-        else 
-        {
+        } else {
           return false;
         }
     }

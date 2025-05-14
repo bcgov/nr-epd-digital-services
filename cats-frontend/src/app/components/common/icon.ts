@@ -35,7 +35,7 @@ import {
   FaFileLines,
   FaUserTie,
   FaCircleExclamation,
-  FaTriangleExclamation
+  FaTriangleExclamation,
 } from 'react-icons/fa6';
 
 import {

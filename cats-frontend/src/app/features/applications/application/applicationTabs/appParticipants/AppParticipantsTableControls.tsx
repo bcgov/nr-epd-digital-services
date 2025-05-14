@@ -2,9 +2,7 @@ import React from 'react';
 
 import './AppParticipantsTableControls.css';
 
-import {
-  AppParticipantFilter,
-} from '../../../../../../generated/types';
+import { AppParticipantFilter } from '../../../../../../generated/types';
 import { Button } from '../../../../../components/button/Button';
 
 interface TableControlsProps {

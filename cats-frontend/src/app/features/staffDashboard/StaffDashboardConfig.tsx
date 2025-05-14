@@ -1,8 +1,12 @@
-import { ProgressBar } from "react-bootstrap";
-import { CircleExclamation, ExclamationTriangleIcon, FillEye } from "../../components/common/icon";
-import { FormFieldType } from "../../components/input-controls/IFormField";
-import { ColumnSize, TableColumn } from "../../components/table/TableColumn";
-import "./StaffDashboard.css";
+import { ProgressBar } from 'react-bootstrap';
+import {
+  CircleExclamation,
+  ExclamationTriangleIcon,
+  FillEye,
+} from '../../components/common/icon';
+import { FormFieldType } from '../../components/input-controls/IFormField';
+import { ColumnSize, TableColumn } from '../../components/table/TableColumn';
+import './StaffDashboard.css';
 
 export const StaffDashboardColumns: TableColumn[] = [
   {
@@ -39,7 +43,7 @@ export const StaffDashboardColumns: TableColumn[] = [
     renderCell: (value: any, row: any) => {
       let variant = 'success';
       let Icon;
-    
+
       if (value >= row.capacity) {
         variant = 'danger';
         Icon = CircleExclamation;
@@ -49,21 +53,25 @@ export const StaffDashboardColumns: TableColumn[] = [
       }
       return (
         <div className="d-flex align-items-center justify-content-start gap-3 w-100">
-          <span className="text-nowrap " style={{ width: '20px' }}>{value}</span>
+          <span className="text-nowrap " style={{ width: '20px' }}>
+            {value}
+          </span>
           <ProgressBar
             className={`flex-grow-1`}
             variant={variant}
             now={value}
             max={row.capacity}
             label={
-             Icon && <div className="d-flex align-items-center justify-content-end">
-                <Icon className="me-2" />
-              </div>
+              Icon && (
+                <div className="d-flex align-items-center justify-content-end">
+                  <Icon className="me-2" />
+                </div>
+              )
             }
           />
         </div>
       );
-      },
+    },
   },
   {
     id: 3,
@@ -101,6 +109,6 @@ export const StaffDashboardColumns: TableColumn[] = [
     },
     columnSize: ColumnSize.XtraSmall,
     dynamicColumn: true,
-    customHeaderCss:'custom-tbl-header',
+    customHeaderCss: 'custom-tbl-header',
   },
 ];

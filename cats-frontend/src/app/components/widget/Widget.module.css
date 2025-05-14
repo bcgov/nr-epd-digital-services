@@ -3,7 +3,6 @@
 }
 
 .widgetLabel {
-  
   font-weight: var(--typography-font-weights-bold);
   text-align: left;
   color: var(--typography-color-primary, #2d2d2d);

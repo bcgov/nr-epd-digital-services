@@ -22,9 +22,7 @@ const TableControls: React.FC<TableControlsProps> = ({
           variant="tertiary"
           onClick={() => handleFilterChange(Filter.All)}
           className={
-            filter === Filter.All
-              ? 'table-controls__button--selected'
-              : ''
+            filter === Filter.All ? 'table-controls__button--selected' : ''
           }
         >
           All

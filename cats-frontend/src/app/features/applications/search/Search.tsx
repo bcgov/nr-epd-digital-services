@@ -24,9 +24,7 @@ const Search: React.FC = () => {
   const [columns, setColumns] = useState<TableColumn[]>(
     applicationResultColumns,
   );
-  const [filter, setFilter] = useState<Filter>(
-    Filter.All,
-  );
+  const [filter, setFilter] = useState<Filter>(Filter.All);
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
   const [totalResults, setTotalResults] = useState<number>(0);
