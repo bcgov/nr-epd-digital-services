@@ -7,6 +7,9 @@ import {
 } from 'typeorm';
 import { Site } from './site.entity';
 
+/**
+ *  DO NOT USE  - FETCH DATA FROM SITE SERVICE
+ */
 @Index('pk_region', ['id'], { unique: true })
 @Entity('region')
 export class Region {

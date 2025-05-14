@@ -23,6 +23,10 @@ import {
   SaveButton,
 } from '../../components/simple/CustomButtons';
 import './Assignment.css';
+import {
+  useGetApplicationDetailsByIdQuery,
+  useGetSiteDetailsBySiteIdQuery,
+} from '../applications/application/applicationTabs/appDetails/Details.generated';
 
 interface AssignmentProps {
   id?: string;
@@ -59,6 +63,27 @@ const Assignment: React.FC<AssignmentProps> = ({
   const { data: serviceTypesList } = useGetApplicationServiceTypesQuery();
 
   const [updateStaffAssigned] = useUpdateStaffAssignedMutation();
+
+  const { data: applicationData, loading: applicationDataLoading } =
+    useGetApplicationDetailsByIdQuery({
+      variables: {
+        applicationId,
+      },
+      skip: !applicationId,
+    });
+
+  const application = applicationData?.getApplicationDetailsById.data;
+
+  const {
+    data: siteData,
+    loading: siteDataLoading,
+    called: siteDataCalled,
+  } = useGetSiteDetailsBySiteIdQuery({
+    variables: {
+      siteId: application?.siteId?.toString() || '',
+    },
+    skip: !application?.siteId,
+  });
 
   useEffect(() => {
     SetServiceTypes(serviceTypesList?.getApplicationServiceTypes?.data || []);
@@ -198,7 +223,8 @@ const Assignment: React.FC<AssignmentProps> = ({
     uniqueRoles = uniqueRoles.filter(
       (item: any) =>
         item.value === 'Caseworker' ||
-        item.value === 'Statutory Decision Maker',
+        item.value === 'Statutory Decision Maker' ||
+        item.value === 'Mentor',
     );
 
     let params: UpdateDisplayTypeParams = {
@@ -230,15 +256,27 @@ const Assignment: React.FC<AssignmentProps> = ({
           <div className="site-info-content">
             <div className="site-info-content-div">
               <div className="site-info-label">Site ID</div>
-              <div>1234</div>
+              <div>{siteData?.getSiteDetailsBySiteId?.data?.id}</div>
             </div>
             <div className="site-info-content-div">
               <div className="site-info-label">Site Risk Classification</div>
-              <div>1234</div>
+              <div>{siteData?.getSiteDetailsBySiteId?.data?.siteRiskCode}</div>
             </div>
             <div className="site-info-content-div">
               <div className="site-info-label">Site Address</div>
-              <div>1234 Bay St, Victoria</div>
+              <div>
+                {siteData?.getSiteDetailsBySiteId?.data?.addrLine_1 ||
+                  '' +
+                    ' ' +
+                    siteData?.getSiteDetailsBySiteId?.data?.addrLine_2 ||
+                  '' +
+                    ' ' +
+                    siteData?.getSiteDetailsBySiteId?.data?.addrLine_3 ||
+                  '' +
+                    ' ' +
+                    siteData?.getSiteDetailsBySiteId?.data?.addrLine_4 ||
+                  ''}
+              </div>
             </div>
           </div>
         }
