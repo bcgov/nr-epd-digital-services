@@ -38,6 +38,27 @@ export default class ApplicationServiceTypeSeeder extends Seeder {
         { abbrev: 'SDM' },
         { assignmentFactor: 1 },
       );
+
+      const mentorResult = await manager.findOne(ParticipantRole, {
+        where: { abbrev: 'MENTOR' },
+      });
+
+      if (!mentorResult) {
+        const participantRole = new ParticipantRole();
+        participantRole.abbrev = 'MENTOR';
+        participantRole.description = 'Mentor';
+        participantRole.assignmentFactor = 1;
+        participantRole.isMinistry = true;
+        participantRole.isActive = true;
+        participantRole.displayOrder = 7;
+        participantRole.rowVersionCount = 0;
+        participantRole.createdBy = 'sysadmin';
+        participantRole.createdDateTime = new Date();
+        participantRole.updatedBy = 'sysadmin';
+        participantRole.updatedDateTime = new Date();
+        participantRole.ts = Buffer.from('');
+        await manager.save(participantRole);
+      }
     } catch (error) {
       console.log('ApplicationServiceTypeSeeder', error);
     }
