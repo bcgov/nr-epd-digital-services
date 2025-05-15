@@ -25,7 +25,7 @@ import { SiteService } from '../site/site.service';
 import { ConfigService } from '@nestjs/config';
 import { Risk } from '../../entities/risk.entity';
 import { StaffRoles } from './staffRoles.enum';
-import { AppPriority } from 'src/app/entities/appPriority.entity';
+import { AppPriority } from '../../entities/appPriority.entity';
 
 @Injectable()
 export class StaffAssignmentService {
