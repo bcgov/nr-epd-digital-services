@@ -220,7 +220,10 @@ const ApplicationDetails = () => {
         navigationBarText={navigationBarText}
         childern={navigationBarChildern}
       />
-      <PageContainer role="details">
+      <PageContainer
+        customContainerClass={styles.applicationPageContainer}
+        role="details"
+      >
         {(appId || appDescription || siteDescription) && (
           <div className={`gap-3 row ${isVisible ? 'invisible' : ''}`}>
             {(appId || appDescription) && (

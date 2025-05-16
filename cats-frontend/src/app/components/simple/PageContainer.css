@@ -1,6 +1,6 @@
 .page-continer {
-  padding: 0 var(--layout-margin-xxlarge) var(--layout-margin-huge)
-    var(--layout-margin-xxlarge);
+  padding: var(--layout-margin-xxlarge) var(--layout-margin-xxlarge)
+    var(--layout-margin-huge) var(--layout-margin-xxlarge);
   gap: var(--layout-margin-xxlarge);
   display: flex;
   flex-direction: column;

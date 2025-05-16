@@ -2,7 +2,7 @@ query SearchApplications(
   $searchParam: String!
   $page: Int!
   $pageSize: Int!
-  $filter: ApplicationFilter!
+  $filter: Filter!
   $sortBy: ApplicationSortByField!
   $sortByDir: ApplicationSortByDirection!
 ) {
