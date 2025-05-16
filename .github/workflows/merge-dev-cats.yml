@@ -12,6 +12,17 @@ concurrency:
 
 jobs:
   # https://github.com/bcgov-nr/action-builder-ghcr
+  get-pr-info:
+    runs-on: ubuntu-24.04
+    outputs:
+      pr: ${{ steps.vars.outputs.pr }}
+    steps:
+      - id: vars
+        uses: bcgov-nr/action-get-pr@v0.0.1
+      - name: Echo PR number
+        run: |
+          echo "PR: ${{ steps.vars.outputs.pr }}"
+
   builds:
     name: Builds
     runs-on: ubuntu-24.04
@@ -45,6 +56,7 @@ jobs:
     name: Deploys Database (test)
     uses: ./.github/workflows/.dbdeployer.yml
     secrets: inherit
+    needs: [get-pr-info]
     with:
       triggers: ('charts/crunchy/' '.github/workflows/merge-dev-cats.yml')
       # triggers: ('charts/crunchy/')
@@ -54,7 +66,7 @@ jobs:
     # https://github.com/bcgov/quickstart-openshift-helpers
   deploys:
     name: Deploys (test)
-    needs: [builds, deploy_db]
+    needs: [builds, get-pr-info, deploy_db]
     uses: ./.github/workflows/.deployer.yml
     secrets: inherit
     with:
