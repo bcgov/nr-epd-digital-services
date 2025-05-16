@@ -1,9 +1,10 @@
-name: CATS PR
+name: Deploy CATS to TEST
 
 on:
   push:
     branches:
       - dev 
+      - feat/CATS-test
 
 concurrency:
   group: test
@@ -45,7 +46,6 @@ jobs:
     uses: ./.github/workflows/.dbdeployer.yml
     secrets: inherit
     with:
-      # Todo - Can revert to below trigger, this line just forces db deploy when updating this file, good for active dev.
       triggers: ('charts/crunchy/' '.github/workflows/cats-pr-open.yml')
       # triggers: ('charts/crunchy/')
       values: 'values-dev.yaml'
@@ -55,7 +55,6 @@ jobs:
   deploys:
     name: Deploys (test)
     needs: [builds, deploy_db]
-    # needs: [builds]
     uses: ./.github/workflows/.deployer.yml
     secrets: inherit
     with:
