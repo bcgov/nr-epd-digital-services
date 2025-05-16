@@ -46,7 +46,7 @@ jobs:
     uses: ./.github/workflows/.dbdeployer.yml
     secrets: inherit
     with:
-      triggers: ('charts/crunchy/' '.github/workflows/cats-pr-open.yml')
+      triggers: ('charts/crunchy/' '.github/workflows/merge-dev-cats.yml')
       # triggers: ('charts/crunchy/')
       values: 'values-dev.yaml'
       app_values:  'values-test.yaml' 
