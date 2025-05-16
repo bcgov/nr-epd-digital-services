@@ -301,13 +301,22 @@ export const updateFields = (
   ];
 };
 
-export const bcBoxAppUrl = import.meta.env.VITE_BCBOX_APP_URL;
-export const getBcBoxBucketIdApiUrl = import.meta.env.VITE_BCBOX_BUCKET_URL;
-export const comsAccessKeyId = import.meta.env.VITE_COMS_ACCESS_KEY_ID;
-export const comsBcBoxBucketId = import.meta.env.VITE_COMS_BUCKET;
-export const comsEndPoint = import.meta.env.VITE_COMS_ENDPOINT;
-export const comsAccessRegion = import.meta.env.VITE_COMS_ACCESS_REGION;
-export const comsAccessKey = import.meta.env.VITE_COMS_ACCESS_KEY;
+export const bcBoxAppUrl =
+  import.meta.env.VITE_BCBOX_APP_URL || window?._env_?.VITE_BCBOX_APP_URL;
+export const getBcBoxBucketIdApiUrl =
+  import.meta.env.VITE_BCBOX_BUCKET_URL || window?._env_?.VITE_BCBOX_BUCKET_URL;
+export const comsAccessKeyId =
+  import.meta.env.VITE_COMS_ACCESS_KEY_ID ||
+  window?._env_?.VITE_COMS_ACCESS_KEY_ID;
+export const comsBcBoxBucketId =
+  import.meta.env.VITE_COMS_BUCKET || window?._env_?.VITE_COMS_BUCKET;
+export const comsEndPoint =
+  import.meta.env.VITE_COMS_ENDPOINT || window?._env_?.VITE_COMS_ENDPOINT;
+export const comsAccessRegion =
+  import.meta.env.VITE_COMS_ACCESS_REGION ||
+  window?._env_?.VITE_COMS_ACCESS_REGION;
+export const comsAccessKey =
+  import.meta.env.VITE_COMS_ACCESS_KEY || window?._env_?.VITE_COMS_ACCESS_KEY;
 
 type PermissionSuccessCallback = (state: PermissionState) => void;
 type PermissionErrorCallback = (error: Error) => void;

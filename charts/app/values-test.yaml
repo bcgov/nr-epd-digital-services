@@ -18,12 +18,11 @@ global:
       enabled: true
     SITE_SERVICE_URL: "epd-backend-applications"
     CATS_EMAIL_TEST_MODE: true
-    # switch to haley's email after verifying
-    CATS_TEST_EMAIL_ADDRESS: midhun.murali@aot-technologies.com
-    CHES_TOKEN_URL: https://dev.loginproxy.gov.bc.ca/auth/realms/comsvcauth/protocol/openid-connect/token
-    CHES_EMAIL_URL: https://ches-dev.api.gov.bc.ca/api/v1/email
+    CATS_TEST_EMAIL_ADDRESS: haley.sawyer@gov.bc.ca
+    CHES_TOKEN_URL: https://test.loginproxy.gov.bc.ca/auth/realms/comsvcauth/protocol/openid-connect/token
+    CHES_EMAIL_URL: https://ches-test.api.gov.bc.ca/api/v1/email
     CHES_EMAIL_FROM: NOREPLYEPD@gov.bc.ca
-    CATS_APPLICATION_URL: http://localhost:3000/applications/
+    CATS_APPLICATION_URL: http://localhost:3000/applications
 #-- the components of the application, backend.
 backend:
   #-- enable or disable backend
@@ -44,7 +43,7 @@ frontend:
     enabled: false # enable it in PRODUCTION for having pod disruption budget.
   config:
     REACT_APP_BACKEND_API: ~
-    REACT_APP_AUTH_AUTHORITY: "https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/"
+    REACT_APP_AUTH_AUTHORITY: "https://epd-keycloak-test.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/"
     REACT_APP_AUTH_CLIENT_ID: "cats-web"
     REACT_APP_AUTH_REDIRECT_URI: ~
     # REACT_APP_AUTH_LOGOUT_REDIRECT_URI: ~
@@ -58,8 +57,8 @@ frontend:
     VITE_SITE_REGISTRAR_USER_ROLE: "site-registrar"
     VITE_SITE_INTERNAL_USER_ROLE: "site-internal-user"
     VITE_SITE_REGISTRY_URL: ~
-    VITE_FORM_API: "https://forms-flow-forms-e38158-dev.apps.silver.devops.gov.bc.ca/"
-    VITE_FORM_BACKEND_API: "https://forms-flow-api-e38158-dev.apps.silver.devops.gov.bc.ca/"
-    VITE_FORM_FLOW_API: "https://forms-flow-api-e38158-dev.apps.silver.devops.gov.bc.ca/"
+    VITE_FORM_API: "https://forms-flow-forms-e38158-test.apps.silver.devops.gov.bc.ca/"
+    VITE_FORM_BACKEND_API: "https://forms-flow-api-e38158-test.apps.silver.devops.gov.bc.ca/"
+    VITE_FORM_FLOW_API: "https://forms-flow-api-e38158-test.apps.silver.devops.gov.bc.ca/"
 
 
