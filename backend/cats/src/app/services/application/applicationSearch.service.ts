@@ -9,6 +9,7 @@ import { SortByDirection } from '../../utilities/enums/application/sortByDirecti
 import { SortByField } from '../../utilities/enums/application/sortByField.enum';
 import { ApplicationResultDto } from 'src/app/dto/applicationResultDto';
 import { plainToInstance } from 'class-transformer';
+import { StaffRoles } from '../assignment/staffRoles.enum';
 
 @Injectable()
 export class ApplicationSearchService {
@@ -42,6 +43,7 @@ export class ApplicationSearchService {
     query
       .leftJoinAndSelect('application.appParticipants', 'appParticipant')
       .leftJoinAndSelect('appParticipant.person', 'person')
+      .leftJoinAndSelect('appParticipant.participantRole', 'participantRole')
       .leftJoinAndSelect('application.site', 'site')
       .leftJoinAndSelect('application.appType', 'appType')
       .leftJoinAndSelect('application.appStatus', 'appStatus')
@@ -119,9 +121,14 @@ export class ApplicationSearchService {
       applicationType: app.appType?.description || '',
       lastUpdated: app.updatedDateTime.toISOString(),
       status: app.appStatus?.statusType?.abbrev || '',
-      staffAssigned: app.appParticipants.map(
-        (participant) => participant.person,
-      ),
+      staffAssigned: app.appParticipants
+        .filter(
+          (participant) =>
+            participant.participantRole?.abbrev === StaffRoles.CASE_WORKER ||
+            participant.participantRole?.abbrev === StaffRoles.MENTOR ||
+            participant.participantRole?.abbrev === StaffRoles.SDM,
+        )
+        .map((participant) => participant.person),
       priority: app.appPriorities?.[0]?.priority?.abbrev || '',
       url: app.id.toString(),
     }));

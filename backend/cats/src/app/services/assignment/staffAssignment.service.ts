@@ -25,6 +25,7 @@ import { SiteService } from '../site/site.service';
 import { ConfigService } from '@nestjs/config';
 import { Risk } from '../../entities/risk.entity';
 import { StaffRoles } from './staffRoles.enum';
+import { AppPriority } from '../../entities/appPriority.entity';
 
 @Injectable()
 export class StaffAssignmentService {
@@ -56,6 +57,9 @@ export class StaffAssignmentService {
 
     @InjectRepository(Risk)
     private readonly siteRiskRepository: Repository<Risk>,
+
+    @InjectRepository(AppPriority)
+    private readonly appPriorityRepository: Repository<AppPriority>,
 
     private readonly appParticipantService: AppParticipantService,
 
@@ -394,6 +398,13 @@ p.id, p.first_name, p.middle_name, p.last_name
                   },
                 });
 
+              let priority = await this.appPriorityRepository.findOne({
+                where: {
+                  applicationId: application.id,
+                },
+                relations: ['priority'],
+              });
+
               await this.emailService.sendEmail(
                 toEmailAddress,
                 'Application Assigned',
@@ -406,6 +417,7 @@ p.id, p.first_name, p.middle_name, p.last_name
                   caseWorkerArr,
                   sdmArr,
                   mentorArr,
+                  priority?.priority?.description,
                 ),
               );
             });
@@ -453,6 +465,7 @@ p.id, p.first_name, p.middle_name, p.last_name
     caseWorkerArr: AppParticipant[] = [],
     sdmArr: AppParticipant[] = [],
     mentorArr: AppParticipant[] = [],
+    priority: string,
   ): string {
     //const filePath = `${__dirname}/email-template/application-assignment-notification.html`;
 
@@ -512,7 +525,8 @@ p.id, p.first_name, p.middle_name, p.last_name
       .replace(
         /\$\{mentorList\}/g,
         this.getStaffListNameAsString(mentorArr, StaffRoles.MENTOR),
-      );
+      )
+      .replace(/\$\{priority\}/g, priority);
 
     return template;
   }
