@@ -1,17 +1,16 @@
-
-export { };
+export {};
 
 /**
- * In OpenShift, we make use of `config.js` to have runtime environment variables. We can't just do 
+ * In OpenShift, we make use of `config.js` to have runtime environment variables. We can't just do
  * `import meta.env` as we do in local development. OpenShift builds are also compiled then placed in nginx,
  * which is why we need to use `config.js` to set these variables at runtime.
- * 
+ *
  * So, anywhere we do `import meta.env.VITE_*`, we need to also check for `window._env_.VITE_*` as a fallback.
  * This ensures that our application can run in both local and production environments seamlessly.
- * 
+ *
  * Also see: `charts/app/templates/frontend/templates/configmap.yaml`
- * 
- * example: 
+ *
+ * example:
  *    const FORM_API: string = import.meta.env.VITE_FORM_API || window._env_.VITE_FORM_API;
  */
 declare global {
