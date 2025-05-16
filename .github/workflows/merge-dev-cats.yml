@@ -5,6 +5,16 @@ on:
     branches:
       - dev 
       - feat/CATS-test
+  # TODO - Remove this! We do NOT want it to happen on PRs, but only _after_ PRs are merged in.
+  # TODO TODO TODO - REMOVE BEFORE MERGING
+  # TODO TODO TODO - REMOVE BEFORE MERGING
+  # TODO TODO TODO - REMOVE BEFORE MERGING
+  # TODO TODO TODO - REMOVE BEFORE MERGING
+  # TODO TODO TODO - REMOVE BEFORE MERGING
+  # TODO TODO TODO - REMOVE BEFORE MERGING
+  pull_request:
+    branches:
+      - dev
 
 concurrency:
   group: test
