@@ -253,6 +253,7 @@ export type InvoiceByApplicationIdDto = {
   id: Scalars['Int']['output'];
   issuedDate: Scalars['DateTime']['output'];
   status: Scalars['String']['output'];
+  subject: Scalars['String']['output'];
   totalInCents: Scalars['Int']['output'];
 };
 
@@ -264,7 +265,7 @@ export type InvoiceDto = {
   dueDate: Scalars['DateTime']['output'];
   gstInCents: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
-  invoiceId: Scalars['Int']['output'];
+  invoiceId?: Maybe<Scalars['Int']['output']>;
   issuedDate: Scalars['DateTime']['output'];
   lineItems: Array<InvoiceLineItemDto>;
   pstInCents: Scalars['Int']['output'];
@@ -282,9 +283,9 @@ export type InvoiceInputDto = {
   applicationId: Scalars['Int']['input'];
   dueDate: Scalars['DateTime']['input'];
   gstInCents: Scalars['Int']['input'];
-  invoiceId: Scalars['Int']['input'];
+  invoiceId?: InputMaybe<Scalars['Int']['input']>;
   issuedDate: Scalars['DateTime']['input'];
-  lineItems: Array<InvoiceLineItemCreateDto>;
+  lineItems: Array<InvoiceLineItemInputDto>;
   pstInCents: Scalars['Int']['input'];
   recipientId: Scalars['Int']['input'];
   status: InvoiceStatus;
@@ -292,14 +293,6 @@ export type InvoiceInputDto = {
   subtotalInCents: Scalars['Int']['input'];
   taxExempt: Scalars['Boolean']['input'];
   totalInCents: Scalars['Int']['input'];
-};
-
-export type InvoiceLineItemCreateDto = {
-  description: Scalars['String']['input'];
-  quantity: Scalars['Int']['input'];
-  totalInCents: Scalars['Int']['input'];
-  type: Scalars['String']['input'];
-  unitPriceInCents: Scalars['Int']['input'];
 };
 
 export type InvoiceLineItemDto = {
@@ -316,10 +309,21 @@ export type InvoiceLineItemDto = {
   updatedBy: Scalars['String']['output'];
 };
 
+export type InvoiceLineItemInputDto = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdBy?: InputMaybe<Scalars['String']['input']>;
+  description: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['Float']['input']>;
+  quantity: Scalars['Int']['input'];
+  totalInCents: Scalars['Int']['input'];
+  type: Scalars['String']['input'];
+  unitPriceInCents: Scalars['Int']['input'];
+};
+
 export type InvoiceResponse = {
   __typename?: 'InvoiceResponse';
   httpStatusCode?: Maybe<Scalars['Int']['output']>;
-  invoice?: Maybe<Array<InvoiceDto>>;
+  invoice?: Maybe<InvoiceDto>;
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;

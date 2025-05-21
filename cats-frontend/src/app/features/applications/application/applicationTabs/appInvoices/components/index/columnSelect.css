@@ -1,0 +1,16 @@
+.column-select-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.column-select-grid label {
+  display: flex;
+  align-items: center;
+}
+
+.column-select-grid input[type='checkbox'] {
+  margin-right: 8px;
+}
