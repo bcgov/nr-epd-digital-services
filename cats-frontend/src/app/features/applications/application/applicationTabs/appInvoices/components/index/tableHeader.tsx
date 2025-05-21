@@ -10,6 +10,7 @@ interface TableHeaderProps {
   handleColumnChange: (selectedColumns: TableColumn[]) => void;
   handleFilterChange: (filter: InvoiceFilter) => void;
   filter: InvoiceFilter;
+  createInvoiceButton?: React.ReactNode;
 }
 
 const TableHeader: React.FC<TableHeaderProps> = ({
@@ -17,6 +18,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({
   handleColumnChange,
   handleFilterChange,
   filter,
+  createInvoiceButton,
 }) => {
   const [showColumnSelect, setShowColumnSelect] = useState(false);
 
@@ -49,6 +51,11 @@ const TableHeader: React.FC<TableHeaderProps> = ({
         </div>
       )}
       <hr className="table-header-hr" />
+      {createInvoiceButton && (
+        <div className="d-flex justify-content-start mb-3">
+          {createInvoiceButton}
+        </div>
+      )}
     </div>
   );
 };
