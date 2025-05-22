@@ -5,6 +5,7 @@ on:
     branches:
       - dev 
       - feat/CATS-test # todo remove before merging
+      - feat/CATS-test-deploy # todo remove before merging
   # Workflow dispatch is largely for debugging.
   workflow_dispatch:
     inputs:
@@ -21,6 +22,7 @@ jobs:
   # https://github.com/bcgov-nr/action-builder-ghcr
   get-pr-info:
     runs-on: ubuntu-24.04
+    if: inputs.tag  == ''
     outputs:
       pr: ${{ steps.vars.outputs.pr }}
     steps:
