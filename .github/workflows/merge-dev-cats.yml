@@ -65,7 +65,7 @@ jobs:
     name: Deploys Database (test)
     uses: ./.github/workflows/.dbdeployer.yml
     secrets: inherit
-    needs: [get-pr-info]
+    # needs: [get-pr-info] # can't always require this, like workflow dispatch etc.
     with:
       triggers: ('charts/crunchy/' '.github/workflows/merge-dev-cats.yml')
       # triggers: ('charts/crunchy/')
