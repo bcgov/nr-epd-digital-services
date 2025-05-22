@@ -75,7 +75,8 @@ jobs:
     # https://github.com/bcgov/quickstart-openshift-helpers
   deploys:
     name: Deploys (test)
-    needs: [builds, get-pr-info, deploy_db]
+    # needs: [builds, get-pr-info, deploy_db] # same as above, not needed in test / workflow dispatch path
+    needs: [builds,  deploy_db]
     uses: ./.github/workflows/.deployer.yml
     secrets: inherit
     with:
