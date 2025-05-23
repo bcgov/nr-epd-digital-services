@@ -204,6 +204,8 @@ spec:
               value: {{ .Values.global.config.CHES_EMAIL_FROM | quote }}
             - name: CATS_APPLICATION_URL
               value: {{ .Values.global.config.CATS_APPLICATION_URL | quote }}
+            - name: CATS_API
+              value: {{ .Values.global.config.CATS_API | quote }}
           ports:
             - name: http
               containerPort: {{ .Values.backend.service.targetPort }}
