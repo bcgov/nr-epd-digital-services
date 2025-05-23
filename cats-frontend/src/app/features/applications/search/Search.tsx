@@ -7,7 +7,7 @@ import ApplicationResultsTable from './applicationResults/table';
 import { TableColumn } from '../../../components/table/TableColumn';
 import { applicationResultColumns } from './applicationResults/tableColumnConfig';
 import {
-  ApplicationFilter,
+  Filter,
   ApplicationResultDto,
   ApplicationSortByDirection,
   ApplicationSortByField,
@@ -24,9 +24,7 @@ const Search: React.FC = () => {
   const [columns, setColumns] = useState<TableColumn[]>(
     applicationResultColumns,
   );
-  const [filter, setFilter] = useState<ApplicationFilter>(
-    ApplicationFilter.All,
-  );
+  const [filter, setFilter] = useState<Filter>(Filter.All);
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
   const [totalResults, setTotalResults] = useState<number>(0);
@@ -41,7 +39,7 @@ const Search: React.FC = () => {
     searchTerm: '',
     page: 1,
     pageSize: 5,
-    filter: ApplicationFilter.All,
+    filter: Filter.All,
     sortBy: ApplicationSortByField.Id,
     sortByDir: ApplicationSortByDirection.Asc,
   });
@@ -77,7 +75,7 @@ const Search: React.FC = () => {
         searchTerm: string,
         page: number,
         pageSize: number,
-        filter: ApplicationFilter,
+        filter: Filter,
         sortBy: ApplicationSortByField,
         sortByDir: ApplicationSortByDirection,
       ) => {
@@ -106,7 +104,7 @@ const Search: React.FC = () => {
     debouncedSearch(searchTerm, 1, pageSize, filter, sortBy, sortByDir);
   };
 
-  const handleFilterChange = (filter: ApplicationFilter) => {
+  const handleFilterChange = (filter: Filter) => {
     setFilter(filter);
     debouncedSearch(searchTerm, page, pageSize, filter, sortBy, sortByDir);
   };
