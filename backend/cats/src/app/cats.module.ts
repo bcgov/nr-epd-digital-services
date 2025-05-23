@@ -76,6 +76,10 @@ import { StaffAssignmentService } from './services/assignment/staffAssignment.se
 import { ApplicationServiceType } from './entities/applicationServiceType.entity';
 import { ChesEmailService } from './services/email/chesEmail.service';
 import { HttpModule, HttpService } from '@nestjs/axios';
+import { PermissionsResolver } from './resolvers/permissions/permissions.resolver';
+import { PermissionsService } from './services/permissions/permissions.service';
+import { Permissions } from './entities/permissions.entity';
+import { PersonPermission } from './entities/personPermissions.entity';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -133,6 +137,8 @@ import { HttpModule, HttpService } from '@nestjs/axios';
       InvoiceV2,
       InvoiceLineItem,
       ApplicationServiceType,
+      Permissions,
+      PersonPermission
     ]),
     HttpModule,
   ],
@@ -160,8 +166,9 @@ import { HttpModule, HttpService } from '@nestjs/axios';
     InvoiceService,
     StaffAssignmentResolver,
     StaffAssignmentService,
-
     ChesEmailService,
+    PermissionsResolver,
+    PermissionsService,
   ],
   controllers: [UserController],
 })

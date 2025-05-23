@@ -256,6 +256,7 @@ const Form: React.FC<IFormRendererProps> = ({
                   }
                   srMode={srMode}
                   validation={field.validation}
+                  wrapperClassName={field.wrapperClassName}
                 />
               )}
               {field.type === FormFieldType.Switch && (
