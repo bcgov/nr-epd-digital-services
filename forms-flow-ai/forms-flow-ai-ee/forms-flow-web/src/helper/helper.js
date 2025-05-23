@@ -22,7 +22,6 @@ export const getClientApplicationStatus = (applicationStatus) => {
     withdrawn: "Completed",
     "awaiting payment": "Invoice sent",
     closed: "Closed",
-    submitted: "Submitted Updated",
   };
 
   const normalizedStatus = applicationStatus.toLowerCase();
