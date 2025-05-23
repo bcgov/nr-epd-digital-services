@@ -29,6 +29,11 @@ const Widget: React.FC<IWidget> = ({
   widgetIschecked,
   hideWidgetCheckbox,
   customWidgetCss,
+  changeResultsPerPage,
+  resultsPerPage,
+  selectPage,
+  totalResults,
+  filter,
 }) => {
   let widgetSortHandler = sortHandler ?? (() => {});
 
@@ -48,12 +53,15 @@ const Widget: React.FC<IWidget> = ({
               isChecked={widgetIschecked}
             />
           )}
-          <div className="w-100 me-1">
+          <div
+            className={`${styles.widgetLblContainer} w-100 me-1 d-flex flex-wrap align-items-center justify-content-between`}
+          >
             <h4
               className={`${customLabelCss ?? styles.widgetLabel} ${isRequired ? styles.widgetRequiredField : ''}`}
             >
               {title}
             </h4>
+            {filter}
           </div>
         </div>
       )}
@@ -73,6 +81,10 @@ const Widget: React.FC<IWidget> = ({
             idColumnName={primaryKeycolumnName ?? ''}
             sortHandler={widgetSortHandler}
             currentPage={currentPage}
+            selectPage={selectPage}
+            changeResultsPerPage={changeResultsPerPage}
+            resultsPerPage={resultsPerPage}
+            totalResults={totalResults}
           />
         </div>
       )}
