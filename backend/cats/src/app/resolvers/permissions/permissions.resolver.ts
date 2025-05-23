@@ -3,9 +3,9 @@ import { Resource } from 'nest-keycloak-connect';
 import { HttpStatus} from '@nestjs/common';
 import { LoggerService } from '../../logger/logger.service';
 import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
-import { RoleWithPermissions } from 'src/app/dto/permissions/viewPermissions.dto';
-import { PermissionsResponse } from 'src/app/dto/response/permissions/permissionsResponse';
-import { PermissionsService } from 'src/app/services/permissions/permissions.service';
+import { RoleWithPermissions } from '../../dto/permissions/viewPermissions.dto';
+import { PermissionsResponse } from '../../dto/response/permissions/permissionsResponse';
+import { PermissionsService } from '../../services/permissions/permissions.service';
 
 @Resolver(() => RoleWithPermissions)
 @Resource('user-service')

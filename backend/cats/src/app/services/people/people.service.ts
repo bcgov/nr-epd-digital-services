@@ -7,7 +7,7 @@ import { LoggerService } from '../../logger/logger.service';
 import { CreatePerson } from '../../dto/person/createPerson.dto';
 import { UpdatePerson } from '../../dto/person/updatePerson.dto';
 import { PermissionsService } from '../permissions/permissions.service';
-import { ViewPerson } from 'src/app/dto/person/viewPerson.dto';
+import { ViewPerson } from '../../dto/person/viewPerson.dto';
 
 @Injectable()
 export class PersonService {

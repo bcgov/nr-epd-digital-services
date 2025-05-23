@@ -157,6 +157,7 @@ describe('PersonNoteService', () => {
           createdDatetime: new Date(),
           updatedBy: null,
           updatedDatetime: null,
+          personPermissions: []
         },
       };
   
