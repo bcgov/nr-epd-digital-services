@@ -153,6 +153,8 @@ spec:
               value: {{ .Values.backend.service.targetPort | quote }}
             - name: GRAPHQL_SCHEMA_FILE_PATH
               value: "/graphql/schema.graphql"
+            - name: SITE_SERVICE_URL
+              value: {{ .Values.global.config.SITE_SERVICE_URL | quote }}
             - name: POSTGRES_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -190,6 +192,18 @@ spec:
                 secretKeyRef:
                   key: user
                   name: postgres-crunchy-pguser-postgres
+            - name: CATS_EMAIL_TEST_MODE
+              value: {{ .Values.global.config.CATS_EMAIL_TEST_MODE | quote }}
+            - name: CATS_TEST_EMAIL_ADDRESS
+              value: {{ .Values.global.config.CATS_TEST_EMAIL_ADDRESS | quote }}
+            - name: CHES_TOKEN_URL
+              value: {{ .Values.global.config.CHES_TOKEN_URL | quote }}
+            - name: CHES_EMAIL_URL
+              value: {{ .Values.global.config.CHES_EMAIL_URL | quote }}
+            - name: CHES_EMAIL_FROM
+              value: {{ .Values.global.config.CHES_EMAIL_FROM | quote }}
+            - name: CATS_APPLICATION_URL
+              value: {{ .Values.global.config.CATS_APPLICATION_URL | quote }}
           ports:
             - name: http
               containerPort: {{ .Values.backend.service.targetPort }}
@@ -228,7 +242,7 @@ spec:
           emptyDir: {}
         - name: seed-data-mount
           persistentVolumeClaim:
-            claimName: nr-ora2pg-sql
+            claimName: nr-cats-dbdump-sql
         - name: seed-data-scripts
           configMap:
             name: {{ template "backend.fullname" . }}-scripts

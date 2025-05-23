@@ -39,7 +39,7 @@ data:
     fi
 
     # check if sites table has any rows or not. if seed is already done, even if it is enabled, here it checks and skips seeding again.
-    if [ "$(PGPASSWORD="$POSTGRES_ADMIN_PASSWORD" psql -h "$POSTGRESQL_HOST" -d "$POSTGRES_DATABASE" -U "$POSTGRES_ADMIN_USERNAME" -t -c "SELECT count(*) FROM sites.sites;")" -gt 0 ]; then
+    if [ "$(PGPASSWORD="$POSTGRES_ADMIN_PASSWORD" psql -h "$POSTGRESQL_HOST" -d "$POSTGRES_DATABASE" -U "$POSTGRES_ADMIN_USERNAME" -t -c "SELECT count(*) FROM cats.app_type;")" -gt 0 ]; then
       echo "Seed data already loaded. Exiting."
       exit 0
     fi

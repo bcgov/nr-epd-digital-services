@@ -53,12 +53,6 @@ export type ApplicationDetailsResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
-export enum ApplicationFilter {
-  All = 'ALL',
-  Completed = 'COMPLETED',
-  Unassigned = 'UNASSIGNED'
-}
-
 export type ApplicationHousingDto = {
   __typename?: 'ApplicationHousingDto';
   housing: HousingDto;
@@ -213,6 +207,13 @@ export type DropdownResponse = {
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
 };
+
+export enum Filter {
+  All = 'ALL',
+  Completed = 'COMPLETED',
+  Overcapacity = 'OVERCAPACITY',
+  Unassigned = 'UNASSIGNED'
+}
 
 export type HousingDto = {
   __typename?: 'HousingDto';
@@ -494,6 +495,7 @@ export type Query = {
   getPersonNotesByPersonId: PersonNoteResponse;
   getSiteDetailsBySiteId: SiteDetailsResponse;
   getStaffAssignedByAppId: ViewStaffAssignedResponse;
+  getStaffs: StaffResponse;
   searchApplications: ApplicationSearchResponse;
   searchApplicationsById: ApplicationSearchResponse;
   searchPerson: SearchPersonResponse;
@@ -551,8 +553,17 @@ export type QueryGetStaffAssignedByAppIdArgs = {
 };
 
 
+export type QueryGetStaffsArgs = {
+  filter?: InputMaybe<Filter>;
+  page: Scalars['Int']['input'];
+  pageSize: Scalars['Int']['input'];
+  sortBy?: InputMaybe<StaffSortByField>;
+  sortByDir?: InputMaybe<ApplicationSortByDirection>;
+};
+
+
 export type QuerySearchApplicationsArgs = {
-  filter: ApplicationFilter;
+  filter: Filter;
   page: Scalars['Int']['input'];
   pageSize: Scalars['Int']['input'];
   searchParam: Scalars['String']['input'];
@@ -631,6 +642,24 @@ export type StaffAssignedDto = {
   applicationServiceTypeId?: Maybe<Scalars['Float']['output']>;
   staffList: Array<ViewStaffAssignedDto>;
 };
+
+export type StaffResponse = {
+  __typename?: 'StaffResponse';
+  count?: Maybe<Scalars['Float']['output']>;
+  data: Array<ViewStaff>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  page?: Maybe<Scalars['Float']['output']>;
+  pageSize?: Maybe<Scalars['Float']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export enum StaffSortByField {
+  Assignment = 'ASSIGNMENT',
+  Id = 'ID',
+  Name = 'NAME'
+}
 
 export type UpdateAppParticipantDto = {
   applicationId: Scalars['Float']['input'];
@@ -830,6 +859,14 @@ export type ViewPersonNote = {
   id: Scalars['String']['output'];
   noteDescription: Scalars['String']['output'];
   user?: Maybe<Scalars['String']['output']>;
+};
+
+export type ViewStaff = {
+  __typename?: 'ViewStaff';
+  assignments: Scalars['Float']['output'];
+  capacity: Scalars['Float']['output'];
+  id: Scalars['Float']['output'];
+  name: Scalars['String']['output'];
 };
 
 export type ViewStaffAssignedDto = {
