@@ -35,6 +35,7 @@ import { SpinnerSVG } from "../../containers/SpinnerSVG";
 import Head from "../../containers/Head";
 import { push } from "connected-react-router";
 import isValiResourceId from "../../helper/regExp/validResourceId";
+import { getClientApplicationStatus } from "../../helper/helper";
 
 export const ApplicationList = React.memo(() => {
   const { t } = useTranslation();
@@ -149,6 +150,11 @@ export const ApplicationList = React.memo(() => {
   const listApplications = (applications) => {
     let totalApplications = applications.map((application) => {
       application.isClientEdit = isClientEdit(application.applicationStatus);
+      if (getUserRolePermission(userRoles, CLIENT)) {
+        application.applicationStatus = getClientApplicationStatus(
+          application.applicationStatus
+        );
+      }
       return application;
     });
     return totalApplications;
