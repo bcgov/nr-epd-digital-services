@@ -22,4 +22,9 @@ export interface IWidget {
   widgetIschecked?: boolean;
   hideWidgetCheckbox?: boolean;
   customWidgetCss?: string;
+  selectPage?: (pageNumber: number) => void;
+  changeResultsPerPage?: (pageNumber: number) => void;
+  resultsPerPage?: number;
+  totalResults?: number;
+  filter?: React.ReactNode;
 }

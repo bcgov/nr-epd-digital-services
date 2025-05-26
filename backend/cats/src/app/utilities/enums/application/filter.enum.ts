@@ -4,8 +4,9 @@ export enum Filter {
   ALL = 'all',
   UNASSIGNED = 'unassigned',
   COMPLETED = 'completed',
+  OVERCAPACITY = 'overcapacity',
 }
 
 registerEnumType(Filter, {
-  name: 'ApplicationFilter',
+  name: 'Filter',
 });
