@@ -24,6 +24,8 @@ import * as path from 'path';
 import { SiteService } from '../site/site.service';
 import { Risk } from '../../entities/risk.entity';
 import { StaffRoles } from './staffRoles.enum';
+import { AppPriority } from '../../entities/appPriority.entity';
+import { Priority } from '../../entities/priority.entity';
 
 describe('StaffAssignmentService', () => {
   let service: StaffAssignmentService;
@@ -38,10 +40,19 @@ describe('StaffAssignmentService', () => {
   let configService: ConfigService;
   let siteService: SiteService;
   let siteRiskRepository: Repository<Risk>;
+  let appPriorityRepository: Repository<AppPriority>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
+        {
+          provide: getRepositoryToken(AppPriority),
+          useValue: {
+            find: jest.fn(),
+            findOne: jest.fn(),
+            filter: jest.fn(),
+          },
+        },
         {
           provide: getRepositoryToken(AppParticipant),
           useValue: {
@@ -152,6 +163,9 @@ describe('StaffAssignmentService', () => {
     emailService = module.get<ChesEmailService>(ChesEmailService);
     participantRoleRepository = module.get<Repository<ParticipantRole>>(
       getRepositoryToken(ParticipantRole),
+    );
+    appPriorityRepository = module.get<Repository<AppPriority>>(
+      getRepositoryToken(AppPriority),
     );
     configService = module.get<ConfigService>(ConfigService);
     siteService = module.get<SiteService>(SiteService);
@@ -280,6 +294,8 @@ describe('StaffAssignmentService', () => {
       site,
       [],
       [],
+      [],
+      '',
     );
     expect(result).toContain(role);
     expect(result).toContain(serviceRequested);
@@ -351,6 +367,12 @@ describe('StaffAssignmentService', () => {
       },
     ]);
     (repository.findOne as jest.Mock).mockResolvedValue(serviceType);
+
+    const appPrioirty = new AppPriority();
+    appPrioirty.id = 1;
+    appPrioirty.priority = new Priority();
+    appPrioirty.priority.description = 'High';
+    (appPriorityRepository.findOne as jest.Mock).mockResolvedValue(appPrioirty);
 
     const result = await service.updateStaffAssigned(
       staffInput,
