@@ -7,7 +7,7 @@ export type SearchApplicationsQueryVariables = Types.Exact<{
   searchParam: Types.Scalars['String']['input'];
   page: Types.Scalars['Int']['input'];
   pageSize: Types.Scalars['Int']['input'];
-  filter: Types.ApplicationFilter;
+  filter: Types.Filter;
   sortBy: Types.ApplicationSortByField;
   sortByDir: Types.ApplicationSortByDirection;
 }>;
@@ -17,7 +17,7 @@ export type SearchApplicationsQuery = { __typename?: 'Query', searchApplications
 
 
 export const SearchApplicationsDocument = gql`
-    query SearchApplications($searchParam: String!, $page: Int!, $pageSize: Int!, $filter: ApplicationFilter!, $sortBy: ApplicationSortByField!, $sortByDir: ApplicationSortByDirection!) {
+    query SearchApplications($searchParam: String!, $page: Int!, $pageSize: Int!, $filter: Filter!, $sortBy: ApplicationSortByField!, $sortByDir: ApplicationSortByDirection!) {
   searchApplications(
     searchParam: $searchParam
     page: $page
