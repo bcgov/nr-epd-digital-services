@@ -426,28 +426,26 @@ const Person = () => {
   );
 
   useEffect(() => {
-    // Prefill permissions and roles here
-    if (formData?.permissionIds && data?.getPermissions?.data) {
-      const personPermissions: number[] = formData?.permissionIds
+  // Only run once when formData is initially populated
+  if (formData?.permissionIds && data?.getPermissions?.data && selectedPermissions.size === 0) {
+    const personPermissions: number[] = formData?.permissionIds;
 
-      // Initialize selectedPermissions Set with person's permissions
-      setSelectedPermissions(new Set(personPermissions))
+    setSelectedPermissions(new Set(personPermissions));
 
-      // Determine enabled roles by checking if any permission of that role is in personPermissions
-      const rolesMap: Record<number, boolean> = {}
+    const rolesMap: Record<number, boolean> = {};
 
-      data?.getPermissions?.data.forEach((role: any) => {
-        role.permissions.forEach((perm: any) => {
-          if (personPermissions.includes(perm.id)) {
-            rolesMap[role.roleId] = true;
-          }
-        });
-      })
+    data?.getPermissions?.data.forEach((role: any) => {
+      role.permissions.forEach((perm: any) => {
+        if (personPermissions.includes(perm.id)) {
+          rolesMap[role.roleId] = true;
+        }
+      });
+    });
 
-      setEnabledRoles(rolesMap);
-    }
+    setEnabledRoles(rolesMap);
+  }
+}, [formData?.permissionIds, data?.getPermissions?.data]);
 
-  }, [formData, data?.getPermissions?.data]);
 
   const handleSwitchToggle = (roleId: number) => {
     setEnabledRoles(prev => {
