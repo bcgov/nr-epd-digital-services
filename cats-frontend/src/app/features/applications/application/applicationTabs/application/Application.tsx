@@ -187,7 +187,10 @@ export const Application: React.FC<ApplicationProps> = () => {
     return (
       <div className="error-container">
         <div className="error-message">
-          <p className="error-details">Application was not submitted through the platform. Please check your file records for reference.</p>
+          <p className="error-details">
+            Application was not submitted through the platform. Please check
+            your file records for reference.
+          </p>
         </div>
       </div>
     );

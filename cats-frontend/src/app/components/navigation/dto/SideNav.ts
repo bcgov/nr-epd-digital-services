@@ -119,7 +119,7 @@ const roleBasedSideBarList: Record<string, SideNav[]> = {
           icon: icons.AddressBook,
           linkTo: '/people',
         }),
-               createSideNav({
+        createSideNav({
           displayText: 'Staff',
           hasChildren: false,
           icon: icons.userTie,
