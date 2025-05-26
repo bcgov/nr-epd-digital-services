@@ -37,7 +37,21 @@ export const PermissionsSeeder = async (manager: EntityManager) => {
     for (const role of roles) {
       const permissions = getPermissionsForRole(role.abbrev);
 
-      permissions.forEach((perm) => {
+      // Fetch existing permission descriptions for this role
+      const existingPermissions = await manager.find(Permissions, {
+        where: { roleId: role.id },
+        select: ["description"],
+      });
+      const existingDescriptions = new Set(
+        existingPermissions.map((p) => p.description)
+      );
+
+      // Filter out permissions that already exist
+      const newPermissions = permissions.filter(
+        (perm) => !existingDescriptions.has(perm.description)
+      );
+
+      newPermissions.forEach((perm) => {
         const permission = new Permissions();
         permission.roleId = role.id;
         permission.description = perm.description;
