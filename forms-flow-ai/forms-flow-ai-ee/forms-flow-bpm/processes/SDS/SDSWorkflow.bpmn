@@ -118,6 +118,17 @@ execution.setVariable('siteAddress',siteAddress);</bpmn:script>
       <bpmn:outgoing>Flow_0di55l0</bpmn:outgoing>
     </bpmn:receiveTask>
     <bpmn:sequenceFlow id="Flow_1ezlpcw" name="Yes" sourceRef="Gateway_1cvtuda" targetRef="Activity_1pkq9tl">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', 'Awaiting information from client');</camunda:script>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+          <camunda:field name="fields">
+            <camunda:expression>["applicationId", "applicationStatus"]</camunda:expression>
+          </camunda:field>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
+      </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isAgentFillingForm== true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0axurx6" sourceRef="Activity_1pkq9tl" targetRef="Activity_0upowfr">
@@ -161,9 +172,31 @@ execution.setVariable('siteAddress',siteAddress);</bpmn:script>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${section5DeclarationSectionLocalGovernmentPermits== false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0ci62kp" name="Yes" sourceRef="Gateway_0rg109d" targetRef="Activity_0b45bvb">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', 'Awaiting Municipality Review');</camunda:script>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+          <camunda:field name="fields">
+            <camunda:expression>["applicationId", "applicationStatus"]</camunda:expression>
+          </camunda:field>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
+      </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${section5DeclarationSectionLocalGovernmentPermits== true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1lqa1uz" name="Recheck" sourceRef="Gateway_1txthk0" targetRef="Activity_0b45bvb">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', 'Awaiting Municipality Review');</camunda:script>
+        </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
+          <camunda:field name="fields">
+            <camunda:expression>["applicationId", "applicationStatus"]</camunda:expression>
+          </camunda:field>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Recheck'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1k5fi3f" sourceRef="Activity_06nypz0" targetRef="Gateway_1txthk0" />
