@@ -19,7 +19,7 @@ import { ConfigService } from '@nestjs/config';
 // import { AddUserToGroupDto } from 'src/app/dto/addUserToGroup';
 
 @Controller('users')
-@Resource('user-service')
+@Resource('cats-service')
 export class UserController {
   constructor(
     private readonly keyCloakService: KeycloakService,
