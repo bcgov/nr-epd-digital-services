@@ -444,7 +444,7 @@ const Person = () => {
 
     setEnabledRoles(rolesMap);
   }
-}, [formData?.permissionIds, data?.getPermissions?.data]);
+}, [data?.getPermissions?.data]);
 
 
   const handleSwitchToggle = (roleId: number) => {
