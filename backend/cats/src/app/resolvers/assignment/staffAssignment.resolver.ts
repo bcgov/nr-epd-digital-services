@@ -29,7 +29,7 @@ import {
 } from '../../dto/assignment/viewStaffWithCapacity';
 
 @Resolver()
-@Resource('user-service')
+@Resource('cats-service')
 export class StaffAssignmentResolver {
   constructor(
     private readonly service: StaffAssignmentService,
@@ -82,7 +82,9 @@ export class StaffAssignmentResolver {
     }
   }
 
-  @Query(() => ViewStaffWithCapacityResponse, {name: 'getAllActiveStaffMembers' })
+  @Query(() => ViewStaffWithCapacityResponse, {
+    name: 'getAllActiveStaffMembers',
+  })
   @UsePipes(new GenericValidationPipe())
   async getAllActiveStaffMembers() {
     try {
