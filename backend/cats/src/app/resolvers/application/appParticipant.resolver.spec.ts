@@ -16,12 +16,8 @@ import { ViewAppParticipantEntityDto } from '../../dto/appParticipants/viewAppPa
 describe('AppParticipantResolver', () => {
   let resolver: AppParticipantResolver;
   let appParticipantService: AppParticipantService;
-  let genericResponseProvider: GenericResponseProvider<
-    ViewAppParticipantsDto[]
-  >;
-  let genericResponseProviderEntity: GenericResponseProvider<
-    ViewAppParticipantEntityDto[]
-  >;
+  let genericResponseProvider: GenericResponseProvider<ViewAppParticipantsDto[]>;
+  let genericResponseProviderEntity: GenericResponseProvider<ViewAppParticipantEntityDto[]>;
   let loggerService: LoggerService;
 
   beforeEach(async () => {
@@ -34,7 +30,7 @@ describe('AppParticipantResolver', () => {
 
           useValue: {
             getAppParticipantsByAppId: jest.fn(),
-            getParticipantNames: jest.fn(),
+            getParticipantNames: jest.fn(), 
             getOrganizations: jest.fn(),
             createAppParticipant: jest.fn(),
             updateAppParticipant: jest.fn(),
@@ -67,8 +63,10 @@ describe('AppParticipantResolver', () => {
       GenericResponseProvider<ViewAppParticipantsDto[]>
     >(GenericResponseProvider);
     genericResponseProviderEntity = module.get<
-      GenericResponseProvider<ViewAppParticipantEntityDto[]>
-    >(GenericResponseProvider);
+    GenericResponseProvider<ViewAppParticipantEntityDto[]>
+  >(GenericResponseProvider);
+ 
+   
   });
 
   it('should be defined', () => {
@@ -132,7 +130,7 @@ describe('AppParticipantResolver', () => {
       const result = await resolver.getAppParticipantsByAppId(
         applicationId,
         user,
-        filter,
+        filter
       );
 
       expect(
@@ -170,12 +168,12 @@ describe('AppParticipantResolver', () => {
       const result = await resolver.getAppParticipantsByAppId(
         applicationId,
         user,
-        filter,
+        filter
       );
 
       expect(
         appParticipantService.getAppParticipantsByAppId,
-      ).toHaveBeenCalledWith(applicationId, user, filter);
+      ).toHaveBeenCalledWith(applicationId, user, filter );
 
       expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
         'Participants data not found for app id: 1',
@@ -190,7 +188,9 @@ describe('AppParticipantResolver', () => {
   describe('getParticipantNames', () => {
     it('should return participant names on search', async () => {
       const searchParam = 'John';
-      const mockResult = [{ key: '1', value: 'John Doe' }];
+      const mockResult = [
+        { key: '1', value: 'John Doe' },
+      ];
       const user = { id: 'user1' };
       const expectedResponse: DropdownResponse = {
         data: mockResult,
@@ -198,25 +198,21 @@ describe('AppParticipantResolver', () => {
         httpStatusCode: HttpStatus.OK,
         success: true,
       };
-
-      jest
-        .spyOn(appParticipantService, 'getParticipantNames')
-        .mockResolvedValue(mockResult);
+  
+      jest.spyOn(appParticipantService, 'getParticipantNames').mockResolvedValue(mockResult);
       const result = await resolver.getParticipantNames(searchParam, user);
-
-      expect(appParticipantService.getParticipantNames).toHaveBeenCalledWith(
-        searchParam,
-      );
-      expect(loggerService.log).toHaveBeenCalledWith(
-        'AppParticipantResolver.getParticipantNames() RES:200 end',
-      );
+    
+      expect(appParticipantService.getParticipantNames).toHaveBeenCalledWith(searchParam);
+      expect(loggerService.log).toHaveBeenCalledWith('AppParticipantResolver.getParticipantNames() RES:200 end');
     });
   });
 
   describe('getOrganizations', () => {
     it('should return organization names on search', async () => {
       const searchParam = 'Org';
-      const mockResult = [{ key: '1', value: 'Org1' }];
+      const mockResult = [
+        { key: '1', value: 'Org1' },
+      ];
       const user = { id: 'user1' };
       const expectedResponse: DropdownResponse = {
         data: mockResult,
@@ -224,22 +220,17 @@ describe('AppParticipantResolver', () => {
         httpStatusCode: HttpStatus.OK,
         success: true,
       };
-
-      jest
-        .spyOn(appParticipantService, 'getOrganizations')
-        .mockResolvedValue(mockResult);
+  
+      jest.spyOn(appParticipantService, 'getOrganizations').mockResolvedValue(mockResult);
       const result = await resolver.getOrganizations(searchParam, user);
-
-      expect(appParticipantService.getOrganizations).toHaveBeenCalledWith(
-        searchParam,
-      );
-      expect(loggerService.log).toHaveBeenCalledWith(
-        'AppParticipantResolver.getOrganizations() RES:200 end',
-      );
+    
+      expect(appParticipantService.getOrganizations).toHaveBeenCalledWith(searchParam);
+      expect(loggerService.log).toHaveBeenCalledWith('AppParticipantResolver.getOrganizations() RES:200 end');
     });
   });
 
-  describe('createAppParticipant', () => {
+  describe ('createAppParticipant', () => {
+
     it('should create a new participant successfully', async () => {
       const input: CreateAppParticipantDto = {
         applicationId: 1,
@@ -262,30 +253,26 @@ describe('AppParticipantResolver', () => {
         isMainParticipant: false,
         effectiveStartDate: new Date('2021-01-01'),
         createdBy: 'system',
-        createdDateTime: new Date('2025-02-05T18:43:03.244Z'),
+        createdDateTime:new Date('2025-02-05T18:43:03.244Z'),
         effectiveEndDate: new Date('2021-12-31'),
         rowVersionCount: null,
         updatedBy: null,
         updatedDateTime: null,
-      };
+      }
 
       const expectedResponse = {
         message: 'Participant created successfully',
         httpStatusCode: HttpStatus.CREATED,
         success: true,
-        data: [addedParticipant],
+        data: [addedParticipant]
       };
 
-      jest
-        .spyOn(appParticipantService, 'createAppParticipant')
-        .mockResolvedValue(addedParticipant);
-
-      (
-        genericResponseProviderEntity.createResponse as jest.Mock
-      ).mockReturnValue(addedParticipant);
-      const result = await resolver.createAppParticipant(input, {
-        identity_provider: 'IDIR',
-      });
+      jest.spyOn(appParticipantService, 'createAppParticipant').mockResolvedValue(addedParticipant);
+      
+      (genericResponseProviderEntity.createResponse as jest.Mock).mockReturnValue(
+        addedParticipant,
+      );
+      const result = await resolver.createAppParticipant(input, { identity_provider: 'IDIR' });
     });
   });
 
@@ -302,7 +289,7 @@ describe('AppParticipantResolver', () => {
         identity_provider: 'idir',
         givenName: 'TestUser',
       };
-
+  
       const updatedParticipant = {
         id: 1,
         applicationId: 1,
@@ -317,7 +304,7 @@ describe('AppParticipantResolver', () => {
         rowVersionCount: null,
         updatedBy: 'TestUser',
         updatedDateTime: new Date('2025-02-05T18:43:03.244Z'),
-      };
+      }
 
       const expectedResponse = {
         message: 'App Participant updated successfully with ID: 1',
@@ -325,24 +312,18 @@ describe('AppParticipantResolver', () => {
         success: true,
         timestamp: new Date(),
         data: [updatedParticipant],
-      };
-      jest
-        .spyOn(appParticipantService, 'updateAppParticipant')
-        .mockResolvedValue(updatedParticipant as any);
+      }
+      jest.spyOn(appParticipantService, 'updateAppParticipant').mockResolvedValue(updatedParticipant as any);
 
-      (
-        genericResponseProviderEntity.createResponse as jest.Mock
-      ).mockReturnValue(expectedResponse);
-
+      (genericResponseProviderEntity.createResponse as jest.Mock).mockReturnValue(
+        expectedResponse,
+      );
+  
       const result = await resolver.updateAppParticipant(input, user);
       expect(result).toBeDefined();
-      expect(appParticipantService.updateAppParticipant).toHaveBeenCalledWith(
-        input,
-        user,
-      );
-      expect(loggerService.log).toHaveBeenCalledWith(
-        'AppParticipantResolver.updateAppParticipant() RES:201 end',
-      );
+      expect(appParticipantService.updateAppParticipant).toHaveBeenCalledWith(input, user);
+      expect(loggerService.log).toHaveBeenCalledWith('AppParticipantResolver.updateAppParticipant() RES:201 end');
     });
-  });
+    });
+
 });

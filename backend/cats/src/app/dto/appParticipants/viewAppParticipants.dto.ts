@@ -13,7 +13,7 @@ export class ViewAppParticipantsDto extends BaseAppParticipantsDto {
   @Field()
   applicationId: number;
 
-  @Field({ defaultValue: false })
+  @Field({defaultValue: false})
   isMainParticipant: boolean;
 
   @Field()
@@ -62,4 +62,5 @@ export class ViewAppParticipantsDto extends BaseAppParticipantsDto {
 
   @Field(() => ViewParticipantsRolesDto)
   participantRole: ViewParticipantsRolesDto;
+
 }

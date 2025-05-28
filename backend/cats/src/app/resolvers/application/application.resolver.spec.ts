@@ -56,10 +56,9 @@ describe('ApplicationResolver', () => {
     resolver = module.get<ApplicationResolver>(ApplicationResolver);
     applicationService = module.get<ApplicationService>(ApplicationService);
     loggerService = module.get<LoggerService>(LoggerService);
-    genericResponseProvider = module.get<
-      GenericResponseProvider<ApplicationResponse[]>
-    >(GenericResponseProvider);
+    genericResponseProvider = module.get<GenericResponseProvider<ApplicationResponse[]>>(GenericResponseProvider);
   });
+
 
   it('should create an application successfully', async () => {
     const createApplicationDto: CreateApplication = {
@@ -67,7 +66,7 @@ describe('ApplicationResolver', () => {
       submissionId: '54f678b8-963e-449c-a414-71a21b5e0b66',
       siteId: 123,
       appTypeAbbrev: 'CSR',
-      receivedDate: new Date(),
+      receivedDate: new Date()
     };
 
     const createdApplication = {
@@ -81,16 +80,12 @@ describe('ApplicationResolver', () => {
       data: [createdApplication],
     };
 
-    jest
-      .spyOn(applicationService, 'createApplication')
-      .mockResolvedValue(createdApplication);
+    jest.spyOn(applicationService, 'createApplication').mockResolvedValue(createdApplication);
 
     const result = await resolver.createApplication(createApplicationDto);
 
     expect(result).toEqual(expectedResult);
-    expect(applicationService.createApplication).toHaveBeenCalledWith(
-      createApplicationDto,
-    );
+    expect(applicationService.createApplication).toHaveBeenCalledWith(createApplicationDto);
     expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
       'Application created successfully',
       HttpStatus.CREATED,
@@ -105,7 +100,7 @@ describe('ApplicationResolver', () => {
       submissionId: '54f678b8-963e-449c-a414-71a21b5e0b66',
       siteId: 123,
       appTypeAbbrev: 'TEST',
-      receivedDate: new Date(),
+      receivedDate: new Date()
     };
 
     const expectedResult = {
@@ -120,9 +115,7 @@ describe('ApplicationResolver', () => {
     const result = await resolver.createApplication(createApplicationDto);
 
     expect(result).toEqual(expectedResult);
-    expect(applicationService.createApplication).toHaveBeenCalledWith(
-      createApplicationDto,
-    );
+    expect(applicationService.createApplication).toHaveBeenCalledWith(createApplicationDto);
     expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
       'Failed to create application',
       HttpStatus.BAD_REQUEST,

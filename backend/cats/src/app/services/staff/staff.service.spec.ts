@@ -44,13 +44,7 @@ describe('StaffService', () => {
       .mockResolvedValueOnce(sampleResult) // data query
       .mockResolvedValueOnce(sampleCount); // count query
 
-    const result = await staffService.getStaffs(
-      1,
-      10,
-      null,
-      SortBy.NAME,
-      SortByDirection.ASC,
-    );
+    const result = await staffService.getStaffs(1, 10, null, SortBy.NAME, SortByDirection.ASC);
 
     expect(result.page).toBe(1);
     expect(result.pageSize).toBe(10);
@@ -70,13 +64,7 @@ describe('StaffService', () => {
       .mockResolvedValueOnce([sampleResult[1]]) // only unassigned
       .mockResolvedValueOnce([{ count: '1' }]);
 
-    const result = await staffService.getStaffs(
-      1,
-      10,
-      Filter.UNASSIGNED,
-      SortBy.ID,
-      SortByDirection.ASC,
-    );
+    const result = await staffService.getStaffs(1, 10, Filter.UNASSIGNED, SortBy.ID, SortByDirection.ASC);
 
     expect(result.count).toBe(1);
     expect(result.data[0].assignments).toBe(0);
@@ -87,13 +75,7 @@ describe('StaffService', () => {
       .mockResolvedValueOnce([sampleResult[0]]) // only overcapacity
       .mockResolvedValueOnce([{ count: '1' }]);
 
-    const result = await staffService.getStaffs(
-      1,
-      10,
-      Filter.OVERCAPACITY,
-      SortBy.ASSIGNMENT,
-      SortByDirection.DESC,
-    );
+    const result = await staffService.getStaffs(1, 10, Filter.OVERCAPACITY, SortBy.ASSIGNMENT, SortByDirection.DESC);
 
     expect(result.count).toBe(1);
     expect(result.data[0].assignments).toBe(3);
@@ -104,13 +86,7 @@ describe('StaffService', () => {
       .mockResolvedValueOnce(sampleResult)
       .mockResolvedValueOnce(sampleCount);
 
-    const result = await staffService.getStaffs(
-      1,
-      10,
-      null,
-      SortBy.NAME,
-      'invalid' as any,
-    );
+    const result = await staffService.getStaffs(1, 10, null, SortBy.NAME, 'invalid' as any);
 
     expect(result.page).toBe(1);
     expect(result.data.length).toBeGreaterThan(0);
@@ -121,13 +97,7 @@ describe('StaffService', () => {
       .mockResolvedValueOnce(sampleResult)
       .mockResolvedValueOnce(sampleCount);
 
-    const result = await staffService.getStaffs(
-      2,
-      5,
-      null,
-      SortBy.ID,
-      SortByDirection.ASC,
-    );
+    const result = await staffService.getStaffs(2, 5, null, SortBy.ID, SortByDirection.ASC);
 
     expect(result.page).toBe(2);
     expect(result.pageSize).toBe(5);

@@ -1,15 +1,6 @@
-import {
-  Column,
-  Entity,
-  In,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { PersonPermission } from './personPermissions.entity';
-import { ParticipantRole } from './participantRole.entity';
+import { Column, Entity, In, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { PersonPermission } from "./personPermissions.entity";
+import { ParticipantRole } from "./participantRole.entity";
 
 @Index('pk_person_permissions', ['id'], { unique: true })
 @Entity('permissions')
@@ -41,17 +32,11 @@ export class Permissions {
     nullable: true,
   })
   updatedDatetime: Date;
-
-  @ManyToOne(
-    () => ParticipantRole,
-    (participantRole) => participantRole.permissions,
-  )
+  
+  @ManyToOne(() => ParticipantRole, participantRole => participantRole.permissions)
   @JoinColumn([{ name: 'role_id', referencedColumnName: 'id' }])
   role: ParticipantRole;
 
-  @OneToMany(
-    () => PersonPermission,
-    (personPermission) => personPermission.permission,
-  )
+  @OneToMany(() => PersonPermission, personPermission => personPermission.permission)
   personPermissions: PersonPermission[];
 }

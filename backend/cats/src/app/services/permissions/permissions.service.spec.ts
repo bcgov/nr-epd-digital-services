@@ -39,12 +39,8 @@ describe('PermissionsService', () => {
     }).compile();
 
     service = module.get<PermissionsService>(PermissionsService);
-    permissionsRepo = module.get<Repository<Permissions>>(
-      getRepositoryToken(Permissions),
-    );
-    personPermissionRepo = module.get<Repository<PersonPermission>>(
-      getRepositoryToken(PersonPermission),
-    );
+    permissionsRepo = module.get<Repository<Permissions>>(getRepositoryToken(Permissions));
+    personPermissionRepo = module.get<Repository<PersonPermission>>(getRepositoryToken(PersonPermission));
     loggerService = module.get<LoggerService>(LoggerService);
   });
 
@@ -73,12 +69,8 @@ describe('PermissionsService', () => {
         relations: ['role'],
         order: { roleId: 'ASC' },
       });
-      expect(loggerService.log).toHaveBeenCalledWith(
-        'PermissionsService.getPermissions() start',
-      );
-      expect(loggerService.log).toHaveBeenCalledWith(
-        'PermissionsService.getPermissions() end',
-      );
+      expect(loggerService.log).toHaveBeenCalledWith('PermissionsService.getPermissions() start');
+      expect(loggerService.log).toHaveBeenCalledWith('PermissionsService.getPermissions() end');
       expect(result).toEqual([
         {
           roleId: 100,
@@ -92,16 +84,10 @@ describe('PermissionsService', () => {
     });
 
     it('should throw and log on error', async () => {
-      (permissionsRepo.find as jest.Mock).mockRejectedValue(
-        new Error('DB failure'),
-      );
+      (permissionsRepo.find as jest.Mock).mockRejectedValue(new Error('DB failure'));
 
-      await expect(service.getPermissions()).rejects.toThrow(
-        'Failed to fetch permissions: DB failure',
-      );
-      expect(loggerService.log).toHaveBeenCalledWith(
-        'PermissionsService.getPermissions() error',
-      );
+      await expect(service.getPermissions()).rejects.toThrow('Failed to fetch permissions: DB failure');
+      expect(loggerService.log).toHaveBeenCalledWith('PermissionsService.getPermissions() error');
     });
   });
 
@@ -109,62 +95,49 @@ describe('PermissionsService', () => {
     const mockUser = { givenName: 'tester' };
 
     it('should delete and assign new permissions', async () => {
-      const permissionIds = [1, 2];
-      const saveMock = personPermissionRepo.save as jest.Mock;
-      const mockUser = { givenName: 'tester' };
+        const permissionIds = [1, 2];
+        const saveMock = personPermissionRepo.save as jest.Mock;
+        const mockUser = { givenName: 'tester' };
 
-      (personPermissionRepo.delete as jest.Mock).mockResolvedValue(undefined);
-      saveMock.mockResolvedValue(undefined);
+        (personPermissionRepo.delete as jest.Mock).mockResolvedValue(undefined);
+        saveMock.mockResolvedValue(undefined);
 
-      await service.assignPermissionsToPerson(10, permissionIds, mockUser);
+        await service.assignPermissionsToPerson(10, permissionIds, mockUser);
 
-      expect(loggerService.log).toHaveBeenCalledWith(
-        'PermissionsService.assignPermissionsToPerson() start',
-      );
-      expect(personPermissionRepo.delete).toHaveBeenCalledWith({
-        personId: 10,
-      });
+        expect(loggerService.log).toHaveBeenCalledWith('PermissionsService.assignPermissionsToPerson() start');
+        expect(personPermissionRepo.delete).toHaveBeenCalledWith({ personId: 10 });
 
-      expect(saveMock).toHaveBeenCalledWith(
-        expect.arrayContaining([
-          expect.objectContaining({
-            personId: 10,
-            permissionId: 1,
-            createdBy: 'tester',
-            updatedBy: 'tester',
-            createdDatetime: expect.any(Date),
-            updatedDatetime: expect.any(Date),
-          }),
-          expect.objectContaining({
-            permissionId: 2,
-          }),
-        ]),
-      );
+        expect(saveMock).toHaveBeenCalledWith(
+            expect.arrayContaining([
+            expect.objectContaining({
+                personId: 10,
+                permissionId: 1,
+                createdBy: 'tester',
+                updatedBy: 'tester',
+                createdDatetime: expect.any(Date),
+                updatedDatetime: expect.any(Date),
+            }),
+            expect.objectContaining({
+                permissionId: 2,
+            }),
+            ]),
+        );
 
-      expect(loggerService.log).toHaveBeenCalledWith(
-        'PermissionsService.assignPermissionsToPerson() end',
-      );
+        expect(loggerService.log).toHaveBeenCalledWith('PermissionsService.assignPermissionsToPerson() end');
     });
+
 
     it('should skip save if no permissionIds', async () => {
       await service.assignPermissionsToPerson(10, [], mockUser);
-      expect(personPermissionRepo.delete).toHaveBeenCalledWith({
-        personId: 10,
-      });
+      expect(personPermissionRepo.delete).toHaveBeenCalledWith({ personId: 10 });
       expect(personPermissionRepo.save).not.toHaveBeenCalled();
     });
 
     it('should throw and log if assigning fails', async () => {
-      (personPermissionRepo.delete as jest.Mock).mockRejectedValue(
-        new Error('Delete error'),
-      );
+      (personPermissionRepo.delete as jest.Mock).mockRejectedValue(new Error('Delete error'));
 
-      await expect(
-        service.assignPermissionsToPerson(10, [1], mockUser),
-      ).rejects.toThrow('Failed to assign permissions: Delete error');
-      expect(loggerService.log).toHaveBeenCalledWith(
-        'PermissionsService.assignPermissionsToPerson() error',
-      );
+      await expect(service.assignPermissionsToPerson(10, [1], mockUser)).rejects.toThrow('Failed to assign permissions: Delete error');
+      expect(loggerService.log).toHaveBeenCalledWith('PermissionsService.assignPermissionsToPerson() error');
     });
   });
 });

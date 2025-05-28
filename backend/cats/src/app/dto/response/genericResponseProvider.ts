@@ -25,7 +25,7 @@ export class GenericResponseProvider<T> {
     httpStatusCode?: number;
     success?: boolean;
     data?: T | null;
-    count?: number;
+    count?: number
     page?: number;
     pageSize?: number;
   }): GenericPagedResponse<T> {
