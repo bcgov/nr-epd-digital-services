@@ -82,6 +82,9 @@ import { Permissions } from './entities/permissions.entity';
 import { PersonPermission } from './entities/personPermissions.entity';
 import { ApplicationServiceType } from './entities/applicationServiceType.entity';
 import { StaffAssignmentResolver } from './resolvers/assignment/staffAssignment.resolver';
+import { TimesheetDay } from './entities/timesheetDay.entity';
+import { TimesheetDayService } from './services/timesheetDay.service';
+import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -95,6 +98,7 @@ import { StaffAssignmentResolver } from './resolvers/assignment/staffAssignment.
       Application,
       TimesheetWeek,
       TimesheetDetail,
+      TimesheetDay,
       AppExpense,
       AppLandUse,
       LandUse,
@@ -173,6 +177,8 @@ import { StaffAssignmentResolver } from './resolvers/assignment/staffAssignment.
     ChesEmailService,
     PermissionsResolver,
     PermissionsService,
+    TimesheetDayService,
+    TimesheetDayResolver,
   ],
   controllers: [UserController],
 })
