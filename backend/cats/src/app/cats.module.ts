@@ -71,6 +71,8 @@ import { InvoiceV2 } from './entities/invoiceV2.entity';
 import { InvoiceLineItem } from './entities/invoiceLineItem.entity';
 import { InvoiceResolver } from './resolvers/invoice/invoice.resolver';
 import { InvoiceService } from './services/invoice/invoice.service';
+import { ApplicationNotesResolver } from './resolvers/application/applicationNotes.resolver';
+import { ApplicationNotesService } from './services/application/applicationNotes.service';
 import { StaffResolver } from './resolvers/staff/staff.resolver';
 import { StaffService } from './services/staff/staff.service';
 import { StaffAssignmentService } from './services/assignment/staffAssignment.service';
@@ -164,6 +166,8 @@ import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
     SiteService,
     InvoiceResolver,
     InvoiceService,
+    ApplicationNotesResolver,
+    ApplicationNotesService,
     StaffResolver,
     StaffService,
     StaffAssignmentResolver,

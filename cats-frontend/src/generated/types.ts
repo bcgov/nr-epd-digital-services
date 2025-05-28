@@ -30,6 +30,18 @@ export type AddHousingInputDto = {
   relatedApplicationIds?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
+export type AppNoteDto = {
+  __typename?: 'AppNoteDto';
+  applicationId: Scalars['Int']['output'];
+  createdBy: Scalars['String']['output'];
+  createdDateTime: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  noteDate: Scalars['String']['output'];
+  noteText: Scalars['String']['output'];
+  updatedBy: Scalars['String']['output'];
+  updatedDateTime: Scalars['DateTime']['output'];
+};
+
 export enum AppParticipantFilter {
   All = 'ALL',
   Main = 'MAIN'
@@ -62,6 +74,15 @@ export type ApplicationHousingDto = {
 export type ApplicationHousingResponse = {
   __typename?: 'ApplicationHousingResponse';
   data: Array<ApplicationHousingDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type ApplicationNotesResponse = {
+  __typename?: 'ApplicationNotesResponse';
+  data: Array<AppNoteDto>;
   httpStatusCode?: Maybe<Scalars['Int']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
@@ -352,13 +373,16 @@ export type Mutation = {
   addHousingToApplication: ApplicationHousingResponse;
   createAppParticipant: CreateAppParticipantsResponse;
   createApplication: ApplicationResponse;
+  createApplicationNote: ApplicationNotesResponse;
   createInvoice: InvoiceResponse;
   createPerson: PersonResponse;
   createPersonNote: PersonNoteResponse;
+  deleteApplicationNotes: ApplicationNotesResponse;
   deleteInvoice: ResponseDto;
   deletePersonNote: PersonNoteResponse;
   updateAppParticipant: UpdateAppParticipantsResponse;
   updateApplicationHousing: ApplicationHousingResponse;
+  updateApplicationNote: ApplicationNotesResponse;
   updateInvoice: InvoiceResponse;
   updatePerson: PersonResponse;
   updatePersonNote: PersonNoteResponse;
@@ -382,6 +406,13 @@ export type MutationCreateApplicationArgs = {
 };
 
 
+export type MutationCreateApplicationNoteArgs = {
+  applicationId: Scalars['Int']['input'];
+  noteDate: Scalars['DateTime']['input'];
+  noteText: Scalars['String']['input'];
+};
+
+
 export type MutationCreateInvoiceArgs = {
   invoiceData: InvoiceInputDto;
 };
@@ -394,6 +425,11 @@ export type MutationCreatePersonArgs = {
 
 export type MutationCreatePersonNoteArgs = {
   note: CreatePersonNote;
+};
+
+
+export type MutationDeleteApplicationNotesArgs = {
+  noteIds: Array<Scalars['Int']['input']>;
 };
 
 
@@ -414,6 +450,13 @@ export type MutationUpdateAppParticipantArgs = {
 
 export type MutationUpdateApplicationHousingArgs = {
   input: UpdateHousingInputDto;
+};
+
+
+export type MutationUpdateApplicationNoteArgs = {
+  noteDate: Scalars['DateTime']['input'];
+  noteId: Scalars['Int']['input'];
+  noteText: Scalars['String']['input'];
 };
 
 
@@ -472,6 +515,24 @@ export type PersonResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type PersonWithTimesheetDaysDto = {
+  __typename?: 'PersonWithTimesheetDaysDto';
+  email?: Maybe<Scalars['String']['output']>;
+  firstName: Scalars['String']['output'];
+  lastName: Scalars['String']['output'];
+  personId: Scalars['Int']['output'];
+  timesheetDays: Array<TimesheetDayDto>;
+};
+
+export type PersonWithTimesheetDaysResponse = {
+  __typename?: 'PersonWithTimesheetDaysResponse';
+  data?: Maybe<Array<PersonWithTimesheetDaysDto>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   _service: _Service;
@@ -482,6 +543,7 @@ export type Query = {
   getAppParticipantsByAppId: AppParticipantsResponse;
   getApplicationDetailsById: ApplicationDetailsResponse;
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
+  getApplicationNotesByApplicationId: ApplicationNotesResponse;
   getApplicationServiceTypes: DropdownResponse;
   getHousingTypes: HousingTypeResponse;
   getInvoicesByApplicationId: InvoicesByApplicationIdResponse;
@@ -491,6 +553,7 @@ export type Query = {
   getSiteDetailsBySiteId: SiteDetailsResponse;
   getStaffAssignedByAppId: ViewStaffAssignedResponse;
   getStaffs: StaffResponse;
+  getTimesheetDaysForAssignedStaff: PersonWithTimesheetDaysResponse;
   searchApplications: ApplicationSearchResponse;
   searchApplicationsById: ApplicationSearchResponse;
   searchPerson: SearchPersonResponse;
@@ -514,6 +577,11 @@ export type QueryGetApplicationDetailsByIdArgs = {
 
 
 export type QueryGetApplicationHousingByApplicationIdArgs = {
+  applicationId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetApplicationNotesByApplicationIdArgs = {
   applicationId: Scalars['Int']['input'];
 };
 
@@ -554,6 +622,13 @@ export type QueryGetStaffsArgs = {
   pageSize: Scalars['Int']['input'];
   sortBy?: InputMaybe<StaffSortByField>;
   sortByDir?: InputMaybe<ApplicationSortByDirection>;
+};
+
+
+export type QueryGetTimesheetDaysForAssignedStaffArgs = {
+  applicationId: Scalars['Float']['input'];
+  endDate: Scalars['String']['input'];
+  startDate: Scalars['String']['input'];
 };
 
 
