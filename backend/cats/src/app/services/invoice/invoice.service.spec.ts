@@ -4,9 +4,9 @@ import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { InvoiceV2 } from '../../entities/invoiceV2.entity';
 import { LoggerService } from '../../logger/logger.service';
-import { InvoiceCreateDto, InvoiceStatus } from '../../dto/invoice/invoice.dto';
+import { InvoiceInputDto, InvoiceStatus } from '../../dto/invoice/invoice.dto';
 import {
-  InvoiceLineItemCreateDto,
+  InvoiceLineItemInputDto,
   InvoiceLineItemType,
 } from '../../dto/invoice/invoiceLineItem.dto';
 import { InvoiceLineItem } from '../../entities/invoiceLineItem.entity';
@@ -25,6 +25,7 @@ describe('InvoiceService', () => {
           useValue: {
             find: jest.fn(),
             save: jest.fn(),
+            delete: jest.fn(),
           },
         },
         {
@@ -75,7 +76,7 @@ describe('InvoiceService', () => {
 
       expect(repository.find).toHaveBeenCalledWith({
         where: { application: { id: applicationId } },
-        relations: ['line_items'],
+        relations: ['lineItems'],
       });
       expect(loggerService.log).toHaveBeenCalledWith(
         `InvoiceService: getInvoicesByApplicationId: applicationId: ${applicationId}`,
@@ -100,7 +101,7 @@ describe('InvoiceService', () => {
 
       expect(repository.find).toHaveBeenCalledWith({
         where: { application: { id: applicationId } },
-        relations: ['line_items'],
+        relations: ['lineItems'],
       });
       expect(loggerService.log).toHaveBeenCalledWith(
         `InvoiceService: getInvoicesByApplicationId: applicationId: ${applicationId}`,
@@ -114,14 +115,14 @@ describe('InvoiceService', () => {
 
   describe('createInvoice', () => {
     it('should create and return an invoice when repository succeeds', async () => {
-      const mockLineItemData: InvoiceLineItemCreateDto = {
+      const mockLineItemData: InvoiceLineItemInputDto = {
         type: InvoiceLineItemType.SERVICE,
         description: 'Consulting services',
         quantity: 2,
         unitPriceInCents: 5000,
         totalInCents: 10000,
       };
-      const mockInvoiceData: InvoiceCreateDto = {
+      const mockInvoiceData: InvoiceInputDto = {
         applicationId: 1,
         recipientId: 1,
         invoiceId: null,
@@ -134,7 +135,13 @@ describe('InvoiceService', () => {
         gstInCents: 0,
         pstInCents: 0,
         totalInCents: 10000,
-        lineItems: [mockLineItemData],
+        lineItems: [
+          {
+            ...mockLineItemData,
+            createdBy: 'testUser',
+            createdAt: new Date(),
+          },
+        ],
       };
 
       const mockLineItem: InvoiceLineItem = {
@@ -162,13 +169,20 @@ describe('InvoiceService', () => {
       jest.spyOn(repository, 'save').mockResolvedValue(mockInvoice);
 
       const result = await service.createInvoice(mockInvoiceData, {
-        username: 'testUser',
+        name: 'testUser',
       });
 
       expect(repository.save).toHaveBeenCalledWith({
         ...mockInvoiceData,
+        application: { id: mockInvoiceData.applicationId },
+        recipient: { id: mockInvoiceData.recipientId },
         createdBy: 'testUser',
         updatedBy: 'testUser',
+        lineItems: mockInvoiceData.lineItems.map((item) => ({
+          ...item,
+          createdBy: 'testUser',
+          updatedBy: 'testUser',
+        })),
       });
       expect(loggerService.log).toHaveBeenCalledWith(
         `InvoiceService: createInvoice: invoiceData: ${JSON.stringify(
@@ -182,14 +196,14 @@ describe('InvoiceService', () => {
     });
 
     it('should log and throw an error when repository fails', async () => {
-      const mockLineItemData: InvoiceLineItemCreateDto = {
+      const mockLineItemData: InvoiceLineItemInputDto = {
         type: InvoiceLineItemType.SERVICE,
         description: 'Consulting services',
         quantity: 2,
         unitPriceInCents: 5000,
         totalInCents: 10000,
       };
-      const mockInvoiceData: InvoiceCreateDto = {
+      const mockInvoiceData: InvoiceInputDto = {
         applicationId: 1,
         recipientId: 1,
         invoiceId: null,
@@ -209,13 +223,20 @@ describe('InvoiceService', () => {
       jest.spyOn(repository, 'save').mockRejectedValue(new Error(errorMessage));
 
       await expect(
-        service.createInvoice(mockInvoiceData, { username: 'testUser' }),
+        service.createInvoice(mockInvoiceData, { name: 'testUser' }),
       ).rejects.toThrow(`Failed to create invoice: ${errorMessage}`);
 
       expect(repository.save).toHaveBeenCalledWith({
         ...mockInvoiceData,
+        application: { id: mockInvoiceData.applicationId },
+        recipient: { id: mockInvoiceData.recipientId },
         createdBy: 'testUser',
         updatedBy: 'testUser',
+        lineItems: mockInvoiceData.lineItems.map((item) => ({
+          ...item,
+          createdBy: 'testUser',
+          updatedBy: 'testUser',
+        })),
       });
       expect(loggerService.log).toHaveBeenCalledWith(
         `InvoiceService: createInvoice: invoiceData: ${JSON.stringify(
@@ -224,6 +245,67 @@ describe('InvoiceService', () => {
       );
       expect(loggerService.error).toHaveBeenCalledWith(
         `InvoiceService: createInvoice: Error creating invoice: ${errorMessage}`,
+        null,
+      );
+    });
+  });
+
+  describe('deleteInvoice', () => {
+    it('should delete an invoice and return true when repository succeeds', async () => {
+      const invoiceId = 1;
+      jest
+        .spyOn(repository, 'delete')
+        .mockResolvedValue({ affected: 1 } as any);
+
+      const result = await service.deleteInvoice(invoiceId);
+
+      expect(repository.delete).toHaveBeenCalledWith(invoiceId);
+      expect(loggerService.log).toHaveBeenCalledWith(
+        `InvoiceService: deleteInvoice: invoiceId: ${invoiceId}`,
+      );
+      expect(loggerService.log).toHaveBeenCalledWith(
+        `InvoiceService: deleteInvoice: Success.`,
+      );
+      expect(result).toBe(true);
+    });
+
+    it('should log and throw an error when the invoice is not found', async () => {
+      const invoiceId = 1;
+      jest
+        .spyOn(repository, 'delete')
+        .mockResolvedValue({ affected: 0 } as any);
+
+      await expect(service.deleteInvoice(invoiceId)).rejects.toThrow(
+        `Invoice with ID ${invoiceId} not found.`,
+      );
+
+      expect(repository.delete).toHaveBeenCalledWith(invoiceId);
+      expect(loggerService.log).toHaveBeenCalledWith(
+        `InvoiceService: deleteInvoice: invoiceId: ${invoiceId}`,
+      );
+      expect(loggerService.error).toHaveBeenCalledWith(
+        `InvoiceService: deleteInvoice: Error deleting invoice: Invoice with ID ${invoiceId} not found.`,
+        null,
+      );
+    });
+
+    it('should log and throw an error when repository fails', async () => {
+      const invoiceId = 1;
+      const errorMessage = 'Database error';
+      jest
+        .spyOn(repository, 'delete')
+        .mockRejectedValue(new Error(errorMessage));
+
+      await expect(service.deleteInvoice(invoiceId)).rejects.toThrow(
+        `Failed to delete invoice: ${errorMessage}`,
+      );
+
+      expect(repository.delete).toHaveBeenCalledWith(invoiceId);
+      expect(loggerService.log).toHaveBeenCalledWith(
+        `InvoiceService: deleteInvoice: invoiceId: ${invoiceId}`,
+      );
+      expect(loggerService.error).toHaveBeenCalledWith(
+        `InvoiceService: deleteInvoice: Error deleting invoice: ${errorMessage}`,
         null,
       );
     });

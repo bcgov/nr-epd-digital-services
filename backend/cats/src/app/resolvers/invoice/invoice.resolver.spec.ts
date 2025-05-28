@@ -3,7 +3,7 @@ import { InvoiceResolver } from './invoice.resolver';
 import { InvoiceService } from '../../services/invoice/invoice.service';
 import { LoggerService } from '../../logger/logger.service';
 import { InvoiceV2 } from '../../entities/invoiceV2.entity';
-import { InvoiceStatus } from '../../dto/invoice/invoice.dto';
+import { InvoiceInputDto, InvoiceStatus } from '../../dto/invoice/invoice.dto';
 
 describe('InvoiceResolver', () => {
   let resolver: InvoiceResolver;
@@ -18,6 +18,8 @@ describe('InvoiceResolver', () => {
           provide: InvoiceService,
           useValue: {
             getInvoicesByApplicationId: jest.fn(),
+            updateInvoice: jest.fn(),
+            deleteInvoice: jest.fn(),
           },
         },
         {
@@ -98,6 +100,151 @@ describe('InvoiceResolver', () => {
       expect(result.success).toBe(false);
       expect(result.httpStatusCode).toBe(500);
       expect(result.message).toBe('An error occurred while fetching invoices.');
+    });
+  });
+
+  describe('updateInvoice', () => {
+    it('should update an invoice successfully', async () => {
+      const mockUpdatedInvoice: InvoiceV2 = {
+        id: 1,
+        application: null,
+        lineItems: [],
+        subject: 'Updated Invoice',
+        issuedDate: new Date(),
+        dueDate: new Date(),
+        status: InvoiceStatus.PAID,
+        recipient: null,
+        invoiceId: null,
+        taxExempt: false,
+        subtotalInCents: 20000,
+        gstInCents: 1000,
+        pstInCents: 500,
+        totalInCents: 21500,
+        createdBy: 'test-user',
+        updatedBy: 'test-user',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      jest
+        .spyOn(invoiceService, 'updateInvoice')
+        .mockResolvedValue(mockUpdatedInvoice);
+
+      const updateData: InvoiceInputDto = {
+        applicationId: null,
+        recipientId: null,
+        invoiceId: null,
+        subject: 'Updated Invoice',
+        issuedDate: new Date(),
+        dueDate: new Date(),
+        status: InvoiceStatus.PAID,
+        taxExempt: false,
+        subtotalInCents: 20000,
+        gstInCents: 1000,
+        pstInCents: 500,
+        totalInCents: 21500,
+        lineItems: [],
+      };
+
+      const user = { id: 'test-user' };
+      const result = await resolver.updateInvoice(1, updateData, user);
+
+      expect(invoiceService.updateInvoice).toHaveBeenCalledWith(
+        1,
+        updateData,
+        user,
+      );
+      expect(result.success).toBe(true);
+      expect(result.httpStatusCode).toBe(200);
+      expect(result.invoice).toEqual({
+        id: mockUpdatedInvoice.id,
+        applicationId: mockUpdatedInvoice.application?.id,
+        recipientId: mockUpdatedInvoice.recipient?.id,
+        invoiceId: mockUpdatedInvoice.invoiceId,
+        subject: mockUpdatedInvoice.subject,
+        issuedDate: mockUpdatedInvoice.issuedDate,
+        dueDate: mockUpdatedInvoice.dueDate,
+        status: mockUpdatedInvoice.status,
+        taxExempt: mockUpdatedInvoice.taxExempt,
+        subtotalInCents: mockUpdatedInvoice.subtotalInCents,
+        gstInCents: mockUpdatedInvoice.gstInCents,
+        pstInCents: mockUpdatedInvoice.pstInCents,
+        totalInCents: mockUpdatedInvoice.totalInCents,
+        createdAt: mockUpdatedInvoice.createdAt,
+        updatedAt: mockUpdatedInvoice.updatedAt,
+        createdBy: mockUpdatedInvoice.createdBy,
+        updatedBy: mockUpdatedInvoice.updatedBy,
+        lineItems: [],
+      });
+    });
+
+    it('should handle errors when update fails', async () => {
+      jest
+        .spyOn(invoiceService, 'updateInvoice')
+        .mockRejectedValue(new Error('Service error'));
+
+      const updateData: InvoiceInputDto = {
+        applicationId: null,
+        recipientId: null,
+        invoiceId: null,
+        subject: 'Updated Invoice',
+        issuedDate: new Date(),
+        dueDate: new Date(),
+        status: InvoiceStatus.PAID,
+        taxExempt: false,
+        subtotalInCents: 20000,
+        gstInCents: 1000,
+        pstInCents: 500,
+        totalInCents: 21500,
+        lineItems: [],
+      };
+
+      const user = { id: 'test-user' };
+      const result = await resolver.updateInvoice(1, updateData, user);
+
+      expect(invoiceService.updateInvoice).toHaveBeenCalledWith(
+        1,
+        updateData,
+        user,
+      );
+      expect(loggerService.error).toHaveBeenCalled();
+      expect(result.success).toBe(false);
+      expect(result.httpStatusCode).toBe(500);
+      expect(result.message).toBe(
+        'An error occurred while updating the invoice.',
+      );
+    });
+  });
+
+  describe('deleteInvoice', () => {
+    it('should delete an invoice successfully', async () => {
+      jest.spyOn(invoiceService, 'deleteInvoice').mockResolvedValue(undefined);
+
+      const invoiceId = 1;
+      const result = await resolver.deleteInvoice(invoiceId);
+
+      expect(invoiceService.deleteInvoice).toHaveBeenCalledWith(invoiceId);
+      expect(result.success).toBe(true);
+      expect(result.httpStatusCode).toBe(200);
+      expect(result.message).toBe('Invoice deleted successfully.');
+    });
+
+    it('should handle errors when delete fails', async () => {
+      jest
+        .spyOn(invoiceService, 'deleteInvoice')
+        .mockRejectedValue(new Error('Service error'));
+
+      const invoiceId = 1;
+      const user = { id: 'test-user' };
+      const result = await resolver.deleteInvoice(invoiceId);
+
+      expect(invoiceService.deleteInvoice).toHaveBeenCalledWith(invoiceId);
+      expect(loggerService.error).toHaveBeenCalled();
+      expect(result.success).toBe(false);
+      expect(result.httpStatusCode).toBe(500);
+      expect(result.message).toBe(
+        'An error occurred while deleting the invoice.',
+      );
     });
   });
 });

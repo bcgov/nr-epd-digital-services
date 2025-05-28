@@ -1,8 +1,11 @@
 import { getAxiosInstance, getUser } from '../../../../../helpers/utility';
 
-const FORM_API: string = import.meta.env.VITE_FORM_API;
-const FORM_BACKEND_API: string = import.meta.env.VITE_FORM_BACKEND_API;
-const FORM_FLOW_API: string = import.meta.env.VITE_FORM_FLOW_API;
+const FORM_API: string =
+  import.meta.env.VITE_FORM_API || window._env_.VITE_FORM_API;
+const FORM_BACKEND_API: string =
+  import.meta.env.VITE_FORM_BACKEND_API || window._env_.VITE_FORM_BACKEND_API;
+const FORM_FLOW_API: string =
+  import.meta.env.VITE_FORM_FLOW_API || window._env_.VITE_FORM_FLOW_API;
 const COMS_ENDPOINTS = {
   FORM: '/form',
   SUBMISSION: '/submission',

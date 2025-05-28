@@ -31,3 +31,11 @@
   line-height: 18px;
   color: var(--typography-color-disabled, #9f9d9c);
 }
+
+.applicationPageContainer {
+  padding: 0 var(--layout-margin-xxlarge) var(--layout-margin-huge)
+    var(--layout-margin-xxlarge);
+  gap: var(--layout-margin-xxlarge);
+  display: flex;
+  flex-direction: column;
+}

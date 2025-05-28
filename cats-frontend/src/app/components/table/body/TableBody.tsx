@@ -417,6 +417,7 @@ const TableBody: FC<TableBodyProps> = ({
           isEditing={editMode ?? true}
           tableMode={field.tableMode ?? false}
           stickyCol={field.stickyCol}
+          customIcon={field.customIcon}
         />
       );
     } else if (field.type === FormFieldType.IconButton) {
@@ -493,10 +494,11 @@ const TableBody: FC<TableBodyProps> = ({
 
     let cellValue: string | ReactNode;
 
+    let rowData = data[rowIndex];
     if (column.renderCell && typeof column.renderCell === 'function') {
-      cellValue = cellData.map((cellData: any, i: number) => (
+      cellValue = cellData.map((data: any, i: number) => (
         <React.Fragment key={i}>
-          {column.renderCell!(cellData, data[rowIndex])}
+          {column.renderCell!(data, rowData)}
         </React.Fragment>
       ));
     } else {

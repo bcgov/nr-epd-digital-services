@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { InvoiceV2 } from '../../entities/invoiceV2.entity';
 import { LoggerService } from '../../logger/logger.service';
-import { InvoiceCreateDto, InvoiceDto } from 'src/app/dto/invoice/invoice.dto';
+import { InvoiceInputDto } from '../../dto/invoice/invoice.dto';
 
 @Injectable()
 export class InvoiceService {
@@ -23,7 +23,7 @@ export class InvoiceService {
     try {
       invoices = await this.invoiceRepository.find({
         where: { application: { id: applicationId } },
-        relations: ['line_items'],
+        relations: ['lineItems'],
       });
     } catch (error) {
       this.loggerService.error(
@@ -41,7 +41,7 @@ export class InvoiceService {
   }
 
   async createInvoice(
-    invoiceData: InvoiceCreateDto,
+    invoiceData: InvoiceInputDto,
     user: any,
   ): Promise<InvoiceV2> {
     this.loggerService.log(
@@ -53,8 +53,15 @@ export class InvoiceService {
     try {
       invoice = await this.invoiceRepository.save({
         ...invoiceData,
-        createdBy: user.username,
-        updatedBy: user.username,
+        application: { id: invoiceData.applicationId },
+        recipient: { id: invoiceData.recipientId },
+        createdBy: user.name,
+        updatedBy: user.name,
+        lineItems: invoiceData.lineItems.map((item) => ({
+          ...item,
+          createdBy: user.name,
+          updatedBy: user.name,
+        })),
       });
     } catch (error) {
       this.loggerService.error(
@@ -65,5 +72,54 @@ export class InvoiceService {
     }
     this.loggerService.log(`InvoiceService: createInvoice: Success.`);
     return invoice;
+  }
+
+  async updateInvoice(
+    id: number,
+    updateData: InvoiceInputDto,
+    user: any,
+  ): Promise<InvoiceV2> {
+    this.loggerService.log(`InvoiceService: updateInvoice: invoiceId: ${id}`);
+    let updatedInvoice: InvoiceV2;
+    try {
+      await this.invoiceRepository.save({
+        ...updateData,
+        id: id,
+        updatedBy: user.username,
+      });
+      updatedInvoice = await this.invoiceRepository.findOne({
+        where: { id: id },
+        relations: ['lineItems', 'application', 'recipient'],
+      });
+      if (!updatedInvoice) {
+        throw new Error(`Invoice with ID ${id} not found.`);
+      }
+    } catch (error) {
+      this.loggerService.error(
+        `InvoiceService: updateInvoice: Error updating invoice: ${error.message}`,
+        null,
+      );
+      throw new Error(`Failed to update invoice: ${error.message}`);
+    }
+    this.loggerService.log(`InvoiceService: updateInvoice: Success.`);
+    return updatedInvoice;
+  }
+
+  async deleteInvoice(id: number): Promise<boolean> {
+    this.loggerService.log(`InvoiceService: deleteInvoice: invoiceId: ${id}`);
+    try {
+      const result = await this.invoiceRepository.delete(id);
+      if (result.affected === 0) {
+        throw new Error(`Invoice with ID ${id} not found.`);
+      }
+      this.loggerService.log(`InvoiceService: deleteInvoice: Success.`);
+      return true;
+    } catch (error) {
+      this.loggerService.error(
+        `InvoiceService: deleteInvoice: Error deleting invoice: ${error.message}`,
+        null,
+      );
+      throw new Error(`Failed to delete invoice: ${error.message}`);
+    }
   }
 }

@@ -9,7 +9,7 @@ export type GetAppParticipantsByAppIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetAppParticipantsByAppIdQuery = { __typename?: 'Query', getAppParticipantsByAppId: { __typename?: 'AppParticipantsResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewAppParticipantsDto', id: number, applicationId: number, isMainParticipant: boolean, name: string, fullName: string, description: string, effectiveStartDate: any, effectiveEndDate?: any | null, isMinistry: boolean }> | null } };
+export type GetAppParticipantsByAppIdQuery = { __typename?: 'Query', getAppParticipantsByAppId: { __typename?: 'AppParticipantsResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewAppParticipantsDto', id: number, applicationId: number, isMainParticipant: boolean, effectiveStartDate: any, effectiveEndDate?: any | null, isMinistry: boolean, organization?: { __typename?: 'ViewOrganizationsDto', id?: number | null, name: string } | null, person: { __typename?: 'ViewParticipantNamesDto', id: number, fullName: string }, participantRole: { __typename?: 'ViewParticipantsRolesDto', id: number, description: string } }> | null } };
 
 export type GetParticipantRolesQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
@@ -37,6 +37,13 @@ export type CreateAppParticipantMutationVariables = Types.Exact<{
 
 export type CreateAppParticipantMutation = { __typename?: 'Mutation', createAppParticipant: { __typename?: 'CreateAppParticipantsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewAppParticipantEntityDto', id: number, applicationId: number, personId: number, participantRoleId: number, organizationId?: number | null, isMainParticipant: boolean, effectiveStartDate: any, effectiveEndDate?: any | null, createdBy: string, createdDateTime: any, rowVersionCount?: number | null, updatedBy?: string | null, updatedDateTime?: any | null }> | null } };
 
+export type UpdateAppParticipantMutationVariables = Types.Exact<{
+  updateAppParticipant: Types.UpdateAppParticipantDto;
+}>;
+
+
+export type UpdateAppParticipantMutation = { __typename?: 'Mutation', updateAppParticipant: { __typename?: 'UpdateAppParticipantsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewAppParticipantEntityDto', id: number, applicationId: number, personId: number, participantRoleId: number, organizationId?: number | null, isMainParticipant: boolean, effectiveStartDate: any, effectiveEndDate?: any | null, createdBy: string, createdDateTime: any, rowVersionCount?: number | null, updatedBy?: string | null, updatedDateTime?: any | null }> | null } };
+
 
 export const GetAppParticipantsByAppIdDocument = gql`
     query getAppParticipantsByAppId($applicationId: Int!, $filter: AppParticipantFilter!) {
@@ -49,9 +56,18 @@ export const GetAppParticipantsByAppIdDocument = gql`
       id
       applicationId
       isMainParticipant
-      name
-      fullName
-      description
+      organization {
+        id
+        name
+      }
+      person {
+        id
+        fullName
+      }
+      participantRole {
+        id
+        description
+      }
       effectiveStartDate
       effectiveEndDate
       isMinistry
@@ -284,3 +300,54 @@ export function useCreateAppParticipantMutation(baseOptions?: Apollo.MutationHoo
 export type CreateAppParticipantMutationHookResult = ReturnType<typeof useCreateAppParticipantMutation>;
 export type CreateAppParticipantMutationResult = Apollo.MutationResult<CreateAppParticipantMutation>;
 export type CreateAppParticipantMutationOptions = Apollo.BaseMutationOptions<CreateAppParticipantMutation, CreateAppParticipantMutationVariables>;
+export const UpdateAppParticipantDocument = gql`
+    mutation updateAppParticipant($updateAppParticipant: UpdateAppParticipantDto!) {
+  updateAppParticipant(updateAppParticipant: $updateAppParticipant) {
+    message
+    httpStatusCode
+    success
+    timestamp
+    data {
+      id
+      applicationId
+      personId
+      participantRoleId
+      organizationId
+      isMainParticipant
+      effectiveStartDate
+      effectiveEndDate
+      createdBy
+      createdDateTime
+      rowVersionCount
+      updatedBy
+      updatedDateTime
+    }
+  }
+}
+    `;
+export type UpdateAppParticipantMutationFn = Apollo.MutationFunction<UpdateAppParticipantMutation, UpdateAppParticipantMutationVariables>;
+
+/**
+ * __useUpdateAppParticipantMutation__
+ *
+ * To run a mutation, you first call `useUpdateAppParticipantMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateAppParticipantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateAppParticipantMutation, { data, loading, error }] = useUpdateAppParticipantMutation({
+ *   variables: {
+ *      updateAppParticipant: // value for 'updateAppParticipant'
+ *   },
+ * });
+ */
+export function useUpdateAppParticipantMutation(baseOptions?: Apollo.MutationHookOptions<UpdateAppParticipantMutation, UpdateAppParticipantMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateAppParticipantMutation, UpdateAppParticipantMutationVariables>(UpdateAppParticipantDocument, options);
+      }
+export type UpdateAppParticipantMutationHookResult = ReturnType<typeof useUpdateAppParticipantMutation>;
+export type UpdateAppParticipantMutationResult = Apollo.MutationResult<UpdateAppParticipantMutation>;
+export type UpdateAppParticipantMutationOptions = Apollo.BaseMutationOptions<UpdateAppParticipantMutation, UpdateAppParticipantMutationVariables>;

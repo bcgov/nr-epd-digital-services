@@ -11,9 +11,19 @@ global:
     keycloakRealm: ~
     keycloakClientID: ~
     keycloakAuthURL: ~
+    CHES_CLIENT_ID: ~
+    CHES_CLIENT_SECRET: ~
   config:
     seed:
-      enabled: true # TODO -> when test is successfully deployed, make PR/Dev env always cloned , so seed happens in TEST env
+      enabled: true
+    SITE_SERVICE_URL: "epd-backend-applications"
+    CATS_EMAIL_TEST_MODE: true
+    # switch to haley's email after verifying
+    CATS_TEST_EMAIL_ADDRESS: midhun.murali@aot-technologies.com
+    CHES_TOKEN_URL: https://dev.loginproxy.gov.bc.ca/auth/realms/comsvcauth/protocol/openid-connect/token
+    CHES_EMAIL_URL: https://ches-dev.api.gov.bc.ca/api/v1/email
+    CHES_EMAIL_FROM: NOREPLYEPD@gov.bc.ca
+    CATS_APPLICATION_URL: http://localhost:3000/applications/
 #-- the components of the application, backend.
 backend:
   #-- enable or disable backend
@@ -35,12 +45,21 @@ frontend:
   config:
     REACT_APP_BACKEND_API: ~
     REACT_APP_AUTH_AUTHORITY: "https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/"
-    REACT_APP_AUTH_CLIENT_ID: "site-web"
+    REACT_APP_AUTH_CLIENT_ID: "cats-web"
     REACT_APP_AUTH_REDIRECT_URI: ~
-    REACT_APP_AUTH_LOGOUT_REDIRECT_URI: ~
+    # REACT_APP_AUTH_LOGOUT_REDIRECT_URI: ~
+    REACT_APP_AUTH_LOGOUT_REDIRECT_URI: "https://logontest7.gov.bc.ca/clp-cgi/logoff.cgi?retnow=1&returl=https://epd-keycloak-test.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/protocol/openid-connect/logout?post_logout_redirect_uri=https://nr-epd-digital-services-879-frontend.apps.silver.devops.gov.bc.ca/"
     REACT_APP_AUTH_RESPONSE_TYPE: "code"
     REACT_APP_AUTH_SCOPE: "openid profile"
     REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS: "true"
     REACT_APP_AUTH_LOAD_USER_INFO: "true"
     REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT: "true"
+
+    VITE_SITE_REGISTRAR_USER_ROLE: "site-registrar"
+    VITE_SITE_INTERNAL_USER_ROLE: "site-internal-user"
+    VITE_SITE_REGISTRY_URL: ~
+    VITE_FORM_API: "https://forms-flow-forms-e38158-dev.apps.silver.devops.gov.bc.ca/"
+    VITE_FORM_BACKEND_API: "https://forms-flow-api-e38158-dev.apps.silver.devops.gov.bc.ca/"
+    VITE_FORM_FLOW_API: "https://forms-flow-api-e38158-dev.apps.silver.devops.gov.bc.ca/"
+
 

@@ -1147,6 +1147,7 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
       {isEditing ? (
         <Dropdown className="custom-dropdown-search">
           <Dropdown.Toggle
+            disabled={isDisabled}
             id={drdownId}
             data-testid={drdownId}
             className={`form-control d-flex align-items-center justify-content-between 

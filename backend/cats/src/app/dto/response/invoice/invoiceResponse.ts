@@ -3,7 +3,7 @@ import { ResponseDto } from '../response.dto';
 import { InvoiceDto } from '../../invoice/invoice.dto';
 
 @ObjectType()
-export class CreateInvoiceResponse extends ResponseDto {
-  @Field(() => [InvoiceDto], { nullable: true })
+export class InvoiceResponse extends ResponseDto {
+  @Field(() => InvoiceDto, { nullable: true })
   invoice?: InvoiceDto;
 }

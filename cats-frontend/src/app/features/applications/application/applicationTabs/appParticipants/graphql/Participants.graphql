@@ -8,9 +8,18 @@ query getAppParticipantsByAppId($applicationId: Int!, $filter: AppParticipantFil
       id
       applicationId
       isMainParticipant
-      name
-      fullName
-      description
+      organization {
+        id
+        name
+      }
+      person {
+        id
+        fullName
+      }
+      participantRole {
+        id
+        description
+      }
       effectiveStartDate
       effectiveEndDate
       isMinistry
@@ -60,6 +69,30 @@ query getOrganizations($searchParamForOrg: String!) {
 
 mutation createAppParticipant($newAppParticipant: CreateAppParticipantDto!) {
   createAppParticipant(newAppParticipant: $newAppParticipant) {
+    message
+    httpStatusCode
+    success
+    timestamp
+    data {
+      id
+      applicationId
+      personId
+      participantRoleId
+      organizationId
+      isMainParticipant
+      effectiveStartDate
+      effectiveEndDate
+      createdBy
+      createdDateTime
+      rowVersionCount
+      updatedBy
+      updatedDateTime
+    }
+  }
+}
+
+mutation updateAppParticipant($updateAppParticipant: UpdateAppParticipantDto!) {
+  updateAppParticipant(updateAppParticipant: $updateAppParticipant) {
     message
     httpStatusCode
     success
