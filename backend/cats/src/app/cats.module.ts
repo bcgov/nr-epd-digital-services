@@ -140,7 +140,7 @@ import { StaffAssignmentResolver } from './resolvers/assignment/staffAssignment.
       InvoiceLineItem,
       ApplicationServiceType,
       Permissions,
-      PersonPermission
+      PersonPermission,
     ]),
     HttpModule,
   ],

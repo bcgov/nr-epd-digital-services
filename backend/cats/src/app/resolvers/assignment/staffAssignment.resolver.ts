@@ -82,7 +82,9 @@ export class StaffAssignmentResolver {
     }
   }
 
-  @Query(() => ViewStaffWithCapacityResponse, {name: 'getAllActiveStaffMembers' })
+  @Query(() => ViewStaffWithCapacityResponse, {
+    name: 'getAllActiveStaffMembers',
+  })
   @UsePipes(new GenericValidationPipe())
   async getAllActiveStaffMembers() {
     try {

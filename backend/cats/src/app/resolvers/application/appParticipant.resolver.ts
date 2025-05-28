@@ -207,7 +207,7 @@ export class AppParticipantResolver {
           false,
           result,
         );
-      } 
+      }
     } catch (error) {
       this.loggerService.log(
         `AppParticipantResolver.getOrganizations() Error: ${error.message}`,

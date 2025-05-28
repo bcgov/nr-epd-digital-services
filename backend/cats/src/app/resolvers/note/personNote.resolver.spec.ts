@@ -61,25 +61,26 @@ describe('PersonNoteResolver', () => {
     resolver = module.get<PersonNoteResolver>(PersonNoteResolver);
     personNoteService = module.get<PersonNoteService>(PersonNoteService);
     loggerService = module.get<LoggerService>(LoggerService);
-    genericResponseProvider = module.get<GenericResponseProvider<PersonNoteResponse[]>>(GenericResponseProvider);
+    genericResponseProvider = module.get<
+      GenericResponseProvider<PersonNoteResponse[]>
+    >(GenericResponseProvider);
   });
 
   it('should return person notes successfully when found', async () => {
     const mockPersonNotes = [
-        {
-          id: '1',
-          noteDescription: 'This is a note description',  // noteDescription instead of 'note'
-          user: 'John Doe',  // user instead of 'note'
-          date: new Date('2024-02-14'),  // Provide a date
-        },
-        {
-          id: '2',
-          noteDescription: 'This is another note description',
-          user: 'Jane Smith',
-          date: new Date('2024-02-15'),
-        },
-      ];
-      
+      {
+        id: '1',
+        noteDescription: 'This is a note description', // noteDescription instead of 'note'
+        user: 'John Doe', // user instead of 'note'
+        date: new Date('2024-02-14'), // Provide a date
+      },
+      {
+        id: '2',
+        noteDescription: 'This is another note description',
+        user: 'Jane Smith',
+        date: new Date('2024-02-15'),
+      },
+    ];
 
     const expectedResult = {
       message: 'Notes fetched successfully',
@@ -88,12 +89,18 @@ describe('PersonNoteResolver', () => {
       data: mockPersonNotes,
     };
 
-    jest.spyOn(personNoteService, 'getPersonNotesByPersonId').mockResolvedValue(mockPersonNotes);
+    jest
+      .spyOn(personNoteService, 'getPersonNotesByPersonId')
+      .mockResolvedValue(mockPersonNotes);
 
-    const result = await resolver.getPersonNotesByPersonId(1, { identity_provider: 'IDIR' });
+    const result = await resolver.getPersonNotesByPersonId(1, {
+      identity_provider: 'IDIR',
+    });
 
     expect(result).toEqual(expectedResult);
-    expect(personNoteService.getPersonNotesByPersonId).toHaveBeenCalledWith(1, { identity_provider: 'IDIR' });
+    expect(personNoteService.getPersonNotesByPersonId).toHaveBeenCalledWith(1, {
+      identity_provider: 'IDIR',
+    });
     expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
       'Notes fetched successfully',
       HttpStatus.OK,
@@ -110,12 +117,18 @@ describe('PersonNoteResolver', () => {
       data: null,
     };
 
-    jest.spyOn(personNoteService, 'getPersonNotesByPersonId').mockResolvedValue([]);
+    jest
+      .spyOn(personNoteService, 'getPersonNotesByPersonId')
+      .mockResolvedValue([]);
 
-    const result = await resolver.getPersonNotesByPersonId(1, { identity_provider: 'IDIR' });
+    const result = await resolver.getPersonNotesByPersonId(1, {
+      identity_provider: 'IDIR',
+    });
 
     expect(result).toEqual(expectedResult);
-    expect(personNoteService.getPersonNotesByPersonId).toHaveBeenCalledWith(1, { identity_provider: 'IDIR' });
+    expect(personNoteService.getPersonNotesByPersonId).toHaveBeenCalledWith(1, {
+      identity_provider: 'IDIR',
+    });
     expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
       'Notes data not found for person id: 1',
       HttpStatus.NOT_FOUND,
@@ -125,18 +138,18 @@ describe('PersonNoteResolver', () => {
   });
 
   it('should create a person note successfully', async () => {
-    const createNoteDto: CreatePersonNote =  {
-        personId: 1,
-        noteDescription: 'This is the note description',  // Replacing 'note' with 'noteDescription'
-      };
+    const createNoteDto: CreatePersonNote = {
+      personId: 1,
+      noteDescription: 'This is the note description', // Replacing 'note' with 'noteDescription'
+    };
 
     const createdNote = {
-        id: '1',
-        noteDescription: 'This is the note description',  // Replacing 'note' with 'noteDescription'
-        user: 'John Doe',  // Add user property
-        date: new Date('2024-02-14'),  // Add date property
+      id: '1',
+      noteDescription: 'This is the note description', // Replacing 'note' with 'noteDescription'
+      user: 'John Doe', // Add user property
+      date: new Date('2024-02-14'), // Add date property
     };
-      
+
     const expectedResult = {
       message: 'Note created successfully',
       httpStatusCode: HttpStatus.CREATED,
@@ -144,12 +157,19 @@ describe('PersonNoteResolver', () => {
       data: [createdNote],
     };
 
-    jest.spyOn(personNoteService, 'createPersonNote').mockResolvedValue(createdNote);
+    jest
+      .spyOn(personNoteService, 'createPersonNote')
+      .mockResolvedValue(createdNote);
 
-    const result = await resolver.createPersonNote(createNoteDto, { identity_provider: 'IDIR' });
+    const result = await resolver.createPersonNote(createNoteDto, {
+      identity_provider: 'IDIR',
+    });
 
     expect(result).toEqual(expectedResult);
-    expect(personNoteService.createPersonNote).toHaveBeenCalledWith(createNoteDto, { identity_provider: 'IDIR' });
+    expect(personNoteService.createPersonNote).toHaveBeenCalledWith(
+      createNoteDto,
+      { identity_provider: 'IDIR' },
+    );
     expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
       'Note created successfully',
       HttpStatus.CREATED,
@@ -159,7 +179,10 @@ describe('PersonNoteResolver', () => {
   });
 
   it('should return an error when creation of person note fails', async () => {
-    const createNoteDto: CreatePersonNote = { personId: 1, noteDescription: 'Invalid note' };
+    const createNoteDto: CreatePersonNote = {
+      personId: 1,
+      noteDescription: 'Invalid note',
+    };
 
     const expectedResult = {
       message: 'Failed to create note',
@@ -170,10 +193,15 @@ describe('PersonNoteResolver', () => {
 
     jest.spyOn(personNoteService, 'createPersonNote').mockResolvedValue(null);
 
-    const result = await resolver.createPersonNote(createNoteDto, { identity_provider: 'IDIR' });
+    const result = await resolver.createPersonNote(createNoteDto, {
+      identity_provider: 'IDIR',
+    });
 
     expect(result).toEqual(expectedResult);
-    expect(personNoteService.createPersonNote).toHaveBeenCalledWith(createNoteDto, { identity_provider: 'IDIR' });
+    expect(personNoteService.createPersonNote).toHaveBeenCalledWith(
+      createNoteDto,
+      { identity_provider: 'IDIR' },
+    );
     expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
       'Failed to create note',
       HttpStatus.BAD_REQUEST,
@@ -185,10 +213,10 @@ describe('PersonNoteResolver', () => {
   it('should update a person note successfully', async () => {
     const updateNoteDto: UpdatePersonNote = { noteDescription: 'Updated note' };
     const updatedNote = {
-        id: '1',
-        noteDescription: 'Updated note',  // Replacing 'note' with 'noteDescription'
-        user: 'John Doe',  // Add user property
-        date: new Date('2024-02-14'),  // Add date property
+      id: '1',
+      noteDescription: 'Updated note', // Replacing 'note' with 'noteDescription'
+      user: 'John Doe', // Add user property
+      date: new Date('2024-02-14'), // Add date property
     };
 
     const expectedResult = {
@@ -198,12 +226,20 @@ describe('PersonNoteResolver', () => {
       data: [updatedNote],
     };
 
-    jest.spyOn(personNoteService, 'updatePersonNote').mockResolvedValue(updatedNote);
+    jest
+      .spyOn(personNoteService, 'updatePersonNote')
+      .mockResolvedValue(updatedNote);
 
-    const result = await resolver.updatePeronNote('1', updateNoteDto, { identity_provider: 'IDIR' });
+    const result = await resolver.updatePeronNote('1', updateNoteDto, {
+      identity_provider: 'IDIR',
+    });
 
     expect(result).toEqual(expectedResult);
-    expect(personNoteService.updatePersonNote).toHaveBeenCalledWith('1', updateNoteDto, { identity_provider: 'IDIR' });
+    expect(personNoteService.updatePersonNote).toHaveBeenCalledWith(
+      '1',
+      updateNoteDto,
+      { identity_provider: 'IDIR' },
+    );
     expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
       'Note updated successfully',
       HttpStatus.OK,
@@ -224,10 +260,18 @@ describe('PersonNoteResolver', () => {
 
     jest.spyOn(personNoteService, 'updatePersonNote').mockResolvedValue(null);
 
-    const result = await resolver.updatePeronNote('nonexistentId', updateNoteDto, { identity_provider: 'IDIR' });
+    const result = await resolver.updatePeronNote(
+      'nonexistentId',
+      updateNoteDto,
+      { identity_provider: 'IDIR' },
+    );
 
     expect(result).toEqual(expectedResult);
-    expect(personNoteService.updatePersonNote).toHaveBeenCalledWith('nonexistentId', updateNoteDto, { identity_provider: 'IDIR' });
+    expect(personNoteService.updatePersonNote).toHaveBeenCalledWith(
+      'nonexistentId',
+      updateNoteDto,
+      { identity_provider: 'IDIR' },
+    );
     expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
       'Note not found for update',
       HttpStatus.NOT_FOUND,
@@ -247,10 +291,15 @@ describe('PersonNoteResolver', () => {
 
     jest.spyOn(personNoteService, 'deletePersonNote').mockResolvedValue(true);
 
-    const result = await resolver.deletePersonNote(deleteNotesDto, { identity_provider: 'IDIR' });
+    const result = await resolver.deletePersonNote(deleteNotesDto, {
+      identity_provider: 'IDIR',
+    });
 
     expect(result).toEqual(expectedResult);
-    expect(personNoteService.deletePersonNote).toHaveBeenCalledWith(deleteNotesDto, { identity_provider: 'IDIR' });
+    expect(personNoteService.deletePersonNote).toHaveBeenCalledWith(
+      deleteNotesDto,
+      { identity_provider: 'IDIR' },
+    );
     expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
       'Note deleted successfully',
       HttpStatus.OK,
@@ -270,10 +319,15 @@ describe('PersonNoteResolver', () => {
 
     jest.spyOn(personNoteService, 'deletePersonNote').mockResolvedValue(false);
 
-    const result = await resolver.deletePersonNote(deleteNotesDto, { identity_provider: 'IDIR' });
+    const result = await resolver.deletePersonNote(deleteNotesDto, {
+      identity_provider: 'IDIR',
+    });
 
     expect(result).toEqual(expectedResult);
-    expect(personNoteService.deletePersonNote).toHaveBeenCalledWith(deleteNotesDto, { identity_provider: 'IDIR' });
+    expect(personNoteService.deletePersonNote).toHaveBeenCalledWith(
+      deleteNotesDto,
+      { identity_provider: 'IDIR' },
+    );
     expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
       'Note not found for deletion',
       HttpStatus.NOT_FOUND,

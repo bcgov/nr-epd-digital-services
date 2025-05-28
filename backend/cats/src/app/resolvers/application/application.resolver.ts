@@ -11,44 +11,44 @@ import { Unprotected } from 'nest-keycloak-connect';
 
 @Resolver()
 export class ApplicationResolver {
-    constructor(
-        private readonly applicationService: ApplicationService,
-        private readonly loggerService: LoggerService,
-        private readonly applicationResponse: GenericResponseProvider<
-            ViewApplication[]
-        >,
-    ) { }
+  constructor(
+    private readonly applicationService: ApplicationService,
+    private readonly loggerService: LoggerService,
+    private readonly applicationResponse: GenericResponseProvider<
+      ViewApplication[]
+    >,
+  ) {}
 
-    @Unprotected()
-    @Mutation(() => ApplicationResponse, { name: 'createApplication' })
-    @UsePipes(new GenericValidationPipe())
-    async createApplication(
-        @Args('application', { type: () => CreateApplication })
-        application: CreateApplication,
-    ) {
-        this.loggerService.log('ApplicationResolver.createApplication() start');
-        const result = await this.applicationService.createApplication(application);
+  @Unprotected()
+  @Mutation(() => ApplicationResponse, { name: 'createApplication' })
+  @UsePipes(new GenericValidationPipe())
+  async createApplication(
+    @Args('application', { type: () => CreateApplication })
+    application: CreateApplication,
+  ) {
+    this.loggerService.log('ApplicationResolver.createApplication() start');
+    const result = await this.applicationService.createApplication(application);
 
-        if (result) {
-            this.loggerService.log(
-                'ApplicationResolver.createApplication() RES:201 end',
-            );
-            return this.applicationResponse.createResponse(
-                'Application created successfully',
-                HttpStatus.CREATED,
-                true,
-                [result],
-            );
-        } else {
-            this.loggerService.log(
-                'ApplicationResolver.createApplication() RES:400 end',
-            );
-            return this.applicationResponse.createResponse(
-                'Failed to create application',
-                HttpStatus.BAD_REQUEST,
-                false,
-                null,
-            );
-        }
+    if (result) {
+      this.loggerService.log(
+        'ApplicationResolver.createApplication() RES:201 end',
+      );
+      return this.applicationResponse.createResponse(
+        'Application created successfully',
+        HttpStatus.CREATED,
+        true,
+        [result],
+      );
+    } else {
+      this.loggerService.log(
+        'ApplicationResolver.createApplication() RES:400 end',
+      );
+      return this.applicationResponse.createResponse(
+        'Failed to create application',
+        HttpStatus.BAD_REQUEST,
+        false,
+        null,
+      );
     }
+  }
 }

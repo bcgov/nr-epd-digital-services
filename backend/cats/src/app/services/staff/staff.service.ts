@@ -42,7 +42,7 @@ export class StaffService {
         havingClause = `HAVING ${assignmentExpr} > ${capacity}`;
       }
 
-      const baseQuery =  `
+      const baseQuery = `
         SELECT   
           p.id, 
           p.first_name, 
@@ -73,7 +73,7 @@ export class StaffService {
           p.id, p.first_name, p.middle_name, p.last_name
         ${havingClause}
       `;
-      
+
       // Sort mapping
       const sortMap = {
         [SortBy.ID]: 'p.id',
@@ -90,8 +90,11 @@ export class StaffService {
         LIMIT $1
         OFFSET $2
       `;
-     
-      const rawResults = await this.dataSource.query(finalQuery, [pageSize, offset]);
+
+      const rawResults = await this.dataSource.query(finalQuery, [
+        pageSize,
+        offset,
+      ]);
 
       // Total count for pagination
       const countQuery = `
@@ -102,7 +105,7 @@ export class StaffService {
       const countResult = await this.dataSource.query(countQuery);
       const count = parseInt(countResult[0].count, 10);
 
-       const result = {
+      const result = {
         page,
         pageSize,
         count,
@@ -116,9 +119,11 @@ export class StaffService {
 
       this.loggerSerivce.log('StaffService: getStaffs end');
       return result;
-     
     } catch (error) {
-      this.loggerSerivce.error(`StaffService Error: ${error.message}`, error.stack);
+      this.loggerSerivce.error(
+        `StaffService Error: ${error.message}`,
+        error.stack,
+      );
       throw new Error(`Failed to fetch staff: ${error.message}`);
     }
   }

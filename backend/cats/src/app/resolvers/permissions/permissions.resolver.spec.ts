@@ -31,13 +31,15 @@ describe('PermissionsResolver', () => {
         {
           provide: GenericResponseProvider,
           useValue: {
-            createResponse: jest.fn().mockImplementation((msg, status, success, data) => ({
-              message: msg,
-              httpStatusCode: status,
-              success: success,
-              data: data,
-              timestamp: expect.any(String),
-            })),
+            createResponse: jest
+              .fn()
+              .mockImplementation((msg, status, success, data) => ({
+                message: msg,
+                httpStatusCode: status,
+                success: success,
+                data: data,
+                timestamp: expect.any(String),
+              })),
           },
         },
       ],
@@ -46,7 +48,9 @@ describe('PermissionsResolver', () => {
     resolver = module.get<PermissionsResolver>(PermissionsResolver);
     permissionsService = module.get<PermissionsService>(PermissionsService);
     loggerService = module.get<LoggerService>(LoggerService);
-    permissionResponse = module.get<GenericResponseProvider<RoleWithPermissions[]>>(GenericResponseProvider);
+    permissionResponse = module.get<
+      GenericResponseProvider<RoleWithPermissions[]>
+    >(GenericResponseProvider);
   });
 
   it('should be defined', () => {
@@ -56,15 +60,23 @@ describe('PermissionsResolver', () => {
   describe('getPermissions', () => {
     it('should return permissions when records are found', async () => {
       const mockData: RoleWithPermissions[] = [
-        { roleDescription: 'Case Worker', roleId: 1, permissions: [{ id: 1, description: 'permission 1', roleId: 1 }] },
+        {
+          roleDescription: 'Case Worker',
+          roleId: 1,
+          permissions: [{ id: 1, description: 'permission 1', roleId: 1 }],
+        },
       ];
 
-      jest.spyOn(permissionsService, 'getPermissions').mockResolvedValue(mockData);
+      jest
+        .spyOn(permissionsService, 'getPermissions')
+        .mockResolvedValue(mockData);
 
       const result = await resolver.getPermissions();
 
       expect(permissionsService.getPermissions).toHaveBeenCalled();
-      expect(loggerService.log).toHaveBeenCalledWith('PermissionsResolver.getPermissions() RES:200 end');
+      expect(loggerService.log).toHaveBeenCalledWith(
+        'PermissionsResolver.getPermissions() RES:200 end',
+      );
       expect(result).toEqual({
         message: 'Permission records fetched successfully',
         httpStatusCode: HttpStatus.OK,
@@ -79,7 +91,9 @@ describe('PermissionsResolver', () => {
 
       const result = await resolver.getPermissions();
 
-      expect(loggerService.log).toHaveBeenCalledWith('PermissionsResolver.getPermissions() RES:404 end');
+      expect(loggerService.log).toHaveBeenCalledWith(
+        'PermissionsResolver.getPermissions() RES:404 end',
+      );
       expect(result).toEqual({
         message: 'No permission records found',
         httpStatusCode: HttpStatus.NOT_FOUND,
@@ -90,10 +104,16 @@ describe('PermissionsResolver', () => {
     });
 
     it('should throw an error and log it when permissionsService fails', async () => {
-      jest.spyOn(permissionsService, 'getPermissions').mockRejectedValue(new Error('Service Error'));
+      jest
+        .spyOn(permissionsService, 'getPermissions')
+        .mockRejectedValue(new Error('Service Error'));
 
-      await expect(resolver.getPermissions()).rejects.toThrow('Failed to fetch person: Service Error');
-      expect(loggerService.log).toHaveBeenCalledWith('PermissionsResolver.getPermissions() RES:500 end');
+      await expect(resolver.getPermissions()).rejects.toThrow(
+        'Failed to fetch person: Service Error',
+      );
+      expect(loggerService.log).toHaveBeenCalledWith(
+        'PermissionsResolver.getPermissions() RES:500 end',
+      );
     });
   });
 });

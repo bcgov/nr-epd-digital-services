@@ -35,11 +35,11 @@ describe('StaffResolver', () => {
           provide: GenericResponseProvider,
           useValue: {
             createPagedResponse: jest.fn().mockImplementation((response) => ({
-                message: response.message,
-                httpStatusCode: response.httpStatusCode,
-                success: response.success,
-                data: response.data,
-                timestamp: expect.any(String),
+              message: response.message,
+              httpStatusCode: response.httpStatusCode,
+              success: response.success,
+              data: response.data,
+              timestamp: expect.any(String),
             })),
           },
         },
@@ -49,7 +49,9 @@ describe('StaffResolver', () => {
     resolver = module.get<StaffResolver>(StaffResolver);
     staffService = module.get<StaffService>(StaffService);
     loggerService = module.get<LoggerService>(LoggerService);
-    personResponse = module.get<GenericResponseProvider<ViewStaff[]>>(GenericResponseProvider);
+    personResponse = module.get<GenericResponseProvider<ViewStaff[]>>(
+      GenericResponseProvider,
+    );
   });
 
   it('should be defined', () => {
@@ -59,8 +61,8 @@ describe('StaffResolver', () => {
   describe('findAll', () => {
     it('should return staff records when found', async () => {
       const mockStaffData = [
-        { id: 1, name: 'John Doe', assignment: 3, capacity: 10},
-        { id: 2, name: 'Jane Smith', assignment: 5, capacity: 10},
+        { id: 1, name: 'John Doe', assignment: 3, capacity: 10 },
+        { id: 2, name: 'Jane Smith', assignment: 5, capacity: 10 },
       ];
 
       staffService.getStaffs = jest.fn().mockResolvedValue({
@@ -68,29 +70,41 @@ describe('StaffResolver', () => {
         count: mockStaffData.length,
       });
 
-      const result = await resolver.findAll(1, 5, Filter.ALL, SortBy.NAME, SortByDirection.ASC);
+      const result = await resolver.findAll(
+        1,
+        5,
+        Filter.ALL,
+        SortBy.NAME,
+        SortByDirection.ASC,
+      );
 
-      expect(staffService.getStaffs).toHaveBeenCalledWith(1, 5, Filter.ALL, SortBy.NAME, SortByDirection.ASC);
+      expect(staffService.getStaffs).toHaveBeenCalledWith(
+        1,
+        5,
+        Filter.ALL,
+        SortBy.NAME,
+        SortByDirection.ASC,
+      );
       expect(result).toEqual({
         message: 'Staff records fetched successfully',
         httpStatusCode: HttpStatus.OK,
         success: true,
         data: [
-            {
+          {
             id: 1,
             name: 'John Doe',
             assignment: 3,
             capacity: 10,
-            },
-            {
+          },
+          {
             id: 2,
             name: 'Jane Smith',
             assignment: 5,
             capacity: 10,
-            },
+          },
         ],
         timestamp: expect.any(String),
-        });
+      });
     });
 
     it('should return not found response when no staff records exist', async () => {
@@ -99,9 +113,21 @@ describe('StaffResolver', () => {
         count: 0,
       });
 
-      const result = await resolver.findAll(1, 5, Filter.ALL, SortBy.ID, SortByDirection.ASC);
+      const result = await resolver.findAll(
+        1,
+        5,
+        Filter.ALL,
+        SortBy.ID,
+        SortByDirection.ASC,
+      );
 
-      expect(staffService.getStaffs).toHaveBeenCalledWith(1, 5, Filter.ALL, SortBy.ID, SortByDirection.ASC);
+      expect(staffService.getStaffs).toHaveBeenCalledWith(
+        1,
+        5,
+        Filter.ALL,
+        SortBy.ID,
+        SortByDirection.ASC,
+      );
       expect(result).toEqual({
         message: 'No staff records found',
         httpStatusCode: HttpStatus.NOT_FOUND,
@@ -113,7 +139,7 @@ describe('StaffResolver', () => {
 
     it('should log a success message when staff records are fetched successfully', async () => {
       const mockStaffData = [
-        { id: 1, name: 'John Doe', assignment: 3, capacity: 10},
+        { id: 1, name: 'John Doe', assignment: 3, capacity: 10 },
       ];
 
       staffService.getStaffs = jest.fn().mockResolvedValue({
@@ -121,30 +147,45 @@ describe('StaffResolver', () => {
         count: mockStaffData.length,
       });
 
-      await resolver.findAll(1, 5, Filter.ALL, SortBy.NAME, SortByDirection.ASC);
-
-      expect(loggerService.log).toHaveBeenCalledWith('StaffResolver.getStaffs() RES:200 start');
-      expect(loggerService.log).toHaveBeenCalledWith(
-        `page: 1, pageSize: 5, filter: ${Filter.ALL.toLowerCase()}, sortBy: ${SortBy.NAME.toLowerCase()}, sortByDir: ${SortByDirection.ASC}`
+      await resolver.findAll(
+        1,
+        5,
+        Filter.ALL,
+        SortBy.NAME,
+        SortByDirection.ASC,
       );
-      expect(loggerService.log).toHaveBeenCalledWith('StaffResolver.getStaffs() RES:200 end');
+
+      expect(loggerService.log).toHaveBeenCalledWith(
+        'StaffResolver.getStaffs() RES:200 start',
+      );
+      expect(loggerService.log).toHaveBeenCalledWith(
+        `page: 1, pageSize: 5, filter: ${Filter.ALL.toLowerCase()}, sortBy: ${SortBy.NAME.toLowerCase()}, sortByDir: ${
+          SortByDirection.ASC
+        }`,
+      );
+      expect(loggerService.log).toHaveBeenCalledWith(
+        'StaffResolver.getStaffs() RES:200 end',
+      );
     });
 
-   it('should return error response if staffService fails', async () => {
-        staffService.getStaffs = jest.fn().mockRejectedValue(new Error('Database Error'));
+    it('should return error response if staffService fails', async () => {
+      staffService.getStaffs = jest
+        .fn()
+        .mockRejectedValue(new Error('Database Error'));
 
-        await expect(
-            resolver.findAll(1, 5, Filter.ALL, SortBy.NAME, SortByDirection.ASC)
-        ).rejects.toThrow('Failed to fetch staff: Database Error');
+      await expect(
+        resolver.findAll(1, 5, Filter.ALL, SortBy.NAME, SortByDirection.ASC),
+      ).rejects.toThrow('Failed to fetch staff: Database Error');
     });
 
-  it('should handle unexpected errors gracefully', async () => {
-    staffService.getStaffs = jest.fn().mockRejectedValue(new Error('Unexpected Error'));
+    it('should handle unexpected errors gracefully', async () => {
+      staffService.getStaffs = jest
+        .fn()
+        .mockRejectedValue(new Error('Unexpected Error'));
 
-    await expect(
-        resolver.findAll(1, 5, Filter.ALL, SortBy.NAME, SortByDirection.ASC)
-    ).rejects.toThrow('Failed to fetch staff: Unexpected Error');
+      await expect(
+        resolver.findAll(1, 5, Filter.ALL, SortBy.NAME, SortByDirection.ASC),
+      ).rejects.toThrow('Failed to fetch staff: Unexpected Error');
     });
-
   });
 });

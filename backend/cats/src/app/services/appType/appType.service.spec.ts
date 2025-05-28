@@ -33,7 +33,7 @@ describe('AppTypeService', () => {
       repository.findOne = jest.fn().mockResolvedValue(mockAppType);
 
       const result = await service.getAppTypeByAbbrev(appTypeAbbrev);
-      expect(result).toEqual({ id: 1, });
+      expect(result).toEqual({ id: 1 });
     });
 
     it('should return empty array if no app type found', async () => {
@@ -41,7 +41,7 @@ describe('AppTypeService', () => {
       repository.findOne = jest.fn().mockResolvedValue([]);
 
       const result = await service.getAppTypeByAbbrev(appTypeAbbrev);
-      expect(result).toEqual({ "id": undefined });
+      expect(result).toEqual({ id: undefined });
     });
   });
 });
