@@ -4,7 +4,7 @@
             "title": "Site Disclosure Statements",
             "display": "form",
             "type": "form",
-            "name": "sdsform",
+            "name": "sdsForm",
             "path": "sdsform",
             "tags": [
                 "common"
