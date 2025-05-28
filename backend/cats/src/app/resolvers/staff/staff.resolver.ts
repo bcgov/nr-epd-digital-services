@@ -11,7 +11,7 @@ import { SortByDirection } from '../../utilities/enums/application/sortByDirecti
 import { SortBy } from '../../utilities/enums/staff/sortBy.enum';
 
 @Resolver(() => ViewStaff)
-@Resource('user-service')
+@Resource('cats-service')
 export class StaffResolver {
   constructor(
     private readonly staffService: StaffService,

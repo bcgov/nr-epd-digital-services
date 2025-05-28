@@ -19,7 +19,7 @@ import { UpdateAppParticipantsResponse } from '../../dto/response/applicationPar
 import { UpdateAppParticipantDto } from '../../dto/appParticipants/updateAppParticipant.dto';
 
 @Resolver(() => ViewAppParticipantsDto)
-@Resource('user-service')
+@Resource('cats-service')
 export class AppParticipantResolver {
   constructor(
     private readonly appParticipantService: AppParticipantService,

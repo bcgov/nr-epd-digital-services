@@ -5,7 +5,7 @@ import { AppService } from './app.service';
 import { Request } from 'express';
 
 @Controller()
-@Resource('user-service')
+@Resource('cats-service')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 

@@ -11,7 +11,7 @@ import { CreatePerson } from '../../dto/person/createPerson.dto';
 import { UpdatePerson } from '../../dto/person/updatePerson.dto';
 
 @Resolver(() => ViewPerson)
-@Resource('user-service')
+@Resource('cats-service')
 export class PersonResolver {
   constructor(
     private readonly personService: PersonService,

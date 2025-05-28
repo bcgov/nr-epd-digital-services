@@ -29,7 +29,7 @@ import {
 } from '../../dto/assignment/viewStaffWithCapacity';
 
 @Resolver()
-@Resource('user-service')
+@Resource('cats-service')
 export class StaffAssignmentResolver {
   constructor(
     private readonly service: StaffAssignmentService,
