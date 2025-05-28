@@ -1,5 +1,4 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { IsString } from 'class-validator';
 import { ResponseDto } from '../response/response.dto';
 import { BaseStaffAssignedDto } from './baseStaffAssigned.dto';
 
