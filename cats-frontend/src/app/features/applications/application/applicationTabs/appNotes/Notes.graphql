@@ -12,3 +12,21 @@ query getApplicationNotesByApplicationId($applicationId: Int!) {
     }
   }
 }
+
+mutation createApplicationNote($applicationId: Int!, $noteDate: DateTime!, $noteText: String!) {
+  createApplicationNote(applicationId: $applicationId, noteDate: $noteDate, noteText: $noteText) {
+    success
+  }
+}
+
+mutation updateApplicationNote($noteId: Int!, $noteDate: DateTime!, $noteText: String!) {
+  updateApplicationNote(noteId: $noteId, noteDate: $noteDate, noteText: $noteText) {
+    success
+  }
+}
+
+mutation deleteApplicationNotes($noteIds: [Int!]!) {
+  deleteApplicationNotes(noteIds: $noteIds) {
+    success
+  }
+}
