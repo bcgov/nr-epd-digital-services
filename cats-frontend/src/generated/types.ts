@@ -254,6 +254,7 @@ export type InvoiceByApplicationIdDto = {
   id: Scalars['Int']['output'];
   issuedDate: Scalars['DateTime']['output'];
   status: Scalars['String']['output'];
+  subject: Scalars['String']['output'];
   totalInCents: Scalars['Int']['output'];
 };
 
@@ -265,7 +266,7 @@ export type InvoiceDto = {
   dueDate: Scalars['DateTime']['output'];
   gstInCents: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
-  invoiceId: Scalars['Int']['output'];
+  invoiceId?: Maybe<Scalars['Int']['output']>;
   issuedDate: Scalars['DateTime']['output'];
   lineItems: Array<InvoiceLineItemDto>;
   pstInCents: Scalars['Int']['output'];
@@ -283,9 +284,9 @@ export type InvoiceInputDto = {
   applicationId: Scalars['Int']['input'];
   dueDate: Scalars['DateTime']['input'];
   gstInCents: Scalars['Int']['input'];
-  invoiceId: Scalars['Int']['input'];
+  invoiceId?: InputMaybe<Scalars['Int']['input']>;
   issuedDate: Scalars['DateTime']['input'];
-  lineItems: Array<InvoiceLineItemCreateDto>;
+  lineItems: Array<InvoiceLineItemInputDto>;
   pstInCents: Scalars['Int']['input'];
   recipientId: Scalars['Int']['input'];
   status: InvoiceStatus;
@@ -293,14 +294,6 @@ export type InvoiceInputDto = {
   subtotalInCents: Scalars['Int']['input'];
   taxExempt: Scalars['Boolean']['input'];
   totalInCents: Scalars['Int']['input'];
-};
-
-export type InvoiceLineItemCreateDto = {
-  description: Scalars['String']['input'];
-  quantity: Scalars['Int']['input'];
-  totalInCents: Scalars['Int']['input'];
-  type: Scalars['String']['input'];
-  unitPriceInCents: Scalars['Int']['input'];
 };
 
 export type InvoiceLineItemDto = {
@@ -317,10 +310,21 @@ export type InvoiceLineItemDto = {
   updatedBy: Scalars['String']['output'];
 };
 
+export type InvoiceLineItemInputDto = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdBy?: InputMaybe<Scalars['String']['input']>;
+  description: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['Float']['input']>;
+  quantity: Scalars['Int']['input'];
+  totalInCents: Scalars['Int']['input'];
+  type: Scalars['String']['input'];
+  unitPriceInCents: Scalars['Int']['input'];
+};
+
 export type InvoiceResponse = {
   __typename?: 'InvoiceResponse';
   httpStatusCode?: Maybe<Scalars['Int']['output']>;
-  invoice?: Maybe<Array<InvoiceDto>>;
+  invoice?: Maybe<InvoiceDto>;
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
@@ -359,6 +363,7 @@ export type Mutation = {
   updatePerson: PersonResponse;
   updatePersonNote: PersonNoteResponse;
   updateStaffAssigned: ResponseDto;
+  upsertTimesheetDays: TimesheetDayResponse;
 };
 
 
@@ -433,6 +438,11 @@ export type MutationUpdateStaffAssignedArgs = {
   applicationId: Scalars['Int']['input'];
   applicationServiceTypeId: Scalars['Int']['input'];
   staffInput: Array<UpdateStaffAssignedDto>;
+};
+
+
+export type MutationUpsertTimesheetDaysArgs = {
+  input: UpsertTimesheetDaysInputDto;
 };
 
 export type ParticipantsRolesResponse = {
@@ -639,6 +649,32 @@ export enum StaffSortByField {
   Name = 'NAME'
 }
 
+export type TimesheetDayDto = {
+  __typename?: 'TimesheetDayDto';
+  applicationId: Scalars['Int']['output'];
+  date: Scalars['DateTime']['output'];
+  hours?: Maybe<Scalars['Float']['output']>;
+  id: Scalars['Int']['output'];
+  personId: Scalars['Int']['output'];
+};
+
+export type TimesheetDayResponse = {
+  __typename?: 'TimesheetDayResponse';
+  data: Array<TimesheetDayDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type TimesheetDayUpsertInputDto = {
+  applicationId: Scalars['Int']['input'];
+  date: Scalars['String']['input'];
+  hours?: InputMaybe<Scalars['Float']['input']>;
+  personId: Scalars['Int']['input'];
+  timesheetDayId?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type UpdateAppParticipantDto = {
   applicationId: Scalars['Float']['input'];
   effectiveEndDate?: InputMaybe<Scalars['DateTime']['input']>;
@@ -704,6 +740,10 @@ export type UpdateStaffAssignedDto = {
   personId: Scalars['Float']['input'];
   roleId: Scalars['Float']['input'];
   startDate: Scalars['DateTime']['input'];
+};
+
+export type UpsertTimesheetDaysInputDto = {
+  entries: Array<TimesheetDayUpsertInputDto>;
 };
 
 export type ViewAppParticipantEntityDto = {
