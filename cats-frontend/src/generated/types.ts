@@ -364,6 +364,7 @@ export type Mutation = {
   updatePerson: PersonResponse;
   updatePersonNote: PersonNoteResponse;
   updateStaffAssigned: ResponseDto;
+  upsertTimesheetDays: TimesheetDayResponse;
 };
 
 
@@ -438,6 +439,11 @@ export type MutationUpdateStaffAssignedArgs = {
   applicationId: Scalars['Int']['input'];
   applicationServiceTypeId: Scalars['Int']['input'];
   staffInput: Array<UpdateStaffAssignedDto>;
+};
+
+
+export type MutationUpsertTimesheetDaysArgs = {
+  input: UpsertTimesheetDaysInputDto;
 };
 
 export type ParticipantsRolesResponse = {
@@ -661,6 +667,32 @@ export enum StaffSortByField {
   Name = 'NAME'
 }
 
+export type TimesheetDayDto = {
+  __typename?: 'TimesheetDayDto';
+  applicationId: Scalars['Int']['output'];
+  date: Scalars['DateTime']['output'];
+  hours?: Maybe<Scalars['Float']['output']>;
+  id: Scalars['Int']['output'];
+  personId: Scalars['Int']['output'];
+};
+
+export type TimesheetDayResponse = {
+  __typename?: 'TimesheetDayResponse';
+  data: Array<TimesheetDayDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type TimesheetDayUpsertInputDto = {
+  applicationId: Scalars['Int']['input'];
+  date: Scalars['String']['input'];
+  hours?: InputMaybe<Scalars['Float']['input']>;
+  personId: Scalars['Int']['input'];
+  timesheetDayId?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type UpdateAppParticipantDto = {
   applicationId: Scalars['Float']['input'];
   effectiveEndDate?: InputMaybe<Scalars['DateTime']['input']>;
@@ -727,6 +759,10 @@ export type UpdateStaffAssignedDto = {
   personId: Scalars['Float']['input'];
   roleId: Scalars['Float']['input'];
   startDate: Scalars['DateTime']['input'];
+};
+
+export type UpsertTimesheetDaysInputDto = {
+  entries: Array<TimesheetDayUpsertInputDto>;
 };
 
 export type ViewAppParticipantEntityDto = {
