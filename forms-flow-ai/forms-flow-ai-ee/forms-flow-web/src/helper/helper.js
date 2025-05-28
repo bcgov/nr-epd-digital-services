@@ -22,7 +22,6 @@ export const getClientApplicationStatus = (applicationStatus) => {
     withdrawn: "Completed",
     "awaiting payment": "Invoice sent",
     closed: "Closed",
-    
     returned: "Additional Information Requested",
     resubmit: "Additional Information Requested",
     "received from municipality": "Review",
