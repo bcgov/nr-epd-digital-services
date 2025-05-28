@@ -1,20 +1,11 @@
-import Widget from '@cats/components/widget/Widget';
-import { useGetPermissionsQuery } from './graphql/PersonPermissions.generated';
-import { useState } from 'react';
-import {
-  CheckBoxInput,
-  SwitchInput,
-} from '@cats/components/input-controls/InputControls';
-import { FormFieldType } from '@cats/components/input-controls/IFormField';
-import LoadingOverlay, {
-  LoadingSpinner,
-} from '@cats/components/loader/LoadingOverlay';
 import { IPersonPermission } from './IPersonPermissions';
 import {
   RoleWithPermissions,
   ViewPermissions,
 } from '../../../../generated/types';
-import { permission } from 'process';
+import { CheckBoxInput, SwitchInput } from '../../../components/input-controls/InputControls';
+import { FormFieldType } from '../../../components/input-controls/IFormField';
+
 
 const PersonPermissions: React.FC<IPersonPermission> = ({
   editMode,
