@@ -18,7 +18,7 @@ export const fetchPeronNotes = async (id: string) => {
     const result = response?.data?.data?.getPersonNotesByPersonId; // Return the notes data
     if (result?.success) {
       return result?.data;
-    } 
+    }
   } catch (error) {
     console.error('Error fetching notes:', error);
     throw new Error('Failed to fetch notes.');
@@ -39,7 +39,7 @@ export const updatePersonNote = async (id: string, note: any) => {
     const result = response?.data?.data?.updatePersonNote; // Return the note data
     if (result?.success) {
       return result;
-    } 
+    }
   } catch (error) {
     // Log the error and throw an exception
     console.error('Error updating note:', error);
@@ -78,7 +78,7 @@ export const deletePersonNote = async (notes: any) => {
     const result = response?.data?.data?.deletePersonNote; // Return the status
     if (result?.success) {
       return result;
-    } 
+    }
   } catch (error) {
     console.error('Error deleting note:', error);
     throw new Error('Failed to delete note.');

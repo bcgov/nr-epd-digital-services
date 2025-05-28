@@ -88,7 +88,9 @@ const Person = () => {
 
   const { data } = useGetPermissionsQuery();
   const [enabledRoles, setEnabledRoles] = useState<Record<number, boolean>>({});
-  const [selectedPermissions, setSelectedPermissions] = useState<Set<number>>(new Set());
+  const [selectedPermissions, setSelectedPermissions] = useState<Set<number>>(
+    new Set(),
+  );
 
   const onClickBackButton = () => {
     navigate(-1);
@@ -426,29 +428,32 @@ const Person = () => {
   );
 
   useEffect(() => {
-  // Only run once when formData is initially populated
-  if (formData?.permissionIds && data?.getPermissions?.data && selectedPermissions.size === 0) {
-    const personPermissions: number[] = formData?.permissionIds;
+    // Only run once when formData is initially populated
+    if (
+      formData?.permissionIds &&
+      data?.getPermissions?.data &&
+      selectedPermissions.size === 0
+    ) {
+      const personPermissions: number[] = formData?.permissionIds;
 
-    setSelectedPermissions(new Set(personPermissions));
+      setSelectedPermissions(new Set(personPermissions));
 
-    const rolesMap: Record<number, boolean> = {};
+      const rolesMap: Record<number, boolean> = {};
 
-    data?.getPermissions?.data.forEach((role: any) => {
-      role.permissions.forEach((perm: any) => {
-        if (personPermissions.includes(perm.id)) {
-          rolesMap[role.roleId] = true;
-        }
+      data?.getPermissions?.data.forEach((role: any) => {
+        role.permissions.forEach((perm: any) => {
+          if (personPermissions.includes(perm.id)) {
+            rolesMap[role.roleId] = true;
+          }
+        });
       });
-    });
 
-    setEnabledRoles(rolesMap);
-  }
-}, [data?.getPermissions?.data]);
-
+      setEnabledRoles(rolesMap);
+    }
+  }, [data?.getPermissions?.data]);
 
   const handleSwitchToggle = (roleId: number) => {
-    setEnabledRoles(prev => {
+    setEnabledRoles((prev) => {
       const isCurrentlyEnabled = prev[roleId];
       const newEnabledRoles = {
         ...prev,
@@ -456,13 +461,15 @@ const Person = () => {
       };
       // If turning OFF the role switch, remove its permission IDs
       if (isCurrentlyEnabled) {
-        const rolePermissions =  data?.getPermissions?.data?.find(r => r.roleId === roleId)?.permissions || [];
-        const permissionIdsToRemove = rolePermissions.map(p => p.id);
-        setSelectedPermissions(prev => {
+        const rolePermissions =
+          data?.getPermissions?.data?.find((r) => r.roleId === roleId)
+            ?.permissions || [];
+        const permissionIdsToRemove = rolePermissions.map((p) => p.id);
+        setSelectedPermissions((prev) => {
           const updated = new Set(prev);
-          permissionIdsToRemove.forEach(id => updated.delete(id));
+          permissionIdsToRemove.forEach((id) => updated.delete(id));
           // Also update formData
-          setFormData(prevData => ({
+          setFormData((prevData) => ({
             ...prevData,
             permissionIds: Array.from(updated),
           }));
@@ -474,12 +481,14 @@ const Person = () => {
   };
 
   const handleCheckboxToggle = (permissionId: number) => {
-    setSelectedPermissions(prev => {
+    setSelectedPermissions((prev) => {
       const updated = new Set(prev);
-      updated.has(permissionId) ? updated.delete(permissionId) : updated.add(permissionId);
+      updated.has(permissionId)
+        ? updated.delete(permissionId)
+        : updated.add(permissionId);
       // Sync to formData here
       const updatedArray = Array.from(updated);
-      setFormData(prevData => ({
+      setFormData((prevData) => ({
         ...prevData,
         permissionIds: updatedArray,
       }));
@@ -508,16 +517,17 @@ const Person = () => {
             (personName.length > 0 ? personName : 'New Person')) ||
             ''}
         </div>
-          
+
         {/* Account Permissions */}
         <Widget title={'Account Permissions'} hideTable={true}>
-          <PersonPermissions editMode={viewMode === UserMode.EditMode}
+          <PersonPermissions
+            editMode={viewMode === UserMode.EditMode}
             permissions={data?.getPermissions?.data ?? []}
             enabledRoles={enabledRoles}
             selectedPermissions={selectedPermissions}
             onSwitchToggle={handleSwitchToggle}
             onCheckboxToggle={handleCheckboxToggle}
-         />
+          />
         </Widget>
 
         {/* Contact Information */}

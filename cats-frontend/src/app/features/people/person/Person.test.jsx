@@ -4,10 +4,10 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import Person from './Person';
 import { MockedProvider } from '@apollo/client/testing';
 import { GET_PERSON_BY_ID } from './graphql/PersonQueries';
-import { fetchPerson } from './services/PersonService';  // Import the service function
+import { fetchPerson } from './services/PersonService'; // Import the service function
 
 vi.mock('./services/PersonService', () => ({
-  fetchPerson: vi.fn(),  // Mocked version of the function
+  fetchPerson: vi.fn(), // Mocked version of the function
 }));
 
 // Mocked GraphQL responses
@@ -15,12 +15,12 @@ const mocks = [
   {
     request: {
       query: GET_PERSON_BY_ID,
-      variables: { id: 1 },  // Match the query parameters
+      variables: { id: 1 }, // Match the query parameters
     },
     result: {
       data: {
         findPersonById: {
-          message: "Person fetched",
+          message: 'Person fetched',
           httpStatusCode: 200,
           success: true,
           timestamp: new Date().toISOString(),
@@ -61,12 +61,12 @@ describe('Person Component', () => {
         <MockedProvider mocks={mocks} addTypename={false}>
           <Person />
         </MockedProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect(screen.getByText(/Create New Person/i)).toBeInTheDocument();
   });
 
-   it('shows the correct title when a person is fetched', async () => {
+  it('shows the correct title when a person is fetched', async () => {
     const mockPersonData = {
       firstName: 'John',
       middleName: 'Doe',
@@ -77,11 +77,16 @@ describe('Person Component', () => {
     render(
       <MemoryRouter initialEntries={['/person/1']}>
         <Routes>
-        
-            <Route path="/person/:id" element={  <MockedProvider mocks={mocks} addTypename={false}><Person /></MockedProvider>} />
-          
+          <Route
+            path="/person/:id"
+            element={
+              <MockedProvider mocks={mocks} addTypename={false}>
+                <Person />
+              </MockedProvider>
+            }
+          />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await waitFor(() => {
@@ -90,22 +95,31 @@ describe('Person Component', () => {
   });
 
   it('shows LoadingOverlay when loading data', async () => {
-    fetchPerson.mockResolvedValueOnce(new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          firstName: 'John',
-          middleName: 'Doe',
-          lastName: 'Smith',
-        });
-      }, 500);
-    }));
+    fetchPerson.mockResolvedValueOnce(
+      new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            firstName: 'John',
+            middleName: 'Doe',
+            lastName: 'Smith',
+          });
+        }, 500);
+      }),
+    );
 
     render(
       <MemoryRouter initialEntries={['/person/1']}>
         <Routes>
-          <Route path="/person/:id" element={<MockedProvider mocks={mocks} addTypename={false}><Person /></MockedProvider>} />
+          <Route
+            path="/person/:id"
+            element={
+              <MockedProvider mocks={mocks} addTypename={false}>
+                <Person />
+              </MockedProvider>
+            }
+          />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(screen.getByTestId('loading-overlay')).toBeInTheDocument();
@@ -127,9 +141,16 @@ describe('Person Component', () => {
     render(
       <MemoryRouter initialEntries={['/person/1']}>
         <Routes>
-          <Route path="/person/:id" element={<MockedProvider mocks={mocks} addTypename={false}><Person /></MockedProvider>} />
+          <Route
+            path="/person/:id"
+            element={
+              <MockedProvider mocks={mocks} addTypename={false}>
+                <Person />
+              </MockedProvider>
+            }
+          />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await screen.findByText('John Doe Smith');
