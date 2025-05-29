@@ -14,13 +14,13 @@ export class PermissionsService {
 
         @InjectRepository(PersonPermission) 
         private readonly personPermissionRepository: Repository<PersonPermission>,
-        private readonly loggerSerivce: LoggerService,
+        private readonly loggerService: LoggerService,
     ) {}
 
     async getPermissions(): Promise<RoleWithPermissions[]> {
         try
         {
-            this.loggerSerivce.log('PermissionsService.getPermissions() start');
+            this.loggerService.log('PermissionsService.getPermissions() start');
             const result = await this.permissionsRepository.find({
                 relations: ['role'],
                 order: { roleId: 'ASC' },
@@ -44,19 +44,19 @@ export class PermissionsService {
                 });
             }
 
-            this.loggerSerivce.log('PermissionsService.getPermissions() end');
+            this.loggerService.log('PermissionsService.getPermissions() end');
             return Array.from(roleMap.values());
         }
         catch (error)
         {
-            this.loggerSerivce.log('PermissionsService.getPermissions() error');
+            this.loggerService.log('PermissionsService.getPermissions() error');
             throw new Error(`Failed to fetch permissions: ${error.message}`);
         }
     }
 
     async assignPermissionsToPerson(personId: number, permissionIds: number[], userInfo: any): Promise<void> {
         try {
-            this.loggerSerivce.log('PermissionsService.assignPermissionsToPerson() start');
+            this.loggerService.log('PermissionsService.assignPermissionsToPerson() start');
            
             // 1. Remove existing
             await this.personPermissionRepository.delete({ personId });
@@ -76,9 +76,9 @@ export class PermissionsService {
 
                 await this.personPermissionRepository.save(newPermissions);
             }
-            this.loggerSerivce.log('PermissionsService.assignPermissionsToPerson() end');
+            this.loggerService.log('PermissionsService.assignPermissionsToPerson() end');
         } catch (error) {
-            this.loggerSerivce.log('PermissionsService.assignPermissionsToPerson() error');
+            this.loggerService.log('PermissionsService.assignPermissionsToPerson() error');
             throw new Error(`Failed to assign permissions: ${error.message}`);
         }
     }

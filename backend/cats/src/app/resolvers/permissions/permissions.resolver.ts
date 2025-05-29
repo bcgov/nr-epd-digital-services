@@ -12,7 +12,7 @@ import { PermissionsService } from '../../services/permissions/permissions.servi
 export class PermissionsResolver {
   constructor(
     private readonly permissionsService: PermissionsService,
-    private readonly loggerSerivce: LoggerService,
+    private readonly loggerService: LoggerService,
     private readonly permissionResponse: GenericResponseProvider<RoleWithPermissions[]>
   ) {}
 
@@ -21,17 +21,17 @@ export class PermissionsResolver {
     try {
       const result = await this.permissionsService.getPermissions();
       if(result?.length > 0) {
-        this.loggerSerivce.log('PermissionsResolver.getPermissions() RES:200 end');
+        this.loggerService.log('PermissionsResolver.getPermissions() RES:200 end');
         return this.permissionResponse.createResponse('Permission records fetched successfully', HttpStatus.OK, true, result);
       }
       else
       {
-        this.loggerSerivce.log('PermissionsResolver.getPermissions() RES:404 end');
+        this.loggerService.log('PermissionsResolver.getPermissions() RES:404 end');
         return this.permissionResponse.createResponse('No permission records found', HttpStatus.NOT_FOUND, false, []);
       }
     } 
     catch (error) {
-      this.loggerSerivce.log('PermissionsResolver.getPermissions() RES:500 end');
+      this.loggerService.log('PermissionsResolver.getPermissions() RES:500 end');
       throw new Error(`Failed to fetch person: ${error.message}`);
     }
   }
