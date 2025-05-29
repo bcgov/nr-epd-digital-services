@@ -92,7 +92,7 @@ describe('PermissionsResolver', () => {
     it('should throw an error and log it when permissionsService fails', async () => {
       jest.spyOn(permissionsService, 'getPermissions').mockRejectedValue(new Error('Service Error'));
 
-      await expect(resolver.getPermissions()).rejects.toThrow('Failed to fetch person: Service Error');
+      await expect(resolver.getPermissions()).rejects.toThrow('Failed to fetch permissions: Service Error');
       expect(loggerService.log).toHaveBeenCalledWith('PermissionsResolver.getPermissions() RES:500 end');
     });
   });
