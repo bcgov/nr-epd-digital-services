@@ -1,11 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DataSource } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { LoggerService } from '../../logger/logger.service';
 import { Filter } from '../../utilities/enums/application/filter.enum';
 import { SortByDirection } from '../../utilities/enums/application/sortByDirection.enum';
 import { SortBy } from '../../utilities/enums/staff/sortBy.enum';
-import { Person } from '../../entities/person.entity';
 import { ViewStaff } from '../../dto/staff/viewStaff.dto';
 
 @Injectable()
