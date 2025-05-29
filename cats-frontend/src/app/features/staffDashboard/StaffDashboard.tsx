@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '../../components/button/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { StaffDashboardColumns } from './StaffDashboardConfig';
-import { useGetStaffsQuery } from './graphql/StaffDashboard.generated';
+import { useGetRolesQuery, useGetStaffsQuery } from './graphql/StaffDashboard.generated';
 import {
   ApplicationSortByDirection,
   Filter,
@@ -16,6 +16,9 @@ import FilterControls from './FilterControls';
 import './StaffDashboard.css';
 import { RequestStatus } from '@cats/helpers/requests/status';
 import { TableColumn } from '@cats/components/table/TableColumn';
+import ModalDialog from '@cats/components/modaldialog/ModalDialog';
+import { DropdownInput } from '@cats/components/input-controls/InputControls';
+import { FormFieldType } from '@cats/components/input-controls/IFormField';
 
 interface IStaffDashboard {
   page: number;
@@ -30,6 +33,7 @@ const StaffDashboard = () => {
   const location = useLocation();
   const fromScreen = location.state?.from || '';
   const [showFilterSelect, setShowFilterSelect] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [queryState, setQueryState] = useState<IStaffDashboard>({
     page: 1,
     pageSize: 5,
@@ -47,6 +51,8 @@ const StaffDashboard = () => {
       sortByDir: queryState.sortByDir,
     },
   });
+
+  const {data: roles, loading: rolesLoading} = useGetRolesQuery();
 
   const handleTableSort = (row: TableColumn, ascending: boolean) => {
     let newSortByDir = ascending
@@ -74,6 +80,8 @@ const StaffDashboard = () => {
   const handleTableChange = (event: any) => {
     if (event?.property?.includes('view')) {
       // TODO : navigate to staff details
+      console.log(event);
+      setIsOpen(true);
     }
   };
 
@@ -145,6 +153,60 @@ const StaffDashboard = () => {
           </Button>
         </div>
       </Widget>
+      {
+        isOpen && (
+          <ModalDialog 
+            headerLabel={'Viewing: '}
+            noFooterOptions={true}
+            closeHandler={() => setIsOpen(!isOpen)}
+          >
+            <div>
+              <div className="custom-modal-lbl mb-2"> Staff Options </div>
+              <DropdownInput
+                type={FormFieldType.DropDown}
+                options={rolesLoading ? [] : roles?.getAllParticipantRoles?.data?.map((role) => ({key: role.id.toString(), value: role.description}))}
+                onChange={(value) => {
+                  console.log(value);
+                }}
+                label="Roles"
+                value="actions"
+                isEditing={true}
+                
+                />
+            </div>
+            <Widget
+              tableIsLoading={loading ? RequestStatus.loading : RequestStatus.success}
+              customWidgetCss={'custom-widget-container'}
+              customLabelCss="custom-modal-widget-lbl"
+              allowRowsSelect={false}
+              changeHandler={handleTableChange}
+              sortHandler={(row, ascDir) => {
+                handleTableSort(row, ascDir);
+              }}
+              title={'Assigned Applications'}
+              aria-label="Assigned Applications Widget"
+              primaryKeycolumnName="id"
+              showPageOptions={true}
+              selectPage={(page) => {
+                setQueryState((prev: IStaffDashboard) => ({ ...prev, page }));
+              }}
+              changeResultsPerPage={(pageSize) => {
+                setQueryState((prev: IStaffDashboard) => ({
+                  ...prev,
+                  pageSize,
+                  page: 1,
+                }));
+              }}
+              tableColumns={StaffDashboardColumns}
+              currentPage={queryState?.page}
+              resultsPerPage={queryState?.pageSize}
+              tableData={data?.getStaffs?.data ?? []}
+              totalResults={data?.getStaffs?.count ?? 0}
+            >
+            </Widget>
+          </ModalDialog>
+        )
+      }
     </PageContainer>
   );
 };

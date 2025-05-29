@@ -33,3 +33,21 @@ a.custom-staff-edit-lbl {
 .progress .progress-bar {
   border-radius: var(--layout-border-radius-large);
 }
+
+.custom-modal-lbl{
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 30.61px;
+  letter-spacing: 0%;
+  color: var(--typography-color-primary, #2d2d2d);
+}
+
+.custom-modal-widget-lbl{
+  margin: 0;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 18px;
+  letter-spacing: 0%;
+  vertical-align: bottom;
+  color: var(--typography-color-primary, #2d2d2d);
+}

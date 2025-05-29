@@ -16,3 +16,16 @@ query   getStaffs($page: Int!, $pageSize: Int!, $filter: Filter, $sortBy: StaffS
         }
     }
   }
+
+  query getRoles {
+    getAllParticipantRoles {
+        httpStatusCode
+        success
+        message
+        timestamp
+        data {
+        id
+        description
+        }
+    }
+}
