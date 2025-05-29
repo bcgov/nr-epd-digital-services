@@ -71,6 +71,8 @@ import { InvoiceV2 } from './entities/invoiceV2.entity';
 import { InvoiceLineItem } from './entities/invoiceLineItem.entity';
 import { InvoiceResolver } from './resolvers/invoice/invoice.resolver';
 import { InvoiceService } from './services/invoice/invoice.service';
+import { ApplicationNotesResolver } from './resolvers/application/applicationNotes.resolver';
+import { ApplicationNotesService } from './services/application/applicationNotes.service';
 import { StaffResolver } from './resolvers/staff/staff.resolver';
 import { StaffService } from './services/staff/staff.service';
 import { StaffAssignmentService } from './services/assignment/staffAssignment.service';
@@ -78,6 +80,9 @@ import { ChesEmailService } from './services/email/chesEmail.service';
 import { HttpModule, HttpService } from '@nestjs/axios';
 import { ApplicationServiceType } from './entities/applicationServiceType.entity';
 import { StaffAssignmentResolver } from './resolvers/assignment/staffAssignment.resolver';
+import { TimesheetDay } from './entities/timesheetDay.entity';
+import { TimesheetDayService } from './services/timesheetDay.service';
+import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -91,6 +96,7 @@ import { StaffAssignmentResolver } from './resolvers/assignment/staffAssignment.
       Application,
       TimesheetWeek,
       TimesheetDetail,
+      TimesheetDay,
       AppExpense,
       AppLandUse,
       LandUse,
@@ -160,11 +166,15 @@ import { StaffAssignmentResolver } from './resolvers/assignment/staffAssignment.
     SiteService,
     InvoiceResolver,
     InvoiceService,
+    ApplicationNotesResolver,
+    ApplicationNotesService,
     StaffResolver,
     StaffService,
     StaffAssignmentResolver,
     StaffAssignmentService,
     ChesEmailService,
+    TimesheetDayService,
+    TimesheetDayResolver,
   ],
   controllers: [UserController],
 })

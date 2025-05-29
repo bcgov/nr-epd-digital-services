@@ -10,6 +10,7 @@ import {
   ShoppingCartIcon,
   ListCheckIcon,
   UserTie,
+  AddressBookIcon,
 } from '../../common/icon';
 import { UserRoleType } from '../../../helpers/utility';
 
@@ -86,11 +87,26 @@ const icons = {
   cart: ShoppingCartIcon,
   srReference: ListCheckIcon,
   userTie: UserTie,
+  AddressBook: AddressBookIcon,
 };
 
 // Refactored role-based navigation lists using a Record type
 const roleBasedSideBarList: Record<string, SideNav[]> = {
   internal: [
+    createSideNav({
+      displayText: 'Applications',
+      hasChildren: true,
+      icon: null,
+      linkTo: '/',
+      children: [
+        createSideNav({
+          displayText: 'All Applications',
+          hasChildren: false,
+          icon: icons.folios,
+          linkTo: '/applications',
+        }),
+      ],
+    }),
     createSideNav({
       displayText: 'Manage',
       hasChildren: true,
@@ -100,20 +116,8 @@ const roleBasedSideBarList: Record<string, SideNav[]> = {
         createSideNav({
           displayText: 'People',
           hasChildren: false,
-          icon: icons.folios,
+          icon: icons.AddressBook,
           linkTo: '/people',
-        }),
-        createSideNav({
-          displayText: 'Organizations',
-          hasChildren: false,
-          icon: icons.purchases,
-          linkTo: '/purchases',
-        }),
-        createSideNav({
-          displayText: 'Applications',
-          hasChildren: false,
-          icon: icons.folios,
-          linkTo: '/applications',
         }),
         createSideNav({
           displayText: 'Staff',
