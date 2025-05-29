@@ -9,6 +9,13 @@ import {
 } from "./permissions";
 import { LoggerService } from "../app/logger/logger.service";
 
+
+export enum PermissionRole {
+  CSWKR = "CSWKR", // Caseworker
+  SDM = "SDM", // SDM (Supervisor)
+  MENTOR = "MENTOR", // Mentor
+}
+
 export const PermissionsSeeder = async (manager: EntityManager) => {
   const logger = new LoggerService();
   try {
@@ -23,11 +30,11 @@ export const PermissionsSeeder = async (manager: EntityManager) => {
 
     const getPermissionsForRole = (abbrev: string): any[] => {
       switch (abbrev) {
-        case "CSWKR":
+        case PermissionRole.CSWKR:
           return [...COMMON_PERMISSIONS, ...CASEWORKER_PERMISSIONS];
-        case "SDM":
+        case PermissionRole.SDM:
           return [...COMMON_PERMISSIONS, ...SDM_PERMISSIONS];
-        case "MENTOR":
+        case PermissionRole.MENTOR:
           return [...COMMON_PERMISSIONS, ...MENTOR_PERMISSIONS];
         default:
           return [];
