@@ -1,0 +1,17 @@
+query getPermissions {
+  getPermissions {
+    message
+    httpStatusCode
+    success
+    timestamp
+    data {
+      roleId
+      roleDescription
+      permissions {
+        id
+        roleId
+        description
+      }
+    }
+  }
+}

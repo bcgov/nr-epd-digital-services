@@ -191,6 +191,7 @@ export type CreatePerson = {
   loginUserName?: InputMaybe<Scalars['String']['input']>;
   middleName?: InputMaybe<Scalars['String']['input']>;
   mobile?: InputMaybe<Scalars['String']['input']>;
+  permissionIds?: InputMaybe<Array<Scalars['Int']['input']>>;
   phone?: InputMaybe<Scalars['String']['input']>;
   postal?: InputMaybe<Scalars['String']['input']>;
   prov?: InputMaybe<Scalars['String']['input']>;
@@ -497,6 +498,15 @@ export type ParticipantsRolesResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type PermissionsResponse = {
+  __typename?: 'PermissionsResponse';
+  data?: Maybe<Array<RoleWithPermissions>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type PersonNoteResponse = {
   __typename?: 'PersonNoteResponse';
   data?: Maybe<Array<ViewPersonNote>>;
@@ -550,6 +560,7 @@ export type Query = {
   getInvoicesByApplicationId: InvoicesByApplicationIdResponse;
   getOrganizations: DropdownResponse;
   getParticipantNames: DropdownResponse;
+  getPermissions: PermissionsResponse;
   getPersonNotesByPersonId: PersonNoteResponse;
   getSiteDetailsBySiteId: SiteDetailsResponse;
   getStaffAssignedByAppId: ViewStaffAssignedResponse;
@@ -670,6 +681,13 @@ export type ResponseDto = {
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type RoleWithPermissions = {
+  __typename?: 'RoleWithPermissions';
+  permissions: Array<ViewPermissions>;
+  roleDescription: Scalars['String']['output'];
+  roleId: Scalars['Float']['output'];
 };
 
 export type SearchPersonResponse = {
@@ -810,6 +828,7 @@ export type UpdatePerson = {
   loginUserName?: InputMaybe<Scalars['String']['input']>;
   middleName?: InputMaybe<Scalars['String']['input']>;
   mobile?: InputMaybe<Scalars['String']['input']>;
+  permissionIds?: InputMaybe<Array<Scalars['Int']['input']>>;
   phone?: InputMaybe<Scalars['String']['input']>;
   postal?: InputMaybe<Scalars['String']['input']>;
   prov?: InputMaybe<Scalars['String']['input']>;
@@ -946,6 +965,13 @@ export type ViewParticipantsRolesDto = {
   id: Scalars['Float']['output'];
 };
 
+export type ViewPermissions = {
+  __typename?: 'ViewPermissions';
+  description: Scalars['String']['output'];
+  id: Scalars['Float']['output'];
+  roleId: Scalars['Float']['output'];
+};
+
 export type ViewPerson = {
   __typename?: 'ViewPerson';
   address_1?: Maybe<Scalars['String']['output']>;
@@ -966,6 +992,7 @@ export type ViewPerson = {
   loginUserName?: Maybe<Scalars['String']['output']>;
   middleName?: Maybe<Scalars['String']['output']>;
   mobile?: Maybe<Scalars['String']['output']>;
+  permissionIds?: Maybe<Array<Scalars['Int']['output']>>;
   phone?: Maybe<Scalars['String']['output']>;
   postal?: Maybe<Scalars['String']['output']>;
   prov?: Maybe<Scalars['String']['output']>;
