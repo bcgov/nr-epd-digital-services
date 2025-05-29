@@ -32,7 +32,7 @@ export class PermissionsResolver {
     } 
     catch (error) {
       this.loggerService.log('PermissionsResolver.getPermissions() RES:500 end');
-      throw new Error(`Failed to fetch person: ${error.message}`);
+      throw new Error(`Failed to fetch permissions: ${error.message}`);
     }
   }
 }
