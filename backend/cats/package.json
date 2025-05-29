@@ -27,7 +27,7 @@
     "typeorm:revert-migration": "npm run typeorm -- -d ./typeOrm.config.ts migration:revert",
     "codegen": "graphql-codegen --config ./codegen.mts",
     "codegen:watch": "npm run codegen -- --watch",
-    "seed:service-types": "ts-node ./node_modules/@jorgebodega/typeorm-seeding/dist/cli.js seed -d ./typeOrm.config.ts ./src/seed/applicationServiceType.seed.ts"
+    "seed:service-types": "ts-node ./node_modules/@jorgebodega/typeorm-seeding/dist/cli.js seed -d ./typeOrm.config.ts ./src/seed/genericSeeder.seed.ts"
   },
   "dependencies": {
     "@apollo/federation": "^0.37.1",
