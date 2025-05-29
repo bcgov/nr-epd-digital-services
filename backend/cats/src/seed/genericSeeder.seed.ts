@@ -2,11 +2,12 @@ import { DataSource } from 'typeorm';
 import { Seeder } from '@jorgebodega/typeorm-seeding';
 import { ApplicationServiceTypeSeeder } from './applicationServiceType.seed';
 import { PermissionsSeeder } from './permissions.seed';
+import { LoggerService } from '../app/logger/logger.service';
 
 export default class GenericSeeder extends Seeder {
+  private logger = new LoggerService();
   async run(dataSource: DataSource) {
     const manager = dataSource.createEntityManager();
-
     const seeders = [
       {
         name: 'ApplicationServiceTypeSeeder',
@@ -20,13 +21,13 @@ export default class GenericSeeder extends Seeder {
 
     for (const seeder of seeders) {
       try {
-        console.log(`Running ${seeder.name}...`);
+        this.logger.log(`Running ${seeder.name}...`);
         await seeder.execute();
-        console.log(`Completed ${seeder.name}`);
+        this.logger.log(`Completed ${seeder.name}`);
       } catch (error) {
-        console.error(`Error in ${seeder.name}:`, error);
+        this.logger.error(`Error in ${seeder.name}:`, error);
       }
     }
-    console.log('All seeders finished.');
+    this.logger.log('All seeders finished.');
   }
 }

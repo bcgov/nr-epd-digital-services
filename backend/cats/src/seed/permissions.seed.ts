@@ -5,17 +5,19 @@ import {
   CASEWORKER_PERMISSIONS,
   COMMON_PERMISSIONS,
   MENTOR_PERMISSIONS,
-  SDM_PRMISSIONS,
+  SDM_PERMISSIONS,
 } from "./permissions";
+import { LoggerService } from "../app/logger/logger.service";
 
 export const PermissionsSeeder = async (manager: EntityManager) => {
+  const logger = new LoggerService();
   try {
     const roles = await manager.find(ParticipantRole, {
       where: { roleType: "STAFF" },
     });
 
     if (!roles.length) {
-      console.warn("No STAFF roles found. Skipping PermissionsSeeder.");
+      logger.warn("No STAFF roles found. Skipping PermissionsSeeder.");
       return;
     }
 
@@ -24,7 +26,7 @@ export const PermissionsSeeder = async (manager: EntityManager) => {
         case "CSWKR":
           return [...COMMON_PERMISSIONS, ...CASEWORKER_PERMISSIONS];
         case "SDM":
-          return [...COMMON_PERMISSIONS, ...SDM_PRMISSIONS];
+          return [...COMMON_PERMISSIONS, ...SDM_PERMISSIONS];
         case "MENTOR":
           return [...COMMON_PERMISSIONS, ...MENTOR_PERMISSIONS];
         default:
@@ -66,11 +68,11 @@ export const PermissionsSeeder = async (manager: EntityManager) => {
 
     if (permissionEntities.length) {
       await manager.save(Permissions, permissionEntities);
-      console.log(`Seeded ${permissionEntities.length} permissions.`);
+      logger.log(`Seeded ${permissionEntities.length} permissions.`);
     } else {
-      console.warn("No permissions generated for available roles.");
+      logger.warn("No permissions generated for available roles.");
     }
   } catch (error) {
-    console.error("PermissionsSeeder error:", error);
+    logger.error("PermissionsSeeder error:", error);
   }
 };

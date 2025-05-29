@@ -38,7 +38,7 @@ export const COMMON_PERMISSIONS = [
             
 ];
 
-export const SDM_PRMISSIONS = [
+export const SDM_PERMISSIONS = [
     {
         description :"AP Recommended Certifications (Risk Based)"
     },
