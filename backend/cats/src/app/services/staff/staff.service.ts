@@ -1,17 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DataSource } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { LoggerService } from '../../logger/logger.service';
 import { Filter } from '../../utilities/enums/application/filter.enum';
 import { SortByDirection } from '../../utilities/enums/application/sortByDirection.enum';
 import { SortBy } from '../../utilities/enums/staff/sortBy.enum';
-import { Person } from '../../entities/person.entity';
 import { ViewStaff } from '../../dto/staff/viewStaff.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { AppParticipant } from '../../entities/appParticipant.entity';
+import { ViewApplications } from 'src/app/dto/staff/viewApplications.dto';
 
 @Injectable()
 export class StaffService {
   constructor(
-    private readonly loggerSerivce: LoggerService,
+    @InjectRepository(AppParticipant)
+    private readonly applicationParticRepo: Repository<AppParticipant>,
+    private readonly loggerService: LoggerService,
     private readonly dataSource: DataSource,
   ) {}
 
@@ -23,7 +26,7 @@ export class StaffService {
     sortByDir: SortByDirection,
   ) {
     try {
-      this.loggerSerivce.log('StaffService: getStaffs start');
+      this.loggerService.log('StaffService: getStaffs start');
 
       const capacity = 10;
       const offset = (page - 1) * pageSize;
@@ -116,12 +119,72 @@ export class StaffService {
         })) as ViewStaff[],
       };
 
-      this.loggerSerivce.log('StaffService: getStaffs end');
+      this.loggerService.log('StaffService: getStaffs end');
       return result;
      
     } catch (error) {
-      this.loggerSerivce.error(`StaffService Error: ${error.message}`, error.stack);
+      this.loggerService.error(`StaffService Error: ${error.message}`, error.stack);
       throw new Error(`Failed to fetch staff: ${error.message}`);
+    }
+  }
+  async getApplicationsByStaff(
+    page: number,
+    pageSize: number,
+    sortBy: SortBy,
+    sortDirection: SortByDirection,
+    staffId: number,
+    roleId?: number,
+   ) {
+    try {
+      this.loggerService.log('StaffService: getApplicationsByStaff start');
+
+      const conditions: any = { id: staffId };
+      if (roleId) {
+        conditions.participantRoleId = roleId;
+      }
+
+      const [applications, total] = await this.applicationParticRepo.findAndCount({
+        where: conditions,
+        relations: ['person', 'participantRole'],
+        order: {
+          [sortBy]: sortDirection,
+        },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      });
+
+      if (!applications.length) {
+        this.loggerService.warn(`No applications found for staffId: ${staffId}${roleId ? ` and roleId: ${roleId}` : ''}`);
+        return {
+          data: [],
+          total,
+          page,
+          pageSize,
+        };
+      }
+
+      const data: ViewApplications[] = applications.map(app => ({
+        id: app.id,
+        applicationId: app.applicationId,
+        roleId: app.participantRoleId,
+        // SiteAddress: app.siteAddress,
+        roleDescription: app?.participantRole?.description,
+        effectiveStartDate: app.effectiveStartDate,
+        effectiveEndDate: app.effectiveEndDate,
+      }));
+
+      this.loggerService.log('StaffService: getApplicationsByStaff end');
+
+      return {
+        data,
+        total,
+        page,
+        pageSize,
+      };
+
+    } catch (error) {
+      this.loggerService.error(`StaffService Error: ${error.message}`, error.stack);
+      throw new Error(`Failed to fetch staff applications: ${error.message}`);
     }
   }
 }

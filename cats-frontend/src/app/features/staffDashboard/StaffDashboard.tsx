@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Button } from '../../components/button/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { StaffDashboardColumns } from './StaffDashboardConfig';
-import { useGetRolesQuery, useGetStaffsQuery } from './graphql/StaffDashboard.generated';
+import { staffApplicationsColumns, StaffDashboardColumns } from './StaffDashboardConfig';
+import { useGetApplicationsByStaffQuery, useGetRolesQuery, useGetStaffsQuery } from './graphql/StaffDashboard.generated';
 import {
   ApplicationSortByDirection,
   Filter,
@@ -23,9 +23,15 @@ import { FormFieldType } from '@cats/components/input-controls/IFormField';
 interface IStaffDashboard {
   page: number;
   pageSize: number;
-  filter: Filter;
   sortBy: StaffSortByField;
   sortByDir: ApplicationSortByDirection;
+  filter?: Filter;
+}
+
+interface IModalState extends IStaffDashboard{
+  isModalOpen: boolean;
+  personId: number
+  roleId?: number
 }
 
 const StaffDashboard = () => {
@@ -33,7 +39,15 @@ const StaffDashboard = () => {
   const location = useLocation();
   const fromScreen = location.state?.from || '';
   const [showFilterSelect, setShowFilterSelect] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [queryModalState, setQueryModalState] = useState<IModalState>({
+    page: 1,
+    pageSize: 5,
+    sortBy: StaffSortByField.Id,
+    sortByDir: ApplicationSortByDirection.Asc,
+    isModalOpen: false,
+    personId: 0
+  });
+
   const [queryState, setQueryState] = useState<IStaffDashboard>({
     page: 1,
     pageSize: 5,
@@ -52,8 +66,23 @@ const StaffDashboard = () => {
     },
   });
 
+  const {data: applications, loading: applicationsLoading} = useGetApplicationsByStaffQuery({
+    variables: {
+      page: queryModalState.page,
+      pageSize: queryModalState.pageSize,
+      sortBy: queryModalState.sortBy,
+      sortByDir: queryModalState.sortByDir,
+      personId: queryModalState.personId,
+      roleId: queryModalState.roleId
+    },
+    skip: !queryModalState.isModalOpen || !queryModalState.personId,
+  });
+
   const {data: roles, loading: rolesLoading} = useGetRolesQuery();
 
+
+  console.log('applications', applications);
+  console.log('applicationsLoading', applicationsLoading);
   const handleTableSort = (row: TableColumn, ascending: boolean) => {
     let newSortByDir = ascending
       ? ApplicationSortByDirection.Asc
@@ -81,7 +110,15 @@ const StaffDashboard = () => {
     if (event?.property?.includes('view')) {
       // TODO : navigate to staff details
       console.log(event);
-      setIsOpen(true);
+      setQueryModalState((prev: IStaffDashboard) => ({
+        ...prev,
+        page: 1,
+        pageSize: 5,
+        sortBy: StaffSortByField.Id,
+        sortByDir: ApplicationSortByDirection.Asc,
+        isModalOpen: true,
+        personId: Number(event?.row?.id)
+      }))
     }
   };
 
@@ -137,7 +174,7 @@ const StaffDashboard = () => {
                 page: 1,
               }));
             }}
-            filter={queryState.filter ?? {}}
+            filter={queryState?.filter ?? Filter.All}
           />
         }
       >
@@ -154,11 +191,11 @@ const StaffDashboard = () => {
         </div>
       </Widget>
       {
-        isOpen && (
+        queryModalState.isModalOpen && (
           <ModalDialog 
             headerLabel={'Viewing: '}
             noFooterOptions={true}
-            closeHandler={() => setIsOpen(!isOpen)}
+            closeHandler={() => setQueryModalState((prev: IModalState) => ({...prev, isModalOpen: !prev.isModalOpen}))}
           >
             <div>
               <div className="custom-modal-lbl mb-2"> Staff Options </div>
@@ -166,13 +203,12 @@ const StaffDashboard = () => {
                 type={FormFieldType.DropDown}
                 options={rolesLoading ? [] : roles?.getAllParticipantRoles?.data?.map((role) => ({key: role.id.toString(), value: role.description}))}
                 onChange={(value) => {
-                  console.log(value);
+                  setQueryModalState((prev: IModalState) => ({...prev, roleId: Number(value)}))
                 }}
                 label="Roles"
-                value="actions"
+                value={queryModalState?.roleId?.toString() ?? ''}
                 isEditing={true}
-                
-                />
+              />
             </div>
             <Widget
               tableIsLoading={loading ? RequestStatus.loading : RequestStatus.success}
@@ -197,7 +233,7 @@ const StaffDashboard = () => {
                   page: 1,
                 }));
               }}
-              tableColumns={StaffDashboardColumns}
+              tableColumns={staffApplicationsColumns}
               currentPage={queryState?.page}
               resultsPerPage={queryState?.pageSize}
               tableData={data?.getStaffs?.data ?? []}

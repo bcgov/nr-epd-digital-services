@@ -1,5 +1,5 @@
 
-query   getStaffs($page: Int!, $pageSize: Int!, $filter: Filter, $sortBy: StaffSortByField,  $sortByDir: ApplicationSortByDirection ) {
+query getStaffs($page: Int!, $pageSize: Int!, $filter: Filter, $sortBy: StaffSortByField,  $sortByDir: ApplicationSortByDirection ) {
     getStaffs( page: $page, pageSize: $pageSize, filter: $filter, sortBy: $sortBy, sortByDir: $sortByDir)  
     {
         message
@@ -15,17 +15,38 @@ query   getStaffs($page: Int!, $pageSize: Int!, $filter: Filter, $sortBy: StaffS
             capacity
         }
     }
-  }
+}
 
-  query getRoles {
+query getApplicationsByStaff($page: Int!, $pageSize: Int!, $sortBy: StaffSortByField,  $sortByDir: ApplicationSortByDirection, $personId: Int!, $roleId: Int) {
+    getApplicationsByStaff( page: $page, pageSize: $pageSize, sortBy: $sortBy, sortByDir: $sortByDir, personId: $personId, roleId: $roleId)  
+    {
+        message
+        httpStatusCode
+        success
+        count
+        page
+        pageSize
+        data {
+           id
+           applicationId
+           roleId
+           roleDescription
+           effectiveStartDate
+           effectiveEndDate
+        }
+    }
+}
+
+query getRoles {
     getAllParticipantRoles {
         httpStatusCode
         success
         message
         timestamp
         data {
-        id
-        description
+            id
+            description
+            roleType
         }
     }
 }
