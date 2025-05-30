@@ -90,6 +90,7 @@ import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
 import { RecentViewedApplication } from './entities/RecentViewedApplication.entity';
 import { DashboardService } from './services/dashboard/dashboard.service';
 import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
+import { ApplicationServiceTypeAssignmentFactor } from './entities/applicationServiceTypeAssignmentFactor';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -150,7 +151,9 @@ import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
       ApplicationServiceType,
       Permissions,
       PersonPermission,
-      RecentViewedApplication
+      RecentViewedApplication,
+
+      ApplicationServiceTypeAssignmentFactor,
     ]),
     HttpModule,
   ],
