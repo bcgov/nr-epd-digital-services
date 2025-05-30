@@ -1,17 +1,13 @@
-import { DataSource } from 'typeorm';
-import { Seeder } from '@jorgebodega/typeorm-seeding';
+import { EntityManager } from 'typeorm';
 import { ApplicationServiceType } from '../app/entities/applicationServiceType.entity';
 import { ParticipantRole } from '../app/entities/participantRole.entity';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const serviceTypeJSON = require('./applicationServiceType.json');
 
-export default class ApplicationServiceTypeSeeder extends Seeder {
-  async run(dataSource: DataSource) {
-    try {
-      const manager = dataSource.createEntityManager();
-
-      for (const item of serviceTypeJSON) {
+export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
+  try{
+   for (const item of serviceTypeJSON) {
         const existing = await manager.findOne(ApplicationServiceType, {
           where: {
             serviceName: item.description,
@@ -31,12 +27,13 @@ export default class ApplicationServiceTypeSeeder extends Seeder {
       await manager.update(
         ParticipantRole,
         { abbrev: 'CSWKR' },
-        { assignmentFactor: 2 },
+        { assignmentFactor: 2, roleType: 'STAFF' },
       );
+      
       await manager.update(
         ParticipantRole,
         { abbrev: 'SDM' },
-        { assignmentFactor: 1 },
+        { assignmentFactor: 1, roleType: 'STAFF' },
       );
 
       const mentorResult = await manager.findOne(ParticipantRole, {
@@ -57,10 +54,18 @@ export default class ApplicationServiceTypeSeeder extends Seeder {
         participantRole.updatedBy = 'sysadmin';
         participantRole.updatedDateTime = new Date();
         participantRole.ts = Buffer.from('');
+        participantRole.roleType = 'STAFF';
         await manager.save(participantRole);
+      }
+      else
+      {
+        await manager.update(
+          ParticipantRole,
+          { abbrev: 'MENTOR' },
+          { assignmentFactor: 1, roleType: 'STAFF' },
+        );
       }
     } catch (error) {
       console.log('ApplicationServiceTypeSeeder', error);
     }
-  }
-}
+};

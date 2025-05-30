@@ -14,7 +14,7 @@ export class ApplicationService {
     private readonly applicationRepository: Repository<Application>,
     private readonly loggerService: LoggerService,
     private readonly appTypeService: AppTypeService,
-  ) {}
+  ) { }
 
   async createApplication(createApplication: CreateApplication) {
     this.loggerService.log('ApplicationService.createApplication() start'); // Log the start of the method
@@ -22,7 +22,7 @@ export class ApplicationService {
     try {
       // Log the input parameters for better traceability
       this.loggerService.debug(
-        `Attempting to create application with srs form id: ${createApplication?.formId} ' and submission id: ${createApplication?.formId}`,
+        `Attempting to create application with SRS form id: ${createApplication?.formId} ' and submission id: ${createApplication?.formId}`,
       );
 
       const appType = await this.appTypeService.getAppTypeByAbbrev(
