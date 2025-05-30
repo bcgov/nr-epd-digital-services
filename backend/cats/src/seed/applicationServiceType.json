@@ -1,133 +1,37 @@
 [
-    {
-      "type": "CSAP",
-      "description": "Approval in Principle with or without additional services",
-      "value": 2
-    },
-    {
-      "type": "CSAP",
-      "description":"Certificate of Compliance - detailed risk assessment with or without other reports",
-      "value": 2
-    },
-    {
-      "type": "CSAP",
-      "description":
-        "Certificate of Compliance - numerical with or without other reports",
-      "value": 3
-    },
-    {
-      "type": "CSAP",
-      "description": "Certificate of Compliance - screening level risk assessment",
-      "value": 1
-    },
-    {
-      "type": "CSAP",
-      "description": "Final Determination under CSR 15(3)",
-      "value": 1
-    },
-    {
-      "type": "CSAP",
-      "description":
-        "Preliminary Determination under CSR 15(3), with other reports",
-      "value": 2
-    },
-    {
-      "type": "CSAP",
-      "description": "Reporting",
-      "value": 2
-    },
-    { "type": "NON_CSAP", "description": "Financial Statement/Security", "value": 1 },
-    {
-      "type": "NON_CSAP",
-      "description": "P12 - Reclassification with or without additional services",
-      "value": 3
-    },
-    { "type": "NON_CSAP", "description": "Protocol 21 Water Use", "value": 2 },
-    { "type": "NON_CSAP", "description": "Protocol 6 Approval", "value": 2 },
-    { "type": "NON_CSAP", "description": "Site ID (Annual Update)", "value": 1 },
-    { "type": "NON_CSAP", "description": "Site ID Release (Scenario 1)", "value": 1 },
-    { "type": "NON_CSAP", "description": "Site ID Release (Scenario 3)", "value": 3 },
-    { "type": "NON_CSAP", "description": "Site Profile Release", "value": 1 },
-    {
-      "type": "NON_CSAP",
-      "description": "Additional Services and Functions",
-      "value": 2
-    },
-    {
-      "type": "NON_CSAP",
-      "description":
-        "Amendment of Legal Instrument: Hourly Fees with or without other services",
-      "value": 3
-    },
-    {
-      "type": "NON_CSAP",
-      "description": "Approval in Principle with or without additional services",
-      "value": 3
-    },
-    { "type": "NON_CSAP", "description": "Approvals and Permits", "value": 3 },
-    {
-      "type": "NON_CSAP",
-      "description": "Authorizations - Monitoring Report",
-      "value": 2
-    },
-    {
-      "type": "NON_CSAP",
-      "description": "Background Substance Conc.: Protocol 4 Background Soil",
-      "value": 2
-    },
-    {
-      "type": "NON_CSAP",
-      "description":
-        "Background Substance Conc.: Protocol 9 Background Groundwater",
-      "value": 2
-    },
-    {
-      "type": "NON_CSAP",
-      "description":
-        "Certificate of Compliance - detailed risk assessment with or without other reports",
-      "value": 5
-    },
-    {
-      "type": "NON_CSAP",
-      "description":
-        "Certificate of Compliance - numerical with or without other reports",
-      "value": 6
-    },
-    {
-      "type": "NON_CSAP",
-      "description": "Certificate of Compliance - screening level risk assessment",
-      "value": 5
-    },
-    { "type": "NON_CSAP", "description": "Confirmation of remediation", "value": 6 },
-    { "type": "NON_CSAP", "description": "Consultation", "value": 3 },
-    { "type": "NON_CSAP", "description": "Covenant", "value": 2 },
-    {
-      "type": "NON_CSAP",
-      "description":
-        "Detailed site investigation, Risk assessment with other services",
-      "value": 6
-    },
-    {
-      "type": "NON_CSAP",
-      "description": "Final Determination under CSR 15(3)",
-      "value": 2
-    },
-    {
-      "type": "NON_CSAP",
-      "description":
-        "Preliminary Determination under CSR 15(3), with other reports",
-      "value": 2
-    },
-    {
-      "type": "NON_CSAP",
-      "description": "Remediation plan with risk assessment",
-      "value": 10
-    },
-    { "type": "NON_CSAP", "description": "Reporting", "value": 2 },
-    { "type": "NON_CSAP", "description": "Request to Director", "value": 2 },
-    {
-      "type": "NON_CSAP",
-      "description": "Site ID - Confirmation of Remediation",
-      "value": 1
-    }
-  ]
+  {"type":"CSAP","description":"Approval in Principle with or without additional services","CW":7.6875,"SDM":6.9587155963,"MNTR":3.4793577982},
+  {"type":"CSAP","description":"Certificate of Compliance - detailed risk assessment with or without other reports","CW":4.75,"SDM":8.5720720721,"MNTR":4.286036036},
+  {"type":"CSAP","description":"Certificate of Compliance - numerical withor without other reports","CW":23.0,"SDM":6.4509803922,"MNTR":3.2254901961},
+  {"type":"CSAP","description":"Certificate of Compliance - screening level risk assessment","CW":0.25,"SDM":7.9423076923,"MNTR":3.9711538462},
+  {"type":"CSAP","description":"Final Determination under CSR 15(3)","CW":2.125,"SDM":2.3897058824,"MNTR":1.1948529412},
+  {"type":"CSAP","description":"Preliminary Determination under CSR 15(3), with other reports","CW":4.3333333333,"SDM":5.6893333333,"MNTR":2.8446666667},
+  {"type":"CSAP","description":"Reporting","CW":5.27,"SDM":3.25,"MNTR":1.625},
+  {"type":"Non-CSAP","description":" Financial Statement/Security","CW":0.0,"SDM":3.5,"MNTR":1.75},
+  {"type":"Non-CSAP","description":" P12 - Reclassification with or without additional services","CW":24.65,"SDM":1.85,"MNTR":0.925},
+  {"type":"Non-CSAP","description":" Protocol 21 Water Use","CW":8.7352941176,"SDM":3.5625,"MNTR":1.78125},
+  {"type":"Non-CSAP","description":" Protocol 6 Approval","CW":11.3722222222,"SDM":2.5838842975,"MNTR":1.2919421488},
+  {"type":"Non-CSAP","description":" Site ID (Annual Update)","CW":2.637254902,"SDM":0.4575,"MNTR":0.22875},
+  {"type":"Non-CSAP","description":" Site ID Release (Scenario 1)","CW":3.1809392265,"SDM":0.5866477273,"MNTR":0.2933238636},
+  {"type":"Non-CSAP","description":" Site ID Release (Scenario 3)","CW":22.0595238095,"SDM":1.7875,"MNTR":0.89375},
+  {"type":"Non-CSAP","description":" Site Profile Release","CW":5.0,"SDM":2.5,"MNTR":1.25},
+  {"type":"Non-CSAP","description":"Additional Services and Functions","CW":15.0555555556,"SDM":4.175,"MNTR":2.0875},
+  {"type":"Non-CSAP","description":"Amendment of Legal Instrument: Hourly Fees with or without other services","CW":17.96,"SDM":5.425,"MNTR":2.7125},
+  {"type":"Non-CSAP","description":"Approval in Principle with or without additional services","CW":19.625,"SDM":5.5882352941,"MNTR":2.7941176471},
+  {"type":"Non-CSAP","description":"Approvals and Permits","CW":21.3125,"SDM":2.65,"MNTR":1.325},
+  {"type":"Non-CSAP","description":"Authorizations - Monitoring Report","CW":12.125,"SDM":3.6666666667,"MNTR":1.8333333333},
+  {"type":"Non-CSAP","description":"Background Substance Conc.: Protocol 4 Background Soil","CW":13.3392857143,"SDM":2.8012820513,"MNTR":1.4006410256},
+  {"type":"Non-CSAP","description":"Background Substance Conc.: Protocol 9 Background Groundwater","CW":9.8333333333,"SDM":2.5769230769,"MNTR":1.2884615385},
+  {"type":"Non-CSAP","description":"Certificate of Compliance - detailed risk assessment with or without other reports","CW":48.375,"SDM":6.9230769231,"MNTR":3.4615384615},
+  {"type":"Non-CSAP","description":"Certificate of Compliance - numerical withor without other reports","CW":63.3333333333,"SDM":7.2678571429,"MNTR":3.6339285714},
+  {"type":"Non-CSAP","description":"Certificate of Compliance - screening level risk assessment","CW":0.0,"SDM":10.0,"MNTR":5.0},
+  {"type":"Non-CSAP","description":"Confirmation of remediation","CW":60.5,"SDM":2.0,"MNTR":1.0},
+  {"type":"Non-CSAP","description":"Consultation:","CW":25.0007936508,"SDM":4.561627907,"MNTR":2.2808139535},
+  {"type":"Non-CSAP","description":"Covenant","CW":14.5,"SDM":0.5,"MNTR":0.25},
+  {"type":"Non-CSAP","description":"Detailed site investigation, Risk assessment with other services","CW":70.25,"SDM":7.0,"MNTR":3.5},
+  {"type":"Non-CSAP","description":"Final Determination under CSR 15(3)","CW":0.0,"SDM":1.2857142857,"MNTR":0.6428571429},
+  {"type":"Non-CSAP","description":"Preliminary Determination under CSR 15(3), with other reports","CW":7.25,"SDM":4.9705882353,"MNTR":2.4852941176},
+  {"type":"Non-CSAP","description":"Remediation plan with risk assessment","CW":202.0,"SDM":15.0,"MNTR":7.5},
+  {"type":"Non-CSAP","description":"Reporting","CW":10.93275,"SDM":3.2461538462,"MNTR":1.6230769231},
+  {"type":"Non-CSAP","description":"Request to Director","CW":9.4375,"SDM":2.8365384615,"MNTR":1.4182692308},
+  {"type":"Non-CSAP","description":"Site ID - Confirmation of Remediation","CW":6.5833333333,"SDM":0.6875,"MNTR":0.34375}
+]
