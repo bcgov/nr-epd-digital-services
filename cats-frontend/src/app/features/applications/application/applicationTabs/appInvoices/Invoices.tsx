@@ -40,7 +40,6 @@ export const Invoices: React.FC = () => {
   };
 
   const handleSortChange = (column: TableColumn, ascending: boolean) => {
-    console.log('Sorting by:', column, 'Ascending:', ascending);
     let newSortBy = InvoiceSortBy.ID;
     let newSortByDir = ascending ? InvoiceSortByDir.ASC : InvoiceSortByDir.DESC;
     switch (column.graphQLPropertyName) {
