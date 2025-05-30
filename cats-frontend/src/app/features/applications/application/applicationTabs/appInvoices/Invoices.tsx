@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import InvoiceIndexTable from './components/index/table';
 import { RequestStatus } from '@cats/helpers/requests/status';
 import { InvoiceByApplicationIdDto } from '../../../../../../generated/types';
@@ -13,20 +13,19 @@ import {
 } from './components/index/sortBy';
 
 export const Invoices: React.FC = () => {
-  const [results, setResults] = React.useState<InvoiceByApplicationIdDto[]>([]);
-  const [displayResults, setDisplayResults] = React.useState<
+  const [results, setResults] = useState<InvoiceByApplicationIdDto[]>([]);
+  const [displayResults, setDisplayResults] = useState<
     InvoiceByApplicationIdDto[]
   >([]);
-  const [filter, setFilter] = React.useState<InvoiceFilter>(InvoiceFilter.ALL);
-  const [sortBy, setSortBy] = React.useState<InvoiceSortBy>(InvoiceSortBy.ID);
-  const [sortByDir, setSortByDir] = React.useState<InvoiceSortByDir>(
+  const [filter, setFilter] = useState<InvoiceFilter>(InvoiceFilter.ALL);
+  const [sortBy, setSortBy] = useState<InvoiceSortBy>(InvoiceSortBy.ID);
+  const [sortByDir, setSortByDir] = useState<InvoiceSortByDir>(
     InvoiceSortByDir.ASC,
   );
-  const [requestStatus, setRequestStatus] = React.useState<RequestStatus>(
+  const [requestStatus, setRequestStatus] = useState<RequestStatus>(
     RequestStatus.idle,
   );
-  const [columns, setColumns] =
-    React.useState<TableColumn[]>(indexTableColumns);
+  const [columns, setColumns] = useState<TableColumn[]>(indexTableColumns);
 
   const { id = '' } = useParams();
   const applicationId = parseInt(id, 10);
