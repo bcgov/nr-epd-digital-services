@@ -82,7 +82,11 @@ export class StaffAssignmentService {
       const dropDownlist = applicationServiceTypes.map(
         (applicationServiceType) => ({
           key: applicationServiceType.id,
-          value: applicationServiceType.serviceName,
+          value:
+            applicationServiceType.serviceName +
+            ' (' +
+            applicationServiceType.serviceType +
+            ')',
         }),
       );
 
@@ -100,19 +104,13 @@ export class StaffAssignmentService {
   }
 
   getStaffWithCurrentFactorsQuery = (personId: number) => `
-  SELECT   
+   SELECT   
 p.id, 
 p.first_name, 
 p.middle_name,
 p.last_name,     
-COALESCE(SUM(ast.assignment_factor), 0) 
-+COALESCE(SUM(pr.assignment_factor), 0)
-+COALESCE(  
-sum(CASE 
-WHEN rs.abbrev = 'H' THEN 3
-WHEN rs.abbrev is null THEN 0
-ELSE 1
-END),0) as current_factors
+COALESCE(SUM(af.assignment_factor), 0) 
+ as current_factors
 FROM 
 cats.person p
 LEFT JOIN cats.app_participant a ON a.person_id = p.id AND (
@@ -121,7 +119,7 @@ OR (CURRENT_DATE >= a.effective_start_date AND a.effective_end_date IS NULL))
 LEFT JOIN cats.application app ON app.id = a.application_id 
 LEFT JOIN cats.application_service_type ast ON ast.id = app.application_service_type_id
 LEFT JOIN cats.participant_role pr ON pr.id = a.participant_role_id
-LEFT JOIN cats.risk rs ON rs.id = app.id
+LEFT JOIN cats.application_service_type_assignment_factor af on af.service_type_id = ast.id and af.role_id = pr.id
 WHERE 
 p.login_user_name is not null and p.is_active = true
 ${personId ? 'AND p.id = $1' : ''}

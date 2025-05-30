@@ -78,6 +78,7 @@ import { ChesEmailService } from './services/email/chesEmail.service';
 import { HttpModule, HttpService } from '@nestjs/axios';
 import { ApplicationServiceType } from './entities/applicationServiceType.entity';
 import { StaffAssignmentResolver } from './resolvers/assignment/staffAssignment.resolver';
+import { ApplicationServiceTypeAssignmentFactor } from './entities/applicationServiceTypeAssignmentFactor';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -135,6 +136,7 @@ import { StaffAssignmentResolver } from './resolvers/assignment/staffAssignment.
       InvoiceV2,
       InvoiceLineItem,
       ApplicationServiceType,
+      ApplicationServiceTypeAssignmentFactor,
     ]),
     HttpModule,
   ],
