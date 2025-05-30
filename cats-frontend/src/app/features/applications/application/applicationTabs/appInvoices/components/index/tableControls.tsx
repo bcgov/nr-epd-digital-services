@@ -1,6 +1,6 @@
 import React from 'react';
 import { TableColumnsIcon } from '@cats/components/common/icon';
-import './tableControls.css';
+import styles from './tableControls.module.css';
 import { Button } from '@cats/components/button/Button';
 import { InvoiceFilter } from './filter';
 
@@ -23,7 +23,7 @@ const TableControls: React.FC<TableControlsProps> = ({
           onClick={() => handleFilterChange(InvoiceFilter.ALL)}
           className={
             filter === InvoiceFilter.ALL
-              ? 'table-controls__button--selected'
+              ? styles.tableControlsButtonSelected
               : ''
           }
         >
@@ -36,7 +36,7 @@ const TableControls: React.FC<TableControlsProps> = ({
           onClick={() => handleFilterChange(InvoiceFilter.DRAFT)}
           className={
             filter === InvoiceFilter.DRAFT
-              ? 'table-controls__button--selected'
+              ? styles.tableControlsButtonSelected
               : ''
           }
         >
@@ -49,21 +49,21 @@ const TableControls: React.FC<TableControlsProps> = ({
           onClick={() => handleFilterChange(InvoiceFilter.RECEIVED)}
           className={
             filter === InvoiceFilter.RECEIVED
-              ? 'table-controls__button--selected'
+              ? styles.tableControlsButtonSelected
               : ''
           }
         >
           Unpaid
         </Button>
       </div>
-      <div className="col text-right columns-toggle">
+      <div className={`col text-right ${styles.columnsToggle}`}>
         <Button
           variant="tertiary"
           onClick={() => {
             toggleColumnSelect();
           }}
         >
-          <span className="table-controls__columns-toggle-label">
+          <span className={styles.columnsToggleLabel}>
             <TableColumnsIcon />
             <span>Columns</span>
           </span>

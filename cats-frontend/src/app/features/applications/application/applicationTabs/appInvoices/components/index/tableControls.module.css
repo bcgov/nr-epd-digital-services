@@ -1,14 +1,14 @@
-.table-controls__columns-toggle-label {
+.columnsToggleLabel {
   display: inline-flex;
   align-items: center;
   gap: 8px;
 }
 
-.table-controls__button--selected {
+.tableControlsButtonSelected {
   font-weight: bold;
   color: var(--surface-primary-default);
 }
 
-.columns-toggle {
+.columnsToggle {
   margin-left: 64px;
 }
