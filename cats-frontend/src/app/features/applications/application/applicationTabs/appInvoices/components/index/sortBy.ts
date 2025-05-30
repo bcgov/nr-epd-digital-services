@@ -1,4 +1,4 @@
-export enum invoiceSortBy {
+export enum InvoiceSortBy {
   ID = 'id',
   SUBJECT = 'subject',
   ISSUED_DATE = 'issuedDate',

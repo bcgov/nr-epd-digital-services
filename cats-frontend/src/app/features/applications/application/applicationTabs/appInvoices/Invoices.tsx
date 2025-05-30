@@ -8,7 +8,7 @@ import { TableColumn } from '@cats/components/table/TableColumn';
 import { indexTableColumns } from './components/index/tableColumnConfig';
 import { InvoiceFilter } from './components/index/filter';
 import {
-  invoiceSortBy as InvoiceSortBy,
+  InvoiceSortBy as InvoiceSortBy,
   invoiceSortByDir as InvoiceSortByDir,
 } from './components/index/sortBy';
 
