@@ -2,7 +2,6 @@ import { EntityManager } from 'typeorm';
 import { ApplicationServiceType } from '../app/entities/applicationServiceType.entity';
 import { ParticipantRole } from '../app/entities/participantRole.entity';
 import { ApplicationServiceTypeAssignmentFactor } from '../app/entities/applicationServiceTypeAssignmentFactor';
-import { ApplicationServiceTypeAssignmentFactor } from '../app/entities/applicationServiceTypeAssignmentFactor';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const serviceTypeJSON = require('./applicationServiceType.json');
