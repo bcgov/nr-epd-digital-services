@@ -1,0 +1,14 @@
+.columnsToggleLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tableControlsButtonSelected {
+  font-weight: bold;
+  color: var(--surface-primary-default);
+}
+
+.columnsToggle {
+  margin-left: 64px;
+}

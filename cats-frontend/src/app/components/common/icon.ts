@@ -45,6 +45,10 @@ import {
   BsExclamationCircle,
   BsExclamationTriangle,
   BsXLg,
+  BsFillFileEarmarkTextFill,
+  BsCheckLg,
+  BsFillSendFill,
+  BsCurrencyDollar,
 } from 'react-icons/bs';
 
 import { FaExternalLinkAlt } from 'react-icons/fa';
@@ -70,6 +74,10 @@ export const DropdownIcon = FaCaretDown;
 export const CalendarIcon = FaCalendar;
 export const XmarkIcon = FaXmark;
 export const XmarkIcon2 = BsXLg;
+export const TextFileEarmark = BsFillFileEarmarkTextFill;
+export const CheckIcon = BsCheckLg;
+export const SendIcon = BsFillSendFill;
+export const DollarIcon = BsCurrencyDollar;
 export const AngleLeft = FaAngleLeft;
 export const AngleRight = FaAngleRight;
 export const ChevronDown = FaChevronDown;
