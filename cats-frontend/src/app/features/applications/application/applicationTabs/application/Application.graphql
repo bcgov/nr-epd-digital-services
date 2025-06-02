@@ -1,0 +1,9 @@
+query getApplicationById($applicationId: Int!) {
+  getApplicationDetailsById(id: $applicationId) {
+    data {
+      id
+      formId
+      submissionId
+    }
+  }
+}

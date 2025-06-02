@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { AppParticipant } from './appParticipant.entity';
+import { Permissions } from './permissions.entity';
 
 @Index('pk_participant_role', ['id'], { unique: true })
 @Entity('participant_role')
@@ -18,6 +19,9 @@ export class ParticipantRole {
 
   @Column('character varying', { name: 'description', length: 250 })
   description: string;
+
+  @Column('character varying', { name: 'role_type', length: 50, nullable: true })
+  roleType: string | null; // Example: Staff, Volunteer etc
 
   @Column('boolean', { name: 'is_ministry' })
   isMinistry: boolean;
@@ -51,4 +55,10 @@ export class ParticipantRole {
     (appParticipant) => appParticipant.participantRole,
   )
   appParticipants: AppParticipant[];
+
+  @Column('integer', { name: 'assignment_factor', nullable: true })
+  assignmentFactor: number | null;
+
+  @OneToMany(() => Permissions, permissions => permissions.roleId)
+  permissions: Permissions[];
 }

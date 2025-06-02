@@ -63,7 +63,31 @@ import { ApplicationHousingService } from './services/application/applicationHou
 import { ApplicationHousingResolver } from './resolvers/application/applicationHousing.resolver';
 import { ApplicationResolver } from './resolvers/application/application.resolver';
 import { ApplicationService } from './services/application/application.service';
+import { ApplicationDetailsResolver } from './resolvers/application/applicationDetails.resolver';
 import { AppTypeService } from './services/appType/appType.service';
+import { SiteResolver } from './resolvers/site/site.resolver';
+import { SiteService } from './services/site/site.service';
+import { InvoiceV2 } from './entities/invoiceV2.entity';
+import { InvoiceLineItem } from './entities/invoiceLineItem.entity';
+import { InvoiceResolver } from './resolvers/invoice/invoice.resolver';
+import { InvoiceService } from './services/invoice/invoice.service';
+import { ApplicationNotesResolver } from './resolvers/application/applicationNotes.resolver';
+import { ApplicationNotesService } from './services/application/applicationNotes.service';
+import { StaffResolver } from './resolvers/staff/staff.resolver';
+import { StaffService } from './services/staff/staff.service';
+import { StaffAssignmentService } from './services/assignment/staffAssignment.service';
+import { ChesEmailService } from './services/email/chesEmail.service';
+import { HttpModule, HttpService } from '@nestjs/axios';
+import { PermissionsResolver } from './resolvers/permissions/permissions.resolver';
+import { PermissionsService } from './services/permissions/permissions.service';
+import { Permissions } from './entities/permissions.entity';
+import { PersonPermission } from './entities/personPermissions.entity';
+import { ApplicationServiceType } from './entities/applicationServiceType.entity';
+import { StaffAssignmentResolver } from './resolvers/assignment/staffAssignment.resolver';
+import { TimesheetDay } from './entities/timesheetDay.entity';
+import { TimesheetDayService } from './services/timesheetDay.service';
+import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
+
 /**
  * Module for wrapping all functionalities in user microserivce
  */
@@ -76,6 +100,7 @@ import { AppTypeService } from './services/appType/appType.service';
       Application,
       TimesheetWeek,
       TimesheetDetail,
+      TimesheetDay,
       AppExpense,
       AppLandUse,
       LandUse,
@@ -117,7 +142,13 @@ import { AppTypeService } from './services/appType/appType.service';
       Organization,
       ParticipantRole,
       PersonNote,
+      InvoiceV2,
+      InvoiceLineItem,
+      ApplicationServiceType,
+      Permissions,
+      PersonPermission
     ]),
+    HttpModule,
   ],
   providers: [
     PersonResolver,
@@ -135,7 +166,23 @@ import { AppTypeService } from './services/appType/appType.service';
     ApplicationHousingService,
     ApplicationResolver,
     ApplicationService,
+    ApplicationDetailsResolver,
     AppTypeService,
+    SiteResolver,
+    SiteService,
+    InvoiceResolver,
+    InvoiceService,
+    ApplicationNotesResolver,
+    ApplicationNotesService,
+    StaffResolver,
+    StaffService,
+    StaffAssignmentResolver,
+    StaffAssignmentService,
+    ChesEmailService,
+    PermissionsResolver,
+    PermissionsService,
+    TimesheetDayService,
+    TimesheetDayResolver,
   ],
   controllers: [UserController],
 })

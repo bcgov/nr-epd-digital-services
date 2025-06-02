@@ -19,6 +19,7 @@ import { CreateAppParticipantDto } from '../../dto/appParticipants/createAppPart
 import { UserTypeEum } from '../../utilities/enums/userType';
 import { id } from 'cls-rtracer';
 import { application } from 'express';
+import { UpdateAppParticipantDto } from 'src/app/dto/appParticipants/updateAppParticipant.dto';
 
 @Injectable()
 export class AppParticipantService {
@@ -47,10 +48,12 @@ export class AppParticipantService {
   async getAppParticipantsByAppId(
     applicationId: number,
     user: any,
-    filter: AppParticipantFilter
+    filter: AppParticipantFilter,
   ): Promise<ViewAppParticipantsDto[]> {
     try {
-      this.loggerService.log('at service layer getAppParticipantsByAppId start');
+      this.loggerService.log(
+        'at service layer getAppParticipantsByAppId start',
+      );
       let result = [];
       if (user?.identity_provider === 'idir') {
         result = await this.appParticsRepository.find({
@@ -67,10 +70,19 @@ export class AppParticipantService {
           id: participant.id,
           applicationId: participant.applicationId,
           isMainParticipant: participant.isMainParticipant,
-          fullName:
-            participant.person.firstName + ' ' + participant.person.lastName,
-          name: participant.organization?.name || '',
-          description: participant.participantRole.description,
+          person: {
+            id: participant.person.id,
+            fullName:
+              participant.person.firstName + ' ' + participant.person.lastName,
+          },
+          organization: {
+            id: participant.organization?.id,
+            name: participant.organization?.name || '',
+          },
+          participantRole: {
+            id: participant.participantRole.id,
+            description: participant.participantRole.description,
+          },
           effectiveStartDate: participant.effectiveStartDate,
           effectiveEndDate: participant.effectiveEndDate,
           isMinistry: participant.participantRole.isMinistry,
@@ -84,12 +96,16 @@ export class AppParticipantService {
         }
         const appPartics = plainToInstance(
           ViewAppParticipantsDto,
-          filter === AppParticipantFilter.ALL ? transformedObjects : mainParticipants,
+          filter === AppParticipantFilter.ALL
+            ? transformedObjects
+            : mainParticipants,
         );
         return appPartics;
       }
     } catch (error) {
-      this.loggerService.log('at service layer getAppParticipantsByAppId error');
+      this.loggerService.log(
+        'at service layer getAppParticipantsByAppId error',
+      );
       throw new HttpException(
         `Failed to retrieve app participants by appId: ${applicationId}`,
         HttpStatus.NOT_FOUND,
@@ -115,19 +131,26 @@ export class AppParticipantService {
   }
 
   /**
-   * 
-   * @param searchText: string 
-   * @returns An array of key value pairs containing the names of the participants. 
+   *
+   * @param searchText: string
+   * @returns An array of key value pairs containing the names of the participants.
    * @throws Error if there is an issue retrieving the data.
    */
   async getParticipantNames(searchParam: string): Promise<DropdownDto[]> {
     try {
       this.loggerService.log('at service layer getParticipantNames start');
 
-      const persons = await this.personRepository.createQueryBuilder('person')
-        .where('person.firstName ILIKE :searchParam', { searchParam: `${searchParam}%` })
-        .orWhere('person.middleName ILIKE :searchParam', { searchParam: `${searchParam}%` })
-        .orWhere('person.lastName ILIKE :searchParam', { searchParam: `${searchParam}%` })
+      const persons = await this.personRepository
+        .createQueryBuilder('person')
+        .where('person.firstName ILIKE :searchParam', {
+          searchParam: `${searchParam}%`,
+        })
+        .orWhere('person.middleName ILIKE :searchParam', {
+          searchParam: `${searchParam}%`,
+        })
+        .orWhere('person.lastName ILIKE :searchParam', {
+          searchParam: `${searchParam}%`,
+        })
         .getMany();
 
       if (!persons?.length) {
@@ -135,7 +158,12 @@ export class AppParticipantService {
       } else {
         const transformedObjects = persons.map((person) => ({
           key: person.id.toString(),
-          value: (person.firstName || '') + ' ' + (person.middleName || '') + ' ' + (person.lastName || '')
+          value:
+            (person.firstName || '') +
+            ' ' +
+            (person.middleName || '') +
+            ' ' +
+            (person.lastName || ''),
         }));
 
         return transformedObjects;
@@ -150,8 +178,8 @@ export class AppParticipantService {
   }
 
   /**
-   * 
-   * @param searchParamForOrg: string 
+   *
+   * @param searchParamForOrg: string
    * @returns An array of key value pairs containing the names of the organizations.
    * @throws Error if there is an issue retrieving the data.
    */
@@ -159,8 +187,11 @@ export class AppParticipantService {
     try {
       this.loggerService.log('at service layer getOrganizationNames start');
 
-      const organizations = await this.organizationRepository.createQueryBuilder('organization')
-        .where('organization.name ILIKE :searchParamForOrg', { searchParamForOrg: `%${searchParamForOrg}%` })
+      const organizations = await this.organizationRepository
+        .createQueryBuilder('organization')
+        .where('organization.name ILIKE :searchParamForOrg', {
+          searchParamForOrg: `%${searchParamForOrg}%`,
+        })
         .getMany();
       if (!organizations?.length) {
         return [];
@@ -180,16 +211,23 @@ export class AppParticipantService {
     }
   }
 
-  async createAppParticipant(newAppParticipant: CreateAppParticipantDto, user: any) {
+  async createAppParticipant(
+    newAppParticipant: CreateAppParticipantDto,
+    user: any,
+  ) {
     this.loggerService.log('at service layer addAppParticipant start');
 
     try {
       // Log the input parameters for better traceability
-      this.loggerService.debug(`createAppParticipant: ${JSON.stringify(newAppParticipant)}`);
+      this.loggerService.debug(
+        `createAppParticipant: ${JSON.stringify(newAppParticipant)}`,
+      );
 
       // Check if the user identity_provider is 'IDIR'
       if (user?.identity_provider === UserTypeEum.IDIR) {
-        this.loggerService.debug(`User with username: ${user?.givenName} is using IDIR identity provider.`);
+        this.loggerService.debug(
+          `User with username: ${user?.givenName} is using IDIR identity provider.`,
+        );
 
         // Check if the participant already exists, also  we want to ignore this check where organizationId is null
         // because we can have multiple participants with same personId and participantRoleId but different organizationId
@@ -205,19 +243,26 @@ export class AppParticipantService {
         }
 
         if (existingParticipant) {
-          throw new HttpException('Participant already exists', HttpStatus.BAD_REQUEST);
+          throw new HttpException(
+            'Participant already exists',
+            HttpStatus.BAD_REQUEST,
+          );
         } else {
-          const createdAppParticipant = this.appParticsRepository.create({
+          const createdAppParticipant = await this.appParticsRepository.create({
             ...newAppParticipant,
             createdBy: user?.givenName,
             createdDateTime: new Date(),
           });
 
           //savde the new participant
-          const savedAppParticipant = await this.appParticsRepository.save(createdAppParticipant);
+          const savedAppParticipant = await this.appParticsRepository.save(
+            createdAppParticipant,
+          );
 
           if (savedAppParticipant) {
-            this.loggerService.log(`App Participant created successfully with ID: ${savedAppParticipant.id}`);
+            this.loggerService.log(
+              `App Participant created successfully with ID: ${savedAppParticipant.id}`,
+            );
             return {
               id: savedAppParticipant.id,
               applicationId: savedAppParticipant.applicationId,
@@ -233,27 +278,107 @@ export class AppParticipantService {
               updatedBy: savedAppParticipant.updatedBy,
               updatedDateTime: savedAppParticipant.updatedDateTime,
             };
-          }
-          else {
+          } else {
             this.loggerService.warn('Failed to create App Participant');
             return null;
           }
         }
-      }
-      else {
+      } else {
         // If the identity provider is not IDIR, log a warning and prevent participant creation
-        this.loggerService.warn(`App Participation creation blocked: User ${user?.givenName} is not using IDIR identity provider.`);
-        throw new HttpException('Only users with IDIR identity provider are allowed to add participants', HttpStatus.FORBIDDEN);
+        this.loggerService.warn(
+          `App Participation creation blocked: User ${user?.givenName} is not using IDIR identity provider.`,
+        );
+        throw new HttpException(
+          'Only users with IDIR identity provider are allowed to add participants',
+          HttpStatus.FORBIDDEN,
+        );
       }
-    }
-    catch (err) {
+    } catch (err) {
       // Log the error with the exception details
-      this.loggerService.error('Exception occurred in AppParticipantService.createAppParticipant()', JSON.stringify(err));
-      throw new HttpException('Failed to add app Participant', HttpStatus.BAD_REQUEST);
-    }
-    finally {
+      this.loggerService.error(
+        'Exception occurred in AppParticipantService.createAppParticipant()',
+        JSON.stringify(err),
+      );
+      throw new HttpException(
+        'Failed to add app Participant',
+        HttpStatus.BAD_REQUEST,
+      );
+    } finally {
       // Log the end of the method
-      this.loggerService.log('AppParticipantService.createAppParticipant() end');
+      this.loggerService.log(
+        'AppParticipantService.createAppParticipant() end',
+      );
+    }
+  }
+
+  async updateAppParticipant(
+    updateParticipant: UpdateAppParticipantDto,
+    user: any,
+  ) {
+    this.loggerService.log('at service layer updateAppParticipant start');
+
+    try {
+      // Log the input parameters for better traceability
+      this.loggerService.debug(
+        `updateAppParticipant: participantId=${updateParticipant.applicationId
+        }, updateData=${JSON.stringify(updateParticipant)}`,
+      );
+
+      // Fetch the participant by ID
+      const existingParticipant = await this.appParticsRepository.findOne({
+        where: { id: updateParticipant.id },
+      });
+
+      if (!existingParticipant) {
+        throw new HttpException('Participant not found', HttpStatus.NOT_FOUND);
+      }
+
+      // Update the startDate or endDate if provided
+      if (updateParticipant.effectiveStartDate) {
+        existingParticipant.effectiveStartDate =
+          updateParticipant.effectiveStartDate;
+      }
+      if (updateParticipant.effectiveEndDate) {
+        existingParticipant.effectiveEndDate =
+          updateParticipant.effectiveEndDate;
+      }
+
+      // Update metadata
+      existingParticipant.updatedBy = user?.givenName;
+      existingParticipant.updatedDateTime = new Date();
+
+      // Save the updated participant
+      const updatedParticipant = await this.appParticsRepository.save(
+        existingParticipant,
+      );
+
+      this.loggerService.log(
+        `App Participant updated successfully with ID: ${updatedParticipant.id}`,
+      );
+      return {
+        id: updatedParticipant.id,
+        applicationId: updatedParticipant.applicationId,
+        personId: updatedParticipant.personId,
+        participantRoleId: updatedParticipant.participantRoleId,
+        organizationId: updatedParticipant.organizationId,
+        isMainParticipant: updatedParticipant.isMainParticipant,
+        effectiveStartDate: updatedParticipant.effectiveStartDate,
+        effectiveEndDate: updatedParticipant.effectiveEndDate,
+        createdBy: updatedParticipant.createdBy,
+        createdDateTime: updatedParticipant.createdDateTime,
+        rowVersionCount: updatedParticipant.rowVersionCount,
+        updatedBy: updatedParticipant.updatedBy,
+        updatedDateTime: updatedParticipant.updatedDateTime,
+      };
+    } catch (error) {
+      this.loggerService.error(
+        'Error occurred while updating App Participant',
+        error.stack,
+      );
+      throw new HttpException(
+        'Failed to update App Participant',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

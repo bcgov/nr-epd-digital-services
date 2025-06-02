@@ -8,6 +8,8 @@ import {
 import { AppParticipant } from './appParticipant.entity';
 import { Timesheet } from './timesheet.entity';
 import { PersonNote } from './personNote.entity';
+import { InvoiceV2 } from './invoiceV2.entity';
+import { PersonPermission } from './personPermissions.entity';
 
 @Index('pk_person', ['id'], { unique: true })
 @Entity('person')
@@ -94,10 +96,17 @@ export class Person {
   @Column('timestamp without time zone', { name: 'created_datetime' })
   createdDatetime: Date;
 
-  @Column('character varying', { name: 'updated_by', length: 20, nullable: true })
+  @Column('character varying', {
+    name: 'updated_by',
+    length: 20,
+    nullable: true,
+  })
   updatedBy: string;
 
-  @Column('timestamp without time zone', { name: 'updated_datetime', nullable: true })
+  @Column('timestamp without time zone', {
+    name: 'updated_datetime',
+    nullable: true,
+  })
   updatedDatetime: Date;
 
   // Comment out for now, not sure if we need this
@@ -113,4 +122,10 @@ export class Person {
 
   @OneToMany(() => PersonNote, (note) => note.person)
   notes?: PersonNote[];
+
+  @OneToMany(() => InvoiceV2, (invoice) => invoice.recipient)
+  invoices?: InvoiceV2[];
+
+  @OneToMany(() => PersonPermission, personPermission => personPermission.person)
+  personPermissions: PersonPermission[];
 }

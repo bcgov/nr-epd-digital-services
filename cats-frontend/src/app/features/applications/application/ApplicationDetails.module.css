@@ -1,0 +1,41 @@
+.applicationDetailContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-margin-xxlarge);
+}
+
+.applicationLbl {
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--typography-color-primary, #2d2d2d);
+}
+
+.applicationTypeLbl {
+  font-weight: 700;
+}
+
+.applicationIdLbl {
+  font-weight: 400;
+}
+
+.applicationAddressLbl {
+  font-weight: 400;
+  color: var(--typography-color-secondary, #474543);
+}
+
+.customDot {
+  font-family: Noto Sans;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--typography-color-disabled, #9f9d9c);
+}
+
+.applicationPageContainer {
+  padding: 0 var(--layout-margin-xxlarge) var(--layout-margin-huge)
+    var(--layout-margin-xxlarge);
+  gap: var(--layout-margin-xxlarge);
+  display: flex;
+  flex-direction: column;
+}

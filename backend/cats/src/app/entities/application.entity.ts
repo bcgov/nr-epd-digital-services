@@ -29,6 +29,7 @@ import { SiteType } from './siteType.entity';
 import { HousingApplicationXref } from './housingApplicationXref.entity';
 import { Invoice } from './invoice.entity';
 import { Timesheet } from './timesheet.entity';
+import { ApplicationServiceType } from './applicationServiceType.entity';
 
 @Index('idx_application_app_type_id', ['appTypeId'], {})
 @Index('pk_application', ['id'], { unique: true })
@@ -97,7 +98,11 @@ export class Application {
   @Column('character varying', { name: 'form_id', length: 50, nullable: true })
   formId: string | null;
 
-  @Column('character varying', { name: 'submission_id', length: 50, nullable: true })
+  @Column('character varying', {
+    name: 'submission_id',
+    length: 50,
+    nullable: true,
+  })
   submissionId: string | null;
 
   @OneToMany(() => AppExpense, (appExpense) => appExpense.application)
@@ -129,6 +134,9 @@ export class Application {
 
   @OneToOne(() => AppStatus, (appStatus) => appStatus.application)
   appStatus: AppStatus;
+
+  @OneToMany(() => AppStatus, (appStatus) => appStatus.application)
+  appStatuses: AppStatus[];
 
   @OneToMany(() => AppVapourUse, (appVapourUse) => appVapourUse.application)
   appVapourUses: AppVapourUse[];
@@ -179,4 +187,16 @@ export class Application {
 
   @OneToMany(() => Timesheet, (timesheet) => timesheet.application)
   timesheets: Timesheet[];
+
+  @Column('integer', { name: 'application_service_type_id', nullable: true })
+  serviceTypeId: number | null;
+
+  @ManyToOne(
+    () => ApplicationServiceType,
+    (serviceType) => serviceType.applications,
+  )
+  @JoinColumn([
+    { name: 'application_service_type_id', referencedColumnName: 'id' },
+  ])
+  serviceType: ApplicationServiceType;
 }

@@ -6,18 +6,20 @@ import { Person } from '../../entities/person.entity';
 import { LoggerService } from '../../logger/logger.service';
 import { CreatePerson } from '../../dto/person/createPerson.dto';
 import { UpdatePerson } from '../../dto/person/updatePerson.dto';
+import { PermissionsService } from '../permissions/permissions.service';
+import { ViewPerson } from '../../dto/person/viewPerson.dto';
 
 @Injectable()
 export class PersonService {
   constructor(
     @InjectRepository(Person)
     private readonly personRepository: Repository<Person>,
+    private readonly permissionsService: PermissionsService,
     private readonly loggerSerivce: LoggerService,
-  ) {}
+  ) { }
 
   /** Fetch all person records */
-  async findAll()
-  {
+  async findAll() {
     try {
       this.loggerSerivce.log('at service layer findAll start');
       return await this.personRepository.find();
@@ -27,36 +29,57 @@ export class PersonService {
   }
 
   /** Find a person by ID */
-  async findOne(id: number)
-  {
+  async findOne(id: number) {
     try {
       this.loggerSerivce.log('at service layer findOne start');
-      return await this.personRepository.findOneBy({ id: id });
+      const person = await this.personRepository.findOne({
+        where: { id },
+        relations: ['personPermissions', 'personPermissions.permission'],
+      });
+
+      if (!person) return null;
+
+      // Extract permission IDs from personPermissions relation
+      const permissionIds = person.personPermissions?.map(pp => pp.permissionId) || [];
+
+      // Map entity to DTO shape (pseudo-code)
+      const viewPerson: ViewPerson = {
+        ...person,
+        permissionIds,
+      };
+
+      return viewPerson;
     } catch (error) {
       throw new Error(`Failed to find person with id ${id}: ${error.message}`);
     }
   }
 
   /** Create a new person record */
-  async create(input: CreatePerson, userInfo: any)
-  {
+  async create(input: CreatePerson, userInfo: any) {
     try {
       this.loggerSerivce.log('at service layer create start');
+      const { permissionIds = [], ...personData } = input;
       const person = this.personRepository.create({
-        ...input,
+        ...personData,
         createdBy: userInfo ? userInfo.givenName : '',
         createdDatetime: new Date(),
       });
+
+      const savedPerson = await this.personRepository.save(person);
+
+      if (permissionIds.length > 0) {
+        await this.permissionsService.assignPermissionsToPerson(savedPerson.id, permissionIds, userInfo);
+      }
+
       this.loggerSerivce.log('at service layer create end');
-      return await this.personRepository.save(person);
+      return savedPerson;
     } catch (error) {
       throw new Error(`Failed to create person: ${error.message}`);
     }
   }
 
   /** Update existing person records */
-  async update(input: UpdatePerson[], userInfo: any)
-  {
+  async update(input: UpdatePerson[], userInfo: any) {
     try {
       this.loggerSerivce.log('at service layer update start');
       for (const data of input) {
@@ -68,6 +91,9 @@ export class PersonService {
           updatedDateTime: new Date(),
         };
         await this.personRepository.save(updatedPerson);
+        if (data.permissionIds && Array.isArray(data.permissionIds)) {
+          await this.permissionsService.assignPermissionsToPerson(data.id, data.permissionIds, userInfo);
+        }
       }
       this.loggerSerivce.log('at service layer update end');
       return true;

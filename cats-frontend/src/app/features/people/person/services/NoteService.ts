@@ -18,8 +18,6 @@ export const fetchPeronNotes = async (id: string) => {
     const result = response?.data?.data?.getPersonNotesByPersonId; // Return the notes data
     if (result?.success) {
       return result?.data;
-    } else {
-      console.error(result?.message);
     }
   } catch (error) {
     console.error('Error fetching notes:', error);
@@ -41,8 +39,6 @@ export const updatePersonNote = async (id: string, note: any) => {
     const result = response?.data?.data?.updatePersonNote; // Return the note data
     if (result?.success) {
       return result;
-    } else {
-      console.error(result?.message);
     }
   } catch (error) {
     // Log the error and throw an exception
@@ -64,8 +60,6 @@ export const createPersonNote = async (note: any) => {
     const result = request?.data?.data?.createPersonNote; // Return the created note
     if (result?.success) {
       return result;
-    } else {
-      console.error(result?.message);
     }
   } catch (error) {
     // Log the error and throw an exception
@@ -84,8 +78,6 @@ export const deletePersonNote = async (notes: any) => {
     const result = response?.data?.data?.deletePersonNote; // Return the status
     if (result?.success) {
       return result;
-    } else {
-      console.error(result?.message);
     }
   } catch (error) {
     console.error('Error deleting note:', error);

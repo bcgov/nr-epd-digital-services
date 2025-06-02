@@ -1,0 +1,15 @@
+query GetInvoicesByApplicationId($applicationId: Int!) {
+  getInvoicesByApplicationId(applicationId: $applicationId) {
+    success
+    httpStatusCode
+    message
+    invoices {
+      id
+      subject
+      issuedDate
+      dueDate
+      status
+      totalInCents
+    }
+  }
+}

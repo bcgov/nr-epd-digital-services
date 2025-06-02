@@ -3,22 +3,23 @@ import { TableColumn } from '../../../../components/table/TableColumn';
 import Table from '../../../../components/table/Table';
 import { RequestStatus } from '../../../../helpers/requests/status';
 import TableHeader from './TableHeader';
-import { ApplicationFilter } from '../../../../../generated/types';
+import { Filter } from '../../../../../generated/types';
 
 interface ApplicationResultsTableProps {
   columns: TableColumn[];
   results: any[];
   requestStatus: RequestStatus;
   handleColumnChange: (selectedColumns: TableColumn[]) => void;
-  handleFilterChange: (filter: ApplicationFilter) => void;
+  handleFilterChange: (filter: Filter) => void;
   page: number;
   pageSize: number;
   handlePageChange: (newPage: number) => void;
   handlePageSizeChange: (newPageSize: number) => void;
   showPageOptions: boolean;
   totalResults: number;
-  filter: ApplicationFilter;
+  filter: Filter;
   sortHandler: (column: TableColumn, ascending: boolean) => void;
+  changeHandler: (eventRecord: any) => void;
 }
 
 const ApplicationResultsTable: React.FC<ApplicationResultsTableProps> = ({
@@ -35,6 +36,7 @@ const ApplicationResultsTable: React.FC<ApplicationResultsTableProps> = ({
   totalResults,
   filter,
   sortHandler,
+  changeHandler,
 }) => {
   return (
     <div>
@@ -49,7 +51,7 @@ const ApplicationResultsTable: React.FC<ApplicationResultsTableProps> = ({
         isLoading={requestStatus}
         columns={columns.filter((column) => column.isChecked)}
         data={results}
-        changeHandler={() => {}}
+        changeHandler={changeHandler}
         editMode={false}
         idColumnName="id"
         currentPage={page}

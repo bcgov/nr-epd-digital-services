@@ -41,6 +41,8 @@ import { useFetchNotes } from './hooks/useFetchNotes';
 import { useUpdateNote } from './hooks/useUpdateNotes';
 import { useCreateNote } from './hooks/useCreateNote';
 import { useDeleteNote } from './hooks/useDeleteNote';
+import PersonPermissions from './PersonPermissions';
+import { useGetPermissionsQuery } from './graphql/PersonPermissions.generated';
 
 export type NoteTypes = 'Edit Note' | 'New Note' | 'View Note';
 
@@ -84,6 +86,12 @@ const Person = () => {
   const [error, setError] = useState<string | null>(null);
   const [addrForm, setAddrForm] = useState(addressForm);
 
+  const { data } = useGetPermissionsQuery();
+  const [enabledRoles, setEnabledRoles] = useState<Record<number, boolean>>({});
+  const [selectedPermissions, setSelectedPermissions] = useState<Set<number>>(
+    new Set(),
+  );
+
   const onClickBackButton = () => {
     navigate(-1);
   };
@@ -96,10 +104,10 @@ const Person = () => {
       } else {
         setPersonName(
           (personData?.firstName ?? '') +
-            ' ' +
-            (personData?.middleName ?? '') +
-            ' ' +
-            (personData?.lastName ?? ''),
+          ' ' +
+          (personData?.middleName ?? '') +
+          ' ' +
+          (personData?.lastName ?? ''),
         );
         setFormData(personData);
         setLoading(false);
@@ -363,13 +371,6 @@ const Person = () => {
     }
   };
 
-  {
-    /* Use the LoadingOverlay component */
-  }
-  if (loading && !!id) {
-    return <LoadingOverlay loading={loading} />;
-  }
-
   const navigationBarChildern = (
     <>
       {viewMode === UserMode.Default && userType === UserType.STAFF && (
@@ -426,6 +427,79 @@ const Person = () => {
     </>
   );
 
+  useEffect(() => {
+    // Only run once when formData is initially populated
+    if (
+      formData?.permissionIds &&
+      data?.getPermissions?.data &&
+      selectedPermissions.size === 0
+    ) {
+      const personPermissions: number[] = formData?.permissionIds;
+
+      setSelectedPermissions(new Set(personPermissions));
+
+      const rolesMap: Record<number, boolean> = {};
+
+      data?.getPermissions?.data.forEach((role: any) => {
+        role.permissions.forEach((perm: any) => {
+          if (personPermissions.includes(perm.id)) {
+            rolesMap[role.roleId] = true;
+          }
+        });
+      });
+
+      setEnabledRoles(rolesMap);
+    }
+  }, [data?.getPermissions?.data]);
+
+  const handleSwitchToggle = (roleId: number) => {
+    setEnabledRoles((prev) => {
+      const isCurrentlyEnabled = prev[roleId];
+      const newEnabledRoles = {
+        ...prev,
+        [roleId]: !isCurrentlyEnabled,
+      };
+      // If turning OFF the role switch, remove its permission IDs
+      if (isCurrentlyEnabled) {
+        const rolePermissions =
+          data?.getPermissions?.data?.find((r) => r.roleId === roleId)
+            ?.permissions || [];
+        const permissionIdsToRemove = rolePermissions.map((p) => p.id);
+        setSelectedPermissions((prev) => {
+          const updated = new Set(prev);
+          permissionIdsToRemove.forEach((id) => updated.delete(id));
+          // Also update formData
+          setFormData((prevData) => ({
+            ...prevData,
+            permissionIds: Array.from(updated),
+          }));
+          return updated;
+        });
+      }
+      return newEnabledRoles;
+    });
+  };
+
+  const handleCheckboxToggle = (permissionId: number) => {
+    setSelectedPermissions((prev) => {
+      const updated = new Set(prev);
+      updated.has(permissionId)
+        ? updated.delete(permissionId)
+        : updated.add(permissionId);
+      // Sync to formData here
+      const updatedArray = Array.from(updated);
+      setFormData((prevData) => ({
+        ...prevData,
+        permissionIds: updatedArray,
+      }));
+      return updated;
+    });
+  };
+
+  if (loading && !!id) {
+    return <LoadingOverlay loading={loading} />;
+  }
+
   return (
     <>
       <NavigationBar
@@ -437,11 +511,26 @@ const Person = () => {
         childern={navigationBarChildern}
       />
       <PageContainer role="Person">
+        {/* Person Name */}
         <div className="custom-person-name">
           {(!isVisible &&
             (personName.length > 0 ? personName : 'New Person')) ||
             ''}
         </div>
+
+        {/* Account Permissions */}
+        <Widget title={'Account Permissions'} hideTable={true}>
+          <PersonPermissions
+            editMode={viewMode === UserMode.EditMode}
+            permissions={data?.getPermissions?.data ?? []}
+            enabledRoles={enabledRoles}
+            selectedPermissions={selectedPermissions}
+            onSwitchToggle={handleSwitchToggle}
+            onCheckboxToggle={handleCheckboxToggle}
+          />
+        </Widget>
+
+        {/* Contact Information */}
         <Widget title={'Contact Information'} hideTable={true}>
           <Form
             editMode={viewMode === UserMode.EditMode}
@@ -452,6 +541,8 @@ const Person = () => {
             }
           />
         </Widget>
+
+        {/* Address */}
         <Widget title={'Address'} hideTable={true}>
           <Form
             editMode={viewMode === UserMode.EditMode}
@@ -463,12 +554,12 @@ const Person = () => {
           />
         </Widget>
         {id && (
+          // Notes
           <Widget
             currentPage={1}
             allowRowsSelect={true}
             tableColumns={noteColumns}
             tableData={notes ?? []}
-            // tableIsLoading={status ?? RequestStatus.idle}
             changeHandler={handleTableChange}
             sortHandler={(row, ascDir) => {
               handleTableSort(row, ascDir);
@@ -496,6 +587,7 @@ const Person = () => {
           </Widget>
         )}
         {(isDeleteNote || isDeletePerson) && (
+          // Delete Modal
           <ModalDialog
             key={v4()}
             label={`Are you sure you want to delete ${isDeleteNote ? 'note(s)' : 'person'}  ?`}
@@ -527,6 +619,7 @@ const Person = () => {
           />
         )}
         {note?.isNotesModal && (
+          // Note Modal
           <ModalDialog
             headerLabel={note?.noteType}
             saveButtonDisabled={note?.noteData?.noteDescription?.length <= 0}
@@ -583,6 +676,7 @@ const Person = () => {
               }); // Reset the note state
             }}
           >
+            {/* Note Form */}
             <Form
               editMode={true}
               formRows={noteForm}

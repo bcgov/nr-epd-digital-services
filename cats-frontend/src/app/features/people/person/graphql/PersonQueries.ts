@@ -25,6 +25,7 @@ export const GET_PERSON_BY_ID = gql`
         mobile
         fax
         isActive
+        permissionIds
       }
     }
   }

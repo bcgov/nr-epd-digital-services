@@ -29,8 +29,13 @@ const Widget: React.FC<IWidget> = ({
   widgetIschecked,
   hideWidgetCheckbox,
   customWidgetCss,
+  changeResultsPerPage,
+  resultsPerPage,
+  selectPage,
+  totalResults,
+  filter,
 }) => {
-  let widgetSortHandler = sortHandler ?? (() => {});
+  let widgetSortHandler = sortHandler ?? (() => { });
 
   return (
     <div
@@ -43,17 +48,20 @@ const Widget: React.FC<IWidget> = ({
               type={FormFieldType.Checkbox}
               label={''}
               isLabel={false}
-              onChange={handleCheckBoxChange ?? (() => {})}
+              onChange={handleCheckBoxChange ?? (() => { })}
               srMode={srMode}
               isChecked={widgetIschecked}
             />
           )}
-          <div className="w-100 me-1">
+          <div
+            className={`${styles.widgetLblContainer} w-100 me-1 d-flex flex-wrap align-items-center justify-content-between`}
+          >
             <h4
               className={`${customLabelCss ?? styles.widgetLabel} ${isRequired ? styles.widgetRequiredField : ''}`}
             >
               {title}
             </h4>
+            {filter}
           </div>
         </div>
       )}
@@ -67,12 +75,16 @@ const Widget: React.FC<IWidget> = ({
             data={tableData ?? []}
             showPageOptions={showPageOptions}
             allowRowsSelect={allowRowsSelect}
-            changeHandler={changeHandler ?? (() => {})}
+            changeHandler={changeHandler ?? (() => { })}
             editMode={editMode ?? false}
             srMode={srMode ?? false}
             idColumnName={primaryKeycolumnName ?? ''}
             sortHandler={widgetSortHandler}
             currentPage={currentPage}
+            selectPage={selectPage}
+            changeResultsPerPage={changeResultsPerPage}
+            resultsPerPage={resultsPerPage}
+            totalResults={totalResults}
           />
         </div>
       )}

@@ -30,6 +30,18 @@ export type AddHousingInputDto = {
   relatedApplicationIds?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
+export type AppNoteDto = {
+  __typename?: 'AppNoteDto';
+  applicationId: Scalars['Int']['output'];
+  createdBy: Scalars['String']['output'];
+  createdDateTime: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  noteDate: Scalars['String']['output'];
+  noteText: Scalars['String']['output'];
+  updatedBy: Scalars['String']['output'];
+  updatedDateTime: Scalars['DateTime']['output'];
+};
+
 export enum AppParticipantFilter {
   All = 'ALL',
   Main = 'MAIN'
@@ -44,11 +56,14 @@ export type AppParticipantsResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
-export enum ApplicationFilter {
-  All = 'ALL',
-  Completed = 'COMPLETED',
-  Unassigned = 'UNASSIGNED'
-}
+export type ApplicationDetailsResponse = {
+  __typename?: 'ApplicationDetailsResponse';
+  data?: Maybe<ViewApplicationDetails>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
 
 export type ApplicationHousingDto = {
   __typename?: 'ApplicationHousingDto';
@@ -59,6 +74,15 @@ export type ApplicationHousingDto = {
 export type ApplicationHousingResponse = {
   __typename?: 'ApplicationHousingResponse';
   data: Array<ApplicationHousingDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type ApplicationNotesResponse = {
+  __typename?: 'ApplicationNotesResponse';
+  data: Array<AppNoteDto>;
   httpStatusCode?: Maybe<Scalars['Int']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
@@ -143,9 +167,10 @@ export type CreateAppParticipantsResponse = {
 
 export type CreateApplication = {
   appTypeAbbrev: Scalars['String']['input'];
+  formId: Scalars['String']['input'];
   receivedDate: Scalars['DateTime']['input'];
   siteId: Scalars['Float']['input'];
-  srsApplicationId: Scalars['Float']['input'];
+  submissionId: Scalars['String']['input'];
 };
 
 export type CreatePerson = {
@@ -166,6 +191,7 @@ export type CreatePerson = {
   loginUserName?: InputMaybe<Scalars['String']['input']>;
   middleName?: InputMaybe<Scalars['String']['input']>;
   mobile?: InputMaybe<Scalars['String']['input']>;
+  permissionIds?: InputMaybe<Array<Scalars['Int']['input']>>;
   phone?: InputMaybe<Scalars['String']['input']>;
   postal?: InputMaybe<Scalars['String']['input']>;
   prov?: InputMaybe<Scalars['String']['input']>;
@@ -178,6 +204,13 @@ export type CreatePersonNote = {
 
 export type DeletePersonNote = {
   id: Scalars['String']['input'];
+};
+
+export type DetailField = {
+  __typename?: 'DetailField';
+  abbrev: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+  id: Scalars['Float']['output'];
 };
 
 export type DropdownDto = {
@@ -195,6 +228,13 @@ export type DropdownResponse = {
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
 };
+
+export enum Filter {
+  All = 'ALL',
+  Completed = 'COMPLETED',
+  Overcapacity = 'OVERCAPACITY',
+  Unassigned = 'UNASSIGNED'
+}
 
 export type HousingDto = {
   __typename?: 'HousingDto';
@@ -230,17 +270,125 @@ export type HousingTypeResponse = {
   data: Array<HousingTypeDto>;
 };
 
+export type InvoiceByApplicationIdDto = {
+  __typename?: 'InvoiceByApplicationIdDto';
+  dueDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  issuedDate: Scalars['DateTime']['output'];
+  status: Scalars['String']['output'];
+  subject: Scalars['String']['output'];
+  totalInCents: Scalars['Int']['output'];
+};
+
+export type InvoiceDto = {
+  __typename?: 'InvoiceDto';
+  applicationId: Scalars['Int']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  createdBy?: Maybe<Scalars['String']['output']>;
+  dueDate: Scalars['DateTime']['output'];
+  gstInCents: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  invoiceId?: Maybe<Scalars['Int']['output']>;
+  issuedDate: Scalars['DateTime']['output'];
+  lineItems: Array<InvoiceLineItemDto>;
+  pstInCents: Scalars['Int']['output'];
+  recipientId: Scalars['Int']['output'];
+  status: InvoiceStatus;
+  subject: Scalars['String']['output'];
+  subtotalInCents: Scalars['Int']['output'];
+  taxExempt: Scalars['Boolean']['output'];
+  totalInCents: Scalars['Int']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  updatedBy: Scalars['String']['output'];
+};
+
+export type InvoiceInputDto = {
+  applicationId: Scalars['Int']['input'];
+  dueDate: Scalars['DateTime']['input'];
+  gstInCents: Scalars['Int']['input'];
+  invoiceId?: InputMaybe<Scalars['Int']['input']>;
+  issuedDate: Scalars['DateTime']['input'];
+  lineItems: Array<InvoiceLineItemInputDto>;
+  pstInCents: Scalars['Int']['input'];
+  recipientId: Scalars['Int']['input'];
+  status: InvoiceStatus;
+  subject: Scalars['String']['input'];
+  subtotalInCents: Scalars['Int']['input'];
+  taxExempt: Scalars['Boolean']['input'];
+  totalInCents: Scalars['Int']['input'];
+};
+
+export type InvoiceLineItemDto = {
+  __typename?: 'InvoiceLineItemDto';
+  createdAt: Scalars['DateTime']['output'];
+  createdBy: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  quantity: Scalars['Int']['output'];
+  totalInCents: Scalars['Int']['output'];
+  type: Scalars['String']['output'];
+  unitPriceInCents: Scalars['Int']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  updatedBy: Scalars['String']['output'];
+};
+
+export type InvoiceLineItemInputDto = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdBy?: InputMaybe<Scalars['String']['input']>;
+  description: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['Float']['input']>;
+  quantity: Scalars['Int']['input'];
+  totalInCents: Scalars['Int']['input'];
+  type: Scalars['String']['input'];
+  unitPriceInCents: Scalars['Int']['input'];
+};
+
+export type InvoiceResponse = {
+  __typename?: 'InvoiceResponse';
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  invoice?: Maybe<InvoiceDto>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+/** The status of an invoice */
+export enum InvoiceStatus {
+  Draft = 'DRAFT',
+  Paid = 'PAID',
+  Received = 'RECEIVED',
+  Sent = 'SENT'
+}
+
+export type InvoicesByApplicationIdResponse = {
+  __typename?: 'InvoicesByApplicationIdResponse';
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  invoices?: Maybe<Array<InvoiceByApplicationIdDto>>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addHousingToApplication: ApplicationHousingResponse;
   createAppParticipant: CreateAppParticipantsResponse;
   createApplication: ApplicationResponse;
+  createApplicationNote: ApplicationNotesResponse;
+  createInvoice: InvoiceResponse;
   createPerson: PersonResponse;
   createPersonNote: PersonNoteResponse;
+  deleteApplicationNotes: ApplicationNotesResponse;
+  deleteInvoice: ResponseDto;
   deletePersonNote: PersonNoteResponse;
+  updateAppParticipant: UpdateAppParticipantsResponse;
   updateApplicationHousing: ApplicationHousingResponse;
+  updateApplicationNote: ApplicationNotesResponse;
+  updateInvoice: InvoiceResponse;
   updatePerson: PersonResponse;
   updatePersonNote: PersonNoteResponse;
+  updateStaffAssigned: ResponseDto;
+  upsertTimesheetDays: TimesheetDayResponse;
 };
 
 
@@ -259,6 +407,18 @@ export type MutationCreateApplicationArgs = {
 };
 
 
+export type MutationCreateApplicationNoteArgs = {
+  applicationId: Scalars['Int']['input'];
+  noteDate: Scalars['DateTime']['input'];
+  noteText: Scalars['String']['input'];
+};
+
+
+export type MutationCreateInvoiceArgs = {
+  invoiceData: InvoiceInputDto;
+};
+
+
 export type MutationCreatePersonArgs = {
   person: CreatePerson;
 };
@@ -269,13 +429,41 @@ export type MutationCreatePersonNoteArgs = {
 };
 
 
+export type MutationDeleteApplicationNotesArgs = {
+  noteIds: Array<Scalars['Int']['input']>;
+};
+
+
+export type MutationDeleteInvoiceArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationDeletePersonNoteArgs = {
   notes: Array<DeletePersonNote>;
 };
 
 
+export type MutationUpdateAppParticipantArgs = {
+  updateAppParticipant: UpdateAppParticipantDto;
+};
+
+
 export type MutationUpdateApplicationHousingArgs = {
   input: UpdateHousingInputDto;
+};
+
+
+export type MutationUpdateApplicationNoteArgs = {
+  noteDate: Scalars['DateTime']['input'];
+  noteId: Scalars['Int']['input'];
+  noteText: Scalars['String']['input'];
+};
+
+
+export type MutationUpdateInvoiceArgs = {
+  id: Scalars['Int']['input'];
+  updateData: InvoiceInputDto;
 };
 
 
@@ -289,9 +477,30 @@ export type MutationUpdatePersonNoteArgs = {
   note: UpdatePersonNote;
 };
 
+
+export type MutationUpdateStaffAssignedArgs = {
+  applicationId: Scalars['Int']['input'];
+  applicationServiceTypeId: Scalars['Int']['input'];
+  staffInput: Array<UpdateStaffAssignedDto>;
+};
+
+
+export type MutationUpsertTimesheetDaysArgs = {
+  input: UpsertTimesheetDaysInputDto;
+};
+
 export type ParticipantsRolesResponse = {
   __typename?: 'ParticipantsRolesResponse';
   data?: Maybe<Array<ViewParticipantsRolesDto>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type PermissionsResponse = {
+  __typename?: 'PermissionsResponse';
+  data?: Maybe<Array<RoleWithPermissions>>;
   httpStatusCode?: Maybe<Scalars['Int']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
@@ -316,18 +525,46 @@ export type PersonResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type PersonWithTimesheetDaysDto = {
+  __typename?: 'PersonWithTimesheetDaysDto';
+  email?: Maybe<Scalars['String']['output']>;
+  firstName: Scalars['String']['output'];
+  lastName: Scalars['String']['output'];
+  personId: Scalars['Int']['output'];
+  timesheetDays: Array<TimesheetDayDto>;
+};
+
+export type PersonWithTimesheetDaysResponse = {
+  __typename?: 'PersonWithTimesheetDaysResponse';
+  data?: Maybe<Array<PersonWithTimesheetDaysDto>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   _service: _Service;
   findAllPerson: PersonResponse;
   findPersonById: PersonResponse;
+  getAllActiveStaffMembers: ViewStaffWithCapacityResponse;
   getAllParticipantRoles: ParticipantsRolesResponse;
   getAppParticipantsByAppId: AppParticipantsResponse;
+  getApplicationDetailsById: ApplicationDetailsResponse;
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
+  getApplicationNotesByApplicationId: ApplicationNotesResponse;
+  getApplicationServiceTypes: DropdownResponse;
   getHousingTypes: HousingTypeResponse;
+  getInvoicesByApplicationId: InvoicesByApplicationIdResponse;
   getOrganizations: DropdownResponse;
   getParticipantNames: DropdownResponse;
+  getPermissions: PermissionsResponse;
   getPersonNotesByPersonId: PersonNoteResponse;
+  getSiteDetailsBySiteId: SiteDetailsResponse;
+  getStaffAssignedByAppId: ViewStaffAssignedResponse;
+  getStaffs: StaffResponse;
+  getTimesheetDaysForAssignedStaff: PersonWithTimesheetDaysResponse;
   searchApplications: ApplicationSearchResponse;
   searchApplicationsById: ApplicationSearchResponse;
   searchPerson: SearchPersonResponse;
@@ -345,7 +582,22 @@ export type QueryGetAppParticipantsByAppIdArgs = {
 };
 
 
+export type QueryGetApplicationDetailsByIdArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type QueryGetApplicationHousingByApplicationIdArgs = {
+  applicationId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetApplicationNotesByApplicationIdArgs = {
+  applicationId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetInvoicesByApplicationIdArgs = {
   applicationId: Scalars['Int']['input'];
 };
 
@@ -365,8 +617,34 @@ export type QueryGetPersonNotesByPersonIdArgs = {
 };
 
 
+export type QueryGetSiteDetailsBySiteIdArgs = {
+  siteId: Scalars['String']['input'];
+};
+
+
+export type QueryGetStaffAssignedByAppIdArgs = {
+  applicationId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetStaffsArgs = {
+  filter?: InputMaybe<Filter>;
+  page: Scalars['Int']['input'];
+  pageSize: Scalars['Int']['input'];
+  sortBy?: InputMaybe<StaffSortByField>;
+  sortByDir?: InputMaybe<ApplicationSortByDirection>;
+};
+
+
+export type QueryGetTimesheetDaysForAssignedStaffArgs = {
+  applicationId: Scalars['Float']['input'];
+  endDate: Scalars['String']['input'];
+  startDate: Scalars['String']['input'];
+};
+
+
 export type QuerySearchApplicationsArgs = {
-  filter: ApplicationFilter;
+  filter: Filter;
   page: Scalars['Int']['input'];
   pageSize: Scalars['Int']['input'];
   searchParam: Scalars['String']['input'];
@@ -386,6 +664,21 @@ export type QuerySearchPersonArgs = {
   searchParam: Scalars['String']['input'];
 };
 
+export type ResponseDto = {
+  __typename?: 'ResponseDto';
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type RoleWithPermissions = {
+  __typename?: 'RoleWithPermissions';
+  permissions: Array<ViewPermissions>;
+  roleDescription: Scalars['String']['output'];
+  roleId: Scalars['Float']['output'];
+};
+
 export type SearchPersonResponse = {
   __typename?: 'SearchPersonResponse';
   count?: Maybe<Scalars['Float']['output']>;
@@ -394,6 +687,99 @@ export type SearchPersonResponse = {
   page?: Maybe<Scalars['Float']['output']>;
   pageSize?: Maybe<Scalars['Float']['output']>;
   persons: Array<ViewPerson>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type SiteAssocs = {
+  __typename?: 'SiteAssocs';
+  associatedSite: SiteDetailsDto;
+};
+
+export type SiteDetailsDto = {
+  __typename?: 'SiteDetailsDTO';
+  addrLine_1?: Maybe<Scalars['String']['output']>;
+  addrLine_2?: Maybe<Scalars['String']['output']>;
+  addrLine_3?: Maybe<Scalars['String']['output']>;
+  addrLine_4?: Maybe<Scalars['String']['output']>;
+  associatedSites: Array<SiteAssocs>;
+  city?: Maybe<Scalars['String']['output']>;
+  commonName?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  latdeg?: Maybe<Scalars['Float']['output']>;
+  longdeg?: Maybe<Scalars['Float']['output']>;
+  siteRiskCode?: Maybe<Scalars['String']['output']>;
+  whenCreated: Scalars['String']['output'];
+  whenUpdated?: Maybe<Scalars['String']['output']>;
+};
+
+export type SiteDetailsResponse = {
+  __typename?: 'SiteDetailsResponse';
+  data?: Maybe<SiteDetailsDto>;
+};
+
+export type StaffAssignedDto = {
+  __typename?: 'StaffAssignedDto';
+  applicationServiceTypeId?: Maybe<Scalars['Float']['output']>;
+  staffList: Array<ViewStaffAssignedDto>;
+};
+
+export type StaffResponse = {
+  __typename?: 'StaffResponse';
+  count?: Maybe<Scalars['Float']['output']>;
+  data: Array<ViewStaff>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  page?: Maybe<Scalars['Float']['output']>;
+  pageSize?: Maybe<Scalars['Float']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export enum StaffSortByField {
+  Assignment = 'ASSIGNMENT',
+  Id = 'ID',
+  Name = 'NAME'
+}
+
+export type TimesheetDayDto = {
+  __typename?: 'TimesheetDayDto';
+  applicationId: Scalars['Int']['output'];
+  date: Scalars['DateTime']['output'];
+  hours?: Maybe<Scalars['Float']['output']>;
+  id: Scalars['Int']['output'];
+  personId: Scalars['Int']['output'];
+};
+
+export type TimesheetDayResponse = {
+  __typename?: 'TimesheetDayResponse';
+  data: Array<TimesheetDayDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type TimesheetDayUpsertInputDto = {
+  applicationId: Scalars['Int']['input'];
+  date: Scalars['String']['input'];
+  hours?: InputMaybe<Scalars['Float']['input']>;
+  personId: Scalars['Int']['input'];
+  timesheetDayId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type UpdateAppParticipantDto = {
+  applicationId: Scalars['Float']['input'];
+  effectiveEndDate?: InputMaybe<Scalars['DateTime']['input']>;
+  effectiveStartDate: Scalars['DateTime']['input'];
+  id: Scalars['Float']['input'];
+};
+
+export type UpdateAppParticipantsResponse = {
+  __typename?: 'UpdateAppParticipantsResponse';
+  data?: Maybe<Array<ViewAppParticipantEntityDto>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
 };
@@ -427,6 +813,7 @@ export type UpdatePerson = {
   loginUserName?: InputMaybe<Scalars['String']['input']>;
   middleName?: InputMaybe<Scalars['String']['input']>;
   mobile?: InputMaybe<Scalars['String']['input']>;
+  permissionIds?: InputMaybe<Array<Scalars['Int']['input']>>;
   phone?: InputMaybe<Scalars['String']['input']>;
   postal?: InputMaybe<Scalars['String']['input']>;
   prov?: InputMaybe<Scalars['String']['input']>;
@@ -436,6 +823,21 @@ export type UpdatePerson = {
 
 export type UpdatePersonNote = {
   noteDescription: Scalars['String']['input'];
+};
+
+export type UpdateStaffAssignedDto = {
+  action: Scalars['String']['input'];
+  applicationId: Scalars['Float']['input'];
+  endDate?: InputMaybe<Scalars['DateTime']['input']>;
+  id: Scalars['Float']['input'];
+  organizationId?: InputMaybe<Scalars['Float']['input']>;
+  personId: Scalars['Float']['input'];
+  roleId: Scalars['Float']['input'];
+  startDate: Scalars['DateTime']['input'];
+};
+
+export type UpsertTimesheetDaysInputDto = {
+  entries: Array<TimesheetDayUpsertInputDto>;
 };
 
 export type ViewAppParticipantEntityDto = {
@@ -470,6 +872,9 @@ export type ViewAppParticipantsDto = {
   isMinistry: Scalars['Boolean']['output'];
   lastName: Scalars['String']['output'];
   name: Scalars['String']['output'];
+  organization?: Maybe<ViewOrganizationsDto>;
+  participantRole: ViewParticipantsRolesDto;
+  person: ViewParticipantNamesDto;
   rowVersionCount?: Maybe<Scalars['Float']['output']>;
   updatedBy?: Maybe<Scalars['String']['output']>;
   updatedDateTime?: Maybe<Scalars['DateTime']['output']>;
@@ -480,10 +885,54 @@ export type ViewApplication = {
   id: Scalars['Float']['output'];
 };
 
+export type ViewApplicationDetails = {
+  __typename?: 'ViewApplicationDetails';
+  appType?: Maybe<DetailField>;
+  csapRefNumber?: Maybe<Scalars['String']['output']>;
+  currentStatus?: Maybe<DetailField>;
+  endDate?: Maybe<Scalars['DateTime']['output']>;
+  formId?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Float']['output'];
+  isHousing: Scalars['Boolean']['output'];
+  isTaxExempt: Scalars['Boolean']['output'];
+  outcome?: Maybe<DetailField>;
+  priority?: Maybe<DetailField>;
+  queuedDate?: Maybe<Scalars['DateTime']['output']>;
+  receivedDate: Scalars['DateTime']['output'];
+  reviewProcess?: Maybe<DetailField>;
+  siteAddress: Scalars['String']['output'];
+  siteCity: Scalars['String']['output'];
+  siteId: Scalars['Float']['output'];
+  siteType?: Maybe<DetailField>;
+  submissionId?: Maybe<Scalars['String']['output']>;
+};
+
+export type ViewOrganizationsDto = {
+  __typename?: 'ViewOrganizationsDto';
+  id?: Maybe<Scalars['Float']['output']>;
+  name: Scalars['String']['output'];
+};
+
+export type ViewParticipantNamesDto = {
+  __typename?: 'ViewParticipantNamesDto';
+  firstName: Scalars['String']['output'];
+  fullName: Scalars['String']['output'];
+  id: Scalars['Float']['output'];
+  lastName: Scalars['String']['output'];
+  middleName?: Maybe<Scalars['String']['output']>;
+};
+
 export type ViewParticipantsRolesDto = {
   __typename?: 'ViewParticipantsRolesDto';
   description: Scalars['String']['output'];
   id: Scalars['Float']['output'];
+};
+
+export type ViewPermissions = {
+  __typename?: 'ViewPermissions';
+  description: Scalars['String']['output'];
+  id: Scalars['Float']['output'];
+  roleId: Scalars['Float']['output'];
 };
 
 export type ViewPerson = {
@@ -506,6 +955,7 @@ export type ViewPerson = {
   loginUserName?: Maybe<Scalars['String']['output']>;
   middleName?: Maybe<Scalars['String']['output']>;
   mobile?: Maybe<Scalars['String']['output']>;
+  permissionIds?: Maybe<Array<Scalars['Int']['output']>>;
   phone?: Maybe<Scalars['String']['output']>;
   postal?: Maybe<Scalars['String']['output']>;
   prov?: Maybe<Scalars['String']['output']>;
@@ -520,6 +970,50 @@ export type ViewPersonNote = {
   id: Scalars['String']['output'];
   noteDescription: Scalars['String']['output'];
   user?: Maybe<Scalars['String']['output']>;
+};
+
+export type ViewStaff = {
+  __typename?: 'ViewStaff';
+  assignments: Scalars['Float']['output'];
+  capacity: Scalars['Float']['output'];
+  id: Scalars['Float']['output'];
+  name: Scalars['String']['output'];
+};
+
+export type ViewStaffAssignedDto = {
+  __typename?: 'ViewStaffAssignedDto';
+  applicationId: Scalars['Float']['output'];
+  currentCapacity?: Maybe<Scalars['Float']['output']>;
+  endDate?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['Float']['output'];
+  personId: Scalars['Float']['output'];
+  roleId: Scalars['Float']['output'];
+  startDate: Scalars['DateTime']['output'];
+};
+
+export type ViewStaffAssignedResponse = {
+  __typename?: 'ViewStaffAssignedResponse';
+  data?: Maybe<StaffAssignedDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type ViewStaffWithCapacityDto = {
+  __typename?: 'ViewStaffWithCapacityDTO';
+  currentCapacity?: Maybe<Scalars['Float']['output']>;
+  personFullName: Scalars['String']['output'];
+  personId: Scalars['Float']['output'];
+};
+
+export type ViewStaffWithCapacityResponse = {
+  __typename?: 'ViewStaffWithCapacityResponse';
+  data?: Maybe<Array<ViewStaffWithCapacityDto>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
 };
 
 export type YesNoCodeDto = {

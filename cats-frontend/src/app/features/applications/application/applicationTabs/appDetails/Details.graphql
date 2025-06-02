@@ -1,0 +1,60 @@
+query getApplicationDetailsById($applicationId: Int!) {
+  getApplicationDetailsById(id: $applicationId) {
+    data {
+      id
+      siteId
+      csapRefNumber
+      priority {
+        abbrev
+      }
+      isHousing
+      isTaxExempt
+      receivedDate
+      queuedDate
+      endDate
+      outcome {
+        description
+      }
+      appType {
+        description
+      }
+      currentStatus {
+        description
+      }
+      siteType {
+        description
+      }
+      reviewProcess {
+        description
+      }
+    }
+  }
+}
+
+query getSiteDetailsBySiteId($siteId: String!) {
+  getSiteDetailsBySiteId(siteId: $siteId) {
+    data {
+      ...SiteDetails
+      associatedSites {
+        associatedSite {
+          ...SiteDetails
+        }
+      }
+    }
+  }
+}
+
+fragment SiteDetails on SiteDetailsDTO {
+  id
+  latdeg
+  longdeg
+  commonName
+  addrLine_1
+  addrLine_2
+  addrLine_3
+  addrLine_4
+  city
+  commonName
+  siteRiskCode
+  whenUpdated
+}

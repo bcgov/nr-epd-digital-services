@@ -55,6 +55,10 @@ on:
         default: 'values.yaml'
         required: false
         type: string
+      redirect_uri:
+        description: 'Redirect URI for Keycloak'
+        required: false
+        type: string
 
     outputs:
       triggered:
@@ -160,6 +164,9 @@ jobs:
             --set-string global.secrets.keycloakRealm="${{ secrets.KEYCLOAK_REALM }}" \
             --set-string global.secrets.keycloakClientID="${{ secrets.KEYCLOAK_CLIENTID }}" \
             --set-string global.secrets.keycloakAuthURL="${{ secrets.KEYCLOAK_AUTH_URL }}" \
+            --set-string global.secrets.chesClientID="${{ secrets.CHES_CLIENT_ID }}" \
+            --set-string global.secrets.chesClientSecret="${{ secrets.CHES_CLIENT_SECRET }}" \
+            --set-string global.config.REACT_APP_AUTH_LOGOUT_REDIRECT_URI="${{ inputs.redirect_uri}}" \
             --set-string global.config.dbUser=${{ inputs.db_user }} \
             ${{ inputs.params }} \
             --install --wait --atomic ${{ steps.vars.outputs.release }} --debug \

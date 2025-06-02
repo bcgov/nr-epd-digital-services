@@ -2,18 +2,13 @@ name: CATS PR
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, ready_for_review] # ready for review is not included by default, More than one activity type triggers this event. For information about each activity type, see "Webhook events and payloads." By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened. To trigger workflows by different activity types, use the types keyword. For more information, see "Workflow syntax for GitHub Actions."
     branches:
-      - srs-605 # this is the default branch and not main
-      #- srs-605 #test branch
-    # paths:
-    #   - 'backend/cats/**'
-    #   - 'cats-frontend/**'  
-
+      - dev
 
 concurrency:
   # Cancel in progress for PR open and close
-  group: ${{ github.event.number }}
+  # group: ${{ github.event.number }}
+  group: ${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: true
 
 jobs:
@@ -23,10 +18,13 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        package: [backend, cats-frontend ]
+        package: [backend, backend-migration, cats-frontend]
         include:
           - package: backend
             build_file: ./backend/cats/Dockerfile
+            build_context: backend/cats
+          - package: backend-migration
+            build_file: ./backend/cats/Dockerfile-migrations-openshift
             build_context: backend/cats
           - package: cats-frontend
             build_file: ./cats-frontend/Dockerfile
@@ -36,7 +34,8 @@ jobs:
       - uses: bcgov-nr/action-builder-ghcr@v2.2.0
         with:
           package: ${{ matrix.package }}
-          tag: ${{ github.event.number }}
+          # tag: ${{ github.event.number }}
+          tag: ${{ github.event.pull_request.number || github.run_id }}
           tag_fallback: latest
           triggers: ('${{ matrix.package }}/')
           build_file: ${{ matrix.build_file }}
@@ -48,6 +47,8 @@ jobs:
     uses: ./.github/workflows/.dbdeployer.yml
     secrets: inherit
     with:
+      # Can revert to below trigger, this line just forces db deploy when updating this file, good for active dev.
+      # triggers: ('charts/crunchy/' '.github/workflows/cats-pr-open.yml')
       triggers: ('charts/crunchy/')
       values: 'values-dev.yaml'
       app_values:  'values-pr.yaml' # PR specific values file.
@@ -61,9 +62,10 @@ jobs:
     with:
       triggers: ('backend/cats/' 'cats-frontend/' 'charts/' '.github/workflows/')
       values: 'values-pr.yaml' # PR specific values file.
+      redirect_uri: https://logontest7.gov.bc.ca/clp-cgi/logoff.cgi?retnow=1&returl=https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/protocol/openid-connect/logout?post_logout_redirect_uri=https://nr-epd-digital-services-${{ github.event.pull_request.number}}-frontend.apps.silver.devops.gov.bc.ca/
       db_user: cats-${{ github.event.number }}
-      timeout-minutes: 60
-
+      timeout-minutes: 20
+  
   results:
     name: PR Results
     needs: [builds, deploys]

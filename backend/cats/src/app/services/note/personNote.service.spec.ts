@@ -68,59 +68,59 @@ describe('PersonNoteService', () => {
       const user = {
         identity_provider: UserTypeEum.BCEID, // Not IDIR
       };
-  
+
       await expect(service.createPersonNote(createNote, user)).rejects.toThrow(
         new HttpException('Failed to create note', HttpStatus.FORBIDDEN),
       );
     });
-  
+
     it('should create a note if user has IDIR identity provider', async () => {
       const createNote = { personId: 1, noteDescription: 'Test note' };
       const user = {
         identity_provider: UserTypeEum.IDIR, // IDIR provider
         givenName: 'TestUser',
       };
-  
+
       // Mock repository methods with the correct types
-      const savedNote = { 
+      const savedNote = {
         id: '1', // Change id to string to match the expected type
         personId: 1,
-        noteDescription: 'Test note', 
-        createdBy: 'TestUser', 
-        createdDatetime: new Date() 
+        noteDescription: 'Test note',
+        createdBy: 'TestUser',
+        createdDatetime: new Date()
       };
-  
+
       jest.spyOn(repository, 'create').mockReturnValue(savedNote as any);
       jest.spyOn(repository, 'save').mockResolvedValue(savedNote as any);
-  
+
       const result = await service.createPersonNote(createNote, user);
-  
+
       expect(result).toBeDefined();
       expect(result.id).toBe(savedNote.id);
       expect(result.noteDescription).toBe(savedNote.noteDescription);
       expect(result.user).toBe(savedNote.createdBy);
     });
   });
-  
+
   describe('updatePersonNote', () => {
     it('should throw an error when trying to update a non-existing note', async () => {
       const updateNote = { noteDescription: 'Updated note description' };
       const user = { identity_provider: UserTypeEum.IDIR, givenName: 'TestUser' };
       const noteId = 'non-existing-id';
-  
+
       // Simulate note not found
       jest.spyOn(repository, 'findOne').mockResolvedValue(null);
-  
+
       await expect(service.updatePersonNote(noteId, updateNote, user)).rejects.toThrow(
         new HttpException('Failed to update note', HttpStatus.NOT_FOUND)
       );
     });
-  
+
     it('should return the note without updating if no changes are detected', async () => {
       const updateNote = { noteDescription: 'Same description' }; // No actual change
       const user = { identity_provider: UserTypeEum.IDIR, givenName: 'TestUser' };
       const noteId = '1';
-  
+
       // Create the mock with all required fields for PersonNote
       const existingNote = {
         id: noteId,
@@ -138,7 +138,7 @@ describe('PersonNoteService', () => {
           middleName: 'A',
           lastName: 'Doe',
           isTaxExempt: false,
-          isEnvConsultant: false, 
+          isEnvConsultant: false,
           loginUserName: 'johndoe',
           address_1: '123 Main St',
           address_2: 'Apt 4B',
@@ -157,15 +157,16 @@ describe('PersonNoteService', () => {
           createdDatetime: new Date(),
           updatedBy: null,
           updatedDatetime: null,
+          personPermissions: []
         },
       };
-  
+
       // Mock repository response for finding an existing note
       jest.spyOn(repository, 'findOne').mockResolvedValue(existingNote);
-  
+
       // Call the service method
       const result = await service.updatePersonNote(noteId, updateNote, user);
-  
+
       // Ensure all fields are correctly returned
       expect(result).toEqual({
         id: existingNote.id,
@@ -175,26 +176,26 @@ describe('PersonNoteService', () => {
       });
     });
   });
-  
+
   describe('deletePersonNote', () => {
     it('should return false when attempting to delete a non-existing note', async () => {
-        const notesToDelete = [{ id: 'non-existing-id' }];
-        const user = { identity_provider: UserTypeEum.IDIR, givenName: 'TestUser' };
-      
-        jest.spyOn(repository, 'findOne').mockResolvedValue(null); // Simulate note not found
-      
-        const result = await service.deletePersonNote(notesToDelete, user);
-      
-        expect(result).toBe(false);
+      const notesToDelete = [{ id: 'non-existing-id' }];
+      const user = { identity_provider: UserTypeEum.IDIR, givenName: 'TestUser' };
+
+      jest.spyOn(repository, 'findOne').mockResolvedValue(null); // Simulate note not found
+
+      const result = await service.deletePersonNote(notesToDelete, user);
+
+      expect(result).toBe(false);
     });
-    
+
     it('should throw FORBIDDEN error if user does not have IDIR identity provider during deletion', async () => {
-        const notesToDelete = [{ id: '1' }];
-        const user = { identity_provider: 'BCEID', givenName: 'TestUser' };
-      
-        await expect(service.deletePersonNote(notesToDelete, user)).rejects.toThrow(
-          new HttpException('Only users with IDIR identity provider are allowed to delete notes', HttpStatus.FORBIDDEN)
-        );
+      const notesToDelete = [{ id: '1' }];
+      const user = { identity_provider: 'BCEID', givenName: 'TestUser' };
+
+      await expect(service.deletePersonNote(notesToDelete, user)).rejects.toThrow(
+        new HttpException('Only users with IDIR identity provider are allowed to delete notes', HttpStatus.FORBIDDEN)
+      );
     });
   });
 });

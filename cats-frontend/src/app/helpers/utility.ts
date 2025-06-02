@@ -119,18 +119,31 @@ export const generateRequestId = () => {
   return nanoid();
 };
 
-export const getAxiosInstance = () => {
-  const user = getUser();
+export const getAxiosInstance = (URL?: string, customHeaders?: any) => {
+  const user = getUser(); // Get user info to get the access token
+  let requestHeaders: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+
+  if (customHeaders) {
+    requestHeaders = {
+      ...requestHeaders,
+      ...customHeaders,
+    };
+  } else {
+    requestHeaders = {
+      Authorization: `Bearer ${user?.access_token || ''}`,
+    };
+  }
+  // Conditionally add requestID and Access-Control-Allow-Origin based on the URL
+  if (!URL) {
+    requestHeaders['requestID'] = generateRequestId(); // Generate a unique request ID
+    requestHeaders['Access-Control-Allow-Origin'] = '*'; // Allow all origins (CORS header)
+  }
 
   const instance = axios.create({
-    baseURL: API,
-    // timeout: 2000,
-    headers: {
-      Authorization: 'Bearer ' + user?.access_token,
-      requestID: generateRequestId(),
-      'Access-Control-Allow-Origin': '*',
-      'Content-Type': 'application/json',
-    },
+    baseURL: URL ?? API, // Use the provided URL or default to the API constant
+    headers: requestHeaders,
   });
 
   return instance;
@@ -188,45 +201,40 @@ export const showNotification = (
 
 export enum UserRoleType {
   INTERNAL = 'internal',
-  SR = 'sr',
-  default = 'not-logged-in',
+  DEFAULT = 'not-logged-in',
+  CSSA_MANAGER = 'cssa-manager',
 }
 
 export const isUserOfType = (roleType: UserRoleType) => {
   const user = getUser();
-
   if (user !== null) {
     const userRoles: any = user.profile?.role;
     switch (roleType) {
       case 'internal':
         const internalUserRole =
           import.meta.env.VITE_SITE_INTERNAL_USER_ROLE || 'site-internal-user';
-
         if (userRoles.includes(internalUserRole)) {
           return true;
         } else {
           return false;
         }
-      case 'sr':
-        return false;
-      // const srUserRole =
-      //   //  process.env?.REACT_APP_SITE_REGISTRAR_USER_ROLE
-      //   // ?? ((window as any)?._env_?.REACT_APP_SITE_REGISTRAR_USER_ROLE) ??
-      //   "site-site-registrar";
-
-      // if (userRoles.includes(srUserRole)) {
-      //   return true;
-      // } else {
-      //   return false;
-      // }
+      case 'cssa-manager':
+        const cssaManagerRole = import.meta.env.VITE_CATS_CSSA_MANAGER_ROLE;
+        if (userRoles.includes(cssaManagerRole)) {
+          return true;
+        } else {
+          return false;
+        }
     }
   }
+
+  return false;
 };
 
 export const getLoggedInUserType = () => {
   return isUserOfType(UserRoleType.INTERNAL)
     ? UserRoleType.INTERNAL
-    : UserRoleType.default;
+    : UserRoleType.DEFAULT;
 };
 
 export const isUserRoleInternalUser = () => { };
@@ -288,13 +296,22 @@ export const updateFields = (
   ];
 };
 
-export const bcBoxAppUrl = import.meta.env.VITE_BCBOX_APP_URL;
-export const getBcBoxBucketIdApiUrl = import.meta.env.VITE_BCBOX_BUCKET_URL;
-export const comsAccessKeyId = import.meta.env.VITE_COMS_ACCESS_KEY_ID;
-export const comsBcBoxBucketId = import.meta.env.VITE_COMS_BUCKET;
-export const comsEndPoint = import.meta.env.VITE_COMS_ENDPOINT;
-export const comsAccessRegion = import.meta.env.VITE_COMS_ACCESS_REGION;
-export const comsAccessKey = import.meta.env.VITE_COMS_ACCESS_KEY;
+export const bcBoxAppUrl =
+  import.meta.env.VITE_BCBOX_APP_URL || window?._env_?.VITE_BCBOX_APP_URL;
+export const getBcBoxBucketIdApiUrl =
+  import.meta.env.VITE_BCBOX_BUCKET_URL || window?._env_?.VITE_BCBOX_BUCKET_URL;
+export const comsAccessKeyId =
+  import.meta.env.VITE_COMS_ACCESS_KEY_ID ||
+  window?._env_?.VITE_COMS_ACCESS_KEY_ID;
+export const comsBcBoxBucketId =
+  import.meta.env.VITE_COMS_BUCKET || window?._env_?.VITE_COMS_BUCKET;
+export const comsEndPoint =
+  import.meta.env.VITE_COMS_ENDPOINT || window?._env_?.VITE_COMS_ENDPOINT;
+export const comsAccessRegion =
+  import.meta.env.VITE_COMS_ACCESS_REGION ||
+  window?._env_?.VITE_COMS_ACCESS_REGION;
+export const comsAccessKey =
+  import.meta.env.VITE_COMS_ACCESS_KEY || window?._env_?.VITE_COMS_ACCESS_KEY;
 
 type PermissionSuccessCallback = (state: PermissionState) => void;
 type PermissionErrorCallback = (error: Error) => void;

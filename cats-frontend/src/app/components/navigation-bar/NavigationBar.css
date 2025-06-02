@@ -1,24 +1,25 @@
 .custom-navigation-bar-header {
-  padding: var(--layout-margin-large) var(--layout-margin-xxlarge) 0
-    var(--layout-margin-xxlarge);
+  padding: var(--layout-margin-large) var(--layout-margin-xxlarge) 0 var(--layout-margin-xxlarge);
   gap: var(--layout-margin-xxlarge);
 }
+
 .custom-navigation-bar-sticky-header {
-  position: -webkit-sticky; /* For Safari */
+  position: -webkit-sticky;
+  /* For Safari */
   position: sticky;
   z-index: 999 !important;
   top: 65px;
   left: 128px;
-  padding: var(--layout-margin-large) var(--layout-margin-xxlarge)
-    var(--layout-margin-large) var(--layout-margin-xxlarge);
+  padding: var(--layout-margin-large) var(--layout-margin-xxlarge) var(--layout-margin-large) var(--layout-margin-xxlarge);
   gap: var(--layout-margin-xxlarge);
   background: var(--surface-color-background-white, #ffffff);
   border-bottom: 1px solid var(--surface-color-border-default, #d8d8d8);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
   .custom-navigation-bar-sticky-header {
     align-items: flex-start !important;
+    gap: var(--layout-margin-medium);
   }
 }
 
@@ -30,7 +31,7 @@
   color: var(--typography-color-primary, #2d2d2d);
 }
 
-.custom-navigation-bar-sticky-header-lbl > div > span {
+.custom-navigation-bar-sticky-header-lbl>div>span {
   font-weight: 400;
   padding-left: 8px;
 }

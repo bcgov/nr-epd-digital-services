@@ -71,9 +71,8 @@ const Pagination: React.FC<PaginationProps> = ({
     return (
       <div
         onClick={() => selectPage?.(pageNumber)}
-        className={`pagination-page ${
-          currentPage === pageNumber ? 'pagination-page-active' : ''
-        }`}
+        className={`pagination-page ${currentPage === pageNumber ? 'pagination-page-active' : ''
+          }`}
       >
         {pageNumber}
       </div>
@@ -204,6 +203,7 @@ const Pagination: React.FC<PaginationProps> = ({
             onChange={(e) => {
               changeResultsPerPage?.(parseInt(e.target.value));
             }}
+            value={resultsPerPage}
           >
             <option>5</option>
             <option>10</option>

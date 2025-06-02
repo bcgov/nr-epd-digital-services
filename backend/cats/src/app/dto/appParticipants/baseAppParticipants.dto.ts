@@ -4,9 +4,6 @@ import { IsDate, IsOptional, IsString } from 'class-validator';
 @ObjectType()
 @InputType()
 export class BaseAppParticipantsDto {
-  @Field({ defaultValue: false })
-  isMainParticipant: boolean;
-
   @Field()
   @IsDate()
   effectiveStartDate: Date;

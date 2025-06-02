@@ -71,7 +71,7 @@ const NavigationPills: React.FC<INavigationPills> = ({
   };
 
   return (
-    <div className="pt-5">
+    <div>
       <div className="d-flex d-xxl-flex d-xl-flex gap-2 d-none">
         {components.map((item) => (
           <Button
@@ -96,7 +96,7 @@ const NavigationPills: React.FC<INavigationPills> = ({
               customCssMenu={'custom-nav-action-menu'}
               disable={disabled}
               toggleButtonVariant={'secondary'}
-              // toggleButtonSize={isMobileScreen ? 'medium' : 'small'}
+            // toggleButtonSize={isMobileScreen ? 'medium' : 'small'}
             />
           </div>
           <div>

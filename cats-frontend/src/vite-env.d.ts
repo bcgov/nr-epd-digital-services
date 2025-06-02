@@ -14,6 +14,10 @@ interface ImportMetaEnv {
   readonly VITE_AUTH_REVOKE_TOKENS_ON_SIGNOUT: string;
   readonly VITE_SITE_REGISTRAR_USER_ROLE: string;
   readonly VITE_SITE_INTERNAL_USER_ROLE: string;
+  readonly VITE_FORM_API: string;
+  readonly VITE_FORM_BACKEND_API: string;
+  readonly VITE_FORM_FLOW_API: string;
+  readonly VITE_CATS_CSSA_MANAGER_ROLE: string;
 }
 
 interface ImportMeta {

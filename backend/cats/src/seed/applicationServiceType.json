@@ -1,0 +1,133 @@
+[
+    {
+      "type": "CSAP",
+      "description": "Approval in Principle with or without additional services",
+      "value": 2
+    },
+    {
+      "type": "CSAP",
+      "description":"Certificate of Compliance - detailed risk assessment with or without other reports",
+      "value": 2
+    },
+    {
+      "type": "CSAP",
+      "description":
+        "Certificate of Compliance - numerical with or without other reports",
+      "value": 3
+    },
+    {
+      "type": "CSAP",
+      "description": "Certificate of Compliance - screening level risk assessment",
+      "value": 1
+    },
+    {
+      "type": "CSAP",
+      "description": "Final Determination under CSR 15(3)",
+      "value": 1
+    },
+    {
+      "type": "CSAP",
+      "description":
+        "Preliminary Determination under CSR 15(3), with other reports",
+      "value": 2
+    },
+    {
+      "type": "CSAP",
+      "description": "Reporting",
+      "value": 2
+    },
+    { "type": "NON_CSAP", "description": "Financial Statement/Security", "value": 1 },
+    {
+      "type": "NON_CSAP",
+      "description": "P12 - Reclassification with or without additional services",
+      "value": 3
+    },
+    { "type": "NON_CSAP", "description": "Protocol 21 Water Use", "value": 2 },
+    { "type": "NON_CSAP", "description": "Protocol 6 Approval", "value": 2 },
+    { "type": "NON_CSAP", "description": "Site ID (Annual Update)", "value": 1 },
+    { "type": "NON_CSAP", "description": "Site ID Release (Scenario 1)", "value": 1 },
+    { "type": "NON_CSAP", "description": "Site ID Release (Scenario 3)", "value": 3 },
+    { "type": "NON_CSAP", "description": "Site Profile Release", "value": 1 },
+    {
+      "type": "NON_CSAP",
+      "description": "Additional Services and Functions",
+      "value": 2
+    },
+    {
+      "type": "NON_CSAP",
+      "description":
+        "Amendment of Legal Instrument: Hourly Fees with or without other services",
+      "value": 3
+    },
+    {
+      "type": "NON_CSAP",
+      "description": "Approval in Principle with or without additional services",
+      "value": 3
+    },
+    { "type": "NON_CSAP", "description": "Approvals and Permits", "value": 3 },
+    {
+      "type": "NON_CSAP",
+      "description": "Authorizations - Monitoring Report",
+      "value": 2
+    },
+    {
+      "type": "NON_CSAP",
+      "description": "Background Substance Conc.: Protocol 4 Background Soil",
+      "value": 2
+    },
+    {
+      "type": "NON_CSAP",
+      "description":
+        "Background Substance Conc.: Protocol 9 Background Groundwater",
+      "value": 2
+    },
+    {
+      "type": "NON_CSAP",
+      "description":
+        "Certificate of Compliance - detailed risk assessment with or without other reports",
+      "value": 5
+    },
+    {
+      "type": "NON_CSAP",
+      "description":
+        "Certificate of Compliance - numerical with or without other reports",
+      "value": 6
+    },
+    {
+      "type": "NON_CSAP",
+      "description": "Certificate of Compliance - screening level risk assessment",
+      "value": 5
+    },
+    { "type": "NON_CSAP", "description": "Confirmation of remediation", "value": 6 },
+    { "type": "NON_CSAP", "description": "Consultation", "value": 3 },
+    { "type": "NON_CSAP", "description": "Covenant", "value": 2 },
+    {
+      "type": "NON_CSAP",
+      "description":
+        "Detailed site investigation, Risk assessment with other services",
+      "value": 6
+    },
+    {
+      "type": "NON_CSAP",
+      "description": "Final Determination under CSR 15(3)",
+      "value": 2
+    },
+    {
+      "type": "NON_CSAP",
+      "description":
+        "Preliminary Determination under CSR 15(3), with other reports",
+      "value": 2
+    },
+    {
+      "type": "NON_CSAP",
+      "description": "Remediation plan with risk assessment",
+      "value": 10
+    },
+    { "type": "NON_CSAP", "description": "Reporting", "value": 2 },
+    { "type": "NON_CSAP", "description": "Request to Director", "value": 2 },
+    {
+      "type": "NON_CSAP",
+      "description": "Site ID - Confirmation of Remediation",
+      "value": 1
+    }
+  ]
