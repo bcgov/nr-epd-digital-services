@@ -124,7 +124,7 @@ const roleBasedSideBarList: Record<string, SideNav[]> = {
           hasChildren: false,
           icon: icons.userTie,
           linkTo: '/staff',
-          requiredRoles: [UserRoleType.CSSA_MANAGER], // Only 'CSSA Manager' can access
+          requiredRoles: [UserRoleType.MANAGER], // Only 'CSSA Manager' can access
         }),
       ],
     }),

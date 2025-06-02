@@ -117,10 +117,13 @@ export class AppParticipantService {
    * Retrieves all participant roles and transforms the data into DTOs.
    * @returns An array of ParticipantRole objects containing participant roles.
    */
-  async getAllParticipantRoles(): Promise<ViewParticipantsRolesDto[]> {
+  async getAllParticipantRoles(roleType?: string | null): Promise<ViewParticipantsRolesDto[]> {
     try {
       this.loggerService.log('at service layer getAllParticipantRoles start');
-      return await this.participantRoleRepository.find();
+      const condition = roleType ? { roleType } : {};
+      return await this.participantRoleRepository.find({
+        where: condition,
+      });
     } catch (error) {
       this.loggerService.log('at service layer getAllParticipantRoles error');
       throw new HttpException(

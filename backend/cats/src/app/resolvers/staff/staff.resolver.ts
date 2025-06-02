@@ -75,9 +75,9 @@ export class StaffResolver {
     @Args({ name: 'sortBy', type: () => SortBy, nullable: true })
     sortBy: SortBy = SortBy.ID,
     @Args({ name: 'sortByDir', type: () => SortByDirection, nullable: true })
-    @Args({ name: 'personId', type: () => Int }) personId: number,
-    @Args({ name: 'roleId', type: () => Int, nullable: true }) roleId?: number,
     sortDirection: SortByDirection = SortByDirection.ASC,
+    @Args({ name: 'personId', type: () => Int }) personId: number,
+    @Args({ name: 'roleId', type: () => Int, nullable: true }) roleId?: number | null,
   ) {
     try {
       this.loggerSerivce.log('StaffResolver.getApplicationsByStaff() RES:200 start');

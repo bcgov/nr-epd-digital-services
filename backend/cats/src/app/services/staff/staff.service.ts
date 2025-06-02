@@ -8,6 +8,7 @@ import { ViewStaff } from '../../dto/staff/viewStaff.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AppParticipant } from '../../entities/appParticipant.entity';
 import { ViewApplications } from 'src/app/dto/staff/viewApplications.dto';
+import { SiteService } from '../site/site.service';
 
 @Injectable()
 export class StaffService {
@@ -16,6 +17,7 @@ export class StaffService {
     private readonly applicationParticRepo: Repository<AppParticipant>,
     private readonly loggerService: LoggerService,
     private readonly dataSource: DataSource,
+    private readonly siteService: SiteService
   ) {}
 
   async getStaffs(
@@ -127,61 +129,98 @@ export class StaffService {
       throw new Error(`Failed to fetch staff: ${error.message}`);
     }
   }
+
   async getApplicationsByStaff(
     page: number,
     pageSize: number,
     sortBy: SortBy,
     sortDirection: SortByDirection,
     staffId: number,
-    roleId?: number,
-   ) {
+    roleId?: number | null,
+  ) {
     try {
       this.loggerService.log('StaffService: getApplicationsByStaff start');
 
-      const conditions: any = { id: staffId };
+      if (!staffId || staffId <= 0) {
+        throw new Error('Invalid staffId');
+      }
+      if (page <= 0 || pageSize <= 0) {
+        throw new Error('Invalid page or pageSize value');
+      }
+
+      const qb = this.applicationParticRepo
+        .createQueryBuilder('appParticipant')
+        .leftJoinAndSelect('appParticipant.participantRole', 'participantRole')
+        .leftJoinAndSelect('appParticipant.application', 'application')
+        .where('appParticipant.person_id = :staffId', { staffId });
+
       if (roleId) {
-        conditions.participantRoleId = roleId;
+        qb.andWhere('appParticipant.participantRoleId = :roleId', { roleId });
       }
 
-      const [applications, total] = await this.applicationParticRepo.findAndCount({
-        where: conditions,
-        relations: ['person', 'participantRole'],
-        order: {
-          [sortBy]: sortDirection,
-        },
-        skip: (page - 1) * pageSize,
-        take: pageSize,
-      });
+      let sortByAddress =  false;
+      // Sorting logic
+      switch (sortBy) {
+        case SortBy.ID:
+          qb.orderBy('appParticipant.id', sortDirection);
+          break;
+        case SortBy.ROLE:
+          qb.orderBy('participantRole.description', sortDirection);
+          break;
+        case SortBy.START_DATE:
+          qb.orderBy('appParticipant.effectiveStartDate', sortDirection);
+          break;
+        case SortBy.END_DATE:
+          qb.orderBy('appParticipant.effectiveEndDate', sortDirection);
+          break;
+        case SortBy.SITE_ADDRESS:
+          sortByAddress = true;
+          break;
+        default:
+          throw new Error(`Unsupported sort field: ${sortBy}`);
+      }
 
-      if (!applications.length) {
-        this.loggerService.warn(`No applications found for staffId: ${staffId}${roleId ? ` and roleId: ${roleId}` : ''}`);
+      qb.skip((page - 1) * pageSize).take(pageSize);
+
+      const [applications, total] = await qb.getManyAndCount();
+
+      const data: ViewApplications[] = await Promise.all(applications.map(async (app: AppParticipant) => {
+      const siteDetails = await this.siteService.getSiteById(app?.application?.siteId.toString());
+        let siteAddress = '';
+        if(siteDetails)
+        {
+          siteAddress = `${siteDetails?.findSiteBySiteId?.data?.addrLine_1 ?? ''}
+                        ${siteDetails?.findSiteBySiteId?.data?.addrLine_2 ?? ''}
+                        ${siteDetails?.findSiteBySiteId?.data?.addrLine_3 ?? ''}
+                        ${siteDetails?.findSiteBySiteId?.data?.addrLine_4 ?? ''}`;
+        }
+        
         return {
-          data: [],
-          total,
-          page,
-          pageSize,
+          id: app.id,
+          applicationId: app.applicationId,
+          roleId: app.participantRoleId,
+          roleDescription: app.participantRole?.description,
+          siteAddress,
+          effectiveStartDate: app.effectiveStartDate,
+          effectiveEndDate: app.effectiveEndDate,
         };
-      }
-
-      const data: ViewApplications[] = applications.map(app => ({
-        id: app.id,
-        applicationId: app.applicationId,
-        roleId: app.participantRoleId,
-        // SiteAddress: app.siteAddress,
-        roleDescription: app?.participantRole?.description,
-        effectiveStartDate: app.effectiveStartDate,
-        effectiveEndDate: app.effectiveEndDate,
       }));
 
-      this.loggerService.log('StaffService: getApplicationsByStaff end');
+      if (data?.length > 0 && sortByAddress) {
+        data.sort((a, b) => {
+          const siteA = a.siteAddress ?? '';
+          const siteB = b.siteAddress ?? '';
+          return sortDirection === SortByDirection.ASC ? siteA.localeCompare(siteB) : siteB.localeCompare(siteA);
+        });
+      }
 
       return {
         data,
         total,
         page,
         pageSize,
+        count: total,
       };
-
     } catch (error) {
       this.loggerService.error(`StaffService Error: ${error.message}`, error.stack);
       throw new Error(`Failed to fetch staff applications: ${error.message}`);

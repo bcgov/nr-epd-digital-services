@@ -14,8 +14,8 @@ export class ViewApplications {
     @Field()
     roleDescription: string;
 
-    // @Field()
-    // SiteAddress: string;
+    @Field()
+    siteAddress: string;
 
     @Field()
     effectiveStartDate: Date;

@@ -577,6 +577,11 @@ export type QueryFindPersonByIdArgs = {
 };
 
 
+export type QueryGetAllParticipantRolesArgs = {
+  roleType?: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type QueryGetAppParticipantsByAppIdArgs = {
   applicationId: Scalars['Int']['input'];
   filter?: InputMaybe<AppParticipantFilter>;
@@ -942,6 +947,7 @@ export type ViewApplications = {
   id: Scalars['Float']['output'];
   roleDescription: Scalars['String']['output'];
   roleId: Scalars['Float']['output'];
+  siteAddress: Scalars['String']['output'];
 };
 
 export type ViewOrganizationsDto = {
@@ -963,6 +969,7 @@ export type ViewParticipantsRolesDto = {
   __typename?: 'ViewParticipantsRolesDto';
   description: Scalars['String']['output'];
   id: Scalars['Float']['output'];
+  roleType?: Maybe<Scalars['String']['output']>;
 };
 
 export type ViewPermissions = {

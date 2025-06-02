@@ -94,10 +94,10 @@ export class AppParticipantResolver {
   }
 
   @Query(() => ParticipantsRolesResponse, { name: 'getAllParticipantRoles' })
-  @UsePipes(new GenericValidationPipe())
-  async getAllParticipantRoles(@AuthenticatedUser() user: any) {
+  async getAllParticipantRoles(
+    @Args('roleType', { type: () => String, nullable: true }) roleType?: string | null) {
     try {
-      const result = await this.appParticipantService.getAllParticipantRoles();
+      const result = await this.appParticipantService.getAllParticipantRoles(roleType);
       if (result?.length > 0) {
         this.loggerService.log(
           'AppParticipantResolver.getAllParticipantRoles() RES:200 end',

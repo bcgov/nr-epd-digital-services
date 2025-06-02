@@ -31,14 +31,15 @@ query getApplicationsByStaff($page: Int!, $pageSize: Int!, $sortBy: StaffSortByF
            applicationId
            roleId
            roleDescription
+           siteAddress
            effectiveStartDate
            effectiveEndDate
         }
     }
 }
 
-query getRoles {
-    getAllParticipantRoles {
+query getRoles($roleType: String) {
+    getAllParticipantRoles(roleType: $roleType) {
         httpStatusCode
         success
         message

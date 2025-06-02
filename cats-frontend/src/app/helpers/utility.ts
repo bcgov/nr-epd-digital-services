@@ -202,7 +202,7 @@ export const showNotification = (
 export enum UserRoleType {
   INTERNAL = 'internal',
   DEFAULT = 'not-logged-in',
-  CSSA_MANAGER = 'cssa-manager',
+  MANAGER = 'manager',
 }
 
 export const isUserOfType = (roleType: UserRoleType) => {
@@ -210,7 +210,7 @@ export const isUserOfType = (roleType: UserRoleType) => {
   if (user !== null) {
     const userRoles: any = user.profile?.role;
     switch (roleType) {
-      case 'internal':
+      case UserRoleType.INTERNAL:
         const internalUserRole =
           import.meta.env.VITE_SITE_INTERNAL_USER_ROLE || 'site-internal-user';
         if (userRoles.includes(internalUserRole)) {
@@ -218,7 +218,7 @@ export const isUserOfType = (roleType: UserRoleType) => {
         } else {
           return false;
         }
-      case 'cssa-manager':
+      case UserRoleType.MANAGER:
         const cssaManagerRole = import.meta.env.VITE_CATS_CSSA_MANAGER_ROLE;
         if (userRoles.includes(cssaManagerRole)) {
           return true;

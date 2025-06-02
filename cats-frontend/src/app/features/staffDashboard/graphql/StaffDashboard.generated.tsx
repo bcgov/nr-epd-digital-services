@@ -24,12 +24,14 @@ export type GetApplicationsByStaffQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetApplicationsByStaffQuery = { __typename?: 'Query', getApplicationsByStaff: { __typename?: 'ViewApplicationResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, count?: number | null, page?: number | null, pageSize?: number | null, data: Array<{ __typename?: 'ViewApplications', id: number, applicationId: number, roleId: number, roleDescription: string, effectiveStartDate: any, effectiveEndDate?: any | null }> } };
+export type GetApplicationsByStaffQuery = { __typename?: 'Query', getApplicationsByStaff: { __typename?: 'ViewApplicationResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, count?: number | null, page?: number | null, pageSize?: number | null, data: Array<{ __typename?: 'ViewApplications', id: number, applicationId: number, roleId: number, roleDescription: string, siteAddress: string, effectiveStartDate: any, effectiveEndDate?: any | null }> } };
 
-export type GetRolesQueryVariables = Types.Exact<{ [key: string]: never; }>;
+export type GetRolesQueryVariables = Types.Exact<{
+  roleType?: Types.InputMaybe<Types.Scalars['String']['input']>;
+}>;
 
 
-export type GetRolesQuery = { __typename?: 'Query', getAllParticipantRoles: { __typename?: 'ParticipantsRolesResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewParticipantsRolesDto', id: number, description: string }> | null } };
+export type GetRolesQuery = { __typename?: 'Query', getAllParticipantRoles: { __typename?: 'ParticipantsRolesResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewParticipantsRolesDto', id: number, description: string, roleType?: string | null }> | null } };
 
 
 export const GetStaffsDocument = gql`
@@ -114,6 +116,7 @@ export const GetApplicationsByStaffDocument = gql`
       applicationId
       roleId
       roleDescription
+      siteAddress
       effectiveStartDate
       effectiveEndDate
     }
@@ -159,8 +162,8 @@ export type GetApplicationsByStaffLazyQueryHookResult = ReturnType<typeof useGet
 export type GetApplicationsByStaffSuspenseQueryHookResult = ReturnType<typeof useGetApplicationsByStaffSuspenseQuery>;
 export type GetApplicationsByStaffQueryResult = Apollo.QueryResult<GetApplicationsByStaffQuery, GetApplicationsByStaffQueryVariables>;
 export const GetRolesDocument = gql`
-    query getRoles {
-  getAllParticipantRoles {
+    query getRoles($roleType: String) {
+  getAllParticipantRoles(roleType: $roleType) {
     httpStatusCode
     success
     message
@@ -168,6 +171,7 @@ export const GetRolesDocument = gql`
     data {
       id
       description
+      roleType
     }
   }
 }
@@ -185,6 +189,7 @@ export const GetRolesDocument = gql`
  * @example
  * const { data, loading, error } = useGetRolesQuery({
  *   variables: {
+ *      roleType: // value for 'roleType'
  *   },
  * });
  */
