@@ -18,7 +18,7 @@ export class AppTypeService {
     try {
       // Log the input parameters for better traceability
       this.loggerService.debug(
-        `Fetching application type with abbrev: ${appTypeAbbrev}`,
+        `Fetching application type with abbreviation: ${appTypeAbbrev}`,
       );
 
       const appType = await this.appTypeRepository.findOne({
