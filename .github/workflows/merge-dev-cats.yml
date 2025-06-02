@@ -58,7 +58,7 @@ jobs:
           build_file: ${{ matrix.build_file }}
           build_context: ${{ matrix.build_context }}
 
-          
+
   deploy_db:
     name: Deploys Database (test)
     uses: ./.github/workflows/.dbdeployer.yml
