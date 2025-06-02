@@ -143,6 +143,7 @@ describe('PersonResolver', () => {
       createdDatetime: new Date('2025-02-05T18:43:03.244Z'),
       updatedBy: 'system',
       updatedDatetime: new Date('2025-02-05T18:43:03.244Z'),
+      personPermissions: [],
     };
     const expectedResult = {
       message: 'Person created successfully',
