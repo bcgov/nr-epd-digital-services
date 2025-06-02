@@ -35,7 +35,7 @@ const Widget: React.FC<IWidget> = ({
   totalResults,
   filter,
 }) => {
-  let widgetSortHandler = sortHandler ?? (() => {});
+  let widgetSortHandler = sortHandler ?? (() => { });
 
   return (
     <div
@@ -48,7 +48,7 @@ const Widget: React.FC<IWidget> = ({
               type={FormFieldType.Checkbox}
               label={''}
               isLabel={false}
-              onChange={handleCheckBoxChange ?? (() => {})}
+              onChange={handleCheckBoxChange ?? (() => { })}
               srMode={srMode}
               isChecked={widgetIschecked}
             />
@@ -75,7 +75,7 @@ const Widget: React.FC<IWidget> = ({
             data={tableData ?? []}
             showPageOptions={showPageOptions}
             allowRowsSelect={allowRowsSelect}
-            changeHandler={changeHandler ?? (() => {})}
+            changeHandler={changeHandler ?? (() => { })}
             editMode={editMode ?? false}
             srMode={srMode ?? false}
             idColumnName={primaryKeycolumnName ?? ''}

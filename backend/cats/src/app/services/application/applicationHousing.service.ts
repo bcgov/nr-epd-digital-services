@@ -30,7 +30,7 @@ export class ApplicationHousingService {
     @InjectRepository(HousingType)
     private readonly housingTypeRepository: Repository<HousingType>,
     private readonly loggerService: LoggerService,
-  ) {}
+  ) { }
 
   async getApplicationHousingByApplicationId(
     applicationId: number,

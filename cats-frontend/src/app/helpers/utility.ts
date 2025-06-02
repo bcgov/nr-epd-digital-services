@@ -100,9 +100,9 @@ export const flattenFormRows = (arr: IFormField[][]): IFormField[] => {
 export function getUser() {
   const oidcStorage = sessionStorage.getItem(
     `oidc.user:` +
-      getClientSettings().authority +
-      `:` +
-      getClientSettings().client_id,
+    getClientSettings().authority +
+    `:` +
+    getClientSettings().client_id,
   );
   if (!oidcStorage) {
     return null;
@@ -237,9 +237,9 @@ export const getLoggedInUserType = () => {
     : UserRoleType.DEFAULT;
 };
 
-export const isUserRoleInternalUser = () => {};
+export const isUserRoleInternalUser = () => { };
 
-export const isUserRoleSiteRegistrar = () => {};
+export const isUserRoleSiteRegistrar = () => { };
 
 export const updateTableColumn = (
   columns: TableColumn[],

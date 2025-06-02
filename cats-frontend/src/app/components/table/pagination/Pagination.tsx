@@ -71,9 +71,8 @@ const Pagination: React.FC<PaginationProps> = ({
     return (
       <div
         onClick={() => selectPage?.(pageNumber)}
-        className={`pagination-page ${
-          currentPage === pageNumber ? 'pagination-page-active' : ''
-        }`}
+        className={`pagination-page ${currentPage === pageNumber ? 'pagination-page-active' : ''
+          }`}
       >
         {pageNumber}
       </div>

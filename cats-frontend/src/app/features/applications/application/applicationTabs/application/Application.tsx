@@ -35,7 +35,7 @@ interface ApplicationForm {
   formJson: FormJson;
 }
 
-interface ApplicationProps {}
+interface ApplicationProps { }
 
 export const Application: React.FC<ApplicationProps> = () => {
   const userDetails = getUser();

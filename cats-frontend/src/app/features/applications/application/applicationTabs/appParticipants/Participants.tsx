@@ -40,10 +40,10 @@ export const Participants = () => {
         userType={UserType.Internal}
         appParticsData={queryData?.getAppParticipantsByAppId?.data || []}
         viewMode={UserMode.Default}
-        handleTableSort={() => {}}
-        handleAddParticipant={() => {}}
-        handleRemoveParticipant={() => {}}
-        handleItemClick={() => {}}
+        handleTableSort={() => { }}
+        handleAddParticipant={() => { }}
+        handleRemoveParticipant={() => { }}
+        handleItemClick={() => { }}
         loading={queryLoading}
         handleFilterChange={updateFilter}
         filter={filterOption}

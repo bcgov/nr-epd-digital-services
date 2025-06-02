@@ -4,7 +4,7 @@ import axios from 'axios';
 
 @Injectable()
 export class KeycloakService {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) { }
 
   /**
    * Retrieve access token from Keycloak.

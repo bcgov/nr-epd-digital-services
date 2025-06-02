@@ -64,18 +64,18 @@ a.custom-people-edit-lbl {
 /* Header */
 
 .custom-person-header {
-  padding: var(--layout-margin-large) var(--layout-margin-xxlarge) 0
-    var(--layout-margin-xxlarge);
+  padding: var(--layout-margin-large) var(--layout-margin-xxlarge) 0 var(--layout-margin-xxlarge);
   gap: var(--layout-margin-xxlarge);
 }
+
 .custom-person-sticky-header {
-  position: -webkit-sticky; /* For Safari */
+  position: -webkit-sticky;
+  /* For Safari */
   position: sticky;
   z-index: 999 !important;
   top: 65px;
   left: 128px;
-  padding: var(--layout-margin-large) var(--layout-margin-xxlarge)
-    var(--layout-margin-large) var(--layout-margin-xxlarge);
+  padding: var(--layout-margin-large) var(--layout-margin-xxlarge) var(--layout-margin-large) var(--layout-margin-xxlarge);
   gap: var(--layout-margin-xxlarge);
   background: var(--surface-color-background-white, #ffffff);
   border-bottom: 1px solid var(--surface-color-border-default, #d8d8d8);
@@ -95,7 +95,7 @@ a.custom-people-edit-lbl {
   color: var(--typography-color-primary, #2d2d2d);
 }
 
-.custom-person-sticky-header-lbl > div > span {
+.custom-person-sticky-header-lbl>div>span {
   font-weight: 400;
   padding-left: 8px;
 }
@@ -115,9 +115,7 @@ a.custom-people-edit-lbl {
   color: var(--typography-color-secondary, #474543);
 }
 
-.custom-note-modal-edit-input
-  .rs-input-group.rs-input-group-inside
-  .rs-input-group-addon {
+.custom-note-modal-edit-input .rs-input-group.rs-input-group-inside .rs-input-group-addon {
   top: 0;
   background: none;
   border: none;
@@ -132,7 +130,7 @@ a.custom-people-edit-lbl {
 .custom-search-input-container {
   position: relative;
 
-  & > .custom-search-box-container {
+  &>.custom-search-box-container {
     position: unset !important;
   }
 }

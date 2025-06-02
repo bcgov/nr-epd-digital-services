@@ -17,7 +17,8 @@ header {
 }
 
 header h1 {
-  font-weight: normal; /* 400 */
+  font-weight: normal;
+  /* 400 */
   margin: 5px 5px 0 18px;
   visibility: hidden;
   font-size: 24px;
@@ -143,15 +144,18 @@ header .other {
 }
 
 ::-webkit-scrollbar {
-  width: 12px; /* width of the scrollbar */
+  width: 12px;
+  /* width of the scrollbar */
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; /* color of the track */
+  background: #f1f1f1;
+  /* color of the track */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888; /* color of the thumb */
+  background: #888;
+  /* color of the thumb */
 }
 
 @media (max-width: 576px) {

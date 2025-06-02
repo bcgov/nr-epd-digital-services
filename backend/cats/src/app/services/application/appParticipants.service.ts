@@ -36,7 +36,7 @@ export class AppParticipantService {
 
     @InjectRepository(Organization)
     private readonly organizationRepository: Repository<Organization>,
-  ) {}
+  ) { }
 
   /**
    * Retrieves app participants for a given app ID and transforms the data into DTOs.
@@ -320,8 +320,7 @@ export class AppParticipantService {
     try {
       // Log the input parameters for better traceability
       this.loggerService.debug(
-        `updateAppParticipant: participantId=${
-          updateParticipant.applicationId
+        `updateAppParticipant: participantId=${updateParticipant.applicationId
         }, updateData=${JSON.stringify(updateParticipant)}`,
       );
 

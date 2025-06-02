@@ -68,18 +68,18 @@ export const SearchApplicationsDocument = gql`
  *   },
  * });
  */
-export function useSearchApplicationsQuery(baseOptions: Apollo.QueryHookOptions<SearchApplicationsQuery, SearchApplicationsQueryVariables> & ({ variables: SearchApplicationsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SearchApplicationsQuery, SearchApplicationsQueryVariables>(SearchApplicationsDocument, options);
-      }
+export function useSearchApplicationsQuery(baseOptions: Apollo.QueryHookOptions<SearchApplicationsQuery, SearchApplicationsQueryVariables> & ({ variables: SearchApplicationsQueryVariables; skip?: boolean; } | { skip: boolean; })) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<SearchApplicationsQuery, SearchApplicationsQueryVariables>(SearchApplicationsDocument, options);
+}
 export function useSearchApplicationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchApplicationsQuery, SearchApplicationsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SearchApplicationsQuery, SearchApplicationsQueryVariables>(SearchApplicationsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<SearchApplicationsQuery, SearchApplicationsQueryVariables>(SearchApplicationsDocument, options);
+}
 export function useSearchApplicationsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<SearchApplicationsQuery, SearchApplicationsQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<SearchApplicationsQuery, SearchApplicationsQueryVariables>(SearchApplicationsDocument, options);
-        }
+  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<SearchApplicationsQuery, SearchApplicationsQueryVariables>(SearchApplicationsDocument, options);
+}
 export type SearchApplicationsQueryHookResult = ReturnType<typeof useSearchApplicationsQuery>;
 export type SearchApplicationsLazyQueryHookResult = ReturnType<typeof useSearchApplicationsLazyQuery>;
 export type SearchApplicationsSuspenseQueryHookResult = ReturnType<typeof useSearchApplicationsSuspenseQuery>;

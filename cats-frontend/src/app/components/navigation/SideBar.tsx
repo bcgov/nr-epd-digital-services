@@ -34,7 +34,6 @@ function SideBar() {
 
     const linkContent = isCartLink ? displayCount : item.displayText;
     const isParentGroup: boolean = item.displayText && !item.icon;
-
     return (
       <section
         tabIndex={tabIndex}

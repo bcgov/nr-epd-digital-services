@@ -41,7 +41,6 @@ jobs:
           build_file: ${{ matrix.build_file }}
           build_context: ${{ matrix.build_context }}
 
-
   deploy_db:
     name: Deploys Database
     if: ${{ ! github.event.pull_request.draft }}

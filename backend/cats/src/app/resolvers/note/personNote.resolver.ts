@@ -18,17 +18,16 @@ export class PersonNoteResolver {
         private readonly personNoteService: PersonNoteService,
         private readonly loggerService: LoggerService,
         private readonly personNoteResponse: GenericResponseProvider<ViewPersonNote[]>,
-    ) {}
+    ) { }
 
     @Query(() => PersonNoteResponse, { name: 'getPersonNotesByPersonId' })
     @UsePipes(new GenericValidationPipe())
     async getPersonNotesByPersonId(
-        @Args('id', { type: () => Number }) id: number, 
+        @Args('id', { type: () => Number }) id: number,
         @AuthenticatedUser() user: any
     ) {
         const result = await this.personNoteService.getPersonNotesByPersonId(id, user);
-        if (result?.length > 0) 
-        {
+        if (result?.length > 0) {
             this.loggerService.log('PersonNoteResolver.getPersonNotesByPersonId() RES:200 end');
             return this.personNoteResponse.createResponse(
                 'Notes fetched successfully',
@@ -36,9 +35,8 @@ export class PersonNoteResolver {
                 true,
                 result,
             );
-        } 
-        else 
-        {
+        }
+        else {
             this.loggerService.log('PersonNoteResolver.getPersonNotesByPersonId() RES:404 end');
             return this.personNoteResponse.createResponse(
                 `Notes data not found for person id: ${id}`,
@@ -64,9 +62,8 @@ export class PersonNoteResolver {
                 true,
                 [result],
             );
-        } 
-        else 
-        {
+        }
+        else {
             this.loggerService.log('PersonNoteResolver.createPersonNote() RES:400 end');
             return this.personNoteResponse.createResponse(
                 'Failed to create note',
@@ -93,9 +90,8 @@ export class PersonNoteResolver {
                 true,
                 [result],
             );
-        } 
-        else 
-        {
+        }
+        else {
             this.loggerService.log('PersonNoteResolver.updatePersonNote() RES:404 end');
             return this.personNoteResponse.createResponse(
                 'Note not found for update',
@@ -108,7 +104,7 @@ export class PersonNoteResolver {
 
     @Mutation(() => PersonNoteResponse, { name: 'deletePersonNote' })
     @UsePipes(new GenericValidationPipe())
-    async deletePersonNote( @Args('notes', {type: () => [DeletePersonNote]}) notes: DeletePersonNote[],  @AuthenticatedUser() user: any) {
+    async deletePersonNote(@Args('notes', { type: () => [DeletePersonNote] }) notes: DeletePersonNote[], @AuthenticatedUser() user: any) {
         const result = await this.personNoteService.deletePersonNote(notes, user);
         if (result) {
             this.loggerService.log('PersonNoteResolver.deletePersonNote() RES:200 end');
@@ -118,9 +114,8 @@ export class PersonNoteResolver {
                 result,
                 null,
             );
-        } 
-        else 
-        {
+        }
+        else {
             this.loggerService.log('PersonNoteResolver.deletePersonNote() RES:404 end');
             return this.personNoteResponse.createResponse(
                 'Note not found for deletion',

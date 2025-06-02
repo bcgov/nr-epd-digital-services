@@ -186,4 +186,4 @@ import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
   ],
   controllers: [UserController],
 })
-export class CatsModule {}
+export class CatsModule { }

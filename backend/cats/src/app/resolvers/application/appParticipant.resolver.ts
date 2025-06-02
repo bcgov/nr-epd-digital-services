@@ -43,7 +43,7 @@ export class AppParticipantResolver {
     private readonly organizationResponseProvider: GenericResponseProvider<
       DropdownDto[]
     >,
-  ) {}
+  ) { }
 
   @Query(() => AppParticipantsResponse, { name: 'getAppParticipantsByAppId' })
   @UsePipes(new GenericValidationPipe()) // Apply generic validation pipe
@@ -207,7 +207,7 @@ export class AppParticipantResolver {
           false,
           result,
         );
-      } 
+      }
     } catch (error) {
       this.loggerService.log(
         `AppParticipantResolver.getOrganizations() Error: ${error.message}`,

@@ -104,10 +104,10 @@ const Person = () => {
       } else {
         setPersonName(
           (personData?.firstName ?? '') +
-            ' ' +
-            (personData?.middleName ?? '') +
-            ' ' +
-            (personData?.lastName ?? ''),
+          ' ' +
+          (personData?.middleName ?? '') +
+          ' ' +
+          (personData?.lastName ?? ''),
         );
         setFormData(personData);
         setLoading(false);

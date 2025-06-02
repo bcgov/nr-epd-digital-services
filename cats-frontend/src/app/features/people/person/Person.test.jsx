@@ -135,7 +135,6 @@ describe('Person Component', () => {
       middleName: 'Doe',
       lastName: 'Smith',
     };
-
     fetchPerson.mockResolvedValueOnce(mockPersonData);
 
     render(

@@ -38,7 +38,7 @@ describe('AppParticipantsService', () => {
             createAppParticipant: jest.fn(),
             save: jest.fn(),
             create: jest.fn(),
-            findOne : jest.fn(),
+            findOne: jest.fn(),
           },
         },
         {
@@ -68,7 +68,7 @@ describe('AppParticipantsService', () => {
             debug: jest.fn(),
           },
         },
-       
+
       ],
     }).compile();
 
@@ -154,7 +154,7 @@ describe('AppParticipantsService', () => {
 
       const result = await service.getAllParticipantRoles();
       expect(result).toEqual(mockRoles);
-    
+
     });
   });
 
@@ -169,7 +169,7 @@ describe('AppParticipantsService', () => {
 
       const result = await service.getOrganizations(searchParam);
       expect(result).toEqual(mockRoles);
-    
+
     });
   });
 
@@ -184,7 +184,7 @@ describe('AppParticipantsService', () => {
 
       const result = await service.getParticipantNames(searchParam);
       expect(result).toEqual(mockRoles);
-    
+
     });
   });
 
@@ -201,11 +201,11 @@ describe('AppParticipantsService', () => {
       createdDateTime: new Date('2025-02-05T18:43:03.244Z'),
     };
 
-    const addedParticipant= {
+    const addedParticipant = {
       id: 27912,
       ...input,
       createdBy: 'system',
-      createdDateTime:new Date('2025-02-05T18:43:03.244Z'),
+      createdDateTime: new Date('2025-02-05T18:43:03.244Z'),
       rowVersionCount: null,
       updatedBy: null,
       updatedDateTime: null,
@@ -223,7 +223,7 @@ describe('AppParticipantsService', () => {
       data: [addedParticipant]
     };
     it('should log start message and create a participant successfully', async () => {
-      
+
 
       jest.spyOn(appParticsRepo, 'create').mockReturnValue(addedParticipant as any);
       jest.spyOn(appParticsRepo, 'save').mockResolvedValue(addedParticipant as any);
@@ -231,7 +231,7 @@ describe('AppParticipantsService', () => {
       expect(result).toBeDefined();
       expect(result.id).toBe(addedParticipant.id);
       expect(result.isMainParticipant).toBe(addedParticipant.isMainParticipant);
-    
+
     });
 
     it('should throw HttpException when participant creation fails', async () => {
@@ -283,7 +283,7 @@ describe('AppParticipantsService', () => {
       jest
         .spyOn(appParticsRepo, 'findOne')
         .mockResolvedValue([updatedParticipant] as any);
-  
+
       const result = await service.updateAppParticipant(input, user);
       expect(result).toBeDefined();
     });
@@ -299,7 +299,7 @@ describe('AppParticipantsService', () => {
         new HttpException('Failed to update App Participant', HttpStatus.INTERNAL_SERVER_ERROR),
       );
     });
-    });
   });
-  
+});
+
 
