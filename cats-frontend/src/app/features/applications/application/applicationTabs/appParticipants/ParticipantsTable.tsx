@@ -32,6 +32,8 @@ import './ParticipantsTable.css';
 
 import { useParams } from 'react-router-dom';
 import App from '../../../../../../App';
+import { formatDateUTC, parseLocalDate } from '@cats/helpers/utility';
+import { UTCDate } from '@date-fns/utc';
 
 export const AppParticipantsActionTypes = {
   AddParticipant: 'Add Participant',
@@ -141,11 +143,20 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     },
   });
 
-  const initialAppParticipantDetails = {
+  type appParticipantDetailsType = {
+    id: string,
+    isMainParticipant: boolean,
+    effectiveStartDate: Date | string | null,
+    effectiveEndDate: Date | string | null,
+    participantRole: string,
+    person: string,
+    organization: string, // Assign an empty string as the initial value
+  }
+  const initialAppParticipantDetails : appParticipantDetailsType= {
     id: '',
     isMainParticipant: false,
-    effectiveStartDate: '',
-    effectiveEndDate: '',
+    effectiveStartDate: null,
+    effectiveEndDate: null,
     participantRole: '',
     person: '',
     organization: '', // Assign an empty string as the initial value
@@ -242,8 +253,8 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         appParticipantDetails: {
           id: appParticipantEditDetails.id,
           isMainParticipant: appParticipantEditDetails.isMainParticipant,
-          effectiveStartDate: appParticipantEditDetails.effectiveStartDate,
-          effectiveEndDate: appParticipantEditDetails.effectiveEndDate,
+          effectiveStartDate: appParticipantEditDetails.effectiveStartDate ? parseLocalDate(appParticipantEditDetails.effectiveStartDate) : null,
+          effectiveEndDate: appParticipantEditDetails.effectiveEndDate ? parseLocalDate(appParticipantEditDetails.effectiveEndDate) : null,
           participantRole: appParticipantRole.id.toString(),
           person: appParticipantName.id.toString(),
           organization: appParticipantOrganization?.id?.toString() ?? '',

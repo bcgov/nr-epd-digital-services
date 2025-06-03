@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { FormFieldType, IFormField } from './IFormField';
-import { formatDate, formatDateRange } from '../../helpers/utility';
+import { formatDate, formatDateRange, formatDateUTC, normalizeDate, parseLocalDate } from '../../helpers/utility';
 import { DatePicker, DateRangePicker } from 'rsuite';
 import {
   CalendarIcon,
@@ -28,6 +28,7 @@ import {
 } from 'react-aria-components';
 
 import styles from './InputControls.module.css';
+import { format } from 'date-fns';
 
 interface InputProps extends IFormField {
   children?: InputProps[];
@@ -756,13 +757,22 @@ export const DateInput: React.FC<InputProps> = ({
   const ContainerElement = tableMode ? 'td' : 'div';
   let dateValue;
 
-  value = tableMode ? (value != '' ? new Date(value) : null) : value;
-  value = !tableMode && isEditing && value != null ? new Date(value) : value;
-
-  if (value) {
-    dateValue = formatDate(new Date(value), dateFormat);
+  if (value != null && value !== '') {
+    value =
+      tableMode
+        ? value instanceof Date
+          ? normalizeDate(value)
+          : parseLocalDate(value)
+        : (!tableMode && isEditing && value instanceof Date)
+          ? normalizeDate(value)
+          : value;
   }
-
+  
+  // Format for UI
+  if (value) {
+    dateValue = formatDate(value, dateFormat ?? 'MMM dd, yyyy');
+  } 
+  
   const handleCheckBoxChange = (isChecked: boolean) => {
     onChange(isChecked);
   };
