@@ -15,7 +15,7 @@ import { Organization } from '../../entities/organization.entity';
 import { DropdownDto } from '../../dto/dropdown.dto';
 import { CreateAppParticipantDto } from '../../dto/appParticipants/createAppParticipant.dto';
 import { UserTypeEum } from '../../utilities/enums/userType';
-import { UpdateAppParticipantDto } from 'src/app/dto/appParticipants/updateAppParticipant.dto';
+import { UpdateAppParticipantDto } from '../../dto/appParticipants/updateAppParticipant.dto';
 
 @Injectable()
 export class AppParticipantService {
