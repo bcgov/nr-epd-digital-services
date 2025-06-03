@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import TableControls from './tableControls';
-import './TableHeader.css';
+import './tableHeader.css';
 import { TableColumn } from '@cats/components/table/TableColumn';
 import { InvoiceFilter } from './filter';
 import ColumnSelect from './columnSelect';
