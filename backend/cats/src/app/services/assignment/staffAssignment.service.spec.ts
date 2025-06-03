@@ -173,16 +173,16 @@ describe('StaffAssignmentService', () => {
 
   it('should return application service types successfully', async () => {
     const applicationServiceTypes = [
-      { id: 1, serviceName: 'Service 1' },
-      { id: 2, serviceName: 'Service 2' },
+      { id: 1, serviceName: 'Service 1', serviceType: 'Type 1' },
+      { id: 2, serviceName: 'Service 2', serviceType: 'Type 2' },
     ];
     (repository.find as jest.Mock).mockResolvedValue(applicationServiceTypes);
 
     const result = await service.getApplicationServiceTypes();
 
     expect(result).toEqual([
-      { key: 1, value: 'Service 1' },
-      { key: 2, value: 'Service 2' },
+      { key: 1, value: 'Service 1 (Type 1)' },
+      { key: 2, value: 'Service 2 (Type 2)' },
     ]);
     expect(loggerService.log).toHaveBeenCalledTimes(2);
   });

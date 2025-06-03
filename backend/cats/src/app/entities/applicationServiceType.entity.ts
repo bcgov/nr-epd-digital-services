@@ -1,6 +1,14 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { Application } from './application.entity';
+import { ParticipantRole } from './participantRole.entity';
 
 @ObjectType()
 @Entity('application_service_type')
@@ -12,10 +20,6 @@ export class ApplicationServiceType {
   @Field()
   @Column('character varying', { name: 'service_name' })
   serviceName: string;
-
-  @Field()
-  @Column('integer', { name: 'assignment_factor' })
-  assignmentFactor: number;
 
   @Field()
   @Column('character varying', { name: 'service_type' })
