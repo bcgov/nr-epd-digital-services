@@ -31,9 +31,6 @@ import Form from '../../../../../components/form/Form';
 import './ParticipantsTable.css';
 
 import { useParams } from 'react-router-dom';
-import App from '../../../../../../App';
-import { formatDateUTC, parseLocalDate } from '@cats/helpers/utility';
-import { UTCDate } from '@date-fns/utc';
 
 export const AppParticipantsActionTypes = {
   AddParticipant: 'Add Participant',
@@ -253,8 +250,8 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         appParticipantDetails: {
           id: appParticipantEditDetails.id,
           isMainParticipant: appParticipantEditDetails.isMainParticipant,
-          effectiveStartDate: appParticipantEditDetails.effectiveStartDate ? parseLocalDate(appParticipantEditDetails.effectiveStartDate) : null,
-          effectiveEndDate: appParticipantEditDetails.effectiveEndDate ? parseLocalDate(appParticipantEditDetails.effectiveEndDate) : null,
+          effectiveStartDate: appParticipantEditDetails.effectiveStartDate,
+          effectiveEndDate: appParticipantEditDetails.effectiveEndDate || null,
           participantRole: appParticipantRole.id.toString(),
           person: appParticipantName.id.toString(),
           organization: appParticipantOrganization?.id?.toString() ?? '',

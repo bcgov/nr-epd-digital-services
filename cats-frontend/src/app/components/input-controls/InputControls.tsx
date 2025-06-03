@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { FormFieldType, IFormField } from './IFormField';
-import { formatDate, formatDateRange, formatDateUTC, normalizeDate, parseLocalDate } from '../../helpers/utility';
+import { formatDate, formatDateRange, normalizeDate, parseLocalDate } from '../../helpers/utility';
 import { DatePicker, DateRangePicker } from 'rsuite';
 import {
   CalendarIcon,
@@ -28,7 +28,6 @@ import {
 } from 'react-aria-components';
 
 import styles from './InputControls.module.css';
-import { format } from 'date-fns';
 
 interface InputProps extends IFormField {
   children?: InputProps[];
@@ -765,7 +764,7 @@ export const DateInput: React.FC<InputProps> = ({
           : parseLocalDate(value)
         : (!tableMode && isEditing && value instanceof Date)
           ? normalizeDate(value)
-          : value;
+          : parseLocalDate(value);
   }
   
   // Format for UI
