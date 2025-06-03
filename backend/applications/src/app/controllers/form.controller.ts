@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Put, Req } from '@nestjs/common';
 import { Unprotected } from 'nest-keycloak-connect';
 import { SubmissionResponse } from '../dto/submissionResponse.dto';
 import { Form } from '../entities/form.entity';
@@ -66,12 +66,15 @@ export class FormController {
    */
   @Post(':formId/submission') async save(
     @Param('formId') formId,
-    @Body() content,
+    @Body() content, @Req() request,
   ): Promise<SubmissionResponse> {
+    console.log('Request headers---', request.headers);
+    const origin = request.headers.origin;
     const savedSubmission = await this.formService.create(formId, content.data);
     const submissionResponse: SubmissionResponse =
       this.transformResult(savedSubmission);
-    await this.catsService.submitToCats(content.data, savedSubmission.id, savedSubmission.formId);
+    if (origin)
+      await this.catsService.submitToCats(content.data, savedSubmission.id, savedSubmission.formId);
     return submissionResponse;
   }
 
