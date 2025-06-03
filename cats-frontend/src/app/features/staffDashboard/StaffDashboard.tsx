@@ -1,8 +1,15 @@
 import { useState } from 'react';
 import { Button } from '../../components/button/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { staffApplicationsColumns, StaffDashboardColumns } from './StaffDashboardConfig';
-import { useGetApplicationsByStaffQuery, useGetRolesQuery, useGetStaffsQuery } from './graphql/StaffDashboard.generated';
+import {
+  staffApplicationsColumns,
+  StaffDashboardColumns,
+} from './StaffDashboardConfig';
+import {
+  useGetApplicationsByStaffQuery,
+  useGetRolesQuery,
+  useGetStaffsQuery,
+} from './graphql/StaffDashboard.generated';
 import {
   ApplicationSortByDirection,
   Filter,
@@ -27,11 +34,11 @@ interface IStaffDashboard {
   filter?: Filter;
 }
 
-interface IModalState extends IStaffDashboard{
+interface IModalState extends IStaffDashboard {
   isModalOpen: boolean;
-  personId: number
+  personId: number;
   personName: string;
-  roleId?: number | null
+  roleId?: number | null;
 }
 
 const StaffDashboard = () => {
@@ -46,7 +53,7 @@ const StaffDashboard = () => {
     sortByDir: ApplicationSortByDirection.Asc,
     isModalOpen: false,
     personId: 0,
-    personName: ''
+    personName: '',
   });
 
   const [queryState, setQueryState] = useState<IStaffDashboard>({
@@ -67,26 +74,31 @@ const StaffDashboard = () => {
     },
   });
 
-  const {data: applications, loading: applicationsLoading} = useGetApplicationsByStaffQuery({
+  const { data: applications, loading: applicationsLoading } =
+    useGetApplicationsByStaffQuery({
+      variables: {
+        page: queryModalState.page,
+        pageSize: queryModalState.pageSize,
+        sortBy: queryModalState.sortBy,
+        sortByDir: queryModalState.sortByDir,
+        personId: queryModalState.personId,
+        roleId: queryModalState?.roleId ?? null,
+      },
+      skip: !queryModalState.isModalOpen || !queryModalState.personId,
+    });
+
+  const { data: roles, loading: rolesLoading } = useGetRolesQuery({
     variables: {
-      page: queryModalState.page,
-      pageSize: queryModalState.pageSize,
-      sortBy: queryModalState.sortBy,
-      sortByDir: queryModalState.sortByDir,
-      personId: queryModalState.personId,
-      roleId: queryModalState?.roleId ?? null
+      roleType: 'STAFF',
     },
     skip: !queryModalState.isModalOpen || !queryModalState.personId,
   });
 
-  const {data: roles, loading: rolesLoading} = useGetRolesQuery({
-    variables: {
-      roleType: 'STAFF'
-    },
-    skip: !queryModalState.isModalOpen || !queryModalState.personId,
-  });
-
-  const handleSort = (row: TableColumn, ascending: boolean, isModal: boolean = false) => {
+  const handleSort = (
+    row: TableColumn,
+    ascending: boolean,
+    isModal: boolean = false,
+  ) => {
     const newSortByDir = ascending
       ? ApplicationSortByDirection.Asc
       : ApplicationSortByDirection.Desc;
@@ -105,7 +117,8 @@ const StaffDashboard = () => {
         };
 
     // Default to 'Id' if the property name is not in the map
-    const sortField = sortFields[row.graphQLPropertyName] || StaffSortByField.Id;
+    const sortField =
+      sortFields[row.graphQLPropertyName] || StaffSortByField.Id;
 
     // Update the state based on whether it's for the modal or the main table
     if (isModal) {
@@ -124,7 +137,11 @@ const StaffDashboard = () => {
   };
 
   // Usage for the main table
-  const handleTableSort = (row: TableColumn, ascending: boolean, isModal: boolean) => {
+  const handleTableSort = (
+    row: TableColumn,
+    ascending: boolean,
+    isModal: boolean,
+  ) => {
     handleSort(row, ascending, isModal); // isModal: false for the main table
   };
 
@@ -138,8 +155,8 @@ const StaffDashboard = () => {
         sortByDir: ApplicationSortByDirection.Asc,
         isModalOpen: true,
         personId: Number(event?.row?.id),
-        personName: event?.row?.name
-      }))
+        personName: event?.row?.name,
+      }));
     }
   };
 
@@ -211,12 +228,12 @@ const StaffDashboard = () => {
           </Button>
         </div>
       </Widget>
-      {
-        queryModalState.isModalOpen && (
-          <ModalDialog 
-            headerLabel={`Viewing: ${queryModalState?.personName ?? ''}`}
-            noFooterOptions={true}
-            closeHandler={() => setQueryModalState((prev: IModalState) => ({
+      {queryModalState.isModalOpen && (
+        <ModalDialog
+          headerLabel={`Viewing: ${queryModalState?.personName ?? ''}`}
+          noFooterOptions={true}
+          closeHandler={() =>
+            setQueryModalState((prev: IModalState) => ({
               ...prev,
               page: 1,
               pageSize: 5,
@@ -224,56 +241,69 @@ const StaffDashboard = () => {
               sortByDir: ApplicationSortByDirection.Asc,
               personId: 0,
               roleId: null,
-              isModalOpen: !prev.isModalOpen
-            }))}
-          >
-            <div>
-              <div className="custom-modal-lbl mb-2"> Staff Options </div>
-              <DropdownInput
-                type={FormFieldType.DropDown}
-                options={rolesLoading ? [] : roles?.getAllParticipantRoles?.data?.map((role) =>({key: role.id.toString(), value: role.description})) ?? []}
-                onChange={(value) => {
-                  setQueryModalState((prev: IModalState) => ({...prev, roleId: value === '' ? null : Number(value)}))
-                }}
-                label="Roles"
-                placeholder='Select Role'
-                value={queryModalState?.roleId?.toString() ?? ''}
-                isEditing={true}
-              />
-            </div>
-            <Widget
-              tableIsLoading={applicationsLoading ? RequestStatus.loading : RequestStatus.success}
-              customWidgetCss='custom-widget-container'
-              customLabelCss='custom-modal-widget-lbl'
-              allowRowsSelect={false}
-              changeHandler={handleTableChange}
-              sortHandler={(row, ascDir) => {
-                 handleTableSort(row, ascDir, true);
-              }}
-              title={'Assigned Applications'}
-              aria-label="Assigned Applications Widget"
-              primaryKeycolumnName="id"
-              showPageOptions={true}
-              selectPage={(page) => {
-                setQueryModalState((prev: IModalState) => ({ ...prev, page }));
-              }}
-              changeResultsPerPage={(pageSize) => {
+              isModalOpen: !prev.isModalOpen,
+            }))
+          }
+        >
+          <div>
+            <div className="custom-modal-lbl mb-2"> Staff Options </div>
+            <DropdownInput
+              type={FormFieldType.DropDown}
+              options={
+                rolesLoading
+                  ? []
+                  : (roles?.getAllParticipantRoles?.data?.map((role) => ({
+                      key: role.id.toString(),
+                      value: role.description,
+                    })) ?? [])
+              }
+              onChange={(value) => {
                 setQueryModalState((prev: IModalState) => ({
                   ...prev,
-                  pageSize,
-                  page: 1,
+                  roleId: value === '' ? null : Number(value),
                 }));
               }}
-              tableColumns={staffApplicationsColumns}
-              currentPage={queryModalState?.page}
-              resultsPerPage={queryModalState?.pageSize}
-              tableData={applications?.getApplicationsByStaff?.data ?? []}
-              totalResults={applications?.getApplicationsByStaff?.count ?? 0}
-            >
-            </Widget>
-          </ModalDialog>
-        )
-      }
+              label="Roles"
+              placeholder="Select Role"
+              value={queryModalState?.roleId?.toString() ?? ''}
+              isEditing={true}
+            />
+          </div>
+          <Widget
+            tableIsLoading={
+              applicationsLoading
+                ? RequestStatus.loading
+                : RequestStatus.success
+            }
+            customWidgetCss="custom-widget-container"
+            customLabelCss="custom-modal-widget-lbl"
+            allowRowsSelect={false}
+            changeHandler={handleTableChange}
+            sortHandler={(row, ascDir) => {
+              handleTableSort(row, ascDir, true);
+            }}
+            title={'Assigned Applications'}
+            aria-label="Assigned Applications Widget"
+            primaryKeycolumnName="id"
+            showPageOptions={true}
+            selectPage={(page) => {
+              setQueryModalState((prev: IModalState) => ({ ...prev, page }));
+            }}
+            changeResultsPerPage={(pageSize) => {
+              setQueryModalState((prev: IModalState) => ({
+                ...prev,
+                pageSize,
+                page: 1,
+              }));
+            }}
+            tableColumns={staffApplicationsColumns}
+            currentPage={queryModalState?.page}
+            resultsPerPage={queryModalState?.pageSize}
+            tableData={applications?.getApplicationsByStaff?.data ?? []}
+            totalResults={applications?.getApplicationsByStaff?.count ?? 0}
+          ></Widget>
+        </ModalDialog>
+      )}
     </PageContainer>
   );
 };

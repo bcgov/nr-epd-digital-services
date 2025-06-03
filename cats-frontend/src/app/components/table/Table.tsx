@@ -121,7 +121,9 @@ const Table: FC<TableProps> = ({
 
   return (
     <React.Fragment>
-      <div className={`${ data?.length > 10 ? 'pe-2' : ''} tableWidth table-border-radius`}>
+      <div
+        className={`${data?.length > 10 ? 'pe-2' : ''} tableWidth table-border-radius`}
+      >
         <table className="table" aria-label={label}>
           <thead aria-label={`${label} Header`}>
             <TableHeader

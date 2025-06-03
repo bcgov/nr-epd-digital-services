@@ -400,8 +400,8 @@ export const DropdownInput: React.FC<InputProps> = ({
         >
           <option
             value=""
-            disabled = { disabledPlaceholder }
-            hidden = { hiddenPlaceholder }
+            disabled={disabledPlaceholder}
+            hidden={hiddenPlaceholder}
             className={`custom-disabled-option  ${customPlaceholderCss ?? ''}`}
           >
             {placeholder}
@@ -421,11 +421,13 @@ export const DropdownInput: React.FC<InputProps> = ({
           <Avatar
             firstName={options
               ?.find((opt) => opt.key === value)
-              ?.value.toString().split(',')[0]
+              ?.value.toString()
+              .split(',')[0]
               .trim()}
             lastName={options
               ?.find((opt) => opt.key === value)
-              ?.value.toString().split(',')[1]
+              ?.value.toString()
+              .split(',')[1]
               .trim()}
             customImageCss="custom-form-image"
             customTextCss="custom-form-image-txt"

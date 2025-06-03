@@ -38,7 +38,7 @@ a.custom-staff-edit-lbl {
   border-radius: var(--layout-border-radius-large);
 }
 
-.custom-modal-lbl{
+.custom-modal-lbl {
   font-weight: 700;
   font-size: 18px;
   line-height: 30.61px;
@@ -46,7 +46,7 @@ a.custom-staff-edit-lbl {
   color: var(--typography-color-primary, #2d2d2d);
 }
 
-.custom-modal-widget-lbl{
+.custom-modal-widget-lbl {
   margin: 0;
   font-weight: 700;
   font-size: 16px;
@@ -56,7 +56,7 @@ a.custom-staff-edit-lbl {
   color: var(--typography-color-primary, #2d2d2d);
 }
 
-.custom-apps-modal-lbl{
+.custom-apps-modal-lbl {
   font-family: Noto Sans;
   font-weight: 400;
   font-size: 12px;
@@ -70,5 +70,5 @@ a.custom-apps-modal-lbl {
   text-decoration: underline;
   text-decoration-style: solid;
   text-decoration-thickness: 0%;
-  color: var(--typography-color-link, #255A90);
+  color: var(--typography-color-link, #255a90);
 }

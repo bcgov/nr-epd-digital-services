@@ -151,7 +151,7 @@ export const staffApplicationsColumns: TableColumn[] = [
       customInputTextCss: 'custom-apps-modal-lbl',
       tableMode: true,
     },
-     customHeaderCss: 'custom-header',
+    customHeaderCss: 'custom-header',
   },
   {
     id: 3,
@@ -168,7 +168,7 @@ export const staffApplicationsColumns: TableColumn[] = [
       customInputTextCss: 'custom-apps-modal-lbl',
       tableMode: true,
     },
-     customHeaderCss: 'custom-header',
+    customHeaderCss: 'custom-header',
   },
   {
     id: 4,
@@ -185,7 +185,7 @@ export const staffApplicationsColumns: TableColumn[] = [
       customInputTextCss: 'custom-apps-modal-lbl',
       tableMode: true,
     },
-     customHeaderCss: 'custom-header',
+    customHeaderCss: 'custom-header',
   },
   {
     id: 5,
