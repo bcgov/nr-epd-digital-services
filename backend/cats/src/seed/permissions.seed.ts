@@ -7,8 +7,6 @@ import {
   MENTOR_PERMISSIONS,
   SDM_PERMISSIONS,
 } from "./permissions";
-import { LoggerService } from "../app/logger/logger.service";
-
 
 export enum PermissionRole {
   CSWKR = "CSWKR", // Caseworker
@@ -17,14 +15,13 @@ export enum PermissionRole {
 }
 
 export const PermissionsSeeder = async (manager: EntityManager) => {
-  const logger = new LoggerService();
   try {
     const roles = await manager.find(ParticipantRole, {
       where: { roleType: "STAFF" },
     });
 
     if (!roles.length) {
-      logger.warn("No STAFF roles found. Skipping PermissionsSeeder.");
+      console.log("No STAFF roles found. Skipping PermissionsSeeder.");
       return;
     }
 
@@ -75,11 +72,11 @@ export const PermissionsSeeder = async (manager: EntityManager) => {
 
     if (permissionEntities.length) {
       await manager.save(Permissions, permissionEntities);
-      logger.log(`Seeded ${permissionEntities.length} permissions.`);
+      console.log(`Seeded ${permissionEntities.length} permissions.`);
     } else {
-      logger.warn("No permissions generated for available roles.");
+      console.log("No permissions generated for available roles.");
     }
   } catch (error) {
-    logger.error("PermissionsSeeder error:", error);
+    console.error("PermissionsSeeder error:", error);
   }
 };
