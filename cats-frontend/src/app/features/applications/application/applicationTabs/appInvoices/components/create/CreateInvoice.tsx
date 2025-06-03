@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
 import CreateInvoiceForm from './CreateInvoiceForm';
 
 const CreateInvoice: React.FC = () => {
