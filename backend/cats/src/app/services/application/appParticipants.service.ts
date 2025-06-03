@@ -12,14 +12,10 @@ import { ParticipantRole } from '../../entities/participantRole.entity';
 import { ViewParticipantsRolesDto } from '../../dto/appParticipants/viewParticipantsRoles.dto';
 import { Person } from '../../entities/person.entity';
 import { Organization } from '../../entities/organization.entity';
-import { ViewParticipantNamesDto } from '../../dto/appParticipants/ViewParticipantNames.dto';
-import { ViewOrganizationsDto } from '../../dto/appParticipants/viewOrganization.dto';
 import { DropdownDto } from '../../dto/dropdown.dto';
 import { CreateAppParticipantDto } from '../../dto/appParticipants/createAppParticipant.dto';
 import { UserTypeEum } from '../../utilities/enums/userType';
-import { id } from 'cls-rtracer';
-import { application } from 'express';
-import { UpdateAppParticipantDto } from 'src/app/dto/appParticipants/updateAppParticipant.dto';
+import { UpdateAppParticipantDto } from '../../dto/appParticipants/updateAppParticipant.dto';
 
 @Injectable()
 export class AppParticipantService {
@@ -229,18 +225,16 @@ export class AppParticipantService {
           `User with username: ${user?.givenName} is using IDIR identity provider.`,
         );
 
-        // Check if the participant already exists, also  we want to ignore this check where organizationId is null
-        // because we can have multiple participants with same personId and participantRoleId but different organizationId
+        // Check if the participant already exists, we can have multiple participants with same personId and participantRoleId but different organizationId
         let existingParticipant = null;
-        if (newAppParticipant.organizationId) {
           existingParticipant = await this.appParticsRepository.findOne({
             where: {
+              applicationId: newAppParticipant.applicationId,
               personId: newAppParticipant.personId,
               participantRoleId: newAppParticipant.participantRoleId,
               organizationId: newAppParticipant.organizationId,
             },
           });
-        }
 
         if (existingParticipant) {
           throw new HttpException(
@@ -254,7 +248,7 @@ export class AppParticipantService {
             createdDateTime: new Date(),
           });
 
-          //savde the new participant
+          //save the new participant
           const savedAppParticipant = await this.appParticsRepository.save(
             createdAppParticipant,
           );
