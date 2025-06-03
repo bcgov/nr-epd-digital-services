@@ -124,6 +124,8 @@ spec:
                   name: postgres-crunchy-pguser-postgres
             - name: SEED_DATA_PATH
               value: "/mnt/sql/data_migration.sql"
+            - name: VITE_CATS_CSSA_MANAGER_ROLE
+              value: "formsflow-reviewer/cssa-manager"
           resources: # this is optional
             requests:
               cpu: {{ .Values.backend.resources.requests.cpu }}
