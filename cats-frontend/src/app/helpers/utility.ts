@@ -53,7 +53,7 @@ export const formatDateRange = (
 export const parseLocalDate = (dateString: string) => {
   const [y, m, d] = dateString.split('-').map(Number);
   return new Date(y, m - 1, d); // Local midnight
-}
+};
 
 /* This creates a new Date object at midnight local time (00:00:00.000) for the selected day.
  It's a way to normalize the date without any timezone shifts caused by hours/minutes. */

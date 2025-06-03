@@ -141,15 +141,15 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   });
 
   type appParticipantDetailsType = {
-    id: string,
-    isMainParticipant: boolean,
-    effectiveStartDate: Date | string | null,
-    effectiveEndDate: Date | string | null,
-    participantRole: string,
-    person: string,
-    organization: string, // Assign an empty string as the initial value
-  }
-  const initialAppParticipantDetails : appParticipantDetailsType= {
+    id: string;
+    isMainParticipant: boolean;
+    effectiveStartDate: Date | string | null;
+    effectiveEndDate: Date | string | null;
+    participantRole: string;
+    person: string;
+    organization: string; // Assign an empty string as the initial value
+  };
+  const initialAppParticipantDetails: appParticipantDetailsType = {
     id: '',
     isMainParticipant: false,
     effectiveStartDate: null,
