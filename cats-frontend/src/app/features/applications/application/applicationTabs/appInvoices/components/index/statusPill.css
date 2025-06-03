@@ -1,0 +1,33 @@
+.status-pill__base {
+  display: inline-block;
+  padding: var(--layout-padding-xsmall) var(--layout-padding-small);
+  border-radius: var(--layout-border-radius-medium);
+  font-weight: var(--typography-font-weights-bold);
+  text-transform: capitalize;
+  color: inherit;
+  border: var(--layout-border-width-medium) solid;
+}
+
+.status-pill__draft {
+  background-color: var(--support-surface-color-info);
+  border-color: var(--support-border-color-info);
+  color: var(--support-border-color-info);
+}
+
+.status-pill__received {
+  background-color: var(--support-surface-color-success);
+  border-color: var(--support-border-color-success);
+  color: var(--support-border-color-success);
+}
+
+.status-pill__sent {
+  background-color: var(--support-surface-color-danger);
+  border-color: var(--support-border-color-danger);
+  color: var(--support-border-color-danger);
+}
+
+.status-pill__paid {
+  background-color: var(--theme-gray-20);
+  border-color: var(--theme-gray-100);
+  color: var(--theme-gray-100);
+}
