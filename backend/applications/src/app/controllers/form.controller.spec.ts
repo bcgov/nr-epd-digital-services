@@ -82,9 +82,12 @@ describe('FormController', () => {
       createdDate: new Date(),
       modifiedDate: new Date(),
     };
+    const mockRequest = {
+      headers: { origin: 'https://example.com' },
+    } as unknown as Request;
 
     mockFormService.create.mockResolvedValue(savedSubmission);
-    const result = await controller.save(formId, content);
+    const result = await controller.save(formId, content, mockRequest);
 
     expect(mockFormService.create).toHaveBeenCalledWith(formId, formData);
     expect(mockCatsService.submitToCats).toHaveBeenCalledWith(
