@@ -212,4 +212,63 @@ export class InvoiceResolver {
     response.message = 'Invoice deleted successfully.';
     return response;
   }
+
+  @Query(() => InvoiceResponse)
+  async getInvoiceById(
+    @Args('id', { type: () => Int }) id: number,
+  ): Promise<InvoiceResponse> {
+    this.loggerService.log(`InvoiceResolver: getInvoiceById: invoiceId: ${id}`);
+    const response = new InvoiceResponse();
+    let invoice: InvoiceV2;
+
+    try {
+      invoice = await this.invoiceService.getInvoiceById(id);
+    } catch (error) {
+      this.loggerService.error(
+        `InvoiceResolver: getInvoiceById: Error fetching invoice: ${error.message}`,
+        null,
+      );
+      response.httpStatusCode = 500;
+      response.message = 'An error occurred while fetching the invoice.';
+      response.success = false;
+      return response;
+    }
+
+    const invoiceDto: InvoiceDto = {
+      id: invoice.id,
+      applicationId: invoice.application?.id,
+      recipientId: invoice.recipient?.id,
+      invoiceId: invoice.invoiceId,
+      subject: invoice.subject,
+      issuedDate: invoice.issuedDate,
+      dueDate: invoice.dueDate,
+      status: invoice.status as InvoiceStatus,
+      taxExempt: invoice.taxExempt,
+      subtotalInCents: invoice.subtotalInCents,
+      gstInCents: invoice.gstInCents,
+      pstInCents: invoice.pstInCents,
+      createdAt: invoice.createdAt,
+      updatedAt: invoice.updatedAt,
+      createdBy: invoice.createdBy,
+      updatedBy: invoice.updatedBy,
+      totalInCents: invoice.totalInCents,
+      lineItems: invoice.lineItems.map((lineItem) => ({
+        id: lineItem.id,
+        type: lineItem.type,
+        description: lineItem.description,
+        quantity: lineItem.quantity,
+        unitPriceInCents: lineItem.unitPriceInCents,
+        totalInCents: lineItem.totalInCents,
+        createdAt: lineItem.createdAt,
+        updatedAt: lineItem.updatedAt,
+        createdBy: lineItem.createdBy,
+        updatedBy: lineItem.updatedBy,
+      })),
+    };
+
+    response.invoice = invoiceDto;
+    response.httpStatusCode = 200;
+    response.success = true;
+    return response;
+  }
 }
