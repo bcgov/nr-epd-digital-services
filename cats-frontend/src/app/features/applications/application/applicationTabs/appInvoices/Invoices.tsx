@@ -3,14 +3,16 @@ import InvoiceIndexTable from './components/index/table';
 import { RequestStatus } from '@cats/helpers/requests/status';
 import { InvoiceByApplicationIdDto } from '../../../../../../generated/types';
 import { useGetInvoicesByApplicationIdQuery } from './getInvoicesByApplicationId.generated';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { TableColumn } from '@cats/components/table/TableColumn';
 import { indexTableColumns } from './components/index/tableColumnConfig';
 import { InvoiceFilter } from './components/index/filter';
 import {
   InvoiceSortBy as InvoiceSortBy,
-  invoiceSortByDir as InvoiceSortByDir,
+  InvoiceSortByDir as InvoiceSortByDir,
 } from './components/index/sortBy';
+import { Button } from '@cats/components/button/Button';
+import { Plus } from '@cats/components/common/icon';
 
 export const Invoices: React.FC = () => {
   const [results, setResults] = useState<InvoiceByApplicationIdDto[]>([]);
@@ -25,8 +27,9 @@ export const Invoices: React.FC = () => {
   const [requestStatus, setRequestStatus] = useState<RequestStatus>(
     RequestStatus.idle,
   );
-  const [columns, setColumns] = useState<TableColumn[]>(indexTableColumns);
-
+  const [columns, setColumns] =
+    React.useState<TableColumn[]>(indexTableColumns);
+  const navigate = useNavigate();
   const { id = '' } = useParams();
   const applicationId = parseInt(id, 10);
   const { data, error } = useGetInvoicesByApplicationIdQuery({
@@ -129,10 +132,20 @@ export const Invoices: React.FC = () => {
     }
   }, [data, error]);
 
+  const handleCreateInvoiceClick = () => {
+    navigate(`/applications/${applicationId}/invoices/create`);
+  };
+
+  const createInvoiceButton = (
+    <Button variant="secondary" onClick={handleCreateInvoiceClick}>
+      <Plus /> Create Invoice
+    </Button>
+  );
+
   return (
     <div>
-      <div>
-        <p>TODO: Financial Summary Will Go Here</p>
+      <div className="d-flex justify-content-between mb-3 align-items-center">
+        <p>Financial Summary Will Go Here</p>
       </div>
       <div>
         <InvoiceIndexTable
@@ -143,6 +156,7 @@ export const Invoices: React.FC = () => {
           filter={filter}
           handleFilterChange={handleFilterChange}
           sortHandler={handleSortChange}
+          createInvoiceButton={createInvoiceButton}
         />
       </div>
     </div>
