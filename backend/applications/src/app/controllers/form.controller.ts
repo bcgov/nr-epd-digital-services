@@ -68,6 +68,7 @@ export class FormController {
     @Param('formId') formId,
     @Body() content, @Req() request,
   ): Promise<SubmissionResponse> {
+    console.log('Request headers---', request.headers);
     const origin = request.headers.origin;
     const savedSubmission = await this.formService.create(formId, content.data);
     const submissionResponse: SubmissionResponse =
