@@ -6,7 +6,12 @@ import React, {
   useState,
 } from 'react';
 import { FormFieldType, IFormField } from './IFormField';
-import { formatDate, formatDateRange } from '../../helpers/utility';
+import {
+  formatDate,
+  formatDateRange,
+  normalizeDate,
+  parseLocalDate,
+} from '../../helpers/utility';
 import { DatePicker, DateRangePicker } from 'rsuite';
 import {
   CalendarIcon,
@@ -756,11 +761,19 @@ export const DateInput: React.FC<InputProps> = ({
   const ContainerElement = tableMode ? 'td' : 'div';
   let dateValue;
 
-  value = tableMode ? (value != '' ? new Date(value) : null) : value;
-  value = !tableMode && isEditing && value != null ? new Date(value) : value;
+  if (value != null && value !== '') {
+    value = tableMode
+      ? value instanceof Date
+        ? normalizeDate(value)
+        : parseLocalDate(value)
+      : !tableMode && isEditing && value instanceof Date
+        ? normalizeDate(value)
+        : parseLocalDate(value);
+  }
 
+  // Format for UI
   if (value) {
-    dateValue = formatDate(new Date(value), dateFormat);
+    dateValue = formatDate(value, dateFormat ?? 'MMM dd, yyyy');
   }
 
   const handleCheckBoxChange = (isChecked: boolean) => {
