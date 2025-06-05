@@ -58,6 +58,14 @@ export const parseLocalDate = (dateString: string) => {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }
 
+  //Handling edge case (for future-proofing)
+  //If the server someday sends a non-standard format, e.g., '06/03/2025' or '03-Jun-2025', 
+  //this function may break. So if you expect any non-ISO formats, you may want to do:
+  if (!dateString.match(/^\d{4}-\d{2}-\d{2}/)) {
+    console.warn('Unexpected date format:', dateString);
+    return new Date(dateString); // fallback
+  }
+
   // Handle basic YYYY-MM-DD format
   const [y, m, d] = dateString.split('-').map(Number);
   return new Date(y, m - 1, d); // Local midnight
