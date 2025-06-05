@@ -51,6 +51,14 @@ export const formatDateRange = (
 
 //Normalize date returned in string format e.g. '2025-06-03' (string) will be normalized to 2025-06-03T00:00:00 local
 export const parseLocalDate = (dateString: string) => {
+   // Check if it's a full ISO string with time (UTC or timezone-aware)
+   if (dateString.includes('T')) {
+    const date = new Date(dateString);
+    // Normalize to local midnight
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  // Handle basic YYYY-MM-DD format
   const [y, m, d] = dateString.split('-').map(Number);
   return new Date(y, m - 1, d); // Local midnight
 };
