@@ -1,9 +1,17 @@
-name: CATS PR
+name: Deploy CATS to TEST
 
 on:
   push:
     branches:
       - dev 
+      - feat/CATS-test # todo remove before merging
+  # Workflow dispatch is largely for debugging.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Image tag set to deploy; e.g. PR number or prod"
+        type: string
+        default: 'prod'
 
 concurrency:
   group: test
@@ -11,6 +19,17 @@ concurrency:
 
 jobs:
   # https://github.com/bcgov-nr/action-builder-ghcr
+  get-pr-info:
+    runs-on: ubuntu-24.04
+    outputs:
+      pr: ${{ steps.vars.outputs.pr }}
+    steps:
+      - id: vars
+        uses: bcgov-nr/action-get-pr@v0.0.1
+      - name: Echo PR number
+        run: |
+          echo "PR: ${{ steps.vars.outputs.pr }}"
+
   builds:
     name: Builds
     runs-on: ubuntu-24.04
@@ -39,14 +58,14 @@ jobs:
           build_file: ${{ matrix.build_file }}
           build_context: ${{ matrix.build_context }}
 
-          
+
   deploy_db:
     name: Deploys Database (test)
     uses: ./.github/workflows/.dbdeployer.yml
     secrets: inherit
+    needs: [get-pr-info]
     with:
-      # Todo - Can revert to below trigger, this line just forces db deploy when updating this file, good for active dev.
-      triggers: ('charts/crunchy/' '.github/workflows/cats-pr-open.yml')
+      triggers: ('charts/crunchy/' '.github/workflows/merge-dev-cats.yml')
       # triggers: ('charts/crunchy/')
       values: 'values-dev.yaml'
       app_values:  'values-test.yaml' 
@@ -54,18 +73,18 @@ jobs:
     # https://github.com/bcgov/quickstart-openshift-helpers
   deploys:
     name: Deploys (test)
-    needs: [builds, deploy_db]
-    # needs: [builds]
+    needs: [builds, get-pr-info, deploy_db]
     uses: ./.github/workflows/.deployer.yml
     secrets: inherit
     with:
       triggers: ('backend/cats/' 'cats-frontend/' 'charts/' '.github/workflows/')
       values: 'values-test.yaml'
       redirect_uri: https://logontest7.gov.bc.ca/clp-cgi/logoff.cgi?retnow=1&returl=https://epd-keycloak-test.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/protocol/openid-connect/logout?post_logout_redirect_uri=https://nr-epd-digital-services-${{ github.event.pull_request.number}}-frontend.apps.silver.devops.gov.bc.ca/
-      db_user: cats-test
+      db_user: cats
       timeout-minutes: 20
       environment: test
   
+
   results:
     name: PR Results
     needs: [builds, deploys]
