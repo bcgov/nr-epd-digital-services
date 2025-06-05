@@ -20,6 +20,7 @@ describe('InvoiceResolver', () => {
             getInvoicesByApplicationId: jest.fn(),
             updateInvoice: jest.fn(),
             deleteInvoice: jest.fn(),
+            getInvoiceById: jest.fn(),
           },
         },
         {
@@ -244,6 +245,89 @@ describe('InvoiceResolver', () => {
       expect(result.httpStatusCode).toBe(500);
       expect(result.message).toBe(
         'An error occurred while deleting the invoice.',
+      );
+    });
+  });
+  describe('getInvoiceById', () => {
+    it('should return invoice when service succeeds', async () => {
+      const mockInvoice: InvoiceV2 = {
+        id: 1,
+        application: null,
+        lineItems: [],
+        subject: 'Invoice 1',
+        issuedDate: new Date(),
+        dueDate: new Date(),
+        status: InvoiceStatus.DRAFT,
+        recipient: null,
+        invoiceId: null,
+        taxExempt: false,
+        subtotalInCents: 10000,
+        gstInCents: 0,
+        pstInCents: 0,
+        totalInCents: 10000,
+        createdBy: 'test-user',
+        updatedBy: 'test-user',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      jest
+        .spyOn(invoiceService, 'getInvoiceById')
+        .mockResolvedValue(mockInvoice);
+
+      const invoiceId = 1;
+      const result = await resolver.getInvoiceById(invoiceId);
+
+      expect(invoiceService.getInvoiceById).toHaveBeenCalledWith(invoiceId);
+      expect(result.success).toBe(true);
+      expect(result.httpStatusCode).toBe(200);
+      expect(result.invoice).toEqual({
+        id: mockInvoice.id,
+        applicationId: mockInvoice.application?.id,
+        recipientId: mockInvoice.recipient?.id,
+        invoiceId: mockInvoice.invoiceId,
+        subject: mockInvoice.subject,
+        issuedDate: mockInvoice.issuedDate,
+        dueDate: mockInvoice.dueDate,
+        status: mockInvoice.status,
+        taxExempt: mockInvoice.taxExempt,
+        subtotalInCents: mockInvoice.subtotalInCents,
+        gstInCents: mockInvoice.gstInCents,
+        pstInCents: mockInvoice.pstInCents,
+        createdAt: mockInvoice.createdAt,
+        updatedAt: mockInvoice.updatedAt,
+        createdBy: mockInvoice.createdBy,
+        updatedBy: mockInvoice.updatedBy,
+        totalInCents: mockInvoice.totalInCents,
+        lineItems: mockInvoice.lineItems.map((lineItem) => ({
+          id: lineItem.id,
+          type: lineItem.type,
+          description: lineItem.description,
+          quantity: lineItem.quantity,
+          unitPriceInCents: lineItem.unitPriceInCents,
+          totalInCents: lineItem.totalInCents,
+          createdAt: lineItem.createdAt,
+          updatedAt: lineItem.updatedAt,
+          createdBy: lineItem.createdBy,
+          updatedBy: lineItem.updatedBy,
+        })),
+      });
+    });
+
+    it('should handle errors when service fails', async () => {
+      jest
+        .spyOn(invoiceService, 'getInvoiceById')
+        .mockRejectedValue(new Error('Service error'));
+
+      const invoiceId = 1;
+      const result = await resolver.getInvoiceById(invoiceId);
+
+      expect(invoiceService.getInvoiceById).toHaveBeenCalledWith(invoiceId);
+      expect(loggerService.error).toHaveBeenCalled();
+      expect(result.success).toBe(false);
+      expect(result.httpStatusCode).toBe(500);
+      expect(result.message).toBe(
+        'An error occurred while fetching the invoice.',
       );
     });
   });
