@@ -27,7 +27,7 @@ const roleBasedRoutes: any = {
       path: '/staff',
       element: (
         <ProtectedRoute
-          requiredRoles={[UserRoleType.CSSA_MANAGER]}
+          requiredRoles={[UserRoleType.MANAGER]}
           element={<StaffDashboard />}
         />
       ),

@@ -7,4 +7,7 @@ export class ViewParticipantsRolesDto {
 
   @Field()
   description: string;
+
+  @Field({nullable: true})
+  roleType?: string | null;
 }

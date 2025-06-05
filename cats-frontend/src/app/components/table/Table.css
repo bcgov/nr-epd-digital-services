@@ -62,6 +62,7 @@
 }
 
 .tableWidth {
+  max-height: 50vh;
   width: 100%;
   overflow-x: scroll;
 }

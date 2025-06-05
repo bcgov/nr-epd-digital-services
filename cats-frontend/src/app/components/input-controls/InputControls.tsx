@@ -311,6 +311,8 @@ export const TextInput: React.FC<InputProps> = ({
 export const DropdownInput: React.FC<InputProps> = ({
   label,
   placeholder,
+  hiddenPlaceholder,
+  disabledPlaceholder,
   options,
   value,
   isEditing,
@@ -363,7 +365,7 @@ export const DropdownInput: React.FC<InputProps> = ({
   const handleCheckBoxChange = (isChecked: boolean) => {
     onChange(isChecked);
   };
-  const isFirstOptionGrey = value === '';
+  const isFirstOptionGrey: boolean = value === '';
   return (
     <ContainerElement
       className={tableMode ? 'table-border-light align-content-center' : 'mb-3'}
@@ -403,8 +405,8 @@ export const DropdownInput: React.FC<InputProps> = ({
         >
           <option
             value=""
-            disabled
-            hidden
+            disabled={disabledPlaceholder}
+            hidden={hiddenPlaceholder}
             className={`custom-disabled-option  ${customPlaceholderCss ?? ''}`}
           >
             {placeholder}
@@ -424,11 +426,13 @@ export const DropdownInput: React.FC<InputProps> = ({
           <Avatar
             firstName={options
               ?.find((opt) => opt.key === value)
-              ?.value.split(',')[0]
+              ?.value.toString()
+              .split(',')[0]
               .trim()}
             lastName={options
               ?.find((opt) => opt.key === value)
-              ?.value.split(',')[1]
+              ?.value.toString()
+              .split(',')[1]
               .trim()}
             customImageCss="custom-form-image"
             customTextCss="custom-form-image-txt"
@@ -1544,7 +1548,7 @@ export const SearchCustomInput: React.FC<InputProps> = ({
                     id="menu-item"
                     className="custom-search-input-item d-flex align-items-center w-100"
                     role="menuitem"
-                    aria-label={item.value}
+                    aria-label={item.value.toString()}
                     tabIndex={0} // Allow keyboard focus
                     key={item.key}
                     onClick={() => {

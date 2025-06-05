@@ -557,6 +557,7 @@ export type Query = {
   getApplicationServiceTypes: DropdownResponse;
   getApplicationsByStaff: ViewApplicationResponse;
   getHousingTypes: HousingTypeResponse;
+  getInvoiceById: InvoiceResponse;
   getInvoicesByApplicationId: InvoicesByApplicationIdResponse;
   getOrganizations: DropdownResponse;
   getParticipantNames: DropdownResponse;
@@ -610,6 +611,11 @@ export type QueryGetApplicationsByStaffArgs = {
   roleId?: InputMaybe<Scalars['Int']['input']>;
   sortBy?: InputMaybe<StaffSortByField>;
   sortByDir?: InputMaybe<ApplicationSortByDirection>;
+};
+
+
+export type QueryGetInvoiceByIdArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
