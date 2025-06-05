@@ -51,6 +51,22 @@ export const formatDateRange = (
 
 //Normalize date returned in string format e.g. '2025-06-03' (string) will be normalized to 2025-06-03T00:00:00 local
 export const parseLocalDate = (dateString: string) => {
+  // Check if it's a full ISO string with time (UTC or timezone-aware)
+  if (dateString.includes('T')) {
+    const date = new Date(dateString);
+    // Normalize to local midnight
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  //Handling edge case (for future-proofing)
+  //If the server someday sends a non-standard format, e.g., '06/03/2025' or '03-Jun-2025',
+  //this function may break. So if you expect any non-ISO formats, you may want to do:
+  if (!dateString.match(/^\d{4}-\d{2}-\d{2}/)) {
+    console.warn('Unexpected date format:', dateString);
+    return new Date(dateString); // fallback
+  }
+
+  // Handle basic YYYY-MM-DD format
   const [y, m, d] = dateString.split('-').map(Number);
   return new Date(y, m - 1, d); // Local midnight
 };
