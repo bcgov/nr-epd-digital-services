@@ -227,14 +227,14 @@ export class AppParticipantService {
 
         // Check if the participant already exists, we can have multiple participants with same personId and participantRoleId but different organizationId
         let existingParticipant = null;
-          existingParticipant = await this.appParticsRepository.findOne({
-            where: {
-              applicationId: newAppParticipant.applicationId,
-              personId: newAppParticipant.personId,
-              participantRoleId: newAppParticipant.participantRoleId,
-              organizationId: newAppParticipant.organizationId,
-            },
-          });
+        existingParticipant = await this.appParticsRepository.findOne({
+          where: {
+            applicationId: newAppParticipant.applicationId,
+            personId: newAppParticipant.personId,
+            participantRoleId: newAppParticipant.participantRoleId,
+            organizationId: newAppParticipant.organizationId,
+          },
+        });
 
         if (existingParticipant) {
           throw new HttpException(
@@ -372,6 +372,92 @@ export class AppParticipantService {
       );
       throw new HttpException(
         'Failed to update App Participant',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  /**
+   * Retrieve a participant by ID with their associated person information
+   *
+   * @param id - The ID of the participant to retrieve
+   * @param user - The authenticated user information
+   * @returns A ViewAppParticipantsDto object with the participant and person details
+   * @throws HttpException if the participant is not found or there's an error
+   */
+  async getAppParticipantById(
+    id: number,
+    user: any,
+  ): Promise<ViewAppParticipantsDto> {
+    try {
+      this.loggerService.log('at service layer getAppParticipantById start');
+
+      // Check user authentication
+      if (user?.identity_provider !== 'idir') {
+        throw new HttpException(
+          'Only IDIR users can retrieve participants',
+          HttpStatus.FORBIDDEN,
+        );
+      }
+
+      // Find the participant with person, organization and role relations
+      const participant = await this.appParticsRepository.findOne({
+        where: { id },
+        relations: ['organization', 'participantRole', 'person'],
+      });
+
+      if (!participant) {
+        throw new HttpException(
+          `Participant with ID ${id} not found`,
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      // Transform the data into the DTO format
+      const transformedParticipant = {
+        id: participant.id,
+        applicationId: participant.applicationId,
+        isMainParticipant: participant.isMainParticipant,
+        person: {
+          id: participant.person.id,
+          firstName: participant.person.firstName,
+          middleName: participant.person.middleName,
+          lastName: participant.person.lastName,
+          fullName:
+            participant.person.firstName +
+            (participant.person.middleName
+              ? ' ' + participant.person.middleName
+              : '') +
+            ' ' +
+            participant.person.lastName,
+        },
+        organization: {
+          id: participant.organization?.id,
+          name: participant.organization?.name || '',
+        },
+        participantRole: {
+          id: participant.participantRole.id,
+          description: participant.participantRole.description,
+        },
+        effectiveStartDate: participant.effectiveStartDate,
+        effectiveEndDate: participant.effectiveEndDate,
+        isMinistry: participant.participantRole.isMinistry,
+      };
+
+      return plainToInstance(ViewAppParticipantsDto, transformedParticipant);
+    } catch (error) {
+      this.loggerService.error(
+        'Error occurred in getAppParticipantById',
+        error.stack,
+      );
+
+      // Rethrow HttpExceptions as is
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        `Failed to retrieve app participant with ID: ${id}`,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

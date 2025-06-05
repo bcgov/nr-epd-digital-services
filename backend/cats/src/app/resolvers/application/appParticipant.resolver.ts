@@ -1,7 +1,7 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AppParticipantService } from '../../services/application/appParticipants.service';
 import { AuthenticatedUser, Resource } from 'nest-keycloak-connect';
-import { HttpStatus, UsePipes } from '@nestjs/common';
+import { HttpException, HttpStatus, UsePipes } from '@nestjs/common';
 import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
 import { GenericValidationPipe } from '../../utils/validations/genericValidationPipe';
 import { AppParticipantsResponse } from '../../dto/response/applicationParticipant/appParticipantsResponse';
@@ -43,6 +43,7 @@ export class AppParticipantResolver {
     private readonly organizationResponseProvider: GenericResponseProvider<
       DropdownDto[]
     >,
+    private readonly singleParticipantResponseProvider: GenericResponseProvider<ViewAppParticipantsDto>,
   ) {}
 
   @Query(() => AppParticipantsResponse, { name: 'getAppParticipantsByAppId' })
@@ -207,7 +208,7 @@ export class AppParticipantResolver {
           false,
           result,
         );
-      } 
+      }
     } catch (error) {
       this.loggerService.log(
         `AppParticipantResolver.getOrganizations() Error: ${error.message}`,
@@ -311,6 +312,50 @@ export class AppParticipantResolver {
       return this.genericResponseProvider.createResponse(
         'An error occurred while updating app participant',
         HttpStatus.INTERNAL_SERVER_ERROR,
+        false,
+        null,
+      );
+    }
+  }
+
+  @Query(() => AppParticipantsResponse, { name: 'getAppParticipantById' })
+  @UsePipes(new GenericValidationPipe())
+  async getAppParticipantById(
+    @Args('id', { type: () => Int }) id: number,
+    @AuthenticatedUser() user: any,
+  ) {
+    try {
+      const result = await this.appParticipantService.getAppParticipantById(
+        id,
+        user,
+      );
+
+      this.loggerService.log(
+        'AppParticipantResolver.getAppParticipantById() RES:200 end',
+      );
+      return this.singleParticipantResponseProvider.createResponse(
+        'Participant fetched successfully',
+        HttpStatus.OK,
+        true,
+        result,
+      );
+    } catch (error) {
+      this.loggerService.log(
+        `AppParticipantResolver.getAppParticipantById() Error: ${error.message}`,
+      );
+
+      // Determine appropriate status code
+      let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+      let message = 'An error occurred while fetching the participant';
+
+      if (error instanceof HttpException) {
+        statusCode = error.getStatus();
+        message = error.message;
+      }
+
+      return this.singleParticipantResponseProvider.createResponse(
+        message,
+        statusCode,
         false,
         null,
       );
