@@ -331,16 +331,14 @@ export class AppParticipantService {
         throw new HttpException('Participant not found', HttpStatus.NOT_FOUND);
       }
 
-      // Update the startDate or endDate if provided
       if (updateParticipant.effectiveStartDate) {
         existingParticipant.effectiveStartDate =
           updateParticipant.effectiveStartDate;
       }
-      if (updateParticipant.effectiveEndDate) {
-        existingParticipant.effectiveEndDate =
-          updateParticipant.effectiveEndDate;
-      }
-
+      
+      //The effectiveEndDate is optional, so no need to check if it exists because there may be cases where it existed and now the user wants to remove it
+      existingParticipant.effectiveEndDate = updateParticipant.effectiveEndDate; 
+      
       // Update metadata
       existingParticipant.updatedBy = user?.givenName;
       existingParticipant.updatedDateTime = new Date();
