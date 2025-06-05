@@ -555,6 +555,7 @@ export type Query = {
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
   getApplicationNotesByApplicationId: ApplicationNotesResponse;
   getApplicationServiceTypes: DropdownResponse;
+  getApplicationsByStaff: ViewApplicationResponse;
   getHousingTypes: HousingTypeResponse;
   getInvoicesByApplicationId: InvoicesByApplicationIdResponse;
   getOrganizations: DropdownResponse;
@@ -576,6 +577,11 @@ export type QueryFindPersonByIdArgs = {
 };
 
 
+export type QueryGetAllParticipantRolesArgs = {
+  roleType?: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type QueryGetAppParticipantsByAppIdArgs = {
   applicationId: Scalars['Int']['input'];
   filter?: InputMaybe<AppParticipantFilter>;
@@ -594,6 +600,16 @@ export type QueryGetApplicationHousingByApplicationIdArgs = {
 
 export type QueryGetApplicationNotesByApplicationIdArgs = {
   applicationId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetApplicationsByStaffArgs = {
+  page: Scalars['Int']['input'];
+  pageSize: Scalars['Int']['input'];
+  personId: Scalars['Int']['input'];
+  roleId?: InputMaybe<Scalars['Int']['input']>;
+  sortBy?: InputMaybe<StaffSortByField>;
+  sortByDir?: InputMaybe<ApplicationSortByDirection>;
 };
 
 
@@ -738,8 +754,12 @@ export type StaffResponse = {
 
 export enum StaffSortByField {
   Assignment = 'ASSIGNMENT',
+  EndDate = 'END_DATE',
   Id = 'ID',
-  Name = 'NAME'
+  Name = 'NAME',
+  Role = 'ROLE',
+  SiteAddress = 'SITE_ADDRESS',
+  StartDate = 'START_DATE'
 }
 
 export type TimesheetDayDto = {
@@ -907,6 +927,29 @@ export type ViewApplicationDetails = {
   submissionId?: Maybe<Scalars['String']['output']>;
 };
 
+export type ViewApplicationResponse = {
+  __typename?: 'ViewApplicationResponse';
+  count?: Maybe<Scalars['Float']['output']>;
+  data: Array<ViewApplications>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  page?: Maybe<Scalars['Float']['output']>;
+  pageSize?: Maybe<Scalars['Float']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type ViewApplications = {
+  __typename?: 'ViewApplications';
+  applicationId: Scalars['Float']['output'];
+  effectiveEndDate?: Maybe<Scalars['DateTime']['output']>;
+  effectiveStartDate: Scalars['DateTime']['output'];
+  id: Scalars['Float']['output'];
+  roleDescription: Scalars['String']['output'];
+  roleId: Scalars['Float']['output'];
+  siteAddress: Scalars['String']['output'];
+};
+
 export type ViewOrganizationsDto = {
   __typename?: 'ViewOrganizationsDto';
   id?: Maybe<Scalars['Float']['output']>;
@@ -926,6 +969,7 @@ export type ViewParticipantsRolesDto = {
   __typename?: 'ViewParticipantsRolesDto';
   description: Scalars['String']['output'];
   id: Scalars['Float']['output'];
+  roleType?: Maybe<Scalars['String']['output']>;
 };
 
 export type ViewPermissions = {
