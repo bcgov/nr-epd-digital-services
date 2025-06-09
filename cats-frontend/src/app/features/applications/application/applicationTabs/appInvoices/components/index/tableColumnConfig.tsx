@@ -4,6 +4,7 @@ import { formatDateUTC } from '@cats/helpers/utility';
 import { FileLinesIcon } from '@cats/components/common/icon';
 import { StatusType } from './statusType';
 import StatusPill from './statusPill';
+import { Link, useParams } from 'react-router-dom';
 
 export const indexTableColumns: TableColumn[] = [
   {
@@ -81,11 +82,27 @@ export const indexTableColumns: TableColumn[] = [
     sortOrder: 7,
     isChecked: true,
     displayType: {
-      type: FormFieldType.Link,
-      label: 'View',
-      href: '/invoices/',
-      customLinkValue: 'View',
-      customIcon: <FileLinesIcon />,
+      // We're not using the Link type here because we want to customize the
+      // rendering to include two variables.
+      type: FormFieldType.Label,
+    },
+    renderCell: (value: any, row: any) => {
+      // The component will be rendered inside the application tab which contains the application ID in the URL
+      // Extract it from the current URL
+      const { applicationId } = useParams<{ applicationId: string }>();
+
+      // Use Link component from react-router-dom to create the dynamic link
+      return (
+        <div className="d-flex justify-content-center w-100">
+          <Link
+            to={`/applications/${applicationId}/invoices/${value}/view`}
+            className="d-flex align-items-center gap-2 text-decoration-none"
+            style={{ color: 'var(--surface-color-primary-default, #053662)' }}
+          >
+            <FileLinesIcon /> <span>View</span>
+          </Link>
+        </div>
+      );
     },
   },
 ];
