@@ -549,6 +549,7 @@ export type Query = {
   findAllPerson: PersonResponse;
   findPersonById: PersonResponse;
   getAllActiveStaffMembers: ViewStaffWithCapacityResponse;
+  getAllActiveStaffMembersForApplicationServiceType: ViewStaffWithCapacityResponse;
   getAllParticipantRoles: ParticipantsRolesResponse;
   getAppParticipantsByAppId: AppParticipantsResponse;
   getApplicationDetailsById: ApplicationDetailsResponse;
@@ -573,6 +574,11 @@ export type Query = {
 
 export type QueryFindPersonByIdArgs = {
   id: Scalars['Float']['input'];
+};
+
+
+export type QueryGetAllActiveStaffMembersForApplicationServiceTypeArgs = {
+  applicationServiceTypeId: Scalars['Int']['input'];
 };
 
 
