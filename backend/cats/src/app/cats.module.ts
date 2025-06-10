@@ -91,8 +91,9 @@ import { RecentViewedApplication } from './entities/RecentViewedApplication.enti
 import { DashboardService } from './services/dashboard/dashboard.service';
 import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
 
-import { ApplicationServiceTypeAssignmentFactor } from './entities/applicationServiceTypeAssignmentFactor';
-import { PermissionServiceTypeMapping } from './entities/permissionServiceTypeMapping';
+
+import { ServiceAssignmentFactor } from './entities/serviceAssignmentFactor';
+import { PermissionServiceType } from './entities/permissionServiceType';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -153,10 +154,9 @@ import { PermissionServiceTypeMapping } from './entities/permissionServiceTypeMa
       ApplicationServiceType,
       Permissions,
       PersonPermission,
-      RecentViewedApplication,
-
-      ApplicationServiceTypeAssignmentFactor,
-      PermissionServiceTypeMapping,
+         RecentViewedApplication,
+      ServiceAssignmentFactor,
+      PermissionServiceType,
     ]),
     HttpModule,
   ],

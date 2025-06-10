@@ -13,8 +13,8 @@ import { Application } from './application.entity';
 import { ApplicationServiceType } from './applicationServiceType.entity';
 
 @ObjectType()
-@Entity('permission_service_type_mapping')
-export class PermissionServiceTypeMapping {
+@Entity('permission_service_type')
+export class PermissionServiceType {
   @Field()
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: string;

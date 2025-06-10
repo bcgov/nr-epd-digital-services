@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { Application } from './application.entity';
 import { ParticipantRole } from './participantRole.entity';
-import { PermissionServiceTypeMapping } from './permissionServiceTypeMapping';
+import { PermissionServiceType } from './permissionServiceType';
 
 @ObjectType()
 @Entity('application_service_type')
@@ -29,9 +29,6 @@ export class ApplicationServiceType {
   @OneToMany(() => Application, (application) => application.serviceType)
   applications: Application[];
 
-  @OneToMany(
-    () => PermissionServiceTypeMapping,
-    (mapping) => mapping.serviceTypes,
-  )
-  permissionServiceTypeMappings: PermissionServiceTypeMapping[];
+  @OneToMany(() => PermissionServiceType, (mapping) => mapping.serviceTypes)
+  permissionServiceTypeMappings: PermissionServiceType[];
 }

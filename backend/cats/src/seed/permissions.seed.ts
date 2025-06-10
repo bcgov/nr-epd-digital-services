@@ -9,7 +9,7 @@ import {
 } from './permissions';
 import { LoggerService } from '../app/logger/logger.service';
 import { ApplicationServiceType } from '../app/entities/applicationServiceType.entity';
-import { PermissionServiceTypeMapping } from '../app/entities/permissionServiceTypeMapping';
+import { PermissionServiceType } from '../app/entities/permissionServiceType';
 import { parse } from 'path';
 import { PersonService } from 'src/app/services/people/people.service';
 
@@ -20,6 +20,7 @@ export enum PermissionRole {
 }
 
 export const PermissionsSeeder = async (manager: EntityManager) => {
+  const logger = new LoggerService();
   try {
     const roles = await manager.find(ParticipantRole, {
       where: { roleType: 'STAFF' },
@@ -74,8 +75,7 @@ export const PermissionsSeeder = async (manager: EntityManager) => {
 
         if (perm.serviceTypesDetails && perm.serviceTypesDetails.length > 0) {
           for (const serviceTypeDetail of perm.serviceTypesDetails) {
-            const permissionServiceTypeMapping =
-              new PermissionServiceTypeMapping();
+            const permissionServiceTypeMapping = new PermissionServiceType();
 
             let serviceTypeItem = await manager.findOne(
               ApplicationServiceType,
@@ -93,7 +93,7 @@ export const PermissionsSeeder = async (manager: EntityManager) => {
               );
               permissionServiceTypeMapping.permissionId = permission.id;
               await manager.save(
-                PermissionServiceTypeMapping,
+                PermissionServiceType,
                 permissionServiceTypeMapping,
               );
             }

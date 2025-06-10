@@ -11,8 +11,8 @@ import { ParticipantRole } from './participantRole.entity';
 import { ApplicationServiceType } from './applicationServiceType.entity';
 
 @ObjectType()
-@Entity('application_service_type_assignment_factor')
-export class ApplicationServiceTypeAssignmentFactor {
+@Entity('service_assignment_factor')
+export class ServiceAssignmentFactor {
   @Field()
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: string;

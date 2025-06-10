@@ -18,7 +18,7 @@ export class StaffService {
     private readonly applicationParticRepo: Repository<AppParticipant>,
     private readonly loggerService: LoggerService,
     private readonly dataSource: DataSource,
-    private readonly siteService: SiteService
+    private readonly siteService: SiteService,
     private readonly staffAssignmentService: StaffAssignmentService,
   ) {}
 
@@ -101,7 +101,7 @@ export class StaffService {
       this.loggerService.log('StaffService: getStaffs end');
       return result;
     } catch (error) {
-      this.loggerSerivce.error(
+      this.loggerService.error(
         `StaffService Error: ${error.message}`,
         error.stack,
       );
@@ -137,7 +137,7 @@ export class StaffService {
         qb.andWhere('appParticipant.participantRoleId = :roleId', { roleId });
       }
 
-      let sortByAddress =  false;
+      let sortByAddress = false;
       // Sorting logic
       switch (sortBy) {
         case SortBy.ID:
@@ -163,33 +163,42 @@ export class StaffService {
 
       const [applications, total] = await qb.getManyAndCount();
 
-      const data: ViewApplications[] = await Promise.all(applications.map(async (app: AppParticipant) => {
-      const siteDetails = await this.siteService.getSiteById(app?.application?.siteId.toString());
-        let siteAddress = '';
-        if(siteDetails)
-        {
-          siteAddress = `${siteDetails?.findSiteBySiteId?.data?.addrLine_1 ?? ''}
+      const data: ViewApplications[] = await Promise.all(
+        applications.map(async (app: AppParticipant) => {
+          const siteDetails = await this.siteService.getSiteById(
+            app?.application?.siteId.toString(),
+          );
+          let siteAddress = '';
+          if (siteDetails) {
+            siteAddress = `${
+              siteDetails?.findSiteBySiteId?.data?.addrLine_1 ?? ''
+            }
                         ${siteDetails?.findSiteBySiteId?.data?.addrLine_2 ?? ''}
                         ${siteDetails?.findSiteBySiteId?.data?.addrLine_3 ?? ''}
-                        ${siteDetails?.findSiteBySiteId?.data?.addrLine_4 ?? ''}`;
-        }
-        
-        return {
-          id: app.id,
-          applicationId: app.applicationId,
-          roleId: app.participantRoleId,
-          roleDescription: app.participantRole?.description,
-          siteAddress,
-          effectiveStartDate: app.effectiveStartDate,
-          effectiveEndDate: app.effectiveEndDate,
-        };
-      }));
+                        ${
+                          siteDetails?.findSiteBySiteId?.data?.addrLine_4 ?? ''
+                        }`;
+          }
+
+          return {
+            id: app.id,
+            applicationId: app.applicationId,
+            roleId: app.participantRoleId,
+            roleDescription: app.participantRole?.description,
+            siteAddress,
+            effectiveStartDate: app.effectiveStartDate,
+            effectiveEndDate: app.effectiveEndDate,
+          };
+        }),
+      );
 
       if (data?.length > 0 && sortByAddress) {
         data.sort((a, b) => {
           const siteA = a.siteAddress ?? '';
           const siteB = b.siteAddress ?? '';
-          return sortDirection === SortByDirection.ASC ? siteA.localeCompare(siteB) : siteB.localeCompare(siteA);
+          return sortDirection === SortByDirection.ASC
+            ? siteA.localeCompare(siteB)
+            : siteB.localeCompare(siteA);
         });
       }
 
@@ -201,7 +210,10 @@ export class StaffService {
         count: total,
       };
     } catch (error) {
-      this.loggerService.error(`StaffService Error: ${error.message}`, error.stack);
+      this.loggerService.error(
+        `StaffService Error: ${error.message}`,
+        error.stack,
+      );
       throw new Error(`Failed to fetch staff applications: ${error.message}`);
     }
   }
