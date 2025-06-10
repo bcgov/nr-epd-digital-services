@@ -88,6 +88,7 @@ import { TimesheetDay } from './entities/timesheetDay.entity';
 import { TimesheetDayService } from './services/timesheetDay.service';
 import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
 import { ApplicationServiceTypeAssignmentFactor } from './entities/applicationServiceTypeAssignmentFactor';
+import { PermissionServiceTypeMapping } from './entities/permissionServiceTypeMapping';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -149,6 +150,7 @@ import { ApplicationServiceTypeAssignmentFactor } from './entities/applicationSe
       Permissions,
       PersonPermission,
       ApplicationServiceTypeAssignmentFactor,
+      PermissionServiceTypeMapping,
     ]),
     HttpModule,
   ],

@@ -221,6 +221,33 @@ describe('StaffAssignmentService', () => {
     expect(result).toEqual([]);
   });
 
+  it('should return array of staff members', async () => {
+    (personRepository.query as jest.Mock).mockResolvedValueOnce([
+      {
+        id: 1,
+        first_name: 'John',
+        last_name: 'Doe',
+        roles: 'STAFF',
+        middle_name: '',
+        current_factors: 1,
+      },
+    ]);
+    const result =
+      await service.getAllActiveStaffMembersWithCurrentCapacityForApplicationServiceType(
+        1,
+      );
+    expect(result).toEqual([
+      {
+        personId: 1,
+        personFirstName: 'John',
+        personLastName: 'Doe',
+        personFullName: 'John  Doe - (STAFF)',
+        personMiddleName: '',
+        currentCapacity: 1,
+      },
+    ]);
+  });
+
   it('should retrieve staff assigned by app ID successfully', async () => {
     const applicationId = 1;
     const application = new Application();

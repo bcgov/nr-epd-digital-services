@@ -5,11 +5,13 @@ import { LoggerService } from '../../logger/logger.service';
 import { Filter } from '../../utilities/enums/application/filter.enum';
 import { SortBy } from '../../utilities/enums/staff/sortBy.enum';
 import { SortByDirection } from '../../utilities/enums/application/sortByDirection.enum';
+import { StaffAssignmentService } from '../assignment/staffAssignment.service';
 
 describe('StaffService', () => {
   let staffService: StaffService;
   let dataSourceMock: Partial<DataSource>;
   let loggerServiceMock: Partial<LoggerService>;
+  let staffAssignmentService: any;
 
   beforeEach(async () => {
     dataSourceMock = {
@@ -26,25 +28,44 @@ describe('StaffService', () => {
         StaffService,
         { provide: DataSource, useValue: dataSourceMock },
         { provide: LoggerService, useValue: loggerServiceMock },
+        {
+          provide: StaffAssignmentService,
+          useValue: {
+            getStaffWithCurrentFactorsQuery: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
     staffService = module.get<StaffService>(StaffService);
+    staffAssignmentService = module.get<StaffAssignmentService>(
+      StaffAssignmentService,
+    );
   });
 
   const sampleResult = [
-    { id: 1, name: 'John Doe', current_factors: '3' },
-    { id: 2, name: 'Jane Smith', current_factors: '0' },
+    { id: 1, first_name: 'John', last_name: 'Doe', current_factors: '3' },
+    { id: 2, first_name: 'Jane', last_name: 'Smith', current_factors: '0' },
   ];
 
   const sampleCount = [{ count: '2' }];
 
   it('should return paginated staff list without filters', async () => {
+    (
+      staffAssignmentService.getStaffWithCurrentFactorsQuery as jest.Mock
+    ).mockResolvedValueOnce('');
+
     (dataSourceMock.query as jest.Mock)
       .mockResolvedValueOnce(sampleResult) // data query
       .mockResolvedValueOnce(sampleCount); // count query
 
-    const result = await staffService.getStaffs(1, 10, null, SortBy.NAME, SortByDirection.ASC);
+    const result = await staffService.getStaffs(
+      1,
+      10,
+      null,
+      SortBy.NAME,
+      SortByDirection.ASC,
+    );
 
     expect(result.page).toBe(1);
     expect(result.pageSize).toBe(10);
@@ -64,7 +85,13 @@ describe('StaffService', () => {
       .mockResolvedValueOnce([sampleResult[1]]) // only unassigned
       .mockResolvedValueOnce([{ count: '1' }]);
 
-    const result = await staffService.getStaffs(1, 10, Filter.UNASSIGNED, SortBy.ID, SortByDirection.ASC);
+    const result = await staffService.getStaffs(
+      1,
+      10,
+      Filter.UNASSIGNED,
+      SortBy.ID,
+      SortByDirection.ASC,
+    );
 
     expect(result.count).toBe(1);
     expect(result.data[0].assignments).toBe(0);
@@ -75,7 +102,13 @@ describe('StaffService', () => {
       .mockResolvedValueOnce([sampleResult[0]]) // only overcapacity
       .mockResolvedValueOnce([{ count: '1' }]);
 
-    const result = await staffService.getStaffs(1, 10, Filter.OVERCAPACITY, SortBy.ASSIGNMENT, SortByDirection.DESC);
+    const result = await staffService.getStaffs(
+      1,
+      10,
+      Filter.OVERCAPACITY,
+      SortBy.ASSIGNMENT,
+      SortByDirection.DESC,
+    );
 
     expect(result.count).toBe(1);
     expect(result.data[0].assignments).toBe(3);
@@ -86,7 +119,13 @@ describe('StaffService', () => {
       .mockResolvedValueOnce(sampleResult)
       .mockResolvedValueOnce(sampleCount);
 
-    const result = await staffService.getStaffs(1, 10, null, SortBy.NAME, 'invalid' as any);
+    const result = await staffService.getStaffs(
+      1,
+      10,
+      null,
+      SortBy.NAME,
+      'invalid' as any,
+    );
 
     expect(result.page).toBe(1);
     expect(result.data.length).toBeGreaterThan(0);
@@ -97,7 +136,13 @@ describe('StaffService', () => {
       .mockResolvedValueOnce(sampleResult)
       .mockResolvedValueOnce(sampleCount);
 
-    const result = await staffService.getStaffs(2, 5, null, SortBy.ID, SortByDirection.ASC);
+    const result = await staffService.getStaffs(
+      2,
+      5,
+      null,
+      SortBy.ID,
+      SortByDirection.ASC,
+    );
 
     expect(result.page).toBe(2);
     expect(result.pageSize).toBe(5);

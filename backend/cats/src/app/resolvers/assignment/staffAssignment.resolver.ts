@@ -82,7 +82,9 @@ export class StaffAssignmentResolver {
     }
   }
 
-  @Query(() => ViewStaffWithCapacityResponse, {name: 'getAllActiveStaffMembers' })
+  @Query(() => ViewStaffWithCapacityResponse, {
+    name: 'getAllActiveStaffMembers',
+  })
   @UsePipes(new GenericValidationPipe())
   async getAllActiveStaffMembers() {
     try {
@@ -101,6 +103,61 @@ export class StaffAssignmentResolver {
       } else {
         this.loggerService.log(
           'StaffAssignmentResolver.getAllActiveStaffMembers() RES:404 end',
+        );
+        return this.staffResponseProvider.createResponse(
+          'Participant names data not found',
+          HttpStatus.NOT_FOUND,
+          false,
+          result,
+        );
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : typeof error === 'string'
+          ? error
+          : JSON.stringify(error);
+
+      this.loggerService.error(
+        `StaffAssignmentResolver.getStaffAssignedByAppId() - Error: ${errorMessage}`,
+        error instanceof Error ? error.stack : undefined,
+      );
+
+      throw new HttpException(
+        errorMessage || 'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Query(() => ViewStaffWithCapacityResponse, {
+    name: 'getAllActiveStaffMembersForApplicationServiceType',
+  })
+  @UsePipes(new GenericValidationPipe())
+  async getAllActiveStaffMembersForApplicationServiceType(
+    @Args('applicationServiceTypeId', { type: () => Int })
+    applicationServiceTypeId: number,
+  ) {
+    try {
+      const result =
+        await this.service.getAllActiveStaffMembersWithCurrentCapacityForApplicationServiceType(
+          applicationServiceTypeId,
+        );
+
+      if (result?.length > 0) {
+        this.loggerService.log(
+          'StaffAssignmentResolver.getAllActiveStaffMembersWithCurrentCapacityForApplicationServiceType() RES:200 end',
+        );
+        return this.staffResponseProvider.createResponse(
+          'Participant names fetched successfully',
+          HttpStatus.OK,
+          true,
+          result,
+        );
+      } else {
+        this.loggerService.log(
+          'StaffAssignmentResolver.getAllActiveStaffMembersWithCurrentCapacityForApplicationServiceType() RES:404 end',
         );
         return this.staffResponseProvider.createResponse(
           'Participant names data not found',
