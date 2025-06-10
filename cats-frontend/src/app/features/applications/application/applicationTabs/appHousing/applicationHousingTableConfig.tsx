@@ -153,6 +153,8 @@ const getHousingTypeField = (housingTypes: HousingTypeDto[]): IFormField => ({
   label: 'Housing Type',
   graphQLPropertyName: 'housingType',
   placeholder: 'Select Housing Type',
+  hiddenPlaceholder: true,
+  disabledPlaceholder: true,
   options: housingTypes.map((type) => ({
     key: type.id,
     value: type.description,

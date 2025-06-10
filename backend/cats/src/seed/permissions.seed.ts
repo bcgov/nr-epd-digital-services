@@ -20,7 +20,6 @@ export enum PermissionRole {
 }
 
 export const PermissionsSeeder = async (manager: EntityManager) => {
-  const logger = new LoggerService();
   try {
     const roles = await manager.find(ParticipantRole, {
       where: { roleType: 'STAFF' },

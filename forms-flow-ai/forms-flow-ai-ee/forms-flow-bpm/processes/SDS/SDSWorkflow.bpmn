@@ -201,7 +201,7 @@ execution.setVariable('siteAddress',siteAddress);</bpmn:script>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1k5fi3f" sourceRef="Activity_06nypz0" targetRef="Gateway_1txthk0" />
     <bpmn:sequenceFlow id="Flow_05t61qf" name="Approved/Rejected" sourceRef="Gateway_1txthk0" targetRef="Activity_0p4hm8r">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Approved' or action == 'Rejected' }</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted' or action == 'Rejected' }</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_05135h6" sourceRef="Activity_0p4hm8r" targetRef="Event_1jftbqf" />
     <bpmn:sequenceFlow id="Flow_1lfvq5z" name="Returned" sourceRef="Gateway_1txthk0" targetRef="Task_05ulff4">
@@ -209,7 +209,7 @@ execution.setVariable('siteAddress',siteAddress);</bpmn:script>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1vu5vy0" sourceRef="Activity_0b45bvb" targetRef="Gateway_0ojnh7a" />
     <bpmn:sequenceFlow id="Flow_0q4y5zz" name="Accepted" sourceRef="Gateway_0ojnh7a" targetRef="Activity_06nypz0">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Received from municipality'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1yl0zu1" name="Returned" sourceRef="Gateway_0ojnh7a" targetRef="Task_05ulff4">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
@@ -266,7 +266,7 @@ task.execution.setVariable('userRole','Site Information Advisor');</camunda:scri
       <bpmn:outgoing>Flow_0ci62kp</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_1bvjcnh" sourceRef="Gateway_0l22xcz" targetRef="Activity_0yw5we4">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus=='New'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus!='Resubmitted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1jou1jo" sourceRef="Activity_0yw5we4" targetRef="Event_06jjxcg" />
     <bpmn:sequenceFlow id="Flow_0d3zok7" sourceRef="Gateway_0l22xcz" targetRef="Event_06jjxcg">

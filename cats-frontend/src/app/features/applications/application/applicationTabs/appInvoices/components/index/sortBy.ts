@@ -7,7 +7,7 @@ export enum InvoiceSortBy {
   TOTAL_IN_CENTS = 'totalInCents',
 }
 
-export enum invoiceSortByDir {
+export enum InvoiceSortByDir {
   ASC = 'asc',
   DESC = 'desc',
 }

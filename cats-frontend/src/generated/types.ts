@@ -549,13 +549,16 @@ export type Query = {
   findAllPerson: PersonResponse;
   findPersonById: PersonResponse;
   getAllActiveStaffMembers: ViewStaffWithCapacityResponse;
+  getAllActiveStaffMembersForApplicationServiceType: ViewStaffWithCapacityResponse;
   getAllParticipantRoles: ParticipantsRolesResponse;
   getAppParticipantsByAppId: AppParticipantsResponse;
   getApplicationDetailsById: ApplicationDetailsResponse;
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
   getApplicationNotesByApplicationId: ApplicationNotesResponse;
   getApplicationServiceTypes: DropdownResponse;
+  getApplicationsByStaff: ViewApplicationResponse;
   getHousingTypes: HousingTypeResponse;
+  getInvoiceById: InvoiceResponse;
   getInvoicesByApplicationId: InvoicesByApplicationIdResponse;
   getOrganizations: DropdownResponse;
   getParticipantNames: DropdownResponse;
@@ -573,6 +576,16 @@ export type Query = {
 
 export type QueryFindPersonByIdArgs = {
   id: Scalars['Float']['input'];
+};
+
+
+export type QueryGetAllParticipantRolesArgs = {
+  roleType?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryGetAllActiveStaffMembersForApplicationServiceTypeArgs = {
+  applicationServiceTypeId: Scalars['Int']['input'];
 };
 
 
@@ -594,6 +607,21 @@ export type QueryGetApplicationHousingByApplicationIdArgs = {
 
 export type QueryGetApplicationNotesByApplicationIdArgs = {
   applicationId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetApplicationsByStaffArgs = {
+  page: Scalars['Int']['input'];
+  pageSize: Scalars['Int']['input'];
+  personId: Scalars['Int']['input'];
+  roleId?: InputMaybe<Scalars['Int']['input']>;
+  sortBy?: InputMaybe<StaffSortByField>;
+  sortByDir?: InputMaybe<ApplicationSortByDirection>;
+};
+
+
+export type QueryGetInvoiceByIdArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -738,8 +766,12 @@ export type StaffResponse = {
 
 export enum StaffSortByField {
   Assignment = 'ASSIGNMENT',
+  EndDate = 'END_DATE',
   Id = 'ID',
-  Name = 'NAME'
+  Name = 'NAME',
+  Role = 'ROLE',
+  SiteAddress = 'SITE_ADDRESS',
+  StartDate = 'START_DATE'
 }
 
 export type TimesheetDayDto = {
@@ -907,6 +939,29 @@ export type ViewApplicationDetails = {
   submissionId?: Maybe<Scalars['String']['output']>;
 };
 
+export type ViewApplicationResponse = {
+  __typename?: 'ViewApplicationResponse';
+  count?: Maybe<Scalars['Float']['output']>;
+  data: Array<ViewApplications>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  page?: Maybe<Scalars['Float']['output']>;
+  pageSize?: Maybe<Scalars['Float']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type ViewApplications = {
+  __typename?: 'ViewApplications';
+  applicationId: Scalars['Float']['output'];
+  effectiveEndDate?: Maybe<Scalars['DateTime']['output']>;
+  effectiveStartDate: Scalars['DateTime']['output'];
+  id: Scalars['Float']['output'];
+  roleDescription: Scalars['String']['output'];
+  roleId: Scalars['Float']['output'];
+  siteAddress: Scalars['String']['output'];
+};
+
 export type ViewOrganizationsDto = {
   __typename?: 'ViewOrganizationsDto';
   id?: Maybe<Scalars['Float']['output']>;
@@ -926,6 +981,7 @@ export type ViewParticipantsRolesDto = {
   __typename?: 'ViewParticipantsRolesDto';
   description: Scalars['String']['output'];
   id: Scalars['Float']['output'];
+  roleType?: Maybe<Scalars['String']['output']>;
 };
 
 export type ViewPermissions = {

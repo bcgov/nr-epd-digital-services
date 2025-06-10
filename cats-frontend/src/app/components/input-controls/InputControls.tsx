@@ -6,7 +6,12 @@ import React, {
   useState,
 } from 'react';
 import { FormFieldType, IFormField } from './IFormField';
-import { formatDate, formatDateRange } from '../../helpers/utility';
+import {
+  formatDate,
+  formatDateRange,
+  normalizeDate,
+  parseLocalDate,
+} from '../../helpers/utility';
 import { DatePicker, DateRangePicker } from 'rsuite';
 import {
   CalendarIcon,
@@ -306,6 +311,8 @@ export const TextInput: React.FC<InputProps> = ({
 export const DropdownInput: React.FC<InputProps> = ({
   label,
   placeholder,
+  hiddenPlaceholder,
+  disabledPlaceholder,
   options,
   value,
   isEditing,
@@ -358,7 +365,7 @@ export const DropdownInput: React.FC<InputProps> = ({
   const handleCheckBoxChange = (isChecked: boolean) => {
     onChange(isChecked);
   };
-  const isFirstOptionGrey = value === '';
+  const isFirstOptionGrey: boolean = value === '';
   return (
     <ContainerElement
       className={tableMode ? 'table-border-light align-content-center' : 'mb-3'}
@@ -398,8 +405,8 @@ export const DropdownInput: React.FC<InputProps> = ({
         >
           <option
             value=""
-            disabled
-            hidden
+            disabled={disabledPlaceholder}
+            hidden={hiddenPlaceholder}
             className={`custom-disabled-option  ${customPlaceholderCss ?? ''}`}
           >
             {placeholder}
@@ -419,11 +426,13 @@ export const DropdownInput: React.FC<InputProps> = ({
           <Avatar
             firstName={options
               ?.find((opt) => opt.key === value)
-              ?.value.split(',')[0]
+              ?.value.toString()
+              .split(',')[0]
               .trim()}
             lastName={options
               ?.find((opt) => opt.key === value)
-              ?.value.split(',')[1]
+              ?.value.toString()
+              .split(',')[1]
               .trim()}
             customImageCss="custom-form-image"
             customTextCss="custom-form-image-txt"
@@ -756,11 +765,19 @@ export const DateInput: React.FC<InputProps> = ({
   const ContainerElement = tableMode ? 'td' : 'div';
   let dateValue;
 
-  value = tableMode ? (value != '' ? new Date(value) : null) : value;
-  value = !tableMode && isEditing && value != null ? new Date(value) : value;
+  if (value != null && value !== '') {
+    value = tableMode
+      ? value instanceof Date
+        ? normalizeDate(value)
+        : parseLocalDate(value)
+      : !tableMode && isEditing && value instanceof Date
+        ? normalizeDate(value)
+        : parseLocalDate(value);
+  }
 
+  // Format for UI
   if (value) {
-    dateValue = formatDate(new Date(value), dateFormat);
+    dateValue = formatDate(value, dateFormat ?? 'MMM dd, yyyy');
   }
 
   const handleCheckBoxChange = (isChecked: boolean) => {
@@ -1531,7 +1548,7 @@ export const SearchCustomInput: React.FC<InputProps> = ({
                     id="menu-item"
                     className="custom-search-input-item d-flex align-items-center w-100"
                     role="menuitem"
-                    aria-label={item.value}
+                    aria-label={item.value.toString()}
                     tabIndex={0} // Allow keyboard focus
                     key={item.key}
                     onClick={() => {

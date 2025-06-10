@@ -1,16 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { StaffService } from './staff.service';
-import { DataSource } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { LoggerService } from '../../logger/logger.service';
 import { Filter } from '../../utilities/enums/application/filter.enum';
 import { SortBy } from '../../utilities/enums/staff/sortBy.enum';
 import { SortByDirection } from '../../utilities/enums/application/sortByDirection.enum';
+import { AppParticipant } from '../../entities/appParticipant.entity';
+import { SiteService } from '../site/site.service';
+import { getRepositoryToken } from '@nestjs/typeorm';
 import { StaffAssignmentService } from '../assignment/staffAssignment.service';
 
 describe('StaffService', () => {
   let staffService: StaffService;
   let dataSourceMock: Partial<DataSource>;
   let loggerServiceMock: Partial<LoggerService>;
+  let applicationParticRepo: Partial<Repository<AppParticipant>>;
+  let siteServiceMock: Partial<SiteService>;
   let staffAssignmentService: any;
 
   beforeEach(async () => {
@@ -23,11 +28,21 @@ describe('StaffService', () => {
       error: jest.fn(),
     };
 
+    applicationParticRepo = {
+      createQueryBuilder: jest.fn(),
+    };
+
+    siteServiceMock = {
+      getSiteById: jest.fn(),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         StaffService,
         { provide: DataSource, useValue: dataSourceMock },
         { provide: LoggerService, useValue: loggerServiceMock },
+        { provide: getRepositoryToken(AppParticipant), useValue: applicationParticRepo },
+        { provide: SiteService, useValue: siteServiceMock },
         {
           provide: StaffAssignmentService,
           useValue: {
@@ -159,4 +174,111 @@ describe('StaffService', () => {
 
     expect(loggerServiceMock.error).toHaveBeenCalled();
   });
+
+   it('should throw error on invalid staffId', async () => {
+    await expect(
+      staffService.getApplicationsByStaff(1, 10, SortBy.ID, SortByDirection.ASC, 0),
+    ).rejects.toThrow('Invalid staffId');
+  });
+
+  it('should throw error on invalid page or pageSize', async () => {
+    await expect(
+      staffService.getApplicationsByStaff(0, 0, SortBy.ID, SortByDirection.ASC, 1),
+    ).rejects.toThrow('Invalid page or pageSize value');
+  });
+
+  it('should return application data and sort by address', async () => {
+    const mockAppParticipant = {
+      id: 1,
+      applicationId: 123,
+      participantRoleId: 2,
+      participantRole: { description: 'Supervisor' },
+      application: { siteId: 45 },
+      effectiveStartDate: '2024-01-01',
+      effectiveEndDate: '2024-12-31',
+    };
+
+    const mockQueryBuilder: any = {
+      leftJoinAndSelect: jest.fn().mockReturnThis(),
+      where: jest.fn().mockReturnThis(),
+      andWhere: jest.fn().mockReturnThis(),
+      orderBy: jest.fn().mockReturnThis(),
+      skip: jest.fn().mockReturnThis(),
+      take: jest.fn().mockReturnThis(),
+      getManyAndCount: jest.fn().mockResolvedValue([[mockAppParticipant], 1]),
+    };
+
+    (applicationParticRepo.createQueryBuilder as jest.Mock).mockReturnValue(mockQueryBuilder);
+
+    (siteServiceMock.getSiteById as jest.Mock).mockResolvedValue({
+      findSiteBySiteId: {
+        data: {
+          addrLine_1: '123 Main St',
+          addrLine_2: '',
+          addrLine_3: '',
+          addrLine_4: '',
+        },
+      },
+    });
+
+    const result = await staffService.getApplicationsByStaff(1, 10, SortBy.SITE_ADDRESS, SortByDirection.ASC, 1);
+
+    expect(result.data).toHaveLength(1);
+    expect(result.data[0].siteAddress).toContain('123 Main St');
+    expect(result.count).toBe(1);
+    expect(siteServiceMock.getSiteById).toHaveBeenCalledWith('45');
+  });
+
+  it('should sort by role if specified', async () => {
+    const mockAppParticipant = {
+      id: 1,
+      applicationId: 222,
+      participantRoleId: 2,
+      participantRole: { description: 'Inspector' },
+      application: { siteId: 10 },
+      effectiveStartDate: '2024-01-01',
+      effectiveEndDate: '2024-12-31',
+    };
+
+    const mockQueryBuilder: any = {
+      leftJoinAndSelect: jest.fn().mockReturnThis(),
+      where: jest.fn().mockReturnThis(),
+      andWhere: jest.fn().mockReturnThis(),
+      orderBy: jest.fn().mockReturnThis(),
+      skip: jest.fn().mockReturnThis(),
+      take: jest.fn().mockReturnThis(),
+      getManyAndCount: jest.fn().mockResolvedValue([[mockAppParticipant], 1]),
+    };
+
+    (applicationParticRepo.createQueryBuilder as jest.Mock).mockReturnValue(mockQueryBuilder);
+
+    (siteServiceMock.getSiteById as jest.Mock).mockResolvedValue({
+      findSiteBySiteId: {
+        data: {
+          addrLine_1: '456 Elm St',
+          addrLine_2: '',
+          addrLine_3: '',
+          addrLine_4: '',
+        },
+      },
+    });
+
+    const result = await staffService.getApplicationsByStaff(1, 10, SortBy.ROLE, SortByDirection.DESC, 1, 2);
+
+    expect(result.data[0].roleDescription).toBe('Inspector');
+    expect(result.count).toBe(1);
+  });
+
+  it('should handle and log internal errors', async () => {
+    (applicationParticRepo.createQueryBuilder as jest.Mock).mockImplementation(() => {
+      throw new Error('Internal failure');
+    });
+
+    await expect(
+      staffService.getApplicationsByStaff(1, 10, SortBy.ID, SortByDirection.ASC, 1),
+    ).rejects.toThrow('Failed to fetch staff applications: Internal failure');
+
+    expect(loggerServiceMock.error).toHaveBeenCalled();
+  });
+  
 });

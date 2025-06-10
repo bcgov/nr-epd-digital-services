@@ -122,4 +122,29 @@ export class InvoiceService {
       throw new Error(`Failed to delete invoice: ${error.message}`);
     }
   }
+
+  async getInvoiceById(id: number): Promise<InvoiceV2> {
+    this.loggerService.log(`InvoiceService: getInvoiceById: invoiceId: ${id}`);
+    let invoice: InvoiceV2;
+    try {
+      invoice = await this.invoiceRepository.findOne({
+        where: { id },
+        relations: ['lineItems', 'application', 'recipient'],
+      });
+
+      if (!invoice) {
+        throw new Error(`Invoice with ID ${id} not found.`);
+      }
+    } catch (error) {
+      this.loggerService.error(
+        `InvoiceService: getInvoiceById: Error fetching invoice: ${error.message}`,
+        null,
+      );
+      throw new Error(
+        `Failed to fetch invoice with ID ${id}: ${error.message}`,
+      );
+    }
+    this.loggerService.log(`InvoiceService: getInvoiceById: Success.`);
+    return invoice;
+  }
 }
