@@ -13,6 +13,7 @@ interface InvoiceIndexTableProps {
   filter: InvoiceFilter;
   handleFilterChange: (filter: InvoiceFilter) => void;
   sortHandler: (column: TableColumn, ascending: boolean) => void;
+  createInvoiceButton?: React.ReactNode;
 }
 
 const InvoiceIndexTable: React.FC<InvoiceIndexTableProps> = ({
@@ -23,6 +24,7 @@ const InvoiceIndexTable: React.FC<InvoiceIndexTableProps> = ({
   filter,
   handleFilterChange,
   sortHandler,
+  createInvoiceButton,
 }) => {
   return (
     <div>
@@ -31,6 +33,7 @@ const InvoiceIndexTable: React.FC<InvoiceIndexTableProps> = ({
         handleColumnChange={handleColumnChange}
         handleFilterChange={handleFilterChange}
         filter={filter}
+        createInvoiceButton={createInvoiceButton}
       />
       <Table
         label="Invoices"

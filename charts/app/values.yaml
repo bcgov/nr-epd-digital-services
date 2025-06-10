@@ -67,6 +67,9 @@ frontend:
   # -- the deployment strategy, can be "Recreate" or "RollingUpdate"
   deploymentStrategy: RollingUpdate
 
+  config:
+    VITE_CATS_CSSA_MANAGER_ROLE: "formsflow-reviewer/cssa-manager"
+
   #-- autoscaling for the component. it is optional and is an object.
   autoscaling:
     #-- enable or disable autoscaling.

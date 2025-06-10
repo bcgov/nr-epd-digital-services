@@ -49,6 +49,33 @@ export const formatDateRange = (
   return `${formattedStartDate} - ${formattedEndDate}`;
 };
 
+//Normalize date returned in string format e.g. '2025-06-03' (string) will be normalized to 2025-06-03T00:00:00 local
+export const parseLocalDate = (dateString: string) => {
+  // Check if it's a full ISO string with time (UTC or timezone-aware)
+  if (dateString.includes('T')) {
+    const date = new Date(dateString);
+    // Normalize to local midnight
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  //Handling edge case (for future-proofing)
+  //If the server someday sends a non-standard format, e.g., '06/03/2025' or '03-Jun-2025',
+  //this function may break. So if you expect any non-ISO formats, you may want to do:
+  if (!dateString.match(/^\d{4}-\d{2}-\d{2}/)) {
+    console.warn('Unexpected date format:', dateString);
+    return new Date(dateString); // fallback
+  }
+
+  // Handle basic YYYY-MM-DD format
+  const [y, m, d] = dateString.split('-').map(Number);
+  return new Date(y, m - 1, d); // Local midnight
+};
+
+/* This creates a new Date object at midnight local time (00:00:00.000) for the selected day.
+ It's a way to normalize the date without any timezone shifts caused by hours/minutes. */
+export const normalizeDate = (date: Date): Date =>
+  new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
 export const formatDate = (
   date: Date,
   dateFormat: string = 'MMMM do, yyyy',
@@ -202,7 +229,7 @@ export const showNotification = (
 export enum UserRoleType {
   INTERNAL = 'internal',
   DEFAULT = 'not-logged-in',
-  CSSA_MANAGER = 'cssa-manager',
+  MANAGER = 'manager',
 }
 
 export const isUserOfType = (roleType: UserRoleType) => {
@@ -210,7 +237,7 @@ export const isUserOfType = (roleType: UserRoleType) => {
   if (user !== null) {
     const userRoles: any = user.profile?.role;
     switch (roleType) {
-      case 'internal':
+      case UserRoleType.INTERNAL:
         const internalUserRole =
           import.meta.env.VITE_SITE_INTERNAL_USER_ROLE || 'site-internal-user';
         if (userRoles.includes(internalUserRole)) {
@@ -218,7 +245,7 @@ export const isUserOfType = (roleType: UserRoleType) => {
         } else {
           return false;
         }
-      case 'cssa-manager':
+      case UserRoleType.MANAGER:
         const cssaManagerRole = import.meta.env.VITE_CATS_CSSA_MANAGER_ROLE;
         if (userRoles.includes(cssaManagerRole)) {
           return true;

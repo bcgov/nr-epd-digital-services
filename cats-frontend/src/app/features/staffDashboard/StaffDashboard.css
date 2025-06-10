@@ -16,6 +16,10 @@ a.custom-staff-edit-lbl {
   color: var(--surface-color-primary-default, #053662);
 }
 
+.custom-header {
+  font-family: Noto Sans;
+}
+
 .custom-tbl-header {
   text-align: center;
   vertical-align: middle;
@@ -32,4 +36,39 @@ a.custom-staff-edit-lbl {
 
 .progress .progress-bar {
   border-radius: var(--layout-border-radius-large);
+}
+
+.custom-modal-lbl {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 30.61px;
+  letter-spacing: 0%;
+  color: var(--typography-color-primary, #2d2d2d);
+}
+
+.custom-modal-widget-lbl {
+  margin: 0;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 18px;
+  letter-spacing: 0%;
+  vertical-align: bottom;
+  color: var(--typography-color-primary, #2d2d2d);
+}
+
+.custom-apps-modal-lbl {
+  font-family: Noto Sans;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0%;
+  justify-content: flex-start;
+  color: var(--typography-color-secondary, #474543);
+}
+
+a.custom-apps-modal-lbl {
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 0%;
+  color: var(--typography-color-link, #255a90);
 }

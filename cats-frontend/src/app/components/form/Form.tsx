@@ -139,6 +139,8 @@ const Form: React.FC<IFormRendererProps> = ({
                   srMode={srMode ?? false}
                   validation={field.validation}
                   isDisabled={field.isDisabled}
+                  hiddenPlaceholder={field.hiddenPlaceholder}
+                  disabledPlaceholder={field.disabledPlaceholder}
                 />
               )}
               {field.type === FormFieldType.DropDownWithSearch && (
@@ -226,7 +228,7 @@ const Form: React.FC<IFormRendererProps> = ({
                     handleInputChange(field.graphQLPropertyName, value)
                   }
                   type={field.type}
-                  value={formData[field.label] || ''}
+                  value={formData[field.label ?? ''] || ''}
                   isEditing={editMode ?? true}
                   isChildLabel={field.isChildLabel ?? false}
                   srMode={srMode ?? false}

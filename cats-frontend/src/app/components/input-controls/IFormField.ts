@@ -41,6 +41,8 @@ export interface IFormField {
   label?: string;
   isLabel?: boolean;
   placeholder?: string;
+  disabledPlaceholder?: boolean;
+  hiddenPlaceholder?: boolean;
   colSize?: string;
   wrapperClassName?: string;
   customLabelCss?: string;

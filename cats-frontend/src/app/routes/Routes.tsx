@@ -12,6 +12,7 @@ import ProtectedRoute from './ProtectedRoute';
 import { AuthProvider } from 'react-oidc-context';
 import { getClientSettings } from '@cats/auth/UserManagerSetting';
 import { UserManagerSettings } from 'oidc-client-ts';
+import CreateInvoice from '../features/applications/application/applicationTabs/appInvoices/components/create/CreateInvoice';
 
 const roleBasedRoutes: any = {
   [UserRoleType.INTERNAL]: [
@@ -21,11 +22,12 @@ const roleBasedRoutes: any = {
     { path: '/person', element: <Person /> },
     { path: '/applications', element: <ApplicationSearch /> },
     { path: '/applications/:id', element: <ApplicationDetails /> },
+    { path: '/applications/:id/invoices/create', element: <CreateInvoice /> },
     {
       path: '/staff',
       element: (
         <ProtectedRoute
-          requiredRoles={[UserRoleType.CSSA_MANAGER]}
+          requiredRoles={[UserRoleType.MANAGER]}
           element={<StaffDashboard />}
         />
       ),
