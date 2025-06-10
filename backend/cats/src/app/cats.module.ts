@@ -92,6 +92,7 @@ import { DashboardService } from './services/dashboard/dashboard.service';
 import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
 
 import { ApplicationServiceTypeAssignmentFactor } from './entities/applicationServiceTypeAssignmentFactor';
+import { PermissionServiceTypeMapping } from './entities/permissionServiceTypeMapping';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -155,6 +156,7 @@ import { ApplicationServiceTypeAssignmentFactor } from './entities/applicationSe
       RecentViewedApplication,
 
       ApplicationServiceTypeAssignmentFactor,
+      PermissionServiceTypeMapping,
     ]),
     HttpModule,
   ],
