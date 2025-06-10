@@ -119,7 +119,7 @@ OR (CURRENT_DATE >= a.effective_start_date AND a.effective_end_date IS NULL))
 LEFT JOIN cats.application app ON app.id = a.application_id 
 LEFT JOIN cats.application_service_type ast ON ast.id = app.application_service_type_id
 LEFT JOIN cats.participant_role pr ON pr.id = a.participant_role_id
-LEFT JOIN cats.application_service_type_assignment_factor af on af.service_type_id = ast.id and af.role_id = pr.id
+LEFT JOIN cats.service_assignment_factor af on af.service_type_id = ast.id and af.role_id = pr.id
 WHERE 
 p.login_user_name is not null and p.is_active = true
 ${personId ? 'AND p.id = $1' : ''}
@@ -143,7 +143,7 @@ COALESCE(SUM(af.assignment_factor), 0)
 						   per.last_name, 
 STRING_AGG(DISTINCT prl.description, ', ') AS roles 
  from cats.application_service_type ast
-join cats.permission_service_type_mapping pstm on pstm.service_type_id = ast.id
+join cats.permission_service_type pstm on pstm.service_type_id = ast.id
 join cats.permissions ps on ps.id = pstm.permission_id
 join cats.person_permissions pp on pp.permission_id  = ps.id
 join cats.person per on per.id = pp.person_id
@@ -156,7 +156,7 @@ OR (CURRENT_DATE >= a.effective_start_date AND a.effective_end_date IS NULL))
 LEFT JOIN cats.application app ON app.id = a.application_id 
 LEFT JOIN cats.application_service_type ast ON ast.id = app.application_service_type_id
 LEFT JOIN cats.participant_role pr ON pr.id = a.participant_role_id
-LEFT JOIN cats.application_service_type_assignment_factor af on af.service_type_id = ast.id and af.role_id = pr.id
+LEFT JOIN cats.service_assignment_factor af on af.service_type_id = ast.id and af.role_id = pr.id
  ${personId ? 'WHERE AllowedPersons.id = $1' : ''}
 GROUP BY 
 AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, AllowedPersons.last_name,AllowedPersons.roles

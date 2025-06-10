@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { PersonPermission } from './personPermissions.entity';
 import { ParticipantRole } from './participantRole.entity';
-import { PermissionServiceTypeMapping } from './permissionServiceTypeMapping';
+import { PermissionServiceType } from './permissionServiceType';
 
 @Index('pk_person_permissions', ['id'], { unique: true })
 @Entity('permissions')
@@ -57,8 +57,8 @@ export class Permissions {
   personPermissions: PersonPermission[];
 
   @OneToMany(
-    () => PermissionServiceTypeMapping,
+    () => PermissionServiceType,
     (serviceTypeMapping) => serviceTypeMapping.id,
   )
-  permissionServiceTypeMappings: PermissionServiceTypeMapping[];
+  permissionServiceTypeMappings: PermissionServiceType[];
 }

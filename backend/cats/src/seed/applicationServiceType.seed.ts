@@ -1,7 +1,7 @@
 import { EntityManager } from 'typeorm';
 import { ApplicationServiceType } from '../app/entities/applicationServiceType.entity';
 import { ParticipantRole } from '../app/entities/participantRole.entity';
-import { ApplicationServiceTypeAssignmentFactor } from '../app/entities/applicationServiceTypeAssignmentFactor';
+import { ServiceAssignmentFactor } from '../app/entities/serviceAssignmentFactor';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const serviceTypeJSON = require('./applicationServiceType.json');
@@ -83,7 +83,7 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
         });
 
         const sdmRoleServiceTypeItem = await manager.findOne(
-          ApplicationServiceTypeAssignmentFactor,
+          ServiceAssignmentFactor,
           {
             where: {
               applicationServiceType: { id: serviceTypeItem.id },
@@ -93,7 +93,7 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
         );
 
         const mentorRoleServiceTypeItem = await manager.findOne(
-          ApplicationServiceTypeAssignmentFactor,
+          ServiceAssignmentFactor,
           {
             where: {
               applicationServiceType: { id: serviceTypeItem.id },
@@ -103,7 +103,7 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
         );
 
         const caseWorkerRoleServiceTypeItem = await manager.findOne(
-          ApplicationServiceTypeAssignmentFactor,
+          ServiceAssignmentFactor,
           {
             where: {
               applicationServiceType: { id: serviceTypeItem.id },
@@ -113,8 +113,7 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
         );
 
         if (!sdmRoleServiceTypeItem) {
-          const sdmRoleServiceType =
-            new ApplicationServiceTypeAssignmentFactor();
+          const sdmRoleServiceType = new ServiceAssignmentFactor();
           sdmRoleServiceType.applicationServiceType = serviceTypeItem;
           sdmRoleServiceType.role = sdmRole;
           sdmRoleServiceType.assignmentFactor = item.SDM;
@@ -122,8 +121,7 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
         }
 
         if (!mentorRoleServiceTypeItem) {
-          const mentorRoleServiceType =
-            new ApplicationServiceTypeAssignmentFactor();
+          const mentorRoleServiceType = new ServiceAssignmentFactor();
           mentorRoleServiceType.applicationServiceType = serviceTypeItem;
           mentorRoleServiceType.role = mentorRole;
           mentorRoleServiceType.assignmentFactor = item.MNTR;
@@ -131,8 +129,7 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
         }
 
         if (!caseWorkerRoleServiceTypeItem) {
-          const caseWorkerRoleServiceType =
-            new ApplicationServiceTypeAssignmentFactor();
+          const caseWorkerRoleServiceType = new ServiceAssignmentFactor();
           caseWorkerRoleServiceType.applicationServiceType = serviceTypeItem;
           caseWorkerRoleServiceType.role = caseWorkerRole;
           caseWorkerRoleServiceType.assignmentFactor = item.CW;
