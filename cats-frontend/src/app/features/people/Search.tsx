@@ -294,7 +294,7 @@ const Search = () => {
             New Person Profile
           </Button>
 
-          <Actions
+          {/* <Actions
             label="Import / Export"
             items={[
               { label: 'PDF', value: 'pdf' },
@@ -302,10 +302,7 @@ const Search = () => {
             ]}
             onItemClick={() => {}}
             toggleButtonVariant="secondary"
-          />
-          {/* <Button variant="secondary" onClick={() => {}}>
-            Import / Export
-          </Button> */}
+          /> */}
         </div>
         <div className="">
           <div className="d-flex align-items-center">
