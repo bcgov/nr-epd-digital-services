@@ -31,6 +31,8 @@ import Form from '../../../../../components/form/Form';
 import './ParticipantsTable.css';
 
 import { useParams } from 'react-router-dom';
+import { Alert } from 'react-bootstrap';
+import { notifyAlert, notifyError } from '@cats/components/alert/Alert';
 
 export const AppParticipantsActionTypes = {
   AddParticipant: 'Add Participant',
@@ -181,10 +183,40 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     });
   };
 
+  const [formErrors, setFormErrors] = useState<string | null>(null);
+
+  const getComparableEndDate = (
+    value: String | [Date, Date] | null,
+  ): Date | null => {
+    if (!value) return null;
+
+    if (Array.isArray(value)) {
+      return value[1] || ''; // pick the end date of a range
+    }
+
+    return value instanceof Date && !isNaN(value.getTime()) ? value : null;
+  };
+
   const handleFormChange = (
     graphQLPropertyName: any,
-    value: String | [Date, Date],
+    value: String | [Date, Date] | null,
   ) => {
+    const result = false;
+    if (appParticipant.appParticipantDetails.effectiveStartDate && value) {
+      const endDate = getComparableEndDate(value);
+      const result =
+        endDate &&
+        endDate <
+          new Date(appParticipant.appParticipantDetails.effectiveStartDate);
+      if (graphQLPropertyName === 'effectiveEndDate') {
+        if (result) {
+          // If the end date is before the start date, reset it to null and alert user
+          value = null;
+          notifyAlert('End Date cannot be before Start Date');
+        }
+      }
+    }
+
     if (value && typeof value === 'object' && 'key' in value) {
       value = (value as { key: string }).key;
     }
