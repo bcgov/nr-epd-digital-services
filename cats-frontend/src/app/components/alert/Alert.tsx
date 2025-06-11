@@ -43,15 +43,13 @@ const ErrorMsg: React.FC<ErrorMsgProps> = ({
   </div>
 );
 
-const BasicAlertMsg: React.FC<ErrorMsgProps> = ({
-  customMessage,
-}) => (
+const BasicAlertMsg: React.FC<ErrorMsgProps> = ({ customMessage }) => (
   <div className="custom" role="alert">
-      <span className="error-text">
-        {customMessage
-          ? customMessage
-          : 'Error entering input. Please try again.'}
-      </span>
+    <span className="error-text">
+      {customMessage
+        ? customMessage
+        : 'Error entering input. Please try again.'}
+    </span>
   </div>
 );
 
@@ -85,15 +83,8 @@ export const notifyError = (
 };
 
 //Basic alert without header and footer
-export const notifyAlert = (
-  message?: string,
-) => {
-  toast(
-    <BasicAlertMsg
-      customMessage={message}
-    />,
-    createToastOptions('error'),
-  );
+export const notifyAlert = (message?: string) => {
+  toast(<BasicAlertMsg customMessage={message} />, createToastOptions('error'));
 };
 
 export const notifySuccess = (message?: string) => {
