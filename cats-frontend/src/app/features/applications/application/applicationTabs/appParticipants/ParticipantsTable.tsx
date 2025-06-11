@@ -183,8 +183,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     });
   };
 
-  const [formErrors, setFormErrors] = useState<string | null>(null);
-
   const getComparableEndDate = (
     value: String | [Date, Date] | null,
   ): Date | null => {
