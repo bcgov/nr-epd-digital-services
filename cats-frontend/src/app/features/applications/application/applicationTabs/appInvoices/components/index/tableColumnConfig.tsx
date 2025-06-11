@@ -86,11 +86,7 @@ export const indexTableColumns: TableColumn[] = [
       // rendering to include two variables.
       type: FormFieldType.Label,
     },
-    renderCell: (value: any, row: any) => {
-      // The component will be rendered inside the application tab which contains the application ID in the URL
-      // Extract it from the current URL
-      const { applicationId } = useParams<{ applicationId: string }>();
-
+    renderCell: (value: any, row: any, applicationId: string) => {
       // Use Link component from react-router-dom to create the dynamic link
       return (
         <div className="d-flex justify-content-center w-100">
