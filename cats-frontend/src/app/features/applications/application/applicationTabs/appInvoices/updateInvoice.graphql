@@ -1,0 +1,27 @@
+mutation UpdateInvoice($id: Int!, $updateData: InvoiceInputDto!) {
+  updateInvoice(id: $id, updateData: $updateData) {
+    success
+    httpStatusCode
+    message
+    invoice {
+      id
+      subject
+      issuedDate
+      dueDate
+      status
+      taxExempt
+      subtotalInCents
+      gstInCents
+      pstInCents
+      totalInCents
+      lineItems {
+        id
+        type
+        description
+        quantity
+        unitPriceInCents
+        totalInCents
+      }
+    }
+  }
+}
