@@ -43,6 +43,16 @@ const ErrorMsg: React.FC<ErrorMsgProps> = ({
   </div>
 );
 
+const BasicAlertMsg: React.FC<ErrorMsgProps> = ({ customMessage }) => (
+  <div className="custom" role="alert">
+    <span className="error-text">
+      {customMessage
+        ? customMessage
+        : 'Error entering input. Please try again.'}
+    </span>
+  </div>
+);
+
 interface SuccessMsgProps {
   customMessage?: string;
 }
@@ -51,7 +61,7 @@ const SuccessMsg: React.FC<SuccessMsgProps> = ({ customMessage }: any) => (
   <div className=" custom" role="alert">
     <div className="custom">
       <span className="error-text">
-        {customMessage ? customMessage : 'Chagnes saved successfully.'}
+        {customMessage ? customMessage : 'Changes saved successfully.'}
       </span>
     </div>
   </div>
@@ -70,6 +80,11 @@ export const notifyError = (
     />,
     createToastOptions('error'),
   );
+};
+
+//Basic alert without header and footer
+export const notifyAlert = (message?: string) => {
+  toast(<BasicAlertMsg customMessage={message} />, createToastOptions('error'));
 };
 
 export const notifySuccess = (message?: string) => {
