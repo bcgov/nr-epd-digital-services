@@ -206,6 +206,47 @@ spec:
               value: {{ .Values.global.config.CHES_EMAIL_FROM | quote }}
             - name: CATS_APPLICATION_URL
               value: {{ .Values.global.config.CATS_APPLICATION_URL | quote }}
+            - name: KEYCLOCK_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak
+                  key: KEYCLOCK_CLIENT_ID
+            - name: KEYCLOCK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak
+                  key: KEYCLOCK_SECRET
+            - name: KEYCLOCK_AUTH_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: keycloak-config
+                  key: KEYCLOCK_AUTH_URL
+            - name: KEYCLOCK_REALM
+              valueFrom:
+                configMapKeyRef:
+                  name: keycloak-config
+                  key: KEYCLOCK_REALM
+            - name: KEYCLOCK_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak
+                  key: KEYCLOCK_USERNAME
+            - name: KEYCLOCK_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak
+                  key: KEYCLOCK_PASSWORD
+            - name: KEYCLOCK_ADMIN_CLIENT_ID
+              value: admin-cli
+            - name: KEYCLOCK_GRANT_TYPE
+              value: password
+            - name: KEYCLOCK_MASTER_REALM
+              value: master
+            - name: LRS_APPROVING_AUTHORITY_GROUP_NAME
+              value: lrs-approving-authority
+            - name: SITE_OWNER_GROUP_NAME
+              value: formsflow-client-reviewer
+              
           ports:
             - name: http
               containerPort: {{ .Values.backend.service.targetPort }}
