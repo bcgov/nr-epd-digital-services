@@ -87,6 +87,8 @@ import { StaffAssignmentResolver } from './resolvers/assignment/staffAssignment.
 import { TimesheetDay } from './entities/timesheetDay.entity';
 import { TimesheetDayService } from './services/timesheetDay.service';
 import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
+import { ServiceAssignmentFactor } from './entities/serviceAssignmentFactor';
+import { PermissionServiceType } from './entities/permissionServiceType';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -146,7 +148,9 @@ import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
       InvoiceLineItem,
       ApplicationServiceType,
       Permissions,
-      PersonPermission
+      PersonPermission,
+      ServiceAssignmentFactor,
+      PermissionServiceType,
     ]),
     HttpModule,
   ],

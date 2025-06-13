@@ -26,6 +26,8 @@ describe('StaffAssignmentResolver', () => {
             updateStaffAssigned: jest.fn(),
             getApplicationServiceTypes: jest.fn(),
             getAllActiveStaffMembersWithCurrentCapacity: jest.fn(),
+            getAllActiveStaffMembersWithCurrentCapacityForApplicationServiceType:
+              jest.fn(),
           },
         },
         {
@@ -226,6 +228,35 @@ describe('StaffAssignmentResolver', () => {
     expect(loggerService.log).toHaveBeenCalledTimes(1);
     expect(loggerService.log).toHaveBeenCalledWith(
       'StaffAssignmentResolver.getAllActiveStaffMembers() RES:200 end',
+    );
+  });
+
+  it('should return a successful response when getAllActiveStaffMembersWithCurrentCapacityForApplicationServiceType returns a non-empty array', async () => {
+    const result = [{ id: 1, name: 'John Doe' }];
+    (
+      service.getAllActiveStaffMembersWithCurrentCapacityForApplicationServiceType as jest.Mock
+    ).mockResolvedValue(result);
+
+    (genericResponseProvider.createResponse as jest.Mock).mockReturnValue({
+      message:
+        'getAllActiveStaffMembersWithCurrentCapacityForApplicationServiceType fetched successfully',
+      httpStatusCode: 200,
+      success: true,
+      data: result,
+    });
+
+    const response =
+      await resolver.getAllActiveStaffMembersForApplicationServiceType(1);
+    expect(response).toEqual({
+      message:
+        'getAllActiveStaffMembersWithCurrentCapacityForApplicationServiceType fetched successfully',
+      httpStatusCode: HttpStatus.OK,
+      success: true,
+      data: result,
+    });
+    expect(loggerService.log).toHaveBeenCalledTimes(1);
+    expect(loggerService.log).toHaveBeenCalledWith(
+      'StaffAssignmentResolver.getAllActiveStaffMembersWithCurrentCapacityForApplicationServiceType() RES:200 end',
     );
   });
 });

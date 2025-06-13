@@ -20,7 +20,11 @@ export class ParticipantRole {
   @Column('character varying', { name: 'description', length: 250 })
   description: string;
 
-  @Column('character varying', { name: 'role_type', length: 50, nullable: true })
+  @Column('character varying', {
+    name: 'role_type',
+    length: 50,
+    nullable: true,
+  })
   roleType: string | null; // Example: Staff, Volunteer etc
 
   @Column('boolean', { name: 'is_ministry' })
@@ -56,9 +60,6 @@ export class ParticipantRole {
   )
   appParticipants: AppParticipant[];
 
-  @Column('integer', { name: 'assignment_factor', nullable: true })
-  assignmentFactor: number | null;
-
-  @OneToMany(() => Permissions, permissions => permissions.roleId)
+  @OneToMany(() => Permissions, (permissions) => permissions.roleId)
   permissions: Permissions[];
 }

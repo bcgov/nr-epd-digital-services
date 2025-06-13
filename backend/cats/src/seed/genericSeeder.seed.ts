@@ -11,10 +11,10 @@ export default class GenericSeeder extends Seeder {
         name: 'ApplicationServiceTypeSeeder',
         execute: () => ApplicationServiceTypeSeeder(manager),
       },
-      // {
-      //   name: 'PermissionsSeeder',
-      //   execute: () => PermissionsSeeder(manager),
-      // },
+      {
+        name: 'PermissionsSeeder',
+        execute: () => PermissionsSeeder(manager),
+      },
     ];
 
     for (const seeder of seeders) {

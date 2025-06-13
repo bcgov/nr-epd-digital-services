@@ -1,6 +1,15 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { Application } from './application.entity';
+import { ParticipantRole } from './participantRole.entity';
+import { PermissionServiceType } from './permissionServiceType';
 
 @ObjectType()
 @Entity('application_service_type')
@@ -14,13 +23,12 @@ export class ApplicationServiceType {
   serviceName: string;
 
   @Field()
-  @Column('integer', { name: 'assignment_factor' })
-  assignmentFactor: number;
-
-  @Field()
   @Column('character varying', { name: 'service_type' })
   serviceType: string;
 
   @OneToMany(() => Application, (application) => application.serviceType)
   applications: Application[];
+
+  @OneToMany(() => PermissionServiceType, (mapping) => mapping.serviceTypes)
+  permissionServiceTypeMappings: PermissionServiceType[];
 }
