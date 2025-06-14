@@ -659,7 +659,7 @@ export type QueryGetStaffsArgs = {
 
 
 export type QueryGetTimesheetDaysForAssignedStaffArgs = {
-  applicationId: Scalars['Float']['input'];
+  applicationId: Scalars['Int']['input'];
   endDate: Scalars['String']['input'];
   startDate: Scalars['String']['input'];
 };

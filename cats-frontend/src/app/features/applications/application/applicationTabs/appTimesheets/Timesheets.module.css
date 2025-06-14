@@ -1,0 +1,89 @@
+.timesheetsTable {
+  table-layout: fixed;
+  overflow-x: auto;
+  border-collapse: collapse;
+  color: var(--typography-color-secondary);
+
+  thead {
+    position: sticky;
+    font-size: var(--typography-font-size-small-body);
+
+    th {
+      background: var(--theme-gray-20);
+      font-weight: var(--typography-font-weights-regular);
+      border: var(--layout-border-width-small) solid
+        var(--surface-color-border-default);
+      border-bottom: var(--layout-border-width-small) solid
+        var(--surface-color-border-medium);
+
+      padding: var(--layout-padding-xsmall) var(--layout-padding-small);
+      height: 64px;
+    }
+
+    th:first-child {
+      width: 40%;
+    }
+
+    th:not(:first-child) {
+      text-align: end;
+      min-width: 100px;
+    }
+
+    th:last-child {
+      text-align: center;
+      font-weight: var(--typography-font-weights-bold);
+    }
+  }
+
+  tbody {
+    font-size: var(--typography-font-size-small-body);
+
+    td {
+      padding: var(--layout-padding-xsmall) var(--layout-padding-small);
+      height: 64px;
+
+      input {
+        height: 40px;
+        width: 100%;
+        padding: var(--layout-padding-small) var(--layout-padding-medium);
+        font-size: var(--typography-font-size-large-body);
+        border-radius: var(--layout-margin-xsmall);
+        border: var(--layout-border-width-small) solid
+          var(--surface-color-border-default);
+        text-align: end;
+      }
+    }
+  }
+
+  tfoot {
+    font-size: var(--typography-font-size-large-body);
+    font-weight: var(--typography-font-weights-regular);
+
+    td {
+      padding: var(--layout-padding-small);
+      padding-right: var(--layout-padding-large);
+      padding-top: var(--layout-padding-large);
+
+      border: none;
+      background-color: transparent !important;
+    }
+
+    td:not(:first-child) {
+      text-align: end;
+    }
+  }
+}
+
+.projectCell {
+  font-size: var(--typography-font-size-small-body);
+  font-weight: var(--typography-font-weights-regular);
+}
+
+.weekRangeLabel {
+  font-size: var(--typography-font-size-large-body);
+  font-weight: var(--typography-font-weights-regular);
+}
+
+.highlight {
+  background-color: var(--theme-blue-30) !important;
+}
