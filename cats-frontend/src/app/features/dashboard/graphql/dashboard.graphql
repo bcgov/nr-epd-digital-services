@@ -1,0 +1,15 @@
+query getRecentViewedApplications {
+    getRecentViewedApplications {
+        httpStatusCode
+        success
+        message
+        timestamp
+        data {
+            userId
+            applicationId
+            siteId
+            address
+            applicationType
+        }
+    }
+}

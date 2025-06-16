@@ -6,6 +6,7 @@ import { Application } from '../../entities/application.entity';
 import { CreateApplication } from '../../dto/application/createApplication.dto';
 import { ViewApplicationDetails } from '../../dto/application/viewApplicationDetails.dto';
 import { AppTypeService } from '../appType/appType.service';
+import { DashboardService } from '../dashboard/dashboard.service';
 
 @Injectable()
 export class ApplicationService {
@@ -14,6 +15,7 @@ export class ApplicationService {
     private readonly applicationRepository: Repository<Application>,
     private readonly loggerService: LoggerService,
     private readonly appTypeService: AppTypeService,
+    private readonly dashboardService: DashboardService
   ) { }
 
   async createApplication(createApplication: CreateApplication) {
@@ -78,6 +80,7 @@ export class ApplicationService {
 
   async findApplicationDetailsById(
     id: number,
+    userInfo: any
   ): Promise<ViewApplicationDetails> {
     this.loggerService.log(
       'ApplicationService.findApplicationDetailsById() start',
@@ -132,6 +135,7 @@ export class ApplicationService {
         `Application details fetched successfully for ID: ${id}`,
       );
 
+      await this.dashboardService.createRecentViewedApplication(application, userInfo);
       return {
         id: application.id,
         siteId: application.siteId,

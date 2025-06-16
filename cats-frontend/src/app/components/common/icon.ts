@@ -37,6 +37,7 @@ import {
   FaCircleExclamation,
   FaTriangleExclamation,
   FaAddressBook,
+  FaFileCirclePlus,
 } from 'react-icons/fa6';
 
 import {
@@ -102,3 +103,4 @@ export const UserTie = FaUserTie;
 export const CircleExclamation = FaCircleExclamation;
 export const ExclamationTriangleIcon = FaTriangleExclamation;
 export const AddressBookIcon = FaAddressBook;
+export const FileCirclePlusIcon = FaFileCirclePlus;

@@ -13,10 +13,12 @@ import { AuthProvider } from 'react-oidc-context';
 import { getClientSettings } from '@cats/auth/UserManagerSetting';
 import { UserManagerSettings } from 'oidc-client-ts';
 import CreateInvoice from '../features/applications/application/applicationTabs/appInvoices/components/create/CreateInvoice';
+import Dashboard from '@cats/features/dashboard/Dashboard';
 
 const roleBasedRoutes: any = {
   [UserRoleType.INTERNAL]: [
     { path: '/', element: <Search /> },
+    { path: '/dashboard', element: <Dashboard /> },
     { path: '/people', element: <Search /> },
     { path: '/person/:id', element: <Person /> },
     { path: '/person', element: <Person /> },
