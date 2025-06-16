@@ -1,4 +1,3 @@
-import { ProgressBar } from 'react-bootstrap';
 import {
   CircleExclamation,
   ExclamationTriangleIcon,
@@ -7,7 +6,7 @@ import {
 import { FormFieldType } from '../../components/input-controls/IFormField';
 import { ColumnSize, TableColumn } from '../../components/table/TableColumn';
 import { RequestStatus } from '../../helpers/requests/status';
-import CustomProgressBar from '@cats/components/progress-bar/progressBar';
+import CustomProgressBar from '../../components/progress-bar/progressBar';
 
 export const GetConfig = () => {
   const staffColumnInternal: TableColumn[] = [
