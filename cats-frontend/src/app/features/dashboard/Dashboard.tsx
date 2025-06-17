@@ -6,8 +6,8 @@ import Widget from '../../components/widget/Widget';
 import { getUser } from '../../helpers/utility';
 import { useGetRecentViewedApplicationsQuery } from './graphql/dashboard.generated';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@cats/components/button/Button';
-import { FileCirclePlusIcon } from '@cats/components/common/icon';
+import { Button } from '../../components/button/Button';
+import { FileCirclePlusIcon } from '../../components/common/icon';
 
 interface DashboardWidgetProps {
   title?: string;
