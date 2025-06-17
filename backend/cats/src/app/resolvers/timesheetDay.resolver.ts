@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
+import { Args, Mutation, Resolver, Query, Int } from '@nestjs/graphql';
 import { HttpStatus, UsePipes } from '@nestjs/common';
 import { TimesheetDayService } from '../services/timesheetDay.service';
 import {
@@ -69,7 +69,7 @@ export class TimesheetDayResolver {
     name: 'getTimesheetDaysForAssignedStaff',
   })
   async getTimesheetDaysForAssignedStaff(
-    @Args('applicationId', { type: () => Number }) applicationId: number,
+    @Args('applicationId', { type: () => Int }) applicationId: number,
     @Args('startDate', { type: () => String }) startDate: string,
     @Args('endDate', { type: () => String }) endDate: string,
     @AuthenticatedUser() user: any,
