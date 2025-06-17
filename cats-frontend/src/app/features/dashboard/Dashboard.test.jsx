@@ -6,7 +6,6 @@ import { GetRecentViewedApplicationsDocument } from './graphql/dashboard.generat
 import { vi } from 'vitest';
 import { getUser } from '../../helpers/utility';
 
-
 vi.mock('../../helpers/utility', () => ({
   getUser: vi.fn(),
 }));
@@ -58,7 +57,6 @@ const mocks = [
 ];
 
 describe('Dashboard Component', () => {
-
   beforeEach(() => {
     getUser.mockReturnValue({
       profile: { given_name: 'Alice' },
@@ -76,11 +74,11 @@ describe('Dashboard Component', () => {
         <MockedProvider mocks={mocks} addTypename={false}>
           <Dashboard />
         </MockedProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await waitFor(() =>
-      expect(screen.getByText(/Welcome, Alice/i)).toBeInTheDocument()
+      expect(screen.getByText(/Welcome, Alice/i)).toBeInTheDocument(),
     );
   });
 
@@ -90,7 +88,7 @@ describe('Dashboard Component', () => {
         <MockedProvider mocks={mocks} addTypename={false}>
           <Dashboard />
         </MockedProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await screen.findByText('Permit');
@@ -106,7 +104,7 @@ describe('Dashboard Component', () => {
         <MockedProvider mocks={mocks} addTypename={false}>
           <Dashboard />
         </MockedProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await screen.findByText('Permit');
@@ -142,13 +140,13 @@ describe('Dashboard Component', () => {
         <MockedProvider mocks={emptyMocks} addTypename={false}>
           <Dashboard />
         </MockedProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await waitFor(() =>
       expect(
-        screen.getByText(/No recent applications visited by user/i)
-      ).toBeInTheDocument()
+        screen.getByText(/No recent applications visited by user/i),
+      ).toBeInTheDocument(),
     );
   });
 
@@ -160,7 +158,7 @@ describe('Dashboard Component', () => {
         <MockedProvider mocks={mocks} addTypename={false}>
           <Dashboard />
         </MockedProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await screen.findByText('Welcome');
@@ -175,7 +173,7 @@ describe('Dashboard Component', () => {
         <MockedProvider mocks={mocks} addTypename={false}>
           <Dashboard />
         </MockedProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(screen.getByText(/Welcome, Alice/i)).toBeInTheDocument();
@@ -200,12 +198,12 @@ describe('Dashboard Component', () => {
           },
         ]}
         onButtonClick={mockClick}
-      />
+      />,
     );
 
     fireEvent.click(screen.getByText('TestApp'));
     expect(mockClick).toHaveBeenCalledWith(
-      expect.objectContaining({ siteId: 111 })
+      expect.objectContaining({ siteId: 111 }),
     );
   });
 
@@ -213,7 +211,7 @@ describe('Dashboard Component', () => {
     render(<DashboardCardsWidget data={[]} />);
 
     expect(
-      screen.getByText(/No recent applications visited by user/i)
+      screen.getByText(/No recent applications visited by user/i),
     ).toBeInTheDocument();
   });
 
@@ -221,7 +219,7 @@ describe('Dashboard Component', () => {
     render(<DashboardCardsWidget data={undefined} />);
 
     expect(
-      screen.getByText(/No recent applications visited by user/i)
+      screen.getByText(/No recent applications visited by user/i),
     ).toBeInTheDocument();
   });
 
@@ -260,7 +258,7 @@ describe('Dashboard Component', () => {
         <MockedProvider mocks={malformedMocks} addTypename={false}>
           <Dashboard />
         </MockedProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await waitFor(() => {
