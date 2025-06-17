@@ -1,6 +1,6 @@
 .dashboard-title {
   color: var(--typography-color-primary);
-  font-size: 48px;
+  font-size: 36px;
   font-weight: 700;
   line-height: 100%;
   text-align: left;
@@ -47,6 +47,22 @@
   max-width: 100%;
   box-sizing: border-box;
   cursor: pointer;
+}
+
+.dashboard-card:hover {
+  background: var(--surface-color-secondary-button-hover, #EDEBE9);
+  border: 1px solid var(--surface-color-border-default, #D8D8D8);
+  box-shadow: 
+    0px 3.2px 7.2px 0px #00000021,
+    0px 0.6px 1.8px 0px #0000001A;
+}
+
+.dashboard-card:active {
+  background: var(--Theme-gray-50, #D1CFCD);
+  border: 2px solid var(--surface-color-border-active, #2E5DD7);
+  box-shadow: 
+    0px 3.2px 7.2px 0px #00000021,
+    0px 0.6px 1.8px 0px #0000001A;
 }
 
 .dashboard-card-title {
@@ -116,6 +132,19 @@
     var(--layout-padding-medium) var(--layout-padding-large) !important;
 }
 
+.dashboard-view-all-link {
+  font-family: Noto Sans;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 30.61px;
+  text-decoration: none;
+  color: var(--typography-color-link, #255A90);
+}
+
+.dashboard-view-all-link:hover {
+  color: var(--typography-color-link-hover, #1A3F6B);
+}
+
 /* >=576px */
 @media (min-width: 576px) {
   .dashboard-btn {
@@ -162,6 +191,10 @@
     font-size: 18px;
     line-height: 32px;
   }
+
+  .dashboard-title {
+    font-size: 48px;
+  }
 }
 
 /* >=1320px */
@@ -178,5 +211,9 @@
   .dashboard-btn-icon {
     font-size: 18px;
     line-height: 32px;
+  }
+
+  .dashboard-title {
+    font-size: 48px;
   }
 }
