@@ -1,0 +1,36 @@
+query getTimesheetDaysForAssignedStaff(
+  $applicationId: Int!
+  $startDate: String!
+  $endDate: String!
+) {
+  getTimesheetDaysForAssignedStaff(
+    applicationId: $applicationId
+    startDate: $startDate
+    endDate: $endDate
+  ) {
+    data {
+      personId
+      firstName
+      lastName
+      timesheetDays {
+        id
+        date
+        hours
+      }
+    }
+  }
+}
+
+mutation upsertTimesheetDays($entries: [TimesheetDayUpsertInputDto!]!) {
+  upsertTimesheetDays(input: { entries: $entries }) {
+    data {
+      id
+      applicationId
+      personId
+      date
+      hours
+    }
+    message
+    success
+  }
+}
