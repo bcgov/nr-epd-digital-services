@@ -73,6 +73,7 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
     gstInCents: 0,
     pstInCents: 0,
     totalInCents: 0,
+    notes: '',
     lineItems: [
       {
         description: '',
@@ -233,9 +234,18 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
     e.preventDefault();
     calculateTotals();
 
+    // Validate recipient is selected
+    if (!formValues.recipientId || isNaN(parseInt(formValues.recipientId))) {
+      setError('Please select a valid recipient before saving');
+      return;
+    }
+
+    // Convert recipientId to number explicitly
+    const recipientId = Number(formValues.recipientId);
+
     const invoiceData = {
       applicationId,
-      recipientId: parseInt(formValues.recipientId),
+      recipientId,
       subject: formValues.subject,
       issuedDate: new Date(formValues.issuedDate),
       dueDate: new Date(formValues.dueDate),
@@ -245,6 +255,7 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
       gstInCents: formValues.gstInCents,
       pstInCents: formValues.pstInCents,
       totalInCents: formValues.totalInCents,
+      notes: formValues.notes,
       lineItems: formValues.lineItems,
     };
 
@@ -329,11 +340,14 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
                           key={recipient.key}
                           className="p-2 border-bottom cursor-pointer hover-bg-light"
                           onClick={() => {
-                            setFormValues({
-                              ...formValues,
-                              recipientId: recipient.key,
-                            });
-                            setRecipientSearch(recipient.value);
+                            // Ensure recipientId is set as a valid string that can be parsed as int
+                            const numericId = parseInt(recipient.key);
+                            if (!isNaN(numericId)) {
+                              setFormValues({
+                                ...formValues,
+                                recipientId: recipient.key,
+                              });
+                            }
                           }}
                         >
                           {recipient.value}
@@ -390,6 +404,22 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
                   label="Tax Exempt"
                   checked={formValues.taxExempt}
                   onChange={handleChange}
+                />
+              </FormGroup>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col md={12}>
+              <FormGroup className="mb-3">
+                <Form.Label>Notes</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  name="notes"
+                  value={formValues.notes}
+                  onChange={handleChange}
+                  rows={3}
+                  placeholder="Enter any additional notes for this invoice"
                 />
               </FormGroup>
             </Col>

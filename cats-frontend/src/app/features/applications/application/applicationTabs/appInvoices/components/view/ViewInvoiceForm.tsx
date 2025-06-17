@@ -37,6 +37,7 @@ interface InvoiceViewModel {
   gstInCents: number;
   pstInCents: number;
   totalInCents: number;
+  notes?: string | null;
   createdBy: string | null;
   updatedBy: string | null;
   lineItems: InvoiceLineItemViewModel[];
@@ -108,6 +109,7 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
         gstInCents: invoiceResponse.gstInCents,
         pstInCents: invoiceResponse.pstInCents,
         totalInCents: invoiceResponse.totalInCents,
+        notes: invoiceResponse.notes || null,
         createdBy: invoiceResponse.createdBy || null,
         updatedBy: invoiceResponse.updatedBy || null,
         lineItems: (invoiceResponse.lineItems || []).map((item) => ({
@@ -281,7 +283,12 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
     const errors = validateForm();
     if (Object.keys(errors).length > 0) {
       setValidationErrors(errors);
-      setUpdateError('Please fix the validation errors before saving');
+
+      // Create a more descriptive error message that lists all validation errors
+      const errorMessages = Object.values(errors).join(', ');
+      setUpdateError(
+        `Please fix the following validation errors: ${errorMessages}`,
+      );
       return;
     }
 
@@ -302,6 +309,7 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
         gstInCents: editableInvoice.gstInCents,
         pstInCents: editableInvoice.pstInCents,
         totalInCents: editableInvoice.totalInCents,
+        notes: editableInvoice.notes,
         lineItems: editableInvoice.lineItems.map((item) => ({
           id: item.id,
           type: item.type,
@@ -526,6 +534,28 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
             </Col>
           </Row>
 
+          <Row className="mb-3">
+            <Col md={12}>
+              <FormGroup>
+                <Form.Label>Notes</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  name="notes"
+                  value={
+                    isEditMode
+                      ? editableInvoice?.notes || ''
+                      : invoice.notes || ''
+                  }
+                  onChange={handleInputChange}
+                  readOnly={!isEditMode}
+                  className={!isEditMode ? 'bg-light' : ''}
+                  rows={3}
+                  placeholder="Enter any additional notes for this invoice"
+                />
+              </FormGroup>
+            </Col>
+          </Row>
+
           <h5 className="mt-4">Invoice Items</h5>
           <div className="tableWidth table-border-radius">
             <table className="table table-border-light">
@@ -586,55 +616,93 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
                     </td>
                     <td className="table-border-light">
                       {isEditMode ? (
-                        <Form.Control
-                          type="text"
-                          value={item.description}
-                          onChange={(e) =>
-                            handleLineItemChange(
-                              item.id,
-                              'description',
-                              e.target.value,
-                            )
-                          }
-                        />
+                        <>
+                          <Form.Control
+                            type="text"
+                            value={item.description}
+                            onChange={(e) =>
+                              handleLineItemChange(
+                                item.id,
+                                'description',
+                                e.target.value,
+                              )
+                            }
+                            isInvalid={
+                              !!validationErrors[
+                                `lineItem-${index}-description`
+                              ]
+                            }
+                          />
+                          {validationErrors[
+                            `lineItem-${index}-description`
+                          ] && (
+                            <div className="text-danger small">
+                              {
+                                validationErrors[
+                                  `lineItem-${index}-description`
+                                ]
+                              }
+                            </div>
+                          )}
+                        </>
                       ) : (
                         item.description
                       )}
                     </td>
                     <td className="table-border-light">
                       {isEditMode ? (
-                        <Form.Control
-                          type="number"
-                          min="0"
-                          step="1"
-                          value={item.quantity}
-                          onChange={(e) =>
-                            handleLineItemChange(
-                              item.id,
-                              'quantity',
-                              Number(e.target.value),
-                            )
-                          }
-                        />
+                        <>
+                          <Form.Control
+                            type="number"
+                            min="0"
+                            step="1"
+                            value={item.quantity}
+                            onChange={(e) =>
+                              handleLineItemChange(
+                                item.id,
+                                'quantity',
+                                Number(e.target.value),
+                              )
+                            }
+                            isInvalid={
+                              !!validationErrors[`lineItem-${index}-quantity`]
+                            }
+                          />
+                          {validationErrors[`lineItem-${index}-quantity`] && (
+                            <div className="text-danger small">
+                              {validationErrors[`lineItem-${index}-quantity`]}
+                            </div>
+                          )}
+                        </>
                       ) : (
                         item.quantity
                       )}
                     </td>
                     <td className="table-border-light">
                       {isEditMode ? (
-                        <Form.Control
-                          type="number"
-                          min="0"
-                          step="0.01"
-                          value={(item.unitPriceInCents / 100).toFixed(2)}
-                          onChange={(e) =>
-                            handleLineItemChange(
-                              item.id,
-                              'unitPriceInCents',
-                              Math.round(Number(e.target.value) * 100),
-                            )
-                          }
-                        />
+                        <>
+                          <Form.Control
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={(item.unitPriceInCents / 100).toFixed(2)}
+                            onChange={(e) =>
+                              handleLineItemChange(
+                                item.id,
+                                'unitPriceInCents',
+                                Math.round(Number(e.target.value) * 100),
+                              )
+                            }
+                            isInvalid={
+                              !!validationErrors[`lineItem-${index}-unitPrice`]
+                            }
+                          />
+                          {validationErrors[`lineItem-${index}-unitPrice`] && (
+                            <div className="text-danger small">
+                              {validationErrors[`lineItem-${index}-unitPrice`]}
+                            </div>
+                          )}
+                        </>
                       ) : (
                         `$${(item.unitPriceInCents / 100).toFixed(2)}`
                       )}

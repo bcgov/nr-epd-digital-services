@@ -28,6 +28,7 @@ export type GetInvoiceByIdQuery = {
       gstInCents: number;
       pstInCents: number;
       totalInCents: number;
+      notes?: string | null;
       createdBy?: string | null;
       updatedBy: string;
       lineItems?: Array<{
@@ -62,6 +63,7 @@ export const GetInvoiceByIdDocument = gql`
         gstInCents
         pstInCents
         totalInCents
+        notes
         createdBy
         updatedBy
         lineItems {

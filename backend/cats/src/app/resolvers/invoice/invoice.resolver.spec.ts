@@ -56,6 +56,7 @@ describe('InvoiceResolver', () => {
           gstInCents: 0,
           pstInCents: 0,
           totalInCents: 10000,
+          notes: 'Test notes for invoice 1',
           createdBy: 'test-user',
           updatedBy: 'test-user',
           createdAt: new Date(),
@@ -82,6 +83,7 @@ describe('InvoiceResolver', () => {
           dueDate: invoice.dueDate,
           status: invoice.status,
           totalInCents: invoice.totalInCents,
+          notes: invoice.notes,
         })),
       );
     });
@@ -121,6 +123,7 @@ describe('InvoiceResolver', () => {
         gstInCents: 1000,
         pstInCents: 500,
         totalInCents: 21500,
+        notes: 'Updated notes for the invoice',
         createdBy: 'test-user',
         updatedBy: 'test-user',
         createdAt: new Date(),
@@ -144,6 +147,7 @@ describe('InvoiceResolver', () => {
         gstInCents: 1000,
         pstInCents: 500,
         totalInCents: 21500,
+        notes: 'Updated notes for the invoice',
         lineItems: [],
       };
 
@@ -171,6 +175,7 @@ describe('InvoiceResolver', () => {
         gstInCents: mockUpdatedInvoice.gstInCents,
         pstInCents: mockUpdatedInvoice.pstInCents,
         totalInCents: mockUpdatedInvoice.totalInCents,
+        notes: mockUpdatedInvoice.notes,
         createdAt: mockUpdatedInvoice.createdAt,
         updatedAt: mockUpdatedInvoice.updatedAt,
         createdBy: mockUpdatedInvoice.createdBy,
@@ -197,6 +202,7 @@ describe('InvoiceResolver', () => {
         gstInCents: 1000,
         pstInCents: 500,
         totalInCents: 21500,
+        notes: 'Updated notes for the invoice',
         lineItems: [],
       };
 
@@ -265,6 +271,7 @@ describe('InvoiceResolver', () => {
         gstInCents: 0,
         pstInCents: 0,
         totalInCents: 10000,
+        notes: 'Test notes for invoice',
         createdBy: 'test-user',
         updatedBy: 'test-user',
         createdAt: new Date(),
@@ -294,6 +301,7 @@ describe('InvoiceResolver', () => {
         subtotalInCents: mockInvoice.subtotalInCents,
         gstInCents: mockInvoice.gstInCents,
         pstInCents: mockInvoice.pstInCents,
+        notes: mockInvoice.notes,
         createdAt: mockInvoice.createdAt,
         updatedAt: mockInvoice.updatedAt,
         createdBy: mockInvoice.createdBy,
