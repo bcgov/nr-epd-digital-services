@@ -14,6 +14,7 @@ import { getClientSettings } from '@cats/auth/UserManagerSetting';
 import { UserManagerSettings } from 'oidc-client-ts';
 import CreateInvoice from '../features/applications/application/applicationTabs/appInvoices/components/create/CreateInvoice';
 import Dashboard from '@cats/features/dashboard/Dashboard';
+import ViewInvoice from '../features/applications/application/applicationTabs/appInvoices/components/view/ViewInvoice';
 
 const roleBasedRoutes: any = {
   [UserRoleType.INTERNAL]: [
@@ -25,6 +26,10 @@ const roleBasedRoutes: any = {
     { path: '/applications', element: <ApplicationSearch /> },
     { path: '/applications/:id', element: <ApplicationDetails /> },
     { path: '/applications/:id/invoices/create', element: <CreateInvoice /> },
+    {
+      path: '/applications/:applicationId/invoices/:id/view',
+      element: <ViewInvoice />,
+    },
     {
       path: '/staff',
       element: (
