@@ -1,10 +1,32 @@
-import { FillEye, FillPinMapFill } from '../../components/common/icon';
+import { FileLinesIcon } from '../../components/common/icon';
 import { FormFieldType } from '../../components/input-controls/IFormField';
 import { ColumnSize, TableColumn } from '../../components/table/TableColumn';
 
-export const recentViewedColumns: TableColumn[] = [
+export const actionRequiredColumns: TableColumn[] = [
   {
     id: 1,
+    displayName: 'Application ID',
+    active: true,
+    graphQLPropertyName: 'siteId',
+    displayType: {
+      type: FormFieldType.Link,
+      label: 'Application ID',
+      graphQLPropertyName: 'id',
+      value: '',
+
+
+      customInputTextCss: 'custom-dashboard-input-txt',
+
+
+      tableMode: true,
+      href: 'applications/',
+    },
+    linkRedirectionURL: 'applications/',
+    columnSize: ColumnSize.Small,
+    dynamicColumn: true,
+  },
+  {
+    id: 2,
     displayName: 'Site ID',
     active: true,
     graphQLPropertyName: 'siteId',
@@ -13,14 +35,19 @@ export const recentViewedColumns: TableColumn[] = [
       label: 'Site ID',
       graphQLPropertyName: 'siteId',
       value: '',
+
       customInputTextCss: 'custom-dashboard-input-txt',
+
+
       tableMode: true,
       href: 'site/details/',
     },
     linkRedirectionURL: 'site/details/',
+    columnSize: ColumnSize.Small,
+    dynamicColumn: true,
   },
   {
-    id: 2,
+    id: 3,
     displayName: 'Site Address',
     active: true,
     graphQLPropertyName: 'address',
@@ -29,42 +56,33 @@ export const recentViewedColumns: TableColumn[] = [
       label: 'Site Address',
       graphQLPropertyName: 'address',
       value: '',
-      customInputTextCss: 'custom-dashboard-input-txt',
       tableMode: true,
-    },
-  },
-  {
-    id: 3,
-    displayName: 'City',
-    active: true,
-    graphQLPropertyName: 'city',
-    displayType: {
-      type: FormFieldType.Label,
-      label: 'City',
-      graphQLPropertyName: 'city',
-      value: '',
+
       customInputTextCss: 'custom-dashboard-input-txt',
-      tableMode: true,
     },
+    columnSize: ColumnSize.Default,
+    dynamicColumn: true,
   },
   {
     id: 4,
-    displayName: 'General Description',
+    displayName: 'Application Type',
     active: true,
-    graphQLPropertyName: 'generalDescription',
+    graphQLPropertyName: 'applicationType',
     displayType: {
       type: FormFieldType.Label,
-      label: 'General Description',
-      graphQLPropertyName: 'generalDescription',
+      label: 'Application Type',
+      graphQLPropertyName: 'applicationType',
       value: '',
-      customInputTextCss: 'custom-dashboard-input-txt',
       tableMode: true,
+
+      customInputTextCss: 'custom-dashboard-input-txt',
     },
-    columnSize: ColumnSize.Triple,
+    columnSize: ColumnSize.Default,
+    dynamicColumn: true,
   },
   {
     id: 5,
-    displayName: 'Last Updates',
+    displayName: 'Start Date',
     active: true,
     graphQLPropertyName: 'whenUpdated',
     displayType: {
@@ -74,44 +92,66 @@ export const recentViewedColumns: TableColumn[] = [
       placeholder: 'MM/DD/YY',
       value: '',
       colSize: 'col-lg-6 col-md-6 col-sm-12',
-      customInputTextCss: 'custom-dashboard-input-txt',
       tableMode: true,
+
+      customInputTextCss: 'custom-dashboard-input-txt',
     },
+    columnSize: ColumnSize.Small,
+    dynamicColumn: true,
   },
   {
     id: 6,
-    displayName: 'Map',
+    displayName: 'Status',
     active: true,
-    graphQLPropertyName: 'siteId',
+    graphQLPropertyName: 'status',
     displayType: {
-      type: FormFieldType.Link,
-      label: 'Map',
-      graphQLPropertyName: 'siteId',
+      type: FormFieldType.Label,
+      label: 'Status',
+      graphQLPropertyName: 'status',
       value: '',
-      customLinkValue: 'View',
-      customInputTextCss: 'custom-dashboard-link',
       tableMode: true,
-      href: 'site/map/',
-      customIcon: <FillPinMapFill />,
+
+      customInputTextCss: 'custom-dashboard-input-txt',
     },
-    linkRedirectionURL: 'site/map/',
+    columnSize: ColumnSize.Default,
+    dynamicColumn: true,
   },
   {
     id: 7,
+    displayName: 'Priority',
+    active: true,
+    graphQLPropertyName: 'priority',
+    displayType: {
+      type: FormFieldType.Label,
+      label: 'Priority',
+      graphQLPropertyName: 'priority',
+      value: '',
+      tableMode: true,
+
+      customInputTextCss: 'custom-dashboard-input-txt',
+    },
+    columnSize: ColumnSize.Small,
+    dynamicColumn: true,
+  },
+  {
+    id: 8,
     displayName: 'Details',
     active: true,
-    graphQLPropertyName: 'siteId',
+    graphQLPropertyName: 'id',
     displayType: {
       type: FormFieldType.Link,
       label: 'Details',
-      graphQLPropertyName: 'siteId',
+      graphQLPropertyName: 'id',
       value: '',
-      customLinkValue: 'View',
+      customLinkValue: 'Details',
       customInputTextCss: 'custom-dashboard-link',
       tableMode: true,
-      href: 'site/details/',
-      customIcon: <FillEye />,
+      href: 'applications/',
+      customIcon: <FileLinesIcon />,
     },
-    linkRedirectionURL: 'site/details/',
+    linkRedirectionURL: 'applications/',
+    columnSize: ColumnSize.XtraSmall,
+    dynamicColumn: true,
+    stickyCol: true,
   },
 ];

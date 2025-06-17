@@ -11,6 +11,8 @@ export class DashboardService {
     constructor(
         @InjectRepository(RecentViewedApplication)
         private readonly recentViewedApplicationRepository: Repository<RecentViewedApplication>,
+        @InjectRepository(Application)
+        private readonly applicationRepository: Repository<Application>,
         private readonly loggerService: LoggerService,
         private readonly siteService: SiteService
     ) {}
@@ -30,6 +32,54 @@ export class DashboardService {
             return recentViewedApplication;
         } catch (error) {
             this.loggerService.error(`Error in getRecentViewedApplication: ${error.message}`, error);
+            throw error;
+        }
+    }
+
+    async getApplications() {
+        try {
+            this.loggerService.log('DashboardService.getApplications() start');
+           const applications = await this.applicationRepository
+                                .createQueryBuilder('application')
+                                .leftJoinAndSelect('application.appPriority', 'appPriority')
+                                .leftJoinAndSelect('application.appStatus', 'appStatus') // This is the join table
+                                .leftJoinAndSelect('appStatus.statusType', 'statusType') // This joins to status_type table
+                                .leftJoinAndSelect('application.appType', 'appType')
+                                .orderBy('appPriority.priorityId', 'DESC')          // Highest priority first
+                                .addOrderBy('application.receivedAt', 'ASC')        // Oldest first
+                                .addOrderBy('statusType.displayOrder', 'ASC')       // Status type order from smallest to biggest
+                                .limit(5)
+                                .getMany();
+
+
+                // const applications = await this.applicationRepository.find({
+                //                     relations: ['appPriority', 'statusType', 'appStatus', 'appType'],
+                //                     order: {
+                //                         appPriority: {
+                //                         displayOrder: 'ASC', // Highest priority first
+                //                         },
+                //                         receivedDate: 'ASC',     // Oldest first
+                //                         statusType: {
+                //                         displayOrder: 'ASC', // Status display order
+                //                         },
+                //                     },
+                //                     take: 5,
+                //                     });
+
+            if (!applications || applications.length === 0)
+            {
+                this.loggerService.log('No applications found');
+                return [];
+            }
+            else
+            {
+                this.loggerService.log(`Found ${applications.length} applications`);
+                return applications;
+            }
+        } 
+        catch (error) 
+        {
+            this.loggerService.error(`Error in getApplications: ${error.message}`, error);
             throw error;
         }
     }
@@ -90,4 +140,6 @@ export class DashboardService {
             throw error;
         }
     }
+
+
 }

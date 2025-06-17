@@ -6,53 +6,111 @@ import { GenericResponseProvider } from "../../dto/response/genericResponseProvi
 import { RecentViewedApplication } from "../../entities/RecentViewedApplication.entity";
 import { DashboardResponse } from "../../dto/response/dashboard/dashboardResponse";
 import { HttpStatus } from "@nestjs/common";
+import { ApplicationSearchResponse } from "src/app/dto/response/applicationSearchResponse";
 
-@Resolver(() => RecentViewedApplication)
+@Resolver()
 @Resource('cats-service')
 export class DashboardResolver {
     constructor(
         private readonly dashboardService: DashboardService,
-        private readonly loggerSerivce: LoggerService,
+        private readonly loggerService: LoggerService,
         private readonly dashboardResponse: GenericResponseProvider<RecentViewedApplication[]>,
+        private readonly applicationResponse: GenericResponseProvider<ApplicationSearchResponse[]>
     ){}
 
     @Query(() => DashboardResponse, { name: 'getRecentViewedApplications' })
     async getRecentViewedApplications(@AuthenticatedUser() user: any,)
     {
-        if(!user || !user?.sub)
-        {
-            this.loggerSerivce.log('An invalid user was passed into DashboardResolver.getRecentViewedApplications() end');
+        try {
+            if(!user || !user?.sub)
+            {
+                this.loggerService.log('An invalid user was passed into DashboardResolver.getRecentViewedApplications() end');
+                return this.dashboardResponse.createResponse(
+                    'Invalid user',
+                    400,
+                    false,
+                    null,
+                );
+            }
+            this.loggerService.log(`DashboardResolver.getRecentViewedApplications() user: ${user?.sub}`);
+            this.loggerService.log('DashboardResolver.getRecentViewedApplications() calling DashboardService.getRecentViewedApplications()');
+
+            // Call the service to get recent viewed applications
+            this.loggerService.log('DashboardResolver.getRecentViewedApplications() start');
+
+            const result = await this.dashboardService.getRecentViewedApplications(user);
+
+            if(result?.length > 0)
+            {
+                this.loggerService.log('DashboardResolver.getRecentViewedApplications() RES:200 end');
+                return this.dashboardResponse.createResponse(
+                    'Recent viewed applications retrieved successfully',
+                    HttpStatus.OK,
+                    true,
+                    result,
+                );
+            }
+            else
+            {
+                this.loggerService.log('DashboardResolver.getRecentViewedApplications() RES:404 end');
+                return this.dashboardResponse.createResponse(
+                    'No recent viewed applications found',
+                    HttpStatus.NOT_FOUND,
+                    false,
+                    null,
+                );
+            }
+        }
+        catch (error) {
+            this.loggerService.error(`Error in getRecentViewedApplications: ${error.message}`, error);
             return this.dashboardResponse.createResponse(
-                'Invalid user',
-                400,
+                'Failed to retrieve recent viewed applications',
+                HttpStatus.INTERNAL_SERVER_ERROR,
                 false,
                 null,
             );
         }
-        this.loggerSerivce.log(`DashboardResolver.getRecentViewedApplications() user: ${user?.sub}`);
-        this.loggerSerivce.log('DashboardResolver.getRecentViewedApplications() calling DashboardService.getRecentViewedApplications()');
+    }
 
-        // Call the service to get recent viewed applications
-        this.loggerSerivce.log('DashboardResolver.getRecentViewedApplications() start');
+    @Query(() => ApplicationSearchResponse, { name: 'getApplications' })
+    async getApplications() 
+    {
+        try {
+            // Log the start of the method
+            this.loggerService.log('DashboardResolver.getApplications() start');
+            this.loggerService.log('DashboardResolver.getApplications() calling DashboardService.getApplications()');
 
-        const result = await this.dashboardService.getRecentViewedApplications(user);
+            // Call the service to get applications
+            this.loggerService.log('DashboardResolver.getApplications() start');
 
-        if(result?.length > 0)
-        {
-            this.loggerSerivce.log('DashboardResolver.getRecentViewedApplications() RES:200 end');
-            return this.dashboardResponse.createResponse(
-                'Recent viewed applications retrieved successfully',
-                HttpStatus.OK,
-                true,
-                result,
-            );
+            const result = await this.dashboardService.getApplications();
+
+            if(result?.length > 0)
+            {
+                this.loggerService.log('DashboardResolver.getApplications() RES:200 end');
+                return this.applicationResponse.createResponse(
+                    'Recent viewed applications retrieved successfully',
+                    HttpStatus.OK,
+                    true,
+                    result,
+                );
+            }
+            else
+            {
+                this.loggerService.log('DashboardResolver.getApplications() RES:404 end');
+                return this.applicationResponse.createResponse(
+                    'No recent viewed applications found',
+                    HttpStatus.NOT_FOUND,
+                    false,
+                    null,
+                );
+            }
         }
-        else
-        {
-            this.loggerSerivce.log('DashboardResolver.getRecentViewedApplications() RES:404 end');
-            return this.dashboardResponse.createResponse(
-                'No recent viewed applications found',
-                HttpStatus.NOT_FOUND,
+        catch (error) {
+            this.loggerService.error(`Error in getApplications: ${error.message}`, error);
+            return this.applicationResponse.createResponse(
+                'Failed to retrieve applications',
+                HttpStatus.INTERNAL_SERVER_ERROR,
                 false,
                 null,
             );

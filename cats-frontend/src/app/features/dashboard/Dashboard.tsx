@@ -5,9 +5,10 @@ import PageContainer from '../../components/simple/PageContainer';
 import Widget from '../../components/widget/Widget';
 import { getUser } from '../../helpers/utility';
 import { useGetRecentViewedApplicationsQuery } from './graphql/dashboard.generated';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@cats/components/button/Button';
 import { FileCirclePlusIcon } from '@cats/components/common/icon';
+import { actionRequiredColumns } from './DashboardConfig';
 
 
 interface DashboardWidgetProps {
@@ -21,6 +22,7 @@ interface DashboardWidgetProps {
 }
 
 export const DashboardCardsWidget: React.FC<DashboardWidgetProps> = ({
+  title,
   data,
   onButtonClick,
 }) => {
@@ -28,8 +30,8 @@ export const DashboardCardsWidget: React.FC<DashboardWidgetProps> = ({
   return (
     <Widget 
       hideTable={true}
-      title='Recent'
-      widgeLabelContainerCss={'custom-dashboard-widget-lbl'}
+      title={title}
+      widgetLabelContainerCss={'custom-dashboard-widget-lbl'}
     >
       {
         data && data.length > 0 ? (
@@ -56,6 +58,28 @@ export const DashboardCardsWidget: React.FC<DashboardWidgetProps> = ({
   )
 }
 
+export const DashboardActionRequiredWidget: React.FC<DashboardWidgetProps> = ({
+  title,
+  columns,
+  loading,
+  data,
+}) => {
+  return (
+    <Widget
+      title={title}
+      tableColumns={columns || []}
+      tableIsLoading={loading}
+      tableData={data}
+      hideTable={false}
+      widgetLabelContainerCss={'custom-dashboard-widget-lbl'}
+      filter={<div className="d-flex justify-content-end">
+       <Link to="/applications" className="dashboard-view-all-link">
+          View All
+        </Link>
+      </div>}
+    />
+  );
+}
 const Dashboard = () => {
   const navigate = useNavigate();
   const loggedInUser = getUser();
@@ -85,7 +109,8 @@ const Dashboard = () => {
           <span className="dashboard-btn-icon"><FileCirclePlusIcon /></span>
           <span className="dashboard-btn-text">New Application</span>
       </Button>
-      {!recentViewedLoading && <DashboardCardsWidget data={data?.getRecentViewedApplications?.data || []} onButtonClick={handleRecentViewClick} />}
+      {!recentViewedLoading && <DashboardCardsWidget data={data?.getRecentViewedApplications?.data || []} onButtonClick={handleRecentViewClick} title={'Recent'} />}
+      <DashboardActionRequiredWidget title={'Action Required'} columns={actionRequiredColumns} />
     </PageContainer>
   );
 };
