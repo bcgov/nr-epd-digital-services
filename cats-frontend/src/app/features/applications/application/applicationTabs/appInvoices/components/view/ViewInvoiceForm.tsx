@@ -325,6 +325,9 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
         // Reset any errors
         setValidationErrors({});
         setUpdateError(null);
+
+        const appId = numericApplicationId || editableInvoice.applicationId;
+        navigate(`/applications/${appId}?tab=invoices&refresh=true`);
       } else {
         setUpdateError(
           result.data?.updateInvoice?.message || 'Failed to update invoice',
