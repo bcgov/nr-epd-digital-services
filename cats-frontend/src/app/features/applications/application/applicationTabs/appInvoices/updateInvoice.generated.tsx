@@ -9,7 +9,7 @@ export type UpdateInvoiceMutationVariables = Types.Exact<{
 }>;
 
 
-export type UpdateInvoiceMutation = { __typename?: 'Mutation', updateInvoice: { __typename?: 'InvoiceResponse', success?: boolean | null, httpStatusCode?: number | null, message?: string | null, invoice?: { __typename?: 'InvoiceDto', id: number, subject: string, issuedDate: any, dueDate: any, status: Types.InvoiceStatus, taxExempt: boolean, subtotalInCents: number, gstInCents: number, pstInCents: number, totalInCents: number, lineItems: Array<{ __typename?: 'InvoiceLineItemDto', id: number, type: string, description: string, quantity: number, unitPriceInCents: number, totalInCents: number }> } | null } };
+export type UpdateInvoiceMutation = { __typename?: 'Mutation', updateInvoice: { __typename?: 'InvoiceResponse', success?: boolean | null, httpStatusCode?: number | null, message?: string | null, invoice?: { __typename?: 'InvoiceDto', id: number, subject: string, issuedDate: any, dueDate: any, status: Types.InvoiceStatus, taxExempt: boolean, subtotalInCents: number, gstInCents: number, pstInCents: number, totalInCents: number, notes?: string | null, lineItems: Array<{ __typename?: 'InvoiceLineItemDto', id: number, type: string, description: string, quantity: number, unitPriceInCents: number, totalInCents: number }> } | null } };
 
 
 export const UpdateInvoiceDocument = gql`
@@ -29,6 +29,7 @@ export const UpdateInvoiceDocument = gql`
       gstInCents
       pstInCents
       totalInCents
+      notes
       lineItems {
         id
         type
