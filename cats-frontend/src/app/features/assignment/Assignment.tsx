@@ -213,7 +213,11 @@ const Assignment: React.FC<AssignmentProps> = ({
             )
             .map((item: any) => ({
               key: item.personId.toString(),
-              value: item.personFullName,
+              value:
+                item.personFullName +
+                ' - (' +
+                ((item.currentCapacity / 160) * 100).toFixed(2) +
+                '%)',
             })),
           handleSearch: (term: any) =>
             handleSearch(
