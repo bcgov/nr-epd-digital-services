@@ -275,6 +275,7 @@ export type InvoiceByApplicationIdDto = {
   dueDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   issuedDate: Scalars['DateTime']['output'];
+  notes?: Maybe<Scalars['String']['output']>;
   status: Scalars['String']['output'];
   subject: Scalars['String']['output'];
   totalInCents: Scalars['Int']['output'];
@@ -291,6 +292,7 @@ export type InvoiceDto = {
   invoiceId?: Maybe<Scalars['Int']['output']>;
   issuedDate: Scalars['DateTime']['output'];
   lineItems: Array<InvoiceLineItemDto>;
+  notes?: Maybe<Scalars['String']['output']>;
   pstInCents: Scalars['Int']['output'];
   recipientId: Scalars['Int']['output'];
   status: InvoiceStatus;
@@ -309,6 +311,7 @@ export type InvoiceInputDto = {
   invoiceId?: InputMaybe<Scalars['Int']['input']>;
   issuedDate: Scalars['DateTime']['input'];
   lineItems: Array<InvoiceLineItemInputDto>;
+  notes?: InputMaybe<Scalars['String']['input']>;
   pstInCents: Scalars['Int']['input'];
   recipientId: Scalars['Int']['input'];
   status: InvoiceStatus;

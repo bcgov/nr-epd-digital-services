@@ -3,7 +3,7 @@ import InvoiceIndexTable from './components/index/table';
 import { RequestStatus } from '@cats/helpers/requests/status';
 import { InvoiceByApplicationIdDto } from '../../../../../../generated/types';
 import { useGetInvoicesByApplicationIdQuery } from './getInvoicesByApplicationId.generated';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { TableColumn } from '@cats/components/table/TableColumn';
 import { indexTableColumns } from './components/index/tableColumnConfig';
 import { InvoiceFilter } from './components/index/filter';
@@ -30,13 +30,31 @@ export const Invoices: React.FC = () => {
   const [columns, setColumns] =
     React.useState<TableColumn[]>(indexTableColumns);
   const navigate = useNavigate();
+  const location = useLocation();
   const { id = '' } = useParams();
   const applicationId = parseInt(id, 10);
-  const { data, error } = useGetInvoicesByApplicationIdQuery({
+
+  // Parse URL search params to check for refresh=true
+  const searchParams = new URLSearchParams(location.search);
+  const shouldRefresh = searchParams.get('refresh') === 'true';
+
+  const { data, error, refetch } = useGetInvoicesByApplicationIdQuery({
     variables: {
       applicationId: applicationId,
     },
   });
+
+  // If refresh=true is in the URL, refetch data and remove the parameter
+  useEffect(() => {
+    if (shouldRefresh) {
+      refetch().then(() => {
+        // Remove refresh=true from the URL after refetching
+        navigate(`/applications/${applicationId}?tab=invoices`, {
+          replace: true,
+        });
+      });
+    }
+  }, [shouldRefresh, refetch, navigate, applicationId]);
 
   const handleFilterChange = (filter: InvoiceFilter) => {
     setFilter(filter);

@@ -56,6 +56,9 @@ export class InvoiceV2 {
   @Column('int')
   totalInCents: number;
 
+  @Column({ type: 'text', nullable: true })
+  notes: string;
+
   @Column({ nullable: true })
   createdBy: string;
 
