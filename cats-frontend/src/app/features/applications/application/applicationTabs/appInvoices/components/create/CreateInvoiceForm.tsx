@@ -91,7 +91,7 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
         if (onSuccess) {
           onSuccess();
         }
-        navigate(`/applications/${applicationId}?tab=invoices`);
+        navigate(`/applications/${applicationId}?tab=invoices&refresh=true`);
       } else {
         setError(data.createInvoice.message || 'Failed to create invoice');
       }
