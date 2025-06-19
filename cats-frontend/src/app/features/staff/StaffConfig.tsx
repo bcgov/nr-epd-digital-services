@@ -108,11 +108,11 @@ export const StaffColumns: TableColumn[] = [
       href: '#',
       customIcon: <FillEye />,
       componentName: 'Manage Staff',
-      stickyCol: true,
+      customContainerCss: 'custom-staff-column-position',
     },
     columnSize: ColumnSize.XtraSmall,
     dynamicColumn: true,
-    customHeaderCss: 'custom-staff-tbl-header custom-staff-tbl-header-sticky',
+    customHeaderCss: 'custom-staff-tbl-header custom-staff-column-position',
   },
 ];
 

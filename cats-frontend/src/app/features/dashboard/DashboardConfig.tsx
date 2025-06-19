@@ -144,10 +144,10 @@ export const actionRequiredColumns: TableColumn[] = [
       tableMode: true,
       href: '/applications/',
       customIcon: <FileLinesIcon />,
-      stickyCol: true,
+      customContainerCss: 'custom-dashboard-column-position',
     },
     columnSize: ColumnSize.Small,
     dynamicColumn: true,
-    customHeaderCss: 'custom-dashboard-tbl-header custom-dashboard-tbl-header-sticky',
+    customHeaderCss: 'custom-dashboard-tbl-header custom-dashboard-column-position',
   },
 ];
