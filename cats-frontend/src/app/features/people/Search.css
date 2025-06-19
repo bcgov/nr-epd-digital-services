@@ -259,12 +259,12 @@ div.search-parent {
 }
 
 @media (max-width: 900px){
-  .custom-search-tbl-header-sticky {
+ .custom-search-column-position {
     position: sticky;
     right: 0;
     z-index: 1;
     box-shadow:
-      -3.2px 0 7.2px 0 #00000021,
+      -3px 0 3px 0 #00000021,
       -0.6px 0 1.8px 0 #0000001A !important;
   }
 }

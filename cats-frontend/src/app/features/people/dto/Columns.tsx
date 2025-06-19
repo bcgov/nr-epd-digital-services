@@ -15,7 +15,6 @@ const getPeopleSearchResultsColumns = () => {
       sortOrder: 1,
       isChecked: true,
       displayType: getColumnType('First Name', 'firstName', ''),
-      stickyCol: true,
     },
     new TableColumn(
       6,
@@ -99,12 +98,11 @@ const getPeopleSearchResultsColumns = () => {
         customInputTextCss: 'custom-search-link',
         tableMode: true,
         href: '/person/',
-        stickyCol: true,
+        customContainerCss: 'custom-search-column-position',
         componentName: 'Manage People',
       },
-      customHeaderCss: 'custom-search-tbl-header custom-search-tbl-header-sticky',
+      customHeaderCss: 'custom-search-tbl-header custom-search-column-position',
       dynamicColumn: true,
-      stickyCol: true,
     },
   ];
 
@@ -119,7 +117,6 @@ const getColumnType = (label: string, propertyName: string, value: string) => {
     value: value,
     customInputTextCss: 'custom-search-input-text',
     tableMode: true,
-    stickyCol: false,
   };
 };
 

@@ -189,8 +189,8 @@ const TableBody: FC<TableBodyProps> = ({
           allowNumbersOnly={field.allowNumbersOnly}
           isEditing={editMode ?? true}
           tableMode={field.tableMode ?? false}
-          stickyCol={field.stickyCol}
           isDisabled={field.isDisabled}
+          customContainerCss={field.customContainerCss}
         />
       );
     } else if (field.type === FormFieldType.Search) {
@@ -213,11 +213,11 @@ const TableBody: FC<TableBodyProps> = ({
           allowNumbersOnly={field.allowNumbersOnly}
           isEditing={editMode ?? true}
           tableMode={field.tableMode ?? false}
-          stickyCol={field.stickyCol}
           customPlaceholderCss={field.customPlaceholderCss}
           isLoading={field.isLoading}
           customInfoMessage={field.customInfoMessage}
           customMenuMessage={field.customMenuMessage}
+          customContainerCss= {field.customContainerCss}
         />
       );
     } else if (field.type === FormFieldType.Label) {
@@ -239,7 +239,7 @@ const TableBody: FC<TableBodyProps> = ({
           allowNumbersOnly={field.allowNumbersOnly}
           isEditing={editMode ?? true}
           tableMode={field.tableMode ?? false}
-          stickyCol={field.stickyCol}
+          customContainerCss={field.customContainerCss}
         />
       );
     } else if (field.type === FormFieldType.Link) {
@@ -261,7 +261,7 @@ const TableBody: FC<TableBodyProps> = ({
           allowNumbersOnly={field.allowNumbersOnly}
           isEditing={editMode ?? true}
           tableMode={field.tableMode ?? false}
-          stickyCol={field.stickyCol}
+          customContainerCss={field.customContainerCss}
           href={field.href}
           customLinkValue={field.customLinkValue}
           customIcon={field.customIcon}
@@ -288,7 +288,7 @@ const TableBody: FC<TableBodyProps> = ({
           allowNumbersOnly={field.allowNumbersOnly}
           isEditing={editMode ?? true}
           tableMode={field.tableMode ?? false}
-          stickyCol={field.stickyCol}
+          customContainerCss={field.customContainerCss}
           href={field.href}
           options={field.options}
         />
@@ -305,7 +305,6 @@ const TableBody: FC<TableBodyProps> = ({
           customPlaceholderCss={field.customPlaceholderCss}
           placeholder={field.placeholder}
           isChecked={value === 'true' ? true : false}
-          // value={value}
           onChange={(value) =>
             tableRecordChangeHandler(rowKey, field.graphQLPropertyName, value)
           }
@@ -315,7 +314,7 @@ const TableBody: FC<TableBodyProps> = ({
           isEditing={editMode ?? true}
           srMode={srMode ?? true}
           tableMode={field.tableMode ?? false}
-          stickyCol={field.stickyCol}
+          customContainerCss={field.customContainerCss}
           href={field.href}
           options={field.options}
         />
@@ -338,7 +337,7 @@ const TableBody: FC<TableBodyProps> = ({
           type={field.type}
           isEditing={editMode ?? true}
           tableMode={field.tableMode ?? false}
-          stickyCol={field.stickyCol}
+          customContainerCss={field.customContainerCss}
           dateFormat={field.dateFormat}
         />
       );
@@ -364,7 +363,7 @@ const TableBody: FC<TableBodyProps> = ({
           textAreaRow={field.textAreaRow}
           textAreaColoum={field.textAreaColoum}
           tableMode={field.tableMode ?? false}
-          stickyCol={field.stickyCol}
+          customContainerCss={field.customContainerCss}
         />
       );
     } else if (field.type === FormFieldType.DropDownWithSearch) {
@@ -386,7 +385,7 @@ const TableBody: FC<TableBodyProps> = ({
           type={field.type}
           isEditing={editMode ?? true}
           tableMode={field.tableMode ?? false}
-          stickyCol={field.stickyCol}
+          customContainerCss={field.customContainerCss}
           handleSearch={field.handleSearch}
           filteredOptions={field.filteredOptions || []}
           isLoading={field.isLoading}
@@ -416,7 +415,7 @@ const TableBody: FC<TableBodyProps> = ({
           type={field.type}
           isEditing={editMode ?? true}
           tableMode={field.tableMode ?? false}
-          stickyCol={field.stickyCol}
+          customContainerCss={field.customContainerCss}
           customIcon={field.customIcon}
         />
       );
@@ -438,7 +437,7 @@ const TableBody: FC<TableBodyProps> = ({
           type={field.type}
           isEditing={editMode ?? true}
           tableMode={field.tableMode ?? false}
-          stickyCol={field.stickyCol}
+          customContainerCss={field.customContainerCss}
           customLinkValue={field.customLinkValue}
           customIcon={field.customIcon}
         />
@@ -461,7 +460,7 @@ const TableBody: FC<TableBodyProps> = ({
           type={field.type}
           isEditing={editMode ?? true}
           tableMode={field.tableMode ?? false}
-          stickyCol={field.stickyCol}
+          customContainerCss={field.customContainerCss}
           customLinkValue={field.customLinkValue}
           customIcon={field.customIcon}
         />
