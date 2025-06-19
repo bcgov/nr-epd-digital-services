@@ -6,9 +6,9 @@ import {
 } from '../../components/common/icon';
 import { FormFieldType } from '../../components/input-controls/IFormField';
 import { ColumnSize, TableColumn } from '../../components/table/TableColumn';
-import './StaffDashboard.css';
+import './Staff.css';
 
-export const StaffDashboardColumns: TableColumn[] = [
+export const StaffColumns: TableColumn[] = [
   {
     id: 1,
     displayName: 'Name',
@@ -24,7 +24,6 @@ export const StaffDashboardColumns: TableColumn[] = [
       customInputTextCss: 'custom-staff-edit-lbl',
       tableMode: true,
     },
-    customHeaderCss: 'custom-header',
   },
   {
     id: 3,
@@ -41,7 +40,7 @@ export const StaffDashboardColumns: TableColumn[] = [
       customInputTextCss: 'custom-staff-edit-lbl',
       tableMode: true,
     },
-    customHeaderCss: 'custom-header',
+     
     renderCell: (value: any, row: any) => {
       let variant = 'success';
       let Icon;
@@ -91,7 +90,7 @@ export const StaffDashboardColumns: TableColumn[] = [
       tableMode: true,
     },
     dynamicColumn: true,
-    customHeaderCss: 'custom-header',
+    customHeaderCss: 'custom-staff-header',
   },
   {
     id: 4,
@@ -109,10 +108,11 @@ export const StaffDashboardColumns: TableColumn[] = [
       href: '#',
       customIcon: <FillEye />,
       componentName: 'Manage Staff',
+      stickyCol: true,
     },
     columnSize: ColumnSize.XtraSmall,
     dynamicColumn: true,
-    customHeaderCss: 'custom-tbl-header custom-header',
+    customHeaderCss: 'custom-staff-tbl-header custom-staff-tbl-header-sticky',
   },
 ];
 
@@ -122,7 +122,7 @@ export const staffApplicationsColumns: TableColumn[] = [
     displayName: 'Application ID',
     active: true,
     graphQLPropertyName: 'applicationId',
-    columnSize: ColumnSize.Small,
+    columnSize: ColumnSize.Default,
     displayType: {
       type: FormFieldType.Link,
       label: '',
@@ -134,7 +134,6 @@ export const staffApplicationsColumns: TableColumn[] = [
       href: '/applications/',
       componentName: 'Staff',
     },
-    customHeaderCss: 'custom-header',
   },
   {
     id: 2,
@@ -151,7 +150,6 @@ export const staffApplicationsColumns: TableColumn[] = [
       customInputTextCss: 'custom-apps-modal-lbl',
       tableMode: true,
     },
-    customHeaderCss: 'custom-header',
   },
   {
     id: 3,
@@ -168,14 +166,13 @@ export const staffApplicationsColumns: TableColumn[] = [
       customInputTextCss: 'custom-apps-modal-lbl',
       tableMode: true,
     },
-    customHeaderCss: 'custom-header',
   },
   {
     id: 4,
     displayName: 'Start Date',
     active: true,
     graphQLPropertyName: 'effectiveStartDate',
-    columnSize: ColumnSize.Default,
+    columnSize: ColumnSize.Small,
     displayType: {
       type: FormFieldType.Text,
       label: '',
@@ -185,14 +182,13 @@ export const staffApplicationsColumns: TableColumn[] = [
       customInputTextCss: 'custom-apps-modal-lbl',
       tableMode: true,
     },
-    customHeaderCss: 'custom-header',
   },
   {
     id: 5,
     displayName: 'End Date',
     active: true,
     graphQLPropertyName: 'effectiveEndDate',
-    columnSize: ColumnSize.Default,
+    columnSize: ColumnSize.Small,
     displayType: {
       type: FormFieldType.Text,
       label: '',
@@ -202,6 +198,5 @@ export const staffApplicationsColumns: TableColumn[] = [
       customInputTextCss: 'custom-apps-modal-lbl',
       tableMode: true,
     },
-    customHeaderCss: 'custom-header',
   },
 ];
