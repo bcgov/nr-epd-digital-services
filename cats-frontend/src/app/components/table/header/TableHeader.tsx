@@ -32,11 +32,11 @@ const TableHeader: FC<TableHeaderProps> = ({
     return null;
   }
   return (
-    <tr className="table-header">
+    <tr>
       {allowRowsSelect && (
         <th
           scope="col"
-          className={`table-header-th checkbox-column positionSticky`}
+          className={`checkbox-column`}
         >
           <input
             type="checkbox"
