@@ -7,7 +7,7 @@ import Search from '../features/people/Search';
 import Person from '../features/people/person/Person';
 import ApplicationDetails from '../features/applications/application/ApplicationDetails';
 import ApplicationSearch from '../features/applications/search/Search';
-import StaffDashboard from '../features/staffDashboard/StaffDashboard';
+import StaffDashboard from '../features/staff/Staff';
 import ProtectedRoute from './ProtectedRoute';
 import { AuthProvider } from 'react-oidc-context';
 import { getClientSettings } from '@cats/auth/UserManagerSetting';
