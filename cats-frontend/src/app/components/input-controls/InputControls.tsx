@@ -48,7 +48,7 @@ const renderTableCell = (
 ) => {
   return (
     <td
-      className={`"table-border-light align-content-center" ${stickyCol ? 'positionSticky' : ''}`}
+      className={`table-border-light align-content-center ${stickyCol ? 'custom-position' : ''}`}
     >
       {content}
     </td>
@@ -258,7 +258,7 @@ export const TextInput: React.FC<InputProps> = ({
   const inputTxtId = label?.replace(/\s+/g, '_') + '_' + v4();
   return (
     <ContainerElement
-      className={`${tableMode ? 'table-border-light align-content-center ' : 'mb-3'} ${tableMode && stickyCol ? 'positionSticky' : ''} `}
+      className={`${tableMode ? 'table-border-light align-content-center ' : 'mb-3'} ${tableMode && stickyCol ? 'custom-position' : ''} `}
     >
       {!tableMode && (
         <>
@@ -899,7 +899,7 @@ export const CheckBoxInput: React.FC<InputProps> = ({
 
   return (
     <ContainerElement
-      className={`${tableMode ? 'table-border-light align-content-center ' : 'd-inline mb-3'} ${tableMode && stickyCol ? 'positionSticky' : ''} `}
+      className={`${tableMode ? 'table-border-light align-content-center ' : 'd-inline mb-3'} ${tableMode && stickyCol ? 'custom-position' : ''} `}
     >
       <div className={wrapperClassName}>
         <input
@@ -1437,7 +1437,7 @@ export const SearchCustomInput: React.FC<InputProps> = ({
   const inputTxtId = label?.replace(/\s+/g, '_') + '_' + v4();
   return (
     <ContainerElement
-      className={`${tableMode ? 'table-border-light align-content-center ' : 'mb-3'} ${tableMode && stickyCol ? 'positionSticky' : ''} `}
+      className={`${tableMode ? 'table-border-light align-content-center ' : 'mb-3'} ${tableMode && stickyCol ? 'custom-position' : ''} `}
     >
       {!tableMode && (
         <label
@@ -1635,7 +1635,7 @@ export const SwitchInput: React.FC<InputProps> = ({
     <ContainerElement
       className={`${
         tableMode ? 'table-border-light align-content-center ' : 'mb-3'
-      } ${tableMode && stickyCol ? 'positionSticky' : ''}`}
+      } ${tableMode && stickyCol ? 'custom-position' : ''}`}
     >
       {/* Switch Input */}
       {isEditing ? (

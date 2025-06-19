@@ -1,22 +1,3 @@
-.table-header {
-  border: 1px solid;
-  border-color: var(--surface-color-border-default);
-  height: 40px;
-  margin-bottom: 10px;
-}
-
-.table-header-th {
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 12px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: var(--typography-color-secondary) !important;
-  border-right: 1px solid #d8d8d8;
-  border-left: 1px solid #d8d8d8;
-
-  background: var(--theme-gray-20) !important;
-}
 
 .checkbox-column {
   width: 0% !important;

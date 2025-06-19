@@ -126,7 +126,7 @@ const TableBody: FC<TableBodyProps> = ({
   const renderNoResultsFound = () => {
     return (
       <tr>
-        <td colSpan={20} className="noContent table-border-light">
+        <td colSpan={20} className="noContent">
           {isLoading === RequestStatus.loading ? (
             <div className="content-loading">
               <SpinnerIcon data-testid="loading-spinner" className="fa-spin " />
@@ -525,7 +525,7 @@ const TableBody: FC<TableBodyProps> = ({
       <React.Fragment key={rowIndex}>
         <tr data-testid="table-row" key={rowIndex}>
           {allowRowsSelect && (
-            <td className="table-border-light content-text positionSticky align-content-center checkbox-column">
+            <td className="content-text align-content-center checkbox-column">
               <input
                 id={getValue(rowIndex, idColumnName)}
                 type="checkbox"
