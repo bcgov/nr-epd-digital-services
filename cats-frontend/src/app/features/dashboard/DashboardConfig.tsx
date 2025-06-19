@@ -1,4 +1,4 @@
-import { FileLinesIcon } from '../../components/common/icon';
+import { ExternalLink, FileLinesIcon } from '../../components/common/icon';
 import { FormFieldType } from '../../components/input-controls/IFormField';
 import { ColumnSize, TableColumn } from '../../components/table/TableColumn';
 
@@ -7,22 +7,17 @@ export const actionRequiredColumns: TableColumn[] = [
     id: 1,
     displayName: 'Application ID',
     active: true,
-    graphQLPropertyName: 'siteId',
+    graphQLPropertyName: 'applicationId',
     displayType: {
       type: FormFieldType.Link,
       label: 'Application ID',
-      graphQLPropertyName: 'id',
+      graphQLPropertyName: 'applicationId',
       value: '',
-
-
       customInputTextCss: 'custom-dashboard-input-txt',
-
-
       tableMode: true,
-      href: 'applications/',
+      href: '/applications/',
     },
-    linkRedirectionURL: 'applications/',
-    columnSize: ColumnSize.Small,
+    columnSize: ColumnSize.Default,
     dynamicColumn: true,
   },
   {
@@ -30,19 +25,24 @@ export const actionRequiredColumns: TableColumn[] = [
     displayName: 'Site ID',
     active: true,
     graphQLPropertyName: 'siteId',
-    displayType: {
-      type: FormFieldType.Link,
-      label: 'Site ID',
-      graphQLPropertyName: 'siteId',
-      value: '',
-
-      customInputTextCss: 'custom-dashboard-input-txt',
-
-
-      tableMode: true,
-      href: 'site/details/',
+    displayType: {type: FormFieldType.Label},
+    renderCell: (value: any) => {
+      return (
+        <div className="custom-dashboard-link-wrapper">
+          <a
+            href={`${import.meta.env.VITE_SITE_REGISTRY_URL}/site/details/${value}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={'custom-dashboard-input-txt'}
+          >
+            {value}
+            <span className="ps-2 custom-dashboard-external-link">
+              <ExternalLink/>
+            </span>
+          </a>
+        </div>
+      );
     },
-    linkRedirectionURL: 'site/details/',
     columnSize: ColumnSize.Small,
     dynamicColumn: true,
   },
@@ -57,7 +57,6 @@ export const actionRequiredColumns: TableColumn[] = [
       graphQLPropertyName: 'address',
       value: '',
       tableMode: true,
-
       customInputTextCss: 'custom-dashboard-input-txt',
     },
     columnSize: ColumnSize.Default,
@@ -74,7 +73,6 @@ export const actionRequiredColumns: TableColumn[] = [
       graphQLPropertyName: 'applicationType',
       value: '',
       tableMode: true,
-
       customInputTextCss: 'custom-dashboard-input-txt',
     },
     columnSize: ColumnSize.Default,
@@ -84,10 +82,10 @@ export const actionRequiredColumns: TableColumn[] = [
     id: 5,
     displayName: 'Start Date',
     active: true,
-    graphQLPropertyName: 'whenUpdated',
+    graphQLPropertyName: 'receivedDate',
     displayType: {
       type: FormFieldType.Date,
-      graphQLPropertyName: 'whenUpdated',
+      graphQLPropertyName: 'receivedDate',
       label: '',
       placeholder: 'MM/DD/YY',
       value: '',
@@ -103,14 +101,13 @@ export const actionRequiredColumns: TableColumn[] = [
     id: 6,
     displayName: 'Status',
     active: true,
-    graphQLPropertyName: 'status',
+    graphQLPropertyName: 'applicationStatus',
     displayType: {
       type: FormFieldType.Label,
       label: 'Status',
-      graphQLPropertyName: 'status',
+      graphQLPropertyName: 'applicationStatus',
       value: '',
       tableMode: true,
-
       customInputTextCss: 'custom-dashboard-input-txt',
     },
     columnSize: ColumnSize.Default,
@@ -127,31 +124,30 @@ export const actionRequiredColumns: TableColumn[] = [
       graphQLPropertyName: 'priority',
       value: '',
       tableMode: true,
-
       customInputTextCss: 'custom-dashboard-input-txt',
     },
-    columnSize: ColumnSize.Small,
+    columnSize: ColumnSize.XtraSmall,
     dynamicColumn: true,
   },
   {
     id: 8,
     displayName: 'Details',
     active: true,
-    graphQLPropertyName: 'id',
+    graphQLPropertyName: 'applicationId',
     displayType: {
       type: FormFieldType.Link,
-      label: 'Details',
-      graphQLPropertyName: 'id',
+      label: 'View',
+      graphQLPropertyName: 'applicationId',
       value: '',
-      customLinkValue: 'Details',
+      customLinkValue: 'View',
       customInputTextCss: 'custom-dashboard-link',
       tableMode: true,
-      href: 'applications/',
+      href: '/applications/',
       customIcon: <FileLinesIcon />,
+      stickyCol: true,
     },
-    linkRedirectionURL: 'applications/',
-    columnSize: ColumnSize.XtraSmall,
+    columnSize: ColumnSize.Small,
     dynamicColumn: true,
-    stickyCol: true,
+    customHeaderCss: 'custom-dashboard-tbl-header custom-dashboard-tbl-header-sticky',
   },
 ];
