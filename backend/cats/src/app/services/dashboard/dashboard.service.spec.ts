@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DashboardService } from './dashboard.service';
 import { Repository } from 'typeorm';
-import { RecentViewedApplication } from '../../entities/RecentViewedApplication.entity';
+import { RecentViewedApplication } from '../../entities/recentViewedApplication.entity';
 import { LoggerService } from '../../logger/logger.service';
 import { SiteService } from '../site/site.service';
 import { Application } from '../../entities/application.entity';

@@ -1,10 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { RecentViewedApplication } from "../../entities/RecentViewedApplication.entity";
+import { RecentViewedApplication } from "../../entities/recentViewedApplication.entity";
 import { LoggerService } from "../../logger/logger.service";
-import { Repository } from "typeorm";
+import { DataSource, Repository } from "typeorm";
 import { SiteService } from "../site/site.service";
 import { Application } from "../../entities/application.entity";
+import { ApplicationSearchResult } from "src/app/dto/response/applicationSearchResponse";
 
 @Injectable()
 export class DashboardService {
@@ -14,7 +15,8 @@ export class DashboardService {
         @InjectRepository(Application)
         private readonly applicationRepository: Repository<Application>,
         private readonly loggerService: LoggerService,
-        private readonly siteService: SiteService
+        private readonly siteService: SiteService,
+        private readonly dataSource: DataSource,
     ) {}
 
 
@@ -39,42 +41,110 @@ export class DashboardService {
     async getApplications() {
         try {
             this.loggerService.log('DashboardService.getApplications() start');
-           const applications = await this.applicationRepository
-                                .createQueryBuilder('application')
-                                .leftJoinAndSelect('application.appPriority', 'appPriority')
-                                .leftJoinAndSelect('application.appStatus', 'appStatus') // This is the join table
-                                .leftJoinAndSelect('appStatus.statusType', 'statusType') // This joins to status_type table
-                                .leftJoinAndSelect('application.appType', 'appType')
-                                .orderBy('appPriority.priorityId', 'DESC')          // Highest priority first
-                                .addOrderBy('application.receivedAt', 'ASC')        // Oldest first
-                                .addOrderBy('statusType.displayOrder', 'ASC')       // Status type order from smallest to biggest
-                                .limit(5)
-                                .getMany();
+            
+            // Fetch the top 5 applications based on priority and received date
+            this.loggerService.log('Fetching top 5 applications based on priority and received date');
+
+            const applications = await this.dataSource.query(`
+                                        WITH ranked_apps AS (
+                                            SELECT 
+                                                app.id AS applicationId,
+                                                app.site_id AS siteId,
+                                                app_type.description AS applicationType,
+                                                status_type.description AS applicationStatus,
+                                                status_type.display_order AS statusDisplayOrder,
+                                                app.received_date AS receivedDate,
+                                                priority.abbrev AS priority,
+                                                priority.display_order AS priorityDisplayOrder,
+                                                ROW_NUMBER() OVER (
+                                                    PARTITION BY app.id
+                                                    ORDER BY 
+                                                        priority.display_order DESC NULLS LAST,
+                                                        status_type.display_order DESC NULLS LAST,
+                                                        app.received_date ASC
+                                                ) AS rn
+                                            FROM cats.application app
+                                            LEFT JOIN cats.app_priority app_priority 
+                                                ON app_priority.application_id = app.id
+                                            LEFT JOIN cats.priority priority 
+                                                ON priority.id = app_priority.priority_id AND priority.is_active = TRUE
+                                            INNER JOIN cats.app_status app_status 
+                                                ON app_status.application_id = app.id
+                                            INNER JOIN cats.status_type status_type 
+                                                ON status_type.id = app_status.status_type_id AND status_type.is_active = TRUE
+                                            LEFT JOIN cats.app_type app_type 
+                                                ON app_type.id = app.app_type_id
+                                        )
+                                        SELECT 
+                                            applicationId,
+                                            siteId,
+                                            applicationType,
+                                            applicationStatus,
+                                            receivedDate,
+                                            priority
+                                        FROM ranked_apps
+                                        WHERE rn = 1 
+                                            AND applicationStatus != 'Closed'
+                                        ORDER BY 
+                                            priorityDisplayOrder DESC NULLS LAST,
+                                            statusDisplayOrder DESC NULLS LAST,
+                                            receivedDate ASC
+                                            LIMIT 5;
+                                            `);
+                                            
 
 
-                // const applications = await this.applicationRepository.find({
-                //                     relations: ['appPriority', 'statusType', 'appStatus', 'appType'],
-                //                     order: {
-                //                         appPriority: {
-                //                         displayOrder: 'ASC', // Highest priority first
-                //                         },
-                //                         receivedDate: 'ASC',     // Oldest first
-                //                         statusType: {
-                //                         displayOrder: 'ASC', // Status display order
-                //                         },
-                //                     },
-                //                     take: 5,
-                //                     });
-
-            if (!applications || applications.length === 0)
-            {
+            // const applications = await this.applicationRepository
+            //             .createQueryBuilder('application')
+            //             .leftJoinAndSelect('application.appPriorities', 'appPriority')
+            //             .leftJoinAndSelect('appPriority.priority', 'priority')
+            //             .leftJoinAndSelect('application.appStatus', 'appStatus')
+            //             .leftJoinAndSelect('appStatus.statusType', 'statusType')
+            //             .leftJoinAndSelect('application.appType', 'appType')
+            //             .orderBy('priority.displayOrder', 'DESC')                      // Highest first
+            //             .addOrderBy('priority.displayOrder IS NULL', 'ASC')            // Push NULLs last
+            //             .addOrderBy('application.receivedDate', 'ASC')                 // Oldest first
+            //             .limit(5)
+            //             .getMany();
+                        
+            this.loggerService.log(`Fetched ${applications.length} applications`);
+            // Check if applications were found
+            if (!applications || applications.length === 0) {
                 this.loggerService.log('No applications found');
                 return [];
-            }
-            else
-            {
+            } else {
                 this.loggerService.log(`Found ${applications.length} applications`);
-                return applications;
+                // const result = new ApplicationSearchResult();
+                const result = await Promise.all(applications.map(async (app : any ) => {
+                    this.loggerService.log(`Processing application ID: ${app.applicationid}, siteId: ${app.siteid}`);
+                    this.loggerService.log(`Fetching site details for application ID: ${app.applicationid}, siteId: ${app.siteid}`);
+
+                    let siteAddress = '';
+                    if (app?.siteid != null && app.siteid.toString().length > 0) {
+                        // Fetch the site details using the siteId from the application
+                        const site = await this.siteService.getSiteById(app?.siteid?.toString());
+
+                        this.loggerService.log(`Got site details for application ID: ${app.applicationid}, siteId: ${app.siteid}`);
+                        const siteDetails = site?.findSiteBySiteId?.data;
+                        if (siteDetails) {
+                            siteAddress = `${siteDetails?.addrLine_1 ?? ''}
+                                        ${siteDetails?.addrLine_2 ?? ''}
+                                        ${siteDetails?.addrLine_3 ?? ''}
+                                        ${siteDetails?.addrLine_4 ?? ''}`;
+                        }
+                    }
+                    return {
+                        applicationId: app?.applicationid,
+                        applicationType: app?.applicationtype  || null,
+                        applicationStatus: app?.applicationstatus  || null,
+                        priority: app?.priority || null,
+                        receivedDate: app?.receiveddate || null,
+                        siteId: app?.siteid || null,
+                        address: siteAddress?.trim() || null,
+                    };
+                }));
+                this.loggerService.log('DashboardService.getApplications() end');
+                return result;
             }
         } 
         catch (error) 

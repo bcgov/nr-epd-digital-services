@@ -55,7 +55,6 @@ import {
 } from 'react-icons/bs';
 
 import { FaExternalLinkAlt } from 'react-icons/fa';
-import { BiSolidFilePdf } from 'react-icons/bi';
 
 export const ShoppingCartIcon = FaCartShopping;
 export const FileExportIcon = FaFileExport;

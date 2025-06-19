@@ -5,11 +5,28 @@ query getRecentViewedApplications {
         message
         timestamp
         data {
-            userId
             applicationId
             siteId
             address
             applicationType
+        }
+    }
+}
+
+query getApplications{
+    getApplications {
+        message
+        httpStatusCode
+        success
+        timestamp
+        data {
+            applicationId
+            siteId
+            address
+            applicationType
+            applicationStatus
+            receivedDate
+            priority
         }
     }
 }

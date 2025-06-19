@@ -4,7 +4,7 @@ import './Dashboard.css';
 import PageContainer from '../../components/simple/PageContainer';
 import Widget from '../../components/widget/Widget';
 import { getUser } from '../../helpers/utility';
-import { useGetRecentViewedApplicationsQuery } from './graphql/dashboard.generated';
+import { useGetApplicationsQuery, useGetRecentViewedApplicationsQuery } from './graphql/dashboard.generated';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/button/Button';
 import { FileCirclePlusIcon } from '../../components/common/icon';
@@ -90,10 +90,13 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const loggedInUser = getUser();
   const [name, setName] = useState('');
-  const { data, loading: recentViewedLoading } =
-    useGetRecentViewedApplicationsQuery({
-      fetchPolicy: 'network-only', // <-- Force server fetch on each mount
-    });
+  const {data: recentViewedData, loading: recentViewedLoading} = useGetRecentViewedApplicationsQuery({
+    fetchPolicy: 'network-only', // <-- Force server fetch on each mount
+  });
+
+  const { data: actionRequiredData, loading: actionRequiredLoading } = useGetApplicationsQuery({
+    fetchPolicy: 'network-only', // <-- Force server fetch on each mount
+  });
 
   useEffect(() => {
     loggedInUser
@@ -123,13 +126,8 @@ const Dashboard = () => {
         </span>
         <span className="dashboard-btn-text">New Application</span>
       </Button>
-      {!recentViewedLoading && (
-        <DashboardCardsWidget
-          data={data?.getRecentViewedApplications?.data || []}
-          onButtonClick={handleRecentViewClick}
-        title={'Recent'} />
-      )}
-      <DashboardActionRequiredWidget title={'Action Required'} columns={actionRequiredColumns} />
+      {!recentViewedLoading && <DashboardCardsWidget data={recentViewedData?.getRecentViewedApplications?.data || []} onButtonClick={handleRecentViewClick} title={'Recent'} />}
+      <DashboardActionRequiredWidget data={actionRequiredData?.getApplications?.data || []} title={'Action Required'} columns={actionRequiredColumns} />
     </PageContainer>
   );
 };
