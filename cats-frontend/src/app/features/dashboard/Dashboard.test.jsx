@@ -2,12 +2,13 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { MockedProvider } from '@apollo/client/testing';
 import Dashboard, { DashboardCardsWidget } from './Dashboard';
-import { GetRecentViewedApplicationsDocument } from './graphql/dashboard.generated';
+import { GetRecentViewedApplicationsDocument, GetApplicationsDocument } from './graphql/dashboard.generated';
 import { vi } from 'vitest';
-import { getUser } from '../../helpers/utility';
+import { getUser, parseLocalDate } from '../../helpers/utility';
 
 vi.mock('../../helpers/utility', () => ({
   getUser: vi.fn(),
+  parseLocalDate: vi.fn(),
 }));
 
 const mockNavigate = vi.fn();
@@ -20,20 +21,45 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
-const mockApplications = [
+const mockRecentApplications = [
   {
-    userId: 'u1',
     applicationId: 101,
     siteId: 202,
     address: '123 Test Street',
     applicationType: 'Permit',
+    applicationStatus: 'Pending',
+    priority: 'High',
+    receivedDate: '2024-05-01',
   },
   {
-    userId: 'u1',
     applicationId: 102,
     siteId: 203,
     address: '456 Another Ave',
     applicationType: 'License',
+    applicationStatus: 'Approved',
+    priority: 'Medium',
+    receivedDate: '2024-04-15',
+  },
+];
+
+const mockApplications = [
+  {
+    applicationId: 101,
+    siteId: 202,
+    address: 'Test Street 1',
+    applicationType: 'Application',
+    applicationStatus: 'Rejected', 
+    priority: 'High',
+    receivedDate: '2024-05-01',
+  },
+  {
+    applicationId: 102,
+    siteId: 203,
+    address: 'Test Street 2',
+    applicationType: 'Compliance',
+    applicationStatus: 'Review',
+    priority: 'Medium',
+    receivedDate: '2024-04-15',
   },
 ];
 
@@ -45,6 +71,22 @@ const mocks = [
     result: {
       data: {
         getRecentViewedApplications: {
+          httpStatusCode: 200,
+          success: true,
+          message: 'Fetched',
+          timestamp: new Date().toISOString(),
+          data: mockRecentApplications,
+        },
+      },
+    },
+  },
+  {
+    request: {
+      query: GetApplicationsDocument,
+    },
+    result: {
+      data: {
+        getApplications: {
           httpStatusCode: 200,
           success: true,
           message: 'Fetched',
@@ -266,4 +308,129 @@ describe('Dashboard Component', () => {
       expect(screen.getByText('Welcome, Bob')).toBeInTheDocument();
     });
   });
+
+  it('renders action required applications when data is returned', async () => {
+    render(
+      <MemoryRouter>
+        <MockedProvider mocks={mocks} addTypename={false}>
+          <Dashboard />
+        </MockedProvider>
+      </MemoryRouter>
+    );
+
+    await screen.findByText('Rejected');
+    expect(screen.getByText('Rejected')).toBeInTheDocument();
+    expect(screen.getByText('Review')).toBeInTheDocument();
+  });
+
+  it('shows empty state when no action required applications are found', async () => {
+    const emptyMocks = [
+      {
+        request: {
+          query: GetApplicationsDocument,
+        },
+        result: {
+          data: {
+            getApplications: {
+              httpStatusCode: 200,
+              success: true,
+              message: 'Fetched',
+              timestamp: new Date().toISOString(),
+              data: [],
+            },
+          },
+        },
+      },
+    ];
+
+    render(
+      <MemoryRouter>
+        <MockedProvider mocks={emptyMocks} addTypename={false}>
+          <Dashboard />
+        </MockedProvider>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.queryByText(/No data/i) || screen.queryByText(/No recent applications/i)
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('shows loading state for action required section', async () => {
+    const slowMocks = [
+      ...mocks,
+      {
+        request: {
+          query: GetApplicationsDocument,
+        },
+        result: {
+          data: {
+            getApplications: {
+              httpStatusCode: 200,
+              success: true,
+              message: 'Fetched',
+              timestamp: new Date().toISOString(),
+              data: [],
+            },
+          },
+        },
+        delay: 1000, // Simulate loading
+      },
+    ];
+
+    render(
+      <MemoryRouter>
+        <MockedProvider mocks={slowMocks} addTypename={false}>
+          <Dashboard />
+        </MockedProvider>
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText(/Welcome/i)).toBeInTheDocument();
+  });
+
+  it('renders gracefully when action required data has nulls', async () => {
+     const malformedMocks = [
+      {
+        request: {
+          query: GetApplicationsDocument,
+        },
+        result: {
+          data: {
+            getApplications: {
+              httpStatusCode: 200,
+              success: true,
+              message: 'OK',
+              timestamp: new Date().toISOString(),
+              data: [
+                {
+                  applicationId: 999,
+                  siteId: null,
+                  address: null,
+                  applicationType: null,
+                  applicationStatus: null,
+                  receivedDate: null,
+                  priority: null
+                },
+              ],
+            },
+          },
+        },
+      },
+    ];
+    render(
+      <MemoryRouter>
+        <MockedProvider mocks={malformedMocks} addTypename={false}>
+          <Dashboard />
+        </MockedProvider>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Action Required')).toBeInTheDocument();
+    });
+  });
+
 });
