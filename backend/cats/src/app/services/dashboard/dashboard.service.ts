@@ -12,8 +12,6 @@ export class DashboardService {
     constructor(
         @InjectRepository(RecentViewedApplication)
         private readonly recentViewedApplicationRepository: Repository<RecentViewedApplication>,
-        @InjectRepository(Application)
-        private readonly applicationRepository: Repository<Application>,
         private readonly loggerService: LoggerService,
         private readonly siteService: SiteService,
         private readonly dataSource: DataSource,
@@ -87,26 +85,12 @@ export class DashboardService {
                                             AND applicationStatus != 'Closed'
                                         ORDER BY 
                                             priorityDisplayOrder DESC NULLS LAST,
-                                            statusDisplayOrder DESC NULLS LAST,
                                             receivedDate ASC
+                                            statusDisplayOrder DESC NULLS LAST,
                                             LIMIT 5;
                                             `);
                                             
 
-
-            // const applications = await this.applicationRepository
-            //             .createQueryBuilder('application')
-            //             .leftJoinAndSelect('application.appPriorities', 'appPriority')
-            //             .leftJoinAndSelect('appPriority.priority', 'priority')
-            //             .leftJoinAndSelect('application.appStatus', 'appStatus')
-            //             .leftJoinAndSelect('appStatus.statusType', 'statusType')
-            //             .leftJoinAndSelect('application.appType', 'appType')
-            //             .orderBy('priority.displayOrder', 'DESC')                      // Highest first
-            //             .addOrderBy('priority.displayOrder IS NULL', 'ASC')            // Push NULLs last
-            //             .addOrderBy('application.receivedDate', 'ASC')                 // Oldest first
-            //             .limit(5)
-            //             .getMany();
-                        
             this.loggerService.log(`Fetched ${applications.length} applications`);
             // Check if applications were found
             if (!applications || applications.length === 0) {
@@ -127,10 +111,14 @@ export class DashboardService {
                         this.loggerService.log(`Got site details for application ID: ${app.applicationid}, siteId: ${app.siteid}`);
                         const siteDetails = site?.findSiteBySiteId?.data;
                         if (siteDetails) {
-                            siteAddress = `${siteDetails?.addrLine_1 ?? ''}
-                                        ${siteDetails?.addrLine_2 ?? ''}
-                                        ${siteDetails?.addrLine_3 ?? ''}
-                                        ${siteDetails?.addrLine_4 ?? ''}`;
+                           siteAddress = [
+                                            siteDetails?.addrLine_1,
+                                            siteDetails?.addrLine_2,
+                                            siteDetails?.addrLine_3,
+                                            siteDetails?.addrLine_4,
+                                            ]
+                                            .filter(line => !!line?.trim())
+                                            .join(' ');
                         }
                     }
                     return {

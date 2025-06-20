@@ -16,9 +16,11 @@ export const actionRequiredColumns: TableColumn[] = [
       customInputTextCss: 'custom-dashboard-input-txt',
       tableMode: true,
       href: '/applications/',
+      componentName: 'Dashboard',
     },
     columnSize: ColumnSize.Default,
     dynamicColumn: true,
+    customHeaderCss: 'custom-dashboard-header',
   },
   {
     id: 2,
@@ -45,6 +47,7 @@ export const actionRequiredColumns: TableColumn[] = [
     },
     columnSize: ColumnSize.Small,
     dynamicColumn: true,
+    customHeaderCss: 'custom-dashboard-header',
   },
   {
     id: 3,
@@ -61,6 +64,7 @@ export const actionRequiredColumns: TableColumn[] = [
     },
     columnSize: ColumnSize.Default,
     dynamicColumn: true,
+    customHeaderCss: 'custom-dashboard-header',
   },
   {
     id: 4,
@@ -77,6 +81,7 @@ export const actionRequiredColumns: TableColumn[] = [
     },
     columnSize: ColumnSize.Default,
     dynamicColumn: true,
+    customHeaderCss: 'custom-dashboard-header',
   },
   {
     id: 5,
@@ -96,6 +101,7 @@ export const actionRequiredColumns: TableColumn[] = [
     },
     columnSize: ColumnSize.Small,
     dynamicColumn: true,
+    customHeaderCss: 'custom-dashboard-header',
   },
   {
     id: 6,
@@ -112,6 +118,7 @@ export const actionRequiredColumns: TableColumn[] = [
     },
     columnSize: ColumnSize.Default,
     dynamicColumn: true,
+    customHeaderCss: 'custom-dashboard-header',
   },
   {
     id: 7,
@@ -128,6 +135,7 @@ export const actionRequiredColumns: TableColumn[] = [
     },
     columnSize: ColumnSize.XtraSmall,
     dynamicColumn: true,
+    customHeaderCss: 'custom-dashboard-header',
   },
   {
     id: 8,
@@ -145,6 +153,7 @@ export const actionRequiredColumns: TableColumn[] = [
       href: '/applications/',
       customIcon: <FileLinesIcon />,
       customContainerCss: 'custom-dashboard-column-position',
+      componentName: 'Dashboard',
     },
     columnSize: ColumnSize.Small,
     dynamicColumn: true,

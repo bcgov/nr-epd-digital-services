@@ -262,7 +262,7 @@ a.custom-dashboard-input-txt {
   min-width: 100px;
 }
 
-@media (max-width: 900px){
+@media (max-width: 1280px){
   .custom-dashboard-column-position {
     position: sticky;
     right: 0;
