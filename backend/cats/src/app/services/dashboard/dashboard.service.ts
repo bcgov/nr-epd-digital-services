@@ -85,8 +85,8 @@ export class DashboardService {
                                             AND applicationStatus != 'Closed'
                                         ORDER BY 
                                             priorityDisplayOrder DESC NULLS LAST,
-                                            receivedDate ASC
-                                            statusDisplayOrder DESC NULLS LAST,
+                                            receivedDate ASC,
+                                            statusDisplayOrder DESC NULLS LAST
                                             LIMIT 5;
                                             `);
                                             
