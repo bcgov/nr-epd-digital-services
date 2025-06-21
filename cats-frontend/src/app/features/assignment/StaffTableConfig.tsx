@@ -174,7 +174,7 @@ export const GetConfig = () => {
         customLabelCss: '',
         customInputTextCss: 'primary-icon-button',
         value: 'Remove',
-        customContainerCss: 'custom-assignment-column-position',
+        customContainerCss:'custom-assignment-column-position',
       },
       columnSize: ColumnSize.XtraSmall,
       customHeaderCss: 'custom-assignment-column-position',

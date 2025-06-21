@@ -7,6 +7,8 @@ import { useGetApplicationsQuery, useGetRecentViewedApplicationsQuery } from './
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/button/Button';
 import { FileCirclePlusIcon } from '../../components/common/icon';
+import { Button } from '../../components/button/Button';
+import { FileCirclePlusIcon } from '../../components/common/icon';
 import { actionRequiredColumns } from './DashboardConfig';
 import { DashboardWidgetProps } from './IDashboard';
 
@@ -99,37 +101,7 @@ export const DashboardActionRequiredWidget: React.FC<DashboardWidgetProps> = ({
  * The main dashboard component.
  * @return {JSX.Element} The dashboard page content.
  */
-}) => {
-  return (
-    <Widget
-      // Set the title for the widget
-      title={title}
-      // Set the columns for the table
-      tableColumns={columns || []}
-      // Set the loading state for the table
-      tableIsLoading={loading}
-      // Set the data for the table
-      tableData={data}
-      // Hide the table
-      hideTable={false}
-      // Set a custom CSS class for the label container
-      widgetLabelContainerCss={'custom-dashboard-widget-lbl'}
-      // Set a custom filter for the widget
-      filter={<div className="d-flex justify-content-end">
-        <Link to="/applications" className="dashboard-view-all-link">
-          View All
-        </Link>
-      </div>}
-    />
-  );
-}
-
-/**
- * The main dashboard component.
- * @return {JSX.Element} The dashboard page content.
- */
 const Dashboard = () => {
-  const navigate = useNavigate();
   const navigate = useNavigate();
   const loggedInUser = getUser();
   const [name, setName] = useState('');
@@ -150,24 +122,7 @@ const Dashboard = () => {
     fetchPolicy: 'network-only', // <-- Force server fetch on each mount
   });
 
-  /**
-   * Fetch the recent viewed applications.
-   * Using the `network-only` fetch policy to force a server fetch on each mount.
-   */
-  const { data: recentViewedData, loading: recentViewedLoading } = useGetRecentViewedApplicationsQuery({
-    fetchPolicy: 'network-only', // <-- Force server fetch on each mount
-  });
-
-  /**
-   * Fetch the action required applications.
-   * Using the `network-only` fetch policy to force a server fetch on each mount.
-   */
-  const { data: actionRequiredData, loading: actionRequiredLoading } = useGetApplicationsQuery({
-    fetchPolicy: 'network-only', // <-- Force server fetch on each mount
-  });
-
   useEffect(() => {
-    // Set the user's name
     // Set the user's name
     loggedInUser
       ? setName(', ' + loggedInUser?.profile.given_name + ' ')

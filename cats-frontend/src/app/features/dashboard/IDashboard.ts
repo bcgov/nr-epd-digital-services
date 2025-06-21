@@ -1,5 +1,5 @@
-import { TableColumn } from '@cats/components/table/TableColumn';
-import { RequestStatus } from '@cats/helpers/requests/status';
+import { TableColumn } from "@cats/components/table/TableColumn";
+import { RequestStatus } from "@cats/helpers/requests/status";
 
 /**
  * Interface for the properties of a dashboard widget.

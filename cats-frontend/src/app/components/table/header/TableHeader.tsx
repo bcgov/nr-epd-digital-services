@@ -34,7 +34,10 @@ const TableHeader: FC<TableHeaderProps> = ({
   return (
     <tr>
       {allowRowsSelect && (
-        <th scope="col" className={`checkbox-column`}>
+        <th
+          scope="col"
+          className={`checkbox-column`}
+        >
           <input
             type="checkbox"
             className="checkbox-color"

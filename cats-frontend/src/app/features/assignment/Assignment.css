@@ -43,12 +43,12 @@
 }
 
 @media (max-width: 900px) {
-  .custom-assignment-column-position {
-    position: sticky;
-    right: 0;
-    z-index: 1;
-    box-shadow:
-      -3px 0 3px 0 #00000021,
-      -0.6px 0 1.8px 0 #0000001a !important;
+   .custom-assignment-column-position {
+      position: sticky;
+      right: 0;
+      z-index: 1;
+      box-shadow:
+        -3px 0 3px 0 #00000021,
+        -0.6px 0 1.8px 0 #0000001A !important;
   }
 }

@@ -217,7 +217,7 @@ const TableBody: FC<TableBodyProps> = ({
           isLoading={field.isLoading}
           customInfoMessage={field.customInfoMessage}
           customMenuMessage={field.customMenuMessage}
-          customContainerCss={field.customContainerCss}
+          customContainerCss= {field.customContainerCss}
         />
       );
     } else if (field.type === FormFieldType.Label) {

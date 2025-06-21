@@ -27,7 +27,7 @@ export const actionRequiredColumns: TableColumn[] = [
     displayName: 'Site ID',
     active: true,
     graphQLPropertyName: 'siteId',
-    displayType: { type: FormFieldType.Label },
+    displayType: {type: FormFieldType.Label},
     renderCell: (value: any) => {
       return (
         <div className="custom-dashboard-link-wrapper">
@@ -39,7 +39,7 @@ export const actionRequiredColumns: TableColumn[] = [
           >
             {value}
             <span className="ps-2 custom-dashboard-external-link">
-              <ExternalLink />
+              <ExternalLink/>
             </span>
           </a>
         </div>
@@ -157,7 +157,6 @@ export const actionRequiredColumns: TableColumn[] = [
     },
     columnSize: ColumnSize.Small,
     dynamicColumn: true,
-    customHeaderCss:
-      'custom-dashboard-tbl-header custom-dashboard-column-position',
+    customHeaderCss: 'custom-dashboard-tbl-header custom-dashboard-column-position',
   },
 ];
