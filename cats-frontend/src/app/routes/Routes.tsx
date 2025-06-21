@@ -9,9 +9,6 @@ import ApplicationDetails from '../features/applications/application/Application
 import ApplicationSearch from '../features/applications/search/Search';
 import StaffDashboard from '../features/staff/Staff';
 import ProtectedRoute from './ProtectedRoute';
-import { AuthProvider } from 'react-oidc-context';
-import { getClientSettings } from '@cats/auth/UserManagerSetting';
-import { UserManagerSettings } from 'oidc-client-ts';
 import CreateInvoice from '../features/applications/application/applicationTabs/appInvoices/components/create/CreateInvoice';
 import Dashboard from '@cats/features/dashboard/Dashboard';
 import ViewInvoice from '../features/applications/application/applicationTabs/appInvoices/components/view/ViewInvoice';
