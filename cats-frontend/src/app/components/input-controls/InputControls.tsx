@@ -88,7 +88,6 @@ export const IconButton: React.FC<InputProps> = ({
   customIcon,
   onChange,
   customContainerCss,
-
 }) => {
   return renderTableCell(
     <div onClick={onChange} className={`${customInputTextCss ?? ''}`}>
@@ -115,15 +114,12 @@ export const Icon: React.FC<InputProps> = ({
   }
 };
 
-export const DeleteIcon: React.FC<InputProps> = ({
-  label,
-  onChange,
-}) => {
+export const DeleteIcon: React.FC<InputProps> = ({ label, onChange }) => {
   return renderTableCell(
     <div onClick={onChange}>
       <TrashCanIcon title="Remove" />
       <span aria-label={label}>&nbsp;Remove</span>
-    </div>
+    </div>,
   );
 };
 
