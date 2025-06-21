@@ -40,7 +40,7 @@ export const StaffColumns: TableColumn[] = [
       customInputTextCss: 'custom-staff-edit-lbl',
       tableMode: true,
     },
-     
+
     renderCell: (value: any, row: any) => {
       let variant = 'success';
       let Icon;

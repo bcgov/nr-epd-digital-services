@@ -3,7 +3,10 @@ import './Dashboard.css';
 import PageContainer from '../../components/simple/PageContainer';
 import Widget from '../../components/widget/Widget';
 import { getUser } from '../../helpers/utility';
-import { useGetApplicationsQuery, useGetRecentViewedApplicationsQuery } from './graphql/dashboard.generated';
+import {
+  useGetApplicationsQuery,
+  useGetRecentViewedApplicationsQuery,
+} from './graphql/dashboard.generated';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/button/Button';
 import { FileCirclePlusIcon } from '../../components/common/icon';
@@ -22,7 +25,7 @@ export const DashboardCardsWidget: React.FC<DashboardWidgetProps> = ({
   onButtonClick,
 }) => {
   return (
-    <Widget 
+    <Widget
       // Hide the table
       hideTable={true}
       // Set the title
@@ -31,34 +34,42 @@ export const DashboardCardsWidget: React.FC<DashboardWidgetProps> = ({
       widgetLabelContainerCss={'custom-dashboard-widget-lbl'}
     >
       {/* If there are applications, render them as cards */}
-      {
-        data && data.length > 0 ? (
-          <div className="dashboard-card-container">
-            {data?.map((application: any, index: number) => (
-              <div key={index} className="dashboard-card" onClick={() => onButtonClick?.(application)}>
-                {/* Application type */}
-                <div className="dashboard-card-title">{application?.applicationType?.trim() || ''}</div>
-                {/* Application ID */}
-                <div className="dashboard-card-id">{application?.siteId || ''}</div>
-                {/* Application address */}
-                <div className="dashboard-card-address">{application?.address?.trim() || ''}</div>
+      {data && data.length > 0 ? (
+        <div className="dashboard-card-container">
+          {data?.map((application: any, index: number) => (
+            <div
+              key={index}
+              className="dashboard-card"
+              onClick={() => onButtonClick?.(application)}
+            >
+              {/* Application type */}
+              <div className="dashboard-card-title">
+                {application?.applicationType?.trim() || ''}
               </div>
-            ))}
-          </div>
-        ) : (
-          /* If there are no applications, display a message */
-          <div className="dashboard-error-container">
-            <div className="dashboard-error-message">
-              <p className="dashboard-error-details">
-                No recent applications visited by user.
-              </p>
+              {/* Application ID */}
+              <div className="dashboard-card-id">
+                {application?.siteId || ''}
+              </div>
+              {/* Application address */}
+              <div className="dashboard-card-address">
+                {application?.address?.trim() || ''}
+              </div>
             </div>
+          ))}
+        </div>
+      ) : (
+        /* If there are no applications, display a message */
+        <div className="dashboard-error-container">
+          <div className="dashboard-error-message">
+            <p className="dashboard-error-details">
+              No recent applications visited by user.
+            </p>
           </div>
-        )
-      }
+        </div>
+      )}
     </Widget>
-  )
-}
+  );
+};
 
 /**
  * A widget that displays a table with action required applications.
@@ -86,14 +97,16 @@ export const DashboardActionRequiredWidget: React.FC<DashboardWidgetProps> = ({
       // Set a custom CSS class for the label container
       widgetLabelContainerCss={'custom-dashboard-widget-lbl'}
       // Set a custom filter for the widget
-      filter={<div className="d-flex justify-content-end">
-        <Link to="/applications" className="dashboard-view-all-link">
-          View All
-        </Link>
-      </div>}
+      filter={
+        <div className="d-flex justify-content-end">
+          <Link to="/applications" className="dashboard-view-all-link">
+            View All
+          </Link>
+        </div>
+      }
     />
   );
-}
+};
 
 /**
  * The main dashboard component.
@@ -108,17 +121,19 @@ const Dashboard = () => {
    * Fetch the recent viewed applications.
    * Using the `network-only` fetch policy to force a server fetch on each mount.
    */
-  const { data: recentViewedData, loading: recentViewedLoading } = useGetRecentViewedApplicationsQuery({
-    fetchPolicy: 'network-only', // <-- Force server fetch on each mount
-  });
+  const { data: recentViewedData, loading: recentViewedLoading } =
+    useGetRecentViewedApplicationsQuery({
+      fetchPolicy: 'network-only', // <-- Force server fetch on each mount
+    });
 
   /**
    * Fetch the action required applications.
    * Using the `network-only` fetch policy to force a server fetch on each mount.
    */
-  const { data: actionRequiredData, loading: actionRequiredLoading } = useGetApplicationsQuery({
-    fetchPolicy: 'network-only', // <-- Force server fetch on each mount
-  });
+  const { data: actionRequiredData, loading: actionRequiredLoading } =
+    useGetApplicationsQuery({
+      fetchPolicy: 'network-only', // <-- Force server fetch on each mount
+    });
 
   useEffect(() => {
     // Set the user's name
@@ -154,9 +169,21 @@ const Dashboard = () => {
         <span className="dashboard-btn-text">New Application</span>
       </Button>
       {/* Display the recent viewed applications widget */}
-      {!recentViewedLoading && <DashboardCardsWidget data={recentViewedData?.getRecentViewedApplications?.data || []} onButtonClick={handleRecentViewClick} title={'Recent'} />}
+      {!recentViewedLoading && (
+        <DashboardCardsWidget
+          data={recentViewedData?.getRecentViewedApplications?.data || []}
+          onButtonClick={handleRecentViewClick}
+          title={'Recent'}
+        />
+      )}
       {/* Display the action required applications widget */}
-      {!actionRequiredLoading && <DashboardActionRequiredWidget data={actionRequiredData?.getApplications?.data || []} title={'Action Required'} columns={actionRequiredColumns} />}
+      {!actionRequiredLoading && (
+        <DashboardActionRequiredWidget
+          data={actionRequiredData?.getApplications?.data || []}
+          title={'Action Required'}
+          columns={actionRequiredColumns}
+        />
+      )}
     </PageContainer>
   );
 };

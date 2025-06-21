@@ -108,14 +108,14 @@ div.tableWidth::-webkit-scrollbar-track {
 table {
   border-collapse: separate;
   border-spacing: 0;
-  border: 1px solid #D8D8D8 !important;
+  border: 1px solid #d8d8d8 !important;
   border-radius: 4px 4px 0px 0px;
   white-space: nowrap;
 }
 
-thead th  {
+thead th {
   border-top: none !important;
-  border-right: 1px solid #D8D8D8 !important;
+  border-right: 1px solid #d8d8d8 !important;
   height: 40px;
   margin-bottom: 10px;
   border-bottom: 1px solid var(--surface-color-border-medium, #898785) !important;
@@ -136,19 +136,20 @@ thead th:first-child {
   border-radius: 4px 0px 0px 0px;
 }
 
-th, td {
- border: none !important;
+th,
+td {
+  border: none !important;
 }
 
 tbody td:last-child {
- border-right: none !important;
+  border-right: none !important;
 }
 
 tbody tr:last-child td {
- border-bottom: none !important;
+  border-bottom: none !important;
 }
 
 tbody td {
- border-bottom: 1px solid var(--surface-color-border-default, #D8D8D8) !important;
- border-right: 1px solid var(--surface-color-border-default, #D8D8D8) !important;
+  border-bottom: 1px solid var(--surface-color-border-default, #d8d8d8) !important;
+  border-right: 1px solid var(--surface-color-border-default, #d8d8d8) !important;
 }

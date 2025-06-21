@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import { Button } from '../../components/button/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {
-  staffApplicationsColumns,
-  StaffColumns,
-} from './StaffConfig';
+import { staffApplicationsColumns, StaffColumns } from './StaffConfig';
 import {
   useGetApplicationsByStaffQuery,
   useGetRolesQuery,

@@ -2,7 +2,10 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { MockedProvider } from '@apollo/client/testing';
 import Dashboard, { DashboardCardsWidget } from './Dashboard';
-import { GetRecentViewedApplicationsDocument, GetApplicationsDocument } from './graphql/dashboard.generated';
+import {
+  GetRecentViewedApplicationsDocument,
+  GetApplicationsDocument,
+} from './graphql/dashboard.generated';
 import { vi } from 'vitest';
 import { getUser, parseLocalDate } from '../../helpers/utility';
 
@@ -48,7 +51,7 @@ const mockApplications = [
     siteId: 202,
     address: 'Test Street 1',
     applicationType: 'Application',
-    applicationStatus: 'Rejected', 
+    applicationStatus: 'Rejected',
     priority: 'High',
     receivedDate: '2024-05-01',
   },
@@ -315,7 +318,7 @@ describe('Dashboard Component', () => {
         <MockedProvider mocks={mocks} addTypename={false}>
           <Dashboard />
         </MockedProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await screen.findByText('Rejected');
@@ -348,12 +351,13 @@ describe('Dashboard Component', () => {
         <MockedProvider mocks={emptyMocks} addTypename={false}>
           <Dashboard />
         </MockedProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await waitFor(() => {
       expect(
-        screen.queryByText(/No data/i) || screen.queryByText(/No recent applications/i)
+        screen.queryByText(/No data/i) ||
+          screen.queryByText(/No recent applications/i),
       ).toBeInTheDocument();
     });
   });
@@ -385,14 +389,14 @@ describe('Dashboard Component', () => {
         <MockedProvider mocks={slowMocks} addTypename={false}>
           <Dashboard />
         </MockedProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(screen.getByText(/Welcome/i)).toBeInTheDocument();
   });
 
   it('renders gracefully when action required data has nulls', async () => {
-     const malformedMocks = [
+    const malformedMocks = [
       {
         request: {
           query: GetApplicationsDocument,
@@ -412,7 +416,7 @@ describe('Dashboard Component', () => {
                   applicationType: null,
                   applicationStatus: null,
                   receivedDate: null,
-                  priority: null
+                  priority: null,
                 },
               ],
             },
@@ -425,12 +429,11 @@ describe('Dashboard Component', () => {
         <MockedProvider mocks={malformedMocks} addTypename={false}>
           <Dashboard />
         </MockedProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await waitFor(() => {
       expect(screen.getByText('Action Required')).toBeInTheDocument();
     });
   });
-
 });

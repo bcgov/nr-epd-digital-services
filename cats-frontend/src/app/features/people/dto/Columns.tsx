@@ -138,7 +138,6 @@ const getIconColumnType = (
   };
 };
 
-
 export { getPeopleSearchResultsColumns };
 
 export const B: any = 1;
