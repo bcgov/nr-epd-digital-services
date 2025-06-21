@@ -7,8 +7,6 @@ import { useGetApplicationsQuery, useGetRecentViewedApplicationsQuery } from './
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/button/Button';
 import { FileCirclePlusIcon } from '../../components/common/icon';
-import { Button } from '../../components/button/Button';
-import { FileCirclePlusIcon } from '../../components/common/icon';
 import { actionRequiredColumns } from './DashboardConfig';
 import { DashboardWidgetProps } from './IDashboard';
 
