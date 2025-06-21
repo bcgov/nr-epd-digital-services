@@ -8,6 +8,7 @@ import Person from '../features/people/person/Person';
 import ApplicationDetails from '../features/applications/application/ApplicationDetails';
 import ApplicationSearch from '../features/applications/search/Search';
 import StaffDashboard from '../features/staff/Staff';
+import StaffDashboard from '../features/staff/Staff';
 import ProtectedRoute from './ProtectedRoute';
 import { AuthProvider } from 'react-oidc-context';
 import { getClientSettings } from '@cats/auth/UserManagerSetting';
@@ -19,6 +20,7 @@ import ViewInvoice from '../features/applications/application/applicationTabs/ap
 const roleBasedRoutes: any = {
   [UserRoleType.INTERNAL]: [
     { path: '/', element: <Search /> },
+    { path: '/dashboard', element: <Dashboard /> },
     { path: '/dashboard', element: <Dashboard /> },
     { path: '/people', element: <Search /> },
     { path: '/person/:id', element: <Person /> },
