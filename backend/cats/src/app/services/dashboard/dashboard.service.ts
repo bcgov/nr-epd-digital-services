@@ -4,7 +4,7 @@ import { LoggerService } from "../../logger/logger.service";
 import { DataSource, Repository } from "typeorm";
 import { SiteService } from "../site/site.service";
 import { Application } from "../../entities/application.entity";
-import { RecentViewedApplication } from "../../entities/temp.rename.entity";
+import { RecentViewedApplication } from "../../entities/recentViewedApplication.entity";
 
 @Injectable()
 export class DashboardService {

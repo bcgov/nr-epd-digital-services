@@ -5,7 +5,7 @@ import { LoggerService } from '../../logger/logger.service';
 import { SiteService } from '../site/site.service';
 import { Application } from '../../entities/application.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { RecentViewedApplication } from '../../entities/temp.rename.entity';
+import { RecentViewedApplication } from '../../entities/recentViewedApplication.entity';
 
 describe('DashboardService', () => {
   let dashboardService: DashboardService;
