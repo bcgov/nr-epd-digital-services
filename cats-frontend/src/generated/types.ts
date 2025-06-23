@@ -202,6 +202,15 @@ export type CreatePersonNote = {
   personId: Scalars['Float']['input'];
 };
 
+export type DashboardResponse = {
+  __typename?: 'DashboardResponse';
+  data?: Maybe<Array<RecentViewedApplication>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type DeletePersonNote = {
   id: Scalars['String']['input'];
 };
@@ -566,6 +575,7 @@ export type Query = {
   getParticipantNames: DropdownResponse;
   getPermissions: PermissionsResponse;
   getPersonNotesByPersonId: PersonNoteResponse;
+  getRecentViewedApplications: DashboardResponse;
   getSiteDetailsBySiteId: SiteDetailsResponse;
   getStaffAssignedByAppId: ViewStaffAssignedResponse;
   getStaffs: StaffResponse;
@@ -687,6 +697,15 @@ export type QuerySearchPersonArgs = {
   page: Scalars['Int']['input'];
   pageSize: Scalars['Int']['input'];
   searchParam: Scalars['String']['input'];
+};
+
+export type RecentViewedApplication = {
+  __typename?: 'RecentViewedApplication';
+  address: Scalars['String']['output'];
+  applicationId: Scalars['Float']['output'];
+  applicationType: Scalars['String']['output'];
+  siteId: Scalars['Float']['output'];
+  userId: Scalars['String']['output'];
 };
 
 export type ResponseDto = {

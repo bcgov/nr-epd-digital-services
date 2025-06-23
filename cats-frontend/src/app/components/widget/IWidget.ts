@@ -27,4 +27,5 @@ export interface IWidget {
   resultsPerPage?: number;
   totalResults?: number;
   filter?: React.ReactNode;
+  widgeLabelContainerCss?: string;
 }

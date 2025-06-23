@@ -6,12 +6,9 @@ import { useAuth } from 'react-oidc-context';
 import Avatar from '../avatar/Avatar';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../Store';
-import { fetchRecentViews } from '../../features/dashboard/DashboardSlice';
 
 const UserAccount = (props: any) => {
-  const dispatch = useDispatch<AppDispatch>();
   const auth = useAuth();
-  // Sample user data
   const userObj = {
     firstname: auth.user?.profile.given_name,
     lastName: auth.user?.profile.family_name,
@@ -25,7 +22,6 @@ const UserAccount = (props: any) => {
   };
 
   useEffect(() => {
-    dispatch(fetchRecentViews(auth.user?.profile.preferred_username ?? ''));
     setUser({
       firstname: auth.user?.profile.given_name,
       lastName: auth.user?.profile.family_name,
