@@ -1,11 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { RecentViewedApplication } from "../../entities/RecentViewedApplication.entity";
 import { LoggerService } from "../../logger/logger.service";
 import { DataSource, Repository } from "typeorm";
 import { SiteService } from "../site/site.service";
 import { Application } from "../../entities/application.entity";
-import { ApplicationSearchResult } from "src/app/dto/response/applicationSearchResponse";
+import { RecentViewedApplication } from "../../entities/recentViewedApplication.entity";
 
 @Injectable()
 export class DashboardService {
