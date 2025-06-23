@@ -89,7 +89,7 @@ import { TimesheetDayService } from './services/timesheetDay.service';
 import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
 import { DashboardService } from './services/dashboard/dashboard.service';
 import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
-import { RecentViewedApplication } from './entities/recentViewedApplication.entity';
+import { RecentViewedApplication } from './entities/temp.rename.entity';
 
 /**
  * Module for wrapping all functionalities in user microserivce

@@ -30,7 +30,7 @@ import { HousingApplicationXref } from './housingApplicationXref.entity';
 import { Invoice } from './invoice.entity';
 import { Timesheet } from './timesheet.entity';
 import { ApplicationServiceType } from './applicationServiceType.entity';
-import { RecentViewedApplication } from './recentViewedApplication.entity';
+import { RecentViewedApplication } from './temp.rename.entity';
 
 @Index('idx_application_app_type_id', ['appTypeId'], {})
 @Index('pk_application', ['id'], { unique: true })

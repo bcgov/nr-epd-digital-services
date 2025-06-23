@@ -3,7 +3,7 @@ import { DashboardResolver } from './dashboard.resolver';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
 import { LoggerService } from '../../logger/logger.service';
 import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
-import { RecentViewedApplication } from '../../entities/recentViewedApplication.entity';
+import { RecentViewedApplication } from '../../entities/temp.rename.entity';
 import { HttpStatus } from '@nestjs/common';
 import { Application } from '../../entities/application.entity';
 import { ViewDashboard } from '../../dto/dashboard/viewDashboard.dto';
