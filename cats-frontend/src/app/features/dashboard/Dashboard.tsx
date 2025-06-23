@@ -166,7 +166,7 @@ const Dashboard = () => {
         <span className="dashboard-btn-icon">
           <FileCirclePlusIcon />
         </span>
-        <span className="dashboard-btn-text">Create a New Site ID</span>
+        <span className="dashboard-btn-text">Create New Site</span>
       </Button>
       {/* Display the recent viewed applications widget */}
       {!recentViewedLoading && (
