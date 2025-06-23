@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { RecentViewedApplication } from "../../entities/recentViewedApplication.entity";
+import { RecentViewedApplication } from "../../entities/RecentViewedApplication.entity";
 import { LoggerService } from "../../logger/logger.service";
 import { DataSource, Repository } from "typeorm";
 import { SiteService } from "../site/site.service";
