@@ -8,44 +8,32 @@ const serviceTypeJSON = require('./applicationServiceType.json');
 
 export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
   try {
-    // await manager.update(
-    //   ParticipantRole,
-    //   { abbrev: 'CSWKR' },
-    //   { roleType: 'STAFF' },
-    // );
+    const mentorResult = await manager.findOne(ParticipantRole, {
+      where: { abbrev: 'MENTOR' },
+    });
 
-    // await manager.update(
-    //   ParticipantRole,
-    //   { abbrev: 'SDM' },
-    //   { roleType: 'STAFF' },
-    // );
-
-    // const mentorResult = await manager.findOne(ParticipantRole, {
-    //   where: { abbrev: 'MENTOR' },
-    // });
-
-    // if (!mentorResult) {
-    //   const participantRole = new ParticipantRole();
-    //   participantRole.abbrev = 'MENTOR';
-    //   participantRole.description = 'Mentor';
-    //   participantRole.isMinistry = true;
-    //   participantRole.isActive = true;
-    //   participantRole.displayOrder = 7;
-    //   participantRole.rowVersionCount = 0;
-    //   participantRole.createdBy = 'sysadmin';
-    //   participantRole.createdDateTime = new Date();
-    //   participantRole.updatedBy = 'sysadmin';
-    //   participantRole.updatedDateTime = new Date();
-    //   participantRole.ts = Buffer.from('');
-    //   participantRole.roleType = 'STAFF';
-    //   await manager.save(participantRole);
-    // } else {
-    //   await manager.update(
-    //     ParticipantRole,
-    //     { abbrev: 'MENTOR' },
-    //     { roleType: 'STAFF' },
-    //   );
-    // }
+    if (!mentorResult) {
+      const participantRole = new ParticipantRole();
+      participantRole.abbrev = 'MENTOR';
+      participantRole.description = 'Mentor';
+      participantRole.isMinistry = true;
+      participantRole.isActive = true;
+      participantRole.displayOrder = 7;
+      participantRole.rowVersionCount = 0;
+      participantRole.createdBy = 'sysadmin';
+      participantRole.createdDateTime = new Date();
+      participantRole.updatedBy = 'sysadmin';
+      participantRole.updatedDateTime = new Date();
+      participantRole.ts = Buffer.from('');
+      participantRole.roleType = 'STAFF';
+      await manager.save(participantRole);
+    } else {
+      await manager.update(
+        ParticipantRole,
+        { abbrev: 'MENTOR' },
+        { roleType: 'STAFF' },
+      );
+    }
 
     const caseWorkerRole = await manager.findOne(ParticipantRole, {
       where: { abbrev: 'CSWKR' },

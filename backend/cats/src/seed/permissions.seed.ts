@@ -91,11 +91,24 @@ export const PermissionsSeeder = async (manager: EntityManager) => {
               permissionServiceTypeMapping.serviceTypeId = parseInt(
                 serviceTypeItem.id,
               );
+
               permissionServiceTypeMapping.permissionId = permission.id;
-              await manager.save(
+
+              let existingServiceTypeItem = await manager.findOne(
                 PermissionServiceType,
-                permissionServiceTypeMapping,
+                {
+                  where: {
+                    serviceTypeId: permissionServiceTypeMapping.serviceTypeId,
+                    permissionId: permissionServiceTypeMapping.permissionId,
+                  },
+                },
               );
+              if (!existingServiceTypeItem) {
+                await manager.save(
+                  PermissionServiceType,
+                  permissionServiceTypeMapping,
+                );
+              }
             }
           }
         }
