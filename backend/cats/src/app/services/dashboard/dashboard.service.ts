@@ -53,6 +53,7 @@ export class DashboardService {
                                                 app.received_date AS receivedDate,
                                                 priority.abbrev AS priority,
                                                 priority.display_order AS priorityDisplayOrder,
+                                                app_status.is_current as currentStatus,
                                                 ROW_NUMBER() OVER (
                                                     PARTITION BY app.id
                                                     ORDER BY 
@@ -64,11 +65,11 @@ export class DashboardService {
                                             LEFT JOIN cats.app_priority app_priority 
                                                 ON app_priority.application_id = app.id
                                             LEFT JOIN cats.priority priority 
-                                                ON priority.id = app_priority.priority_id AND priority.is_active = TRUE
+                                                ON priority.id = app_priority.priority_id
                                             INNER JOIN cats.app_status app_status 
                                                 ON app_status.application_id = app.id
                                             INNER JOIN cats.status_type status_type 
-                                                ON status_type.id = app_status.status_type_id AND status_type.is_active = TRUE
+                                                ON status_type.id = app_status.status_type_id
                                             LEFT JOIN cats.app_type app_type 
                                                 ON app_type.id = app.app_type_id
                                         )
@@ -78,10 +79,11 @@ export class DashboardService {
                                             applicationType,
                                             applicationStatus,
                                             receivedDate,
-                                            priority
+                                            priority,
+                                            currentStatus
                                         FROM ranked_apps
                                         WHERE rn = 1 
-                                            AND applicationStatus != 'Closed'
+                                            AND applicationStatus != 'Closed'  AND currentStatus = true
                                         ORDER BY 
                                             priorityDisplayOrder DESC NULLS LAST,
                                             receivedDate ASC,
