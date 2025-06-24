@@ -597,6 +597,11 @@ export type QueryGetAllActiveStaffMembersForApplicationServiceTypeArgs = {
 };
 
 
+export type QueryGetAllActiveStaffMembersForApplicationServiceTypeArgs = {
+  applicationServiceTypeId: Scalars['Int']['input'];
+};
+
+
 export type QueryGetAppParticipantsByAppIdArgs = {
   applicationId: Scalars['Int']['input'];
   filter?: InputMaybe<AppParticipantFilter>;
