@@ -6,6 +6,8 @@ import { Application } from '../../entities/application.entity';
 import { AppTypeService } from '../appType/appType.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { UserTypeEum } from '../../utilities/enums/userType';
+import { DashboardService } from '../dashboard/dashboard.service';
 import { AppStatus } from '../../entities/appStatus.entity';
 import { StatusTypeService } from '../statusType/statusType.service';
 
@@ -15,6 +17,7 @@ describe('ApplicationService', () => {
   let appStatusRepository: Repository<AppStatus>;
   let loggerService: LoggerService;
   let appTypeService: AppTypeService;
+  let dashboardService: DashboardService;
   let statusTypeService: StatusTypeService;
 
   beforeEach(async () => {
@@ -56,6 +59,12 @@ describe('ApplicationService', () => {
             error: jest.fn(),
           },
         },
+        {
+          provide: DashboardService,
+          useValue: {
+            createRecentViewedApplication: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -65,6 +74,7 @@ describe('ApplicationService', () => {
     applicationRepository = module.get<Repository<Application>>(getRepositoryToken(Application));
     appStatusRepository = module.get<Repository<AppStatus>>(getRepositoryToken(AppStatus));
     loggerService = module.get<LoggerService>(LoggerService);
+    dashboardService = module.get<DashboardService>(DashboardService);
   });
 
 
@@ -170,8 +180,8 @@ describe('ApplicationService', () => {
       applicationRepository.findOne = jest
         .fn()
         .mockResolvedValue(mockApplication);
-
-      const result = await applicationService.findApplicationDetailsById(1);
+      const user = { givenName: 'John', identity_provider: UserTypeEum.IDIR };
+      const result = await applicationService.findApplicationDetailsById(1, user);
 
       expect(applicationRepository.findOne).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -201,8 +211,8 @@ describe('ApplicationService', () => {
 
     it('should return null when application is not found', async () => {
       applicationRepository.findOne = jest.fn().mockResolvedValue(null);
-
-      const result = await applicationService.findApplicationDetailsById(999);
+      const user = { givenName: 'John', identity_provider: UserTypeEum.IDIR };
+      const result = await applicationService.findApplicationDetailsById(999, user);
 
       expect(applicationRepository.findOne).toHaveBeenCalled();
       expect(result).toBeNull();
@@ -211,9 +221,9 @@ describe('ApplicationService', () => {
     it('should handle errors and throw HttpException', async () => {
       const error = new Error('Database error');
       applicationRepository.findOne = jest.fn().mockRejectedValue(error);
-
+      const user = { givenName: 'John', identity_provider: UserTypeEum.IDIR };
       await expect(
-        applicationService.findApplicationDetailsById(1),
+        applicationService.findApplicationDetailsById(1, user),
       ).rejects.toThrow(
         new HttpException(
           'Failed to fetch application details',

@@ -87,6 +87,9 @@ import { StaffAssignmentResolver } from './resolvers/assignment/staffAssignment.
 import { TimesheetDay } from './entities/timesheetDay.entity';
 import { TimesheetDayService } from './services/timesheetDay.service';
 import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
+import { RecentViewedApplication } from './entities/RecentViewedApplication.entity';
+import { DashboardService } from './services/dashboard/dashboard.service';
+import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
 import { StatusTypeService } from './services/statusType/statusType.service';
 
 /**
@@ -147,7 +150,8 @@ import { StatusTypeService } from './services/statusType/statusType.service';
       InvoiceLineItem,
       ApplicationServiceType,
       Permissions,
-      PersonPermission
+      PersonPermission,
+      RecentViewedApplication
     ]),
     HttpModule,
   ],
@@ -185,6 +189,8 @@ import { StatusTypeService } from './services/statusType/statusType.service';
     PermissionsService,
     TimesheetDayService,
     TimesheetDayResolver,
+    DashboardService,
+    DashboardResolver
   ],
   controllers: [UserController],
 })

@@ -6,6 +6,7 @@ import { Application } from '../../entities/application.entity';
 import { CreateApplication } from '../../dto/application/createApplication.dto';
 import { ViewApplicationDetails } from '../../dto/application/viewApplicationDetails.dto';
 import { AppTypeService } from '../appType/appType.service';
+import { DashboardService } from '../dashboard/dashboard.service';
 import { UpdateApplication } from '../../dto/application/updateApplication.dto';
 import { AppStatus } from '../../entities/appStatus.entity';
 import { StatusTypeService } from '../statusType/statusType.service';
@@ -19,6 +20,7 @@ export class ApplicationService {
     private readonly appStatusRepository: Repository<AppStatus>,
     private readonly loggerService: LoggerService,
     private readonly appTypeService: AppTypeService,
+    private readonly dashboardService: DashboardService
     private readonly statusTypeService: StatusTypeService,
   ) { }
 
@@ -106,6 +108,7 @@ export class ApplicationService {
 
   async findApplicationDetailsById(
     id: number,
+    userInfo: any
   ): Promise<ViewApplicationDetails> {
     this.loggerService.log(
       'ApplicationService.findApplicationDetailsById() start',
@@ -160,6 +163,7 @@ export class ApplicationService {
         `Application details fetched successfully for ID: ${id}`,
       );
 
+      await this.dashboardService.createRecentViewedApplication(application, userInfo);
       return {
         id: application.id,
         siteId: application.siteId,

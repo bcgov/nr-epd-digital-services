@@ -53,6 +53,7 @@ export class InvoiceResolver {
       dueDate: invoice.dueDate,
       status: invoice.status,
       totalInCents: invoice.totalInCents,
+      notes: invoice.notes,
     }));
 
     response.httpStatusCode = 200;
@@ -99,6 +100,7 @@ export class InvoiceResolver {
       subtotalInCents: result.subtotalInCents,
       gstInCents: result.gstInCents,
       pstInCents: result.pstInCents,
+      notes: result.notes,
       createdAt: result.createdAt,
       updatedAt: result.updatedAt,
       createdBy: result.createdBy,
@@ -163,6 +165,7 @@ export class InvoiceResolver {
       subtotalInCents: result.subtotalInCents,
       gstInCents: result.gstInCents,
       pstInCents: result.pstInCents,
+      notes: result.notes,
       totalInCents: result.totalInCents,
       createdBy: result.createdBy,
       updatedBy: result.updatedBy,
@@ -247,6 +250,7 @@ export class InvoiceResolver {
       subtotalInCents: invoice.subtotalInCents,
       gstInCents: invoice.gstInCents,
       pstInCents: invoice.pstInCents,
+      notes: invoice.notes,
       createdAt: invoice.createdAt,
       updatedAt: invoice.updatedAt,
       createdBy: invoice.createdBy,

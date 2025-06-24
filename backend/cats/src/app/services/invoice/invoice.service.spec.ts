@@ -64,6 +64,7 @@ describe('InvoiceService', () => {
           gstInCents: 0,
           pstInCents: 0,
           totalInCents: 10000,
+          notes: 'Test invoice notes',
           createdBy: 'testUser',
           updatedBy: 'testUser',
           createdAt: new Date(),
@@ -136,6 +137,7 @@ describe('InvoiceService', () => {
         gstInCents: 0,
         pstInCents: 0,
         totalInCents: 10000,
+        notes: 'Invoice for services rendered',
         lineItems: [
           {
             ...mockLineItemData,
@@ -217,6 +219,7 @@ describe('InvoiceService', () => {
         gstInCents: 0,
         pstInCents: 0,
         totalInCents: 10000,
+        notes: 'Test invoice notes for error case',
         lineItems: [mockLineItemData],
       };
 
@@ -329,6 +332,7 @@ describe('InvoiceService', () => {
         gstInCents: 0,
         pstInCents: 0,
         totalInCents: 10000,
+        notes: 'Notes for invoice by ID test',
         createdBy: 'testUser',
         updatedBy: 'testUser',
         createdAt: new Date(),
