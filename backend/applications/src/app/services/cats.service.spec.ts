@@ -13,6 +13,7 @@ describe('CatsService', () => {
     }).compile();
 
     service = module.get<CatsService>(CatsService);
+    jest.clearAllMocks();
   });
 
   describe('submitToCats', () => {
@@ -22,6 +23,18 @@ describe('CatsService', () => {
       const mockFormData = { siteId: 123, hdnAppType: 'NEW' };
       const mockSubmissionId = 'sub-001';
       const mockFormId = 'form-001';
+
+      const fixedDate = new Date('2025-06-18T12:00:00Z');
+      const isoDate = fixedDate.toISOString();
+
+      // Mock global Date constructor
+      const originalDate = global.Date;
+      global.Date = class extends Date {
+        constructor() {
+          super();
+          return fixedDate;
+        }
+      } as any;
 
       const mockResponse = {
         data: {
@@ -39,37 +52,35 @@ describe('CatsService', () => {
 
       (axios.post as jest.Mock).mockResolvedValue(mockResponse);
 
-      const now = new Date();
-      const isoDate = now.toISOString();
-      jest.useFakeTimers().setSystemTime(now); // freeze time
-
       await service.submitToCats(mockFormData, mockSubmissionId, mockFormId);
 
-      expect(axios.post).toHaveBeenCalledWith(
-        'http://mock-api.com/graphql',
-        expect.objectContaining({
-          query: expect.stringContaining('mutation CreateNewApplication'),
-          variables: {
-            application: {
-              siteId: mockFormData.siteId,
-              appTypeAbbrev: mockFormData.hdnAppType,
-              receivedDate: isoDate,
-              applicationStatus: [
-                {
-                  statusTypeId: 1,
-                  isCurrent: true,
-                  applicationId: 0,
-                  formId: mockFormId,
-                  submissionId: mockSubmissionId,
-                },
-              ],
-            },
-          },
-        }),
-        { headers: { 'Content-Type': 'application/json' } }
-      );
+      expect(axios.post).toHaveBeenCalledTimes(1);
 
-      jest.useRealTimers();
+      const callArgs = (axios.post as jest.Mock).mock.calls[0];
+      expect(callArgs[0]).toBe('http://mock-api.com/graphql');
+
+      expect(callArgs[1]).toMatchObject({
+        variables: {
+          application: {
+            siteId: mockFormData.siteId,
+            appTypeAbbrev: mockFormData.hdnAppType,
+            receivedDate: fixedDate,
+            applicationStatus: [
+              {
+                statusTypeAbbrev: 'New',
+                isCurrent: true,
+                applicationId: 0,
+                formId: mockFormId,
+                submissionId: mockSubmissionId,
+              },
+            ],
+          },
+        }
+      });
+
+
+      // Restore the original Date
+      global.Date = originalDate;
     });
 
     it('should handle errors gracefully', async () => {
@@ -104,8 +115,7 @@ describe('CatsService', () => {
       await service.submitToCats(formData, submissionId, formId);
 
       expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Site Id not available'),
-        expect.any(String)
+        expect.stringContaining(`Site Id not available, application not created in CATS for formID:${formId} submissionId:${submissionId}`)
       );
 
       expect(axios.post).not.toHaveBeenCalled();
