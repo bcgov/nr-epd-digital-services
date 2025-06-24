@@ -6,33 +6,40 @@ import { Application } from '../../entities/application.entity';
 import { CreateApplication } from '../../dto/application/createApplication.dto';
 import { ViewApplicationDetails } from '../../dto/application/viewApplicationDetails.dto';
 import { AppTypeService } from '../appType/appType.service';
+import { DashboardService } from '../dashboard/dashboard.service';
+import { UpdateApplication } from '../../dto/application/updateApplication.dto';
+import { AppStatus } from '../../entities/appStatus.entity';
+import { StatusTypeService } from '../statusType/statusType.service';
 
 @Injectable()
 export class ApplicationService {
   constructor(
     @InjectRepository(Application)
     private readonly applicationRepository: Repository<Application>,
+    @InjectRepository(AppStatus)
+    private readonly appStatusRepository: Repository<AppStatus>,
     private readonly loggerService: LoggerService,
     private readonly appTypeService: AppTypeService,
+    private readonly dashboardService: DashboardService
+    private readonly statusTypeService: StatusTypeService,
   ) { }
 
+  // this method will be called from formsflow when an application is submitted
   async createApplication(createApplication: CreateApplication) {
     this.loggerService.log('ApplicationService.createApplication() start'); // Log the start of the method
 
     try {
       // Log the input parameters for better traceability
       this.loggerService.debug(
-        `Attempting to create application with SRS form id: ${createApplication?.formId} ' and submission id: ${createApplication?.formId}`,
+        `Attempting to create a new application with SRS form id: ${createApplication?.applicationStatus[0].formId} ' and submission id: ${createApplication?.applicationStatus[0].formId}`,
       );
 
       const appType = await this.appTypeService.getAppTypeByAbbrev(
         createApplication.appTypeAbbrev,
       );
 
-      const newApplication = await this.applicationRepository.create({
+      const newApplication = this.applicationRepository.create({
         siteId: createApplication.siteId,
-        formId: createApplication.formId,
-        submissionId: createApplication.submissionId,
         appTypeId: appType?.id,
         rowVersionCount: 1,
         createdBy: 'SYSTEM',
@@ -43,9 +50,32 @@ export class ApplicationService {
       });
 
       // Save the new application
-      const savedApplication = await this.applicationRepository.save(
-        newApplication,
+      const savedApplication = await this.applicationRepository.save(newApplication);
+
+      // Resolve each statusTypeId from statusTypeAbbrev
+      const appStatuses = await Promise.all(
+        createApplication.applicationStatus.map(async (statusDto) => {
+          const statusType = await this.statusTypeService.getStatusTypeByAbbrev(statusDto.statusTypeAbbrev);
+          return this.appStatusRepository.create({
+            application: savedApplication,
+            isCurrent: statusDto.isCurrent,
+            formId: statusDto.formId,
+            submissionId: statusDto.submissionId,
+            statusTypeId: statusType.id,
+            comment: '',
+            rowVersionCount: 1,
+            ts: Buffer.from(new Date().toISOString()),
+            createdBy: 'SYSTEM',
+            updatedBy: 'SYSTEM',
+            createdDateTime: new Date(),
+            updatedDateTime: new Date(),
+          });
+        }),
       );
+
+
+      // Save all appStatuses
+      await this.appStatusRepository.save(appStatuses);
 
       if (savedApplication) {
         this.loggerService.log(
@@ -78,6 +108,7 @@ export class ApplicationService {
 
   async findApplicationDetailsById(
     id: number,
+    userInfo: any
   ): Promise<ViewApplicationDetails> {
     this.loggerService.log(
       'ApplicationService.findApplicationDetailsById() start',
@@ -132,13 +163,14 @@ export class ApplicationService {
         `Application details fetched successfully for ID: ${id}`,
       );
 
+      await this.dashboardService.createRecentViewedApplication(application, userInfo);
       return {
         id: application.id,
         siteId: application.siteId,
         siteAddress: application.site.address,
         siteCity: application.site.city,
-        formId: application.formId,
-        submissionId: application.submissionId,
+        //formId: application.formId,
+        //submissionId: application.submissionId,
         csapRefNumber: application.csapRefNumber,
         receivedDate: new Date(application.receivedDate),
         endDate: application.endDate ? new Date(application.endDate) : null,

@@ -64,6 +64,9 @@ export class InvoiceDto {
   totalInCents: number;
 
   @Field(() => String, { nullable: true })
+  notes: string;
+
+  @Field(() => String, { nullable: true })
   createdBy: string;
 
   @Field(() => String)
@@ -117,6 +120,9 @@ export class InvoiceInputDto {
   @Field(() => Int)
   totalInCents: number;
 
+  @Field(() => String, { nullable: true })
+  notes: string;
+
   @Field(() => [InvoiceLineItemInputDto])
   lineItems: InvoiceLineItemInputDto[];
 }
@@ -140,4 +146,7 @@ export class InvoiceByApplicationIdDto {
 
   @Field(() => Int)
   totalInCents: number;
+
+  @Field(() => String, { nullable: true })
+  notes: string;
 }
