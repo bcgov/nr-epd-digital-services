@@ -8,7 +8,6 @@
       <bpmn:lane id="Lane_1x4hrgw" name="CSSA Manager">
         <bpmn:flowNodeRef>Gateway_1chdumm</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0vo5rls</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1qnqtak</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_1lfy3cm</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_04645fs</bpmn:flowNodeRef>
       </bpmn:lane>
@@ -88,7 +87,7 @@
           <camunda:script scriptFormat="javascript">execution.setVariable('bundleStatus', "CSAP Society Accepted");</camunda:script>
         </camunda:executionListener>
       </bpmn:extensionElements>
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Submitted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1xx7tz6" name="Yes" sourceRef="Gateway_1qqphxe" targetRef="Activity_0a9pnut">
       <bpmn:extensionElements>
@@ -105,7 +104,7 @@ system.out.println ("site owner flow");</camunda:script>
           <camunda:script scriptFormat="javascript">execution.setVariable('isSociety',true);</camunda:script>
         </camunda:executionListener>
       </bpmn:extensionElements>
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Additional Information Requested'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_12uv3km" name="Returned" sourceRef="Gateway_04o747e" targetRef="Activity_1v5ffpw">
       <bpmn:extensionElements>
@@ -113,7 +112,7 @@ system.out.println ("site owner flow");</camunda:script>
           <camunda:script scriptFormat="javascript">execution.setVariable('isAp',true);</camunda:script>
         </camunda:executionListener>
       </bpmn:extensionElements>
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Additional Information Requested'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_19ktqsm" name="Returned" sourceRef="Gateway_0oobb3z" targetRef="Activity_1v5ffpw">
       <bpmn:extensionElements>
@@ -121,7 +120,7 @@ system.out.println ("site owner flow");</camunda:script>
           <camunda:script scriptFormat="javascript">execution.setVariable('isCssaTeam',true);</camunda:script>
         </camunda:executionListener>
       </bpmn:extensionElements>
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Additional Information Requested'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0wxa7vb" name="Returned" sourceRef="Gateway_0o9l3lp" targetRef="Activity_1v5ffpw">
       <bpmn:extensionElements>
@@ -129,7 +128,7 @@ system.out.println ("site owner flow");</camunda:script>
           <camunda:script scriptFormat="javascript">execution.setVariable('isCaseworker',true);</camunda:script>
         </camunda:executionListener>
       </bpmn:extensionElements>
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Additional Information Requested'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1stifo9" name="Resubmitted" sourceRef="Activity_1v5ffpw" targetRef="Activity_1ozfgid">
       <bpmn:extensionElements>
@@ -177,7 +176,7 @@ system.out.println ("isSentFromSociety "+ execution.getVariable('isSentFromSocie
           <camunda:script scriptFormat="javascript">execution.setVariable('bundleStatus', "Approved Professional Accepted");</camunda:script>
         </camunda:executionListener>
       </bpmn:extensionElements>
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'CSAP'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0pzpbn7" name="Recheck" sourceRef="Gateway_15p5urd" targetRef="Activity_1uc1xs1">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Recheck'}</bpmn:conditionExpression>
@@ -212,7 +211,7 @@ system.out.println ("isSentFromSociety "+ execution.getVariable('isSentFromSocie
     <bpmn:sequenceFlow id="Flow_1tu4hj7" name="Accepted" sourceRef="Gateway_0oobb3z" targetRef="Activity_0vo5rls">
       <bpmn:extensionElements>
         <camunda:executionListener event="take">
-          <camunda:script scriptFormat="javascript">execution.setVariable('bundleStatus', "CSSA Team Accepted");</camunda:script>
+          <camunda:script scriptFormat="javascript">execution.setVariable('bundleStatus', "CSSA Team Queued");</camunda:script>
         </camunda:executionListener>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
           <camunda:field name="fields">
@@ -220,7 +219,7 @@ system.out.println ("isSentFromSociety "+ execution.getVariable('isSentFromSocie
           </camunda:field>
         </camunda:executionListener>
       </bpmn:extensionElements>
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Queued'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_01zmsuo" sourceRef="Gateway_00nmer9" targetRef="Activity_1os7sys" />
     <bpmn:sequenceFlow id="Flow_0kumbes" sourceRef="Gateway_00nmer9" targetRef="Gateway_04o747e" />
@@ -249,7 +248,7 @@ system.out.println ("isSentFromSociety "+ execution.getVariable('isSentFromSocie
           </camunda:field>
         </camunda:executionListener>
       </bpmn:extensionElements>
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected' or action == 'Approved' }</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Outcome Decision Made - Satisfactory' or action == 'Outcome Decision Made - Unsatisfactory' }</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0aabyhy" sourceRef="Gateway_1lbpcug" targetRef="Activity_0vo5rls">
       <bpmn:extensionElements>
@@ -276,12 +275,13 @@ execution.setVariable('bundleStatus', "cssaSdmReturned");</camunda:script>
           </camunda:field>
         </camunda:executionListener>
       </bpmn:extensionElements>
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Additional Information Requested'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0c90maq" sourceRef="Gateway_1l4bqor" targetRef="Gateway_1lbpcug" />
     <bpmn:sequenceFlow id="Flow_08c8ij1" sourceRef="Activity_1hs3dja" targetRef="Gateway_1l4bqor" />
     <bpmn:sequenceFlow id="Flow_19ik9s7" sourceRef="Activity_1bsz2qm" targetRef="Gateway_0pty1fn" />
     <bpmn:sequenceFlow id="Flow_01suxh6" name="No" sourceRef="Gateway_1lgyz1h" targetRef="Activity_1bsz2qm">
+      <bpmn:extensionElements />
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isSentFromSociety == false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0qiqnks" sourceRef="Activity_0tsm937" targetRef="Gateway_1lgyz1h" />
@@ -313,9 +313,12 @@ execution.setVariable('bundleStatus', "cssaSdmReturned");</camunda:script>
           </camunda:field>
         </camunda:executionListener>
       </bpmn:extensionElements>
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Review In Progress SDM'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_057qs1x" name="Yes" sourceRef="Gateway_1lgyz1h" targetRef="Activity_15e3ho6">
+      <bpmn:extensionElements>
+        <camunda:executionListener expression="${execution.setVariable(&#34;applicationStatus&#34;,&#34;Review In Progress SDM&#34;)}" event="take" />
+      </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isSentFromSociety == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0ovj0pk" sourceRef="Gateway_17raw62" targetRef="Activity_15e3ho6">
@@ -345,10 +348,10 @@ system.out.println ("soscStatus "+execution.getVariable('soscStatus') );
 
 if (execution.getVariable('cssaStatus') === "Approved" &amp;&amp; execution.getVariable('srcrStatus') === "Approved" &amp;&amp; execution.getVariable('soscStatus') === "Approved" )
 {
-execution.setVariable("applicationStatus", "Approved");
+execution.setVariable("applicationStatus", "Outcome Decision Made - Satisfactory");
 }
 else{
-execution.setVariable("applicationStatus", "Rejected");
+execution.setVariable("applicationStatus", "Outcome Decision Made - Unsatisfactory");
 }</camunda:script>
         </camunda:executionListener>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
@@ -392,11 +395,10 @@ system.out.println('srcrBundleURL'+execution.getVariable('bundleUrl'));</camunda
       </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${riskclassification  != 'exempt' || isSoscAvailable==true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_026ykts" sourceRef="Activity_1qnqtak" targetRef="Gateway_1chdumm" />
     <bpmn:sequenceFlow id="Flow_0lgivc3" name="Recheck" sourceRef="Gateway_1lfy3cm" targetRef="Activity_08ykdar">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Recheck'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_02ysv7t" name="Accepted" sourceRef="Gateway_1lfy3cm" targetRef="Activity_1qnqtak">
+    <bpmn:sequenceFlow id="Flow_02ysv7t" name="Accepted" sourceRef="Gateway_1lfy3cm" targetRef="Gateway_1chdumm">
       <bpmn:extensionElements>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormBPMFilteredDataPipelineListener" event="take" />
         <camunda:executionListener event="take">
@@ -408,7 +410,7 @@ system.out.println('srcrBundleURL'+execution.getVariable('bundleUrl'));</camunda
           </camunda:field>
         </camunda:executionListener>
       </bpmn:extensionElements>
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Review In Progress'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0gcqir8" sourceRef="Activity_0vo5rls" targetRef="Gateway_04645fs" />
     <bpmn:endEvent id="Event_1n5addo">
@@ -436,7 +438,7 @@ system.out.println('srcrBundleURL'+execution.getVariable('bundleUrl'));</camunda
         <bpmn:script>var system = java.lang.System;
 system.out.println ("Sent to SDM");</bpmn:script>
       </bpmn:scriptTask>
-      <bpmn:userTask id="Activity_1leww7q" name="SDM Updates Form" camunda:assignee="${sdmAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
+      <bpmn:userTask id="Activity_1leww7q" name="SDM Updates Form" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
         <bpmn:extensionElements>
           <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
             <camunda:field name="copyDataIndicator">
@@ -491,7 +493,7 @@ task.execution.setVariable('subFormName','SoSC Form');</camunda:script>
         <bpmn:incoming>Flow_1itdpy9</bpmn:incoming>
         <bpmn:incoming>Flow_0lf9s8z</bpmn:incoming>
       </bpmn:endEvent>
-      <bpmn:userTask id="Activity_06deurx" name="Caseworker Updates Form" camunda:assignee="${caseworkerAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
+      <bpmn:userTask id="Activity_06deurx" name="Caseworker Updates Form" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
         <bpmn:extensionElements>
           <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
             <camunda:field name="copyDataIndicator">
@@ -599,7 +601,7 @@ system.out.println ("isSentFromSociety "+execution.getVariable('isSentFromSociet
             </camunda:field>
           </camunda:executionListener>
         </bpmn:extensionElements>
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Review In Progress SDM'}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_17dpj6g" name="Resubmitted" sourceRef="Activity_1vkghr3" targetRef="Activity_140ypbm">
         <bpmn:extensionElements>
@@ -656,7 +658,7 @@ execution.setVariable('bundleStatus', "soscSdmReturned");</camunda:script>
             </camunda:field>
           </camunda:executionListener>
         </bpmn:extensionElements>
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Additional Information Requested'}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_0mjgxil" sourceRef="Gateway_07klrhx" targetRef="Gateway_1ihiqyt" />
       <bpmn:sequenceFlow id="Flow_1itdpy9" name="Approved/Rejected" sourceRef="Gateway_1ihiqyt" targetRef="Event_06h0dbx">
@@ -673,7 +675,7 @@ execution.setVariable('bundleStatus', "SDM Approved SoSC Form");</camunda:script
             </camunda:field>
           </camunda:executionListener>
         </bpmn:extensionElements>
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected' or action == 'Approved' }</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Outcome Decision Made - Satisfactory' or action == 'Outcome Decision Made - Unsatisfactory' }</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_1raj7vr" name="Recheck" sourceRef="Gateway_1ihiqyt" targetRef="Activity_0iwvier">
         <bpmn:extensionElements>
@@ -728,7 +730,7 @@ execution.setVariable('bundleStatus', "SDM Approved SoSC Form");</camunda:script
             </camunda:field>
           </camunda:executionListener>
         </bpmn:extensionElements>
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Additional Information Requested'}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_0xixsb5" name="Resubmitted" sourceRef="Activity_1u9aiq8" targetRef="Activity_0iwvier">
         <bpmn:extensionElements>
@@ -774,7 +776,7 @@ execution.setVariable('requestType', 'SoSC');</camunda:script>
         <bpmn:script>var system = java.lang.System;
 system.out.println ("Sent to SDM");</bpmn:script>
       </bpmn:scriptTask>
-      <bpmn:userTask id="Activity_1gz28jq" name="SDM Updates Form" camunda:assignee="${sdmAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
+      <bpmn:userTask id="Activity_1gz28jq" name="SDM Updates Form" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
         <bpmn:extensionElements>
           <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
             <camunda:field name="copyDataIndicator">
@@ -829,7 +831,7 @@ task.execution.setVariable('subFormName','CSSA Form');</camunda:script>
         <bpmn:incoming>Flow_07enxwq</bpmn:incoming>
         <bpmn:incoming>Flow_0yy721o</bpmn:incoming>
       </bpmn:endEvent>
-      <bpmn:userTask id="Activity_1lysqui" name="Caseworker Updates Form" camunda:assignee="${caseworkerAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
+      <bpmn:userTask id="Activity_1lysqui" name="Caseworker Updates Form" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
         <bpmn:extensionElements>
           <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
             <camunda:field name="copyDataIndicator">
@@ -903,7 +905,7 @@ task.execution.setVariable('subFormName','CSSA Form');
             </camunda:field>
           </camunda:executionListener>
         </bpmn:extensionElements>
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Review In Progress SDM'}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_1vxydh0" name="Resubmitted" sourceRef="Activity_035ztxq" targetRef="Activity_0ufkuud">
         <bpmn:extensionElements>
@@ -960,7 +962,7 @@ execution.setVariable('bundleStatus', "cssaSdmReturned");</camunda:script>
             </camunda:field>
           </camunda:executionListener>
         </bpmn:extensionElements>
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Additional Information Requested'}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_07enxwq" name="Approved/Rejected" sourceRef="Gateway_15xl0xr" targetRef="Event_129m2pb">
         <bpmn:extensionElements>
@@ -976,7 +978,7 @@ execution.setVariable('bundleStatus', "SDM Approved CSSA Form");</camunda:script
             </camunda:field>
           </camunda:executionListener>
         </bpmn:extensionElements>
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected' or action == 'Approved' }</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Outcome Decision Made - Satisfactory' or action == 'Outcome Decision Made - Unsatisfactory' }</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_0yy721o" name="Rejected" sourceRef="Gateway_11ub1p6" targetRef="Event_129m2pb">
         <bpmn:extensionElements>
@@ -1015,7 +1017,7 @@ execution.setVariable('bundleStatus', "SDM Approved CSSA Form");</camunda:script
             </camunda:field>
           </camunda:executionListener>
         </bpmn:extensionElements>
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Additional Information Requested'}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:callActivity id="Activity_1cc5o6q" name="Send Email" calledElement="common-email-workflow">
         <bpmn:extensionElements>
@@ -1394,7 +1396,7 @@ task.execution.setVariable('userRole','CSSA Manager');</camunda:script>
         <bpmn:script>var system = java.lang.System;
 system.out.println ("Sent to Caseworker");</bpmn:script>
       </bpmn:scriptTask>
-      <bpmn:userTask id="Activity_1voobmv" name="Caseworker Updates Form" camunda:assignee="${caseworkerAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
+      <bpmn:userTask id="Activity_1voobmv" name="Caseworker Updates Form" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
         <bpmn:extensionElements>
           <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
             <camunda:field name="copyDataIndicator">
@@ -1441,7 +1443,7 @@ task.execution.setVariable('subFormName','SRCR Form');
         <bpmn:script>var system = java.lang.System;
 system.out.println ("Sent to SDM");</bpmn:script>
       </bpmn:scriptTask>
-      <bpmn:userTask id="Activity_026ojgg" name="SDM Updates Form" camunda:assignee="${sdmAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
+      <bpmn:userTask id="Activity_026ojgg" name="SDM Updates Form" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
         <bpmn:extensionElements>
           <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
             <camunda:field name="copyDataIndicator">
@@ -1526,7 +1528,7 @@ system.out.println ("isSentFromSociety "+execution.getVariable('isSentFromSociet
       <bpmn:startEvent id="Event_1j01pra" name="Start SRCR Flow">
         <bpmn:outgoing>Flow_1axts3r</bpmn:outgoing>
       </bpmn:startEvent>
-      <bpmn:userTask id="Activity_0idq8ua" name="SRCO Updates Form" camunda:assignee="${srcoAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/site-risk-classification-officer">
+      <bpmn:userTask id="Activity_0idq8ua" name="SRCO Updates Form" camunda:candidateGroups="formsflow/formsflow-reviewer/site-risk-classification-officer">
         <bpmn:extensionElements>
           <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
             <camunda:field name="copyDataIndicator">
@@ -1646,7 +1648,7 @@ execution.setVariable('isSrcrResubmitted', false);</camunda:script>
             </camunda:field>
           </camunda:executionListener>
         </bpmn:extensionElements>
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Review In Progress SDM'}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_0pqd76u" name="Recheck" sourceRef="Gateway_0wyokmr" targetRef="Activity_12sm7v1">
         <bpmn:extensionElements />
@@ -1664,7 +1666,7 @@ execution.setVariable('isSrcrResubmitted', false);</camunda:script>
             </camunda:field>
           </camunda:executionListener>
         </bpmn:extensionElements>
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned' }</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Additional Information Requested'}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_0izugkb" name="Resubmitted" sourceRef="Activity_0aiiz1c" targetRef="Activity_15ke6f4">
         <bpmn:extensionElements>
@@ -1771,7 +1773,7 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
             </camunda:field>
           </camunda:executionListener>
         </bpmn:extensionElements>
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Review In Progress'}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_1ifs52w" name="Returned" sourceRef="Gateway_102i3iq" targetRef="Activity_0mpunb8">
         <bpmn:extensionElements>
@@ -1785,7 +1787,7 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
             </camunda:field>
           </camunda:executionListener>
         </bpmn:extensionElements>
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned' }</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Additional Information Requested'}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_1g44pgu" name="Yes" sourceRef="Gateway_0o6amr3" targetRef="Activity_12sm7v1">
         <bpmn:extensionElements>
@@ -1889,7 +1891,7 @@ execution.setVariable('bundleStatus', "srcrSdmReturned");</camunda:script>
             </camunda:field>
           </camunda:executionListener>
         </bpmn:extensionElements>
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned' }</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Additional Information Requested'}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_1jm1bhe" sourceRef="Gateway_1g6waa1" targetRef="Gateway_137ft2z" />
       <bpmn:sequenceFlow id="Flow_0k5l8nk" name="Approved/Rejected" sourceRef="Gateway_137ft2z" targetRef="Event_00asrt1">
@@ -1906,7 +1908,7 @@ execution.setVariable('bundleStatus', "SDM Approved SRCR Form");</camunda:script
             </camunda:field>
           </camunda:executionListener>
         </bpmn:extensionElements>
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Approved' or action == 'Rejected' }</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Outcome Decision Made - Satisfactory' or action == 'Outcome Decision Made - Unsatisfactory' }</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
     </bpmn:subProcess>
     <bpmn:parallelGateway id="Gateway_00nmer9" camunda:asyncAfter="true">
@@ -1945,7 +1947,7 @@ execution.setVariable('bundleStatus', "SDM Approved SRCR Form");</camunda:script
       <bpmn:outgoing>Flow_07eueok</bpmn:outgoing>
       <bpmn:outgoing>Flow_0aabyhy</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:userTask id="Activity_1hs3dja" name="SDM Updates Form" camunda:assignee="${sdmAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
+    <bpmn:userTask id="Activity_1hs3dja" name="SDM Updates Form" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
       <bpmn:extensionElements>
         <camunda:taskListener event="create">
           <camunda:script scriptFormat="javascript">task.execution.setVariable('isSdm',false);</camunda:script>
@@ -1966,7 +1968,7 @@ task.execution.setVariable('userRole','Statutory Decision Maker');</camunda:scri
       <bpmn:incoming>Flow_07vh0na</bpmn:incoming>
       <bpmn:outgoing>Flow_08c8ij1</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_1bsz2qm" name="Caseworker Updates Form" camunda:assignee="${caseworkerAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
+    <bpmn:userTask id="Activity_1bsz2qm" name="Caseworker Updates Form" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
       <bpmn:extensionElements>
         <camunda:taskListener event="create">
           <camunda:script scriptFormat="javascript">task.execution.setVariable('isCaseworker',false);</camunda:script>
@@ -2011,7 +2013,7 @@ system.out.println ("isSentFromSociety "+execution.getVariable('isSentFromSociet
 system.out.println ("Sent to SDM");</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:exclusiveGateway id="Gateway_1chdumm" name="IsSrcrAndSoscAvailable">
-      <bpmn:incoming>Flow_026ykts</bpmn:incoming>
+      <bpmn:incoming>Flow_02ysv7t</bpmn:incoming>
       <bpmn:outgoing>Flow_0drs8s9</bpmn:outgoing>
       <bpmn:outgoing>Flow_0i3fcvy</bpmn:outgoing>
     </bpmn:exclusiveGateway>
@@ -2057,42 +2059,6 @@ system.out.println ("soscStatus "+execution.getVariable('soscStatus') );</camund
       <bpmn:outgoing>Flow_1l4qibu</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_1l4qibu" sourceRef="Gateway_1qrhl19" targetRef="Gateway_1m36jwe" />
-    <bpmn:scriptTask id="Activity_1qnqtak" name="Set Reviewers" scriptFormat="javascript">
-      <bpmn:extensionElements />
-      <bpmn:incoming>Flow_02ysv7t</bpmn:incoming>
-      <bpmn:outgoing>Flow_026ykts</bpmn:outgoing>
-      <bpmn:script>var system = java.lang.System;
-var selectCssaSdm= execution.getVariable('selectCssaSdm');
-system.out.println ("selectCssaSdm"+selectCssaSdm);
-
-var selectCssaCaseworker= execution.getVariable('selectCssaCaseworker');
-system.out.println ("selectCssaCaseworker"+selectCssaCaseworker);
-
-var selectSoscSdm= execution.getVariable('selectSoscSdm');
-system.out.println ("selectSoscSdm"+selectSoscSdm);
-
-var selectSoscCaseworker= execution.getVariable('selectSoscCaseworker');
-system.out.println ("selectSoscCaseworker"+selectSoscCaseworker);
-
-var selectSrcrSdm= execution.getVariable('selectSdm');
-system.out.println ("selectSdm"+selectSdm);
-
-var selectSrcrCaseworker= execution.getVariable('selectCaseworker');
-system.out.println ("selectCaseworker"+selectCaseworker);
-
-var selectSrco= execution.getVariable('selectSrco');
-system.out.println ("selectSrco"+selectSrco);
-execution.setVariable('srcoAssignment',selectSrco);
-system.out.println ("srcoAssignment"+execution.getVariable('srcoAssignment'));
-
-var selectCaseworker = selectCssaCaseworker? selectCssaCaseworker:(selectSoscCaseworker?selectSoscCaseworker:(selectSrcrCaseworker?selectSrcrCaseworker:null));
-execution.setVariable('caseworkerAssignment',selectCaseworker);
-system.out.println ("caseworkerAssignment"+execution.getVariable('caseworkerAssignment'));
-
-var selectSdm = selectCssaSdm? selectCssaSdm:(selectSoscSdm?selectSoscSdm:(selectSrcrSdm?selectSrcrSdm:null));
-execution.setVariable('sdmAssignment',selectSdm);
-system.out.println ("sdmAssignment"+execution.getVariable('sdmAssignment'));</bpmn:script>
-    </bpmn:scriptTask>
     <bpmn:exclusiveGateway id="Gateway_1lfy3cm">
       <bpmn:incoming>Flow_1dtmwt0</bpmn:incoming>
       <bpmn:outgoing>Flow_02ysv7t</bpmn:outgoing>
@@ -2150,13 +2116,12 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
     <bpmn:sequenceFlow id="Flow_1b01psv" sourceRef="Gateway_1gvu1qg" targetRef="Activity_0yw5we4">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus=='New'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_03phi1y" sourceRef="Gateway_0o1oxx6" targetRef="Gateway_1gvu1qg" />
     <bpmn:sequenceFlow id="Flow_1loq3ni" sourceRef="Gateway_0o1oxx6" targetRef="Gateway_1qqphxe" />
     <bpmn:sequenceFlow id="Flow_05pndkl" sourceRef="Activity_1ozfgid" targetRef="Gateway_0o1oxx6" />
     <bpmn:parallelGateway id="Gateway_0o1oxx6">
       <bpmn:incoming>Flow_05pndkl</bpmn:incoming>
-      <bpmn:outgoing>Flow_03phi1y</bpmn:outgoing>
       <bpmn:outgoing>Flow_1loq3ni</bpmn:outgoing>
+      <bpmn:outgoing>Flow_03phi1y</bpmn:outgoing>
     </bpmn:parallelGateway>
     <bpmn:endEvent id="Event_0z3ea6o">
       <bpmn:incoming>Flow_1nigg0r</bpmn:incoming>
@@ -2173,6 +2138,7 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       <bpmn:incoming>Flow_1b01psv</bpmn:incoming>
       <bpmn:outgoing>Flow_1nigg0r</bpmn:outgoing>
     </bpmn:callActivity>
+    <bpmn:sequenceFlow id="Flow_03phi1y" sourceRef="Gateway_0o1oxx6" targetRef="Gateway_1gvu1qg" />
   </bpmn:process>
   <bpmn:message id="Message_1ngb2eg" name="application_resubmitted" />
   <bpmn:message id="Message_0lm44we" name="application_resubmitted" />
@@ -3071,10 +3037,6 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       <bpmndi:BPMNShape id="Gateway_1qrhl19_di" bpmnElement="Gateway_1qrhl19" isMarkerVisible="true">
         <dc:Bounds x="2395" y="4515" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_06dqknd_di" bpmnElement="Activity_1qnqtak">
-        <dc:Bounds x="2095" y="2150" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1lfy3cm_di" bpmnElement="Gateway_1lfy3cm" isMarkerVisible="true">
         <dc:Bounds x="2120" y="2045" width="50" height="50" />
       </bpmndi:BPMNShape>
@@ -3509,10 +3471,6 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
           <dc:Bounds x="1841" y="2303" width="18" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_026ykts_di" bpmnElement="Flow_026ykts">
-        <di:waypoint x="2145" y="2230" />
-        <di:waypoint x="2145" y="2295" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0lgivc3_di" bpmnElement="Flow_0lgivc3">
         <di:waypoint x="2120" y="2070" />
         <di:waypoint x="1990" y="2070" />
@@ -3524,9 +3482,9 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_02ysv7t_di" bpmnElement="Flow_02ysv7t">
         <di:waypoint x="2145" y="2095" />
-        <di:waypoint x="2145" y="2150" />
+        <di:waypoint x="2145" y="2295" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2157" y="2110" width="46" height="14" />
+          <dc:Bounds x="2157" y="2126" width="46" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0gcqir8_di" bpmnElement="Flow_0gcqir8">
@@ -3584,10 +3542,6 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
         <di:waypoint x="1780" y="310" />
         <di:waypoint x="1675" y="310" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_03phi1y_di" bpmnElement="Flow_03phi1y">
-        <di:waypoint x="1860" y="250" />
-        <di:waypoint x="1805" y="250" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1loq3ni_di" bpmnElement="Flow_1loq3ni">
         <di:waypoint x="1885" y="275" />
         <di:waypoint x="1885" y="285" />
@@ -3595,6 +3549,10 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       <bpmndi:BPMNEdge id="Flow_05pndkl_di" bpmnElement="Flow_05pndkl">
         <di:waypoint x="1885" y="200" />
         <di:waypoint x="1885" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03phi1y_di" bpmnElement="Flow_03phi1y">
+        <di:waypoint x="1860" y="250" />
+        <di:waypoint x="1805" y="250" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
