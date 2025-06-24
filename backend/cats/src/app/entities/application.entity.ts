@@ -30,6 +30,7 @@ import { HousingApplicationXref } from './housingApplicationXref.entity';
 import { Invoice } from './invoice.entity';
 import { Timesheet } from './timesheet.entity';
 import { ApplicationServiceType } from './applicationServiceType.entity';
+import { RecentViewedApplication } from './RecentViewedApplication.entity';
 
 @Index('idx_application_app_type_id', ['appTypeId'], {})
 @Index('pk_application', ['id'], { unique: true })
@@ -199,4 +200,7 @@ export class Application {
     { name: 'application_service_type_id', referencedColumnName: 'id' },
   ])
   serviceType: ApplicationServiceType;
+
+  @OneToMany(() => RecentViewedApplication, (recentViewedApplications) => recentViewedApplications.application)
+  recentViewedApplications: RecentViewedApplication[];
 }

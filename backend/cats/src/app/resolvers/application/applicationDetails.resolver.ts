@@ -5,6 +5,7 @@ import { ApplicationDetailsResponse } from '../../dto/response/application/appli
 import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
 import { HttpStatus } from '@nestjs/common';
 import { ViewApplicationDetails } from '../../dto/application/viewApplicationDetails.dto';
+import { AuthenticatedUser } from 'nest-keycloak-connect';
 
 @Resolver()
 export class ApplicationDetailsResolver {
@@ -17,7 +18,10 @@ export class ApplicationDetailsResolver {
   @Query(() => ApplicationDetailsResponse, {
     name: 'getApplicationDetailsById',
   })
-  async getApplicationDetailsById(@Args('id', { type: () => Int }) id: number) {
+  async getApplicationDetailsById(
+    @Args('id', { type: () => Int }) id: number,
+    @AuthenticatedUser() user: any
+  ) {
     this.loggerService.log(
       'ApplicationDetailsResolver.getApplicationDetailsById() start',
     );
@@ -25,6 +29,7 @@ export class ApplicationDetailsResolver {
     try {
       const result = await this.applicationService.findApplicationDetailsById(
         id,
+        user
       );
 
       if (result) {

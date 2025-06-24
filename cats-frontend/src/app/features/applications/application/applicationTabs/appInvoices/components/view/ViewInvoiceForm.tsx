@@ -1,11 +1,13 @@
-import { useState, useEffect, FC } from 'react';
+import { useState, useEffect, FC, ChangeEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FormGroup, Form, Col, Row, Alert } from 'react-bootstrap';
 import { Button } from '@cats/components/button/Button';
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes, FaEdit, FaSave } from 'react-icons/fa';
 import { useGetHeaderDetailsByApplicationIdQuery } from '@cats/features/applications/application/ApplicationDetails.generated';
 import { useGetInvoiceByIdQuery } from '../../getInvoiceById.generated';
 import { useGetPersonByIdQuery } from './getPersonById.generated';
+import { useUpdateInvoiceMutation } from '../../updateInvoice.generated';
+import { InvoiceStatus } from '../../../../../../../../generated/types';
 
 enum InvoiceLineItemType {
   SERVICE = 'service',
@@ -29,12 +31,13 @@ interface InvoiceViewModel {
   subject: string;
   issuedDate: string;
   dueDate: string;
-  status: string;
+  status: InvoiceStatus;
   taxExempt: boolean;
   subtotalInCents: number;
   gstInCents: number;
   pstInCents: number;
   totalInCents: number;
+  notes?: string | null;
   createdBy: string | null;
   updatedBy: string | null;
   lineItems: InvoiceLineItemViewModel[];
@@ -50,7 +53,11 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
 
   const navigate = useNavigate();
   const numericInvoiceId = id ? parseInt(id, 10) : 0;
-  const numericApplicationId = applicationId ? parseInt(applicationId, 10) : 0;
+  // Initialize application ID from URL parameter but fallback to 0
+  const initialAppId = applicationId ? parseInt(applicationId, 10) : 0;
+  // We'll use this state to track the valid application ID
+  const [numericApplicationId, setNumericApplicationId] =
+    useState(initialAppId);
 
   // Fetch invoice details
   const {
@@ -66,14 +73,24 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
   const { data: applicationData, loading: applicationLoading } =
     useGetHeaderDetailsByApplicationIdQuery({
       variables: { applicationId: numericApplicationId },
-      skip: !numericApplicationId,
+      skip: !numericApplicationId || isNaN(numericApplicationId),
     });
 
   const appTypeDescription =
     applicationData?.getApplicationDetailsById.data?.appType?.description || '';
 
   const [invoice, setInvoice] = useState<InvoiceViewModel | null>(null);
+  const [editableInvoice, setEditableInvoice] =
+    useState<InvoiceViewModel | null>(null);
   const [recipientName, setRecipientName] = useState<string>('');
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [updateError, setUpdateError] = useState<string | null>(null);
+  const [validationErrors, setValidationErrors] = useState<{
+    [key: string]: string;
+  }>({});
+
+  const [updateInvoice, { loading: updateLoading }] =
+    useUpdateInvoiceMutation();
 
   useEffect(() => {
     if (invoiceData?.getInvoiceById?.invoice) {
@@ -92,6 +109,7 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
         gstInCents: invoiceResponse.gstInCents,
         pstInCents: invoiceResponse.pstInCents,
         totalInCents: invoiceResponse.totalInCents,
+        notes: invoiceResponse.notes || null,
         createdBy: invoiceResponse.createdBy || null,
         updatedBy: invoiceResponse.updatedBy || null,
         lineItems: (invoiceResponse.lineItems || []).map((item) => ({
@@ -103,7 +121,14 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
           totalInCents: item.totalInCents,
         })),
       };
+
+      // Ensure we have a valid application ID
+      if (mappedInvoice.applicationId && !isNaN(mappedInvoice.applicationId)) {
+        setNumericApplicationId(mappedInvoice.applicationId);
+      }
+
       setInvoice(mappedInvoice);
+      setEditableInvoice(mappedInvoice);
     }
   }, [invoiceData]);
 
@@ -145,15 +170,200 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
     return date.toISOString().split('T')[0];
   };
 
+  // Handle form field changes
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value, type } = e.target;
+    const checked =
+      type === 'checkbox' ? (e.target as HTMLInputElement).checked : false;
+
+    setEditableInvoice((prev) => {
+      if (!prev) return null;
+
+      return {
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value,
+      };
+    });
+  };
+
+  // Handle line item changes
+  const handleLineItemChange = (
+    id: number,
+    field: keyof InvoiceLineItemViewModel,
+    value: any,
+  ) => {
+    setEditableInvoice((prev) => {
+      if (!prev) return null;
+
+      const updatedLineItems = prev.lineItems.map((item) => {
+        if (item.id === id) {
+          let updatedItem = { ...item, [field]: value };
+
+          // Recalculate total if quantity or unit price changes
+          if (field === 'quantity' || field === 'unitPriceInCents') {
+            updatedItem.totalInCents =
+              updatedItem.quantity * updatedItem.unitPriceInCents;
+          }
+
+          return updatedItem;
+        }
+        return item;
+      });
+
+      // Recalculate subtotal
+      const subtotal = updatedLineItems.reduce(
+        (sum, item) => sum + item.totalInCents,
+        0,
+      );
+
+      // Calculate taxes based on tax exempt status
+      const gst = prev.taxExempt ? 0 : Math.round(subtotal * 0.05); // 5% GST
+      const pst = prev.taxExempt ? 0 : Math.round(subtotal * 0.07); // 7% PST (adjust as needed)
+
+      return {
+        ...prev,
+        lineItems: updatedLineItems,
+        subtotalInCents: subtotal,
+        gstInCents: gst,
+        pstInCents: pst,
+        totalInCents: subtotal + gst + pst,
+      };
+    });
+  };
+
+  const handleEditToggle = () => {
+    if (isEditMode) {
+      // Discard changes
+      setEditableInvoice(invoice);
+      setUpdateError(null);
+    }
+    setIsEditMode(!isEditMode);
+  };
+
+  const validateForm = () => {
+    const errors: { [key: string]: string } = {};
+
+    if (!editableInvoice) return errors;
+
+    if (!editableInvoice.subject?.trim()) {
+      errors.subject = 'Subject is required';
+    }
+
+    if (!editableInvoice.dueDate) {
+      errors.dueDate = 'Due date is required';
+    }
+
+    // Check if any line items have invalid data
+    editableInvoice.lineItems.forEach((item, index) => {
+      if (!item.description?.trim()) {
+        errors[`lineItem-${index}-description`] =
+          `Description is required for item ${index + 1}`;
+      }
+
+      if (item.quantity <= 0) {
+        errors[`lineItem-${index}-quantity`] =
+          `Quantity must be greater than 0 for item ${index + 1}`;
+      }
+
+      if (item.unitPriceInCents < 0) {
+        errors[`lineItem-${index}-unitPrice`] =
+          `Unit price cannot be negative for item ${index + 1}`;
+      }
+    });
+
+    return errors;
+  };
+
+  const handleSave = async () => {
+    if (!editableInvoice) return;
+
+    // Validate form before submission
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+
+      // Create a more descriptive error message that lists all validation errors
+      const errorMessages = Object.values(errors).join(', ');
+      setUpdateError(
+        `Please fix the following validation errors: ${errorMessages}`,
+      );
+      return;
+    }
+
+    try {
+      setUpdateError(null);
+      setValidationErrors({});
+
+      // Prepare data for update
+      const updateData = {
+        applicationId: editableInvoice.applicationId,
+        recipientId: editableInvoice.recipientId,
+        subject: editableInvoice.subject,
+        issuedDate: editableInvoice.issuedDate,
+        dueDate: editableInvoice.dueDate,
+        taxExempt: editableInvoice.taxExempt,
+        status: editableInvoice.status,
+        subtotalInCents: editableInvoice.subtotalInCents,
+        gstInCents: editableInvoice.gstInCents,
+        pstInCents: editableInvoice.pstInCents,
+        totalInCents: editableInvoice.totalInCents,
+        notes: editableInvoice.notes,
+        lineItems: editableInvoice.lineItems.map((item) => ({
+          id: item.id,
+          type: item.type,
+          description: item.description,
+          quantity: item.quantity,
+          unitPriceInCents: item.unitPriceInCents,
+          totalInCents: item.totalInCents,
+        })),
+      };
+
+      const result = await updateInvoice({
+        variables: {
+          id: numericInvoiceId,
+          updateData: updateData,
+        },
+      });
+
+      if (result.data?.updateInvoice?.success) {
+        setInvoice(editableInvoice);
+        setIsEditMode(false);
+        // Reset any errors
+        setValidationErrors({});
+        setUpdateError(null);
+
+        const appId = numericApplicationId || editableInvoice.applicationId;
+        navigate(`/applications/${appId}?tab=invoices&refresh=true`);
+      } else {
+        setUpdateError(
+          result.data?.updateInvoice?.message || 'Failed to update invoice',
+        );
+      }
+    } catch (error) {
+      setUpdateError(
+        error instanceof Error ? error.message : 'An unknown error occurred',
+      );
+    }
+  };
+
   return (
     <div className="mb-4">
       <div className="d-flex align-items-center mb-3">
         <Button
           variant="secondary"
           className="me-3"
-          onClick={() =>
-            navigate(`/applications/${numericApplicationId}?tab=invoices`)
-          }
+          onClick={() => {
+            // Make sure we have a valid application ID to navigate to
+            const appId =
+              numericApplicationId && !isNaN(numericApplicationId)
+                ? numericApplicationId
+                : invoice?.applicationId && !isNaN(invoice.applicationId)
+                  ? invoice.applicationId
+                  : '';
+            navigate(`/applications/${appId}?tab=invoices`);
+          }}
           title="Back"
         >
           <FaTimes /> Back
@@ -166,9 +376,42 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
               {applicationLoading ? 'Loading...' : appTypeDescription}
             </span>
           </div>
-          <div style={{ fontSize: '1.1em' }}>View Invoice #{invoice.id}</div>
+          <div style={{ fontSize: '1.1em' }}>
+            {isEditMode ? 'Edit' : 'View'} Invoice #{invoice.id}
+          </div>
+        </div>
+        <div>
+          {isEditMode ? (
+            <>
+              <Button
+                variant="primary"
+                className="me-2"
+                onClick={handleSave}
+                disabled={updateLoading}
+              >
+                <FaSave /> {updateLoading ? 'Saving...' : 'Save'}
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={handleEditToggle}
+                disabled={updateLoading}
+              >
+                Cancel
+              </Button>
+            </>
+          ) : (
+            <Button variant="primary" onClick={handleEditToggle}>
+              <FaEdit /> Edit
+            </Button>
+          )}
         </div>
       </div>
+
+      {updateError && (
+        <Alert variant="danger" className="mb-3">
+          {updateError}
+        </Alert>
+      )}
 
       <div>
         <h3 className="mb-4">Invoice Details</h3>
@@ -180,10 +423,20 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
                 <Form.Label>Subject</Form.Label>
                 <Form.Control
                   type="text"
-                  value={invoice.subject}
-                  readOnly
-                  className="bg-light"
+                  name="subject"
+                  value={
+                    isEditMode ? editableInvoice?.subject : invoice.subject
+                  }
+                  onChange={handleInputChange}
+                  readOnly={!isEditMode}
+                  className={!isEditMode ? 'bg-light' : ''}
+                  isInvalid={!!validationErrors.subject}
                 />
+                {validationErrors.subject && (
+                  <Form.Control.Feedback type="invalid">
+                    {validationErrors.subject}
+                  </Form.Control.Feedback>
+                )}
               </FormGroup>
             </Col>
             <Col md={6}>
@@ -216,20 +469,35 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
                 <Form.Label>Due Date</Form.Label>
                 <Form.Control
                   type="date"
-                  value={formatDate(invoice.dueDate)}
-                  readOnly
-                  className="bg-light"
+                  name="dueDate"
+                  value={formatDate(
+                    isEditMode
+                      ? editableInvoice?.dueDate || ''
+                      : invoice.dueDate,
+                  )}
+                  onChange={handleInputChange}
+                  readOnly={!isEditMode}
+                  className={!isEditMode ? 'bg-light' : ''}
+                  isInvalid={!!validationErrors.dueDate}
                 />
+                {validationErrors.dueDate && (
+                  <Form.Control.Feedback type="invalid">
+                    {validationErrors.dueDate}
+                  </Form.Control.Feedback>
+                )}
               </FormGroup>
             </Col>
             <Col md={4} className="d-flex align-items-end">
               <FormGroup className="mb-3">
                 <Form.Check
                   type="checkbox"
+                  name="taxExempt"
                   label="Tax Exempt"
-                  checked={invoice.taxExempt}
-                  readOnly
-                  disabled
+                  checked={
+                    isEditMode ? editableInvoice?.taxExempt : invoice.taxExempt
+                  }
+                  onChange={handleInputChange}
+                  disabled={!isEditMode}
                 />
               </FormGroup>
             </Col>
@@ -239,12 +507,18 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
             <Col md={4}>
               <FormGroup>
                 <Form.Label>Status</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={invoice.status}
-                  readOnly
-                  className="bg-light"
-                />
+                <Form.Select
+                  name="status"
+                  value={isEditMode ? editableInvoice?.status : invoice.status}
+                  onChange={handleInputChange}
+                  disabled={!isEditMode}
+                  className={!isEditMode ? 'bg-light' : ''}
+                >
+                  <option value={InvoiceStatus.Draft}>Draft</option>
+                  <option value={InvoiceStatus.Sent}>Sent</option>
+                  <option value={InvoiceStatus.Received}>Received</option>
+                  <option value={InvoiceStatus.Paid}>Paid</option>
+                </Form.Select>
               </FormGroup>
             </Col>
             <Col md={4}>
@@ -255,6 +529,28 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
                   value={invoice.createdBy || 'N/A'}
                   readOnly
                   className="bg-light"
+                />
+              </FormGroup>
+            </Col>
+          </Row>
+
+          <Row className="mb-3">
+            <Col md={12}>
+              <FormGroup>
+                <Form.Label>Notes</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  name="notes"
+                  value={
+                    isEditMode
+                      ? editableInvoice?.notes || ''
+                      : invoice.notes || ''
+                  }
+                  onChange={handleInputChange}
+                  readOnly={!isEditMode}
+                  className={!isEditMode ? 'bg-light' : ''}
+                  rows={3}
+                  placeholder="Enter any additional notes for this invoice"
                 />
               </FormGroup>
             </Col>
@@ -283,19 +579,133 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
                 </tr>
               </thead>
               <tbody className="content-text">
-                {invoice.lineItems?.map((item, index: number) => (
+                {(isEditMode
+                  ? editableInvoice?.lineItems
+                  : invoice.lineItems
+                )?.map((item, index: number) => (
                   <tr key={item.id}>
                     <td className="table-border-light">
-                      {item.type === InvoiceLineItemType.SERVICE
-                        ? 'Service'
-                        : item.type === InvoiceLineItemType.EXPENSE
-                          ? 'Expense'
-                          : 'Timesheet'}
+                      {isEditMode ? (
+                        <Form.Select
+                          value={item.type}
+                          onChange={(e) =>
+                            handleLineItemChange(
+                              item.id,
+                              'type',
+                              e.target.value,
+                            )
+                          }
+                        >
+                          <option value={InvoiceLineItemType.SERVICE}>
+                            Service
+                          </option>
+                          <option value={InvoiceLineItemType.EXPENSE}>
+                            Expense
+                          </option>
+                          <option value={InvoiceLineItemType.TIMESHEET}>
+                            Timesheet
+                          </option>
+                        </Form.Select>
+                      ) : item.type === InvoiceLineItemType.SERVICE ? (
+                        'Service'
+                      ) : item.type === InvoiceLineItemType.EXPENSE ? (
+                        'Expense'
+                      ) : (
+                        'Timesheet'
+                      )}
                     </td>
-                    <td className="table-border-light">{item.description}</td>
-                    <td className="table-border-light">{item.quantity}</td>
                     <td className="table-border-light">
-                      ${(item.unitPriceInCents / 100).toFixed(2)}
+                      {isEditMode ? (
+                        <>
+                          <Form.Control
+                            type="text"
+                            value={item.description}
+                            onChange={(e) =>
+                              handleLineItemChange(
+                                item.id,
+                                'description',
+                                e.target.value,
+                              )
+                            }
+                            isInvalid={
+                              !!validationErrors[
+                                `lineItem-${index}-description`
+                              ]
+                            }
+                          />
+                          {validationErrors[
+                            `lineItem-${index}-description`
+                          ] && (
+                            <div className="text-danger small">
+                              {
+                                validationErrors[
+                                  `lineItem-${index}-description`
+                                ]
+                              }
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        item.description
+                      )}
+                    </td>
+                    <td className="table-border-light">
+                      {isEditMode ? (
+                        <>
+                          <Form.Control
+                            type="number"
+                            min="0"
+                            step="1"
+                            value={item.quantity}
+                            onChange={(e) =>
+                              handleLineItemChange(
+                                item.id,
+                                'quantity',
+                                Number(e.target.value),
+                              )
+                            }
+                            isInvalid={
+                              !!validationErrors[`lineItem-${index}-quantity`]
+                            }
+                          />
+                          {validationErrors[`lineItem-${index}-quantity`] && (
+                            <div className="text-danger small">
+                              {validationErrors[`lineItem-${index}-quantity`]}
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        item.quantity
+                      )}
+                    </td>
+                    <td className="table-border-light">
+                      {isEditMode ? (
+                        <>
+                          <Form.Control
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={(item.unitPriceInCents / 100).toFixed(2)}
+                            onChange={(e) =>
+                              handleLineItemChange(
+                                item.id,
+                                'unitPriceInCents',
+                                Math.round(Number(e.target.value) * 100),
+                              )
+                            }
+                            isInvalid={
+                              !!validationErrors[`lineItem-${index}-unitPrice`]
+                            }
+                          />
+                          {validationErrors[`lineItem-${index}-unitPrice`] && (
+                            <div className="text-danger small">
+                              {validationErrors[`lineItem-${index}-unitPrice`]}
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        `$${(item.unitPriceInCents / 100).toFixed(2)}`
+                      )}
                     </td>
                     <td className="table-border-light">
                       ${(item.totalInCents / 100).toFixed(2)}
@@ -311,20 +721,48 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
             <Col md={6}>
               <div className="d-flex justify-content-between mb-2">
                 <strong>Subtotal:</strong>
-                <span>${(invoice.subtotalInCents / 100).toFixed(2)}</span>
+                <span>
+                  $
+                  {(
+                    (isEditMode && editableInvoice
+                      ? editableInvoice.subtotalInCents
+                      : invoice.subtotalInCents) / 100
+                  ).toFixed(2)}
+                </span>
               </div>
               <div className="d-flex justify-content-between mb-2">
                 <strong>GST:</strong>
-                <span>${(invoice.gstInCents / 100).toFixed(2)}</span>
+                <span>
+                  $
+                  {(
+                    (isEditMode && editableInvoice
+                      ? editableInvoice.gstInCents
+                      : invoice.gstInCents) / 100
+                  ).toFixed(2)}
+                </span>
               </div>
               <div className="d-flex justify-content-between mb-2">
                 <strong>PST:</strong>
-                <span>${(invoice.pstInCents / 100).toFixed(2)}</span>
+                <span>
+                  $
+                  {(
+                    (isEditMode && editableInvoice
+                      ? editableInvoice.pstInCents
+                      : invoice.pstInCents) / 100
+                  ).toFixed(2)}
+                </span>
               </div>
               <hr />
               <div className="d-flex justify-content-between mb-2">
                 <strong>Total:</strong>
-                <strong>${(invoice.totalInCents / 100).toFixed(2)}</strong>
+                <strong>
+                  $
+                  {(
+                    (isEditMode && editableInvoice
+                      ? editableInvoice.totalInCents
+                      : invoice.totalInCents) / 100
+                  ).toFixed(2)}
+                </strong>
               </div>
             </Col>
           </Row>
