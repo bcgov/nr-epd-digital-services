@@ -49,6 +49,16 @@ export class AppStatus {
   @Column('timestamp without time zone', { name: 'updated_date_time' })
   updatedDateTime: Date;
 
+  @Column('character varying', { name: 'form_id', length: 50, nullable: true })
+  formId: string | null;
+
+  @Column('character varying', {
+    name: 'submission_id',
+    length: 50,
+    nullable: true,
+  })
+  submissionId: string | null;
+
   @Column('bytea', { name: 'ts' })
   ts: Buffer;
 

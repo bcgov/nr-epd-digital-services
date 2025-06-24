@@ -34,11 +34,18 @@ export class CatsService {
   `,
       variables: {
         application: {
-          formId: formId,
-          submissionId: submissionId,
           siteId: Number(formData.siteId),            // Float!
           appTypeAbbrev: formData.hdnAppType,           // String!
-          receivedDate: new Date() // DateTime!
+          receivedDate: new Date(),
+          applicationStatus: [
+            {
+              statusTypeAbbrev: 'New',
+              isCurrent: true,
+              applicationId: 0,// Will be overwritten by the backend
+              formId: formId,
+              submissionId: submissionId,
+            }
+          ]
         }
       }
     };

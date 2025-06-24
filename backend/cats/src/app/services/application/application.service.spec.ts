@@ -6,12 +6,16 @@ import { Application } from '../../entities/application.entity';
 import { AppTypeService } from '../appType/appType.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { AppStatus } from '../../entities/appStatus.entity';
+import { StatusTypeService } from '../statusType/statusType.service';
 
 describe('ApplicationService', () => {
   let applicationService: ApplicationService;
   let applicationRepository: Repository<Application>;
+  let appStatusRepository: Repository<AppStatus>;
   let loggerService: LoggerService;
   let appTypeService: AppTypeService;
+  let statusTypeService: StatusTypeService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -20,12 +24,28 @@ describe('ApplicationService', () => {
         {
           provide: AppTypeService,
           useValue: {
-            getAppTypeByDescription: jest.fn(),
+            getAppTypeByAbbrev: jest.fn(),
           },
         },
         {
-          provide: getRepositoryToken(Application), // ✅ Correctly mock Repository<Application>
-          useClass: Repository, // ✅ This ensures it's treated as a repository
+          provide: StatusTypeService,
+          useValue: {
+            getStatusTypeByAbbrev: jest.fn(),
+          },
+        },
+        {
+          provide: getRepositoryToken(Application),
+          useValue: {
+            create: jest.fn(),
+            save: jest.fn(),
+          },
+        },
+        {
+          provide: getRepositoryToken(AppStatus),
+          useValue: {
+            create: jest.fn(),
+            save: jest.fn(),
+          },
         },
         {
           provide: LoggerService,
@@ -41,42 +61,62 @@ describe('ApplicationService', () => {
 
     applicationService = module.get<ApplicationService>(ApplicationService);
     appTypeService = module.get<AppTypeService>(AppTypeService);
-    applicationRepository = module.get<Repository<Application>>(
-      getRepositoryToken(Application),
-    ); // ✅ Correctly get repository
+    statusTypeService = module.get<StatusTypeService>(StatusTypeService);
+    applicationRepository = module.get<Repository<Application>>(getRepositoryToken(Application));
+    appStatusRepository = module.get<Repository<AppStatus>>(getRepositoryToken(AppStatus));
     loggerService = module.get<LoggerService>(LoggerService);
   });
+
 
   describe('createApplication', () => {
     it('should create an application successfully', async () => {
       const mockCreateApplication = {
-        formId: '67e70d854d238fa5ddcfc3b0',
-        submissionId: '54f678b8-963e-449c-a414-71a21b5e0b66',
         siteId: 67890,
         appTypeAbbrev: 'CSR',
         receivedDate: new Date(),
+        applicationStatus: [
+          {
+            statusTypeAbbrev: 'New',
+            isCurrent: true,
+            applicationId: 0,
+            formId: '67e70d854d238fa5ddcfc3b0',
+            submissionId: '54f678b8-963e-449c-a414-71a21b5e0b66',
+          },
+        ],
       };
 
       const mockAppType = { id: 1 };
+      const mockStatusType = { id: 1 };
       const mockNewApplication = { id: 1 };
+      const mockAppStatusEntity = {
+        id: 10,
+        isCurrent: true,
+        statusTypeId: 1,
+        application: mockNewApplication,
+      };
 
-      appTypeService.getAppTypeByAbbrev = jest
-        .fn()
-        .mockResolvedValue(mockAppType);
-      applicationRepository.create = jest
-        .fn()
-        .mockReturnValue(mockNewApplication);
-      applicationRepository.save = jest
-        .fn()
-        .mockResolvedValue(mockNewApplication);
+      // Mock external service and repo calls
+      (appTypeService.getAppTypeByAbbrev as jest.Mock).mockResolvedValue(mockAppType);
+      (statusTypeService.getStatusTypeByAbbrev as jest.Mock).mockResolvedValue(mockAppType);
+      (applicationRepository.create as jest.Mock).mockReturnValue(mockNewApplication);
+      (applicationRepository.save as jest.Mock).mockResolvedValue(mockNewApplication);
+      (appStatusRepository.create as jest.Mock).mockReturnValue(mockAppStatusEntity);
+      (appStatusRepository.save as jest.Mock).mockResolvedValue([mockAppStatusEntity]);
+      (applicationRepository.save as jest.Mock).mockResolvedValue({
+        ...mockNewApplication,
+        appStatus: mockAppStatusEntity,
+      });
 
-      const result = await applicationService.createApplication(
-        mockCreateApplication,
-      );
+      const result = await applicationService.createApplication(mockCreateApplication);
 
       expect(appTypeService.getAppTypeByAbbrev).toHaveBeenCalledWith('CSR');
+      expect(statusTypeService.getStatusTypeByAbbrev).toHaveBeenCalledWith('New');
       expect(applicationRepository.create).toHaveBeenCalled();
-      expect(applicationRepository.save).toHaveBeenCalled();
+      expect(applicationRepository.save).toHaveBeenCalledTimes(1);
+      expect(appStatusRepository.create).toHaveBeenCalled();
+      expect(appStatusRepository.save).toHaveBeenCalled();
+      expect(appStatusRepository.save).toHaveBeenCalledTimes(1);
+
       expect(result).toEqual({ id: 1 });
     });
   });

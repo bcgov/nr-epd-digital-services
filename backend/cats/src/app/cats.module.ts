@@ -87,6 +87,7 @@ import { StaffAssignmentResolver } from './resolvers/assignment/staffAssignment.
 import { TimesheetDay } from './entities/timesheetDay.entity';
 import { TimesheetDayService } from './services/timesheetDay.service';
 import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
+import { StatusTypeService } from './services/statusType/statusType.service';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -168,6 +169,7 @@ import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
     ApplicationService,
     ApplicationDetailsResolver,
     AppTypeService,
+    StatusTypeService,
     SiteResolver,
     SiteService,
     InvoiceResolver,
@@ -186,4 +188,4 @@ import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
   ],
   controllers: [UserController],
 })
-export class CatsModule {}
+export class CatsModule { }
