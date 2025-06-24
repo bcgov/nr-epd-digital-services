@@ -51,8 +51,6 @@ describe('CatsService', () => {
           query: expect.stringContaining('mutation CreateNewApplication'),
           variables: {
             application: {
-              formId: mockFormId,
-              submissionId: mockSubmissionId,
               siteId: mockFormData.siteId,
               appTypeAbbrev: mockFormData.hdnAppType,
               receivedDate: isoDate,
@@ -61,6 +59,8 @@ describe('CatsService', () => {
                   statusTypeId: 1,
                   isCurrent: true,
                   applicationId: 0,
+                  formId: mockFormId,
+                  submissionId: mockSubmissionId,
                 },
               ],
             },

@@ -100,15 +100,23 @@ describe('FormController', () => {
 
   it('should update form submission', async () => {
     const response = { success: true };
+
+    const mockRequest = {
+      headers: { origin: 'https://example.com' },
+    } as unknown as Request;
+
     mockFormService.update.mockResolvedValue(response);
-    const result = await controller.updateSubmission('abc', '123', { data: { test: true } });
+    const result = await controller.updateSubmission('abc', '123', { data: { test: true } }, mockRequest);
     expect(result).toEqual(response);
   });
 
   it('should partially update form submission', async () => {
     const response = { patched: true };
     mockFormService.partialUpdate.mockResolvedValue(response);
-    const result = await controller.partialUpdateSubmission('abc', '123', { data: { patch: true } });
+    const mockRequest = {
+      headers: { origin: 'https://example.com' },
+    }
+    const result = await controller.partialUpdateSubmission('abc', '123', { data: { patch: true } }, mockRequest);
     expect(result).toEqual(response);
   });
 });

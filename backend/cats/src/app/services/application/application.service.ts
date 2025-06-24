@@ -20,7 +20,7 @@ export class ApplicationService {
     private readonly appStatusRepository: Repository<AppStatus>,
     private readonly loggerService: LoggerService,
     private readonly appTypeService: AppTypeService,
-    private readonly dashboardService: DashboardService
+    private readonly dashboardService: DashboardService,
     private readonly statusTypeService: StatusTypeService,
   ) { }
 

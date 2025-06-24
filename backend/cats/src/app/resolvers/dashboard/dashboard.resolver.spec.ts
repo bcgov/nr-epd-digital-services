@@ -34,8 +34,6 @@ const mockRecentViewedApplications: RecentViewedApplication[] = [
       updatedDateTime: new Date('2024-01-01T09:00:00Z'),
       ts: Buffer.from([]),
       csapRefNumber: null,
-      formId: null,
-      submissionId: null,
       // other properties can be left undefined or empty arrays for relations
     } as Application,
   },
@@ -65,8 +63,6 @@ const mockRecentViewedApplications: RecentViewedApplication[] = [
       updatedDateTime: new Date('2024-02-01T09:00:00Z'),
       ts: Buffer.from([]),
       csapRefNumber: null,
-      formId: null,
-      submissionId: null,
     } as Application,
   },
 ];
