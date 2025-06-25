@@ -65,8 +65,8 @@ jobs:
     secrets: inherit
     needs: [get-pr-info]
     with:
-      triggers: ('charts/crunchy/' '.github/workflows/merge-dev-cats.yml')
-      # triggers: ('charts/crunchy/')
+      # Note: doesn't seem to trigger properly if changing eg charts/crunchy/templates/PostgresCluster.yaml without making it expicit
+      triggers: ('charts/crunchy/' 'charts/crunchy/templates/PostgresCluster.yaml' '.github/workflows/merge-dev-cats.yml')
       values: 'values-dev.yaml'
       app_values:  'values-test.yaml' 
       environment: test
