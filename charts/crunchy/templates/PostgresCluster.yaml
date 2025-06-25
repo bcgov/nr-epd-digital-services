@@ -229,4 +229,5 @@ spec:
                       {{ template "crunchy-postgres.fullname" . }}
                     postgres-operator.crunchydata.com/role: pgbouncer
   {{- end }}
+    openshift: true
   {{- end }}
