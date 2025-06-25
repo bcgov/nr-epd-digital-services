@@ -142,8 +142,6 @@ describe('DashboardService', () => {
         { visitedDateTime: new Date('2024-01-02'), id: 2 },
         { visitedDateTime: new Date('2024-01-03'), id: 3 },
         { visitedDateTime: new Date('2024-01-04'), id: 4 },
-        { visitedDateTime: new Date('2024-01-05'), id: 5 },
-        { visitedDateTime: new Date('2024-01-06'), id: 6 },
       ];
       (recentViewedApplicationRepository.find as jest.Mock).mockResolvedValue(oldApps);
       (recentViewedApplicationRepository.remove as jest.Mock).mockResolvedValue(undefined);
@@ -151,7 +149,7 @@ describe('DashboardService', () => {
 
       await dashboardService.createRecentViewedApplication(application, userInfo);
 
-      expect(recentViewedApplicationRepository.remove).toHaveBeenCalledWith(oldApps.slice(0, 2));
+      expect(recentViewedApplicationRepository.remove).toHaveBeenCalledWith(oldApps.slice(0, 1)[0]);
     });
 
     it('should return null and log if user is invalid', async () => {

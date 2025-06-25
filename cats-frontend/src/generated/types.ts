@@ -144,6 +144,15 @@ export enum ApplicationSortByField {
   Status = 'STATUS'
 }
 
+export type ApplicationStatusDto = {
+  applicationId: Scalars['Float']['input'];
+  formId: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['Float']['input']>;
+  isCurrent: Scalars['Boolean']['input'];
+  statusTypeAbbrev: Scalars['String']['input'];
+  submissionId: Scalars['String']['input'];
+};
+
 export type CreateAppParticipantDto = {
   applicationId: Scalars['Float']['input'];
   createdBy?: InputMaybe<Scalars['String']['input']>;
@@ -167,10 +176,9 @@ export type CreateAppParticipantsResponse = {
 
 export type CreateApplication = {
   appTypeAbbrev: Scalars['String']['input'];
-  formId: Scalars['String']['input'];
+  applicationStatus: Array<ApplicationStatusDto>;
   receivedDate: Scalars['DateTime']['input'];
   siteId: Scalars['Float']['input'];
-  submissionId: Scalars['String']['input'];
 };
 
 export type CreatePerson = {

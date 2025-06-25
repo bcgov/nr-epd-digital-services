@@ -31,7 +31,7 @@ export const DashboardCardsWidget: React.FC<DashboardWidgetProps> = ({
     >
       {data && data.length > 0 ? (
         <div className="dashboard-card-container">
-          {data?.map((application: any, index: number) => (
+          {[...data]?.reverse()?.map((application: any, index: number) => (
             <div
               key={index}
               className="dashboard-card"
