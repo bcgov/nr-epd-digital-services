@@ -64,7 +64,7 @@ jobs:
     name: Deploys Database (test)
     uses: ./.github/workflows/.dbdeployer.yml
     secrets: inherit
-    needs: [get-pr-info]
+    # needs: [get-pr-info] #todo revert this
     with:
       # Note: doesn't seem to trigger properly if changing eg charts/crunchy/templates/PostgresCluster.yaml without making it expicit
       triggers: ('charts/crunchy/' 'charts/crunchy/templates/PostgresCluster.yaml' '.github/workflows/merge-dev-cats.yml')
