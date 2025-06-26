@@ -7,4 +7,5 @@ export class UpdateApplicationStatusDto extends PickType(ApplicationStatusDto, [
     'formId',
     'submissionId',
     'formsflowAppId',
+    'statusTypeAbbrev',
 ]) { }

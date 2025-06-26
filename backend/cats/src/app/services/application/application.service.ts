@@ -111,24 +111,56 @@ export class ApplicationService {
     this.loggerService.log('ApplicationService.updateFormsflowAppId() start'); // Log the start of the method
 
     try {
-      const { formId, submissionId, formsflowAppId } = appStatusInput;
+      const { formId, submissionId, formsflowAppId, statusTypeAbbrev } = appStatusInput;
 
-      const appStatus = await this.appStatusRepository.findOne({
+      let appStatus = await this.appStatusRepository.findOne({
         where: { formId, submissionId },
       });
 
       if (!appStatus) {
-        // If matching app status is not found, log a warning and throw an exception
-        this.loggerService.warn(`No AppStatus found for formId=${formId} and submissionId=${submissionId}`);
-        throw new HttpException('AppStatus not found', HttpStatus.NOT_FOUND);
+
+        const existingAppStatus = await this.appStatusRepository.findOne({
+          where: { formsflowAppId },
+        });
+
+        const applicationId = existingAppStatus?.applicationId;
+
+        const statusType = await this.statusTypeService.getStatusTypeByAbbrev(statusTypeAbbrev);
+
+        appStatus = this.appStatusRepository.create({
+          applicationId,
+          formId,
+          submissionId,
+          formsflowAppId,
+          statusTypeId: statusType.id,
+          isCurrent: true,
+          rowVersionCount: 1,
+          ts: Buffer.from(new Date().toISOString()),
+          createdBy: 'SYSTEM',
+          createdDateTime: new Date(),
+          updatedBy: 'SYSTEM',
+          updatedDateTime: new Date(),
+        });
+
+        await this.appStatusRepository.save(appStatus);
+      } else {
+
+        appStatus.formsflowAppId = formsflowAppId;
+        appStatus.updatedBy = 'SYSTEM';
+        appStatus.updatedDateTime = new Date();
+        appStatus.isCurrent = true;
+
+        await this.appStatusRepository.save(appStatus);
       }
 
-      appStatus.formsflowAppId = formsflowAppId;
-      appStatus.updatedBy = 'SYSTEM';
-      appStatus.updatedDateTime = new Date();
-      appStatus.isCurrent = true;
-
-      await this.appStatusRepository.save(appStatus);
+      // Set isCurrent = false for all other entries with the same formsflowAppId but different formId/submissionId
+      await this.appStatusRepository
+        .createQueryBuilder()
+        .update()
+        .set({ isCurrent: false })
+        .where('formsflowAppId = :formsflowAppId', { formsflowAppId })
+        .andWhere('NOT (formId = :formId AND submissionId = :submissionId)', { formId, submissionId })
+        .execute();
 
       // Log success
       this.loggerService.log(`App Status successfully with Formsflow App ID: ${formsflowAppId}`);

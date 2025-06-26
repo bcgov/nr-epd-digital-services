@@ -99,6 +99,7 @@ export class CatsService {
           submissionId: submissionId,
           formId: formId,
           formsflowAppId: Number(formData.applicationId),
+          statusTypeAbbrev: formData.applicationStatus,
         }
       },
     };
