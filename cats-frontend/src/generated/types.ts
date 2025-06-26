@@ -597,8 +597,8 @@ export type QueryGetAllActiveStaffMembersForApplicationServiceTypeArgs = {
 };
 
 
-export type QueryGetAllActiveStaffMembersForApplicationServiceTypeArgs = {
-  applicationServiceTypeId: Scalars['Int']['input'];
+export type QueryGetAllParticipantRolesArgs = {
+  roleType?: InputMaybe<Scalars['String']['input']>;
 };
 
 
