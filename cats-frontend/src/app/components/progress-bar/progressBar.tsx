@@ -18,10 +18,10 @@ const CustomProgressBar: React.FC<ProgressBarProps> = ({ inputValue }) => {
   };
 
   const getTextColorForProgressBar = (value: number): string => {
-    if (value > 160) return 'white'; // when black
-    if (value > 120) return 'white'; // when red
-    if (value > 80) return 'white'; // when amber
-    if (value > 40) return 'black'; // when yellow
+    if (value > 160) return 'white';
+    if (value > 120) return 'white';
+    if (value > 80) return 'white';
+    if (value > 40) return 'black';
     return 'white'; // green
   };
 
