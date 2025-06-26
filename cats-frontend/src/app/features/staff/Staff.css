@@ -16,10 +16,6 @@ a.custom-staff-edit-lbl {
   color: var(--surface-color-primary-default, #053662);
 }
 
-.custom-header {
-  font-family: Noto Sans;
-}
-
 .custom-tbl-header {
   text-align: center;
   vertical-align: middle;
@@ -71,4 +67,28 @@ a.custom-apps-modal-lbl {
   text-decoration-style: solid;
   text-decoration-thickness: 0%;
   color: var(--typography-color-link, #255a90);
+}
+
+.custom-staff-header {
+  font-family: Noto Sans;
+  vertical-align: middle;
+  min-width: 100px;
+}
+
+.custom-staff-tbl-header {
+  font-family: Noto Sans;
+  text-align: center;
+  vertical-align: middle;
+  min-width: 100px;
+}
+
+@media (max-width: 576px) {
+  .custom-staff-column-position {
+    position: sticky;
+    right: 0;
+    z-index: 1;
+    box-shadow:
+      -3px 0 3px 0 #00000021,
+      -0.6px 0 1.8px 0 #0000001a !important;
+  }
 }

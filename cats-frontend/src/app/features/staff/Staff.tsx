@@ -1,15 +1,12 @@
 import { useState } from 'react';
 import { Button } from '../../components/button/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {
-  staffApplicationsColumns,
-  StaffDashboardColumns,
-} from './StaffDashboardConfig';
+import { staffApplicationsColumns, StaffColumns } from './StaffConfig';
 import {
   useGetApplicationsByStaffQuery,
   useGetRolesQuery,
   useGetStaffsQuery,
-} from './graphql/StaffDashboard.generated';
+} from './graphql/Staff.generated';
 import {
   ApplicationSortByDirection,
   Filter,
@@ -19,14 +16,14 @@ import { AngleLeft, Plus } from '../../components/common/icon';
 import PageContainer from '../../components/simple/PageContainer';
 import Widget from '../../components/widget/Widget';
 import FilterControls from './FilterControls';
-import './StaffDashboard.css';
+import './Staff.css';
 import { RequestStatus } from '@cats/helpers/requests/status';
 import { TableColumn } from '@cats/components/table/TableColumn';
 import ModalDialog from '@cats/components/modaldialog/ModalDialog';
 import { DropdownInput } from '@cats/components/input-controls/InputControls';
 import { FormFieldType } from '@cats/components/input-controls/IFormField';
 
-interface IStaffDashboard {
+interface IStaff {
   page: number;
   pageSize: number;
   sortBy: StaffSortByField;
@@ -34,14 +31,14 @@ interface IStaffDashboard {
   filter?: Filter;
 }
 
-interface IModalState extends IStaffDashboard {
+interface IModalState extends IStaff {
   isModalOpen: boolean;
   personId: number;
   personName: string;
   roleId?: number | null;
 }
 
-const StaffDashboard = () => {
+const Staff = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const fromScreen = location.state?.from || '';
@@ -56,7 +53,7 @@ const StaffDashboard = () => {
     personName: '',
   });
 
-  const [queryState, setQueryState] = useState<IStaffDashboard>({
+  const [queryState, setQueryState] = useState<IStaff>({
     page: 1,
     pageSize: 5,
     filter: Filter.All,
@@ -128,7 +125,7 @@ const StaffDashboard = () => {
         sortByDir: newSortByDir,
       }));
     } else {
-      setQueryState((prev: IStaffDashboard) => ({
+      setQueryState((prev: IStaff) => ({
         ...prev,
         sortBy: sortField,
         sortByDir: newSortByDir,
@@ -147,7 +144,7 @@ const StaffDashboard = () => {
 
   const handleTableChange = (event: any) => {
     if (event?.property?.includes('view')) {
-      setQueryModalState((prev: IStaffDashboard) => ({
+      setQueryModalState((prev: IStaff) => ({
         ...prev,
         page: 1,
         pageSize: 5,
@@ -186,16 +183,16 @@ const StaffDashboard = () => {
         primaryKeycolumnName="id"
         showPageOptions={true}
         selectPage={(page) => {
-          setQueryState((prev: IStaffDashboard) => ({ ...prev, page }));
+          setQueryState((prev: IStaff) => ({ ...prev, page }));
         }}
         changeResultsPerPage={(pageSize) => {
-          setQueryState((prev: IStaffDashboard) => ({
+          setQueryState((prev: IStaff) => ({
             ...prev,
             pageSize,
             page: 1,
           }));
         }}
-        tableColumns={StaffDashboardColumns}
+        tableColumns={StaffColumns}
         currentPage={queryState?.page}
         resultsPerPage={queryState?.pageSize}
         tableData={data?.getStaffs?.data ?? []}
@@ -206,7 +203,7 @@ const StaffDashboard = () => {
               setShowFilterSelect(!showFilterSelect);
             }}
             handleFilterChange={(filter) => {
-              setQueryState((prev: IStaffDashboard) => ({
+              setQueryState((prev: IStaff) => ({
                 ...prev,
                 filter,
                 page: 1,
@@ -308,4 +305,4 @@ const StaffDashboard = () => {
   );
 };
 
-export default StaffDashboard;
+export default Staff;
