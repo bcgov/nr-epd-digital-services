@@ -132,15 +132,6 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
       formValues.pstInCents !== pstInCents ||
       formValues.totalInCents !== totalInCents
     ) {
-      console.log('Tax recalculation in useEffect:', {
-        taxExempt: formValues.taxExempt,
-        pstExempt: formValues.pstExempt,
-        subtotal: subtotalInCents,
-        gst: gstInCents,
-        pst: pstInCents,
-        total: totalInCents,
-      });
-
       setFormValues((prev) => ({
         ...prev,
         subtotalInCents,

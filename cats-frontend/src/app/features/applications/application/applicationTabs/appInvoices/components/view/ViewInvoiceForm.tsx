@@ -118,15 +118,6 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
       editableInvoice.pstInCents !== pst ||
       editableInvoice.totalInCents !== total
     ) {
-      console.log('Tax recalculation in useEffect:', {
-        taxExempt: editableInvoice.taxExempt,
-        pstExempt: editableInvoice.pstExempt,
-        subtotal: subtotal,
-        gst: gst,
-        pst: pst,
-        total: total,
-      });
-
       setEditableInvoice((prev) => {
         if (!prev) return null;
         return {
