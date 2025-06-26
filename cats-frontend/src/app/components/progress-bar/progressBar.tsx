@@ -22,7 +22,7 @@ const CustomProgressBar: React.FC<ProgressBarProps> = ({ inputValue }) => {
     if (value > 120) return 'white';
     if (value > 80) return 'white';
     if (value > 40) return 'black';
-    return 'white'; // green
+    return 'white';
   };
 
   return (
