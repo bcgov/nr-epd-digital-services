@@ -57,6 +57,8 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
   useEffect(() => {
     if (recipientSearch && recipientSearch.length >= 2) {
       getParticipantNames({ variables: { searchParam: recipientSearch } });
+    } else {
+      setRecipients([]); // Clear dropdown when search is too short. This prevents showing stale results.
     }
   }, [recipientSearch, getParticipantNames]);
 
@@ -69,6 +71,7 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
       .split('T')[0], // 30 days from now
     status: InvoiceStatus.Draft,
     taxExempt: false,
+    pstExempt: false,
     subtotalInCents: 0,
     gstInCents: 0,
     pstInCents: 0,
@@ -102,28 +105,75 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
     },
   });
 
+  // This useEffect is responsible for calculating and updating all tax-related values
+  // whenever taxExempt, pstExempt, or lineItems change
+  useEffect(() => {
+    const subtotalInCents = formValues.lineItems.reduce(
+      (sum, item) => sum + (item.totalInCents || 0),
+      0,
+    );
+
+    // Calculate taxes based on tax exempt checkboxes
+    const gstInCents = formValues.taxExempt
+      ? 0
+      : Math.round(subtotalInCents * 0.05);
+
+    const pstInCents =
+      formValues.taxExempt || formValues.pstExempt
+        ? 0
+        : Math.round(subtotalInCents * 0.07);
+
+    const totalInCents = subtotalInCents + gstInCents + pstInCents;
+
+    // Only update if values have changed
+    if (
+      formValues.subtotalInCents !== subtotalInCents ||
+      formValues.gstInCents !== gstInCents ||
+      formValues.pstInCents !== pstInCents ||
+      formValues.totalInCents !== totalInCents
+    ) {
+      console.log('Tax recalculation in useEffect:', {
+        taxExempt: formValues.taxExempt,
+        pstExempt: formValues.pstExempt,
+        subtotal: subtotalInCents,
+        gst: gstInCents,
+        pst: pstInCents,
+        total: totalInCents,
+      });
+
+      setFormValues((prev) => ({
+        ...prev,
+        subtotalInCents,
+        gstInCents,
+        pstInCents,
+        totalInCents,
+      }));
+    }
+  }, [formValues.taxExempt, formValues.pstExempt, formValues.lineItems]);
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
     const { name, value, type } = e.target;
+    const isCheckbox = type === 'checkbox';
+    const checked = isCheckbox ? (e.target as HTMLInputElement).checked : false;
 
-    const newValue =
-      type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
-
-    setFormValues((prev) => ({
-      ...prev,
-      [name]: newValue,
-    }));
-
-    // If tax exempt checkbox is changed, recalculate totals immediately
-    if (name === 'taxExempt') {
-      calculateTotals();
+    // Special case for taxExempt to ensure pstExempt is handled appropriately
+    if (name === 'taxExempt' && isCheckbox) {
+      // If tax exempt is toggled
+      setFormValues((prev) => ({
+        ...prev,
+        taxExempt: checked,
+        // If tax exempt is checked, disable PST exempt
+        pstExempt: checked ? false : prev.pstExempt,
+      }));
+    } else {
+      // For all other fields including pstExempt, simple update
+      setFormValues((prev) => ({
+        ...prev,
+        [name]: isCheckbox ? checked : value,
+      }));
     }
-  };
-
-  const handleBlur = () => {
-    // Recalculate totals when input loses focus
-    calculateTotals();
   };
 
   const handleLineItemChange = (
@@ -164,6 +214,7 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
         };
       }
 
+      // Update line items only - tax calculations happen in useEffect
       return {
         ...prev,
         lineItems: updatedLineItems,
@@ -185,9 +236,6 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
         },
       ],
     }));
-
-    // Calculate totals after adding a line item
-    setTimeout(calculateTotals, 0);
   };
 
   const removeLineItem = (index: number) => {
@@ -202,37 +250,10 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
         lineItems: updatedLineItems,
       };
     });
-
-    // Calculate totals after removing a line item
-    setTimeout(calculateTotals, 0);
-  };
-
-  const calculateTotals = () => {
-    const subtotalInCents = formValues.lineItems.reduce(
-      (sum, item) => sum + (item.totalInCents || 0),
-      0,
-    );
-
-    const gstInCents = formValues.taxExempt
-      ? 0
-      : Math.round(subtotalInCents * 0.05);
-    const pstInCents = formValues.taxExempt
-      ? 0
-      : Math.round(subtotalInCents * 0.07);
-    const totalInCents = subtotalInCents + gstInCents + pstInCents;
-
-    setFormValues((prev) => ({
-      ...prev,
-      subtotalInCents,
-      gstInCents,
-      pstInCents,
-      totalInCents,
-    }));
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    calculateTotals();
 
     // Validate recipient is selected
     if (!formValues.recipientId || isNaN(parseInt(formValues.recipientId))) {
@@ -251,6 +272,7 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
       dueDate: new Date(formValues.dueDate),
       status: formValues.status,
       taxExempt: formValues.taxExempt,
+      pstExempt: formValues.pstExempt,
       subtotalInCents: formValues.subtotalInCents,
       gstInCents: formValues.gstInCents,
       pstInCents: formValues.pstInCents,
@@ -343,10 +365,14 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
                             // Ensure recipientId is set as a valid string that can be parsed as int
                             const numericId = parseInt(recipient.key);
                             if (!isNaN(numericId)) {
-                              setFormValues({
-                                ...formValues,
+                              setFormValues((prev) => ({
+                                ...prev,
                                 recipientId: recipient.key,
-                              });
+                              }));
+                              // Update the search field with the selected name
+                              setRecipientSearch(recipient.value);
+                              // Clear recipients array to hide dropdown
+                              setRecipients([]);
                             }
                           }}
                         >
@@ -397,12 +423,22 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
               </FormGroup>
             </Col>
             <Col md={4} className="d-flex align-items-end">
-              <FormGroup className="mb-3">
+              <FormGroup className="mb-3 me-3">
                 <Form.Check
                   type="checkbox"
                   name="taxExempt"
                   label="Tax Exempt"
                   checked={formValues.taxExempt}
+                  onChange={handleChange}
+                />
+              </FormGroup>
+              <FormGroup className="mb-3">
+                <Form.Check
+                  type="checkbox"
+                  name="pstExempt"
+                  label="PST Exempt"
+                  checked={formValues.pstExempt}
+                  disabled={formValues.taxExempt}
                   onChange={handleChange}
                 />
               </FormGroup>
@@ -489,7 +525,6 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
                         name="quantity"
                         value={item.quantity}
                         onChange={(e) => handleLineItemChange(index, e)}
-                        onBlur={handleBlur}
                         min="1"
                         required
                         className="custom-input"
@@ -509,7 +544,6 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
                               : ''
                           }
                           onChange={(e) => handleLineItemChange(index, e)}
-                          onBlur={handleBlur}
                           step="0.01"
                           min="0"
                           required

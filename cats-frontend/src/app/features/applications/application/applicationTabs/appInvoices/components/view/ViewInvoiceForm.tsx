@@ -33,6 +33,7 @@ interface InvoiceViewModel {
   dueDate: string;
   status: InvoiceStatus;
   taxExempt: boolean;
+  pstExempt: boolean;
   subtotalInCents: number;
   gstInCents: number;
   pstInCents: number;
@@ -93,6 +94,57 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
     useUpdateInvoiceMutation();
 
   useEffect(() => {
+    if (!editableInvoice) return;
+
+    // Calculate subtotal from all line items
+    const subtotal = editableInvoice.lineItems.reduce(
+      (sum, item) => sum + (item.totalInCents || 0),
+      0,
+    );
+
+    // Calculate taxes based on tax exempt status
+    const gst = editableInvoice.taxExempt ? 0 : Math.round(subtotal * 0.05); // 5% GST
+    const pst =
+      editableInvoice.taxExempt || editableInvoice.pstExempt
+        ? 0
+        : Math.round(subtotal * 0.07); // 7% PST
+
+    const total = subtotal + gst + pst;
+
+    // Only update if values have changed
+    if (
+      editableInvoice.subtotalInCents !== subtotal ||
+      editableInvoice.gstInCents !== gst ||
+      editableInvoice.pstInCents !== pst ||
+      editableInvoice.totalInCents !== total
+    ) {
+      console.log('Tax recalculation in useEffect:', {
+        taxExempt: editableInvoice.taxExempt,
+        pstExempt: editableInvoice.pstExempt,
+        subtotal: subtotal,
+        gst: gst,
+        pst: pst,
+        total: total,
+      });
+
+      setEditableInvoice((prev) => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          subtotalInCents: subtotal,
+          gstInCents: gst,
+          pstInCents: pst,
+          totalInCents: total,
+        };
+      });
+    }
+  }, [
+    editableInvoice?.taxExempt,
+    editableInvoice?.pstExempt,
+    editableInvoice?.lineItems,
+  ]);
+
+  useEffect(() => {
     if (invoiceData?.getInvoiceById?.invoice) {
       // Map the GraphQL response to our view model
       const invoiceResponse = invoiceData.getInvoiceById.invoice;
@@ -105,6 +157,7 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
         dueDate: invoiceResponse.dueDate,
         status: invoiceResponse.status,
         taxExempt: invoiceResponse.taxExempt,
+        pstExempt: invoiceResponse.pstExempt || false, // Default to false for backward compatibility
         subtotalInCents: invoiceResponse.subtotalInCents,
         gstInCents: invoiceResponse.gstInCents,
         pstInCents: invoiceResponse.pstInCents,
@@ -181,10 +234,25 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
     setEditableInvoice((prev) => {
       if (!prev) return null;
 
-      return {
-        ...prev,
-        [name]: type === 'checkbox' ? checked : value,
-      };
+      let updatedInvoice;
+
+      // Handle special case for taxExempt
+      if (name === 'taxExempt' && type === 'checkbox') {
+        // If taxExempt is checked, also disable pstExempt
+        updatedInvoice = {
+          ...prev,
+          taxExempt: checked,
+          // Disable PST exempt when tax exempt is checked
+          pstExempt: checked ? false : prev.pstExempt,
+        };
+      } else {
+        updatedInvoice = {
+          ...prev,
+          [name]: type === 'checkbox' ? checked : value,
+        };
+      }
+
+      return updatedInvoice;
     });
   };
 
@@ -212,23 +280,9 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
         return item;
       });
 
-      // Recalculate subtotal
-      const subtotal = updatedLineItems.reduce(
-        (sum, item) => sum + item.totalInCents,
-        0,
-      );
-
-      // Calculate taxes based on tax exempt status
-      const gst = prev.taxExempt ? 0 : Math.round(subtotal * 0.05); // 5% GST
-      const pst = prev.taxExempt ? 0 : Math.round(subtotal * 0.07); // 7% PST (adjust as needed)
-
       return {
         ...prev,
         lineItems: updatedLineItems,
-        subtotalInCents: subtotal,
-        gstInCents: gst,
-        pstInCents: pst,
-        totalInCents: subtotal + gst + pst,
       };
     });
   };
@@ -304,6 +358,7 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
         issuedDate: editableInvoice.issuedDate,
         dueDate: editableInvoice.dueDate,
         taxExempt: editableInvoice.taxExempt,
+        pstExempt: editableInvoice.pstExempt,
         status: editableInvoice.status,
         subtotalInCents: editableInvoice.subtotalInCents,
         gstInCents: editableInvoice.gstInCents,
@@ -488,7 +543,7 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
               </FormGroup>
             </Col>
             <Col md={4} className="d-flex align-items-end">
-              <FormGroup className="mb-3">
+              <FormGroup className="mb-3 me-3">
                 <Form.Check
                   type="checkbox"
                   name="taxExempt"
@@ -498,6 +553,20 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
                   }
                   onChange={handleInputChange}
                   disabled={!isEditMode}
+                />
+              </FormGroup>
+              <FormGroup className="mb-3">
+                <Form.Check
+                  type="checkbox"
+                  name="pstExempt"
+                  label="PST Exempt"
+                  checked={
+                    isEditMode ? editableInvoice?.pstExempt : invoice.pstExempt
+                  }
+                  onChange={handleInputChange}
+                  disabled={
+                    !isEditMode || (editableInvoice?.taxExempt ?? false)
+                  }
                 />
               </FormGroup>
             </Col>
