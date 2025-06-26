@@ -22,7 +22,6 @@ export const applicationResultColumns: TableColumn[] = [
     linkRedirectionURL: undefined,
     dynamicColumn: false,
     columnSize: ColumnSize.Default,
-    stickyCol: false,
     customHeaderCss: '',
   },
   {
@@ -39,7 +38,6 @@ export const applicationResultColumns: TableColumn[] = [
     linkRedirectionURL: undefined,
     dynamicColumn: false,
     columnSize: ColumnSize.Default,
-    stickyCol: false,
     customHeaderCss: '',
   },
   {
@@ -56,7 +54,6 @@ export const applicationResultColumns: TableColumn[] = [
     linkRedirectionURL: undefined,
     dynamicColumn: false,
     columnSize: ColumnSize.Default,
-    stickyCol: false,
     customHeaderCss: '',
   },
   {
@@ -73,7 +70,6 @@ export const applicationResultColumns: TableColumn[] = [
     linkRedirectionURL: undefined,
     dynamicColumn: false,
     columnSize: ColumnSize.Default,
-    stickyCol: false,
     customHeaderCss: '',
   },
   {
@@ -90,7 +86,6 @@ export const applicationResultColumns: TableColumn[] = [
     linkRedirectionURL: undefined,
     dynamicColumn: false,
     columnSize: ColumnSize.Default,
-    stickyCol: false,
     customHeaderCss: '',
     renderCell: (value: any) => {
       return formatDateUTC(value);
@@ -110,7 +105,6 @@ export const applicationResultColumns: TableColumn[] = [
     linkRedirectionURL: undefined,
     dynamicColumn: false,
     columnSize: ColumnSize.Default,
-    stickyCol: false,
     customHeaderCss: '',
   },
   {
@@ -127,7 +121,6 @@ export const applicationResultColumns: TableColumn[] = [
     linkRedirectionURL: undefined,
     dynamicColumn: false,
     columnSize: ColumnSize.Default,
-    stickyCol: false,
     customHeaderCss: '',
     renderCell: (value: any) => {
       return <StaffAssigned staff={value} />;
@@ -147,7 +140,6 @@ export const applicationResultColumns: TableColumn[] = [
     linkRedirectionURL: undefined,
     dynamicColumn: false,
     columnSize: ColumnSize.Default,
-    stickyCol: false,
     customHeaderCss: '',
   },
   {
@@ -174,7 +166,6 @@ export const applicationResultColumns: TableColumn[] = [
     },
     dynamicColumn: false,
     columnSize: ColumnSize.Default,
-    stickyCol: false,
     customHeaderCss: '',
   },
   {
@@ -201,7 +192,6 @@ export const applicationResultColumns: TableColumn[] = [
     },
     dynamicColumn: false,
     columnSize: ColumnSize.Default,
-    stickyCol: false,
     customHeaderCss: '',
   },
 ];

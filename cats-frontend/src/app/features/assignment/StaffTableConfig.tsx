@@ -169,16 +169,15 @@ export const GetConfig = () => {
         placeholder: '',
         graphQLPropertyName: 'remove',
         tableMode: true,
-        stickyCol: true,
         customIcon: <XmarkIcon />,
         customLinkValue: 'Remove',
         customLabelCss: '',
         customInputTextCss: 'primary-icon-button',
         value: 'Remove',
+        customContainerCss: 'custom-assignment-column-position',
       },
       columnSize: ColumnSize.XtraSmall,
-
-      stickyCol: true,
+      customHeaderCss: 'custom-assignment-column-position',
     },
   ];
 

@@ -3,9 +3,10 @@ import { DashboardResolver } from './dashboard.resolver';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
 import { LoggerService } from '../../logger/logger.service';
 import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
-import { RecentViewedApplication } from '../../entities/RecentViewedApplication.entity';
+import { RecentViewedApplication } from '../../entities/recentViewedApplication.entity';
 import { HttpStatus } from '@nestjs/common';
 import { Application } from '../../entities/application.entity';
+import { ViewDashboard } from '../../dto/dashboard/viewDashboard.dto';
 
 const mockRecentViewedApplications: RecentViewedApplication[] = [
   {
@@ -36,7 +37,6 @@ const mockRecentViewedApplications: RecentViewedApplication[] = [
       csapRefNumber: null,
       formId: null,
       submissionId: null,
-      // other properties can be left undefined or empty arrays for relations
     } as Application,
   },
   {
@@ -76,7 +76,7 @@ describe('DashboardResolver', () => {
   let resolver: DashboardResolver;
   let dashboardService: DashboardService;
   let loggerService: LoggerService;
-  let dashboardResponse: GenericResponseProvider<RecentViewedApplication[]>;
+  let dashboardResponse: GenericResponseProvider<ViewDashboard[]>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -86,12 +86,16 @@ describe('DashboardResolver', () => {
           provide: DashboardService,
           useValue: {
             getRecentViewedApplications: jest.fn(),
+            getApplications: jest.fn(),
           },
         },
         {
           provide: LoggerService,
           useValue: {
             log: jest.fn(),
+            error: jest.fn(),
+            warn: jest.fn(),
+            debug: jest.fn(),
           },
         },
         {
@@ -112,7 +116,7 @@ describe('DashboardResolver', () => {
     resolver = module.get<DashboardResolver>(DashboardResolver);
     dashboardService = module.get<DashboardService>(DashboardService);
     loggerService = module.get<LoggerService>(LoggerService);
-    dashboardResponse = module.get<GenericResponseProvider<RecentViewedApplication[]>>(GenericResponseProvider);
+    dashboardResponse = module.get<GenericResponseProvider<ViewDashboard[]>>(GenericResponseProvider);
   });
 
   it('should be defined', () => {
@@ -223,22 +227,205 @@ describe('DashboardResolver', () => {
       const user = { sub: 'user-123' };
       const error = new Error('Service failure');
 
-      dashboardService.getRecentViewedApplications = jest.fn().mockRejectedValue(error);
+      jest.spyOn(dashboardService, 'getRecentViewedApplications').mockRejectedValue(error);
 
-      // You may want to handle this error inside resolver with try/catch if needed,
-      // but since no error handling is shown, test for rejection here:
-      await expect(resolver.getRecentViewedApplications(user)).rejects.toThrow(error);
+      const result = await resolver.getRecentViewedApplications(user);
 
-      expect(loggerService.log).toHaveBeenCalledWith(
-        `DashboardResolver.getRecentViewedApplications() user: ${user.sub}`
+      expect(loggerService.error).toHaveBeenCalledWith(
+        `Error in getRecentViewedApplications: ${error.message}`,
+        error
       );
-      expect(loggerService.log).toHaveBeenCalledWith(
-        'DashboardResolver.getRecentViewedApplications() calling DashboardService.getRecentViewedApplications()'
+      expect(dashboardResponse.createResponse).toHaveBeenCalledWith(
+        'Failed to retrieve recent viewed applications',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        false,
+        null
       );
-      expect(loggerService.log).toHaveBeenCalledWith(
-        'DashboardResolver.getRecentViewedApplications() start'
-      );
-      expect(dashboardService.getRecentViewedApplications).toHaveBeenCalledWith(user);
+      expect(result).toEqual({
+        message: 'Failed to retrieve recent viewed applications',
+        httpStatusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        success: false,
+        data: null,
+        timestamp: expect.any(String),
+      });
     });
+
+
+  });
+
+  describe('getApplications', () => {
+    it('should return applications when found', async () => {
+      const mockApplications = [
+        {
+          applicationId: 1,
+          applicationType: 'Residential',
+          applicationStatus: 'Submitted',
+          priority: 'High',
+          receivedDate: '2024-05-01',
+          siteId: 101,
+          address: '123 Main St Suite 100',
+        },
+      ];
+
+      jest.spyOn(dashboardService, 'getApplications').mockResolvedValue(mockApplications);
+
+      const result = await resolver.getApplications();
+
+      expect(loggerService.log).toHaveBeenCalledWith('DashboardResolver.getApplications() start');
+      expect(loggerService.log).toHaveBeenCalledWith('DashboardResolver.getApplications() calling DashboardService.getApplications()');
+      expect(loggerService.log).toHaveBeenCalledWith('DashboardResolver.getApplications() RES:200 end');
+
+      expect(dashboardResponse.createResponse).toHaveBeenCalledWith(
+        'Recent viewed applications retrieved successfully',
+        HttpStatus.OK,
+        true,
+        mockApplications
+      );
+
+      expect(result).toEqual({
+        message: 'Recent viewed applications retrieved successfully',
+        httpStatusCode: HttpStatus.OK,
+        success: true,
+        data: mockApplications,
+        timestamp: expect.any(String),
+      });
+    });
+
+    it('should return 404 when no applications found', async () => {
+      jest.spyOn(dashboardService, 'getApplications').mockResolvedValue([]);
+
+      const result = await resolver.getApplications();
+
+      expect(loggerService.log).toHaveBeenCalledWith('DashboardResolver.getApplications() RES:404 end');
+      expect(dashboardResponse.createResponse).toHaveBeenCalledWith(
+        'No recent viewed applications found',
+        HttpStatus.NOT_FOUND,
+        false,
+        null
+      );
+
+      expect(result).toEqual({
+        message: 'No recent viewed applications found',
+        httpStatusCode: HttpStatus.NOT_FOUND,
+        success: false,
+        data: null,
+        timestamp: expect.any(String),
+      });
+    });
+
+    it('should handle service errors', async () => {
+      const error = new Error('DB crash');
+      jest.spyOn(dashboardService, 'getApplications').mockRejectedValue(error);
+
+      const result = await resolver.getApplications();
+
+      expect(loggerService.error).toHaveBeenCalledWith(
+        `Error in getApplications: ${error.message}`,
+        error
+      );
+      expect(dashboardResponse.createResponse).toHaveBeenCalledWith(
+        'Failed to retrieve applications',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        false,
+        null
+      );
+
+      expect(result).toEqual({
+        message: 'Failed to retrieve applications',
+        httpStatusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        success: false,
+        data: null,
+        timestamp: expect.any(String),
+      });
+    });
+    
+    it('should return trimmed and single-line formatted address', async () => {
+  const mockApplications = [
+    {
+      applicationId: 2,
+      applicationType: 'Commercial',
+      applicationStatus: 'In Review',
+      priority: 'Medium',
+      receivedDate: '2024-06-01',
+      siteId: 202,
+      address: '456 Elm St\n\n  Suite 200\n  \n'
+    }
+  ];
+
+  jest.spyOn(dashboardService, 'getApplications').mockResolvedValue(mockApplications);
+
+  const result = await resolver.getApplications();
+
+
+  expect(result.data[0].address).toBe('456 Elm St\n\n  Suite 200\n  \n');
+    });
+
+    it('should handle missing fields in application data gracefully', async () => {
+      const mockApplications = [
+        {
+          applicationId: 3,
+          applicationType: null,
+          applicationStatus: 'Pending',
+          priority: null,
+          receivedDate: '2024-06-10',
+          siteId: 303,
+          address: null,
+        }
+      ];
+
+      jest.spyOn(dashboardService, 'getApplications').mockResolvedValue(mockApplications);
+
+      const result = await resolver.getApplications();
+
+      expect(result.data[0].applicationType).toBeNull();
+      expect(result.data[0].priority).toBeNull();
+      expect(result.data[0].address).toBeNull();
+    });
+
+    it('should return multiple applications including ones with missing optional fields', async () => {
+      const mockApplications = [
+        {
+          applicationId: 4,
+          applicationType: 'Industrial',
+          applicationStatus: 'Approved',
+          priority: 'Low',
+          receivedDate: '2024-04-20',
+          siteId: 404,
+          address: '789 Pine St Suite 300',
+        },
+        {
+          applicationId: 5,
+          applicationType: null,
+          applicationStatus: 'Submitted',
+          priority: null,
+          receivedDate: '2024-05-15',
+          siteId: 505,
+          address: null,
+        }
+      ];
+
+      jest.spyOn(dashboardService, 'getApplications').mockResolvedValue(mockApplications);
+
+      const result = await resolver.getApplications();
+
+      expect(result.data.length).toBe(2);
+      expect(result.data[0].applicationType).toBe('Industrial');
+      expect(result.data[1].applicationType).toBeNull();
+    });
+
+    it('should handle null result from dashboardService gracefully', async () => {
+      jest.spyOn(dashboardService, 'getApplications').mockResolvedValue(null);
+
+      const result = await resolver.getApplications();
+
+      expect(result).toEqual({
+        message: 'No recent viewed applications found',
+        httpStatusCode: HttpStatus.NOT_FOUND,
+        success: false,
+        data: null,
+        timestamp: expect.any(String),
+      });
+    });
+
   });
 });

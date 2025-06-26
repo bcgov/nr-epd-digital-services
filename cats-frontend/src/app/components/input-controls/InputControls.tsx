@@ -44,11 +44,11 @@ interface InputProps extends IFormField {
 
 const renderTableCell = (
   content: JSX.Element | string,
-  stickyCol?: boolean,
+  customContainerCss?: string,
 ) => {
   return (
     <td
-      className={`"table-border-light align-content-center" ${stickyCol ? 'positionSticky' : ''}`}
+      className={`table-border-light align-content-center ${customContainerCss ?? ''}`}
     >
       {content}
     </td>
@@ -62,7 +62,7 @@ export const Link: React.FC<InputProps> = ({
   customLinkValue,
   customIcon,
   onChange,
-  stickyCol,
+  customContainerCss,
   href,
   componentName,
 }) => {
@@ -77,61 +77,36 @@ export const Link: React.FC<InputProps> = ({
       {customIcon && customIcon}{' '}
       <span className="ps-1">{customLinkValue ?? value}</span>
     </RouterLink>,
-    stickyCol,
+    customContainerCss,
   );
 };
 
 export const IconButton: React.FC<InputProps> = ({
-  label,
-  placeholder,
-  type,
   value,
-  validation,
-  allowNumbersOnly,
-  isEditing,
-  customLabelCss,
   customInputTextCss,
-  customEditLabelCss,
-  customEditInputTextCss,
   customLinkValue,
   customIcon,
   onChange,
-  tableMode,
-  stickyCol,
-  href,
+  customContainerCss,
 }) => {
   return renderTableCell(
     <div onClick={onChange} className={`${customInputTextCss ?? ''}`}>
       {customIcon && customIcon}{' '}
       <span className="ps-1">{customLinkValue ?? value}</span>
     </div>,
+    customContainerCss,
   );
 };
 
 export const Icon: React.FC<InputProps> = ({
-  label,
-  placeholder,
-  type,
   value,
-  validation,
-  allowNumbersOnly,
-  isEditing,
-  customLabelCss,
   customInputTextCss,
-  customEditLabelCss,
-  customEditInputTextCss,
-  customLinkValue,
   customIcon,
-  onChange,
-  tableMode,
-  stickyCol,
-  href,
 }) => {
   if (value === 'true' || value === true) {
     return renderTableCell(
       <div className={`${customInputTextCss ?? ''}`}>
         {customIcon && customIcon}{' '}
-        {/* <span className="ps-1">{customLinkValue ?? value}</span> */}
       </div>,
     );
   } else {
@@ -139,22 +114,7 @@ export const Icon: React.FC<InputProps> = ({
   }
 };
 
-export const DeleteIcon: React.FC<InputProps> = ({
-  label,
-  placeholder,
-  type,
-  value,
-  validation,
-  allowNumbersOnly,
-  isEditing,
-  customLabelCss,
-  customInputTextCss,
-  customEditLabelCss,
-  customEditInputTextCss,
-  onChange,
-  tableMode,
-  href,
-}) => {
+export const DeleteIcon: React.FC<InputProps> = ({ label, onChange }) => {
   return renderTableCell(
     <div onClick={onChange}>
       <TrashCanIcon title="Remove" />
@@ -165,19 +125,9 @@ export const DeleteIcon: React.FC<InputProps> = ({
 
 export const Label: React.FC<InputProps> = ({
   label,
-  placeholder,
-  type,
   value,
-  validation,
-  allowNumbersOnly,
-  isEditing,
-  customLabelCss,
   customInputTextCss,
-  customEditLabelCss,
-  customEditInputTextCss,
-  stickyCol,
-  onChange,
-  tableMode,
+  customContainerCss,
 }) => {
   return renderTableCell(
     <span
@@ -186,7 +136,7 @@ export const Label: React.FC<InputProps> = ({
     >
       {value}
     </span>,
-    stickyCol,
+    customContainerCss,
   );
 };
 
@@ -205,7 +155,7 @@ export const TextInput: React.FC<InputProps> = ({
   customEditInputTextCss,
   customPlaceholderCss,
   customErrorCss,
-  stickyCol,
+  customContainerCss,
   onChange,
   tableMode,
   customInfoMessage,
@@ -258,7 +208,7 @@ export const TextInput: React.FC<InputProps> = ({
   const inputTxtId = label?.replace(/\s+/g, '_') + '_' + v4();
   return (
     <ContainerElement
-      className={`${tableMode ? 'table-border-light align-content-center ' : 'mb-3'} ${tableMode && stickyCol ? 'positionSticky' : ''} `}
+      className={`${tableMode ? 'table-border-light align-content-center ' : 'mb-3'} ${customContainerCss ?? ''} `}
     >
       {!tableMode && (
         <>
@@ -881,11 +831,9 @@ export const CheckBoxInput: React.FC<InputProps> = ({
   customPlaceholderCss,
   isEditing,
   type,
-  value,
   onChange,
   tableMode,
-  stickyCol,
-  srMode,
+  customContainerCss,
   wrapperClassName,
   isDisabled,
 }) => {
@@ -899,7 +847,7 @@ export const CheckBoxInput: React.FC<InputProps> = ({
 
   return (
     <ContainerElement
-      className={`${tableMode ? 'table-border-light align-content-center ' : 'd-inline mb-3'} ${tableMode && stickyCol ? 'positionSticky' : ''} `}
+      className={`${tableMode ? 'table-border-light align-content-center ' : 'd-inline mb-3'} ${customContainerCss ?? ''} `}
     >
       <div className={wrapperClassName}>
         <input
@@ -1055,7 +1003,7 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
   customEditLabelCss,
   customEditInputTextCss,
   customPlaceholderCss,
-  stickyCol,
+  customContainerCss,
   onChange,
   handleSearch,
   tableMode,
@@ -1146,7 +1094,7 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
 
   return (
     <ContainerElement
-      className={`${tableMode ? 'table-border-light align-content-center' : 'mb-3'} ${tableMode && stickyCol ? 'position-sticky' : ''} `}
+      className={`${tableMode ? 'table-border-light align-content-center' : 'mb-3'} ${customContainerCss ?? ''}`}
     >
       {!tableMode && (
         <label
@@ -1261,7 +1209,7 @@ export const SearchCustomInput: React.FC<InputProps> = ({
   customMenuMessage,
   searchCustomInputContainerCss,
   searchCustomInputMenuCss,
-  stickyCol,
+  customContainerCss,
   isLoading,
   onChange,
   tableMode,
@@ -1437,7 +1385,7 @@ export const SearchCustomInput: React.FC<InputProps> = ({
   const inputTxtId = label?.replace(/\s+/g, '_') + '_' + v4();
   return (
     <ContainerElement
-      className={`${tableMode ? 'table-border-light align-content-center ' : 'mb-3'} ${tableMode && stickyCol ? 'positionSticky' : ''} `}
+      className={`${tableMode ? 'table-border-light align-content-center ' : 'mb-3'} ${customContainerCss ?? ''} `}
     >
       {!tableMode && (
         <label
@@ -1583,7 +1531,6 @@ export const SearchCustomInput: React.FC<InputProps> = ({
 };
 
 export const SwitchInput: React.FC<InputProps> = ({
-  type,
   label,
   value,
   onChange,
@@ -1595,7 +1542,7 @@ export const SwitchInput: React.FC<InputProps> = ({
   customEditInputTextCss,
   customEditLabelCss,
   customErrorCss,
-  stickyCol,
+  customContainerCss,
   tableMode,
   labelPosition,
 }) => {
@@ -1619,7 +1566,7 @@ export const SwitchInput: React.FC<InputProps> = ({
     }
     onChange(checked);
   };
-  const inputTxtId = label?.replace(/\s+/g, '_') + '_' + v4();
+
   const lbl = (
     <label
       htmlFor={label}
@@ -1635,7 +1582,7 @@ export const SwitchInput: React.FC<InputProps> = ({
     <ContainerElement
       className={`${
         tableMode ? 'table-border-light align-content-center ' : 'mb-3'
-      } ${tableMode && stickyCol ? 'positionSticky' : ''}`}
+      } ${customContainerCss ?? ''}`}
     >
       {/* Switch Input */}
       {isEditing ? (
