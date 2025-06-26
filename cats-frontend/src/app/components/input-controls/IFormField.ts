@@ -84,7 +84,7 @@ export interface IFormField {
     customMessage?: string;
   };
   tableMode?: boolean;
-  stickyCol?: boolean;
+  customContainerCss?: string;
   href?: string;
   textAreaRow?: number;
   textAreaColoum?: number;
