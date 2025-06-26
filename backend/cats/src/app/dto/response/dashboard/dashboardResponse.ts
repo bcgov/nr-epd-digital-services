@@ -1,9 +1,9 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 import { ResponseDto } from "../response.dto";
-import { RecentViewedApplication } from "../../../entities/RecentViewedApplication.entity";
+import { ViewDashboard } from "../../dashboard/viewDashboard.dto";
 
 @ObjectType()
 export class DashboardResponse extends ResponseDto {
-    @Field(() => [RecentViewedApplication], {nullable: true})
-    data?: RecentViewedApplication[] | null;
+    @Field(() => [ViewDashboard], {nullable: true})
+    data?: ViewDashboard[] | null;
 }

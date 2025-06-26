@@ -18,6 +18,7 @@ interface ImportMetaEnv {
   readonly VITE_FORM_BACKEND_API: string;
   readonly VITE_FORM_FLOW_API: string;
   readonly VITE_CATS_CSSA_MANAGER_ROLE: string;
+  readonly VITE_SITE_REGISTRY_URL: string;
 }
 
 interface ImportMeta {

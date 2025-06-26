@@ -244,3 +244,42 @@ div.search-parent {
   text-align: center;
   color: var(--icons-color-primary);
 }
+
+.custom-search-header {
+  font-family: Noto Sans;
+  vertical-align: middle;
+  min-width: 100px;
+}
+
+.custom-search-tbl-header {
+  font-family: Noto Sans;
+  text-align: center;
+  vertical-align: middle;
+  min-width: 100px;
+}
+
+@media (max-width: 900px) {
+  .custom-search-column-position {
+    position: sticky;
+    right: 0;
+    z-index: 1;
+    box-shadow:
+      -3px 0 3px 0 #00000021,
+      -0.6px 0 1.8px 0 #0000001a !important;
+  }
+}
+
+.custom-search-link {
+  font-family: Noto Sans;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.custom-search-input-text {
+  font-family: Noto Sans;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--typography-color-secondary, #474543);
+}

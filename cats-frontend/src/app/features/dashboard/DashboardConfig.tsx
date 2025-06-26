@@ -1,26 +1,56 @@
-import { FillEye, FillPinMapFill } from '../../components/common/icon';
+import { ExternalLink, FileLinesIcon } from '../../components/common/icon';
 import { FormFieldType } from '../../components/input-controls/IFormField';
 import { ColumnSize, TableColumn } from '../../components/table/TableColumn';
 
-export const recentViewedColumns: TableColumn[] = [
+export const actionRequiredColumns: TableColumn[] = [
   {
     id: 1,
-    displayName: 'Site ID',
+    displayName: 'Application ID',
     active: true,
-    graphQLPropertyName: 'siteId',
+    graphQLPropertyName: 'applicationId',
     displayType: {
       type: FormFieldType.Link,
-      label: 'Site ID',
-      graphQLPropertyName: 'siteId',
+      label: 'Application ID',
+      graphQLPropertyName: 'applicationId',
       value: '',
       customInputTextCss: 'custom-dashboard-input-txt',
       tableMode: true,
-      href: 'site/details/',
+      href: '/applications/',
+      componentName: 'Dashboard',
     },
-    linkRedirectionURL: 'site/details/',
+    columnSize: ColumnSize.Default,
+    dynamicColumn: true,
+    customHeaderCss: 'custom-dashboard-header',
   },
   {
     id: 2,
+    displayName: 'Site ID',
+    active: true,
+    graphQLPropertyName: 'siteId',
+    displayType: { type: FormFieldType.Label },
+    renderCell: (value: any) => {
+      return (
+        <div className="custom-dashboard-link-wrapper">
+          <a
+            href={`${import.meta.env.VITE_SITE_REGISTRY_URL}/site/details/${value}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={'custom-dashboard-input-txt'}
+          >
+            {value}
+            <span className="ps-2 custom-dashboard-external-link">
+              <ExternalLink />
+            </span>
+          </a>
+        </div>
+      );
+    },
+    columnSize: ColumnSize.Small,
+    dynamicColumn: true,
+    customHeaderCss: 'custom-dashboard-header',
+  },
+  {
+    id: 3,
     displayName: 'Site Address',
     active: true,
     graphQLPropertyName: 'address',
@@ -29,89 +59,105 @@ export const recentViewedColumns: TableColumn[] = [
       label: 'Site Address',
       graphQLPropertyName: 'address',
       value: '',
-      customInputTextCss: 'custom-dashboard-input-txt',
       tableMode: true,
-    },
-  },
-  {
-    id: 3,
-    displayName: 'City',
-    active: true,
-    graphQLPropertyName: 'city',
-    displayType: {
-      type: FormFieldType.Label,
-      label: 'City',
-      graphQLPropertyName: 'city',
-      value: '',
       customInputTextCss: 'custom-dashboard-input-txt',
-      tableMode: true,
     },
+    columnSize: ColumnSize.Default,
+    dynamicColumn: true,
+    customHeaderCss: 'custom-dashboard-header',
   },
   {
     id: 4,
-    displayName: 'General Description',
+    displayName: 'Application Type',
     active: true,
-    graphQLPropertyName: 'generalDescription',
+    graphQLPropertyName: 'applicationType',
     displayType: {
       type: FormFieldType.Label,
-      label: 'General Description',
-      graphQLPropertyName: 'generalDescription',
+      label: 'Application Type',
+      graphQLPropertyName: 'applicationType',
       value: '',
-      customInputTextCss: 'custom-dashboard-input-txt',
       tableMode: true,
+      customInputTextCss: 'custom-dashboard-input-txt',
     },
-    columnSize: ColumnSize.Triple,
+    columnSize: ColumnSize.Default,
+    dynamicColumn: true,
+    customHeaderCss: 'custom-dashboard-header',
   },
   {
     id: 5,
-    displayName: 'Last Updates',
+    displayName: 'Start Date',
     active: true,
-    graphQLPropertyName: 'whenUpdated',
+    graphQLPropertyName: 'receivedDate',
     displayType: {
       type: FormFieldType.Date,
-      graphQLPropertyName: 'whenUpdated',
+      graphQLPropertyName: 'receivedDate',
       label: '',
       placeholder: 'MM/DD/YY',
       value: '',
       colSize: 'col-lg-6 col-md-6 col-sm-12',
-      customInputTextCss: 'custom-dashboard-input-txt',
       tableMode: true,
+
+      customInputTextCss: 'custom-dashboard-input-txt',
     },
+    columnSize: ColumnSize.Small,
+    dynamicColumn: true,
+    customHeaderCss: 'custom-dashboard-header',
   },
   {
     id: 6,
-    displayName: 'Map',
+    displayName: 'Status',
     active: true,
-    graphQLPropertyName: 'siteId',
+    graphQLPropertyName: 'applicationStatus',
     displayType: {
-      type: FormFieldType.Link,
-      label: 'Map',
-      graphQLPropertyName: 'siteId',
+      type: FormFieldType.Label,
+      label: 'Status',
+      graphQLPropertyName: 'applicationStatus',
       value: '',
-      customLinkValue: 'View',
-      customInputTextCss: 'custom-dashboard-link',
       tableMode: true,
-      href: 'site/map/',
-      customIcon: <FillPinMapFill />,
+      customInputTextCss: 'custom-dashboard-input-txt',
     },
-    linkRedirectionURL: 'site/map/',
+    columnSize: ColumnSize.Default,
+    dynamicColumn: true,
+    customHeaderCss: 'custom-dashboard-header',
   },
   {
     id: 7,
+    displayName: 'Priority',
+    active: true,
+    graphQLPropertyName: 'priority',
+    displayType: {
+      type: FormFieldType.Label,
+      label: 'Priority',
+      graphQLPropertyName: 'priority',
+      value: '',
+      tableMode: true,
+      customInputTextCss: 'custom-dashboard-input-txt',
+    },
+    columnSize: ColumnSize.XtraSmall,
+    dynamicColumn: true,
+    customHeaderCss: 'custom-dashboard-header',
+  },
+  {
+    id: 8,
     displayName: 'Details',
     active: true,
-    graphQLPropertyName: 'siteId',
+    graphQLPropertyName: 'applicationId',
     displayType: {
       type: FormFieldType.Link,
-      label: 'Details',
-      graphQLPropertyName: 'siteId',
+      label: 'View',
+      graphQLPropertyName: 'applicationId',
       value: '',
       customLinkValue: 'View',
       customInputTextCss: 'custom-dashboard-link',
       tableMode: true,
-      href: 'site/details/',
-      customIcon: <FillEye />,
+      href: '/applications/',
+      customIcon: <FileLinesIcon />,
+      customContainerCss: 'custom-dashboard-column-position',
+      componentName: 'Dashboard',
     },
-    linkRedirectionURL: 'site/details/',
+    columnSize: ColumnSize.Small,
+    dynamicColumn: true,
+    customHeaderCss:
+      'custom-dashboard-tbl-header custom-dashboard-column-position',
   },
 ];
