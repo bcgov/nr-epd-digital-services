@@ -147,6 +147,7 @@ describe('ApplicationResolver', () => {
       formId: 'form-123',
       submissionId: 'sub-456',
       formsflowAppId: 12345,
+      statusTypeAbbrev: 'Accepted',
     };
 
     const expectedResponse = {

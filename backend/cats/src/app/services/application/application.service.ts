@@ -142,7 +142,7 @@ export class ApplicationService {
           updatedDateTime: new Date(),
         });
 
-        await this.appStatusRepository.save(appStatus);
+        appStatus = await this.appStatusRepository.save(appStatus);
       } else {
 
         appStatus.formsflowAppId = formsflowAppId;

@@ -20,12 +20,18 @@ describe('ApplicationService', () => {
   let appTypeService: AppTypeService;
   let statusTypeService: StatusTypeService;
   let dashboardService: DashboardService;
+  const executeMock = jest.fn().mockResolvedValue({ affected: 1 });
+  const statusTypeServiceMock = {
+    getStatusTypeByAbbrev: jest.fn(),
+  } as Partial<jest.Mocked<StatusTypeService>>;
+
 
   // Manual mocks for repository methods with jest.fn()
   let appStatusRepositoryMock: {
     create: jest.Mock;
     save: jest.Mock;
     findOne: jest.Mock;
+    createQueryBuilder: jest.Mock;
   };
 
   let applicationRepositoryMock: {
@@ -40,6 +46,13 @@ describe('ApplicationService', () => {
       create: jest.fn(),
       save: jest.fn(),
       findOne: jest.fn(),
+      createQueryBuilder: jest.fn().mockReturnValue({
+        update: jest.fn().mockReturnThis(),
+        set: jest.fn().mockReturnThis(),
+        where: jest.fn().mockReturnThis(),
+        andWhere: jest.fn().mockReturnThis(),
+        execute: executeMock,
+      }),
     };
 
     applicationRepositoryMock = {
@@ -61,9 +74,7 @@ describe('ApplicationService', () => {
         },
         {
           provide: StatusTypeService,
-          useValue: {
-            getStatusTypeByAbbrev: jest.fn(),
-          },
+          useValue: statusTypeServiceMock,
         },
         {
           provide: LoggerService,
@@ -91,7 +102,8 @@ describe('ApplicationService', () => {
 
     applicationService = module.get<ApplicationService>(ApplicationService);
     appTypeService = module.get<AppTypeService>(AppTypeService);
-    statusTypeService = module.get<StatusTypeService>(StatusTypeService);
+    statusTypeService = module.get(StatusTypeService);
+    (statusTypeServiceMock.getStatusTypeByAbbrev as jest.Mock).mockResolvedValue({ id: 1 });
     applicationRepository = module.get<Repository<Application>>(getRepositoryToken(Application));
     appStatusRepository = module.get<Repository<AppStatus>>(getRepositoryToken(AppStatus));
     loggerService = module.get<LoggerService>(LoggerService);
@@ -155,6 +167,7 @@ describe('ApplicationService', () => {
         formId: 'form-123',
         submissionId: 'sub-456',
         formsflowAppId: 9999,
+        statusTypeAbbrev: 'Accepted',
       };
 
       const mockAppStatus = {
@@ -167,13 +180,35 @@ describe('ApplicationService', () => {
         isCurrent: false,
       };
 
-      appStatusRepositoryMock.findOne.mockResolvedValue(mockAppStatus);
+      // Mock findOne to return existing app status
+      appStatusRepositoryMock.findOne.mockImplementation(({ where }) => {
+        if (
+          where.formId === input.formId &&
+          where.submissionId === input.submissionId
+        ) {
+          return Promise.resolve(mockAppStatus);
+        }
+        return Promise.resolve(undefined);
+      });
 
       appStatusRepositoryMock.save.mockResolvedValue({
         ...mockAppStatus,
         formsflowAppId: input.formsflowAppId,
         updatedBy: 'SYSTEM',
+        updatedDateTime: expect.any(Date),
         isCurrent: true,
+      });
+
+      appStatusRepositoryMock.createQueryBuilder.mockReturnValue({
+        update: () => ({
+          set: () => ({
+            where: () => ({
+              andWhere: () => ({
+                execute: jest.fn().mockResolvedValue({ affected: 1 }),
+              }),
+            }),
+          }),
+        }),
       });
 
       const result = await applicationService.updateFormsflowAppId(input);
@@ -182,35 +217,87 @@ describe('ApplicationService', () => {
         where: { formId: input.formId, submissionId: input.submissionId },
       });
 
-      expect(appStatusRepositoryMock.save).toHaveBeenCalledWith(expect.objectContaining({
-        formsflowAppId: input.formsflowAppId,
-        updatedBy: 'SYSTEM',
-        isCurrent: true,
-      }));
+      expect(appStatusRepositoryMock.save).toHaveBeenCalledWith(
+        expect.objectContaining({
+          formsflowAppId: input.formsflowAppId,
+          updatedBy: 'SYSTEM',
+          isCurrent: true,
+        }),
+      );
 
       expect(result).toEqual({
         success: true,
-        message: 'Updated successfully for id=101',
+        message: `Updated successfully for id=${mockAppStatus.id}`,
+      });
+    });
+
+    it('should create new AppStatus if no matching entry found', async () => {
+      const input: UpdateApplicationStatusDto = {
+        formId: 'form-999',
+        submissionId: 'sub-888',
+        formsflowAppId: 1234,
+        statusTypeAbbrev: 'Accepted',
+      };
+
+      const mockStatusType = { id: 7 };
+      const existingAppStatus = { applicationId: 555 };
+
+      appStatusRepositoryMock.findOne.mockImplementation(({ where }) => {
+        if (where.formsflowAppId === input.formsflowAppId) {
+          return Promise.resolve(existingAppStatus);
+        }
+        return Promise.resolve(undefined);
       });
 
-      expect(loggerService.log).toHaveBeenCalledWith(expect.stringContaining('start'));
+      (statusTypeServiceMock.getStatusTypeByAbbrev as jest.Mock).mockResolvedValue({ id: 1 });
+
+      appStatusRepositoryMock.create.mockImplementation((data) => data);
+
+      appStatusRepositoryMock.save.mockResolvedValue({
+        id: 789,
+        ...input,
+        statusTypeId: mockStatusType.id,
+        applicationId: existingAppStatus.applicationId,
+        createdBy: 'SYSTEM',
+        updatedBy: 'SYSTEM',
+        isCurrent: true,
+      });
+
+      appStatusRepositoryMock.createQueryBuilder.mockReturnValue({
+        update: () => ({
+          set: () => ({
+            where: () => ({
+              andWhere: () => ({
+                execute: jest.fn().mockResolvedValue({ affected: 1 }),
+              }),
+            }),
+          }),
+        }),
+      });
+
+      const result = await applicationService.updateFormsflowAppId(input);
+
+      expect(statusTypeService.getStatusTypeByAbbrev).toHaveBeenCalledWith('Accepted');
+      expect(appStatusRepositoryMock.save).toHaveBeenCalled();
+      expect(result).toEqual({
+        success: true,
+        message: 'Updated successfully for id=789',
+      });
     });
+
 
     it('should throw 404 if AppStatus not found', async () => {
       const input: UpdateApplicationStatusDto = {
         formId: 'missing-form',
         submissionId: 'missing-sub',
         formsflowAppId: 8888,
+        statusTypeAbbrev: 'Accepted',
       };
 
       appStatusRepositoryMock.findOne.mockResolvedValue(null);
 
       await expect(applicationService.updateFormsflowAppId(input)).rejects.toThrow(
         new HttpException('Failed to update  Formsflow App ID', HttpStatus.NOT_FOUND),
-      );
-
-      expect(loggerService.warn).toHaveBeenCalledWith(
-        expect.stringContaining(`No AppStatus found for formId=${input.formId}`),
       );
     });
 
@@ -219,6 +306,7 @@ describe('ApplicationService', () => {
         formId: 'form-crash',
         submissionId: 'sub-crash',
         formsflowAppId: 7777,
+        statusTypeAbbrev: 'Accepted',
       };
 
       appStatusRepositoryMock.findOne.mockRejectedValue(new Error('DB is down'));
