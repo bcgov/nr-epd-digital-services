@@ -15,7 +15,6 @@ export class DashboardService {
         private readonly siteService: SiteService
     ) {}
 
-
     async getRecentViewedApplications(user: any) {
         this.loggerService.log('DashboardService.getRecentViewedApplication() start');
         try {
@@ -54,38 +53,55 @@ export class DashboardService {
             const recentlyVisitedApplications = await this.getRecentViewedApplications(userInfo);
             this.loggerService.log(`Found ${recentlyVisitedApplications.length} recently visited applications for user: ${userId}`);
 
-            // If the user has more than the maximum number of recently visited applications, delete the oldest ones
-            if (recentlyVisitedApplications.length > maxVisitedApplications) {
-                const applicationsToDelete = recentlyVisitedApplications.slice(0, recentlyVisitedApplications.length - maxVisitedApplications);
-                await this.recentViewedApplicationRepository.remove(applicationsToDelete);
-            }
+            //currently existed recently visited applications for user
+            const existingApplications = recentlyVisitedApplications.find((app) => app.applicationId === application?.id && app.userId === userId && app.siteId === application?.siteId);
+            this.loggerService.log(`Found existing recently visited applications for user: ${userId} and application ID: ${application?.id} and site ID: ${application?.siteId}`);
 
-            // Create a new RecentViewedApplication entry
-            this.loggerService.log(`Creating recent viewed application for user: ${userId}, application ID: ${application?.id}`);
-            let siteAddress = '';
-            const siteInfo = site?.findSiteBySiteId?.data;
-            if(siteInfo)
+            if(existingApplications)
             {
-                siteAddress = `${siteInfo?.addrLine_1 ?? ''}
-                               ${siteInfo?.addrLine_2 ?? ''}
-                               ${siteInfo?.addrLine_3 ?? ''}
-                               ${siteInfo?.addrLine_4 ?? ''}`;
+                this.loggerService.log(`Updating existing recently visited application for user: ${userId}, application ID: ${application?.id} and site ID: ${application?.siteId}`);
+                existingApplications.visitedDateTime = new Date();
+                const updatedRecentViewedApplication = await this.recentViewedApplicationRepository.save(existingApplications);
+                this.loggerService.log('DashboardService.createRecentViewedApplication() end');
+                return updatedRecentViewedApplication;
+            }
+            else
+            {
+                // If the user has more than the maximum number of recently visited applications, delete the oldest ones
+                if (recentlyVisitedApplications.length >= maxVisitedApplications ) {
+                    const applicationsToDelete = recentlyVisitedApplications[0];
+                    this.loggerService.log(`Deleting oldest recently visited application for user: ${userId}, application ID: ${applicationsToDelete?.applicationId} and site ID: ${applicationsToDelete?.siteId}`);
+                    await this.recentViewedApplicationRepository.remove(applicationsToDelete);
+                }
+
+                // Create a new RecentViewedApplication entry
+                this.loggerService.log(`Creating recent viewed application for user: ${userId}, application ID: ${application?.id}`);
+                let siteAddress = '';
+                const siteInfo = site?.findSiteBySiteId?.data;
+                if(siteInfo)
+                {
+                    siteAddress = `${siteInfo?.addrLine_1 ?? ''}
+                                ${siteInfo?.addrLine_2 ?? ''}
+                                ${siteInfo?.addrLine_3 ?? ''}
+                                ${siteInfo?.addrLine_4 ?? ''}`;
+                }
+
+                const recentViewedApplication = new RecentViewedApplication();
+                recentViewedApplication.userId = userId;
+                recentViewedApplication.applicationId = application?.id;
+                recentViewedApplication.applicationType = application?.appType.description;
+                recentViewedApplication.visitedBy =  userInfo?.givenName || ''
+                recentViewedApplication.visitedDateTime = new Date();
+                recentViewedApplication.siteId =parseInt(site?.findSiteBySiteId?.data?.id);
+                recentViewedApplication.address = siteAddress.trim();
+
+                const createdRecentViewedApplication = await this.recentViewedApplicationRepository.save(recentViewedApplication);
+                this.loggerService.log('DashboardService.createRecentViewedApplication() end');
+                return createdRecentViewedApplication;
             }
 
-            const recentViewedApplication = new RecentViewedApplication();
-            recentViewedApplication.userId = userId;
-            recentViewedApplication.applicationId = application?.id;
-            recentViewedApplication.applicationType = application?.appType.description;
-            recentViewedApplication.visitedBy =  userInfo?.givenName || ''
-            recentViewedApplication.visitedDateTime = new Date();
-            recentViewedApplication.siteId =parseInt(site?.findSiteBySiteId?.data?.id);
-            recentViewedApplication.address = siteAddress.trim();
-
-            const createdRecentViewedApplication = await this.recentViewedApplicationRepository.save(recentViewedApplication);
-            this.loggerService.log('DashboardService.createRecentViewedApplication() end');
-            return createdRecentViewedApplication;
-
-        } catch (error) {
+        } 
+        catch (error) {
             this.loggerService.error(`Error in createRecentViewedApplication: ${error.message}`, error);
             throw error;
         }

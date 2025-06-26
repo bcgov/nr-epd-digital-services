@@ -15,11 +15,11 @@ export class RecentViewedApplication {
     userId: string;
 
     @Field()
-    @Column('character varying', { name: 'application_id' })
+    @Column('integer', { name: 'application_id' })
     applicationId: number
 
     @Field()
-    @Column('character varying', { name: 'site_id' })
+    @Column('integer', { name: 'site_id' })
     siteId: number
 
     @Field()
