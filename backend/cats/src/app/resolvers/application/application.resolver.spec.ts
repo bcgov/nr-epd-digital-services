@@ -6,14 +6,25 @@ import { ApplicationResolver } from './application.resolver';
 import { ApplicationService } from '../../services/application/application.service';
 import { ApplicationResponse } from '../../dto/response/application/applicationResponse';
 import { CreateApplication } from '../../dto/application/createApplication.dto';
+import { UpdateApplicationStatusDto } from '../../dto/application/updateApplicationStatus.dto';
 
 describe('ApplicationResolver', () => {
   let resolver: ApplicationResolver;
   let applicationService: ApplicationService;
   let loggerService: LoggerService;
   let genericResponseProvider: GenericResponseProvider<ApplicationResponse[]>;
+  let mockResponseFactory: { createResponse: jest.Mock };
 
   beforeEach(async () => {
+    mockResponseFactory = {
+      createResponse: jest.fn((msg, status, success, data) => ({
+        message: msg,
+        httpStatusCode: status,
+        success,
+        data,
+      })),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ApplicationResolver,
@@ -21,6 +32,7 @@ describe('ApplicationResolver', () => {
           provide: ApplicationService,
           useValue: {
             createApplication: jest.fn(),
+            updateFormsflowAppId: jest.fn(),
           },
         },
         {
@@ -34,21 +46,7 @@ describe('ApplicationResolver', () => {
         },
         {
           provide: GenericResponseProvider,
-          useValue: {
-            createResponse: jest.fn(
-              (
-                message: string,
-                httpStatusCode: number,
-                success: boolean,
-                data?: ApplicationResponse[],
-              ) => ({
-                message,
-                httpStatusCode,
-                success,
-                data,
-              }),
-            ),
-          },
+          useValue: mockResponseFactory,
         },
       ],
     }).compile();
@@ -57,6 +55,10 @@ describe('ApplicationResolver', () => {
     applicationService = module.get<ApplicationService>(ApplicationService);
     loggerService = module.get<LoggerService>(LoggerService);
     genericResponseProvider = module.get<GenericResponseProvider<ApplicationResponse[]>>(GenericResponseProvider);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
 
@@ -68,6 +70,7 @@ describe('ApplicationResolver', () => {
       applicationStatus: [
         {
           statusTypeAbbrev: 'New',
+          formsflowAppId: 1234,
           isCurrent: true,
           applicationId: 0,
           formId: '67e70d854d238fa5ddcfc3b0',
@@ -109,6 +112,7 @@ describe('ApplicationResolver', () => {
       applicationStatus: [
         {
           statusTypeAbbrev: 'New',
+          formsflowAppId: 1234,
           isCurrent: true,
           applicationId: 0,
           formId: '67e70d854d238fa5ddcfc3b0',
@@ -136,5 +140,29 @@ describe('ApplicationResolver', () => {
       false,
       null,
     );
+  });
+
+  it('should call service and return success response', async () => {
+    const input: UpdateApplicationStatusDto = {
+      formId: 'form-123',
+      submissionId: 'sub-456',
+      formsflowAppId: 12345,
+    };
+
+    const expectedResponse = {
+      message: 'Updated successfully for id=10',
+      httpStatusCode: 200,
+      success: true,
+      timestamp: new Date().toISOString(),
+      data: [{ formsflowAppId: 12345 }],
+    };
+
+    jest.spyOn(applicationService, 'updateFormsflowAppId').mockResolvedValue(expectedResponse);
+
+    const result = await resolver.updateFormsflowAppId(input);
+
+    expect(applicationService.updateFormsflowAppId).toHaveBeenCalledWith(input);
+    expect(result).toEqual(expectedResponse);
+    expect(loggerService.log).toHaveBeenCalledWith('ApplicationResolver.updateFormsflowAppId() start');
   });
 });

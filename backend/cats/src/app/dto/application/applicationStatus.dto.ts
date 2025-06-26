@@ -23,4 +23,7 @@ export class ApplicationStatusDto {
 
   @Field()
   submissionId: string; // the submission id in formsflow
+
+  @Field()
+  formsflowAppId: number; // formsflow application id
 }

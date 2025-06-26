@@ -7,9 +7,9 @@ import { CreateApplication } from '../../dto/application/createApplication.dto';
 import { ViewApplicationDetails } from '../../dto/application/viewApplicationDetails.dto';
 import { AppTypeService } from '../appType/appType.service';
 import { DashboardService } from '../dashboard/dashboard.service';
-import { UpdateApplication } from '../../dto/application/updateApplication.dto';
 import { AppStatus } from '../../entities/appStatus.entity';
 import { StatusTypeService } from '../statusType/statusType.service';
+import { UpdateApplicationStatusDto } from '../../dto/application/updateApplicationStatus.dto';
 
 @Injectable()
 export class ApplicationService {
@@ -105,6 +105,51 @@ export class ApplicationService {
       this.loggerService.log('ApplicationService.createApplication() end');
     }
   }
+
+  // this method will be called from formsflow after an application is submitted to update the formsflow app id
+  async updateFormsflowAppId(appStatusInput: UpdateApplicationStatusDto) {
+    this.loggerService.log('ApplicationService.updateFormsflowAppId() start'); // Log the start of the method
+
+    try {
+      const { formId, submissionId, formsflowAppId } = appStatusInput;
+
+      const appStatus = await this.appStatusRepository.findOne({
+        where: { formId, submissionId },
+      });
+
+      if (!appStatus) {
+        // If matching app status is not found, log a warning and throw an exception
+        this.loggerService.warn(`No AppStatus found for formId=${formId} and submissionId=${submissionId}`);
+        throw new HttpException('AppStatus not found', HttpStatus.NOT_FOUND);
+      }
+
+      appStatus.formsflowAppId = formsflowAppId;
+      appStatus.updatedBy = 'SYSTEM';
+      appStatus.updatedDateTime = new Date();
+      appStatus.isCurrent = true;
+
+      await this.appStatusRepository.save(appStatus);
+
+      // Log success
+      this.loggerService.log(`App Status successfully with Formsflow App ID: ${formsflowAppId}`);
+
+      return { success: true, message: `Updated successfully for id=${appStatus.id}` };
+    } catch (err) {
+      // Log the error with the exception details
+      this.loggerService.error(
+        'Exception occurred in ApplicationService.updateFormsflowAppId()',
+        JSON.stringify(err),
+      );
+      throw new HttpException(
+        'Failed to update  Formsflow App ID',
+        HttpStatus.BAD_REQUEST,
+      );
+    } finally {
+      // Log the end of the method
+      this.loggerService.log('ApplicationService.updateFormsflowAppId() end');
+    }
+  }
+
 
   async findApplicationDetailsById(
     id: number,

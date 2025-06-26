@@ -49,6 +49,9 @@ export class AppStatus {
   @Column('timestamp without time zone', { name: 'updated_date_time' })
   updatedDateTime: Date;
 
+  @Column('integer', { name: 'formsflow_app_id', nullable: true })
+  formsflowAppId: number | null;
+
   @Column('character varying', { name: 'form_id', length: 50, nullable: true })
   formId: string | null;
 
