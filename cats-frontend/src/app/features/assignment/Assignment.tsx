@@ -75,7 +75,6 @@ const Assignment: React.FC<AssignmentProps> = ({
 
   useEffect(() => {
     if (assignmentServiceType) {
-      console.log('assignmentServiceType', assignmentServiceType);
       staffMemebersRefetchForServiceType({
         applicationServiceTypeId: Number(assignmentServiceType),
       });
@@ -84,10 +83,6 @@ const Assignment: React.FC<AssignmentProps> = ({
 
   useEffect(() => {
     if (staffMemebersListForServiceType) {
-      console.log(
-        'staffMemebersListForServiceType',
-        staffMemebersListForServiceType,
-      );
       processStaffMemebersList(
         staffMemebersList?.getAllActiveStaffMembers?.data || [],
         staffMemebersListForServiceType
