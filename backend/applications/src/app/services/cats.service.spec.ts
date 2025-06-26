@@ -1,125 +1,146 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { CatsService } from './cats.service';
 import axios from 'axios';
 
-jest.mock('axios'); // Prevent actual HTTP requests
+jest.mock('axios');
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('CatsService', () => {
   let service: CatsService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [CatsService],
-    }).compile();
-
-    service = module.get<CatsService>(CatsService);
+  beforeEach(() => {
+    service = new CatsService();
     jest.clearAllMocks();
   });
 
   describe('submitToCats', () => {
-    it('should send a GraphQL mutation request to CATS API with required applicationStatus', async () => {
-      process.env.CATS_API = 'http://mock-api.com/graphql';
+    const submissionId = 'sub123';
+    const formId = 'form123';
+    const formData = {
+      siteId: 101,
+      hdnAppType: 'TYPE_A',
+      applicationId: 100001,
+    };
 
-      const mockFormData = { siteId: 123, hdnAppType: 'NEW' };
-      const mockSubmissionId = 'sub-001';
-      const mockFormId = 'form-001';
-
-      const fixedDate = new Date('2025-06-18T12:00:00Z');
-      const isoDate = fixedDate.toISOString();
-
-      // Mock global Date constructor
-      const originalDate = global.Date;
-      global.Date = class extends Date {
-        constructor() {
-          super();
-          return fixedDate;
-        }
-      } as any;
-
+    it('should call axios.post with the correct payload when siteId is present', async () => {
       const mockResponse = {
         data: {
           data: {
             createApplication: {
-              message: 'Success',
+              message: 'Created',
               httpStatusCode: 200,
               success: true,
-              timestamp: '2025-06-18T00:00:00.000Z',
-              data: { id: 1 },
+              timestamp: '2025-06-26T00:00:00Z',
+              data: {
+                id: 1,
+              },
             },
           },
         },
       };
 
-      (axios.post as jest.Mock).mockResolvedValue(mockResponse);
-
-      await service.submitToCats(mockFormData, mockSubmissionId, mockFormId);
-
-      expect(axios.post).toHaveBeenCalledTimes(1);
-
-      const callArgs = (axios.post as jest.Mock).mock.calls[0];
-      expect(callArgs[0]).toBe('http://mock-api.com/graphql');
-
-      expect(callArgs[1]).toMatchObject({
-        variables: {
-          application: {
-            siteId: mockFormData.siteId,
-            appTypeAbbrev: mockFormData.hdnAppType,
-            receivedDate: fixedDate,
-            applicationStatus: [
-              {
-                statusTypeAbbrev: 'New',
-                isCurrent: true,
-                applicationId: 0,
-                formId: mockFormId,
-                submissionId: mockSubmissionId,
-              },
-            ],
-          },
-        }
-      });
-
-
-      // Restore the original Date
-      global.Date = originalDate;
-    });
-
-    it('should handle errors gracefully', async () => {
-      process.env.CATS_API = 'http://mock-api.com/graphql';
-
-      const mockFormData = { siteId: 123, hdnAppType: 'NEW' };
-      const mockSubmissionId = 'sub-001';
-      const mockFormId = 'form-001';
-
-      (axios.post as jest.Mock).mockRejectedValue(new Error('Request failed'));
-
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-
-      await expect(
-        service.submitToCats(mockFormData, mockSubmissionId, mockFormId)
-      ).resolves.toBeUndefined();
-
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Error:',
-        expect.any(Error)
-      );
-
-      consoleSpy.mockRestore();
-    });
-
-    it('should log when siteId is missing and not call axios', async () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-      const formData = { hdnAppType: 'CSR' }; // siteId missing
-      const submissionId = 'sub-001';
-      const formId = 'form-001';
+      mockedAxios.post.mockResolvedValueOnce(mockResponse);
 
       await service.submitToCats(formData, submissionId, formId);
 
+      expect(mockedAxios.post).toHaveBeenCalledWith(
+        process.env.CATS_API,
+        expect.objectContaining({
+          query: expect.stringContaining('mutation CreateNewApplication'),
+          variables: {
+            application: expect.objectContaining({
+              siteId: formData.siteId,
+              appTypeAbbrev: formData.hdnAppType,
+              applicationStatus: expect.arrayContaining([
+                expect.objectContaining({
+                  formId,
+                  submissionId,
+                  formsflowAppId: formData.applicationId,
+                }),
+              ]),
+            }),
+          },
+        }),
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+    });
+
+    it('should not call axios.post and log error if siteId is missing', async () => {
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+      const invalidFormData = { ...formData, siteId: null };
+
+      await service.submitToCats(invalidFormData, submissionId, formId);
+
+      expect(mockedAxios.post).not.toHaveBeenCalled();
       expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining(`Site Id not available, application not created in CATS for formID:${formId} submissionId:${submissionId}`)
+        expect.stringContaining('Site Id not available, application not created in CATS'),
       );
 
-      expect(axios.post).not.toHaveBeenCalled();
       consoleSpy.mockRestore();
+    });
+
+    it('should log error if axios.post throws', async () => {
+      const error = new Error('Network error');
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+
+      mockedAxios.post.mockRejectedValueOnce(error);
+
+      await service.submitToCats(formData, submissionId, formId);
+
+      expect(consoleSpy).toHaveBeenCalledWith('Error:', error);
+
+      consoleSpy.mockRestore();
+    });
+  });
+
+  describe('updateCatsApplication', () => {
+    const submissionId = 'sub456';
+    const formId = 'form456';
+    const formData = { applicationId: 99999 };
+
+    it('should call axios.post and return the response data', async () => {
+      const mockResponse = {
+        data: {
+          data: {
+            updateFormsflowAppId: {
+              message: 'Updated',
+              httpStatusCode: 200,
+              success: true,
+              timestamp: '2025-06-26T00:00:00Z',
+              data: {
+                formsflowAppId: 99999,
+              },
+            },
+          },
+        },
+      };
+
+      mockedAxios.post.mockResolvedValueOnce(mockResponse);
+
+      const result = await service.updateCatsApplication(submissionId, formId, formData);
+
+      expect(mockedAxios.post).toHaveBeenCalledWith(
+        process.env.CATS_API,
+        expect.objectContaining({
+          query: expect.stringContaining('mutation UpdateFormsflowAppId'),
+          variables: {
+            appStatusInput: {
+              submissionId,
+              formId,
+              formsflowAppId: formData.applicationId,
+            },
+          },
+        }),
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+
+      expect(result).toEqual(mockResponse.data);
+    });
+
+    it('should throw an error if axios.post fails', async () => {
+      const error = new Error('Update failed');
+      mockedAxios.post.mockRejectedValueOnce(error);
+
+      await expect(service.updateCatsApplication(submissionId, formId, formData)).rejects.toThrow('Update failed');
     });
   });
 });

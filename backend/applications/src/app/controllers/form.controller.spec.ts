@@ -14,6 +14,7 @@ const mockFormService = {
 
 const mockCatsService = {
   submitToCats: jest.fn(),
+  updateCatsApplication: jest.fn(),
 };
 
 describe('FormController', () => {
@@ -110,13 +111,28 @@ describe('FormController', () => {
     expect(result).toEqual(response);
   });
 
-  it('should partially update form submission', async () => {
+  it('should call catsService.updateCatsApplication when partially updating', async () => {
     const response = { patched: true };
+    const formId = 'abc';
+    const submissionId = '123';
+    const patchData = { patch: true };
+
     mockFormService.partialUpdate.mockResolvedValue(response);
+    mockCatsService.updateCatsApplication = jest.fn().mockResolvedValue(undefined); // Add this method
+
     const mockRequest = {
       headers: { origin: 'https://example.com' },
-    }
-    const result = await controller.partialUpdateSubmission('abc', '123', { data: { patch: true } }, mockRequest);
+    };
+
+    const result = await controller.partialUpdateSubmission(
+      formId,
+      submissionId,
+      { data: patchData },
+      mockRequest,
+    );
+
+    expect(mockFormService.partialUpdate).toHaveBeenCalledWith(submissionId, formId, patchData);
+    expect(mockCatsService.updateCatsApplication).toHaveBeenCalledWith(submissionId, formId, patchData);
     expect(result).toEqual(response);
   });
 });
