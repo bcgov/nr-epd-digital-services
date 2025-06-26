@@ -12,12 +12,9 @@ import { ApplicationServiceType } from '../app/entities/applicationServiceType.e
 import { PermissionServiceType } from '../app/entities/permissionServiceType';
 import { parse } from 'path';
 import { PersonService } from 'src/app/services/people/people.service';
+import { StaffRoles } from 'src/app/services/assignment/staffRoles.enum';
 
-export enum PermissionRole {
-  CSWKR = 'CSWKR', // Caseworker
-  SDM = 'SDM', // SDM (Supervisor)
-  MENTOR = 'MENTOR', // Mentor
-}
+
 
 export const PermissionsSeeder = async (manager: EntityManager) => {
   const logger = new LoggerService();
@@ -33,11 +30,11 @@ export const PermissionsSeeder = async (manager: EntityManager) => {
 
     const getPermissionsForRole = (abbrev: string): any[] => {
       switch (abbrev) {
-        case PermissionRole.CSWKR:
+        case StaffRoles.CASE_WORKER:
           return [...COMMON_PERMISSIONS, ...CASEWORKER_PERMISSIONS];
-        case PermissionRole.SDM:
+        case StaffRoles.SDM:
           return [...COMMON_PERMISSIONS, ...SDM_PERMISSIONS];
-        case PermissionRole.MENTOR:
+        case StaffRoles.MENTOR:
           return [...COMMON_PERMISSIONS, ...MENTOR_PERMISSIONS];
         default:
           return [];

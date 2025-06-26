@@ -2,6 +2,7 @@ import { EntityManager } from 'typeorm';
 import { ApplicationServiceType } from '../app/entities/applicationServiceType.entity';
 import { ParticipantRole } from '../app/entities/participantRole.entity';
 import { ServiceAssignmentFactor } from '../app/entities/serviceAssignmentFactor';
+import { StaffRoles } from 'src/app/services/assignment/staffRoles.enum';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const serviceTypeJSON = require('./applicationServiceType.json');
@@ -36,7 +37,7 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
     }
 
     const caseWorkerRole = await manager.findOne(ParticipantRole, {
-      where: { abbrev: 'CSWKR' },
+      where: { abbrev: StaffRoles.CASE_WORKER },
     });
 
     const sdmRole = await manager.findOne(ParticipantRole, {
