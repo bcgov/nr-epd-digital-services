@@ -141,13 +141,13 @@ export class StaffAssignmentResolver {
   ) {
     try {
       const result =
-        await this.service.getAllActiveStaffMembersWithCurrentCapacityForApplicationServiceType(
+        await this.service.getActiveStaffWithCapacityByServiceType(
           applicationServiceTypeId,
         );
 
       if (result?.length > 0) {
         this.loggerService.log(
-          'StaffAssignmentResolver.getAllActiveStaffMembersWithCurrentCapacityForApplicationServiceType() RES:200 end',
+          'StaffAssignmentResolver.getActiveStaffWithCapacityByServiceType () RES:200 end',
         );
         return this.staffResponseProvider.createResponse(
           'Participant names fetched successfully',
@@ -157,7 +157,7 @@ export class StaffAssignmentResolver {
         );
       } else {
         this.loggerService.log(
-          'StaffAssignmentResolver.getAllActiveStaffMembersWithCurrentCapacityForApplicationServiceType() RES:404 end',
+          'StaffAssignmentResolver.getActiveStaffWithCapacityByServiceType () RES:404 end',
         );
         return this.staffResponseProvider.createResponse(
           'Participant names data not found',

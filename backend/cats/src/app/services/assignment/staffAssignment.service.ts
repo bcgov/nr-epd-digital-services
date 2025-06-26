@@ -204,13 +204,13 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
     }
   }
 
-  async getAllActiveStaffMembersWithCurrentCapacityForApplicationServiceType(
+  async getActiveStaffWithCapacityByServiceType(
     applicationServiceTypeId: number,
     personId?: number,
   ): Promise<ViewStaffWithCapacityDTO[]> {
     try {
       this.loggerService.log(
-        'at service layer getAllActiveStaffMembersWithCurrentCapacityForApplicationServiceType start',
+        'at service layer getActiveStaffWithCapacityByServiceType  start',
       );
 
       const query =

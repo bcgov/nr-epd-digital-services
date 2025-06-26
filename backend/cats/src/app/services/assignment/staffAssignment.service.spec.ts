@@ -233,7 +233,7 @@ describe('StaffAssignmentService', () => {
       },
     ]);
     const result =
-      await service.getAllActiveStaffMembersWithCurrentCapacityForApplicationServiceType(
+      await service.getActiveStaffWithCapacityByServiceType(
         1,
       );
     expect(result).toEqual([
