@@ -117,6 +117,8 @@ export class ApplicationService {
         where: { formId, submissionId },
       });
 
+      const statusType = await this.statusTypeService.getStatusTypeByAbbrev(statusTypeAbbrev);
+
       if (!appStatus) {
 
         const existingAppStatus = await this.appStatusRepository.findOne({
@@ -124,8 +126,6 @@ export class ApplicationService {
         });
 
         const applicationId = existingAppStatus?.applicationId;
-
-        const statusType = await this.statusTypeService.getStatusTypeByAbbrev(statusTypeAbbrev);
 
         appStatus = this.appStatusRepository.create({
           applicationId,
@@ -149,6 +149,7 @@ export class ApplicationService {
         appStatus.updatedBy = 'SYSTEM';
         appStatus.updatedDateTime = new Date();
         appStatus.isCurrent = true;
+        appStatus.statusTypeId = statusType.id;
 
         await this.appStatusRepository.save(appStatus);
       }
