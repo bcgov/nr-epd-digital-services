@@ -35,8 +35,6 @@ const mockRecentViewedApplications: RecentViewedApplication[] = [
       updatedDateTime: new Date('2024-01-01T09:00:00Z'),
       ts: Buffer.from([]),
       csapRefNumber: null,
-      formId: null,
-      submissionId: null,
     } as Application,
   },
   {
@@ -65,8 +63,6 @@ const mockRecentViewedApplications: RecentViewedApplication[] = [
       updatedDateTime: new Date('2024-02-01T09:00:00Z'),
       ts: Buffer.from([]),
       csapRefNumber: null,
-      formId: null,
-      submissionId: null,
     } as Application,
   },
 ];
@@ -338,26 +334,26 @@ describe('DashboardResolver', () => {
         timestamp: expect.any(String),
       });
     });
-    
+
     it('should return trimmed and single-line formatted address', async () => {
-  const mockApplications = [
-    {
-      applicationId: 2,
-      applicationType: 'Commercial',
-      applicationStatus: 'In Review',
-      priority: 'Medium',
-      receivedDate: '2024-06-01',
-      siteId: 202,
-      address: '456 Elm St\n\n  Suite 200\n  \n'
-    }
-  ];
+      const mockApplications = [
+        {
+          applicationId: 2,
+          applicationType: 'Commercial',
+          applicationStatus: 'In Review',
+          priority: 'Medium',
+          receivedDate: '2024-06-01',
+          siteId: 202,
+          address: '456 Elm St\n\n  Suite 200\n  \n'
+        }
+      ];
 
-  jest.spyOn(dashboardService, 'getApplications').mockResolvedValue(mockApplications);
+      jest.spyOn(dashboardService, 'getApplications').mockResolvedValue(mockApplications);
 
-  const result = await resolver.getApplications();
+      const result = await resolver.getApplications();
 
 
-  expect(result.data[0].address).toBe('456 Elm St\n\n  Suite 200\n  \n');
+      expect(result.data[0].address).toBe('456 Elm St\n\n  Suite 200\n  \n');
     });
 
     it('should handle missing fields in application data gracefully', async () => {
