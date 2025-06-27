@@ -65,6 +65,7 @@ export const Application: React.FC<ApplicationProps> = () => {
     variables: {
       applicationId,
     },
+    fetchPolicy: 'network-only',
     skip: !applicationId,
   });
 

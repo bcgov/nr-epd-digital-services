@@ -90,6 +90,7 @@ import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
 import { DashboardService } from './services/dashboard/dashboard.service';
 import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
 import { RecentViewedApplication } from './entities/recentViewedApplication.entity';
+import { StatusTypeService } from './services/statusType/statusType.service';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -172,6 +173,7 @@ import { RecentViewedApplication } from './entities/recentViewedApplication.enti
     ApplicationService,
     ApplicationDetailsResolver,
     AppTypeService,
+    StatusTypeService,
     SiteResolver,
     SiteService,
     InvoiceResolver,
@@ -192,4 +194,4 @@ import { RecentViewedApplication } from './entities/recentViewedApplication.enti
   ],
   controllers: [UserController],
 })
-export class CatsModule {}
+export class CatsModule { }
