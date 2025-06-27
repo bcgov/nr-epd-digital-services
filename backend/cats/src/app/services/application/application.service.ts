@@ -154,7 +154,7 @@ export class ApplicationService {
         await this.appStatusRepository.save(appStatus);
       }
 
-      // Set isCurrent = false for all other entries with the same formsflowAppId but different formId/submissionId
+      // Set isCurrent as false for all other entries with the same formsflowAppId but different formId/submissionId
       await this.appStatusRepository
         .createQueryBuilder()
         .update()
