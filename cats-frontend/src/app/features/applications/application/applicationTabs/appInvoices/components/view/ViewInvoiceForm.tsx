@@ -2,11 +2,15 @@ import { useState, useEffect, FC, ChangeEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FormGroup, Form, Col, Row, Alert } from 'react-bootstrap';
 import { Button } from '@cats/components/button/Button';
-import { FaTimes, FaEdit, FaSave } from 'react-icons/fa';
+import { FaTimes, FaEdit, FaSave, FaFilePdf } from 'react-icons/fa';
 import { useGetHeaderDetailsByApplicationIdQuery } from '@cats/features/applications/application/ApplicationDetails.generated';
 import { useGetInvoiceByIdQuery } from '../../getInvoiceById.generated';
 import { useGetPersonByIdQuery } from './getPersonById.generated';
 import { useUpdateInvoiceMutation } from '../../updateInvoice.generated';
+import {
+  useDownloadInvoicePdfLazyQuery,
+  useDownloadInvoicePdfQuery,
+} from './downloadInvoicePdf.generated';
 import { InvoiceStatus } from '../../../../../../../../generated/types';
 
 enum InvoiceLineItemType {
@@ -92,6 +96,58 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
 
   const [updateInvoice, { loading: updateLoading }] =
     useUpdateInvoiceMutation();
+
+  // Function to download invoice PDF
+  const handleDownloadPdf = async () => {
+    try {
+      const { data } = await downloadPdf();
+
+      if (
+        data?.downloadInvoicePdf?.success &&
+        data.downloadInvoicePdf.pdfContent
+      ) {
+        // Convert base64 to blob
+        const byteCharacters = atob(data.downloadInvoicePdf.pdfContent);
+        const byteNumbers = new Array(byteCharacters.length);
+
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'application/pdf' });
+
+        // Create download link
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download =
+          data.downloadInvoicePdf.filename || `invoice_${numericInvoiceId}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      } else {
+        setUpdateError(
+          'Failed to download PDF: ' +
+            (data?.downloadInvoicePdf?.message || 'Unknown error'),
+        );
+      }
+    } catch (error) {
+      setUpdateError(
+        error instanceof Error
+          ? error.message
+          : 'An error occurred while downloading the PDF',
+      );
+    }
+  };
+
+  // Query hook for downloading PDF (lazy query - only executes when called)
+  const [downloadPdf, { loading: pdfLoading }] = useDownloadInvoicePdfLazyQuery(
+    {
+      variables: { id: numericInvoiceId },
+    },
+  );
 
   useEffect(() => {
     if (!editableInvoice) return;
@@ -446,9 +502,19 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
               </Button>
             </>
           ) : (
-            <Button variant="primary" onClick={handleEditToggle}>
-              <FaEdit /> Edit
-            </Button>
+            <>
+              <Button
+                variant="primary"
+                className="me-2"
+                onClick={handleDownloadPdf}
+                disabled={pdfLoading}
+              >
+                <FaFilePdf /> {pdfLoading ? 'Downloading...' : 'Download PDF'}
+              </Button>
+              <Button variant="primary" onClick={handleEditToggle}>
+                <FaEdit /> Edit
+              </Button>
+            </>
           )}
         </div>
       </div>

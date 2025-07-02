@@ -199,3 +199,22 @@ mutation DeleteInvoice($id: Int!) {
 {
   "id": {{invoiceId}}
 }
+
+### downloadInvoicePdf
+POST {{protocol}}://{{host}}/graphql
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+query DownloadInvoicePdf($id: Int!) {
+  downloadInvoicePdf(id: $id) {
+    success
+    httpStatusCode
+    message
+    pdfContent
+    filename
+  }
+}
+
+{
+  "id": {{invoiceId}}
+}

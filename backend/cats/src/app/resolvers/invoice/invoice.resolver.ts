@@ -13,6 +13,7 @@ import { AuthenticatedUser } from 'nest-keycloak-connect';
 import { ResponseDto } from '../../dto/response/response.dto';
 import { GenericValidationPipe } from '../../utilities/validations/genericValidationPipe';
 import { UsePipes } from '@nestjs/common';
+import { InvoicePdfResponse } from '../../dto/response/invoice/invoicePdfResponse';
 
 @Resolver()
 export class InvoiceResolver {
@@ -277,5 +278,47 @@ export class InvoiceResolver {
     response.httpStatusCode = 200;
     response.success = true;
     return response;
+  }
+
+  @Query(() => InvoicePdfResponse)
+  async downloadInvoicePdf(
+    @Args('id', { type: () => Int }) id: number,
+  ): Promise<InvoicePdfResponse> {
+    this.loggerService.log(
+      `InvoiceResolver: downloadInvoicePdf: invoiceId: ${id}`,
+    );
+    const response = new InvoicePdfResponse();
+
+    try {
+      // Get the invoice first to determine filename
+      const invoice = await this.invoiceService.getInvoiceById(id);
+      const pdfBuffer = await this.invoiceService.generateInvoicePdf(id);
+
+      // Convert buffer to Base64 string for GraphQL response
+      const base64Content = pdfBuffer.toString('base64');
+
+      // Create a filename for the PDF
+      const filename = `invoice_${id}_${invoice.subject
+        .replace(/[^a-z0-9]/gi, '_')
+        .toLowerCase()}.pdf`;
+
+      // Populate response
+      response.pdfContent = base64Content;
+      response.filename = filename;
+      response.httpStatusCode = 200;
+      response.success = true;
+      response.message = 'Invoice PDF generated successfully.';
+
+      return response;
+    } catch (error) {
+      this.loggerService.error(
+        `InvoiceResolver: downloadInvoicePdf: Error: ${error.message}`,
+        null,
+      );
+      response.httpStatusCode = 500;
+      response.message = 'An error occurred while generating the invoice PDF.';
+      response.success = false;
+      return response;
+    }
   }
 }

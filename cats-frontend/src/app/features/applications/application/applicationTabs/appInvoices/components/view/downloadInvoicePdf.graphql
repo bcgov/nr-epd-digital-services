@@ -1,0 +1,9 @@
+query DownloadInvoicePdf($id: Int!) {
+  downloadInvoicePdf(id: $id) {
+    success
+    httpStatusCode
+    message
+    pdfContent
+    filename
+  }
+}

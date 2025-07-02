@@ -1,4 +1,4 @@
-import { useState, FormEvent, useEffect, ChangeEvent, FC } from 'react';
+import { useState, FormEvent, useEffect, ChangeEvent, FC, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FormGroup, Form, Col, Row, Alert } from 'react-bootstrap';
 import { useCreateInvoiceMutation } from '../../createInvoice.generated';
@@ -25,6 +25,7 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
   const { id } = useParams<{ id: string }>();
   const applicationId = id ? parseInt(id) : 0;
   const navigate = useNavigate();
+  const recipientDropdownRef = useRef<HTMLDivElement>(null);
 
   // Fetch application details including application type
   const { data: applicationData, loading: applicationLoading } =
@@ -57,10 +58,27 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
   useEffect(() => {
     if (recipientSearch && recipientSearch.length >= 2) {
       getParticipantNames({ variables: { searchParam: recipientSearch } });
-    } else {
-      setRecipients([]); // Clear dropdown when search is too short. This prevents showing stale results.
+    } else if (recipientSearch === '') {
+      setRecipients([]);
     }
   }, [recipientSearch, getParticipantNames]);
+
+  // Handle click outside of recipient dropdown to close it
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        recipientDropdownRef.current &&
+        !recipientDropdownRef.current.contains(event.target as Node)
+      ) {
+        setRecipients([]);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const [formValues, setFormValues] = useState({
     subject: '',
@@ -328,14 +346,34 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
             <Col md={6}>
               <FormGroup className="mb-3">
                 <Form.Label>Recipient</Form.Label>
-                <div className="position-relative">
-                  <Form.Control
-                    type="text"
-                    name="recipientSearch"
-                    placeholder="Search recipients..."
-                    onChange={(e) => setRecipientSearch(e.target.value)}
-                    value={recipientSearch}
-                  />
+                <div className="position-relative" ref={recipientDropdownRef}>
+                  <div className="position-relative">
+                    <Form.Control
+                      type="text"
+                      name="recipientSearch"
+                      placeholder="Search recipients..."
+                      onChange={(e) => setRecipientSearch(e.target.value)}
+                      value={recipientSearch}
+                    />
+                    {formValues.recipientId && (
+                      <Button
+                        variant="secondary"
+                        size="small"
+                        className="position-absolute end-0 top-0 mt-1 me-1"
+                        style={{ padding: '0.25rem' }}
+                        onClick={() => {
+                          setRecipientSearch('');
+                          setFormValues({
+                            ...formValues,
+                            recipientId: '',
+                          });
+                        }}
+                        title="Clear selection"
+                      >
+                        <FaTimes size={12} />
+                      </Button>
+                    )}
+                  </div>
                   {loadingParticipants && (
                     <div className="text-muted small mt-1">Loading...</div>
                   )}
@@ -359,10 +397,10 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
                               setFormValues((prev) => ({
                                 ...prev,
                                 recipientId: recipient.key,
-                              }));
-                              // Update the search field with the selected name
+                              });
+                              // Set the search text to the selected recipient's name
                               setRecipientSearch(recipient.value);
-                              // Clear recipients array to hide dropdown
+                              // Clear the dropdown by resetting the recipients array
                               setRecipients([]);
                             }
                           }}

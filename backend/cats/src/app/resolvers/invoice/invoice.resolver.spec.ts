@@ -4,11 +4,24 @@ import { InvoiceService } from '../../services/invoice/invoice.service';
 import { LoggerService } from '../../logger/logger.service';
 import { InvoiceV2 } from '../../entities/invoiceV2.entity';
 import { InvoiceInputDto, InvoiceStatus } from '../../dto/invoice/invoice.dto';
+import { InvoicePdfResponse } from '../../dto/response/invoice/invoicePdfResponse';
 
 describe('InvoiceResolver', () => {
   let resolver: InvoiceResolver;
   let invoiceService: InvoiceService;
   let loggerService: LoggerService;
+
+  const mockInvoice = {
+    id: 1,
+    subject: 'Test Invoice',
+    issuedDate: new Date(),
+    dueDate: new Date(),
+    status: 'draft',
+    application: { id: 123 },
+    recipient: { id: 456 },
+  };
+
+  const mockPdfBuffer = Buffer.from('Mock PDF content');
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -20,7 +33,8 @@ describe('InvoiceResolver', () => {
             getInvoicesByApplicationId: jest.fn(),
             updateInvoice: jest.fn(),
             deleteInvoice: jest.fn(),
-            getInvoiceById: jest.fn(),
+            getInvoiceById: jest.fn().mockResolvedValue(mockInvoice),
+            generateInvoicePdf: jest.fn().mockResolvedValue(mockPdfBuffer),
           },
         },
         {
@@ -344,6 +358,81 @@ describe('InvoiceResolver', () => {
       expect(result.message).toBe(
         'An error occurred while fetching the invoice.',
       );
+    });
+  });
+  describe('downloadInvoicePdf', () => {
+    it('should return a PDF file when service succeeds', async () => {
+      const mockPdfBuffer = Buffer.from('PDF file content');
+
+      jest
+        .spyOn(invoiceService, 'generateInvoicePdf')
+        .mockResolvedValue(mockPdfBuffer);
+
+      const invoiceId = 1;
+      const result = await resolver.downloadInvoicePdf(invoiceId);
+
+      expect(invoiceService.generateInvoicePdf).toHaveBeenCalledWith(invoiceId);
+      expect(result.success).toBe(true);
+      expect(result.httpStatusCode).toBe(200);
+    });
+
+    it('should handle errors when service fails', async () => {
+      jest
+        .spyOn(invoiceService, 'generateInvoicePdf')
+        .mockRejectedValue(new Error('Service error'));
+
+      const invoiceId = 1;
+      const result = await resolver.downloadInvoicePdf(invoiceId);
+
+      expect(invoiceService.generateInvoicePdf).toHaveBeenCalledWith(invoiceId);
+      expect(loggerService.error).toHaveBeenCalled();
+      expect(result.success).toBe(false);
+      expect(result.httpStatusCode).toBe(500);
+      expect(result.message).toBe(
+        'An error occurred while generating the invoice PDF.',
+      );
+    });
+
+    it('should return a successful response with PDF content', async () => {
+      // Arrange
+      const invoiceId = 1;
+
+      jest
+        .spyOn(invoiceService, 'getInvoiceById')
+        .mockResolvedValue(mockInvoice as any);
+      jest
+        .spyOn(invoiceService, 'generateInvoicePdf')
+        .mockResolvedValue(mockPdfBuffer);
+
+      // Act
+      const result = await resolver.downloadInvoicePdf(invoiceId);
+
+      // Assert
+      expect(result).toBeInstanceOf(InvoicePdfResponse);
+      expect(result.success).toBe(true);
+      expect(result.httpStatusCode).toBe(200);
+      expect(result.pdfContent).toBe(mockPdfBuffer.toString('base64'));
+      expect(result.filename).toBe('invoice_1_test_invoice.pdf');
+      expect(invoiceService.getInvoiceById).toHaveBeenCalledWith(invoiceId);
+      expect(invoiceService.generateInvoicePdf).toHaveBeenCalledWith(invoiceId);
+    });
+
+    it('should handle errors gracefully', async () => {
+      // Arrange
+      const invoiceId = 999;
+      const error = new Error('Failed to generate PDF');
+      jest.spyOn(invoiceService, 'generateInvoicePdf').mockRejectedValue(error);
+
+      // Act
+      const result = await resolver.downloadInvoicePdf(invoiceId);
+
+      // Assert
+      expect(result.success).toBe(false);
+      expect(result.httpStatusCode).toBe(500);
+      expect(result.message).toBe(
+        'An error occurred while generating the invoice PDF.',
+      );
+      expect(result.pdfContent).toBeUndefined();
     });
   });
 });
