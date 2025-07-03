@@ -310,6 +310,7 @@ export type InvoiceDto = {
   issuedDate: Scalars['DateTime']['output'];
   lineItems: Array<InvoiceLineItemDto>;
   notes?: Maybe<Scalars['String']['output']>;
+  pstExempt: Scalars['Boolean']['output'];
   pstInCents: Scalars['Int']['output'];
   recipientId: Scalars['Int']['output'];
   status: InvoiceStatus;
@@ -329,6 +330,7 @@ export type InvoiceInputDto = {
   issuedDate: Scalars['DateTime']['input'];
   lineItems: Array<InvoiceLineItemInputDto>;
   notes?: InputMaybe<Scalars['String']['input']>;
+  pstExempt: Scalars['Boolean']['input'];
   pstInCents: Scalars['Int']['input'];
   recipientId: Scalars['Int']['input'];
   status: InvoiceStatus;

@@ -44,6 +44,9 @@ export class InvoiceV2 {
   @Column({ default: false })
   taxExempt: boolean;
 
+  @Column({ default: false })
+  pstExempt: boolean;
+
   @Column('int')
   subtotalInCents: number;
 

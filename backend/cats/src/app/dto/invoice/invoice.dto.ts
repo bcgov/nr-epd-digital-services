@@ -51,6 +51,9 @@ export class InvoiceDto {
   @Field(() => Boolean)
   taxExempt: boolean;
 
+  @Field(() => Boolean)
+  pstExempt: boolean;
+
   @Field(() => Int)
   subtotalInCents: number;
 
@@ -107,6 +110,9 @@ export class InvoiceInputDto {
 
   @Field(() => Boolean)
   taxExempt: boolean;
+
+  @Field(() => Boolean)
+  pstExempt: boolean;
 
   @Field(() => Int)
   subtotalInCents: number;
