@@ -92,6 +92,10 @@ import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
 import { RecentViewedApplication } from './entities/recentViewedApplication.entity';
 import { StatusTypeService } from './services/statusType/statusType.service';
 
+
+import { ServiceAssignmentFactor } from './entities/serviceAssignmentFactor';
+import { PermissionServiceType } from './entities/permissionServiceType';
+
 /**
  * Module for wrapping all functionalities in user microserivce
  */
@@ -151,7 +155,9 @@ import { StatusTypeService } from './services/statusType/statusType.service';
       ApplicationServiceType,
       Permissions,
       PersonPermission,
-      RecentViewedApplication
+         RecentViewedApplication,
+      ServiceAssignmentFactor,
+      PermissionServiceType,
     ]),
     HttpModule,
   ],
