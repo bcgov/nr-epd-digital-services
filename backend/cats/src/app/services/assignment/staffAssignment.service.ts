@@ -82,7 +82,11 @@ export class StaffAssignmentService {
       const dropDownlist = applicationServiceTypes.map(
         (applicationServiceType) => ({
           key: applicationServiceType.id,
-          value: applicationServiceType.serviceName,
+          value:
+            applicationServiceType.serviceName +
+            ' (' +
+            applicationServiceType.serviceType +
+            ')',
         }),
       );
 
@@ -99,20 +103,14 @@ export class StaffAssignmentService {
     }
   }
 
-  getStaffWithCurrentFactorsQuery = (personId: number) => `
-  SELECT   
+  getStaffWithCurrentFactorsQuery = (personId?: number) => `
+   SELECT   
 p.id, 
 p.first_name, 
 p.middle_name,
 p.last_name,     
-COALESCE(SUM(ast.assignment_factor), 0) 
-+COALESCE(SUM(pr.assignment_factor), 0)
-+COALESCE(  
-sum(CASE 
-WHEN rs.abbrev = 'H' THEN 3
-WHEN rs.abbrev is null THEN 0
-ELSE 1
-END),0) as current_factors
+COALESCE(SUM(af.assignment_factor), 0) 
+ as current_factors
 FROM 
 cats.person p
 LEFT JOIN cats.app_participant a ON a.person_id = p.id AND (
@@ -121,12 +119,48 @@ OR (CURRENT_DATE >= a.effective_start_date AND a.effective_end_date IS NULL))
 LEFT JOIN cats.application app ON app.id = a.application_id 
 LEFT JOIN cats.application_service_type ast ON ast.id = app.application_service_type_id
 LEFT JOIN cats.participant_role pr ON pr.id = a.participant_role_id
-LEFT JOIN cats.risk rs ON rs.id = app.id
+LEFT JOIN cats.service_assignment_factor af on af.service_type_id = ast.id and af.role_id = pr.id
 WHERE 
 p.login_user_name is not null and p.is_active = true
 ${personId ? 'AND p.id = $1' : ''}
 GROUP BY 
 p.id, p.first_name, p.middle_name, p.last_name
+`;
+
+  getStaffWithCurrentFactorsQueryForApplicationServiceType = (
+    serviceTypeId: number,
+    personId?: number,
+  ) => `
+  SELECT   
+AllowedPersons.id, 
+AllowedPersons.first_name, 
+AllowedPersons.middle_name,
+AllowedPersons.last_name,    
+AllowedPersons.roles, 
+COALESCE(SUM(af.assignment_factor), 0) 
+ as current_factors from ((select per.id, per.first_name,
+						   per.middle_name,
+						   per.last_name, 
+STRING_AGG(DISTINCT prl.description, ', ') AS roles 
+ from cats.application_service_type ast
+join cats.permission_service_type pstm on pstm.service_type_id = ast.id
+join cats.permissions ps on ps.id = pstm.permission_id
+join cats.person_permissions pp on pp.permission_id  = ps.id
+join cats.person per on per.id = pp.person_id
+join cats.participant_role prl on prl.id = ps.role_id
+where ast.id = ${serviceTypeId} and per.is_active = true
+GROUP BY per.id, per.first_name, per.middle_name, per.last_name)) AllowedPersons
+LEFT JOIN cats.app_participant a ON a.person_id = AllowedPersons.id AND (
+(CURRENT_DATE BETWEEN a.effective_start_date AND a.effective_end_date)
+OR (CURRENT_DATE >= a.effective_start_date AND a.effective_end_date IS NULL))
+LEFT JOIN cats.application app ON app.id = a.application_id 
+LEFT JOIN cats.application_service_type ast ON ast.id = app.application_service_type_id
+LEFT JOIN cats.participant_role pr ON pr.id = a.participant_role_id
+LEFT JOIN cats.service_assignment_factor af on af.service_type_id = ast.id and af.role_id = pr.id
+ ${personId ? 'WHERE AllowedPersons.id = $1' : ''}
+GROUP BY 
+AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, AllowedPersons.last_name,AllowedPersons.roles
+
 `;
 
   async getAllActiveStaffMembersWithCurrentCapacity(
@@ -153,6 +187,52 @@ p.id, p.first_name, p.middle_name, p.last_name
           personFullName: `${person.first_name} ${person.middle_name ?? ''} ${
             person.last_name
           }`,
+
+          currentCapacity: person.current_factors,
+        }));
+
+        return transformedObjects;
+      }
+    } catch (error) {
+      this.loggerService.log(
+        'Error occured to fetch getAllActiveStaffMembersWithCurrentCapacity',
+      );
+      throw new HttpException(
+        `Failed to retrieve getAllActiveStaffMembersWithCurrentCapacity`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
+
+  async getActiveStaffWithCapacityByServiceType(
+    applicationServiceTypeId: number,
+    personId?: number,
+  ): Promise<ViewStaffWithCapacityDTO[]> {
+    try {
+      this.loggerService.log(
+        'at service layer getActiveStaffWithCapacityByServiceType  start',
+      );
+
+      const query =
+        this.getStaffWithCurrentFactorsQueryForApplicationServiceType(
+          applicationServiceTypeId,
+          personId,
+        );
+
+      const params = personId ? [personId] : [];
+      const persons = await this.personRepository.query(query, params);
+
+      if (!persons?.length) {
+        return [];
+      } else {
+        const transformedObjects = persons.map((person) => ({
+          personId: person.id,
+          personFirstName: person.first_name,
+          personMiddleName: person.middle_name,
+          personLastName: person.last_name,
+          personFullName: `${person.first_name} ${person.middle_name ?? ''} ${
+            person.last_name
+          } - (${person.roles})`,
           currentCapacity: person.current_factors,
         }));
 

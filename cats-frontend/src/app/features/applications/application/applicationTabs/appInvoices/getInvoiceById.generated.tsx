@@ -24,6 +24,7 @@ export type GetInvoiceByIdQuery = {
       dueDate: any;
       status: Types.InvoiceStatus;
       taxExempt: boolean;
+      pstExempt: boolean;
       subtotalInCents: number;
       gstInCents: number;
       pstInCents: number;
@@ -59,6 +60,7 @@ export const GetInvoiceByIdDocument = gql`
         dueDate
         status
         taxExempt
+        pstExempt
         subtotalInCents
         gstInCents
         pstInCents

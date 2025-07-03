@@ -310,6 +310,7 @@ export type InvoiceDto = {
   issuedDate: Scalars['DateTime']['output'];
   lineItems: Array<InvoiceLineItemDto>;
   notes?: Maybe<Scalars['String']['output']>;
+  pstExempt: Scalars['Boolean']['output'];
   pstInCents: Scalars['Int']['output'];
   recipientId: Scalars['Int']['output'];
   status: InvoiceStatus;
@@ -329,6 +330,7 @@ export type InvoiceInputDto = {
   issuedDate: Scalars['DateTime']['input'];
   lineItems: Array<InvoiceLineItemInputDto>;
   notes?: InputMaybe<Scalars['String']['input']>;
+  pstExempt: Scalars['Boolean']['input'];
   pstInCents: Scalars['Int']['input'];
   recipientId: Scalars['Int']['input'];
   status: InvoiceStatus;
@@ -569,6 +571,7 @@ export type Query = {
   findAllPerson: PersonResponse;
   findPersonById: PersonResponse;
   getAllActiveStaffMembers: ViewStaffWithCapacityResponse;
+  getAllActiveStaffMembersForApplicationServiceType: ViewStaffWithCapacityResponse;
   getAllParticipantRoles: ParticipantsRolesResponse;
   getAppParticipantsByAppId: AppParticipantsResponse;
   getApplicationDetailsById: ApplicationDetailsResponse;
@@ -597,6 +600,11 @@ export type Query = {
 
 export type QueryFindPersonByIdArgs = {
   id: Scalars['Float']['input'];
+};
+
+
+export type QueryGetAllActiveStaffMembersForApplicationServiceTypeArgs = {
+  applicationServiceTypeId: Scalars['Int']['input'];
 };
 
 
