@@ -30,7 +30,7 @@ import { HousingApplicationXref } from './housingApplicationXref.entity';
 import { Invoice } from './invoice.entity';
 import { Timesheet } from './timesheet.entity';
 import { ApplicationServiceType } from './applicationServiceType.entity';
-import { RecentViewedApplication } from './RecentViewedApplication.entity';
+import { RecentViewedApplication } from './recentViewedApplication.entity';
 
 @Index('idx_application_app_type_id', ['appTypeId'], {})
 @Index('pk_application', ['id'], { unique: true })
@@ -95,16 +95,6 @@ export class Application {
     length: 50,
   })
   csapRefNumber: string | null;
-
-  @Column('character varying', { name: 'form_id', length: 50, nullable: true })
-  formId: string | null;
-
-  @Column('character varying', {
-    name: 'submission_id',
-    length: 50,
-    nullable: true,
-  })
-  submissionId: string | null;
 
   @OneToMany(() => AppExpense, (appExpense) => appExpense.application)
   appExpenses: AppExpense[];

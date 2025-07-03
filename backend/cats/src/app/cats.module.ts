@@ -87,9 +87,14 @@ import { StaffAssignmentResolver } from './resolvers/assignment/staffAssignment.
 import { TimesheetDay } from './entities/timesheetDay.entity';
 import { TimesheetDayService } from './services/timesheetDay.service';
 import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
-import { RecentViewedApplication } from './entities/RecentViewedApplication.entity';
 import { DashboardService } from './services/dashboard/dashboard.service';
 import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
+import { RecentViewedApplication } from './entities/recentViewedApplication.entity';
+import { StatusTypeService } from './services/statusType/statusType.service';
+
+
+import { ServiceAssignmentFactor } from './entities/serviceAssignmentFactor';
+import { PermissionServiceType } from './entities/permissionServiceType';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -150,7 +155,9 @@ import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
       ApplicationServiceType,
       Permissions,
       PersonPermission,
-      RecentViewedApplication
+         RecentViewedApplication,
+      ServiceAssignmentFactor,
+      PermissionServiceType,
     ]),
     HttpModule,
   ],
@@ -172,6 +179,7 @@ import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
     ApplicationService,
     ApplicationDetailsResolver,
     AppTypeService,
+    StatusTypeService,
     SiteResolver,
     SiteService,
     InvoiceResolver,
@@ -192,4 +200,4 @@ import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
   ],
   controllers: [UserController],
 })
-export class CatsModule {}
+export class CatsModule { }

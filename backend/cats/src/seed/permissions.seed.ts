@@ -1,37 +1,40 @@
-import { EntityManager } from "typeorm";
-import { ParticipantRole } from "../app/entities/participantRole.entity";
-import { Permissions } from "../app/entities/permissions.entity";
+import { EntityManager } from 'typeorm';
+import { ParticipantRole } from '../app/entities/participantRole.entity';
+import { Permissions } from '../app/entities/permissions.entity';
 import {
   CASEWORKER_PERMISSIONS,
   COMMON_PERMISSIONS,
   MENTOR_PERMISSIONS,
   SDM_PERMISSIONS,
-} from "./permissions";
+} from './permissions';
+import { LoggerService } from '../app/logger/logger.service';
+import { ApplicationServiceType } from '../app/entities/applicationServiceType.entity';
+import { PermissionServiceType } from '../app/entities/permissionServiceType';
+import { parse } from 'path';
+import { PersonService } from 'src/app/services/people/people.service';
+import { StaffRoles } from 'src/app/services/assignment/staffRoles.enum';
 
-export enum PermissionRole {
-  CSWKR = "CSWKR", // Caseworker
-  SDM = "SDM", // SDM (Supervisor)
-  MENTOR = "MENTOR", // Mentor
-}
+
 
 export const PermissionsSeeder = async (manager: EntityManager) => {
+  const logger = new LoggerService();
   try {
     const roles = await manager.find(ParticipantRole, {
-      where: { roleType: "STAFF" },
+      where: { roleType: 'STAFF' },
     });
 
     if (!roles.length) {
-      console.log("No STAFF roles found. Skipping PermissionsSeeder.");
+      logger.warn('No STAFF roles found. Skipping PermissionsSeeder.');
       return;
     }
 
     const getPermissionsForRole = (abbrev: string): any[] => {
       switch (abbrev) {
-        case PermissionRole.CSWKR:
+        case StaffRoles.CASE_WORKER:
           return [...COMMON_PERMISSIONS, ...CASEWORKER_PERMISSIONS];
-        case PermissionRole.SDM:
+        case StaffRoles.SDM:
           return [...COMMON_PERMISSIONS, ...SDM_PERMISSIONS];
-        case PermissionRole.MENTOR:
+        case StaffRoles.MENTOR:
           return [...COMMON_PERMISSIONS, ...MENTOR_PERMISSIONS];
         default:
           return [];
@@ -46,37 +49,69 @@ export const PermissionsSeeder = async (manager: EntityManager) => {
       // Fetch existing permission descriptions for this role
       const existingPermissions = await manager.find(Permissions, {
         where: { roleId: role.id },
-        select: ["description"],
+        select: ['description'],
       });
       const existingDescriptions = new Set(
-        existingPermissions.map((p) => p.description)
+        existingPermissions.map((p) => p.description),
       );
 
       // Filter out permissions that already exist
       const newPermissions = permissions.filter(
-        (perm) => !existingDescriptions.has(perm.description)
+        (perm) => !existingDescriptions.has(perm.description),
       );
 
-      newPermissions.forEach((perm) => {
+      for (const perm of newPermissions) {
         const permission = new Permissions();
         permission.roleId = role.id;
         permission.description = perm.description;
-        permission.createdBy = "sysadmin";
+        permission.createdBy = 'sysadmin';
         permission.createdDatetime = new Date();
-        permission.updatedBy = "sysadmin";
+        permission.updatedBy = 'sysadmin';
         permission.updatedDatetime = new Date();
+        await manager.save(Permissions, permission);
 
-        permissionEntities.push(permission);
-      });
-    }
+        if (perm.serviceTypesDetails && perm.serviceTypesDetails.length > 0) {
+          for (const serviceTypeDetail of perm.serviceTypesDetails) {
+            const permissionServiceTypeMapping = new PermissionServiceType();
 
-    if (permissionEntities.length) {
-      await manager.save(Permissions, permissionEntities);
-      console.log(`Seeded ${permissionEntities.length} permissions.`);
-    } else {
-      console.log("No permissions generated for available roles.");
+            let serviceTypeItem = await manager.findOne(
+              ApplicationServiceType,
+              {
+                where: {
+                  serviceName: serviceTypeDetail.applicationServiceDesc,
+                  serviceType: serviceTypeDetail.serviceType,
+                },
+              },
+            );
+
+            if (serviceTypeItem) {
+              permissionServiceTypeMapping.serviceTypeId = parseInt(
+                serviceTypeItem.id,
+              );
+
+              permissionServiceTypeMapping.permissionId = permission.id;
+
+              let existingServiceTypeItem = await manager.findOne(
+                PermissionServiceType,
+                {
+                  where: {
+                    serviceTypeId: permissionServiceTypeMapping.serviceTypeId,
+                    permissionId: permissionServiceTypeMapping.permissionId,
+                  },
+                },
+              );
+              if (!existingServiceTypeItem) {
+                await manager.save(
+                  PermissionServiceType,
+                  permissionServiceTypeMapping,
+                );
+              }
+            }
+          }
+        }
+      }
     }
   } catch (error) {
-    console.error("PermissionsSeeder error:", error);
+    logger.error('PermissionsSeeder error:', error);
   }
 };

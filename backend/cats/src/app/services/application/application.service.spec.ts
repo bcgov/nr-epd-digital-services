@@ -8,27 +8,73 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { UserTypeEum } from '../../utilities/enums/userType';
 import { DashboardService } from '../dashboard/dashboard.service';
+import { AppStatus } from '../../entities/appStatus.entity';
+import { StatusTypeService } from '../statusType/statusType.service';
+import { UpdateApplicationStatusDto } from '../../dto/application/updateApplicationStatus.dto';
 
 describe('ApplicationService', () => {
   let applicationService: ApplicationService;
   let applicationRepository: Repository<Application>;
+  let appStatusRepository: Repository<AppStatus>;
   let loggerService: LoggerService;
   let appTypeService: AppTypeService;
+  let statusTypeService: StatusTypeService;
   let dashboardService: DashboardService;
+  const executeMock = jest.fn().mockResolvedValue({ affected: 1 });
+  const statusTypeServiceMock = {
+    getStatusTypeByAbbrev: jest.fn(),
+  } as Partial<jest.Mocked<StatusTypeService>>;
+
+
+  // Manual mocks for repository methods with jest.fn()
+  let appStatusRepositoryMock: {
+    create: jest.Mock;
+    save: jest.Mock;
+    findOne: jest.Mock;
+    createQueryBuilder: jest.Mock;
+  };
+
+  let applicationRepositoryMock: {
+    create: jest.Mock;
+    save: jest.Mock;
+    findOne: jest.Mock;
+  };
 
   beforeEach(async () => {
+    // Initialize repository mocks
+    appStatusRepositoryMock = {
+      create: jest.fn(),
+      save: jest.fn(),
+      findOne: jest.fn(),
+      createQueryBuilder: jest.fn().mockReturnValue({
+        update: jest.fn().mockReturnThis(),
+        set: jest.fn().mockReturnThis(),
+        where: jest.fn().mockReturnThis(),
+        andWhere: jest.fn().mockReturnThis(),
+        execute: executeMock,
+      }),
+    };
+
+    applicationRepositoryMock = {
+      create: jest.fn(),
+      save: jest.fn(),
+      findOne: jest.fn(),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ApplicationService,
         {
-          provide: AppTypeService,
-          useValue: {
-            getAppTypeByDescription: jest.fn(),
-          },
+          provide: getRepositoryToken(AppStatus),
+          useValue: appStatusRepositoryMock,
         },
         {
-          provide: getRepositoryToken(Application), // ✅ Correctly mock Repository<Application>
-          useClass: Repository, // ✅ This ensures it's treated as a repository
+          provide: getRepositoryToken(Application),
+          useValue: applicationRepositoryMock,
+        },
+        {
+          provide: StatusTypeService,
+          useValue: statusTypeServiceMock,
         },
         {
           provide: LoggerService,
@@ -45,49 +91,234 @@ describe('ApplicationService', () => {
             createRecentViewedApplication: jest.fn(),
           },
         },
+        {
+          provide: AppTypeService,
+          useValue: {
+            getAppTypeByAbbrev: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
     applicationService = module.get<ApplicationService>(ApplicationService);
     appTypeService = module.get<AppTypeService>(AppTypeService);
-    applicationRepository = module.get<Repository<Application>>(
-      getRepositoryToken(Application),
-    ); // ✅ Correctly get repository
+    statusTypeService = module.get(StatusTypeService);
+    (statusTypeServiceMock.getStatusTypeByAbbrev as jest.Mock).mockResolvedValue({ id: 1 });
+    applicationRepository = module.get<Repository<Application>>(getRepositoryToken(Application));
+    appStatusRepository = module.get<Repository<AppStatus>>(getRepositoryToken(AppStatus));
     loggerService = module.get<LoggerService>(LoggerService);
     dashboardService = module.get<DashboardService>(DashboardService);
   });
 
+
   describe('createApplication', () => {
     it('should create an application successfully', async () => {
       const mockCreateApplication = {
-        formId: '67e70d854d238fa5ddcfc3b0',
-        submissionId: '54f678b8-963e-449c-a414-71a21b5e0b66',
         siteId: 67890,
         appTypeAbbrev: 'CSR',
         receivedDate: new Date(),
+        applicationStatus: [
+          {
+            statusTypeAbbrev: 'New',
+            formsflowAppId: 1234,
+            isCurrent: true,
+            applicationId: 0,
+            formId: '67e70d854d238fa5ddcfc3b0',
+            submissionId: '54f678b8-963e-449c-a414-71a21b5e0b66',
+          },
+        ],
       };
 
       const mockAppType = { id: 1 };
+      const mockStatusType = { id: 1 };
       const mockNewApplication = { id: 1 };
+      const mockAppStatusEntity = {
+        id: 10,
+        isCurrent: true,
+        statusTypeId: 1,
+        application: mockNewApplication,
+      };
 
-      appTypeService.getAppTypeByAbbrev = jest
-        .fn()
-        .mockResolvedValue(mockAppType);
-      applicationRepository.create = jest
-        .fn()
-        .mockReturnValue(mockNewApplication);
-      applicationRepository.save = jest
-        .fn()
-        .mockResolvedValue(mockNewApplication);
+      // Mock external service and repo calls
+      (appTypeService.getAppTypeByAbbrev as jest.Mock).mockResolvedValue(mockAppType);
+      (statusTypeService.getStatusTypeByAbbrev as jest.Mock).mockResolvedValue(mockStatusType);
+      applicationRepositoryMock.create.mockReturnValue(mockNewApplication);
+      applicationRepositoryMock.save.mockResolvedValue(mockNewApplication);
+      appStatusRepositoryMock.create.mockReturnValue(mockAppStatusEntity);
+      appStatusRepositoryMock.save.mockResolvedValue([mockAppStatusEntity]);
 
-      const result = await applicationService.createApplication(
-        mockCreateApplication,
-      );
+      const result = await applicationService.createApplication(mockCreateApplication);
 
       expect(appTypeService.getAppTypeByAbbrev).toHaveBeenCalledWith('CSR');
-      expect(applicationRepository.create).toHaveBeenCalled();
-      expect(applicationRepository.save).toHaveBeenCalled();
+      expect(statusTypeService.getStatusTypeByAbbrev).toHaveBeenCalledWith('New');
+      expect(applicationRepositoryMock.create).toHaveBeenCalled();
+      expect(applicationRepositoryMock.save).toHaveBeenCalledTimes(1);
+      expect(appStatusRepositoryMock.create).toHaveBeenCalled();
+      expect(appStatusRepositoryMock.save).toHaveBeenCalled();
+      expect(appStatusRepositoryMock.save).toHaveBeenCalledTimes(1);
+
       expect(result).toEqual({ id: 1 });
+    });
+  });
+
+  describe('updateFormsflowAppId', () => {
+    it('should update formsflowAppId when matching AppStatus is found', async () => {
+      const input: UpdateApplicationStatusDto = {
+        formId: 'form-123',
+        submissionId: 'sub-456',
+        formsflowAppId: 9999,
+        statusTypeAbbrev: 'Accepted',
+      };
+
+      const mockAppStatus = {
+        id: 101,
+        formId: input.formId,
+        submissionId: input.submissionId,
+        formsflowAppId: null,
+        updatedBy: null,
+        updatedDateTime: null,
+        isCurrent: false,
+      };
+
+      // Mock findOne to return existing app status
+      appStatusRepositoryMock.findOne.mockImplementation(({ where }) => {
+        if (
+          where.formId === input.formId &&
+          where.submissionId === input.submissionId
+        ) {
+          return Promise.resolve(mockAppStatus);
+        }
+        return Promise.resolve(undefined);
+      });
+
+      appStatusRepositoryMock.save.mockResolvedValue({
+        ...mockAppStatus,
+        formsflowAppId: input.formsflowAppId,
+        updatedBy: 'SYSTEM',
+        updatedDateTime: expect.any(Date),
+        isCurrent: true,
+      });
+
+      appStatusRepositoryMock.createQueryBuilder.mockReturnValue({
+        update: () => ({
+          set: () => ({
+            where: () => ({
+              andWhere: () => ({
+                execute: jest.fn().mockResolvedValue({ affected: 1 }),
+              }),
+            }),
+          }),
+        }),
+      });
+
+      const result = await applicationService.updateFormsflowAppId(input);
+
+      expect(appStatusRepositoryMock.findOne).toHaveBeenCalledWith({
+        where: { formId: input.formId, submissionId: input.submissionId },
+      });
+
+      expect(appStatusRepositoryMock.save).toHaveBeenCalledWith(
+        expect.objectContaining({
+          formsflowAppId: input.formsflowAppId,
+          updatedBy: 'SYSTEM',
+          isCurrent: true,
+        }),
+      );
+
+      expect(result).toEqual({
+        success: true,
+        message: `Updated successfully for id=${mockAppStatus.id}`,
+      });
+    });
+
+    it('should create new AppStatus if no matching entry found', async () => {
+      const input: UpdateApplicationStatusDto = {
+        formId: 'form-999',
+        submissionId: 'sub-888',
+        formsflowAppId: 1234,
+        statusTypeAbbrev: 'Accepted',
+      };
+
+      const mockStatusType = { id: 7 };
+      const existingAppStatus = { applicationId: 555 };
+
+      appStatusRepositoryMock.findOne.mockImplementation(({ where }) => {
+        if (where.formsflowAppId === input.formsflowAppId) {
+          return Promise.resolve(existingAppStatus);
+        }
+        return Promise.resolve(undefined);
+      });
+
+      (statusTypeServiceMock.getStatusTypeByAbbrev as jest.Mock).mockResolvedValue({ id: 1 });
+
+      appStatusRepositoryMock.create.mockImplementation((data) => data);
+
+      appStatusRepositoryMock.save.mockResolvedValue({
+        id: 789,
+        ...input,
+        statusTypeId: mockStatusType.id,
+        applicationId: existingAppStatus.applicationId,
+        createdBy: 'SYSTEM',
+        updatedBy: 'SYSTEM',
+        isCurrent: true,
+      });
+
+      appStatusRepositoryMock.createQueryBuilder.mockReturnValue({
+        update: () => ({
+          set: () => ({
+            where: () => ({
+              andWhere: () => ({
+                execute: jest.fn().mockResolvedValue({ affected: 1 }),
+              }),
+            }),
+          }),
+        }),
+      });
+
+      const result = await applicationService.updateFormsflowAppId(input);
+
+      expect(statusTypeService.getStatusTypeByAbbrev).toHaveBeenCalledWith('Accepted');
+      expect(appStatusRepositoryMock.save).toHaveBeenCalled();
+      expect(result).toEqual({
+        success: true,
+        message: 'Updated successfully for id=789',
+      });
+    });
+
+
+    it('should throw 404 if AppStatus not found', async () => {
+      const input: UpdateApplicationStatusDto = {
+        formId: 'missing-form',
+        submissionId: 'missing-sub',
+        formsflowAppId: 8888,
+        statusTypeAbbrev: 'Accepted',
+      };
+
+      appStatusRepositoryMock.findOne.mockResolvedValue(null);
+
+      await expect(applicationService.updateFormsflowAppId(input)).rejects.toThrow(
+        new HttpException('Failed to update  Formsflow App ID', HttpStatus.NOT_FOUND),
+      );
+    });
+
+    it('should handle internal exceptions and throw HttpException with BAD_REQUEST', async () => {
+      const input: UpdateApplicationStatusDto = {
+        formId: 'form-crash',
+        submissionId: 'sub-crash',
+        formsflowAppId: 7777,
+        statusTypeAbbrev: 'Accepted',
+      };
+
+      appStatusRepositoryMock.findOne.mockRejectedValue(new Error('DB is down'));
+
+      await expect(applicationService.updateFormsflowAppId(input)).rejects.toThrow(
+        new HttpException('Failed to update  Formsflow App ID', HttpStatus.BAD_REQUEST),
+      );
+
+      expect(loggerService.error).toHaveBeenCalledWith(
+        'Exception occurred in ApplicationService.updateFormsflowAppId()',
+        expect.any(String),
+      );
     });
   });
 
@@ -137,13 +368,14 @@ describe('ApplicationService', () => {
         ],
       };
 
-      applicationRepository.findOne = jest
-        .fn()
-        .mockResolvedValue(mockApplication);
+      applicationRepositoryMock.findOne.mockResolvedValue(mockApplication);
+
       const user = { givenName: 'John', identity_provider: UserTypeEum.IDIR };
+
       const result = await applicationService.findApplicationDetailsById(1, user);
 
-      expect(applicationRepository.findOne).toHaveBeenCalledWith(
+      // Assert using the correct mock object
+      expect(applicationRepositoryMock.findOne).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { id: 1 },
         }),
@@ -170,18 +402,20 @@ describe('ApplicationService', () => {
     });
 
     it('should return null when application is not found', async () => {
-      applicationRepository.findOne = jest.fn().mockResolvedValue(null);
+      applicationRepositoryMock.findOne.mockResolvedValue(null);
       const user = { givenName: 'John', identity_provider: UserTypeEum.IDIR };
+
       const result = await applicationService.findApplicationDetailsById(999, user);
 
-      expect(applicationRepository.findOne).toHaveBeenCalled();
+      expect(applicationRepositoryMock.findOne).toHaveBeenCalled();
       expect(result).toBeNull();
     });
 
     it('should handle errors and throw HttpException', async () => {
       const error = new Error('Database error');
-      applicationRepository.findOne = jest.fn().mockRejectedValue(error);
+      applicationRepositoryMock.findOne.mockRejectedValue(error);
       const user = { givenName: 'John', identity_provider: UserTypeEum.IDIR };
+
       await expect(
         applicationService.findApplicationDetailsById(1, user),
       ).rejects.toThrow(
@@ -194,4 +428,5 @@ describe('ApplicationService', () => {
       expect(loggerService.error).toHaveBeenCalled();
     });
   });
+
 });
