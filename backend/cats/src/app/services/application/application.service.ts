@@ -117,6 +117,7 @@ export class ApplicationService {
         where: { formId, submissionId },
       });
 
+      console.log('statusTypeAbbrev---', statusTypeAbbrev);
       const statusType = await this.statusTypeService.getStatusTypeByAbbrev(statusTypeAbbrev);
 
       if (!appStatus) {
@@ -154,7 +155,7 @@ export class ApplicationService {
         await this.appStatusRepository.save(appStatus);
       }
 
-      // Set isCurrent = false for all other entries with the same formsflowAppId but different formId/submissionId
+      // Set isCurrent as false for all other entries with the same formsflowAppId but different formId/submissionId
       await this.appStatusRepository
         .createQueryBuilder()
         .update()
@@ -166,7 +167,7 @@ export class ApplicationService {
       // Log success
       this.loggerService.log(`App Status successfully with Formsflow App ID: ${formsflowAppId}`);
 
-      return { success: true, message: `Updated successfully for id=${appStatus.id}` };
+      return { success: true, message: `Updated successfully for id=${appStatus.id}`, formsflowAppId: formsflowAppId };
     } catch (err) {
       // Log the error with the exception details
       this.loggerService.error(

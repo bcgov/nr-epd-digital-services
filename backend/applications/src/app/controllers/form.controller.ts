@@ -125,6 +125,7 @@ export class FormController {
       formId,
       content.data,
     );
+
     await this.catsService.updateCatsApplication(submissionId, formId, content.data);
     return partialUpdatedSubmission;
   }

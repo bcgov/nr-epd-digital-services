@@ -61,7 +61,6 @@ export class CatsService {
           }
         });
 
-        console.log(response.data);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -111,7 +110,6 @@ export class CatsService {
         },
       });
 
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error('Error updating application in CATS:', error);

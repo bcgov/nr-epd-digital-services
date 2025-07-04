@@ -150,15 +150,22 @@ describe('ApplicationResolver', () => {
       statusTypeAbbrev: 'Accepted',
     };
 
-    const expectedResponse = {
-      message: 'Updated successfully for id=10',
-      httpStatusCode: 200,
+    const mockServiceResponse = {
       success: true,
-      timestamp: new Date().toISOString(),
-      data: [{ formsflowAppId: 12345 }],
+      message: 'Updated successfully for id=10',
+      formsflowAppId: 12345,
     };
 
-    jest.spyOn(applicationService, 'updateFormsflowAppId').mockResolvedValue(expectedResponse);
+    const expectedResponse = {
+      success: true,
+      message: 'Application status updated successfully',
+      httpStatusCode: 200,
+      data: [
+        mockServiceResponse,
+      ],
+    };
+
+    jest.spyOn(applicationService, 'updateFormsflowAppId').mockResolvedValue(mockServiceResponse);
 
     const result = await resolver.updateFormsflowAppId(input);
 
@@ -166,4 +173,5 @@ describe('ApplicationResolver', () => {
     expect(result).toEqual(expectedResponse);
     expect(loggerService.log).toHaveBeenCalledWith('ApplicationResolver.updateFormsflowAppId() start');
   });
+
 });
