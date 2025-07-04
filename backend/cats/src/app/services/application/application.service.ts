@@ -167,7 +167,7 @@ export class ApplicationService {
       // Log success
       this.loggerService.log(`App Status successfully with Formsflow App ID: ${formsflowAppId}`);
 
-      return { success: true, message: `Updated successfully for id=${appStatus.id}` };
+      return { success: true, message: `Updated successfully for id=${appStatus.id}`, formsflowAppId: formsflowAppId };
     } catch (err) {
       // Log the error with the exception details
       this.loggerService.error(

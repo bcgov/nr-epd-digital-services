@@ -80,7 +80,27 @@ export class ApplicationResolver {
     ) {
         try {
             this.loggerService.log('ApplicationResolver.updateFormsflowAppId() start');
-            return this.applicationService.updateFormsflowAppId(appStatusInput);
+            const result = await this.applicationService.updateFormsflowAppId(appStatusInput);
+
+            if (result) {
+                this.loggerService.log('ApplicationResolver.updateFormsflowAppId() RES:200 end');
+                return this.applicationStatusResponse.createResponse(
+                    'Application status updated successfully',
+                    HttpStatus.OK,
+                    true,
+                    [result],
+                );
+            }
+            else {
+                this.loggerService.log('ApplicationResolver.updateFormsflowAppId()RES:404 end');
+                return this.applicationStatusResponse.createResponse(
+                    'Note not found for update',
+                    HttpStatus.NOT_FOUND,
+                    false,
+                    null,
+                );
+            }
+
         } catch (error) {
             this.loggerService.error(
                 'ApplicationResolver.updateFormsflowAppId() error',
