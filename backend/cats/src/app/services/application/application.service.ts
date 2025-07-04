@@ -117,6 +117,7 @@ export class ApplicationService {
         where: { formId, submissionId },
       });
 
+      console.log('statusTypeAbbrev---', statusTypeAbbrev);
       const statusType = await this.statusTypeService.getStatusTypeByAbbrev(statusTypeAbbrev);
 
       if (!appStatus) {
