@@ -228,6 +228,7 @@ describe('ApplicationService', () => {
       expect(result).toEqual({
         success: true,
         message: `Updated successfully for id=${mockAppStatus.id}`,
+        formsflowAppId: input.formsflowAppId,
       });
     });
 
@@ -282,6 +283,7 @@ describe('ApplicationService', () => {
       expect(result).toEqual({
         success: true,
         message: 'Updated successfully for id=789',
+        formsflowAppId: input.formsflowAppId,
       });
     });
 
