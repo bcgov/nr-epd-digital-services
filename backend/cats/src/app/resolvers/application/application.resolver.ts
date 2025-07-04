@@ -107,7 +107,7 @@ export class ApplicationResolver {
                 error,
             );
             return this.applicationStatusResponse.createResponse(
-                'Error updating FormsflowAppId',
+                'Error updating FormsflowAppId in ApplicationResolver.updateFormsflowAppId()',
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 false,
                 null,
