@@ -61,7 +61,6 @@ export class CatsService {
           }
         });
 
-        console.log(response.data);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -80,6 +79,8 @@ export class CatsService {
   async updateCatsApplication(submissionId: string, formId: string, formData: any) {
     const GRAPHQL_URL = process.env.CATS_API;
 
+    console.log('formData---');
+    console.log(formData);
     const updateApplicationMutation = {
       query: `
         mutation UpdateFormsflowAppId($appStatusInput: UpdateApplicationStatusDto!) {
@@ -111,7 +112,6 @@ export class CatsService {
         },
       });
 
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error('Error updating application in CATS:', error);
