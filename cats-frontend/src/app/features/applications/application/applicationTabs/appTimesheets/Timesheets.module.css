@@ -37,10 +37,15 @@
 
   tbody {
     font-size: var(--typography-font-size-small-body);
+    background: var(--theme-gray-white);
+    border: var(--layout-border-width-small) solid
+      var(--surface-color-border-default);
 
     td {
       padding: var(--layout-padding-xsmall) var(--layout-padding-small);
       height: 64px;
+      border: var(--layout-border-width-small) solid
+        var(--surface-color-border-default);
 
       input {
         height: 40px;
@@ -86,4 +91,12 @@
 
 .highlight {
   background-color: var(--theme-blue-30) !important;
+}
+
+.datePickerPopover {
+  margin-top: 0.5rem;
+  border: 1px solid #d8d8d8;
+  border-radius: 4px;
+  max-width: 300px;
+  background-color: white;
 }

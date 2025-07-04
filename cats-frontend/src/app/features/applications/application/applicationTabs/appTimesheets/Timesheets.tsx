@@ -1,6 +1,13 @@
 import { useMemo, useState } from 'react';
-import { format, startOfWeek, endOfWeek, addWeeks, isThisWeek } from 'date-fns';
-import { useParams } from 'react-router-dom';
+import {
+  format,
+  startOfWeek,
+  endOfWeek,
+  addWeeks,
+  isThisWeek,
+  parseISO,
+} from 'date-fns';
+import { useParams, useSearchParams } from 'react-router-dom';
 import {
   useGetTimesheetDaysForAssignedStaffQuery,
   useUpsertTimesheetDaysMutation,
@@ -91,7 +98,15 @@ function denormalizeTimesheetData(
 }
 
 export const Timesheets = () => {
-  const [selectedDate, setSelectedDate] = useState<Date>(() => new Date());
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [selectedDate, setSelectedDate] = useState<Date>(() => {
+    const startDate = searchParams.get('startDate');
+    if (!startDate) {
+      return new Date();
+    }
+    return parseISO(startDate);
+  });
   const { monday: startDate, sunday: endDate } = useMemo(
     () => getWeekRange(selectedDate),
     [selectedDate],
@@ -141,6 +156,15 @@ export const Timesheets = () => {
 
   const handleWeekChange = (dir: number) => {
     setSelectedDate((prev) => addWeeks(prev, dir));
+  };
+
+  const handleDateSelect = (date: Date) => {
+    setSelectedDate(date);
+    setSearchParams((params) => {
+      const startDate = getWeekRange(date).monday;
+      params.set('startDate', format(startDate, 'yyyy-MM-dd'));
+      return params;
+    });
   };
 
   const handleCellChange = (
@@ -208,6 +232,7 @@ export const Timesheets = () => {
         isCurrentWeek={isCurrentWeek}
         onWeekChange={handleWeekChange}
         disabled={saveTimesheetDaysLoading}
+        onDateSelect={handleDateSelect}
       />
 
       <div>
