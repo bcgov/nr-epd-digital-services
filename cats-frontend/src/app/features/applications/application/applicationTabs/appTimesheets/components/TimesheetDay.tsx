@@ -40,7 +40,7 @@ export const TimesheetDay = ({
   return (
     <div>
       <div
-        className={cx(styles.timesheetsSectionHeader, {
+        className={cx(styles.timesheetBaseHeader, styles.timesheetDayHeader, {
           [styles.highlight]: isToday(day),
         })}
       >

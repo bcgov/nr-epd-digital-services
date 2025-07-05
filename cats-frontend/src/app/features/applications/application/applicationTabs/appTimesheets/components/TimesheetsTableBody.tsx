@@ -46,7 +46,13 @@ export const TimesheetsTableBody = ({
 
   return (
     <div>
-      <div className={cx(styles.timesheetsSectionHeader, 'fw-bold')}>
+      <div
+        className={cx(
+          styles.timesheetBaseHeader,
+          styles.timesheetsSectionHeader,
+          'fw-bold',
+        )}
+      >
         Firstname Lastname | Assigned Role
       </div>
       <div>

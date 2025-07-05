@@ -10,17 +10,26 @@
   background-color: white;
 }
 
-.timesheetsSectionHeader {
+.timesheetBaseHeader {
   display: flex;
   flex-direction: column;
   justify-content: center;
   background-color: var(--theme-gray-20);
   color: var(--typography-color-secondary);
   font-size: var(--typography-font-size-label);
-  border-bottom: 1px solid var(--surface-color-border-medium);
+  border: 1px solid var(--surface-color-border-medium);
   padding-left: var(--layout-padding-small);
   margin: 0 auto;
   height: 64px;
+}
+
+.timesheetsSectionHeader {
+  border: 1px solid var(--surface-color-border-medium);
+}
+
+.timesheetDayHeader {
+  border: 1px solid var(--surface-color-border-default);
+  border-bottom: 1px solid var(--surface-color-border-medium);
 }
 
 .timesheetsSectionContent {
@@ -46,7 +55,7 @@
     border: var(--layout-border-width-small) solid
       var(--surface-color-border-default);
 
-    padding-right: 2em; /* leaving space for the icon */   
+    padding-right: 2em; /* leaving space for the icon */
   }
 }
 
@@ -55,8 +64,13 @@
   padding: var(--layout-padding-small) 0;
   gap: 0;
 
-  &:not(:last-child) {
-    border-bottom: none;
+  border: 1px solid var(--surface-color-border-medium);
+  border-top: none;
+  border-bottom: 1px solid var(--surface-color-border-default);
+  border-radius: 0;
+
+  &:last-child {
+    border-bottom: 1px solid var(--surface-color-border-medium);
   }
 }
 
