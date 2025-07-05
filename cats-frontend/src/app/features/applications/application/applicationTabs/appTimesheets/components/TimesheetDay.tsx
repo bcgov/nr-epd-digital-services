@@ -67,9 +67,16 @@ export const TimesheetDay = ({
                 e.target.value === '' ||
                 /^\d*\.?\d{0,2}$/.test(e.target.value)
               ) {
-                onCellChange(personId, dateStr, {
-                  hours: e.target.value,
-                });
+                const numValue = parseFloat(e.target.value);
+                // Limit to 0-24 hours range
+                if (
+                  e.target.value === '' ||
+                  (numValue >= 0 && numValue <= 24)
+                ) {
+                  onCellChange(personId, dateStr, {
+                    hours: e.target.value,
+                  });
+                }
               }
             }}
             onBlur={(e) => {

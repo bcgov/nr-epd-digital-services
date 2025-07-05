@@ -7,6 +7,8 @@ import {
   IsOptional,
   ValidateNested,
   IsString,
+  Max,
+  Min,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ResponseDto } from './response/response.dto';
@@ -57,6 +59,8 @@ export class TimesheetDayUpsertInputDto {
 
   @Field(() => Float, { nullable: true })
   @IsNumber()
+  @Min(0, { message: 'Hours cannot be negative' })
+  @Max(24, { message: 'Hours cannot exceed 24 hours per day' })
   hours?: number;
 
   @Field({ nullable: true })
