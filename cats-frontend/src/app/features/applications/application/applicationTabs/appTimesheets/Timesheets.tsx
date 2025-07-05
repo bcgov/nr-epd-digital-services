@@ -80,8 +80,14 @@ function denormalizeTimesheetData(
   Object.entries(edits).forEach(([personId, dateEdits]) => {
     Object.entries(dateEdits).forEach(([date, value]) => {
       const currentValue = normalizedData[Number(personId)]?.[date];
-      const newHours = value.hours ? formatHours(value.hours) : 0;
-      const newComment = value.comment ?? '';
+      const newHours =
+        value.hours !== undefined
+          ? formatHours(value.hours)
+          : (currentValue?.hours ?? 0);
+      const newComment =
+        value.comment !== undefined
+          ? value.comment
+          : (currentValue?.comment ?? '');
       // Only include if the value has changed
       if (
         currentValue?.hours !== newHours ||
