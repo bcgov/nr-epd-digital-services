@@ -1,18 +1,18 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { TimesheetDay } from '../entities/timesheetDay.entity';
-import { Application } from '../entities/application.entity';
-import { Person } from '../entities/person.entity';
+import { TimesheetDay } from '../../entities/timesheetDay.entity';
+import { Application } from '../../entities/application.entity';
+import { Person } from '../../entities/person.entity';
 import {
   TimesheetDayUpsertInputDto,
   PersonWithTimesheetDaysDto,
-} from '../dto/timesheetDay.dto';
-import { LoggerService } from '../logger/logger.service';
+} from '../../dto/timesheetDay.dto';
+import { LoggerService } from '../../logger/logger.service';
 import { format, parseISO } from 'date-fns';
 import { In, Between } from 'typeorm';
-import { StaffAssignmentService } from './assignment/staffAssignment.service';
-import { ParticipantRole } from '../entities/participantRole.entity';
+import { StaffAssignmentService } from '../assignment/staffAssignment.service';
+import { ParticipantRole } from '../../entities/participantRole.entity';
 
 @Injectable()
 export class TimesheetDayService {

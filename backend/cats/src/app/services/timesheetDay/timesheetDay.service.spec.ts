@@ -2,14 +2,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TimesheetDayService } from './timesheetDay.service';
-import { TimesheetDay } from '../entities/timesheetDay.entity';
-import { Application } from '../entities/application.entity';
-import { Person } from '../entities/person.entity';
-import { LoggerService } from '../logger/logger.service';
-import { TimesheetDayUpsertInputDto } from '../dto/timesheetDay.dto';
+import { TimesheetDay } from '../../entities/timesheetDay.entity';
+import { Application } from '../../entities/application.entity';
+import { Person } from '../../entities/person.entity';
+import { LoggerService } from '../../logger/logger.service';
+import { TimesheetDayUpsertInputDto } from '../../dto/timesheetDay.dto';
 import { HttpException } from '@nestjs/common';
-import { StaffAssignmentService } from './assignment/staffAssignment.service';
-import { ParticipantRole } from '../entities/participantRole.entity';
+import { StaffAssignmentService } from '../assignment/staffAssignment.service';
+import { ParticipantRole } from '../../entities/participantRole.entity';
 
 describe('TimesheetDayService', () => {
   let service: TimesheetDayService;

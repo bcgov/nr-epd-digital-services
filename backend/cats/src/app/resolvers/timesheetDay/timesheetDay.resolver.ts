@@ -1,17 +1,17 @@
 import { Args, Mutation, Resolver, Query, Int } from '@nestjs/graphql';
 import { HttpStatus, UsePipes } from '@nestjs/common';
-import { TimesheetDayService } from '../services/timesheetDay.service';
+import { TimesheetDayService } from '../../services/timesheetDay/timesheetDay.service';
 import {
   TimesheetDayDto,
   TimesheetDayResponse,
   UpsertTimesheetDaysInputDto,
   PersonWithTimesheetDaysDto,
   PersonWithTimesheetDaysResponse,
-} from '../dto/timesheetDay.dto';
-import { GenericResponseProvider } from '../dto/response/genericResponseProvider';
-import { GenericValidationPipe } from '../utils/validations/genericValidationPipe';
+} from '../../dto/timesheetDay.dto';
+import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
+import { GenericValidationPipe } from '../../utils/validations/genericValidationPipe';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
-import { LoggerService } from '../logger/logger.service';
+import { LoggerService } from '../../logger/logger.service';
 
 @Resolver(() => TimesheetDayDto)
 export class TimesheetDayResolver {
