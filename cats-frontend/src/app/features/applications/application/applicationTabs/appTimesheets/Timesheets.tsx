@@ -164,7 +164,8 @@ export const Timesheets = () => {
   }, [startDate]);
 
   const handleWeekChange = (dir: number) => {
-    setSelectedDate((prev) => addWeeks(prev, dir));
+    const newDate = addWeeks(selectedDate, dir);
+    handleDateSelect(newDate);
   };
 
   const handleDateSelect = (date: Date) => {
