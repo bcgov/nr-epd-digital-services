@@ -152,7 +152,7 @@ export const Timesheets = () => {
     (data?.getTimesheetDaysForAssignedStaff?.data as StaffRow[]) || [];
 
   const weekDays: Date[] = useMemo(() => {
-    return Array.from({ length: 7 }, (_, i) => {
+    return Array.from({ length: 5 }, (_, i) => {
       const d = new Date(startDate);
       d.setDate(d.getDate() + i);
       return d;
