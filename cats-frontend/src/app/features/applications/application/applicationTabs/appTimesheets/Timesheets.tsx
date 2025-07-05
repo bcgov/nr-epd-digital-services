@@ -44,7 +44,7 @@ function getNumericCellValue(
   const currentValue = normalizedData[personId]?.[dateStr];
   const editedValue = edits[personId]?.[dateStr];
   return editedValue !== undefined
-    ? formatHours(editedValue)
+    ? parseFloat(editedValue.hours ?? '0')
     : (currentValue?.hours ?? 0);
 }
 
@@ -60,6 +60,7 @@ function normalizeTimesheetData(
       const date = day.date.slice(0, 10);
       normalized[person.personId][date] = {
         hours: formatHours(day.hours ?? 0),
+        comment: day.comment ?? '',
         id: day.id,
       };
     });
@@ -79,15 +80,19 @@ function denormalizeTimesheetData(
   Object.entries(edits).forEach(([personId, dateEdits]) => {
     Object.entries(dateEdits).forEach(([date, value]) => {
       const currentValue = normalizedData[Number(personId)]?.[date];
-      const newValue = value ? formatHours(value) : 0;
-
+      const newHours = value.hours ? formatHours(value.hours) : 0;
+      const newComment = value.comment ?? '';
       // Only include if the value has changed
-      if (currentValue?.hours !== newValue) {
+      if (
+        currentValue?.hours !== newHours ||
+        (currentValue?.comment ?? '') !== newComment
+      ) {
         result.push({
           applicationId,
           personId: Number(personId),
           date,
-          hours: newValue,
+          hours: newHours,
+          comment: newComment,
           timesheetDayId: currentValue?.id,
         });
       }
@@ -170,18 +175,18 @@ export const Timesheets = () => {
   const handleCellChange = (
     personId: number,
     dateStr: string,
-    value: string,
+    value: { hours?: string; comment?: string },
   ) => {
-    // Only allow numbers with up to 2 decimal places
-    if (value === '' || /^\d*\.?\d{0,2}$/.test(value)) {
-      setEdits((prev) => ({
-        ...prev,
-        [personId]: {
-          ...prev[personId],
-          [dateStr]: value,
+    setEdits((prev) => ({
+      ...prev,
+      [personId]: {
+        ...prev[personId],
+        [dateStr]: {
+          ...prev[personId]?.[dateStr],
+          ...value,
         },
-      }));
-    }
+      },
+    }));
   };
 
   const handleSave = async () => {
@@ -218,7 +223,7 @@ export const Timesheets = () => {
     return formatHours(sum);
   });
 
-  const totalForAllStaff: number = formatHours(
+  const totalHoursForAllStaff: number = formatHours(
     totalHoursPerDay.reduce((a, b) => a + b, 0),
   );
 
@@ -235,25 +240,16 @@ export const Timesheets = () => {
         onDateSelect={handleDateSelect}
       />
 
-      <div>
-        <table className={`${styles.timesheetsTable}`}>
-          <TimesheetsTableHead weekDays={weekDays} />
-          <TimesheetsTableBody
-            staffRows={staffRows}
-            weekDays={weekDays}
-            normalizedData={normalizedData}
-            edits={edits}
-            onCellChange={handleCellChange}
-            disabled={saveTimesheetDaysLoading}
-            applicationId={applicationId}
-          />
-          <TimesheetsTableFooter
-            totalForAllStaff={totalForAllStaff}
-            totalHoursPerDay={totalHoursPerDay}
-          />
-        </table>
-      </div>
+      <TimesheetsTableBody
+        staffRows={staffRows}
+        weekDays={weekDays}
+        normalizedData={normalizedData}
+        edits={edits}
+        onCellChange={handleCellChange}
+        disabled={saveTimesheetDaysLoading}
+      />
 
+      <TimesheetsTableFooter totalHoursForAllStaff={totalHoursForAllStaff} />
       <TimesheetsActions
         onSave={handleSave}
         hasEdits={Object.keys(edits).length > 0}

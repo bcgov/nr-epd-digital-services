@@ -1,17 +1,22 @@
-import { format, isSameDay } from 'date-fns';
+import { format } from 'date-fns';
 import cx from 'classnames';
-import { XmarkIcon } from '@cats/components/common/icon';
 import styles from '../Timesheets.module.css';
 import { StaffRow } from '../types';
+import CollapsiblePanel from '@cats/components/simple/CollapsiblePanel';
+import { useState } from 'react';
+import { TimesheetDay } from './TimesheetDay';
 
 interface TimesheetsTableBodyProps {
   staffRows: StaffRow[];
   weekDays: Date[];
   normalizedData: any;
   edits: any;
-  onCellChange: (personId: number, dateStr: string, value: string) => void;
+  onCellChange: (
+    personId: number,
+    dateStr: string,
+    value: { hours?: string; comment?: string },
+  ) => void;
   disabled?: boolean;
-  applicationId: number;
 }
 
 export const TimesheetsTableBody = ({
@@ -21,66 +26,63 @@ export const TimesheetsTableBody = ({
   edits,
   onCellChange,
   disabled,
-  applicationId,
 }: TimesheetsTableBodyProps) => {
-  const today = new Date();
-
-  const getProjectInfo = (person: StaffRow) => (
-    <>
-      <div className="fw-bold">TODO: address</div>
-      <span>
-        {applicationId} • TODO: type • {person.firstName} {person.lastName}
-      </span>
-    </>
+  const [expandedPersonIds, setExpandedPersonIds] = useState<Set<number>>(
+    new Set(),
   );
 
+  // This helps preserve the open/close state of the collapsible panels when navigating between weeks
+  const onPersonToggle = (personId: number, open: boolean) => {
+    if (open) {
+      setExpandedPersonIds((prev) => new Set(prev).add(personId));
+    } else {
+      setExpandedPersonIds((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(personId);
+        return newSet;
+      });
+    }
+  };
+
   return (
-    <tbody>
-      {staffRows.map((person) => (
-        <tr key={person.personId}>
-          <td className={styles.projectCell}>{getProjectInfo(person)}</td>
-          {weekDays.map((day) => {
-            const dateStr = format(day, 'yyyy-MM-dd');
-            const currentValue = normalizedData[person.personId]?.[dateStr];
-            const editedValue = edits[person.personId]?.[dateStr];
-            const value =
-              editedValue !== undefined
-                ? editedValue
-                : (currentValue?.hours?.toFixed(2) ?? '');
+    <div>
+      <div className={cx(styles.timesheetsSectionHeader, 'fw-bold')}>
+        Firstname Lastname | Assigned Role
+      </div>
+      <div>
+        {staffRows.map((person) => (
+          <CollapsiblePanel
+            defaultOpen={expandedPersonIds.has(person.personId)}
+            onToggle={(open) => onPersonToggle(person.personId, open)}
+            key={person.personId}
+            panelContainerClassName={styles.personPanel}
+            panelLabelClassName={styles.personPanelLabel}
+            label={`${person.firstName} ${person.lastName} | ${person.roleDescription}`}
+            content={
+              <div className={styles.timesheetsSectionContent}>
+                {weekDays.map((day) => {
+                  const dateStr = format(day, 'yyyy-MM-dd');
+                  const currentValue =
+                    normalizedData[person.personId]?.[dateStr] || {};
+                  const editedValue = edits[person.personId]?.[dateStr] || {};
 
-            return (
-              <td
-                key={dateStr}
-                className={cx({
-                  [styles.highlight]: isSameDay(day, today),
+                  return (
+                    <TimesheetDay
+                      key={`${person.personId}-${day}`}
+                      day={day}
+                      personId={person.personId}
+                      currentValue={currentValue}
+                      editedValue={editedValue}
+                      onCellChange={onCellChange}
+                      disabled={disabled}
+                    />
+                  );
                 })}
-              >
-                <input
-                  type="text"
-                  inputMode="decimal"
-                  pattern="\d*\.?\d{0,2}"
-                  value={value}
-                  disabled={disabled}
-                  onChange={(e) =>
-                    onCellChange(person.personId, dateStr, e.target.value)
-                  }
-                  onBlur={(e) => {
-                    if (e.target.value) {
-                      const num = parseFloat(e.target.value);
-                      if (isNaN(num)) return;
-
-                      onCellChange(person.personId, dateStr, num.toFixed(2));
-                    }
-                  }}
-                />
-              </td>
-            );
-          })}
-          <td className="text-center align-middle">
-            <XmarkIcon /> Remove
-          </td>
-        </tr>
-      ))}
-    </tbody>
+              </div>
+            }
+          />
+        ))}
+      </div>
+    </div>
   );
 };

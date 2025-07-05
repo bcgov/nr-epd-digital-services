@@ -10,14 +10,14 @@ export type GetTimesheetDaysForAssignedStaffQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetTimesheetDaysForAssignedStaffQuery = { __typename?: 'Query', getTimesheetDaysForAssignedStaff: { __typename?: 'PersonWithTimesheetDaysResponse', data?: Array<{ __typename?: 'PersonWithTimesheetDaysDto', personId: number, firstName: string, lastName: string, timesheetDays: Array<{ __typename?: 'TimesheetDayDto', id: number, date: any, hours?: number | null }> }> | null } };
+export type GetTimesheetDaysForAssignedStaffQuery = { __typename?: 'Query', getTimesheetDaysForAssignedStaff: { __typename?: 'PersonWithTimesheetDaysResponse', data?: Array<{ __typename?: 'PersonWithTimesheetDaysDto', personId: number, firstName: string, lastName: string, roleId?: number | null, roleDescription?: string | null, timesheetDays: Array<{ __typename?: 'TimesheetDayDto', id: number, date: any, hours?: number | null, comment?: string | null }> }> | null } };
 
 export type UpsertTimesheetDaysMutationVariables = Types.Exact<{
   entries: Array<Types.TimesheetDayUpsertInputDto> | Types.TimesheetDayUpsertInputDto;
 }>;
 
 
-export type UpsertTimesheetDaysMutation = { __typename?: 'Mutation', upsertTimesheetDays: { __typename?: 'TimesheetDayResponse', message?: string | null, success?: boolean | null, data: Array<{ __typename?: 'TimesheetDayDto', id: number, applicationId: number, personId: number, date: any, hours?: number | null }> } };
+export type UpsertTimesheetDaysMutation = { __typename?: 'Mutation', upsertTimesheetDays: { __typename?: 'TimesheetDayResponse', message?: string | null, success?: boolean | null, data: Array<{ __typename?: 'TimesheetDayDto', id: number, applicationId: number, personId: number, date: any, hours?: number | null, comment?: string | null }> } };
 
 
 export const GetTimesheetDaysForAssignedStaffDocument = gql`
@@ -31,10 +31,13 @@ export const GetTimesheetDaysForAssignedStaffDocument = gql`
       personId
       firstName
       lastName
+      roleId
+      roleDescription
       timesheetDays {
         id
         date
         hours
+        comment
       }
     }
   }
@@ -84,6 +87,7 @@ export const UpsertTimesheetDaysDocument = gql`
       personId
       date
       hours
+      comment
     }
     message
     success

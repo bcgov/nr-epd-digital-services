@@ -6,6 +6,7 @@ import {
   IsInt,
   IsOptional,
   ValidateNested,
+  IsString,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ResponseDto } from './response/response.dto';
@@ -26,6 +27,9 @@ export class TimesheetDayDto {
 
   @Field(() => Float, { nullable: true })
   hours?: number;
+
+  @Field({ nullable: true })
+  comment?: string;
 }
 
 @InputType()
@@ -54,6 +58,11 @@ export class TimesheetDayUpsertInputDto {
   @Field(() => Float, { nullable: true })
   @IsNumber()
   hours?: number;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsString()
+  comment?: string;
 }
 
 @InputType()
@@ -83,6 +92,12 @@ export class PersonWithTimesheetDaysDto {
 
   @Field({ nullable: true })
   email?: string;
+
+  @Field(() => Int, { nullable: true })
+  roleId?: number;
+
+  @Field({ nullable: true })
+  roleDescription?: string;
 
   @Field(() => [TimesheetDayDto])
   timesheetDays: TimesheetDayDto[];

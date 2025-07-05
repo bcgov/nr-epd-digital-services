@@ -1,94 +1,3 @@
-.timesheetsTable {
-  table-layout: fixed;
-  overflow-x: auto;
-  border-collapse: collapse;
-  color: var(--typography-color-secondary);
-
-  thead {
-    position: sticky;
-    font-size: var(--typography-font-size-small-body);
-
-    th {
-      background: var(--theme-gray-20);
-      font-weight: var(--typography-font-weights-regular);
-      border: var(--layout-border-width-small) solid
-        var(--surface-color-border-default);
-      border-bottom: var(--layout-border-width-small) solid
-        var(--surface-color-border-medium);
-
-      padding: var(--layout-padding-xsmall) var(--layout-padding-small);
-      height: 64px;
-    }
-
-    th:first-child {
-      width: 40%;
-    }
-
-    th:not(:first-child) {
-      text-align: end;
-      min-width: 100px;
-    }
-
-    th:last-child {
-      text-align: center;
-      font-weight: var(--typography-font-weights-bold);
-    }
-  }
-
-  tbody {
-    font-size: var(--typography-font-size-small-body);
-    background: var(--theme-gray-white);
-    border: var(--layout-border-width-small) solid
-      var(--surface-color-border-default);
-
-    td {
-      padding: var(--layout-padding-xsmall) var(--layout-padding-small);
-      height: 64px;
-      border: var(--layout-border-width-small) solid
-        var(--surface-color-border-default);
-
-      input {
-        height: 40px;
-        width: 100%;
-        padding: var(--layout-padding-small) var(--layout-padding-medium);
-        font-size: var(--typography-font-size-large-body);
-        border-radius: var(--layout-margin-xsmall);
-        border: var(--layout-border-width-small) solid
-          var(--surface-color-border-default);
-        text-align: end;
-      }
-    }
-  }
-
-  tfoot {
-    font-size: var(--typography-font-size-large-body);
-    font-weight: var(--typography-font-weights-regular);
-
-    td {
-      padding: var(--layout-padding-small);
-      padding-right: var(--layout-padding-large);
-      padding-top: var(--layout-padding-large);
-
-      border: none;
-      background-color: transparent !important;
-    }
-
-    td:not(:first-child) {
-      text-align: end;
-    }
-  }
-}
-
-.projectCell {
-  font-size: var(--typography-font-size-small-body);
-  font-weight: var(--typography-font-weights-regular);
-}
-
-.weekRangeLabel {
-  font-size: var(--typography-font-size-large-body);
-  font-weight: var(--typography-font-weights-regular);
-}
-
 .highlight {
   background-color: var(--theme-blue-30) !important;
 }
@@ -99,4 +8,85 @@
   border-radius: 4px;
   max-width: 300px;
   background-color: white;
+}
+
+.timesheetsSectionHeader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--theme-gray-20);
+  color: var(--typography-color-secondary);
+  font-size: var(--typography-font-size-label);
+  border-bottom: 1px solid var(--surface-color-border-medium);
+  padding-left: var(--layout-padding-small);
+  margin: 0 auto;
+  height: 64px;
+}
+
+.timesheetsSectionContent {
+  margin-top: var(--layout-margin-small);
+  padding: 0 20px 20px 20px;
+  border-top: 1px solid var(--surface-color-border-default);
+}
+
+.timeSheetDayInputs {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  padding: 8px;
+  gap: 8px;
+  border: var(--layout-border-width-small) solid
+    var(--surface-color-border-default);
+
+  input {
+    width: 100%;
+    height: 40px;
+    padding: var(--layout-padding-small) var(--layout-padding-medium);
+    font-size: var(--typography-font-size-medium-body);
+    border-radius: var(--layout-margin-xsmall);
+    border: var(--layout-border-width-small) solid
+      var(--surface-color-border-default);
+
+    padding-right: 2em; /* leaving space for the icon */   
+  }
+}
+
+.personPanel {
+  min-height: 64px;
+  padding: var(--layout-padding-small) 0;
+  gap: 0;
+
+  &:not(:last-child) {
+    border-bottom: none;
+  }
+}
+
+.personPanelLabel {
+  padding: var(--layout-padding-small);
+  font-size: var(--typography-font-size-small-body);
+}
+
+.inputWithIcon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.hoursInput {
+  text-align: end;
+
+  &::placeholder {
+    text-align: end !important;
+  }
+}
+
+.inputIcon {
+  position: absolute;
+  right: 0.7em;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--theme-gray-60);
+  display: flex;
+  align-items: center;
+  font-size: 16px;
 }
