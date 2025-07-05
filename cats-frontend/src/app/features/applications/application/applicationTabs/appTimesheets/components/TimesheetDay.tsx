@@ -45,7 +45,7 @@ export const TimesheetDay = ({
         })}
       >
         <div className="fw-bold">{format(day, 'EEEE')}</div>
-        <div>{format(day, 'd MMM')}</div>
+        <div>{format(day, 'd MMMM')}</div>
       </div>
 
       <div

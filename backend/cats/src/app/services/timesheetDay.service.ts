@@ -201,6 +201,8 @@ export class TimesheetDayService {
           loginUserName: person.loginUserName,
           email: person.email,
           roleDescription: role?.description,
+          startDate: staffAssignment?.startDate,
+          endDate: staffAssignment?.endDate,
           timesheetDays: timesheetDays
             .filter((t) => t.personId === person.id)
             .map((t) => ({

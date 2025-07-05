@@ -99,6 +99,12 @@ export class PersonWithTimesheetDaysDto {
   @Field({ nullable: true })
   roleDescription?: string;
 
+  @Field(() => Date, { nullable: true })
+  startDate?: Date;
+
+  @Field(() => Date, { nullable: true })
+  endDate?: Date;
+
   @Field(() => [TimesheetDayDto])
   timesheetDays: TimesheetDayDto[];
 }

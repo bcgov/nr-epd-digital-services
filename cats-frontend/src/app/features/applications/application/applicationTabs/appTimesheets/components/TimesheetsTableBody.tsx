@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, isBefore, isAfter } from 'date-fns';
 import cx from 'classnames';
 import styles from '../Timesheets.module.css';
 import { StaffRow } from '../types';
@@ -66,6 +66,11 @@ export const TimesheetsTableBody = ({
                     normalizedData[person.personId]?.[dateStr] || {};
                   const editedValue = edits[person.personId]?.[dateStr] || {};
 
+                  const dayDisabled =
+                    disabled ||
+                    (person.startDate && isBefore(day, person.startDate)) ||
+                    (person.endDate && isAfter(day, person.endDate));
+
                   return (
                     <TimesheetDay
                       key={`${person.personId}-${day}`}
@@ -74,7 +79,7 @@ export const TimesheetsTableBody = ({
                       currentValue={currentValue}
                       editedValue={editedValue}
                       onCellChange={onCellChange}
-                      disabled={disabled}
+                      disabled={dayDisabled}
                     />
                   );
                 })}
