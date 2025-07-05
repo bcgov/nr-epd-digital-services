@@ -12,9 +12,7 @@ import {
   useGetTimesheetDaysForAssignedStaffQuery,
   useUpsertTimesheetDaysMutation,
 } from './Timesheets.generated';
-import styles from './Timesheets.module.css';
 import { TimesheetsWeekSelection } from './components/TimesheetsWeekSelection';
-import { TimesheetsTableHead } from './components/TimesheetsTableHead';
 import { TimesheetsTableBody } from './components/TimesheetsTableBody';
 import { TimesheetsTableFooter } from './components/TimesheetsTableFooter';
 import { TimesheetsActions } from './components/TimesheetsActions';
