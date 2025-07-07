@@ -11,8 +11,8 @@ import { LoggerService } from '../app/logger/logger.service';
 import { ApplicationServiceType } from '../app/entities/applicationServiceType.entity';
 import { PermissionServiceType } from '../app/entities/permissionServiceType';
 import { parse } from 'path';
-import { PersonService } from 'src/app/services/people/people.service';
-import { StaffRoles } from 'src/app/services/assignment/staffRoles.enum';
+import { PersonService } from '../app/services/people/people.service';
+import { StaffRoles } from '../app/services/assignment/staffRoles.enum';
 
 
 

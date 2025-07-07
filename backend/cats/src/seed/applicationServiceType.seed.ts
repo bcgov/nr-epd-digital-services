@@ -2,7 +2,7 @@ import { EntityManager } from 'typeorm';
 import { ApplicationServiceType } from '../app/entities/applicationServiceType.entity';
 import { ParticipantRole } from '../app/entities/participantRole.entity';
 import { ServiceAssignmentFactor } from '../app/entities/serviceAssignmentFactor';
-import { StaffRoles } from 'src/app/services/assignment/staffRoles.enum';
+import { StaffRoles } from '../app/services/assignment/staffRoles.enum';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const serviceTypeJSON = require('./applicationServiceType.json');
