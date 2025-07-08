@@ -8,6 +8,7 @@ import { useGetInvoiceByIdQuery } from '../../getInvoiceById.generated';
 import { useGetPersonByIdQuery } from './getPersonById.generated';
 import { useUpdateInvoiceMutation } from '../../updateInvoice.generated';
 import { InvoiceStatus } from '../../../../../../../../generated/types';
+import InvoiceAttachments from '../shared/InvoiceAttachments';
 
 enum InvoiceLineItemType {
   SERVICE = 'service',
@@ -827,6 +828,12 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
             </Col>
           </Row>
         </Form>
+
+        <InvoiceAttachments
+          invoiceId={invoice.id}
+          applicationId={Number(applicationId)}
+          readOnly={!isEditMode}
+        />
       </div>
     </div>
   );

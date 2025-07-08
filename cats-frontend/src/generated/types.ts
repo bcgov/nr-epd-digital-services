@@ -147,10 +147,20 @@ export enum ApplicationSortByField {
 export type ApplicationStatusDto = {
   applicationId: Scalars['Float']['input'];
   formId: Scalars['String']['input'];
+  formsflowAppId: Scalars['Float']['input'];
   id?: InputMaybe<Scalars['Float']['input']>;
   isCurrent: Scalars['Boolean']['input'];
   statusTypeAbbrev: Scalars['String']['input'];
   submissionId: Scalars['String']['input'];
+};
+
+export type ApplicationStatusResponse = {
+  __typename?: 'ApplicationStatusResponse';
+  data?: Maybe<Array<ViewApplicationStatus>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
 };
 
 export type CreateAppParticipantDto = {
@@ -246,6 +256,29 @@ export type DropdownResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type FileUploadInputDto = {
+  applicationId: Scalars['Int']['input'];
+  fileContent: Scalars['String']['input'];
+  fileName: Scalars['String']['input'];
+  invoiceId?: InputMaybe<Scalars['Int']['input']>;
+  mimeType: Scalars['String']['input'];
+};
+
+export type FileUploadMultipartInputDto = {
+  applicationId: Scalars['Int']['input'];
+  invoiceId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type FileUploadResponse = {
+  __typename?: 'FileUploadResponse';
+  attachment?: Maybe<InvoiceAttachmentDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  objectStorageId?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export enum Filter {
   All = 'ALL',
   Completed = 'COMPLETED',
@@ -285,6 +318,44 @@ export type HousingTypeDto = {
 export type HousingTypeResponse = {
   __typename?: 'HousingTypeResponse';
   data: Array<HousingTypeDto>;
+};
+
+export type InvoiceAttachmentDto = {
+  __typename?: 'InvoiceAttachmentDto';
+  createdAt: Scalars['DateTime']['output'];
+  createdBy: Scalars['String']['output'];
+  fileName: Scalars['String']['output'];
+  fileSize: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  invoiceId: Scalars['Int']['output'];
+  mimeType: Scalars['String']['output'];
+  objectStorageId: Scalars['String']['output'];
+};
+
+export type InvoiceAttachmentInputDto = {
+  fileName: Scalars['String']['input'];
+  fileSize: Scalars['Int']['input'];
+  invoiceId: Scalars['Int']['input'];
+  mimeType: Scalars['String']['input'];
+  objectStorageId: Scalars['String']['input'];
+};
+
+export type InvoiceAttachmentResponse = {
+  __typename?: 'InvoiceAttachmentResponse';
+  attachment?: Maybe<InvoiceAttachmentDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type InvoiceAttachmentsResponse = {
+  __typename?: 'InvoiceAttachmentsResponse';
+  attachments?: Maybe<Array<InvoiceAttachmentDto>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
 };
 
 export type InvoiceByApplicationIdDto = {
@@ -398,18 +469,24 @@ export type Mutation = {
   createApplication: ApplicationResponse;
   createApplicationNote: ApplicationNotesResponse;
   createInvoice: InvoiceResponse;
+  createInvoiceAttachment: InvoiceAttachmentResponse;
   createPerson: PersonResponse;
   createPersonNote: PersonNoteResponse;
   deleteApplicationNotes: ApplicationNotesResponse;
   deleteInvoice: ResponseDto;
+  deleteInvoiceAttachment: ResponseDto;
   deletePersonNote: PersonNoteResponse;
   updateAppParticipant: UpdateAppParticipantsResponse;
   updateApplicationHousing: ApplicationHousingResponse;
   updateApplicationNote: ApplicationNotesResponse;
+  updateFormsflowAppId: ApplicationStatusResponse;
   updateInvoice: InvoiceResponse;
   updatePerson: PersonResponse;
   updatePersonNote: PersonNoteResponse;
   updateStaffAssigned: ResponseDto;
+  uploadFileToComsForInvoice: FileUploadResponse;
+  uploadFileToInvoice: FileUploadResponse;
+  uploadFileToInvoiceMultipart: FileUploadResponse;
   upsertTimesheetDays: TimesheetDayResponse;
 };
 
@@ -441,6 +518,11 @@ export type MutationCreateInvoiceArgs = {
 };
 
 
+export type MutationCreateInvoiceAttachmentArgs = {
+  input: InvoiceAttachmentInputDto;
+};
+
+
 export type MutationCreatePersonArgs = {
   person: CreatePerson;
 };
@@ -457,6 +539,11 @@ export type MutationDeleteApplicationNotesArgs = {
 
 
 export type MutationDeleteInvoiceArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteInvoiceAttachmentArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -483,6 +570,11 @@ export type MutationUpdateApplicationNoteArgs = {
 };
 
 
+export type MutationUpdateFormsflowAppIdArgs = {
+  appStatusInput: UpdateApplicationStatusDto;
+};
+
+
 export type MutationUpdateInvoiceArgs = {
   id: Scalars['Int']['input'];
   updateData: InvoiceInputDto;
@@ -504,6 +596,21 @@ export type MutationUpdateStaffAssignedArgs = {
   applicationId: Scalars['Int']['input'];
   applicationServiceTypeId: Scalars['Int']['input'];
   staffInput: Array<UpdateStaffAssignedDto>;
+};
+
+
+export type MutationUploadFileToComsForInvoiceArgs = {
+  input: FileUploadInputDto;
+};
+
+
+export type MutationUploadFileToInvoiceArgs = {
+  input: FileUploadInputDto;
+};
+
+
+export type MutationUploadFileToInvoiceMultipartArgs = {
+  input: FileUploadMultipartInputDto;
 };
 
 
@@ -581,6 +688,7 @@ export type Query = {
   getApplications: DashboardResponse;
   getApplicationsByStaff: ViewApplicationResponse;
   getHousingTypes: HousingTypeResponse;
+  getInvoiceAttachments: InvoiceAttachmentsResponse;
   getInvoiceById: InvoiceResponse;
   getInvoicesByApplicationId: InvoicesByApplicationIdResponse;
   getOrganizations: DropdownResponse;
@@ -641,6 +749,11 @@ export type QueryGetApplicationsByStaffArgs = {
   roleId?: InputMaybe<Scalars['Int']['input']>;
   sortBy?: InputMaybe<StaffSortByField>;
   sortByDir?: InputMaybe<ApplicationSortByDirection>;
+};
+
+
+export type QueryGetInvoiceAttachmentsArgs = {
+  invoiceId: Scalars['Int']['input'];
 };
 
 
@@ -840,6 +953,13 @@ export type UpdateAppParticipantsResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type UpdateApplicationStatusDto = {
+  formId: Scalars['String']['input'];
+  formsflowAppId: Scalars['Float']['input'];
+  statusTypeAbbrev: Scalars['String']['input'];
+  submissionId: Scalars['String']['input'];
+};
+
 export type UpdateHousingInputDto = {
   applicationHousingId: Scalars['Int']['input'];
   effectiveDate?: InputMaybe<Scalars['DateTime']['input']>;
@@ -973,6 +1093,11 @@ export type ViewApplicationResponse = {
   pageSize?: Maybe<Scalars['Float']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type ViewApplicationStatus = {
+  __typename?: 'ViewApplicationStatus';
+  formsflowAppId: Scalars['Float']['output'];
 };
 
 export type ViewApplications = {

@@ -69,6 +69,7 @@ import { SiteResolver } from './resolvers/site/site.resolver';
 import { SiteService } from './services/site/site.service';
 import { InvoiceV2 } from './entities/invoiceV2.entity';
 import { InvoiceLineItem } from './entities/invoiceLineItem.entity';
+import { InvoiceAttachment } from './entities/invoiceAttachment.entity';
 import { InvoiceResolver } from './resolvers/invoice/invoice.resolver';
 import { InvoiceService } from './services/invoice/invoice.service';
 import { ApplicationNotesResolver } from './resolvers/application/applicationNotes.resolver';
@@ -92,9 +93,11 @@ import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
 import { RecentViewedApplication } from './entities/recentViewedApplication.entity';
 import { StatusTypeService } from './services/statusType/statusType.service';
 
-
 import { ServiceAssignmentFactor } from './entities/serviceAssignmentFactor';
 import { PermissionServiceType } from './entities/permissionServiceType';
+import { InvoiceAttachmentResolver } from './resolvers/invoice/invoiceAttachment.resolver';
+import { InvoiceAttachmentService } from './services/invoice/invoiceAttachment.service';
+import { ComsService } from './services/coms/coms.service';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -152,10 +155,11 @@ import { PermissionServiceType } from './entities/permissionServiceType';
       PersonNote,
       InvoiceV2,
       InvoiceLineItem,
+      InvoiceAttachment,
       ApplicationServiceType,
       Permissions,
       PersonPermission,
-         RecentViewedApplication,
+      RecentViewedApplication,
       ServiceAssignmentFactor,
       PermissionServiceType,
     ]),
@@ -196,8 +200,11 @@ import { PermissionServiceType } from './entities/permissionServiceType';
     TimesheetDayService,
     TimesheetDayResolver,
     DashboardService,
-    DashboardResolver
+    DashboardResolver,
+    InvoiceAttachmentResolver,
+    InvoiceAttachmentService,
+    ComsService,
   ],
   controllers: [UserController],
 })
-export class CatsModule { }
+export class CatsModule {}
