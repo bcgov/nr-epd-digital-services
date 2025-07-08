@@ -65,19 +65,16 @@ jobs:
     secrets: inherit
     needs: [get-pr-info]
     with:
-      # Note: doesn't seem to trigger properly if changing eg charts/crunchy/templates/PostgresCluster.yaml without making it expicit
-      triggers: ('charts/crunchy/' 'charts/crunchy/templates/PostgresCluster.yaml' '.github/workflows/merge-dev-cats.yml')
       values: 'values-dev.yaml'
       app_values:  'values-test.yaml' 
       environment: test
-    # https://github.com/bcgov/quickstart-openshift-helpers
+    
   deploys:
     name: Deploys (test)
     needs: [builds, get-pr-info, deploy_db]
     uses: ./.github/workflows/.deployer.yml
     secrets: inherit
     with:
-      triggers: ('backend/cats/' 'cats-frontend/' 'charts/' '.github/workflows/')
       values: 'values-test.yaml'
       redirect_uri: https://logontest7.gov.bc.ca/clp-cgi/logoff.cgi?retnow=1&returl=https://epd-keycloak-test.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/protocol/openid-connect/logout?post_logout_redirect_uri=https://nr-epd-digital-services-${{ github.event.pull_request.number}}-frontend.apps.silver.devops.gov.bc.ca/
       db_user: cats
