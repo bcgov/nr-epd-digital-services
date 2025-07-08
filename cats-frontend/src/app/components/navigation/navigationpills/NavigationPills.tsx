@@ -1,84 +1,82 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useEffect } from 'react';
 import './NavigationPills.css';
 import { INavigationPills } from './INavigationPills';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Actions from '../../action/Actions';
 import { Button } from '../../button/Button';
 
-const NavigationPills: React.FC<INavigationPills> = ({
-  components,
-  disabled = false,
-  tabSearchKey,
-}) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+import { navigationItems } from '../../../features/navigation/NavigationPillsConfig';
 
-  const initialTab = useMemo(() => {
-    const tab = searchParams.get(tabSearchKey);
-    if (!tab) return components[0].value;
-    return (
-      components.find((item) => item.value === tab)?.value ||
-      components[0].value
+const NavigationPills: React.FC<INavigationPills> = ({ disabled = false }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const currentPath = useMemo(() => {
+    const pathSegments = location.pathname.split('/');
+    const lastSegment = pathSegments[pathSegments.length - 1];
+
+    const currentComponent = navigationItems.find(
+      (item) => item.path === lastSegment,
     );
-    // Only need the value set at the initial render
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const [activeTabKey, setActiveTabKey] = useState<string>(initialTab);
+    return currentComponent?.path || navigationItems[0].path;
+  }, [location.pathname]);
 
   useEffect(() => {
-    const currentTab = searchParams.get(tabSearchKey);
-    if (currentTab) {
-      const component = components.find((item) => item.value === currentTab);
+    const pathSegments = location.pathname.split('/');
+    const lastSegment = pathSegments[pathSegments.length - 1];
+    const isApplicationId = !isNaN(Number(lastSegment));
 
-      if (component) {
-        setActiveTabKey(component.value);
-      }
+    if (isApplicationId) {
+      const newPath = `${location.pathname}/${navigationItems[0].path}`;
+      navigate(newPath, { replace: true });
     }
-  }, [components, searchParams, tabSearchKey]);
+  }, [location.pathname, navigate]);
 
   const handlePillClick = (tabKey: string) => {
-    setActiveTabKey(tabKey);
-    setSearchParams((params) => {
-      params.set(tabSearchKey, tabKey);
-      return params;
-    });
+    const component = navigationItems.find((item) => item.value === tabKey);
+    if (component) {
+      const currentPathSegments = location.pathname.split('/');
+      currentPathSegments.pop();
+      const newPath = `${currentPathSegments.join('/')}/${component.path}`;
+      navigate(newPath);
+    }
   };
 
   const getCurrentElementIndex = useCallback(() => {
-    const currentComponentIndex = components.findIndex(
-      (tab: any) => tab.value === activeTabKey,
+    const currentComponentIndex = navigationItems.findIndex(
+      (tab: any) => tab.path === currentPath,
     );
 
     return currentComponentIndex;
-  }, [components, activeTabKey]);
+  }, [currentPath]);
 
   const isActiveTabFirstPosition = () => {
     return getCurrentElementIndex() === 0;
   };
 
   const isActiveTabLastPosition = () => {
-    return getCurrentElementIndex() + 1 === components.length;
+    return getCurrentElementIndex() + 1 === navigationItems.length;
   };
 
   const getNextElement = () => {
     const currentComponentindex = getCurrentElementIndex();
-    return components[currentComponentindex + 1].value;
+    return navigationItems[currentComponentindex + 1].value;
   };
 
   const getPreviousElement = () => {
     const currentComponentindex = getCurrentElementIndex();
-    return components[currentComponentindex - 1].value;
+    return navigationItems[currentComponentindex - 1].value;
   };
 
   return (
     <div>
       <div className="d-flex d-xxl-flex d-xl-flex gap-2 d-none">
-        {components.map((item) => (
+        {navigationItems.map((item) => (
           <Button
             key={item.value}
             size="small"
-            disabled={disabled && item.value !== activeTabKey}
-            variant={item.value === activeTabKey ? 'primary' : 'tertiary'}
+            disabled={disabled && item.path !== currentPath}
+            variant={item.path === currentPath ? 'primary' : 'tertiary'}
             onClick={() => handlePillClick(item.value)}
           >
             {item.label}
@@ -90,7 +88,7 @@ const NavigationPills: React.FC<INavigationPills> = ({
           <div>
             <Actions
               label="Select Page"
-              items={components}
+              items={navigationItems}
               onItemClick={(value) => handlePillClick(value)}
               customCssToggleBtn={'custom-nav-btn'}
               customCssMenu={'custom-nav-action-menu'}
@@ -113,9 +111,9 @@ const NavigationPills: React.FC<INavigationPills> = ({
                 ></span>
               </div>
               <div className="ps-3 pe-2 m-0 p-0 w-100 text-center">
-                {components.map(
+                {navigationItems.map(
                   (tab) =>
-                    tab.value === activeTabKey && (
+                    tab.path === currentPath && (
                       <Button
                         key={tab.value}
                         // size={isMobileScreen ? 'medium' : 'small'}
@@ -140,15 +138,6 @@ const NavigationPills: React.FC<INavigationPills> = ({
             </div>
           </div>
         </div>
-      </div>
-      <div className="mt-4">
-        {components &&
-          activeTabKey !== '' &&
-          components?.map((tabComponent) => {
-            return tabComponent.value === activeTabKey ? (
-              <div key={tabComponent.value}>{tabComponent.component}</div>
-            ) : null;
-          })}
       </div>
     </div>
   );
