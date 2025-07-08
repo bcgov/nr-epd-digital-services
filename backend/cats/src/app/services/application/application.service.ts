@@ -7,34 +7,39 @@ import { CreateApplication } from '../../dto/application/createApplication.dto';
 import { ViewApplicationDetails } from '../../dto/application/viewApplicationDetails.dto';
 import { AppTypeService } from '../appType/appType.service';
 import { DashboardService } from '../dashboard/dashboard.service';
+import { AppStatus } from '../../entities/appStatus.entity';
+import { StatusTypeService } from '../statusType/statusType.service';
+import { UpdateApplicationStatusDto } from '../../dto/application/updateApplicationStatus.dto';
 
 @Injectable()
 export class ApplicationService {
   constructor(
     @InjectRepository(Application)
     private readonly applicationRepository: Repository<Application>,
+    @InjectRepository(AppStatus)
+    private readonly appStatusRepository: Repository<AppStatus>,
     private readonly loggerService: LoggerService,
     private readonly appTypeService: AppTypeService,
-    private readonly dashboardService: DashboardService
+    private readonly dashboardService: DashboardService,
+    private readonly statusTypeService: StatusTypeService,
   ) { }
 
+  // this method will be called from formsflow when an application is submitted
   async createApplication(createApplication: CreateApplication) {
     this.loggerService.log('ApplicationService.createApplication() start'); // Log the start of the method
 
     try {
       // Log the input parameters for better traceability
       this.loggerService.debug(
-        `Attempting to create application with SRS form id: ${createApplication?.formId} ' and submission id: ${createApplication?.formId}`,
+        `Attempting to create a new application with SRS form id: ${createApplication?.applicationStatus[0].formId} ' and submission id: ${createApplication?.applicationStatus[0].formId}`,
       );
 
       const appType = await this.appTypeService.getAppTypeByAbbrev(
         createApplication.appTypeAbbrev,
       );
 
-      const newApplication = await this.applicationRepository.create({
+      const newApplication = this.applicationRepository.create({
         siteId: createApplication.siteId,
-        formId: createApplication.formId,
-        submissionId: createApplication.submissionId,
         appTypeId: appType?.id,
         rowVersionCount: 1,
         createdBy: 'SYSTEM',
@@ -45,9 +50,32 @@ export class ApplicationService {
       });
 
       // Save the new application
-      const savedApplication = await this.applicationRepository.save(
-        newApplication,
+      const savedApplication = await this.applicationRepository.save(newApplication);
+
+      // Resolve each statusTypeId from statusTypeAbbrev
+      const appStatuses = await Promise.all(
+        createApplication.applicationStatus.map(async (statusDto) => {
+          const statusType = await this.statusTypeService.getStatusTypeByAbbrev(statusDto.statusTypeAbbrev);
+          return this.appStatusRepository.create({
+            application: savedApplication,
+            isCurrent: statusDto.isCurrent,
+            formId: statusDto.formId,
+            submissionId: statusDto.submissionId,
+            statusTypeId: statusType.id,
+            comment: '',
+            rowVersionCount: 1,
+            ts: Buffer.from(new Date().toISOString()),
+            createdBy: 'SYSTEM',
+            updatedBy: 'SYSTEM',
+            createdDateTime: new Date(),
+            updatedDateTime: new Date(),
+          });
+        }),
       );
+
+
+      // Save all appStatuses
+      await this.appStatusRepository.save(appStatuses);
 
       if (savedApplication) {
         this.loggerService.log(
@@ -77,6 +105,85 @@ export class ApplicationService {
       this.loggerService.log('ApplicationService.createApplication() end');
     }
   }
+
+  // this method will be called from formsflow after an application is submitted to update the formsflow app id
+  async updateFormsflowAppId(appStatusInput: UpdateApplicationStatusDto) {
+    this.loggerService.log('ApplicationService.updateFormsflowAppId() start'); // Log the start of the method
+
+    try {
+      const { formId, submissionId, formsflowAppId, statusTypeAbbrev } = appStatusInput;
+
+      let appStatus = await this.appStatusRepository.findOne({
+        where: { formId, submissionId },
+      });
+
+      console.log('statusTypeAbbrev---', statusTypeAbbrev);
+      const statusType = await this.statusTypeService.getStatusTypeByAbbrev(statusTypeAbbrev);
+
+      if (!appStatus) {
+
+        const existingAppStatus = await this.appStatusRepository.findOne({
+          where: { formsflowAppId },
+        });
+
+        const applicationId = existingAppStatus?.applicationId;
+
+        appStatus = this.appStatusRepository.create({
+          applicationId,
+          formId,
+          submissionId,
+          formsflowAppId,
+          statusTypeId: statusType.id,
+          isCurrent: true,
+          rowVersionCount: 1,
+          ts: Buffer.from(new Date().toISOString()),
+          createdBy: 'SYSTEM',
+          createdDateTime: new Date(),
+          updatedBy: 'SYSTEM',
+          updatedDateTime: new Date(),
+        });
+
+        appStatus = await this.appStatusRepository.save(appStatus);
+      } else {
+
+        appStatus.formsflowAppId = formsflowAppId;
+        appStatus.updatedBy = 'SYSTEM';
+        appStatus.updatedDateTime = new Date();
+        appStatus.isCurrent = true;
+        appStatus.statusTypeId = statusType.id;
+
+        await this.appStatusRepository.save(appStatus);
+      }
+
+      // Set isCurrent as false for all other entries with the same formsflowAppId but different formId/submissionId
+      await this.appStatusRepository
+        .createQueryBuilder()
+        .update()
+        .set({ isCurrent: false })
+        .where('formsflowAppId = :formsflowAppId', { formsflowAppId })
+        .andWhere('NOT (formId = :formId AND submissionId = :submissionId)', { formId, submissionId })
+        .execute();
+
+      // Log success
+      this.loggerService.log(`App Status successfully with Formsflow App ID: ${formsflowAppId}`);
+
+      return { success: true, message: `Updated successfully for id=${appStatus.id}`, formsflowAppId: formsflowAppId };
+    } catch (err) {
+      // Log the error with the exception details
+      this.loggerService.error(
+        'Exception occurred in ApplicationService.updateFormsflowAppId()',
+        JSON.stringify(err),
+      );
+      throw new HttpException(
+        'Failed to update  Formsflow App ID',
+        HttpStatus.BAD_REQUEST,
+      );
+    } finally {
+      // Log the end of the method
+      this.loggerService.log('ApplicationService.updateFormsflowAppId() end');
+    }
+  }
+
 
   async findApplicationDetailsById(
     id: number,
@@ -141,8 +248,8 @@ export class ApplicationService {
         siteId: application.siteId,
         siteAddress: application.site.address,
         siteCity: application.site.city,
-        formId: application.formId,
-        submissionId: application.submissionId,
+        formId: application.appStatuses?.find((status) => status.isCurrent)?.formId,
+        submissionId: application?.appStatuses?.find((status) => status.isCurrent)?.submissionId,
         csapRefNumber: application.csapRefNumber,
         receivedDate: new Date(application.receivedDate),
         endDate: application.endDate ? new Date(application.endDate) : null,

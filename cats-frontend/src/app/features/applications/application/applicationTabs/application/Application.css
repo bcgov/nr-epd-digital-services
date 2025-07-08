@@ -54,10 +54,6 @@
   color: #868e96 !important;
 }
 
-.table.table td {
-  white-space: normal;
-}
-
 .steps .step {
   display: block;
   width: 100%;

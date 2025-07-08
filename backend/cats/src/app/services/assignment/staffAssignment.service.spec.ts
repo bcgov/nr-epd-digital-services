@@ -173,16 +173,16 @@ describe('StaffAssignmentService', () => {
 
   it('should return application service types successfully', async () => {
     const applicationServiceTypes = [
-      { id: 1, serviceName: 'Service 1' },
-      { id: 2, serviceName: 'Service 2' },
+      { id: 1, serviceName: 'Service 1', serviceType: 'Type 1' },
+      { id: 2, serviceName: 'Service 2', serviceType: 'Type 2' },
     ];
     (repository.find as jest.Mock).mockResolvedValue(applicationServiceTypes);
 
     const result = await service.getApplicationServiceTypes();
 
     expect(result).toEqual([
-      { key: 1, value: 'Service 1' },
-      { key: 2, value: 'Service 2' },
+      { key: 1, value: 'Service 1 (Type 1)' },
+      { key: 2, value: 'Service 2 (Type 2)' },
     ]);
     expect(loggerService.log).toHaveBeenCalledTimes(2);
   });
@@ -219,6 +219,33 @@ describe('StaffAssignmentService', () => {
     (personRepository.query as jest.Mock).mockResolvedValueOnce([]);
     const result = await service.getAllActiveStaffMembersWithCurrentCapacity();
     expect(result).toEqual([]);
+  });
+
+  it('should return array of staff members', async () => {
+    (personRepository.query as jest.Mock).mockResolvedValueOnce([
+      {
+        id: 1,
+        first_name: 'John',
+        last_name: 'Doe',
+        roles: 'STAFF',
+        middle_name: '',
+        current_factors: 1,
+      },
+    ]);
+    const result =
+      await service.getActiveStaffWithCapacityByServiceType(
+        1,
+      );
+    expect(result).toEqual([
+      {
+        personId: 1,
+        personFirstName: 'John',
+        personLastName: 'Doe',
+        personFullName: 'John  Doe - (STAFF)',
+        personMiddleName: '',
+        currentCapacity: 1,
+      },
+    ]);
   });
 
   it('should retrieve staff assigned by app ID successfully', async () => {

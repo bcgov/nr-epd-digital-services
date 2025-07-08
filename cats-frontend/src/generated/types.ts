@@ -144,6 +144,15 @@ export enum ApplicationSortByField {
   Status = 'STATUS'
 }
 
+export type ApplicationStatusDto = {
+  applicationId: Scalars['Float']['input'];
+  formId: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['Float']['input']>;
+  isCurrent: Scalars['Boolean']['input'];
+  statusTypeAbbrev: Scalars['String']['input'];
+  submissionId: Scalars['String']['input'];
+};
+
 export type CreateAppParticipantDto = {
   applicationId: Scalars['Float']['input'];
   createdBy?: InputMaybe<Scalars['String']['input']>;
@@ -167,10 +176,9 @@ export type CreateAppParticipantsResponse = {
 
 export type CreateApplication = {
   appTypeAbbrev: Scalars['String']['input'];
-  formId: Scalars['String']['input'];
+  applicationStatus: Array<ApplicationStatusDto>;
   receivedDate: Scalars['DateTime']['input'];
   siteId: Scalars['Float']['input'];
-  submissionId: Scalars['String']['input'];
 };
 
 export type CreatePerson = {
@@ -204,7 +212,7 @@ export type CreatePersonNote = {
 
 export type DashboardResponse = {
   __typename?: 'DashboardResponse';
-  data?: Maybe<Array<RecentViewedApplication>>;
+  data?: Maybe<Array<ViewDashboard>>;
   httpStatusCode?: Maybe<Scalars['Int']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
@@ -302,6 +310,7 @@ export type InvoiceDto = {
   issuedDate: Scalars['DateTime']['output'];
   lineItems: Array<InvoiceLineItemDto>;
   notes?: Maybe<Scalars['String']['output']>;
+  pstExempt: Scalars['Boolean']['output'];
   pstInCents: Scalars['Int']['output'];
   recipientId: Scalars['Int']['output'];
   status: InvoiceStatus;
@@ -321,6 +330,7 @@ export type InvoiceInputDto = {
   issuedDate: Scalars['DateTime']['input'];
   lineItems: Array<InvoiceLineItemInputDto>;
   notes?: InputMaybe<Scalars['String']['input']>;
+  pstExempt: Scalars['Boolean']['input'];
   pstInCents: Scalars['Int']['input'];
   recipientId: Scalars['Int']['input'];
   status: InvoiceStatus;
@@ -568,6 +578,7 @@ export type Query = {
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
   getApplicationNotesByApplicationId: ApplicationNotesResponse;
   getApplicationServiceTypes: DropdownResponse;
+  getApplications: DashboardResponse;
   getApplicationsByStaff: ViewApplicationResponse;
   getHousingTypes: HousingTypeResponse;
   getInvoiceById: InvoiceResponse;
@@ -589,6 +600,11 @@ export type Query = {
 
 export type QueryFindPersonByIdArgs = {
   id: Scalars['Float']['input'];
+};
+
+
+export type QueryGetAllActiveStaffMembersForApplicationServiceTypeArgs = {
+  applicationServiceTypeId: Scalars['Int']['input'];
 };
 
 
@@ -703,15 +719,6 @@ export type QuerySearchPersonArgs = {
   page: Scalars['Int']['input'];
   pageSize: Scalars['Int']['input'];
   searchParam: Scalars['String']['input'];
-};
-
-export type RecentViewedApplication = {
-  __typename?: 'RecentViewedApplication';
-  address: Scalars['String']['output'];
-  applicationId: Scalars['Float']['output'];
-  applicationType: Scalars['String']['output'];
-  siteId: Scalars['Float']['output'];
-  userId: Scalars['String']['output'];
 };
 
 export type ResponseDto = {
@@ -982,6 +989,17 @@ export type ViewApplications = {
   roleDescription: Scalars['String']['output'];
   roleId: Scalars['Float']['output'];
   siteAddress: Scalars['String']['output'];
+};
+
+export type ViewDashboard = {
+  __typename?: 'ViewDashboard';
+  address?: Maybe<Scalars['String']['output']>;
+  applicationId: Scalars['Float']['output'];
+  applicationStatus?: Maybe<Scalars['String']['output']>;
+  applicationType?: Maybe<Scalars['String']['output']>;
+  priority?: Maybe<Scalars['String']['output']>;
+  receivedDate?: Maybe<Scalars['DateTime']['output']>;
+  siteId?: Maybe<Scalars['Float']['output']>;
 };
 
 export type ViewOrganizationsDto = {
