@@ -86,7 +86,9 @@ const Person = () => {
   const [error, setError] = useState<string | null>(null);
   const [addrForm, setAddrForm] = useState(addressForm);
 
-  const { data } = useGetPermissionsQuery();
+  const { data } = useGetPermissionsQuery(
+    {fetchPolicy: 'cache-and-network'}
+  );
   const [enabledRoles, setEnabledRoles] = useState<Record<number, boolean>>({});
   const [selectedPermissions, setSelectedPermissions] = useState<Set<number>>(
     new Set(),
@@ -110,6 +112,21 @@ const Person = () => {
             (personData?.lastName ?? ''),
         );
         setFormData(personData);
+
+      // reset selectedPermissions and enabledRoles
+        const personPermissions: number[] = personData.permissionIds ?? [];
+        // originalPermissionsRef.current = personPermissions;
+        setSelectedPermissions(new Set(personPermissions))
+        const rolesMap: Record<number, boolean> = {};
+        data?.getPermissions?.data?.forEach((role: any) => {
+          role.permissions.forEach((perm: any) => {
+            if (personPermissions.includes(perm.id)) {
+              rolesMap[role.roleId] = true;
+            }
+          });
+        });
+        setEnabledRoles(rolesMap);
+
         setLoading(false);
       }
     } catch (err) {
@@ -177,6 +194,30 @@ const Person = () => {
     };
   }, []);
 
+  useEffect(() => {
+    // Only run once when formData is initially populated
+    if (
+      formData?.permissionIds &&
+      data?.getPermissions?.data &&
+      selectedPermissions.size === 0
+    ) {
+      const rolesMap: Record<number, boolean> = {};
+      const personPermissions: number[] = formData?.permissionIds;
+
+      setSelectedPermissions(new Set(personPermissions));
+
+      data?.getPermissions?.data.forEach((role: any) => {
+        role.permissions.forEach((perm: any) => {
+          if (personPermissions.includes(perm.id)) {
+            rolesMap[role.roleId] = true;
+          }
+        });
+      });
+
+      setEnabledRoles(rolesMap);
+    }
+  }, [data?.getPermissions?.data]);
+  
   const fetchAddresses = useCallback(async (searchParam: string) => {
     if (searchParam.trim()) {
       try {
@@ -339,6 +380,8 @@ const Person = () => {
           if (result) {
             setViewMode(UserMode.Default);
             getPersonData(id);
+          } else {
+            setError('Failed to update person');
           }
         } else {
           setLoading(createLoading); // Set loading to true
@@ -358,6 +401,9 @@ const Person = () => {
       case UserAction.CANCEL: // Cancel the changes
         if (id) {
           setViewMode(UserMode.Default);
+          getPersonData(id);
+          setEnabledRoles({});
+          setSelectedPermissions(new Set());
         } else {
           setFormData(null);
           setNotes([]);
@@ -427,56 +473,45 @@ const Person = () => {
     </>
   );
 
-  useEffect(() => {
-    // Only run once when formData is initially populated
-    if (
-      formData?.permissionIds &&
-      data?.getPermissions?.data &&
-      selectedPermissions.size === 0
-    ) {
-      const personPermissions: number[] = formData?.permissionIds;
-
-      setSelectedPermissions(new Set(personPermissions));
-
-      const rolesMap: Record<number, boolean> = {};
-
-      data?.getPermissions?.data.forEach((role: any) => {
-        role.permissions.forEach((perm: any) => {
-          if (personPermissions.includes(perm.id)) {
-            rolesMap[role.roleId] = true;
-          }
-        });
-      });
-
-      setEnabledRoles(rolesMap);
-    }
-  }, [data?.getPermissions?.data]);
-
   const handleSwitchToggle = (roleId: number) => {
-    setEnabledRoles((prev) => {
-      const isCurrentlyEnabled = prev[roleId];
-      const newEnabledRoles = {
-        ...prev,
-        [roleId]: !isCurrentlyEnabled,
-      };
-      // If turning OFF the role switch, remove its permission IDs
+    setEnabledRoles((prevRoles) => {
+      const isCurrentlyEnabled = !!prevRoles[roleId];
+      const updatedRoles = { ...prevRoles };
+    
       if (isCurrentlyEnabled) {
-        const rolePermissions =
-          data?.getPermissions?.data?.find((r) => r.roleId === roleId)
-            ?.permissions || [];
-        const permissionIdsToRemove = rolePermissions.map((p) => p.id);
+        // Remove the role from enabledRoles
+        delete updatedRoles[roleId];
+      
+        const allRoles = data?.getPermissions?.data ?? [];
+        const thisRole = allRoles.find(r => r.roleId === roleId);
+        const thisRolePermissionIds = thisRole?.permissions.map(p => p.id) ?? [];
+      
+        // Get all permission IDs used by other still-enabled roles
+        const otherPermissionIds = new Set<number>();
+        for (const [otherId, enabled] of Object.entries(updatedRoles)) {
+          if (enabled) {
+            const role = allRoles.find(r => r.roleId === parseInt(otherId));
+            role?.permissions.forEach(p => otherPermissionIds.add(p.id));
+          }
+        }
+      
+        // Remove only exclusive permissions of this role
+        const toRemove = thisRolePermissionIds.filter(
+          (id) => !otherPermissionIds.has(id)
+        );
+      
         setSelectedPermissions((prev) => {
           const updated = new Set(prev);
-          permissionIdsToRemove.forEach((id) => updated.delete(id));
-          // Also update formData
-          setFormData((prevData) => ({
-            ...prevData,
-            permissionIds: Array.from(updated),
-          }));
+          toRemove.forEach((id) => updated.delete(id));
+          setFormData((fd) => ({ ...fd, permissionIds: Array.from(updated) }));
           return updated;
         });
+      } else {
+        // Add the role to enabledRoles
+        updatedRoles[roleId] = true;
       }
-      return newEnabledRoles;
+    
+      return updatedRoles;
     });
   };
 

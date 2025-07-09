@@ -147,10 +147,20 @@ export enum ApplicationSortByField {
 export type ApplicationStatusDto = {
   applicationId: Scalars['Float']['input'];
   formId: Scalars['String']['input'];
+  formsflowAppId: Scalars['Float']['input'];
   id?: InputMaybe<Scalars['Float']['input']>;
   isCurrent: Scalars['Boolean']['input'];
   statusTypeAbbrev: Scalars['String']['input'];
   submissionId: Scalars['String']['input'];
+};
+
+export type ApplicationStatusResponse = {
+  __typename?: 'ApplicationStatusResponse';
+  data?: Maybe<Array<ViewApplicationStatus>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
 };
 
 export type CreateAppParticipantDto = {
@@ -406,6 +416,7 @@ export type Mutation = {
   updateAppParticipant: UpdateAppParticipantsResponse;
   updateApplicationHousing: ApplicationHousingResponse;
   updateApplicationNote: ApplicationNotesResponse;
+  updateFormsflowAppId: ApplicationStatusResponse;
   updateInvoice: InvoiceResponse;
   updatePerson: PersonResponse;
   updatePersonNote: PersonNoteResponse;
@@ -480,6 +491,11 @@ export type MutationUpdateApplicationNoteArgs = {
   noteDate: Scalars['DateTime']['input'];
   noteId: Scalars['Int']['input'];
   noteText: Scalars['String']['input'];
+};
+
+
+export type MutationUpdateFormsflowAppIdArgs = {
+  appStatusInput: UpdateApplicationStatusDto;
 };
 
 
@@ -840,6 +856,13 @@ export type UpdateAppParticipantsResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type UpdateApplicationStatusDto = {
+  formId: Scalars['String']['input'];
+  formsflowAppId: Scalars['Float']['input'];
+  statusTypeAbbrev: Scalars['String']['input'];
+  submissionId: Scalars['String']['input'];
+};
+
 export type UpdateHousingInputDto = {
   applicationHousingId: Scalars['Int']['input'];
   effectiveDate?: InputMaybe<Scalars['DateTime']['input']>;
@@ -973,6 +996,11 @@ export type ViewApplicationResponse = {
   pageSize?: Maybe<Scalars['Float']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type ViewApplicationStatus = {
+  __typename?: 'ViewApplicationStatus';
+  formsflowAppId: Scalars['Float']['output'];
 };
 
 export type ViewApplications = {

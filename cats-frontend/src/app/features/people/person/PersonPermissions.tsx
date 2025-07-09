@@ -21,7 +21,7 @@ const PersonPermissions: React.FC<IPersonPermission> = ({
     <div>
       {permissions?.map((role: RoleWithPermissions, index) => {
         return (
-          <div key={index} className="row py-2 px-0">
+          <div key={role.roleId} className="row py-2 px-0">
             <SwitchInput
               label={role.roleDescription}
               value={!!enabledRoles[role.roleId]}
@@ -36,9 +36,8 @@ const PersonPermissions: React.FC<IPersonPermission> = ({
             {editMode
               ? enabledRoles[role.roleId] &&
                 role.permissions.map((permission: ViewPermissions, index) => (
-                  <div className="col-lg-4 col-md-6 col-sm-12 px-4" key={index}>
+                  <div className="col-lg-4 col-md-6 col-sm-12 px-4" key={permission.id}>
                     <CheckBoxInput
-                      key={permission.id}
                       isLabel={true}
                       label={permission.description}
                       isChecked={selectedPermissions.has(permission.id)}
