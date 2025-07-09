@@ -22,6 +22,7 @@ import {
   TimesheetChange,
   StaffRow,
 } from './types';
+import { useUnsavedChangesWarning } from '@cats/hooks/useUnsavedChangesWarning';
 
 function getWeekRange(date: Date) {
   const monday = startOfWeek(date, { weekStartsOn: 1 });
@@ -128,6 +129,13 @@ export const Timesheets = () => {
   const endDateStr = format(endDate, 'yyyy-MM-dd');
 
   const [edits, setEdits] = useState<EditsData>({});
+
+  const hasUnsavedChanges = Object.keys(edits).length > 0;
+  useUnsavedChangesWarning({
+    hasUnsavedChanges,
+    message:
+      'You have unsaved timesheet changes. Are you sure you want to leave?',
+  });
 
   const { data, refetch } = useGetTimesheetDaysForAssignedStaffQuery({
     variables: {
@@ -257,7 +265,7 @@ export const Timesheets = () => {
       <TimesheetsTableFooter totalHoursForAllStaff={totalHoursForAllStaff} />
       <TimesheetsActions
         onSave={handleSave}
-        hasEdits={Object.keys(edits).length > 0}
+        hasEdits={hasUnsavedChanges}
         disabled={saveTimesheetDaysLoading}
       />
     </div>
