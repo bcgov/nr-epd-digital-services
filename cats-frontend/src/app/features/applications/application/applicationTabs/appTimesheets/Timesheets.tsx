@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef } from 'react';
 import {
   format,
   startOfWeek,
@@ -109,6 +109,7 @@ function denormalizeTimesheetData(
 
 export const Timesheets = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const isRefetchingRef = useRef(false);
 
   const [selectedDate, setSelectedDate] = useState<Date>(() => {
     const startDate = searchParams.get('startDate');
@@ -145,7 +146,12 @@ export const Timesheets = () => {
     },
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
-      setEdits({});
+      // We want to clear the edits only when refetching the existing data, not when making new queries.
+      // This makes sure the changes are not lost when navigation between dates and the entered values don't flicker after mutation
+      if (isRefetchingRef.current) {
+        setEdits({});
+        isRefetchingRef.current = false;
+      }
     },
   });
 
@@ -209,12 +215,12 @@ export const Timesheets = () => {
       applicationId,
     );
     if (changes.length > 0) {
-      console.log('Timesheet changes to save:', changes);
       await saveTimesheetDays({
         variables: {
           entries: changes,
         },
       });
+      isRefetchingRef.current = true;
       refetch();
     }
   };
