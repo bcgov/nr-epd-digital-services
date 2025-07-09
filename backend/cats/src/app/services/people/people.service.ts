@@ -14,13 +14,12 @@ export class PersonService {
   constructor(
     @InjectRepository(Person)
     private readonly personRepository: Repository<Person>,
-    private readonly permissionsService: PermissionsService, 
+    private readonly permissionsService: PermissionsService,
     private readonly loggerSerivce: LoggerService,
   ) {}
 
   /** Fetch all person records */
-  async findAll()
-  {
+  async findAll() {
     try {
       this.loggerSerivce.log('at service layer findAll start');
       return await this.personRepository.find();
@@ -30,35 +29,34 @@ export class PersonService {
   }
 
   /** Find a person by ID */
-  async findOne(id: number)
-  {
+  async findOne(id: number) {
     try {
       this.loggerSerivce.log('at service layer findOne start');
       const person = await this.personRepository.findOne({
-      where: { id },
-      relations: ['personPermissions', 'personPermissions.permission'],
-    });
+        where: { id },
+        relations: ['personPermissions', 'personPermissions.permission'],
+      });
 
-    if (!person) return null;
+      if (!person) return null;
 
-    // Extract permission IDs from personPermissions relation
-    const permissionIds = person.personPermissions?.map(pp => pp.permissionId) || [];
+      // Extract permission IDs from personPermissions relation
+      const permissionIds =
+        person.personPermissions?.map((pp) => pp.permissionId) || [];
 
-    // Map entity to DTO shape (pseudo-code)
-    const viewPerson: ViewPerson = {
-      ...person,
-      permissionIds,
-    };
+      // Map entity to DTO shape (pseudo-code)
+      const viewPerson: ViewPerson = {
+        ...person,
+        permissionIds,
+      };
 
-    return viewPerson;
+      return viewPerson;
     } catch (error) {
       throw new Error(`Failed to find person with id ${id}: ${error.message}`);
     }
   }
 
   /** Create a new person record */
-  async create(input: CreatePerson, userInfo: any)
-  {
+  async create(input: CreatePerson, userInfo: any) {
     try {
       this.loggerSerivce.log('at service layer create start');
       const { permissionIds = [], ...personData } = input;
@@ -67,23 +65,26 @@ export class PersonService {
         createdBy: userInfo ? userInfo.givenName : '',
         createdDatetime: new Date(),
       });
-      
-        const savedPerson = await this.personRepository.save(person);
 
-        if (permissionIds.length > 0) {
-          await this.permissionsService.assignPermissionsToPerson(savedPerson.id, permissionIds, userInfo);
-        }
+      const savedPerson = await this.personRepository.save(person);
 
-        this.loggerSerivce.log('at service layer create end');
-        return savedPerson;
+      if (permissionIds.length > 0) {
+        await this.permissionsService.assignPermissionsToPerson(
+          savedPerson.id,
+          permissionIds,
+          userInfo,
+        );
+      }
+
+      this.loggerSerivce.log('at service layer create end');
+      return savedPerson;
     } catch (error) {
       throw new Error(`Failed to create person: ${error.message}`);
     }
   }
 
   /** Update existing person records */
-  async update(input: UpdatePerson[], userInfo: any)
-  {
+  async update(input: UpdatePerson[], userInfo: any) {
     try {
       this.loggerSerivce.log('at service layer update start');
       for (const data of input) {
@@ -96,7 +97,11 @@ export class PersonService {
         };
         await this.personRepository.save(updatedPerson);
         if (data.permissionIds && Array.isArray(data.permissionIds)) {
-           await this.permissionsService.assignPermissionsToPerson(data.id, data.permissionIds, userInfo);
+          await this.permissionsService.assignPermissionsToPerson(
+            data.id,
+            data.permissionIds,
+            userInfo,
+          );
         }
       }
       this.loggerSerivce.log('at service layer update end');
@@ -133,37 +138,39 @@ export class PersonService {
       const response = new SearchPersonResponse();
       const query = this.personRepository.createQueryBuilder('person');
       query.andWhere('is_deleted is not true');
-      query.andWhere(
-        new Brackets((qb) => {
-          qb.where('CAST(person.id AS TEXT) LIKE :searchParam', {
-            searchParam: `%${searchParam}%`,
-          })
-            .orWhere('LOWER(person.first_name) LIKE LOWER(:searchParam)', {
-              searchParam: `%${searchParam.toLowerCase()}%`,
-            })
-            .orWhere('LOWER(person.last_name) LIKE LOWER(:searchParam)', {
-              searchParam: `%${searchParam.toLowerCase()}%`,
-            })
-            .orWhere('LOWER(person.email) LIKE LOWER(:searchParam)', {
-              searchParam: `%${searchParam.toLowerCase()}%`,
-            })
-            .orWhere('LOWER(person.city) LIKE LOWER(:searchParam)', {
-              searchParam: `%${searchParam.toLowerCase()}%`,
-            })
-            .orWhere('LOWER(person.prov) LIKE LOWER(:searchParam)', {
-              searchParam: `%${searchParam.toLowerCase()}%`,
-            })
-            .orWhere('LOWER(person.address_1) LIKE LOWER(:searchParam)', {
-              searchParam: `%${searchParam.toLowerCase()}%`,
-            })
-            .orWhere('LOWER(person.address_2) LIKE LOWER(:searchParam)', {
-              searchParam: `%${searchParam.toLowerCase()}%`,
-            })
-            .orWhere('LOWER(person.postal) LIKE LOWER(:searchParam)', {
-              searchParam: `%${searchParam.toLowerCase()}%`,
-            });
-        }),
-      );
+
+      if (searchParam?.trim()) {
+        const keywords = searchParam.trim().toLowerCase().split(/\s+/); // split by whitespace
+
+        for (const keyword of keywords) {
+          const searchPattern = `%${keyword}%`;
+          query.andWhere(
+            new Brackets((qb) => {
+              qb.where('CAST(person.id AS TEXT) LIKE :kw', {
+                kw: searchPattern,
+              })
+                .orWhere('LOWER(person.first_name) LIKE :kw', {
+                  kw: searchPattern,
+                })
+                .orWhere('LOWER(person.last_name) LIKE :kw', {
+                  kw: searchPattern,
+                })
+                .orWhere('LOWER(person.email) LIKE :kw', { kw: searchPattern })
+                .orWhere('LOWER(person.city) LIKE :kw', { kw: searchPattern })
+                .orWhere('LOWER(person.prov) LIKE :kw', { kw: searchPattern })
+                .orWhere('LOWER(person.address_1) LIKE :kw', {
+                  kw: searchPattern,
+                })
+                .orWhere('LOWER(person.address_2) LIKE :kw', {
+                  kw: searchPattern,
+                })
+                .orWhere('LOWER(person.postal) LIKE :kw', {
+                  kw: searchPattern,
+                });
+            }),
+          );
+        }
+      }
 
       const [personList, count] = await query
         .skip((page - 1) * pageSize)
