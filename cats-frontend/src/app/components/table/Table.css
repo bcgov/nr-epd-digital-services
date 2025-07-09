@@ -105,7 +105,7 @@ div.tableWidth::-webkit-scrollbar-track {
   width: 40%;
 }
 
-table {
+.table {
   border-collapse: separate;
   border-spacing: 0;
   border: 1px solid #d8d8d8 !important;
@@ -113,7 +113,7 @@ table {
   white-space: nowrap;
 }
 
-thead th {
+.table thead th {
   border-top: none !important;
   border-right: 1px solid #d8d8d8 !important;
   height: 40px;
@@ -127,29 +127,29 @@ thead th {
   line-height: 12px;
 }
 
-thead th:last-child {
+.table thead th:last-child {
   border-right: none !important;
   border-radius: 0px 4px 0px 0px;
 }
 
-thead th:first-child {
+.table thead th:first-child {
   border-radius: 4px 0px 0px 0px;
 }
 
-th,
-td {
+.table th,
+.table td {
   border: none !important;
 }
 
-tbody td:last-child {
+.table tbody td:last-child {
   border-right: none !important;
 }
 
-tbody tr:last-child td {
+.table tbody tr:last-child td {
   border-bottom: none !important;
 }
 
-tbody td {
+.table tbody td {
   border-bottom: 1px solid var(--surface-color-border-default, #d8d8d8) !important;
   border-right: 1px solid var(--surface-color-border-default, #d8d8d8) !important;
 }
