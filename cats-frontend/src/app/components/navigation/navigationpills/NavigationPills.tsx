@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useEffect } from 'react';
 import './NavigationPills.css';
 import { INavigationPills } from './INavigationPills';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Actions from '../../action/Actions';
 import { Button } from '../../button/Button';
 
@@ -10,6 +10,7 @@ import { navigationItems } from '../../../features/navigation/NavigationPillsCon
 const NavigationPills: React.FC<INavigationPills> = ({ disabled = false }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
 
   const currentPath = useMemo(() => {
     const pathSegments = location.pathname.split('/');
@@ -22,15 +23,14 @@ const NavigationPills: React.FC<INavigationPills> = ({ disabled = false }) => {
   }, [location.pathname]);
 
   useEffect(() => {
-    const pathSegments = location.pathname.split('/');
-    const lastSegment = pathSegments[pathSegments.length - 1];
-    const isApplicationId = !isNaN(Number(lastSegment));
-
-    if (isApplicationId) {
+    if (
+      id &&
+      !navigationItems.some((item) => location.pathname.endsWith(item.path))
+    ) {
       const newPath = `${location.pathname}/${navigationItems[0].path}`;
       navigate(newPath, { replace: true });
     }
-  }, [location.pathname, navigate]);
+  }, [location.pathname, navigate, id]);
 
   const handlePillClick = (tabKey: string) => {
     const component = navigationItems.find((item) => item.value === tabKey);
