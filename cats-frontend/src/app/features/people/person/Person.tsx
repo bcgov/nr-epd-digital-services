@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Widget from '../../../components/widget/Widget';
 import Form from '../../../components/form/Form';
 import PageContainer from '../../../components/simple/PageContainer';
@@ -85,6 +85,7 @@ const Person = () => {
   const [loading, setLoading] = useState(true); // To handle loading state
   const [error, setError] = useState<string | null>(null);
   const [addrForm, setAddrForm] = useState(addressForm);
+  const originalPersonDataRef = useRef<any | null>(null);
 
   const { data } = useGetPermissionsQuery(
     {fetchPolicy: 'cache-and-network'}
@@ -97,6 +98,21 @@ const Person = () => {
   const onClickBackButton = () => {
     navigate(-1);
   };
+
+  const getEnabledRolesFromPermissions = (
+    permissionIds: number[],
+    allRoles: any[],
+  ): Record<number, boolean>  => {
+    const rolesMap: Record<number, boolean> = {};
+    allRoles.forEach((role : any) => {
+      role.permissions.forEach((perm : any) => {
+        if (permissionIds.includes(perm.id)) {
+          rolesMap[role.roleId] = true;
+        }
+      });
+    });
+    return rolesMap;
+  }
 
   const getPersonData = async (id: any) => {
     try {
@@ -111,22 +127,12 @@ const Person = () => {
             ' ' +
             (personData?.lastName ?? ''),
         );
+        originalPersonDataRef.current = personData;
         setFormData(personData);
-
-      // reset selectedPermissions and enabledRoles
-        const personPermissions: number[] = personData.permissionIds ?? [];
-        // originalPermissionsRef.current = personPermissions;
-        setSelectedPermissions(new Set(personPermissions))
-        const rolesMap: Record<number, boolean> = {};
-        data?.getPermissions?.data?.forEach((role: any) => {
-          role.permissions.forEach((perm: any) => {
-            if (personPermissions.includes(perm.id)) {
-              rolesMap[role.roleId] = true;
-            }
-          });
-        });
-        setEnabledRoles(rolesMap);
-
+        const permissions = personData?.permissionIds ?? [];
+        setSelectedPermissions(new Set(permissions));
+        const roles = getEnabledRolesFromPermissions(permissions, data?.getPermissions?.data || []);
+        setEnabledRoles(roles);
         setLoading(false);
       }
     } catch (err) {
@@ -195,28 +201,11 @@ const Person = () => {
   }, []);
 
   useEffect(() => {
-    // Only run once when formData is initially populated
-    if (
-      formData?.permissionIds &&
-      data?.getPermissions?.data &&
-      selectedPermissions.size === 0
-    ) {
-      const rolesMap: Record<number, boolean> = {};
-      const personPermissions: number[] = formData?.permissionIds;
-
-      setSelectedPermissions(new Set(personPermissions));
-
-      data?.getPermissions?.data.forEach((role: any) => {
-        role.permissions.forEach((perm: any) => {
-          if (personPermissions.includes(perm.id)) {
-            rolesMap[role.roleId] = true;
-          }
-        });
-      });
-
+    if (formData?.permissionIds && data?.getPermissions?.data && Object.keys(enabledRoles).length === 0) {
+      const rolesMap = getEnabledRolesFromPermissions( formData.permissionIds, data.getPermissions.data );
       setEnabledRoles(rolesMap);
     }
-  }, [data?.getPermissions?.data]);
+  }, [formData, data?.getPermissions?.data]);
   
   const fetchAddresses = useCallback(async (searchParam: string) => {
     if (searchParam.trim()) {
@@ -399,11 +388,12 @@ const Person = () => {
         }
         break;
       case UserAction.CANCEL: // Cancel the changes
-        if (id) {
+        if (id && originalPersonDataRef.current) {
+          const originalData = originalPersonDataRef.current;
+          setSelectedPermissions(new Set(originalData.permissionIds));
+          setEnabledRoles(getEnabledRolesFromPermissions(originalData.permissionIds, data?.getPermissions?.data || []));
+          setFormData(originalData);
           setViewMode(UserMode.Default);
-          getPersonData(id);
-          setEnabledRoles({});
-          setSelectedPermissions(new Set());
         } else {
           setFormData(null);
           setNotes([]);
