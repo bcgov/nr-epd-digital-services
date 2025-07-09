@@ -85,13 +85,12 @@ import { PersonPermission } from './entities/personPermissions.entity';
 import { ApplicationServiceType } from './entities/applicationServiceType.entity';
 import { StaffAssignmentResolver } from './resolvers/assignment/staffAssignment.resolver';
 import { TimesheetDay } from './entities/timesheetDay.entity';
-import { TimesheetDayService } from './services/timesheetDay.service';
-import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
+import { TimesheetDayService } from './services/timesheetDay/timesheetDay.service';
+import { TimesheetDayResolver } from './resolvers/timesheetDay/timesheetDay.resolver';
 import { DashboardService } from './services/dashboard/dashboard.service';
 import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
 import { RecentViewedApplication } from './entities/recentViewedApplication.entity';
 import { StatusTypeService } from './services/statusType/statusType.service';
-
 
 import { ServiceAssignmentFactor } from './entities/serviceAssignmentFactor';
 import { PermissionServiceType } from './entities/permissionServiceType';
@@ -155,7 +154,7 @@ import { PermissionServiceType } from './entities/permissionServiceType';
       ApplicationServiceType,
       Permissions,
       PersonPermission,
-         RecentViewedApplication,
+      RecentViewedApplication,
       ServiceAssignmentFactor,
       PermissionServiceType,
     ]),
@@ -196,8 +195,8 @@ import { PermissionServiceType } from './entities/permissionServiceType';
     TimesheetDayService,
     TimesheetDayResolver,
     DashboardService,
-    DashboardResolver
+    DashboardResolver,
   ],
   controllers: [UserController],
 })
-export class CatsModule { }
+export class CatsModule {}
