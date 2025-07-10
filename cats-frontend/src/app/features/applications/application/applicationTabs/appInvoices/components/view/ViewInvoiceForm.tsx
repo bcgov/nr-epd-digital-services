@@ -253,7 +253,6 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
   };
 
   // Handle line item changes
-  // Handle line item changes
   const handleLineItemChange = (
     id: number,
     field: keyof InvoiceLineItemViewModel,
