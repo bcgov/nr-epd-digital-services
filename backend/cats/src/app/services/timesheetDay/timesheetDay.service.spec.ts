@@ -2,19 +2,21 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TimesheetDayService } from './timesheetDay.service';
-import { TimesheetDay } from '../entities/timesheetDay.entity';
-import { Application } from '../entities/application.entity';
-import { Person } from '../entities/person.entity';
-import { LoggerService } from '../logger/logger.service';
-import { TimesheetDayUpsertInputDto } from '../dto/timesheetDay.dto';
+import { TimesheetDay } from '../../entities/timesheetDay.entity';
+import { Application } from '../../entities/application.entity';
+import { Person } from '../../entities/person.entity';
+import { LoggerService } from '../../logger/logger.service';
+import { TimesheetDayUpsertInputDto } from '../../dto/timesheetDay.dto';
 import { HttpException } from '@nestjs/common';
-import { StaffAssignmentService } from './assignment/staffAssignment.service';
+import { StaffAssignmentService } from '../assignment/staffAssignment.service';
+import { ParticipantRole } from '../../entities/participantRole.entity';
 
 describe('TimesheetDayService', () => {
   let service: TimesheetDayService;
   let timesheetDayRepository: Repository<TimesheetDay>;
   let applicationRepository: Repository<Application>;
   let personRepository: Repository<Person>;
+  let participantRoleRepository: Repository<ParticipantRole>;
   let logger: LoggerService;
   let staffAssignmentService: StaffAssignmentService;
 
@@ -43,6 +45,10 @@ describe('TimesheetDayService', () => {
         { provide: getRepositoryToken(Application), useClass: Repository },
         { provide: getRepositoryToken(Person), useClass: Repository },
         {
+          provide: getRepositoryToken(ParticipantRole),
+          useClass: Repository,
+        },
+        {
           provide: LoggerService,
           useValue: { log: jest.fn(), error: jest.fn() },
         },
@@ -62,6 +68,9 @@ describe('TimesheetDayService', () => {
     );
     personRepository = module.get<Repository<Person>>(
       getRepositoryToken(Person),
+    );
+    participantRoleRepository = module.get<Repository<ParticipantRole>>(
+      getRepositoryToken(ParticipantRole),
     );
     logger = module.get<LoggerService>(LoggerService);
     staffAssignmentService = module.get<StaffAssignmentService>(
@@ -180,6 +189,47 @@ describe('TimesheetDayService', () => {
         expect(errors).toContain('Date is required');
       }
     });
+
+    it('should throw validation error if hours exceed 24', async () => {
+      const input: TimesheetDayUpsertInputDto[] = [
+        { applicationId: 1, personId: 2, date: '2025-06-01', hours: 25 },
+      ];
+      await expect(
+        service.upsertTimesheetDays(input, mockUser),
+      ).rejects.toThrow();
+    });
+
+    it('should throw validation error if hours are negative', async () => {
+      const input: TimesheetDayUpsertInputDto[] = [
+        { applicationId: 1, personId: 2, date: '2025-06-01', hours: -1 },
+      ];
+      await expect(
+        service.upsertTimesheetDays(input, mockUser),
+      ).rejects.toThrow();
+    });
+
+    it('should accept valid hours values (0-24)', async () => {
+      const input: TimesheetDayUpsertInputDto[] = [
+        { applicationId: 1, personId: 2, date: '2025-06-01', hours: 0 },
+        { applicationId: 1, personId: 2, date: '2025-06-02', hours: 8.5 },
+        { applicationId: 1, personId: 2, date: '2025-06-03', hours: 24 },
+      ];
+      jest
+        .spyOn(applicationRepository, 'findOne')
+        .mockResolvedValue(mockApplication);
+      jest.spyOn(personRepository, 'findOne').mockResolvedValue(mockPerson);
+      jest
+        .spyOn(timesheetDayRepository, 'create')
+        .mockReturnValue(mockTimesheetDay);
+      jest
+        .spyOn(timesheetDayRepository, 'save')
+        .mockResolvedValue(mockTimesheetDay);
+
+      const result = await service.upsertTimesheetDays(input, mockUser);
+      expect(result).toHaveLength(3);
+      expect(timesheetDayRepository.create).toHaveBeenCalledTimes(3);
+      expect(timesheetDayRepository.save).toHaveBeenCalledTimes(3);
+    });
   });
 
   describe('getTimesheetDaysForAssignedStaff', () => {
@@ -214,6 +264,15 @@ describe('TimesheetDayService', () => {
         date: '2025-06-01',
         hours: '8',
       };
+
+      const mockParticipantRole = {
+        id: 1,
+        description: 'Participant Role Description',
+      } as ParticipantRole;
+
+      jest
+        .spyOn(participantRoleRepository, 'find')
+        .mockResolvedValue([mockParticipantRole]);
       jest
         .spyOn(staffAssignmentService, 'getStaffByAppId')
         .mockResolvedValue(mockStaffResult);

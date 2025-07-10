@@ -147,10 +147,20 @@ export enum ApplicationSortByField {
 export type ApplicationStatusDto = {
   applicationId: Scalars['Float']['input'];
   formId: Scalars['String']['input'];
+  formsflowAppId: Scalars['Float']['input'];
   id?: InputMaybe<Scalars['Float']['input']>;
   isCurrent: Scalars['Boolean']['input'];
   statusTypeAbbrev: Scalars['String']['input'];
   submissionId: Scalars['String']['input'];
+};
+
+export type ApplicationStatusResponse = {
+  __typename?: 'ApplicationStatusResponse';
+  data?: Maybe<Array<ViewApplicationStatus>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
 };
 
 export type CreateAppParticipantDto = {
@@ -406,6 +416,7 @@ export type Mutation = {
   updateAppParticipant: UpdateAppParticipantsResponse;
   updateApplicationHousing: ApplicationHousingResponse;
   updateApplicationNote: ApplicationNotesResponse;
+  updateFormsflowAppId: ApplicationStatusResponse;
   updateInvoice: InvoiceResponse;
   updatePerson: PersonResponse;
   updatePersonNote: PersonNoteResponse;
@@ -483,6 +494,11 @@ export type MutationUpdateApplicationNoteArgs = {
 };
 
 
+export type MutationUpdateFormsflowAppIdArgs = {
+  appStatusInput: UpdateApplicationStatusDto;
+};
+
+
 export type MutationUpdateInvoiceArgs = {
   id: Scalars['Int']['input'];
   updateData: InvoiceInputDto;
@@ -550,9 +566,13 @@ export type PersonResponse = {
 export type PersonWithTimesheetDaysDto = {
   __typename?: 'PersonWithTimesheetDaysDto';
   email?: Maybe<Scalars['String']['output']>;
+  endDate?: Maybe<Scalars['DateTime']['output']>;
   firstName: Scalars['String']['output'];
   lastName: Scalars['String']['output'];
   personId: Scalars['Int']['output'];
+  roleDescription?: Maybe<Scalars['String']['output']>;
+  roleId?: Maybe<Scalars['Int']['output']>;
+  startDate?: Maybe<Scalars['DateTime']['output']>;
   timesheetDays: Array<TimesheetDayDto>;
 };
 
@@ -806,6 +826,7 @@ export enum StaffSortByField {
 export type TimesheetDayDto = {
   __typename?: 'TimesheetDayDto';
   applicationId: Scalars['Int']['output'];
+  comment?: Maybe<Scalars['String']['output']>;
   date: Scalars['DateTime']['output'];
   hours?: Maybe<Scalars['Float']['output']>;
   id: Scalars['Int']['output'];
@@ -823,6 +844,7 @@ export type TimesheetDayResponse = {
 
 export type TimesheetDayUpsertInputDto = {
   applicationId: Scalars['Int']['input'];
+  comment?: InputMaybe<Scalars['String']['input']>;
   date: Scalars['String']['input'];
   hours?: InputMaybe<Scalars['Float']['input']>;
   personId: Scalars['Int']['input'];
@@ -843,6 +865,13 @@ export type UpdateAppParticipantsResponse = {
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type UpdateApplicationStatusDto = {
+  formId: Scalars['String']['input'];
+  formsflowAppId: Scalars['Float']['input'];
+  statusTypeAbbrev: Scalars['String']['input'];
+  submissionId: Scalars['String']['input'];
 };
 
 export type UpdateHousingInputDto = {
@@ -978,6 +1007,11 @@ export type ViewApplicationResponse = {
   pageSize?: Maybe<Scalars['Float']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type ViewApplicationStatus = {
+  __typename?: 'ViewApplicationStatus';
+  formsflowAppId: Scalars['Float']['output'];
 };
 
 export type ViewApplications = {

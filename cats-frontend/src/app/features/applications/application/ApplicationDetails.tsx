@@ -44,7 +44,7 @@ const ApplicationDetails = () => {
   const application = data?.getApplicationDetailsById.data;
 
   const onClickBackButton = () => {
-    navigate(-1);
+    navigate('/applications');
   };
 
   useEffect(() => {
