@@ -12,7 +12,7 @@ import { Button } from '../../components/button/Button';
 import { FileCirclePlusIcon } from '../../components/common/icon';
 import { actionRequiredColumns } from './DashboardConfig';
 import { DashboardWidgetProps } from './IDashboard';
-import { RequestStatus } from '@cats/helpers/requests/status';
+import { RequestStatus } from '../../helpers/requests/status';
 
 /**
  * A widget that displays a list of cards.
