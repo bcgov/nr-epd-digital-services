@@ -27,6 +27,7 @@ describe('InvoiceService', () => {
             findOne: jest.fn(),
             save: jest.fn(),
             delete: jest.fn(),
+            update: jest.fn(),
           },
         },
         {
@@ -53,6 +54,7 @@ describe('InvoiceService', () => {
           id: 1,
           application: null,
           lineItems: [],
+          attachments: [],
           subject: 'Invoice 1',
           issuedDate: new Date(),
           dueDate: new Date(),
@@ -164,6 +166,7 @@ describe('InvoiceService', () => {
         application: null,
         recipient: null,
         invoice: null,
+        attachments: [],
         createdBy: 'testUser',
         createdAt: new Date(),
         updatedBy: 'testUser',
@@ -257,6 +260,169 @@ describe('InvoiceService', () => {
     });
   });
 
+  describe('updateInvoice', () => {
+    it('should update and return an invoice when repository succeeds', async () => {
+      const invoiceId = 1;
+      const mockUpdateData: InvoiceInputDto = {
+        applicationId: 1,
+        recipientId: 1,
+        invoiceId: null,
+        subject: 'Updated Invoice',
+        issuedDate: new Date(),
+        dueDate: new Date(),
+        status: InvoiceStatus.PAID,
+        taxExempt: false,
+        pstExempt: false,
+        subtotalInCents: 20000,
+        gstInCents: 1000,
+        pstInCents: 500,
+        totalInCents: 21500,
+        notes: 'Updated invoice notes',
+        lineItems: [],
+      };
+
+      const mockUpdatedInvoice: InvoiceV2 = {
+        id: invoiceId,
+        application: null,
+        lineItems: [],
+        attachments: [],
+        subject: 'Updated Invoice',
+        issuedDate: new Date(),
+        dueDate: new Date(),
+        status: InvoiceStatus.PAID,
+        recipient: null,
+        invoiceId: null,
+        taxExempt: false,
+        pstExempt: false,
+        subtotalInCents: 20000,
+        gstInCents: 1000,
+        pstInCents: 500,
+        totalInCents: 21500,
+        notes: 'Updated invoice notes',
+        createdBy: 'testUser',
+        updatedBy: 'testUser',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      jest.spyOn(repository, 'save').mockResolvedValue(mockUpdatedInvoice);
+      jest.spyOn(repository, 'findOne').mockResolvedValue(mockUpdatedInvoice);
+
+      const result = await service.updateInvoice(invoiceId, mockUpdateData, {
+        username: 'testUser',
+      });
+
+      expect(repository.save).toHaveBeenCalledWith({
+        ...mockUpdateData,
+        id: invoiceId,
+        updatedBy: 'testUser',
+      });
+      expect(repository.findOne).toHaveBeenCalledWith({
+        where: { id: invoiceId },
+        relations: ['lineItems', 'application', 'recipient'],
+      });
+      expect(loggerService.log).toHaveBeenCalledWith(
+        `InvoiceService: updateInvoice: invoiceId: ${invoiceId}`,
+      );
+      expect(loggerService.log).toHaveBeenCalledWith(
+        `InvoiceService: updateInvoice: Success.`,
+      );
+      expect(result).toEqual(mockUpdatedInvoice);
+    });
+
+    it('should log and throw an error when invoice is not found after update', async () => {
+      const invoiceId = 1;
+      const mockUpdateData: InvoiceInputDto = {
+        applicationId: 1,
+        recipientId: 1,
+        invoiceId: null,
+        subject: 'Updated Invoice',
+        issuedDate: new Date(),
+        dueDate: new Date(),
+        status: InvoiceStatus.PAID,
+        taxExempt: false,
+        pstExempt: false,
+        subtotalInCents: 20000,
+        gstInCents: 1000,
+        pstInCents: 500,
+        totalInCents: 21500,
+        notes: 'Updated invoice notes',
+        lineItems: [],
+      };
+
+      jest.spyOn(repository, 'save').mockResolvedValue(undefined);
+      jest.spyOn(repository, 'findOne').mockResolvedValue(null);
+
+      await expect(
+        service.updateInvoice(invoiceId, mockUpdateData, {
+          username: 'testUser',
+        }),
+      ).rejects.toThrow(
+        `Failed to update invoice: Invoice with ID ${invoiceId} not found.`,
+      );
+
+      expect(repository.save).toHaveBeenCalledWith({
+        ...mockUpdateData,
+        id: invoiceId,
+        updatedBy: 'testUser',
+      });
+      expect(repository.findOne).toHaveBeenCalledWith({
+        where: { id: invoiceId },
+        relations: ['lineItems', 'application', 'recipient'],
+      });
+      expect(loggerService.log).toHaveBeenCalledWith(
+        `InvoiceService: updateInvoice: invoiceId: ${invoiceId}`,
+      );
+      expect(loggerService.error).toHaveBeenCalledWith(
+        `InvoiceService: updateInvoice: Error updating invoice: Invoice with ID ${invoiceId} not found.`,
+        null,
+      );
+    });
+
+    it('should log and throw an error when repository fails', async () => {
+      const invoiceId = 1;
+      const mockUpdateData: InvoiceInputDto = {
+        applicationId: 1,
+        recipientId: 1,
+        invoiceId: null,
+        subject: 'Updated Invoice',
+        issuedDate: new Date(),
+        dueDate: new Date(),
+        status: InvoiceStatus.PAID,
+        taxExempt: false,
+        pstExempt: false,
+        subtotalInCents: 20000,
+        gstInCents: 1000,
+        pstInCents: 500,
+        totalInCents: 21500,
+        notes: 'Updated invoice notes',
+        lineItems: [],
+      };
+
+      const errorMessage = 'Database error';
+      jest.spyOn(repository, 'save').mockRejectedValue(new Error(errorMessage));
+
+      await expect(
+        service.updateInvoice(invoiceId, mockUpdateData, {
+          username: 'testUser',
+        }),
+      ).rejects.toThrow(`Failed to update invoice: ${errorMessage}`);
+
+      expect(repository.save).toHaveBeenCalledWith({
+        ...mockUpdateData,
+        id: invoiceId,
+        updatedBy: 'testUser',
+      });
+      expect(loggerService.log).toHaveBeenCalledWith(
+        `InvoiceService: updateInvoice: invoiceId: ${invoiceId}`,
+      );
+      expect(loggerService.error).toHaveBeenCalledWith(
+        `InvoiceService: updateInvoice: Error updating invoice: ${errorMessage}`,
+        null,
+      );
+    });
+  });
+
   describe('deleteInvoice', () => {
     it('should delete an invoice and return true when repository succeeds', async () => {
       const invoiceId = 1;
@@ -323,6 +489,7 @@ describe('InvoiceService', () => {
       const mockInvoice = {
         id: invoiceId,
         lineItems: [],
+        attachments: [],
         application: null,
         recipient: null,
         subject: 'Invoice 1',
