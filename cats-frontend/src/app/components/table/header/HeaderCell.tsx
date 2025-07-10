@@ -36,9 +36,7 @@ const HeaderCell: FC<HeaderCellProps> = ({
     <th
       key={index}
       scope="col"
-      className={`table-header-th ${getColumnSize(
-        item.columnSize,
-      )}  ${item.stickyCol ? 'positionSticky' : ''} ${item.customHeaderCss} `}
+      className={`${getColumnSize(item.columnSize)} ${item.customHeaderCss} `}
     >
       {item.displayName}
       {!item.dynamicColumn &&

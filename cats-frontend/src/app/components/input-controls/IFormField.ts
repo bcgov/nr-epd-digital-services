@@ -22,25 +22,27 @@ export enum FormFieldType {
 
 export interface IFormField {
   type:
-  | FormFieldType.Text
-  | FormFieldType.DropDown
-  | FormFieldType.Date
-  | FormFieldType.Group
-  | FormFieldType.Label
-  | FormFieldType.Link
-  | FormFieldType.Checkbox
-  | FormFieldType.DateRange
-  | FormFieldType.TextArea
-  | FormFieldType.DropDownWithSearch
-  | FormFieldType.DeleteIcon
-  | FormFieldType.IconButton
-  | FormFieldType.Search
-  | FormFieldType.Icon
-  | FormFieldType.Switch
-  | FormFieldType.Custom;
+    | FormFieldType.Text
+    | FormFieldType.DropDown
+    | FormFieldType.Date
+    | FormFieldType.Group
+    | FormFieldType.Label
+    | FormFieldType.Link
+    | FormFieldType.Checkbox
+    | FormFieldType.DateRange
+    | FormFieldType.TextArea
+    | FormFieldType.DropDownWithSearch
+    | FormFieldType.DeleteIcon
+    | FormFieldType.IconButton
+    | FormFieldType.Search
+    | FormFieldType.Icon
+    | FormFieldType.Switch
+    | FormFieldType.Custom;
   label?: string;
   isLabel?: boolean;
   placeholder?: string;
+  disabledPlaceholder?: boolean;
+  hiddenPlaceholder?: boolean;
   colSize?: string;
   wrapperClassName?: string;
   customLabelCss?: string;
@@ -56,8 +58,8 @@ export interface IFormField {
   graphQLPropertyName?: string;
   allowNumbersOnly?: boolean;
   options?:
-  | { key: string | number; value: string | number; imageUrl?: any }[]
-  | null;
+    | { key: string | number; value: string | number; imageUrl?: any }[]
+    | null;
   filteredOptions?: { key: string; value: string }[];
   value?: any;
   customLinkValue?: any;
@@ -82,7 +84,7 @@ export interface IFormField {
     customMessage?: string;
   };
   tableMode?: boolean;
-  stickyCol?: boolean;
+  customContainerCss?: string;
   href?: string;
   textAreaRow?: number;
   textAreaColoum?: number;

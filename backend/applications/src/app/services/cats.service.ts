@@ -12,8 +12,10 @@ export class CatsService {
 
   /**
    * To create a new application in CATS once a submission is received
-   * @param savedSubmission saved form
-   * @returns saved form in formflow expected format
+   * @param formData
+   * @param submissionId
+   * @param formId
+   * @returns application id in CATS
    */
   async submitToCats(formData: any, submissionId: string, formId: string) {
     const GRAPHQL_URL = process.env.CATS_API;
@@ -34,11 +36,19 @@ export class CatsService {
   `,
       variables: {
         application: {
-          formId: formId,
-          submissionId: submissionId,
-          siteId: Number(formData.siteId),            // Float!
+          siteId: Number(formData.siteId),            // Float!          
           appTypeAbbrev: formData.hdnAppType,           // String!
-          receivedDate: new Date() // DateTime!
+          receivedDate: new Date(),
+          applicationStatus: [
+            {
+              statusTypeAbbrev: 'New',
+              isCurrent: true,
+              applicationId: 0,// Will be overwritten by the backend
+              formId: formId,
+              submissionId: submissionId,
+              formsflowAppId: Number(formData.applicationId),            // Float!
+            }
+          ]
         }
       }
     };
@@ -51,7 +61,6 @@ export class CatsService {
           }
         });
 
-        console.log(response.data);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -60,4 +69,52 @@ export class CatsService {
     }
 
   }
+
+  /**
+   * To create the formsflow application id in CATS database
+   * @param submissionId saved form
+   * @param formId saved form
+   * @returns id, submissionId, formId
+   */
+  async updateCatsApplication(submissionId: string, formId: string, formData: any) {
+    const GRAPHQL_URL = process.env.CATS_API;
+
+    const updateApplicationMutation = {
+      query: `
+        mutation UpdateFormsflowAppId($appStatusInput: UpdateApplicationStatusDto!) {
+          updateFormsflowAppId(appStatusInput: $appStatusInput) {
+            message
+            httpStatusCode
+            success
+            timestamp
+            data {
+              formsflowAppId
+            }
+          }
+        }
+      `,
+      variables: {
+        appStatusInput: {
+          submissionId: submissionId,
+          formId: formId,
+          formsflowAppId: Number(formData.applicationId),
+          statusTypeAbbrev: formData.applicationStatus,
+        }
+      },
+    };
+
+    try {
+      const response = await axios.post(GRAPHQL_URL, updateApplicationMutation, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error('Error updating application in CATS:', error);
+      throw error;
+    }
+  }
+
 }

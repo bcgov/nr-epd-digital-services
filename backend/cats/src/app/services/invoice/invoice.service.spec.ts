@@ -24,8 +24,10 @@ describe('InvoiceService', () => {
           provide: getRepositoryToken(InvoiceV2),
           useValue: {
             find: jest.fn(),
+            findOne: jest.fn(),
             save: jest.fn(),
             delete: jest.fn(),
+            update: jest.fn(),
           },
         },
         {
@@ -52,6 +54,7 @@ describe('InvoiceService', () => {
           id: 1,
           application: null,
           lineItems: [],
+          attachments: [],
           subject: 'Invoice 1',
           issuedDate: new Date(),
           dueDate: new Date(),
@@ -59,10 +62,12 @@ describe('InvoiceService', () => {
           recipient: null,
           invoiceId: null,
           taxExempt: false,
+          pstExempt: false,
           subtotalInCents: 10000,
           gstInCents: 0,
           pstInCents: 0,
           totalInCents: 10000,
+          notes: 'Test invoice notes',
           createdBy: 'testUser',
           updatedBy: 'testUser',
           createdAt: new Date(),
@@ -131,10 +136,12 @@ describe('InvoiceService', () => {
         dueDate: new Date(),
         status: InvoiceStatus.PAID,
         taxExempt: false,
+        pstExempt: false,
         subtotalInCents: 10000,
         gstInCents: 0,
         pstInCents: 0,
         totalInCents: 10000,
+        notes: 'Invoice for services rendered',
         lineItems: [
           {
             ...mockLineItemData,
@@ -159,6 +166,7 @@ describe('InvoiceService', () => {
         application: null,
         recipient: null,
         invoice: null,
+        attachments: [],
         createdBy: 'testUser',
         createdAt: new Date(),
         updatedBy: 'testUser',
@@ -212,10 +220,12 @@ describe('InvoiceService', () => {
         dueDate: new Date(),
         status: InvoiceStatus.PAID,
         taxExempt: false,
+        pstExempt: false,
         subtotalInCents: 10000,
         gstInCents: 0,
         pstInCents: 0,
         totalInCents: 10000,
+        notes: 'Test invoice notes for error case',
         lineItems: [mockLineItemData],
       };
 
@@ -245,6 +255,169 @@ describe('InvoiceService', () => {
       );
       expect(loggerService.error).toHaveBeenCalledWith(
         `InvoiceService: createInvoice: Error creating invoice: ${errorMessage}`,
+        null,
+      );
+    });
+  });
+
+  describe('updateInvoice', () => {
+    it('should update and return an invoice when repository succeeds', async () => {
+      const invoiceId = 1;
+      const mockUpdateData: InvoiceInputDto = {
+        applicationId: 1,
+        recipientId: 1,
+        invoiceId: null,
+        subject: 'Updated Invoice',
+        issuedDate: new Date(),
+        dueDate: new Date(),
+        status: InvoiceStatus.PAID,
+        taxExempt: false,
+        pstExempt: false,
+        subtotalInCents: 20000,
+        gstInCents: 1000,
+        pstInCents: 500,
+        totalInCents: 21500,
+        notes: 'Updated invoice notes',
+        lineItems: [],
+      };
+
+      const mockUpdatedInvoice: InvoiceV2 = {
+        id: invoiceId,
+        application: null,
+        lineItems: [],
+        attachments: [],
+        subject: 'Updated Invoice',
+        issuedDate: new Date(),
+        dueDate: new Date(),
+        status: InvoiceStatus.PAID,
+        recipient: null,
+        invoiceId: null,
+        taxExempt: false,
+        pstExempt: false,
+        subtotalInCents: 20000,
+        gstInCents: 1000,
+        pstInCents: 500,
+        totalInCents: 21500,
+        notes: 'Updated invoice notes',
+        createdBy: 'testUser',
+        updatedBy: 'testUser',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      jest.spyOn(repository, 'save').mockResolvedValue(mockUpdatedInvoice);
+      jest.spyOn(repository, 'findOne').mockResolvedValue(mockUpdatedInvoice);
+
+      const result = await service.updateInvoice(invoiceId, mockUpdateData, {
+        username: 'testUser',
+      });
+
+      expect(repository.save).toHaveBeenCalledWith({
+        ...mockUpdateData,
+        id: invoiceId,
+        updatedBy: 'testUser',
+      });
+      expect(repository.findOne).toHaveBeenCalledWith({
+        where: { id: invoiceId },
+        relations: ['lineItems', 'application', 'recipient'],
+      });
+      expect(loggerService.log).toHaveBeenCalledWith(
+        `InvoiceService: updateInvoice: invoiceId: ${invoiceId}`,
+      );
+      expect(loggerService.log).toHaveBeenCalledWith(
+        `InvoiceService: updateInvoice: Success.`,
+      );
+      expect(result).toEqual(mockUpdatedInvoice);
+    });
+
+    it('should log and throw an error when invoice is not found after update', async () => {
+      const invoiceId = 1;
+      const mockUpdateData: InvoiceInputDto = {
+        applicationId: 1,
+        recipientId: 1,
+        invoiceId: null,
+        subject: 'Updated Invoice',
+        issuedDate: new Date(),
+        dueDate: new Date(),
+        status: InvoiceStatus.PAID,
+        taxExempt: false,
+        pstExempt: false,
+        subtotalInCents: 20000,
+        gstInCents: 1000,
+        pstInCents: 500,
+        totalInCents: 21500,
+        notes: 'Updated invoice notes',
+        lineItems: [],
+      };
+
+      jest.spyOn(repository, 'save').mockResolvedValue(undefined);
+      jest.spyOn(repository, 'findOne').mockResolvedValue(null);
+
+      await expect(
+        service.updateInvoice(invoiceId, mockUpdateData, {
+          username: 'testUser',
+        }),
+      ).rejects.toThrow(
+        `Failed to update invoice: Invoice with ID ${invoiceId} not found.`,
+      );
+
+      expect(repository.save).toHaveBeenCalledWith({
+        ...mockUpdateData,
+        id: invoiceId,
+        updatedBy: 'testUser',
+      });
+      expect(repository.findOne).toHaveBeenCalledWith({
+        where: { id: invoiceId },
+        relations: ['lineItems', 'application', 'recipient'],
+      });
+      expect(loggerService.log).toHaveBeenCalledWith(
+        `InvoiceService: updateInvoice: invoiceId: ${invoiceId}`,
+      );
+      expect(loggerService.error).toHaveBeenCalledWith(
+        `InvoiceService: updateInvoice: Error updating invoice: Invoice with ID ${invoiceId} not found.`,
+        null,
+      );
+    });
+
+    it('should log and throw an error when repository fails', async () => {
+      const invoiceId = 1;
+      const mockUpdateData: InvoiceInputDto = {
+        applicationId: 1,
+        recipientId: 1,
+        invoiceId: null,
+        subject: 'Updated Invoice',
+        issuedDate: new Date(),
+        dueDate: new Date(),
+        status: InvoiceStatus.PAID,
+        taxExempt: false,
+        pstExempt: false,
+        subtotalInCents: 20000,
+        gstInCents: 1000,
+        pstInCents: 500,
+        totalInCents: 21500,
+        notes: 'Updated invoice notes',
+        lineItems: [],
+      };
+
+      const errorMessage = 'Database error';
+      jest.spyOn(repository, 'save').mockRejectedValue(new Error(errorMessage));
+
+      await expect(
+        service.updateInvoice(invoiceId, mockUpdateData, {
+          username: 'testUser',
+        }),
+      ).rejects.toThrow(`Failed to update invoice: ${errorMessage}`);
+
+      expect(repository.save).toHaveBeenCalledWith({
+        ...mockUpdateData,
+        id: invoiceId,
+        updatedBy: 'testUser',
+      });
+      expect(loggerService.log).toHaveBeenCalledWith(
+        `InvoiceService: updateInvoice: invoiceId: ${invoiceId}`,
+      );
+      expect(loggerService.error).toHaveBeenCalledWith(
+        `InvoiceService: updateInvoice: Error updating invoice: ${errorMessage}`,
         null,
       );
     });
@@ -306,6 +479,94 @@ describe('InvoiceService', () => {
       );
       expect(loggerService.error).toHaveBeenCalledWith(
         `InvoiceService: deleteInvoice: Error deleting invoice: ${errorMessage}`,
+        null,
+      );
+    });
+  });
+  describe('getInvoiceById', () => {
+    it('should return the invoice when found', async () => {
+      const invoiceId = 1;
+      const mockInvoice = {
+        id: invoiceId,
+        lineItems: [],
+        attachments: [],
+        application: null,
+        recipient: null,
+        subject: 'Invoice 1',
+        issuedDate: new Date(),
+        dueDate: new Date(),
+        status: 'PAID',
+        invoiceId: null,
+        taxExempt: false,
+        subtotalInCents: 10000,
+        gstInCents: 0,
+        pstInCents: 0,
+        totalInCents: 10000,
+        notes: 'Notes for invoice by ID test',
+        createdBy: 'testUser',
+        updatedBy: 'testUser',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      } as any;
+
+      jest.spyOn(repository, 'findOne').mockResolvedValue(mockInvoice);
+
+      const result = await service.getInvoiceById(invoiceId);
+
+      expect(repository.findOne).toHaveBeenCalledWith({
+        where: { id: invoiceId },
+        relations: ['lineItems', 'application', 'recipient'],
+      });
+      expect(loggerService.log).toHaveBeenCalledWith(
+        `InvoiceService: getInvoiceById: invoiceId: ${invoiceId}`,
+      );
+      expect(loggerService.log).toHaveBeenCalledWith(
+        `InvoiceService: getInvoiceById: Success.`,
+      );
+      expect(result).toEqual(mockInvoice);
+    });
+
+    it('should log and throw an error when invoice is not found', async () => {
+      const invoiceId = 2;
+      jest.spyOn(repository, 'findOne').mockResolvedValue(null);
+
+      await expect(service.getInvoiceById(invoiceId)).rejects.toThrow(
+        `Failed to fetch invoice with ID ${invoiceId}: Invoice with ID ${invoiceId} not found.`,
+      );
+
+      expect(repository.findOne).toHaveBeenCalledWith({
+        where: { id: invoiceId },
+        relations: ['lineItems', 'application', 'recipient'],
+      });
+      expect(loggerService.log).toHaveBeenCalledWith(
+        `InvoiceService: getInvoiceById: invoiceId: ${invoiceId}`,
+      );
+      expect(loggerService.error).toHaveBeenCalledWith(
+        `InvoiceService: getInvoiceById: Error fetching invoice: Invoice with ID ${invoiceId} not found.`,
+        null,
+      );
+    });
+
+    it('should log and throw an error when repository fails', async () => {
+      const invoiceId = 3;
+      const errorMessage = 'Database error';
+      jest
+        .spyOn(repository, 'findOne')
+        .mockRejectedValue(new Error(errorMessage));
+
+      await expect(service.getInvoiceById(invoiceId)).rejects.toThrow(
+        `Failed to fetch invoice with ID ${invoiceId}: ${errorMessage}`,
+      );
+
+      expect(repository.findOne).toHaveBeenCalledWith({
+        where: { id: invoiceId },
+        relations: ['lineItems', 'application', 'recipient'],
+      });
+      expect(loggerService.log).toHaveBeenCalledWith(
+        `InvoiceService: getInvoiceById: invoiceId: ${invoiceId}`,
+      );
+      expect(loggerService.error).toHaveBeenCalledWith(
+        `InvoiceService: getInvoiceById: Error fetching invoice: ${errorMessage}`,
         null,
       );
     });

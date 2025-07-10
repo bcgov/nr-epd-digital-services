@@ -94,6 +94,12 @@ const icons = {
 const roleBasedSideBarList: Record<string, SideNav[]> = {
   internal: [
     createSideNav({
+      displayText: 'Dashboard',
+      hasChildren: false,
+      icon: icons.dashboard,
+      linkTo: '/dashboard',
+    }),
+    createSideNav({
       displayText: 'Applications',
       hasChildren: true,
       icon: null,
@@ -124,7 +130,7 @@ const roleBasedSideBarList: Record<string, SideNav[]> = {
           hasChildren: false,
           icon: icons.userTie,
           linkTo: '/staff',
-          requiredRoles: [UserRoleType.CSSA_MANAGER], // Only 'CSSA Manager' can access
+          requiredRoles: [UserRoleType.MANAGER], // Only 'CSSA Manager' can access
         }),
       ],
     }),

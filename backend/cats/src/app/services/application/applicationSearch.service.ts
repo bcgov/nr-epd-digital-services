@@ -17,7 +17,7 @@ export class ApplicationSearchService {
     @InjectRepository(Application)
     private readonly applicationRepository: Repository<Application>,
     private readonly loggerService: LoggerService,
-  ) { }
+  ) {}
 
   async searchApplications(
     searchParam: string,

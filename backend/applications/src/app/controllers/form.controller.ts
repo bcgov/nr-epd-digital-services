@@ -68,7 +68,6 @@ export class FormController {
     @Param('formId') formId,
     @Body() content, @Req() request,
   ): Promise<SubmissionResponse> {
-    console.log('Request headers---', request.headers);
     const origin = request.headers.origin;
     const savedSubmission = await this.formService.create(formId, content.data);
     const submissionResponse: SubmissionResponse =
@@ -103,9 +102,10 @@ export class FormController {
   @Put(':formId/submission/:submissionId') async updateSubmission(
     @Param('formId') formId,
     @Param('submissionId') submissionId,
-    @Body() content,
+    @Body() content, @Req() request,
   ): Promise<any> {
-    return await this.formService.update(submissionId, formId, content.data);
+    const updatedSubmission = await this.formService.update(submissionId, formId, content.data);
+    return updatedSubmission;
   }
 
   /**
@@ -118,14 +118,15 @@ export class FormController {
   @Patch(':formId/submission/:submissionId') async partialUpdateSubmission(
     @Param('formId') formId,
     @Param('submissionId') submissionId,
-    @Body() content,
+    @Body() content, @Req() request,
   ) {
-    //const toUpdateContent = JSON.parse(content.data);
-    //let i=0;
-    return await this.formService.partialUpdate(
+    const partialUpdatedSubmission = await this.formService.partialUpdate(
       submissionId,
       formId,
       content.data,
     );
+
+    await this.catsService.updateCatsApplication(submissionId, formId, content.data);
+    return partialUpdatedSubmission;
   }
 }

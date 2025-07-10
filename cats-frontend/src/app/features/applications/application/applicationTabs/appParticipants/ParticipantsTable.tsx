@@ -31,7 +31,8 @@ import Form from '../../../../../components/form/Form';
 import './ParticipantsTable.css';
 
 import { useParams } from 'react-router-dom';
-import App from '../../../../../../App';
+import { Alert } from 'react-bootstrap';
+import { notifyAlert, notifyError } from '@cats/components/alert/Alert';
 
 export const AppParticipantsActionTypes = {
   AddParticipant: 'Add Participant',
@@ -141,11 +142,20 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     },
   });
 
-  const initialAppParticipantDetails = {
+  type appParticipantDetailsType = {
+    id: string;
+    isMainParticipant: boolean;
+    effectiveStartDate: Date | string | null;
+    effectiveEndDate: Date | string | null;
+    participantRole: string;
+    person: string;
+    organization: string; // Assign an empty string as the initial value
+  };
+  const initialAppParticipantDetails: appParticipantDetailsType = {
     id: '',
     isMainParticipant: false,
-    effectiveStartDate: '',
-    effectiveEndDate: '',
+    effectiveStartDate: null,
+    effectiveEndDate: null,
     participantRole: '',
     person: '',
     organization: '', // Assign an empty string as the initial value
@@ -173,10 +183,38 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     });
   };
 
+  const getComparableEndDate = (
+    value: String | [Date, Date] | null,
+  ): Date | null => {
+    if (!value) return null;
+
+    if (Array.isArray(value)) {
+      return value[1] || ''; // pick the end date of a range
+    }
+
+    return value instanceof Date && !isNaN(value.getTime()) ? value : null;
+  };
+
   const handleFormChange = (
     graphQLPropertyName: any,
-    value: String | [Date, Date],
+    value: String | [Date, Date] | null,
   ) => {
+    const result = false;
+    if (appParticipant.appParticipantDetails.effectiveStartDate && value) {
+      const endDate = getComparableEndDate(value);
+      const result =
+        endDate &&
+        endDate <
+          new Date(appParticipant.appParticipantDetails.effectiveStartDate);
+      if (graphQLPropertyName === 'effectiveEndDate') {
+        if (result) {
+          // If the end date is before the start date, reset it to null and alert user
+          value = null;
+          notifyAlert('End Date cannot be before Start Date');
+        }
+      }
+    }
+
     if (value && typeof value === 'object' && 'key' in value) {
       value = (value as { key: string }).key;
     }
@@ -243,7 +281,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
           id: appParticipantEditDetails.id,
           isMainParticipant: appParticipantEditDetails.isMainParticipant,
           effectiveStartDate: appParticipantEditDetails.effectiveStartDate,
-          effectiveEndDate: appParticipantEditDetails.effectiveEndDate,
+          effectiveEndDate: appParticipantEditDetails.effectiveEndDate || null,
           participantRole: appParticipantRole.id.toString(),
           person: appParticipantName.id.toString(),
           organization: appParticipantOrganization?.id?.toString() ?? '',

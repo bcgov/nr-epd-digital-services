@@ -21,7 +21,7 @@ export class ApplicationHousingResolver {
       ApplicationHousingDto[]
     >,
     private readonly loggerService: LoggerService,
-  ) { }
+  ) {}
 
   @Query(() => ApplicationHousingResponse, {
     name: 'getApplicationHousingByApplicationId',

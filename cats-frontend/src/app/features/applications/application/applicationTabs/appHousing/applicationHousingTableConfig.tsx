@@ -153,6 +153,8 @@ const getHousingTypeField = (housingTypes: HousingTypeDto[]): IFormField => ({
   label: 'Housing Type',
   graphQLPropertyName: 'housingType',
   placeholder: 'Select Housing Type',
+  hiddenPlaceholder: true,
+  disabledPlaceholder: true,
   options: housingTypes.map((type) => ({
     key: type.id,
     value: type.description,
@@ -253,13 +255,13 @@ export const getHousingFormFields = ({
   relatedApplicationsValue: string;
   setRelatedApplicationsValue: (value: string) => void;
 }): IFormField[][] => [
-    [getHousingTypeField(housingTypes), housingFormFields['numberOfUnits']],
-    [housingFormFields['effectiveDate'], housingFormFields['expiryDate']],
-    [housingFormFields['replaceFileRow']],
-    [
-      getRelatedApplicationsField(
-        relatedApplicationsValue,
-        setRelatedApplicationsValue,
-      ),
-    ],
-  ];
+  [getHousingTypeField(housingTypes), housingFormFields['numberOfUnits']],
+  [housingFormFields['effectiveDate'], housingFormFields['expiryDate']],
+  [housingFormFields['replaceFileRow']],
+  [
+    getRelatedApplicationsField(
+      relatedApplicationsValue,
+      setRelatedApplicationsValue,
+    ),
+  ],
+];

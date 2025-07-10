@@ -144,6 +144,25 @@ export enum ApplicationSortByField {
   Status = 'STATUS'
 }
 
+export type ApplicationStatusDto = {
+  applicationId: Scalars['Float']['input'];
+  formId: Scalars['String']['input'];
+  formsflowAppId: Scalars['Float']['input'];
+  id?: InputMaybe<Scalars['Float']['input']>;
+  isCurrent: Scalars['Boolean']['input'];
+  statusTypeAbbrev: Scalars['String']['input'];
+  submissionId: Scalars['String']['input'];
+};
+
+export type ApplicationStatusResponse = {
+  __typename?: 'ApplicationStatusResponse';
+  data?: Maybe<Array<ViewApplicationStatus>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type CreateAppParticipantDto = {
   applicationId: Scalars['Float']['input'];
   createdBy?: InputMaybe<Scalars['String']['input']>;
@@ -167,10 +186,9 @@ export type CreateAppParticipantsResponse = {
 
 export type CreateApplication = {
   appTypeAbbrev: Scalars['String']['input'];
-  formId: Scalars['String']['input'];
+  applicationStatus: Array<ApplicationStatusDto>;
   receivedDate: Scalars['DateTime']['input'];
   siteId: Scalars['Float']['input'];
-  submissionId: Scalars['String']['input'];
 };
 
 export type CreatePerson = {
@@ -202,6 +220,15 @@ export type CreatePersonNote = {
   personId: Scalars['Float']['input'];
 };
 
+export type DashboardResponse = {
+  __typename?: 'DashboardResponse';
+  data?: Maybe<Array<ViewDashboard>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type DeletePersonNote = {
   id: Scalars['String']['input'];
 };
@@ -225,6 +252,29 @@ export type DropdownResponse = {
   data?: Maybe<Array<DropdownDto>>;
   httpStatusCode?: Maybe<Scalars['Int']['output']>;
   message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type FileUploadInputDto = {
+  applicationId: Scalars['Int']['input'];
+  fileContent: Scalars['String']['input'];
+  fileName: Scalars['String']['input'];
+  invoiceId?: InputMaybe<Scalars['Int']['input']>;
+  mimeType: Scalars['String']['input'];
+};
+
+export type FileUploadMultipartInputDto = {
+  applicationId: Scalars['Int']['input'];
+  invoiceId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type FileUploadResponse = {
+  __typename?: 'FileUploadResponse';
+  attachment?: Maybe<InvoiceAttachmentDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  objectStorageId?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
 };
@@ -270,11 +320,50 @@ export type HousingTypeResponse = {
   data: Array<HousingTypeDto>;
 };
 
+export type InvoiceAttachmentDto = {
+  __typename?: 'InvoiceAttachmentDto';
+  createdAt: Scalars['DateTime']['output'];
+  createdBy: Scalars['String']['output'];
+  fileName: Scalars['String']['output'];
+  fileSize: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  invoiceId: Scalars['Int']['output'];
+  mimeType: Scalars['String']['output'];
+  objectStorageId: Scalars['String']['output'];
+};
+
+export type InvoiceAttachmentInputDto = {
+  fileName: Scalars['String']['input'];
+  fileSize: Scalars['Int']['input'];
+  invoiceId: Scalars['Int']['input'];
+  mimeType: Scalars['String']['input'];
+  objectStorageId: Scalars['String']['input'];
+};
+
+export type InvoiceAttachmentResponse = {
+  __typename?: 'InvoiceAttachmentResponse';
+  attachment?: Maybe<InvoiceAttachmentDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type InvoiceAttachmentsResponse = {
+  __typename?: 'InvoiceAttachmentsResponse';
+  attachments?: Maybe<Array<InvoiceAttachmentDto>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type InvoiceByApplicationIdDto = {
   __typename?: 'InvoiceByApplicationIdDto';
   dueDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   issuedDate: Scalars['DateTime']['output'];
+  notes?: Maybe<Scalars['String']['output']>;
   status: Scalars['String']['output'];
   subject: Scalars['String']['output'];
   totalInCents: Scalars['Int']['output'];
@@ -291,6 +380,8 @@ export type InvoiceDto = {
   invoiceId?: Maybe<Scalars['Int']['output']>;
   issuedDate: Scalars['DateTime']['output'];
   lineItems: Array<InvoiceLineItemDto>;
+  notes?: Maybe<Scalars['String']['output']>;
+  pstExempt: Scalars['Boolean']['output'];
   pstInCents: Scalars['Int']['output'];
   recipientId: Scalars['Int']['output'];
   status: InvoiceStatus;
@@ -309,6 +400,8 @@ export type InvoiceInputDto = {
   invoiceId?: InputMaybe<Scalars['Int']['input']>;
   issuedDate: Scalars['DateTime']['input'];
   lineItems: Array<InvoiceLineItemInputDto>;
+  notes?: InputMaybe<Scalars['String']['input']>;
+  pstExempt: Scalars['Boolean']['input'];
   pstInCents: Scalars['Int']['input'];
   recipientId: Scalars['Int']['input'];
   status: InvoiceStatus;
@@ -376,18 +469,24 @@ export type Mutation = {
   createApplication: ApplicationResponse;
   createApplicationNote: ApplicationNotesResponse;
   createInvoice: InvoiceResponse;
+  createInvoiceAttachment: InvoiceAttachmentResponse;
   createPerson: PersonResponse;
   createPersonNote: PersonNoteResponse;
   deleteApplicationNotes: ApplicationNotesResponse;
   deleteInvoice: ResponseDto;
+  deleteInvoiceAttachment: ResponseDto;
   deletePersonNote: PersonNoteResponse;
   updateAppParticipant: UpdateAppParticipantsResponse;
   updateApplicationHousing: ApplicationHousingResponse;
   updateApplicationNote: ApplicationNotesResponse;
+  updateFormsflowAppId: ApplicationStatusResponse;
   updateInvoice: InvoiceResponse;
   updatePerson: PersonResponse;
   updatePersonNote: PersonNoteResponse;
   updateStaffAssigned: ResponseDto;
+  uploadFileToComsForInvoice: FileUploadResponse;
+  uploadFileToInvoice: FileUploadResponse;
+  uploadFileToInvoiceMultipart: FileUploadResponse;
   upsertTimesheetDays: TimesheetDayResponse;
 };
 
@@ -419,6 +518,11 @@ export type MutationCreateInvoiceArgs = {
 };
 
 
+export type MutationCreateInvoiceAttachmentArgs = {
+  input: InvoiceAttachmentInputDto;
+};
+
+
 export type MutationCreatePersonArgs = {
   person: CreatePerson;
 };
@@ -435,6 +539,11 @@ export type MutationDeleteApplicationNotesArgs = {
 
 
 export type MutationDeleteInvoiceArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteInvoiceAttachmentArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -461,6 +570,11 @@ export type MutationUpdateApplicationNoteArgs = {
 };
 
 
+export type MutationUpdateFormsflowAppIdArgs = {
+  appStatusInput: UpdateApplicationStatusDto;
+};
+
+
 export type MutationUpdateInvoiceArgs = {
   id: Scalars['Int']['input'];
   updateData: InvoiceInputDto;
@@ -482,6 +596,21 @@ export type MutationUpdateStaffAssignedArgs = {
   applicationId: Scalars['Int']['input'];
   applicationServiceTypeId: Scalars['Int']['input'];
   staffInput: Array<UpdateStaffAssignedDto>;
+};
+
+
+export type MutationUploadFileToComsForInvoiceArgs = {
+  input: FileUploadInputDto;
+};
+
+
+export type MutationUploadFileToInvoiceArgs = {
+  input: FileUploadInputDto;
+};
+
+
+export type MutationUploadFileToInvoiceMultipartArgs = {
+  input: FileUploadMultipartInputDto;
 };
 
 
@@ -528,9 +657,13 @@ export type PersonResponse = {
 export type PersonWithTimesheetDaysDto = {
   __typename?: 'PersonWithTimesheetDaysDto';
   email?: Maybe<Scalars['String']['output']>;
+  endDate?: Maybe<Scalars['DateTime']['output']>;
   firstName: Scalars['String']['output'];
   lastName: Scalars['String']['output'];
   personId: Scalars['Int']['output'];
+  roleDescription?: Maybe<Scalars['String']['output']>;
+  roleId?: Maybe<Scalars['Int']['output']>;
+  startDate?: Maybe<Scalars['DateTime']['output']>;
   timesheetDays: Array<TimesheetDayDto>;
 };
 
@@ -549,18 +682,24 @@ export type Query = {
   findAllPerson: PersonResponse;
   findPersonById: PersonResponse;
   getAllActiveStaffMembers: ViewStaffWithCapacityResponse;
+  getAllActiveStaffMembersForApplicationServiceType: ViewStaffWithCapacityResponse;
   getAllParticipantRoles: ParticipantsRolesResponse;
   getAppParticipantsByAppId: AppParticipantsResponse;
   getApplicationDetailsById: ApplicationDetailsResponse;
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
   getApplicationNotesByApplicationId: ApplicationNotesResponse;
   getApplicationServiceTypes: DropdownResponse;
+  getApplications: DashboardResponse;
+  getApplicationsByStaff: ViewApplicationResponse;
   getHousingTypes: HousingTypeResponse;
+  getInvoiceAttachments: InvoiceAttachmentsResponse;
+  getInvoiceById: InvoiceResponse;
   getInvoicesByApplicationId: InvoicesByApplicationIdResponse;
   getOrganizations: DropdownResponse;
   getParticipantNames: DropdownResponse;
   getPermissions: PermissionsResponse;
   getPersonNotesByPersonId: PersonNoteResponse;
+  getRecentViewedApplications: DashboardResponse;
   getSiteDetailsBySiteId: SiteDetailsResponse;
   getStaffAssignedByAppId: ViewStaffAssignedResponse;
   getStaffs: StaffResponse;
@@ -573,6 +712,21 @@ export type Query = {
 
 export type QueryFindPersonByIdArgs = {
   id: Scalars['Float']['input'];
+};
+
+
+export type QueryGetAllActiveStaffMembersForApplicationServiceTypeArgs = {
+  applicationServiceTypeId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetAllParticipantRolesArgs = {
+  roleType?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryGetAllActiveStaffMembersForApplicationServiceTypeArgs = {
+  applicationServiceTypeId: Scalars['Int']['input'];
 };
 
 
@@ -594,6 +748,26 @@ export type QueryGetApplicationHousingByApplicationIdArgs = {
 
 export type QueryGetApplicationNotesByApplicationIdArgs = {
   applicationId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetApplicationsByStaffArgs = {
+  page: Scalars['Int']['input'];
+  pageSize: Scalars['Int']['input'];
+  personId: Scalars['Int']['input'];
+  roleId?: InputMaybe<Scalars['Int']['input']>;
+  sortBy?: InputMaybe<StaffSortByField>;
+  sortByDir?: InputMaybe<ApplicationSortByDirection>;
+};
+
+
+export type QueryGetInvoiceAttachmentsArgs = {
+  invoiceId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetInvoiceByIdArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -637,7 +811,7 @@ export type QueryGetStaffsArgs = {
 
 
 export type QueryGetTimesheetDaysForAssignedStaffArgs = {
-  applicationId: Scalars['Float']['input'];
+  applicationId: Scalars['Int']['input'];
   endDate: Scalars['String']['input'];
   startDate: Scalars['String']['input'];
 };
@@ -738,13 +912,18 @@ export type StaffResponse = {
 
 export enum StaffSortByField {
   Assignment = 'ASSIGNMENT',
+  EndDate = 'END_DATE',
   Id = 'ID',
-  Name = 'NAME'
+  Name = 'NAME',
+  Role = 'ROLE',
+  SiteAddress = 'SITE_ADDRESS',
+  StartDate = 'START_DATE'
 }
 
 export type TimesheetDayDto = {
   __typename?: 'TimesheetDayDto';
   applicationId: Scalars['Int']['output'];
+  comment?: Maybe<Scalars['String']['output']>;
   date: Scalars['DateTime']['output'];
   hours?: Maybe<Scalars['Float']['output']>;
   id: Scalars['Int']['output'];
@@ -762,6 +941,7 @@ export type TimesheetDayResponse = {
 
 export type TimesheetDayUpsertInputDto = {
   applicationId: Scalars['Int']['input'];
+  comment?: InputMaybe<Scalars['String']['input']>;
   date: Scalars['String']['input'];
   hours?: InputMaybe<Scalars['Float']['input']>;
   personId: Scalars['Int']['input'];
@@ -782,6 +962,13 @@ export type UpdateAppParticipantsResponse = {
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type UpdateApplicationStatusDto = {
+  formId: Scalars['String']['input'];
+  formsflowAppId: Scalars['Float']['input'];
+  statusTypeAbbrev: Scalars['String']['input'];
+  submissionId: Scalars['String']['input'];
 };
 
 export type UpdateHousingInputDto = {
@@ -907,6 +1094,45 @@ export type ViewApplicationDetails = {
   submissionId?: Maybe<Scalars['String']['output']>;
 };
 
+export type ViewApplicationResponse = {
+  __typename?: 'ViewApplicationResponse';
+  count?: Maybe<Scalars['Float']['output']>;
+  data: Array<ViewApplications>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  page?: Maybe<Scalars['Float']['output']>;
+  pageSize?: Maybe<Scalars['Float']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type ViewApplicationStatus = {
+  __typename?: 'ViewApplicationStatus';
+  formsflowAppId: Scalars['Float']['output'];
+};
+
+export type ViewApplications = {
+  __typename?: 'ViewApplications';
+  applicationId: Scalars['Float']['output'];
+  effectiveEndDate?: Maybe<Scalars['DateTime']['output']>;
+  effectiveStartDate: Scalars['DateTime']['output'];
+  id: Scalars['Float']['output'];
+  roleDescription: Scalars['String']['output'];
+  roleId: Scalars['Float']['output'];
+  siteAddress: Scalars['String']['output'];
+};
+
+export type ViewDashboard = {
+  __typename?: 'ViewDashboard';
+  address?: Maybe<Scalars['String']['output']>;
+  applicationId: Scalars['Float']['output'];
+  applicationStatus?: Maybe<Scalars['String']['output']>;
+  applicationType?: Maybe<Scalars['String']['output']>;
+  priority?: Maybe<Scalars['String']['output']>;
+  receivedDate?: Maybe<Scalars['DateTime']['output']>;
+  siteId?: Maybe<Scalars['Float']['output']>;
+};
+
 export type ViewOrganizationsDto = {
   __typename?: 'ViewOrganizationsDto';
   id?: Maybe<Scalars['Float']['output']>;
@@ -926,6 +1152,7 @@ export type ViewParticipantsRolesDto = {
   __typename?: 'ViewParticipantsRolesDto';
   description: Scalars['String']['output'];
   id: Scalars['Float']['output'];
+  roleType?: Maybe<Scalars['String']['output']>;
 };
 
 export type ViewPermissions = {
