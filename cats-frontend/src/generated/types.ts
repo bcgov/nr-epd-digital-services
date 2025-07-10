@@ -577,9 +577,13 @@ export type PersonResponse = {
 export type PersonWithTimesheetDaysDto = {
   __typename?: 'PersonWithTimesheetDaysDto';
   email?: Maybe<Scalars['String']['output']>;
+  endDate?: Maybe<Scalars['DateTime']['output']>;
   firstName: Scalars['String']['output'];
   lastName: Scalars['String']['output'];
   personId: Scalars['Int']['output'];
+  roleDescription?: Maybe<Scalars['String']['output']>;
+  roleId?: Maybe<Scalars['Int']['output']>;
+  startDate?: Maybe<Scalars['DateTime']['output']>;
   timesheetDays: Array<TimesheetDayDto>;
 };
 
@@ -643,6 +647,11 @@ export type QueryGetAllActiveStaffMembersForApplicationServiceTypeArgs = {
 
 export type QueryGetAllParticipantRolesArgs = {
   roleType?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryGetAllActiveStaffMembersForApplicationServiceTypeArgs = {
+  applicationServiceTypeId: Scalars['Int']['input'];
 };
 
 
@@ -834,6 +843,7 @@ export enum StaffSortByField {
 export type TimesheetDayDto = {
   __typename?: 'TimesheetDayDto';
   applicationId: Scalars['Int']['output'];
+  comment?: Maybe<Scalars['String']['output']>;
   date: Scalars['DateTime']['output'];
   hours?: Maybe<Scalars['Float']['output']>;
   id: Scalars['Int']['output'];
@@ -851,6 +861,7 @@ export type TimesheetDayResponse = {
 
 export type TimesheetDayUpsertInputDto = {
   applicationId: Scalars['Int']['input'];
+  comment?: InputMaybe<Scalars['String']['input']>;
   date: Scalars['String']['input'];
   hours?: InputMaybe<Scalars['Float']['input']>;
   personId: Scalars['Int']['input'];
