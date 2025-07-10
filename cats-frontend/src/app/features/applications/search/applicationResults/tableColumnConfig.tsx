@@ -176,7 +176,7 @@ export const applicationResultColumns: TableColumn[] = [
     groupId: 1,
     disabled: false,
     isDefault: true,
-    sortOrder: 9,
+    sortOrder: 10,
     isChecked: true,
     displayType: {
       type: FormFieldType.IconButton,
