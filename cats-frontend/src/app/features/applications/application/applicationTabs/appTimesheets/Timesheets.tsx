@@ -1,13 +1,18 @@
 import { useMemo, useState } from 'react';
-import { format, startOfWeek, endOfWeek, addWeeks, isThisWeek } from 'date-fns';
-import { useParams } from 'react-router-dom';
+import {
+  format,
+  startOfWeek,
+  endOfWeek,
+  addWeeks,
+  isThisWeek,
+  parseISO,
+} from 'date-fns';
+import { useParams, useSearchParams } from 'react-router-dom';
 import {
   useGetTimesheetDaysForAssignedStaffQuery,
   useUpsertTimesheetDaysMutation,
 } from './Timesheets.generated';
-import styles from './Timesheets.module.css';
 import { TimesheetsWeekSelection } from './components/TimesheetsWeekSelection';
-import { TimesheetsTableHead } from './components/TimesheetsTableHead';
 import { TimesheetsTableBody } from './components/TimesheetsTableBody';
 import { TimesheetsTableFooter } from './components/TimesheetsTableFooter';
 import { TimesheetsActions } from './components/TimesheetsActions';
@@ -37,7 +42,7 @@ function getNumericCellValue(
   const currentValue = normalizedData[personId]?.[dateStr];
   const editedValue = edits[personId]?.[dateStr];
   return editedValue !== undefined
-    ? formatHours(editedValue)
+    ? parseFloat(editedValue.hours ?? '0')
     : (currentValue?.hours ?? 0);
 }
 
@@ -53,6 +58,7 @@ function normalizeTimesheetData(
       const date = day.date.slice(0, 10);
       normalized[person.personId][date] = {
         hours: formatHours(day.hours ?? 0),
+        comment: day.comment ?? '',
         id: day.id,
       };
     });
@@ -72,15 +78,25 @@ function denormalizeTimesheetData(
   Object.entries(edits).forEach(([personId, dateEdits]) => {
     Object.entries(dateEdits).forEach(([date, value]) => {
       const currentValue = normalizedData[Number(personId)]?.[date];
-      const newValue = value ? formatHours(value) : 0;
-
+      const newHours =
+        value.hours !== undefined
+          ? formatHours(value.hours)
+          : (currentValue?.hours ?? 0);
+      const newComment =
+        value.comment !== undefined
+          ? value.comment
+          : (currentValue?.comment ?? '');
       // Only include if the value has changed
-      if (currentValue?.hours !== newValue) {
+      if (
+        currentValue?.hours !== newHours ||
+        (currentValue?.comment ?? '') !== newComment
+      ) {
         result.push({
           applicationId,
           personId: Number(personId),
           date,
-          hours: newValue,
+          hours: newHours,
+          comment: newComment,
           timesheetDayId: currentValue?.id,
         });
       }
@@ -91,7 +107,15 @@ function denormalizeTimesheetData(
 }
 
 export const Timesheets = () => {
-  const [selectedDate, setSelectedDate] = useState<Date>(() => new Date());
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [selectedDate, setSelectedDate] = useState<Date>(() => {
+    const startDate = searchParams.get('startDate');
+    if (!startDate) {
+      return new Date();
+    }
+    return parseISO(startDate);
+  });
   const { monday: startDate, sunday: endDate } = useMemo(
     () => getWeekRange(selectedDate),
     [selectedDate],
@@ -132,7 +156,7 @@ export const Timesheets = () => {
     (data?.getTimesheetDaysForAssignedStaff?.data as StaffRow[]) || [];
 
   const weekDays: Date[] = useMemo(() => {
-    return Array.from({ length: 7 }, (_, i) => {
+    return Array.from({ length: 5 }, (_, i) => {
       const d = new Date(startDate);
       d.setDate(d.getDate() + i);
       return d;
@@ -140,24 +164,34 @@ export const Timesheets = () => {
   }, [startDate]);
 
   const handleWeekChange = (dir: number) => {
-    setSelectedDate((prev) => addWeeks(prev, dir));
+    const newDate = addWeeks(selectedDate, dir);
+    handleDateSelect(newDate);
+  };
+
+  const handleDateSelect = (date: Date) => {
+    setSelectedDate(date);
+    setSearchParams((params) => {
+      const startDate = getWeekRange(date).monday;
+      params.set('startDate', format(startDate, 'yyyy-MM-dd'));
+      return params;
+    });
   };
 
   const handleCellChange = (
     personId: number,
     dateStr: string,
-    value: string,
+    value: { hours?: string; comment?: string },
   ) => {
-    // Only allow numbers with up to 2 decimal places
-    if (value === '' || /^\d*\.?\d{0,2}$/.test(value)) {
-      setEdits((prev) => ({
-        ...prev,
-        [personId]: {
-          ...prev[personId],
-          [dateStr]: value,
+    setEdits((prev) => ({
+      ...prev,
+      [personId]: {
+        ...prev[personId],
+        [dateStr]: {
+          ...prev[personId]?.[dateStr],
+          ...value,
         },
-      }));
-    }
+      },
+    }));
   };
 
   const handleSave = async () => {
@@ -194,7 +228,7 @@ export const Timesheets = () => {
     return formatHours(sum);
   });
 
-  const totalForAllStaff: number = formatHours(
+  const totalHoursForAllStaff: number = formatHours(
     totalHoursPerDay.reduce((a, b) => a + b, 0),
   );
 
@@ -208,27 +242,19 @@ export const Timesheets = () => {
         isCurrentWeek={isCurrentWeek}
         onWeekChange={handleWeekChange}
         disabled={saveTimesheetDaysLoading}
+        onDateSelect={handleDateSelect}
       />
 
-      <div>
-        <table className={`${styles.timesheetsTable}`}>
-          <TimesheetsTableHead weekDays={weekDays} />
-          <TimesheetsTableBody
-            staffRows={staffRows}
-            weekDays={weekDays}
-            normalizedData={normalizedData}
-            edits={edits}
-            onCellChange={handleCellChange}
-            disabled={saveTimesheetDaysLoading}
-            applicationId={applicationId}
-          />
-          <TimesheetsTableFooter
-            totalForAllStaff={totalForAllStaff}
-            totalHoursPerDay={totalHoursPerDay}
-          />
-        </table>
-      </div>
+      <TimesheetsTableBody
+        staffRows={staffRows}
+        weekDays={weekDays}
+        normalizedData={normalizedData}
+        edits={edits}
+        onCellChange={handleCellChange}
+        disabled={saveTimesheetDaysLoading}
+      />
 
+      <TimesheetsTableFooter totalHoursForAllStaff={totalHoursForAllStaff} />
       <TimesheetsActions
         onSave={handleSave}
         hasEdits={Object.keys(edits).length > 0}
