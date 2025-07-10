@@ -88,6 +88,11 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
     ],
   });
 
+  // Track which line item unit price fields are currently being edited
+  const [editingPriceFields, setEditingPriceFields] = useState<{
+    [key: number]: string;
+  }>({});
+
   const [error, setError] = useState<string | null>(null);
   const [createInvoice, { loading }] = useCreateInvoiceMutation({
     onCompleted: (data) => {
@@ -177,17 +182,15 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
       const updatedLineItems = [...prev.lineItems];
 
       if (name === 'unitPriceInCents') {
-        // Handle empty value case
-        const priceInCents =
-          value === '' ? 0 : Math.round(parseFloat(value) * 100);
-        const quantity = updatedLineItems[index].quantity;
-        const totalInCents = priceInCents * quantity;
+        // Store the raw input value for editing - don't update the actual price yet
+        setEditingPriceFields((prevEditing) => ({
+          ...prevEditing,
+          [index]: value,
+        }));
 
-        updatedLineItems[index] = {
-          ...updatedLineItems[index],
-          unitPriceInCents: priceInCents,
-          totalInCents: totalInCents,
-        };
+        // Don't update the actual price while user is typing
+        // This will be handled in handlePriceBlur
+        return prev;
       } else if (name === 'quantity') {
         const quantity = value === '' ? 1 : parseInt(value);
         const totalInCents =
@@ -211,6 +214,65 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
         lineItems: updatedLineItems,
       };
     });
+  };
+
+  const handlePriceBlur = (index: number) => {
+    const rawValue = editingPriceFields[index];
+
+    if (rawValue !== undefined) {
+      // Parse the value and update the actual price
+      if (rawValue !== '' && !isNaN(parseFloat(rawValue))) {
+        const priceInCents = Math.round(parseFloat(rawValue) * 100);
+        const quantity = formValues.lineItems[index].quantity;
+        const totalInCents = priceInCents * quantity;
+
+        setFormValues((prev) => {
+          const updatedLineItems = [...prev.lineItems];
+          updatedLineItems[index] = {
+            ...updatedLineItems[index],
+            unitPriceInCents: priceInCents,
+            totalInCents: totalInCents,
+          };
+          return {
+            ...prev,
+            lineItems: updatedLineItems,
+          };
+        });
+      } else if (rawValue === '') {
+        // Handle empty value case
+        setFormValues((prev) => {
+          const updatedLineItems = [...prev.lineItems];
+          updatedLineItems[index] = {
+            ...updatedLineItems[index],
+            unitPriceInCents: 0,
+            totalInCents: 0,
+          };
+          return {
+            ...prev,
+            lineItems: updatedLineItems,
+          };
+        });
+      }
+    }
+
+    // Clear the editing state when user finishes editing
+    setEditingPriceFields((prevEditing) => {
+      const newEditing = { ...prevEditing };
+      delete newEditing[index];
+      return newEditing;
+    });
+  };
+
+  const handlePriceFocus = (index: number) => {
+    // When focusing on the price field, set the raw value for editing
+    const currentPriceInCents = formValues.lineItems[index].unitPriceInCents;
+    const displayValue =
+      currentPriceInCents > 0 ? (currentPriceInCents / 100).toString() : '';
+
+    setEditingPriceFields((prevEditing) => ({
+      ...prevEditing,
+      [index]: displayValue,
+    }));
   };
 
   const addLineItem = () => {
@@ -240,6 +302,25 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
         ...prev,
         lineItems: updatedLineItems,
       };
+    });
+
+    // Clean up editing state for removed item
+    setEditingPriceFields((prevEditing) => {
+      const newEditing = { ...prevEditing };
+      delete newEditing[index];
+
+      // Shift down the indices for items after the removed one
+      const adjustedEditing: { [key: number]: string } = {};
+      Object.keys(newEditing).forEach((key) => {
+        const keyIndex = parseInt(key);
+        if (keyIndex > index) {
+          adjustedEditing[keyIndex - 1] = newEditing[keyIndex];
+        } else {
+          adjustedEditing[keyIndex] = newEditing[keyIndex];
+        }
+      });
+
+      return adjustedEditing;
     });
   };
 
@@ -527,16 +608,18 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
                           <span className="input-group-text">$</span>
                         </div>
                         <Form.Control
-                          type="number"
+                          type="text"
                           name="unitPriceInCents"
                           value={
-                            item.unitPriceInCents > 0
-                              ? (item.unitPriceInCents / 100).toFixed(2)
-                              : ''
+                            editingPriceFields[index] !== undefined
+                              ? editingPriceFields[index]
+                              : item.unitPriceInCents > 0
+                                ? (item.unitPriceInCents / 100).toFixed(2)
+                                : ''
                           }
                           onChange={(e) => handleLineItemChange(index, e)}
-                          step="0.01"
-                          min="0"
+                          onFocus={() => handlePriceFocus(index)}
+                          onBlur={() => handlePriceBlur(index)}
                           required
                           placeholder="0.00"
                           className="custom-input"
