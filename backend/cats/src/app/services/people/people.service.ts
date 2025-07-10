@@ -16,7 +16,7 @@ export class PersonService {
     private readonly personRepository: Repository<Person>,
     private readonly permissionsService: PermissionsService,
     private readonly loggerSerivce: LoggerService,
-  ) { }
+  ) {}
 
   /** Fetch all person records */
   async findAll() {
@@ -40,7 +40,8 @@ export class PersonService {
       if (!person) return null;
 
       // Extract permission IDs from personPermissions relation
-      const permissionIds = person.personPermissions?.map(pp => pp.permissionId) || [];
+      const permissionIds =
+        person.personPermissions?.map((pp) => pp.permissionId) || [];
 
       // Map entity to DTO shape (pseudo-code)
       const viewPerson: ViewPerson = {
@@ -68,7 +69,11 @@ export class PersonService {
       const savedPerson = await this.personRepository.save(person);
 
       if (permissionIds.length > 0) {
-        await this.permissionsService.assignPermissionsToPerson(savedPerson.id, permissionIds, userInfo);
+        await this.permissionsService.assignPermissionsToPerson(
+          savedPerson.id,
+          permissionIds,
+          userInfo,
+        );
       }
 
       this.loggerSerivce.log('at service layer create end');
@@ -92,7 +97,11 @@ export class PersonService {
         };
         await this.personRepository.save(updatedPerson);
         if (data.permissionIds && Array.isArray(data.permissionIds)) {
-          await this.permissionsService.assignPermissionsToPerson(data.id, data.permissionIds, userInfo);
+          await this.permissionsService.assignPermissionsToPerson(
+            data.id,
+            data.permissionIds,
+            userInfo,
+          );
         }
       }
       this.loggerSerivce.log('at service layer update end');
@@ -129,37 +138,39 @@ export class PersonService {
       const response = new SearchPersonResponse();
       const query = this.personRepository.createQueryBuilder('person');
       query.andWhere('is_deleted is not true');
-      query.andWhere(
-        new Brackets((qb) => {
-          qb.where('CAST(person.id AS TEXT) LIKE :searchParam', {
-            searchParam: `%${searchParam}%`,
-          })
-            .orWhere('LOWER(person.first_name) LIKE LOWER(:searchParam)', {
-              searchParam: `%${searchParam.toLowerCase()}%`,
-            })
-            .orWhere('LOWER(person.last_name) LIKE LOWER(:searchParam)', {
-              searchParam: `%${searchParam.toLowerCase()}%`,
-            })
-            .orWhere('LOWER(person.email) LIKE LOWER(:searchParam)', {
-              searchParam: `%${searchParam.toLowerCase()}%`,
-            })
-            .orWhere('LOWER(person.city) LIKE LOWER(:searchParam)', {
-              searchParam: `%${searchParam.toLowerCase()}%`,
-            })
-            .orWhere('LOWER(person.prov) LIKE LOWER(:searchParam)', {
-              searchParam: `%${searchParam.toLowerCase()}%`,
-            })
-            .orWhere('LOWER(person.address_1) LIKE LOWER(:searchParam)', {
-              searchParam: `%${searchParam.toLowerCase()}%`,
-            })
-            .orWhere('LOWER(person.address_2) LIKE LOWER(:searchParam)', {
-              searchParam: `%${searchParam.toLowerCase()}%`,
-            })
-            .orWhere('LOWER(person.postal) LIKE LOWER(:searchParam)', {
-              searchParam: `%${searchParam.toLowerCase()}%`,
-            });
-        }),
-      );
+
+      if (searchParam?.trim()) {
+        const keywords = searchParam.trim().toLowerCase().split(/\s+/); // split by whitespace
+
+        for (const keyword of keywords) {
+          const searchPattern = `%${keyword}%`;
+          query.andWhere(
+            new Brackets((qb) => {
+              qb.where('CAST(person.id AS TEXT) LIKE :kw', {
+                kw: searchPattern,
+              })
+                .orWhere('LOWER(person.first_name) LIKE :kw', {
+                  kw: searchPattern,
+                })
+                .orWhere('LOWER(person.last_name) LIKE :kw', {
+                  kw: searchPattern,
+                })
+                .orWhere('LOWER(person.email) LIKE :kw', { kw: searchPattern })
+                .orWhere('LOWER(person.city) LIKE :kw', { kw: searchPattern })
+                .orWhere('LOWER(person.prov) LIKE :kw', { kw: searchPattern })
+                .orWhere('LOWER(person.address_1) LIKE :kw', {
+                  kw: searchPattern,
+                })
+                .orWhere('LOWER(person.address_2) LIKE :kw', {
+                  kw: searchPattern,
+                })
+                .orWhere('LOWER(person.postal) LIKE :kw', {
+                  kw: searchPattern,
+                });
+            }),
+          );
+        }
+      }
 
       const [personList, count] = await query
         .skip((page - 1) * pageSize)

@@ -320,7 +320,7 @@
                         "height": ""
                       },
                       "type": "button",
-                      "custom": "if(data.approvedProfessionalName === '')\r\n {\r\n   alert(\"Part 7 - Approved Professional Name is required.\")\r\n }\r\n else if(data.recommendationCheckbox.aCoCUnderSection533OfEma === false && data.recommendationCheckbox.aDeterminationUnderSection44OfEma === false && data.recommendationCheckbox.aSiteRiskReclassification === false && data.recommendationCheckbox.anAiPUnderSection531OfEma === false && data.recommendationCheckbox.other === false){\r\n  alert(\"Part 7 - Please select those that apply is required\");\r\n }\r\nelse if(data.describe1 === '')\r\n{\r\n alert(\"Part 7 - Describe: is  required.\")\r\n}\r\nelse if(data.forARecommendationForADetermination === '')\r\n{\r\n alert(\"Part 7 - For a recommendation for a Determination is required\");\r\n}\r\nelse if(data.forARecommendationForanApprovalInPrinciple === '')\r\n{\r\n alert(\"Part 7 - For a recommendation for an Approval in Principle and for a Certificate of Compliance is required.\");\r\n}\r\nelse if(data.siteRiskReclassification === '')\r\n{\r\n alert(\"Part 7 - For a recommendation for a Site Risk Reclassification is required\");\r\n}\r\nelse if(data.asOfTheDateOfSigningOfThisReportTheApprovedProfessionalOrApprovedProfessionalsIfMoreThanOneIsAreMemberSInGoodStandingOfTheRosterOfApprovedProfessionalsAsMaintainedByTheMinistryAndMemberSOfTheContaminatedSitesApprovedProfessionalsSocietyCsapSociety === false)\r\n{\r\n alert(\"Part 7 - As of the date of signing of this report the approved professional, or approved professionals if more than one, is/are member(s) in good standing of the Roster of Approved Professionals, as maintained by the ministry, and member(s) of the Contaminated Sites Approved Professionals Society (CSAP Society) is required\");\r\n}\r\nelse if(data.theApprovedProfessionalsSigningThisSummaryOfSiteConditionHaveReviewedTable1Protocol6ForContaminatedSitesEligibilityOfApplicationsForReviewByApprovedProfessionalsAndConfirmThatTheApplicationForContaminatedSitesServicesMayBeProcessedInTheMannerForNonHighRiskSitesUnderTheRosterOfApprovedProfessionalsProcess === false)\r\n{\r\n alert(\"Part 7 - The approved professionals signing this Summary of Site Condition have reviewed Table 1, Protocol 6 for Contaminated Sites (Eligibility of Applications for Review by Approved Professionals) and confirm that the Application for Contaminated Sites Services may be processed in the manner for non-high risk sites under the Roster of Approved Professionals process is required\");\r\n}\r\nelse if(data.theReviewerHasNoObligationToUndertakeAnyInquiryIntoTheValidityAccuracyOrPrecisionOfWhatIsReportedInTheDocumentsReviewedBeyondThatWhichThereIsReasonableCauseToBelieveThatThereCouldBeErrorsOrOversightsInThoseReports === false)\r\n{\r\n alert(\"Part 7 - The reviewer has no obligation to undertake any inquiry into the validity, accuracy or precision of what is reported in the documents reviewed, beyond that which there is reasonable cause to believe that there could be errors or oversights in those reports is required\");\r\n}\r\n else\r\n {\r\nconst submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst filteredData = _.pick(data, data.soscUtilKeys);\r\n\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": filteredData};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Accepted'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Accepted'\r\n    }); \r\n});\r\n}",
+                      "custom": "if(data.approvedProfessionalName === '')\r\n {\r\n   alert(\"Part 7 - Approved Professional Name is required.\")\r\n }\r\n else if(data.recommendationCheckbox.aCoCUnderSection533OfEma === false && data.recommendationCheckbox.aDeterminationUnderSection44OfEma === false && data.recommendationCheckbox.aSiteRiskReclassification === false && data.recommendationCheckbox.anAiPUnderSection531OfEma === false && data.recommendationCheckbox.other === false){\r\n  alert(\"Part 7 - Please select those that apply is required\");\r\n }\r\nelse if(data.describe1 === '')\r\n{\r\n alert(\"Part 7 - Describe: is  required.\")\r\n}\r\nelse if(data.forARecommendationForADetermination === '')\r\n{\r\n alert(\"Part 7 - For a recommendation for a Determination is required\");\r\n}\r\nelse if(data.forARecommendationForanApprovalInPrinciple === '')\r\n{\r\n alert(\"Part 7 - For a recommendation for an Approval in Principle and for a Certificate of Compliance is required.\");\r\n}\r\nelse if(data.siteRiskReclassification === '')\r\n{\r\n alert(\"Part 7 - For a recommendation for a Site Risk Reclassification is required\");\r\n}\r\nelse if(data.asOfTheDateOfSigningOfThisReportTheApprovedProfessionalOrApprovedProfessionalsIfMoreThanOneIsAreMemberSInGoodStandingOfTheRosterOfApprovedProfessionalsAsMaintainedByTheMinistryAndMemberSOfTheContaminatedSitesApprovedProfessionalsSocietyCsapSociety === false)\r\n{\r\n alert(\"Part 7 - As of the date of signing of this report the approved professional, or approved professionals if more than one, is/are member(s) in good standing of the Roster of Approved Professionals, as maintained by the ministry, and member(s) of the Contaminated Sites Approved Professionals Society (CSAP Society) is required\");\r\n}\r\nelse if(data.theApprovedProfessionalsSigningThisSummaryOfSiteConditionHaveReviewedTable1Protocol6ForContaminatedSitesEligibilityOfApplicationsForReviewByApprovedProfessionalsAndConfirmThatTheApplicationForContaminatedSitesServicesMayBeProcessedInTheMannerForNonHighRiskSitesUnderTheRosterOfApprovedProfessionalsProcess === false)\r\n{\r\n alert(\"Part 7 - The approved professionals signing this Summary of Site Condition have reviewed Table 1, Protocol 6 for Contaminated Sites (Eligibility of Applications for Review by Approved Professionals) and confirm that the Application for Contaminated Sites Services may be processed in the manner for non-high risk sites under the Roster of Approved Professionals process is required\");\r\n}\r\nelse if(data.theReviewerHasNoObligationToUndertakeAnyInquiryIntoTheValidityAccuracyOrPrecisionOfWhatIsReportedInTheDocumentsReviewedBeyondThatWhichThereIsReasonableCauseToBelieveThatThereCouldBeErrorsOrOversightsInThoseReports === false)\r\n{\r\n alert(\"Part 7 - The reviewer has no obligation to undertake any inquiry into the validity, accuracy or precision of what is reported in the documents reviewed, beyond that which there is reasonable cause to believe that there could be errors or oversights in those reports is required\");\r\n}\r\n else\r\n {\r\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails?UserDetails[\"role\"]:[];\r\nconst submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst filteredData = _.pick(data, data.soscUtilKeys);\r\n\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": filteredData};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\n\r\nif(roles.includes(\"formsflow-reviewer/caseworker\")){\r\n  form.emit('customEvent', {\r\n          type: \"actionComplete\",  \r\n          component: component,\r\n          actionType:'Review In Progress SDM'\r\n  });\r\n} else {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Accepted'\r\n    }); \r\n}\r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nif(roles.includes(\"formsflow-reviewer/caseworker\")){\r\n  form.emit('customEvent', {\r\n          type: \"actionComplete\",  \r\n          component: component,\r\n          actionType:'Review In Progress SDM'\r\n  });\r\n} else {\r\n\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Accepted'\r\n    }); \r\n}\r\n});\r\n}",
                       "input": true,
                       "keyModified": true,
                       "placeholder": "",
@@ -360,7 +360,7 @@
                       "showWordCount": false,
                       "allowMultipleMasks": false,
                       "addons": [],
-                      "id": "eiixgw"
+                      "id": "eewqzy"
                     },
                     {
                       "label": "Approved",
@@ -495,7 +495,7 @@
                         "height": ""
                       },
                       "type": "button",
-                      "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst filteredData = _.pick(data, data.soscUtilKeys);\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": filteredData};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Returned'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Returned'\r\n    }); \r\n});",
+                      "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst filteredData = _.pick(data, data.soscUtilKeys);\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": filteredData};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Additional Information Requested'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Additional Information Requested'\r\n    }); \r\n});",
                       "input": true,
                       "placeholder": "",
                       "prefix": "",
@@ -534,7 +534,7 @@
                       "showWordCount": false,
                       "allowMultipleMasks": false,
                       "addons": [],
-                      "id": "ee50ra2"
+                      "id": "efvquav"
                     }
                   ],
                   "size": "md",
@@ -11017,7 +11017,7 @@
                       "id": "espiuxt"
                     }
                   ],
-                  "id": "eqdnhyd00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                  "id": "eqdnhyd000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                   "placeholder": "",
                   "prefix": "",
                   "customClass": "",
@@ -11888,7 +11888,7 @@
                           "defaultValue": ""
                         }
                       ],
-                      "id": "eh0tlha000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                      "id": "eh0tlha0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                       "placeholder": "",
                       "prefix": "",
                       "customClass": "",
@@ -12325,7 +12325,7 @@
                           "defaultValue": ""
                         }
                       ],
-                      "id": "e5zl68i000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                      "id": "e5zl68i0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                       "placeholder": "",
                       "prefix": "",
                       "customClass": "",
@@ -12484,7 +12484,7 @@
                       "input": true,
                       "label": "Crown Land File Numbers",
                       "tableView": true,
-                      "id": "e9cjcks000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                      "id": "e9cjcks0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                       "placeholder": "",
                       "prefix": "",
                       "customClass": "",
@@ -14951,7 +14951,7 @@
                           "defaultValue": ""
                         }
                       ],
-                      "id": "e6m7hoa000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                      "id": "e6m7hoa0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                       "placeholder": "",
                       "prefix": "",
                       "customClass": "",
@@ -15429,7 +15429,7 @@
                           "id": "eexykk5"
                         }
                       ],
-                      "id": "euq555f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                      "id": "euq555f000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                       "placeholder": "",
                       "prefix": "",
                       "customClass": "",
@@ -15577,7 +15577,7 @@
                       "input": true,
                       "label": "Crown Land File Numbers",
                       "tableView": true,
-                      "id": "e77rtvk00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                      "id": "e77rtvk000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                       "placeholder": "",
                       "prefix": "",
                       "customClass": "",
@@ -16550,7 +16550,7 @@
                       "id": "ec1njxr"
                     }
                   ],
-                  "id": "e9i1yh8000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                  "id": "e9i1yh80000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                   "placeholder": "",
                   "prefix": "",
                   "customClass": "",
@@ -17993,27 +17993,46 @@
               "id": "e5pkjic"
             },
             {
-              "html": "<p><i>If investigation reports are incomplete or if reports are titled differently or have a different scope than those listed above in accordance with the Contaminated Sites Regulation (i.e. PSI, DSI), complete Section 4.8 (Investigation or Interpretation Issues)</i></p>",
+              "html": "<p>If investigation reports are incomplete or if reports are titled differently or have a different scope than those listed above in accordance with the Contaminated Sites Regulation (i.e. PSI, DSI), complete Section 4.8 (Investigation or Interpretation Issues)</p>",
               "label": "Content",
+              "customClass": "",
               "refreshOnChange": false,
+              "hidden": false,
+              "modalEdit": false,
               "key": "content66",
+              "tags": [],
+              "properties": {},
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": "",
+                "json": ""
+              },
+              "customConditional": "",
+              "logic": [],
+              "attributes": {},
+              "overlay": {
+                "style": "",
+                "page": "",
+                "left": "",
+                "top": "",
+                "width": "",
+                "height": ""
+              },
               "type": "content",
               "input": false,
               "tableView": false,
               "placeholder": "",
               "prefix": "",
-              "customClass": "",
               "suffix": "",
               "multiple": false,
               "defaultValue": null,
               "protected": false,
               "unique": false,
               "persistent": true,
-              "hidden": false,
               "clearOnHide": true,
               "refreshOn": "",
               "redrawOn": "",
-              "modalEdit": false,
               "dataGridLabel": false,
               "labelPosition": "top",
               "description": "",
@@ -18028,7 +18047,6 @@
               "calculateValue": "",
               "calculateServer": false,
               "widget": null,
-              "attributes": {},
               "validateOn": "change",
               "validate": {
                 "required": false,
@@ -18038,26 +18056,13 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": {
-                "show": null,
-                "when": null,
-                "eq": ""
-              },
-              "overlay": {
-                "style": "",
-                "left": "",
-                "top": "",
-                "width": "",
-                "height": ""
-              },
               "allowCalculateOverride": false,
               "encrypted": false,
               "showCharCount": false,
               "showWordCount": false,
-              "properties": {},
               "allowMultipleMasks": false,
               "addons": [],
-              "id": "egr749e"
+              "id": "eauxwlm"
             }
           ],
           "placeholder": "",
@@ -19464,9 +19469,7 @@
               "tooltip": "",
               "prefix": "",
               "suffix": "",
-              "widget": {
-                "type": "input"
-              },
+              "widget": { "type": "input" },
               "displayMask": "",
               "editor": "",
               "autoExpand": false,
@@ -25227,7 +25230,7 @@
                       "defaultValue": ""
                     }
                   ],
-                  "id": "e8twmi00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                  "id": "e8twmi000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                   "placeholder": "",
                   "prefix": "",
                   "customClass": "",
@@ -25991,7 +25994,7 @@
                   "addons": [],
                   "tree": false,
                   "lazyLoad": false,
-                  "id": "exacpht0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                  "id": "exacpht00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
                 }
               ],
               "placeholder": "",
@@ -26544,7 +26547,7 @@
                       "id": "ev5io9n"
                     }
                   ],
-                  "id": "emy2egp00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                  "id": "emy2egp000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                   "placeholder": "",
                   "prefix": "",
                   "customClass": "",
@@ -27079,7 +27082,7 @@
                       "id": "e9mzze8"
                     }
                   ],
-                  "id": "e5swzaq00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                  "id": "e5swzaq000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                   "placeholder": "",
                   "prefix": "",
                   "customClass": "",
@@ -27803,7 +27806,7 @@
                       "defaultValue": ""
                     }
                   ],
-                  "id": "evf0mpc00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                  "id": "evf0mpc000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                   "placeholder": "",
                   "prefix": "",
                   "customClass": "",
@@ -29002,12 +29005,7 @@
           "tags": [],
           "properties": {},
           "customConditional": "",
-          "conditional": {
-            "json": "",
-            "show": null,
-            "when": null,
-            "eq": ""
-          },
+          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
           "logic": [],
           "attributes": {},
           "overlay": {
@@ -29073,16 +29071,10 @@
               "customDefaultValue": "",
               "calculateValue": "",
               "calculateServer": false,
-              "widget": {
-                "type": "input"
-              },
+              "widget": { "type": "input" },
               "attributes": {},
               "validateOn": "change",
-              "conditional": {
-                "show": null,
-                "when": null,
-                "eq": ""
-              },
+              "conditional": { "show": null, "when": null, "eq": "" },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -31711,16 +31703,8 @@
               "tableView": false,
               "modalEdit": false,
               "values": [
-                {
-                  "label": "Yes",
-                  "value": "yes",
-                  "shortcut": ""
-                },
-                {
-                  "label": "No",
-                  "value": "no",
-                  "shortcut": ""
-                }
+                { "label": "Yes", "value": "yes", "shortcut": "" },
+                { "label": "No", "value": "no", "shortcut": "" }
               ],
               "dataType": "",
               "persistent": true,
@@ -31750,8 +31734,8 @@
               "tags": [],
               "properties": {},
               "conditional": {
-                "show": null,
-                "when": null,
+                "show": "",
+                "when": "",
                 "eq": "",
                 "json": ""
               },
@@ -31796,12 +31780,7 @@
               "key": "content39",
               "tags": [],
               "properties": {},
-              "conditional": {
-                "show": "",
-                "when": "",
-                "eq": "",
-                "json": ""
-              },
+              "conditional": { "show": "", "when": "", "eq": "", "json": "" },
               "customConditional": "",
               "logic": [],
               "attributes": {},
@@ -31914,12 +31893,7 @@
               "key": "references",
               "tags": [],
               "properties": {},
-              "conditional": {
-                "show": "",
-                "when": "",
-                "eq": "",
-                "json": ""
-              },
+              "conditional": { "show": "", "when": "", "eq": "", "json": "" },
               "customConditional": "",
               "logic": [],
               "attributes": {},
@@ -32156,9 +32130,7 @@
                               "customDefaultValue": "",
                               "calculateValue": "",
                               "calculateServer": false,
-                              "widget": {
-                                "type": "input"
-                              },
+                              "widget": { "type": "input" },
                               "attributes": {},
                               "validateOn": "change",
                               "validate": {
@@ -32276,7 +32248,7 @@
                       "id": "ebg2hdh"
                     }
                   ],
-                  "id": "e12sjfg0000000000000000000000000000000000000000000000000",
+                  "id": "e12sjfg00000000000000000000000000000000000000000000000000000",
                   "placeholder": "",
                   "prefix": "",
                   "customClass": "",
@@ -32314,11 +32286,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -33235,7 +33203,7 @@
                   "addons": [],
                   "tree": false,
                   "lazyLoad": false,
-                  "id": "ej2ieui000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                  "id": "ej2ieui0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
                 }
               ],
               "placeholder": "",
@@ -33881,7 +33849,7 @@
                   "addons": [],
                   "tree": false,
                   "lazyLoad": false,
-                  "id": "es8ofcm0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                  "id": "es8ofcm00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
                 }
               ],
               "placeholder": "",
@@ -34527,7 +34495,7 @@
                   "addons": [],
                   "tree": false,
                   "lazyLoad": false,
-                  "id": "ed1sfok0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                  "id": "ed1sfok00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
                 }
               ],
               "placeholder": "",
@@ -35173,7 +35141,7 @@
                   "addons": [],
                   "tree": false,
                   "lazyLoad": false,
-                  "id": "ezboyzs0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                  "id": "ezboyzs00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
                 }
               ],
               "placeholder": "",
@@ -35825,7 +35793,7 @@
                   "addons": [],
                   "tree": false,
                   "lazyLoad": false,
-                  "id": "eum0he0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                  "id": "eum0he00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
                 }
               ],
               "placeholder": "",
@@ -36356,7 +36324,7 @@
                       "id": "egr9za2"
                     }
                   ],
-                  "id": "emg8nhr00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                  "id": "emg8nhr000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                   "placeholder": "",
                   "prefix": "",
                   "customClass": "",
@@ -36930,7 +36898,7 @@
                       "defaultValue": ""
                     }
                   ],
-                  "id": "eswvcf000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                  "id": "eswvcf0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                   "placeholder": "",
                   "prefix": "",
                   "customClass": "",
@@ -37263,9 +37231,7 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": {
-                            "type": "input"
-                          },
+                          "widget": { "type": "input" },
                           "attributes": {},
                           "validateOn": "change",
                           "conditional": {
@@ -37350,9 +37316,7 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": {
-                            "type": "input"
-                          },
+                          "widget": { "type": "input" },
                           "attributes": {},
                           "validateOn": "change",
                           "conditional": {
@@ -37437,9 +37401,7 @@
                           "customDefaultValue": "",
                           "calculateValue": "",
                           "calculateServer": false,
-                          "widget": {
-                            "type": "input"
-                          },
+                          "widget": { "type": "input" },
                           "attributes": {},
                           "validateOn": "change",
                           "conditional": {
@@ -37521,11 +37483,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -37583,11 +37541,7 @@
                 "multiple": false,
                 "unique": false
               },
-              "conditional": {
-                "show": null,
-                "when": null,
-                "eq": ""
-              },
+              "conditional": { "show": null, "when": null, "eq": "" },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -38116,7 +38070,7 @@
                       "id": "eq2c51c"
                     }
                   ],
-                  "id": "ee8r34g000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                  "id": "ee8r34g0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                   "placeholder": "",
                   "prefix": "",
                   "customClass": "",
@@ -41530,7 +41484,7 @@
               "tableView": false,
               "components": [
                 {
-                  "html": "<p>Based on my review of the documentation listed in Part 3 of this Summary of Site Condition, in comparison to the requirements and expectations of the <i>Environmental Management Act</i>, Contaminated Sites Regulation, protocols and supporting ministry policy and guidance and the confirmations and other statements made in this Part </p>",
+                  "html": "<p>Based on my review of the documentation listed in Part 3 of this Summary of Site Condition </p>",
                   "label": "Content",
                   "refreshOnChange": false,
                   "key": "content49",
@@ -41575,11 +41529,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -41594,18 +41544,163 @@
                   "properties": {},
                   "allowMultipleMasks": false,
                   "addons": [],
-                  "id": "e3eowwu"
+                  "id": "efp3rbo"
+                },
+                {
+                  "label": "-in comparison to the requirements and expectations of the <i>Environmental Management Act</i>, Contaminated Sites Regulation, protocols and supporting ministry policy and guidance",
+                  "tag": "p",
+                  "className": "",
+                  "attrs": [{ "attr": "", "value": "" }],
+                  "content": "-in comparison to the requirements and expectations of the <i>Environmental Management Act</i>, Contaminated Sites Regulation, protocols and supporting ministry policy and guidance",
+                  "refreshOnChange": false,
+                  "customClass": "",
+                  "hidden": false,
+                  "modalEdit": false,
+                  "key": "inComparisonToTheRequirementsAndExpectationsOfTheIEnvironmentalManagementActIContaminatedSitesRegulationProtocolsAndSupportingMinistryPolicyAndGuidance",
+                  "tags": [],
+                  "properties": {},
+                  "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": "",
+                    "json": ""
+                  },
+                  "customConditional": "",
+                  "logic": [],
+                  "attributes": {},
+                  "overlay": {
+                    "style": "",
+                    "page": "",
+                    "left": "",
+                    "top": "",
+                    "width": "",
+                    "height": ""
+                  },
+                  "type": "htmlelement",
+                  "input": false,
+                  "placeholder": "",
+                  "prefix": "",
+                  "suffix": "",
+                  "multiple": false,
+                  "defaultValue": null,
+                  "protected": false,
+                  "unique": false,
+                  "persistent": false,
+                  "clearOnHide": true,
+                  "refreshOn": "",
+                  "redrawOn": "",
+                  "tableView": false,
+                  "dataGridLabel": false,
+                  "labelPosition": "top",
+                  "description": "",
+                  "errorLabel": "",
+                  "tooltip": "",
+                  "hideLabel": false,
+                  "tabindex": "",
+                  "disabled": false,
+                  "autofocus": false,
+                  "dbIndex": false,
+                  "customDefaultValue": "",
+                  "calculateValue": "",
+                  "calculateServer": false,
+                  "widget": null,
+                  "validateOn": "change",
+                  "validate": {
+                    "required": false,
+                    "custom": "",
+                    "customPrivate": false,
+                    "strictDateValidation": false,
+                    "multiple": false,
+                    "unique": false
+                  },
+                  "allowCalculateOverride": false,
+                  "encrypted": false,
+                  "showCharCount": false,
+                  "showWordCount": false,
+                  "allowMultipleMasks": false,
+                  "addons": [],
+                  "id": "etg6trf"
+                },
+                {
+                  "label": "and the confirmations and other statements made in this Part",
+                  "tag": "p",
+                  "className": "",
+                  "attrs": [{ "attr": "", "value": "" }],
+                  "content": "-and the confirmations and other statements made in this Part",
+                  "refreshOnChange": false,
+                  "customClass": "",
+                  "hidden": false,
+                  "modalEdit": false,
+                  "key": "andTheConfirmationsAndOtherStatementsMadeInThisPart",
+                  "tags": [],
+                  "properties": {},
+                  "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": "",
+                    "json": ""
+                  },
+                  "customConditional": "",
+                  "logic": [],
+                  "attributes": {},
+                  "overlay": {
+                    "style": "",
+                    "page": "",
+                    "left": "",
+                    "top": "",
+                    "width": "",
+                    "height": ""
+                  },
+                  "type": "htmlelement",
+                  "input": false,
+                  "placeholder": "",
+                  "prefix": "",
+                  "suffix": "",
+                  "multiple": false,
+                  "defaultValue": null,
+                  "protected": false,
+                  "unique": false,
+                  "persistent": false,
+                  "clearOnHide": true,
+                  "refreshOn": "",
+                  "redrawOn": "",
+                  "tableView": false,
+                  "dataGridLabel": false,
+                  "labelPosition": "top",
+                  "description": "",
+                  "errorLabel": "",
+                  "tooltip": "",
+                  "hideLabel": false,
+                  "tabindex": "",
+                  "disabled": false,
+                  "autofocus": false,
+                  "dbIndex": false,
+                  "customDefaultValue": "",
+                  "calculateValue": "",
+                  "calculateServer": false,
+                  "widget": null,
+                  "validateOn": "change",
+                  "validate": {
+                    "required": false,
+                    "custom": "",
+                    "customPrivate": false,
+                    "strictDateValidation": false,
+                    "multiple": false,
+                    "unique": false
+                  },
+                  "allowCalculateOverride": false,
+                  "encrypted": false,
+                  "showCharCount": false,
+                  "showWordCount": false,
+                  "allowMultipleMasks": false,
+                  "addons": [],
+                  "id": "ev6fn2e"
                 },
                 {
                   "label": "I/We,",
                   "tag": "p",
                   "className": "",
-                  "attrs": [
-                    {
-                      "attr": "",
-                      "value": ""
-                    }
-                  ],
+                  "attrs": [{ "attr": "", "value": "" }],
                   "content": "I/We,",
                   "refreshOnChange": false,
                   "customClass": "",
@@ -41890,11 +41985,7 @@
                     "multiple": false,
                     "unique": false
                   },
-                  "conditional": {
-                    "show": null,
-                    "when": null,
-                    "eq": ""
-                  },
+                  "conditional": { "show": null, "when": null, "eq": "" },
                   "overlay": {
                     "style": "",
                     "left": "",
@@ -42178,7 +42269,7 @@
                       "modalEdit": false,
                       "values": [
                         {
-                          "label": "Negative (a determination by a director under section 44 of the Act that a site is <u>not</u> a contaminated site)",
+                          "label": "Negative (a determination by a director under section 44 of the Act that a site is not a contaminated site)",
                           "value": "negativeADeterminationByADirectorUnderSection44OfTheActThatASiteIsNotAContaminatedSite",
                           "shortcut": ""
                         },
@@ -42214,9 +42305,7 @@
                       "errors": "",
                       "key": "typeOfDetermination1",
                       "tags": [],
-                      "properties": {
-                        "apField": "true"
-                      },
+                      "properties": { "apField": "true" },
                       "conditional": {
                         "show": true,
                         "when": "recommendationCheckbox",
@@ -42251,11 +42340,11 @@
                       "addons": [],
                       "inputType": "radio",
                       "fieldSet": false,
-                      "id": "ejqtg7j",
+                      "id": "e8q8zna",
                       "defaultValue": ""
                     },
                     {
-                      "label": "In my opinion the site does <u>not</u> meet the definition of a contaminated site in accordance with the CSR based on the following:",
+                      "label": "In my opinion the site does not meet the definition of a contaminated site in accordance with the CSR based on the following:",
                       "labelPosition": "top",
                       "optionsLabelPosition": "right",
                       "description": "",
@@ -42271,17 +42360,17 @@
                       "modalEdit": false,
                       "values": [
                         {
-                          "label": "CSR Schedule 2 activities are known or suspected to have occurred at the subject site. A preliminary site investigation addressing all identified areas of potential environmental concern (APECs) and potential contaminants of concern (PCOCs) was completed. No substances were identified in concentrations exceeding the standards prescribed in CSR Schedules 3.1-3.4. All evaluated PCOCs are listed in Schedule C of the draft Determination",
+                          "label": "CSR Schedule 2 activities are known or suspected to have occurred at the subject site. A preliminary site investigation addressing all identified areas of potential environmental concern (APECs) and potential contaminants of concern (PCOCs) was completed. No substances were identified in concentrations exceeding the standards prescribed in CSR Schedules 3.1-3.4. All evaluated PCOCs are listed in Schedule B of the draft Determination.",
                           "value": "csrSchedule2ActivitiesAreKnownOrSuspectedToHaveOccurredAtTheSubjectSiteAPreliminarySiteInvestigationAddressingAllIdentifiedAreasOfPotentialEnvironmentalConcernApeCsAndPotentialContaminantsOfConcernPcoCsWasCompletedNoSubstancesWereIdentifiedInConcentrationsExceedingTheStandardsPrescribedInCsrSchedules3134AllEvaluatedPcoCsAreListedInScheduleBOfTheDraftDetermination",
                           "shortcut": ""
                         },
                         {
-                          "label": "No Schedule 2 activities have occurred at the subject site. A preliminary site investigation addressing all identified areas of potential environmental concern (APECs) and potential contaminants of concern (PCOCs) was completed. No substances were identified in concentrations exceeding the standards prescribed in CSR Schedules 3.1-3.4. All evaluated PCOCs are listed in Schedule C of the draft Determination",
+                          "label": "No Schedule 2 activities have occurred at the subject site. A preliminary site investigation addressing all identified areas of potential environmental concern (APECs) and potential contaminants of concern (PCOCs) was completed. No substances were identified in concentrations exceeding the standards prescribed in CSR Schedules 3.1-3.4. All evaluated PCOCs are listed in Schedule B of the draft Determination.",
                           "value": "noSchedule2ActivitiesHaveOccurredAtTheSubjectSiteAPreliminarySiteInvestigationAddressingAllIdentifiedAreasOfPotentialEnvironmentalConcernApeCsAndPotentialContaminantsOfConcernPcoCsWasCompletedNoSubstancesWereIdentifiedInConcentrationsExceedingTheStandardsPrescribedInCsrSchedules3134AllEvaluatedPcoCsAreListedInScheduleBOfTheDraftDetermination",
                           "shortcut": ""
                         },
                         {
-                          "label": "Other available information was provided and reviewed and no substances were identified in concentrations exceeding the standards prescribed in CSR Schedules 3.1-3.4. All evaluated PCOCs are listed in Schedule C of the draft Determination",
+                          "label": "Other available information was provided and reviewed and no substances were identified in concentrations exceeding the standards prescribed in CSR Schedules 3.1-3.4. All evaluated PCOCs are listed in Schedule B of the draft Determination.",
                           "value": "otherAvailableInformationWasProvidedAndReviewedAndNoSubstancesWereIdentifiedInConcentrationsExceedingTheStandardsPrescribedInCsrSchedules3134AllEvaluatedPcoCsAreListedInScheduleBOfTheDraftDetermination",
                           "shortcut": ""
                         }
@@ -42312,9 +42401,7 @@
                       "errors": "",
                       "key": "inMyOpinionTheSiteDoesNotMeetTheDefinitionOfAContaminatedSiteInAccordanceWithTheCsrBasedOnTheFollowingSelectOne",
                       "tags": [],
-                      "properties": {
-                        "apField": "true"
-                      },
+                      "properties": { "apField": "true" },
                       "conditional": {
                         "show": true,
                         "when": "typeOfDetermination1",
@@ -42349,7 +42436,7 @@
                       "addons": [],
                       "inputType": "radio",
                       "fieldSet": false,
-                      "id": "ezxd0n9",
+                      "id": "ev5bsg8",
                       "defaultValue": ""
                     },
                     {
@@ -42360,9 +42447,7 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "displayMask": "",
                       "editor": "",
                       "autoExpand": false,
@@ -42413,9 +42498,7 @@
                       "errors": "",
                       "key": "describeTheInformationProvidedAndHowItJustifiesANegativeDetermination",
                       "tags": [],
-                      "properties": {
-                        "apField": "true"
-                      },
+                      "properties": { "apField": "true" },
                       "conditional": {
                         "show": true,
                         "when": "typeOfDetermination1",
@@ -42465,12 +42548,12 @@
                       "modalEdit": false,
                       "values": [
                         {
-                          "label": "A preliminary site investigation addressing all identified areas of potential environmental concern (APECs) and potential contaminants of concern (PCOCs) was completed. Substances were identified in concentrations exceeding the standards prescribed in CSR Schedules 3.1-3.4. All identified COCs are listed in Schedule C of the draft Determination",
+                          "label": "A preliminary site investigation addressing all identified areas of potential environmental concern (APECs) and potential contaminants of concern (PCOCs) was completed. Substances were identified in concentrations exceeding the standards prescribed in CSR Schedules 3.1-3.4. All identified COCs are listed in Schedule B of the draft Determination.",
                           "value": "aPreliminarySiteInvestigationAddressingAllIdentifiedAreasOfPotentialEnvironmentalConcernApeCsAndPotentialContaminantsOfConcernPcoCsWasCompletedSubstancesWereIdentifiedInConcentrationsExceedingTheStandardsPrescribedInCsrSchedules3134AllIdentifiedCoCsAreListedInScheduleBOfTheDraftDetermination",
                           "shortcut": ""
                         },
                         {
-                          "label": "Other available information was provided and reviewed, and substances were identified in concentrations exceeding the standards prescribed in CSR Schedules 3.1-3.4. All identified COCs are listed in Schedule C of the draft Determination",
+                          "label": "Other available information was provided and reviewed, and substances were identified in concentrations exceeding the standards prescribed in CSR Schedules 3.1-3.4. All identified COCs are listed in Schedule B of the draft Determination.",
                           "value": "otherAvailableInformationWasProvidedAndReviewedAndSubstancesWereIdentifiedInConcentrationsExceedingTheStandardsPrescribedInCsrSchedules3134AllIdentifiedCoCsAreListedInScheduleBOfTheDraftDetermination",
                           "shortcut": ""
                         }
@@ -42501,9 +42584,7 @@
                       "errors": "",
                       "key": "inMyOpinionTheSiteMeetsTheDefinitionOfAContaminatedSiteInAccordanceWithTheCsrBasedOnTheFollowingSelectOne",
                       "tags": [],
-                      "properties": {
-                        "apField": "true"
-                      },
+                      "properties": { "apField": "true" },
                       "conditional": {
                         "show": true,
                         "when": "typeOfDetermination1",
@@ -42538,7 +42619,7 @@
                       "addons": [],
                       "inputType": "radio",
                       "fieldSet": false,
-                      "id": "e16l1wn",
+                      "id": "ertt5o",
                       "defaultValue": ""
                     },
                     {
@@ -42549,9 +42630,7 @@
                       "tooltip": "",
                       "prefix": "",
                       "suffix": "",
-                      "widget": {
-                        "type": "input"
-                      },
+                      "widget": { "type": "input" },
                       "displayMask": "",
                       "editor": "",
                       "autoExpand": false,
@@ -42602,9 +42681,7 @@
                       "errors": "",
                       "key": "describeTheInformationProvidedAndHowItJustifiesAPositiveDetermination",
                       "tags": [],
-                      "properties": {
-                        "apField": "true"
-                      },
+                      "properties": { "apField": "true" },
                       "conditional": {
                         "show": true,
                         "when": "typeOfDetermination1",
@@ -44985,7 +45062,7 @@
                           "id": "eh57og"
                         }
                       ],
-                      "id": "elgzlo000000000000000000000000000000000000000000000000000000000",
+                      "id": "elgzlo0000000000000000000000000000000000000000000000000000000000000",
                       "placeholder": "",
                       "prefix": "",
                       "customClass": "",
@@ -45566,7 +45643,7 @@
                           "id": "ewbhfdf"
                         }
                       ],
-                      "id": "efswbti000000000000000000000000000000000000000000000000000000000",
+                      "id": "efswbti0000000000000000000000000000000000000000000000000000000000000",
                       "placeholder": "",
                       "prefix": "",
                       "customClass": "",
@@ -46059,7 +46136,7 @@
                           "id": "ef7ip7"
                         }
                       ],
-                      "id": "erig56000000000000000000000000000000000000000000000000000000000",
+                      "id": "erig560000000000000000000000000000000000000000000000000000000000000",
                       "placeholder": "",
                       "prefix": "",
                       "customClass": "",
@@ -46540,7 +46617,7 @@
                           "id": "et2cze8"
                         }
                       ],
-                      "id": "ew1qzk000000000000000000000000000000000000000000000000000000000",
+                      "id": "ew1qzk0000000000000000000000000000000000000000000000000000000000000",
                       "placeholder": "",
                       "prefix": "",
                       "customClass": "",
@@ -46941,7 +47018,7 @@
                           "id": "ehp68ju"
                         }
                       ],
-                      "id": "ee6cl3c000000000000000000000000000000000000000000000000000000000",
+                      "id": "ee6cl3c0000000000000000000000000000000000000000000000000000000000000",
                       "placeholder": "",
                       "prefix": "",
                       "customClass": "",
@@ -47298,42 +47375,9 @@
                       "id": "ejp1gvd"
                     },
                     {
-                      "label": "The site has been satisfactorily investigated for all areas of (potential) environmental concern and (potential) contaminants of concern to determine the lateral and vertical extents of contamination",
-                      "description": "",
-                      "tooltip": "",
-                      "shortcut": "",
-                      "inputType": "checkbox",
-                      "customClass": "",
-                      "tabindex": "",
-                      "hidden": false,
-                      "hideLabel": false,
-                      "autofocus": false,
-                      "disabled": false,
+                      "label": "The site has been satisfactorily investigated for all areas of (potential) environmental concern and (potential) contaminants of concern to determine the lateral and vertical extents of contamination; OR",
                       "tableView": false,
-                      "modalEdit": false,
                       "defaultValue": false,
-                      "persistent": true,
-                      "protected": false,
-                      "dbIndex": false,
-                      "encrypted": false,
-                      "redrawOn": "",
-                      "clearOnHide": true,
-                      "customDefaultValue": "",
-                      "calculateValue": "",
-                      "calculateServer": false,
-                      "allowCalculateOverride": false,
-                      "validate": {
-                        "required": false,
-                        "customMessage": "",
-                        "custom": "",
-                        "customPrivate": false,
-                        "json": "",
-                        "strictDateValidation": false,
-                        "multiple": false,
-                        "unique": false
-                      },
-                      "errorLabel": "",
-                      "errors": "",
                       "key": "asAppropriateTheSourceSiteHasBeenSatisfactorilyInvestigatedForAllAreasOfPotentialEnvironmentalConcernAndPotentialContaminantsOfConcernToDetermineTheLateralAndVerticalExtentsOfContaminationWithDueRegardToEmaTheCsrAndTheHwr",
                       "tags": [],
                       "properties": {
@@ -48058,7 +48102,7 @@
                       "id": "e6sjby"
                     },
                     {
-                      "label": "The site has been satisfactorily remediated in accordance with section 53 (3) of the EMA and section 49(2) of the CSR, and with the specified conditions imposed in it's draft Schedule B, in accordance with applicable standards, and with the specified conditions imposed in Schedule B, as identified in the draft COC",
+                      "label": "The site has been satisfactorily remediated in accordance with section 53 (3) of the EMA and section 49(2) of the CSR, in accordance with applicable standards as identified in the draft COC;",
                       "description": "",
                       "tooltip": "",
                       "shortcut": "",
@@ -48096,9 +48140,7 @@
                       "errors": "",
                       "key": "forCoCsTheOnsiteManagementAreaSHasHaveBeenSatisfactorilyRemediatedInAccordanceWithSection533OfTheEmaAndSection492OfTheCsrInAccordanceWithApplicableStandardsAsIdentifiedInTheDraftCoc",
                       "tags": [],
-                      "properties": {
-                        "apField": "true"
-                      },
+                      "properties": { "apField": "true" },
                       "conditional": {
                         "show": null,
                         "when": null,
@@ -48134,7 +48176,7 @@
                       "showWordCount": false,
                       "allowMultipleMasks": false,
                       "addons": [],
-                      "id": "eusckm"
+                      "id": "e8v15h"
                     },
                     {
                       "label": "Contamination exists beyond the legal lot boundaries",
@@ -48754,6 +48796,138 @@
                       },
                       "type": "checkbox",
                       "name": "",
+                      "id": "exi5p5"
+                    },
+                    {
+                      "html": "<h4><strong>For a Protocol Approval or Other Recommendation</strong></h4>",
+                      "label": "For Other Recommendation or Protocol Approvals",
+                      "customClass": "",
+                      "refreshOnChange": false,
+                      "hidden": false,
+                      "modalEdit": false,
+                      "key": "forAProtocolApprovalOrOtherRecommendation",
+                      "tags": [],
+                      "properties": {},
+                      "conditional": {
+                        "show": true,
+                        "when": "recommendationCheckbox",
+                        "eq": "other",
+                        "json": ""
+                      },
+                      "customConditional": "",
+                      "logic": [],
+                      "attributes": {},
+                      "overlay": {
+                        "style": "",
+                        "page": "",
+                        "left": "",
+                        "top": "",
+                        "width": "",
+                        "height": ""
+                      },
+                      "type": "content",
+                      "input": false,
+                      "tableView": false,
+                      "placeholder": "",
+                      "prefix": "",
+                      "suffix": "",
+                      "multiple": false,
+                      "defaultValue": null,
+                      "protected": false,
+                      "unique": false,
+                      "persistent": true,
+                      "clearOnHide": true,
+                      "refreshOn": "",
+                      "redrawOn": "",
+                      "dataGridLabel": false,
+                      "labelPosition": "top",
+                      "description": "",
+                      "errorLabel": "",
+                      "tooltip": "",
+                      "hideLabel": false,
+                      "tabindex": "",
+                      "disabled": false,
+                      "autofocus": false,
+                      "dbIndex": false,
+                      "customDefaultValue": "",
+                      "calculateValue": "",
+                      "calculateServer": false,
+                      "widget": null,
+                      "validateOn": "change",
+                      "validate": {
+                        "required": false,
+                        "custom": "",
+                        "customPrivate": false,
+                        "strictDateValidation": false,
+                        "multiple": false,
+                        "unique": false
+                      },
+                      "allowCalculateOverride": false,
+                      "encrypted": false,
+                      "showCharCount": false,
+                      "showWordCount": false,
+                      "allowMultipleMasks": false,
+                      "addons": [],
+                      "id": "e5oozs"
+                    },
+                    {
+                      "label": "The submitted documentation is in accordance with the requirements outlined in the relevant director's protocol or ministry guidance.",
+                      "description": "",
+                      "tooltip": "",
+                      "shortcut": "",
+                      "inputType": "checkbox",
+                      "customClass": "",
+                      "tabindex": "",
+                      "hidden": false,
+                      "hideLabel": false,
+                      "autofocus": false,
+                      "disabled": false,
+                      "tableView": false,
+                      "modalEdit": false,
+                      "persistent": true,
+                      "protected": false,
+                      "dbIndex": false,
+                      "encrypted": false,
+                      "redrawOn": "",
+                      "clearOnHide": true,
+                      "customDefaultValue": "",
+                      "calculateValue": "",
+                      "calculateServer": false,
+                      "allowCalculateOverride": false,
+                      "validate": {
+                        "required": false,
+                        "customMessage": "",
+                        "custom": "",
+                        "customPrivate": false,
+                        "json": "",
+                        "strictDateValidation": false,
+                        "multiple": false,
+                        "unique": false
+                      },
+                      "errorLabel": "",
+                      "errors": "",
+                      "key": "theSubmittedDocumentationIsInAccordanceWithTheRequirementsOutlinedInTheRelevantDirectorsProtocolOrMinistryGuidance",
+                      "tags": [],
+                      "properties": {},
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": "",
+                        "json": ""
+                      },
+                      "customConditional": "",
+                      "logic": [],
+                      "attributes": {},
+                      "overlay": {
+                        "style": "",
+                        "page": "",
+                        "left": "",
+                        "top": "",
+                        "width": "",
+                        "height": ""
+                      },
+                      "type": "checkbox",
+                      "name": "",
                       "value": "",
                       "input": true,
                       "placeholder": "",
@@ -48770,7 +48944,8 @@
                       "showWordCount": false,
                       "allowMultipleMasks": false,
                       "addons": [],
-                      "id": "ez4l3j"
+                      "id": "e9fgynp",
+                      "defaultValue": false
                     }
                   ],
                   "placeholder": "",
@@ -49311,7 +49486,7 @@
                       "type": "columns",
                       "input": false,
                       "tableView": false,
-                      "id": "eedylrm000000000000000000000000000000000000000000000000000000000",
+                      "id": "eedylrm0000000000000000000000000000000000000000000000000000000000000",
                       "placeholder": "",
                       "prefix": "",
                       "customClass": "",
@@ -50141,7 +50316,7 @@
                       "type": "columns",
                       "input": false,
                       "tableView": false,
-                      "id": "ewf0wxm000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                      "id": "ewf0wxm0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                       "placeholder": "",
                       "prefix": "",
                       "customClass": "",
@@ -51240,7 +51415,7 @@
               "id": "e4431qa"
             },
             {
-              "label": "I agree to comply with the director's requirements for the site as documented in schedule C of the draft certification document.",
+              "label": "I agree to comply with the director's requirements for the site as documented in schedule B of the draft certification document.",
               "description": "",
               "tooltip": "",
               "shortcut": "",
@@ -51314,7 +51489,7 @@
               "showWordCount": false,
               "allowMultipleMasks": false,
               "addons": [],
-              "id": "erwxdce"
+              "id": "eylq8ki"
             },
             {
               "label": "I accept that if a risk assessment has been applied at the site, that the risk assessment is only valid as long as conditions at the site do not change.",
@@ -52995,6 +53170,72 @@
           "addons": [],
           "inputType": "hidden",
           "id": "epx906h"
+        },
+        {
+          "label": "hdnSoscAppType",
+          "customClass": "",
+          "modalEdit": false,
+          "defaultValue": null,
+          "persistent": true,
+          "protected": false,
+          "dbIndex": false,
+          "encrypted": false,
+          "redrawOn": "",
+          "customDefaultValue": "value = 'SOSC';",
+          "calculateValue": "",
+          "calculateServer": false,
+          "key": "hdnSoscAppType",
+          "tags": [],
+          "properties": {},
+          "logic": [],
+          "attributes": {},
+          "overlay": {
+            "style": "",
+            "page": "",
+            "left": "",
+            "top": "",
+            "width": "",
+            "height": ""
+          },
+          "type": "hidden",
+          "input": true,
+          "tableView": false,
+          "keyModified": true,
+          "placeholder": "",
+          "prefix": "",
+          "suffix": "",
+          "multiple": false,
+          "unique": false,
+          "hidden": false,
+          "clearOnHide": true,
+          "refreshOn": "",
+          "dataGridLabel": false,
+          "labelPosition": "top",
+          "description": "",
+          "errorLabel": "",
+          "tooltip": "",
+          "hideLabel": false,
+          "tabindex": "",
+          "disabled": false,
+          "autofocus": false,
+          "widget": { "type": "input" },
+          "validateOn": "change",
+          "validate": {
+            "required": false,
+            "custom": "",
+            "customPrivate": false,
+            "strictDateValidation": false,
+            "multiple": false,
+            "unique": false
+          },
+          "conditional": { "show": null, "when": null, "eq": "" },
+          "allowCalculateOverride": false,
+          "showCharCount": false,
+          "showWordCount": false,
+          "allowMultipleMasks": false,
+          "addons": [],
+          "inputType": "hidden",
+          "id": "eksojzv"
         }
       ]
     }

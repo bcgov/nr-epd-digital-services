@@ -84,18 +84,18 @@ export const GetApplicationHousingByApplicationIdDocument = gql`
  *   },
  * });
  */
-export function useGetApplicationHousingByApplicationIdQuery(baseOptions: Apollo.QueryHookOptions<GetApplicationHousingByApplicationIdQuery, GetApplicationHousingByApplicationIdQueryVariables> & ({ variables: GetApplicationHousingByApplicationIdQueryVariables; skip?: boolean; } | { skip: boolean; })) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<GetApplicationHousingByApplicationIdQuery, GetApplicationHousingByApplicationIdQueryVariables>(GetApplicationHousingByApplicationIdDocument, options);
-}
+export function useGetApplicationHousingByApplicationIdQuery(baseOptions: Apollo.QueryHookOptions<GetApplicationHousingByApplicationIdQuery, GetApplicationHousingByApplicationIdQueryVariables> & ({ variables: GetApplicationHousingByApplicationIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetApplicationHousingByApplicationIdQuery, GetApplicationHousingByApplicationIdQueryVariables>(GetApplicationHousingByApplicationIdDocument, options);
+      }
 export function useGetApplicationHousingByApplicationIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplicationHousingByApplicationIdQuery, GetApplicationHousingByApplicationIdQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<GetApplicationHousingByApplicationIdQuery, GetApplicationHousingByApplicationIdQueryVariables>(GetApplicationHousingByApplicationIdDocument, options);
-}
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetApplicationHousingByApplicationIdQuery, GetApplicationHousingByApplicationIdQueryVariables>(GetApplicationHousingByApplicationIdDocument, options);
+        }
 export function useGetApplicationHousingByApplicationIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetApplicationHousingByApplicationIdQuery, GetApplicationHousingByApplicationIdQueryVariables>) {
-  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
-  return Apollo.useSuspenseQuery<GetApplicationHousingByApplicationIdQuery, GetApplicationHousingByApplicationIdQueryVariables>(GetApplicationHousingByApplicationIdDocument, options);
-}
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetApplicationHousingByApplicationIdQuery, GetApplicationHousingByApplicationIdQueryVariables>(GetApplicationHousingByApplicationIdDocument, options);
+        }
 export type GetApplicationHousingByApplicationIdQueryHookResult = ReturnType<typeof useGetApplicationHousingByApplicationIdQuery>;
 export type GetApplicationHousingByApplicationIdLazyQueryHookResult = ReturnType<typeof useGetApplicationHousingByApplicationIdLazyQuery>;
 export type GetApplicationHousingByApplicationIdSuspenseQueryHookResult = ReturnType<typeof useGetApplicationHousingByApplicationIdSuspenseQuery>;
@@ -130,17 +130,17 @@ export const GetHousingTypesDocument = gql`
  * });
  */
 export function useGetHousingTypesQuery(baseOptions?: Apollo.QueryHookOptions<GetHousingTypesQuery, GetHousingTypesQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<GetHousingTypesQuery, GetHousingTypesQueryVariables>(GetHousingTypesDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetHousingTypesQuery, GetHousingTypesQueryVariables>(GetHousingTypesDocument, options);
+      }
 export function useGetHousingTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetHousingTypesQuery, GetHousingTypesQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<GetHousingTypesQuery, GetHousingTypesQueryVariables>(GetHousingTypesDocument, options);
-}
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetHousingTypesQuery, GetHousingTypesQueryVariables>(GetHousingTypesDocument, options);
+        }
 export function useGetHousingTypesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetHousingTypesQuery, GetHousingTypesQueryVariables>) {
-  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
-  return Apollo.useSuspenseQuery<GetHousingTypesQuery, GetHousingTypesQueryVariables>(GetHousingTypesDocument, options);
-}
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetHousingTypesQuery, GetHousingTypesQueryVariables>(GetHousingTypesDocument, options);
+        }
 export type GetHousingTypesQueryHookResult = ReturnType<typeof useGetHousingTypesQuery>;
 export type GetHousingTypesLazyQueryHookResult = ReturnType<typeof useGetHousingTypesLazyQuery>;
 export type GetHousingTypesSuspenseQueryHookResult = ReturnType<typeof useGetHousingTypesSuspenseQuery>;
@@ -174,18 +174,18 @@ export const SearchApplicationsByIdDocument = gql`
  *   },
  * });
  */
-export function useSearchApplicationsByIdQuery(baseOptions: Apollo.QueryHookOptions<SearchApplicationsByIdQuery, SearchApplicationsByIdQueryVariables> & ({ variables: SearchApplicationsByIdQueryVariables; skip?: boolean; } | { skip: boolean; })) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<SearchApplicationsByIdQuery, SearchApplicationsByIdQueryVariables>(SearchApplicationsByIdDocument, options);
-}
+export function useSearchApplicationsByIdQuery(baseOptions: Apollo.QueryHookOptions<SearchApplicationsByIdQuery, SearchApplicationsByIdQueryVariables> & ({ variables: SearchApplicationsByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchApplicationsByIdQuery, SearchApplicationsByIdQueryVariables>(SearchApplicationsByIdDocument, options);
+      }
 export function useSearchApplicationsByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchApplicationsByIdQuery, SearchApplicationsByIdQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<SearchApplicationsByIdQuery, SearchApplicationsByIdQueryVariables>(SearchApplicationsByIdDocument, options);
-}
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchApplicationsByIdQuery, SearchApplicationsByIdQueryVariables>(SearchApplicationsByIdDocument, options);
+        }
 export function useSearchApplicationsByIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<SearchApplicationsByIdQuery, SearchApplicationsByIdQueryVariables>) {
-  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
-  return Apollo.useSuspenseQuery<SearchApplicationsByIdQuery, SearchApplicationsByIdQueryVariables>(SearchApplicationsByIdDocument, options);
-}
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<SearchApplicationsByIdQuery, SearchApplicationsByIdQueryVariables>(SearchApplicationsByIdDocument, options);
+        }
 export type SearchApplicationsByIdQueryHookResult = ReturnType<typeof useSearchApplicationsByIdQuery>;
 export type SearchApplicationsByIdLazyQueryHookResult = ReturnType<typeof useSearchApplicationsByIdLazyQuery>;
 export type SearchApplicationsByIdSuspenseQueryHookResult = ReturnType<typeof useSearchApplicationsByIdSuspenseQuery>;
@@ -219,9 +219,9 @@ export type AddHousingToApplicationMutationFn = Apollo.MutationFunction<AddHousi
  * });
  */
 export function useAddHousingToApplicationMutation(baseOptions?: Apollo.MutationHookOptions<AddHousingToApplicationMutation, AddHousingToApplicationMutationVariables>) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<AddHousingToApplicationMutation, AddHousingToApplicationMutationVariables>(AddHousingToApplicationDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddHousingToApplicationMutation, AddHousingToApplicationMutationVariables>(AddHousingToApplicationDocument, options);
+      }
 export type AddHousingToApplicationMutationHookResult = ReturnType<typeof useAddHousingToApplicationMutation>;
 export type AddHousingToApplicationMutationResult = Apollo.MutationResult<AddHousingToApplicationMutation>;
 export type AddHousingToApplicationMutationOptions = Apollo.BaseMutationOptions<AddHousingToApplicationMutation, AddHousingToApplicationMutationVariables>;
@@ -254,9 +254,9 @@ export type UpdateApplicationHousingMutationFn = Apollo.MutationFunction<UpdateA
  * });
  */
 export function useUpdateApplicationHousingMutation(baseOptions?: Apollo.MutationHookOptions<UpdateApplicationHousingMutation, UpdateApplicationHousingMutationVariables>) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<UpdateApplicationHousingMutation, UpdateApplicationHousingMutationVariables>(UpdateApplicationHousingDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateApplicationHousingMutation, UpdateApplicationHousingMutationVariables>(UpdateApplicationHousingDocument, options);
+      }
 export type UpdateApplicationHousingMutationHookResult = ReturnType<typeof useUpdateApplicationHousingMutation>;
 export type UpdateApplicationHousingMutationResult = Apollo.MutationResult<UpdateApplicationHousingMutation>;
 export type UpdateApplicationHousingMutationOptions = Apollo.BaseMutationOptions<UpdateApplicationHousingMutation, UpdateApplicationHousingMutationVariables>;

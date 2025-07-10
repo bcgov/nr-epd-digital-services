@@ -33,7 +33,6 @@ export class TableColumn {
     public linkRedirectionURL?: string,
     public dynamicColumn?: boolean,
     public columnSize?: ColumnSize,
-    public stickyCol?: boolean,
     public customHeaderCss?: string,
     public renderCell?: (value: any, rowData: any) => ReactNode,
   ) {

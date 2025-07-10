@@ -3,14 +3,16 @@ import InvoiceIndexTable from './components/index/table';
 import { RequestStatus } from '@cats/helpers/requests/status';
 import { InvoiceByApplicationIdDto } from '../../../../../../generated/types';
 import { useGetInvoicesByApplicationIdQuery } from './getInvoicesByApplicationId.generated';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { TableColumn } from '@cats/components/table/TableColumn';
 import { indexTableColumns } from './components/index/tableColumnConfig';
 import { InvoiceFilter } from './components/index/filter';
 import {
   InvoiceSortBy as InvoiceSortBy,
-  invoiceSortByDir as InvoiceSortByDir,
+  InvoiceSortByDir as InvoiceSortByDir,
 } from './components/index/sortBy';
+import { Button } from '@cats/components/button/Button';
+import { Plus } from '@cats/components/common/icon';
 
 export const Invoices: React.FC = () => {
   const [results, setResults] = useState<InvoiceByApplicationIdDto[]>([]);
@@ -25,15 +27,34 @@ export const Invoices: React.FC = () => {
   const [requestStatus, setRequestStatus] = useState<RequestStatus>(
     RequestStatus.idle,
   );
-  const [columns, setColumns] = useState<TableColumn[]>(indexTableColumns);
-
+  const [columns, setColumns] =
+    React.useState<TableColumn[]>(indexTableColumns);
+  const navigate = useNavigate();
+  const location = useLocation();
   const { id = '' } = useParams();
   const applicationId = parseInt(id, 10);
-  const { data, error } = useGetInvoicesByApplicationIdQuery({
+
+  // Parse URL search params to check for refresh=true
+  const searchParams = new URLSearchParams(location.search);
+  const shouldRefresh = searchParams.get('refresh') === 'true';
+
+  const { data, error, refetch } = useGetInvoicesByApplicationIdQuery({
     variables: {
       applicationId: applicationId,
     },
   });
+
+  // If refresh=true is in the URL, refetch data and remove the parameter
+  useEffect(() => {
+    if (shouldRefresh) {
+      refetch().then(() => {
+        // Remove refresh=true from the URL after refetching
+        navigate(`/applications/${applicationId}?tab=invoices`, {
+          replace: true,
+        });
+      });
+    }
+  }, [shouldRefresh, refetch, navigate, applicationId]);
 
   const handleFilterChange = (filter: InvoiceFilter) => {
     setFilter(filter);
@@ -129,10 +150,20 @@ export const Invoices: React.FC = () => {
     }
   }, [data, error]);
 
+  const handleCreateInvoiceClick = () => {
+    navigate(`/applications/${applicationId}/invoices/create`);
+  };
+
+  const createInvoiceButton = (
+    <Button variant="secondary" onClick={handleCreateInvoiceClick}>
+      <Plus /> Create Invoice
+    </Button>
+  );
+
   return (
     <div>
-      <div>
-        <p>TODO: Financial Summary Will Go Here</p>
+      <div className="d-flex justify-content-between mb-3 align-items-center">
+        <p>Financial Summary Will Go Here</p>
       </div>
       <div>
         <InvoiceIndexTable
@@ -143,6 +174,7 @@ export const Invoices: React.FC = () => {
           filter={filter}
           handleFilterChange={handleFilterChange}
           sortHandler={handleSortChange}
+          createInvoiceButton={createInvoiceButton}
         />
       </div>
     </div>

@@ -8,12 +8,14 @@ import { HttpStatus } from '@nestjs/common';
 import { Filter } from '../../utilities/enums/application/filter.enum';
 import { SortBy } from '../../utilities/enums/staff/sortBy.enum';
 import { SortByDirection } from '../../utilities/enums/application/sortByDirection.enum';
+import { ViewApplication } from '../../dto/application/viewApplication.dto';
 
 describe('StaffResolver', () => {
   let resolver: StaffResolver;
   let staffService: StaffService;
   let loggerService: LoggerService;
   let personResponse: GenericResponseProvider<ViewStaff[]>;
+  let applicationResponse: GenericResponseProvider<ViewApplication[]>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -50,6 +52,7 @@ describe('StaffResolver', () => {
     staffService = module.get<StaffService>(StaffService);
     loggerService = module.get<LoggerService>(LoggerService);
     personResponse = module.get<GenericResponseProvider<ViewStaff[]>>(GenericResponseProvider);
+    applicationResponse = module.get<GenericResponseProvider<ViewApplication[]>>(GenericResponseProvider);
   });
 
   it('should be defined', () => {
@@ -146,5 +149,95 @@ describe('StaffResolver', () => {
     ).rejects.toThrow('Failed to fetch staff: Unexpected Error');
     });
 
+  });
+
+  
+ describe('getApplicationsByStaff', () => {
+    it('should return application records when found', async () => {
+      const mockApplications = [
+        {
+          applicationId: 101,
+          siteAddress: '123 Main St',
+          role: 'Inspector',
+          startDate: '2024-01-01',
+          endDate: '2024-12-31',
+        },
+        {
+          applicationId: 102,
+          siteAddress: '456 Market Ave',
+          role: 'Supervisor',
+          startDate: '2024-06-01',
+          endDate: '2024-12-01',
+        },
+      ];
+
+      staffService.getApplicationsByStaff = jest.fn().mockResolvedValue({
+        data: mockApplications,
+        count: mockApplications.length,
+      });
+
+      const result = await resolver.getApplicationsByStaff(1, 5, SortBy.ID, SortByDirection.ASC, 1, 2);
+
+      expect(staffService.getApplicationsByStaff).toHaveBeenCalledWith(1, 5, SortBy.ID, SortByDirection.ASC, 1, 2);
+      expect(result).toEqual({
+        message: 'Application records fetched successfully',
+        httpStatusCode: HttpStatus.OK,
+        success: true,
+        data: mockApplications,
+        timestamp: expect.any(String),
+      });
+    });
+
+    it('should return not found response when no application records exist', async () => {
+      staffService.getApplicationsByStaff = jest.fn().mockResolvedValue({
+        data: [],
+        count: 0,
+      });
+
+      const result = await resolver.getApplicationsByStaff(1, 5, SortBy.ID, SortByDirection.ASC, 1);
+
+      expect(staffService.getApplicationsByStaff).toHaveBeenCalledWith(1, 5, SortBy.ID, SortByDirection.ASC, 1, undefined);
+      expect(result).toEqual({
+        message: 'No application records found',
+        httpStatusCode: HttpStatus.NOT_FOUND,
+        success: false,
+        data: [],
+        timestamp: expect.any(String),
+      });
+    });
+
+    it('should log appropriate messages', async () => {
+      const mockApplications = [
+        {
+          applicationId: 103,
+          siteAddress: '789 Broadway Blvd',
+          role: 'Auditor',
+          startDate: '2024-05-01',
+          endDate: '2024-11-30',
+        },
+      ];
+
+      staffService.getApplicationsByStaff = jest.fn().mockResolvedValue({
+        data: mockApplications,
+        count: mockApplications.length,
+      });
+
+      await resolver.getApplicationsByStaff(1, 5, SortBy.ID, SortByDirection.ASC, 1, 3);
+
+      expect(loggerService.log).toHaveBeenCalledWith('StaffResolver.getApplicationsByStaff() RES:200 start');
+      expect(loggerService.log).toHaveBeenCalledWith(
+        `personId: 1, roleId: 3, page: 1, pageSize: 5, sortBy: ${SortBy.ID.toLowerCase()}, sortByDir: ${SortByDirection.ASC}`
+      );
+      expect(loggerService.log).toHaveBeenCalledWith('StaffResolver.getApplicationsByStaff() RES:200 end');
+    });
+
+    it('should throw an error if service fails', async () => {
+      staffService.getApplicationsByStaff = jest.fn().mockRejectedValue(new Error('Service failure'));
+
+      await expect(
+        resolver.getApplicationsByStaff(1, 5, SortBy.ID, SortByDirection.ASC, 1)
+      ).rejects.toThrow('Failed to fetch applications: Service failure');
+    });
+    
   });
 });

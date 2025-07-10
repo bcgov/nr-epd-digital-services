@@ -1,0 +1,110 @@
+# GraphQL operations for Invoice Attachments
+
+# Upload file using base64 content
+mutation UploadFileToInvoice($input: FileUploadInputDto!) {
+  uploadFileToInvoice(input: $input) {
+    success
+    httpStatusCode
+    message
+    objectStorageId
+    attachment {
+      id
+      invoiceId
+      fileName
+      fileSize
+      mimeType
+      objectStorageId
+      createdAt
+      createdBy
+    }
+  }
+}
+
+# Upload file using multipart form data (for REST endpoints)
+# Note: This mutation would typically be called via a REST endpoint
+# that accepts multipart/form-data rather than GraphQL
+mutation UploadFileToInvoiceMultipart($input: FileUploadMultipartInputDto!) {
+  uploadFileToInvoiceMultipart(input: $input) {
+    success
+    httpStatusCode
+    message
+    objectStorageId
+    attachment {
+      id
+      invoiceId
+      fileName
+      fileSize
+      mimeType
+      objectStorageId
+      createdAt
+      createdBy
+    }
+  }
+}
+
+# Create attachment record (after file is already uploaded to COMS)
+mutation CreateInvoiceAttachment($input: InvoiceAttachmentInputDto!) {
+  createInvoiceAttachment(input: $input) {
+    success
+    httpStatusCode
+    message
+    attachment {
+      id
+      invoiceId
+      fileName
+      fileSize
+      mimeType
+      objectStorageId
+      createdAt
+      createdBy
+    }
+  }
+}
+
+# Get all attachments for an invoice
+query GetInvoiceAttachments($invoiceId: Int!) {
+  getInvoiceAttachments(invoiceId: $invoiceId) {
+    success
+    httpStatusCode
+    message
+    attachments {
+      id
+      invoiceId
+      fileName
+      fileSize
+      mimeType
+      objectStorageId
+      createdAt
+      createdBy
+    }
+  }
+}
+
+# Delete an attachment
+mutation DeleteInvoiceAttachment($id: Int!) {
+  deleteInvoiceAttachment(id: $id) {
+    success
+    httpStatusCode
+    message
+  }
+}
+
+# Upload file directly to COMS following DocumentEndpoints.ts pattern
+mutation UploadFileToComsForInvoice($input: FileUploadInputDto!) {
+  uploadFileToComsForInvoice(input: $input) {
+    success
+    httpStatusCode
+    message
+    objectStorageId
+    attachment {
+      id
+      invoiceId
+      fileName
+      fileSize
+      mimeType
+      objectStorageId
+      createdAt
+      createdBy
+    }
+  }
+}

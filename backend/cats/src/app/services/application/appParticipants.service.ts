@@ -12,14 +12,10 @@ import { ParticipantRole } from '../../entities/participantRole.entity';
 import { ViewParticipantsRolesDto } from '../../dto/appParticipants/viewParticipantsRoles.dto';
 import { Person } from '../../entities/person.entity';
 import { Organization } from '../../entities/organization.entity';
-import { ViewParticipantNamesDto } from '../../dto/appParticipants/ViewParticipantNames.dto';
-import { ViewOrganizationsDto } from '../../dto/appParticipants/viewOrganization.dto';
 import { DropdownDto } from '../../dto/dropdown.dto';
 import { CreateAppParticipantDto } from '../../dto/appParticipants/createAppParticipant.dto';
 import { UserTypeEum } from '../../utilities/enums/userType';
-import { id } from 'cls-rtracer';
-import { application } from 'express';
-import { UpdateAppParticipantDto } from 'src/app/dto/appParticipants/updateAppParticipant.dto';
+import { UpdateAppParticipantDto } from '../../dto/appParticipants/updateAppParticipant.dto';
 
 @Injectable()
 export class AppParticipantService {
@@ -36,7 +32,7 @@ export class AppParticipantService {
 
     @InjectRepository(Organization)
     private readonly organizationRepository: Repository<Organization>,
-  ) { }
+  ) {}
 
   /**
    * Retrieves app participants for a given app ID and transforms the data into DTOs.
@@ -117,10 +113,13 @@ export class AppParticipantService {
    * Retrieves all participant roles and transforms the data into DTOs.
    * @returns An array of ParticipantRole objects containing participant roles.
    */
-  async getAllParticipantRoles(): Promise<ViewParticipantsRolesDto[]> {
+  async getAllParticipantRoles(roleType?: string | null): Promise<ViewParticipantsRolesDto[]> {
     try {
       this.loggerService.log('at service layer getAllParticipantRoles start');
-      return await this.participantRoleRepository.find();
+      const condition = roleType ? { roleType } : {};
+      return await this.participantRoleRepository.find({
+        where: condition,
+      });
     } catch (error) {
       this.loggerService.log('at service layer getAllParticipantRoles error');
       throw new HttpException(
@@ -229,18 +228,16 @@ export class AppParticipantService {
           `User with username: ${user?.givenName} is using IDIR identity provider.`,
         );
 
-        // Check if the participant already exists, also  we want to ignore this check where organizationId is null
-        // because we can have multiple participants with same personId and participantRoleId but different organizationId
+        // Check if the participant already exists, we can have multiple participants with same personId and participantRoleId but different organizationId
         let existingParticipant = null;
-        if (newAppParticipant.organizationId) {
           existingParticipant = await this.appParticsRepository.findOne({
             where: {
+              applicationId: newAppParticipant.applicationId,
               personId: newAppParticipant.personId,
               participantRoleId: newAppParticipant.participantRoleId,
               organizationId: newAppParticipant.organizationId,
             },
           });
-        }
 
         if (existingParticipant) {
           throw new HttpException(
@@ -254,7 +251,7 @@ export class AppParticipantService {
             createdDateTime: new Date(),
           });
 
-          //savde the new participant
+          //save the new participant
           const savedAppParticipant = await this.appParticsRepository.save(
             createdAppParticipant,
           );
@@ -320,7 +317,8 @@ export class AppParticipantService {
     try {
       // Log the input parameters for better traceability
       this.loggerService.debug(
-        `updateAppParticipant: participantId=${updateParticipant.applicationId
+        `updateAppParticipant: participantId=${
+          updateParticipant.applicationId
         }, updateData=${JSON.stringify(updateParticipant)}`,
       );
 
@@ -333,16 +331,14 @@ export class AppParticipantService {
         throw new HttpException('Participant not found', HttpStatus.NOT_FOUND);
       }
 
-      // Update the startDate or endDate if provided
       if (updateParticipant.effectiveStartDate) {
         existingParticipant.effectiveStartDate =
           updateParticipant.effectiveStartDate;
       }
-      if (updateParticipant.effectiveEndDate) {
-        existingParticipant.effectiveEndDate =
-          updateParticipant.effectiveEndDate;
-      }
-
+      
+      //The effectiveEndDate is optional, so no need to check if it exists because there may be cases where it existed and now the user wants to remove it
+      existingParticipant.effectiveEndDate = updateParticipant.effectiveEndDate; 
+      
       // Update metadata
       existingParticipant.updatedBy = user?.givenName;
       existingParticipant.updatedDateTime = new Date();

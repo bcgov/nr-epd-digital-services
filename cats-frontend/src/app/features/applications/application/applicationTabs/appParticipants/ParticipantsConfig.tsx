@@ -99,12 +99,12 @@ export const getAppParticipantsFormFields = ({
     options: GetOrganizationsQuery['getOrganizations']['data'];
   };
 }): IFormField[][] => [
-    [appParticipantsForm.isMainParticipant],
-    [appParticipantsForm.startDate, appParticipantsForm.endDate],
-    [participantRoleField(roles.options)],
-    [participantNameField(participant)],
-    [participantOrganizationField(organization)],
-  ];
+  [appParticipantsForm.isMainParticipant],
+  [appParticipantsForm.startDate, appParticipantsForm.endDate],
+  [participantRoleField(roles.options)],
+  [participantNameField(participant)],
+  [participantOrganizationField(organization)],
+];
 
 const appParticipantsForm: { [key: string]: IFormField } = {
   isMainParticipant: {
@@ -213,12 +213,12 @@ export const getEditAppParticipantsFormFields = ({
     options: GetOrganizationsQuery['getOrganizations']['data'];
   };
 }): IFormField[][] => [
-    [isMainParticipantFieldForEdit],
-    [appParticipantsForm.startDate, appParticipantsForm.endDate],
-    [editParticipantRoleField(roles.options)],
-    [editParticipantNameField(participant)],
-    [editParticipantOrganizationField(organization)],
-  ];
+  [isMainParticipantFieldForEdit],
+  [appParticipantsForm.startDate, appParticipantsForm.endDate],
+  [editParticipantRoleField(roles.options)],
+  [editParticipantNameField(participant)],
+  [editParticipantOrganizationField(organization)],
+];
 
 export const GetConfig = () => {
   const participantColumnInternal: TableColumn[] = [

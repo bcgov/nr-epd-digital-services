@@ -38,7 +38,6 @@ The `Link` component is a customizable link element in React. It supports a vari
 | `isPrefixcustomLinkValue`   | `boolean`           | Determines if the `customIcon` should be placed before (`true`) or after (`false`) the link text.         | `false`                   |
 | `customIcon`                | `ReactNode`         | A custom icon to be displayed before or after the link text based on the value of `isPrefixcustomLinkValue`. | N/A                       |
 | `tableMode`                 | `boolean`           | If `true`, the component is rendered inside a table cell (`<td>`).                                         | `false`                   |
-| `stickyCol`                 | `boolean`           | When `tableMode` is `true`, this makes the table column sticky (i.e., fixed in position when scrolling).     | N/A                       |
 | `href`                      | `string`            | The base URL to which `value` is appended to form the complete URL.                                         | N/A                       |
 
 #### Example Usage
@@ -197,7 +196,6 @@ The `Label` component renders a label element that displays a value, with option
 | `label`            | `string`            | The text or identifier associated with the label (for accessibility).     |
 | `value`            | `string | ReactNode` | The content or value to be displayed within the label.                     |
 | `customInputTextCss` | `string`          | Optional custom CSS class to style the label text.                        |
-| `stickyCol`        | `boolean`           | If `true`, the label will be rendered inside a sticky table column.       |
 
 ### Example Usage
 
@@ -232,7 +230,6 @@ The `TextInput` component provides a customizable text input field with support 
 | `customEditInputTextCss`| `string`                      | Optional custom CSS class for the input field when editing.                  |
 | `customPlaceholderCss`  | `string`                      | Optional custom CSS class for the placeholder text.                          |
 | `customErrorCss`        | `string`                      | Optional custom CSS class for the error message.                             |
-| `stickyCol`             | `boolean`                     | If `true`, the input field will be rendered inside a sticky table column.    |
 | `onChange`              | `(value: string) => void`     | Callback function to handle value changes.                                   |
 | `tableMode`             | `boolean`                     | If `true`, renders the input field within a table cell.                      |
 
@@ -262,7 +259,6 @@ In table mode, the `TextInput` component will be rendered inside a table cell, a
   placeholder="Enter your age"
   isEditing={true}
   tableMode={true}
-  stickyCol={true}
   onChange={(value) => console.log(value)}
 />
 
@@ -637,7 +633,6 @@ The `CheckBoxInput` component is used to render a checkbox input field, optional
 | `type`                       | `string`                            | The type of the input, typically `checkbox`.                                  |
 | `onChange`                   | `(isChecked: boolean) => void`      | Callback function to handle the checkbox change event.                        |
 | `tableMode`                  | `boolean`                           | If `true`, renders the component inside a table cell.                         |
-| `stickyCol`                  | `boolean`                           | If `true`, the column is sticky (used with `tableMode`).                      |
 | `srMode`                     | `boolean`                           | If `true`, renders a screen-reader only checkbox for better accessibility.    |
 
 ### Example Usage
@@ -715,7 +710,6 @@ The `TextAreaInput` component renders a customizable `<textarea>` element. It su
 | `customEditLabelCss`      | `string`                                       | Custom CSS class for the editable label.                                                                                                                         |
 | `customEditInputTextCss`  | `string`                                       | Custom CSS class for the editable input text.                                                                                                                   |
 | `customPlaceholderCss`    | `string`                                       | Custom CSS class for the placeholder text.                                                                                                                      |
-| `stickyCol`               | `boolean`                                      | If true, the dropdown is made sticky (used for table layout).                                                                                                   |
 | `onChange`                | `(selectedOption: any) => void`                | Callback function to handle the selected option from the dropdown. It will pass the selected option object.                                                      |
 | `handleSearch`            | `(searchTerm: string) => void`                 | Callback function that triggers when the search term is changed.                                                                                               |
 | `tableMode`               | `boolean`                                      | If true, the dropdown is displayed inside a table (`td`). Otherwise, it is a regular `div`.                                                                    |
@@ -738,7 +732,6 @@ The `TextAreaInput` component renders a customizable `<textarea>` element. It su
   customEditLabelCss="custom-edit-label"
   customEditInputTextCss="custom-edit-input-text"
   customPlaceholderCss="custom-placeholder"
-  stickyCol={false}
   onChange={(selectedOption) => setSelectedValue(selectedOption.key)}
   handleSearch={(searchTerm) => filterOptions(searchTerm)}
   tableMode={false}
@@ -774,7 +767,6 @@ The `TextAreaInput` component renders a customizable `<textarea>` element. It su
 | `customErrorCss`          | `string`                                       | Custom CSS class for the error message.                                                                                                                            |
 | `customInfoMessage`       | `React.ReactNode`                              | A custom message to display below the input when there is no input or when the search term results in no matching options.                                         |
 | `customMenuMessage`       | `React.ReactNode`                              | A custom message to display inside the dropdown menu, typically used when no options are available.                                                              |
-| `stickyCol`               | `boolean`                                      | If true, the input is made sticky (used for table layout).                                                                                                        |
 | `isLoading`               | `boolean`                                      | If true, a loading spinner is displayed while the options are being fetched or loaded.                                                                            |
 | `onChange`                | `(value: any) => void`                         | Callback function to handle the input value changes.                                                                                                              |
 | `tableMode`               | `boolean`                                      | If true, the input is displayed inside a table (`td`). Otherwise, it is a regular `div`.                                                                        |
@@ -804,7 +796,6 @@ The `TextAreaInput` component renders a customizable `<textarea>` element. It su
   customErrorCss="error-text"
   customInfoMessage="No results found"
   customMenuMessage="Select an option"
-  stickyCol={false}
   isLoading={false}
   onChange={handleInputChange}
   tableMode={false}

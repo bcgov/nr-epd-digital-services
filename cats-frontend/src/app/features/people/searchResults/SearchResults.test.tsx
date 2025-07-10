@@ -73,7 +73,7 @@ describe('SearchResults Component', () => {
         <RouterProvider router={router} />
       </Provider>,
     );
-    const peopleIdLink = screen.getByText('Details');
+    const peopleIdLink = screen.getByText('View');
     expect(peopleIdLink).toBeInTheDocument();
   });
 
@@ -147,7 +147,7 @@ describe('SearchResults Component', () => {
         <RouterProvider router={router} />
       </Provider>,
     );
-    const peopleIdLink = screen.getByText('Details');
+    const peopleIdLink = screen.getByText('View');
     expect(peopleIdLink).toBeInTheDocument();
   });
 });

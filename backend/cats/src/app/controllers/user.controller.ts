@@ -24,7 +24,7 @@ export class UserController {
   constructor(
     private readonly keyCloakService: KeycloakService,
     private readonly configService: ConfigService,
-  ) { }
+  ) {}
 
   /**
    * Add user to a group in Keycloak.

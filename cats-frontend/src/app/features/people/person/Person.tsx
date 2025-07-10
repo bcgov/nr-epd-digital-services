@@ -104,10 +104,10 @@ const Person = () => {
       } else {
         setPersonName(
           (personData?.firstName ?? '') +
-          ' ' +
-          (personData?.middleName ?? '') +
-          ' ' +
-          (personData?.lastName ?? ''),
+            ' ' +
+            (personData?.middleName ?? '') +
+            ' ' +
+            (personData?.lastName ?? ''),
         );
         setFormData(personData);
         setLoading(false);
@@ -591,6 +591,7 @@ const Person = () => {
           <ModalDialog
             key={v4()}
             label={`Are you sure you want to delete ${isDeleteNote ? 'note(s)' : 'person'}  ?`}
+            saveBtnLabel={isDeleteNote ? 'Delete Notes' : 'Delete Person'}
             closeHandler={async (response) => {
               if (response) {
                 if (isDeleteNote) {
@@ -623,6 +624,7 @@ const Person = () => {
           <ModalDialog
             headerLabel={note?.noteType}
             saveButtonDisabled={note?.noteData?.noteDescription?.length <= 0}
+            saveBtnLabel="Save Note"
             closeHandler={(response) => {
               if (response) {
                 if (note.noteType === 'New Note') {
