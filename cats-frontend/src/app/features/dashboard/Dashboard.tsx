@@ -157,7 +157,8 @@ const Dashboard = () => {
   return (
     <PageContainer role="Dashboard">
       <h1 className="dashboard-title">Welcome{name}</h1>
-      <Button
+      {/* TODO: Uncomment button to create a new site in future */}
+      {/* <Button
         className="dashboard-btn justify-content-center"
         variant="primary"
         size="medium"
@@ -167,7 +168,7 @@ const Dashboard = () => {
           <FileCirclePlusIcon />
         </span>
         <span className="dashboard-btn-text">Create New Site</span>
-      </Button>
+      </Button> */}
       {/* Display the recent viewed applications widget */}
       {!recentViewedLoading && (
         <DashboardCardsWidget
