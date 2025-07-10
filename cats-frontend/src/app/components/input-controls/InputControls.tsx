@@ -90,7 +90,10 @@ export const IconButton: React.FC<InputProps> = ({
   customContainerCss,
 }) => {
   return renderTableCell(
-    <div onClick={onChange} className={`${customInputTextCss ?? ''}`}>
+    <div
+      onClick={onChange}
+      className={`${styles.baseTableLinkStyles} ${customInputTextCss ?? ''}`}
+    >
       {customIcon && customIcon}{' '}
       <span className="ps-1">{customLinkValue ?? value}</span>
     </div>,
@@ -800,13 +803,19 @@ export const DateInput: React.FC<InputProps> = ({
           onChange={handleDateChange}
           oneTap
           readOnly={isDisabled}
+          renderValue={(value, format): string => {
+            if (value) {
+              return formatDate(value, format ?? 'MMM dd, yyyy');
+            }
+            return '';
+          }}
         />
       ) : (
         <span
           aria-label={label}
           className={`d-flex pt-1 ${customInputTextCss ?? ''}`}
         >
-          {dateValue ?? ''}
+          Hi {dateValue ?? ''}
         </span>
       )}
       {error && (
