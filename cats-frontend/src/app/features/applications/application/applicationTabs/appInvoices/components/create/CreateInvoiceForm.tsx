@@ -8,6 +8,8 @@ import { Button } from '@cats/components/button/Button';
 import { FloppyDisk } from '@cats/components/common/icon';
 import { useGetHeaderDetailsByApplicationIdQuery } from '@cats/features/applications/application/ApplicationDetails.generated';
 import { useGetParticipantNamesLazyQuery } from '@cats/features/applications/application/applicationTabs/appParticipants/graphql/Participants.generated';
+import InvoiceAttachments from '../shared/InvoiceAttachments';
+import { UploadedFile } from '../shared/FileUpload';
 
 enum InvoiceLineItemType {
   SERVICE = 'service',
@@ -629,6 +631,13 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
               </div>
             </Col>
           </Row>
+
+          <div className="mt-4">
+            <InvoiceAttachments
+              applicationId={applicationId}
+              invoiceId={undefined} // Will be set after invoice creation
+            />
+          </div>
         </Form>
       </div>
     </div>

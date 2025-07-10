@@ -12,6 +12,7 @@ import {
   useDownloadInvoicePdfQuery,
 } from './downloadInvoicePdf.generated';
 import { InvoiceStatus } from '../../../../../../../../generated/types';
+import InvoiceAttachments from '../shared/InvoiceAttachments';
 
 enum InvoiceLineItemType {
   SERVICE = 'service',
@@ -893,6 +894,12 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
             </Col>
           </Row>
         </Form>
+
+        <InvoiceAttachments
+          invoiceId={invoice.id}
+          applicationId={Number(applicationId)}
+          readOnly={!isEditMode}
+        />
       </div>
     </div>
   );

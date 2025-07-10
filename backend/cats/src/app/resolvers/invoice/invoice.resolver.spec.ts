@@ -31,6 +31,7 @@ describe('InvoiceResolver', () => {
           provide: InvoiceService,
           useValue: {
             getInvoicesByApplicationId: jest.fn(),
+            createInvoice: jest.fn(),
             updateInvoice: jest.fn(),
             deleteInvoice: jest.fn(),
             getInvoiceById: jest.fn().mockResolvedValue(mockInvoice),
@@ -59,6 +60,7 @@ describe('InvoiceResolver', () => {
           id: 1,
           application: null,
           lineItems: [],
+          attachments: [],
           subject: 'Invoice 1',
           issuedDate: new Date(),
           dueDate: new Date(),
@@ -121,12 +123,133 @@ describe('InvoiceResolver', () => {
     });
   });
 
+  describe('createInvoice', () => {
+    it('should create an invoice successfully', async () => {
+      const mockCreatedInvoice: InvoiceV2 = {
+        id: 1,
+        application: null,
+        lineItems: [],
+        attachments: [],
+        subject: 'New Invoice',
+        issuedDate: new Date(),
+        dueDate: new Date(),
+        status: InvoiceStatus.DRAFT,
+        recipient: null,
+        invoiceId: null,
+        taxExempt: false,
+        pstExempt: false,
+        subtotalInCents: 15000,
+        gstInCents: 750,
+        pstInCents: 300,
+        totalInCents: 16050,
+        notes: 'Test notes for new invoice',
+        createdBy: 'test-user',
+        updatedBy: 'test-user',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      jest
+        .spyOn(invoiceService, 'createInvoice')
+        .mockResolvedValue(mockCreatedInvoice);
+
+      const invoiceData: InvoiceInputDto = {
+        applicationId: 123,
+        recipientId: 456,
+        invoiceId: null,
+        subject: 'New Invoice',
+        issuedDate: new Date(),
+        dueDate: new Date(),
+        status: InvoiceStatus.DRAFT,
+        taxExempt: false,
+        pstExempt: false,
+        subtotalInCents: 15000,
+        gstInCents: 750,
+        pstInCents: 300,
+        totalInCents: 16050,
+        notes: 'Test notes for new invoice',
+        lineItems: [],
+      };
+
+      const user = { id: 'test-user' };
+      const result = await resolver.createInvoice(invoiceData, user);
+
+      expect(invoiceService.createInvoice).toHaveBeenCalledWith(
+        invoiceData,
+        user,
+      );
+      expect(result.success).toBe(true);
+      expect(result.httpStatusCode).toBe(201);
+      expect(result.invoice).toEqual({
+        id: mockCreatedInvoice.id,
+        applicationId: mockCreatedInvoice.application?.id,
+        recipientId: mockCreatedInvoice.recipient?.id,
+        invoiceId: mockCreatedInvoice.invoiceId,
+        subject: mockCreatedInvoice.subject,
+        issuedDate: mockCreatedInvoice.issuedDate,
+        dueDate: mockCreatedInvoice.dueDate,
+        status: mockCreatedInvoice.status,
+        taxExempt: mockCreatedInvoice.taxExempt,
+        pstExempt: mockCreatedInvoice.pstExempt,
+        subtotalInCents: mockCreatedInvoice.subtotalInCents,
+        gstInCents: mockCreatedInvoice.gstInCents,
+        pstInCents: mockCreatedInvoice.pstInCents,
+        totalInCents: mockCreatedInvoice.totalInCents,
+        notes: mockCreatedInvoice.notes,
+        createdAt: mockCreatedInvoice.createdAt,
+        updatedAt: mockCreatedInvoice.updatedAt,
+        createdBy: mockCreatedInvoice.createdBy,
+        updatedBy: mockCreatedInvoice.updatedBy,
+        lineItems: [],
+      });
+    });
+
+    it('should handle errors when create fails', async () => {
+      jest
+        .spyOn(invoiceService, 'createInvoice')
+        .mockRejectedValue(new Error('Service error'));
+
+      const invoiceData: InvoiceInputDto = {
+        applicationId: 123,
+        recipientId: 456,
+        invoiceId: null,
+        subject: 'New Invoice',
+        issuedDate: new Date(),
+        dueDate: new Date(),
+        status: InvoiceStatus.DRAFT,
+        taxExempt: false,
+        pstExempt: false,
+        subtotalInCents: 15000,
+        gstInCents: 750,
+        pstInCents: 300,
+        totalInCents: 16050,
+        notes: 'Test notes for new invoice',
+        lineItems: [],
+      };
+
+      const user = { id: 'test-user' };
+      const result = await resolver.createInvoice(invoiceData, user);
+
+      expect(invoiceService.createInvoice).toHaveBeenCalledWith(
+        invoiceData,
+        user,
+      );
+      expect(loggerService.error).toHaveBeenCalled();
+      expect(result.success).toBe(false);
+      expect(result.httpStatusCode).toBe(500);
+      expect(result.message).toBe(
+        'An error occurred while updating the invoice.',
+      );
+    });
+  });
+
   describe('updateInvoice', () => {
     it('should update an invoice successfully', async () => {
       const mockUpdatedInvoice: InvoiceV2 = {
         id: 1,
         application: null,
         lineItems: [],
+        attachments: [],
         subject: 'Updated Invoice',
         issuedDate: new Date(),
         dueDate: new Date(),
@@ -279,6 +402,7 @@ describe('InvoiceResolver', () => {
         id: 1,
         application: null,
         lineItems: [],
+        attachments: [],
         subject: 'Invoice 1',
         issuedDate: new Date(),
         dueDate: new Date(),
