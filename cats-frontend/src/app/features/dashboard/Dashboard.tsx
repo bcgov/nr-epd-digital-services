@@ -136,7 +136,6 @@ const Dashboard = () => {
       fetchPolicy: 'cache-and-network', // <-- Force server fetch on each mount
     });
 
-
   useEffect(() => {
     // Set the user's name
     loggedInUser
@@ -183,7 +182,9 @@ const Dashboard = () => {
         data={actionRequiredData?.getApplications?.data || []}
         title={'Action Required'}
         columns={actionRequiredColumns}
-        loading={actionRequiredLoading ? RequestStatus.loading : RequestStatus.success}
+        loading={
+          actionRequiredLoading ? RequestStatus.loading : RequestStatus.success
+        }
       />
     </PageContainer>
   );

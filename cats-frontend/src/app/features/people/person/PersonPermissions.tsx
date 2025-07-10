@@ -36,7 +36,10 @@ const PersonPermissions: React.FC<IPersonPermission> = ({
             {editMode
               ? enabledRoles[role.roleId] &&
                 role.permissions.map((permission: ViewPermissions, index) => (
-                  <div className="col-lg-4 col-md-6 col-sm-12 px-4" key={permission.id}>
+                  <div
+                    className="col-lg-4 col-md-6 col-sm-12 px-4"
+                    key={permission.id}
+                  >
                     <CheckBoxInput
                       isLabel={true}
                       label={permission.description}
