@@ -815,7 +815,7 @@ export const DateInput: React.FC<InputProps> = ({
           aria-label={label}
           className={`d-flex pt-1 ${customInputTextCss ?? ''}`}
         >
-          Hi {dateValue ?? ''}
+          {dateValue ?? ''}
         </span>
       )}
       {error && (
