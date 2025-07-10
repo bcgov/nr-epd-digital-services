@@ -3,6 +3,7 @@ import { ChevronDown, ChevronUp, SpinnerIcon } from '../common/icon';
 import styles from './CollapsiblePanel.module.css';
 import { Button } from '../button/Button';
 import { LoadingSpinner } from '../loader/LoadingOverlay';
+import cx from 'classnames';
 
 interface CollapsiblePanelProps {
   label: string | ReactNode;
@@ -13,6 +14,9 @@ interface CollapsiblePanelProps {
   showBorder?: boolean;
   showPadding?: boolean;
   smallFont?: boolean;
+  onToggle?: (open: boolean) => void;
+  panelContainerClassName?: string;
+  panelLabelClassName?: string;
 }
 
 const CollapsiblePanel: FC<CollapsiblePanelProps> = ({
@@ -24,45 +28,49 @@ const CollapsiblePanel: FC<CollapsiblePanelProps> = ({
   showBorder = true,
   showPadding = true,
   smallFont = false,
+  panelContainerClassName = '',
+  panelLabelClassName = '',
+  onToggle = () => {},
 }) => {
   const [open, setOpen] = useState(defaultOpen);
+
+  const handleToggle = () => {
+    setOpen(!open);
+    onToggle(!open);
+  };
+
   return (
     <div
-      className={`d-flex flex-column ${styles.panelContainer} ${showBorder && styles.panelContainerBorder} ${showPadding && styles.panelContainerPadding}`}
+      className={cx('d-flex flex-column', styles.panelContainer, {
+        [styles.panelContainerBorder]: showBorder,
+        [styles.panelContainerPadding]: showPadding,
+        [panelContainerClassName]: panelContainerClassName,
+      })}
     >
-      {defaultCloseBtnPosition === 'right' && label && (
-        <div className="d-flex justify-content-between">
-          <div className={styles.panelLabel}>{label}</div>
-          <Button
-            variant="tertiary"
-            onClick={() => setOpen(!open)}
-            aria-label={open ? 'Collapse section' : 'Expand section'}
-            aria-expanded={open}
-          >
-            {open ? <ChevronUp /> : <ChevronDown />}
-          </Button>
-        </div>
-      )}
-
-      {defaultCloseBtnPosition === 'left' && label && (
-        <div className="d-flex">
-          <Button
-            variant="tertiary"
-            onClick={() => setOpen(!open)}
-            aria-label={open ? 'Collapse section' : 'Expand section'}
-            aria-expanded={open}
-          >
-            {open ? <ChevronUp /> : <ChevronDown />}
-          </Button>
+      {label && (
+        <div
+          className={cx('d-flex', {
+            'justify-content-between': defaultCloseBtnPosition === 'right',
+            'justify-content-end': defaultCloseBtnPosition === 'left',
+            'flex-row-reverse': defaultCloseBtnPosition === 'left',
+          })}
+        >
           <div
-            className={
-              styles.panelLabel +
-              ' ' +
-              (smallFont ? styles.panelLabelSmall : '')
-            }
+            className={cx('panel-label', styles.panelLabel, {
+              [styles.panelLabelSmall]: smallFont,
+              [panelLabelClassName]: panelLabelClassName,
+            })}
           >
             {label}
           </div>
+          <Button
+            variant="tertiary"
+            onClick={handleToggle}
+            aria-label={open ? 'Collapse section' : 'Expand section'}
+            aria-expanded={open}
+          >
+            {open ? <ChevronUp /> : <ChevronDown />}
+          </Button>
         </div>
       )}
 
