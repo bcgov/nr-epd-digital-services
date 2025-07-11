@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TimesheetDayResolver } from './timesheetDay.resolver';
-import { TimesheetDayService } from '../services/timesheetDay.service';
-import { GenericResponseProvider } from '../dto/response/genericResponseProvider';
-import { LoggerService } from '../logger/logger.service';
+import { TimesheetDayService } from '../../services/timesheetDay/timesheetDay.service';
+import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
+import { LoggerService } from '../../logger/logger.service';
 import { HttpStatus } from '@nestjs/common';
 import {
   UpsertTimesheetDaysInputDto,
   TimesheetDayDto,
   PersonWithTimesheetDaysDto,
-} from '../dto/timesheetDay.dto';
+} from '../../dto/timesheetDay.dto';
 
 describe('TimesheetDayResolver', () => {
   let resolver: TimesheetDayResolver;

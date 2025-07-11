@@ -9,6 +9,7 @@ export type NormalizedTimesheetData = {
   [personId: number]: {
     [date: string]: {
       hours: number;
+      comment?: string;
       id?: number;
     };
   };
@@ -16,7 +17,10 @@ export type NormalizedTimesheetData = {
 
 export type EditsData = {
   [personId: number]: {
-    [date: string]: string;
+    [date: string]: {
+      hours?: string;
+      comment?: string;
+    };
   };
 };
 
@@ -25,5 +29,6 @@ export type TimesheetChange = {
   personId: number;
   date: string;
   hours: number;
+  comment?: string;
   timesheetDayId?: number;
 };

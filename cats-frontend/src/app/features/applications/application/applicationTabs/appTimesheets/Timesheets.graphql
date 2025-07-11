@@ -12,10 +12,15 @@ query getTimesheetDaysForAssignedStaff(
       personId
       firstName
       lastName
+      roleId
+      roleDescription
+      startDate
+      endDate
       timesheetDays {
         id
         date
         hours
+        comment
       }
     }
   }
@@ -29,6 +34,7 @@ mutation upsertTimesheetDays($entries: [TimesheetDayUpsertInputDto!]!) {
       personId
       date
       hours
+      comment
     }
     message
     success

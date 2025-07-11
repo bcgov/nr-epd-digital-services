@@ -11,6 +11,9 @@ import { Application } from './application.entity';
 import { ParticipantRole } from './participantRole.entity';
 import { PermissionServiceType } from './permissionServiceType';
 
+/**
+ * ApplicationServiceType Entity
+ */
 @ObjectType()
 @Entity('application_service_type')
 export class ApplicationServiceType {
