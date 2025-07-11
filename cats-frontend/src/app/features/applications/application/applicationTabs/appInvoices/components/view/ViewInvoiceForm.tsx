@@ -1,4 +1,5 @@
 import { useState, useEffect, FC, ChangeEvent } from 'react';
+import DOMPurify from 'dompurify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FormGroup, Form, Col, Row, Alert } from 'react-bootstrap';
 import { Button } from '@cats/components/button/Button';
@@ -628,7 +629,8 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
     const printWindow = window.open('', '_blank', 'width=800,height=600');
     if (!printWindow) return;
 
-    printWindow.document.write(printContent);
+    const sanitizedContent = DOMPurify.sanitize(printContent);
+    printWindow.document.write(sanitizedContent);
     printWindow.document.close();
 
     // Trigger print dialog
