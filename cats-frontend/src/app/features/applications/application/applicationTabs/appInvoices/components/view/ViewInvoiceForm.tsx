@@ -91,6 +91,11 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
     [key: string]: string;
   }>({});
 
+  // Track which line item unit price fields are currently being edited
+  const [editingPriceFields, setEditingPriceFields] = useState<{
+    [key: number]: string;
+  }>({});
+
   const [updateInvoice, { loading: updateLoading }] =
     useUpdateInvoiceMutation();
 
@@ -254,6 +259,30 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
     field: keyof InvoiceLineItemViewModel,
     value: any,
   ) => {
+    if (field === 'unitPriceInCents') {
+      // For unit price, store the raw input value for editing
+      setEditingPriceFields((prevEditing) => ({
+        ...prevEditing,
+        [id]: value.toString(),
+      }));
+
+      // Only update the actual price if the value is valid
+      if (value !== '' && !isNaN(parseFloat(value))) {
+        const priceInCents = Math.round(parseFloat(value) * 100);
+        updateLineItemValue(id, field, priceInCents);
+      } else if (value === '') {
+        updateLineItemValue(id, field, 0);
+      }
+    } else {
+      updateLineItemValue(id, field, value);
+    }
+  };
+
+  const updateLineItemValue = (
+    id: number,
+    field: keyof InvoiceLineItemViewModel,
+    value: any,
+  ) => {
     setEditableInvoice((prev) => {
       if (!prev) return null;
 
@@ -279,11 +308,37 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
     });
   };
 
+  const handlePriceBlur = (id: number) => {
+    // Clear the editing state when user finishes editing
+    setEditingPriceFields((prevEditing) => {
+      const newEditing = { ...prevEditing };
+      delete newEditing[id];
+      return newEditing;
+    });
+  };
+
+  const handlePriceFocus = (id: number) => {
+    // When focusing on the price field, set the raw value for editing
+    const lineItem = editableInvoice?.lineItems.find((item) => item.id === id);
+    if (lineItem) {
+      const displayValue =
+        lineItem.unitPriceInCents > 0
+          ? (lineItem.unitPriceInCents / 100).toString()
+          : '';
+      setEditingPriceFields((prevEditing) => ({
+        ...prevEditing,
+        [id]: displayValue,
+      }));
+    }
+  };
+
   const handleEditToggle = () => {
     if (isEditMode) {
       // Discard changes
       setEditableInvoice(invoice);
       setUpdateError(null);
+      // Clear any editing price fields
+      setEditingPriceFields({});
     }
     setIsEditMode(!isEditMode);
   };
@@ -746,14 +801,22 @@ export const ViewInvoiceForm: FC<ViewInvoiceFormProps> = (props) => {
                             type="number"
                             min="0"
                             step="0.01"
-                            value={(item.unitPriceInCents / 100).toFixed(2)}
+                            value={
+                              editingPriceFields[item.id] !== undefined
+                                ? editingPriceFields[item.id]
+                                : item.unitPriceInCents > 0
+                                  ? (item.unitPriceInCents / 100).toFixed(2)
+                                  : ''
+                            }
                             onChange={(e) =>
                               handleLineItemChange(
                                 item.id,
                                 'unitPriceInCents',
-                                Math.round(Number(e.target.value) * 100),
+                                e.target.value,
                               )
                             }
+                            onFocus={() => handlePriceFocus(item.id)}
+                            onBlur={() => handlePriceBlur(item.id)}
                             isInvalid={
                               !!validationErrors[`lineItem-${index}-unitPrice`]
                             }
