@@ -102,10 +102,10 @@ const Person = () => {
     allRoles: any[],
   ): Record<number, boolean> => {
     const rolesMap: Record<number, boolean> = {};
-    allRoles.forEach((role: any) => {
-      role.permissions.forEach((perm: any) => {
-        if (permissionIds.includes(perm.id)) {
-          rolesMap[role.roleId] = true;
+    allRoles?.forEach((role: any) => {
+      role?.permissions?.forEach((perm: any) => {
+        if (permissionIds?.includes(perm?.id)) {
+          rolesMap[role?.roleId] = true;
         }
       });
     });
