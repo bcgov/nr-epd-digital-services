@@ -576,10 +576,10 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
       .replace(/\$\{serviceRequested\}/g, serviceRequested)
       .replace(
         /\$\{site\.address\}/g,
-        site?.findSiteBySiteId?.data?.addrLine_1 ||
-          '' + ' ' + site?.findSiteBySiteId?.data?.addrLine_2 ||
-          '' + ' ' + site?.findSiteBySiteId?.data?.addrLine_3 ||
-          '' + ' ' + site?.findSiteBySiteId?.data?.addrLine_4 ||
+        site?.findSiteBySiteIdLoggedInUser?.data?.addrLine_1 ||
+          '' + ' ' + site?.findSiteBySiteIdLoggedInUser?.data?.addrLine_2 ||
+          '' + ' ' + site?.findSiteBySiteIdLoggedInUser?.data?.addrLine_3 ||
+          '' + ' ' + site?.findSiteBySiteIdLoggedInUser?.data?.addrLine_4 ||
           '',
       )
       .replace(
