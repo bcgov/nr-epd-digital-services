@@ -152,10 +152,10 @@ export class DashboardService {
                 return null;
             }
             const site = await this.siteService.getSiteById(application?.siteId.toString());
-            if(!site)
+            if(!site?.findSiteBySiteId?.data)
             {
+                this.loggerService.log('No data found for site ID: ' + application?.siteId + ' in DashboardService.createRecentViewedApplication() from site registery service end');
                 this.loggerService.log('An invalid site was passed into DashboardService.createRecentViewedApplication() end');
-                return null;
             }
             
             const maxVisitedApplications = 4; // Maximum number of recently visited applications to keep
@@ -201,8 +201,8 @@ export class DashboardService {
                 recentViewedApplication.applicationType = application?.appType.description;
                 recentViewedApplication.visitedBy =  userInfo?.givenName || ''
                 recentViewedApplication.visitedDateTime = new Date();
-                recentViewedApplication.siteId =parseInt(site?.findSiteBySiteId?.data?.id);
-                recentViewedApplication.address = siteAddress.trim();
+                recentViewedApplication.siteId = application?.siteId;
+                recentViewedApplication.address = siteAddress.trim() || 'ADDRESS NOT FOUND';
 
                 const createdRecentViewedApplication = await this.recentViewedApplicationRepository.save(recentViewedApplication);
                 this.loggerService.log('DashboardService.createRecentViewedApplication() end');
