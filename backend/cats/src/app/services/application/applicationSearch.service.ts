@@ -17,7 +17,7 @@ export class ApplicationSearchService {
     @InjectRepository(Application)
     private readonly applicationRepository: Repository<Application>,
     private readonly loggerService: LoggerService,
-  ) {}
+  ) { }
 
   async searchApplications(
     searchParam: string,
@@ -50,6 +50,7 @@ export class ApplicationSearchService {
       .leftJoinAndSelect('appStatus.statusType', 'statusType')
       .leftJoinAndSelect('application.appPriorities', 'appPriority')
       .leftJoinAndSelect('appPriority.priority', 'priority');
+    query.andWhere('appStatus.isCurrent = :isCurrent', { isCurrent: true })
     query.andWhere(
       new Brackets((qb) => {
         qb.where('CAST(application.id AS TEXT) LIKE :searchParam', {

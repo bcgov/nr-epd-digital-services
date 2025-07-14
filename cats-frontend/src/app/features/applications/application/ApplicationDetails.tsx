@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getNavComponents } from '../../navigation/NavigationPillsConfig';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -29,6 +29,7 @@ const ApplicationDetails = () => {
   const [userType, setUserType] = useState<UserType>(UserType.STAFF);
   const location = useLocation();
   const fromScreen = location.state?.from || 'Applications'; // Default to "Unknown Screen" if no state is passed
+  const fromScreenRef = useRef(fromScreen);
   const auth = useAuth();
   const navigate = useNavigate();
   const { id = '' } = useParams();
@@ -44,7 +45,7 @@ const ApplicationDetails = () => {
   const application = data?.getApplicationDetailsById.data;
 
   const onClickBackButton = () => {
-    navigate('/applications');
+    navigate(`/${fromScreenRef.current.toLowerCase()}`);
   };
 
   useEffect(() => {
@@ -76,7 +77,6 @@ const ApplicationDetails = () => {
   }, [isVisible]); // Depend on `isVisible` so we update when visibility changes
 
   const handleItemClick = async (value: string) => {
-    console.log('nupur - handleItemClick value is: ', value);
     switch (value) {
       case UserMode.Default:
         setEdit(false);
@@ -216,7 +216,7 @@ const ApplicationDetails = () => {
         isVisible={isVisible}
         onClickBackButton={onClickBackButton}
         backButtonProps={{ variant: 'secondary' }}
-        backButtonText={`Back to ${fromScreen}`}
+        backButtonText={`Back to ${fromScreenRef.current}`}
         navigationBarText={navigationBarText}
         childern={navigationBarChildern}
       />
