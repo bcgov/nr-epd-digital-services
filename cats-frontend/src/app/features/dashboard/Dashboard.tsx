@@ -12,6 +12,7 @@ import { Button } from '../../components/button/Button';
 import { FileCirclePlusIcon } from '../../components/common/icon';
 import { actionRequiredColumns } from './DashboardConfig';
 import { DashboardWidgetProps } from './IDashboard';
+import { RequestStatus } from '../../helpers/requests/status';
 
 /**
  * A widget that displays a list of cards.
@@ -119,20 +120,20 @@ const Dashboard = () => {
 
   /**
    * Fetch the recent viewed applications.
-   * Using the `network-only` fetch policy to force a server fetch on each mount.
+   * Using the `cache-and-network` fetch policy to force a server fetch on each mount.
    */
   const { data: recentViewedData, loading: recentViewedLoading } =
     useGetRecentViewedApplicationsQuery({
-      fetchPolicy: 'network-only', // <-- Force server fetch on each mount
+      fetchPolicy: 'cache-and-network', // <-- Force server fetch on each mount
     });
 
   /**
    * Fetch the action required applications.
-   * Using the `network-only` fetch policy to force a server fetch on each mount.
+   * Using the `cache-and-network` fetch policy to force a server fetch on each mount.
    */
   const { data: actionRequiredData, loading: actionRequiredLoading } =
     useGetApplicationsQuery({
-      fetchPolicy: 'network-only', // <-- Force server fetch on each mount
+      fetchPolicy: 'cache-and-network', // <-- Force server fetch on each mount
     });
 
   useEffect(() => {
@@ -157,7 +158,8 @@ const Dashboard = () => {
   return (
     <PageContainer role="Dashboard">
       <h1 className="dashboard-title">Welcome{name}</h1>
-      <Button
+      {/* TODO: Uncomment button to create a new site in future */}
+      {/* <Button
         className="dashboard-btn justify-content-center"
         variant="primary"
         size="medium"
@@ -167,7 +169,7 @@ const Dashboard = () => {
           <FileCirclePlusIcon />
         </span>
         <span className="dashboard-btn-text">Create New Site</span>
-      </Button>
+      </Button> */}
       {/* Display the recent viewed applications widget */}
       {!recentViewedLoading && (
         <DashboardCardsWidget
@@ -177,13 +179,14 @@ const Dashboard = () => {
         />
       )}
       {/* Display the action required applications widget */}
-      {!actionRequiredLoading && (
-        <DashboardActionRequiredWidget
-          data={actionRequiredData?.getApplications?.data || []}
-          title={'Action Required'}
-          columns={actionRequiredColumns}
-        />
-      )}
+      <DashboardActionRequiredWidget
+        data={actionRequiredData?.getApplications?.data || []}
+        title={'Action Required'}
+        columns={actionRequiredColumns}
+        loading={
+          actionRequiredLoading ? RequestStatus.loading : RequestStatus.success
+        }
+      />
     </PageContainer>
   );
 };
