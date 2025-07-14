@@ -61,7 +61,7 @@ describe('SiteResolver', () => {
       };
 
       siteService.getSiteById = jest.fn().mockResolvedValue({
-        findSiteBySiteId: {
+        findSiteBySiteIdLoggedInUser: {
           data: mockSiteData,
         },
       });
