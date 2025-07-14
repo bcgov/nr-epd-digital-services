@@ -9,7 +9,6 @@ import {
 } from './permissions';
 import { ApplicationServiceType } from '../app/entities/applicationServiceType.entity';
 import { PermissionServiceType } from '../app/entities/permissionServiceType';
-import { PersonService } from '../app/services/people/people.service';
 import { StaffRoles } from '../app/services/assignment/staffRoles.enum';
 
 

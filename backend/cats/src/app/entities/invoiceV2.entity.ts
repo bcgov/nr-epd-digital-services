@@ -8,6 +8,7 @@ import {
 import { Application } from './application.entity';
 import { Person } from './person.entity';
 import { InvoiceLineItem } from './invoiceLineItem.entity';
+import { InvoiceAttachment } from './invoiceAttachment.entity';
 import { InvoiceStatus } from '../dto/invoice/invoice.dto';
 
 @Entity('invoice_v2')
@@ -83,4 +84,10 @@ export class InvoiceV2 {
     onDelete: 'CASCADE',
   })
   lineItems: InvoiceLineItem[];
+
+  @OneToMany(() => InvoiceAttachment, (attachment) => attachment.invoice, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  attachments: InvoiceAttachment[];
 }
