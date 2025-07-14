@@ -13,7 +13,7 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.custom-modal-content {  
+.custom-modal-content {
   /* max-width: 70vw; */
   max-height: 90vh;
   position: relative;
@@ -35,8 +35,7 @@
 }
 
 .custom-modal-data {
-  padding: var(--layout-padding-large) var(--layout-padding-large)
-    var(--layout-padding-xlarge) var(--layout-padding-large);
+  padding: var(--layout-padding-large) var(--layout-padding-large) var(--layout-padding-xlarge) var(--layout-padding-large);
   gap: var(--layout-margin-medium);
   display: flex;
   flex-direction: column;
@@ -61,8 +60,7 @@
 }
 
 .custom-modal-actions-footer {
-  padding: var(--layout-padding-medium) var(--layout-padding-large)
-    var(--layout-padding-medium) var(--layout-padding-large);
+  padding: var(--layout-padding-medium) var(--layout-padding-large) var(--layout-padding-medium) var(--layout-padding-large);
   gap: var(--layout-margin-xsmall);
   display: flex;
   justify-content: flex-end;
@@ -70,8 +68,7 @@
 
 @media (max-width: 576px) {
   .custom-modal-actions-footer {
-    padding: var(--layout-padding-medium) var(--layout-padding-large)
-      var(--layout-padding-medium) var(--layout-padding-large);
+    padding: var(--layout-padding-medium) var(--layout-padding-large) var(--layout-padding-medium) var(--layout-padding-large);
     gap: var(--layout-margin-xsmall);
     display: flex;
     justify-content: flex-end;
