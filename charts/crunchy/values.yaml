@@ -51,7 +51,7 @@ crunchy: # enable it for TEST and PROD, for PR based pipelines simply use single
     # If retention-full-type set to 'time' then the number defined in retention will take that many days worth of full backups before expiration
     retentionFullType: count
     s3:
-      enabled: true # if enabled, below must be provided, in dev environment, it's not necessary to enable s3.
+      enabled: false # if enabled, below must be provided, in dev environment, it's not necessary to enable s3.
       retention: ~ # one weeks backup in object store.
       bucket: nrsitetst
       endpoint: nrs.objectstore.gov.bc.ca
