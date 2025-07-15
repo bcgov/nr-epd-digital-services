@@ -1,4 +1,3 @@
-import { ProgressBar } from 'react-bootstrap';
 import {
   CircleExclamation,
   ExclamationTriangleIcon,
@@ -7,6 +6,7 @@ import {
 import { FormFieldType } from '../../components/input-controls/IFormField';
 import { ColumnSize, TableColumn } from '../../components/table/TableColumn';
 import { RequestStatus } from '../../helpers/requests/status';
+import CustomProgressBar from '../../components/progress-bar/progressBar';
 
 export const GetConfig = () => {
   const staffColumnInternal: TableColumn[] = [
@@ -57,33 +57,7 @@ export const GetConfig = () => {
         tableMode: true,
       },
       renderCell: (value: any, row: any) => {
-        let variant = 'success';
-        let Icon;
-        if (value >= 10) {
-          variant = 'danger';
-          Icon = CircleExclamation;
-        } else if (value > 10 / 2) {
-          variant = 'warning';
-          Icon = ExclamationTriangleIcon;
-        }
-        return (
-          <div className="d-flex align-items-center justify-content-start gap-3 w-100">
-            <ProgressBar
-              className={`flex-grow-1`}
-              variant={variant}
-              now={value}
-              title={value}
-              max={10}
-              label={
-                Icon && (
-                  <div className="d-flex align-items-center justify-content-end">
-                    <Icon className="me-2" />
-                  </div>
-                )
-              }
-            />
-          </div>
-        );
+        return <CustomProgressBar inputValue={value} />;
       },
     },
     {
@@ -169,16 +143,15 @@ export const GetConfig = () => {
         placeholder: '',
         graphQLPropertyName: 'remove',
         tableMode: true,
-        stickyCol: true,
         customIcon: <XmarkIcon />,
         customLinkValue: 'Remove',
         customLabelCss: '',
         customInputTextCss: 'primary-icon-button',
         value: 'Remove',
+        customContainerCss: 'custom-assignment-column-position',
       },
       columnSize: ColumnSize.XtraSmall,
-
-      stickyCol: true,
+      customHeaderCss: 'custom-assignment-column-position',
     },
   ];
 

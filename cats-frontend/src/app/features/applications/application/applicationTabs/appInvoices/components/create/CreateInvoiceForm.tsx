@@ -8,6 +8,8 @@ import { Button } from '@cats/components/button/Button';
 import { FloppyDisk } from '@cats/components/common/icon';
 import { useGetHeaderDetailsByApplicationIdQuery } from '@cats/features/applications/application/ApplicationDetails.generated';
 import { useGetParticipantNamesLazyQuery } from '@cats/features/applications/application/applicationTabs/appParticipants/graphql/Participants.generated';
+import InvoiceAttachments from '../shared/InvoiceAttachments';
+import { UploadedFile } from '../shared/FileUpload';
 
 enum InvoiceLineItemType {
   SERVICE = 'service',
@@ -57,6 +59,8 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
   useEffect(() => {
     if (recipientSearch && recipientSearch.length >= 2) {
       getParticipantNames({ variables: { searchParam: recipientSearch } });
+    } else {
+      setRecipients([]); // Clear dropdown when search is too short. This prevents showing stale results.
     }
   }, [recipientSearch, getParticipantNames]);
 
@@ -69,10 +73,12 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
       .split('T')[0], // 30 days from now
     status: InvoiceStatus.Draft,
     taxExempt: false,
+    pstExempt: false,
     subtotalInCents: 0,
     gstInCents: 0,
     pstInCents: 0,
     totalInCents: 0,
+    notes: '',
     lineItems: [
       {
         description: '',
@@ -84,6 +90,11 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
     ],
   });
 
+  // Track which line item unit price fields are currently being edited
+  const [editingPriceFields, setEditingPriceFields] = useState<{
+    [key: number]: string;
+  }>({});
+
   const [error, setError] = useState<string | null>(null);
   const [createInvoice, { loading }] = useCreateInvoiceMutation({
     onCompleted: (data) => {
@@ -91,7 +102,7 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
         if (onSuccess) {
           onSuccess();
         }
-        navigate(`/applications/${applicationId}?tab=invoices`);
+        navigate(`/applications/${applicationId}?tab=invoices&refresh=true`);
       } else {
         setError(data.createInvoice.message || 'Failed to create invoice');
       }
@@ -101,28 +112,66 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
     },
   });
 
+  // This useEffect is responsible for calculating and updating all tax-related values
+  // whenever taxExempt, pstExempt, or lineItems change
+  useEffect(() => {
+    const subtotalInCents = formValues.lineItems.reduce(
+      (sum, item) => sum + (item.totalInCents || 0),
+      0,
+    );
+
+    // Calculate taxes based on tax exempt checkboxes
+    const gstInCents = formValues.taxExempt
+      ? 0
+      : Math.round(subtotalInCents * 0.05);
+
+    const pstInCents =
+      formValues.taxExempt || formValues.pstExempt
+        ? 0
+        : Math.round(subtotalInCents * 0.07);
+
+    const totalInCents = subtotalInCents + gstInCents + pstInCents;
+
+    // Only update if values have changed
+    if (
+      formValues.subtotalInCents !== subtotalInCents ||
+      formValues.gstInCents !== gstInCents ||
+      formValues.pstInCents !== pstInCents ||
+      formValues.totalInCents !== totalInCents
+    ) {
+      setFormValues((prev) => ({
+        ...prev,
+        subtotalInCents,
+        gstInCents,
+        pstInCents,
+        totalInCents,
+      }));
+    }
+  }, [formValues.taxExempt, formValues.pstExempt, formValues.lineItems]);
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
     const { name, value, type } = e.target;
+    const isCheckbox = type === 'checkbox';
+    const checked = isCheckbox ? (e.target as HTMLInputElement).checked : false;
 
-    const newValue =
-      type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
-
-    setFormValues((prev) => ({
-      ...prev,
-      [name]: newValue,
-    }));
-
-    // If tax exempt checkbox is changed, recalculate totals immediately
-    if (name === 'taxExempt') {
-      calculateTotals();
+    // Special case for taxExempt to ensure pstExempt is handled appropriately
+    if (name === 'taxExempt' && isCheckbox) {
+      // If tax exempt is toggled
+      setFormValues((prev) => ({
+        ...prev,
+        taxExempt: checked,
+        // If tax exempt is checked, disable PST exempt
+        pstExempt: checked ? false : prev.pstExempt,
+      }));
+    } else {
+      // For all other fields including pstExempt, simple update
+      setFormValues((prev) => ({
+        ...prev,
+        [name]: isCheckbox ? checked : value,
+      }));
     }
-  };
-
-  const handleBlur = () => {
-    // Recalculate totals when input loses focus
-    calculateTotals();
   };
 
   const handleLineItemChange = (
@@ -135,17 +184,15 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
       const updatedLineItems = [...prev.lineItems];
 
       if (name === 'unitPriceInCents') {
-        // Handle empty value case
-        const priceInCents =
-          value === '' ? 0 : Math.round(parseFloat(value) * 100);
-        const quantity = updatedLineItems[index].quantity;
-        const totalInCents = priceInCents * quantity;
+        // Store the raw input value for editing - don't update the actual price yet
+        setEditingPriceFields((prevEditing) => ({
+          ...prevEditing,
+          [index]: value,
+        }));
 
-        updatedLineItems[index] = {
-          ...updatedLineItems[index],
-          unitPriceInCents: priceInCents,
-          totalInCents: totalInCents,
-        };
+        // Don't update the actual price while user is typing
+        // This will be handled in handlePriceBlur
+        return prev;
       } else if (name === 'quantity') {
         const quantity = value === '' ? 1 : parseInt(value);
         const totalInCents =
@@ -163,11 +210,71 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
         };
       }
 
+      // Update line items only - tax calculations happen in useEffect
       return {
         ...prev,
         lineItems: updatedLineItems,
       };
     });
+  };
+
+  const handlePriceBlur = (index: number) => {
+    const rawValue = editingPriceFields[index];
+
+    if (rawValue !== undefined) {
+      // Parse the value and update the actual price
+      if (rawValue !== '' && !isNaN(parseFloat(rawValue))) {
+        const priceInCents = Math.round(parseFloat(rawValue) * 100);
+        const quantity = formValues.lineItems[index].quantity;
+        const totalInCents = priceInCents * quantity;
+
+        setFormValues((prev) => {
+          const updatedLineItems = [...prev.lineItems];
+          updatedLineItems[index] = {
+            ...updatedLineItems[index],
+            unitPriceInCents: priceInCents,
+            totalInCents: totalInCents,
+          };
+          return {
+            ...prev,
+            lineItems: updatedLineItems,
+          };
+        });
+      } else if (rawValue === '') {
+        // Handle empty value case
+        setFormValues((prev) => {
+          const updatedLineItems = [...prev.lineItems];
+          updatedLineItems[index] = {
+            ...updatedLineItems[index],
+            unitPriceInCents: 0,
+            totalInCents: 0,
+          };
+          return {
+            ...prev,
+            lineItems: updatedLineItems,
+          };
+        });
+      }
+    }
+
+    // Clear the editing state when user finishes editing
+    setEditingPriceFields((prevEditing) => {
+      const newEditing = { ...prevEditing };
+      delete newEditing[index];
+      return newEditing;
+    });
+  };
+
+  const handlePriceFocus = (index: number) => {
+    // When focusing on the price field, set the raw value for editing
+    const currentPriceInCents = formValues.lineItems[index].unitPriceInCents;
+    const displayValue =
+      currentPriceInCents > 0 ? (currentPriceInCents / 100).toString() : '';
+
+    setEditingPriceFields((prevEditing) => ({
+      ...prevEditing,
+      [index]: displayValue,
+    }));
   };
 
   const addLineItem = () => {
@@ -184,9 +291,6 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
         },
       ],
     }));
-
-    // Calculate totals after adding a line item
-    setTimeout(calculateTotals, 0);
   };
 
   const removeLineItem = (index: number) => {
@@ -202,49 +306,52 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
       };
     });
 
-    // Calculate totals after removing a line item
-    setTimeout(calculateTotals, 0);
-  };
+    // Clean up editing state for removed item
+    setEditingPriceFields((prevEditing) => {
+      const newEditing = { ...prevEditing };
+      delete newEditing[index];
 
-  const calculateTotals = () => {
-    const subtotalInCents = formValues.lineItems.reduce(
-      (sum, item) => sum + (item.totalInCents || 0),
-      0,
-    );
+      // Shift down the indices for items after the removed one
+      const adjustedEditing: { [key: number]: string } = {};
+      Object.keys(newEditing).forEach((key) => {
+        const keyIndex = parseInt(key);
+        if (keyIndex > index) {
+          adjustedEditing[keyIndex - 1] = newEditing[keyIndex];
+        } else {
+          adjustedEditing[keyIndex] = newEditing[keyIndex];
+        }
+      });
 
-    const gstInCents = formValues.taxExempt
-      ? 0
-      : Math.round(subtotalInCents * 0.05);
-    const pstInCents = formValues.taxExempt
-      ? 0
-      : Math.round(subtotalInCents * 0.07);
-    const totalInCents = subtotalInCents + gstInCents + pstInCents;
-
-    setFormValues((prev) => ({
-      ...prev,
-      subtotalInCents,
-      gstInCents,
-      pstInCents,
-      totalInCents,
-    }));
+      return adjustedEditing;
+    });
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    calculateTotals();
+
+    // Validate recipient is selected
+    if (!formValues.recipientId || isNaN(parseInt(formValues.recipientId))) {
+      setError('Please select a valid recipient before saving');
+      return;
+    }
+
+    // Convert recipientId to number explicitly
+    const recipientId = Number(formValues.recipientId);
 
     const invoiceData = {
       applicationId,
-      recipientId: parseInt(formValues.recipientId),
+      recipientId,
       subject: formValues.subject,
       issuedDate: new Date(formValues.issuedDate),
       dueDate: new Date(formValues.dueDate),
       status: formValues.status,
       taxExempt: formValues.taxExempt,
+      pstExempt: formValues.pstExempt,
       subtotalInCents: formValues.subtotalInCents,
       gstInCents: formValues.gstInCents,
       pstInCents: formValues.pstInCents,
       totalInCents: formValues.totalInCents,
+      notes: formValues.notes,
       lineItems: formValues.lineItems,
     };
 
@@ -329,11 +436,18 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
                           key={recipient.key}
                           className="p-2 border-bottom cursor-pointer hover-bg-light"
                           onClick={() => {
-                            setFormValues({
-                              ...formValues,
-                              recipientId: recipient.key,
-                            });
-                            setRecipientSearch(recipient.value);
+                            // Ensure recipientId is set as a valid string that can be parsed as int
+                            const numericId = parseInt(recipient.key);
+                            if (!isNaN(numericId)) {
+                              setFormValues((prev) => ({
+                                ...prev,
+                                recipientId: recipient.key,
+                              }));
+                              // Update the search field with the selected name
+                              setRecipientSearch(recipient.value);
+                              // Clear recipients array to hide dropdown
+                              setRecipients([]);
+                            }
                           }}
                         >
                           {recipient.value}
@@ -383,13 +497,39 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
               </FormGroup>
             </Col>
             <Col md={4} className="d-flex align-items-end">
-              <FormGroup className="mb-3">
+              <FormGroup className="mb-3 me-3">
                 <Form.Check
                   type="checkbox"
                   name="taxExempt"
                   label="Tax Exempt"
                   checked={formValues.taxExempt}
                   onChange={handleChange}
+                />
+              </FormGroup>
+              <FormGroup className="mb-3">
+                <Form.Check
+                  type="checkbox"
+                  name="pstExempt"
+                  label="PST Exempt"
+                  checked={formValues.pstExempt}
+                  disabled={formValues.taxExempt}
+                  onChange={handleChange}
+                />
+              </FormGroup>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col md={12}>
+              <FormGroup className="mb-3">
+                <Form.Label>Notes</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  name="notes"
+                  value={formValues.notes}
+                  onChange={handleChange}
+                  rows={3}
+                  placeholder="Enter any additional notes for this invoice"
                 />
               </FormGroup>
             </Col>
@@ -459,7 +599,6 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
                         name="quantity"
                         value={item.quantity}
                         onChange={(e) => handleLineItemChange(index, e)}
-                        onBlur={handleBlur}
                         min="1"
                         required
                         className="custom-input"
@@ -471,17 +610,18 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
                           <span className="input-group-text">$</span>
                         </div>
                         <Form.Control
-                          type="number"
+                          type="text"
                           name="unitPriceInCents"
                           value={
-                            item.unitPriceInCents > 0
-                              ? (item.unitPriceInCents / 100).toFixed(2)
-                              : ''
+                            editingPriceFields[index] !== undefined
+                              ? editingPriceFields[index]
+                              : item.unitPriceInCents > 0
+                                ? (item.unitPriceInCents / 100).toFixed(2)
+                                : ''
                           }
                           onChange={(e) => handleLineItemChange(index, e)}
-                          onBlur={handleBlur}
-                          step="0.01"
-                          min="0"
+                          onFocus={() => handlePriceFocus(index)}
+                          onBlur={() => handlePriceBlur(index)}
                           required
                           placeholder="0.00"
                           className="custom-input"
@@ -536,6 +676,13 @@ export const CreateInvoiceForm: FC<CreateInvoiceFormProps> = ({
               </div>
             </Col>
           </Row>
+
+          <div className="mt-4">
+            <InvoiceAttachments
+              applicationId={applicationId}
+              invoiceId={undefined} // Will be set after invoice creation
+            />
+          </div>
         </Form>
       </div>
     </div>

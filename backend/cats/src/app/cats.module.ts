@@ -69,6 +69,7 @@ import { SiteResolver } from './resolvers/site/site.resolver';
 import { SiteService } from './services/site/site.service';
 import { InvoiceV2 } from './entities/invoiceV2.entity';
 import { InvoiceLineItem } from './entities/invoiceLineItem.entity';
+import { InvoiceAttachment } from './entities/invoiceAttachment.entity';
 import { InvoiceResolver } from './resolvers/invoice/invoice.resolver';
 import { InvoiceService } from './services/invoice/invoice.service';
 import { ApplicationNotesResolver } from './resolvers/application/applicationNotes.resolver';
@@ -85,8 +86,18 @@ import { PersonPermission } from './entities/personPermissions.entity';
 import { ApplicationServiceType } from './entities/applicationServiceType.entity';
 import { StaffAssignmentResolver } from './resolvers/assignment/staffAssignment.resolver';
 import { TimesheetDay } from './entities/timesheetDay.entity';
-import { TimesheetDayService } from './services/timesheetDay.service';
-import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
+import { TimesheetDayService } from './services/timesheetDay/timesheetDay.service';
+import { TimesheetDayResolver } from './resolvers/timesheetDay/timesheetDay.resolver';
+import { DashboardService } from './services/dashboard/dashboard.service';
+import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
+import { RecentViewedApplication } from './entities/recentViewedApplication.entity';
+import { StatusTypeService } from './services/statusType/statusType.service';
+
+import { ServiceAssignmentFactor } from './entities/serviceAssignmentFactor';
+import { PermissionServiceType } from './entities/permissionServiceType';
+import { InvoiceAttachmentResolver } from './resolvers/invoice/invoiceAttachment.resolver';
+import { InvoiceAttachmentService } from './services/invoice/invoiceAttachment.service';
+import { ComsService } from './services/coms/coms.service';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -144,9 +155,13 @@ import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
       PersonNote,
       InvoiceV2,
       InvoiceLineItem,
+      InvoiceAttachment,
       ApplicationServiceType,
       Permissions,
-      PersonPermission
+      PersonPermission,
+      RecentViewedApplication,
+      ServiceAssignmentFactor,
+      PermissionServiceType,
     ]),
     HttpModule,
   ],
@@ -168,6 +183,7 @@ import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
     ApplicationService,
     ApplicationDetailsResolver,
     AppTypeService,
+    StatusTypeService,
     SiteResolver,
     SiteService,
     InvoiceResolver,
@@ -183,6 +199,11 @@ import { TimesheetDayResolver } from './resolvers/timesheetDay.resolver';
     PermissionsService,
     TimesheetDayService,
     TimesheetDayResolver,
+    DashboardService,
+    DashboardResolver,
+    InvoiceAttachmentResolver,
+    InvoiceAttachmentService,
+    ComsService,
   ],
   controllers: [UserController],
 })

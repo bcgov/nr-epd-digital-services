@@ -9,6 +9,7 @@ import { RequestStatus } from '../../helpers/requests/status';
 import { useGetParticipantRolesQuery } from '../applications/application/applicationTabs/appParticipants/graphql/Participants.generated';
 
 import {
+  useGetAllActiveStaffMembersForApplicationServiceTypeQuery,
   useGetAllActiveStaffMembersQuery,
   useGetApplicationServiceTypesQuery,
   useGetStaffAssignedByAppIdQuery,
@@ -59,6 +60,36 @@ const Assignment: React.FC<AssignmentProps> = ({
     loading: staffMemebersLoading,
     refetch: staffMemebersRefetch,
   } = useGetAllActiveStaffMembersQuery();
+
+  const {
+    data: staffMemebersListForServiceType,
+    loading: staffMemebersLoadingForServiceType,
+    refetch: staffMemebersRefetchForServiceType,
+  } = useGetAllActiveStaffMembersForApplicationServiceTypeQuery({
+    variables: {
+      applicationServiceTypeId: assignmentServiceType
+        ? Number(assignmentServiceType)
+        : 0,
+    },
+  });
+
+  useEffect(() => {
+    if (assignmentServiceType) {
+      staffMemebersRefetchForServiceType({
+        applicationServiceTypeId: Number(assignmentServiceType),
+      });
+    }
+  }, [assignmentServiceType]);
+
+  useEffect(() => {
+    if (staffMemebersListForServiceType) {
+      processStaffMemebersList(
+        staffMemebersList?.getAllActiveStaffMembers?.data || [],
+        staffMemebersListForServiceType
+          ?.getAllActiveStaffMembersForApplicationServiceType?.data || [],
+      );
+    }
+  }, [staffMemebersListForServiceType]);
 
   const { data: serviceTypesList } = useGetApplicationServiceTypesQuery();
 
@@ -155,7 +186,11 @@ const Assignment: React.FC<AssignmentProps> = ({
   };
 
   // Handle search action
-  const handleSearch = (value: any) => {
+  const handleSearch = (
+    value: any,
+    staffMemebersArray: any,
+    staffMemberArrayForServieType: any,
+  ) => {
     let existingStaffIds = staffRecords.map((item) => item.personId);
     value.trim();
 
@@ -166,29 +201,42 @@ const Assignment: React.FC<AssignmentProps> = ({
         ),
         updates: {
           isLoading: RequestStatus.success,
-          filteredOptions: staffMemebersList?.getAllActiveStaffMembers?.data
+          filteredOptions: staffMemberArrayForServieType
             ?.filter((item: any) => !existingStaffIds.includes(item.personId))
             ?.filter((item: any) =>
               item.personFullName.toLowerCase().includes(value.toLowerCase()),
             )
             .map((item: any) => ({
               key: item.personId.toString(),
-              value: item.personFullName,
+              value:
+                item.personFullName +
+                ' - (' +
+                ((item.currentCapacity / 160) * 100).toFixed(2) +
+                '%)',
             })),
-          handleSearch,
+          handleSearch: (term: any) =>
+            handleSearch(
+              term,
+              staffMemebersArray,
+              staffMemberArrayForServieType,
+            ),
           customInfoMessage: <></>,
         },
       }),
     );
   };
 
-  const processStaffMemebersList = (staffMemebersList: any) => {
-    let options = staffMemebersList?.getAllActiveStaffMembers?.data?.map(
-      (item: any) => ({
-        key: item.personId.toString(),
-        value: item.personFullName,
-      }),
-    );
+  const processStaffMemebersList = (
+    staffMemebersList: any,
+    staffMemberArrayForServieType: any,
+  ) => {
+    if (!staffMemebersList) {
+      return false;
+    }
+    let options = staffMemebersList.map((item: any) => ({
+      key: item.personId.toString(),
+      value: item.personFullName,
+    }));
 
     let params: UpdateDisplayTypeParams = {
       indexToUpdate: staffColumnInternal.findIndex(
@@ -198,7 +246,8 @@ const Assignment: React.FC<AssignmentProps> = ({
         isLoading: RequestStatus.success,
         options: options,
         filteredOptions: options,
-        handleSearch,
+        handleSearch: (term: string) =>
+          handleSearch(term, staffMemebersList, staffMemberArrayForServieType),
         customInfoMessage: <></>,
       },
     };
@@ -206,8 +255,12 @@ const Assignment: React.FC<AssignmentProps> = ({
   };
 
   useEffect(() => {
-    processStaffMemebersList(staffMemebersList);
-  }, [staffMemebersLoading]);
+    processStaffMemebersList(
+      staffMemebersList?.getAllActiveStaffMembers?.data || [],
+      staffMemebersListForServiceType
+        ?.getAllActiveStaffMembersForApplicationServiceType?.data || [],
+    );
+  }, [staffMemebersLoading, staffMemebersLoadingForServiceType]);
 
   useEffect(() => {
     staffMemebersRefetch();
@@ -235,7 +288,13 @@ const Assignment: React.FC<AssignmentProps> = ({
         isLoading: RequestStatus.success,
         options: uniqueRoles,
         filteredOptions: uniqueRoles,
-        handleSearch,
+        handleSearch: (term: string) =>
+          handleSearch(
+            term,
+            staffMemebersList?.getAllActiveStaffMembers?.data || [],
+            staffMemebersListForServiceType
+              ?.getAllActiveStaffMembersForApplicationServiceType?.data || [],
+          ),
         customInfoMessage: <></>,
       },
     };
@@ -294,7 +353,9 @@ const Assignment: React.FC<AssignmentProps> = ({
             }))}
             customInputTextCss="panelLabel"
             value={assignmentServiceType}
-            onChange={(value) => setAssignmentServiceType(value)}
+            onChange={(value) => {
+              setAssignmentServiceType(value);
+            }}
             type={FormFieldType.DropDown}
             isEditing={true}
           />

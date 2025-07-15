@@ -1,15 +1,6 @@
 import { ReactNode } from 'react';
 import { IFormField } from '../input-controls/IFormField';
 
-// export enum ColumnType {
-//     Link,
-//     Text,
-//     TextBox,
-//     DropDown,
-//     Checkbox,
-//     Calender
-//   }
-
 export enum ColumnSize {
   Default,
   Small,
@@ -33,7 +24,6 @@ export class TableColumn {
     public linkRedirectionURL?: string,
     public dynamicColumn?: boolean,
     public columnSize?: ColumnSize,
-    public stickyCol?: boolean,
     public customHeaderCss?: string,
     public renderCell?: (value: any, rowData: any) => ReactNode,
   ) {

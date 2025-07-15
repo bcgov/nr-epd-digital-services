@@ -94,6 +94,12 @@ const icons = {
 const roleBasedSideBarList: Record<string, SideNav[]> = {
   internal: [
     createSideNav({
+      displayText: 'Dashboard',
+      hasChildren: false,
+      icon: icons.dashboard,
+      linkTo: '/dashboard',
+    }),
+    createSideNav({
       displayText: 'Applications',
       hasChildren: true,
       icon: null,

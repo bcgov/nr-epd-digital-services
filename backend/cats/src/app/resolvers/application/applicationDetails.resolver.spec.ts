@@ -3,6 +3,7 @@ import { ApplicationDetailsResolver } from './applicationDetails.resolver';
 import { LoggerService } from '../../logger/logger.service';
 import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
 import { ApplicationService } from '../../services/application/application.service';
+import { UserTypeEum } from '../../utilities/enums/userType';
 
 describe('ApplicationDetailsResolver', () => {
   let resolver: ApplicationDetailsResolver;
@@ -61,10 +62,10 @@ describe('ApplicationDetailsResolver', () => {
       service.findApplicationDetailsById = jest
         .fn()
         .mockResolvedValue(mockApplicationDetails);
+      const user = { givenName: 'John', identity_provider: UserTypeEum.IDIR };
+      const result = await resolver.getApplicationDetailsById(1, user);
 
-      const result = await resolver.getApplicationDetailsById(1);
-
-      expect(service.findApplicationDetailsById).toHaveBeenCalledWith(1);
+      expect(service.findApplicationDetailsById).toHaveBeenCalledWith(1, user);
       expect(result).toMatchObject({
         message: 'Application details retrieved successfully',
         httpStatusCode: 200,
@@ -75,10 +76,10 @@ describe('ApplicationDetailsResolver', () => {
 
     it('should return not found response when application does not exist', async () => {
       service.findApplicationDetailsById = jest.fn().mockResolvedValue(null);
+      const user = { givenName: 'John', identity_provider: UserTypeEum.IDIR };
+      const result = await resolver.getApplicationDetailsById(999, user);
 
-      const result = await resolver.getApplicationDetailsById(999);
-
-      expect(service.findApplicationDetailsById).toHaveBeenCalledWith(999);
+      expect(service.findApplicationDetailsById).toHaveBeenCalledWith(999, user);
       expect(result).toMatchObject({
         message: 'Application not found',
         httpStatusCode: 404,
@@ -91,9 +92,10 @@ describe('ApplicationDetailsResolver', () => {
       const error = new Error('Database error');
       service.findApplicationDetailsById = jest.fn().mockRejectedValue(error);
 
-      const result = await resolver.getApplicationDetailsById(1);
+      const user = { givenName: 'John', identity_provider: UserTypeEum.IDIR };
+      const result = await resolver.getApplicationDetailsById(1, user);
 
-      expect(service.findApplicationDetailsById).toHaveBeenCalledWith(1);
+      expect(service.findApplicationDetailsById).toHaveBeenCalledWith(1, user);
       expect(result).toMatchObject({
         message: 'Error retrieving application details',
         httpStatusCode: 500,

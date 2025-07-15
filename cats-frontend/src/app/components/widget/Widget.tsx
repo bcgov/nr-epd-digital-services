@@ -34,6 +34,7 @@ const Widget: React.FC<IWidget> = ({
   selectPage,
   totalResults,
   filter,
+  widgetLabelContainerCss,
 }) => {
   let widgetSortHandler = sortHandler ?? (() => {});
 
@@ -54,7 +55,7 @@ const Widget: React.FC<IWidget> = ({
             />
           )}
           <div
-            className={`${styles.widgetLblContainer} w-100 me-1 d-flex flex-wrap align-items-center justify-content-between`}
+            className={`${widgetLabelContainerCss || styles.widgetLblContainer} w-100 me-1 d-flex flex-wrap align-items-center justify-content-between`}
           >
             <h4
               className={`${customLabelCss ?? styles.widgetLabel} ${isRequired ? styles.widgetRequiredField : ''}`}

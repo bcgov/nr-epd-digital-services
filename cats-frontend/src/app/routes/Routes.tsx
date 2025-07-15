@@ -7,22 +7,26 @@ import Search from '../features/people/Search';
 import Person from '../features/people/person/Person';
 import ApplicationDetails from '../features/applications/application/ApplicationDetails';
 import ApplicationSearch from '../features/applications/search/Search';
-import StaffDashboard from '../features/staffDashboard/StaffDashboard';
+import StaffDashboard from '../features/staff/Staff';
 import ProtectedRoute from './ProtectedRoute';
-import { AuthProvider } from 'react-oidc-context';
-import { getClientSettings } from '@cats/auth/UserManagerSetting';
-import { UserManagerSettings } from 'oidc-client-ts';
 import CreateInvoice from '../features/applications/application/applicationTabs/appInvoices/components/create/CreateInvoice';
+import Dashboard from '@cats/features/dashboard/Dashboard';
+import ViewInvoice from '../features/applications/application/applicationTabs/appInvoices/components/view/ViewInvoice';
 
 const roleBasedRoutes: any = {
   [UserRoleType.INTERNAL]: [
     { path: '/', element: <Search /> },
+    { path: '/dashboard', element: <Dashboard /> },
     { path: '/people', element: <Search /> },
     { path: '/person/:id', element: <Person /> },
     { path: '/person', element: <Person /> },
     { path: '/applications', element: <ApplicationSearch /> },
     { path: '/applications/:id', element: <ApplicationDetails /> },
     { path: '/applications/:id/invoices/create', element: <CreateInvoice /> },
+    {
+      path: '/applications/:applicationId/invoices/:id/view',
+      element: <ViewInvoice />,
+    },
     {
       path: '/staff',
       element: (

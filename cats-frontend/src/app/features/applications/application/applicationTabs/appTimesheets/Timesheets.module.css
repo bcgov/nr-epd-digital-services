@@ -1,0 +1,106 @@
+.highlight {
+  background-color: var(--theme-blue-30) !important;
+}
+
+.datePickerPopover {
+  margin-top: 0.5rem;
+  border: 1px solid #d8d8d8;
+  border-radius: 4px;
+  max-width: 300px;
+  background-color: white;
+}
+
+.timesheetBaseHeader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--theme-gray-20);
+  color: var(--typography-color-secondary);
+  font-size: var(--typography-font-size-label);
+  border: 1px solid var(--surface-color-border-medium);
+  padding-left: var(--layout-padding-small);
+  margin: 0 auto;
+  height: 64px;
+}
+
+.timesheetsSectionHeader {
+  border: 1px solid var(--surface-color-border-medium);
+}
+
+.timesheetDayHeader {
+  border: 1px solid var(--surface-color-border-default);
+  border-bottom: 1px solid var(--surface-color-border-medium);
+}
+
+.timesheetsSectionContent {
+  margin-top: var(--layout-margin-small);
+  padding: 0 20px 20px 20px;
+  border-top: 1px solid var(--surface-color-border-default);
+}
+
+.timeSheetDayInputs {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  padding: 8px;
+  gap: 8px;
+  border: var(--layout-border-width-small) solid
+    var(--surface-color-border-default);
+
+  input {
+    width: 100%;
+    height: 40px;
+    padding: var(--layout-padding-small) var(--layout-padding-medium);
+    font-size: var(--typography-font-size-medium-body);
+    border-radius: var(--layout-margin-xsmall);
+    border: var(--layout-border-width-small) solid
+      var(--surface-color-border-default);
+
+    padding-right: 2em; /* leaving space for the icon */
+  }
+}
+
+.personPanel {
+  min-height: 64px;
+  padding: var(--layout-padding-small) 0;
+  gap: 0;
+
+  border: 1px solid var(--surface-color-border-medium);
+  border-top: none;
+  border-bottom: 1px solid var(--surface-color-border-default);
+  border-radius: 0;
+
+  &:last-child {
+    border-bottom: 1px solid var(--surface-color-border-medium);
+  }
+}
+
+.personPanelLabel {
+  padding: var(--layout-padding-small);
+  font-size: var(--typography-font-size-small-body);
+}
+
+.inputWithIcon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.hoursInput {
+  text-align: end;
+
+  &::placeholder {
+    text-align: end !important;
+  }
+}
+
+.inputIcon {
+  position: absolute;
+  right: 0.7em;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--theme-gray-60);
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}

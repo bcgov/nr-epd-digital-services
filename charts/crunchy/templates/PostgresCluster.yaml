@@ -5,6 +5,7 @@ metadata:
   name: {{ template "crunchy-postgres.fullname" . }}
   labels: {{ include "crunchy-postgres.labels" . | nindent 4 }}
 spec:
+  openshift: true
   metadata:
     labels: {{ include "crunchy-postgres.labels" . | nindent 6 }}
   imagePullPolicy: {{.Values.crunchy.imagePullPolicy}}
@@ -25,7 +26,7 @@ spec:
         repo1-s3-uri-style: path # This is mandatory since the backups are path based.
         repo1-path: {{ .Values.crunchy.clone.path }} # path to the backup where cluster will bootstrap from
       repo:
-        name: repo1 # hardcoded since repo 1, it is always backed up to object storage in this specific chart.
+        name: repo2 # hardcoded since repo 2, it is always backed up to object storage in this specific chart.
         s3:
           bucket: {{ .Values.crunchy.pgBackRest.s3.bucket }}
           endpoint: {{ .Values.crunchy.pgBackRest.s3.endpoint }}
@@ -114,34 +115,25 @@ spec:
       databases:
         - {{ .Values.global.config.dbName }}
         - postgres
-    {{- if .Values.crunchy.pgBackRest.enabled }}
+  {{- if .Values.crunchy.pgBackRest.enabled }}
   backups:
     pgbackrest:
-      {{- if .Values.crunchy.pgBackRest.s3.enabled}}
+      {{- if and .Values.crunchy.pgBackRest.s3 .Values.crunchy.pgBackRest.s3.enabled }}
       configuration:
         - secret:
             name: {{ .Release.Name }}-s3-secret
       {{- end }}
       global:
-        {{- if .Values.crunchy.pgBackRest.pvc.enabled}}
-        repo2-retention-full: {{ .Values.crunchy.pgBackRest.pvc.retention | quote }}
-        repo2-retention-full-type: {{ .Values.crunchy.pgBackRest.pvc.retentionFullType }}
+        repo1-retention-full: {{ .Values.crunchy.pgBackRest.pvc.retention | quote }}
+        repo1-retention-full-type: {{ .Values.crunchy.pgBackRest.pvc.retentionFullType }}
+        {{- if and .Values.crunchy.pgBackRest.s3 .Values.crunchy.pgBackRest.s3.enabled }}
+        repo2-retention-full: {{ .Values.crunchy.pgBackRest.s3.retention | quote }}
+        repo2-retention-full-type: {{ .Values.crunchy.pgBackRest.retentionFullType }}
+        repo2-path: '{{ .Values.crunchy.pgBackRest.backupPath }}/{{ .Values.crunchy.pgBackRest.clusterCounter}}'
+        repo2-s3-uri-style: path
         {{- end }}
-        repo1-retention-full: {{ .Values.crunchy.pgBackRest.s3.retention | quote }}
-        repo1-retention-full-type: {{ .Values.crunchy.pgBackRest.retentionFullType }}
-        repo1-path: '{{ .Values.crunchy.pgBackRest.backupPath }}/{{ .Values.crunchy.pgBackRest.clusterCounter}}'
-        repo1-s3-uri-style: path
       repos:
         - name: repo1
-          schedules:
-            full: {{ .Values.crunchy.pgBackRest.s3.fullBackupSchedule }}
-            incremental: {{ .Values.crunchy.pgBackRest.s3.incrementalBackupSchedule }}
-          s3:
-            bucket: {{ .Values.crunchy.pgBackRest.s3.bucket | quote }}
-            endpoint: {{ .Values.crunchy.pgBackRest.s3.endpoint | quote }}
-            region: "ca-central-1"
-        {{- if .Values.crunchy.pgBackRest.pvc.enabled}}
-        - name: repo2
           schedules:
             full: {{ .Values.crunchy.pgBackRest.pvc.fullBackupSchedule }}
             incremental: {{ .Values.crunchy.pgBackRest.pvc.incrementalBackupSchedule }}
@@ -153,7 +145,18 @@ spec:
                 requests:
                   storage: {{ .Values.crunchy.pgBackRest.pvc.volume.storage }}
               storageClassName: {{ .Values.crunchy.pgBackRest.pvc.volume.storageClassName }}
-          {{- end }}
+        {{- if and .Values.crunchy.pgBackRest.s3 .Values.crunchy.pgBackRest.s3.enabled }}
+        - name: repo2
+          schedules:
+            full: {{ .Values.crunchy.pgBackRest.s3.fullBackupSchedule }}
+            incremental: {{ .Values.crunchy.pgBackRest.s3.incrementalBackupSchedule }}
+          s3:
+            bucket: {{ .Values.crunchy.pgBackRest.s3.bucket | quote }}
+            endpoint: {{ .Values.crunchy.pgBackRest.s3.endpoint | quote }}
+            region: "ca-central-1"
+        {{- end }}
+
+        
       {{- if and .Values.crunchy.restore .Values.crunchy.restore.enabled }}
       restore:
         enabled: {{ .Values.crunchy.restore.enabled }}

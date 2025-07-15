@@ -51,6 +51,9 @@ export class InvoiceDto {
   @Field(() => Boolean)
   taxExempt: boolean;
 
+  @Field(() => Boolean)
+  pstExempt: boolean;
+
   @Field(() => Int)
   subtotalInCents: number;
 
@@ -62,6 +65,9 @@ export class InvoiceDto {
 
   @Field(() => Int)
   totalInCents: number;
+
+  @Field(() => String, { nullable: true })
+  notes: string;
 
   @Field(() => String, { nullable: true })
   createdBy: string;
@@ -105,6 +111,9 @@ export class InvoiceInputDto {
   @Field(() => Boolean)
   taxExempt: boolean;
 
+  @Field(() => Boolean)
+  pstExempt: boolean;
+
   @Field(() => Int)
   subtotalInCents: number;
 
@@ -116,6 +125,9 @@ export class InvoiceInputDto {
 
   @Field(() => Int)
   totalInCents: number;
+
+  @Field(() => String, { nullable: true })
+  notes: string;
 
   @Field(() => [InvoiceLineItemInputDto])
   lineItems: InvoiceLineItemInputDto[];
@@ -140,4 +152,7 @@ export class InvoiceByApplicationIdDto {
 
   @Field(() => Int)
   totalInCents: number;
+
+  @Field(() => String, { nullable: true })
+  notes: string;
 }
