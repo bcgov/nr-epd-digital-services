@@ -48,16 +48,13 @@ export class DashboardService {
                                                 app.site_id AS siteId,
                                                 app_type.description AS applicationType,
                                                 status_type.description AS applicationStatus,
-                                                status_type.display_order AS statusDisplayOrder,
                                                 app.received_date AS receivedDate,
                                                 priority.abbrev AS priority,
                                                 priority.display_order AS priorityDisplayOrder,
-                                                app_status.is_current as currentStatus,
                                                 ROW_NUMBER() OVER (
                                                     PARTITION BY app.id
                                                     ORDER BY 
                                                         priority.display_order DESC NULLS LAST,
-                                                        status_type.display_order DESC NULLS LAST,
                                                         app.received_date ASC
                                                 ) AS rn
                                             FROM cats.application app
@@ -67,6 +64,7 @@ export class DashboardService {
                                                 ON priority.id = app_priority.priority_id
                                             INNER JOIN cats.app_status app_status 
                                                 ON app_status.application_id = app.id
+                                                AND app_status.is_current = true
                                             INNER JOIN cats.status_type status_type 
                                                 ON status_type.id = app_status.status_type_id
                                             LEFT JOIN cats.app_type app_type 
@@ -78,15 +76,13 @@ export class DashboardService {
                                             applicationType,
                                             applicationStatus,
                                             receivedDate,
-                                            priority,
-                                            currentStatus
+                                            priority
                                         FROM ranked_apps
                                         WHERE rn = 1 
-                                            AND applicationStatus != 'Closed'  AND currentStatus = true
+                                            AND applicationStatus != 'Closed'
                                         ORDER BY 
                                             priorityDisplayOrder DESC NULLS LAST,
-                                            receivedDate ASC,
-                                            statusDisplayOrder DESC NULLS LAST
+                                            receivedDate ASC
                                             LIMIT 5;
                                             `);
                                             
