@@ -191,6 +191,7 @@ const housingFormFields: {
     validation: {
       pattern: /^[0-9]*$/,
       customMessage: 'Number of Units must be a positive integer',
+      required: true,
     },
     colSize: 'col-lg-6 col-md-6 col-sm-12',
   },
