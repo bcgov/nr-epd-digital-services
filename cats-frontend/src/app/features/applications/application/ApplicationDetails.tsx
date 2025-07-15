@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import { getNavComponents } from '../../navigation/NavigationPillsConfig';
+import { useEffect, useState } from 'react';
 import { useAuth } from 'react-oidc-context';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, Outlet } from 'react-router-dom';
 import Actions from '../../../components/action/Actions';
 import PageContainer from '../../../components/simple/PageContainer';
 import NavigationPills from '../../../components/navigation/navigationpills/NavigationPills';
@@ -25,7 +24,6 @@ const ApplicationDetails = () => {
   const [viewMode, setViewMode] = useState(UserMode.Default);
   const [isVisible, setIsVisible] = useState(false);
   const [save, setSave] = useState(false);
-  const navComponents = getNavComponents(true);
   const [userType, setUserType] = useState<UserType>(UserType.STAFF);
   const location = useLocation();
   const fromScreen = location.state?.from || 'Applications'; // Default to "Unknown Screen" if no state is passed
@@ -239,7 +237,10 @@ const ApplicationDetails = () => {
             )}
           </div>
         )}
-        <NavigationPills components={navComponents} tabSearchKey="tab" />
+        <NavigationPills />
+        <div className="mt-4">
+          <Outlet />
+        </div>
       </PageContainer>
     </div>
   );
