@@ -22,7 +22,7 @@ export const getApplicationNotesColumns = ({
     displayType: { type: FormFieldType.Label },
     columnSize: ColumnSize.Small,
     renderCell: (value: Note['noteDate']) => {
-      return formatDate(new Date(value), 'EEE MMM dd yyyy');
+      return value;
     },
   },
   {
@@ -93,6 +93,10 @@ const noteFormFields: {
     label: 'Note',
     placeholder: 'Note',
     graphQLPropertyName: 'noteText',
+    validation: {
+      required: true,
+      customMessage: 'Note is required.',
+    },
   },
 };
 
