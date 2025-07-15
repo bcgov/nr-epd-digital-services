@@ -175,7 +175,7 @@ describe('DashboardService', () => {
 
       const result = await dashboardService.createRecentViewedApplication(application, userInfo);
 
-      expect(result).toBeNull();
+      expect(result).toBeUndefined();
       expect(loggerService.log).toHaveBeenCalledWith(
         'An invalid site was passed into DashboardService.createRecentViewedApplication() end',
       );

@@ -1,14 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Brackets, ILike } from 'typeorm';
+import { Repository, Brackets } from 'typeorm';
 import { Application } from '../../entities/application.entity';
 import { ApplicationSearchResult } from '../../dto/response/applicationSearchResponse';
 import { LoggerService } from '../../logger/logger.service';
 import { Filter } from '../../utilities/enums/application/filter.enum';
 import { SortByDirection } from '../../utilities/enums/application/sortByDirection.enum';
 import { SortByField } from '../../utilities/enums/application/sortByField.enum';
-import { ApplicationResultDto } from 'src/app/dto/applicationResultDto';
-import { plainToInstance } from 'class-transformer';
 import { StaffRoles } from '../assignment/staffRoles.enum';
 
 @Injectable()
@@ -71,7 +69,7 @@ export class ApplicationSearchService {
           .orWhere('LOWER(appType.description) LIKE LOWER(:searchParam)', {
             searchParam: `%${lowerSearchParam}%`,
           })
-          .orWhere('LOWER(statusType.abbrev) LIKE LOWER(:searchParam)', {
+          .orWhere('LOWER(statusType.description) LIKE LOWER(:searchParam)', {
             searchParam: `%${lowerSearchParam}%`,
           })
           .orWhere('LOWER(priority.abbrev) LIKE LOWER(:searchParam)', {
@@ -94,10 +92,33 @@ export class ApplicationSearchService {
       });
     }
 
-    if (sortBy) {
-      const direction = sortByDir === SortByDirection.DESC ? 'DESC' : 'ASC';
-      query.orderBy(`application.${sortBy}`, direction);
-    }
+    const sortDirection = sortByDir === SortByDirection.DESC ? 'DESC' : 'ASC';
+    switch (sortBy) {
+        case SortByField.ID:
+          query.orderBy('application.id', sortDirection);
+          break;
+        case SortByField.SITE_ID:
+          query.orderBy('application.siteId', sortDirection);
+          break;
+        case SortByField.SITE_ADDRESS:
+          query.orderBy('site.address', sortDirection);
+          break;
+        case SortByField.APPLICATION_TYPE:
+          query.orderBy('appType.description', sortDirection);
+          break;
+        case SortByField.LAST_UPDATED:
+          query.orderBy('application.updatedDateTime', sortDirection);
+          break;
+        case SortByField.STATUS:
+          query.orderBy('statusType.description', sortDirection);
+          break;
+        case SortByField.PRIORITY:
+          query.orderBy('priority.displayOrder', sortDirection, 'NULLS LAST');
+          break;
+        default:
+          this.loggerService.log(`Unsupported sort field: ${sortBy}`);
+      }
+
 
     let applicationList: Application[] = [];
     let count = 0;
@@ -121,7 +142,7 @@ export class ApplicationSearchService {
       siteAddress: app.site?.address || '',
       applicationType: app.appType?.description || '',
       lastUpdated: app.updatedDateTime.toISOString(),
-      status: app.appStatus?.statusType?.abbrev || '',
+      status: app.appStatus?.statusType?.description || '',
       staffAssigned: app.appParticipants
         .filter(
           (participant) =>
