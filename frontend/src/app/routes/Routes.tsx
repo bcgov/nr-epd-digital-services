@@ -9,6 +9,7 @@ import { FileUpload } from "../features/bcbox/FileUpload";
 import TaskAssignment from "../features/assignment/TaskAssignment";
 
 const AppRoutes = () => {
+  // just a comment to test
   return (
     <Routes>
       {/* <Route path="/dashboard" element={<ProtectedRoute auth={auth} element={<Dashboard/>}/>}/> */}
