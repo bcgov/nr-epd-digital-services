@@ -1,15 +1,6 @@
 import { ReactNode } from 'react';
 import { IFormField } from '../input-controls/IFormField';
 
-// export enum ColumnType {
-//     Link,
-//     Text,
-//     TextBox,
-//     DropDown,
-//     Checkbox,
-//     Calender
-//   }
-
 export enum ColumnSize {
   Default,
   Small,

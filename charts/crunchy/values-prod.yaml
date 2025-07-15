@@ -9,17 +9,20 @@ crunchy: # enable it for TEST and PROD, for PR based pipelines simply use single
   pgBackRest:
     backupPath: /backups/prod/cluster/version # change it for PROD, create values-prod.yaml
     s3:
-      enabled: true
+      enabled: false
       retention: 7 # one week backup in object store for prod environment
       bucket: kibble
       endpoint: nrs.objectstore.gov.bc.ca
       accessKey: ~
       secretKey: ~
-      fullBackupSchedule: 0 0/4 * * * # full backup every 4 hours
-      incrementalBackupSchedule: 0 1,6,11,17,23 * * * * # incremental backup every 5 hours
+      fullBackupSchedule: 0 9 * * * # full backup at GMT 9
+      incrementalBackupSchedule: 0 0/4 * * * # every four hours
     pvc:
+      enabled: true
       volume:
+        accessModes: "ReadWriteOnce"
         storage: 1024Mi
+        storageClassName: netapp-file-backup
   # Postgres Cluster resource values:
   pgmonitor:
     enabled: true

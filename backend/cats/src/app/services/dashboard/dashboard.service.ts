@@ -48,16 +48,13 @@ export class DashboardService {
                                                 app.site_id AS siteId,
                                                 app_type.description AS applicationType,
                                                 status_type.description AS applicationStatus,
-                                                status_type.display_order AS statusDisplayOrder,
                                                 app.received_date AS receivedDate,
                                                 priority.abbrev AS priority,
                                                 priority.display_order AS priorityDisplayOrder,
-                                                app_status.is_current as currentStatus,
                                                 ROW_NUMBER() OVER (
                                                     PARTITION BY app.id
                                                     ORDER BY 
                                                         priority.display_order DESC NULLS LAST,
-                                                        status_type.display_order DESC NULLS LAST,
                                                         app.received_date ASC
                                                 ) AS rn
                                             FROM cats.application app
@@ -67,6 +64,7 @@ export class DashboardService {
                                                 ON priority.id = app_priority.priority_id
                                             INNER JOIN cats.app_status app_status 
                                                 ON app_status.application_id = app.id
+                                                AND app_status.is_current = true
                                             INNER JOIN cats.status_type status_type 
                                                 ON status_type.id = app_status.status_type_id
                                             LEFT JOIN cats.app_type app_type 
@@ -78,15 +76,13 @@ export class DashboardService {
                                             applicationType,
                                             applicationStatus,
                                             receivedDate,
-                                            priority,
-                                            currentStatus
+                                            priority
                                         FROM ranked_apps
                                         WHERE rn = 1 
-                                            AND applicationStatus != 'Closed'  AND currentStatus = true
+                                            AND applicationStatus != 'Closed'
                                         ORDER BY 
                                             priorityDisplayOrder DESC NULLS LAST,
-                                            receivedDate ASC,
-                                            statusDisplayOrder DESC NULLS LAST
+                                            receivedDate ASC
                                             LIMIT 5;
                                             `);
                                             
@@ -152,18 +148,18 @@ export class DashboardService {
                 return null;
             }
             const site = await this.siteService.getSiteById(application?.siteId.toString());
-            if(!site)
+            if(!site?.findSiteBySiteId?.data)
             {
+                this.loggerService.log('No data found for site ID: ' + application?.siteId + ' in DashboardService.createRecentViewedApplication() from site registery service end');
                 this.loggerService.log('An invalid site was passed into DashboardService.createRecentViewedApplication() end');
-                return null;
             }
             
             const maxVisitedApplications = 4; // Maximum number of recently visited applications to keep
             const recentlyVisitedApplications = await this.getRecentViewedApplications(userInfo);
-            this.loggerService.log(`Found ${recentlyVisitedApplications.length} recently visited applications for user: ${userId}`);
+            this.loggerService.log(`Found ${recentlyVisitedApplications?.length} recently visited applications for user: ${userId}`);
 
             //currently existed recently visited applications for user
-            const existingApplications = recentlyVisitedApplications.find((app) => app.applicationId === application?.id && app.userId === userId && app.siteId === application?.siteId);
+            const existingApplications = recentlyVisitedApplications?.find((app) => app?.applicationId === application?.id && app?.userId === userId && app?.siteId === application?.siteId);
             this.loggerService.log(`Found existing recently visited applications for user: ${userId} and application ID: ${application?.id} and site ID: ${application?.siteId}`);
 
             if(existingApplications)
@@ -177,7 +173,7 @@ export class DashboardService {
             else
             {
                 // If the user has more than the maximum number of recently visited applications, delete the oldest ones
-                if (recentlyVisitedApplications.length >= maxVisitedApplications ) {
+                if (recentlyVisitedApplications?.length >= maxVisitedApplications ) {
                     const applicationsToDelete = recentlyVisitedApplications[0];
                     this.loggerService.log(`Deleting oldest recently visited application for user: ${userId}, application ID: ${applicationsToDelete?.applicationId} and site ID: ${applicationsToDelete?.siteId}`);
                     await this.recentViewedApplicationRepository.remove(applicationsToDelete);
@@ -198,11 +194,11 @@ export class DashboardService {
                 const recentViewedApplication = new RecentViewedApplication();
                 recentViewedApplication.userId = userId;
                 recentViewedApplication.applicationId = application?.id;
-                recentViewedApplication.applicationType = application?.appType.description;
+                recentViewedApplication.applicationType = application?.appType?.description;
                 recentViewedApplication.visitedBy =  userInfo?.givenName || ''
                 recentViewedApplication.visitedDateTime = new Date();
-                recentViewedApplication.siteId =parseInt(site?.findSiteBySiteId?.data?.id);
-                recentViewedApplication.address = siteAddress.trim();
+                recentViewedApplication.siteId = application?.siteId;
+                recentViewedApplication.address = siteAddress.trim() || 'ADDRESS NOT FOUND';
 
                 const createdRecentViewedApplication = await this.recentViewedApplicationRepository.save(recentViewedApplication);
                 this.loggerService.log('DashboardService.createRecentViewedApplication() end');
