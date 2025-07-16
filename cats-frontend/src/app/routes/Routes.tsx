@@ -12,7 +12,7 @@ import ProtectedRoute from './ProtectedRoute';
 import CreateInvoice from '../features/applications/application/applicationTabs/appInvoices/components/create/CreateInvoice';
 import Dashboard from '@cats/features/dashboard/Dashboard';
 import ViewInvoice from '../features/applications/application/applicationTabs/appInvoices/components/view/ViewInvoice';
-import ApplicationTabsRouter from '../features/applications/application/ApplicationTabsRouter';
+// import ApplicationTabsRouter from '../features/applications/application/ApplicationTabsRouter';
 
 const roleBasedRoutes: any = {
   [UserRoleType.INTERNAL]: [
@@ -25,7 +25,6 @@ const roleBasedRoutes: any = {
     {
       path: '/applications/:id',
       element: <ApplicationDetails />,
-      children: [{ path: '*', element: <ApplicationTabsRouter /> }],
     },
     { path: '/applications/:id/invoices/create', element: <CreateInvoice /> },
     {
