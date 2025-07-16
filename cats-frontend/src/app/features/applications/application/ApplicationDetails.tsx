@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams, Outlet } from 'react-router-dom';
 import Actions from '../../../components/action/Actions';
