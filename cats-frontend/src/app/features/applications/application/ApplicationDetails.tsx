@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAuth } from 'react-oidc-context';
 import { useLocation, useNavigate, useParams, Outlet } from 'react-router-dom';
 import Actions from '../../../components/action/Actions';
@@ -26,7 +26,7 @@ const ApplicationDetails = () => {
   const [save, setSave] = useState(false);
   const [userType, setUserType] = useState<UserType>(UserType.STAFF);
   const location = useLocation();
-  const fromScreen = location.state?.from || 'Applications'; // Default to "Unknown Screen" if no state is passed
+  const fromScreen = location.state?.from || '/'; // Default to "Unknown Screen" if no state is passed
   const fromScreenRef = useRef(fromScreen);
   const auth = useAuth();
   const navigate = useNavigate();
