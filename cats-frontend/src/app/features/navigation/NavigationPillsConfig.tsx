@@ -1,32 +1,24 @@
 import { ReactNode } from 'react';
-import { AssociatedFiles } from '../applications/application/applicationTabs/appAssociatedFiles/AssociatedFiles';
-import { Details } from '../applications/application/applicationTabs/appDetails/Details';
-import { Housing } from '../applications/application/applicationTabs/appHousing/Housing';
-import { Invoices } from '../applications/application/applicationTabs/appInvoices/Invoices';
-import { Notes } from '../applications/application/applicationTabs/appNotes/Notes';
-import { Participants } from '../applications/application/applicationTabs/appParticipants/Participants';
-import { Timesheets } from '../applications/application/applicationTabs/appTimesheets/Timesheets';
-import { Application } from '../applications/application/applicationTabs/application/Application';
 
 export type NavComponent = {
   label: string;
   value: string;
+  path: string;
   component: ReactNode;
 };
-const mainNavComponents: NavComponent[] = [
-  { label: 'Application', value: 'application', component: <Application /> },
-  { label: 'Details', value: 'details', component: <Details /> },
-  { label: 'Participants', value: 'participants', component: <Participants /> },
-  { label: 'Timesheets', value: 'timesheets', component: <Timesheets /> },
-  { label: 'Invoices', value: 'invoices', component: <Invoices /> },
-  { label: 'Notes', value: 'notes', component: <Notes /> },
+
+// Navigation configuration for the pills - used by NavigationPills component
+export const navigationItems: Omit<NavComponent, 'component'>[] = [
+  { label: 'Application', value: 'application', path: 'application' },
+  { label: 'Details', value: 'details', path: 'details' },
+  { label: 'Participants', value: 'participants', path: 'participants' },
+  { label: 'Timesheets', value: 'timesheets', path: 'timesheets' },
+  { label: 'Invoices', value: 'invoices', path: 'invoices' },
+  { label: 'Notes', value: 'notes', path: 'notes' },
   {
     label: 'Associated Files',
     value: 'associatedFiles',
-    component: <AssociatedFiles />,
+    path: 'associated-files',
   },
-  { label: 'Housing', value: 'housing', component: <Housing /> },
+  { label: 'Housing', value: 'housing', path: 'housing' },
 ];
-
-export const getNavComponents = (includeUpdatesTab: boolean) =>
-  mainNavComponents;

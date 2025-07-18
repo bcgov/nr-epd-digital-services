@@ -178,12 +178,16 @@ export const TextInput: React.FC<InputProps> = ({
 
   const validateInput = (inputValue: any) => {
     if (validation) {
-      if (validation?.pattern && !validation.pattern?.test(inputValue)) {
-        setError(validation.customMessage || '');
+      if (
+        validation.required &&
+        typeof inputValue === 'string' &&
+        !inputValue.trim()
+      ) {
+        setError(validation.customMessage || ' ');
         return false;
       }
-      if (validation.required && !inputValue.trim()) {
-        setError(validation.customMessage || ' ');
+      if (validation?.pattern && !validation.pattern?.test(inputValue)) {
+        setError(validation.customMessage || '');
         return false;
       }
     }
