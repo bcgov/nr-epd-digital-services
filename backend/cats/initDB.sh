@@ -51,17 +51,17 @@ else
         echo "SEED_DATA_PATH is not set. Skipping seed data load."
     else
         # check if sites table has any rows
-        if [ "$(PGPASSWORD="$POSTGRES_ADMIN_PASSWORD" psql -h "$POSTGRESQL_HOST" -d "$POSTGRES_DATABASE" -U "$POSTGRES_ADMIN_USERNAME" -t -c "SELECT count(*) FROM sites.sites;")" -gt 0 ]; then
+        if [ "$(PGPASSWORD="$POSTGRES_ADMIN_PASSWORD" psql -h "$POSTGRESQL_HOST" -d "$POSTGRES_DATABASE" -U "$POSTGRES_ADMIN_USERNAME" -t -c "SELECT count(*) FROM cats.application;")" -gt 0 ]; then
             echo "Seed data already loaded. Skipping seed data load."
         else
-            echo "Seed data set, seed is enabled, and db is blank, disabling constraints."
+            echo "Seed data set, seed is enabled, and db is blank"
             # Disable constraints before seeding, if file exists
             if [ -f "/mnt/sql/disable_constraints.sql" ]; then
                 echo "Disabling constraints..."
                 PGPASSWORD="$POSTGRES_ADMIN_PASSWORD" psql -h "$POSTGRESQL_HOST" -d "$POSTGRES_DATABASE" -U "$POSTGRES_ADMIN_USERNAME" -f "/mnt/sql/disable_constraints.sql"
             fi
 
-            echo "Seed data set, attempting to load."
+            echo "Seed data set, attempting to load with suppressed logs (this might take a while)."
             PGPASSWORD="$POSTGRES_ADMIN_PASSWORD" psql -q -h "$POSTGRESQL_HOST" -d "$POSTGRES_DATABASE" -U "$POSTGRES_ADMIN_USERNAME" -f "$SEED_DATA_PATH" > /dev/null
             echo "Seed data successfully loaded."
 
