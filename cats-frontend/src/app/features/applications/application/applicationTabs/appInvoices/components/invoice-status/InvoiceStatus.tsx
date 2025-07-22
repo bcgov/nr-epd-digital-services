@@ -1,18 +1,18 @@
 import React from 'react';
-import './statusPill.css';
-import { StatusType } from './statusType';
+import './InvoiceStatus.css';
 import {
   TextFileEarmark,
   CheckIcon,
   SendIcon,
   DollarIcon,
 } from '@cats/components/common/icon';
+import { StatusType } from '../invoice-enums/statusType';
 
-type StatusPillProps = {
+type InvoiceStatusProps = {
   status: StatusType;
 };
 
-const StatusPill: React.FC<StatusPillProps> = ({ status }) => {
+const InvoiceStatus: React.FC<InvoiceStatusProps> = ({ status }) => {
   const getIcon = (status: StatusType) => {
     switch (status.toLowerCase()) {
       case 'draft':
@@ -35,4 +35,4 @@ const StatusPill: React.FC<StatusPillProps> = ({ status }) => {
   );
 };
 
-export default StatusPill;
+export default InvoiceStatus;

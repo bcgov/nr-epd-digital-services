@@ -259,6 +259,16 @@ export class InvoiceResolver {
       createdBy: invoice.createdBy,
       updatedBy: invoice.updatedBy,
       totalInCents: invoice.totalInCents,
+      recipient: {
+        id: invoice.recipient?.id,
+        firstName: invoice?.recipient?.firstName ?? '',
+        middleName: invoice?.recipient?.middleName ?? '',
+        lastName: invoice?.recipient?.lastName ?? '',
+        fullName: 
+          (invoice?.recipient?.firstName ?? '') + ' ' +
+          (invoice?.recipient?.middleName ?? '') + ' ' +
+          (invoice?.recipient?.lastName ?? ''),
+      },
       lineItems: invoice.lineItems.map((lineItem) => ({
         id: lineItem.id,
         type: lineItem.type,

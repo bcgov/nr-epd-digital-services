@@ -1,0 +1,104 @@
+mutation CreateInvoice($invoiceData: InvoiceInputDto!) {
+  createInvoice(invoiceData: $invoiceData) {
+    success
+    httpStatusCode
+    message
+    invoice {
+      id
+      subject
+      issuedDate
+      dueDate
+      status
+      taxExempt
+      subtotalInCents
+      gstInCents
+      pstInCents
+      totalInCents
+      notes
+    }
+  }
+}
+
+mutation UpdateInvoice($id: Int!, $updateData: InvoiceInputDto!) {
+  updateInvoice(id: $id, updateData: $updateData) {
+    success
+    httpStatusCode
+    message
+    invoice {
+      id
+      subject
+      issuedDate
+      dueDate
+      status
+      taxExempt
+      subtotalInCents
+      gstInCents
+      pstInCents
+      totalInCents
+      notes
+      lineItems {
+        id
+        type
+        description
+        quantity
+        unitPriceInCents
+        totalInCents
+      }
+    }
+  }
+}
+
+query GetInvoiceById($id: Int!) {
+  getInvoiceById(id: $id) {
+    success
+    httpStatusCode
+    message
+    invoice {
+      id
+      applicationId
+      recipientId
+      subject
+      issuedDate
+      dueDate
+      status
+      taxExempt
+      pstExempt
+      notes
+      subtotalInCents
+      gstInCents
+      pstInCents
+      totalInCents
+      createdBy
+      updatedBy
+      lineItems {
+        id
+        type
+        description
+        quantity
+        unitPriceInCents
+        totalInCents
+      }
+      recipient {
+        id
+        fullName
+      }
+    }
+  }
+}
+
+
+query GetInvoicesByApplicationId($applicationId: Int!) {
+  getInvoicesByApplicationId(applicationId: $applicationId) {
+    success
+    httpStatusCode
+    message
+    invoices {
+      id
+      subject
+      issuedDate
+      dueDate
+      status
+      totalInCents
+    }
+  }
+}

@@ -5,11 +5,10 @@ import { FormGroup, Form, Col, Row, Alert } from 'react-bootstrap';
 import { Button } from '@cats/components/button/Button';
 import { FaTimes, FaEdit, FaSave, FaPrint } from 'react-icons/fa';
 import { useGetHeaderDetailsByApplicationIdQuery } from '@cats/features/applications/application/ApplicationDetails.generated';
-import { useGetInvoiceByIdQuery } from '../../getInvoiceById.generated';
-import { useGetPersonByIdQuery } from './getPersonById.generated';
-import { useUpdateInvoiceMutation } from '../../updateInvoice.generated';
 import { InvoiceStatus } from '../../../../../../../../generated/types';
 import InvoiceAttachments from '../shared/InvoiceAttachments';
+import { useGetPersonByIdQuery } from '../../graphql/getPersonById.generated';
+import { useGetInvoiceByIdQuery, useUpdateInvoiceMutation } from '../../graphql/Invoice.generated';
 
 enum InvoiceLineItemType {
   SERVICE = 'service',

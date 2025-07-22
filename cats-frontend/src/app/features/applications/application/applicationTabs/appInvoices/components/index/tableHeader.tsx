@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import TableControls from './tableControls';
 import './tableHeader.css';
 import { TableColumn } from '@cats/components/table/TableColumn';
-import { InvoiceFilter } from './filter';
+import { InvoiceFilter } from '../invoice-enums/filter';
 import ColumnSelect from './columnSelect';
 
 interface TableHeaderProps {

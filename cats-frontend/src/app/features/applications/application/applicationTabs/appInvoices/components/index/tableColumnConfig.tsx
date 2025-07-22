@@ -2,9 +2,9 @@ import { TableColumn } from '@cats/components/table/TableColumn';
 import { FormFieldType } from '@cats/components/input-controls/IFormField';
 import { formatDateUTC } from '@cats/helpers/utility';
 import { FileLinesIcon } from '@cats/components/common/icon';
-import { StatusType } from './statusType';
-import StatusPill from './statusPill';
+import { StatusType } from '../invoice-enums/statusType';
 import { Link, useParams } from 'react-router-dom';
+import InvoiceStatus from '../invoice-status/InvoiceStatus';
 
 export const indexTableColumns: TableColumn[] = [
   {
@@ -59,7 +59,7 @@ export const indexTableColumns: TableColumn[] = [
     isChecked: true,
     displayType: { type: FormFieldType.Label, label: 'Status' },
     renderCell: (value: StatusType) => {
-      return <StatusPill status={value} />;
+      return <InvoiceStatus status={value} />;
     },
   },
   {
@@ -86,7 +86,8 @@ export const indexTableColumns: TableColumn[] = [
       // rendering to include two variables.
       type: FormFieldType.Label,
     },
-    renderCell: (value: any, row: any, applicationId: string) => {
+    renderCell: (value: any, applicationId: string) => {
+      console.log(applicationId);
       // Use Link component from react-router-dom to create the dynamic link
       return (
         <div className="d-flex justify-content-center w-100">
