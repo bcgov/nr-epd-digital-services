@@ -372,6 +372,7 @@ export type InvoiceByApplicationIdDto = {
 export type InvoiceDto = {
   __typename?: 'InvoiceDto';
   applicationId: Scalars['Int']['output'];
+  attachments: Array<InvoiceAttachmentDto>;
   createdAt: Scalars['DateTime']['output'];
   createdBy?: Maybe<Scalars['String']['output']>;
   dueDate: Scalars['DateTime']['output'];
@@ -383,6 +384,7 @@ export type InvoiceDto = {
   notes?: Maybe<Scalars['String']['output']>;
   pstExempt: Scalars['Boolean']['output'];
   pstInCents: Scalars['Int']['output'];
+  recipient: ViewParticipantNamesDto;
   recipientId: Scalars['Int']['output'];
   status: InvoiceStatus;
   subject: Scalars['String']['output'];

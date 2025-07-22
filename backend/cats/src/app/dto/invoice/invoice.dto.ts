@@ -9,6 +9,8 @@ import {
   InvoiceLineItemInputDto,
   InvoiceLineItemDto,
 } from './invoiceLineItem.dto';
+import { InvoiceAttachmentDto } from './invoiceAttachment.dto';
+import { ViewParticipantNamesDto } from '../appParticipants/ViewParticipantNames.dto';
 
 export enum InvoiceStatus {
   DRAFT = 'draft',
@@ -83,6 +85,12 @@ export class InvoiceDto {
 
   @Field(() => [InvoiceLineItemDto])
   lineItems: InvoiceLineItemDto[];
+  
+  @Field(() => ViewParticipantNamesDto)
+  recipient?: ViewParticipantNamesDto;
+
+  @Field(() => [InvoiceAttachmentDto])
+  attachments?: InvoiceAttachmentDto[];
 }
 
 @InputType()

@@ -11,7 +11,7 @@ import StaffDashboard from '../features/staff/Staff';
 import ProtectedRoute from './ProtectedRoute';
 import CreateInvoice from '../features/applications/application/applicationTabs/appInvoices/components/create/CreateInvoice';
 import Dashboard from '@cats/features/dashboard/Dashboard';
-import ViewInvoice from '../features/applications/application/applicationTabs/appInvoices/components/view/ViewInvoice';
+import Invoice from '@cats/features/applications/application/applicationTabs/appInvoices/invoice/Invoice';
 
 const roleBasedRoutes: any = {
   [UserRoleType.INTERNAL]: [
@@ -23,10 +23,8 @@ const roleBasedRoutes: any = {
     { path: '/applications', element: <ApplicationSearch /> },
     { path: '/applications/:id', element: <ApplicationDetails /> },
     { path: '/applications/:id/invoices/create', element: <CreateInvoice /> },
-    {
-      path: '/applications/:applicationId/invoices/:id/view',
-      element: <ViewInvoice />,
-    },
+    { path: '/applications/:applicationId/invoice', element: <Invoice />},
+    { path: '/applications/:applicationId/invoice/:id', element: <Invoice />},
     {
       path: '/staff',
       element: (

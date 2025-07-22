@@ -1,7 +1,6 @@
 import { useState, FormEvent, useEffect, ChangeEvent, FC } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FormGroup, Form, Col, Row, Alert } from 'react-bootstrap';
-import { useCreateInvoiceMutation } from '../../createInvoice.generated';
 import { InvoiceStatus } from '../../../../../../../../generated/types';
 import { FaTimes } from 'react-icons/fa';
 import { Button } from '@cats/components/button/Button';
@@ -9,7 +8,7 @@ import { FloppyDisk } from '@cats/components/common/icon';
 import { useGetHeaderDetailsByApplicationIdQuery } from '@cats/features/applications/application/ApplicationDetails.generated';
 import { useGetParticipantNamesLazyQuery } from '@cats/features/applications/application/applicationTabs/appParticipants/graphql/Participants.generated';
 import InvoiceAttachments from '../shared/InvoiceAttachments';
-import { UploadedFile } from '../shared/FileUpload';
+import { useCreateInvoiceMutation } from '../../graphql/Invoice.generated';
 
 enum InvoiceLineItemType {
   SERVICE = 'service',
