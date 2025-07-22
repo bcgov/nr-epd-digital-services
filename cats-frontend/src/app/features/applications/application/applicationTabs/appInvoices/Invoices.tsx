@@ -1,48 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import InvoiceIndexTable from './components/index/table';
 import { RequestStatus } from '@cats/helpers/requests/status';
-import { InvoiceByApplicationIdDto } from '../../../../../../generated/types';
-import { useGetInvoicesByApplicationIdQuery } from './getInvoicesByApplicationId.generated';
+import { Filter, InvoiceByApplicationIdDto } from '../../../../../../generated/types';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { TableColumn } from '@cats/components/table/TableColumn';
 import { indexTableColumns } from './components/index/tableColumnConfig';
-import { InvoiceFilter } from './components/index/filter';
+import { InvoiceFilter } from './components/invoice-enums/filter';
 import {
   InvoiceSortBy as InvoiceSortBy,
   InvoiceSortByDir as InvoiceSortByDir,
-} from './components/index/sortBy';
+} from './components/invoice-enums/sortBy';
 import { Button } from '@cats/components/button/Button';
-import { Plus } from '@cats/components/common/icon';
+import { FilterIcon, Plus } from '@cats/components/common/icon';
+import Widget from '@cats/components/widget/Widget';
+import FilterControls from '@cats/components/filter/FilterControls';
+import { IFilterOption } from '@cats/components/filter/IFilterControls';
+import { GetInvoicesConfig } from './InvoicesConfig';
+import  './Invoices.css';
+import { useGetInvoicesByApplicationIdQuery } from './graphql/Invoice.generated';
 
 export const Invoices: React.FC = () => {
-  const [results, setResults] = useState<InvoiceByApplicationIdDto[]>([]);
-  const [displayResults, setDisplayResults] = useState<
-    InvoiceByApplicationIdDto[]
-  >([]);
-  const [filter, setFilter] = useState<InvoiceFilter>(InvoiceFilter.ALL);
-  const [sortBy, setSortBy] = useState<InvoiceSortBy>(InvoiceSortBy.ID);
-  const [sortByDir, setSortByDir] = useState<InvoiceSortByDir>(
-    InvoiceSortByDir.ASC,
-  );
-  const [requestStatus, setRequestStatus] = useState<RequestStatus>(
-    RequestStatus.idle,
-  );
-  const [columns, setColumns] =
-    React.useState<TableColumn[]>(indexTableColumns);
   const navigate = useNavigate();
   const location = useLocation();
   const { id = '' } = useParams();
   const applicationId = parseInt(id, 10);
+  const { invoiceTableConfig } = GetInvoicesConfig(applicationId);
 
   // Parse URL search params to check for refresh=true
   const searchParams = new URLSearchParams(location.search);
   const shouldRefresh = searchParams.get('refresh') === 'true';
 
   const { data, error, refetch } = useGetInvoicesByApplicationIdQuery({
+    fetchPolicy: 'cache-and-network',
     variables: {
       applicationId: applicationId,
     },
   });
+
+  const [results, setResults] = useState<InvoiceByApplicationIdDto[]>([]);
+  const [displayResults, setDisplayResults] = useState<InvoiceByApplicationIdDto[]>([]);
+  const [filter, setFilter] = useState<InvoiceFilter>(InvoiceFilter.ALL);
+  const [sortBy, setSortBy] = useState<InvoiceSortBy>(InvoiceSortBy.ID);
+  const [sortByDir, setSortByDir] = useState<InvoiceSortByDir>(InvoiceSortByDir.ASC);
+  const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.idle);
+  const [columns, setColumns] = React.useState<TableColumn[]>(indexTableColumns);
+
+  const [selectedRows, setSelectedRows] = useState<{ id: any }[]>([]);
 
   // If refresh=true is in the URL, refetch data and remove the parameter
   useEffect(() => {
@@ -151,7 +154,7 @@ export const Invoices: React.FC = () => {
   }, [data, error]);
 
   const handleCreateInvoiceClick = () => {
-    navigate(`/applications/${applicationId}/invoices/create`);
+    navigate(`/applications/${applicationId}/invoice`);
   };
 
   const createInvoiceButton = (
@@ -160,13 +163,92 @@ export const Invoices: React.FC = () => {
     </Button>
   );
 
+  const handleTableChange = (event: any) => {
+    const { property, value, row, selected } = event;
+
+    if (!property.includes('select_all') && !property.includes('select_row')) return;
+
+    const rows = property === 'select_row' ? [row] : value;
+    const isSelecting = property === 'select_row' ? value : selected;
+
+    setSelectedRows((prevSelectedRows) => {
+      const rowIds = new Set(rows.map((r: any) => r.id));
+
+      if (isSelecting) {
+        // Avoid duplicates
+        const existingIds = new Set(prevSelectedRows.map((r) => r.id));
+        const newSelections = rows
+          .filter((r: any) => !existingIds.has(r.id))
+          .map((r: any) => ({ id: r.id }));
+        return [...prevSelectedRows, ...newSelections];
+      } else {
+        // Remove deselected rows
+        return prevSelectedRows.filter((r) => !rowIds.has(r.id));
+      }
+    });
+  };
+
+
+  const invoiceFilter: IFilterOption[] = [
+    {
+      label: 'All',
+      value: InvoiceFilter.ALL,
+      onClick: () => handleFilterChange(InvoiceFilter.ALL),
+      isSelected: filter === InvoiceFilter.ALL,
+    },
+    {
+      label: 'Draft',
+      value: InvoiceFilter.DRAFT,
+      onClick: () => handleFilterChange(InvoiceFilter.DRAFT),
+      isSelected: filter === InvoiceFilter.DRAFT,
+    },
+    {
+      label: 'Unpaid',
+      value: InvoiceFilter.RECEIVED,
+      onClick: () => handleFilterChange(InvoiceFilter.RECEIVED),
+      isSelected: filter === InvoiceFilter.RECEIVED,
+    },
+    {
+      label: 'Filters',
+      value: 'filters',
+      onClick: () => {alert('Filter')},
+      icon: <FilterIcon />,
+    },
+  ]
+
   return (
     <div>
-      <div className="d-flex justify-content-between mb-3 align-items-center">
+      {/* <div className="d-flex justify-content-between mb-3 align-items-center">
         <p>Financial Summary Will Go Here</p>
-      </div>
+      </div> */}
       <div>
-        <InvoiceIndexTable
+        <Widget 
+          customWidgetCss='gap-4'
+          title="Invoices"
+          tableIsLoading={requestStatus}
+          tableColumns={invoiceTableConfig}
+          tableData={displayResults}
+          sortHandler={handleSortChange}
+          changeHandler={handleTableChange}
+          filter={ <FilterControls options={invoiceFilter} />}
+          currentPage={1}
+          allowRowsSelect={true}
+          primaryKeycolumnName="id"
+        >
+          <div className="d-flex gap-2 align-items-center">
+            <Button variant="secondary" onClick={handleCreateInvoiceClick}>
+              <Plus /> New Invoice
+            </Button>
+            {/* <Button variant="secondary" onClick={(() => navigate(`/applications/${applicationId}/invoices/create`))}>
+              <Plus /> New Invoice 2
+            </Button> */}
+            <Button variant="secondary" disabled={selectedRows.length <= 0} onClick={() => { alert('Send Invoice to Client') }}>
+              <span>Send Invoice to Client</span>
+            </Button>
+          </div>
+        </Widget>
+        
+        {/* <InvoiceIndexTable
           requestStatus={requestStatus}
           results={displayResults}
           columns={columns}
@@ -175,7 +257,7 @@ export const Invoices: React.FC = () => {
           handleFilterChange={handleFilterChange}
           sortHandler={handleSortChange}
           createInvoiceButton={createInvoiceButton}
-        />
+        /> */}
       </div>
     </div>
   );

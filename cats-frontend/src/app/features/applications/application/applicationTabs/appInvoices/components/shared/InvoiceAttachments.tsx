@@ -2,11 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import FileUpload, { UploadedFile } from './FileUpload';
 import { uploadFileToComs, deleteFile } from '../../services/ComsService';
-import {
-  useCreateInvoiceAttachmentMutation,
-  useGetInvoiceAttachmentsQuery,
-  useDeleteInvoiceAttachmentMutation,
-} from '../../invoiceAttachments.generated';
+import { useCreateInvoiceAttachmentMutation, useDeleteInvoiceAttachmentMutation, useGetInvoiceAttachmentsQuery } from '../../graphql/invoiceAttachments.generated';
+
 
 interface InvoiceAttachmentProps {
   invoiceId?: number;

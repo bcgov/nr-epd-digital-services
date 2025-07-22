@@ -367,6 +367,7 @@ const TableBody: FC<TableBodyProps> = ({
         />
       );
     } else if (field.type === FormFieldType.DropDownWithSearch) {
+      
       return (
         <DropdownSearchInput
           key={columnIndex}
@@ -524,7 +525,7 @@ const TableBody: FC<TableBodyProps> = ({
       <React.Fragment key={rowIndex}>
         <tr data-testid="table-row" key={rowIndex}>
           {allowRowsSelect && (
-            <td className="content-text align-content-center checkbox-column">
+            <td className="checkbox-column">
               <input
                 id={getValue(rowIndex, idColumnName)}
                 type="checkbox"

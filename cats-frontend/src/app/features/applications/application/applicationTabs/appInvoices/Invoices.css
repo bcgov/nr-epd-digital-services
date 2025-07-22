@@ -1,0 +1,93 @@
+.custom-invoices-header {
+  font-family: Noto Sans !important;
+  vertical-align: middle;
+  min-width: 100px;
+}
+
+a.custom-invoices-txt {
+  font-family: Noto Sans !important;
+  color: var(--typography-color-link, #255a90);
+  text-decoration: underline;
+  justify-content: left;
+}
+
+.custom-invoices-link {
+    font-family: Noto Sans !important;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
+    text-decoration: none;
+    color: var(--surface-color-primary-default, #053662);
+}
+
+.custom-invoices-link:hover {
+  color: var(--surface-color-primary-hover, #1c5c9b);
+}
+
+a.custom-invoices-txt:hover {
+  color: var(--typography-color-link-hover, #1a3f6b);
+}
+
+.custom-invoices-txt {
+    color: var(--typography-color-secondary, #474543);
+}
+
+.custom-invoices-tbl-header {
+  font-family: Noto Sans;
+  text-align: center;
+  vertical-align: middle;
+  min-width: 100px;
+}
+
+@media (max-width: 1040px) {
+  .custom-invoices-column-position {
+    position: sticky;
+    right: 0;
+    z-index: 1;
+    box-shadow:
+      -3px 0 3px 0 #00000021,
+      -0.6px 0 1.8px 0 #0000001a !important;
+  }
+}
+
+.invoice_detail_conatiner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-margin-xxlarge);
+}
+
+.invoice_lbl {
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--typography-color-primary, #2d2d2d);
+}
+
+.invoice_type_lbl {
+  font-weight: 700;
+}
+
+.invoice_id_lbl {
+  font-weight: 400;
+}
+
+.invoice_subject_lbl {
+  font-weight: 400;
+  color: var(--typography-color-secondary, #474543);
+}
+
+.custom_dot {
+  font-family: Noto Sans;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--typography-color-disabled, #9f9d9c);
+}
+
+.invoice_page_container {
+  padding: 0 var(--layout-margin-xxlarge) var(--layout-margin-huge)
+    var(--layout-margin-xxlarge);
+  gap: var(--layout-margin-xxlarge);
+  display: flex;
+  flex-direction: column;
+}

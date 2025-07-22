@@ -2,7 +2,7 @@ import React from 'react';
 import Table from '@cats/components/table/Table';
 import { RequestStatus } from '@cats/helpers/requests/status';
 import TableHeader from './tableHeader';
-import { InvoiceFilter } from './filter';
+import { InvoiceFilter } from '../invoice-enums/filter';
 import { TableColumn } from '@cats/components/table/TableColumn';
 
 interface InvoiceIndexTableProps {

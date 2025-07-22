@@ -2,7 +2,7 @@ import React from 'react';
 import { TableColumnsIcon } from '@cats/components/common/icon';
 import styles from './tableControls.module.css';
 import { Button } from '@cats/components/button/Button';
-import { InvoiceFilter } from './filter';
+import { InvoiceFilter } from '../invoice-enums/filter';
 
 interface TableControlsProps {
   handleFilterChange: (filter: InvoiceFilter) => void;
