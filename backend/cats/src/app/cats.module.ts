@@ -97,7 +97,7 @@ import { InvoiceAttachmentResolver } from './resolvers/invoice/invoiceAttachment
 import { InvoiceAttachmentService } from './services/invoice/invoiceAttachment.service';
 import { ComsService } from './services/coms/coms.service';
 import { ApplicationSite } from './entities/applicationSite.entity';
-import { InvoiceItem } from './entities/invoiceItem.entity';
+
 /**
  * Module for wrapping all functionalities in user microserivce
  */
