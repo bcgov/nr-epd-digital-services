@@ -1,0 +1,51 @@
+name: Dev Merge - Deploy to PROD
+
+on:
+  push:
+    branches:
+      - main
+      - feat/cats-prod # todo: this can be removed in future, just for active dev.
+
+concurrency:
+  # Cancel in progress for PR open and close
+  group: prod
+  cancel-in-progress: false
+
+jobs:
+  get-pr-info:
+    runs-on: ubuntu-24.04
+    outputs:
+      pr: ${{ steps.vars.outputs.pr }}
+    steps:
+      - id: vars
+        uses: bcgov-nr/action-get-pr@v0.0.1
+      - name: Echo PR number
+        run: |
+          echo "PR: ${{ steps.vars.outputs.pr }}"
+
+  deploy_db:
+    name: Deploys Database
+    uses: ./.github/workflows/.dbdeployer.yml
+    secrets: inherit
+    with:
+      environment: prod
+      values: 'values-prod.yaml'
+      app_values: 'values.yaml' # PROD env specific values file for the APP
+  deploys:
+    name: Deploys to PROD
+    uses: ./.github/workflows/.deployer.yml
+    secrets: inherit
+    needs: [get-pr-info, deploy_db]
+    with:
+      environment: prod
+      tag:  '${{ needs.get-pr-info.outputs.pr }}'
+      values: 'values.yaml' # PROD env specific values file
+
+
+  schemaspy:
+    name: Schemaspy
+    uses: ./.github/workflows/.schema-spy.yml
+    secrets: inherit
+    needs: [deploys]
+    with:
+      tag: prod
