@@ -1,4 +1,4 @@
-name: Dev Merge - Deploy to PROD
+name: Dev Merge CATS - Deploy to PROD
 
 on:
   push:
