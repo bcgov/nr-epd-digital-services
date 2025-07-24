@@ -157,7 +157,8 @@ jobs:
           DEPLOY_TIMEOUT=$((${{ inputs.timeout-minutes }}-1)) 
           
           # Helm upgrade/rollout - atomic, timeout
-          helm upgrade \
+          # TODO: remove --dry-run and --debug once confirmed working, just confirm
+          helm upgrade --dry-run --debug \
             --set-string global.repository=${{ github.repository }} \
             --set-string global.tag=${{ steps.vars.outputs.tag }} \
             --set-string global.secrets.keycloakSecret="${{ secrets.KEYCLOAK_SECRET }}" \
