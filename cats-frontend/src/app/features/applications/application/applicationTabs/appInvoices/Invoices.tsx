@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import InvoiceIndexTable from './components/index/table';
 import { RequestStatus } from '@cats/helpers/requests/status';
-import { Filter, InvoiceByApplicationIdDto } from '../../../../../../generated/types';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { TableColumn } from '@cats/components/table/TableColumn';
 import { indexTableColumns } from './components/index/tableColumnConfig';
@@ -17,8 +15,10 @@ import FilterControls from '@cats/components/filter/FilterControls';
 import { IFilterOption } from '@cats/components/filter/IFilterControls';
 import { GetInvoicesConfig } from './InvoicesConfig';
 import  './Invoices.css';
-import { useGetInvoicesByApplicationIdQuery } from './graphql/Invoice.generated';
+import { useGetInvoicesQuery } from './graphql/Invoice.generated';
+import { ViewInvoice } from '../../../../../../generated/types';
 
+type Invoices = Pick<ViewInvoice, 'id' | 'subject' | 'invoiceStatus' | 'totalInCents' |'issuedDate' | 'dueDate'>;
 export const Invoices: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,20 +30,19 @@ export const Invoices: React.FC = () => {
   const searchParams = new URLSearchParams(location.search);
   const shouldRefresh = searchParams.get('refresh') === 'true';
 
-  const { data, error, refetch } = useGetInvoicesByApplicationIdQuery({
+  const { data, error, refetch } = useGetInvoicesQuery({
     fetchPolicy: 'cache-and-network',
     variables: {
       applicationId: applicationId,
     },
   });
 
-  const [results, setResults] = useState<InvoiceByApplicationIdDto[]>([]);
-  const [displayResults, setDisplayResults] = useState<InvoiceByApplicationIdDto[]>([]);
+  const [results, setResults] = useState<Invoices[]>([]);
+  const [displayResults, setDisplayResults] = useState<Invoices[]>([]);
   const [filter, setFilter] = useState<InvoiceFilter>(InvoiceFilter.ALL);
   const [sortBy, setSortBy] = useState<InvoiceSortBy>(InvoiceSortBy.ID);
   const [sortByDir, setSortByDir] = useState<InvoiceSortByDir>(InvoiceSortByDir.ASC);
   const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.idle);
-  const [columns, setColumns] = React.useState<TableColumn[]>(indexTableColumns);
 
   const [selectedRows, setSelectedRows] = useState<{ id: any }[]>([]);
 
@@ -95,7 +94,7 @@ export const Invoices: React.FC = () => {
     let filteredResults = results;
     if (filter !== InvoiceFilter.ALL) {
       filteredResults = results.filter(
-        (invoice) => invoice.status.toLowerCase() === filter.toLowerCase(),
+        (invoice) => invoice.invoiceStatus.toLowerCase() === filter.toLowerCase(),
       );
     }
 
@@ -122,8 +121,8 @@ export const Invoices: React.FC = () => {
           rightValue = right.dueDate || '';
           break;
         case InvoiceSortBy.STATUS:
-          leftValue = left.status || '';
-          rightValue = right.status || '';
+          leftValue = left.invoiceStatus || '';
+          rightValue = right.invoiceStatus || '';
           break;
         case InvoiceSortBy.TOTAL_IN_CENTS:
           leftValue = left.totalInCents || 0;
@@ -146,7 +145,7 @@ export const Invoices: React.FC = () => {
 
   useEffect(() => {
     if (data) {
-      setResults(data.getInvoicesByApplicationId.invoices || []);
+      setResults(data?.getInvoices?.data || []);
       setRequestStatus(RequestStatus.success);
     } else if (error) {
       setRequestStatus(RequestStatus.failed);

@@ -54,9 +54,9 @@ export class InvoiceAttachmentResolver {
         fileName: attachment.fileName,
         fileSize: attachment.fileSize,
         mimeType: attachment.mimeType,
-        objectStorageId: attachment.objectStorageId,
-        createdAt: attachment.createdAt,
-        createdBy: attachment.createdBy,
+        objectStorageId: attachment.objectId,
+        createdAt: attachment.whenCreated,
+        createdBy: attachment.whoCreated,
       }));
 
       response.success = true;
@@ -76,7 +76,6 @@ export class InvoiceAttachmentResolver {
   }
 
   @Mutation(() => FileUploadResponse)
-  @UsePipes(new GenericValidationPipe())
   async uploadFileToInvoice(
     @Args('input') input: FileUploadInputDto,
     @AuthenticatedUser() user: any,
@@ -95,16 +94,16 @@ export class InvoiceAttachmentResolver {
       const attachment =
         await this.attachmentService.uploadFileAndCreateAttachment(input, user);
 
-      response.objectStorageId = attachment.objectStorageId;
+      response.objectStorageId = attachment.objectId;
       response.attachment = {
         id: attachment.id,
         invoiceId: attachment.invoiceId,
         fileName: attachment.fileName,
         fileSize: attachment.fileSize,
         mimeType: attachment.mimeType,
-        objectStorageId: attachment.objectStorageId,
-        createdAt: attachment.createdAt,
-        createdBy: attachment.createdBy,
+        objectStorageId: attachment.objectId,
+        createdAt: attachment.whenCreated,
+        createdBy: attachment.whoCreated,
       };
 
       response.success = true;
@@ -149,9 +148,9 @@ export class InvoiceAttachmentResolver {
         fileName: attachment.fileName,
         fileSize: attachment.fileSize,
         mimeType: attachment.mimeType,
-        objectStorageId: attachment.objectStorageId,
-        createdAt: attachment.createdAt,
-        createdBy: attachment.createdBy,
+        objectStorageId: attachment.objectId,
+        createdAt: attachment.whenCreated,
+        createdBy: attachment.whoCreated,
       };
 
       response.success = true;
@@ -241,16 +240,16 @@ export class InvoiceAttachmentResolver {
           user,
         );
 
-      response.objectStorageId = attachment.objectStorageId;
+      response.objectStorageId = attachment.objectId;
       response.attachment = {
         id: attachment.id,
         invoiceId: attachment.invoiceId,
         fileName: attachment.fileName,
         fileSize: attachment.fileSize,
         mimeType: attachment.mimeType,
-        objectStorageId: attachment.objectStorageId,
-        createdAt: attachment.createdAt,
-        createdBy: attachment.createdBy,
+        objectStorageId: attachment.objectId,
+        createdAt: attachment.whenCreated,
+        createdBy: attachment.whoCreated,
       };
 
       response.success = true;

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import ViewInvoiceForm from '../components/view/ViewInvoiceForm';
 import NavigationBar from '@cats/components/navigation-bar/NavigationBar';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { UserMode } from '@cats/helpers/requests/userMode';
@@ -10,52 +9,54 @@ import PageContainer from '@cats/components/simple/PageContainer';
 import { useGetHeaderDetailsByApplicationIdQuery } from '@cats/features/applications/application/ApplicationDetails.generated';
 import { FaTimes } from 'react-icons/fa';
 import { Button } from '@cats/components/button/Button';
-import { FilePdfIcon, PaperPlaneIcon, Plus, SpinnerIcon } from '@cats/components/common/icon';
-import { DropdownDto, InvoiceDto, InvoiceInputDto, InvoiceLineItemInputDto, InvoiceStatus, ViewApplicationDetails } from '../../../../../../../generated/types';
+import { FilePdfIcon, PaperPlaneIcon, Plus } from '@cats/components/common/icon';
 import './Invoice.css';
 import Widget from '@cats/components/widget/Widget';
 import Form from '@cats/components/form/Form';
 import { GetInvoiceConfig } from './InvoiceConfig';
 import { RequestStatus } from '@cats/helpers/requests/status';
-import { InvoiceItemTypes } from '../components/invoice-enums/invoiceItemTypes';
 import { useGetParticipantNamesQuery } from '../../appParticipants/graphql/Participants.generated';
-import { v4 } from 'uuid';
 import { validateForm } from '@cats/helpers/utility';
 import { IFormField } from '@cats/components/input-controls/IFormField';
 import ModalDialog from '@cats/components/modaldialog/ModalDialog';
 import LoadingOverlay from '@cats/components/loader/LoadingOverlay';
-import DOMPurify from 'dompurify';
 import InvoicePreviewTemplate from './InvoicePreviewTemplate';
-import { useCreateInvoiceMutation, useGetInvoiceByIdQuery, useUpdateInvoiceMutation } from '../graphql/Invoice.generated';
-
+import { GetInvoiceByIdDocument, useCreateInvoiceMutation, useDeleteInvoiceMutation, useGetInvoiceByIdQuery, useUpdateInvoiceMutation } from '../graphql/Invoice.generated';
+import { pdf, PDFViewer } from '@react-pdf/renderer';
+import { DropdownDto, InvoiceStatus, UpdateInvoice, UpdateInvoiceItem, ViewApplicationDetails } from '../../../../../../../generated/types';
+import { Update } from 'vite';
+import { InvoiceItemTypes } from '../components/invoice-enums/invoiceItemTypes';
+import { v4 } from 'uuid';
+import Decimal from 'decimal.js';
 
 const initialInvoice: any = {
     subject: '',
-    recipientId: '',
+    personId: '',
     issuedDate: new Date().toISOString().split('T')[0],
     dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
       .toISOString()
       .split('T')[0], // 30 days from now
-    status: InvoiceStatus.Draft,
+    invoiceStatus: InvoiceStatus.Draft,
     taxExempt: false,
     pstExempt: false,
     subtotalInCents: 0,
     gstInCents: 0,
     pstInCents: 0,
     totalInCents: 0,
-    notes: '',
-    lineItems: [
+    invoiceNotes: '',
+    invoiceItems: [
       {
+        id: v4(),
         description: '',
         quantity: '1',
         unitPriceInCents: '0', // Will display as empty in the UI
         totalInCents: '',
-        type: InvoiceItemTypes.SERVICE,
+        itemType: InvoiceItemTypes.SERVICE,
       },
     ],
     recipient: {
-      id: 0,
-      fullName: '',
+      key: '0',
+      value: '',
     }
   }
 const Invoice: React.FC = () => {
@@ -81,19 +82,20 @@ const Invoice: React.FC = () => {
   );
   
   // Fetch invoice details
-  const { data: invoiceData, refetch } = useGetInvoiceByIdQuery(
+  const { data: invoiceData } = useGetInvoiceByIdQuery(
     {
       fetchPolicy: 'cache-and-network',
-      variables: { id: numericInvoiceId },
+      variables: { invoiceId: numericInvoiceId },
       skip: !numericInvoiceId,
     }
   );
 
   const [updateInvoice] = useUpdateInvoiceMutation();
   const [createInvoice] = useCreateInvoiceMutation();
+  const [deleteInvoice] = useDeleteInvoiceMutation();
 
   // State to store invoice and application details
-  const [invoiceDetails, setInvoiceDetails] = useState(invoiceData?.getInvoiceById?.invoice || initialInvoice);
+  const [invoiceDetails, setInvoiceDetails] = useState(initialInvoice);
   const [applicationDetails, setApplicationDetails] = useState<ViewApplicationDetails | null | undefined>(applicationData?.getApplicationDetailsById?.data as ViewApplicationDetails);
   
   const [isVisible, setIsVisible] = useState(false);
@@ -126,22 +128,22 @@ const Invoice: React.FC = () => {
   }, [isVisible]);
 
   const transformInvoiceDetails = () => {
-    if (invoiceData?.getInvoiceById?.invoice) {
+    if (invoiceData?.getInvoiceById?.data) {
         setInvoiceDetails((prev: any) => ({
           ...prev,
-          ...invoiceData.getInvoiceById.invoice,
-          recipientId: invoiceData?.getInvoiceById?.invoice?.recipientId.toString(),
-          lineItems: invoiceData?.getInvoiceById?.invoice?.lineItems?.map((item: any) => (
+          ...invoiceData.getInvoiceById.data,
+          // recipientId: invoiceData?.getInvoiceById?.data?.recipientId.toString(),
+          invoiceItems: invoiceData?.getInvoiceById?.data?.invoiceItems?.map((item: any) => (
             { 
               ...item, 
               quantity: item.quantity.toString(),
               unitPriceInCents: ((item.unitPriceInCents ?? 0) / 100).toFixed(2), 
               totalInCents: ((item.totalInCents ?? 0) / 100).toFixed(2)
             })),
-          recipient: {
-            ...invoiceData?.getInvoiceById?.invoice?.recipient,
-            id: invoiceData?.getInvoiceById?.invoice?.recipient?.id.toString(),
-          }
+          // recipient: {
+          //   ...invoiceData?.getInvoiceById?.invoice?.recipient,
+          //   id: invoiceData?.getInvoiceById?.invoice?.recipient?.id.toString(),
+          // }
         }));
       }
   }
@@ -151,7 +153,7 @@ const Invoice: React.FC = () => {
       setApplicationDetails(applicationData.getApplicationDetailsById.data as ViewApplicationDetails);
     }
     if(!!id) {
-      if (invoiceData?.getInvoiceById?.invoice) {
+      if (invoiceData?.getInvoiceById?.data) {
         transformInvoiceDetails();  
         setRequestStatus(RequestStatus.success);
       }
@@ -166,6 +168,15 @@ const Invoice: React.FC = () => {
  
   }, [applicationData, invoiceData]);
 
+  const toDecimal = (val: any): Decimal => {
+    try {
+      const parsed = typeof val === 'string' ? val.trim() : val;
+      const decimal = new Decimal(parsed);
+      return decimal.isNaN() ? new Decimal(0) : decimal;
+    } catch {
+      return new Decimal(0);
+    }
+  };
 
   const handleItemClick = async (action: string) => {
     switch (action) {
@@ -184,51 +195,74 @@ const Invoice: React.FC = () => {
         else {
           setErrors([]);
           setHasErrors(false);
-         
-          const updatedInvoiceDetails: InvoiceInputDto = {
-            applicationId: invoiceDetails?.applicationId,
-            recipientId: Number(invoiceDetails?.recipientId),
-            dueDate: invoiceDetails?.dueDate,
-            issuedDate: invoiceDetails?.issuedDate,
-            subject: invoiceDetails?.subject,
-            status: invoiceDetails?.status,
-            taxExempt: invoiceDetails?.taxExempt,
-            pstExempt: invoiceDetails?.pstExempt,
-            subtotalInCents:invoiceDetails?.subtotalInCents,
-            gstInCents: invoiceDetails?.gstInCents,
-            pstInCents: invoiceDetails?.pstInCents,
-            totalInCents: invoiceDetails?.totalInCents, 
-            notes: invoiceDetails?.notes,
-            lineItems: invoiceDetails?.lineItems?.map((item: any) => ({
-            id: item.id,
-            description: item.description,
-            type: item.type, 
-            quantity: Number(item.quantity),
-            unitPriceInCents: Number(item.unitPriceInCents) * 100, 
-            totalInCents: Number(item.totalInCents) * 100
-          })) as InvoiceLineItemInputDto[]}
 
           if(!!id) {
-            updateInvoice({ 
-              variables: { 
-                id: numericInvoiceId, 
-                updateData: updatedInvoiceDetails 
-              } 
-            })
-            .then((response) => {
-              if(response?.data?.updateInvoice?.success) {
-                setViewMode(UserMode.Default);  
-                refetch(); 
+            const {recipient, whoUpdated, __typename, ...rest} = invoiceDetails;
+            const updatedInvoiceItems: UpdateInvoiceItem[] = invoiceDetails?.invoiceItems?.map((item: any) => {
+              const quantity = toDecimal(item.quantity);
+              const unitPrice = toDecimal(item.unitPriceInCents);
+              const total = toDecimal(item.totalInCents);
+              const isIdNumber = typeof item.id === 'number';
+              return {
+                ...(isIdNumber ? { id: item.id } : {}), // include only if it's a number
+                itemType: item.itemType,
+                description: item.description,
+                quantity: quantity.toNumber(),
+                unitPriceInCents: unitPrice.times(100).toDecimalPlaces(0).toNumber(),
+                totalInCents: total.times(100).toDecimalPlaces(0).toNumber(),
               }
             })
+            const invoiceToUpdate: UpdateInvoice = {
+              ...rest,
+              dueDate: invoiceDetails?.dueDate,
+              invoiceItems: updatedInvoiceItems,
+            };
+            try {
+                const response = await updateInvoice({
+                  variables: {
+                    invoice: invoiceToUpdate,
+                  },
+                  refetchQueries: [
+                    {
+                      query: GetInvoiceByIdDocument,
+                      variables: { invoiceId: numericInvoiceId },
+                    },
+                  ],
+                  awaitRefetchQueries: true,
+                });
+
+                if (response?.data?.updateInvoice?.success) {
+                  setViewMode(UserMode.Default);
+                }
+            } 
+            catch (err) {
+                console.error("Failed to update invoice:", err);
+            }
           }
           else {
+            const { recipient, ...updatedInvoice} = invoiceDetails;
             await createInvoice({ 
               variables: { 
-                invoiceData: {...updatedInvoiceDetails, applicationId: numericAppId} 
+                invoice: {
+                  ...updatedInvoice, 
+                  applicationId: numericAppId,
+                  invoiceItems : invoiceDetails?.invoiceItems?.map((item: any) => {
+                    const quantity = toDecimal(item.quantity);
+                    const unitPrice = toDecimal(item.unitPriceInCents);
+                    const total = toDecimal(item.totalInCents);
+                    const { id, ...rest } = item;
+                    return {
+                      ...rest,
+                      quantity: quantity.toNumber(),
+                      unitPriceInCents: unitPrice.times(100).toDecimalPlaces(0).toNumber(),
+                      totalInCents: total.times(100).toDecimalPlaces(0).toNumber(),
+                      
+                    }
+                  })
+                } 
               } 
             })
-            .then((response) => {
+            .then((response: any) => {
               if(response?.data?.createInvoice?.success) {
                 setViewMode(UserMode.Default);   
                 navigate(`/applications/${applicationId}?tab=invoices`);
@@ -254,15 +288,15 @@ const Invoice: React.FC = () => {
         if (invoiceDetails) {
           setInvoiceDetails((prev: any) => ({
             ...prev,
-            lineItems: [
-              ...prev.lineItems,
+            invoiceItems: [
+              ...prev.invoiceItems,
               {
                 id: v4(),
                 description: '',
                 quantity: '1',
                 unitPriceInCents: '0', // Keep as 0 in data model, but display as empty
                 totalInCents: '',
-                type: InvoiceItemTypes.SERVICE,
+                itemType: InvoiceItemTypes.SERVICE,
               },
             ],
           }));
@@ -274,6 +308,18 @@ const Invoice: React.FC = () => {
       case InvoiceActions.DUPLICATE_INVOICE:
         break;
       case InvoiceActions.DELETE_INVOICE:
+        if(!!id) {
+          const response = await deleteInvoice(
+            { 
+              variables: {
+                invoiceId: numericInvoiceId
+              }
+            }
+          );
+          if (response?.data?.deleteInvoice?.success) {
+            navigate(`/applications/${applicationId}?tab=invoices`);
+          }
+        }
         break;
       case InvoiceActions.RECORD_INVOICE_PAYMENT:
         break;
@@ -282,18 +328,13 @@ const Invoice: React.FC = () => {
 
       case InvoiceActions.PREVIEW_INVOICE_PDF:
         if (!invoiceDetails) return;
+        const blob = await pdf(
+          <InvoicePreviewTemplate invoice={invoiceDetails} application={applicationDetails}/>
+        ).toBlob();
 
-        // Create a new window for printing
-        const printWindow = window.open('', '_blank', 'width=800,height=600');
-        if (!printWindow) return;
-   
-        const sanitizedContent = DOMPurify.sanitize(InvoicePreviewTemplate(invoiceDetails, applicationDetails));
-        printWindow.document.write(sanitizedContent);
-        printWindow.document.close();
-    
-        // Trigger print dialog
-        printWindow.focus();
-        printWindow.print();
+        const blobUrl = URL.createObjectURL(blob);
+        window.open(blobUrl, '_blank');
+
         break;
       default:
         break;
@@ -301,44 +342,38 @@ const Invoice: React.FC = () => {
   }
 
   const calculateInvoice = (invoiceDetails: any) => {
-    const safeParse = (val: any): number => {
-      const parsed = parseFloat(val);
-      return isNaN(parsed) ? 0 : parsed;
-    };
-    // Recalculate line item totals
-    const updatedLineItems = invoiceDetails.lineItems.map((item: any) => {
-      const quantity = safeParse(item.quantity);
-      const unitPrice = safeParse(item.unitPriceInCents);
-      const total = quantity * unitPrice;
+    const updatedLineItems = invoiceDetails?.invoiceItems?.map((item: any) => {
+      const quantity = toDecimal(item.quantity);
+      const unitPrice = toDecimal(item.unitPriceInCents);
+      const total = quantity.mul(unitPrice);
 
       return {
         ...item,
-        quantity: item.quantity, // Preserve raw input
-        unitPriceInCents: item.unitPriceInCents, // Preserve raw input
-        totalInCents: total === 0 ? '' : total.toFixed(2), // Only format calculated total
+        quantity: item.quantity,
+        unitPriceInCents: item.unitPriceInCents,
+        totalInCents: total.isZero() ? '' : total.toFixed(2),
       };
     });
 
-    // Calculate the subtotal of all line items
-    const subtotal = updatedLineItems.reduce((sum: number, item: any) => {
-      return sum + safeParse(item.totalInCents);
-    }, 0);
+    const subtotal = updatedLineItems.reduce((sum: Decimal, item: any) => {
+      return sum.plus(toDecimal(item.totalInCents));
+    }, new Decimal(0));
 
-    // Calculate taxes based on exemptions
-    const gst = invoiceDetails.taxExempt ? 0 : subtotal * 0.05;
-    const pst = invoiceDetails.taxExempt || invoiceDetails.pstExempt ? 0 : subtotal * 0.07;
-    const total = subtotal + gst + pst;
+    const gst = invoiceDetails.taxExempt ? new Decimal(0) : subtotal.mul(0.05);
+    const pst = invoiceDetails.taxExempt || invoiceDetails.pstExempt
+      ? new Decimal(0)
+      : subtotal.mul(0.07);
+    const total = subtotal.plus(gst).plus(pst);
 
-    // Return the updated invoice details with new totals
     return {
       ...invoiceDetails,
-      lineItems: updatedLineItems,
-      subtotalInCents: (subtotal * 100), // still string, to match your usage
-      gstInCents: (gst * 100),
-      pstInCents: (pst * 100),
-      totalInCents: (total * 100),
+      invoiceItems: updatedLineItems,
+      subtotalInCents: subtotal.mul(100).toDecimalPlaces(0).toNumber(),
+      gstInCents: gst.mul(100).toDecimalPlaces(0).toNumber(),
+      pstInCents: pst.mul(100).toDecimalPlaces(0).toNumber(),
+      totalInCents: total.mul(100).toDecimalPlaces(0).toNumber(),
     };
-  }
+  };
 
   const handleInputChange = (
     graphQLPropertyName: any,
@@ -348,19 +383,19 @@ const Invoice: React.FC = () => {
       if (!prev) return prev;
 
       const next = { ...prev };
-
       // Handle recipientId with object value
       if (
-        graphQLPropertyName === 'recipientId' &&
+        graphQLPropertyName === 'personId' &&
         typeof value === 'object' &&
         value !== null &&
         'key' in value
       ) {
-        next.recipientId = value.key;
+        next.personId = value.key;
+        // next.recipient = value;
         next.recipient = {
           ...prev.recipient,
-          id: value.key,
-          fullName: value.value,
+          key: value.key,
+          value: value.value,
         };
         return next;
       }
@@ -382,14 +417,14 @@ const Invoice: React.FC = () => {
 
   const invoiceItemChangeHandler = (event: any) => {
     const { row, property, value } = event;
-    let lineItems: any;
+    let invoiceItems: any;
     if(event.property.includes('remove'))
     {
-      lineItems = invoiceDetails?.lineItems?.filter((item: any) => item.id !== row.id);
+      invoiceItems = invoiceDetails?.invoiceItems?.filter((item: any) => item.id !== row.id);
     }
     else
     {
-      lineItems = invoiceDetails?.lineItems?.map((item: any) => 
+      invoiceItems = invoiceDetails?.invoiceItems?.map((item: any) => 
         item.id === row.id 
         ? 
           property === 'quantity' || property === 'unitPriceInCents' ? 
@@ -406,9 +441,11 @@ const Invoice: React.FC = () => {
         item
       );
     }
+    
     setInvoiceDetails((prev: any) => {
+      console.log('prev', prev );
       if (!prev) return prev;
-      return calculateInvoice({ ...prev, lineItems });
+      return calculateInvoice({ ...prev, invoiceItems });
     });
   }
 
@@ -425,8 +462,8 @@ const Invoice: React.FC = () => {
         setSearchParam: setSearchParam, 
         options:invoiceDetails?.recipient
             ? [{
-                key: invoiceDetails?.recipient?.id?.toString(),
-                value: invoiceDetails?.recipient?.fullName
+                key: invoiceDetails?.recipient?.key,
+                value: invoiceDetails?.recipient?.value
               }]
             : [],
         filteredOptions: recipients?.getParticipantNames?.data ?? [],
@@ -470,10 +507,21 @@ const Invoice: React.FC = () => {
       ];
 
       const invoiceItemsError: any[] = [];
-      invoiceDetails?.lineItems?.length <= 0 ?
+      invoiceDetails?.invoiceItems?.length <= 0 ?
         invoiceItemsError.push({errorMessage: 'At least one invoice item is required'}) :
-        invoiceDetails?.lineItems?.map((item: any) =>{
-            const validateInvoiceItem = validateForm(invoiceLineItems, item, '');
+        invoiceDetails?.invoiceItems?.map((item: any, index: number) =>{
+            let quantity = toDecimal(item.quantity)
+            let unitPriceInCents = toDecimal(item.unitPriceInCents)
+            if(quantity <= toDecimal(0))
+            {
+              invoiceItemsError.push({errorMessage: `Invoice item: [${index + 1}] Quantity must be greater than 0`});
+            }
+            if(unitPriceInCents <= toDecimal(0))
+            {
+              invoiceItemsError.push({errorMessage: `Invoice item: [${index + 1}] Unit price must be greater than 0`});
+            }
+           
+            const validateInvoiceItem = validateForm(invoiceLineItems, item, `Invoice item: [${index + 1}]`);
             invoiceItemsError.push(...validateInvoiceItem);
           }
         );
@@ -540,9 +588,9 @@ const Invoice: React.FC = () => {
   );
 
   const hasValidAppData = !!applicationData?.getApplicationDetailsById?.data;
-  const hasValidInvoiceData = !!invoiceData?.getInvoiceById?.invoice;
+  const hasValidInvoiceData = !!invoiceData?.getInvoiceById?.data;
   const { appType, id: appId,  } = applicationDetails || {};
-  const { subject: invoiceSubject } = invoiceData?.getInvoiceById?.invoice || {};
+  const { subject: invoiceSubject } = invoiceData?.getInvoiceById?.data || {};
   const navigationBarText =
     (appId || appType?.description) && (
       <div className="d-flex flex-column gap-1">
@@ -651,7 +699,7 @@ const Invoice: React.FC = () => {
               title='Attached Files'
               tableIsLoading={requestStatus}
               tableColumns={invoiceAttachmentsTableConfigs}
-              tableData={invoiceDetails?.lineItems || []}
+              tableData={invoiceDetails?.invoiceAttachments || []}
               changeHandler={() => {}}
             />
 
@@ -663,7 +711,7 @@ const Invoice: React.FC = () => {
                 title='Invoice Items'
                 tableIsLoading={requestStatus}
                 tableColumns={invoiceItemsTableConfigs}
-                tableData={invoiceDetails?.lineItems || []}
+                tableData={invoiceDetails?.invoiceItems || []}
                 changeHandler={invoiceItemChangeHandler}
               >
                 { viewMode === UserMode.EditMode &&
@@ -705,8 +753,10 @@ const Invoice: React.FC = () => {
             /> */}
           </>
         }
-
-        <ViewInvoiceForm />
+        {/* <PDFViewer width="100%" height="600">
+          <InvoicePreviewTemplate invoice={invoiceDetails} application={applicationDetails}/>
+        </PDFViewer> */}
+        {/* <ViewInvoiceForm /> */}
         {
           hasErrors &&
             <ModalDialog
