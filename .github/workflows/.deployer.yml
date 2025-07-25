@@ -158,6 +158,7 @@ jobs:
           
           # Helm upgrade/rollout - atomic, timeout
           # TODO: remove --dry-run and --debug once confirmed working, just confirm
+          
           helm upgrade --dry-run --debug \
             --set-string global.repository=${{ github.repository }} \
             --set-string global.tag=${{ steps.vars.outputs.tag }} \
