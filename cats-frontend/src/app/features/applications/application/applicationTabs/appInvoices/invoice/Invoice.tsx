@@ -615,6 +615,7 @@ const Invoice: React.FC = () => {
     }
 
     setInvoiceDetails((prev: any) => {
+      console.log('prev', prev );
       if (!prev) return prev;
       return calculateInvoice({ ...prev, invoiceItems });
     });
