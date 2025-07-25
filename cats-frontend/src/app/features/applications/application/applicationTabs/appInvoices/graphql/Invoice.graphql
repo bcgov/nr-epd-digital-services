@@ -1,104 +1,103 @@
-mutation CreateInvoice($invoiceData: InvoiceInputDto!) {
-  createInvoice(invoiceData: $invoiceData) {
-    success
-    httpStatusCode
+query GetInvoices($applicationId: Int!) {
+  getInvoices(applicationId: $applicationId) {
     message
-    invoice {
+    httpStatusCode
+    success
+    timestamp
+    data {
       id
       subject
       issuedDate
       dueDate
-      status
-      taxExempt
-      subtotalInCents
-      gstInCents
-      pstInCents
+      invoiceStatus
       totalInCents
-      notes
     }
   }
 }
 
-mutation UpdateInvoice($id: Int!, $updateData: InvoiceInputDto!) {
-  updateInvoice(id: $id, updateData: $updateData) {
-    success
-    httpStatusCode
+query GetInvoiceById($invoiceId: Int!) {
+  getInvoiceById(invoiceId: $invoiceId) {
     message
-    invoice {
-      id
-      subject
-      issuedDate
-      dueDate
-      status
-      taxExempt
-      subtotalInCents
-      gstInCents
-      pstInCents
-      totalInCents
-      notes
-      lineItems {
-        id
-        type
-        description
-        quantity
-        unitPriceInCents
-        totalInCents
-      }
-    }
-  }
-}
-
-query GetInvoiceById($id: Int!) {
-  getInvoiceById(id: $id) {
-    success
     httpStatusCode
-    message
-    invoice {
+    success
+    timestamp
+    data {
       id
       applicationId
-      recipientId
+      personId
       subject
       issuedDate
       dueDate
-      status
+      invoiceStatus
       taxExempt
       pstExempt
-      notes
+      invoiceNotes
       subtotalInCents
       gstInCents
       pstInCents
       totalInCents
-      createdBy
-      updatedBy
-      lineItems {
+      whoUpdated
+      invoiceItems {
         id
-        type
+        itemType
         description
         quantity
         unitPriceInCents
         totalInCents
       }
       recipient {
-        id
-        fullName
+        key
+        value
       }
     }
   }
 }
 
+mutation CreateInvoice($invoice: CreateInvoice!) {
+  createInvoice(invoice: $invoice) {
+    message
+    httpStatusCode
+    success
+    timestamp
+  }
+}
 
-query GetInvoicesByApplicationId($applicationId: Int!) {
-  getInvoicesByApplicationId(applicationId: $applicationId) {
+mutation UpdateInvoice($invoice: UpdateInvoice!) {
+  updateInvoice(invoice: $invoice) {
     success
     httpStatusCode
     message
-    invoices {
+    timestamp
+    data {
       id
       subject
       issuedDate
       dueDate
-      status
+      invoiceStatus
+      taxExempt
+      subtotalInCents
+      gstInCents
+      pstInCents
       totalInCents
+      invoiceNotes
+      invoiceItems {
+        id
+        itemType
+        description
+        quantity
+        unitPriceInCents
+        totalInCents
+      }
     }
+  }
+}
+
+mutation deleteInvoice($invoiceId: Int!) {
+  deleteInvoice(invoiceId: $invoiceId)
+  {
+ 		message
+    httpStatusCode
+    success
+    timestamp
   }
 }

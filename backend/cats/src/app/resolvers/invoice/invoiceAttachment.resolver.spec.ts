@@ -22,11 +22,11 @@ describe('InvoiceAttachmentResolver', () => {
     fileName: 'test-file.pdf',
     fileSize: 1024,
     mimeType: 'application/pdf',
-    objectStorageId: 'obj-123',
-    createdAt: new Date('2024-01-01'),
-    createdBy: 'Test User',
-    updatedAt: new Date('2024-01-01'),
-    updatedBy: 'Test User',
+    objectId: 'obj-123',
+    whenCreated: new Date('2024-01-01'),
+    whoCreated: 'Test User',
+    whenUpdated: new Date('2024-01-01'),
+    whoUpdated: 'Test User',
     invoice: null,
   } as InvoiceAttachment;
 
@@ -137,7 +137,7 @@ describe('InvoiceAttachmentResolver', () => {
       expect(result.success).toBe(true);
       expect(result.httpStatusCode).toBe(201);
       expect(result.message).toBe('File uploaded successfully');
-      expect(result.objectStorageId).toBe(mockAttachment.objectStorageId);
+      expect(result.objectStorageId).toBe(mockAttachment.objectId);
       expect(result.attachment.id).toBe(mockAttachment.id);
       expect(
         attachmentService.uploadFileAndCreateAttachment,
@@ -306,7 +306,7 @@ describe('InvoiceAttachmentResolver', () => {
       expect(result.success).toBe(true);
       expect(result.httpStatusCode).toBe(201);
       expect(result.message).toBe('File uploaded successfully');
-      expect(result.objectStorageId).toBe(mockAttachment.objectStorageId);
+      expect(result.objectStorageId).toBe(mockAttachment.objectId);
       expect(result.attachment.id).toBe(mockAttachment.id);
 
       const expectedUploadData = {
