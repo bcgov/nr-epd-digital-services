@@ -68,7 +68,6 @@ import { AppTypeService } from './services/appType/appType.service';
 import { SiteResolver } from './resolvers/site/site.resolver';
 import { SiteService } from './services/site/site.service';
 import { InvoiceV2 } from './entities/invoiceV2.entity';
-import { InvoiceLineItem } from './entities/invoiceLineItem.entity';
 import { InvoiceAttachment } from './entities/invoiceAttachment.entity';
 import { InvoiceResolver } from './resolvers/invoice/invoice.resolver';
 import { InvoiceService } from './services/invoice/invoice.service';
@@ -98,6 +97,7 @@ import { InvoiceAttachmentResolver } from './resolvers/invoice/invoiceAttachment
 import { InvoiceAttachmentService } from './services/invoice/invoiceAttachment.service';
 import { ComsService } from './services/coms/coms.service';
 import { ApplicationSite } from './entities/applicationSite.entity';
+import { InvoiceItem } from './entities/invoiceItem.entity';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -154,7 +154,7 @@ import { ApplicationSite } from './entities/applicationSite.entity';
       ParticipantRole,
       PersonNote,
       InvoiceV2,
-      InvoiceLineItem,
+      InvoiceItem,
       InvoiceAttachment,
       ApplicationServiceType,
       Permissions,

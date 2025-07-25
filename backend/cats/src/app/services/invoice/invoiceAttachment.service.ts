@@ -33,7 +33,7 @@ export class InvoiceAttachmentService {
     try {
       const attachments = await this.attachmentRepository.find({
         where: { invoiceId },
-        order: { createdAt: 'DESC' },
+        order: { whenCreated: 'DESC' },
       });
 
       this.loggerService.log(
@@ -118,10 +118,10 @@ export class InvoiceAttachmentService {
           fileName: uploadData.fileName,
           fileSize: fileBuffer.length,
           mimeType: uploadData.mimeType,
-          objectStorageId: uploadResult.objectId!,
-          createdBy: user?.name || 'system',
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          objectId: uploadResult.objectId!,
+          whoUpdated: user?.name || 'system',
+          whenCreated: new Date(),
+          whenUpdated: new Date(),
         } as InvoiceAttachment)
       );
     } catch (error) {
@@ -149,7 +149,7 @@ export class InvoiceAttachmentService {
     try {
       const attachment = this.attachmentRepository.create({
         ...attachmentData,
-        createdBy: user?.name || 'system',
+        whoCreated: user?.name || 'system',
       });
 
       const savedAttachment = await this.attachmentRepository.save(attachment);
@@ -191,7 +191,7 @@ export class InvoiceAttachmentService {
 
       // Delete from COMS
       const comsDeleteSuccess = await this.comsService.deleteFile(
-        attachment.objectStorageId,
+        attachment.objectId,
       );
 
       if (!comsDeleteSuccess) {

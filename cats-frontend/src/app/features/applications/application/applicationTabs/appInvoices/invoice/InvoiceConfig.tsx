@@ -5,10 +5,8 @@ import { ColumnSize, TableColumn } from "@cats/components/table/TableColumn";
 import  { InvoiceItemTypes } from "../components/invoice-enums/invoiceItemTypes";
 import { FaTimes } from "react-icons/fa";
 import { GetParticipantNamesQuery } from "../../appParticipants/graphql/Participants.generated";
-import { ReactNode } from "react";
 import { DropdownSearchInput, Link } from "@cats/components/input-controls/InputControls";
 import { RequestStatus } from "@cats/helpers/requests/status";
-import { create } from "domain";
 
 
 export const GetInvoiceConfig = (viewMode: UserMode, isDisabled: boolean, 
@@ -30,9 +28,9 @@ export const GetInvoiceConfig = (viewMode: UserMode, isDisabled: boolean,
                         customEditInputTextCss={'custom-invoice-edit-txt'}
                         placeholder={'Enter search term...'}
                         options={recipient.options || []}
-                        value={invoiceDetails?.recipientId || ''}
+                        value={invoiceDetails?.personId || ''}
                         onChange={(value) =>
-                            handleInputChange('recipientId', value)
+                            handleInputChange('personId', value)
                         }
                         type={FormFieldType.DropDownWithSearch}
                         handleSearch={recipient.setSearchParam}
@@ -51,9 +49,9 @@ export const GetInvoiceConfig = (viewMode: UserMode, isDisabled: boolean,
                         type={FormFieldType.Link}
                         customInputTextCss={'custom-invoice-txt pe-1'}
                         onChange={(value) =>
-                            handleInputChange('recipientId', value)
+                            handleInputChange('personId', value)
                         }
-                        value={invoiceDetails?.recipientId || ''}
+                        value={invoiceDetails?.personId || ''}
                         href="/person/"
                         customLinkValue = {'Edit Person Profile'}
                         componentName="Invoice"
@@ -113,7 +111,7 @@ export const GetInvoiceConfig = (viewMode: UserMode, isDisabled: boolean,
         {
             type: FormFieldType.Custom,
             colSize: 'col-lg-6 col-md-6 col-sm-12',
-            graphQLPropertyName: 'recipientId',
+            graphQLPropertyName: 'personId',
             validation: {
                 required: true,
                 customMessage: 'Please select invoice recipient.'
@@ -124,7 +122,7 @@ export const GetInvoiceConfig = (viewMode: UserMode, isDisabled: boolean,
                                 <div className="mb-3">
                                     <label htmlFor="invoice-recipient" className="custom-invoice-lbl" aria-labelledby="invoice-recipient">Invoice Recipient</label>
                                     <div id="invoice-recipient" className="d-flex gap-2 w-100 align-items-center custom-invoice-txt" aria-labelledby="invoice-recipient">
-                                        {invoiceDetails?.recipient?.fullName} <div className="fw-bold pe-1 m-0 d-flex">[{customInvoiceRecProfileLink}]</div>
+                                        {invoiceDetails?.recipient?.value} <div className="fw-bold pe-1 m-0 d-flex">[{customInvoiceRecProfileLink}]</div>
                                     </div>
                                 </div>
                             }
@@ -186,7 +184,7 @@ export const GetInvoiceConfig = (viewMode: UserMode, isDisabled: boolean,
             type: FormFieldType.DropDown,
             label: 'Invoice Status',
             placeholder: 'Invoice Status',
-            graphQLPropertyName: 'status',
+            graphQLPropertyName: 'invoiceStatus',
             options: [
                 { key: InvoiceStatus.Draft, value: 'Draft' },
                 { key: InvoiceStatus.Paid, value: 'Paid' },
@@ -204,7 +202,7 @@ export const GetInvoiceConfig = (viewMode: UserMode, isDisabled: boolean,
             type: FormFieldType.Text,
             label: 'Created By',
             placeholder: 'Created By',
-            graphQLPropertyName: 'updatedBy',
+            graphQLPropertyName: 'whoUpdated',
             value: '',
             colSize: 'col-lg-6 col-md-6 col-sm-12',
             customLabelCss: 'custom-invoice-lbl',
@@ -218,7 +216,7 @@ export const GetInvoiceConfig = (viewMode: UserMode, isDisabled: boolean,
             textAreaRow: 3,
             label: `Notes ${viewMode === UserMode.EditMode ? '(Optional)' : ''}`,
             placeholder: 'Notes',
-            graphQLPropertyName: 'notes',
+            graphQLPropertyName: 'invoiceNotes',
             value: '',
             colSize: 'col-lg-12 col-md-12 col-sm-12',
             customLabelCss: 'custom-invoice-lbl',
@@ -287,12 +285,12 @@ export const GetInvoiceConfig = (viewMode: UserMode, isDisabled: boolean,
             id:1,
             displayName:'Item Type',
             active: true,
-            graphQLPropertyName: 'type',
+            graphQLPropertyName: 'itemType',
             displayType: { 
                 type: FormFieldType.DropDown, 
                 label: 'Item Type',
                 tableMode: true,
-                graphQLPropertyName: 'type',
+                graphQLPropertyName: 'itemType',
                 placeholder: 'Select Item Type',
                 options: [
                     { key: InvoiceItemTypes.EXPENSE, value: 'Expense' },

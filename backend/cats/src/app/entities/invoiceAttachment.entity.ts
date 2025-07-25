@@ -6,12 +6,15 @@ import {
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  Index,
 } from 'typeorm';
 import { InvoiceV2 } from './invoiceV2.entity';
 
+@Index('idx_invoice_attachment_invoice_id', ['invoiceId'])
+@Index('idx_invoice_attachment_when_created', ['whenCreated'])
 @Entity('invoice_attachment')
 export class InvoiceAttachment {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
 
   @Column({ name: 'invoice_id' })
@@ -26,22 +29,26 @@ export class InvoiceAttachment {
   @Column({ name: 'mime_type', length: 100 })
   mimeType: string;
 
-  @Column({ name: 'object_storage_id', length: 255 })
-  objectStorageId: string;
+  @Column('uuid', { name: 'object_id'})
+  objectId: string;
 
-  @Column({ name: 'created_by', length: 100 })
-  createdBy: string;
+  @Column('character varying', { name: 'who_created', length: 30 })
+  whoCreated: string;
 
-  @Column({ name: 'updated_by', length: 100, nullable: true })
-  updatedBy?: string;
+  @Column('character varying', {
+    name: 'who_updated',
+    nullable: true,
+    length: 30,
+  })
+  whoUpdated: string | null;
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  @CreateDateColumn({ name: 'when_created', type: 'timestamp without time zone' })
+  whenCreated: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  @UpdateDateColumn({ name: 'when_updated', type: 'timestamp without time zone', nullable: true })
+  whenUpdated: Date | null;
 
-  @ManyToOne(() => InvoiceV2, (invoice) => invoice.attachments)
-  @JoinColumn({ name: 'invoice_id' })
+  @ManyToOne(() => InvoiceV2, (invoice) => invoice.invoiceAttachments, { onDelete: 'CASCADE' })
+  @JoinColumn([{ name: 'invoice_id', referencedColumnName: 'id' }])
   invoice: InvoiceV2;
 }
