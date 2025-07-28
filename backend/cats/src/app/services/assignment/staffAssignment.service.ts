@@ -497,7 +497,7 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
                   caseWorkerArr,
                   sdmArr,
                   mentorArr,
-                  priority?.priority?.description,
+                  priority?.priority?.description ?? '',
                 ),
               );
             });
@@ -584,15 +584,21 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
       )
       .replace(
         /\$\{application\.queueDate\}/g,
-        application?.createdDateTime?.toDateString(),
+        application?.createdDateTime === undefined
+          ? ''
+          : application?.createdDateTime?.toDateString(),
       )
       .replace(
         /\$\{staff\.effectiveStartDate\}/g,
-        staff?.effectiveStartDate?.toDateString(),
+        staff?.effectiveStartDate === undefined
+          ? ''
+          : staff?.effectiveStartDate?.toDateString(),
       )
       .replace(
         /\$\{application\.risk\}/g,
-        site?.findSiteBySiteId?.data?.siteRiskCode,
+        site?.findSiteBySiteIdLoggedInUser === undefined
+          ? ''
+          : site?.findSiteBySiteIdLoggedInUser?.data?.siteRiskCode,
       )
       .replace(
         /\$\{caseWorkerList\}/g,
