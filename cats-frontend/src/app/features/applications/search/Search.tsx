@@ -16,15 +16,21 @@ import { useSearchApplicationsQuery } from './hooks/SearchApplications.generated
 import ModalDialog from '../../../components/modaldialog/ModalDialog';
 import Assignment from '../../assignment/Assignment';
 
-const Search: React.FC = () => {
+interface SearchProps {
+  filterMyTasks?: boolean;
+}
+
+const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [assignStaffModalOpen, setAssignStaffModalOpen] = useState(false);
   const [results, setResults] = useState<ApplicationResultDto[]>([]);
   const [requestStatus, setRequestStatus] = useState(RequestStatus.idle);
   const [columns, setColumns] = useState<TableColumn[]>(
-    applicationResultColumns,
+    applicationResultColumns(filterMyTasks),
   );
-  const [filter, setFilter] = useState<Filter>(Filter.All);
+  const [filter, setFilter] = useState<Filter>(
+    filterMyTasks === true ? Filter.Assigned : Filter.All,
+  );
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
   const [totalResults, setTotalResults] = useState<number>(0);
@@ -39,7 +45,7 @@ const Search: React.FC = () => {
     searchTerm: '',
     page: 1,
     pageSize: 5,
-    filter: Filter.All,
+    filter: filterMyTasks === true ? Filter.Assigned : Filter.All,
     sortBy: ApplicationSortByField.Id,
     sortByDir: ApplicationSortByDirection.Asc,
   });
@@ -164,7 +170,7 @@ const Search: React.FC = () => {
 
   return (
     <PageContainer role="Search">
-      <h1>All Applications</h1>
+      <h1> {filterMyTasks ? 'My Tasks' : ' All Applications'}</h1>
       <SearchInput
         searchTerm={searchTerm}
         handleSearchChange={handleSearchChange}
@@ -186,6 +192,7 @@ const Search: React.FC = () => {
         totalResults={totalResults}
         filter={filter}
         sortHandler={handleSortChange}
+        filterMyTasks={filterMyTasks}
       />
       {assignStaffModalOpen && (
         <ModalDialog
