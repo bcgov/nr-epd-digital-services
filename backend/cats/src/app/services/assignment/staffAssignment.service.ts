@@ -497,7 +497,7 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
                   caseWorkerArr,
                   sdmArr,
                   mentorArr,
-                  priority?.priority?.description,
+                  priority?.priority?.description ?? '',
                 ),
               );
             });
@@ -576,23 +576,29 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
       .replace(/\$\{serviceRequested\}/g, serviceRequested)
       .replace(
         /\$\{site\.address\}/g,
-        site?.findSiteBySiteId?.data?.addrLine_1 ||
-          '' + ' ' + site?.findSiteBySiteId?.data?.addrLine_2 ||
-          '' + ' ' + site?.findSiteBySiteId?.data?.addrLine_3 ||
-          '' + ' ' + site?.findSiteBySiteId?.data?.addrLine_4 ||
+        site?.findSiteBySiteIdLoggedInUser?.data?.addrLine_1 ||
+          '' + ' ' + site?.findSiteBySiteIdLoggedInUser?.data?.addrLine_2 ||
+          '' + ' ' + site?.findSiteBySiteIdLoggedInUser?.data?.addrLine_3 ||
+          '' + ' ' + site?.findSiteBySiteIdLoggedInUser?.data?.addrLine_4 ||
           '',
       )
       .replace(
         /\$\{application\.queueDate\}/g,
-        application?.createdDateTime?.toDateString(),
+        application?.createdDateTime === undefined
+          ? ''
+          : application?.createdDateTime?.toDateString(),
       )
       .replace(
         /\$\{staff\.effectiveStartDate\}/g,
-        staff?.effectiveStartDate?.toDateString(),
+        staff?.effectiveStartDate === undefined
+          ? ''
+          : staff?.effectiveStartDate?.toDateString(),
       )
       .replace(
         /\$\{application\.risk\}/g,
-        site?.findSiteBySiteId?.data?.siteRiskCode,
+        site?.findSiteBySiteIdLoggedInUser === undefined
+          ? ''
+          : site?.findSiteBySiteIdLoggedInUser?.data?.siteRiskCode,
       )
       .replace(
         /\$\{caseWorkerList\}/g,
