@@ -66,6 +66,7 @@ describe('ApplicationSearchResolver', () => {
       jest.spyOn(service, 'searchApplications').mockResolvedValue(result);
 
       const response = await resolver.searchApplications(
+        null,
         searchParam,
         page,
         pageSize,
@@ -82,6 +83,7 @@ describe('ApplicationSearchResolver', () => {
         filter,
         sortBy,
         sortByDir,
+        null,
       );
       expect(loggerService.log).toHaveBeenCalledWith(
         `ApplicationSearchResolver: searchParam: ${searchParam}, page: ${page}, pageSize: ${pageSize}, filter: ${filter}, sortBy: ${sortBy}, sortByDir: ${sortByDir}.`,
@@ -109,6 +111,7 @@ describe('ApplicationSearchResolver', () => {
       jest.spyOn(service, 'searchApplications').mockResolvedValue(errorResult);
 
       const response = await resolver.searchApplications(
+        null,
         searchParam,
         page,
         pageSize,
