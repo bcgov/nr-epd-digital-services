@@ -24,6 +24,8 @@ global:
     CHES_EMAIL_URL: https://ches-dev.api.gov.bc.ca/api/v1/email
     CHES_EMAIL_FROM: NOREPLYEPD@gov.bc.ca
     CATS_APPLICATION_URL: http://localhost:3000/applications/
+    KEYCLOAK_TOKEN_URL: https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/protocol/openid-connect/token
+    KEYCLOAK_SITE_SERVICE_CLIENT_ID: site-service # note: KEYCLOAK_SITE_SERVICE_CLIENT_SECRET is handled in github secrets.
 #-- the components of the application, backend.
 backend:
   #-- enable or disable backend

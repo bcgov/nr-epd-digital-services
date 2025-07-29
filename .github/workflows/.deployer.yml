@@ -164,6 +164,7 @@ jobs:
             --set-string global.secrets.keycloakRealm="${{ secrets.KEYCLOAK_REALM }}" \
             --set-string global.secrets.keycloakClientID="${{ secrets.KEYCLOAK_CLIENTID }}" \
             --set-string global.secrets.keycloakAuthURL="${{ secrets.KEYCLOAK_AUTH_URL }}" \
+            --set-string global.secrets.KEYCLOAK_SITE_SERVICE_CLIENT_SECRET="${{ secrets.KEYCLOAK_SITE_SERVICE_CLIENT_SECRET }}" \
             --set-string global.secrets.chesClientID="${{ secrets.CHES_CLIENT_ID }}" \
             --set-string global.secrets.chesClientSecret="${{ secrets.CHES_CLIENT_SECRET }}" \
             --set-string global.config.REACT_APP_AUTH_LOGOUT_REDIRECT_URI="${{ inputs.redirect_uri}}" \
