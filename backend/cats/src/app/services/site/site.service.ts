@@ -94,7 +94,7 @@ export class SiteService implements OnModuleInit {
       const siteData = await this.siteSdk.findSiteBySiteIdLoggedInUser({
         siteId,
       });
-
+      console.log('SiteService.siteData', JSON.stringify(siteData));
       this.loggerService.log('SiteService.getSiteById() end');
       return siteData;
     } catch (error: unknown) {
