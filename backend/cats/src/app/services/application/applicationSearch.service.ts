@@ -8,6 +8,7 @@ import { Filter } from '../../utilities/enums/application/filter.enum';
 import { SortByDirection } from '../../utilities/enums/application/sortByDirection.enum';
 import { SortByField } from '../../utilities/enums/application/sortByField.enum';
 import { StaffRoles } from '../assignment/staffRoles.enum';
+import { fi } from 'date-fns/locale';
 
 @Injectable()
 export class ApplicationSearchService {
@@ -15,7 +16,7 @@ export class ApplicationSearchService {
     @InjectRepository(Application)
     private readonly applicationRepository: Repository<Application>,
     private readonly loggerService: LoggerService,
-  ) { }
+  ) {}
 
   async searchApplications(
     searchParam: string,
@@ -24,6 +25,7 @@ export class ApplicationSearchService {
     filter: Filter,
     sortBy: SortByField,
     sortByDir: SortByDirection,
+    user: any,
   ): Promise<ApplicationSearchResult> {
     this.loggerService.log(
       `ApplicationSearchService: searchParam: ${searchParam}, page: ${page}, pageSize: ${pageSize}, filter: ${filter}, sortBy: ${sortBy}, sortByDir: ${sortByDir}.`,
@@ -48,7 +50,7 @@ export class ApplicationSearchService {
       .leftJoinAndSelect('appStatus.statusType', 'statusType')
       .leftJoinAndSelect('application.appPriorities', 'appPriority')
       .leftJoinAndSelect('appPriority.priority', 'priority');
-    query.andWhere('appStatus.isCurrent = :isCurrent', { isCurrent: true })
+    query.andWhere('appStatus.isCurrent = :isCurrent', { isCurrent: true });
     query.andWhere(
       new Brackets((qb) => {
         qb.where('CAST(application.id AS TEXT) LIKE :searchParam', {
@@ -84,6 +86,10 @@ export class ApplicationSearchService {
       }),
     );
 
+    if (filter && filter.toLowerCase() === Filter.ASSIGNED) {
+      query.andWhere('person.email = :email', { email: user.email });
+    }
+
     if (filter === Filter.UNASSIGNED) {
       query.andWhere('appParticipant.personId IS NULL');
     } else if (filter === Filter.COMPLETED) {
@@ -94,31 +100,30 @@ export class ApplicationSearchService {
 
     const sortDirection = sortByDir === SortByDirection.DESC ? 'DESC' : 'ASC';
     switch (sortBy) {
-        case SortByField.ID:
-          query.orderBy('application.id', sortDirection);
-          break;
-        case SortByField.SITE_ID:
-          query.orderBy('application.siteId', sortDirection);
-          break;
-        case SortByField.SITE_ADDRESS:
-          query.orderBy('site.address', sortDirection);
-          break;
-        case SortByField.APPLICATION_TYPE:
-          query.orderBy('appType.description', sortDirection);
-          break;
-        case SortByField.LAST_UPDATED:
-          query.orderBy('application.updatedDateTime', sortDirection);
-          break;
-        case SortByField.STATUS:
-          query.orderBy('statusType.description', sortDirection);
-          break;
-        case SortByField.PRIORITY:
-          query.orderBy('priority.displayOrder', sortDirection, 'NULLS LAST');
-          break;
-        default:
-          this.loggerService.log(`Unsupported sort field: ${sortBy}`);
-      }
-
+      case SortByField.ID:
+        query.orderBy('application.id', sortDirection);
+        break;
+      case SortByField.SITE_ID:
+        query.orderBy('application.siteId', sortDirection);
+        break;
+      case SortByField.SITE_ADDRESS:
+        query.orderBy('site.address', sortDirection);
+        break;
+      case SortByField.APPLICATION_TYPE:
+        query.orderBy('appType.description', sortDirection);
+        break;
+      case SortByField.LAST_UPDATED:
+        query.orderBy('application.updatedDateTime', sortDirection);
+        break;
+      case SortByField.STATUS:
+        query.orderBy('statusType.description', sortDirection);
+        break;
+      case SortByField.PRIORITY:
+        query.orderBy('priority.displayOrder', sortDirection, 'NULLS LAST');
+        break;
+      default:
+        this.loggerService.log(`Unsupported sort field: ${sortBy}`);
+    }
 
     let applicationList: Application[] = [];
     let count = 0;
