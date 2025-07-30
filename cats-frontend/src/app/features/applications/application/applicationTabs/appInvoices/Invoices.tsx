@@ -8,13 +8,16 @@ import Widget from '@cats/components/widget/Widget';
 import FilterControls from '@cats/components/filter/FilterControls';
 import { IFilterOption } from '@cats/components/filter/IFilterControls';
 import { GetInvoicesConfig } from './InvoicesConfig';
-import  './Invoices.css';
+import './Invoices.css';
 import { useGetInvoicesQuery } from './graphql/Invoice.generated';
 import { ViewInvoice } from '../../../../../../generated/types';
 import { InvoiceFilter } from './enums/filter';
 import { InvoiceSortBy, InvoiceSortByDir } from './enums/sortBy';
 
-type Invoices = Pick<ViewInvoice, 'id' | 'subject' | 'invoiceStatus' | 'totalInCents' |'issuedDate' | 'dueDate'>;
+type Invoices = Pick<
+  ViewInvoice,
+  'id' | 'subject' | 'invoiceStatus' | 'totalInCents' | 'issuedDate' | 'dueDate'
+>;
 export const Invoices: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -37,8 +40,12 @@ export const Invoices: React.FC = () => {
   const [displayResults, setDisplayResults] = useState<Invoices[]>([]);
   const [filter, setFilter] = useState<InvoiceFilter>(InvoiceFilter.ALL);
   const [sortBy, setSortBy] = useState<InvoiceSortBy>(InvoiceSortBy.ID);
-  const [sortByDir, setSortByDir] = useState<InvoiceSortByDir>(InvoiceSortByDir.ASC);
-  const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.idle);
+  const [sortByDir, setSortByDir] = useState<InvoiceSortByDir>(
+    InvoiceSortByDir.ASC,
+  );
+  const [requestStatus, setRequestStatus] = useState<RequestStatus>(
+    RequestStatus.idle,
+  );
 
   const [selectedRows, setSelectedRows] = useState<{ id: any }[]>([]);
 
@@ -90,7 +97,8 @@ export const Invoices: React.FC = () => {
     let filteredResults = results;
     if (filter !== InvoiceFilter.ALL) {
       filteredResults = results.filter(
-        (invoice) => invoice.invoiceStatus.toLowerCase() === filter.toLowerCase(),
+        (invoice) =>
+          invoice.invoiceStatus.toLowerCase() === filter.toLowerCase(),
       );
     }
 
@@ -161,7 +169,8 @@ export const Invoices: React.FC = () => {
   const handleTableChange = (event: any) => {
     const { property, value, row, selected } = event;
 
-    if (!property.includes('select_all') && !property.includes('select_row')) return;
+    if (!property.includes('select_all') && !property.includes('select_row'))
+      return;
 
     const rows = property === 'select_row' ? [row] : value;
     const isSelecting = property === 'select_row' ? value : selected;
@@ -182,7 +191,6 @@ export const Invoices: React.FC = () => {
       }
     });
   };
-
 
   const invoiceFilter: IFilterOption[] = [
     {
@@ -206,10 +214,12 @@ export const Invoices: React.FC = () => {
     {
       label: 'Filters',
       value: 'filters',
-      onClick: () => {alert('Filter')},
+      onClick: () => {
+        alert('Filter');
+      },
       icon: <FilterIcon />,
     },
-  ]
+  ];
 
   return (
     <div>
@@ -217,15 +227,15 @@ export const Invoices: React.FC = () => {
         <p>Financial Summary Will Go Here</p>
       </div> */}
       <div>
-        <Widget 
-          customWidgetCss='gap-4'
+        <Widget
+          customWidgetCss="gap-4"
           title="Invoices"
           tableIsLoading={requestStatus}
           tableColumns={invoiceTableConfig}
           tableData={displayResults}
           sortHandler={handleSortChange}
           changeHandler={handleTableChange}
-          filter={ <FilterControls options={invoiceFilter} />}
+          filter={<FilterControls options={invoiceFilter} />}
           currentPage={1}
           allowRowsSelect={true}
           primaryKeycolumnName="id"
@@ -237,12 +247,18 @@ export const Invoices: React.FC = () => {
             {/* <Button variant="secondary" onClick={(() => navigate(`/applications/${applicationId}/invoices/create`))}>
               <Plus /> New Invoice 2
             </Button> */}
-            <Button variant="secondary" disabled={selectedRows.length <= 0} onClick={() => { alert('Send Invoice to Client') }}>
+            <Button
+              variant="secondary"
+              disabled={selectedRows.length <= 0}
+              onClick={() => {
+                alert('Send Invoice to Client');
+              }}
+            >
               <span>Send Invoice to Client</span>
             </Button>
           </div>
         </Widget>
-        
+
         {/* <InvoiceIndexTable
           requestStatus={requestStatus}
           results={displayResults}

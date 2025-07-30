@@ -67,7 +67,8 @@ export const Link: React.FC<InputProps> = ({
   componentName,
   tableMode,
 }) => {
-  const routerLink = (<RouterLink
+  const routerLink = (
+    <RouterLink
       to={href + value}
       className={`d-flex pt-1 ${styles.baseTableLinkStyles} ${customInputTextCss ?? ''}`}
       aria-label={`${label + ' ' + value}`}
@@ -76,7 +77,8 @@ export const Link: React.FC<InputProps> = ({
     >
       {customIcon && customIcon}{' '}
       <span className="ps-1">{customLinkValue ?? value}</span>
-    </RouterLink>)
+    </RouterLink>
+  );
   if (tableMode) return renderTableCell(routerLink, customContainerCss);
   return <div className={`${customContainerCss ?? ''}`}>{routerLink}</div>;
 };
