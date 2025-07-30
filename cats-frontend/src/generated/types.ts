@@ -276,10 +276,9 @@ export type CreateInvoice = {
 };
 
 export type CreateInvoiceAttachment = {
+  bucketId: Scalars['String']['input'];
   fileName: Scalars['String']['input'];
-  fileSize: Scalars['Int']['input'];
   invoiceId: Scalars['Int']['input'];
-  mimeType: Scalars['String']['input'];
   objectId: Scalars['String']['input'];
 };
 
