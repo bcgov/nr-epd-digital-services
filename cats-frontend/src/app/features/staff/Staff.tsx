@@ -251,6 +251,7 @@ const Staff = () => {
         <ModalDialog
           headerLabel={`Viewing: ${queryModalState?.personName ?? ''}`}
           noFooterOptions={true}
+          customContentCss='custom-staff-modal-content'
           closeHandler={() =>
             setQueryModalState((prev: IModalState) => ({
               ...prev,
@@ -320,7 +321,7 @@ const Staff = () => {
             resultsPerPage={queryModalState?.pageSize}
             tableData={applications?.getApplicationsByStaff?.data ?? []}
             totalResults={applications?.getApplicationsByStaff?.count ?? 0}
-          ></Widget>
+          />
         </ModalDialog>
       )}
     </PageContainer>

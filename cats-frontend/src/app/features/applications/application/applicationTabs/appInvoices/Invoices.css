@@ -89,3 +89,7 @@ a.custom-invoices-txt:hover {
   line-height: 34px;
   color: var(--typography-color-primary, #2d2d2d);
 }
+
+.custom-invoice-modal-content {
+  min-width: 50vw;
+}

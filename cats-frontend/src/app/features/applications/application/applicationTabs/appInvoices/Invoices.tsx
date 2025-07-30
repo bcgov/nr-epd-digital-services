@@ -64,7 +64,7 @@ export const Invoices: React.FC = () => {
     if (shouldRefresh) {
       refetch().then(() => {
         // Remove refresh=true from the URL after refetching
-        navigate(`/applications/${applicationId}?tab=invoices`, {
+        navigate(`/applications/${applicationId}/invoices`, {
           replace: true,
         });
       });
@@ -261,6 +261,7 @@ export const Invoices: React.FC = () => {
           customHeaderTextCss="custom-invoice-heading"
           saveBtnLabel="Confirm"
           showTickIcon={true}
+          customContentCss='custom-invoice-modal-content'
           closeHandler={(response) => {
             if (response) {
               switch (selectedType) {

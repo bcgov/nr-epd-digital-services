@@ -411,7 +411,7 @@ const Invoice: React.FC = () => {
                   }
                   setAttachmentsToDelete([]);
                   setViewMode(UserMode.Default);
-                  navigate(`/applications/${applicationId}?tab=invoices`);
+                  navigate(`/applications/${applicationId}/invoices`);
                 }
               });
             }
@@ -425,7 +425,7 @@ const Invoice: React.FC = () => {
           setViewMode(UserMode.Default);
           transformInvoiceDetails();
         } else {
-          navigate(`/applications/${applicationId}?tab=invoices`);
+          navigate(`/applications/${applicationId}/invoices`);
         }
         break;
       case InvoiceActions.ADD_INVOICE_ITEM:
@@ -483,7 +483,7 @@ const Invoice: React.FC = () => {
                 await deleteBucket(bucketId);
               }
             }
-            navigate(`/applications/${applicationId}?tab=invoices`);
+            navigate(`/applications/${applicationId}/invoices`);
           }
         }
         break;
