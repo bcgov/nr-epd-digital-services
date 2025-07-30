@@ -1,13 +1,13 @@
 .checkbox-column {
-  padding: 7px 8px 0px 8px  !important;
+  padding: 7px 8px 0px 8px !important;
   width: 0% !important;
   min-width: 40px !important;
   text-align: center !important;
   vertical-align: middle !important;
 }
 
-thead th.checkbox-column{
-  padding: 8px  !important;
+thead th.checkbox-column {
+  padding: 8px !important;
 }
 
 .checkbox-color:hover,

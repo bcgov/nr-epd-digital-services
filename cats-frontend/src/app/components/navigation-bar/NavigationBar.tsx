@@ -21,7 +21,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
     >
       <div className="d-flex gap-4 flex-wrap align-items-center">
         <Button onClick={onClickBackButton} {...backButtonProps}>
-          { buttonIcon || <AngleLeft />}
+          {buttonIcon || <AngleLeft />}
           {backButtonText}
         </Button>
         <div

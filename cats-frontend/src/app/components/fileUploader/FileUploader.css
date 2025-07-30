@@ -16,7 +16,6 @@
   position: relative;
 }
 
-
 .fu-drag-over {
   background-color: #e6f7ff;
   border-color: #1890ff;
@@ -41,7 +40,7 @@
   max-width: 300px;
   max-height: 200px;
   border-radius: 6px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .fu-pdf {

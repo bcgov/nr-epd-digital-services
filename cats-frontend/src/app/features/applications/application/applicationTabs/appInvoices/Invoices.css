@@ -12,12 +12,12 @@ a.custom-invoices-txt {
 }
 
 .custom-invoices-link {
-    font-family: Noto Sans !important;
-    font-weight: 700;
-    font-size: 12px;
-    line-height: 16px;
-    text-decoration: none;
-    color: var(--surface-color-primary-default, #053662);
+  font-family: Noto Sans !important;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  text-decoration: none;
+  color: var(--surface-color-primary-default, #053662);
 }
 
 .custom-invoices-link:hover {
@@ -29,7 +29,7 @@ a.custom-invoices-txt:hover {
 }
 
 .custom-invoices-txt {
-    color: var(--typography-color-secondary, #474543);
+  color: var(--typography-color-secondary, #474543);
 }
 
 .custom-invoices-tbl-header {
@@ -51,11 +51,11 @@ a.custom-invoices-txt:hover {
 }
 
 .custom-invoices-lbl {
-    font-family: Noto Sans !important;
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 16px;
-    color: var(--typography-color-primary, #2d2d2d);
+  font-family: Noto Sans !important;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: var(--typography-color-primary, #2d2d2d);
 }
 
 .custom-invoices-input {
@@ -74,7 +74,7 @@ a.custom-invoices-txt:hover {
   font-size: 16px !important;
   font-weight: 400 !important;
   line-height: 24px !important;
-  color: var(--typography-color-primary, #2D2D2D);
+  color: var(--typography-color-primary, #2d2d2d);
 }
 
 .custom-invoices-dot {
@@ -87,5 +87,5 @@ a.custom-invoices-txt:hover {
   font-style: Bold;
   font-size: 20px;
   line-height: 34px;
-  color: var(--typography-color-primary, #2D2D2D);
+  color: var(--typography-color-primary, #2d2d2d);
 }

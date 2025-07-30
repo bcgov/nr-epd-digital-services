@@ -472,7 +472,6 @@ export const validateForm = (
   return errors;
 };
 
-
 /**
  * Cleans up a GraphQL payload by removing specified keys.
  * @param {any} obj - The object to clean.
@@ -482,9 +481,12 @@ export const validateForm = (
  */
 const DEFAULT_STRIP_KEYS = ['__typename'];
 
-export function cleanGraphQLPayload(obj: any, fieldsToStrip: string[] = DEFAULT_STRIP_KEYS): any {
+export function cleanGraphQLPayload(
+  obj: any,
+  fieldsToStrip: string[] = DEFAULT_STRIP_KEYS,
+): any {
   if (Array.isArray(obj)) {
-    return obj.map(item => cleanGraphQLPayload(item, fieldsToStrip));
+    return obj.map((item) => cleanGraphQLPayload(item, fieldsToStrip));
   } else if (obj && typeof obj === 'object') {
     const newObj: any = {};
     for (const key in obj) {

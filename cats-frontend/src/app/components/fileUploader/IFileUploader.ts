@@ -4,7 +4,7 @@ export interface IFileUploader {
   acceptedFileTypes?: Record<string, string[]>;
   multiple?: boolean;
   showPreview?: boolean;
-  showPreviewLink?: boolean;   
+  showPreviewLink?: boolean;
   maxSizeMB?: number;
   allowFolderDrop?: boolean;
   classNames?: {

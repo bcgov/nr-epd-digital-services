@@ -1,14 +1,26 @@
-import { getAxiosInstance } from "@cats/helpers/utility";
-import { HttpStatusCode } from "axios";
+import { getAxiosInstance } from '@cats/helpers/utility';
+import { HttpStatusCode } from 'axios';
 
-
-const COMS_API: string =  import.meta.env.VITE_COMS_API ||  ((window as any)._env_ && (window as any)._env_.VITE_COMS_API);
-const S3_STORAGE_REGION: string =  import.meta.env.VITE_S3_STORAGE_REGION ||  ((window as any)._env_ && (window as any)._env_.VITE_S3_STORAGE_REGION);
-const S3_STORAGE_BUCKET: string =  import.meta.env.VITE_S3_STORAGE_BUCKET ||  ((window as any)._env_ && (window as any)._env_.VITE_S3_STORAGE_BUCKET);
-const S3_STORAGE_ENDPOINT: string =  import.meta.env.VITE_S3_STORAGE_ENDPOINT ||  ((window as any)._env_ && (window as any)._env_.VITE_S3_STORAGE_ENDPOINT);
-const S3_STORAGE_ACCESS_KEY_ID: string =  import.meta.env.VITE_S3_STORAGE_ACCESS_KEY_ID ||  ((window as any)._env_ && (window as any)._env_.VITE_S3_STORAGE_ACCESS_KEY_ID);
-const S3_STORAGE_SECRET_ACCESS_KEY: string =  import.meta.env.VITE_S3_STORAGE_SECRET_ACCESS_KEY ||  ((window as any)._env_ && (window as any)._env_.VITE_S3_STORAGE_SECRET_ACCESS_KEY);
-
+const COMS_API: string =
+  import.meta.env.VITE_COMS_API ||
+  ((window as any)._env_ && (window as any)._env_.VITE_COMS_API);
+const S3_STORAGE_REGION: string =
+  import.meta.env.VITE_S3_STORAGE_REGION ||
+  ((window as any)._env_ && (window as any)._env_.VITE_S3_STORAGE_REGION);
+const S3_STORAGE_BUCKET: string =
+  import.meta.env.VITE_S3_STORAGE_BUCKET ||
+  ((window as any)._env_ && (window as any)._env_.VITE_S3_STORAGE_BUCKET);
+const S3_STORAGE_ENDPOINT: string =
+  import.meta.env.VITE_S3_STORAGE_ENDPOINT ||
+  ((window as any)._env_ && (window as any)._env_.VITE_S3_STORAGE_ENDPOINT);
+const S3_STORAGE_ACCESS_KEY_ID: string =
+  import.meta.env.VITE_S3_STORAGE_ACCESS_KEY_ID ||
+  ((window as any)._env_ &&
+    (window as any)._env_.VITE_S3_STORAGE_ACCESS_KEY_ID);
+const S3_STORAGE_SECRET_ACCESS_KEY: string =
+  import.meta.env.VITE_S3_STORAGE_SECRET_ACCESS_KEY ||
+  ((window as any)._env_ &&
+    (window as any)._env_.VITE_S3_STORAGE_SECRET_ACCESS_KEY);
 
 type DownloadType = 'url' | 'proxy';
 

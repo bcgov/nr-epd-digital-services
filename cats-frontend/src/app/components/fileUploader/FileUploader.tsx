@@ -10,9 +10,13 @@ const FileUploader: React.FC<IFileUploader> = ({
     'image/jpeg': ['.jpg', '.jpeg'],
     'image/png': ['.png'],
     'application/msword': ['.doc'],
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': [
+      '.docx',
+    ],
     'application/vnd.ms-excel': ['.xls'],
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': [
+      '.xlsx',
+    ],
   },
   multiple = false,
   showPreview = false,
@@ -41,28 +45,28 @@ const FileUploader: React.FC<IFileUploader> = ({
     return true;
   };
 
-const processFiles = (fileList: FileList | null) => {
-  if (!fileList) return;
+  const processFiles = (fileList: FileList | null) => {
+    if (!fileList) return;
 
-  const validFiles: File[] = [];
-  const urls: string[] = [];
+    const validFiles: File[] = [];
+    const urls: string[] = [];
 
-  Array.from(fileList).forEach((file) => {
-    if (validateFile(file)) {
-      validFiles.push(file);
-      urls.push(URL.createObjectURL(file));
-    }
-  });
-
-  if (validFiles.length) {
-    setFiles(multiple ? validFiles : [validFiles[0]]);
-    setPreviewUrls(multiple ? urls : [urls[0]]);
-    onFileSelect?.({
-      files: multiple ? validFiles : [validFiles[0]],
-      previewUrls: multiple ? urls : [urls[0]],
+    Array.from(fileList).forEach((file) => {
+      if (validateFile(file)) {
+        validFiles.push(file);
+        urls.push(URL.createObjectURL(file));
+      }
     });
-  }
-};
+
+    if (validFiles.length) {
+      setFiles(multiple ? validFiles : [validFiles[0]]);
+      setPreviewUrls(multiple ? urls : [urls[0]]);
+      onFileSelect?.({
+        files: multiple ? validFiles : [validFiles[0]],
+        previewUrls: multiple ? urls : [urls[0]],
+      });
+    }
+  };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     processFiles(e.target.files);
@@ -78,9 +82,19 @@ const processFiles = (fileList: FileList | null) => {
   const flatAccept = Object.values(acceptedFileTypes).flat().join(',');
 
   return (
-    <div className={clsx(!classNames?.container && 'fu-container', classNames.container)}>
+    <div
+      className={clsx(
+        !classNames?.container && 'fu-container',
+        classNames.container,
+      )}
+    >
       <div
-        className={clsx( !classNames?.dropArea && 'fu-drop-area', !classNames?.dragOver && isDragOver && 'fu-drag-over', classNames.dropArea,  isDragOver && classNames.dragOver)}
+        className={clsx(
+          !classNames?.dropArea && 'fu-drop-area',
+          !classNames?.dragOver && isDragOver && 'fu-drag-over',
+          classNames.dropArea,
+          isDragOver && classNames.dragOver,
+        )}
         onDrop={handleDrop}
         onDragOver={(e) => {
           e.preventDefault();
@@ -97,17 +111,37 @@ const processFiles = (fileList: FileList | null) => {
           style={{ display: 'none' }}
           multiple={multiple}
         />
-        <div className={clsx(!classNames?.iconWrapper && 'fu-icon-wrapper', classNames.iconWrapper)}>
+        <div
+          className={clsx(
+            !classNames?.iconWrapper && 'fu-icon-wrapper',
+            classNames.iconWrapper,
+          )}
+        >
           {icons.upload || <PaperclipIcon />}
-          <div className={clsx(!classNames?.label && 'fu-label', classNames.label)}>
-            {customText.dropMessage || (files.length > 0 ? files.map(f => f.name).join(', ') : 'Drag file(s) here or click to select')}
+          <div
+            className={clsx(!classNames?.label && 'fu-label', classNames.label)}
+          >
+            {customText.dropMessage ||
+              (files.length > 0
+                ? files.map((f) => f.name).join(', ')
+                : 'Drag file(s) here or click to select')}
           </div>
         </div>
       </div>
 
       {files.length > 0 && (showPreview || showPreviewLink) && (
-        <div className={clsx(!classNames?.preview && 'fu-preview', classNames.preview)}>
-          <p className={clsx(!classNames?.previewTitle && 'fu-preview-title', classNames.previewTitle)}>
+        <div
+          className={clsx(
+            !classNames?.preview && 'fu-preview',
+            classNames.preview,
+          )}
+        >
+          <p
+            className={clsx(
+              !classNames?.previewTitle && 'fu-preview-title',
+              classNames.previewTitle,
+            )}
+          >
             {customText.previewTitle || 'File Preview'}
           </p>
 
@@ -118,46 +152,67 @@ const processFiles = (fileList: FileList | null) => {
             return (
               <div key={index}>
                 {showPreview && (
-                    <>
-                        {renderPreview ? (
-                        renderPreview(file, previewUrl)
-                        ) : (
-                        <>
-                            {previewUrl && fileType.startsWith('image/') && (
-                            <img
-                                src={previewUrl}
-                                alt="Preview"
-                                className={clsx(!classNames?.image && 'fu-image', classNames.image)}
-                            />
+                  <>
+                    {renderPreview ? (
+                      renderPreview(file, previewUrl)
+                    ) : (
+                      <>
+                        {previewUrl && fileType.startsWith('image/') && (
+                          <img
+                            src={previewUrl}
+                            alt="Preview"
+                            className={clsx(
+                              !classNames?.image && 'fu-image',
+                              classNames.image,
                             )}
-        
-                            {previewUrl && fileType === 'application/pdf' && (
-                            <iframe
-                                src={previewUrl}
-                                title="PDF Preview"
-                                className={clsx(!classNames?.pdf && 'fu-pdf', classNames.pdf)}
-                            />
-                            )}
-        
-                            {!fileType.startsWith('image/') && fileType !== 'application/pdf' && (
-                            <div className={clsx(!classNames?.noPreview && 'fu-no-preview', classNames.noPreview)}>
-                                {icons.file || ''} {fileType}
-                            </div>
-                            )}
-                        </>
+                          />
                         )}
-                    </>
+
+                        {previewUrl && fileType === 'application/pdf' && (
+                          <iframe
+                            src={previewUrl}
+                            title="PDF Preview"
+                            className={clsx(
+                              !classNames?.pdf && 'fu-pdf',
+                              classNames.pdf,
+                            )}
+                          />
+                        )}
+
+                        {!fileType.startsWith('image/') &&
+                          fileType !== 'application/pdf' && (
+                            <div
+                              className={clsx(
+                                !classNames?.noPreview && 'fu-no-preview',
+                                classNames.noPreview,
+                              )}
+                            >
+                              {icons.file || ''} {fileType}
+                            </div>
+                          )}
+                      </>
+                    )}
+                  </>
                 )}
 
                 {previewUrl && showPreviewLink && (
-                  <div className={clsx(!classNames?.previewLinkWrapper && 'fu-preview-link-wrapper', classNames.previewLinkWrapper)}>
+                  <div
+                    className={clsx(
+                      !classNames?.previewLinkWrapper &&
+                        'fu-preview-link-wrapper',
+                      classNames.previewLinkWrapper,
+                    )}
+                  >
                     <a
                       href={previewUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={clsx(!classNames?.previewLink && 'fu-preview-link', classNames.previewLink)}
+                      className={clsx(
+                        !classNames?.previewLink && 'fu-preview-link',
+                        classNames.previewLink,
+                      )}
                     >
-                      {file?.name ||customText.viewFullText || 'View File'}
+                      {file?.name || customText.viewFullText || 'View File'}
                     </a>
                   </div>
                 )}

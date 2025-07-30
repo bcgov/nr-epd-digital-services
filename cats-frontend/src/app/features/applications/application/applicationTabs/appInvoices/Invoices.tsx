@@ -8,7 +8,7 @@ import Widget from '@cats/components/widget/Widget';
 import FilterControls from '@cats/components/filter/FilterControls';
 import { IFilterOption } from '@cats/components/filter/IFilterControls';
 import { GetInvoicesConfig } from './InvoicesConfig';
-import  './Invoices.css';
+import './Invoices.css';
 import { useGetInvoicesQuery } from './graphql/Invoice.generated';
 import { ViewInvoice } from '../../../../../../generated/types';
 import ModalDialog from '@cats/components/modaldialog/ModalDialog';
@@ -16,7 +16,10 @@ import { useGetHeaderDetailsByApplicationIdQuery } from '../../ApplicationDetail
 import { InvoiceFilter } from './enums/filter';
 import { InvoiceSortBy, InvoiceSortByDir } from './enums/sortBy';
 
-type Invoices = Pick<ViewInvoice, 'id' | 'subject' | 'invoiceStatus' | 'totalInCents' |'issuedDate' | 'dueDate'>;
+type Invoices = Pick<
+  ViewInvoice,
+  'id' | 'subject' | 'invoiceStatus' | 'totalInCents' | 'issuedDate' | 'dueDate'
+>;
 export const Invoices: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -46,8 +49,12 @@ export const Invoices: React.FC = () => {
   const [displayResults, setDisplayResults] = useState<Invoices[]>([]);
   const [filter, setFilter] = useState<InvoiceFilter>(InvoiceFilter.ALL);
   const [sortBy, setSortBy] = useState<InvoiceSortBy>(InvoiceSortBy.ID);
-  const [sortByDir, setSortByDir] = useState<InvoiceSortByDir>(InvoiceSortByDir.ASC);
-  const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.idle);
+  const [sortByDir, setSortByDir] = useState<InvoiceSortByDir>(
+    InvoiceSortByDir.ASC,
+  );
+  const [requestStatus, setRequestStatus] = useState<RequestStatus>(
+    RequestStatus.idle,
+  );
   const [isNewInvoiceOpen, setIsNewInvoiceOpen] = useState(false);
   const [selectedRows, setSelectedRows] = useState<{ id: any }[]>([]);
   const [selectedType, setSelectedType] = useState('blank-invoice');
@@ -100,7 +107,8 @@ export const Invoices: React.FC = () => {
     let filteredResults = results;
     if (filter !== InvoiceFilter.ALL) {
       filteredResults = results.filter(
-        (invoice) => invoice.invoiceStatus.toLowerCase() === filter.toLowerCase(),
+        (invoice) =>
+          invoice.invoiceStatus.toLowerCase() === filter.toLowerCase(),
       );
     }
 
@@ -161,7 +169,8 @@ export const Invoices: React.FC = () => {
   const handleTableChange = (event: any) => {
     const { property, value, row, selected } = event;
 
-    if (!property.includes('select_all') && !property.includes('select_row')) return;
+    if (!property.includes('select_all') && !property.includes('select_row'))
+      return;
 
     const rows = property === 'select_row' ? [row] : value;
     const isSelecting = property === 'select_row' ? value : selected;
@@ -208,7 +217,7 @@ export const Invoices: React.FC = () => {
       onClick: () => {},
       icon: <FilterIcon />,
     },
-  ]
+  ];
 
   return (
     <div>
@@ -216,107 +225,130 @@ export const Invoices: React.FC = () => {
         <p>Financial Summary Will Go Here</p>
       </div> */}
       <div>
-        <Widget 
-          customWidgetCss='gap-4'
+        <Widget
+          customWidgetCss="gap-4"
           title="Invoices"
           tableIsLoading={requestStatus}
           tableColumns={invoiceTableConfig}
           tableData={displayResults}
           sortHandler={handleSortChange}
           changeHandler={handleTableChange}
-          filter={ <FilterControls options={invoiceFilter} />}
+          filter={<FilterControls options={invoiceFilter} />}
           currentPage={1}
           allowRowsSelect={true}
           primaryKeycolumnName="id"
         >
           <div className="d-flex gap-2 align-items-center">
-            <Button variant="secondary" onClick={() => setIsNewInvoiceOpen(true)}>
+            <Button
+              variant="secondary"
+              onClick={() => setIsNewInvoiceOpen(true)}
+            >
               <Plus /> New Invoice
             </Button>
-            <Button variant="secondary" disabled={selectedRows.length <= 0} onClick={() => { }}>
+            <Button
+              variant="secondary"
+              disabled={selectedRows.length <= 0}
+              onClick={() => {}}
+            >
               <span>Send Invoice to Client</span>
             </Button>
           </div>
         </Widget>
       </div>
-      {
-        isNewInvoiceOpen && (
-          <ModalDialog
-            label='Create New Invoice'
-            customHeaderTextCss='custom-invoice-heading'
-            saveBtnLabel='Confirm'
-            showTickIcon={true}
-            closeHandler={(response) => {
-              if (response) {
-                switch (selectedType) {
-                  case 'prepaid-invoice':
-                    break;
-                  case 'postpaid-invoice':
-                    break;
-                  case 'blank-invoice':
-                    navigate(`/applications/${applicationId}/invoice`);
-                    break;
-                  default:
-                    navigate(`/applications/${applicationId}/invoice`);
-                    break;
-                }
+      {isNewInvoiceOpen && (
+        <ModalDialog
+          label="Create New Invoice"
+          customHeaderTextCss="custom-invoice-heading"
+          saveBtnLabel="Confirm"
+          showTickIcon={true}
+          closeHandler={(response) => {
+            if (response) {
+              switch (selectedType) {
+                case 'prepaid-invoice':
+                  break;
+                case 'postpaid-invoice':
+                  break;
+                case 'blank-invoice':
+                  navigate(`/applications/${applicationId}/invoice`);
+                  break;
+                default:
+                  navigate(`/applications/${applicationId}/invoice`);
+                  break;
               }
-              setIsNewInvoiceOpen(!isNewInvoiceOpen);
-            }}
-          >
-            <div className="d-flex flex-column gap-5">
-              <div className="d-flex flex-column gap-1">
-                <label htmlFor="create-invoice" className="custom-invoices-lbl">Application</label>
-                <div id='create-invoice' className="custom-invoices-input-txt custom-invoices-input" aria-disabled="true">
-                  <span>{applicationData?.getApplicationDetailsById?.data?.id}</span>
-                  <span className='custom-invoices-dot px-1'>·</span>
-                  <span>{applicationData?.getApplicationDetailsById?.data?.siteAddress}</span>
-                  <span className='custom-invoices-dot px-1'>·</span>
-                  <span>{applicationData?.getApplicationDetailsById?.data?.appType?.description}</span>
-                </div>
-              </div>
-              <div className="d-flex flex-column gap-3">
-                  <label className="custom-invoices-lbl">Invoice Type</label>
-                  <div className="d-flex flex-column gap-2 px-3 custom-invoices-input-txt">
-                    <label className="d-flex gap-2 align-items-center">
-                      <input
-                        disabled={true}
-                        type="radio"
-                        name="invoiceType"
-                        value="prepaid-invoice"
-                        checked={selectedType === 'prepaid-invoice'}
-                        onChange={(e) => setSelectedType(e.target.value)}
-                      />
-                      Prepaid Services Invoice
-                    </label>
-
-                    <label className="d-flex gap-2 align-items-center">
-                      <input
-                        disabled={true}
-                        type="radio"
-                        name="invoiceType"
-                        value="postpaid-invoice"
-                        checked={selectedType === 'postpaid-invoice'}
-                        onChange={(e) => setSelectedType(e.target.value)}
-                      />
-                      Postpaid Services Invoice
-                    </label>
-                    <label className="d-flex gap-2 align-items-center">
-                      <input
-                        type="radio"
-                        name="invoiceType"
-                        value="blank-invoice"
-                        checked={selectedType === 'blank-invoice'}
-                        onChange={(e) => setSelectedType(e.target.value)}
-                      />
-                      Blank Invoice
-                    </label>
-                  </div>
+            }
+            setIsNewInvoiceOpen(!isNewInvoiceOpen);
+          }}
+        >
+          <div className="d-flex flex-column gap-5">
+            <div className="d-flex flex-column gap-1">
+              <label htmlFor="create-invoice" className="custom-invoices-lbl">
+                Application
+              </label>
+              <div
+                id="create-invoice"
+                className="custom-invoices-input-txt custom-invoices-input"
+                aria-disabled="true"
+              >
+                <span>
+                  {applicationData?.getApplicationDetailsById?.data?.id}
+                </span>
+                <span className="custom-invoices-dot px-1">·</span>
+                <span>
+                  {
+                    applicationData?.getApplicationDetailsById?.data
+                      ?.siteAddress
+                  }
+                </span>
+                <span className="custom-invoices-dot px-1">·</span>
+                <span>
+                  {
+                    applicationData?.getApplicationDetailsById?.data?.appType
+                      ?.description
+                  }
+                </span>
               </div>
             </div>
-          </ModalDialog>
-        )
-      }
+            <div className="d-flex flex-column gap-3">
+              <label className="custom-invoices-lbl">Invoice Type</label>
+              <div className="d-flex flex-column gap-2 px-3 custom-invoices-input-txt">
+                <label className="d-flex gap-2 align-items-center">
+                  <input
+                    disabled={true}
+                    type="radio"
+                    name="invoiceType"
+                    value="prepaid-invoice"
+                    checked={selectedType === 'prepaid-invoice'}
+                    onChange={(e) => setSelectedType(e.target.value)}
+                  />
+                  Prepaid Services Invoice
+                </label>
+
+                <label className="d-flex gap-2 align-items-center">
+                  <input
+                    disabled={true}
+                    type="radio"
+                    name="invoiceType"
+                    value="postpaid-invoice"
+                    checked={selectedType === 'postpaid-invoice'}
+                    onChange={(e) => setSelectedType(e.target.value)}
+                  />
+                  Postpaid Services Invoice
+                </label>
+                <label className="d-flex gap-2 align-items-center">
+                  <input
+                    type="radio"
+                    name="invoiceType"
+                    value="blank-invoice"
+                    checked={selectedType === 'blank-invoice'}
+                    onChange={(e) => setSelectedType(e.target.value)}
+                  />
+                  Blank Invoice
+                </label>
+              </div>
+            </div>
+          </div>
+        </ModalDialog>
+      )}
     </div>
   );
 };
