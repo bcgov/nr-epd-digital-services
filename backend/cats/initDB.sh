@@ -40,6 +40,40 @@ echo "init db complete"
 # run type orm migrations 
 npm run typeorm:run-migrations
 
+## TODO: Put seed data logic here.
+# check if seed is enabled or not SEED_ENABLED should be true
+if [ "$SEED_ENABLED" != "true" ]; then
+    echo "Seed data is not enabled. Skipping seed data load."
+else
+    echo "SEED DATA PATH :: $SEED_DATA_PATH"
+    # check if seed data path is set or not
+    if [ -z "$SEED_DATA_PATH" ]; then
+        echo "SEED_DATA_PATH is not set. Skipping seed data load."
+    else
+        # check if sites table has any rows
+        if [ "$(PGPASSWORD="$POSTGRES_ADMIN_PASSWORD" psql -h "$POSTGRESQL_HOST" -d "$POSTGRES_DATABASE" -U "$POSTGRES_ADMIN_USERNAME" -t -c "SELECT count(*) FROM cats.application;")" -gt 0 ]; then
+            echo "Seed data already loaded. Skipping seed data load."
+        else
+            echo "Seed data set, seed is enabled, and db is blank"
+            # Disable constraints before seeding, if file exists
+            if [ -f "/mnt/sql/disable_constraints.sql" ]; then
+                echo "Disabling constraints..."
+                PGPASSWORD="$POSTGRES_ADMIN_PASSWORD" psql -h "$POSTGRESQL_HOST" -d "$POSTGRES_DATABASE" -U "$POSTGRES_ADMIN_USERNAME" -f "/mnt/sql/disable_constraints.sql"
+            fi
+
+            echo "Seed data set, attempting to load with suppressed logs (this might take a while)."
+            PGPASSWORD="$POSTGRES_ADMIN_PASSWORD" psql -q -h "$POSTGRESQL_HOST" -d "$POSTGRES_DATABASE" -U "$POSTGRES_ADMIN_USERNAME" -f "$SEED_DATA_PATH" > /dev/null
+            echo "Seed data successfully loaded."
+
+            # Enable constraints after seeding, if file exists
+            if [ -f "/mnt/sql/enable_constraints.sql" ]; then
+                echo "Enabling constraints..."
+                PGPASSWORD="$POSTGRES_ADMIN_PASSWORD" psql -h "$POSTGRESQL_HOST" -d "$POSTGRES_DATABASE" -U "$POSTGRES_ADMIN_USERNAME" -f "/mnt/sql/enable_constraints.sql"
+            fi
+        fi
+    fi
+fi
+
 npm run seed:service-types
 
 echo "migrations completed"

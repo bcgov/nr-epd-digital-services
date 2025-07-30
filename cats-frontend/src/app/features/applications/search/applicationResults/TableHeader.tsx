@@ -10,6 +10,7 @@ interface TableHeaderProps {
   handleColumnChange: (selectedColumns: TableColumn[]) => void;
   handleFilterChange: (filter: Filter) => void;
   filter: Filter;
+  filterMyTasks?: boolean;
 }
 
 const TableHeader: React.FC<TableHeaderProps> = ({
@@ -17,6 +18,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({
   handleColumnChange,
   handleFilterChange,
   filter,
+  filterMyTasks,
 }) => {
   const [showColumnSelect, setShowColumnSelect] = useState(false);
 
@@ -35,6 +37,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({
             handleFilterChange={handleFilterChange}
             filter={filter}
             toggleColumnSelect={toggleColumnSelect}
+            filterMyTasks={filterMyTasks}
           />
         </div>
       </div>

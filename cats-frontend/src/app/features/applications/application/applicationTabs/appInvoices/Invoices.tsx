@@ -2,11 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { RequestStatus } from '@cats/helpers/requests/status';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { TableColumn } from '@cats/components/table/TableColumn';
-import { InvoiceFilter } from './enums/filter';
-import {
-  InvoiceSortBy as InvoiceSortBy,
-  InvoiceSortByDir as InvoiceSortByDir,
-} from './enums/sortBy';
 import { Button } from '@cats/components/button/Button';
 import { FilterIcon, Plus } from '@cats/components/common/icon';
 import Widget from '@cats/components/widget/Widget';
@@ -18,6 +13,8 @@ import { useGetInvoicesQuery } from './graphql/Invoice.generated';
 import { ViewInvoice } from '../../../../../../generated/types';
 import ModalDialog from '@cats/components/modaldialog/ModalDialog';
 import { useGetHeaderDetailsByApplicationIdQuery } from '../../ApplicationDetails.generated';
+import { InvoiceFilter } from './enums/filter';
+import { InvoiceSortBy, InvoiceSortByDir } from './enums/sortBy';
 
 type Invoices = Pick<ViewInvoice, 'id' | 'subject' | 'invoiceStatus' | 'totalInCents' |'issuedDate' | 'dueDate'>;
 export const Invoices: React.FC = () => {

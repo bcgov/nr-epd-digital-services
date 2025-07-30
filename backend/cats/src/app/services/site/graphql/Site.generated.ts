@@ -3,12 +3,12 @@ import * as Types from '../../../../generated/types';
 import { GraphQLClient, RequestOptions } from 'graphql-request';
 import gql from 'graphql-tag';
 type GraphQLClientRequestHeaders = RequestOptions['requestHeaders'];
-export type FindSiteBySiteIdQueryVariables = Types.Exact<{
+export type FindSiteBySiteIdLoggedInUserQueryVariables = Types.Exact<{
   siteId: Types.Scalars['String']['input'];
 }>;
 
 
-export type FindSiteBySiteIdQuery = { __typename?: 'Query', findSiteBySiteId: { __typename?: 'FetchSiteDetail', data?: { __typename?: 'Sites', id: string, longdeg?: number | null, latdeg?: number | null, addrLine_1: string, addrLine_2?: string | null, addrLine_3?: string | null, addrLine_4?: string | null, city: string, commonName: string, siteRiskCode: string, whenCreated: any, whenUpdated?: any | null, siteAssocs: Array<{ __typename?: 'SiteAssocs', siteIdAssociatedWith2: { __typename?: 'Sites', id: string, longdeg?: number | null, latdeg?: number | null, addrLine_1: string, addrLine_2?: string | null, addrLine_3?: string | null, addrLine_4?: string | null, city: string, commonName: string, siteRiskCode: string, whenCreated: any, whenUpdated?: any | null } }> } | null } };
+export type FindSiteBySiteIdLoggedInUserQuery = { __typename?: 'Query', findSiteBySiteIdLoggedInUser: { __typename?: 'FetchSiteDetail', data?: { __typename?: 'Sites', id: string, longdeg?: number | null, latdeg?: number | null, addrLine_1: string, addrLine_2?: string | null, addrLine_3?: string | null, addrLine_4?: string | null, city: string, commonName: string, siteRiskCode: string, whenCreated: any, whenUpdated?: any | null, siteAssocs: Array<{ __typename?: 'SiteAssocs', siteIdAssociatedWith2: { __typename?: 'Sites', id: string, longdeg?: number | null, latdeg?: number | null, addrLine_1: string, addrLine_2?: string | null, addrLine_3?: string | null, addrLine_4?: string | null, city: string, commonName: string, siteRiskCode: string, whenCreated: any, whenUpdated?: any | null } }> } | null } };
 
 export type SiteDetailsFragment = { __typename?: 'Sites', id: string, longdeg?: number | null, latdeg?: number | null, addrLine_1: string, addrLine_2?: string | null, addrLine_3?: string | null, addrLine_4?: string | null, city: string, commonName: string, siteRiskCode: string, whenCreated: any, whenUpdated?: any | null };
 
@@ -28,9 +28,9 @@ export const SiteDetailsFragmentDoc = gql`
   whenUpdated
 }
     `;
-export const FindSiteBySiteIdDocument = gql`
-    query findSiteBySiteId($siteId: String!) {
-  findSiteBySiteId(siteId: $siteId) {
+export const FindSiteBySiteIdLoggedInUserDocument = gql`
+    query findSiteBySiteIdLoggedInUser($siteId: String!) {
+  findSiteBySiteIdLoggedInUser(siteId: $siteId) {
     data {
       ...SiteDetails
       siteAssocs {
@@ -50,8 +50,8 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    findSiteBySiteId(variables: FindSiteBySiteIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<FindSiteBySiteIdQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<FindSiteBySiteIdQuery>(FindSiteBySiteIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'findSiteBySiteId', 'query', variables);
+    findSiteBySiteIdLoggedInUser(variables: FindSiteBySiteIdLoggedInUserQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<FindSiteBySiteIdLoggedInUserQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FindSiteBySiteIdLoggedInUserQuery>(FindSiteBySiteIdLoggedInUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'findSiteBySiteIdLoggedInUser', 'query', variables);
     }
   };
 }

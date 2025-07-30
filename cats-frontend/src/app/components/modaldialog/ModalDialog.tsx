@@ -30,6 +30,7 @@ interface ModalDialogCloseHandlerProps {
   noFooterOptions?: boolean;
   showTickIcon?: boolean;
   showIcon?: boolean;
+  validator?: () => boolean;
 }
 
 const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
@@ -54,6 +55,7 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
   noFooterOptions,
   showTickIcon = false,
   showIcon = true,
+  validator,
 }) => {
   saveBtnLabel = saveBtnLabel ?? '';
   cancelBtnLabel = cancelBtnLabel ?? '';
@@ -73,6 +75,10 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
   };
 
   const handleSave = () => {
+    if (validator && !validator()) {
+      return;
+    }
+
     // Add save logic here
     setOpen(false);
     closeHandler(true);

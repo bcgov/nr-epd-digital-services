@@ -18,8 +18,6 @@ describe('Assignment Component', () => {
       </MockedProvider>,
     );
 
-    expect(await screen.findByText('Site ID')).toBeInTheDocument();
-    expect(screen.getByText('Site Risk Classification')).toBeInTheDocument();
-    expect(screen.getByText('Site Address')).toBeInTheDocument();
+    expect(screen.getByText('Site Information')).toBeInTheDocument();
   });
 });

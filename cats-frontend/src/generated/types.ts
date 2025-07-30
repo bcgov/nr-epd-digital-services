@@ -291,6 +291,7 @@ export type DropdownResponse = {
 
 export enum Filter {
   All = 'ALL',
+  Assigned = 'ASSIGNED',
   Completed = 'COMPLETED',
   Overcapacity = 'OVERCAPACITY',
   Unassigned = 'UNASSIGNED'

@@ -14,11 +14,13 @@ import styles from './Details.module.css';
 interface IDetailsProps {
   applicationIdParam?: number;
   showSiteDetails?: boolean;
+  defaultOpen?: boolean;
 }
 
 export const Details: React.FC<IDetailsProps> = ({
   applicationIdParam,
   showSiteDetails = true,
+  defaultOpen = true,
 }) => {
   const { id = '' } = useParams();
   const applicationId =
@@ -50,7 +52,7 @@ export const Details: React.FC<IDetailsProps> = ({
   return (
     <div className="d-flex flex-column gap-3">
       <CollapsiblePanel
-        defaultOpen={true}
+        defaultOpen={defaultOpen}
         label="Application Information"
         loading={applicationDataLoading}
         defaultCloseBtnPosition="left"

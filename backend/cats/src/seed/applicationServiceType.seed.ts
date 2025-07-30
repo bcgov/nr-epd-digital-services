@@ -8,6 +8,7 @@ import { StaffRoles } from '../app/services/assignment/staffRoles.enum';
 const serviceTypeJSON = require('./applicationServiceType.json');
 
 export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
+  console.log('ApplicationServiceTypeSeeder start');
   try {
     const mentorResult = await manager.findOne(ParticipantRole, {
       where: { abbrev: 'MENTOR' },
@@ -28,6 +29,7 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
       participantRole.ts = Buffer.from('');
       participantRole.roleType = 'STAFF';
       await manager.save(participantRole);
+      console.log('mentor role created');
     } else {
       await manager.update(
         ParticipantRole,
@@ -47,6 +49,8 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
     const mentorRole = await manager.findOne(ParticipantRole, {
       where: { abbrev: 'MENTOR' },
     });
+
+    console.log('roles found', caseWorkerRole, sdmRole, mentorRole);
 
     if (caseWorkerRole && sdmRole && mentorRole) {
       for (const item of serviceTypeJSON) {
@@ -125,8 +129,6 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
           await manager.save(caseWorkerRoleServiceType);
         }
       }
-    } else {
-      throw new Error('Failed to create roles');
     }
   } catch (error) {
     console.log('ApplicationServiceTypeSeeder', error);

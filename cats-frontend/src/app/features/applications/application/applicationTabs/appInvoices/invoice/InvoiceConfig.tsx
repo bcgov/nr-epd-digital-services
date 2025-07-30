@@ -2,12 +2,12 @@ import { FormFieldType, IFormField } from "@cats/components/input-controls/IForm
 import { InvoiceStatus } from "../../../../../../../generated/types";
 import { UserMode } from "@cats/helpers/requests/userMode";
 import { ColumnSize, TableColumn } from "@cats/components/table/TableColumn";
-import  { InvoiceItemTypes } from "../enums/invoiceItemTypes";
 import { FaTimes } from "react-icons/fa";
 import { GetParticipantNamesQuery } from "../../appParticipants/graphql/Participants.generated";
 import { DropdownSearchInput, Link } from "@cats/components/input-controls/InputControls";
 import { RequestStatus } from "@cats/helpers/requests/status";
 import { getObject } from "./services/coms.service";
+import { InvoiceItemTypes } from "../enums/invoiceItemTypes";
 
 
 export const GetInvoiceConfig = (viewMode: UserMode, isDisabled: boolean, 

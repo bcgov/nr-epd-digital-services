@@ -6,9 +6,17 @@ import { useAuth } from 'react-oidc-context';
 import Avatar from '../avatar/Avatar';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../Store';
+import { useNavigate } from 'react-router-dom';
 
 const UserAccount = (props: any) => {
   const auth = useAuth();
+  const navigate = useNavigate();
+
+  if (auth?.user?.profile?.identity_provider === 'bceid') {
+    navigate('/error');
+    auth.signinRedirect({ extraQueryParams: { kc_idp_hint: 'idir' } });
+  }
+
   const userObj = {
     firstname: auth.user?.profile.given_name,
     lastName: auth.user?.profile.family_name,

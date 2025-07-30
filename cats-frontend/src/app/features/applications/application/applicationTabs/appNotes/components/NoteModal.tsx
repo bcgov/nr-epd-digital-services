@@ -96,6 +96,18 @@ export const NoteModal: FC<NoteModalProps> = ({
           saveButtonDisabled={loading}
           cancelButtonDisabled={loading}
           saveBtnLabel={noteModal.mode === 'delete' ? 'Confirm' : 'Save Note'}
+          validator={() => {
+            if (noteModal.mode === 'add') {
+              if (
+                !noteModal.noteData.noteDate ||
+                !noteModal.noteData.noteText
+              ) {
+                alert('Note date and note text are required');
+                return false;
+              }
+            }
+            return true;
+          }}
           closeHandler={(saved) => {
             if (!saved) {
               setNoteModal(initialNoteModalState());

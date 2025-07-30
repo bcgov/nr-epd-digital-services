@@ -90,7 +90,10 @@ export const IconButton: React.FC<InputProps> = ({
   customContainerCss,
 }) => {
   return renderTableCell(
-    <div onClick={onChange} className={`${customInputTextCss ?? ''}`}>
+    <div
+      onClick={onChange}
+      className={`${styles.baseTableLinkStyles} ${customInputTextCss ?? ''}`}
+    >
       {customIcon && customIcon}{' '}
       <span className="ps-1">{customLinkValue ?? value}</span>
     </div>,
@@ -175,12 +178,16 @@ export const TextInput: React.FC<InputProps> = ({
 
   const validateInput = (inputValue: any) => {
     if (validation) {
-      if (validation?.pattern && !validation.pattern?.test(inputValue)) {
-        setError(validation.customMessage || '');
+      if (
+        validation.required &&
+        typeof inputValue === 'string' &&
+        !inputValue.trim()
+      ) {
+        setError(validation.customMessage || ' ');
         return false;
       }
-      if (validation.required && !inputValue.trim()) {
-        setError(validation.customMessage || ' ');
+      if (validation?.pattern && !validation.pattern?.test(inputValue)) {
+        setError(validation.customMessage || '');
         return false;
       }
     }
@@ -800,6 +807,12 @@ export const DateInput: React.FC<InputProps> = ({
           onChange={handleDateChange}
           oneTap
           readOnly={isDisabled}
+          renderValue={(value, format): string => {
+            if (value) {
+              return formatDate(value, format ?? 'MMM dd, yyyy');
+            }
+            return '';
+          }}
         />
       ) : (
         <span

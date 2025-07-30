@@ -4,7 +4,6 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { UserMode } from '@cats/helpers/requests/userMode';
 import Actions from '@cats/components/action/Actions';
 import { SaveButton } from '@cats/components/simple/CustomButtons';
-import { InvoiceActions } from '../enums/invoiceActions';
 import PageContainer from '@cats/components/simple/PageContainer';
 import { useGetHeaderDetailsByApplicationIdQuery } from '@cats/features/applications/application/ApplicationDetails.generated';
 import { FaTimes } from 'react-icons/fa';
@@ -24,7 +23,6 @@ import InvoicePreviewTemplate from './InvoicePreviewTemplate';
 import { GetInvoiceByIdDocument, useCreateInvoiceMutation, useDeleteInvoiceMutation, useGetInvoiceByIdQuery, useUpdateInvoiceMutation } from '../graphql/Invoice.generated';
 import { pdf } from '@react-pdf/renderer';
 import { DropdownDto, InvoiceStatus, UpdateInvoice, UpdateInvoiceItem, ViewApplicationDetails } from '../../../../../../../generated/types';
-import { InvoiceItemTypes } from '../enums/invoiceItemTypes';
 import { v4 } from 'uuid';
 import Decimal from 'decimal.js';
 import FileUploader from '@cats/components/fileUploader/FileUploader';
@@ -35,6 +33,8 @@ interface DeletedAttachment {
   bucketId: string;
   objectId: string;
 }
+import { InvoiceItemTypes } from '../enums/invoiceItemTypes';
+import { InvoiceActions } from '../enums/invoiceActions';
 
 const initialInvoice: any = {
     subject: '',

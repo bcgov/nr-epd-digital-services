@@ -230,6 +230,7 @@ export enum UserRoleType {
   INTERNAL = 'internal',
   DEFAULT = 'not-logged-in',
   MANAGER = 'manager',
+  EXTERNAL = 'external',
 }
 
 export const isUserOfType = (roleType: UserRoleType) => {
@@ -239,7 +240,7 @@ export const isUserOfType = (roleType: UserRoleType) => {
     switch (roleType) {
       case UserRoleType.INTERNAL:
         const internalUserRole =
-          import.meta.env.VITE_SITE_INTERNAL_USER_ROLE || 'site-internal-user';
+          import.meta.env.VITE_INTERNAL_USER_ROLE || 'cats-internal-user';
         if (userRoles.includes(internalUserRole)) {
           return true;
         } else {
@@ -252,6 +253,10 @@ export const isUserOfType = (roleType: UserRoleType) => {
         } else {
           return false;
         }
+      case UserRoleType.EXTERNAL:
+        return user.profile?.identity_provider === 'bceid';
+      default:
+        return false;
     }
   }
 
@@ -262,6 +267,10 @@ export const getLoggedInUserType = () => {
   return isUserOfType(UserRoleType.INTERNAL)
     ? UserRoleType.INTERNAL
     : UserRoleType.DEFAULT;
+};
+
+export const isBCEIDUserType = () => {
+  return isUserOfType(UserRoleType.EXTERNAL);
 };
 
 export const isUserRoleInternalUser = () => {};
