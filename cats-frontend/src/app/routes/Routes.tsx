@@ -13,7 +13,6 @@ import ApplicationDetails from '../features/applications/application/Application
 import ApplicationSearch from '../features/applications/search/Search';
 import StaffDashboard from '../features/staff/Staff';
 import ProtectedRoute from './ProtectedRoute';
-import CreateInvoice from '../features/applications/application/applicationTabs/appInvoices/components/create/CreateInvoice';
 import Dashboard from '@cats/features/dashboard/Dashboard';
 import Invoice from '@cats/features/applications/application/applicationTabs/appInvoices/invoice/Invoice';
 import ApplicationTabsRouter from '../features/applications/application/ApplicationTabsRouter';
@@ -34,7 +33,6 @@ const roleBasedRoutes: any = {
       element: <ApplicationDetails />,
       children: [{ path: '*', element: <ApplicationTabsRouter /> }],
     },
-    { path: '/applications/:id/invoices/create', element: <CreateInvoice /> },
     { path: '/applications/:applicationId/invoice', element: <Invoice />},
     { path: '/applications/:applicationId/invoice/:id', element: <Invoice />},
     {

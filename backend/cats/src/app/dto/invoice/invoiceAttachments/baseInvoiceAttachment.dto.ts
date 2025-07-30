@@ -9,12 +9,9 @@ export class BaseInvoiceAttachment {
     @Field()
     fileName: string;
 
-    @Field(() => Int)
-    fileSize: number;
-
     @Field()
-    mimeType: string;
-
+    bucketId: string;
+        
     @Field()
     objectId: string;
 }

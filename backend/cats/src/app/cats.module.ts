@@ -202,9 +202,6 @@ import { InvoiceItem } from './entities/invoiceItem.entity';
     TimesheetDayResolver,
     DashboardService,
     DashboardResolver,
-    InvoiceAttachmentResolver,
-    InvoiceAttachmentService,
-    ComsService,
   ],
   controllers: [UserController],
 })
