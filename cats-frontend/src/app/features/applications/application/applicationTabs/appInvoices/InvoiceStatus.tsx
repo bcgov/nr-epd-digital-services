@@ -6,11 +6,15 @@ import {
   SendIcon,
   DollarIcon,
 } from '@cats/components/common/icon';
+<<<<<<< HEAD
 <<<<<<<< HEAD:cats-frontend/src/app/features/applications/application/applicationTabs/appInvoices/InvoiceStatus.tsx
 import { StatusType } from './enums/statusType';
 ========
 import { StatusType } from '../invoice-enums/statusType';
 >>>>>>>> 7d11e7a8 (Implement Invoice CRUD opteration of FE and BE):cats-frontend/src/app/features/applications/application/applicationTabs/appInvoices/components/invoice-status/InvoiceStatus.tsx
+=======
+import { StatusType } from './enums/statusType';
+>>>>>>> 254b7068 (implement update, create and delete invoice)
 
 type InvoiceStatusProps = {
   status: StatusType;
