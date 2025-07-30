@@ -41,10 +41,10 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     paddingBottom: 3,
   },
-  textBold :{
+  textBold: {
     fontWeight: 'bold',
   },
-  textFont:{
+  textFont: {
     fontSize: 10,
   },
   row: {
@@ -59,7 +59,8 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: 'bold',
   },
-  table: {    // const identityId = "c3a6b8c1-e2ca-473d-a648-755a4aa6250e"
+  table: {
+    // const identityId = "c3a6b8c1-e2ca-473d-a648-755a4aa6250e"
 
     width: '100%',
     borderWidth: 1,
@@ -124,17 +125,30 @@ export const InvoicePreviewTemplate = ({ invoice, application }: any) => (
       {/* Title */}
       <Text style={styles.title}>INVOICE - #{invoice?.id}</Text>
       <Text style={styles.subheading}>
-        Ministry of Environment and Climate Change Strategy - Environmental Protection Division
+        Ministry of Environment and Climate Change Strategy - Environmental
+        Protection Division
       </Text>
 
       {/* Invoice Details */}
       <View style={styles.row}>
         <View style={styles.col}>
           <Text style={styles.sectionTitle}>Invoice Details</Text>
-          <Text style={styles.textFont}><Text style={styles.textBold}>Application: </Text>{application?.appType?.description}</Text>
-          <Text style={styles.textFont}><Text style={styles.textBold}>Issued: </Text> {formatDate(invoice?.issuedDate)}</Text>
-          <Text style={styles.textFont}><Text style={styles.textBold}>Due: </Text> {formatDate(invoice?.dueDate)}</Text>
-          <Text style={styles.textFont}><Text style={styles.textBold}>Status: </Text> {invoice?.invoiceStatus}</Text>
+          <Text style={styles.textFont}>
+            <Text style={styles.textBold}>Application: </Text>
+            {application?.appType?.description}
+          </Text>
+          <Text style={styles.textFont}>
+            <Text style={styles.textBold}>Issued: </Text>{' '}
+            {formatDate(invoice?.issuedDate)}
+          </Text>
+          <Text style={styles.textFont}>
+            <Text style={styles.textBold}>Due: </Text>{' '}
+            {formatDate(invoice?.dueDate)}
+          </Text>
+          <Text style={styles.textFont}>
+            <Text style={styles.textBold}>Status: </Text>{' '}
+            {invoice?.invoiceStatus}
+          </Text>
         </View>
       </View>
 
@@ -142,10 +156,14 @@ export const InvoicePreviewTemplate = ({ invoice, application }: any) => (
       <View style={styles.row}>
         <View style={styles.col}>
           <Text style={styles.sectionTitle}>Issued To</Text>
-          <Text style={styles.textFont}><Text style={styles.textBold}>Recipient: </Text>
-           {invoice?.recipient?.value || `ID: ${invoice?.personId}`}
+          <Text style={styles.textFont}>
+            <Text style={styles.textBold}>Recipient: </Text>
+            {invoice?.recipient?.value || `ID: ${invoice?.personId}`}
           </Text>
-          <Text style={styles.textFont}><Text style={styles.textBold}>Subject: </Text>{invoice?.subject}</Text>
+          <Text style={styles.textFont}>
+            <Text style={styles.textBold}>Subject: </Text>
+            {invoice?.subject}
+          </Text>
         </View>
       </View>
 
@@ -183,7 +201,9 @@ export const InvoicePreviewTemplate = ({ invoice, application }: any) => (
         <View style={styles.totalsRow}>
           <Text>GST (5%):</Text>
           <Text>
-            {invoice?.taxExempt ? 'Tax Exempt' : formatCurrency(invoice?.gstInCents)}
+            {invoice?.taxExempt
+              ? 'Tax Exempt'
+              : formatCurrency(invoice?.gstInCents)}
           </Text>
         </View>
         <View style={styles.totalsRow}>

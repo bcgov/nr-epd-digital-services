@@ -164,8 +164,8 @@ const Staff = () => {
       filter,
       page: 1,
     }));
-  }
-  
+  };
+
   const options: IFilterOption[] = [
     {
       label: 'All',
@@ -233,8 +233,8 @@ const Staff = () => {
         resultsPerPage={queryState?.pageSize}
         tableData={data?.getStaffs?.data ?? []}
         totalResults={data?.getStaffs?.count ?? 0}
-        filter={ <FilterControls options={options} /> } 
-        >
+        filter={<FilterControls options={options} />}
+      >
         <div className="d-flex gap-2 flex-wrap">
           <Button
             variant="secondary"

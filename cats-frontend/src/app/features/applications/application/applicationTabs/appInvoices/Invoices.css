@@ -12,12 +12,12 @@ a.custom-invoices-txt {
 }
 
 .custom-invoices-link {
-    font-family: Noto Sans !important;
-    font-weight: 700;
-    font-size: 12px;
-    line-height: 16px;
-    text-decoration: none;
-    color: var(--surface-color-primary-default, #053662);
+  font-family: Noto Sans !important;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  text-decoration: none;
+  color: var(--surface-color-primary-default, #053662);
 }
 
 .custom-invoices-link:hover {
@@ -29,7 +29,7 @@ a.custom-invoices-txt:hover {
 }
 
 .custom-invoices-txt {
-    color: var(--typography-color-secondary, #474543);
+  color: var(--typography-color-secondary, #474543);
 }
 
 .custom-invoices-tbl-header {

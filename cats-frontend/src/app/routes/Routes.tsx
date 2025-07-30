@@ -33,8 +33,8 @@ const roleBasedRoutes: any = {
       element: <ApplicationDetails />,
       children: [{ path: '*', element: <ApplicationTabsRouter /> }],
     },
-    { path: '/applications/:applicationId/invoice', element: <Invoice />},
-    { path: '/applications/:applicationId/invoice/:id', element: <Invoice />},
+    { path: '/applications/:applicationId/invoice', element: <Invoice /> },
+    { path: '/applications/:applicationId/invoice/:id', element: <Invoice /> },
     {
       path: '/staff',
       element: (
