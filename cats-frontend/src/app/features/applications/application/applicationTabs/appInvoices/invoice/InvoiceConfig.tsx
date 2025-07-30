@@ -2,11 +2,12 @@ import { FormFieldType, IFormField } from "@cats/components/input-controls/IForm
 import { InvoiceStatus } from "../../../../../../../generated/types";
 import { UserMode } from "@cats/helpers/requests/userMode";
 import { ColumnSize, TableColumn } from "@cats/components/table/TableColumn";
-import  { InvoiceItemTypes } from "../components/invoice-enums/invoiceItemTypes";
+import  { InvoiceItemTypes } from "../enums/invoiceItemTypes";
 import { FaTimes } from "react-icons/fa";
 import { GetParticipantNamesQuery } from "../../appParticipants/graphql/Participants.generated";
 import { DropdownSearchInput, Link } from "@cats/components/input-controls/InputControls";
 import { RequestStatus } from "@cats/helpers/requests/status";
+import { getObject } from "./services/coms.service";
 
 
 export const GetInvoiceConfig = (viewMode: UserMode, isDisabled: boolean, 
@@ -20,6 +21,12 @@ export const GetInvoiceConfig = (viewMode: UserMode, isDisabled: boolean,
         loading: boolean
     }
 ) => {
+    const viewFileHandler = async (objectId: any) => {
+        if (!!objectId?.trim()) {
+            const response = await getObject(objectId);
+            window.open(response, '_blank');
+        }
+    };
     const customInvoiceRecipient =  <DropdownSearchInput
                         label={'Invoice Recipient'}
                         customLabelCss={'custom-invoice-lbl'}
@@ -239,7 +246,41 @@ export const GetInvoiceConfig = (viewMode: UserMode, isDisabled: boolean,
                 required: true,
                 customMessage: 'Please enter invoice subject.',
             }
-        }
+        },
+        recordPaymentDate: {
+            type: FormFieldType.Date,
+            label: 'Payment Date',
+            placeholder: 'Payment Date',
+            dateFormat: 'EE MMM dd yyyy',
+            graphQLPropertyName: 'recordPaymentDate',
+            value: '',
+            colSize: 'col-lg-6 col-md-6 col-sm-12',
+            customLabelCss: 'custom-invoice-lbl',
+            customEditLabelCss: 'custom-invoice-edit-lbl',
+            customInputTextCss: 'custom-invoice-txt',
+            customEditInputTextCss: 'custom-invoice-edit-txt',
+            isDisabled: true,
+            validation: {
+                required: true,
+                customMessage: 'Please enter record payment date.',     
+            }
+        },
+        recordPaymentAmount: {
+            type: FormFieldType.Text,
+            label: 'Amount($)',
+            placeholder: '$ Enter Amount',
+            graphQLPropertyName: 'recordPaymentAmount',
+            value: '',
+            colSize: 'col-lg-6 col-md-6 col-sm-12',
+            customLabelCss: 'custom-invoice-lbl',
+            customEditLabelCss: 'custom-invoice-edit-lbl',
+            customInputTextCss: 'custom-invoice-txt',
+            customEditInputTextCss: 'custom-invoice-edit-txt',
+            validation: {
+                required: true,
+                customMessage: 'Please enter record payment amount.',
+            }
+        },
         
     };
     
@@ -256,6 +297,10 @@ export const GetInvoiceConfig = (viewMode: UserMode, isDisabled: boolean,
         (createMode ? [] : [invoiceForm.invoiceSubject]),
         (createMode ? [] : [invoiceForm.invoiceStatus,invoiceForm.createdBy]),
         [invoiceForm.notes]
+    ];
+
+    const invoiceRecordPaymentForm: IFormField[][] = [
+        [invoiceForm.recordPaymentDate, invoiceForm.recordPaymentAmount]
     ];
 
     const actionsColumn:TableColumn = {
@@ -401,8 +446,8 @@ export const GetInvoiceConfig = (viewMode: UserMode, isDisabled: boolean,
             active: true,
             graphQLPropertyName: 'fileName',
             displayType: { 
-                type: FormFieldType.Link, 
-                label: 'File Name',
+                type: FormFieldType.Label, 
+                label: '',
                 tableMode: true,
                 graphQLPropertyName: 'fileName',
                 value: '',
@@ -410,6 +455,16 @@ export const GetInvoiceConfig = (viewMode: UserMode, isDisabled: boolean,
             },
             dynamicColumn: true,
             columnSize: ColumnSize.Default,
+            renderCell: (value: any, rowData: any) => {
+                if(rowData?.previewUrl) 
+                {
+                    return <a href={rowData?.previewUrl} target="_blank" rel="noopener noreferrer">{value || 'View File'} </a>
+                }
+                if(!!rowData?.objectId.trim() && !!rowData?.bucketId?.trim())
+                {
+                    return <a href="#" onClick={(e) => { e.preventDefault(); viewFileHandler(rowData.objectId); }} target="_blank" rel="noopener noreferrer">{value || 'View File'} </a>
+                }
+            }
         },
     ]
     
@@ -421,6 +476,7 @@ export const GetInvoiceConfig = (viewMode: UserMode, isDisabled: boolean,
         applicationDetailsForm, 
         invoiceDetailsForm, 
         invoiceItemsTableConfigs, 
-        invoiceAttachmentsTableConfigs
+        invoiceAttachmentsTableConfigs,
+        invoiceRecordPaymentForm
     };
 } 

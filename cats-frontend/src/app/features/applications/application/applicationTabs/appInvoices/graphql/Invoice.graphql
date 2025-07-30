@@ -45,6 +45,13 @@ query GetInvoiceById($invoiceId: Int!) {
         unitPriceInCents
         totalInCents
       }
+      invoiceAttachments {
+        id
+        fileName
+        bucketId
+        objectId
+        invoiceId
+      }
       recipient {
         key
         value
@@ -59,6 +66,42 @@ mutation CreateInvoice($invoice: CreateInvoice!) {
     httpStatusCode
     success
     timestamp
+    data {
+      id
+      applicationId
+      personId
+      subject
+      issuedDate
+      dueDate
+      invoiceStatus
+      taxExempt
+      pstExempt
+      invoiceNotes
+      subtotalInCents
+      gstInCents
+      pstInCents
+      totalInCents
+      whoUpdated
+      invoiceItems {
+        id
+        itemType
+        description
+        quantity
+        unitPriceInCents
+        totalInCents
+      }
+      invoiceAttachments {
+        id
+        fileName
+        bucketId
+        objectId
+        invoiceId
+      }
+      recipient {
+        key
+        value
+      }
+    }
   }
 }
 
@@ -68,27 +111,6 @@ mutation UpdateInvoice($invoice: UpdateInvoice!) {
     httpStatusCode
     message
     timestamp
-    data {
-      id
-      subject
-      issuedDate
-      dueDate
-      invoiceStatus
-      taxExempt
-      subtotalInCents
-      gstInCents
-      pstInCents
-      totalInCents
-      invoiceNotes
-      invoiceItems {
-        id
-        itemType
-        description
-        quantity
-        unitPriceInCents
-        totalInCents
-      }
-    }
   }
 }
 

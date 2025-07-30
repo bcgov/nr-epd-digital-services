@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { RequestStatus } from '@cats/helpers/requests/status';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { TableColumn } from '@cats/components/table/TableColumn';
-import { indexTableColumns } from './components/index/tableColumnConfig';
-import { InvoiceFilter } from './components/invoice-enums/filter';
+import { InvoiceFilter } from './enums/filter';
 import {
   InvoiceSortBy as InvoiceSortBy,
   InvoiceSortByDir as InvoiceSortByDir,
-} from './components/invoice-enums/sortBy';
+} from './enums/sortBy';
 import { Button } from '@cats/components/button/Button';
 import { FilterIcon, Plus } from '@cats/components/common/icon';
 import Widget from '@cats/components/widget/Widget';
@@ -17,6 +16,8 @@ import { GetInvoicesConfig } from './InvoicesConfig';
 import  './Invoices.css';
 import { useGetInvoicesQuery } from './graphql/Invoice.generated';
 import { ViewInvoice } from '../../../../../../generated/types';
+import ModalDialog from '@cats/components/modaldialog/ModalDialog';
+import { useGetHeaderDetailsByApplicationIdQuery } from '../../ApplicationDetails.generated';
 
 type Invoices = Pick<ViewInvoice, 'id' | 'subject' | 'invoiceStatus' | 'totalInCents' |'issuedDate' | 'dueDate'>;
 export const Invoices: React.FC = () => {
@@ -37,14 +38,22 @@ export const Invoices: React.FC = () => {
     },
   });
 
+  // Fetch application details for the header
+  const { data: applicationData } = useGetHeaderDetailsByApplicationIdQuery({
+    fetchPolicy: 'cache-and-network',
+    variables: { applicationId: applicationId },
+    skip: !applicationId || isNaN(applicationId),
+  });
+
   const [results, setResults] = useState<Invoices[]>([]);
   const [displayResults, setDisplayResults] = useState<Invoices[]>([]);
   const [filter, setFilter] = useState<InvoiceFilter>(InvoiceFilter.ALL);
   const [sortBy, setSortBy] = useState<InvoiceSortBy>(InvoiceSortBy.ID);
   const [sortByDir, setSortByDir] = useState<InvoiceSortByDir>(InvoiceSortByDir.ASC);
   const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.idle);
-
+  const [isNewInvoiceOpen, setIsNewInvoiceOpen] = useState(false);
   const [selectedRows, setSelectedRows] = useState<{ id: any }[]>([]);
+  const [selectedType, setSelectedType] = useState('blank-invoice');
 
   // If refresh=true is in the URL, refetch data and remove the parameter
   useEffect(() => {
@@ -152,16 +161,6 @@ export const Invoices: React.FC = () => {
     }
   }, [data, error]);
 
-  const handleCreateInvoiceClick = () => {
-    navigate(`/applications/${applicationId}/invoice`);
-  };
-
-  const createInvoiceButton = (
-    <Button variant="secondary" onClick={handleCreateInvoiceClick}>
-      <Plus /> Create Invoice
-    </Button>
-  );
-
   const handleTableChange = (event: any) => {
     const { property, value, row, selected } = event;
 
@@ -187,7 +186,6 @@ export const Invoices: React.FC = () => {
     });
   };
 
-
   const invoiceFilter: IFilterOption[] = [
     {
       label: 'All',
@@ -210,7 +208,7 @@ export const Invoices: React.FC = () => {
     {
       label: 'Filters',
       value: 'filters',
-      onClick: () => {alert('Filter')},
+      onClick: () => {},
       icon: <FilterIcon />,
     },
   ]
@@ -235,29 +233,93 @@ export const Invoices: React.FC = () => {
           primaryKeycolumnName="id"
         >
           <div className="d-flex gap-2 align-items-center">
-            <Button variant="secondary" onClick={handleCreateInvoiceClick}>
+            <Button variant="secondary" onClick={() => setIsNewInvoiceOpen(true)}>
               <Plus /> New Invoice
             </Button>
-            {/* <Button variant="secondary" onClick={(() => navigate(`/applications/${applicationId}/invoices/create`))}>
-              <Plus /> New Invoice 2
-            </Button> */}
-            <Button variant="secondary" disabled={selectedRows.length <= 0} onClick={() => { alert('Send Invoice to Client') }}>
+            <Button variant="secondary" disabled={selectedRows.length <= 0} onClick={() => { }}>
               <span>Send Invoice to Client</span>
             </Button>
           </div>
         </Widget>
-        
-        {/* <InvoiceIndexTable
-          requestStatus={requestStatus}
-          results={displayResults}
-          columns={columns}
-          handleColumnChange={setColumns}
-          filter={filter}
-          handleFilterChange={handleFilterChange}
-          sortHandler={handleSortChange}
-          createInvoiceButton={createInvoiceButton}
-        /> */}
       </div>
+      {
+        isNewInvoiceOpen && (
+          <ModalDialog
+            label='Create New Invoice'
+            customHeaderTextCss='custom-invoice-heading'
+            saveBtnLabel='Confirm'
+            showTickIcon={true}
+            closeHandler={(response) => {
+              if (response) {
+                switch (selectedType) {
+                  case 'prepaid-invoice':
+                    break;
+                  case 'postpaid-invoice':
+                    break;
+                  case 'blank-invoice':
+                    navigate(`/applications/${applicationId}/invoice`);
+                    break;
+                  default:
+                    navigate(`/applications/${applicationId}/invoice`);
+                    break;
+                }
+              }
+              setIsNewInvoiceOpen(!isNewInvoiceOpen);
+            }}
+          >
+            <div className="d-flex flex-column gap-5">
+              <div className="d-flex flex-column gap-1">
+                <label htmlFor="create-invoice" className="custom-invoices-lbl">Application</label>
+                <div id='create-invoice' className="custom-invoices-input-txt custom-invoices-input" aria-disabled="true">
+                  <span>{applicationData?.getApplicationDetailsById?.data?.id}</span>
+                  <span className='custom-invoices-dot px-1'>·</span>
+                  <span>{applicationData?.getApplicationDetailsById?.data?.siteAddress}</span>
+                  <span className='custom-invoices-dot px-1'>·</span>
+                  <span>{applicationData?.getApplicationDetailsById?.data?.appType?.description}</span>
+                </div>
+              </div>
+              <div className="d-flex flex-column gap-3">
+                  <label className="custom-invoices-lbl">Invoice Type</label>
+                  <div className="d-flex flex-column gap-2 px-3 custom-invoices-input-txt">
+                    <label className="d-flex gap-2 align-items-center">
+                      <input
+                        disabled={true}
+                        type="radio"
+                        name="invoiceType"
+                        value="prepaid-invoice"
+                        checked={selectedType === 'prepaid-invoice'}
+                        onChange={(e) => setSelectedType(e.target.value)}
+                      />
+                      Prepaid Services Invoice
+                    </label>
+
+                    <label className="d-flex gap-2 align-items-center">
+                      <input
+                        disabled={true}
+                        type="radio"
+                        name="invoiceType"
+                        value="postpaid-invoice"
+                        checked={selectedType === 'postpaid-invoice'}
+                        onChange={(e) => setSelectedType(e.target.value)}
+                      />
+                      Postpaid Services Invoice
+                    </label>
+                    <label className="d-flex gap-2 align-items-center">
+                      <input
+                        type="radio"
+                        name="invoiceType"
+                        value="blank-invoice"
+                        checked={selectedType === 'blank-invoice'}
+                        onChange={(e) => setSelectedType(e.target.value)}
+                      />
+                      Blank Invoice
+                    </label>
+                  </div>
+              </div>
+            </div>
+          </ModalDialog>
+        )
+      }
     </div>
   );
 };

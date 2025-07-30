@@ -28,6 +28,8 @@ interface ModalDialogCloseHandlerProps {
   saveButtonDisabled?: boolean;
   discardButtonDisabled?: boolean;
   noFooterOptions?: boolean;
+  showTickIcon?: boolean;
+  showIcon?: boolean;
 }
 
 const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
@@ -50,6 +52,8 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
   cancelButtonDisabled,
   saveButtonDisabled,
   noFooterOptions,
+  showTickIcon = false,
+  showIcon = true,
 }) => {
   saveBtnLabel = saveBtnLabel ?? '';
   cancelBtnLabel = cancelBtnLabel ?? '';
@@ -109,6 +113,8 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
                 clickHandler={handleSave}
                 label={saveBtnLabel}
                 isDisabled={saveButtonDisabled}
+                showTickIcon={showTickIcon}
+                showIcon={showIcon}
               />
             </div>
           )}

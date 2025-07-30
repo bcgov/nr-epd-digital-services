@@ -1,8 +1,8 @@
 import { FormFieldType } from "@cats/components/input-controls/IFormField";
 import { ColumnSize, TableColumn } from "@cats/components/table/TableColumn";
 import { formatDateUTC } from "@cats/helpers/utility";
-import { StatusType } from "./components/invoice-enums/statusType";
-import InvoiceStatus from "./components/invoice-status/InvoiceStatus";
+import { StatusType } from "./enums/statusType";
+import InvoiceStatus from "./InvoiceStatus";
 import { FileLinesIcon } from "@cats/components/common/icon";
 
 export const GetInvoicesConfig = (applicationId: number) => {
