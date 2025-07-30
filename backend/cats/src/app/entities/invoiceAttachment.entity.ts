@@ -23,11 +23,8 @@ export class InvoiceAttachment {
   @Column({ name: 'file_name', length: 255 })
   fileName: string;
 
-  @Column({ name: 'file_size' })
-  fileSize: number;
-
-  @Column({ name: 'mime_type', length: 100 })
-  mimeType: string;
+  @Column('uuid', { name: 'bucket_id'})
+  bucketId: string;
 
   @Column('uuid', { name: 'object_id'})
   objectId: string;
