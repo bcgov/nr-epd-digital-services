@@ -4,7 +4,6 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { UserMode } from '@cats/helpers/requests/userMode';
 import Actions from '@cats/components/action/Actions';
 import { SaveButton } from '@cats/components/simple/CustomButtons';
-import { InvoiceActions } from '../components/invoice-enums/invoiceActions';
 import PageContainer from '@cats/components/simple/PageContainer';
 import { useGetHeaderDetailsByApplicationIdQuery } from '@cats/features/applications/application/ApplicationDetails.generated';
 import { FaTimes } from 'react-icons/fa';
@@ -22,12 +21,12 @@ import ModalDialog from '@cats/components/modaldialog/ModalDialog';
 import LoadingOverlay from '@cats/components/loader/LoadingOverlay';
 import InvoicePreviewTemplate from './InvoicePreviewTemplate';
 import { GetInvoiceByIdDocument, useCreateInvoiceMutation, useDeleteInvoiceMutation, useGetInvoiceByIdQuery, useUpdateInvoiceMutation } from '../graphql/Invoice.generated';
-import { pdf, PDFViewer } from '@react-pdf/renderer';
+import { pdf } from '@react-pdf/renderer';
 import { DropdownDto, InvoiceStatus, UpdateInvoice, UpdateInvoiceItem, ViewApplicationDetails } from '../../../../../../../generated/types';
-import { Update } from 'vite';
-import { InvoiceItemTypes } from '../components/invoice-enums/invoiceItemTypes';
 import { v4 } from 'uuid';
 import Decimal from 'decimal.js';
+import { InvoiceItemTypes } from '../enums/invoiceItemTypes';
+import { InvoiceActions } from '../enums/invoiceActions';
 
 const initialInvoice: any = {
     subject: '',
