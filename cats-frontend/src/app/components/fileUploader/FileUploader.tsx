@@ -195,25 +195,25 @@ const FileUploader: React.FC<IFileUploader> = ({
                     )}
                   </>
                 )}
-                {
-                  previewUrl && showPreviewLink && previewUrl.startsWith('blob:') ? (
-                    <a
-                      href={previewUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={clsx(
-                        !classNames?.previewLink && 'fu-preview-link',
-                        classNames.previewLink,
-                      )}
-                    >
-                      {file?.name || customText.viewFullText || 'View File'}
-                    </a>
-                  ) : (
-                    <span>
-                      {file?.name || customText.viewFullText || 'View File'}
-                    </span>
-                  )
-                }
+                {previewUrl &&
+                showPreviewLink &&
+                previewUrl.startsWith('blob:') ? (
+                  <a
+                    href={previewUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={clsx(
+                      !classNames?.previewLink && 'fu-preview-link',
+                      classNames.previewLink,
+                    )}
+                  >
+                    {file?.name || customText.viewFullText || 'View File'}
+                  </a>
+                ) : (
+                  <span>
+                    {file?.name || customText.viewFullText || 'View File'}
+                  </span>
+                )}
               </div>
             );
           })}
