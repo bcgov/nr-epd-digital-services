@@ -7,7 +7,7 @@ import {
 import { formatDateUTC } from '../../../../helpers/utility';
 import StaffAssigned from './staffAssigned';
 import './table.css';
-export const applicationResultColumns: TableColumn[] = [
+export const applicationResultColumns = (fromMyTasks: boolean = false) => [
   {
     id: 1,
     displayName: 'Application ID',
@@ -161,7 +161,7 @@ export const applicationResultColumns: TableColumn[] = [
       href: '/applications/',
       customLinkValue: 'View',
       customIcon: <FileLinesIcon />,
-      componentName: 'Applications',
+      componentName: fromMyTasks ? 'My Tasks' : 'Applications',
       customInputTextCss: 'application-results__view-link',
     },
     dynamicColumn: false,

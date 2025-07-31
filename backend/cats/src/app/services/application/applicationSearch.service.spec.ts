@@ -75,6 +75,7 @@ describe('ApplicationSearchService', () => {
       filter,
       sortBy,
       sortByDir,
+      null,
     );
 
     expect(result).toBeInstanceOf(ApplicationSearchResult);
@@ -110,6 +111,7 @@ describe('ApplicationSearchService', () => {
       Filter.ALL,
       SortByField.ID,
       SortByDirection.ASC,
+      null,
     );
     expect(result).toBeInstanceOf(ApplicationSearchResult);
     expect(result.error).toBe('Test error');

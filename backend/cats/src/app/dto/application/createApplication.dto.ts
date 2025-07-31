@@ -4,8 +4,8 @@ import { ApplicationStatusDto } from './applicationStatus.dto';
 // DTO for creating a person
 @InputType()
 export class CreateApplication {
-    @Field()
-    siteId: number; // site for which the application is created
+    @Field(() => [Number])
+    siteIds: number[]; // multiple sites for which the application is created
 
     @Field()
     appTypeAbbrev: string; // the application type eg: SDS, SoSC etc

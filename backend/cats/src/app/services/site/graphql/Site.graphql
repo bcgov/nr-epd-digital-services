@@ -1,5 +1,5 @@
-query findSiteBySiteId($siteId: String!) {
-  findSiteBySiteId(siteId: $siteId) {
+query findSiteBySiteIdLoggedInUser($siteId: String!) {
+  findSiteBySiteIdLoggedInUser(siteId: $siteId) {
     data {
       ...SiteDetails
       siteAssocs {

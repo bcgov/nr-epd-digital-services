@@ -32,7 +32,7 @@ export class AppParticipantService {
 
     @InjectRepository(Organization)
     private readonly organizationRepository: Repository<Organization>,
-  ) {}
+  ) { }
 
   /**
    * Retrieves app participants for a given app ID and transforms the data into DTOs.
@@ -56,7 +56,6 @@ export class AppParticipantService {
           where: { applicationId },
           relations: ['organization', 'participantRole', 'person'],
         });
-        console.log('nupurdixit - result', result);
       }
 
       if (!result?.length) {
@@ -230,14 +229,14 @@ export class AppParticipantService {
 
         // Check if the participant already exists, we can have multiple participants with same personId and participantRoleId but different organizationId
         let existingParticipant = null;
-          existingParticipant = await this.appParticsRepository.findOne({
-            where: {
-              applicationId: newAppParticipant.applicationId,
-              personId: newAppParticipant.personId,
-              participantRoleId: newAppParticipant.participantRoleId,
-              organizationId: newAppParticipant.organizationId,
-            },
-          });
+        existingParticipant = await this.appParticsRepository.findOne({
+          where: {
+            applicationId: newAppParticipant.applicationId,
+            personId: newAppParticipant.personId,
+            participantRoleId: newAppParticipant.participantRoleId,
+            organizationId: newAppParticipant.organizationId,
+          },
+        });
 
         if (existingParticipant) {
           throw new HttpException(
@@ -317,8 +316,7 @@ export class AppParticipantService {
     try {
       // Log the input parameters for better traceability
       this.loggerService.debug(
-        `updateAppParticipant: participantId=${
-          updateParticipant.applicationId
+        `updateAppParticipant: participantId=${updateParticipant.applicationId
         }, updateData=${JSON.stringify(updateParticipant)}`,
       );
 
@@ -335,10 +333,10 @@ export class AppParticipantService {
         existingParticipant.effectiveStartDate =
           updateParticipant.effectiveStartDate;
       }
-      
+
       //The effectiveEndDate is optional, so no need to check if it exists because there may be cases where it existed and now the user wants to remove it
-      existingParticipant.effectiveEndDate = updateParticipant.effectiveEndDate; 
-      
+      existingParticipant.effectiveEndDate = updateParticipant.effectiveEndDate;
+
       // Update metadata
       existingParticipant.updatedBy = user?.givenName;
       existingParticipant.updatedDateTime = new Date();

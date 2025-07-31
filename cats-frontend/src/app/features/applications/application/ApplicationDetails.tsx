@@ -43,7 +43,7 @@ const ApplicationDetails = () => {
   const application = data?.getApplicationDetailsById.data;
 
   const onClickBackButton = () => {
-    navigate(`/${fromScreenRef.current.toLowerCase()}`);
+    navigate(`/${fromScreenRef.current.replace(/\s+/g, '').toLowerCase()}`);
   };
 
   useEffect(() => {

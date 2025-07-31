@@ -157,6 +157,12 @@ spec:
               value: {{ .Values.global.config.CHES_EMAIL_FROM | quote }}
             - name: CATS_APPLICATION_URL
               value: {{ .Values.global.config.CATS_APPLICATION_URL | quote }}
+            - name: KEYCLOAK_TOKEN_URL
+              value: {{ .Values.global.config.KEYCLOAK_TOKEN_URL | quote }}
+            - name: KEYCLOAK_SITE_SERVICE_CLIENT_ID
+              value: {{ .Values.global.config.KEYCLOAK_SITE_SERVICE_CLIENT_ID | quote }}
+            - name: KEYCLOAK_SITE_SERVICE_CLIENT_SECRET
+              value: {{ .Values.global.secrets.KEYCLOAK_SITE_SERVICE_CLIENT_SECRET | quote }}
           ports:
             - name: http
               containerPort: {{ .Values.backend.service.targetPort }}

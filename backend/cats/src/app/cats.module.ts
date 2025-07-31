@@ -92,12 +92,12 @@ import { DashboardService } from './services/dashboard/dashboard.service';
 import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
 import { RecentViewedApplication } from './entities/recentViewedApplication.entity';
 import { StatusTypeService } from './services/statusType/statusType.service';
-
 import { ServiceAssignmentFactor } from './entities/serviceAssignmentFactor';
 import { PermissionServiceType } from './entities/permissionServiceType';
 import { InvoiceAttachmentResolver } from './resolvers/invoice/invoiceAttachment.resolver';
 import { InvoiceAttachmentService } from './services/invoice/invoiceAttachment.service';
 import { ComsService } from './services/coms/coms.service';
+import { ApplicationSite } from './entities/applicationSite.entity';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -162,6 +162,7 @@ import { ComsService } from './services/coms/coms.service';
       RecentViewedApplication,
       ServiceAssignmentFactor,
       PermissionServiceType,
+      ApplicationSite,
     ]),
     HttpModule,
   ],
@@ -207,4 +208,4 @@ import { ComsService } from './services/coms/coms.service';
   ],
   controllers: [UserController],
 })
-export class CatsModule {}
+export class CatsModule { }

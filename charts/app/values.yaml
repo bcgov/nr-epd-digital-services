@@ -24,6 +24,8 @@ global:
     dbUser: ~ # either site or pr specific user.
     seed:
       enabled: false
+    KEYCLOAK_SITE_SERVICE_CLIENT_ID: site-service # note: KEYCLOAK_SITE_SERVICE_CLIENT_SECRET is handled in github secrets.
+    KEYCLOAK_TOKEN_URL: https://epd-keycloak-prod.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/protocol/openid-connect/token
   #-- domain of the application, it is required, apps.silver.devops.gov.bc.ca for silver cluster and apps.devops.gov.bc.ca for gold cluster
   domain: "apps.silver.devops.gov.bc.ca" # it is apps.gold.devops.gov.bc.ca for gold cluster
   #-- the database Alias gives a nice way to switch to different databases, crunchy, patroni ... etc.

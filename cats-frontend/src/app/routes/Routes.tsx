@@ -2,7 +2,11 @@ import { createBrowserRouter } from 'react-router-dom';
 import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import App from '../../App';
-import { getLoggedInUserType, UserRoleType } from '../helpers/utility';
+import {
+  getLoggedInUserType,
+  isBCEIDUserType,
+  UserRoleType,
+} from '../helpers/utility';
 import Search from '../features/people/Search';
 import Person from '../features/people/person/Person';
 import ApplicationDetails from '../features/applications/application/ApplicationDetails';
@@ -13,15 +17,18 @@ import CreateInvoice from '../features/applications/application/applicationTabs/
 import Dashboard from '@cats/features/dashboard/Dashboard';
 import ViewInvoice from '../features/applications/application/applicationTabs/appInvoices/components/view/ViewInvoice';
 import ApplicationTabsRouter from '../features/applications/application/ApplicationTabsRouter';
+import MyTasks from '../features/mytasks/mytasks';
 
 const roleBasedRoutes: any = {
   [UserRoleType.INTERNAL]: [
+    { path: '/error', element: <h1>You are not authorized</h1> },
     { path: '/', element: <Search /> },
     { path: '/dashboard', element: <Dashboard /> },
     { path: '/people', element: <Search /> },
     { path: '/person/:id', element: <Person /> },
     { path: '/person', element: <Person /> },
     { path: '/applications', element: <ApplicationSearch /> },
+    { path: '/mytasks', element: <MyTasks /> },
     {
       path: '/applications/:id',
       element: <ApplicationDetails />,
@@ -62,8 +69,18 @@ const createRoutesForRole = (role: string) => [
 ];
 
 const userType = getLoggedInUserType();
-const siteRouter = createBrowserRouter(
-  createRoutesForRole(UserRoleType.INTERNAL),
-);
+
+const externalUser = isBCEIDUserType();
+
+const siteRouter = externalUser
+  ? createBrowserRouter([
+      {
+        path: '*',
+        element: (
+          <h1>ERROR!!! You are not authorized to access this appplication</h1>
+        ),
+      },
+    ])
+  : createBrowserRouter(createRoutesForRole(UserRoleType.INTERNAL));
 
 export default siteRouter;
