@@ -172,6 +172,7 @@ const FileUploader: React.FC<IFileUploader> = ({
                           <iframe
                             src={previewUrl}
                             title="PDF Preview"
+                            sandbox=""
                             className={clsx(
                               !classNames?.pdf && 'fu-pdf',
                               classNames.pdf,
