@@ -8,4 +8,7 @@ export class UpdateApplicationStatusDto extends PickType(ApplicationStatusDto, [
     'submissionId',
     'formsflowAppId',
     'statusTypeAbbrev',
-]) { }
+]) {
+    @Field(() => [Number], { nullable: true })
+    siteIds?: number[];
+}
