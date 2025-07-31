@@ -172,7 +172,7 @@ const FileUploader: React.FC<IFileUploader> = ({
                           <iframe
                             src={previewUrl}
                             title="PDF Preview"
-                            sandbox=""
+                            sandbox="allow-same-origin"
                             className={clsx(
                               !classNames?.pdf && 'fu-pdf',
                               classNames.pdf,
