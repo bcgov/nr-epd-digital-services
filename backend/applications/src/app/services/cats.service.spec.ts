@@ -16,7 +16,7 @@ describe('CatsService', () => {
     const submissionId = 'sub123';
     const formId = 'form123';
     const formData = {
-      siteId: 101,
+      siteId: '101, 123',
       hdnAppType: 'TYPE_A',
       applicationId: 100001,
     };
@@ -44,22 +44,26 @@ describe('CatsService', () => {
 
       expect(mockedAxios.post).toHaveBeenCalledWith(
         process.env.CATS_API,
-        expect.objectContaining({
+        {
           query: expect.stringContaining('mutation CreateNewApplication'),
           variables: {
             application: expect.objectContaining({
-              siteId: formData.siteId,
-              appTypeAbbrev: formData.hdnAppType,
+              siteIds: [101, 123],
+              appTypeAbbrev: 'TYPE_A',
+              receivedDate: expect.anything(), // could be string or Date
               applicationStatus: expect.arrayContaining([
                 expect.objectContaining({
-                  formId,
-                  submissionId,
-                  formsflowAppId: formData.applicationId,
+                  applicationId: 0,
+                  formId: 'form123',
+                  submissionId: 'sub123',
+                  formsflowAppId: 100001,
+                  isCurrent: true,
+                  statusTypeAbbrev: 'New',
                 }),
               ]),
             }),
           },
-        }),
+        },
         { headers: { 'Content-Type': 'application/json' } }
       );
     });
@@ -95,7 +99,14 @@ describe('CatsService', () => {
   describe('updateCatsApplication', () => {
     const submissionId = 'sub456';
     const formId = 'form456';
-    const formData = { applicationId: 99999 };
+    const formData = {
+      applicationId: 99999,
+      applicationStatus: 'New',
+      siteId: '123,111'
+    };
+
+    const statusTypeAbbrev = 'New';
+    const siteIds = [123, 111];
 
     it('should call axios.post and return the response data', async () => {
       const mockResponse = {
@@ -126,7 +137,9 @@ describe('CatsService', () => {
             appStatusInput: {
               submissionId,
               formId,
-              formsflowAppId: formData.applicationId,
+              formsflowAppId: Number(formData.applicationId),
+              statusTypeAbbrev,
+              siteIds
             },
           },
         }),

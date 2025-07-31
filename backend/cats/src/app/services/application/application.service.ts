@@ -10,6 +10,7 @@ import { DashboardService } from '../dashboard/dashboard.service';
 import { AppStatus } from '../../entities/appStatus.entity';
 import { StatusTypeService } from '../statusType/statusType.service';
 import { UpdateApplicationStatusDto } from '../../dto/application/updateApplicationStatus.dto';
+import { ApplicationSite } from '../../entities/applicationSite.entity';
 
 @Injectable()
 export class ApplicationService {
@@ -18,6 +19,8 @@ export class ApplicationService {
     private readonly applicationRepository: Repository<Application>,
     @InjectRepository(AppStatus)
     private readonly appStatusRepository: Repository<AppStatus>,
+    @InjectRepository(ApplicationSite)
+    private readonly applicationSiteRepository: Repository<ApplicationSite>,
     private readonly loggerService: LoggerService,
     private readonly appTypeService: AppTypeService,
     private readonly dashboardService: DashboardService,
@@ -34,27 +37,42 @@ export class ApplicationService {
         `Attempting to create a new application with SRS form id: ${createApplication?.applicationStatus[0].formId} ' and submission id: ${createApplication?.applicationStatus[0].formId}`,
       );
 
-      const appType = await this.appTypeService.getAppTypeByAbbrev(
-        createApplication.appTypeAbbrev,
-      );
+      const { applicationStatus, appTypeAbbrev, siteIds, receivedDate } = createApplication;
+
+      const appType = await this.appTypeService.getAppTypeByAbbrev(appTypeAbbrev);
 
       const newApplication = this.applicationRepository.create({
-        siteId: createApplication.siteId,
+        siteId: createApplication.siteIds[0],// in case the application has mutliple site, we store the first site id for consistency
         appTypeId: appType?.id,
+        isMultiSite: siteIds.length == 0 ? false : true,
         rowVersionCount: 1,
         createdBy: 'SYSTEM',
         updatedBy: 'SYSTEM',
         createdDateTime: new Date(),
         updatedDateTime: new Date(),
-        receivedDate: createApplication.receivedDate.toISOString(),
+        receivedDate: receivedDate.toISOString(),
       });
 
       // Save the new application
       const savedApplication = await this.applicationRepository.save(newApplication);
 
+      // Insert siteIds into application_site table (assuming you have such a repository/service)
+      if (Array.isArray(siteIds) && siteIds.length > 0) {
+        const applicationSiteEntities = siteIds.map(siteId => this.applicationSiteRepository.create({
+          applicationId: savedApplication.id,
+          siteId: siteId,
+          createdBy: 'SYSTEM',
+          updatedBy: 'SYSTEM',
+          createdDateTime: new Date(),
+          updatedDateTime: new Date(),
+        }));
+
+        await this.applicationSiteRepository.save(applicationSiteEntities);
+      }
+
       // Resolve each statusTypeId from statusTypeAbbrev
       const appStatuses = await Promise.all(
-        createApplication.applicationStatus.map(async (statusDto) => {
+        applicationStatus.map(async (statusDto) => {
           const statusType = await this.statusTypeService.getStatusTypeByAbbrev(statusDto.statusTypeAbbrev);
           return this.appStatusRepository.create({
             application: savedApplication,
@@ -111,7 +129,7 @@ export class ApplicationService {
     this.loggerService.log('ApplicationService.updateFormsflowAppId() start'); // Log the start of the method
 
     try {
-      const { formId, submissionId, formsflowAppId, statusTypeAbbrev } = appStatusInput;
+      const { formId, submissionId, formsflowAppId, statusTypeAbbrev, siteIds } = appStatusInput;
 
       let appStatus = await this.appStatusRepository.findOne({
         where: { formId, submissionId },
@@ -119,6 +137,7 @@ export class ApplicationService {
 
       console.log('statusTypeAbbrev---', statusTypeAbbrev);
       const statusType = await this.statusTypeService.getStatusTypeByAbbrev(statusTypeAbbrev);
+      let applicationId: number;
 
       if (!appStatus) {
 
@@ -126,7 +145,7 @@ export class ApplicationService {
           where: { formsflowAppId },
         });
 
-        const applicationId = existingAppStatus?.applicationId;
+        applicationId = existingAppStatus?.applicationId;
 
         appStatus = this.appStatusRepository.create({
           applicationId,
@@ -153,6 +172,7 @@ export class ApplicationService {
         appStatus.statusTypeId = statusType.id;
 
         await this.appStatusRepository.save(appStatus);
+        applicationId = appStatus.applicationId;
       }
 
       // Set isCurrent as false for all other entries with the same formsflowAppId but different formId/submissionId
@@ -163,6 +183,26 @@ export class ApplicationService {
         .where('formsflowAppId = :formsflowAppId', { formsflowAppId })
         .andWhere('NOT (formId = :formId AND submissionId = :submissionId)', { formId, submissionId })
         .execute();
+
+      // Update application_site table if siteIds are provided
+      if (siteIds && siteIds.length > 0 && applicationId) {
+        // Remove existing mappings
+        await this.applicationSiteRepository.delete({ applicationId });
+
+        // Insert new mappings
+        const applicationSites = siteIds.map(siteId =>
+          this.applicationSiteRepository.create({
+            applicationId,
+            siteId,
+            createdBy: 'SYSTEM',
+            updatedBy: 'SYSTEM',
+            createdDateTime: new Date(),
+            updatedDateTime: new Date(),
+          })
+        );
+
+        await this.applicationSiteRepository.save(applicationSites);
+      }
 
       // Log success
       this.loggerService.log(`App Status successfully with Formsflow App ID: ${formsflowAppId}`);

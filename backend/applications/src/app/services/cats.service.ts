@@ -20,6 +20,12 @@ export class CatsService {
   async submitToCats(formData: any, submissionId: string, formId: string) {
     const GRAPHQL_URL = process.env.CATS_API;
 
+    // Parse and split comma-separated site IDs
+    const siteIds = formData.siteId?.split(',')
+      .map((id: string) => id.trim())
+      .filter((id: string) => id !== '')
+      .map(Number) || [];
+
     const createApplicationMutation = {
       query: `
     mutation CreateNewApplication($application: CreateApplication!) {
@@ -36,7 +42,7 @@ export class CatsService {
   `,
       variables: {
         application: {
-          siteId: Number(formData.siteId),            // Float!          
+          siteIds: siteIds, // array of site id's    
           appTypeAbbrev: formData.hdnAppType,           // String!
           receivedDate: new Date(),
           applicationStatus: [
@@ -79,6 +85,13 @@ export class CatsService {
   async updateCatsApplication(submissionId: string, formId: string, formData: any) {
     const GRAPHQL_URL = process.env.CATS_API;
 
+    console.log('updateCatsApplication.formData---', formData)
+    // Parse and split comma-separated site IDs
+    const siteIds = formData.siteId?.split(',')
+      .map((id: string) => id.trim())
+      .filter((id: string) => id !== '')
+      .map(Number) || [];
+
     const updateApplicationMutation = {
       query: `
         mutation UpdateFormsflowAppId($appStatusInput: UpdateApplicationStatusDto!) {
@@ -99,6 +112,7 @@ export class CatsService {
           formId: formId,
           formsflowAppId: Number(formData.applicationId),
           statusTypeAbbrev: formData.applicationStatus,
+          siteIds: siteIds, // array of site id's    
         }
       },
     };
