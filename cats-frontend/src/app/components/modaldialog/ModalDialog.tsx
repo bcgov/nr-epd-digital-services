@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 import './ModalDialog.css';
-import { XmarkIcon  } from '../common/icon';
+import { XmarkIcon } from '../common/icon';
 import {
   CancelButton,
   DiscardButton,
@@ -94,7 +94,11 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
   return (
     <div>
       {open && (
-        <ModalDialogWrapper customModalCss={customModalCss} customContentCss={customContentCss} closeHandler={handleClose}>
+        <ModalDialogWrapper
+          customModalCss={customModalCss}
+          customContentCss={customContentCss}
+          closeHandler={handleClose}
+        >
           <div className={clsx('custom-modal-header', customHeaderCss)}>
             <span
               className={clsx('custom-modal-header-text', customHeaderTextCss)}
@@ -110,7 +114,11 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
               <XmarkIcon />
             </Button>
           </div>
-          {children && <div className={clsx('custom-modal-data', customChildrenCss)}>{children}</div>}
+          {children && (
+            <div className={clsx('custom-modal-data', customChildrenCss)}>
+              {children}
+            </div>
+          )}
           {!noFooterOptions && !discardOption && !errorOption && (
             <div
               className={clsx('custom-modal-actions-footer', customFooterCss)}
@@ -185,7 +193,9 @@ export const ModalDialogWrapper: React.FC<ModalDialogCloseHandlerProps> = ({
   return (
     <div>
       <div className={clsx('custom-modal', customModalCss)}>
-        <div className={clsx('custom-modal-content', customContentCss)}>{children}</div>
+        <div className={clsx('custom-modal-content', customContentCss)}>
+          {children}
+        </div>
       </div>
     </div>
   );
@@ -196,16 +206,33 @@ export const ModalDialogHeaderOnly: React.FC<ModalDialogCloseHandlerProps> = ({
   children,
   customHeaderCss,
 }) => {
-  return <div className={clsx('custom-modal-header', customHeaderCss)}>{children}</div>;
+  return (
+    <div className={clsx('custom-modal-header', customHeaderCss)}>
+      {children}
+    </div>
+  );
 };
 
 export const ModalDialogWrapperWithHeader: React.FC<
   ModalDialogCloseHandlerProps
-> = ({ closeHandler, children, customHeaderCss, customModalCss, customContentCss }) => {
+> = ({
+  closeHandler,
+  children,
+  customHeaderCss,
+  customModalCss,
+  customContentCss,
+}) => {
   return (
     <div>
-      <ModalDialogWrapper closeHandler={ModalDialogHeaderOnly} customModalCss={customModalCss} customContentCss={customContentCss}>
-        <ModalDialogHeaderOnly closeHandler={ModalDialogHeaderOnly} customHeaderCss={customHeaderCss}>
+      <ModalDialogWrapper
+        closeHandler={ModalDialogHeaderOnly}
+        customModalCss={customModalCss}
+        customContentCss={customContentCss}
+      >
+        <ModalDialogHeaderOnly
+          closeHandler={ModalDialogHeaderOnly}
+          customHeaderCss={customHeaderCss}
+        >
           {children}
         </ModalDialogHeaderOnly>
       </ModalDialogWrapper>
