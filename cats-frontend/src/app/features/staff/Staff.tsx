@@ -251,7 +251,7 @@ const Staff = () => {
         <ModalDialog
           headerLabel={`Viewing: ${queryModalState?.personName ?? ''}`}
           noFooterOptions={true}
-          customContentCss='custom-staff-modal-content'
+          customContentCss="custom-staff-modal-content"
           closeHandler={() =>
             setQueryModalState((prev: IModalState) => ({
               ...prev,

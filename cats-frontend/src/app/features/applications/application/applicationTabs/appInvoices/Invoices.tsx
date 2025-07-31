@@ -261,7 +261,7 @@ export const Invoices: React.FC = () => {
           customHeaderTextCss="custom-invoice-heading"
           saveBtnLabel="Confirm"
           showTickIcon={true}
-          customContentCss='custom-invoice-modal-content'
+          customContentCss="custom-invoice-modal-content"
           closeHandler={(response) => {
             if (response) {
               switch (selectedType) {
