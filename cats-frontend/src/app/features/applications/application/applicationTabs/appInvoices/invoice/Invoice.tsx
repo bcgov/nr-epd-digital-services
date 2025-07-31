@@ -19,7 +19,7 @@ import Form from '@cats/components/form/Form';
 import { GetInvoiceConfig } from './InvoiceConfig';
 import { RequestStatus } from '@cats/helpers/requests/status';
 import { useGetParticipantNamesQuery } from '../../appParticipants/graphql/Participants.generated';
-import { validateForm } from '@cats/helpers/utility';
+import { cleanGraphQLPayload, validateForm } from '@cats/helpers/utility';
 import { IFormField } from '@cats/components/input-controls/IFormField';
 import ModalDialog from '@cats/components/modaldialog/ModalDialog';
 import LoadingOverlay from '@cats/components/loader/LoadingOverlay';
@@ -41,6 +41,19 @@ import {
 } from '../../../../../../../generated/types';
 import { v4 } from 'uuid';
 import Decimal from 'decimal.js';
+import FileUploader from '@cats/components/fileUploader/FileUploader';
+import {
+  createBucket,
+  createObject,
+  deleteBucket,
+  deleteObject,
+} from './services/coms.service';
+import { HttpStatusCode } from 'axios';
+
+interface DeletedAttachment {
+  bucketId: string;
+  objectId: string;
+}
 import { InvoiceItemTypes } from '../enums/invoiceItemTypes';
 import { InvoiceActions } from '../enums/invoiceActions';
 
@@ -69,11 +82,13 @@ const initialInvoice: any = {
       itemType: InvoiceItemTypes.SERVICE,
     },
   ],
+  invoiceAttachments: [],
   recipient: {
     key: '0',
     value: '',
   },
 };
+
 const Invoice: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -117,8 +132,14 @@ const Invoice: React.FC = () => {
   const [viewMode, setViewMode] = useState(UserMode.Default);
   const [taxExempt, setTaxExempt] = useState(false);
   const [searchParam, setSearchParam] = useState<string>('');
-  const [errors, setErrors] = useState<string[]>([]);
+  const [errors, setErrors] = useState<any[]>([]);
   const [hasErrors, setHasErrors] = useState(false);
+  const [attachmentsToDelete, setAttachmentsToDelete] = useState<
+    DeletedAttachment[]
+  >([]);
+  const [bucketId, setBucketId] = useState<string | null>(null);
+  const [isRecordPaymentOpen, setIsRecordPaymentOpen] = useState(false);
+  const [isSendInvoiceOpen, setIsSendInvoiceOpen] = useState(false);
 
   const { data: recipients, loading } = useGetParticipantNamesQuery({
     fetchPolicy: 'network-only',
@@ -146,7 +167,6 @@ const Invoice: React.FC = () => {
       setInvoiceDetails((prev: any) => ({
         ...prev,
         ...invoiceData.getInvoiceById.data,
-        // recipientId: invoiceData?.getInvoiceById?.data?.recipientId.toString(),
         invoiceItems: invoiceData?.getInvoiceById?.data?.invoiceItems?.map(
           (item: any) => ({
             ...item,
@@ -155,10 +175,6 @@ const Invoice: React.FC = () => {
             totalInCents: ((item.totalInCents ?? 0) / 100).toFixed(2),
           }),
         ),
-        // recipient: {
-        //   ...invoiceData?.getInvoiceById?.invoice?.recipient,
-        //   id: invoiceData?.getInvoiceById?.invoice?.recipient?.id.toString(),
-        // }
       }));
     }
   };
@@ -172,6 +188,11 @@ const Invoice: React.FC = () => {
     }
     if (!!id) {
       if (invoiceData?.getInvoiceById?.data) {
+        if (invoiceData?.getInvoiceById?.data?.invoiceAttachments?.length > 0) {
+          const firstAttachment =
+            invoiceData?.getInvoiceById?.data?.invoiceAttachments[0];
+          setBucketId(firstAttachment?.bucketId);
+        }
         transformInvoiceDetails();
         setRequestStatus(RequestStatus.success);
       } else {
@@ -192,12 +213,120 @@ const Invoice: React.FC = () => {
     }
   };
 
+  const processInvoiceAttachments = async (invoice: any): Promise<any> => {
+    try {
+      if (!invoice) return invoice;
+
+      // 1. Delete objects
+      if (attachmentsToDelete?.length) {
+        for (const attachment of attachmentsToDelete) {
+          if (attachment?.objectId?.trim()) {
+            const comsResponse = await deleteObject(attachment?.objectId);
+            if (comsResponse?.DeleteMarker) {
+              setAttachmentsToDelete((prev) =>
+                prev?.filter((a: any) => a?.objectId !== attachment?.objectId),
+              );
+            }
+          }
+        }
+      }
+
+      // 2. Create bucket if needed
+      let currentBucketId = bucketId?.trim();
+      if (!bucketId?.trim()) {
+        const bucketName = `application/${applicationId}/invoice/${invoice?.id}`;
+        const bucketKey = `application/${applicationId}/invoice/${invoice?.id}`;
+        const comsResponse = await createBucket(bucketName, bucketKey);
+        if (comsResponse) {
+          currentBucketId = comsResponse?.bucketId;
+          setBucketId(comsResponse?.bucketId);
+        }
+      }
+
+      // 3. Upload attachments
+      const updatedAttachments = await Promise.all(
+        invoice?.invoiceAttachments?.map(async (attachment: any) => {
+          if (
+            !attachment?.file ||
+            (attachment?.objectId && !attachment?.previewUrl)
+          ) {
+            const { __typename, ...rest } = attachment;
+            return rest;
+          }
+
+          if (!currentBucketId?.trim()) {
+            throw new Error(
+              'Bucket ID is required before uploading the object.',
+            );
+          }
+          const comsResponse = await createObject(
+            currentBucketId,
+            attachment?.file,
+          );
+
+          if (comsResponse?.status === HttpStatusCode.Conflict) {
+            setErrors((prev) => [
+              ...prev,
+              {
+                errorMessage: `File ${attachment?.fileName} already exists in the bucket.`,
+              },
+            ]);
+            setHasErrors(true);
+            return attachment;
+          }
+
+          const { file, id, previewUrl, __typename, ...rest } = attachment;
+          return {
+            ...rest,
+            objectId: comsResponse?.id,
+            bucketId: currentBucketId,
+          };
+        }),
+      );
+
+      return {
+        ...invoice,
+        invoiceAttachments: updatedAttachments,
+      };
+    } catch (e) {
+      console.error('Error processing invoice attachments:', e);
+    }
+  };
+
+  const updateInvoiceDetails = (invoice: any) => {
+    const cleanInvoice = cleanGraphQLPayload(invoice, [
+      'recipient',
+      'whoUpdated',
+      '__typename',
+    ]);
+    const updatedInvoiceItems: UpdateInvoiceItem[] =
+      cleanInvoice?.invoiceItems?.map((item: any) => {
+        const quantity = toDecimal(item.quantity);
+        const unitPrice = toDecimal(item.unitPriceInCents);
+        const total = toDecimal(item.totalInCents);
+        const isIdNumber = typeof item.id === 'number';
+        return {
+          ...(isIdNumber ? { id: item.id } : {}), // include only if it's a number
+          itemType: item.itemType,
+          description: item.description,
+          quantity: quantity.toNumber(),
+          unitPriceInCents: unitPrice.times(100).toDecimalPlaces(0).toNumber(),
+          totalInCents: total.times(100).toDecimalPlaces(0).toNumber(),
+        };
+      });
+    const invoiceToUpdate: UpdateInvoice = {
+      ...cleanInvoice,
+      invoiceItems: updatedInvoiceItems,
+    };
+
+    return invoiceToUpdate;
+  };
+
   const handleItemClick = async (action: string) => {
     switch (action) {
       case InvoiceActions.EDIT_INVOICE:
         setViewMode(UserMode.EditMode);
         break;
-
       case InvoiceActions.SAVE_INVOICE:
         const errors = await validateInvoice();
         if (errors?.length > 0) {
@@ -208,37 +337,14 @@ const Invoice: React.FC = () => {
         } else {
           setErrors([]);
           setHasErrors(false);
-
-          if (!!id) {
-            const { recipient, whoUpdated, __typename, ...rest } =
-              invoiceDetails;
-            const updatedInvoiceItems: UpdateInvoiceItem[] =
-              invoiceDetails?.invoiceItems?.map((item: any) => {
-                const quantity = toDecimal(item.quantity);
-                const unitPrice = toDecimal(item.unitPriceInCents);
-                const total = toDecimal(item.totalInCents);
-                const isIdNumber = typeof item.id === 'number';
-                return {
-                  ...(isIdNumber ? { id: item.id } : {}), // include only if it's a number
-                  itemType: item.itemType,
-                  description: item.description,
-                  quantity: quantity.toNumber(),
-                  unitPriceInCents: unitPrice
-                    .times(100)
-                    .toDecimalPlaces(0)
-                    .toNumber(),
-                  totalInCents: total.times(100).toDecimalPlaces(0).toNumber(),
-                };
-              });
-            const invoiceToUpdate: UpdateInvoice = {
-              ...rest,
-              dueDate: invoiceDetails?.dueDate,
-              invoiceItems: updatedInvoiceItems,
-            };
-            try {
+          try {
+            if (!!id) {
+              const updatedInvoice =
+                await processInvoiceAttachments(invoiceDetails);
+              if (hasErrors) return;
               const response = await updateInvoice({
                 variables: {
-                  invoice: invoiceToUpdate,
+                  invoice: updateInvoiceDetails(updatedInvoice),
                 },
                 refetchQueries: [
                   {
@@ -248,61 +354,80 @@ const Invoice: React.FC = () => {
                 ],
                 awaitRefetchQueries: true,
               });
-
               if (response?.data?.updateInvoice?.success) {
                 setViewMode(UserMode.Default);
+                setAttachmentsToDelete([]);
               }
-            } catch (err) {
-              console.error('Failed to update invoice:', err);
-            }
-          } else {
-            const { recipient, ...updatedInvoice } = invoiceDetails;
-            await createInvoice({
-              variables: {
-                invoice: {
-                  ...updatedInvoice,
-                  applicationId: numericAppId,
-                  invoiceItems: invoiceDetails?.invoiceItems?.map(
-                    (item: any) => {
-                      const quantity = toDecimal(item.quantity);
-                      const unitPrice = toDecimal(item.unitPriceInCents);
-                      const total = toDecimal(item.totalInCents);
-                      const { id, ...rest } = item;
-                      return {
-                        ...rest,
-                        quantity: quantity.toNumber(),
-                        unitPriceInCents: unitPrice
-                          .times(100)
-                          .toDecimalPlaces(0)
-                          .toNumber(),
-                        totalInCents: total
-                          .times(100)
-                          .toDecimalPlaces(0)
-                          .toNumber(),
-                      };
-                    },
-                  ),
+            } else {
+              const { invoiceAttachments, ...restInvoice } =
+                cleanGraphQLPayload(invoiceDetails, [
+                  'recipient',
+                  '__typename',
+                ]);
+              await createInvoice({
+                variables: {
+                  invoice: {
+                    ...restInvoice,
+                    applicationId: numericAppId,
+                    invoiceItems: invoiceDetails?.invoiceItems?.map(
+                      (item: any) => {
+                        const quantity = toDecimal(item.quantity);
+                        const unitPrice = toDecimal(item.unitPriceInCents);
+                        const total = toDecimal(item.totalInCents);
+                        const { id, ...rest } = item;
+                        return {
+                          ...rest,
+                          quantity: quantity.toNumber(),
+                          unitPriceInCents: unitPrice
+                            .times(100)
+                            .toDecimalPlaces(0)
+                            .toNumber(),
+                          totalInCents: total
+                            .times(100)
+                            .toDecimalPlaces(0)
+                            .toNumber(),
+                        };
+                      },
+                    ),
+                  },
                 },
-              },
-            }).then((response: any) => {
-              if (response?.data?.createInvoice?.success) {
-                setViewMode(UserMode.Default);
-                navigate(`/applications/${applicationId}?tab=invoices`);
-              }
-            });
+              }).then(async (response: any) => {
+                if (
+                  response?.data?.createInvoice?.success &&
+                  !!response?.data?.createInvoice?.data?.id
+                ) {
+                  if (!!invoiceAttachments?.length) {
+                    const result = await processInvoiceAttachments({
+                      ...response?.data?.createInvoice?.data,
+                      id: response?.data?.createInvoice?.data?.id,
+                      invoiceAttachments,
+                    });
+                    if (hasErrors) return;
+                    await updateInvoice({
+                      variables: {
+                        invoice: updateInvoiceDetails(result),
+                      },
+                    });
+                  }
+                  setAttachmentsToDelete([]);
+                  setViewMode(UserMode.Default);
+                  navigate(`/applications/${applicationId}/invoices`);
+                }
+              });
+            }
+          } catch (err) {
+            console.error('Failed to save invoice:', err);
           }
         }
         break;
-
       case InvoiceActions.CANCEL_INVOICE:
         if (!!id) {
           setViewMode(UserMode.Default);
           transformInvoiceDetails();
         } else {
-          navigate(`/applications/${applicationId}?tab=invoices`);
+          navigate(`/applications/${applicationId}/invoices`);
         }
         break;
-
       case InvoiceActions.ADD_INVOICE_ITEM:
         if (invoiceDetails) {
           setInvoiceDetails((prev: any) => ({
@@ -321,10 +446,28 @@ const Invoice: React.FC = () => {
           }));
         }
         break;
-
       case InvoiceActions.MARK_AS_SENT:
-        break;
-      case InvoiceActions.DUPLICATE_INVOICE:
+        if (!!id) {
+          try {
+            await updateInvoice({
+              variables: {
+                invoice: {
+                  ...updateInvoiceDetails(invoiceDetails),
+                  invoiceStatus: InvoiceStatus.Sent,
+                },
+              },
+              refetchQueries: [
+                {
+                  query: GetInvoiceByIdDocument,
+                  variables: { invoiceId: numericInvoiceId },
+                },
+              ],
+              awaitRefetchQueries: true,
+            });
+          } catch (err) {
+            console.error('Failed to mark invoice as sent:', err);
+          }
+        }
         break;
       case InvoiceActions.DELETE_INVOICE:
         if (!!id) {
@@ -334,13 +477,24 @@ const Invoice: React.FC = () => {
             },
           });
           if (response?.data?.deleteInvoice?.success) {
-            navigate(`/applications/${applicationId}?tab=invoices`);
+            // Delete attachments from COMS
+            if (!!invoiceDetails?.invoiceAttachments?.length) {
+              if (!!bucketId?.trim()) {
+                await deleteBucket(bucketId);
+              }
+            }
+            navigate(`/applications/${applicationId}/invoices`);
           }
         }
         break;
+      case InvoiceActions.DUPLICATE_INVOICE:
+        break;
       case InvoiceActions.RECORD_INVOICE_PAYMENT:
+        setIsRecordPaymentOpen(!isRecordPaymentOpen);
         break;
       case InvoiceActions.SEND_INVOICE:
+        if (!invoiceDetails) return;
+        setIsSendInvoiceOpen(!isSendInvoiceOpen);
         break;
 
       case InvoiceActions.PREVIEW_INVOICE_PDF:
@@ -412,7 +566,6 @@ const Invoice: React.FC = () => {
         'key' in value
       ) {
         next.personId = value.key;
-        // next.recipient = value;
         next.recipient = {
           ...prev.recipient,
           key: value.key,
@@ -441,7 +594,7 @@ const Invoice: React.FC = () => {
   const invoiceItemChangeHandler = (event: any) => {
     const { row, property, value } = event;
     let invoiceItems: any;
-    if (event.property.includes('remove')) {
+    if (property.includes('remove')) {
       invoiceItems = invoiceDetails?.invoiceItems?.filter(
         (item: any) => item.id !== row.id,
       );
@@ -462,7 +615,6 @@ const Invoice: React.FC = () => {
     }
 
     setInvoiceDetails((prev: any) => {
-      console.log('prev', prev);
       if (!prev) return prev;
       return calculateInvoice({ ...prev, invoiceItems });
     });
@@ -473,6 +625,7 @@ const Invoice: React.FC = () => {
     invoiceDetailsForm,
     invoiceItemsTableConfigs,
     invoiceAttachmentsTableConfigs,
+    invoiceRecordPaymentForm,
   } = GetInvoiceConfig(
     viewMode,
     taxExempt,
@@ -554,6 +707,64 @@ const Invoice: React.FC = () => {
       return invoiceItemsError;
     } catch (error: any) {
       return error.message;
+    }
+  };
+
+  const handleFileUpload = (file: File, previewUrl: string) => {
+    setInvoiceDetails((prev: any) =>
+      prev
+        ? {
+            ...prev,
+            invoiceAttachments: [
+              ...prev.invoiceAttachments,
+              {
+                id: v4(),
+                invoiceId: numericInvoiceId,
+                fileName: file.name,
+                file: file,
+                previewUrl,
+              },
+            ],
+          }
+        : prev,
+    );
+  };
+
+  const handleFileSelect = (files: File[], previewUrls: string[]) => {
+    if (!files?.length || !previewUrls.length) return;
+
+    files.forEach((file, index) => {
+      const previewUrl = previewUrls[index];
+      handleFileUpload(file, previewUrl);
+    });
+  };
+
+  const attachmentsChangeHandler = (event: any) => {
+    const { property, row } = event;
+    if (property.includes('remove')) {
+      setInvoiceDetails((prev: any) => {
+        if (!prev) return prev;
+
+        const isUploaded = row.bucketId && row.objectId;
+
+        // Track for deletion only if it was uploaded
+        if (isUploaded) {
+          setAttachmentsToDelete((prevDeleted: any[]) => [
+            ...prevDeleted,
+            { bucketId: row.bucketId, objectId: row.objectId },
+          ]);
+        }
+
+        // Remove from UI
+        const updated = prev.invoiceAttachments.filter(
+          (item: any) => item.id !== row.id,
+        );
+
+        return {
+          ...prev,
+          invoiceAttachments: updated,
+        };
+      });
     }
   };
 
@@ -745,7 +956,39 @@ const Invoice: React.FC = () => {
                 }
               />
             </Widget>
-
+            {viewMode === UserMode.EditMode && (
+              <div className="d-flex flex-column gap-1">
+                <label className="custom-invoice-edit-lbl">
+                  Attach File(S)
+                </label>
+                <FileUploader
+                  multiple={true}
+                  maxSizeMB={10}
+                  onValidationError={(msg) => {
+                    setErrors((prev) => [
+                      ...prev,
+                      {
+                        errorMessage: msg,
+                      },
+                    ]);
+                    setHasErrors(true);
+                  }}
+                  classNames={{
+                    dropArea: 'custom-fu-drop-area',
+                    iconWrapper:
+                      'd-flex align-items-center justify-content-center gap-2 custom-fu-icon-wrapper',
+                    label: 'custom-invoice-txt p-0 m-0',
+                  }}
+                  customText={{
+                    dropMessage:
+                      'Drag file here or click to select from browser',
+                  }}
+                  onFileSelect={({ files, previewUrls }) =>
+                    handleFileSelect(files, previewUrls)
+                  }
+                />
+              </div>
+            )}
             {/* Attachments */}
             <Widget
               editMode={viewMode === UserMode.EditMode}
@@ -754,7 +997,7 @@ const Invoice: React.FC = () => {
               tableIsLoading={requestStatus}
               tableColumns={invoiceAttachmentsTableConfigs}
               tableData={invoiceDetails?.invoiceAttachments || []}
-              changeHandler={() => {}}
+              changeHandler={attachmentsChangeHandler}
             />
 
             {/* Invoice Items */}
@@ -832,9 +1075,6 @@ const Invoice: React.FC = () => {
             /> */}
           </>
         }
-        {/* <PDFViewer width="100%" height="600">
-          <InvoicePreviewTemplate invoice={invoiceDetails} application={applicationDetails}/>
-        </PDFViewer> */}
         {/* <ViewInvoiceForm /> */}
         {hasErrors && (
           <ModalDialog
@@ -867,6 +1107,35 @@ const Invoice: React.FC = () => {
               </React.Fragment>
             }
           </ModalDialog>
+        )}
+        {isRecordPaymentOpen && (
+          <ModalDialog
+            closeHandler={() => setIsRecordPaymentOpen(!isRecordPaymentOpen)}
+            headerLabel="Record Payment"
+            customHeaderTextCss="custom-invoice-heading"
+            saveBtnLabel="Confirm"
+            showTickIcon={true}
+            saveButtonDisabled={true}
+          >
+            <Form
+              editMode={true}
+              formRows={invoiceRecordPaymentForm}
+              formData={{
+                recordPaymentDate: new Date(),
+                recordPaymentAmount: 0,
+              }}
+              handleInputChange={() => {
+                console.log('handleInputChange');
+              }}
+            />
+          </ModalDialog>
+        )}
+        {isSendInvoiceOpen && (
+          <ModalDialog
+            closeHandler={() => setIsSendInvoiceOpen(!isSendInvoiceOpen)}
+            headerLabel="Send Invoice"
+            customHeaderTextCss="error-modal-header-text"
+          ></ModalDialog>
         )}
       </PageContainer>
     </div>

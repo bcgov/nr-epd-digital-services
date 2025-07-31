@@ -12,6 +12,7 @@ import {
   Link,
 } from '@cats/components/input-controls/InputControls';
 import { RequestStatus } from '@cats/helpers/requests/status';
+import { getObject } from './services/coms.service';
 import { InvoiceItemTypes } from '../enums/invoiceItemTypes';
 
 export const GetInvoiceConfig = (
@@ -27,6 +28,12 @@ export const GetInvoiceConfig = (
     loading: boolean;
   },
 ) => {
+  const viewFileHandler = async (objectId: any) => {
+    if (!!objectId?.trim()) {
+      const response = await getObject(objectId);
+      window.open(response, '_blank');
+    }
+  };
   const customInvoiceRecipient = (
     <DropdownSearchInput
       label={'Invoice Recipient'}
@@ -261,6 +268,40 @@ export const GetInvoiceConfig = (
         customMessage: 'Please enter invoice subject.',
       },
     },
+    recordPaymentDate: {
+      type: FormFieldType.Date,
+      label: 'Payment Date',
+      placeholder: 'Payment Date',
+      dateFormat: 'EE MMM dd yyyy',
+      graphQLPropertyName: 'recordPaymentDate',
+      value: '',
+      colSize: 'col-lg-6 col-md-6 col-sm-12',
+      customLabelCss: 'custom-invoice-lbl',
+      customEditLabelCss: 'custom-invoice-edit-lbl',
+      customInputTextCss: 'custom-invoice-txt',
+      customEditInputTextCss: 'custom-invoice-edit-txt',
+      isDisabled: true,
+      validation: {
+        required: true,
+        customMessage: 'Please enter record payment date.',
+      },
+    },
+    recordPaymentAmount: {
+      type: FormFieldType.Text,
+      label: 'Amount($)',
+      placeholder: '$ Enter Amount',
+      graphQLPropertyName: 'recordPaymentAmount',
+      value: '',
+      colSize: 'col-lg-6 col-md-6 col-sm-12',
+      customLabelCss: 'custom-invoice-lbl',
+      customEditLabelCss: 'custom-invoice-edit-lbl',
+      customInputTextCss: 'custom-invoice-txt',
+      customEditInputTextCss: 'custom-invoice-edit-txt',
+      validation: {
+        required: true,
+        customMessage: 'Please enter record payment amount.',
+      },
+    },
   };
 
   const applicationDetailsForm: IFormField[][] = [
@@ -285,6 +326,10 @@ export const GetInvoiceConfig = (
     createMode ? [] : [invoiceForm.invoiceSubject],
     createMode ? [] : [invoiceForm.invoiceStatus, invoiceForm.createdBy],
     [invoiceForm.notes],
+  ];
+
+  const invoiceRecordPaymentForm: IFormField[][] = [
+    [invoiceForm.recordPaymentDate, invoiceForm.recordPaymentAmount],
   ];
 
   const actionsColumn: TableColumn = {
@@ -432,8 +477,8 @@ export const GetInvoiceConfig = (
       active: true,
       graphQLPropertyName: 'fileName',
       displayType: {
-        type: FormFieldType.Link,
-        label: 'File Name',
+        type: FormFieldType.Label,
+        label: '',
         tableMode: true,
         graphQLPropertyName: 'fileName',
         value: '',
@@ -441,6 +486,34 @@ export const GetInvoiceConfig = (
       },
       dynamicColumn: true,
       columnSize: ColumnSize.Default,
+      renderCell: (value: any, rowData: any) => {
+        if (rowData?.previewUrl) {
+          return (
+            <a
+              href={rowData?.previewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {value || 'View File'}{' '}
+            </a>
+          );
+        }
+        if (!!rowData?.objectId.trim() && !!rowData?.bucketId?.trim()) {
+          return (
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                viewFileHandler(rowData.objectId);
+              }}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {value || 'View File'}{' '}
+            </a>
+          );
+        }
+      },
     },
   ];
 
@@ -453,5 +526,6 @@ export const GetInvoiceConfig = (
     invoiceDetailsForm,
     invoiceItemsTableConfigs,
     invoiceAttachmentsTableConfigs,
+    invoiceRecordPaymentForm,
   };
 };

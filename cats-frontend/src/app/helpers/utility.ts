@@ -471,3 +471,30 @@ export const validateForm = (
 
   return errors;
 };
+
+/**
+ * Cleans up a GraphQL payload by removing specified keys.
+ * @param {any} obj - The object to clean.
+ * @param {string[]} fieldsToStrip - An array of keys to remove from the object
+ * (default: ['__typename', 'recipient', 'whoUpdated']).
+ * @returns {any} The cleaned up object.
+ */
+const DEFAULT_STRIP_KEYS = ['__typename'];
+
+export function cleanGraphQLPayload(
+  obj: any,
+  fieldsToStrip: string[] = DEFAULT_STRIP_KEYS,
+): any {
+  if (Array.isArray(obj)) {
+    return obj.map((item) => cleanGraphQLPayload(item, fieldsToStrip));
+  } else if (obj && typeof obj === 'object') {
+    const newObj: any = {};
+    for (const key in obj) {
+      if (!fieldsToStrip.includes(key)) {
+        newObj[key] = cleanGraphQLPayload(obj[key], fieldsToStrip);
+      }
+    }
+    return newObj;
+  }
+  return obj;
+}
