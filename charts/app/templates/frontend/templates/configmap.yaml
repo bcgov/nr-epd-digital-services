@@ -30,9 +30,7 @@ data:
   VITE_FORM_BACKEND_API: {{ .Values.frontend.config.VITE_FORM_BACKEND_API | quote }}
   VITE_FORM_FLOW_API: {{ .Values.frontend.config.VITE_FORM_FLOW_API | quote }}
   VITE_CATS_CSSA_MANAGER_ROLE: {{ .Values.frontend.config.VITE_CATS_CSSA_MANAGER_ROLE | quote }}
-  VITE_COMS_API: {{ .Values.frontend.config.VITE_COMS_API | quote }}
-  VITE_S3_STORAGE_ENDPOINT: {{ .Values.frontend.config.VITE_S3_STORAGE_ENDPOINT | quote }}
-  VITE_S3_STORAGE_REGION: {{ .Values.frontend.config.VITE_S3_STORAGE_REGION | quote }}
+ 
 
   config.js: "// runtime-config.js vars\n  window[\"_env_\"] =  {\n    
       \"VITE_BACKEND_API\": \"{{ .Values.frontend.config.REACT_APP_BACKEND_API | default $REACT_APP_BACKEND_API }}\",\n 
@@ -50,8 +48,5 @@ data:
       \"VITE_FORM_BACKEND_API\": \"{{ .Values.frontend.config.VITE_FORM_BACKEND_API }}\",\n   
       \"VITE_FORM_FLOW_API\": \"{{ .Values.frontend.config.VITE_FORM_FLOW_API }}\",\n    
       \"VITE_CATS_CSSA_MANAGER_ROLE\": \"{{ .Values.frontend.config.VITE_CATS_CSSA_MANAGER_ROLE }}\",\n
-      \"VITE_COMS_API\": \"{{ .Values.frontend.config.VITE_COMS_API }}\",\n
-      \"VITE_S3_STORAGE_ENDPOINT\": \"{{ .Values.frontend.config.VITE_S3_STORAGE_ENDPOINT }}\",\n
-      \"VITE_S3_STORAGE_REGION\": \"{{ .Values.frontend.config.VITE_S3_STORAGE_REGION }}\"\n
-  }"
+      }"
 {{- end }}
