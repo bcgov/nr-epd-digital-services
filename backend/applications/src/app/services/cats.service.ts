@@ -85,7 +85,7 @@ export class CatsService {
   async updateCatsApplication(submissionId: string, formId: string, formData: any) {
     const GRAPHQL_URL = process.env.CATS_API;
 
-    // Parse and split comma-separated site IDs
+    // test Parse and split comma-separated site IDs
     const siteIds = formData.siteId?.split(',')
       .map((id: string) => id.trim())
       .filter((id: string) => id !== '')
