@@ -41,7 +41,6 @@ jobs:
       tag:  '${{ needs.get-pr-info.outputs.pr }}'
       values: 'values.yaml' # PROD env specific values file
 
-
   schemaspy:
     name: Schemaspy
     uses: ./.github/workflows/.schema-spy.yml
