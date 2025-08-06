@@ -346,12 +346,19 @@ const Invoice: React.FC = () => {
   };
 
   const generateFile = async () => {
-    return await pdf(
-          <InvoicePreviewTemplate
-            invoice={invoiceDetails}
-            application={applicationDetails}
-          />,
-        ).toBlob();
+    try {
+      const blob = await pdf(
+        <InvoicePreviewTemplate
+          invoice={invoiceDetails}
+          application={applicationDetails}
+        />
+      ).toBlob();
+
+      return blob;
+    } catch (error) {
+      console.error("Error generating the PDF:", error);
+      throw error;
+    }
   }
   const handleItemClick = async (action: string) => {
     switch (action) {
@@ -534,7 +541,15 @@ const Invoice: React.FC = () => {
           to: invoiceEmailDetails?.emailAddress,
           subject: invoiceEmailDetails?.emailSubject,
           body: invoiceEmailDetails?.emailBody,
-        }, file);
+        }, file)
+        .then((res: any) => {
+            if(res?.success)
+            {
+              setIsSendInvoiceOpen(false);
+            }
+          }
+        )
+        .catch((err: any) => console.error(err));
 
         break;
 

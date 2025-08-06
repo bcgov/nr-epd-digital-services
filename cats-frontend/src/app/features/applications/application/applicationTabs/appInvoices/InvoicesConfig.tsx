@@ -4,9 +4,7 @@ import { formatDateUTC } from '@cats/helpers/utility';
 import { StatusType } from './enums/statusType';
 import InvoiceStatus from './InvoiceStatus';
 import { FileLinesIcon } from '@cats/components/common/icon';
-import { StatusType } from './enums/statusType';
-import InvoiceStatus from './InvoiceStatus';
-import { FileLinesIcon } from '@cats/components/common/icon';
+
 
 export const GetInvoicesConfig = (applicationId: number) => {
   const invoiceTableConfig: TableColumn[] = [

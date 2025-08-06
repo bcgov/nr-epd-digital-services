@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
-import { Resource, RoleMatchingMode, Roles } from 'nest-keycloak-connect';
+import { Body, Controller, Post, UploadedFile, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Resource} from 'nest-keycloak-connect';
 import { LoggerService } from '../logger/logger.service';
 import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/file.interceptor';
 import { InvoiceEmail } from '../dto/invoice/invoiceEmail/invoiceEmail.dto';
@@ -16,6 +16,11 @@ export class EmailController {
 
     @Post('/sendEmail')
     @UseInterceptors(FileInterceptor('file'))
+    @UsePipes(new ValidationPipe({
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+        whitelist: true,
+    }))
     async sendEmail( @UploadedFile() file: Express.Multer.File, @Body() invoiceEmail: InvoiceEmail) {
         try {
             let attachments = null;

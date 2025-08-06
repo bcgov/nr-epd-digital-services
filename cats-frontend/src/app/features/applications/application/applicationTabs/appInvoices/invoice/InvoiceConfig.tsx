@@ -343,7 +343,6 @@ export const GetInvoiceConfig = ({
       customEditLabelCss: 'custom-invoice-edit-lbl',
       customInputTextCss: 'custom-invoice-txt',
       customEditInputTextCss: 'custom-invoice-edit-txt',
-      customPlaceholderCss: 'custom-invoice-placeholder',
     },
     invoiceEmailRecipient: { 
       type:FormFieldType.DropDownWithSearch,
