@@ -53,6 +53,7 @@ export const GetInvoiceConfig = ({
       customInputTextCss={'custom-invoice-txt'}
       customEditLabelCss={'custom-invoice-edit-lbl'}
       customEditInputTextCss={'custom-invoice-edit-txt'}
+      customPlaceholderCss={'custom-invoice-placeholder'}
       placeholder={'Enter search term...'}
       options={recipient?.options || []}
       value={invoiceDetails?.personId || ''}
@@ -342,6 +343,7 @@ export const GetInvoiceConfig = ({
       customEditLabelCss: 'custom-invoice-edit-lbl',
       customInputTextCss: 'custom-invoice-txt',
       customEditInputTextCss: 'custom-invoice-edit-txt',
+      customPlaceholderCss: 'custom-invoice-placeholder',
     },
     invoiceEmailRecipient: { 
       type:FormFieldType.DropDownWithSearch,
