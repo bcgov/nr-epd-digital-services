@@ -93,9 +93,6 @@ import { RecentViewedApplication } from './entities/recentViewedApplication.enti
 import { StatusTypeService } from './services/statusType/statusType.service';
 import { ServiceAssignmentFactor } from './entities/serviceAssignmentFactor';
 import { PermissionServiceType } from './entities/permissionServiceType';
-import { InvoiceAttachmentResolver } from './resolvers/invoice/invoiceAttachment.resolver';
-import { InvoiceAttachmentService } from './services/invoice/invoiceAttachment.service';
-import { ComsService } from './services/coms/coms.service';
 import { ApplicationSite } from './entities/applicationSite.entity';
 import { InvoiceItem } from './entities/invoiceItem.entity';
 

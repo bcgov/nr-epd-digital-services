@@ -188,7 +188,7 @@ export type CreateApplication = {
   appTypeAbbrev: Scalars['String']['input'];
   applicationStatus: Array<ApplicationStatusDto>;
   receivedDate: Scalars['DateTime']['input'];
-  siteId: Scalars['Float']['input'];
+  siteIds: Array<Scalars['Float']['input']>;
 };
 
 export type CreateInvoice = {
@@ -820,6 +820,7 @@ export type UpdateAppParticipantsResponse = {
 export type UpdateApplicationStatusDto = {
   formId: Scalars['String']['input'];
   formsflowAppId: Scalars['Float']['input'];
+  siteIds?: InputMaybe<Array<Scalars['Float']['input']>>;
   statusTypeAbbrev: Scalars['String']['input'];
   submissionId: Scalars['String']['input'];
 };
