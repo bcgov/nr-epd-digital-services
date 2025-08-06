@@ -1132,8 +1132,7 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
             data-testid={drdownId}
             className={`form-control d-flex align-items-center justify-content-between 
                             custom-select custom-input custom-dropdown
-                            ${customEditInputTextCss ?? 'custom-input-text'}
-                            ${customPlaceholderCss ?? ''}`}
+                            ${value ? (customEditInputTextCss ?? 'custom-input-text') : (customPlaceholderCss ?? '')}`}
           >
             {value
               ? options?.find((opt) => opt.key === value)?.value

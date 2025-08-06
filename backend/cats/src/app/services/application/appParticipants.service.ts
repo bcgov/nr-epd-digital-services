@@ -156,12 +156,8 @@ export class AppParticipantService {
       } else {
         const transformedObjects = persons.map((person) => ({
           key: person.id.toString(),
-          value:
-            (person.firstName || '') +
-            ' ' +
-            (person.middleName || '') +
-            ' ' +
-            (person.lastName || ''),
+          value: [person.firstName, person.middleName, person.lastName].filter(Boolean).join(' '),
+          metaData: person?.email || '', // Assuming email is the metadata you want to include
         }));
 
         return transformedObjects;

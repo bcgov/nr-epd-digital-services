@@ -54,23 +54,23 @@ export class ChesEmailService {
     }
   }
 
-  async sendEmail(to: string[], subject: string, body: string): Promise<void> {
+  async sendEmail(to: string[], subject: string, body: string, bodyType: string = 'html', priority: string = 'normal', attachments: any[] = []): Promise<void> {
     try {
       const token = await this.getAccessToken();
       this.loggerService.log('Sending Email start');
       const payload = {
         bcc: [],
-        bodyType: 'html',
+        bodyType: bodyType,
         body,
         cc: [],
         delayTS: 0,
         encoding: 'utf-8',
         from: this.fromAddress,
-        priority: 'normal',
+        priority: priority,
         subject,
         to,
         tag: '',
-        attachments: [],
+        attachments: attachments,
       };
 
       const headers = {

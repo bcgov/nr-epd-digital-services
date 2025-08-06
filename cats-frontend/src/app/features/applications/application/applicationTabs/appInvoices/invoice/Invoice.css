@@ -8,20 +8,13 @@
 
 .invoice_balance span {
   font-weight: 700;
-  font-weight: 700;
 }
 
 .invoice_widget_lbl_container {
   padding: var(--layout-padding-small) 0px var(--layout-padding-small) 0px;
-  padding: var(--layout-padding-small) 0px var(--layout-padding-small) 0px;
 }
 
 .custom-invoice-edit-lbl {
-  font-family: Noto Sans !important;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 16px;
-  color: var(--typography-color-primary, #2d2d2d);
   font-family: Noto Sans !important;
   font-size: 12px;
   font-weight: 400;
@@ -39,23 +32,9 @@ a.custom-invoice-edit-lbl {
   justify-content: center;
   text-decoration: none;
   color: var(--surface-color-primary-default, #053662);
-  font-family: Noto Sans !important;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 16px;
-  gap: var(--layout-margin-xsmall);
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: var(--surface-color-primary-default, #053662);
 }
 
 .custom-invoice-lbl {
-  font-family: Noto Sans !important;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 18px;
-  color: var(--typography-color-secondary, #474543);
   font-family: Noto Sans !important;
   font-size: 12px;
   font-weight: 700;
@@ -70,21 +49,13 @@ a.custom-invoice-edit-lbl {
   line-height: 27.01px;
   color: var(--typography-color-primary, #2d2d2d);
   padding-top: 0 !important;
-  font-family: Noto Sans !important;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 27.01px;
-  color: var(--typography-color-primary, #2d2d2d);
-  padding-top: 0 !important;
 }
 
 a.custom-invoice-txt {
   color: var(--typography-color-link, #255a90);
-  color: var(--typography-color-link, #255a90);
 }
 
 a.custom-invoice-txt:hover {
-  color: var(--typography-color-link-hover, #1a3f6b);
   color: var(--typography-color-link-hover, #1a3f6b);
 }
 
@@ -93,12 +64,7 @@ a.custom-invoice-txt:hover {
   font-size: 16px;
   font-weight: 400;
   line-height: 24px;
-  color: var(--typography-color-secondary, #474543);
-  font-family: Noto Sans !important;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
-  color: var(--typography-color-secondary, #474543);
+  color: var(--typography-color-secondary, #474543) !important;
 }
 
 .custom-invoice-edit-txt
@@ -225,4 +191,8 @@ a.custom-invoice-txt:hover {
   gap: var(--layout-margin-xxlarge);
   display: flex;
   flex-direction: column;
+}
+
+.custom-invoice-placeholder {
+  color: var(--typography-color-disabled, #9f9d9c) !important;
 }

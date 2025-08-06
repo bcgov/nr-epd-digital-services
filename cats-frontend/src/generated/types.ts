@@ -276,7 +276,7 @@ export type DetailField = {
 export type DropdownDto = {
   __typename?: 'DropdownDto';
   key: Scalars['String']['output'];
-  metaData: Scalars['String']['output'];
+  metaData?: Maybe<Scalars['String']['output']>;
   value: Scalars['String']['output'];
 };
 
