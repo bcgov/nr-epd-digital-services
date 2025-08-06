@@ -55,6 +55,7 @@ query GetInvoiceById($invoiceId: Int!) {
       recipient {
         key
         value
+        metaData
       }
     }
   }
@@ -100,6 +101,7 @@ mutation CreateInvoice($invoice: CreateInvoice!) {
       recipient {
         key
         value
+        metaData
       }
     }
   }
@@ -121,5 +123,19 @@ mutation deleteInvoice($invoiceId: Int!) {
     httpStatusCode
     success
     timestamp
+  }
+}
+
+query getInvoiceRecipientNames($searchParam: String!) {
+  getParticipantNames(searchParam: $searchParam) {
+    httpStatusCode
+    success
+    message
+    timestamp
+    data {
+      key
+      value
+      metaData
+    }
   }
 }

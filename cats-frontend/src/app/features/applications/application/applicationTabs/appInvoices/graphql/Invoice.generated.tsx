@@ -15,14 +15,14 @@ export type GetInvoiceByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetInvoiceByIdQuery = { __typename?: 'Query', getInvoiceById: { __typename?: 'InvoiceResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null, data?: { __typename?: 'ViewInvoice', id: number, applicationId: number, personId: string, subject: string, issuedDate: any, dueDate: any, invoiceStatus: Types.InvoiceStatus, taxExempt: boolean, pstExempt: boolean, invoiceNotes?: string | null, subtotalInCents: number, gstInCents: number, pstInCents: number, totalInCents: number, whoUpdated: string, invoiceItems: Array<{ __typename?: 'ViewInvoiceItem', id: number, itemType: string, description: string, quantity: number, unitPriceInCents: number, totalInCents: number }>, invoiceAttachments: Array<{ __typename?: 'ViewInvoiceAttachment', id: number, fileName: string, bucketId: string, objectId: string, invoiceId: number }>, recipient: { __typename?: 'DropdownDto', key: string, value: string } } | null } };
+export type GetInvoiceByIdQuery = { __typename?: 'Query', getInvoiceById: { __typename?: 'InvoiceResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null, data?: { __typename?: 'ViewInvoice', id: number, applicationId: number, personId: string, subject: string, issuedDate: any, dueDate: any, invoiceStatus: Types.InvoiceStatus, taxExempt: boolean, pstExempt: boolean, invoiceNotes?: string | null, subtotalInCents: number, gstInCents: number, pstInCents: number, totalInCents: number, whoUpdated: string, invoiceItems: Array<{ __typename?: 'ViewInvoiceItem', id: number, itemType: string, description: string, quantity: number, unitPriceInCents: number, totalInCents: number }>, invoiceAttachments: Array<{ __typename?: 'ViewInvoiceAttachment', id: number, fileName: string, bucketId: string, objectId: string, invoiceId: number }>, recipient: { __typename?: 'DropdownDto', key: string, value: string, metaData?: string | null } } | null } };
 
 export type CreateInvoiceMutationVariables = Types.Exact<{
   invoice: Types.CreateInvoice;
 }>;
 
 
-export type CreateInvoiceMutation = { __typename?: 'Mutation', createInvoice: { __typename?: 'InvoiceResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null, data?: { __typename?: 'ViewInvoice', id: number, applicationId: number, personId: string, subject: string, issuedDate: any, dueDate: any, invoiceStatus: Types.InvoiceStatus, taxExempt: boolean, pstExempt: boolean, invoiceNotes?: string | null, subtotalInCents: number, gstInCents: number, pstInCents: number, totalInCents: number, whoUpdated: string, invoiceItems: Array<{ __typename?: 'ViewInvoiceItem', id: number, itemType: string, description: string, quantity: number, unitPriceInCents: number, totalInCents: number }>, invoiceAttachments: Array<{ __typename?: 'ViewInvoiceAttachment', id: number, fileName: string, bucketId: string, objectId: string, invoiceId: number }>, recipient: { __typename?: 'DropdownDto', key: string, value: string } } | null } };
+export type CreateInvoiceMutation = { __typename?: 'Mutation', createInvoice: { __typename?: 'InvoiceResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null, data?: { __typename?: 'ViewInvoice', id: number, applicationId: number, personId: string, subject: string, issuedDate: any, dueDate: any, invoiceStatus: Types.InvoiceStatus, taxExempt: boolean, pstExempt: boolean, invoiceNotes?: string | null, subtotalInCents: number, gstInCents: number, pstInCents: number, totalInCents: number, whoUpdated: string, invoiceItems: Array<{ __typename?: 'ViewInvoiceItem', id: number, itemType: string, description: string, quantity: number, unitPriceInCents: number, totalInCents: number }>, invoiceAttachments: Array<{ __typename?: 'ViewInvoiceAttachment', id: number, fileName: string, bucketId: string, objectId: string, invoiceId: number }>, recipient: { __typename?: 'DropdownDto', key: string, value: string, metaData?: string | null } } | null } };
 
 export type UpdateInvoiceMutationVariables = Types.Exact<{
   invoice: Types.UpdateInvoice;
@@ -37,6 +37,13 @@ export type DeleteInvoiceMutationVariables = Types.Exact<{
 
 
 export type DeleteInvoiceMutation = { __typename?: 'Mutation', deleteInvoice: { __typename?: 'InvoiceResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null } };
+
+export type GetInvoiceRecipientNamesQueryVariables = Types.Exact<{
+  searchParam: Types.Scalars['String']['input'];
+}>;
+
+
+export type GetInvoiceRecipientNamesQuery = { __typename?: 'Query', getParticipantNames: { __typename?: 'DropdownResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'DropdownDto', key: string, value: string, metaData?: string | null }> | null } };
 
 
 export const GetInvoicesDocument = gql`
@@ -131,6 +138,7 @@ export const GetInvoiceByIdDocument = gql`
       recipient {
         key
         value
+        metaData
       }
     }
   }
@@ -210,6 +218,7 @@ export const CreateInvoiceDocument = gql`
       recipient {
         key
         value
+        metaData
       }
     }
   }
@@ -313,3 +322,51 @@ export function useDeleteInvoiceMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteInvoiceMutationHookResult = ReturnType<typeof useDeleteInvoiceMutation>;
 export type DeleteInvoiceMutationResult = Apollo.MutationResult<DeleteInvoiceMutation>;
 export type DeleteInvoiceMutationOptions = Apollo.BaseMutationOptions<DeleteInvoiceMutation, DeleteInvoiceMutationVariables>;
+export const GetInvoiceRecipientNamesDocument = gql`
+    query getInvoiceRecipientNames($searchParam: String!) {
+  getParticipantNames(searchParam: $searchParam) {
+    httpStatusCode
+    success
+    message
+    timestamp
+    data {
+      key
+      value
+      metaData
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetInvoiceRecipientNamesQuery__
+ *
+ * To run a query within a React component, call `useGetInvoiceRecipientNamesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInvoiceRecipientNamesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetInvoiceRecipientNamesQuery({
+ *   variables: {
+ *      searchParam: // value for 'searchParam'
+ *   },
+ * });
+ */
+export function useGetInvoiceRecipientNamesQuery(baseOptions: Apollo.QueryHookOptions<GetInvoiceRecipientNamesQuery, GetInvoiceRecipientNamesQueryVariables> & ({ variables: GetInvoiceRecipientNamesQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetInvoiceRecipientNamesQuery, GetInvoiceRecipientNamesQueryVariables>(GetInvoiceRecipientNamesDocument, options);
+      }
+export function useGetInvoiceRecipientNamesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetInvoiceRecipientNamesQuery, GetInvoiceRecipientNamesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetInvoiceRecipientNamesQuery, GetInvoiceRecipientNamesQueryVariables>(GetInvoiceRecipientNamesDocument, options);
+        }
+export function useGetInvoiceRecipientNamesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetInvoiceRecipientNamesQuery, GetInvoiceRecipientNamesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetInvoiceRecipientNamesQuery, GetInvoiceRecipientNamesQueryVariables>(GetInvoiceRecipientNamesDocument, options);
+        }
+export type GetInvoiceRecipientNamesQueryHookResult = ReturnType<typeof useGetInvoiceRecipientNamesQuery>;
+export type GetInvoiceRecipientNamesLazyQueryHookResult = ReturnType<typeof useGetInvoiceRecipientNamesLazyQuery>;
+export type GetInvoiceRecipientNamesSuspenseQueryHookResult = ReturnType<typeof useGetInvoiceRecipientNamesSuspenseQuery>;
+export type GetInvoiceRecipientNamesQueryResult = Apollo.QueryResult<GetInvoiceRecipientNamesQuery, GetInvoiceRecipientNamesQueryVariables>;

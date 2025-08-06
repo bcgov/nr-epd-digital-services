@@ -34,7 +34,11 @@ interface ModalDialogCloseHandlerProps {
   noFooterOptions?: boolean;
   showTickIcon?: boolean;
   showIcon?: boolean;
+  customSaveIcon?: React.ReactNode;
+  customCancelIcon?: React.ReactNode;
+  customDiscardIcon?: React.ReactNode;
   validator?: () => boolean;
+  discardHandler?: () => void;
 }
 
 const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
@@ -62,7 +66,11 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
   noFooterOptions,
   showTickIcon = false,
   showIcon = true,
+  customSaveIcon,
+  customCancelIcon,
+  customDiscardIcon,
   validator,
+  discardHandler,
 }) => {
   saveBtnLabel = saveBtnLabel ?? '';
   cancelBtnLabel = cancelBtnLabel ?? '';
@@ -77,8 +85,15 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
   };
 
   const handleDiscard = () => {
-    setOpen(false);
-    closeHandler('discard');
+    // Add discard logic here
+    if (discardHandler) {
+      discardHandler();
+    }
+    else {
+      // Close the modal after discarding
+      setOpen(false);
+      closeHandler('discard');
+    }
   };
 
   const handleSave = () => {
@@ -128,6 +143,8 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
                 clickHandler={handleClose}
                 label={cancelBtnLabel}
                 isDisabled={cancelButtonDisabled}
+                showIcon={showIcon}
+                customIcon={customCancelIcon}
               />
               <SaveButton
                 variant={saveButtonVariant ?? 'primary'}
@@ -136,6 +153,7 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
                 isDisabled={saveButtonDisabled}
                 showTickIcon={showTickIcon}
                 showIcon={showIcon}
+                customIcon={customSaveIcon}
               />
             </div>
           )}
@@ -148,6 +166,8 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
                 clickHandler={handleClose}
                 label={cancelBtnLabel}
                 isDisabled={cancelButtonDisabled}
+                showIcon={showIcon}
+                customIcon={customCancelIcon}
               />
               <DiscardButton
                 clickHandler={handleDiscard}
@@ -155,12 +175,16 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
                 showIcon={false}
                 variant={discardButtonVariant}
                 isDisabled={discardButtonDisabled}
+                customIcon={customDiscardIcon}
               />
               <SaveButton
                 clickHandler={handleSave}
                 label={saveBtnLabel}
                 variant={saveButtonVariant}
                 isDisabled={saveButtonDisabled}
+                showTickIcon={showTickIcon}
+                showIcon={showIcon}
+                customIcon={customSaveIcon}
               />
             </div>
           )}
@@ -173,6 +197,8 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
                 label={cancelBtnLabel}
                 variant={cancelButtonVariant}
                 isDisabled={cancelButtonDisabled}
+                showIcon={showIcon}
+                customIcon={customCancelIcon}
               />
             </div>
           )}

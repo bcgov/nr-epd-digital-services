@@ -6,7 +6,6 @@ import { InvoiceStatus } from '../../../../../../../generated/types';
 import { UserMode } from '@cats/helpers/requests/userMode';
 import { ColumnSize, TableColumn } from '@cats/components/table/TableColumn';
 import { FaTimes } from 'react-icons/fa';
-import { GetParticipantNamesQuery } from '../../appParticipants/graphql/Participants.generated';
 import {
   DropdownSearchInput,
   Link,
@@ -14,20 +13,33 @@ import {
 import { RequestStatus } from '@cats/helpers/requests/status';
 import { getObject } from './services/coms.service';
 import { InvoiceItemTypes } from '../enums/invoiceItemTypes';
+import { GetInvoiceRecipientNamesQuery } from '../graphql/Invoice.generated';
 
-export const GetInvoiceConfig = (
-  viewMode: UserMode,
-  isDisabled: boolean,
-  handleInputChange: (fieldName: string, value: string) => void,
-  invoiceDetails: any,
-  createMode: boolean,
-  recipient: {
-    setSearchParam: (searchParam: string) => void;
-    options: GetParticipantNamesQuery['getParticipantNames']['data'];
-    filteredOptions: GetParticipantNamesQuery['getParticipantNames']['data'];
-    loading: boolean;
-  },
-) => {
+
+interface RecipientConfig {
+  setSearchParam: (searchParam: string) => void;
+  options: GetInvoiceRecipientNamesQuery['getParticipantNames']['data'];
+  filteredOptions: GetInvoiceRecipientNamesQuery['getParticipantNames']['data'];
+  loading: boolean;
+}
+
+interface GetInvoiceConfigParams {
+  viewMode: UserMode;
+  isDisabled?: boolean;
+  handleInputChange?: (fieldName: string, value: string) => void;
+  invoiceDetails?: any;
+  createMode?: boolean;
+  recipient?: RecipientConfig;
+}
+
+export const GetInvoiceConfig = ({
+  viewMode,
+  isDisabled = false,
+  handleInputChange = () => {},
+  invoiceDetails = {},
+  createMode = false,
+  recipient,
+}: GetInvoiceConfigParams) => {
   const viewFileHandler = async (objectId: any) => {
     if (!!objectId?.trim()) {
       const response = await getObject(objectId);
@@ -42,15 +54,15 @@ export const GetInvoiceConfig = (
       customEditLabelCss={'custom-invoice-edit-lbl'}
       customEditInputTextCss={'custom-invoice-edit-txt'}
       placeholder={'Enter search term...'}
-      options={recipient.options || []}
+      options={recipient?.options || []}
       value={invoiceDetails?.personId || ''}
-      onChange={(value) => handleInputChange('personId', value)}
+      onChange={(value) => handleInputChange('personId', value) }
       type={FormFieldType.DropDownWithSearch}
-      handleSearch={recipient.setSearchParam}
-      filteredOptions={recipient.filteredOptions || []}
+      handleSearch={recipient?.setSearchParam}
+      filteredOptions={recipient?.filteredOptions || []}
       isEditing={viewMode === UserMode.EditMode}
       isLoading={
-        !recipient.loading ? RequestStatus.idle : RequestStatus.loading
+        !recipient?.loading ? RequestStatus.idle : RequestStatus.loading
       }
       validation={{
         required: true,
@@ -302,7 +314,67 @@ export const GetInvoiceConfig = (
         customMessage: 'Please enter record payment amount.',
       },
     },
+    invoiceEmailSubject: {
+      type: FormFieldType.Text,
+      label: 'E-mail Subject',
+      placeholder: 'Please enter e-mail subject....',
+      graphQLPropertyName: 'emailSubject',
+      value: '',
+      colSize: 'col-lg-12 col-md-12 col-sm-12',
+      customLabelCss: 'custom-invoice-lbl',
+      customEditLabelCss: 'custom-invoice-edit-lbl',
+      customInputTextCss: 'custom-invoice-txt',
+      customEditInputTextCss: 'custom-invoice-edit-txt',
+      validation: {
+        required: true,
+        customMessage: 'Please enter e-mail subject.',
+      },
+    },
+    invoiceEmailBody: {
+      type: FormFieldType.TextArea,
+      textAreaRow: 15,
+      label: 'E-mail Body',
+      placeholder: 'Please enter e-mail body....',
+      graphQLPropertyName: 'emailBody',
+      value: '',
+      colSize: 'col-lg-12 col-md-12 col-sm-12',
+      customLabelCss: 'custom-invoice-lbl',
+      customEditLabelCss: 'custom-invoice-edit-lbl',
+      customInputTextCss: 'custom-invoice-txt',
+      customEditInputTextCss: 'custom-invoice-edit-txt',
+    },
+    invoiceEmailRecipient: { 
+      type:FormFieldType.DropDownWithSearch,
+      label: 'E-mail Recipient',
+      placeholder: 'Please select e-mail recipient...',
+      graphQLPropertyName: 'personId',
+      value: '',
+      colSize: 'col-lg-12 col-md-12 col-sm-12',
+      customLabelCss: 'custom-invoice-lbl',
+      customEditLabelCss: 'custom-invoice-edit-lbl',
+      customInputTextCss: 'custom-invoice-txt',
+      customEditInputTextCss: 'custom-invoice-edit-txt',  
+      options: recipient?.options || [],
+      handleSearch: recipient?.setSearchParam,
+      filteredOptions: recipient?.filteredOptions || [],
+      validation: {
+        required: true,
+        customMessage: 'Please select e-mail recipient.',
+      }
+    }
   };
+
+  const invoiceEmailForm: IFormField[][] = [
+    [
+      invoiceForm.invoiceEmailRecipient,
+    ],
+    [
+      invoiceForm.invoiceEmailSubject,
+    ],
+    [
+      invoiceForm.invoiceEmailBody,
+    ],
+  ];
 
   const applicationDetailsForm: IFormField[][] = [
     [
@@ -527,5 +599,6 @@ export const GetInvoiceConfig = (
     invoiceItemsTableConfigs,
     invoiceAttachmentsTableConfigs,
     invoiceRecordPaymentForm,
+    invoiceEmailForm,
   };
 };

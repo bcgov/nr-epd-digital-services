@@ -18,7 +18,6 @@ import Widget from '@cats/components/widget/Widget';
 import Form from '@cats/components/form/Form';
 import { GetInvoiceConfig } from './InvoiceConfig';
 import { RequestStatus } from '@cats/helpers/requests/status';
-import { useGetParticipantNamesQuery } from '../../appParticipants/graphql/Participants.generated';
 import { cleanGraphQLPayload, validateForm } from '@cats/helpers/utility';
 import { IFormField } from '@cats/components/input-controls/IFormField';
 import ModalDialog from '@cats/components/modaldialog/ModalDialog';
@@ -29,6 +28,7 @@ import {
   useCreateInvoiceMutation,
   useDeleteInvoiceMutation,
   useGetInvoiceByIdQuery,
+  useGetInvoiceRecipientNamesQuery,
   useUpdateInvoiceMutation,
 } from '../graphql/Invoice.generated';
 import { pdf } from '@react-pdf/renderer';
@@ -56,6 +56,8 @@ interface DeletedAttachment {
 }
 import { InvoiceItemTypes } from '../enums/invoiceItemTypes';
 import { InvoiceActions } from '../enums/invoiceActions';
+import { InvoiceEmailTemplate } from './InvoiceEmailTemplate';
+import { sendInvoice } from './services/cats.service';
 
 const initialInvoice: any = {
   subject: '',
@@ -86,6 +88,7 @@ const initialInvoice: any = {
   recipient: {
     key: '0',
     value: '',
+    metaData: '',
   },
 };
 
@@ -120,6 +123,14 @@ const Invoice: React.FC = () => {
   const [deleteInvoice] = useDeleteInvoiceMutation();
 
   // State to store invoice and application details
+  const [invoiceEmailDetails, setInvoiceEmailDetails] = useState<any>({
+    emailSubject: '',
+    emailBody: '',
+    emailAddress: '',
+    personId: '',
+    emailRecipient: { key: '0', value: '' },
+  });
+
   const [invoiceDetails, setInvoiceDetails] = useState(initialInvoice);
   const [applicationDetails, setApplicationDetails] = useState<
     ViewApplicationDetails | null | undefined
@@ -141,7 +152,7 @@ const Invoice: React.FC = () => {
   const [isRecordPaymentOpen, setIsRecordPaymentOpen] = useState(false);
   const [isSendInvoiceOpen, setIsSendInvoiceOpen] = useState(false);
 
-  const { data: recipients, loading } = useGetParticipantNamesQuery({
+  const { data: recipients, loading } = useGetInvoiceRecipientNamesQuery({
     fetchPolicy: 'network-only',
     variables: { searchParam },
     skip: !searchParam.trim(),
@@ -198,6 +209,18 @@ const Invoice: React.FC = () => {
       } else {
         setRequestStatus(RequestStatus.loading);
       }
+
+      if (invoiceData?.getInvoiceById?.data && applicationData?.getApplicationDetailsById?.data) {
+        const emailBody = InvoiceEmailTemplate(invoiceData?.getInvoiceById?.data, applicationData?.getApplicationDetailsById?.data);
+        setInvoiceEmailDetails((prev: any) => ({
+          ...prev,
+          emailBody: emailBody.trim(),
+          personId: invoiceData?.getInvoiceById?.data?.personId,
+          emailRecipient: invoiceData?.getInvoiceById?.data?.recipient || { key: '0', value: '' },
+          emailAddress: invoiceData?.getInvoiceById?.data?.recipient?.metaData || '',
+        }));
+      }
+
     } else {
       setViewMode(UserMode.EditMode);
     }
@@ -322,6 +345,14 @@ const Invoice: React.FC = () => {
     return invoiceToUpdate;
   };
 
+  const generateFile = async () => {
+    return await pdf(
+          <InvoicePreviewTemplate
+            invoice={invoiceDetails}
+            application={applicationDetails}
+          />,
+        ).toBlob();
+  }
   const handleItemClick = async (action: string) => {
     switch (action) {
       case InvoiceActions.EDIT_INVOICE:
@@ -493,19 +524,23 @@ const Invoice: React.FC = () => {
         setIsRecordPaymentOpen(!isRecordPaymentOpen);
         break;
       case InvoiceActions.SEND_INVOICE:
-        if (!invoiceDetails) return;
-        setIsSendInvoiceOpen(!isSendInvoiceOpen);
+        if (!invoiceDetails && !invoiceEmailDetails) return;
+        const pdf = await generateFile();
+        const file = new File([pdf], `Invoice-${invoiceDetails.id}.pdf`, {
+          type: 'application/pdf',
+        });
+        await sendInvoice({
+          invoiceId: invoiceDetails?.id,
+          to: invoiceEmailDetails?.emailAddress,
+          subject: invoiceEmailDetails?.emailSubject,
+          body: invoiceEmailDetails?.emailBody,
+        }, file);
+
         break;
 
       case InvoiceActions.PREVIEW_INVOICE_PDF:
         if (!invoiceDetails) return;
-        const blob = await pdf(
-          <InvoicePreviewTemplate
-            invoice={invoiceDetails}
-            application={applicationDetails}
-          />,
-        ).toBlob();
-
+        const blob = await generateFile();
         const blobUrl = URL.createObjectURL(blob);
         window.open(blobUrl, '_blank');
 
@@ -626,25 +661,23 @@ const Invoice: React.FC = () => {
     invoiceItemsTableConfigs,
     invoiceAttachmentsTableConfigs,
     invoiceRecordPaymentForm,
+    invoiceEmailForm,
   } = GetInvoiceConfig(
-    viewMode,
-    taxExempt,
-    handleInputChange,
-    invoiceDetails,
-    !id,
     {
-      setSearchParam: setSearchParam,
-      options: invoiceDetails?.recipient
-        ? [
-            {
-              key: invoiceDetails?.recipient?.key,
-              value: invoiceDetails?.recipient?.value,
-            },
-          ]
-        : [],
-      filteredOptions: recipients?.getParticipantNames?.data ?? [],
-      loading: loading,
-    },
+      viewMode: viewMode,
+      isDisabled: taxExempt,
+      handleInputChange: handleInputChange,
+      invoiceDetails: invoiceDetails,
+      createMode: !id,
+      recipient: {
+        setSearchParam: setSearchParam,
+        options: isSendInvoiceOpen ? invoiceEmailDetails?.emailRecipient ?
+          [{ key: invoiceEmailDetails?.emailRecipient?.key, value: invoiceEmailDetails?.emailRecipient?.value }] : []
+          : invoiceDetails?.recipient ? [{ key: invoiceDetails?.recipient?.key, value: invoiceDetails?.recipient?.value }] : [],
+        filteredOptions: recipients?.getParticipantNames?.data ?? [],
+        loading: loading,
+      },
+    }
   );
 
   const validateInvoice = async () => {
@@ -706,6 +739,28 @@ const Invoice: React.FC = () => {
           });
       return invoiceItemsError;
     } catch (error: any) {
+      return error.message;
+    }
+  };
+
+  const validateInvoiceEmailDetails = () => {
+    try {
+      setErrors([]);
+      setHasErrors(false);
+      const errors = validateForm(invoiceEmailForm, invoiceEmailDetails, '');
+      if (errors?.length > 0) {
+        setErrors(errors);
+        setHasErrors(true);
+        return false;
+      }
+      if(!invoiceEmailDetails?.emailAddress) {
+        setErrors([{errorMessage: 'There is no email address to send the invoice. Please add a valid email address to send the invoice.'}]);
+        setHasErrors(true);
+        return false;
+      }
+      return true;
+    } 
+    catch (error: any) {
       return error.message;
     }
   };
@@ -886,7 +941,7 @@ const Invoice: React.FC = () => {
             <div className="d-flex  gap-3">
               <Button
                 variant="primary"
-                onClick={() => handleItemClick(InvoiceActions.SEND_INVOICE)}
+                onClick={() => setIsSendInvoiceOpen(!isSendInvoiceOpen)}
               >
                 {<PaperPlaneIcon />}
                 {InvoiceActions.SEND_INVOICE}
@@ -906,7 +961,7 @@ const Invoice: React.FC = () => {
                 <span>Balance: </span>
                 {`$${((invoiceDetails?.totalInCents ?? 0) / 100).toFixed(2)}`}
               </div>
-              <div>
+              {/* <div>
                 <Button
                   variant="secondary"
                   onClick={() =>
@@ -915,7 +970,7 @@ const Invoice: React.FC = () => {
                 >
                   {InvoiceActions.RECORD_INVOICE_PAYMENT}
                 </Button>
-              </div>
+              </div> */}
             </div>
           </div>
         )}
@@ -1075,9 +1130,64 @@ const Invoice: React.FC = () => {
             /> */}
           </>
         }
-        {/* <ViewInvoiceForm /> */}
+        {/* {isRecordPaymentOpen && (
+          <ModalDialog
+            closeHandler={() => setIsRecordPaymentOpen(!isRecordPaymentOpen)}
+            headerLabel="Record Payment"
+            customHeaderTextCss="custom-invoice-heading"
+            saveBtnLabel="Confirm"
+            showTickIcon={true}
+            saveButtonDisabled={true}
+          >
+            <Form
+              editMode={true}
+              formRows={invoiceRecordPaymentForm}
+              formData={{
+                recordPaymentDate: new Date(),
+                recordPaymentAmount: 0,
+              }}
+              handleInputChange={() => {}}
+            />
+          </ModalDialog>
+        )} */}
+        {isSendInvoiceOpen && (
+          <ModalDialog
+            headerLabel="Send Invoice"
+            customContentCss="custom-invoice-modal-content"
+            customHeaderTextCss="custom-invoice-heading"
+            discardOption={true}
+            saveBtnLabel='Send Invoice'
+            dicardBtnLabel='View Invoice'
+            cancelBtnLabel='Cancel'
+            customSaveIcon={<PaperPlaneIcon />}
+            discardHandler={() => handleItemClick(InvoiceActions.PREVIEW_INVOICE_PDF)}
+            validator={validateInvoiceEmailDetails}
+            closeHandler={ (response) =>{
+              if (response) {
+                handleItemClick(InvoiceActions.SEND_INVOICE);
+              }
+              setIsSendInvoiceOpen(false);
+            }}
+            >
+              <Form
+                editMode={true}
+                formRows={invoiceEmailForm}
+                formData={invoiceEmailDetails ?? {}}
+                handleInputChange={(invoicePropertyName: string, value: any) =>{
+                  let isRecipient = typeof value === 'object' && invoicePropertyName === 'personId';
+                  setInvoiceEmailDetails((prev: any) => ({
+                    ...prev,
+                    [invoicePropertyName]: isRecipient ? value?.key.trim() : value,
+                    emailAddress: isRecipient ? value?.metaData : prev?.emailAddress,
+                    emailRecipient: isRecipient ? { key: value?.key.trim(), value: value?.value?.trim() } : prev?.emailRecipient
+                  }))
+                }}
+            />
+          </ModalDialog>
+        )}
         {hasErrors && (
           <ModalDialog
+            cancelBtnLabel='Close'
             closeHandler={() => {
               setHasErrors(false);
             }}
@@ -1107,35 +1217,6 @@ const Invoice: React.FC = () => {
               </React.Fragment>
             }
           </ModalDialog>
-        )}
-        {isRecordPaymentOpen && (
-          <ModalDialog
-            closeHandler={() => setIsRecordPaymentOpen(!isRecordPaymentOpen)}
-            headerLabel="Record Payment"
-            customHeaderTextCss="custom-invoice-heading"
-            saveBtnLabel="Confirm"
-            showTickIcon={true}
-            saveButtonDisabled={true}
-          >
-            <Form
-              editMode={true}
-              formRows={invoiceRecordPaymentForm}
-              formData={{
-                recordPaymentDate: new Date(),
-                recordPaymentAmount: 0,
-              }}
-              handleInputChange={() => {
-                console.log('handleInputChange');
-              }}
-            />
-          </ModalDialog>
-        )}
-        {isSendInvoiceOpen && (
-          <ModalDialog
-            closeHandler={() => setIsSendInvoiceOpen(!isSendInvoiceOpen)}
-            headerLabel="Send Invoice"
-            customHeaderTextCss="error-modal-header-text"
-          ></ModalDialog>
         )}
       </PageContainer>
     </div>

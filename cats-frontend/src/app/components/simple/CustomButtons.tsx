@@ -10,57 +10,61 @@ interface ButtonProps {
   isDisabled?: boolean;
   variant?: ButtonVariant;
   showTickIcon?: boolean;
+  customIcon?: React.ReactNode;
 }
 
 interface ButtonWithLabelProps {
   clickHandler: (event: any) => void;
   label: string | number;
+  customIcon?: React.ReactNode;
 }
 
 export const SaveButton: React.FC<ButtonProps> = ({
   clickHandler,
-  label,
+  label = 'Save',
   showIcon,
   variant,
   isDisabled,
   showTickIcon = false,
+  customIcon = showTickIcon ? <TickIcon /> : <FloppyDisk />,
 }) => {
   showIcon = showIcon ?? true;
   return (
     <Button variant={variant} onClick={clickHandler} disabled={isDisabled}>
-      {!showTickIcon && showIcon && <FloppyDisk />}
-      {showTickIcon && showIcon && <TickIcon />}
-      {label && label !== '' ? label : 'Save'}
+      {customIcon}
+      {label}
     </Button>
   );
 };
 
 export const CancelButton: React.FC<ButtonProps> = ({
   clickHandler,
-  label,
+  label = 'Cancel',
   showIcon,
   variant,
   isDisabled,
+  customIcon = <XmarkIcon />,
 }) => {
   showIcon = showIcon ?? true;
   return (
     <Button variant={variant} onClick={clickHandler} disabled={isDisabled}>
-      {showIcon && <XmarkIcon />}
-      {label && label !== '' ? label : 'Cancel'}
+      {showIcon && customIcon}
+      {label}
     </Button>
   );
 };
 
 export const DiscardButton: React.FC<ButtonProps> = ({
   clickHandler,
-  label,
+  label = 'Discard Changes',
   showIcon,
+  customIcon = <XmarkIcon />,
 }) => {
   showIcon = showIcon ?? true;
   return (
     <Button variant="secondary" onClick={clickHandler}>
-      {showIcon && <XmarkIcon />}
-      {label && label !== '' ? label : 'Dicard Changes'}
+      {showIcon && customIcon}
+      {label}
     </Button>
   );
 };
@@ -68,11 +72,12 @@ export const DiscardButton: React.FC<ButtonProps> = ({
 export const CustomPillButton: React.FC<ButtonWithLabelProps> = ({
   clickHandler,
   label,
+  customIcon = <XmarkIcon className="custom-pill-close-btn" />,
 }) => {
   return (
     <div className="custom-pill-button" onClick={(e) => clickHandler(label)}>
       <span className="custom-pill-button-label">{label}</span>
-      <XmarkIcon className="custom-pill-close-btn" />
+      {customIcon}
     </div>
   );
 };
