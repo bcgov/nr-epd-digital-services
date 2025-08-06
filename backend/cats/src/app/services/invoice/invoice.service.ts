@@ -9,19 +9,19 @@ import { CreateInvoice } from '../../dto/invoice/createInvoice.dto';
 import { UpdateInvoice } from '../../dto/invoice/updateInvoice.dto';
 import { InvoiceItem } from '../../entities/invoiceItem.entity';
 import { InvoiceAttachment } from '../../entities/invoiceAttachment.entity';
+import { InvoiceEmail } from '../../dto/invoice/invoiceEmail/invoiceEmail.dto';
+import { ChesEmailService } from '../email/chesEmail.service';
 
 @Injectable()
 export class InvoiceService {
   constructor(
     @InjectRepository(InvoiceV2)
     private readonly invoiceRepository: Repository<InvoiceV2>,
-
     @InjectRepository(InvoiceItem)
     private readonly invoiceItemRepo: Repository<InvoiceItem>,
-
     @InjectRepository(InvoiceAttachment)
     private readonly invoiceAttachmentRepo: Repository<InvoiceAttachment>,
-    
+    private readonly emailService: ChesEmailService,
     private readonly loggerService: LoggerService,
   ) {}
 
@@ -85,6 +85,7 @@ export class InvoiceService {
           recipient: {
             key: invoice?.recipient?.id.toString(),
             value: `${invoice?.recipient?.firstName || ''} ${invoice?.recipient?.middleName || ''} ${invoice?.recipient?.lastName || ''}`.trim(),
+            metaData: invoice?.recipient?.email || '',
           },
         }
         return plainToInstance(ViewInvoice, result);
@@ -134,6 +135,7 @@ export class InvoiceService {
         recipient: {
           key: createdInvoice.personId.toString(),
           value: `${createdInvoice?.recipient?.firstName || ''} ${createdInvoice?.recipient?.middleName || ''} ${createdInvoice?.recipient?.lastName || ''}`.trim(),
+          metaData: createdInvoice?.recipient?.email || '',
         }
       });
       if(result){
@@ -264,6 +266,7 @@ export class InvoiceService {
           value: [fresh.recipient.firstName, fresh.recipient.middleName, fresh.recipient.lastName]
             .filter(Boolean)
             .join(' '),
+          metaData: fresh?.recipient?.email || '',
         },
       });
 
@@ -281,7 +284,6 @@ export class InvoiceService {
     }
   
   }
-
 
   async deleteInvoice(id: number){
     try {
@@ -305,4 +307,20 @@ export class InvoiceService {
     }
   }
 
+  async sendInvoice(invoice: InvoiceEmail, attachment?: any){
+    try {
+      await this.emailService.sendEmail(
+        [invoice.to],
+        invoice.subject,
+        invoice.body,
+        'text',
+        'normal',
+        attachment
+      );
+    } 
+    catch (error) {
+      this.loggerService.error(`InvoiceService: generateInvoicePdf: Error generating PDF: ${error.message}`, null);
+      throw new Error(`Failed to generate PDF for invoice ID ${invoice?.invoiceId}: ${error.message}`);
+    }
+  }
 }

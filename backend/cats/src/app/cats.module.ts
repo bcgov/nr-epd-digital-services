@@ -95,6 +95,7 @@ import { ServiceAssignmentFactor } from './entities/serviceAssignmentFactor';
 import { PermissionServiceType } from './entities/permissionServiceType';
 import { ApplicationSite } from './entities/applicationSite.entity';
 import { InvoiceItem } from './entities/invoiceItem.entity';
+import { EmailController } from './controllers/email.controller';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -200,6 +201,6 @@ import { InvoiceItem } from './entities/invoiceItem.entity';
     DashboardService,
     DashboardResolver,
   ],
-  controllers: [UserController],
+  controllers: [UserController, EmailController],
 })
 export class CatsModule { }
