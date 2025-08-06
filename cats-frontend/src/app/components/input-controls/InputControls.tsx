@@ -65,8 +65,9 @@ export const Link: React.FC<InputProps> = ({
   customContainerCss,
   href,
   componentName,
+  tableMode,
 }) => {
-  return renderTableCell(
+  const routerLink = (
     <RouterLink
       to={href + value}
       className={`d-flex pt-1 ${styles.baseTableLinkStyles} ${customInputTextCss ?? ''}`}
@@ -76,9 +77,10 @@ export const Link: React.FC<InputProps> = ({
     >
       {customIcon && customIcon}{' '}
       <span className="ps-1">{customLinkValue ?? value}</span>
-    </RouterLink>,
-    customContainerCss,
+    </RouterLink>
   );
+  if (tableMode) return renderTableCell(routerLink, customContainerCss);
+  return <div className={`${customContainerCss ?? ''}`}>{routerLink}</div>;
 };
 
 export const IconButton: React.FC<InputProps> = ({
@@ -1067,10 +1069,10 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
 
   const handler = handleSearch ?? ((e) => {});
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilteredOpts([]);
     const searchTerm = event.target.value;
-    handler(searchTerm);
     setSearchTerm(searchTerm);
+    setFilteredOpts([]);
+    handler(searchTerm);
   };
 
   useEffect(() => {
@@ -1082,7 +1084,7 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
     setSearchTerm('');
     setFilteredOpts([]);
     setIsClear(true);
-    //handler('');
+    handler('');
   };
 
   // Function to handle clicks outside the div element

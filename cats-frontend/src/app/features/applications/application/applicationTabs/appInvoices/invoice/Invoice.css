@@ -1,0 +1,228 @@
+.invoice_balance {
+  font-family: Noto Sans !important;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 30.61px;
+  color: var(--typography-color-primary, #2d2d2d);
+}
+
+.invoice_balance span {
+  font-weight: 700;
+  font-weight: 700;
+}
+
+.invoice_widget_lbl_container {
+  padding: var(--layout-padding-small) 0px var(--layout-padding-small) 0px;
+  padding: var(--layout-padding-small) 0px var(--layout-padding-small) 0px;
+}
+
+.custom-invoice-edit-lbl {
+  font-family: Noto Sans !important;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: var(--typography-color-primary, #2d2d2d);
+  font-family: Noto Sans !important;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: var(--typography-color-primary, #2d2d2d);
+}
+
+a.custom-invoice-edit-lbl {
+  font-family: Noto Sans !important;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  gap: var(--layout-margin-xsmall);
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--surface-color-primary-default, #053662);
+  font-family: Noto Sans !important;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  gap: var(--layout-margin-xsmall);
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--surface-color-primary-default, #053662);
+}
+
+.custom-invoice-lbl {
+  font-family: Noto Sans !important;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
+  color: var(--typography-color-secondary, #474543);
+  font-family: Noto Sans !important;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
+  color: var(--typography-color-secondary, #474543);
+}
+
+.custom-invoice-txt {
+  font-family: Noto Sans !important;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 27.01px;
+  color: var(--typography-color-primary, #2d2d2d);
+  padding-top: 0 !important;
+  font-family: Noto Sans !important;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 27.01px;
+  color: var(--typography-color-primary, #2d2d2d);
+  padding-top: 0 !important;
+}
+
+a.custom-invoice-txt {
+  color: var(--typography-color-link, #255a90);
+  color: var(--typography-color-link, #255a90);
+}
+
+a.custom-invoice-txt:hover {
+  color: var(--typography-color-link-hover, #1a3f6b);
+  color: var(--typography-color-link-hover, #1a3f6b);
+}
+
+.custom-invoice-edit-txt {
+  font-family: Noto Sans !important;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--typography-color-secondary, #474543);
+  font-family: Noto Sans !important;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--typography-color-secondary, #474543);
+}
+
+.custom-invoice-edit-txt
+  .rs-input-group.rs-input-group-inside
+  .rs-input-group-addon {
+  top: 0;
+  background: none;
+  border: none;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.custom-invoice-edit-txt .rs-input {
+  padding: 10px 11px !important;
+}
+
+.custom-switch-container {
+  padding: 40px 0 0 0;
+}
+
+.custom-invoice-items-txt {
+  font-family: Noto Sans !important;
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+  color: var(--typography-color-secondary, #474543) !important;
+}
+
+.custom-invoice-items-tbl-header {
+  font-family: Noto Sans;
+  text-align: center;
+  vertical-align: middle;
+  min-width: 100px;
+}
+
+.invoice-widget-total-container {
+  padding: 0 0px var(--layout-padding-small) 0px;
+  border-bottom: 1px solid var(--surface-border-light, #d8d8d8);
+}
+
+.custom-modal-error-header-text {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 34px;
+  text-align: left;
+  color: #f00;
+}
+
+.custom-modal-data-text {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 27.01px;
+  text-align: left;
+  color: #000000;
+}
+
+.custom-fu-drop-area {
+  border: 1px dashed var(--surface-color-border-default, #d8d8d8);
+  border-radius: 6px;
+  padding: 8px var(--layout-padding-medium) 8px var(--layout-padding-medium);
+  background: var(--theme-gray-20, #f3f2f1);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.custom-fu-icon-wrapper .custom-invoice-txt,
+.custom-fu-icon-wrapper svg {
+  color: var(--typography-color-link, #255a90) !important;
+}
+
+.custom-fu-icon-wrapper:hover .custom-invoice-txt,
+.custom-fu-icon-wrapper:hover svg {
+  color: var(--typography-color-link-hover, #1a3f6b) !important;
+}
+
+.custom-fu-icon-wrapper svg {
+  width: 10px;
+  height: 15px;
+  transform: rotate(136deg);
+  opacity: 1;
+  top: 0.5px;
+  left: 4.5px;
+  color: #999;
+  fill: currentColor;
+}
+
+.invoice_detail_conatiner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-margin-xxlarge);
+}
+
+.invoice_lbl {
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--typography-color-primary, #2d2d2d);
+}
+
+.invoice_type_lbl {
+  font-weight: 700;
+}
+
+.invoice_id_lbl {
+  font-weight: 400;
+}
+
+.invoice_subject_lbl {
+  font-weight: 400;
+  color: var(--typography-color-secondary, #474543);
+}
+
+.custom_dot {
+  font-family: Noto Sans;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--typography-color-disabled, #9f9d9c);
+}
+
+.invoice_page_container {
+  padding: 0 var(--layout-margin-xxlarge) var(--layout-margin-huge)
+    var(--layout-margin-xxlarge);
+  gap: var(--layout-margin-xxlarge);
+  display: flex;
+  flex-direction: column;
+}

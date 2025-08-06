@@ -19,6 +19,12 @@ interface ImportMetaEnv {
   readonly VITE_FORM_FLOW_API: string;
   readonly VITE_CATS_CSSA_MANAGER_ROLE: string;
   readonly VITE_SITE_REGISTRY_URL: string;
+  readonly VITE_COMS_API: string;
+  readonly VITE_S3_STORAGE_ENDPOINT: string;
+  readonly VITE_S3_STORAGE_BUCKET: string;
+  readonly VITE_S3_STORAGE_REGION: string;
+  readonly VITE_S3_STORAGE_ACCESS_KEY_ID: string;
+  readonly VITE_S3_STORAGE_SECRET_ACCESS_KEY: string;
 }
 
 interface ImportMeta {

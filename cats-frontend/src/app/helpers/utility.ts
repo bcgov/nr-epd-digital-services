@@ -52,7 +52,7 @@ export const formatDateRange = (
 //Normalize date returned in string format e.g. '2025-06-03' (string) will be normalized to 2025-06-03T00:00:00 local
 export const parseLocalDate = (dateString: string) => {
   // Check if it's a full ISO string with time (UTC or timezone-aware)
-  if (dateString.includes('T')) {
+  if (dateString?.includes('T')) {
     const date = new Date(dateString);
     // Normalize to local midnight
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
@@ -408,4 +408,93 @@ export function sortArray<T>(
       return bValue > aValue ? 1 : bValue < aValue ? -1 : 0;
     }
   });
+}
+
+export const validateForm = (
+  formRows: IFormField[][],
+  formData: any,
+  source: string,
+) => {
+  const errors: any[] = [];
+  const traverse = (
+    rows: IFormField[][],
+    data: any,
+    parentLabel: string = source,
+    parentIndex: string = '',
+  ) => {
+    rows.forEach((items) => {
+      items.forEach((row) => {
+        const propertyName = row.graphQLPropertyName;
+
+        // Ensure graphQLPropertyName exists
+        if (propertyName) {
+          const fieldValue = data[propertyName];
+
+          // Validate the current field
+          if (row.validation?.required && !fieldValue) {
+            // Building the error label with index
+            const errorLabel = parentIndex
+              ? `${parentLabel} [${parseInt(parentIndex, 10) + 1}] ${row?.validation.customMessage}`
+              : `${parentLabel} ${row?.validation.customMessage}`;
+
+            errors.push({
+              label: row.label,
+              errorMessage: errorLabel,
+            });
+          }
+
+          // Recursively handle children
+          if (row.children && Array.isArray(data[propertyName])) {
+            const childData = data[propertyName];
+            childData.forEach((child: any, index: number) => {
+              traverse(
+                row.children as any,
+                child,
+                `${parentLabel} [${parentIndex}] ${row.label}`,
+                `${index + 1}`,
+              );
+            });
+          }
+        }
+      });
+    });
+  };
+
+  // Handle both arrays and single objects
+  if (Array.isArray(formData)) {
+    formData.forEach((item, index) =>
+      traverse(formRows, item, source, `${item.position}`),
+    );
+  } else {
+    traverse(formRows, formData, source);
+  }
+
+  return errors;
+};
+
+/**
+ * Cleans up a GraphQL payload by removing specified keys.
+ * @param {any} obj - The object to clean.
+ * @param {string[]} fieldsToStrip - An array of keys to remove from the object
+ * (default: ['__typename', 'recipient', 'whoUpdated']).
+ * @returns {any} The cleaned up object.
+ */
+const DEFAULT_STRIP_KEYS = ['__typename'];
+
+export function cleanGraphQLPayload(
+  obj: any,
+  fieldsToStrip: string[] = DEFAULT_STRIP_KEYS,
+): any {
+  if (Array.isArray(obj)) {
+    return obj.map((item) => cleanGraphQLPayload(item, fieldsToStrip));
+  } else if (obj && typeof obj === 'object') {
+    const newObj: any = {};
+    for (const key in obj) {
+      if (!fieldsToStrip.includes(key)) {
+        newObj[key] = cleanGraphQLPayload(obj[key], fieldsToStrip);
+      }
+    }
+    return newObj;
+  }
+  return obj;
 }

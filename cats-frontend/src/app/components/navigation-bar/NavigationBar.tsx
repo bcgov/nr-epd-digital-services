@@ -13,6 +13,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
   customChildernCss,
   childern,
   onClickBackButton,
+  buttonIcon,
 }) => {
   return (
     <div
@@ -20,7 +21,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
     >
       <div className="d-flex gap-4 flex-wrap align-items-center">
         <Button onClick={onClickBackButton} {...backButtonProps}>
-          <AngleLeft />
+          {buttonIcon || <AngleLeft />}
           {backButtonText}
         </Button>
         <div
