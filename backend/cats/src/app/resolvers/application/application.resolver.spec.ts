@@ -64,7 +64,7 @@ describe('ApplicationResolver', () => {
 
   it('should create an application successfully', async () => {
     const createApplicationDto: CreateApplication = {
-      siteId: 123,
+      siteIds: [123, 111],
       appTypeAbbrev: 'CSR',
       receivedDate: new Date(),
       applicationStatus: [
@@ -106,7 +106,7 @@ describe('ApplicationResolver', () => {
 
   it('should return an error when creation of application fails', async () => {
     const createApplicationDto: CreateApplication = {
-      siteId: 123,
+      siteIds: [123, 111],
       appTypeAbbrev: 'TEST',
       receivedDate: new Date(),
       applicationStatus: [

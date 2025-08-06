@@ -93,7 +93,10 @@ import { RecentViewedApplication } from './entities/recentViewedApplication.enti
 import { StatusTypeService } from './services/statusType/statusType.service';
 import { ServiceAssignmentFactor } from './entities/serviceAssignmentFactor';
 import { PermissionServiceType } from './entities/permissionServiceType';
-import { InvoiceItem } from './entities/invoiceItem.entity';
+import { InvoiceAttachmentResolver } from './resolvers/invoice/invoiceAttachment.resolver';
+import { InvoiceAttachmentService } from './services/invoice/invoiceAttachment.service';
+import { ComsService } from './services/coms/coms.service';
+import { ApplicationSite } from './entities/applicationSite.entity';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -158,6 +161,7 @@ import { InvoiceItem } from './entities/invoiceItem.entity';
       RecentViewedApplication,
       ServiceAssignmentFactor,
       PermissionServiceType,
+      ApplicationSite,
     ]),
     HttpModule,
   ],
@@ -200,4 +204,4 @@ import { InvoiceItem } from './entities/invoiceItem.entity';
   ],
   controllers: [UserController],
 })
-export class CatsModule {}
+export class CatsModule { }
