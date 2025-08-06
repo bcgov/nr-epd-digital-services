@@ -193,6 +193,6 @@ a.custom-invoice-txt:hover {
   flex-direction: column;
 }
 
-.custom-invoice-placeholder{
+.custom-invoice-placeholder {
   color: var(--typography-color-disabled, #9f9d9c) !important;
 }

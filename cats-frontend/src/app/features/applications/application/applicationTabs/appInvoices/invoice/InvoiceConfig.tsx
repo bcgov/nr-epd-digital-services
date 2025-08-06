@@ -15,7 +15,6 @@ import { getObject } from './services/coms.service';
 import { InvoiceItemTypes } from '../enums/invoiceItemTypes';
 import { GetInvoiceRecipientNamesQuery } from '../graphql/Invoice.generated';
 
-
 interface RecipientConfig {
   setSearchParam: (searchParam: string) => void;
   options: GetInvoiceRecipientNamesQuery['getParticipantNames']['data'];
@@ -57,7 +56,7 @@ export const GetInvoiceConfig = ({
       placeholder={'Enter search term...'}
       options={recipient?.options || []}
       value={invoiceDetails?.personId || ''}
-      onChange={(value) => handleInputChange('personId', value) }
+      onChange={(value) => handleInputChange('personId', value)}
       type={FormFieldType.DropDownWithSearch}
       handleSearch={recipient?.setSearchParam}
       filteredOptions={recipient?.filteredOptions || []}
@@ -344,8 +343,8 @@ export const GetInvoiceConfig = ({
       customInputTextCss: 'custom-invoice-txt',
       customEditInputTextCss: 'custom-invoice-edit-txt',
     },
-    invoiceEmailRecipient: { 
-      type:FormFieldType.DropDownWithSearch,
+    invoiceEmailRecipient: {
+      type: FormFieldType.DropDownWithSearch,
       label: 'E-mail Recipient',
       placeholder: 'Please select e-mail recipient...',
       graphQLPropertyName: 'personId',
@@ -354,27 +353,21 @@ export const GetInvoiceConfig = ({
       customLabelCss: 'custom-invoice-lbl',
       customEditLabelCss: 'custom-invoice-edit-lbl',
       customInputTextCss: 'custom-invoice-txt',
-      customEditInputTextCss: 'custom-invoice-edit-txt',  
+      customEditInputTextCss: 'custom-invoice-edit-txt',
       options: recipient?.options || [],
       handleSearch: recipient?.setSearchParam,
       filteredOptions: recipient?.filteredOptions || [],
       validation: {
         required: true,
         customMessage: 'Please select e-mail recipient.',
-      }
-    }
+      },
+    },
   };
 
   const invoiceEmailForm: IFormField[][] = [
-    [
-      invoiceForm.invoiceEmailRecipient,
-    ],
-    [
-      invoiceForm.invoiceEmailSubject,
-    ],
-    [
-      invoiceForm.invoiceEmailBody,
-    ],
+    [invoiceForm.invoiceEmailRecipient],
+    [invoiceForm.invoiceEmailSubject],
+    [invoiceForm.invoiceEmailBody],
   ];
 
   const applicationDetailsForm: IFormField[][] = [

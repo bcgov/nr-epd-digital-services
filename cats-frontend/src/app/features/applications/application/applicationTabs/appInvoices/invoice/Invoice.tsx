@@ -210,17 +210,26 @@ const Invoice: React.FC = () => {
         setRequestStatus(RequestStatus.loading);
       }
 
-      if (invoiceData?.getInvoiceById?.data && applicationData?.getApplicationDetailsById?.data) {
-        const emailBody = InvoiceEmailTemplate(invoiceData?.getInvoiceById?.data, applicationData?.getApplicationDetailsById?.data);
+      if (
+        invoiceData?.getInvoiceById?.data &&
+        applicationData?.getApplicationDetailsById?.data
+      ) {
+        const emailBody = InvoiceEmailTemplate(
+          invoiceData?.getInvoiceById?.data,
+          applicationData?.getApplicationDetailsById?.data,
+        );
         setInvoiceEmailDetails((prev: any) => ({
           ...prev,
           emailBody: emailBody.trim(),
           personId: invoiceData?.getInvoiceById?.data?.personId,
-          emailRecipient: invoiceData?.getInvoiceById?.data?.recipient || { key: '0', value: '' },
-          emailAddress: invoiceData?.getInvoiceById?.data?.recipient?.metaData || '',
+          emailRecipient: invoiceData?.getInvoiceById?.data?.recipient || {
+            key: '0',
+            value: '',
+          },
+          emailAddress:
+            invoiceData?.getInvoiceById?.data?.recipient?.metaData || '',
         }));
       }
-
     } else {
       setViewMode(UserMode.EditMode);
     }
@@ -351,15 +360,15 @@ const Invoice: React.FC = () => {
         <InvoicePreviewTemplate
           invoice={invoiceDetails}
           application={applicationDetails}
-        />
+        />,
       ).toBlob();
 
       return blob;
     } catch (error) {
-      console.error("Error generating the PDF:", error);
+      console.error('Error generating the PDF:', error);
       throw error;
     }
-  }
+  };
   const handleItemClick = async (action: string) => {
     switch (action) {
       case InvoiceActions.EDIT_INVOICE:
@@ -536,20 +545,21 @@ const Invoice: React.FC = () => {
         const file = new File([pdf], `Invoice-${invoiceDetails.id}.pdf`, {
           type: 'application/pdf',
         });
-        await sendInvoice({
-          invoiceId: invoiceDetails?.id,
-          to: invoiceEmailDetails?.emailAddress,
-          subject: invoiceEmailDetails?.emailSubject,
-          body: invoiceEmailDetails?.emailBody,
-        }, file)
-        .then((res: any) => {
-            if(res?.success)
-            {
+        await sendInvoice(
+          {
+            invoiceId: invoiceDetails?.id,
+            to: invoiceEmailDetails?.emailAddress,
+            subject: invoiceEmailDetails?.emailSubject,
+            body: invoiceEmailDetails?.emailBody,
+          },
+          file,
+        )
+          .then((res: any) => {
+            if (res?.success) {
               setIsSendInvoiceOpen(false);
             }
-          }
-        )
-        .catch((err: any) => console.error(err));
+          })
+          .catch((err: any) => console.error(err));
 
         break;
 
@@ -677,23 +687,35 @@ const Invoice: React.FC = () => {
     invoiceAttachmentsTableConfigs,
     invoiceRecordPaymentForm,
     invoiceEmailForm,
-  } = GetInvoiceConfig(
-    {
-      viewMode: viewMode,
-      isDisabled: taxExempt,
-      handleInputChange: handleInputChange,
-      invoiceDetails: invoiceDetails,
-      createMode: !id,
-      recipient: {
-        setSearchParam: setSearchParam,
-        options: isSendInvoiceOpen ? invoiceEmailDetails?.emailRecipient ?
-          [{ key: invoiceEmailDetails?.emailRecipient?.key, value: invoiceEmailDetails?.emailRecipient?.value }] : []
-          : invoiceDetails?.recipient ? [{ key: invoiceDetails?.recipient?.key, value: invoiceDetails?.recipient?.value }] : [],
-        filteredOptions: recipients?.getParticipantNames?.data ?? [],
-        loading: loading,
-      },
-    }
-  );
+  } = GetInvoiceConfig({
+    viewMode: viewMode,
+    isDisabled: taxExempt,
+    handleInputChange: handleInputChange,
+    invoiceDetails: invoiceDetails,
+    createMode: !id,
+    recipient: {
+      setSearchParam: setSearchParam,
+      options: isSendInvoiceOpen
+        ? invoiceEmailDetails?.emailRecipient
+          ? [
+              {
+                key: invoiceEmailDetails?.emailRecipient?.key,
+                value: invoiceEmailDetails?.emailRecipient?.value,
+              },
+            ]
+          : []
+        : invoiceDetails?.recipient
+          ? [
+              {
+                key: invoiceDetails?.recipient?.key,
+                value: invoiceDetails?.recipient?.value,
+              },
+            ]
+          : [],
+      filteredOptions: recipients?.getParticipantNames?.data ?? [],
+      loading: loading,
+    },
+  });
 
   const validateInvoice = async () => {
     try {
@@ -768,14 +790,18 @@ const Invoice: React.FC = () => {
         setHasErrors(true);
         return false;
       }
-      if(!invoiceEmailDetails?.emailAddress) {
-        setErrors([{errorMessage: 'There is no email address to send the invoice. Please add a valid email address to send the invoice.'}]);
+      if (!invoiceEmailDetails?.emailAddress) {
+        setErrors([
+          {
+            errorMessage:
+              'There is no email address to send the invoice. Please add a valid email address to send the invoice.',
+          },
+        ]);
         setHasErrors(true);
         return false;
       }
       return true;
-    } 
-    catch (error: any) {
+    } catch (error: any) {
       return error.message;
     }
   };
@@ -1171,38 +1197,48 @@ const Invoice: React.FC = () => {
             customContentCss="custom-invoice-modal-content"
             customHeaderTextCss="custom-invoice-heading"
             discardOption={true}
-            saveBtnLabel='Send Invoice'
-            dicardBtnLabel='View Invoice'
-            cancelBtnLabel='Cancel'
+            saveBtnLabel="Send Invoice"
+            dicardBtnLabel="View Invoice"
+            cancelBtnLabel="Cancel"
             customSaveIcon={<PaperPlaneIcon />}
-            discardHandler={() => handleItemClick(InvoiceActions.PREVIEW_INVOICE_PDF)}
+            discardHandler={() =>
+              handleItemClick(InvoiceActions.PREVIEW_INVOICE_PDF)
+            }
             validator={validateInvoiceEmailDetails}
-            closeHandler={ (response) =>{
+            closeHandler={(response) => {
               if (response) {
                 handleItemClick(InvoiceActions.SEND_INVOICE);
               }
               setIsSendInvoiceOpen(false);
             }}
-            >
-              <Form
-                editMode={true}
-                formRows={invoiceEmailForm}
-                formData={invoiceEmailDetails ?? {}}
-                handleInputChange={(invoicePropertyName: string, value: any) =>{
-                  let isRecipient = typeof value === 'object' && invoicePropertyName === 'personId';
-                  setInvoiceEmailDetails((prev: any) => ({
-                    ...prev,
-                    [invoicePropertyName]: isRecipient ? value?.key.trim() : value,
-                    emailAddress: isRecipient ? value?.metaData : prev?.emailAddress,
-                    emailRecipient: isRecipient ? { key: value?.key.trim(), value: value?.value?.trim() } : prev?.emailRecipient
-                  }))
-                }}
+          >
+            <Form
+              editMode={true}
+              formRows={invoiceEmailForm}
+              formData={invoiceEmailDetails ?? {}}
+              handleInputChange={(invoicePropertyName: string, value: any) => {
+                let isRecipient =
+                  typeof value === 'object' &&
+                  invoicePropertyName === 'personId';
+                setInvoiceEmailDetails((prev: any) => ({
+                  ...prev,
+                  [invoicePropertyName]: isRecipient
+                    ? value?.key.trim()
+                    : value,
+                  emailAddress: isRecipient
+                    ? value?.metaData
+                    : prev?.emailAddress,
+                  emailRecipient: isRecipient
+                    ? { key: value?.key.trim(), value: value?.value?.trim() }
+                    : prev?.emailRecipient,
+                }));
+              }}
             />
           </ModalDialog>
         )}
         {hasErrors && (
           <ModalDialog
-            cancelBtnLabel='Close'
+            cancelBtnLabel="Close"
             closeHandler={() => {
               setHasErrors(false);
             }}

@@ -88,8 +88,7 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
     // Add discard logic here
     if (discardHandler) {
       discardHandler();
-    }
-    else {
+    } else {
       // Close the modal after discarding
       setOpen(false);
       closeHandler('discard');
