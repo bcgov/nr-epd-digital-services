@@ -92,3 +92,7 @@ a.custom-apps-modal-lbl {
       -0.6px 0 1.8px 0 #0000001a !important;
   }
 }
+
+.custom-staff-modal-content {
+  min-width: 50vw;
+}

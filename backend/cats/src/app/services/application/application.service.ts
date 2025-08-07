@@ -44,7 +44,7 @@ export class ApplicationService {
       const newApplication = this.applicationRepository.create({
         siteId: createApplication.siteIds[0],// in case the application has mutliple site, we store the first site id for consistency
         appTypeId: appType?.id,
-        isMultiSite: siteIds.length == 0 ? false : true,
+        isMultiSite: siteIds.length > 1 ? true : false,
         rowVersionCount: 1,
         createdBy: 'SYSTEM',
         updatedBy: 'SYSTEM',

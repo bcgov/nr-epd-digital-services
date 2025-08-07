@@ -7,7 +7,7 @@ import ApplicationType from '../constants/applicationType';
 
 @Injectable()
 export class CatsService {
-  constructor() {}
+  constructor() { }
 
   getSiteIdsFromFormData = (formData: any) => {
     switch (formData.hdnAppType) {
@@ -21,6 +21,15 @@ export class CatsService {
           .map((id: string) => id.trim())
           .filter((id: string) => id !== '')
           .map(Number);
+      case ApplicationType.DERA:
+        return (
+          formData.siteIdNumber
+            ?.toString()
+            .split(',')
+            .map((id: string) => id.trim())
+            .filter((id: string) => id !== '')
+            .map(Number) || []
+        );
       default:
         return (
           formData.siteId
