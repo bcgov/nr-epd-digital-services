@@ -166,6 +166,9 @@ jobs:
             --set-string global.secrets.keycloakAuthURL="${{ secrets.KEYCLOAK_AUTH_URL }}" \
             --set-string global.secrets.KEYCLOAK_SITE_SERVICE_CLIENT_SECRET="${{ secrets.KEYCLOAK_SITE_SERVICE_CLIENT_SECRET }}" \
             --set-string global.secrets.chesClientID="${{ secrets.CHES_CLIENT_ID }}" \
+            --set-string global.secrets.s3StorageBucket="${{ secrets.VITE_S3_STORAGE_BUCKET }}" \
+            --set-string global.secrets.s3StorageAccessKeyId="${{ secrets.VITE_S3_STORAGE_ACCESS_KEY_ID }}" \
+            --set-string global.secrets.s3StorageSecretAccessKey="${{ secrets.VITE_S3_STORAGE_SECRET_ACCESS_KEY }}" \
             --set-string global.secrets.chesClientSecret="${{ secrets.CHES_CLIENT_SECRET }}" \
             --set-string global.config.REACT_APP_AUTH_LOGOUT_REDIRECT_URI="${{ inputs.redirect_uri}}" \
             --set-string global.config.dbUser=${{ inputs.db_user }} \

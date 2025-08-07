@@ -62,5 +62,3 @@ frontend:
     VITE_FORM_API: "https://forms-flow-api-e38158-dev.apps.silver.devops.gov.bc.ca"
     VITE_FORM_BACKEND_API: "https://epd-backend-applications-dev.apps.silver.devops.gov.bc.ca"
     VITE_FORM_FLOW_API: "https://forms-flow-forms-e38158-dev.apps.silver.devops.gov.bc.ca"
-
-
