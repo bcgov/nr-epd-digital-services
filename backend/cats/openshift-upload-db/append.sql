@@ -1,26 +1,6 @@
 -- BELOW IS CUSTOM EPD TWEAKS
 -- CUSTOM APPEND FILE
 
--- Custom code from Team Ada to reset indices of imported data, so new inserts will work correctly with auto-generated id
-SELECT setval(
-        'cats.application_id_seq',
-        (SELECT MAX(id) FROM cats.application) + 1,
-        false
-      );
-
-
-SELECT setval(
-        'cats.participant_role_id_seq',
-        (SELECT MAX(id) FROM cats.participant_role) + 1,
-        false
-      );
-
-SELECT setval(
-        'cats.person_id_seq',
-        (SELECT MAX(id) FROM cats.person) + 1,
-        false
-      );
-
 
 -- Custom types so that submissions over API for all form types will work.
 INSERT INTO cats.app_type VALUES (4, 'SDS', 'Site Disclosure Statement', 16777215, 10053120, true, 100, 0, 'sysadmin', '2019-01-08 11:58:00', 'sysadmin', '2019-01-08 11:58:00', '\x0000000000001c07');
@@ -33,20 +13,9 @@ INSERT INTO cats.app_type VALUES (9, 'SOSC', 'Summary of Site Condition', 167772
 
 
 
--- Set "STAFF" role for some, matching earlier migration
-UPDATE cats.participant_role
-SET role_type = 'STAFF'
-WHERE abbrev IN ('SDM', 'CSWKR');
-
-UPDATE cats.participant_role
-SET assignment_factor =1
-WHERE abbrev = 'SDM';
-
-UPDATE cats.participant_role
-SET assignment_factor =2
-WHERE abbrev = 'CSWKR';
-
-
+-- Custom script so that it resets the indexes and sequences in our tables.
+-- Necessary, because wtihout it new inserts will go for conflicting ids.
+DO $$
 DECLARE
     rec RECORD;
     seq_name TEXT;
