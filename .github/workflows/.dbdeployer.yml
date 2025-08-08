@@ -108,7 +108,8 @@ jobs:
         run: |
           echo 'Deploying crunchy helm chart'
           if [ ${{ inputs.s3_enabled }} == true ]; then
-            helm upgrade --install --wait \
+          echo "Remove helm dry run after testing"
+            helm upgrade --dry-run --debug --install --wait \
              --set-string crunchy.pgBackRest.s3.accessKey=${{ secrets.s3_access_key }} \
               --set-string crunchy.pgBackRest.s3.secretKey=${{ secrets.s3_secret_key }} \
               --values ${{ inputs.values }} postgres  .
