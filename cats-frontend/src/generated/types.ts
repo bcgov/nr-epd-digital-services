@@ -163,6 +163,22 @@ export type ApplicationStatusResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type Coms = {
+  __typename?: 'Coms';
+  bucketId?: Maybe<Scalars['String']['output']>;
+  downloadUrl?: Maybe<Scalars['String']['output']>;
+  objectId?: Maybe<Scalars['String']['output']>;
+};
+
+export type ComsResponse = {
+  __typename?: 'ComsResponse';
+  data?: Maybe<Coms>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type CreateAppParticipantDto = {
   applicationId: Scalars['Float']['input'];
   createdBy?: InputMaybe<Scalars['String']['input']>;
@@ -273,6 +289,11 @@ export type DetailField = {
   id: Scalars['Float']['output'];
 };
 
+export enum DownloadType {
+  Proxy = 'PROXY',
+  Url = 'URL'
+}
+
 export type DropdownDto = {
   __typename?: 'DropdownDto';
   key: Scalars['String']['output'];
@@ -363,11 +384,14 @@ export type Mutation = {
   createAppParticipant: CreateAppParticipantsResponse;
   createApplication: ApplicationResponse;
   createApplicationNote: ApplicationNotesResponse;
+  createBucket: ComsResponse;
   createInvoice: InvoiceResponse;
   createPerson: PersonResponse;
   createPersonNote: PersonNoteResponse;
   deleteApplicationNotes: ApplicationNotesResponse;
+  deleteBucket: ComsResponse;
   deleteInvoice: InvoiceResponse;
+  deleteObject: ComsResponse;
   deletePersonNote: PersonNoteResponse;
   updateAppParticipant: UpdateAppParticipantsResponse;
   updateApplicationHousing: ApplicationHousingResponse;
@@ -403,6 +427,12 @@ export type MutationCreateApplicationNoteArgs = {
 };
 
 
+export type MutationCreateBucketArgs = {
+  bucketKey: Scalars['String']['input'];
+  bucketName: Scalars['String']['input'];
+};
+
+
 export type MutationCreateInvoiceArgs = {
   invoice: CreateInvoice;
 };
@@ -423,8 +453,19 @@ export type MutationDeleteApplicationNotesArgs = {
 };
 
 
+export type MutationDeleteBucketArgs = {
+  bucketId: Scalars['String']['input'];
+};
+
+
 export type MutationDeleteInvoiceArgs = {
   invoiceId: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteObjectArgs = {
+  objectId: Scalars['String']['input'];
+  versionId?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -558,6 +599,7 @@ export type Query = {
   getHousingTypes: HousingTypeResponse;
   getInvoiceById: InvoiceResponse;
   getInvoices: InvoicesResponse;
+  getObject: ComsResponse;
   getOrganizations: DropdownResponse;
   getParticipantNames: DropdownResponse;
   getPermissions: PermissionsResponse;
@@ -626,6 +668,12 @@ export type QueryGetInvoiceByIdArgs = {
 
 export type QueryGetInvoicesArgs = {
   applicationId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetObjectArgs = {
+  downloadType?: InputMaybe<DownloadType>;
+  objectId: Scalars['String']['input'];
 };
 
 

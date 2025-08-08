@@ -2,7 +2,7 @@ import {
   FormFieldType,
   IFormField,
 } from '@cats/components/input-controls/IFormField';
-import { InvoiceStatus } from '../../../../../../../generated/types';
+import { DownloadType, InvoiceStatus } from '../../../../../../../generated/types';
 import { UserMode } from '@cats/helpers/requests/userMode';
 import { ColumnSize, TableColumn } from '@cats/components/table/TableColumn';
 import { FaTimes } from 'react-icons/fa';
@@ -13,7 +13,7 @@ import {
 import { RequestStatus } from '@cats/helpers/requests/status';
 import { getObject } from './services/coms.service';
 import { InvoiceItemTypes } from '../enums/invoiceItemTypes';
-import { GetInvoiceRecipientNamesQuery } from '../graphql/Invoice.generated';
+import { GetInvoiceRecipientNamesQuery, useGetObjectQuery } from '../graphql/Invoice.generated';
 
 interface RecipientConfig {
   setSearchParam: (searchParam: string) => void;
@@ -29,22 +29,32 @@ interface GetInvoiceConfigParams {
   invoiceDetails?: any;
   createMode?: boolean;
   recipient?: RecipientConfig;
+  viewFileHandler: (objectId: any) => void;
 }
 
 export const GetInvoiceConfig = ({
   viewMode,
   isDisabled = false,
   handleInputChange = () => {},
+  viewFileHandler,
   invoiceDetails = {},
   createMode = false,
   recipient,
 }: GetInvoiceConfigParams) => {
-  const viewFileHandler = async (objectId: any) => {
-    if (!!objectId?.trim()) {
-      const response = await getObject(objectId);
-      window.open(response, '_blank');
-    }
-  };
+  // const viewFileHandler = async (objectId: any) => {
+  //   if (!!objectId?.trim()) {
+  //     console.log('viewFileHandler');
+  //     const { data: response } = useGetObjectQuery({
+  //       variables: {
+  //         objectId: objectId,
+  //         downloadType: DownloadType.Url,
+  //       },
+  //     });
+  //     console.log(response);
+  //     // const response = await getObject(objectId);
+  //     // window.open(response, '_blank');
+  //   }
+  // };
   const customInvoiceRecipient = (
     <DropdownSearchInput
       label={'Invoice Recipient'}

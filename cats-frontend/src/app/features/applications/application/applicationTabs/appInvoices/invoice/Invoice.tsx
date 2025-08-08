@@ -25,14 +25,20 @@ import LoadingOverlay from '@cats/components/loader/LoadingOverlay';
 import InvoicePreviewTemplate from './InvoicePreviewTemplate';
 import {
   GetInvoiceByIdDocument,
+  useCreateBucketMutation,
   useCreateInvoiceMutation,
+  useDeleteBucketMutation,
   useDeleteInvoiceMutation,
+  useDeleteObjectMutation,
   useGetInvoiceByIdQuery,
   useGetInvoiceRecipientNamesQuery,
+  useGetObjectLazyQuery,
+  useGetObjectQuery,
   useUpdateInvoiceMutation,
 } from '../graphql/Invoice.generated';
 import { pdf } from '@react-pdf/renderer';
 import {
+  DownloadType,
   DropdownDto,
   InvoiceStatus,
   UpdateInvoice,
@@ -42,22 +48,24 @@ import {
 import { v4 } from 'uuid';
 import Decimal from 'decimal.js';
 import FileUploader from '@cats/components/fileUploader/FileUploader';
-import {
-  createBucket,
-  createObject,
-  deleteBucket,
-  deleteObject,
-} from './services/coms.service';
+// import {
+//   createBucket,
+//   createObject,
+//   deleteBucket,
+//   deleteObject,
+// } from './services/coms.service';
 import { HttpStatusCode } from 'axios';
+import { InvoiceItemTypes } from '../enums/invoiceItemTypes';
+import { InvoiceActions } from '../enums/invoiceActions';
+import { InvoiceEmailTemplate } from './InvoiceEmailTemplate';
+import { createObject, sendInvoice } from './services/cats.service';
+import { useLazyQuery } from '@apollo/client';
+import { GET_NOTES_BY_PERSON_ID } from '@cats/features/people/person/graphql/NoteQueries';
 
 interface DeletedAttachment {
   bucketId: string;
   objectId: string;
 }
-import { InvoiceItemTypes } from '../enums/invoiceItemTypes';
-import { InvoiceActions } from '../enums/invoiceActions';
-import { InvoiceEmailTemplate } from './InvoiceEmailTemplate';
-import { sendInvoice } from './services/cats.service';
 
 const initialInvoice: any = {
   subject: '',
@@ -118,9 +126,14 @@ const Invoice: React.FC = () => {
     skip: !numericInvoiceId,
   });
 
+  
+
   const [updateInvoice] = useUpdateInvoiceMutation();
   const [createInvoice] = useCreateInvoiceMutation();
   const [deleteInvoice] = useDeleteInvoiceMutation();
+  const [createBucket] = useCreateBucketMutation();
+  const [deleteBucket] = useDeleteBucketMutation();
+  const [deleteObject] = useDeleteObjectMutation();
 
   // State to store invoice and application details
   const [invoiceEmailDetails, setInvoiceEmailDetails] = useState<any>({
@@ -253,12 +266,23 @@ const Invoice: React.FC = () => {
       if (attachmentsToDelete?.length) {
         for (const attachment of attachmentsToDelete) {
           if (attachment?.objectId?.trim()) {
-            const comsResponse = await deleteObject(attachment?.objectId);
-            if (comsResponse?.DeleteMarker) {
-              setAttachmentsToDelete((prev) =>
-                prev?.filter((a: any) => a?.objectId !== attachment?.objectId),
-              );
-            }
+            await deleteObject({
+              variables: {
+                objectId: attachment?.objectId,
+              }
+            }).then((response: any) => {
+              if (response?.data?.DeleteMarker) {
+                setAttachmentsToDelete((prev) =>
+                  prev?.filter((a: any) => a?.objectId !== attachment?.objectId),
+                );
+              }
+            })
+            // const comsResponse = await deleteObject(attachment?.objectId);
+            // if (comsResponse?.DeleteMarker) {
+            //   setAttachmentsToDelete((prev) =>
+            //     prev?.filter((a: any) => a?.objectId !== attachment?.objectId),
+            //   );
+            // }
           }
         }
       }
@@ -268,52 +292,81 @@ const Invoice: React.FC = () => {
       if (!bucketId?.trim()) {
         const bucketName = `application/${applicationId}/invoice/${invoice?.id}`;
         const bucketKey = `application/${applicationId}/invoice/${invoice?.id}`;
-        const comsResponse = await createBucket(bucketName, bucketKey);
-        if (comsResponse) {
-          currentBucketId = comsResponse?.bucketId;
-          setBucketId(comsResponse?.bucketId);
-        }
+        await createBucket(
+          {
+            variables: {
+              bucketName,
+              bucketKey,
+            }
+          }
+        ).then((response: any) => {
+          if (response?.data?.bucketId) {
+            currentBucketId = response?.data?.bucketId;
+            setBucketId(response?.data?.bucketId);
+          }
+        });
+        // const comsResponse = await createBucket(bucketName, bucketKey);
+        // if (comsResponse) {
+        //   currentBucketId = comsResponse?.bucketId;
+        //   setBucketId(comsResponse?.bucketId);
+        // }
       }
+
+      console.log('attachments', invoice?.invoiceAttachments?.filter(
+          (attachment: any) =>
+            attachment?.file && !attachment?.objectId && attachment?.previewUrl,));
 
       // 3. Upload attachments
       const updatedAttachments = await Promise.all(
-        invoice?.invoiceAttachments?.map(async (attachment: any) => {
-          if (
-            !attachment?.file ||
-            (attachment?.objectId && !attachment?.previewUrl)
-          ) {
-            const { __typename, ...rest } = attachment;
-            return rest;
-          }
+        await createObject(
+          {
+            bucketId: currentBucketId ?? '', 
+            invoiceId: invoice?.id
+          },
+         invoice?.invoiceAttachments?.filter(
+          (attachment: any) =>
+            attachment?.file && !attachment?.objectId && attachment?.previewUrl,)
+        ).then((response: any) => {
+          console.log('response', response);
+          return response;
+        })
+        // invoice?.invoiceAttachments?.map(async (attachment: any) => {
+        //   if (
+        //     !attachment?.file ||
+        //     (attachment?.objectId && !attachment?.previewUrl)
+        //   ) {
+        //     const { __typename, ...rest } = attachment;
+        //     return rest;
+        //   }
 
-          if (!currentBucketId?.trim()) {
-            throw new Error(
-              'Bucket ID is required before uploading the object.',
-            );
-          }
-          const comsResponse = await createObject(
-            currentBucketId,
-            attachment?.file,
-          );
+        //   if (!currentBucketId?.trim()) {
+        //     throw new Error(
+        //       'Bucket ID is required before uploading the object.',
+        //     );
+        //   }
+        //   const comsResponse = await createObject(
+        //     currentBucketId,
+        //     attachment?.file,
+        //   );
 
-          if (comsResponse?.status === HttpStatusCode.Conflict) {
-            setErrors((prev) => [
-              ...prev,
-              {
-                errorMessage: `File ${attachment?.fileName} already exists in the bucket.`,
-              },
-            ]);
-            setHasErrors(true);
-            return attachment;
-          }
+        //   if (comsResponse?.status === HttpStatusCode.Conflict) {
+        //     setErrors((prev) => [
+        //       ...prev,
+        //       {
+        //         errorMessage: `File ${attachment?.fileName} already exists in the bucket.`,
+        //       },
+        //     ]);
+        //     setHasErrors(true);
+        //     return attachment;
+        //   }
 
-          const { file, id, previewUrl, __typename, ...rest } = attachment;
-          return {
-            ...rest,
-            objectId: comsResponse?.id,
-            bucketId: currentBucketId,
-          };
-        }),
+        //   const { file, id, previewUrl, __typename, ...rest } = attachment;
+        //   return {
+        //     ...rest,
+        //     objectId: comsResponse?.id,
+        //     bucketId: currentBucketId,
+        //   };
+        // }),
       );
 
       return {
@@ -369,6 +422,7 @@ const Invoice: React.FC = () => {
       throw error;
     }
   };
+
   const handleItemClick = async (action: string) => {
     switch (action) {
       case InvoiceActions.EDIT_INVOICE:
@@ -405,7 +459,8 @@ const Invoice: React.FC = () => {
                 setViewMode(UserMode.Default);
                 setAttachmentsToDelete([]);
               }
-            } else {
+            } 
+            else {
               const { invoiceAttachments, ...restInvoice } =
                 cleanGraphQLPayload(invoiceDetails, [
                   'recipient',
@@ -527,7 +582,12 @@ const Invoice: React.FC = () => {
             // Delete attachments from COMS
             if (!!invoiceDetails?.invoiceAttachments?.length) {
               if (!!bucketId?.trim()) {
-                await deleteBucket(bucketId);
+                // await deleteBucket(bucketId);
+                await deleteBucket({
+                  variables: {
+                    bucketId,
+                  },
+                })
               }
             }
             navigate(`/applications/${applicationId}/invoices`);
@@ -680,6 +740,27 @@ const Invoice: React.FC = () => {
     });
   };
 
+  const [getObject, { data, error }] = useGetObjectLazyQuery()
+
+  const viewFileHandler = (objectId: string) => {
+    if (!objectId?.trim()) return;
+
+    console.log('viewFileHandler - fetching objectId:', objectId);
+    getObject({
+      variables: { objectId, downloadType: DownloadType.Url },
+    }).then((result) => {
+      console.log('viewFileHandler - result:', result);
+      if (result?.data?.getObject?.data?.downloadUrl) {
+        return result?.data?.getObject?.data?.downloadUrl
+        // window.open(result.data.getObject?.data.downloadUrl, '_blank');
+      }
+      // const blob = new Blob([result.data.getObject], { type: 'application/pdf' });
+      // const blobUrl = URL.createObjectURL(blob);
+      // window.open(blobUrl, '_blank');
+    });
+
+  };
+
   const {
     applicationDetailsForm,
     invoiceDetailsForm,
@@ -693,6 +774,7 @@ const Invoice: React.FC = () => {
     handleInputChange: handleInputChange,
     invoiceDetails: invoiceDetails,
     createMode: !id,
+    viewFileHandler: viewFileHandler,
     recipient: {
       setSearchParam: setSearchParam,
       options: isSendInvoiceOpen
@@ -815,8 +897,7 @@ const Invoice: React.FC = () => {
               ...prev.invoiceAttachments,
               {
                 id: v4(),
-                invoiceId: numericInvoiceId,
-                fileName: file.name,
+                
                 file: file,
                 previewUrl,
               },
