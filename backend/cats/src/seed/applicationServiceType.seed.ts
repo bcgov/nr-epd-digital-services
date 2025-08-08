@@ -14,7 +14,7 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
       where: { abbrev: StaffRoles.MENTOR },
     });
 
-    if (!mentorResult) {
+    if (!mentorResult || Object.keys(mentorResult).length === 0) {
       const participantRole = new ParticipantRole();
       participantRole.abbrev = StaffRoles.MENTOR;
       participantRole.description = 'Mentor';
