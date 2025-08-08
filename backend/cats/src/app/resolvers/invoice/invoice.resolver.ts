@@ -1,281 +1,139 @@
 import { Resolver, Query, Args, Int, Mutation } from '@nestjs/graphql';
 import { InvoiceService } from '../../services/invoice/invoice.service';
-import { InvoiceV2 } from '../../entities/invoiceV2.entity';
-import { InvoicesByApplicationIdResponse } from '../../dto/response/invoice/invoicesByApplicationIdResponse';
 import { LoggerService } from '../../logger/logger.service';
-import { InvoiceResponse } from '../../dto/response/invoice/invoiceResponse';
-import {
-  InvoiceInputDto as InvoiceInputDto,
-  InvoiceDto,
-  InvoiceStatus,
-} from '../../dto/invoice/invoice.dto';
+import { InvoiceResponse, InvoicesResponse } from '../../dto/response/invoice/invoiceResponse';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
-import { ResponseDto } from '../../dto/response/response.dto';
-import { GenericValidationPipe } from '../../utilities/validations/genericValidationPipe';
-import { UsePipes } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
+import { ViewInvoice } from '../../dto/invoice/viewInvoice.dto';
+import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
+import { CreateInvoice } from '../../dto/invoice/createInvoice.dto';
+import { UpdateInvoice } from '../../dto/invoice/updateInvoice.dto';
+import { InvoiceEmail } from '../../dto/invoice/invoiceEmail/invoiceEmail.dto';
 
 @Resolver()
 export class InvoiceResolver {
   constructor(
     private readonly invoiceService: InvoiceService,
     private readonly loggerService: LoggerService,
+    private readonly invoiceRes: GenericResponseProvider<ViewInvoice>,
+    private readonly invoicesRes: GenericResponseProvider<ViewInvoice[]>,
   ) {}
 
-  @Query(() => InvoicesByApplicationIdResponse)
-  async getInvoicesByApplicationId(
-    @Args('applicationId', { type: () => Int }) applicationId: number,
-  ): Promise<InvoicesByApplicationIdResponse> {
-    this.loggerService.log(
-      `InvoiceResolver: getInvoicesByApplicationId: applicationId: ${applicationId}`,
-    );
-    const response = new InvoicesByApplicationIdResponse();
-    let invoices: InvoiceV2[];
 
-    try {
-      invoices = await this.invoiceService.getInvoicesByApplicationId(
-        applicationId,
+  @Query(() => InvoicesResponse, { name: 'getInvoices' })
+  async getInvoices( @Args('applicationId', { type: () => Int }) applicationId: number) {
+    try
+    {
+      this.loggerService.log(
+        `InvoiceResolver: getInvoices: applicationId: ${applicationId}`,
       );
-    } catch (error) {
+      const invoices = await this.invoiceService.getInvoices(applicationId);
+      if(invoices?.length > 0){
+       return this.invoicesRes.createResponse('Invoice records fetched successfully', HttpStatus.OK, true, invoices);
+      }
+      else{
+       return this.invoicesRes.createResponse('No invoice records found', HttpStatus.NOT_FOUND, false, []);
+      }
+    }
+    catch (error) {
       this.loggerService.error(
-        `InvoiceResolver: getInvoicesByApplicationId: Error fetching invoices: ${error.message}`,
+        `InvoiceResolver: getInvoices: Error fetching invoices: ${error.message}`,
         null,
       );
-      response.httpStatusCode = 500;
-      response.message = 'An error occurred while fetching invoices.';
-      response.success = false;
-      return response;
     }
-
-    response.invoices = invoices.map((invoice) => ({
-      id: invoice.id,
-      subject: invoice.subject,
-      issuedDate: invoice.issuedDate,
-      dueDate: invoice.dueDate,
-      status: invoice.status,
-      totalInCents: invoice.totalInCents,
-      notes: invoice.notes,
-    }));
-
-    response.httpStatusCode = 200;
-    response.success = true;
-    return response;
   }
-
-  @Mutation(() => InvoiceResponse)
-  async createInvoice(
-    @Args('invoiceData') invoiceData: InvoiceInputDto,
-    @AuthenticatedUser() user: any,
-  ): Promise<InvoiceResponse> {
-    this.loggerService.log(
-      `InvoiceResolver: createInvoice: invoiceData: ${JSON.stringify(
-        invoiceData,
-      )}`,
-    );
-    const response = new InvoiceResponse();
-    let result: InvoiceV2;
-
-    try {
-      result = await this.invoiceService.createInvoice(invoiceData, user);
-    } catch (error) {
-      this.loggerService.error(
-        `InvoiceResolver: createInvoice: Error creating invoice: ${error.message}`,
-        null,
+  
+  @Query(() => InvoiceResponse, { name: 'getInvoiceById' })
+  async getInvoiceById(@Args('invoiceId', { type: () => Int }) invoiceId: number){
+    try
+    {
+      this.loggerService.log(
+        `InvoiceResolver: getInvoiceById: invoiceId: ${invoiceId}`,
       );
-      response.httpStatusCode = 500;
-      response.message = 'An error occurred while updating the invoice.';
-      response.success = false;
-      return response;
+      const invoice = await this.invoiceService.getInvoiceById(invoiceId);
+      if(invoice){
+       return this.invoiceRes.createResponse('Invoice record fetched successfully', HttpStatus.OK, true, invoice);
+      }
+      else{
+       return this.invoiceRes.createResponse('Invoice record not found', HttpStatus.NOT_FOUND, false, null);
+      }
     }
-
-    const createdInvoice: InvoiceDto = {
-      id: result.id,
-      applicationId: result.application?.id,
-      recipientId: result.recipient?.id,
-      invoiceId: result.invoiceId,
-      subject: result.subject,
-      issuedDate: result.issuedDate,
-      dueDate: result.dueDate,
-      status: result.status as InvoiceStatus,
-      taxExempt: result.taxExempt,
-      pstExempt: result.pstExempt,
-      subtotalInCents: result.subtotalInCents,
-      gstInCents: result.gstInCents,
-      pstInCents: result.pstInCents,
-      notes: result.notes,
-      createdAt: result.createdAt,
-      updatedAt: result.updatedAt,
-      createdBy: result.createdBy,
-      updatedBy: result.updatedBy,
-      totalInCents: result.totalInCents,
-      lineItems: result.lineItems.map((lineItem) => ({
-        id: lineItem.id,
-        type: lineItem.type,
-        description: lineItem.description,
-        quantity: lineItem.quantity,
-        unitPriceInCents: lineItem.unitPriceInCents,
-        totalInCents: lineItem.totalInCents,
-        createdAt: lineItem.createdAt,
-        updatedAt: lineItem.updatedAt,
-        createdBy: lineItem.createdBy,
-        updatedBy: lineItem.updatedBy,
-      })),
-    };
-
-    response.invoice = createdInvoice;
-    response.httpStatusCode = 201;
-    response.success = true;
-    return response;
-  }
-
-  @Mutation(() => InvoiceResponse)
-  @UsePipes(new GenericValidationPipe())
-  async updateInvoice(
-    @Args('id', { type: () => Int }) id: number,
-    @Args('updateData') updateData: InvoiceInputDto,
-    @AuthenticatedUser() user: any,
-  ): Promise<InvoiceResponse> {
-    this.loggerService.log(
-      `InvoiceResolver: updateInvoice: invoiceId: ${id}, updateData: ${JSON.stringify(
-        updateData,
-      )}`,
-    );
-    const response = new InvoiceResponse();
-    let result: InvoiceV2;
-    try {
-      result = await this.invoiceService.updateInvoice(id, updateData, user);
-    } catch (error) {
-      this.loggerService.error(
-        `InvoiceResolver: updateInvoice: Error updating invoice: ${error.message}`,
-        null,
-      );
-      response.httpStatusCode = 500;
-      response.message = 'An error occurred while updating the invoice.';
-      response.success = false;
-      return response;
-    }
-    const updatedInvoice: InvoiceDto = {
-      id: result.id,
-      applicationId: result.application?.id,
-      recipientId: result.recipient?.id,
-      invoiceId: result.invoiceId,
-      subject: result.subject,
-      issuedDate: result.issuedDate,
-      dueDate: result.dueDate,
-      status: result.status,
-      taxExempt: result.taxExempt,
-      pstExempt: result.pstExempt,
-      subtotalInCents: result.subtotalInCents,
-      gstInCents: result.gstInCents,
-      pstInCents: result.pstInCents,
-      notes: result.notes,
-      totalInCents: result.totalInCents,
-      createdBy: result.createdBy,
-      updatedBy: result.updatedBy,
-      createdAt: result.createdAt,
-      updatedAt: result.updatedAt,
-      lineItems: result.lineItems.map((lineItem) => ({
-        id: lineItem.id,
-        type: lineItem.type,
-        description: lineItem.description,
-        quantity: lineItem.quantity,
-        unitPriceInCents: lineItem.unitPriceInCents,
-        totalInCents: lineItem.totalInCents,
-        createdAt: lineItem.createdAt,
-        updatedAt: lineItem.updatedAt,
-        createdBy: lineItem.createdBy,
-        updatedBy: lineItem.updatedBy,
-      })),
-    };
-
-    response.invoice = updatedInvoice;
-    response.httpStatusCode = 200;
-    response.success = true;
-    return response;
-  }
-
-  @Mutation(() => ResponseDto)
-  async deleteInvoice(
-    @Args('id', { type: () => Int }) id: number,
-  ): Promise<ResponseDto> {
-    this.loggerService.log(`InvoiceResolver: deleteInvoice: invoiceId: ${id}`);
-    let response = new ResponseDto();
-    try {
-      await this.invoiceService.deleteInvoice(id);
-    } catch (error) {
-      this.loggerService.error(
-        `InvoiceResolver: deleteInvoice: Error deleting invoice: ${error.message}`,
-        null,
-      );
-      response.httpStatusCode = 500;
-      response.message = 'An error occurred while deleting the invoice.';
-      response.success = false;
-      return response;
-    }
-
-    response.httpStatusCode = 200;
-    response.success = true;
-    response.message = 'Invoice deleted successfully.';
-    return response;
-  }
-
-  @Query(() => InvoiceResponse)
-  async getInvoiceById(
-    @Args('id', { type: () => Int }) id: number,
-  ): Promise<InvoiceResponse> {
-    this.loggerService.log(`InvoiceResolver: getInvoiceById: invoiceId: ${id}`);
-    const response = new InvoiceResponse();
-    let invoice: InvoiceV2;
-
-    try {
-      invoice = await this.invoiceService.getInvoiceById(id);
-    } catch (error) {
+    catch (error) {
       this.loggerService.error(
         `InvoiceResolver: getInvoiceById: Error fetching invoice: ${error.message}`,
         null,
       );
-      response.httpStatusCode = 500;
-      response.message = 'An error occurred while fetching the invoice.';
-      response.success = false;
-      return response;
     }
+  }
 
-    const invoiceDto: InvoiceDto = {
-      id: invoice.id,
-      applicationId: invoice.application?.id,
-      recipientId: invoice.recipient?.id,
-      invoiceId: invoice.invoiceId,
-      subject: invoice.subject,
-      issuedDate: invoice.issuedDate,
-      dueDate: invoice.dueDate,
-      status: invoice.status as InvoiceStatus,
-      taxExempt: invoice.taxExempt,
-      pstExempt: invoice.pstExempt,
-      subtotalInCents: invoice.subtotalInCents,
-      gstInCents: invoice.gstInCents,
-      pstInCents: invoice.pstInCents,
-      notes: invoice.notes,
-      createdAt: invoice.createdAt,
-      updatedAt: invoice.updatedAt,
-      createdBy: invoice.createdBy,
-      updatedBy: invoice.updatedBy,
-      totalInCents: invoice.totalInCents,
-      lineItems: invoice.lineItems.map((lineItem) => ({
-        id: lineItem.id,
-        type: lineItem.type,
-        description: lineItem.description,
-        quantity: lineItem.quantity,
-        unitPriceInCents: lineItem.unitPriceInCents,
-        totalInCents: lineItem.totalInCents,
-        createdAt: lineItem.createdAt,
-        updatedAt: lineItem.updatedAt,
-        createdBy: lineItem.createdBy,
-        updatedBy: lineItem.updatedBy,
-      })),
-    };
+  @Mutation(() => InvoiceResponse, { name: 'createInvoice' })
+  async createInvoice(
+    @Args('invoice',  { type: () => CreateInvoice }) invoice: CreateInvoice,
+    @AuthenticatedUser() user: any) { 
+      try
+      {
+        this.loggerService.log(`InvoiceResolver: createInvoice: invoice: ${JSON.stringify( invoice)}`);
+        const result = await this.invoiceService.createInvoice(invoice, user);
+        if(result){
+          return this.invoiceRes.createResponse('Invoice created successfully', HttpStatus.OK, true, result);
+        }
+        else{
+          return this.invoiceRes.createResponse('Failed to create invoice', HttpStatus.INTERNAL_SERVER_ERROR, false, null);
+        }
+      }
+      catch (error) {
+        this.loggerService.error(
+          `InvoiceResolver: createInvoice: Error creating invoice: ${error.message}`,
+          null,
+        );
+      }
+  }
 
-    response.invoice = invoiceDto;
-    response.httpStatusCode = 200;
-    response.success = true;
-    return response;
+  @Mutation(() => InvoiceResponse, { name: 'deleteInvoice' })
+  async deleteInvoice(@Args('invoiceId', { type: () => Int }) invoiceId: number){
+    try
+    {
+      this.loggerService.log(
+        `InvoiceResolver: deleteInvoice: invoiceId: ${invoiceId}`,
+      );
+      const result = await this.invoiceService.deleteInvoice(invoiceId);
+      if(!!result){
+        return this.invoiceRes.createResponse('Invoice deleted successfully', HttpStatus.OK, true);
+      }
+      else{
+        return this.invoiceRes.createResponse('Invoice not found', HttpStatus.NOT_FOUND, false);
+      }
+    }
+    catch (error) {
+      this.loggerService.error(
+        `InvoiceResolver: deleteInvoice: Error deleting invoice: ${error.message}`,
+        null,
+      );
+      return this.invoiceRes.createResponse('Failed to delete invoice', HttpStatus.INTERNAL_SERVER_ERROR, false);
+    }
+  }
+
+  @Mutation(() => InvoiceResponse, { name: 'updateInvoice' })
+  async updateInvoice( 
+    @Args('invoice',  { type: () => UpdateInvoice }) invoice: UpdateInvoice, 
+    @AuthenticatedUser() user: any){
+      try
+      {
+        this.loggerService.log(`InvoiceResolver: updateInvoice: invoice: ${JSON.stringify( invoice)}`);
+        const result = await this.invoiceService.updateInvoice(invoice, user);
+        if(result){
+          return this.invoiceRes.createResponse('Invoice updated successfully', HttpStatus.OK, true, result);
+        }
+        else{
+          return this.invoiceRes.createResponse('Invoice not found', HttpStatus.NOT_FOUND, false, null);
+        }
+
+      }
+      catch (error) {
+        this.loggerService.error(
+          `InvoiceResolver: updateInvoice: Error updating invoice: ${error.message}`,
+          null,
+        );
+      }
   }
 }
