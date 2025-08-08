@@ -7,7 +7,7 @@ TEMP_POD="temp-pod"
 PVC_FILE="pvc.yaml"
 POD_FILE="temp-pod.yaml"
 NAMESPACE="e38158-dev"
-SQL_FILE="cats-data-test.sql"
+SQL_FILE="cats-prod-data-7Aug.sql"
 APPEND_FILE="append.sql"
 COMBINED_FILE="combined-data.sql"
 
