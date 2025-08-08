@@ -742,24 +742,24 @@ const Invoice: React.FC = () => {
 
   const [getObject, { data, error }] = useGetObjectLazyQuery()
 
-  const viewFileHandler = (objectId: string) => {
-    if (!objectId?.trim()) return;
+  // const viewFileHandler = (objectId: string) => {
+  //   if (!objectId?.trim()) return;
 
-    console.log('viewFileHandler - fetching objectId:', objectId);
-    getObject({
-      variables: { objectId, downloadType: DownloadType.Url },
-    }).then((result) => {
-      console.log('viewFileHandler - result:', result);
-      if (result?.data?.getObject?.data?.downloadUrl) {
-        return result?.data?.getObject?.data?.downloadUrl
-        // window.open(result.data.getObject?.data.downloadUrl, '_blank');
-      }
-      // const blob = new Blob([result.data.getObject], { type: 'application/pdf' });
-      // const blobUrl = URL.createObjectURL(blob);
-      // window.open(blobUrl, '_blank');
-    });
+  //   console.log('viewFileHandler - fetching objectId:', objectId);
+  //   getObject({
+  //     variables: { objectId, downloadType: DownloadType.Url },
+  //   }).then((result) => {
+  //     console.log('viewFileHandler - result:', result);
+  //     if (result?.data?.getObject?.data?.downloadUrl) {
+  //       return result?.data?.getObject?.data?.downloadUrl
+  //       // window.open(result.data.getObject?.data.downloadUrl, '_blank');
+  //     }
+  //     // const blob = new Blob([result.data.getObject], { type: 'application/pdf' });
+  //     // const blobUrl = URL.createObjectURL(blob);
+  //     // window.open(blobUrl, '_blank');
+  //   });
 
-  };
+  // };
 
   const {
     applicationDetailsForm,
@@ -774,7 +774,7 @@ const Invoice: React.FC = () => {
     handleInputChange: handleInputChange,
     invoiceDetails: invoiceDetails,
     createMode: !id,
-    viewFileHandler: viewFileHandler,
+    getObject: getObject,
     recipient: {
       setSearchParam: setSearchParam,
       options: isSendInvoiceOpen

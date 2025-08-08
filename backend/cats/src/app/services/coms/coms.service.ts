@@ -152,7 +152,7 @@ export class ComsService {
             };
 
             const response = await firstValueFrom(
-                this.httpService.put(`${this.comsApi}${this.object_path}/${bucketId}`, file, config),
+                this.httpService.put(`${this.comsApi}${this.object_path}`, file, config),
             );
 
             if( response?.status === HttpStatus.CONFLICT ) {
@@ -163,7 +163,7 @@ export class ComsService {
                 };
             }
 
-            if (response?.data && response?.data?.key) {
+            if (response?.data) {
                 return { 
                     objectId: response.data.id,
                     fileAlreadyExists: false,

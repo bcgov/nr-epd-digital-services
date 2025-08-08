@@ -41,11 +41,21 @@ export class UploadController {
             const response = await this.comsService.uploadFilesToComs(files?.files, fileUpload.bucketId, fileUpload.invoiceId, context);
             
             this.loggerService.log('Upload controller: uploadFiles() end');
-            return response;
+             return {
+                message: 'Files uploaded successfully',
+                statusCode: HttpStatus.OK,
+                success: true,
+                data: response,  // Add the response data here
+            };
 
         } catch (error) {
             this.loggerService.error('Upload controller: uploadFiles() error', error);
-            throw new Error('Failed to upload files.');
+             return {
+                message: 'Failed to upload files',
+                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+                success: false,
+                error: error.message || error,
+            };
         }
     }
 }

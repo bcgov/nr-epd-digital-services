@@ -29,32 +29,34 @@ interface GetInvoiceConfigParams {
   invoiceDetails?: any;
   createMode?: boolean;
   recipient?: RecipientConfig;
-  viewFileHandler: (objectId: any) => void;
+  getObject: any;
 }
 
 export const GetInvoiceConfig = ({
   viewMode,
   isDisabled = false,
   handleInputChange = () => {},
-  viewFileHandler,
+  getObject,
   invoiceDetails = {},
   createMode = false,
   recipient,
 }: GetInvoiceConfigParams) => {
-  // const viewFileHandler = async (objectId: any) => {
-  //   if (!!objectId?.trim()) {
-  //     console.log('viewFileHandler');
-  //     const { data: response } = useGetObjectQuery({
-  //       variables: {
-  //         objectId: objectId,
-  //         downloadType: DownloadType.Url,
-  //       },
-  //     });
-  //     console.log(response);
-  //     // const response = await getObject(objectId);
-  //     // window.open(response, '_blank');
-  //   }
-  // };
+  const viewFileHandler = async (objectId: any) => {
+    if (!!objectId?.trim()) {
+      getObject({
+          fetchPolicy: 'network-only',
+          variables: { objectId, downloadType: DownloadType.Url },
+        }).then((result: any) => {
+          if (result?.data?.getObject?.data?.downloadUrl) {
+            const response = result?.data?.getObject?.data?.downloadUrl;
+            console.log('viewFileHandler - result:', response);
+            window.open(response, '_blank');
+          }
+        });
+      // const response = await getObject(objectId);
+      // window.open(response, '_blank');
+    }
+  };
   const customInvoiceRecipient = (
     <DropdownSearchInput
       label={'Invoice Recipient'}
