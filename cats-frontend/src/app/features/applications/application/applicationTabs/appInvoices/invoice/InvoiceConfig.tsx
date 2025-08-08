@@ -49,12 +49,9 @@ export const GetInvoiceConfig = ({
         }).then((result: any) => {
           if (result?.data?.getObject?.data?.downloadUrl) {
             const response = result?.data?.getObject?.data?.downloadUrl;
-            console.log('viewFileHandler - result:', response);
             window.open(response, '_blank');
           }
         });
-      // const response = await getObject(objectId);
-      // window.open(response, '_blank');
     }
   };
   const customInvoiceRecipient = (

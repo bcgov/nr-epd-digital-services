@@ -142,7 +142,7 @@ export class ComsService {
 
             const config = {
                 headers: {
-                    'Content-Disposition': this.setDispositionHeader(file.name),
+                    'Content-Disposition': this.setDispositionHeader(file.originalname),
                     'Content-Type': file.type || 'application/octet-stream',
                     Authorization: `Bearer ${  context?.req?.accessTokenJWT || ''}`,
                 },
@@ -155,7 +155,8 @@ export class ComsService {
                 this.httpService.put(`${this.comsApi}${this.object_path}`, file, config),
             );
 
-            if( response?.status === HttpStatus.CONFLICT ) {
+            this.loggerService.log(`Response status: ${response?.status}`);
+            if(response?.status === HttpStatus.CONFLICT ) {
                 // Return an object indicating a conflict without throwing the error
                 return { 
                     fileAlreadyExists: true,
@@ -172,6 +173,14 @@ export class ComsService {
             throw new Error('File upload failed, no response data.');
         } 
         catch (error) {
+            if (error?.response?.status === HttpStatus.CONFLICT) {
+                // Handle 409 error explicitly here as well
+                return {
+                    fileAlreadyExists: true,
+                    errorMessage: `File ${file.originalname} already exists. Please upload a different file or change the file name.`,
+                };
+            }
+
             this.loggerService.error('Error uploading object to bucket', error);
             throw new Error(`Failed to upload object: ${error.message}`);
         }

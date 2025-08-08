@@ -41,7 +41,8 @@ export class UploadController {
             const response = await this.comsService.uploadFilesToComs(files?.files, fileUpload.bucketId, fileUpload.invoiceId, context);
             
             this.loggerService.log('Upload controller: uploadFiles() end');
-             return {
+            if(response?.length === 0) return { message: 'No files uploaded', statusCode: HttpStatus.BAD_REQUEST, success: false };
+            return {
                 message: 'Files uploaded successfully',
                 statusCode: HttpStatus.OK,
                 success: true,
