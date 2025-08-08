@@ -1,4 +1,5 @@
 -- BELOW IS CUSTOM EPD TWEAKS
+-- FROM APPEND FILE
 
 -- Custom code from Team Ada to reset indices of imported data, so new inserts will work correctly with auto-generated id
 SELECT setval(
