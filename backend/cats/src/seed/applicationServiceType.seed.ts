@@ -11,12 +11,12 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
   console.log('ApplicationServiceTypeSeeder start');
   try {
     const mentorResult = await manager.findOne(ParticipantRole, {
-      where: { abbrev: 'MENTOR' },
+      where: { abbrev: StaffRoles.MENTOR },
     });
 
     if (!mentorResult) {
       const participantRole = new ParticipantRole();
-      participantRole.abbrev = 'MENTOR';
+      participantRole.abbrev = StaffRoles.MENTOR;
       participantRole.description = 'Mentor';
       participantRole.isMinistry = true;
       participantRole.isActive = true;
@@ -29,11 +29,10 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
       participantRole.ts = Buffer.from('');
       participantRole.roleType = 'STAFF';
       await manager.save(participantRole);
-      console.log('mentor role created');
     } else {
       await manager.update(
         ParticipantRole,
-        { abbrev: 'MENTOR' },
+        { abbrev: StaffRoles.MENTOR },
         { roleType: 'STAFF' },
       );
     }
@@ -43,11 +42,11 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
     });
 
     const sdmRole = await manager.findOne(ParticipantRole, {
-      where: { abbrev: 'SDM' },
+      where: { abbrev: StaffRoles.SDM },
     });
 
     const mentorRole = await manager.findOne(ParticipantRole, {
-      where: { abbrev: 'MENTOR' },
+      where: { abbrev: StaffRoles.MENTOR },
     });
 
     console.log('roles found', caseWorkerRole, sdmRole, mentorRole);

@@ -36,8 +36,6 @@ export const PermissionsSeeder = async (manager: EntityManager) => {
       }
     };
 
-    const permissionEntities: Permissions[] = [];
-
     for (const role of roles) {
       const permissions = getPermissionsForRole(role.abbrev);
 
