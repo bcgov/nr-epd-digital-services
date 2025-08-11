@@ -23,6 +23,10 @@ INSERT INTO cats.status_type VALUES (46, 'Outcome Decision Made - Satisfactory',
 INSERT INTO cats.status_type VALUES (47, 'Outcome Decision Made - Unsatisfactory', 'Outcome Decision Made - Unsatisfactory', true, 25, 0, 'system', '2025-06-26 14:46:00', 'system', '2025-06-26 14:46:00', '\x0000000000064255');
 
 
+-- Set "STAFF" role for some, matching earlier migration
+UPDATE cats.participant_role
+SET role_type = 'STAFF'
+WHERE abbrev IN ('SDM', 'CSWKR','MENT');
 
 -- Custom script so that it resets the indexes and sequences in our tables.
 -- Necessary, because wtihout it new inserts will go for conflicting ids.
