@@ -33,7 +33,7 @@ export class CatsService {
       case ApplicationType.NOM:
         const nomSiteIds = [
           ...(formData.dataGrid?.flatMap((item: any) =>
-            item['contact-parcelSiteIdNumber']?.toString().split(','),
+            item['contactParcelSiteIdNumber']?.toString().split(','),
           ) || []),
           ...(formData.siteIdNumber?.toString().split(',') || []),
         ];
