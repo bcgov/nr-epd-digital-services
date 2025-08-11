@@ -157,7 +157,8 @@ jobs:
           DEPLOY_TIMEOUT=$((${{ inputs.timeout-minutes }}-1)) 
           
           # Helm upgrade/rollout - atomic, timeout
-          helm upgrade \
+
+          helm upgrade --debug \
             --set-string global.repository=${{ github.repository }} \
             --set-string global.tag=${{ steps.vars.outputs.tag }} \
             --set-string global.secrets.keycloakSecret="${{ secrets.KEYCLOAK_SECRET }}" \
