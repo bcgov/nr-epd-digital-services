@@ -21,6 +21,7 @@ INSERT INTO cats.status_type VALUES (44, 'Additional Information Requested', 'Ad
 INSERT INTO cats.status_type VALUES (45, 'Queued', 'Queued', true, 25, 0, 'system', '2025-06-26 14:46:00', 'system', '2025-06-26 14:46:00', '\x0000000000064255');
 INSERT INTO cats.status_type VALUES (46, 'Outcome Decision Made - Satisfactory', 'Outcome Decision Made - Satisfactory', true, 25, 0, 'system', '2025-06-26 14:46:00', 'system', '2025-06-26 14:46:00', '\x0000000000064255');
 INSERT INTO cats.status_type VALUES (47, 'Outcome Decision Made - Unsatisfactory', 'Outcome Decision Made - Unsatisfactory', true, 25, 0, 'system', '2025-06-26 14:46:00', 'system', '2025-06-26 14:46:00', '\x0000000000064255');
+INSERT INTO cats.status_type VALUES (48, 'Review In Progress', 'Review In Progress', true, 25, 0, 'system', '2025-06-26 14:46:00', 'system', '2025-06-26 14:46:00', '\x0000000000064255');
 
 
 -- Set "STAFF" role for some, matching earlier migration
