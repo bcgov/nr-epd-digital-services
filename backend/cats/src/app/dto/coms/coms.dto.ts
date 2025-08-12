@@ -7,8 +7,5 @@ export class Coms {
     bucketId?: string | null
 
     @Field({ nullable: true })
-    objectId?: string | null
-
-    @Field({ nullable: true })
     downloadUrl?: string | null
 }

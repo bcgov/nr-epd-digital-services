@@ -63,6 +63,11 @@ export class EmailController {
         } 
         catch (error) {
             this.loggerService.error('Email controller: sendEmail() error', error);
+            return {
+                message: 'Failed to send email',
+                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+                success: false
+            }
         }
     }
 }

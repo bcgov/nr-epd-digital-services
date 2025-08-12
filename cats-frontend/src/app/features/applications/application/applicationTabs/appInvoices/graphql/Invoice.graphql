@@ -168,8 +168,6 @@ query getObject($objectId: String!, $downloadType: DownloadType) {
     success
     timestamp
     data {
-      bucketId
-      objectId
       downloadUrl
     }
   }

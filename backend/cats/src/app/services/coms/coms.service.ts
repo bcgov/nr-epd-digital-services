@@ -1,10 +1,11 @@
 import { HttpService } from '@nestjs/axios';
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { LoggerService } from '../../logger/logger.service';
 import { firstValueFrom } from 'rxjs';
 import { DownloadType } from '../../utilities/enums/coms/downloadType.enum';
-
+import * as fs from 'fs';
+import { HttpStatusCode } from 'axios';
 
 
 @Injectable()
@@ -59,7 +60,7 @@ export class ComsService {
              };
             // Using `firstValueFrom` instead of `toPromise()`
             const response = await firstValueFrom(
-                this.httpService.put(`${this.comsApi}${this.bucket_path}`, params, { headers: { 'Content-Type': 'application/json' } }),
+                this.httpService.put(`${this.comsApi}${this.bucket_path}`, params, { headers }),
             );
 
             if (response?.data) {
@@ -87,11 +88,10 @@ export class ComsService {
                 this.httpService.delete(`${this.comsApi}${this.bucket_path}/${bucketId}`, { headers }),
             );
 
-            if (response?.data) {
+            if (response?.status === HttpStatusCode.NoContent) {
                 this.loggerService.log(`Deleted bucket with ID: ${bucketId}`);
                 return true;
             }
-            throw new Error('Bucket deletion failed, no response data.');
         } 
         catch (error) {
             this.loggerService.error('Error deleting bucket', error);
@@ -99,36 +99,77 @@ export class ComsService {
         }
     }
 
-    async uploadFilesToComs(files: Express.Multer.File[], bucketId: string, invoiceId: number,  context: any) {
+    async uploadFilesToComs(files: Express.Multer.File[], bucketId: string, invoiceId: number, accessTokenJWT: any) {
         try {
-            this.loggerService.log(`Uploading files to bucket: ${bucketId}`);
-            const promises = files.map(async (file) => {
+            this.loggerService.log(`Starting upload of ${files.length} files to bucket: ${bucketId}`);
+
+            const uploadPromises = files.map(async (file) => {
+                const fileStream = fs.createReadStream(file.path);
+
                 try {
-                    this.loggerService.log(`Uploading file to bucket: ${bucketId}`);
-                    const response = await this.createObject(bucketId, file,  context);
+                    const response = await this.createObject(bucketId, file.originalname, file.mimetype, fileStream, accessTokenJWT);
+                    if (response?.status === HttpStatusCode.Ok || response?.status === HttpStatusCode.Created) {
+                        return {
+                            bucketId,
+                            invoiceId,
+                            fileName: file.originalname || '',
+                            objectId : response?.data.id || '',
+                            isAlreadyExist: false,
+                            errorMessage: null,
+                            statusCode: response?.status,
+                        };
+                    } 
+                  
+                    if (response.status === HttpStatusCode.Conflict || response.fileAlreadyExists) {
+                        return {
+                            bucketId,
+                            invoiceId,
+                            fileName: file.originalname || '',
+                            objectId : '',
+                            isAlreadyExist: true,
+                            errorMessage: response?.errorMessage || 'File already exists',
+                            statusCode: response?.status,
+                        };
+                    }
+                    
                     return {
                         bucketId,
                         invoiceId,
-                        fileName: file.originalname,
-                        fileAlreadyExists: response?.fileAlreadyExists || false,
-                        errorMessage: response?.errorMessage || '',
-                        objectId : response?.objectId || '',
+                        fileName: file.originalname || '',
+                        objectId : response?.data?.id || '',
+                        isAlreadyExist: false,
+                        errorMessage: `Upload failed: ${response.errorMessage}` || 'Unknown error',
+                        statusCode: response?.status,
                     };
                 } 
-                catch (error) {
-                    this.loggerService.error('Error uploading files to bucket', error);
+                catch (err) {
+                    this.loggerService.error(`Failed uploading ${file.originalname}`, err);
                     return {
                         bucketId,
                         invoiceId,
-                        fileName: file.originalname,
-                        fileAlreadyExists: false,
-                        errorMessage: `Failed to upload file: ${error.message}`,
-                        objectId: '',
+                        objectId : '',
+                        isAlreadyExist: false,
+                        errorMessage: err.message || 'Unknown error',
+                        statusCode: HttpStatusCode.InternalServerError,
                     };
+                } 
+                finally {
+                    fileStream.close();
                 }
             });
-            const results = await Promise.all(promises);
-            return results;
+
+            const results = await Promise.all(uploadPromises);
+
+            const summary = {
+                totalFiles: results.length,
+                uploaded: results.filter(r => !r.isAlreadyExist && !r.errorMessage).length,
+                conflicts: results.filter(r => r.isAlreadyExist).length,
+                errors: results.filter(r => r.errorMessage && !r.isAlreadyExist).length,
+            };
+
+            this.loggerService.log(`Completed uploading files: ${summary.uploaded} success, ${summary.conflicts} conflicts, ${summary.errors} errors.`);
+            
+            return { results, summary };
         } 
         catch (error) {
             this.loggerService.error('Error uploading files to bucket', error);
@@ -136,52 +177,53 @@ export class ComsService {
         }
     }
 
-    async createObject(bucketId: string, file: any,  context: any) {
+    async createObject(bucketId: string, fileName: string, mimeType: string, fileStream: fs.ReadStream, accessTokenJWT: any): Promise<any> {
         try {
-            this.loggerService.log(`Uploading file to bucket: ${bucketId}`);
+            this.loggerService.log(`Uploading file ${fileName} to bucket: ${bucketId}`);
+
+            const stats = await fs.promises.stat(fileStream.path);
+            const fileSizeInBytes = stats.size;
+
 
             const config = {
                 headers: {
-                    'Content-Disposition': this.setDispositionHeader(file.originalname),
-                    'Content-Type': file.type || 'application/octet-stream',
-                    Authorization: `Bearer ${  context?.req?.accessTokenJWT || ''}`,
+                    'Content-Disposition': this.setDispositionHeader(fileName),
+                    'Content-Type': mimeType || 'application/octet-stream',
+                    'Content-Length': fileSizeInBytes.toString(),
+                    'x-amz-bucket': bucketId,
+                    Authorization: `Bearer ${accessTokenJWT || ''}`,
                 },
-                params: {
-                    bucketId: bucketId,
-                },
+                params: { bucketId },
+                maxContentLength: Infinity,
+                maxBodyLength: Infinity,
             };
 
-            const response = await firstValueFrom(
-                this.httpService.put(`${this.comsApi}${this.object_path}`, file, config),
+            this.loggerService.log(`PUT ${this.comsApi}${this.object_path}`);
+
+            const response = await firstValueFrom( 
+                this.httpService.put(`${this.comsApi}${this.object_path}`, fileStream, config)
             );
 
-            this.loggerService.log(`Response status: ${response?.status}`);
-            if(response?.status === HttpStatus.CONFLICT ) {
-                // Return an object indicating a conflict without throwing the error
-                return { 
-                    fileAlreadyExists: true,
-                    errorMessage: `File ${file.originalname} already exists. Please upload a different file or change the file name.`,
-                };
-            }
+            this.loggerService.log(`Response status: ${response.status}`);
 
-            if (response?.data) {
-                return { 
-                    objectId: response.data.id,
-                    fileAlreadyExists: false,
-                };
-            }
-            throw new Error('File upload failed, no response data.');
+            return response;
         } 
         catch (error) {
-            if (error?.response?.status === HttpStatus.CONFLICT) {
+            this.loggerService.error(`Error uploading ${fileName} to bucket`, error);
+            if (error?.response?.status === HttpStatusCode.Conflict) {
                 // Handle 409 error explicitly here as well
-                return {
+                return { 
+                    status: error?.response?.status,
                     fileAlreadyExists: true,
-                    errorMessage: `File ${file.originalname} already exists. Please upload a different file or change the file name.`,
+                    errorMessage: `File ${fileName} already exists. Please upload a different file or change the file name.`,
                 };
             }
-
-            this.loggerService.error('Error uploading object to bucket', error);
+            else {
+                return { 
+                    status: error?.response?.status,
+                    errorMessage: `Failed to upload ${fileName}: ${error.message}`,
+                };
+            }
             throw new Error(`Failed to upload object: ${error.message}`);
         }
     }

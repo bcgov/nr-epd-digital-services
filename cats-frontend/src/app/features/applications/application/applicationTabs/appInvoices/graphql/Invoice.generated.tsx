@@ -66,7 +66,7 @@ export type GetObjectQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetObjectQuery = { __typename?: 'Query', getObject: { __typename?: 'ComsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null, data?: { __typename?: 'Coms', bucketId?: string | null, objectId?: string | null, downloadUrl?: string | null } | null } };
+export type GetObjectQuery = { __typename?: 'Query', getObject: { __typename?: 'ComsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null, data?: { __typename?: 'Coms', downloadUrl?: string | null } | null } };
 
 export type DeleteObjectMutationVariables = Types.Exact<{
   objectId: Types.Scalars['String']['input'];
@@ -485,8 +485,6 @@ export const GetObjectDocument = gql`
     success
     timestamp
     data {
-      bucketId
-      objectId
       downloadUrl
     }
   }

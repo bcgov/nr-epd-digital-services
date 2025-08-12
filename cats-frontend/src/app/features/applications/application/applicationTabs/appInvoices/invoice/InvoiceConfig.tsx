@@ -11,9 +11,8 @@ import {
   Link,
 } from '@cats/components/input-controls/InputControls';
 import { RequestStatus } from '@cats/helpers/requests/status';
-import { getObject } from './services/coms.service';
 import { InvoiceItemTypes } from '../enums/invoiceItemTypes';
-import { GetInvoiceRecipientNamesQuery, useGetObjectQuery } from '../graphql/Invoice.generated';
+import { GetInvoiceRecipientNamesQuery } from '../graphql/Invoice.generated';
 
 interface RecipientConfig {
   setSearchParam: (searchParam: string) => void;

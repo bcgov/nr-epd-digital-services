@@ -167,7 +167,6 @@ export type Coms = {
   __typename?: 'Coms';
   bucketId?: Maybe<Scalars['String']['output']>;
   downloadUrl?: Maybe<Scalars['String']['output']>;
-  objectId?: Maybe<Scalars['String']['output']>;
 };
 
 export type ComsResponse = {
