@@ -44,6 +44,23 @@ export class UploadController {
         @Body() fileUpload: { bucketId: string; invoiceId: number },
         @Req() req: Request,
     ) {
+        // Type check to prevent type confusion attacks
+        if (!Array.isArray(files)) {
+            this.loggerService.warn('Upload controller: uploadFiles() received non-array files parameter');
+            return {
+                message: 'Invalid files parameter',
+                statusCode: HttpStatusCode.BadRequest,
+                success: false,
+                summary: {
+                    totalFiles: 0,
+                    uploaded: 0,
+                    conflicts: 0,
+                    errors: 0,
+                },
+                data: [],
+                error: 'Files parameter must be an array',
+            };
+        }
         try {
             this.loggerService.log('Upload controller: uploadFiles() start');
             
