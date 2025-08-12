@@ -135,7 +135,9 @@ export class ApplicationService {
         where: { formId, submissionId },
       });
 
-      console.log('statusTypeAbbrev---', statusTypeAbbrev);
+      this.loggerService.log(`App Status successfully with formId: ${formId}, submissionId: ${submissionId}, 
+        formsflowAppId: ${formsflowAppId}, statusTypeAbbrev: ${statusTypeAbbrev}, siteIds: ${siteIds}  `);
+
       const statusType = await this.statusTypeService.getStatusTypeByAbbrev(statusTypeAbbrev);
       let applicationId: number;
 
@@ -186,6 +188,15 @@ export class ApplicationService {
 
       // Update application_site table if siteIds are provided
       if (siteIds && siteIds.length > 0 && applicationId) {
+        // Update the primary siteId in application table
+        await this.applicationRepository.update(
+          applicationId,
+          {
+            siteId: siteIds[0], // or however you determine which siteId to use
+            updatedBy: 'SYSTEM',
+            updatedDateTime: new Date(),
+          }
+        );
         // Remove existing mappings
         await this.applicationSiteRepository.delete({ applicationId });
 
