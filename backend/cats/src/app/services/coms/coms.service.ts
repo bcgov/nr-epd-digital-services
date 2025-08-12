@@ -102,7 +102,7 @@ export class ComsService {
     async uploadFilesToComs(files: Express.Multer.File[], bucketId: string, invoiceId: number, accessTokenJWT: any) {
         // Type confusion protection: ensure files is an array of objects
         if (!Array.isArray(files) || !files.every(f => typeof f === 'object' && f !== null && typeof f.originalname === 'string' && typeof f.path === 'string')) {
-            this.loggerService.error('Invalid files parameter: expected an array of Express.Multer.File objects');
+            this.loggerService.log('Invalid files parameter: expected an array of Express.Multer.File objects');
             throw new Error('Invalid files parameter: expected an array of files');
         }
         try {

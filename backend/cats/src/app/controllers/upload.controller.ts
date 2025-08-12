@@ -132,10 +132,10 @@ export class UploadController {
                 statusCode: HttpStatusCode.InternalServerError,
                 success: false,
                 summary: {
-                    totalFiles: files?.length ?? 0,
+                    totalFiles: Array.isArray(files) ? files.length : 0,
                     uploaded: 0,
                     conflicts: 0,
-                    errors: files?.length ?? 0,
+                    errors: Array.isArray(files) ? files.length : 0,
                 },
                 data: [],
                 error: error.message || 'Unexpected error',
