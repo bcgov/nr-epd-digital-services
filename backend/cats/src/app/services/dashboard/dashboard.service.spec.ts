@@ -220,7 +220,7 @@ describe('DashboardService', () => {
 
       expect(result).toBeNull();
       expect(loggerService.log).toHaveBeenCalledWith(
-        'An invalid site was passed into DashboardService.createRecentViewedApplication() end',
+        'This application has no siteId DashboardService.createRecentViewedApplication() end',
       );
     });
 
