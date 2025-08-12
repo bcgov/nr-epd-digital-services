@@ -2,7 +2,10 @@ import {
   FormFieldType,
   IFormField,
 } from '@cats/components/input-controls/IFormField';
-import { DownloadType, InvoiceStatus } from '../../../../../../../generated/types';
+import {
+  DownloadType,
+  InvoiceStatus,
+} from '../../../../../../../generated/types';
 import { UserMode } from '@cats/helpers/requests/userMode';
 import { ColumnSize, TableColumn } from '@cats/components/table/TableColumn';
 import { FaTimes } from 'react-icons/fa';
@@ -43,14 +46,14 @@ export const GetInvoiceConfig = ({
   const viewFileHandler = async (objectId: any) => {
     if (!!objectId?.trim()) {
       getObject({
-          fetchPolicy: 'network-only',
-          variables: { objectId, downloadType: DownloadType.Url },
-        }).then((result: any) => {
-          if (result?.data?.getObject?.data?.downloadUrl) {
-            const response = result?.data?.getObject?.data?.downloadUrl;
-            window.open(response, '_blank');
-          }
-        });
+        fetchPolicy: 'network-only',
+        variables: { objectId, downloadType: DownloadType.Url },
+      }).then((result: any) => {
+        if (result?.data?.getObject?.data?.downloadUrl) {
+          const response = result?.data?.getObject?.data?.downloadUrl;
+          window.open(response, '_blank');
+        }
+      });
     }
   };
   const customInvoiceRecipient = (

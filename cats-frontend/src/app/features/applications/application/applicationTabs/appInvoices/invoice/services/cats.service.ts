@@ -29,10 +29,10 @@ export const sendInvoice = async (
   }
 };
 
-
 export const createObject = async (
-  fileUpload: { bucketId: string, invoiceId: string }, 
-  filesPayload: any[]):Promise<any> => {
+  fileUpload: { bucketId: string; invoiceId: string },
+  filesPayload: any[],
+): Promise<any> => {
   try {
     const formData = new FormData();
 
@@ -43,7 +43,7 @@ export const createObject = async (
 
         // Check if the 'file' is a valid File object
         if (file instanceof File) {
-          formData.append('files', file);  // Append with correct key name for multiple files
+          formData.append('files', file); // Append with correct key name for multiple files
         }
       }
     }
@@ -59,8 +59,7 @@ export const createObject = async (
     );
 
     return response.data;
-  } 
-  catch (error) {
+  } catch (error) {
     console.error('Error in creating object:', error);
     throw error;
   }
