@@ -551,7 +551,7 @@
                                                 "height": ""
                                             },
                                             "type": "button",
-                                            "custom": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\r\nconst roles = UserDetails?UserDetails[\"role\"]:[];\r\n\r\nif(roles.includes(\"formsflow-reviewer/cssa-team\")){\r\n  form.emit('customEvent', {\r\n          type: \"actionComplete\",  \r\n          component: component,\r\n          actionType:'Queued'\r\n    });\r\n} else if(roles.includes(\"formsflow-reviewer/cssa-manager\")){\r\n  form.emit('customEvent', {\r\n          type: \"actionComplete\",  \r\n          component: component,\r\n          actionType:'Review In Progress'\r\n    });\r\n} else if(roles.includes(\"formsflow-reviewer/csap\")){\r\n  form.emit('customEvent', {\r\n          type: \"actionComplete\",  \r\n          component: component,\r\n          actionType:'CSAP'\r\n    });\r\n} else if(roles.includes(\"formsflow-reviewer/csap-society\")){\r\n  form.emit('customEvent', {\r\n          type: \"actionComplete\",  \r\n          component: component,\r\n          actionType:'Submitted'\r\n    });\r\n}else {\r\n  form.emit('customEvent', {\r\n          type: \"actionComplete\",  \r\n          component: component,\r\n          actionType:'Accepted'\r\n    });\r\n}",
+                                            "custom": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\nconst roles = UserDetails?UserDetails[\"role\"]:[];\n\nif(roles.includes(\"formsflow-reviewer/cssa-team\")){\n  form.emit('customEvent', {\n          type: \"actionComplete\",  \n          component: component,\n          actionType:'Queued'\n    });\n} else if(roles.includes(\"formsflow-reviewer/cssa-manager\")){\n  form.emit('customEvent', {\n          type: \"actionComplete\",  \n          component: component,\n          actionType:'Review In Progress'\n    });\n} else if(roles.includes(\"formsflow-reviewer/csap\")){\n  form.emit('customEvent', {\n          type: \"actionComplete\",  \n          component: component,\n          actionType:'CSAP'\n    });\n} else if(roles.includes(\"formsflow-reviewer/csap-society\")){\n  form.emit('customEvent', {\n          type: \"actionComplete\",  \n          component: component,\n          actionType:'Submitted'\n    });\n}\nelse if(roles.includes(\"formsflow-reviewer/site-information-advisor\")){\n  form.emit('customEvent', {\n          type: \"actionComplete\",  \n          component: component,\n          actionType:'Queued'\n    });\n}\nelse {\n  form.emit('customEvent', {\n          type: \"actionComplete\",  \n          component: component,\n          actionType:'Accepted'\n    });\n}\n\n",
                                             "input": true,
                                             "keyModified": true,
                                             "placeholder": "",
@@ -591,7 +591,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "eqorgv6"
+                                            "id": "et8aphk"
                                         },
                                         {
                                             "label": "Approved",
@@ -4943,7 +4943,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ele95t00000000000000000000000000000000000000000",
+                                    "id": "ele95t000000000000000000000000000000000000000000000000000",
                                     "key": "spropertyOwnerAndOrOperator",
                                     "tree": false,
                                     "type": "panel",
@@ -14479,7 +14479,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eks0gu00000000000000000000000000000000000000000",
+                                    "id": "eks0gu000000000000000000000000000000000000000000000000000",
                                     "key": "exposurePathwayQuestionnaireAffectedParcel",
                                     "tree": false,
                                     "type": "panel",
@@ -18423,7 +18423,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eo5mwyp00000000000000000000000000000000000000000",
+                                    "id": "eo5mwyp000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
