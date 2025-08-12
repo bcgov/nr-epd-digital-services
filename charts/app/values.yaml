@@ -108,5 +108,8 @@ frontend:
     REACT_APP_AUTH_LOAD_USER_INFO: "true"
     REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT: "true"
     VITE_GEOCODER_API: "https://geocoder.api.gov.bc.ca"
-
+crunchy: # Increase WAL storage as we ran out of it in PR/dev when importing prod oracle data, and will likely need 2gb WAL for all envs.
+  instances:
+    dataVolumeClaimSpec:
+      walStorage: 2Gi
 
