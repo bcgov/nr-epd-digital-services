@@ -30,6 +30,18 @@ export class CatsService {
             .filter((id: string) => id !== '')
             .map(Number) || []
         );
+      case ApplicationType.NOM:
+        const nomSiteIds = [
+          ...(formData.dataGrid?.flatMap((item: any) =>
+            item['contactParcelSiteIdNumber']?.toString().split(','),
+          ) || []),
+          ...(formData.siteIdNumber?.toString().split(',') || []),
+        ];
+
+        return nomSiteIds
+          .map((id: string) => id.trim())
+          .filter((id: string) => id !== '')
+          .map(Number);
       default:
         return (
           formData.siteId
