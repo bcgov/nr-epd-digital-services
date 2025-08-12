@@ -22,13 +22,15 @@ export class CatsService {
           .filter((id: string) => id !== '')
           .map(Number);
       case ApplicationType.DERA:
+      case ApplicationType.NIR:
         return (
-          formData.siteIdNumber
-            ?.toString()
+          formData.siteIdNumber?.toString()
             .split(',')
-            .map((id: string) => id.trim())
-            .filter((id: string) => id !== '')
-            .map(Number) || []
+            .map(id => id.trim())
+            .filter(Boolean) // removes empty strings
+            .map(Number)
+            .filter(num => !isNaN(num)) // removes NaN
+          ?? []
         );
       case ApplicationType.NOM:
         const nomSiteIds = [
@@ -44,12 +46,13 @@ export class CatsService {
           .map(Number);
       default:
         return (
-          formData.siteId
-            ?.toString()
+          formData.siteId?.toString()
             .split(',')
-            .map((id: string) => id.trim())
-            .filter((id: string) => id !== '')
-            .map(Number) || []
+            .map(id => id.trim())
+            .filter(Boolean) // removes empty strings
+            .map(Number)
+            .filter(num => !isNaN(num)) // removes NaN
+          ?? []
         );
     }
   };
