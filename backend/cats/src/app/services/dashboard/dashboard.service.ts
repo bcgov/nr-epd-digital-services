@@ -14,7 +14,7 @@ export class DashboardService {
     private readonly loggerService: LoggerService,
     private readonly siteService: SiteService,
     private readonly dataSource: DataSource,
-  ) {}
+  ) { }
 
   async getRecentViewedApplications(user: any) {
     this.loggerService.log(
@@ -174,12 +174,17 @@ export class DashboardService {
         );
         return null;
       }
-      const site = await this.siteService.getSiteById(
-        application?.siteId.toString(),
-      );
+
+      let site = null;
+      if (application?.siteId != null) {
+        site = await this.siteService.getSiteById(
+          application?.siteId.toString(),
+        );
+      }
+
       if (!site) {
         this.loggerService.log(
-          'An invalid site was passed into DashboardService.createRecentViewedApplication() end',
+          'This application has no siteId DashboardService.createRecentViewedApplication() end',
         );
         return null;
       }
