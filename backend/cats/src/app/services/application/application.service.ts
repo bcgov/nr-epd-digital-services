@@ -265,6 +265,8 @@ export class ApplicationService {
         ],
       });
 
+      console.log('application---', application);
+
       if (!application) {
         this.loggerService.warn(`No application found with ID: ${id}`);
         return null;
@@ -297,8 +299,8 @@ export class ApplicationService {
       return {
         id: application.id,
         siteId: application.siteId,
-        siteAddress: application.site.address,
-        siteCity: application.site.city,
+        siteAddress: application.site?.address,
+        siteCity: application.site?.city,
         formId: application.appStatuses?.find((status) => status.isCurrent)?.formId,
         submissionId: application?.appStatuses?.find((status) => status.isCurrent)?.submissionId,
         csapRefNumber: application.csapRefNumber,
