@@ -229,7 +229,6 @@ export class ComsService {
                     errorMessage: `Failed to upload ${fileName}: ${error.message}`,
                 };
             }
-            throw new Error(`Failed to upload object: ${error.message}`);
         }
     }
 
