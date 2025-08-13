@@ -34,10 +34,10 @@ const TableHeader: FC<TableHeaderProps> = ({
   return (
     <tr>
       {allowRowsSelect && (
-        <th scope="col" className={`checkbox-column`}>
+        <th scope="col" className={`checkbox-column pb-2`}>
           <input
             type="checkbox"
-            className="checkbox-color"
+            className="checkbox-color m-0 b-0"
             checked={isCurrentPageSelected}
             onChange={(event) => {
               selectAllRowsHandler(event, !currentPageAllRowsSelected);

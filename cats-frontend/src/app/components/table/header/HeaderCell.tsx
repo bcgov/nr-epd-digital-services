@@ -36,7 +36,7 @@ const HeaderCell: FC<HeaderCellProps> = ({
     <th
       key={index}
       scope="col"
-      className={`${getColumnSize(item.columnSize)} ${item.customHeaderCss} `}
+      className={`${getColumnSize(item.columnSize)} ${item.customHeaderCss ?? 'align-middle'} `}
     >
       {item.displayName}
       {!item.dynamicColumn &&

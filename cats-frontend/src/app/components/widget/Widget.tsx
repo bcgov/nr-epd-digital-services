@@ -37,7 +37,6 @@ const Widget: React.FC<IWidget> = ({
   widgetLabelContainerCss,
 }) => {
   let widgetSortHandler = sortHandler ?? (() => {});
-
   return (
     <div
       className={`d-flex flex-column ${styles.widgetContainer} ${customWidgetCss ?? ''}`}
