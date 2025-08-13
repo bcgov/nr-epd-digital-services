@@ -186,7 +186,7 @@ export class DashboardService {
         this.loggerService.log(
           'This application has no siteId DashboardService.createRecentViewedApplication() end',
         );
-        return null;
+        //return null;
       }
 
       const maxVisitedApplications = 4; // Maximum number of recently visited applications to keep
