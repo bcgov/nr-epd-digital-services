@@ -271,7 +271,7 @@ export class DashboardService {
         `Error in createRecentViewedApplication: ${error.message}`,
         error,
       );
-      return null;
+      throw error;
     }
   }
 }
