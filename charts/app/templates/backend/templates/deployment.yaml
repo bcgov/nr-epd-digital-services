@@ -161,6 +161,14 @@ spec:
               value: {{ .Values.global.config.KEYCLOAK_TOKEN_URL | quote }}
             - name: KEYCLOAK_SITE_SERVICE_CLIENT_ID
               value: {{ .Values.global.config.KEYCLOAK_SITE_SERVICE_CLIENT_ID | quote }}
+            - name: VITE_COMS_API
+              value: {{ .Values.global.config.VITE_COMS_API | quote }}
+            - name: VITE_S3_STORAGE_REGION
+              value: {{ .Values.global.config.VITE_S3_STORAGE_REGION | quote }}
+            - name: VITE_COMS_BUCKET
+              value: {{ .Values.global.config.VITE_COMS_BUCKET | quote }}
+            - name: VITE_COMS_OBJECT
+              value: {{ .Values.global.config.VITE_COMS_OBJECT | quote }}
             - name: KEYCLOAK_SITE_SERVICE_CLIENT_SECRET
               value: {{ .Values.global.secrets.KEYCLOAK_SITE_SERVICE_CLIENT_SECRET | quote }}
             - name: VITE_S3_STORAGE_SECRET_ACCESS_KEY
