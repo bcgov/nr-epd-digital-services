@@ -16,7 +16,7 @@ global:
   config:
     seed:
       enabled: true
-    SITE_SERVICE_URL: https://nr-site-registry-test-frontend.apps.silver.devops.gov.bc.ca
+    SITE_SERVICE_URL: https://nr-site-registry-test-backend.apps.silver.devops.gov.bc.ca/graphql
     CATS_EMAIL_TEST_MODE: true
     # switch to haley's email after verifying
     CATS_TEST_EMAIL_ADDRESS: midhun.murali@aot-technologies.com
