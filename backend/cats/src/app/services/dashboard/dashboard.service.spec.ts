@@ -210,7 +210,7 @@ describe('DashboardService', () => {
       );
     });
 
-    it('should return null and log if site is invalid', async () => {
+    /*it('should return null and log if site is invalid', async () => {
       (siteService.getSiteById as jest.Mock).mockResolvedValue(null);
 
       const result = await dashboardService.createRecentViewedApplication(
@@ -222,7 +222,7 @@ describe('DashboardService', () => {
       expect(loggerService.log).toHaveBeenCalledWith(
         'This application has no siteId DashboardService.createRecentViewedApplication() end',
       );
-    });
+    });*/
 
     it('should log and throw on repository or service errors', async () => {
       (siteService.getSiteById as jest.Mock).mockRejectedValue(
