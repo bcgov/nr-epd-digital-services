@@ -252,9 +252,8 @@ export class DashboardService {
           application?.appType.description;
         recentViewedApplication.visitedBy = userInfo?.givenName || '';
         recentViewedApplication.visitedDateTime = new Date();
-        recentViewedApplication.siteId = parseInt(
-          site?.findSiteBySiteIdLoggedInUser?.data?.id,
-        );
+        recentViewedApplication.siteId = site?.findSiteBySiteIdLoggedInUser?.data?.id ?? null;
+
         recentViewedApplication.address = siteAddress.trim();
 
         const createdRecentViewedApplication =
