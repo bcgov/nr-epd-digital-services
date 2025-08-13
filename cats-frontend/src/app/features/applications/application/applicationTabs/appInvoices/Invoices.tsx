@@ -260,6 +260,7 @@ export const Invoices: React.FC = () => {
           label="Create New Invoice"
           customHeaderTextCss="custom-invoice-heading"
           saveBtnLabel="Confirm"
+          cancelBtnLabel="Cancel"
           showTickIcon={true}
           customContentCss="custom-invoice-modal-content"
           closeHandler={(response) => {
