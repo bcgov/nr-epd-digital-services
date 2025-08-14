@@ -1028,7 +1028,7 @@ const Invoice: React.FC = () => {
     </div>
   );
 
-  if ((!hasValidAppData && !hasValidInvoiceData) && !!id?.trim()) {
+  if (!hasValidAppData && !hasValidInvoiceData && !!id?.trim()) {
     return (
       <LoadingOverlay loading={!hasValidAppData || !hasValidInvoiceData} />
     );
