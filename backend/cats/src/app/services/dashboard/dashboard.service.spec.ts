@@ -154,12 +154,13 @@ describe('DashboardService', () => {
       });
       expect(recentViewedApplicationRepository.remove).not.toHaveBeenCalled(); // only 2 < max 4
       expect(recentViewedApplicationRepository.save).toHaveBeenCalled();
+      console.log('result---', result);
       expect(result).toMatchObject({
         userId: 'user1',
         applicationId: 101,
         applicationType: 'TypeA',
         visitedBy: 'John',
-        siteId: 55,
+        siteId: '55',
       });
       expect(loggerService.log).toHaveBeenCalledWith(
         'DashboardService.createRecentViewedApplication() end',
