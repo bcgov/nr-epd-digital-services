@@ -14,8 +14,8 @@ export class RecentViewedApplication {
     @Column('character varying', { name: 'application_id' })
     applicationId: number
 
-    @Column('character varying', { name: 'site_id' })
-    siteId: number
+    @Column('character varying', { name: 'site_id', nullable: true })
+    siteId: number | null;
 
     @Column('character varying', { length: 200 })
     address: string;

@@ -159,7 +159,7 @@ describe('DashboardService', () => {
         applicationId: 101,
         applicationType: 'TypeA',
         visitedBy: 'John',
-        siteId: 55,
+        siteId: '55',
       });
       expect(loggerService.log).toHaveBeenCalledWith(
         'DashboardService.createRecentViewedApplication() end',
@@ -207,20 +207,6 @@ describe('DashboardService', () => {
       expect(result).toBeNull();
       expect(loggerService.log).toHaveBeenCalledWith(
         'An invalid user was passed into DashboardService.createRecentViewedApplication() end',
-      );
-    });
-
-    it('should return null and log if site is invalid', async () => {
-      (siteService.getSiteById as jest.Mock).mockResolvedValue(null);
-
-      const result = await dashboardService.createRecentViewedApplication(
-        application,
-        userInfo,
-      );
-
-      expect(result).toBeNull();
-      expect(loggerService.log).toHaveBeenCalledWith(
-        'This application has no siteId DashboardService.createRecentViewedApplication() end',
       );
     });
 
