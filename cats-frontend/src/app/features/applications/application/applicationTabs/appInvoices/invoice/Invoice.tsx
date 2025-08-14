@@ -218,8 +218,8 @@ const Invoice: React.FC = () => {
         applicationData?.getApplicationDetailsById?.data
       ) {
         const emailBody = InvoiceEmailTemplate(
-          invoiceData?.getInvoiceById?.data,
-          applicationData?.getApplicationDetailsById?.data,
+          invoiceData?.getInvoiceById?.data ?? {},
+          applicationData?.getApplicationDetailsById?.data ?? {},
         );
         setInvoiceEmailDetails((prev: any) => ({
           ...prev,
@@ -1028,11 +1028,11 @@ const Invoice: React.FC = () => {
     </div>
   );
 
-  // if ((!hasValidAppData || !hasValidInvoiceData) && !!id?.trim()) {
-  //   return (
-  //     <LoadingOverlay loading={!hasValidAppData || !hasValidInvoiceData} />
-  //   );
-  // }
+  if ((!hasValidAppData && !hasValidInvoiceData) && !!id?.trim()) {
+    return (
+      <LoadingOverlay loading={!hasValidAppData || !hasValidInvoiceData} />
+    );
+  }
 
   return (
     <div className="invoice_detail_conatiner">
