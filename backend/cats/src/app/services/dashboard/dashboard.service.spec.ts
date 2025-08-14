@@ -154,7 +154,6 @@ describe('DashboardService', () => {
       });
       expect(recentViewedApplicationRepository.remove).not.toHaveBeenCalled(); // only 2 < max 4
       expect(recentViewedApplicationRepository.save).toHaveBeenCalled();
-      console.log('result---', result);
       expect(result).toMatchObject({
         userId: 'user1',
         applicationId: 101,
@@ -210,20 +209,6 @@ describe('DashboardService', () => {
         'An invalid user was passed into DashboardService.createRecentViewedApplication() end',
       );
     });
-
-    /*it('should return null and log if site is invalid', async () => {
-      (siteService.getSiteById as jest.Mock).mockResolvedValue(null);
-
-      const result = await dashboardService.createRecentViewedApplication(
-        application,
-        userInfo,
-      );
-
-      expect(result).toBeNull();
-      expect(loggerService.log).toHaveBeenCalledWith(
-        'This application has no siteId DashboardService.createRecentViewedApplication() end',
-      );
-    });*/
 
     it('should log and throw on repository or service errors', async () => {
       (siteService.getSiteById as jest.Mock).mockRejectedValue(

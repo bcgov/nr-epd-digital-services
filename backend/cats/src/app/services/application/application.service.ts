@@ -32,7 +32,7 @@ export class ApplicationService {
     this.loggerService.log('ApplicationService.createApplication() start'); // Log the start of the method
 
     try {
-      // test Log the input parameters for better traceability
+      // Log the input parameters for better traceability
       this.loggerService.debug(
         `Attempting to create a new application with SRS form id: ${createApplication?.applicationStatus[0].formId} ' and submission id: ${createApplication?.applicationStatus[0].formId}`,
       );
@@ -264,8 +264,6 @@ export class ApplicationService {
           'appParticipants.organization',
         ],
       });
-
-      console.log('application---', application);
 
       if (!application) {
         this.loggerService.warn(`No application found with ID: ${id}`);
