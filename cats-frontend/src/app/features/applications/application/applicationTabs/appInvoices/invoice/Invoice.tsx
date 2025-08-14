@@ -218,8 +218,8 @@ const Invoice: React.FC = () => {
         applicationData?.getApplicationDetailsById?.data
       ) {
         const emailBody = InvoiceEmailTemplate(
-          invoiceData?.getInvoiceById?.data ?? {},
-          applicationData?.getApplicationDetailsById?.data ?? {},
+          invoiceData?.getInvoiceById?.data,
+          applicationData?.getApplicationDetailsById?.data,
         );
         setInvoiceEmailDetails((prev: any) => ({
           ...prev,
