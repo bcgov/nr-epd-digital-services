@@ -514,7 +514,11 @@ const Invoice: React.FC = () => {
                     if (hasErrors) return;
                     await updateInvoice({
                       variables: {
-                        invoice: updateInvoiceDetails(result),
+                        invoice: cleanGraphQLPayload(result, [
+                          'recipient',
+                          'whoUpdated',
+                          '__typename',
+                        ]),
                       },
                     });
                   }

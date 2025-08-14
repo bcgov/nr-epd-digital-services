@@ -1024,9 +1024,9 @@ export type ViewApplicationDetails = {
   queuedDate?: Maybe<Scalars['DateTime']['output']>;
   receivedDate: Scalars['DateTime']['output'];
   reviewProcess?: Maybe<DetailField>;
-  siteAddress: Scalars['String']['output'];
-  siteCity: Scalars['String']['output'];
-  siteId: Scalars['Float']['output'];
+  siteAddress?: Maybe<Scalars['String']['output']>;
+  siteCity?: Maybe<Scalars['String']['output']>;
+  siteId?: Maybe<Scalars['Float']['output']>;
   siteType?: Maybe<DetailField>;
   submissionId?: Maybe<Scalars['String']['output']>;
 };
