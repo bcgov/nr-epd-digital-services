@@ -17,7 +17,7 @@ export class ViewApplicationDetails {
   @Field()
   id: number;
 
-  @Field()
+  @Field({ nullable: true })
   siteId: number;
 
   @Field()
