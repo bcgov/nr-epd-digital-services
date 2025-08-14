@@ -17,13 +17,13 @@ export class ViewApplicationDetails {
   @Field()
   id: number;
 
-  @Field()
+  @Field({ nullable: true })
   siteId: number;
 
-  @Field()
+  @Field({ nullable: true })
   siteAddress: string;
 
-  @Field()
+  @Field({ nullable: true })
   siteCity: string;
 
   @Field({ nullable: true })

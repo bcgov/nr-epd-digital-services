@@ -297,8 +297,8 @@ export class ApplicationService {
       return {
         id: application.id,
         siteId: application.siteId,
-        siteAddress: application.site.address,
-        siteCity: application.site.city,
+        siteAddress: application.site?.address,
+        siteCity: application.site?.city,
         formId: application.appStatuses?.find((status) => status.isCurrent)?.formId,
         submissionId: application?.appStatuses?.find((status) => status.isCurrent)?.submissionId,
         csapRefNumber: application.csapRefNumber,
