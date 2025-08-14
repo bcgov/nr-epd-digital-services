@@ -149,7 +149,7 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
         <bpmn:script>var system = java.lang.System;
 system.out.println ("Sent to Caseworker");</bpmn:script>
       </bpmn:scriptTask>
-      <bpmn:userTask id="Activity_1voobmv" name="Caseworker Updates Form" camunda:assignee="${caseworkerAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
+      <bpmn:userTask id="Activity_1voobmv" name="Caseworker Updates Form" camunda:candidateGroups="formsflow/formsflow-reviewer/caseworker">
         <bpmn:extensionElements>
           <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
             <camunda:field name="copyDataIndicator">
@@ -193,7 +193,7 @@ task.execution.setVariable('userRole','Case Worker');</camunda:script>
         <bpmn:script>var system = java.lang.System;
 system.out.println ("Sent to SDM");</bpmn:script>
       </bpmn:scriptTask>
-      <bpmn:userTask id="Activity_026ojgg" name="SDM Updates Form" camunda:assignee="${sdmAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
+      <bpmn:userTask id="Activity_026ojgg" name="SDM Updates Form" camunda:candidateGroups="formsflow/formsflow-reviewer/sdm">
         <bpmn:extensionElements>
           <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
             <camunda:field name="copyDataIndicator">
@@ -276,7 +276,7 @@ system.out.println ("Begin SRCR Flow - Sent To SRCO");</bpmn:script>
       <bpmn:startEvent id="Event_1j01pra" name="Start SRCR Flow">
         <bpmn:outgoing>Flow_1axts3r</bpmn:outgoing>
       </bpmn:startEvent>
-      <bpmn:userTask id="Activity_0idq8ua" name="SRCO Updates Form" camunda:assignee="${srcoAssignment}" camunda:candidateGroups="formsflow/formsflow-reviewer/site-risk-classification-officer">
+      <bpmn:userTask id="Activity_0idq8ua" name="SRCO Updates Form" camunda:candidateGroups="formsflow/formsflow-reviewer/site-risk-classification-officer">
         <bpmn:extensionElements>
           <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.task.FormConnectorListener" event="create">
             <camunda:field name="copyDataIndicator">
@@ -607,7 +607,7 @@ execution.setVariable("applicationStatus", "Rejected");
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${riskclassification  != 'exempt'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1oam11w" sourceRef="Activity_06nypz0" targetRef="Gateway_1awj7az">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted' || action == 'Outcome Decision Made - Satisfactory' ||  action == 'Outcome Decision Made - Unsatisfactory'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Queued' || action == 'Outcome Decision Made - Satisfactory' ||  action == 'Outcome Decision Made - Unsatisfactory'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1ua4w6m" name="Need Info" sourceRef="Activity_06nypz0" targetRef="Task_05ulff4">
       <bpmn:extensionElements>
@@ -718,7 +718,7 @@ execution.setVariable('nirStatus', "Resubmitted");</camunda:script>
       <bpmn:outgoing>Flow_1wavf5u</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_0rqhohs" name="Accepted" sourceRef="Gateway_1w01edb" targetRef="Activity_0truthe">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Review In Progress'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1wavf5u" name="Recheck" sourceRef="Gateway_1w01edb" targetRef="Activity_06nypz0">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Recheck'}</bpmn:conditionExpression>
