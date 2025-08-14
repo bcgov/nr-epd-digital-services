@@ -1028,11 +1028,11 @@ const Invoice: React.FC = () => {
     </div>
   );
 
-  if ((!hasValidAppData || !hasValidInvoiceData) && !!id?.trim()) {
-    return (
-      <LoadingOverlay loading={!hasValidAppData || !hasValidInvoiceData} />
-    );
-  }
+  // if ((!hasValidAppData || !hasValidInvoiceData) && !!id?.trim()) {
+  //   return (
+  //     <LoadingOverlay loading={!hasValidAppData || !hasValidInvoiceData} />
+  //   );
+  // }
 
   return (
     <div className="invoice_detail_conatiner">
