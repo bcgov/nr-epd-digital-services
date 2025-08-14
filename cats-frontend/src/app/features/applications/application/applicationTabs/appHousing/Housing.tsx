@@ -235,7 +235,7 @@ export const Housing = () => {
             housingModal.mode === 'add' ? 'Add Housing' : 'Edit Housing'
           }
           cancelBtnLabel="Cancel"
-          saveBtnLabel='Save Housing Type'
+          saveBtnLabel="Save Housing Type"
           saveButtonDisabled={dataSaveInProgress || !isFormValid}
           cancelButtonDisabled={dataSaveInProgress}
           closeHandler={(saved) => {
