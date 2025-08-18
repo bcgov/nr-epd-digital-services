@@ -6,6 +6,7 @@ export const getClientApplicationStatus = (applicationStatus) => {
     municipality: "With Municipality",
     csap: "With CSAP",
     "csap society": "With CSAP Society",
+    "csap society": "With CSAP Society",
     new: "Submitted",
     queued: "Accepted",
     "additional information requested": "Additional Information Requested",
