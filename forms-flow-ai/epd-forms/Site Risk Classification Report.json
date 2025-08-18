@@ -900,7 +900,7 @@
                                                 "height": ""
                                             },
                                             "type": "button",
-                                            "custom": "const submissionId = form._submission._id;\n  const formId = form._submission.form;\n  const formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\n  const formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\n  const formio = new Formio(formDataReqUrl);\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\nconst roles = UserDetails?UserDetails[\"role\"]:[];\n  formio.saveSubmission(formDataReqObj1).then( result => {\nif(roles.includes(\"formsflow-reviewer/cssa-manager\") || roles.includes(\"formsflow-reviewer/site-risk-classification-officer\")){\n  form.emit('customEvent', {\n          type: \"actionComplete\",  \n          component: component,\n          actionType:'Review In Progress'\n    });\n}\nelse if( roles.includes(\"formsflow-reviewer/caseworker\"))\n{\n form.emit('customEvent', {\n          type: \"actionComplete\",  \n          component: component,\n          actionType:'Review In Progress SDM'\n    });\n}\nelse if(roles.includes(\"formsflow-reviewer/csap\") || roles.includes(\"formsflow-reviewer/csap-society\")){\n  form.emit('customEvent', {\n          type: \"actionComplete\",  \n          component: component,\n          actionType:'Accepted'\n    });\n}\nelse\n{\n  form.emit('customEvent', {\n            type: \"actionComplete\",   \n            component: component,\n            actionType: 'Queued'\n      }); \n}\n  }).catch((error)=>{\n    console.log(error);\n  });",
+                                            "custom": "const submissionId = form._submission._id;\n  const formId = form._submission.form;\n  const formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\n  const formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\n  const formio = new Formio(formDataReqUrl);\n  formio.saveSubmission(formDataReqObj1).then( result => {\n  form.emit('customEvent', {\n            type: \"actionComplete\",   \n            component: component,\n            actionType: 'Accepted'\n      }); \n  }).catch((error)=>{\n  //Error callback on not Save\n  form.emit('customEvent', {\n            type: \"actionError\",   \n            component: component,\n            actionType:'Accepted'\n      }); \n  });",
                                             "input": true,
                                             "keyModified": true,
                                             "placeholder": "",
@@ -940,7 +940,7 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "efcw8i"
+                                            "id": "ee2sv6m"
                                         },
                                         {
                                             "label": "Outcome Decision Made - Satisfactory",
@@ -1150,7 +1150,7 @@
                                                 "eq": "",
                                                 "json": ""
                                             },
-                                            "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\nconst roles = UserDetails[\"role\"];\n\nif(roles.includes(\"formsflow-reviewer/csap\") || \nroles.includes(\"formsflow-reviewer/csap-society\")|| \nroles.includes(\"formsflow-reviewer/cssa-manager\")) {\n  show = false;\n}\nelse\n{\n  show = true;\n}\n\nif(roles.includes(\"formsflow-reviewer/cssa-team\") || roles.includes(\"formsflow-reviewer/site-risk-classification-officer\") || roles.includes(\"formsflow-reviewer/caseworker\") || roles.includes(\"formsflow-reviewer/cssa-manager\"))\n{\n   component.label = 'Reject'\n}",
+                                            "customConditional": "",
                                             "logic": [],
                                             "attributes": {},
                                             "overlay": {
@@ -1161,8 +1161,22 @@
                                                 "width": "",
                                                 "height": ""
                                             },
-                                            "type": "button",
-                                            "custom": "\n\nconst submissionId = form._submission._id;\nconst formId = form._submission.form;\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": data};\nconst formio = new Formio(formDataReqUrl);\nconst UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\nconst roles = UserDetails?UserDetails[\"role\"]:[];\nformio.saveSubmission(formDataReqObj1).then( result => {\nif(roles.includes(\"formsflow-reviewer/cssa-team\") || roles.includes(\"formsflow-reviewer/site-risk-classification-officer\") || roles.includes(\"formsflow-reviewer/caseworker\") || roles.includes(\"formsflow-reviewer/cssa-manager\")){\n  form.emit('customEvent', {\n          type: \"actionComplete\",  \n          component: component,\n          actionType:'Rejected'\n    });\n}\nelse\n{\n\tform.emit('customEvent', {\n          type: \"actionComplete\",   \n          component: component,\n          actionType: 'Outcome Decision Made - Unsatisfactory'\n    \t}); \n}\n\n}).catch((error)=>{\n  console.log(error)\n});\n",
+                                            "type": "select",
+                                            "indexeddb": {
+                                                "filter": {}
+                                            },
+                                            "lazyLoad": true,
+                                            "selectValues": "data",
+                                            "selectFields": "",
+                                            "disableLimit": false,
+                                            "searchField": "",
+                                            "searchDebounce": 0.3,
+                                            "minSearch": 0,
+                                            "filter": "",
+                                            "limit": 100,
+                                            "authenticate": false,
+                                            "ignoreCache": false,
+                                            "redrawOn": "",
                                             "input": true,
                                             "placeholder": "",
                                             "prefix": "",
@@ -1201,7 +1215,13 @@
                                             "showWordCount": false,
                                             "allowMultipleMasks": false,
                                             "addons": [],
-                                            "id": "eyx5wtd"
+                                            "fuseOptions": {
+                                                "include": "score",
+                                                "threshold": 0.3
+                                            },
+                                            "id": "ee27bwl",
+                                            "defaultValue": "",
+                                            "sort": ""
                                         }
                                     ],
                                     "size": "md",
@@ -4366,7 +4386,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ele95t000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ele95t0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "spropertyOwnerAndOrOperator",
                                     "tree": false,
                                     "type": "panel",
@@ -13845,7 +13865,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eks0gu00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eks0gu000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "exposurePathwayQuestionnaireAffectedParcel",
                                     "tree": false,
                                     "type": "panel",
@@ -17789,7 +17809,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eo5mwyp000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eo5mwyp0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
