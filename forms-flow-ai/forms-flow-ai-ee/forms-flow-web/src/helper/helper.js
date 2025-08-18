@@ -5,6 +5,7 @@ export const getClientApplicationStatus = (applicationStatus) => {
   const statusMap = {
     municipality: "With Municipality",
     csap: "With CSAP",
+    "csap society": "With CSAP Society",
     new: "Submitted",
     queued: "Accepted",
     "additional information requested": "Additional Information Requested",
@@ -25,7 +26,7 @@ export const getClientApplicationStatus = (applicationStatus) => {
     returned: "Additional Information Requested",
     resubmit: "Additional Information Requested",
     "received from municipality": "Review",
-    "review in progress": "Review",
+    recheck: "Review",
   };
 
   const normalizedStatus = applicationStatus.toLowerCase();

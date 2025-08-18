@@ -7,7 +7,7 @@ import ApplicationType from '../constants/applicationType';
 
 @Injectable()
 export class CatsService {
-  constructor() { }
+  constructor() {}
 
   getSiteIdsFromFormData = (formData: any) => {
     switch (formData.hdnAppType) {
@@ -44,6 +44,15 @@ export class CatsService {
           .map((id: string) => id.trim())
           .filter((id: string) => id !== '')
           .map(Number);
+      case ApplicationType.SRCR:
+        return (
+          formData.siteIdNumber
+            ?.toString()
+            .split(',')
+            .map((id: string) => id.trim())
+            .filter((id: string) => id !== '')
+            .map(Number) || []
+        );
       default:
         return (
           formData.siteId?.toString()
@@ -129,6 +138,11 @@ export class CatsService {
     formId: string,
     formData: any,
   ) {
+    if (!formData.applicationStatus) {
+      console.log('No application status received');
+      return;
+    }
+
     const GRAPHQL_URL = process.env.CATS_API;
 
     // Parse and split comma-separated site IDs
