@@ -26,6 +26,9 @@ export const applicationResultColumns = (fromMyTasks: boolean = false) => [
     columnSize: ColumnSize.Default,
     dynamicColumn: false,
     customHeaderCss: 'custom-applications-header',
+    isDefault: true,
+    sortOrder: 3,
+    isChecked: true,
   },
   {
     id: 2,
@@ -53,6 +56,9 @@ export const applicationResultColumns = (fromMyTasks: boolean = false) => [
     columnSize: ColumnSize.Small,
     dynamicColumn: false,
     customHeaderCss: 'custom-applications-header',
+    isDefault: true,
+    sortOrder: 3,
+    isChecked: true,
   },
   {
     id: 3,
