@@ -3,3 +3,31 @@
   font-size: 12px;
   line-height: 16px;
 }
+
+.custom-applications-input-txt {
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  line-height: 16px !important;
+  text-align: left !important;
+}
+
+a.custom-applications-input-txt:hover {
+  color: var(--typography-color-link-hover, #1a3f6b) !important;
+}
+
+a.custom-applications-input-txt {
+  color: var(--typography-color-link, #255a90) !important;
+  text-decoration: underline !important;
+  justify-content: left !important;
+}
+
+.custom-applications-link-wrapper:hover .custom-applications-input-txt,
+.custom-applications-link-wrapper:hover .custom-applications-external-link {
+  color: var(--typography-color-link-hover, #1a3f6b) !important;
+}
+
+.custom-applications-header {
+  font-family: Noto Sans ! important;
+  vertical-align: middle ! important;
+  min-width: 100px ! important;
+}

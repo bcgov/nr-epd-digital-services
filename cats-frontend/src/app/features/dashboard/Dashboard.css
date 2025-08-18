@@ -20,6 +20,10 @@ a.custom-dashboard-input-txt {
   justify-content: left;
 }
 
+a.custom-dashboard-input-txt:hover {
+  color: var(--typography-color-link-hover, #1a3f6b);
+}
+
 .custom-dashboard-link-wrapper:hover .custom-dashboard-input-txt,
 .custom-dashboard-link-wrapper:hover .custom-dashboard-external-link {
   color: var(--typography-color-link-hover, #1a3f6b);
