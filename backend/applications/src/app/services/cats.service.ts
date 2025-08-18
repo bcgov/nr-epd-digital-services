@@ -7,7 +7,7 @@ import ApplicationType from '../constants/applicationType';
 
 @Injectable()
 export class CatsService {
-  constructor() { }
+  constructor() {}
 
   getSiteIdsFromFormData = (formData: any) => {
     switch (formData.hdnAppType) {
