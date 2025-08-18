@@ -27,6 +27,7 @@ export const getClientApplicationStatus = (applicationStatus) => {
     resubmit: "Additional Information Requested",
     "received from municipality": "Review",
     recheck: "Review",
+    "review in progress": "Review",
   };
 
   const normalizedStatus = applicationStatus.toLowerCase();
