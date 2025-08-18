@@ -31,7 +31,7 @@ const StaffAssigned: React.FC<StaffAssignedProps> = ({ staff }) => {
     <OverlayTrigger
       trigger="click"
       placement="bottom-start"
-      overlay={popover}
+      overlay={!!staff.length ? popover : <></>}
       rootClose
       transition={false}
     >
@@ -45,7 +45,7 @@ const StaffAssigned: React.FC<StaffAssignedProps> = ({ staff }) => {
           <span className="staff-assigned__extra">+ {extraStaffCount}</span>
         )}
         <div className="staff-assigned__dropdown-arrow">
-          <DropdownIcon size={20} />
+        { !!staff.length && <DropdownIcon size={20} />}
         </div>
       </button>
     </OverlayTrigger>
