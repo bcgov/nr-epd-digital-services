@@ -130,14 +130,101 @@ execution.setVariable('EmailType','nom');
 execution.setVariable('formName','Site Risk Classification Report');
 
 
-execution.setVariable('emailsIdsToProcess',JSON.stringify(listOwnerEmailAddress));</bpmn:script></bpmn:scriptTask><bpmn:exclusiveGateway id="Gateway_0qeiyw3" name="Is Application Resubmitted"><bpmn:incoming>Flow_0uiz94v</bpmn:incoming><bpmn:outgoing>Flow_1mjvum7</bpmn:outgoing><bpmn:outgoing>Flow_1wf5te7</bpmn:outgoing><bpmn:outgoing>Flow_128jxf3</bpmn:outgoing><bpmn:outgoing>Flow_1p1932t</bpmn:outgoing><bpmn:outgoing>Flow_0oxgtz8</bpmn:outgoing><bpmn:outgoing>Flow_1lj8tdk</bpmn:outgoing><bpmn:outgoing>Flow_08zx269</bpmn:outgoing></bpmn:exclusiveGateway><bpmn:startEvent id="Event_02fettt" name="Submit Form"><bpmn:outgoing>Flow_1la2yud</bpmn:outgoing></bpmn:startEvent><bpmn:scriptTask id="Activity_0j9b17x" name="Set Variables" scriptFormat="javascript"><bpmn:incoming>Flow_1la2yud</bpmn:incoming><bpmn:outgoing>Flow_1j5aqkd</bpmn:outgoing><bpmn:script>execution.setVariable('isAp',false);
+execution.setVariable('emailsIdsToProcess',JSON.stringify(listOwnerEmailAddress));</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:exclusiveGateway id="Gateway_0qeiyw3" name="Is Application Resubmitted">
+      <bpmn:incoming>Flow_0uiz94v</bpmn:incoming>
+      <bpmn:outgoing>Flow_1mjvum7</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1wf5te7</bpmn:outgoing>
+      <bpmn:outgoing>Flow_128jxf3</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1p1932t</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0oxgtz8</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1lj8tdk</bpmn:outgoing>
+      <bpmn:outgoing>Flow_08zx269</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:startEvent id="Event_02fettt" name="Submit Form">
+      <bpmn:outgoing>Flow_1la2yud</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:scriptTask id="Activity_0j9b17x" name="Set Variables" scriptFormat="javascript">
+      <bpmn:incoming>Flow_1la2yud</bpmn:incoming>
+      <bpmn:outgoing>Flow_1j5aqkd</bpmn:outgoing>
+      <bpmn:script>execution.setVariable('isAp',false);
 execution.setVariable('isSociety',false);
 execution.setVariable('isCssaTeam',false);
 execution.setVariable('isCaseworker',false);
 execution.setVariable('isSrco',false);
-execution.setVariable('isSdm',false);</bpmn:script></bpmn:scriptTask><bpmn:userTask id="Activity_06nypz0" name="CSAP Review" camunda:candidateGroups="formsflow/formsflow-reviewer/csap"><bpmn:extensionElements><camunda:formData><camunda:formField id="action" label="Action" type="string" /></camunda:formData><camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="create" /><camunda:taskListener event="complete"><camunda:script scriptFormat="javascript">task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
-task.execution.setVariable('userRole','CSAP');</camunda:script></camunda:taskListener><camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="complete" /><camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="complete"><camunda:field name="fields"><camunda:expression>["applicationId","applicationStatus"]</camunda:expression></camunda:field></camunda:taskListener></bpmn:extensionElements><bpmn:incoming>Flow_0err7mx</bpmn:incoming><bpmn:incoming>Flow_058kqm8</bpmn:incoming><bpmn:incoming>Flow_1wf5te7</bpmn:incoming><bpmn:outgoing>Flow_159m7j9</bpmn:outgoing></bpmn:userTask><bpmn:exclusiveGateway id="Gateway_1osruh3" name="Action Taken"><bpmn:incoming>Flow_159m7j9</bpmn:incoming><bpmn:outgoing>Flow_0iim75v</bpmn:outgoing><bpmn:outgoing>Flow_0glptri</bpmn:outgoing></bpmn:exclusiveGateway><bpmn:userTask id="Activity_08fgjgt" name="Society Review" camunda:candidateGroups="formsflow/formsflow-reviewer/csap-society"><bpmn:extensionElements><camunda:formData><camunda:formField id="action" label="Action" type="string" /></camunda:formData><camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="create" /><camunda:taskListener event="complete"><camunda:script scriptFormat="javascript">task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
-task.execution.setVariable('userRole','CSAP Society');</camunda:script></camunda:taskListener><camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="complete" /><camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="complete"><camunda:field name="fields"><camunda:expression>["applicationId","applicationStatus"]</camunda:expression></camunda:field></camunda:taskListener></bpmn:extensionElements><bpmn:incoming>Flow_0iim75v</bpmn:incoming><bpmn:incoming>Flow_15il78e</bpmn:incoming><bpmn:incoming>Flow_128jxf3</bpmn:incoming><bpmn:outgoing>Flow_1pghhuh</bpmn:outgoing></bpmn:userTask><bpmn:exclusiveGateway id="Gateway_132oe4w" name="Action Taken"><bpmn:incoming>Flow_1pghhuh</bpmn:incoming><bpmn:outgoing>Flow_11adl9o</bpmn:outgoing><bpmn:outgoing>Flow_0y1l5de</bpmn:outgoing><bpmn:outgoing>Flow_0err7mx</bpmn:outgoing></bpmn:exclusiveGateway><bpmn:exclusiveGateway id="Gateway_1kotdsu" name="Action Taken"><bpmn:incoming>Flow_13r7dqy</bpmn:incoming><bpmn:outgoing>Flow_1igr7br</bpmn:outgoing><bpmn:outgoing>Flow_0y8vydy</bpmn:outgoing><bpmn:outgoing>Flow_15il78e</bpmn:outgoing><bpmn:outgoing>Flow_16z6m4e</bpmn:outgoing></bpmn:exclusiveGateway><bpmn:userTask id="Activity_11o1equ" name="CSSA Team Review" camunda:candidateGroups="formsflow/formsflow-reviewer/cssa-team"><bpmn:extensionElements><camunda:formData><camunda:formField id="action" label="Action" type="string" /></camunda:formData><camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="create" /><camunda:taskListener event="complete"><camunda:script scriptFormat="javascript">task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
+execution.setVariable('isSdm',false);</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:userTask id="Activity_06nypz0" name="CSAP Review" camunda:candidateGroups="formsflow/formsflow-reviewer/csap">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="action" label="Action" type="string" />
+        </camunda:formData>
+        <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="create" />
+        <camunda:taskListener event="complete">
+          <camunda:script scriptFormat="javascript">task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
+task.execution.setVariable('userRole','CSAP');</camunda:script>
+        </camunda:taskListener>
+        <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="complete" />
+        <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="complete">
+          <camunda:field name="fields">
+            <camunda:expression>["applicationId","applicationStatus"]</camunda:expression>
+          </camunda:field>
+        </camunda:taskListener>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0err7mx</bpmn:incoming>
+      <bpmn:incoming>Flow_058kqm8</bpmn:incoming>
+      <bpmn:incoming>Flow_1wf5te7</bpmn:incoming>
+      <bpmn:outgoing>Flow_159m7j9</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_1osruh3" name="Action Taken">
+      <bpmn:incoming>Flow_159m7j9</bpmn:incoming>
+      <bpmn:outgoing>Flow_0iim75v</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0glptri</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_08fgjgt" name="Society Review" camunda:candidateGroups="formsflow/formsflow-reviewer/csap-society">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="action" label="Action" type="string" />
+        </camunda:formData>
+        <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="create" />
+        <camunda:taskListener event="complete">
+          <camunda:script scriptFormat="javascript">task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
+task.execution.setVariable('userRole','CSAP Society');</camunda:script>
+        </camunda:taskListener>
+        <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="complete" />
+        <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="complete">
+          <camunda:field name="fields">
+            <camunda:expression>["applicationId","applicationStatus"]</camunda:expression>
+          </camunda:field>
+        </camunda:taskListener>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0iim75v</bpmn:incoming>
+      <bpmn:incoming>Flow_15il78e</bpmn:incoming>
+      <bpmn:incoming>Flow_128jxf3</bpmn:incoming>
+      <bpmn:outgoing>Flow_1pghhuh</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_132oe4w" name="Action Taken">
+      <bpmn:incoming>Flow_1pghhuh</bpmn:incoming>
+      <bpmn:outgoing>Flow_11adl9o</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0y1l5de</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0err7mx</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_1kotdsu" name="Action Taken">
+      <bpmn:incoming>Flow_13r7dqy</bpmn:incoming>
+      <bpmn:outgoing>Flow_1igr7br</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0y8vydy</bpmn:outgoing>
+      <bpmn:outgoing>Flow_15il78e</bpmn:outgoing>
+      <bpmn:outgoing>Flow_16z6m4e</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_11o1equ" name="CSSA Team Review" camunda:candidateGroups="formsflow/formsflow-reviewer/cssa-team">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="action" label="Action" type="string" />
+        </camunda:formData>
+        <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="create" />
+        <camunda:taskListener event="complete">
+          <camunda:script scriptFormat="javascript">task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
 task.execution.setVariable('userRole','CSSA Team');
 task.execution.setVariable('returnedBy','CSSA Team');</camunda:script>
         </camunda:taskListener>
@@ -404,7 +491,22 @@ execution.setVariable('isAp',false);
 execution.setVariable('isSociety',false);
 execution.setVariable('isCssaTeam',false);
 execution.setVariable('isCaseworker',false);
-execution.setVariable('isSdm',false);</camunda:script></camunda:executionListener></bpmn:extensionElements><bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression></bpmn:sequenceFlow><bpmn:sequenceFlow id="Flow_10wb8jx" name="Rejected" sourceRef="Gateway_13mf7un" targetRef="Event_0rqe9p4"><bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected'}</bpmn:conditionExpression></bpmn:sequenceFlow><bpmn:sequenceFlow id="Flow_0nu7red" name="Recheck" sourceRef="Gateway_18qjjlu" targetRef="Activity_00qh5e4"><bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Recheck'}</bpmn:conditionExpression></bpmn:sequenceFlow><bpmn:sequenceFlow id="Flow_1s9sm8u" sourceRef="Gateway_1ih6c9g" targetRef="Activity_05x4sl7" /><bpmn:sequenceFlow id="Flow_09svnbh" name="Returned" sourceRef="Gateway_18qjjlu" targetRef="Task_05ulff4"><bpmn:extensionElements><camunda:executionListener event="take"><camunda:script scriptFormat="javascript">execution.setVariable('isCaseworker',true);
+execution.setVariable('isSdm',false);</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_10wb8jx" name="Rejected" sourceRef="Gateway_13mf7un" targetRef="Event_0rqe9p4">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0nu7red" name="Recheck" sourceRef="Gateway_18qjjlu" targetRef="Activity_00qh5e4">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Recheck'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1s9sm8u" sourceRef="Gateway_1ih6c9g" targetRef="Activity_05x4sl7" />
+    <bpmn:sequenceFlow id="Flow_09svnbh" name="Returned" sourceRef="Gateway_18qjjlu" targetRef="Task_05ulff4">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="javascript">execution.setVariable('isCaseworker',true);
 execution.setVariable('isAp',false);
 execution.setVariable('isSociety',false);
 execution.setVariable('isCssaTeam',false);
