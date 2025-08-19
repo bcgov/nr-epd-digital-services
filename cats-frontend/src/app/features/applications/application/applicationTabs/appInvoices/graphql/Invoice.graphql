@@ -139,3 +139,45 @@ query getInvoiceRecipientNames($searchParam: String!) {
     }
   }
 }
+
+mutation createBucket($bucketName: String!, $bucketKey: String!){
+  createBucket(bucketName: $bucketName, bucketKey: $bucketKey) {
+    message
+    httpStatusCode
+    success
+    timestamp
+    data {
+      bucketId
+    }
+  }
+}
+
+mutation deleteBucket($bucketId: String!) {
+  deleteBucket(bucketId: $bucketId) {
+    message
+    httpStatusCode
+    success
+    timestamp
+  }
+}
+
+query getObject($objectId: String!, $downloadType: DownloadType) {
+  getObject(objectId: $objectId, downloadType: $downloadType) {
+    message
+    httpStatusCode
+    success
+    timestamp
+    data {
+      downloadUrl
+    }
+  }
+}
+
+mutation deleteObject($objectId: String!, $versionId: String) {
+  deleteObject(objectId: $objectId, versionId: $versionId) {
+    message
+    httpStatusCode
+    success
+    timestamp
+  }
+}
