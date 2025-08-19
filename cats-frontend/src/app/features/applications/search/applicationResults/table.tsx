@@ -52,7 +52,7 @@ const ApplicationResultsTable: React.FC<ApplicationResultsTableProps> = ({
       <Table
         label="Search Results"
         isLoading={requestStatus}
-        columns={columns.filter((column) => column.isChecked)}
+        columns={columns}
         data={results}
         changeHandler={changeHandler}
         editMode={false}
