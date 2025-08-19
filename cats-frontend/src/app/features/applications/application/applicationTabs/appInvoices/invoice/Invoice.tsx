@@ -25,14 +25,19 @@ import LoadingOverlay from '@cats/components/loader/LoadingOverlay';
 import InvoicePreviewTemplate from './InvoicePreviewTemplate';
 import {
   GetInvoiceByIdDocument,
+  useCreateBucketMutation,
   useCreateInvoiceMutation,
+  useDeleteBucketMutation,
   useDeleteInvoiceMutation,
+  useDeleteObjectMutation,
   useGetInvoiceByIdQuery,
   useGetInvoiceRecipientNamesQuery,
+  useGetObjectLazyQuery,
   useUpdateInvoiceMutation,
 } from '../graphql/Invoice.generated';
 import { pdf } from '@react-pdf/renderer';
 import {
+  DownloadType,
   DropdownDto,
   InvoiceStatus,
   UpdateInvoice,
@@ -42,22 +47,16 @@ import {
 import { v4 } from 'uuid';
 import Decimal from 'decimal.js';
 import FileUploader from '@cats/components/fileUploader/FileUploader';
-import {
-  createBucket,
-  createObject,
-  deleteBucket,
-  deleteObject,
-} from './services/coms.service';
 import { HttpStatusCode } from 'axios';
+import { InvoiceItemTypes } from '../enums/invoiceItemTypes';
+import { InvoiceActions } from '../enums/invoiceActions';
+import { InvoiceEmailTemplate } from './InvoiceEmailTemplate';
+import { createObject, sendInvoice } from './services/cats.service';
 
 interface DeletedAttachment {
   bucketId: string;
   objectId: string;
 }
-import { InvoiceItemTypes } from '../enums/invoiceItemTypes';
-import { InvoiceActions } from '../enums/invoiceActions';
-import { InvoiceEmailTemplate } from './InvoiceEmailTemplate';
-import { sendInvoice } from './services/cats.service';
 
 const initialInvoice: any = {
   subject: '',
@@ -118,9 +117,13 @@ const Invoice: React.FC = () => {
     skip: !numericInvoiceId,
   });
 
+  const [getObject] = useGetObjectLazyQuery();
   const [updateInvoice] = useUpdateInvoiceMutation();
   const [createInvoice] = useCreateInvoiceMutation();
   const [deleteInvoice] = useDeleteInvoiceMutation();
+  const [createBucket] = useCreateBucketMutation();
+  const [deleteBucket] = useDeleteBucketMutation();
+  const [deleteObject] = useDeleteObjectMutation();
 
   // State to store invoice and application details
   const [invoiceEmailDetails, setInvoiceEmailDetails] = useState<any>({
@@ -249,15 +252,27 @@ const Invoice: React.FC = () => {
     try {
       if (!invoice) return invoice;
 
-      // 1. Delete objects
+      // 1. Delete objects marked for deletion
       if (attachmentsToDelete?.length) {
+        // Use for-await-of for sequential async deletes, can be parallel if needed
         for (const attachment of attachmentsToDelete) {
           if (attachment?.objectId?.trim()) {
-            const comsResponse = await deleteObject(attachment?.objectId);
-            if (comsResponse?.DeleteMarker) {
-              setAttachmentsToDelete((prev) =>
-                prev?.filter((a: any) => a?.objectId !== attachment?.objectId),
+            try {
+              const response = await deleteObject({
+                variables: { objectId: attachment.objectId },
+              });
+
+              if (response?.data?.deleteObject?.success) {
+                setAttachmentsToDelete((prev) =>
+                  prev.filter((a: any) => a.objectId !== attachment.objectId),
+                );
+              }
+            } catch (deleteErr) {
+              console.warn(
+                `Failed to delete objectId ${attachment.objectId}:`,
+                deleteErr,
               );
+              // Decide if you want to continue or stop on error
             }
           }
         }
@@ -265,63 +280,109 @@ const Invoice: React.FC = () => {
 
       // 2. Create bucket if needed
       let currentBucketId = bucketId?.trim();
-      if (!bucketId?.trim()) {
-        const bucketName = `application/${applicationId}/invoice/${invoice?.id}`;
-        const bucketKey = `application/${applicationId}/invoice/${invoice?.id}`;
-        const comsResponse = await createBucket(bucketName, bucketKey);
-        if (comsResponse) {
-          currentBucketId = comsResponse?.bucketId;
-          setBucketId(comsResponse?.bucketId);
+
+      if (!currentBucketId) {
+        const bucketName = `application/${applicationId}/invoice/${invoice.id}`;
+        const bucketKey = bucketName;
+
+        try {
+          const response = await createBucket({
+            variables: { bucketName, bucketKey },
+          });
+
+          if (response?.data?.createBucket?.data?.bucketId) {
+            currentBucketId = response?.data?.createBucket?.data?.bucketId;
+            setBucketId(currentBucketId);
+          }
+
+          if (!response?.data?.createBucket?.data?.bucketId) {
+            console.error('Bucket creation failed, no response data.');
+            return;
+          }
+        } catch (bucketErr) {
+          console.error('Bucket creation failed:', bucketErr);
+          return;
         }
       }
 
-      // 3. Upload attachments
-      const updatedAttachments = await Promise.all(
-        invoice?.invoiceAttachments?.map(async (attachment: any) => {
-          if (
-            !attachment?.file ||
-            (attachment?.objectId && !attachment?.previewUrl)
-          ) {
-            const { __typename, ...rest } = attachment;
-            return rest;
-          }
-
-          if (!currentBucketId?.trim()) {
-            throw new Error(
-              'Bucket ID is required before uploading the object.',
-            );
-          }
-          const comsResponse = await createObject(
-            currentBucketId,
-            attachment?.file,
-          );
-
-          if (comsResponse?.status === HttpStatusCode.Conflict) {
-            setErrors((prev) => [
-              ...prev,
-              {
-                errorMessage: `File ${attachment?.fileName} already exists in the bucket.`,
-              },
-            ]);
-            setHasErrors(true);
-            return attachment;
-          }
-
-          const { file, id, previewUrl, __typename, ...rest } = attachment;
-          return {
-            ...rest,
-            objectId: comsResponse?.id,
-            bucketId: currentBucketId,
-          };
-        }),
+      // 3. Filter attachments that need upload
+      const filesToUpload = invoice.invoiceAttachments?.filter(
+        (att: any) => att.file && !att.objectId && att.previewUrl,
       );
 
-      return {
-        ...invoice,
-        invoiceAttachments: updatedAttachments,
-      };
+      if (!filesToUpload?.length) {
+        // Nothing to upload, return original invoice unmodified
+        return invoice;
+      }
+
+      // Filter out attachments that are NOT uploaded (no file or no previewUrl)
+      const filesToKeep = invoice.invoiceAttachments.filter(
+        (att: any) => !(att?.file && att?.previewUrl),
+      );
+
+      if (!currentBucketId?.trim()) {
+        throw new Error('Bucket ID is required before uploading the object.');
+      }
+
+      // 4. Upload attachments
+      try {
+        const response = await createObject(
+          { bucketId: currentBucketId ?? '', invoiceId: invoice.id },
+          filesToUpload,
+        );
+
+        // Check if there are conflicts or errors
+        const hasConflicts = response?.summary?.conflicts > 0;
+        const hasErrors = response?.summary?.errors > 0;
+
+        if (!response?.status && (hasConflicts || hasErrors)) {
+          response.data.forEach((item: any) => {
+            if (
+              item.status === HttpStatusCode.Conflict ||
+              item.fileAlreadyExists
+            ) {
+              setErrors((prev) => [
+                ...prev,
+                {
+                  errorMessage: `File ${item.fileName} already exists in the bucket.`,
+                },
+              ]);
+            } else {
+              setErrors((prev) => [
+                ...prev,
+                { errorMessage: item.errorMessage || 'Unknown error' },
+              ]);
+            }
+          });
+          setHasErrors(true);
+          return invoice;
+        }
+
+        // Map uploaded files to updated attachments array
+        const updatedAttachments = response?.data?.map((item: any) => ({
+          invoiceId: invoice.id,
+          fileName: item.fileName,
+          objectId: item.objectId,
+          bucketId: currentBucketId,
+        }));
+
+        // Update invoice with new attachments
+        return {
+          ...invoice,
+          invoiceAttachments: [...filesToKeep, ...updatedAttachments],
+        };
+      } catch (uploadErr: any) {
+        setErrors((prev) => [
+          ...prev,
+          { errorMessage: 'Upload file(s) failed' },
+        ]);
+        setHasErrors(true);
+        return invoice;
+      }
     } catch (e) {
       console.error('Error processing invoice attachments:', e);
+      // Return invoice as fallback or empty array, depends on your needs
+      return invoice;
     }
   };
 
@@ -369,6 +430,7 @@ const Invoice: React.FC = () => {
       throw error;
     }
   };
+
   const handleItemClick = async (action: string) => {
     switch (action) {
       case InvoiceActions.EDIT_INVOICE:
@@ -406,15 +468,15 @@ const Invoice: React.FC = () => {
                 setAttachmentsToDelete([]);
               }
             } else {
-              const { invoiceAttachments, ...restInvoice } =
-                cleanGraphQLPayload(invoiceDetails, [
-                  'recipient',
-                  '__typename',
-                ]);
+              const { invoiceAttachments, ...restInvoice } = invoiceDetails;
+              const cleanInvoice = cleanGraphQLPayload(restInvoice, [
+                'recipient',
+                '__typename',
+              ]);
               await createInvoice({
                 variables: {
                   invoice: {
-                    ...restInvoice,
+                    ...cleanInvoice,
                     applicationId: numericAppId,
                     invoiceItems: invoiceDetails?.invoiceItems?.map(
                       (item: any) => {
@@ -452,7 +514,11 @@ const Invoice: React.FC = () => {
                     if (hasErrors) return;
                     await updateInvoice({
                       variables: {
-                        invoice: updateInvoiceDetails(result),
+                        invoice: cleanGraphQLPayload(result, [
+                          'recipient',
+                          'whoUpdated',
+                          '__typename',
+                        ]),
                       },
                     });
                   }
@@ -496,21 +562,28 @@ const Invoice: React.FC = () => {
       case InvoiceActions.MARK_AS_SENT:
         if (!!id) {
           try {
-            await updateInvoice({
-              variables: {
-                invoice: {
-                  ...updateInvoiceDetails(invoiceDetails),
-                  invoiceStatus: InvoiceStatus.Sent,
+            if (
+              !invoiceDetails ||
+              invoiceDetails?.invoiceStatus === InvoiceStatus.Sent
+            ) {
+              return;
+            } else {
+              await updateInvoice({
+                variables: {
+                  invoice: {
+                    ...updateInvoiceDetails(invoiceDetails),
+                    invoiceStatus: InvoiceStatus.Sent,
+                  },
                 },
-              },
-              refetchQueries: [
-                {
-                  query: GetInvoiceByIdDocument,
-                  variables: { invoiceId: numericInvoiceId },
-                },
-              ],
-              awaitRefetchQueries: true,
-            });
+                refetchQueries: [
+                  {
+                    query: GetInvoiceByIdDocument,
+                    variables: { invoiceId: numericInvoiceId },
+                  },
+                ],
+                awaitRefetchQueries: true,
+              });
+            }
           } catch (err) {
             console.error('Failed to mark invoice as sent:', err);
           }
@@ -527,7 +600,11 @@ const Invoice: React.FC = () => {
             // Delete attachments from COMS
             if (!!invoiceDetails?.invoiceAttachments?.length) {
               if (!!bucketId?.trim()) {
-                await deleteBucket(bucketId);
+                await deleteBucket({
+                  variables: {
+                    bucketId,
+                  },
+                });
               }
             }
             navigate(`/applications/${applicationId}/invoices`);
@@ -693,6 +770,7 @@ const Invoice: React.FC = () => {
     handleInputChange: handleInputChange,
     invoiceDetails: invoiceDetails,
     createMode: !id,
+    getObject: getObject,
     recipient: {
       setSearchParam: setSearchParam,
       options: isSendInvoiceOpen
@@ -896,6 +974,7 @@ const Invoice: React.FC = () => {
             <SaveButton
               clickHandler={() => handleItemClick(InvoiceActions.SAVE_INVOICE)}
               label={InvoiceActions.SAVE_INVOICE}
+              isDisabled={hasErrors}
             />
           </>
         )}
@@ -925,6 +1004,7 @@ const Invoice: React.FC = () => {
   const hasValidInvoiceData = !!invoiceData?.getInvoiceById?.data;
   const { appType, id: appId } = applicationDetails || {};
   const { subject: invoiceSubject } = invoiceData?.getInvoiceById?.data || {};
+
   const navigationBarText = (appId || appType?.description) && (
     <div className="d-flex flex-column gap-1">
       {(appId || appType?.description) && (
@@ -952,7 +1032,7 @@ const Invoice: React.FC = () => {
     </div>
   );
 
-  if ((!hasValidAppData || !hasValidInvoiceData) && !!id?.trim()) {
+  if (!hasValidAppData && !hasValidInvoiceData && !!id?.trim()) {
     return (
       <LoadingOverlay loading={!hasValidAppData || !hasValidInvoiceData} />
     );

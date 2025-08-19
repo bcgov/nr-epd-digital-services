@@ -95,6 +95,7 @@ export const NoteModal: FC<NoteModalProps> = ({
           headerLabel={modalHeaderLabel}
           saveButtonDisabled={loading}
           cancelButtonDisabled={loading}
+          cancelBtnLabel="Cancel"
           saveBtnLabel={noteModal.mode === 'delete' ? 'Confirm' : 'Save Note'}
           validator={() => {
             if (noteModal.mode === 'add') {
