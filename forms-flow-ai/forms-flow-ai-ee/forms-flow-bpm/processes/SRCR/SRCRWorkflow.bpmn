@@ -361,7 +361,7 @@ execution.setVariable('isSrco',false);</camunda:script>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="take" />
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
           <camunda:field name="fields">
-            <camunda:expression>["applicationId", "applicationStatus", "nirStatus", "siteIdNumber","hdnAppType"]</camunda:expression>
+            <camunda:expression>["applicationId", "applicationStatus", "siteIdNumber","hdnAppType"]</camunda:expression>
           </camunda:field>
         </camunda:executionListener>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
