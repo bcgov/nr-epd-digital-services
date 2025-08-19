@@ -8,7 +8,6 @@ import { ViewInvoice } from '../../dto/invoice/viewInvoice.dto';
 import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
 import { CreateInvoice } from '../../dto/invoice/createInvoice.dto';
 import { UpdateInvoice } from '../../dto/invoice/updateInvoice.dto';
-import { InvoiceEmail } from '../../dto/invoice/invoiceEmail/invoiceEmail.dto';
 
 @Resolver()
 export class InvoiceResolver {

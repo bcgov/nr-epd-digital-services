@@ -45,6 +45,37 @@ export type GetInvoiceRecipientNamesQueryVariables = Types.Exact<{
 
 export type GetInvoiceRecipientNamesQuery = { __typename?: 'Query', getParticipantNames: { __typename?: 'DropdownResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'DropdownDto', key: string, value: string, metaData?: string | null }> | null } };
 
+export type CreateBucketMutationVariables = Types.Exact<{
+  bucketName: Types.Scalars['String']['input'];
+  bucketKey: Types.Scalars['String']['input'];
+}>;
+
+
+export type CreateBucketMutation = { __typename?: 'Mutation', createBucket: { __typename?: 'ComsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null, data?: { __typename?: 'Coms', bucketId?: string | null } | null } };
+
+export type DeleteBucketMutationVariables = Types.Exact<{
+  bucketId: Types.Scalars['String']['input'];
+}>;
+
+
+export type DeleteBucketMutation = { __typename?: 'Mutation', deleteBucket: { __typename?: 'ComsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null } };
+
+export type GetObjectQueryVariables = Types.Exact<{
+  objectId: Types.Scalars['String']['input'];
+  downloadType?: Types.InputMaybe<Types.DownloadType>;
+}>;
+
+
+export type GetObjectQuery = { __typename?: 'Query', getObject: { __typename?: 'ComsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null, data?: { __typename?: 'Coms', downloadUrl?: string | null } | null } };
+
+export type DeleteObjectMutationVariables = Types.Exact<{
+  objectId: Types.Scalars['String']['input'];
+  versionId?: Types.InputMaybe<Types.Scalars['String']['input']>;
+}>;
+
+
+export type DeleteObjectMutation = { __typename?: 'Mutation', deleteObject: { __typename?: 'ComsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null } };
+
 
 export const GetInvoicesDocument = gql`
     query GetInvoices($applicationId: Int!) {
@@ -370,3 +401,163 @@ export type GetInvoiceRecipientNamesQueryHookResult = ReturnType<typeof useGetIn
 export type GetInvoiceRecipientNamesLazyQueryHookResult = ReturnType<typeof useGetInvoiceRecipientNamesLazyQuery>;
 export type GetInvoiceRecipientNamesSuspenseQueryHookResult = ReturnType<typeof useGetInvoiceRecipientNamesSuspenseQuery>;
 export type GetInvoiceRecipientNamesQueryResult = Apollo.QueryResult<GetInvoiceRecipientNamesQuery, GetInvoiceRecipientNamesQueryVariables>;
+export const CreateBucketDocument = gql`
+    mutation createBucket($bucketName: String!, $bucketKey: String!) {
+  createBucket(bucketName: $bucketName, bucketKey: $bucketKey) {
+    message
+    httpStatusCode
+    success
+    timestamp
+    data {
+      bucketId
+    }
+  }
+}
+    `;
+export type CreateBucketMutationFn = Apollo.MutationFunction<CreateBucketMutation, CreateBucketMutationVariables>;
+
+/**
+ * __useCreateBucketMutation__
+ *
+ * To run a mutation, you first call `useCreateBucketMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateBucketMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createBucketMutation, { data, loading, error }] = useCreateBucketMutation({
+ *   variables: {
+ *      bucketName: // value for 'bucketName'
+ *      bucketKey: // value for 'bucketKey'
+ *   },
+ * });
+ */
+export function useCreateBucketMutation(baseOptions?: Apollo.MutationHookOptions<CreateBucketMutation, CreateBucketMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateBucketMutation, CreateBucketMutationVariables>(CreateBucketDocument, options);
+      }
+export type CreateBucketMutationHookResult = ReturnType<typeof useCreateBucketMutation>;
+export type CreateBucketMutationResult = Apollo.MutationResult<CreateBucketMutation>;
+export type CreateBucketMutationOptions = Apollo.BaseMutationOptions<CreateBucketMutation, CreateBucketMutationVariables>;
+export const DeleteBucketDocument = gql`
+    mutation deleteBucket($bucketId: String!) {
+  deleteBucket(bucketId: $bucketId) {
+    message
+    httpStatusCode
+    success
+    timestamp
+  }
+}
+    `;
+export type DeleteBucketMutationFn = Apollo.MutationFunction<DeleteBucketMutation, DeleteBucketMutationVariables>;
+
+/**
+ * __useDeleteBucketMutation__
+ *
+ * To run a mutation, you first call `useDeleteBucketMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteBucketMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteBucketMutation, { data, loading, error }] = useDeleteBucketMutation({
+ *   variables: {
+ *      bucketId: // value for 'bucketId'
+ *   },
+ * });
+ */
+export function useDeleteBucketMutation(baseOptions?: Apollo.MutationHookOptions<DeleteBucketMutation, DeleteBucketMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteBucketMutation, DeleteBucketMutationVariables>(DeleteBucketDocument, options);
+      }
+export type DeleteBucketMutationHookResult = ReturnType<typeof useDeleteBucketMutation>;
+export type DeleteBucketMutationResult = Apollo.MutationResult<DeleteBucketMutation>;
+export type DeleteBucketMutationOptions = Apollo.BaseMutationOptions<DeleteBucketMutation, DeleteBucketMutationVariables>;
+export const GetObjectDocument = gql`
+    query getObject($objectId: String!, $downloadType: DownloadType) {
+  getObject(objectId: $objectId, downloadType: $downloadType) {
+    message
+    httpStatusCode
+    success
+    timestamp
+    data {
+      downloadUrl
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetObjectQuery__
+ *
+ * To run a query within a React component, call `useGetObjectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetObjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetObjectQuery({
+ *   variables: {
+ *      objectId: // value for 'objectId'
+ *      downloadType: // value for 'downloadType'
+ *   },
+ * });
+ */
+export function useGetObjectQuery(baseOptions: Apollo.QueryHookOptions<GetObjectQuery, GetObjectQueryVariables> & ({ variables: GetObjectQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetObjectQuery, GetObjectQueryVariables>(GetObjectDocument, options);
+      }
+export function useGetObjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetObjectQuery, GetObjectQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetObjectQuery, GetObjectQueryVariables>(GetObjectDocument, options);
+        }
+export function useGetObjectSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetObjectQuery, GetObjectQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetObjectQuery, GetObjectQueryVariables>(GetObjectDocument, options);
+        }
+export type GetObjectQueryHookResult = ReturnType<typeof useGetObjectQuery>;
+export type GetObjectLazyQueryHookResult = ReturnType<typeof useGetObjectLazyQuery>;
+export type GetObjectSuspenseQueryHookResult = ReturnType<typeof useGetObjectSuspenseQuery>;
+export type GetObjectQueryResult = Apollo.QueryResult<GetObjectQuery, GetObjectQueryVariables>;
+export const DeleteObjectDocument = gql`
+    mutation deleteObject($objectId: String!, $versionId: String) {
+  deleteObject(objectId: $objectId, versionId: $versionId) {
+    message
+    httpStatusCode
+    success
+    timestamp
+  }
+}
+    `;
+export type DeleteObjectMutationFn = Apollo.MutationFunction<DeleteObjectMutation, DeleteObjectMutationVariables>;
+
+/**
+ * __useDeleteObjectMutation__
+ *
+ * To run a mutation, you first call `useDeleteObjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteObjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteObjectMutation, { data, loading, error }] = useDeleteObjectMutation({
+ *   variables: {
+ *      objectId: // value for 'objectId'
+ *      versionId: // value for 'versionId'
+ *   },
+ * });
+ */
+export function useDeleteObjectMutation(baseOptions?: Apollo.MutationHookOptions<DeleteObjectMutation, DeleteObjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteObjectMutation, DeleteObjectMutationVariables>(DeleteObjectDocument, options);
+      }
+export type DeleteObjectMutationHookResult = ReturnType<typeof useDeleteObjectMutation>;
+export type DeleteObjectMutationResult = Apollo.MutationResult<DeleteObjectMutation>;
+export type DeleteObjectMutationOptions = Apollo.BaseMutationOptions<DeleteObjectMutation, DeleteObjectMutationVariables>;

@@ -24,6 +24,10 @@ global:
     CHES_EMAIL_FROM: NOREPLYEPD@gov.bc.ca
     CATS_APPLICATION_URL: http://localhost:3000/applications
     KEYCLOAK_TOKEN_URL: https://epd-keycloak-test.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/protocol/openid-connect/token
+    VITE_COMS_API: 'https://epd-coms-dev.apps.silver.devops.gov.bc.ca/api/v1/'
+    VITE_S3_STORAGE_REGION: 'ca-central-1'
+    VITE_COMS_BUCKET: 'bucket'
+    VITE_COMS_OBJECT: 'object'
 #-- the components of the application, backend.
 backend:
   #-- enable or disable backend
