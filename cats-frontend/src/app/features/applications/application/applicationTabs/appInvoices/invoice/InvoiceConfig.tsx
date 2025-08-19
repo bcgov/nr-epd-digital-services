@@ -2,7 +2,10 @@ import {
   FormFieldType,
   IFormField,
 } from '@cats/components/input-controls/IFormField';
-import { InvoiceStatus } from '../../../../../../../generated/types';
+import {
+  DownloadType,
+  InvoiceStatus,
+} from '../../../../../../../generated/types';
 import { UserMode } from '@cats/helpers/requests/userMode';
 import { ColumnSize, TableColumn } from '@cats/components/table/TableColumn';
 import { FaTimes } from 'react-icons/fa';
@@ -11,7 +14,6 @@ import {
   Link,
 } from '@cats/components/input-controls/InputControls';
 import { RequestStatus } from '@cats/helpers/requests/status';
-import { getObject } from './services/coms.service';
 import { InvoiceItemTypes } from '../enums/invoiceItemTypes';
 import { GetInvoiceRecipientNamesQuery } from '../graphql/Invoice.generated';
 
@@ -29,20 +31,29 @@ interface GetInvoiceConfigParams {
   invoiceDetails?: any;
   createMode?: boolean;
   recipient?: RecipientConfig;
+  getObject: any;
 }
 
 export const GetInvoiceConfig = ({
   viewMode,
   isDisabled = false,
   handleInputChange = () => {},
+  getObject,
   invoiceDetails = {},
   createMode = false,
   recipient,
 }: GetInvoiceConfigParams) => {
   const viewFileHandler = async (objectId: any) => {
     if (!!objectId?.trim()) {
-      const response = await getObject(objectId);
-      window.open(response, '_blank');
+      getObject({
+        fetchPolicy: 'network-only',
+        variables: { objectId, downloadType: DownloadType.Url },
+      }).then((result: any) => {
+        if (result?.data?.getObject?.data?.downloadUrl) {
+          const response = result?.data?.getObject?.data?.downloadUrl;
+          window.open(response, '_blank');
+        }
+      });
     }
   };
   const customInvoiceRecipient = (

@@ -44,6 +44,15 @@ export class CatsService {
           .map((id: string) => id.trim())
           .filter((id: string) => id !== '')
           .map(Number);
+      case ApplicationType.SRCR:
+        return (
+          formData.siteIdNumber
+            ?.toString()
+            .split(',')
+            .map((id: string) => id.trim())
+            .filter((id: string) => id !== '')
+            .map(Number) || []
+        );
 
       case ApplicationType.SoSC:
         const soscSiteIds: number[] =
@@ -137,6 +146,11 @@ export class CatsService {
     formId: string,
     formData: any,
   ) {
+    if (!formData.applicationStatus) {
+      console.log('No application status received');
+      return;
+    }
+
     const GRAPHQL_URL = process.env.CATS_API;
 
     if (!formData.applicationStatus) {
