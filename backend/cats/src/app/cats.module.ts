@@ -96,6 +96,9 @@ import { PermissionServiceType } from './entities/permissionServiceType';
 import { ApplicationSite } from './entities/applicationSite.entity';
 import { InvoiceItem } from './entities/invoiceItem.entity';
 import { EmailController } from './controllers/email.controller';
+import { ComsService } from './services/coms/coms.service';
+import { ComsResolver } from './resolvers/coms/coms.resolver';
+import { UploadController } from './controllers/upload.controller';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -200,7 +203,9 @@ import { EmailController } from './controllers/email.controller';
     TimesheetDayResolver,
     DashboardService,
     DashboardResolver,
+    ComsService,
+    ComsResolver
   ],
-  controllers: [UserController, EmailController],
+  controllers: [UserController, EmailController, UploadController],
 })
 export class CatsModule { }
