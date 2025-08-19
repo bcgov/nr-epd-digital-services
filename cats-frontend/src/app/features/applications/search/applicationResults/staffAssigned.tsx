@@ -45,7 +45,7 @@ const StaffAssigned: React.FC<StaffAssignedProps> = ({ staff }) => {
           <span className="staff-assigned__extra">+ {extraStaffCount}</span>
         )}
         <div className="staff-assigned__dropdown-arrow">
-        { !!staff.length && <DropdownIcon size={20} />}
+          {!!staff.length && <DropdownIcon size={20} />}
         </div>
       </button>
     </OverlayTrigger>
