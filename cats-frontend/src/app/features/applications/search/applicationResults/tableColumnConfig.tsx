@@ -1,4 +1,7 @@
-import { ExternalLink, FileLinesIcon } from '../../../../components/common/icon';
+import {
+  ExternalLink,
+  FileLinesIcon,
+} from '../../../../components/common/icon';
 import { FormFieldType } from '../../../../components/input-controls/IFormField';
 import {
   TableColumn,
@@ -8,7 +11,7 @@ import { formatDateUTC } from '../../../../helpers/utility';
 import StaffAssigned from './staffAssigned';
 import './table.css';
 export const applicationResultColumns = (fromMyTasks: boolean = false) => [
-   {
+  {
     id: 1,
     displayName: 'Application ID',
     active: true,
