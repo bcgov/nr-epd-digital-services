@@ -18,40 +18,52 @@ export class CatsService {
           ...(formData.documentsSiteId?.toString()?.split(',') || []),
         ];
         return combinedSiteIds
-          .map((id: string) => id.trim())
-          .filter((id: string) => id !== '')
-          .map(Number);
+          .map((id: string | undefined) => (id ? id.trim() : ''))
+          .filter((id: string) => id !== '' && !isNaN(Number(id)))
+          .map((id: string) => Number(id));
       case ApplicationType.DERA:
       case ApplicationType.NIR:
         return (
-          formData.siteIdNumber?.toString()
+          formData.siteIdNumber
+            ?.toString()
             .split(',')
-            .map(id => id.trim())
+            .map((id) => id.trim())
             .filter(Boolean) // removes empty strings
             .map(Number)
-            .filter(num => !isNaN(num)) // removes NaN
-          ?? []
+            .filter((num) => !isNaN(num)) ?? // removes NaN
+          []
         );
       case ApplicationType.NOM:
+        let dataGrid = [];
+        if (typeof formData.dataGrid === 'string') {
+          try {
+            dataGrid = JSON.parse(formData.dataGrid);
+          } catch {
+            dataGrid = [];
+          }
+        }
         const nomSiteIds = [
-          ...(formData.dataGrid?.flatMap((item: any) =>
+          ...(dataGrid?.flatMap((item: any) =>
             item['contactParcelSiteIdNumber']?.toString().split(','),
           ) || []),
           ...(formData.siteIdNumber?.toString().split(',') || []),
         ];
 
         return nomSiteIds
-          .map((id: string) => id.trim())
-          .filter((id: string) => id !== '')
-          .map(Number);
+          .filter(
+            (id: any) =>
+              typeof id === 'string' && id.trim() !== '' && !isNaN(Number(id)),
+          ) // keep only non-empty strings
+          .map((id: string) => Number(id.trim()));
+
       case ApplicationType.SRCR:
         return (
           formData.siteIdNumber
             ?.toString()
             .split(',')
-            .map((id: string) => id.trim())
-            .filter((id: string) => id !== '')
-            .map(Number) || []
+            .map((id: string | undefined) => (id ? id.trim() : ''))
+            .filter((id: string) => id !== '' && !isNaN(Number(id)))
+            .map((id: string) => Number(id)) || []
         );
 
       case ApplicationType.SoSC:
@@ -63,13 +75,14 @@ export class CatsService {
 
       default:
         return (
-          formData.siteId?.toString()
+          formData.siteId
+            ?.toString()
             .split(',')
-            .map(id => id.trim())
+            .map((id) => id.trim())
             .filter(Boolean) // removes empty strings
             .map(Number)
-            .filter(num => !isNaN(num)) // removes NaN
-          ?? []
+            .filter((num) => !isNaN(num)) ?? // removes NaN
+          []
         );
     }
   };
