@@ -80,11 +80,9 @@ export class FormService {
         } else {
           objectName = property;
         }
-
-        if (objectName === 'dataGrid') {
-          // no need to update data
-          // we only want to update status while partial update
-        } else {
+        // no need to update data
+        // we only want to update status while partial update
+        if (objectName !== 'dataGrid') {
           const pathText = "'{" + objectName + "}'";
 
           const newValue = '\'"' + partialUpdateObject[property] + '"\'';
