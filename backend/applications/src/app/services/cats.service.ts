@@ -44,6 +44,23 @@ export class CatsService {
           .map((id: string) => id.trim())
           .filter((id: string) => id !== '')
           .map(Number);
+      case ApplicationType.SRCR:
+        return (
+          formData.siteIdNumber
+            ?.toString()
+            .split(',')
+            .map((id: string) => id.trim())
+            .filter((id: string) => id !== '')
+            .map(Number) || []
+        );
+
+      case ApplicationType.SoSC:
+        const soscSiteIds: number[] =
+          formData.dataGrid?.map((item: any) => Number(item.siteId))
+            .filter((id: number) => !isNaN(id)) || [];
+
+        return soscSiteIds;
+
       default:
         return (
           formData.siteId?.toString()
@@ -129,7 +146,17 @@ export class CatsService {
     formId: string,
     formData: any,
   ) {
+    if (!formData.applicationStatus) {
+      console.log('No application status received');
+      return;
+    }
+
     const GRAPHQL_URL = process.env.CATS_API;
+
+    if (!formData.applicationStatus) {
+      console.log('No application status received');
+      return;
+    }
 
     // Parse and split comma-separated site IDs
     const siteIds = this.getSiteIdsFromFormData(formData);

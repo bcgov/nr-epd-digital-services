@@ -1,12 +1,11 @@
-import { Body, Controller, Post, UploadedFile, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, UploadedFile, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Resource} from 'nest-keycloak-connect';
 import { LoggerService } from '../logger/logger.service';
 import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/file.interceptor';
 import { InvoiceEmail } from '../dto/invoice/invoiceEmail/invoiceEmail.dto';
 import { InvoiceService } from '../services/invoice/invoice.service';
-import { HttpStatusCode } from 'axios';
 
-@Controller('email')
+@Controller('cats')
 @Resource('cats-service')
 export class EmailController {
     constructor(
@@ -46,7 +45,7 @@ export class EmailController {
                 this.loggerService.log('Email controller: sendEmail() end');
                 return {
                     message: 'Email sent successfully without attachments',
-                    statusCode: HttpStatusCode.Ok,
+                    statusCode: HttpStatus.OK,
                     success: true
                 };
             }
@@ -57,13 +56,18 @@ export class EmailController {
                 this.loggerService.log('Email controller: sendEmail() end');
                 return {
                     message: 'Email sent successfully with attachments',
-                    statusCode: HttpStatusCode.Ok,
+                    statusCode: HttpStatus.OK,
                     success: true
                 };
             }
         } 
         catch (error) {
             this.loggerService.error('Email controller: sendEmail() error', error);
+            return {
+                message: 'Failed to send email',
+                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+                success: false
+            }
         }
     }
 }
