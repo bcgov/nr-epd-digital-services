@@ -9,7 +9,6 @@ export class FormService {
     @InjectRepository(Form) private readonly formRepository: Repository<Form>,
   ) {}
 
-
   /**
    * Checks if table exists
    * @returns boolean
