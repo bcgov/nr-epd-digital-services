@@ -8,7 +8,6 @@ export class FormService {
   constructor(
     @InjectRepository(Form) private readonly formRepository: Repository<Form>,
   ) {}
-  ) {}
 
   /**
    * Checks if table exists
@@ -88,7 +87,7 @@ export class FormService {
 
           const newValue = '\'"' + partialUpdateObject[property] + '"\'';
 
-          await this.formRepository
+          await this.formRepository 
             .createQueryBuilder()
             .update(Form)
             .set({
