@@ -8,6 +8,7 @@ export class FormService {
   constructor(
     @InjectRepository(Form) private readonly formRepository: Repository<Form>,
   ) {}
+  ) {}
 
   /**
    * Checks if table exists
