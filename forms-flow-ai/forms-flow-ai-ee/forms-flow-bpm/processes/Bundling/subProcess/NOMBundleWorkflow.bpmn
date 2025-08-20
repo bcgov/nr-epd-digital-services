@@ -151,7 +151,7 @@ task.execution.setVariable('userRole','Site Information Advisor');</camunda:scri
           </camunda:field>
         </camunda:executionListener>
       </bpmn:extensionElements>
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Additional Information Requested'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1oam11w" name="Accepted/Approved" sourceRef="Activity_06nypz0" targetRef="Gateway_15uoiyo">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Queued' || action == 'Approved' }</bpmn:conditionExpression>
@@ -194,7 +194,7 @@ execution.setVariable('nomStatus', "Resubmitted");</camunda:script>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="take" />
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
           <camunda:field name="fields">
-            <camunda:expression>["applicationId", "applicationStatus", "nomStatus"]</camunda:expression>
+            <camunda:expression>["applicationId", "applicationStatus", "nomStatus","hdnAppType","dataGrid","siteIdNumber"]</camunda:expression>
           </camunda:field>
         </camunda:executionListener>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
@@ -753,14 +753,14 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0oif1h7" sourceRef="Gateway_0vt72pb" targetRef="Activity_06nypz0" />
     <bpmn:exclusiveGateway id="Gateway_1g6gqbl">
-      <bpmn:incoming>Flow_1te69r3</bpmn:incoming>
+      <bpmn:incoming>Flow_1qeqv4j</bpmn:incoming>
       <bpmn:outgoing>Flow_13ehiar</bpmn:outgoing>
       <bpmn:outgoing>Flow_1nbjw65</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:parallelGateway id="Gateway_0vt72pb">
       <bpmn:incoming>Flow_0unffch</bpmn:incoming>
       <bpmn:outgoing>Flow_0oif1h7</bpmn:outgoing>
-      <bpmn:outgoing>Flow_1te69r3</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1qeqv4j</bpmn:outgoing>
     </bpmn:parallelGateway>
     <bpmn:receiveTask id="Activity_1e0i2ru" name="Application Resubmitted" messageRef="Message_0lm44we">
       <bpmn:extensionElements>
@@ -806,7 +806,7 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
       <bpmn:incoming>Flow_00mjhxs</bpmn:incoming>
       <bpmn:outgoing>Flow_04l5mhw</bpmn:outgoing>
     </bpmn:manualTask>
-    <bpmn:sequenceFlow id="Flow_1te69r3" sourceRef="Gateway_0vt72pb" targetRef="Gateway_1g6gqbl" />
+    <bpmn:sequenceFlow id="Flow_1qeqv4j" sourceRef="Gateway_0vt72pb" targetRef="Gateway_1g6gqbl" />
   </bpmn:process>
   <bpmn:message id="Message_1ngb2eg" name="application_resubmitted" />
   <bpmn:message id="Message_0lm44we" name="application_resubmitted" />
@@ -968,7 +968,7 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
         <di:waypoint x="259" y="145" />
         <di:waypoint x="311" y="145" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1te69r3_di" bpmnElement="Flow_1te69r3">
+      <bpmndi:BPMNEdge id="Flow_1qeqv4j_di" bpmnElement="Flow_1qeqv4j">
         <di:waypoint x="386" y="260" />
         <di:waypoint x="836" y="260" />
       </bpmndi:BPMNEdge>
