@@ -4,6 +4,7 @@ enum ApplicationType {
   NOM = 'NOM',
   SRCR = 'SRCR',
   NIR = 'NIR',
+  SoSC = 'SOSC',
 }
 
 export default ApplicationType;
