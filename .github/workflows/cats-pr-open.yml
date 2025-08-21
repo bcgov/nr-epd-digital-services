@@ -49,8 +49,8 @@ jobs:
     secrets: inherit
     with:
       # Can revert to below trigger, this line just forces db deploy when updating this file, good for active dev.
-      # triggers: ('charts/crunchy/' '.github/workflows/cats-pr-open.yml')
-      triggers: ('charts/crunchy/')
+      triggers: ('charts/crunchy/' '.github/workflows/cats-pr-open.yml')
+      # triggers: ('charts/crunchy/')
       values: 'values-dev.yaml'
       app_values:  'values-pr.yaml' # PR specific values file.
     # https://github.com/bcgov/quickstart-openshift-helpers
