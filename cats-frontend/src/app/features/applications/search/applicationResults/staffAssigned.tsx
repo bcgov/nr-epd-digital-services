@@ -11,7 +11,7 @@ interface StaffAssignedProps {
 
 const StaffAssigned: React.FC<StaffAssignedProps> = ({ staff }) => {
   const extraStaffCount = staff.length > 4 ? staff.length - 4 : 0;
-
+  //updating some comment
   const popover = (
     <div className="staff-assigned-popup__list">
       {staff.map((person, index) => (
