@@ -34,7 +34,7 @@ import { GraphQLAuthExceptionFilter } from './app/filters/graphql-exception.filt
         clientId: config.get('KEYCLOCK_CLIENT_ID'),
         secret: config.get('KEYCLOCK_SECRET'),
       }),
-      // Secret key of the client taken from keycloak server
+      // Secret key of the client taken from keycloak server config
     }),
     CatsModule,
     TypeOrmModule.forRootAsync({
