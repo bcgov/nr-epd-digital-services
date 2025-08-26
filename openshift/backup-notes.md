@@ -1,6 +1,7 @@
 # Backup notes and scripts to help
 
 ## How to clone backup locally
+
 ```sh
 # Get backup from OpenShift to local
 oc rsync epd-database-backup-8-vxkx8:/backups/ /Users/adamcoard/Dev/nr-epd-digital-services/backups/prod4 -n *****-prod
@@ -10,10 +11,7 @@ oc rsync epd-database-backup-8-vxkx8:/backups/ /Users/adamcoard/Dev/nr-epd-digit
 oc rsync /Users/adamcoard/Dev/nr-epd-digital-services/backups/dev/daily/2023-11-06/ postgresql-mk2-1-68jqc:/var/lib/pgsql/data/aot-tmp -n *****-dev
 ```
 
-
-
 How to restore backup:
-
 
 ```sh
 ## How to Restore Backup

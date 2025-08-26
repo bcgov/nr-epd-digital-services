@@ -23,7 +23,7 @@ export class ApplicationResolver {
     private readonly applicationStatusResponse: GenericResponseProvider<
       ViewApplicationStatus[]
     >,
-  ) { }
+  ) {}
 
   @Unprotected()
   @Mutation(() => ApplicationResponse, { name: 'createApplication' })
@@ -35,11 +35,10 @@ export class ApplicationResolver {
     try {
       this.loggerService.log(
         'ApplicationResolver.createApplication() start' +
-        JSON.stringify(application),
+          JSON.stringify(application),
       );
-      const result = await this.applicationService.createApplication(
-        application,
-      );
+      const result =
+        await this.applicationService.createApplication(application);
 
       if (result) {
         this.loggerService.log(
@@ -86,21 +85,23 @@ export class ApplicationResolver {
       this.loggerService.log(
         'ApplicationResolver.updateFormsflowAppId() start',
       );
-      const result = await this.applicationService.updateFormsflowAppId(
-        appStatusInput,
-      );
+      const result =
+        await this.applicationService.updateFormsflowAppId(appStatusInput);
 
       if (result) {
-        this.loggerService.log('ApplicationResolver.updateFormsflowAppId() RES:200 end');
+        this.loggerService.log(
+          'ApplicationResolver.updateFormsflowAppId() RES:200 end',
+        );
         return this.applicationStatusResponse.createResponse(
           'Application status updated successfully',
           HttpStatus.OK,
           true,
           [result],
         );
-      }
-      else {
-        this.loggerService.log('ApplicationResolver.updateFormsflowAppId()RES:404 end');
+      } else {
+        this.loggerService.log(
+          'ApplicationResolver.updateFormsflowAppId()RES:404 end',
+        );
         return this.applicationStatusResponse.createResponse(
           'Note not found for update',
           HttpStatus.NOT_FOUND,
@@ -108,7 +109,6 @@ export class ApplicationResolver {
           null,
         );
       }
-
     } catch (error) {
       this.loggerService.error(
         'ApplicationResolver.updateFormsflowAppId() error',

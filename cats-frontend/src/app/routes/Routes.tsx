@@ -70,13 +70,13 @@ const externalUser = isBCEIDUserType();
 
 const siteRouter = externalUser
   ? createBrowserRouter([
-    {
-      path: '*',
-      element: (
-        <h1>ERROR!!! You are not authorized to access this appplication</h1>
-      ),
-    },
-  ])
+      {
+        path: '*',
+        element: (
+          <h1>ERROR!!! You are not authorized to access this appplication</h1>
+        ),
+      },
+    ])
   : createBrowserRouter(createRoutesForRole(UserRoleType.INTERNAL));
 
 export default siteRouter;

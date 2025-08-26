@@ -7,7 +7,6 @@ import { DownloadType } from '../../utilities/enums/coms/downloadType.enum';
 import * as fs from 'fs';
 import { HttpStatusCode } from 'axios';
 
-
 @Injectable()
 export class ComsService {
   private readonly accessKeyId: string;
@@ -21,15 +20,17 @@ export class ComsService {
   private readonly object_path: string;
   private readonly downloadType: DownloadType;
 
-
   constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
     private readonly loggerService: LoggerService,
   ) {
-
-    this.accessKeyId = this.configService.get<string>('VITE_S3_STORAGE_ACCESS_KEY_ID');
-    this.secretAccessKey = this.configService.get<string>('VITE_S3_STORAGE_SECRET_ACCESS_KEY');
+    this.accessKeyId = this.configService.get<string>(
+      'VITE_S3_STORAGE_ACCESS_KEY_ID',
+    );
+    this.secretAccessKey = this.configService.get<string>(
+      'VITE_S3_STORAGE_SECRET_ACCESS_KEY',
+    );
     this.region = this.configService.get<string>('VITE_S3_STORAGE_REGION');
     this.bucket = this.configService.get<string>('VITE_S3_STORAGE_BUCKET');
     this.endpoint = this.configService.get<string>('VITE_S3_STORAGE_ENDPOINT');
@@ -42,7 +43,9 @@ export class ComsService {
 
   async createBucket(bucketName: string, bucketKey: string, context: any) {
     try {
-      this.loggerService.log(`Creating bucket: ${bucketName}, with key: ${bucketKey}`);
+      this.loggerService.log(
+        `Creating bucket: ${bucketName}, with key: ${bucketKey}`,
+      );
       const params = {
         accessKeyId: this.accessKeyId,
         secretAccessKey: this.secretAccessKey,
@@ -60,7 +63,9 @@ export class ComsService {
       };
       // Using `firstValueFrom` instead of `toPromise()`
       const response = await firstValueFrom(
-        this.httpService.put(`${this.comsApi}${this.bucket_path}`, params, { headers }),
+        this.httpService.put(`${this.comsApi}${this.bucket_path}`, params, {
+          headers,
+        }),
       );
 
       if (response?.data) {
@@ -68,8 +73,7 @@ export class ComsService {
         return { bucketId: response.data.bucketId };
       }
       throw new Error('Bucket creation failed, no response data.');
-    }
-    catch (error) {
+    } catch (error) {
       this.loggerService.error('Error creating bucket', error);
       throw new Error(`Failed to create bucket: ${error.message}`);
     }
@@ -85,35 +89,64 @@ export class ComsService {
       };
 
       const response = await firstValueFrom(
-        this.httpService.delete(`${this.comsApi}${this.bucket_path}/${bucketId}`, { headers }),
+        this.httpService.delete(
+          `${this.comsApi}${this.bucket_path}/${bucketId}`,
+          { headers },
+        ),
       );
 
       if (response?.status === HttpStatusCode.NoContent) {
         this.loggerService.log(`Deleted bucket with ID: ${bucketId}`);
         return true;
       }
-    }
-    catch (error) {
+    } catch (error) {
       this.loggerService.error('Error deleting bucket', error);
       throw new Error(`Failed to delete bucket: ${error.message}`);
     }
   }
 
-  async uploadFilesToComs(files: Express.Multer.File[], bucketId: string, invoiceId: number, accessTokenJWT: any) {
+  async uploadFilesToComs(
+    files: Express.Multer.File[],
+    bucketId: string,
+    invoiceId: number,
+    accessTokenJWT: any,
+  ) {
     // Type confusion protection: ensure files is an array of objects
-    if (!Array.isArray(files) || !files.every(f => typeof f === 'object' && f !== null && typeof f.originalname === 'string' && typeof f.path === 'string')) {
-      this.loggerService.log('Invalid files parameter: expected an array of Express.Multer.File objects');
+    if (
+      !Array.isArray(files) ||
+      !files.every(
+        (f) =>
+          typeof f === 'object' &&
+          f !== null &&
+          typeof f.originalname === 'string' &&
+          typeof f.path === 'string',
+      )
+    ) {
+      this.loggerService.log(
+        'Invalid files parameter: expected an array of Express.Multer.File objects',
+      );
       throw new Error('Invalid files parameter: expected an array of files');
     }
     try {
-      this.loggerService.log(`Starting upload of ${files.length} files to bucket: ${bucketId}`);
+      this.loggerService.log(
+        `Starting upload of ${files.length} files to bucket: ${bucketId}`,
+      );
 
       const uploadPromises = files.map(async (file) => {
         const fileStream = fs.createReadStream(file.path);
 
         try {
-          const response = await this.createObject(bucketId, file.originalname, file.mimetype, fileStream, accessTokenJWT);
-          if (response?.status === HttpStatusCode.Ok || response?.status === HttpStatusCode.Created) {
+          const response = await this.createObject(
+            bucketId,
+            file.originalname,
+            file.mimetype,
+            fileStream,
+            accessTokenJWT,
+          );
+          if (
+            response?.status === HttpStatusCode.Ok ||
+            response?.status === HttpStatusCode.Created
+          ) {
             return {
               bucketId,
               invoiceId,
@@ -125,7 +158,10 @@ export class ComsService {
             };
           }
 
-          if (response.status === HttpStatusCode.Conflict || response.fileAlreadyExists) {
+          if (
+            response.status === HttpStatusCode.Conflict ||
+            response.fileAlreadyExists
+          ) {
             return {
               bucketId,
               invoiceId,
@@ -143,12 +179,15 @@ export class ComsService {
             fileName: file.originalname || '',
             objectId: response?.data?.id || '',
             isAlreadyExist: false,
-            errorMessage: `Upload failed: ${response.errorMessage}` || 'Unknown error',
+            errorMessage:
+              `Upload failed: ${response.errorMessage}` || 'Unknown error',
             statusCode: response?.status,
           };
-        }
-        catch (err) {
-          this.loggerService.error(`Failed uploading ${file.originalname}`, err);
+        } catch (err) {
+          this.loggerService.error(
+            `Failed uploading ${file.originalname}`,
+            err,
+          );
           return {
             bucketId,
             invoiceId,
@@ -157,8 +196,7 @@ export class ComsService {
             errorMessage: err.message || 'Unknown error',
             statusCode: HttpStatusCode.InternalServerError,
           };
-        }
-        finally {
+        } finally {
           fileStream.close();
         }
       });
@@ -167,28 +205,38 @@ export class ComsService {
 
       const summary = {
         totalFiles: results.length,
-        uploaded: results.filter(r => !r.isAlreadyExist && !r.errorMessage).length,
-        conflicts: results.filter(r => r.isAlreadyExist).length,
-        errors: results.filter(r => r.errorMessage && !r.isAlreadyExist).length,
+        uploaded: results.filter((r) => !r.isAlreadyExist && !r.errorMessage)
+          .length,
+        conflicts: results.filter((r) => r.isAlreadyExist).length,
+        errors: results.filter((r) => r.errorMessage && !r.isAlreadyExist)
+          .length,
       };
 
-      this.loggerService.log(`Completed uploading files: ${summary.uploaded} success, ${summary.conflicts} conflicts, ${summary.errors} errors.`);
+      this.loggerService.log(
+        `Completed uploading files: ${summary.uploaded} success, ${summary.conflicts} conflicts, ${summary.errors} errors.`,
+      );
 
       return { results, summary };
-    }
-    catch (error) {
+    } catch (error) {
       this.loggerService.error('Error uploading files to bucket', error);
       throw new Error(`Failed to upload files: ${error.message}`);
     }
   }
 
-  async createObject(bucketId: string, fileName: string, mimeType: string, fileStream: fs.ReadStream, accessTokenJWT: any): Promise<any> {
+  async createObject(
+    bucketId: string,
+    fileName: string,
+    mimeType: string,
+    fileStream: fs.ReadStream,
+    accessTokenJWT: any,
+  ): Promise<any> {
     try {
-      this.loggerService.log(`Uploading file ${fileName} to bucket: ${bucketId}`);
+      this.loggerService.log(
+        `Uploading file ${fileName} to bucket: ${bucketId}`,
+      );
 
       const stats = await fs.promises.stat(fileStream.path);
       const fileSizeInBytes = stats.size;
-
 
       const config = {
         headers: {
@@ -206,14 +254,17 @@ export class ComsService {
       this.loggerService.log(`PUT ${this.comsApi}${this.object_path}`);
 
       const response = await firstValueFrom(
-        this.httpService.put(`${this.comsApi}${this.object_path}`, fileStream, config)
+        this.httpService.put(
+          `${this.comsApi}${this.object_path}`,
+          fileStream,
+          config,
+        ),
       );
 
       this.loggerService.log(`Response status: ${response.status}`);
 
       return response;
-    }
-    catch (error) {
+    } catch (error) {
       this.loggerService.error(`Error uploading ${fileName} to bucket`, error);
       if (error?.response?.status === HttpStatusCode.Conflict) {
         // Handle 409 error explicitly here as well
@@ -222,8 +273,7 @@ export class ComsService {
           fileAlreadyExists: true,
           errorMessage: `File ${fileName} already exists. Please upload a different file or change the file name.`,
         };
-      }
-      else {
+      } else {
         return {
           status: error?.response?.status,
           errorMessage: `Failed to upload ${fileName}: ${error.message}`,
@@ -232,7 +282,11 @@ export class ComsService {
     }
   }
 
-  async getObject(objectId: string, downloadType: DownloadType = this.downloadType, context: any) {
+  async getObject(
+    objectId: string,
+    downloadType: DownloadType = this.downloadType,
+    context: any,
+  ) {
     try {
       this.loggerService.log(`Downloading object from bucket: ${objectId}`);
 
@@ -250,8 +304,11 @@ export class ComsService {
 
       // Make the GET request to the backend
       const response = await firstValueFrom(
-        this.httpService.get(`${this.comsApi}${this.object_path}/${objectId}`, config),
-      )
+        this.httpService.get(
+          `${this.comsApi}${this.object_path}/${objectId}`,
+          config,
+        ),
+      );
 
       if (response?.data) {
         return {
@@ -259,8 +316,7 @@ export class ComsService {
         };
       }
       throw new Error('Object download failed, no response data.');
-    }
-    catch (error) {
+    } catch (error) {
       this.loggerService.error('Error downloading object from bucket', error);
       throw new Error(`Failed to download object: ${error.message}`);
     }
@@ -277,7 +333,10 @@ export class ComsService {
       };
 
       const response = await firstValueFrom(
-        this.httpService.delete(`${this.comsApi}${this.object_path}/${objectId}`, { params, headers }),
+        this.httpService.delete(
+          `${this.comsApi}${this.object_path}/${objectId}`,
+          { params, headers },
+        ),
       );
 
       if (response?.data) {
@@ -287,8 +346,7 @@ export class ComsService {
 
       this.loggerService.log(`Failed to delete object with ID: ${objectId}`);
       throw new Error('Object deletion failed, no response data.');
-    }
-    catch (error) {
+    } catch (error) {
       this.loggerService.error('Error deleting object', error);
       throw new Error(`Failed to delete object: ${error.message}`);
     }
@@ -303,7 +361,11 @@ export class ComsService {
       };
 
       const response = await firstValueFrom(
-        this.httpService.patch(`${this.comsApi}${this.object_path}/${bucketId}/public`, null, { params }),
+        this.httpService.patch(
+          `${this.comsApi}${this.object_path}/${bucketId}/public`,
+          null,
+          { params },
+        ),
       );
 
       if (response?.data) {
@@ -311,8 +373,7 @@ export class ComsService {
       }
 
       throw new Error('Setting file public failed, no response data.');
-    }
-    catch (error) {
+    } catch (error) {
       this.loggerService.error('Error setting file public in bucket', error);
       throw new Error(`Failed to set file public: ${error.message}`);
     }
@@ -326,7 +387,7 @@ export class ComsService {
       // Encode filename if it has special characters
       const encodedFilename = encodeURIComponent(filename).replace(
         /[!'()*]/g,
-        (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`
+        (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`,
       );
 
       // Only modify the header if filename was changed (i.e., if it's encoded)
@@ -335,9 +396,11 @@ export class ComsService {
       }
 
       return dispositionHeader;
-    }
-    catch (error) {
-      this.loggerService.error(`ComsService: setDispositionHeader: Error - ${error.message}`, null);
+    } catch (error) {
+      this.loggerService.error(
+        `ComsService: setDispositionHeader: Error - ${error.message}`,
+        null,
+      );
       throw new Error(`Failed to set disposition header: ${error.message}`);
     }
   }

@@ -9,7 +9,7 @@ import { AppConfig } from "../config";
 import {
   WEB_BASE_URL,
   WEB_BASE_CUSTOM_URL,
-  CUSTOM_SUBMISSION_URL
+  CUSTOM_SUBMISSION_URL,
 } from "../apiManager/endpoints/config";
 
 // import {_kc} from "../constants/tenantConstant";
@@ -64,12 +64,12 @@ const initKeycloak = (store, ...rest) => {
               // doLogout();
             } else {
               KeycloakData.loadUserInfo().then((res) =>
-                store.dispatch(setUserDetails(res))
+                store.dispatch(setUserDetails(res)),
               );
               // onAuthenticatedCallback();
               done(null, KeycloakData);
             }
-          })
+          }),
         );
 
         refreshToken(store);
@@ -143,8 +143,6 @@ const getFormioToken = () => localStorage.getItem("formioToken");
 /*const updateToken = (successCallback) => {
   return KeycloakData.updateToken(5).then(successCallback).catch(doLogin);
 };*/
-
- 
 
 // const KeycloakData= _kc;
 

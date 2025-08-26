@@ -15451,9 +15451,7 @@
         "name": "composeDirective",
         "description": null,
         "isRepeatable": false,
-        "locations": [
-          "SCHEMA"
-        ],
+        "locations": ["SCHEMA"],
         "args": [
           {
             "name": "name",
@@ -15498,20 +15496,14 @@
         "name": "extends",
         "description": null,
         "isRepeatable": false,
-        "locations": [
-          "INTERFACE",
-          "OBJECT"
-        ],
+        "locations": ["INTERFACE", "OBJECT"],
         "args": []
       },
       {
         "name": "external",
         "description": null,
         "isRepeatable": false,
-        "locations": [
-          "FIELD_DEFINITION",
-          "OBJECT"
-        ],
+        "locations": ["FIELD_DEFINITION", "OBJECT"],
         "args": [
           {
             "name": "reason",
@@ -15549,11 +15541,7 @@
         "name": "include",
         "description": "Directs the executor to include this field or fragment only when the `if` argument is true.",
         "isRepeatable": false,
-        "locations": [
-          "FIELD",
-          "FRAGMENT_SPREAD",
-          "INLINE_FRAGMENT"
-        ],
+        "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
         "args": [
           {
             "name": "if",
@@ -15577,19 +15565,14 @@
         "name": "interfaceObject",
         "description": null,
         "isRepeatable": false,
-        "locations": [
-          "OBJECT"
-        ],
+        "locations": ["OBJECT"],
         "args": []
       },
       {
         "name": "key",
         "description": null,
         "isRepeatable": false,
-        "locations": [
-          "INTERFACE",
-          "OBJECT"
-        ],
+        "locations": ["INTERFACE", "OBJECT"],
         "args": [
           {
             "name": "fields",
@@ -15625,9 +15608,7 @@
         "name": "link",
         "description": null,
         "isRepeatable": false,
-        "locations": [
-          "SCHEMA"
-        ],
+        "locations": ["SCHEMA"],
         "args": [
           {
             "name": "as",
@@ -15687,9 +15668,7 @@
         "name": "override",
         "description": null,
         "isRepeatable": false,
-        "locations": [
-          "FIELD_DEFINITION"
-        ],
+        "locations": ["FIELD_DEFINITION"],
         "args": [
           {
             "name": "from",
@@ -15713,9 +15692,7 @@
         "name": "provides",
         "description": null,
         "isRepeatable": false,
-        "locations": [
-          "FIELD_DEFINITION"
-        ],
+        "locations": ["FIELD_DEFINITION"],
         "args": [
           {
             "name": "fields",
@@ -15739,9 +15716,7 @@
         "name": "requires",
         "description": null,
         "isRepeatable": false,
-        "locations": [
-          "FIELD_DEFINITION"
-        ],
+        "locations": ["FIELD_DEFINITION"],
         "args": [
           {
             "name": "fields",
@@ -15765,21 +15740,14 @@
         "name": "shareable",
         "description": null,
         "isRepeatable": false,
-        "locations": [
-          "FIELD_DEFINITION",
-          "OBJECT"
-        ],
+        "locations": ["FIELD_DEFINITION", "OBJECT"],
         "args": []
       },
       {
         "name": "skip",
         "description": "Directs the executor to skip this field or fragment when the `if` argument is true.",
         "isRepeatable": false,
-        "locations": [
-          "FIELD",
-          "FRAGMENT_SPREAD",
-          "INLINE_FRAGMENT"
-        ],
+        "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
         "args": [
           {
             "name": "if",
@@ -15803,9 +15771,7 @@
         "name": "specifiedBy",
         "description": "Exposes a URL that specifies the behavior of this scalar.",
         "isRepeatable": false,
-        "locations": [
-          "SCALAR"
-        ],
+        "locations": ["SCALAR"],
         "args": [
           {
             "name": "url",

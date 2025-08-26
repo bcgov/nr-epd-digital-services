@@ -8,41 +8,73 @@ export type UpdateInvoiceMutationVariables = Types.Exact<{
   updateData: Types.InvoiceInputDto;
 }>;
 
-
-export type UpdateInvoiceMutation = { __typename?: 'Mutation', updateInvoice: { __typename?: 'InvoiceResponse', success?: boolean | null, httpStatusCode?: number | null, message?: string | null, invoice?: { __typename?: 'InvoiceDto', id: number, subject: string, issuedDate: any, dueDate: any, status: Types.InvoiceStatus, taxExempt: boolean, subtotalInCents: number, gstInCents: number, pstInCents: number, totalInCents: number, notes?: string | null, lineItems: Array<{ __typename?: 'InvoiceLineItemDto', id: number, type: string, description: string, quantity: number, unitPriceInCents: number, totalInCents: number }> } | null } };
-
+export type UpdateInvoiceMutation = {
+  __typename?: 'Mutation';
+  updateInvoice: {
+    __typename?: 'InvoiceResponse';
+    success?: boolean | null;
+    httpStatusCode?: number | null;
+    message?: string | null;
+    invoice?: {
+      __typename?: 'InvoiceDto';
+      id: number;
+      subject: string;
+      issuedDate: any;
+      dueDate: any;
+      status: Types.InvoiceStatus;
+      taxExempt: boolean;
+      subtotalInCents: number;
+      gstInCents: number;
+      pstInCents: number;
+      totalInCents: number;
+      notes?: string | null;
+      lineItems: Array<{
+        __typename?: 'InvoiceLineItemDto';
+        id: number;
+        type: string;
+        description: string;
+        quantity: number;
+        unitPriceInCents: number;
+        totalInCents: number;
+      }>;
+    } | null;
+  };
+};
 
 export const UpdateInvoiceDocument = gql`
-    mutation UpdateInvoice($id: Int!, $updateData: InvoiceInputDto!) {
-  updateInvoice(id: $id, updateData: $updateData) {
-    success
-    httpStatusCode
-    message
-    invoice {
-      id
-      subject
-      issuedDate
-      dueDate
-      status
-      taxExempt
-      subtotalInCents
-      gstInCents
-      pstInCents
-      totalInCents
-      notes
-      lineItems {
+  mutation UpdateInvoice($id: Int!, $updateData: InvoiceInputDto!) {
+    updateInvoice(id: $id, updateData: $updateData) {
+      success
+      httpStatusCode
+      message
+      invoice {
         id
-        type
-        description
-        quantity
-        unitPriceInCents
+        subject
+        issuedDate
+        dueDate
+        status
+        taxExempt
+        subtotalInCents
+        gstInCents
+        pstInCents
         totalInCents
+        notes
+        lineItems {
+          id
+          type
+          description
+          quantity
+          unitPriceInCents
+          totalInCents
+        }
       }
     }
   }
-}
-    `;
-export type UpdateInvoiceMutationFn = Apollo.MutationFunction<UpdateInvoiceMutation, UpdateInvoiceMutationVariables>;
+`;
+export type UpdateInvoiceMutationFn = Apollo.MutationFunction<
+  UpdateInvoiceMutation,
+  UpdateInvoiceMutationVariables
+>;
 
 /**
  * __useUpdateInvoiceMutation__
@@ -62,10 +94,24 @@ export type UpdateInvoiceMutationFn = Apollo.MutationFunction<UpdateInvoiceMutat
  *   },
  * });
  */
-export function useUpdateInvoiceMutation(baseOptions?: Apollo.MutationHookOptions<UpdateInvoiceMutation, UpdateInvoiceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateInvoiceMutation, UpdateInvoiceMutationVariables>(UpdateInvoiceDocument, options);
-      }
-export type UpdateInvoiceMutationHookResult = ReturnType<typeof useUpdateInvoiceMutation>;
-export type UpdateInvoiceMutationResult = Apollo.MutationResult<UpdateInvoiceMutation>;
-export type UpdateInvoiceMutationOptions = Apollo.BaseMutationOptions<UpdateInvoiceMutation, UpdateInvoiceMutationVariables>;
+export function useUpdateInvoiceMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateInvoiceMutation,
+    UpdateInvoiceMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateInvoiceMutation,
+    UpdateInvoiceMutationVariables
+  >(UpdateInvoiceDocument, options);
+}
+export type UpdateInvoiceMutationHookResult = ReturnType<
+  typeof useUpdateInvoiceMutation
+>;
+export type UpdateInvoiceMutationResult =
+  Apollo.MutationResult<UpdateInvoiceMutation>;
+export type UpdateInvoiceMutationOptions = Apollo.BaseMutationOptions<
+  UpdateInvoiceMutation,
+  UpdateInvoiceMutationVariables
+>;

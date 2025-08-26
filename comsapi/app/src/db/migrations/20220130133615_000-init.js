@@ -2,70 +2,113 @@ const stamps = require('../stamps');
 const { NIL: SYSTEM_USER } = require('uuid');
 
 exports.up = function (knex) {
-  return Promise.resolve()
-    // Create public schema COMS tables
-    .then(() => knex.schema.createTable('identity_provider', table => {
-      table.string('idp', 255).primary();
-      table.boolean('active').notNullable().defaultTo(true);
-      stamps(knex, table);
-    }))
+  return (
+    Promise.resolve()
+      // Create public schema COMS tables
+      .then(() =>
+        knex.schema.createTable('identity_provider', (table) => {
+          table.string('idp', 255).primary();
+          table.boolean('active').notNullable().defaultTo(true);
+          stamps(knex, table);
+        }),
+      )
 
-    .then(() => knex.schema.createTable('user', table => {
-      table.uuid('userId').primary();
-      table.uuid('identityId').index();
-      table.string('idp', 255).references('idp').inTable('identity_provider').onUpdate('CASCADE').onDelete('CASCADE');
-      table.string('username', 255).notNullable().index();
-      table.string('email', 255).index();
-      table.string('firstName', 255);
-      table.string('fullName', 255);
-      table.string('lastName', 255);
-      table.boolean('active').notNullable().defaultTo(true);
-      stamps(knex, table);
-    }))
+      .then(() =>
+        knex.schema.createTable('user', (table) => {
+          table.uuid('userId').primary();
+          table.uuid('identityId').index();
+          table
+            .string('idp', 255)
+            .references('idp')
+            .inTable('identity_provider')
+            .onUpdate('CASCADE')
+            .onDelete('CASCADE');
+          table.string('username', 255).notNullable().index();
+          table.string('email', 255).index();
+          table.string('firstName', 255);
+          table.string('fullName', 255);
+          table.string('lastName', 255);
+          table.boolean('active').notNullable().defaultTo(true);
+          stamps(knex, table);
+        }),
+      )
 
-    .then(() => knex.schema.createTable('permission', table => {
-      table.string('permCode', 255).primary();
-      table.boolean('active').notNullable().defaultTo(true);
-      stamps(knex, table);
-    }))
+      .then(() =>
+        knex.schema.createTable('permission', (table) => {
+          table.string('permCode', 255).primary();
+          table.boolean('active').notNullable().defaultTo(true);
+          stamps(knex, table);
+        }),
+      )
 
-    .then(() => knex.schema.createTable('object', table => {
-      table.uuid('id').primary();
-      table.string('originalName', 255).notNullable();
-      table.string('path', 1024).notNullable();
-      table.string('mimeType', 255).notNullable();
-      table.boolean('public').notNullable().defaultTo(false);
-      table.boolean('active').notNullable().defaultTo(true);
-      stamps(knex, table);
-    }))
+      .then(() =>
+        knex.schema.createTable('object', (table) => {
+          table.uuid('id').primary();
+          table.string('originalName', 255).notNullable();
+          table.string('path', 1024).notNullable();
+          table.string('mimeType', 255).notNullable();
+          table.boolean('public').notNullable().defaultTo(false);
+          table.boolean('active').notNullable().defaultTo(true);
+          stamps(knex, table);
+        }),
+      )
 
-    .then(() => knex.schema.createTable('object_permission', table => {
-      table.uuid('id').primary();
-      table.uuid('objectId').references('id').inTable('object').notNullable().onUpdate('CASCADE').onDelete('CASCADE');
-      table.uuid('userId').references('userId').inTable('user').notNullable().onUpdate('CASCADE').onDelete('CASCADE');
-      table.string('permCode').references('permCode').inTable('permission').notNullable().onUpdate('CASCADE').onDelete('CASCADE');
-      stamps(knex, table);
-    }))
+      .then(() =>
+        knex.schema.createTable('object_permission', (table) => {
+          table.uuid('id').primary();
+          table
+            .uuid('objectId')
+            .references('id')
+            .inTable('object')
+            .notNullable()
+            .onUpdate('CASCADE')
+            .onDelete('CASCADE');
+          table
+            .uuid('userId')
+            .references('userId')
+            .inTable('user')
+            .notNullable()
+            .onUpdate('CASCADE')
+            .onDelete('CASCADE');
+          table
+            .string('permCode')
+            .references('permCode')
+            .inTable('permission')
+            .notNullable()
+            .onUpdate('CASCADE')
+            .onDelete('CASCADE');
+          stamps(knex, table);
+        }),
+      )
 
-    // Create audit schema and logged_actions table
-    .then(() => knex.schema.raw('CREATE SCHEMA IF NOT EXISTS audit'))
+      // Create audit schema and logged_actions table
+      .then(() => knex.schema.raw('CREATE SCHEMA IF NOT EXISTS audit'))
 
-    .then(() => knex.schema.withSchema('audit').createTable('logged_actions', table => {
-      table.specificType(
-        'id',
-        'integer GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY'
-      );
-      table.string('schemaName', 255).notNullable().index();
-      table.string('tableName', 255).notNullable().index();
-      table.string('dbUser', 255).notNullable();
-      table.string('updatedByUsername', 255);
-      table.timestamp('actionTimestamp', { useTz: true }).defaultTo(knex.fn.now()).index();
-      table.string('action', 255).notNullable().index();
-      table.json('originalData');
-      table.json('newData');
-    }))
+      .then(() =>
+        knex.schema
+          .withSchema('audit')
+          .createTable('logged_actions', (table) => {
+            table.specificType(
+              'id',
+              'integer GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY',
+            );
+            table.string('schemaName', 255).notNullable().index();
+            table.string('tableName', 255).notNullable().index();
+            table.string('dbUser', 255).notNullable();
+            table.string('updatedByUsername', 255);
+            table
+              .timestamp('actionTimestamp', { useTz: true })
+              .defaultTo(knex.fn.now())
+              .index();
+            table.string('action', 255).notNullable().index();
+            table.json('originalData');
+            table.json('newData');
+          }),
+      )
 
-    .then(() => knex.schema.raw(`CREATE OR REPLACE FUNCTION audit.if_modified_func() RETURNS trigger AS $body$
+      .then(() =>
+        knex.schema
+          .raw(`CREATE OR REPLACE FUNCTION audit.if_modified_func() RETURNS trigger AS $body$
     DECLARE
         v_old_data json;
         v_new_data json;
@@ -102,68 +145,104 @@ exports.up = function (knex) {
     $body$
     LANGUAGE plpgsql
     SECURITY DEFINER
-    SET search_path = pg_catalog, audit;`))
+    SET search_path = pg_catalog, audit;`),
+      )
 
-    // Create audit triggers
-    .then(() => knex.schema.raw(`CREATE TRIGGER audit_identity_provider_trigger
+      // Create audit triggers
+      .then(() =>
+        knex.schema.raw(`CREATE TRIGGER audit_identity_provider_trigger
     AFTER UPDATE OR DELETE ON identity_provider
-    FOR EACH ROW EXECUTE PROCEDURE audit.if_modified_func();`))
+    FOR EACH ROW EXECUTE PROCEDURE audit.if_modified_func();`),
+      )
 
-    .then(() => knex.schema.raw(`CREATE TRIGGER audit_user_trigger
+      .then(() =>
+        knex.schema.raw(`CREATE TRIGGER audit_user_trigger
     AFTER UPDATE OR DELETE ON "user"
-    FOR EACH ROW EXECUTE PROCEDURE audit.if_modified_func();`))
+    FOR EACH ROW EXECUTE PROCEDURE audit.if_modified_func();`),
+      )
 
-    .then(() => knex.schema.raw(`CREATE TRIGGER audit_permission_trigger
+      .then(() =>
+        knex.schema.raw(`CREATE TRIGGER audit_permission_trigger
     AFTER UPDATE OR DELETE ON permission
-    FOR EACH ROW EXECUTE PROCEDURE audit.if_modified_func();`))
+    FOR EACH ROW EXECUTE PROCEDURE audit.if_modified_func();`),
+      )
 
-    .then(() => knex.schema.raw(`CREATE TRIGGER audit_object_trigger
+      .then(() =>
+        knex.schema.raw(`CREATE TRIGGER audit_object_trigger
     AFTER UPDATE OR DELETE ON object
-    FOR EACH ROW EXECUTE PROCEDURE audit.if_modified_func();`))
+    FOR EACH ROW EXECUTE PROCEDURE audit.if_modified_func();`),
+      )
 
-    .then(() => knex.schema.raw(`CREATE TRIGGER audit_object_permission_trigger
+      .then(() =>
+        knex.schema.raw(`CREATE TRIGGER audit_object_permission_trigger
     AFTER UPDATE OR DELETE ON object_permission
-    FOR EACH ROW EXECUTE PROCEDURE audit.if_modified_func();`))
+    FOR EACH ROW EXECUTE PROCEDURE audit.if_modified_func();`),
+      )
 
-    // Populate Baseline Data
-    .then(() => {
-      const users = ['system'];
-      const items = users.map((user) => ({
-        userId: SYSTEM_USER,
-        username: user,
-        active: true,
-        createdBy: SYSTEM_USER,
-      }));
-      return knex('user').insert(items);
-    })
+      // Populate Baseline Data
+      .then(() => {
+        const users = ['system'];
+        const items = users.map((user) => ({
+          userId: SYSTEM_USER,
+          username: user,
+          active: true,
+          createdBy: SYSTEM_USER,
+        }));
+        return knex('user').insert(items);
+      })
 
-    .then(() => {
-      const perms = ['CREATE', 'READ', 'UPDATE', 'DELETE', 'MANAGE' ];
-      const items = perms.map((perm) => ({
-        permCode: perm,
-        active: true,
-        createdBy: SYSTEM_USER,
-      }));
-      return knex('permission').insert(items);
-    });
+      .then(() => {
+        const perms = ['CREATE', 'READ', 'UPDATE', 'DELETE', 'MANAGE'];
+        const items = perms.map((perm) => ({
+          permCode: perm,
+          active: true,
+          createdBy: SYSTEM_USER,
+        }));
+        return knex('permission').insert(items);
+      })
+  );
 };
 
 exports.down = function (knex) {
-  return Promise.resolve()
-    // Drop audit triggers
-    .then(() => knex.schema.raw('DROP TRIGGER IF EXISTS audit_object_permission_trigger ON object_permission'))
-    .then(() => knex.schema.raw('DROP TRIGGER IF EXISTS audit_object_trigger ON object'))
-    .then(() => knex.schema.raw('DROP TRIGGER IF EXISTS audit_permission_trigger ON permission'))
-    .then(() => knex.schema.raw('DROP TRIGGER IF EXISTS audit_user_trigger ON "user"'))
-    .then(() => knex.schema.raw('DROP TRIGGER IF EXISTS audit_identity_provider_trigger ON identity_provider'))
-    // Drop audit schema and logged_actions table
-    .then(() => knex.schema.raw('DROP FUNCTION IF EXISTS audit.if_modified_func()'))
-    .then(() => knex.schema.withSchema('audit').dropTableIfExists('logged_actions'))
-    .then(() => knex.schema.dropSchemaIfExists('audit'))
-    // Drop public schema COMS tables
-    .then(() => knex.schema.dropTableIfExists('object_permission'))
-    .then(() => knex.schema.dropTableIfExists('object'))
-    .then(() => knex.schema.dropTableIfExists('permission'))
-    .then(() => knex.schema.dropTableIfExists('user'))
-    .then(() => knex.schema.dropTableIfExists('identity_provider'));
+  return (
+    Promise.resolve()
+      // Drop audit triggers
+      .then(() =>
+        knex.schema.raw(
+          'DROP TRIGGER IF EXISTS audit_object_permission_trigger ON object_permission',
+        ),
+      )
+      .then(() =>
+        knex.schema.raw(
+          'DROP TRIGGER IF EXISTS audit_object_trigger ON object',
+        ),
+      )
+      .then(() =>
+        knex.schema.raw(
+          'DROP TRIGGER IF EXISTS audit_permission_trigger ON permission',
+        ),
+      )
+      .then(() =>
+        knex.schema.raw('DROP TRIGGER IF EXISTS audit_user_trigger ON "user"'),
+      )
+      .then(() =>
+        knex.schema.raw(
+          'DROP TRIGGER IF EXISTS audit_identity_provider_trigger ON identity_provider',
+        ),
+      )
+      // Drop audit schema and logged_actions table
+      .then(() =>
+        knex.schema.raw('DROP FUNCTION IF EXISTS audit.if_modified_func()'),
+      )
+      .then(() =>
+        knex.schema.withSchema('audit').dropTableIfExists('logged_actions'),
+      )
+      .then(() => knex.schema.dropSchemaIfExists('audit'))
+      // Drop public schema COMS tables
+      .then(() => knex.schema.dropTableIfExists('object_permission'))
+      .then(() => knex.schema.dropTableIfExists('object'))
+      .then(() => knex.schema.dropTableIfExists('permission'))
+      .then(() => knex.schema.dropTableIfExists('user'))
+      .then(() => knex.schema.dropTableIfExists('identity_provider'))
+  );
 };

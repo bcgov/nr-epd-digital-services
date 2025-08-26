@@ -14,7 +14,7 @@ jest.mock('../../../src/db/models/tables/identityProvider', () => ({
   insertAndFetch: jest.fn(),
   modify: jest.fn(),
   query: jest.fn(),
-  where: jest.fn()
+  where: jest.fn(),
 }));
 
 const userTrx = trxBuilder();
@@ -33,7 +33,7 @@ jest.mock('../../../src/db/models/tables/user', () => ({
   select: jest.fn(),
   throwIfNotFound: jest.fn(),
   where: jest.fn(),
-  whereNotNull: jest.fn()
+  whereNotNull: jest.fn(),
 }));
 
 const service = require('../../../src/services/user');
@@ -47,7 +47,7 @@ const token = {
   family_name: 'smith',
   name: 'john smith',
   email: 'jsmith@email.com',
-  identity_provider: 'idir'
+  identity_provider: 'idir',
 };
 const user = {
   userId: userId,
@@ -57,7 +57,7 @@ const user = {
   lastName: 'smith',
   fullName: 'john smith',
   email: 'jsmith@email.com',
-  idp: 'idir'
+  idp: 'idir',
 };
 
 beforeEach(() => {
@@ -75,7 +75,6 @@ describe('_tokenToUser', () => {
   });
 });
 
-
 describe('createIdp', () => {
   it('Creates an IDP record', async () => {
     await service.createIdp('foo');
@@ -88,7 +87,7 @@ describe('createIdp', () => {
       expect.objectContaining({
         idp: 'foo',
         createdBy: expect.any(String),
-      })
+      }),
     );
     expect(identityProviderTrx.commit).toHaveBeenCalledTimes(1);
   });
@@ -126,8 +125,8 @@ describe('createUser', () => {
     expect(User.insert).toBeCalledWith(
       expect.objectContaining({
         ...user,
-        userId: expect.any(String)
-      })
+        userId: expect.any(String),
+      }),
     );
     expect(userTrx.commit).toHaveBeenCalledTimes(1);
   });
@@ -148,13 +147,13 @@ describe('createUser', () => {
     expect(User.insert).toBeCalledWith(
       expect.objectContaining({
         ...user,
-        userId: expect.any(String)
-      })
+        userId: expect.any(String),
+      }),
     );
     expect(userTrx.commit).toHaveBeenCalledTimes(1);
   });
 
-  it('Does not create an idp if user has none (eg: \'System\' user)', async () => {
+  it("Does not create an idp if user has none (eg: 'System' user)", async () => {
     const systemUser = { ...user, idp: undefined };
     await service.createUser(systemUser);
 
@@ -171,7 +170,11 @@ describe('createUser', () => {
 
 describe('getCurrentUserId', () => {
   it('Query user by identityId', async () => {
-    User.first.mockResolvedValue({ ...user, userId: '123', identityId: '123-idir' });
+    User.first.mockResolvedValue({
+      ...user,
+      userId: '123',
+      identityId: '123-idir',
+    });
     const result = await service.getCurrentUserId('123-idir');
 
     expect(User.query).toHaveBeenCalledTimes(1);
@@ -194,7 +197,11 @@ describe('listIdps', () => {
     expect(IdentityProvider.query).toHaveBeenCalledTimes(1);
     expect(IdentityProvider.query).toHaveBeenCalledWith();
     expect(IdentityProvider.modify).toHaveBeenCalledTimes(2);
-    expect(IdentityProvider.modify).toHaveBeenNthCalledWith(1, 'filterActive', params.active);
+    expect(IdentityProvider.modify).toHaveBeenNthCalledWith(
+      1,
+      'filterActive',
+      params.active,
+    );
     expect(IdentityProvider.modify).toHaveBeenNthCalledWith(2, 'orderDefault');
   });
 });
@@ -224,14 +231,17 @@ describe('login', () => {
   it('Adds a new user record', async () => {
     User.first.mockResolvedValue(undefined);
     createUserSpy.mockResolvedValue(user);
-    trxWrapperSpy.mockImplementation(callback => callback({}));
+    trxWrapperSpy.mockImplementation((callback) => callback({}));
 
     await service.login(token);
 
     expect(User.query).toHaveBeenCalledTimes(1);
     expect(User.query).toHaveBeenCalledWith(expect.any(Object));
     expect(User.where).toHaveBeenCalledTimes(1);
-    expect(User.where).toHaveBeenCalledWith({ identityId: user.identityId, idp: user.idp });
+    expect(User.where).toHaveBeenCalledWith({
+      identityId: user.identityId,
+      idp: user.idp,
+    });
     expect(User.first).toHaveBeenCalledTimes(1);
     expect(User.first).toHaveBeenCalledWith();
 
@@ -241,21 +251,31 @@ describe('login', () => {
   });
 
   it('Updates an existing user record', async () => {
-    trxWrapperSpy.mockImplementation(callback => callback({}));
-    User.first.mockResolvedValue({ ...user, userId: 'a96f2809-d6f4-4cef-a02a-3f72edff06d7' });
+    trxWrapperSpy.mockImplementation((callback) => callback({}));
+    User.first.mockResolvedValue({
+      ...user,
+      userId: 'a96f2809-d6f4-4cef-a02a-3f72edff06d7',
+    });
 
     await service.login(token);
 
     expect(User.query).toHaveBeenCalledTimes(1);
     expect(User.query).toHaveBeenCalledWith(expect.any(Object));
     expect(User.where).toHaveBeenCalledTimes(1);
-    expect(User.where).toHaveBeenCalledWith({ identityId: user.identityId, idp: user.idp });
+    expect(User.where).toHaveBeenCalledWith({
+      identityId: user.identityId,
+      idp: user.idp,
+    });
     expect(User.first).toHaveBeenCalledTimes(1);
     expect(User.first).toHaveBeenCalledWith();
 
     expect(createUserSpy).toHaveBeenCalledTimes(0);
     expect(updateUserSpy).toHaveBeenCalledTimes(1);
-    expect(updateUserSpy).toHaveBeenCalledWith('a96f2809-d6f4-4cef-a02a-3f72edff06d7', expect.objectContaining(user), expect.any(Object));
+    expect(updateUserSpy).toHaveBeenCalledWith(
+      'a96f2809-d6f4-4cef-a02a-3f72edff06d7',
+      expect.objectContaining(user),
+      expect.any(Object),
+    );
   });
 });
 
@@ -294,16 +314,48 @@ describe('searchUsers', () => {
     expect(User.query).toHaveBeenCalledTimes(1);
     expect(User.query).toHaveBeenCalledWith();
     expect(User.modify).toHaveBeenCalledTimes(11);
-    expect(User.modify).toHaveBeenNthCalledWith(1, 'filterUserId', params.userId);
-    expect(User.modify).toHaveBeenNthCalledWith(2, 'filterIdentityId', params.identityId);
+    expect(User.modify).toHaveBeenNthCalledWith(
+      1,
+      'filterUserId',
+      params.userId,
+    );
+    expect(User.modify).toHaveBeenNthCalledWith(
+      2,
+      'filterIdentityId',
+      params.identityId,
+    );
     expect(User.modify).toHaveBeenNthCalledWith(3, 'filterIdp', params.idp);
-    expect(User.modify).toHaveBeenNthCalledWith(4, 'filterUsername', params.username);
+    expect(User.modify).toHaveBeenNthCalledWith(
+      4,
+      'filterUsername',
+      params.username,
+    );
     expect(User.modify).toHaveBeenNthCalledWith(5, 'filterEmail', params.email);
-    expect(User.modify).toHaveBeenNthCalledWith(6, 'filterFirstName', params.firstName);
-    expect(User.modify).toHaveBeenNthCalledWith(7, 'filterFullName', params.fullName);
-    expect(User.modify).toHaveBeenNthCalledWith(8, 'filterLastName', params.lastName);
-    expect(User.modify).toHaveBeenNthCalledWith(9, 'filterActive', params.active);
-    expect(User.modify).toHaveBeenNthCalledWith(10, 'filterSearch', params.search);
+    expect(User.modify).toHaveBeenNthCalledWith(
+      6,
+      'filterFirstName',
+      params.firstName,
+    );
+    expect(User.modify).toHaveBeenNthCalledWith(
+      7,
+      'filterFullName',
+      params.fullName,
+    );
+    expect(User.modify).toHaveBeenNthCalledWith(
+      8,
+      'filterLastName',
+      params.lastName,
+    );
+    expect(User.modify).toHaveBeenNthCalledWith(
+      9,
+      'filterActive',
+      params.active,
+    );
+    expect(User.modify).toHaveBeenNthCalledWith(
+      10,
+      'filterSearch',
+      params.search,
+    );
     expect(User.modify).toHaveBeenNthCalledWith(11, 'orderLastFirstAscending');
     expect(User.whereNotNull).toHaveBeenCalledTimes(1);
     expect(User.whereNotNull).toHaveBeenCalledWith('identityId');
@@ -357,7 +409,10 @@ describe('updateUser', () => {
     expect(User.query).toHaveBeenCalledTimes(1);
     expect(User.query).toHaveBeenCalledWith(expect.anything());
     expect(User.patchAndFetchById).toHaveBeenCalledTimes(1);
-    expect(User.patchAndFetchById).toHaveBeenCalledWith(userId, expect.any(Object));
+    expect(User.patchAndFetchById).toHaveBeenCalledWith(
+      userId,
+      expect.any(Object),
+    );
   });
 
   it('Creates idp if idp does not exist in db', async () => {
@@ -377,6 +432,9 @@ describe('updateUser', () => {
     expect(User.query).toHaveBeenCalledTimes(1);
     expect(User.query).toHaveBeenCalledWith(expect.anything());
     expect(User.patchAndFetchById).toHaveBeenCalledTimes(1);
-    expect(User.patchAndFetchById).toHaveBeenCalledWith(userId, expect.any(Object));
+    expect(User.patchAndFetchById).toHaveBeenCalledWith(
+      userId,
+      expect.any(Object),
+    );
   });
 });

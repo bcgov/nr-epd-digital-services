@@ -1,6 +1,6 @@
-import { Query, Resolver} from '@nestjs/graphql';
+import { Query, Resolver } from '@nestjs/graphql';
 import { Resource } from 'nest-keycloak-connect';
-import { HttpStatus} from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
 import { LoggerService } from '../../logger/logger.service';
 import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
 import { RoleWithPermissions } from '../../dto/permissions/viewPermissions.dto';
@@ -13,27 +13,41 @@ export class PermissionsResolver {
   constructor(
     private readonly permissionsService: PermissionsService,
     private readonly loggerService: LoggerService,
-    private readonly permissionResponse: GenericResponseProvider<RoleWithPermissions[]>
+    private readonly permissionResponse: GenericResponseProvider<
+      RoleWithPermissions[]
+    >,
   ) {}
 
   @Query(() => PermissionsResponse, { name: 'getPermissions' })
   async getPermissions() {
     try {
       const result = await this.permissionsService.getPermissions();
-      if(result?.length > 0) {
-        this.loggerService.log('PermissionsResolver.getPermissions() RES:200 end');
-        return this.permissionResponse.createResponse('Permission records fetched successfully', HttpStatus.OK, true, result);
+      if (result?.length > 0) {
+        this.loggerService.log(
+          'PermissionsResolver.getPermissions() RES:200 end',
+        );
+        return this.permissionResponse.createResponse(
+          'Permission records fetched successfully',
+          HttpStatus.OK,
+          true,
+          result,
+        );
+      } else {
+        this.loggerService.log(
+          'PermissionsResolver.getPermissions() RES:404 end',
+        );
+        return this.permissionResponse.createResponse(
+          'No permission records found',
+          HttpStatus.NOT_FOUND,
+          false,
+          [],
+        );
       }
-      else
-      {
-        this.loggerService.log('PermissionsResolver.getPermissions() RES:404 end');
-        return this.permissionResponse.createResponse('No permission records found', HttpStatus.NOT_FOUND, false, []);
-      }
-    } 
-    catch (error) {
-      this.loggerService.log('PermissionsResolver.getPermissions() RES:500 end');
+    } catch (error) {
+      this.loggerService.log(
+        'PermissionsResolver.getPermissions() RES:500 end',
+      );
       throw new Error(`Failed to fetch permissions: ${error.message}`);
     }
   }
 }
-

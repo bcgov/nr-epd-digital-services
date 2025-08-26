@@ -4,7 +4,6 @@ import { BasePersonNote } from './basePersonNote.dto';
 
 @ObjectType()
 export class ViewPersonNote extends BasePersonNote {
-
   @Field()
   @IsUUID()
   id: string; // UUID as the primary key (this will be a string)

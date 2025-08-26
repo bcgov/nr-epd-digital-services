@@ -6,7 +6,10 @@ const { join } = require('path');
 
 /** Gets the OpenAPI specification */
 function getSpec() {
-  const rawSpec = readFileSync(join(__dirname, '../../docs/v1.api-spec.yaml'), 'utf8');
+  const rawSpec = readFileSync(
+    join(__dirname, '../../docs/v1.api-spec.yaml'),
+    'utf8',
+  );
   const spec = yaml.load(rawSpec);
   spec.servers[0].url = '/api/v1';
   if (config.has('keycloak.enabled')) {

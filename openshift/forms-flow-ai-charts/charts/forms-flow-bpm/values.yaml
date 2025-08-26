@@ -9,7 +9,7 @@ camunda:
     name: forms-flow-bpm
     port: 5432
   historyLevel: auto
-  securityOrigin: '*'
+  securityOrigin: "*"
   logLevel: INFO
   formBuilder:
     password: demo # CAMUNDA_FORMBUILDER_PIPELINE_PASSWORD
@@ -28,7 +28,7 @@ camunda:
     url: "jdbc:postgresql://${CAMUNDA_DATABASE_SERVICE_NAME}:${CAMUNDA_DATABASE_PORT}/${CAMUNDA_DATABASE_NAME}"
   websocket:
     messageType: TASK_EVENT #WEBSOCKET_MESSAGE_TYPE
-    securityOrigin:   #WEBSOCKET_SECURITY_ORIGIN
+    securityOrigin: #WEBSOCKET_SECURITY_ORIGIN
 
 image:
   registry: docker.io
@@ -36,7 +36,7 @@ image:
   tag: v5.2.0-epd #The image tag to pull from
 formsflow:
   configmap: forms-flow-ai # name of formsflow.ai configmap
-  secret: forms-flow-ai #name of formsflow.ai secret 
+  secret: forms-flow-ai #name of formsflow.ai secret
   auth: forms-flow-ai-auth
 ingress:
   ingressClassName: ""
@@ -48,7 +48,7 @@ ingress:
   tls: true
   selfSigned: false
   extraTls:
-   - {}
+    - {}
 mail:
   from: "<DEFINE_ME>"
   password: "<DEFINE_ME>"

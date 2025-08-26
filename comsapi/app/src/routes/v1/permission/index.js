@@ -3,10 +3,7 @@ const router = require('express').Router();
 // Base Responder
 router.get('/', (_req, res) => {
   res.status(200).json({
-    endpoints: [
-      '/bucket',
-      '/object'
-    ]
+    endpoints: ['/bucket', '/object'],
   });
 });
 

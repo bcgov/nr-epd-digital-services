@@ -8,7 +8,11 @@ import {
   FILTER_TYPES,
 } from "react-bootstrap-table2-filter";
 import { getLocalDateTime } from "../../apiManager/services/formatterService";
-import { AWAITING_ACKNOWLEDGEMENT, TYPE_BUNDLE, TYPE_FORM } from "../../constants/applicationConstants";
+import {
+  AWAITING_ACKNOWLEDGEMENT,
+  TYPE_BUNDLE,
+  TYPE_FORM,
+} from "../../constants/applicationConstants";
 import { Translation } from "react-i18next";
 import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 import DropdownButton from "react-bootstrap/DropdownButton";
@@ -60,7 +64,14 @@ const linkSubmission = (cell, row, redirectUrl) => {
   const icon = row.isClientEdit ? "fa fa-edit" : "fa fa-eye";
   return (
     <div onClick={() => window.open(url, "_blank")}>
-      <span style={{ color: "#003366", cursor: "pointer", "font-weight": "bold", "font-size": "0.9rem" }}>
+      <span
+        style={{
+          color: "#003366",
+          cursor: "pointer",
+          "font-weight": "bold",
+          "font-size": "0.9rem",
+        }}
+      >
         <span>
           <i className={icon} />
           &nbsp;
@@ -79,13 +90,21 @@ function timeFormatter(cell) {
 const nameFormatter = (cell) => {
   const name = startCase(cell);
   return (
-    <label className="text-truncate w-100" style={{ maxWidth: "550px" }} title={name}>
+    <label
+      className="text-truncate w-100"
+      style={{ maxWidth: "550px" }}
+      title={name}
+    >
       {startCase(name)}
     </label>
   );
 };
 
-const customStyle = { border: "1px solid #a7a7a7", fontStyle: "normal", "border-radius": "7px" };
+const customStyle = {
+  border: "1px solid #a7a7a7",
+  fontStyle: "normal",
+  "border-radius": "7px",
+};
 
 const styleForValidationFail = { border: "1px solid red" };
 
@@ -116,7 +135,7 @@ export const columns = (
   callback,
   t,
   redirectUrl,
-  invalidFilters
+  invalidFilters,
 ) => {
   if (invalidFilters.APPLICATION_ID) {
     notifyValidationError();

@@ -1,6 +1,6 @@
 # Forms Flow Web Custom Changes OpenShift Yaml
 
-This is a dockerfile deploy for our customized forms-flow-web.  The high level summary:
+This is a dockerfile deploy for our customized forms-flow-web. The high level summary:
 
 1. Create build in `tools` env.
 2. Manually update yaml of deploymentconfig for epd-frontend in devs/tools/environment.
@@ -25,5 +25,4 @@ May also wish to update `ImageChange` trigger
 
 ## Manually Triggering a Build
 
-Just tag the build from tools to `dev` or `test`.  Will be creating CI/CD tasks for this and github action in near future.
-
+Just tag the build from tools to `dev` or `test`. Will be creating CI/CD tasks for this and github action in near future.

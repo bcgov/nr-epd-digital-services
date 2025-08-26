@@ -23,7 +23,7 @@ export class InvoiceService {
     private readonly invoiceAttachmentRepo: Repository<InvoiceAttachment>,
     private readonly emailService: ChesEmailService,
     private readonly loggerService: LoggerService,
-  ) { }
+  ) {}
 
   async getInvoices(applicationId: number) {
     try {
@@ -31,19 +31,19 @@ export class InvoiceService {
       if (applicationId <= 0) {
         this.loggerService.log(`Invalid applicationId: ${applicationId}`);
         return [];
-      }
-      else {
+      } else {
         this.loggerService.log(`Valid applicationId: ${applicationId}`);
-        this.loggerService.log(`InvoiceService.getInvoices(): applicationId: ${applicationId}`);
+        this.loggerService.log(
+          `InvoiceService.getInvoices(): applicationId: ${applicationId}`,
+        );
         const invoices = await this.invoiceRepository.find({
           where: { applicationId: applicationId },
-          order: { whenUpdated: 'DESC' }
+          order: { whenUpdated: 'DESC' },
         });
         this.loggerService.log(`InvoiceService.getInvoices(): End.`);
         return plainToInstance(ViewInvoice, invoices);
       }
-    }
-    catch (error) {
+    } catch (error) {
       this.loggerService.error(
         `InvoiceService: getInvoices: Error fetching invoices: ${error.message}`,
         null,
@@ -56,20 +56,28 @@ export class InvoiceService {
 
   async getInvoiceById(id: number) {
     try {
-      this.loggerService.log(`InvoiceService.getInvoiceById(): invoiceId: ${id} start`);
+      this.loggerService.log(
+        `InvoiceService.getInvoiceById(): invoiceId: ${id} start`,
+      );
       if (id <= 0) {
         this.loggerService.log(`Invalid invoiceId: ${id}`);
         return null;
-      }
-      else {
+      } else {
         this.loggerService.log(`Valid invoiceId: ${id}`);
         const invoice = await this.invoiceRepository.findOne({
           where: { id: id },
-          relations: ['invoiceItems', 'invoiceAttachments', 'application', 'recipient'],
+          relations: [
+            'invoiceItems',
+            'invoiceAttachments',
+            'application',
+            'recipient',
+          ],
         });
         this.loggerService.log(`InvoiceService.getInvoiceById(): End.`);
         if (!invoice) {
-          this.loggerService.log(`InvoiceService.getInvoiceById(): invoiceId: ${id} not found`);
+          this.loggerService.log(
+            `InvoiceService.getInvoiceById(): invoiceId: ${id} not found`,
+          );
           return null;
         }
         const result = {
@@ -77,10 +85,11 @@ export class InvoiceService {
           personId: invoice?.recipient?.id.toString(),
           recipient: {
             key: invoice?.recipient?.id.toString(),
-            value: `${invoice?.recipient?.firstName || ''} ${invoice?.recipient?.middleName || ''} ${invoice?.recipient?.lastName || ''}`.trim(),
+            value:
+              `${invoice?.recipient?.firstName || ''} ${invoice?.recipient?.middleName || ''} ${invoice?.recipient?.lastName || ''}`.trim(),
             metaData: invoice?.recipient?.email || '',
           },
-        }
+        };
         return plainToInstance(ViewInvoice, result);
       }
     } catch (error) {
@@ -99,8 +108,11 @@ export class InvoiceService {
       this.loggerService.log(`InvoiceService.createInvoice(): start`);
 
       if (!invoice.invoiceItems?.length) {
-        this.loggerService.error(`InvoiceService: createInvoice: At least one invoice item is required.`, `${invoice?.invoiceItems?.length || 0}`);
-        throw new Error("At least one invoice item is required.");
+        this.loggerService.error(
+          `InvoiceService: createInvoice: At least one invoice item is required.`,
+          `${invoice?.invoiceItems?.length || 0}`,
+        );
+        throw new Error('At least one invoice item is required.');
       }
 
       const invoiceEntity = this.invoiceRepository.create({
@@ -108,16 +120,20 @@ export class InvoiceService {
         personId: Number(invoice.personId),
         whoCreated: user?.givenName || 'SYSTEM',
         whoUpdated: user?.givenName || 'SYSTEM',
-        invoiceItems: invoice.invoiceItems.map(item => this.invoiceItemRepo.create({
-          ...item,
-          whoCreated: user?.givenName || 'SYSTEM',
-          whoUpdated: user?.givenName || 'SYSTEM',
-        })),
-        invoiceAttachments: (invoice.invoiceAttachments ?? []).map(att => this.invoiceAttachmentRepo.create({
-          ...att,
-          whoCreated: user?.givenName || 'SYSTEM',
-          whoUpdated: user?.givenName || 'SYSTEM',
-        })),
+        invoiceItems: invoice.invoiceItems.map((item) =>
+          this.invoiceItemRepo.create({
+            ...item,
+            whoCreated: user?.givenName || 'SYSTEM',
+            whoUpdated: user?.givenName || 'SYSTEM',
+          }),
+        ),
+        invoiceAttachments: (invoice.invoiceAttachments ?? []).map((att) =>
+          this.invoiceAttachmentRepo.create({
+            ...att,
+            whoCreated: user?.givenName || 'SYSTEM',
+            whoUpdated: user?.givenName || 'SYSTEM',
+          }),
+        ),
       });
 
       const createdInvoice = await this.invoiceRepository.save(invoiceEntity);
@@ -127,21 +143,25 @@ export class InvoiceService {
         personId: createdInvoice.personId.toString(),
         recipient: {
           key: createdInvoice.personId.toString(),
-          value: `${createdInvoice?.recipient?.firstName || ''} ${createdInvoice?.recipient?.middleName || ''} ${createdInvoice?.recipient?.lastName || ''}`.trim(),
+          value:
+            `${createdInvoice?.recipient?.firstName || ''} ${createdInvoice?.recipient?.middleName || ''} ${createdInvoice?.recipient?.lastName || ''}`.trim(),
           metaData: createdInvoice?.recipient?.email || '',
-        }
+        },
       });
       if (result) {
         this.loggerService.log(`InvoiceService.createInvoice(): End`);
         return result;
-      }
-      else {
-        this.loggerService.log(`InvoiceService.createInvoice(): End with no result`);
+      } else {
+        this.loggerService.log(
+          `InvoiceService.createInvoice(): End with no result`,
+        );
         return null;
       }
-    }
-    catch (error) {
-      this.loggerService.error(`InvoiceService: createInvoice: Error creating invoice: ${error.message}`, null);
+    } catch (error) {
+      this.loggerService.error(
+        `InvoiceService: createInvoice: Error creating invoice: ${error.message}`,
+        null,
+      );
       throw new Error(`Failed to create invoice: ${error.message}`);
     }
   }
@@ -169,9 +189,11 @@ export class InvoiceService {
 
       // Build lookup maps
       const existingItems = existingInvoice.invoiceItems;
-      const existingItemsMap = new Map(existingItems.map(i => [i.id, i]));
+      const existingItemsMap = new Map(existingItems.map((i) => [i.id, i]));
       const existingAttachments = existingInvoice.invoiceAttachments;
-      const existingAttachmentsMap = new Map(existingAttachments.map(a => [a.id, a]));
+      const existingAttachmentsMap = new Map(
+        existingAttachments.map((a) => [a.id, a]),
+      );
 
       const toUpdateItems = [];
       const toAddItems = [];
@@ -182,8 +204,7 @@ export class InvoiceService {
             ...dtoItem,
             whoUpdated: user?.givenName || 'SYSTEM',
           });
-        }
-        else {
+        } else {
           const { id, ...rest } = dtoItem;
           toAddItems.push({
             ...rest,
@@ -193,7 +214,9 @@ export class InvoiceService {
           });
         }
       }
-      const toDeleteItems = existingItems.filter(i => !invoice.invoiceItems?.find(it => it.id === i.id));
+      const toDeleteItems = existingItems.filter(
+        (i) => !invoice.invoiceItems?.find((it) => it.id === i.id),
+      );
 
       const toUpdateAttachments = [];
       const toAddAttachments = [];
@@ -213,21 +236,27 @@ export class InvoiceService {
           });
         }
       }
-      const toDeleteAttachments = existingAttachments.filter(a => !invoice.invoiceAttachments?.find(at => at.id === a.id));
+      const toDeleteAttachments = existingAttachments.filter(
+        (a) => !invoice.invoiceAttachments?.find((at) => at.id === a.id),
+      );
 
-      await this.invoiceRepository.manager.transaction(async manager => {
+      await this.invoiceRepository.manager.transaction(async (manager) => {
         const itemRepo = manager.getRepository(InvoiceItem);
         const attRepo = manager.getRepository(InvoiceAttachment);
         const invRepo = manager.getRepository(InvoiceV2);
 
         if (toDeleteItems.length) await itemRepo.remove(toDeleteItems);
-        if (toDeleteAttachments.length) await attRepo.remove(toDeleteAttachments);
+        if (toDeleteAttachments.length)
+          await attRepo.remove(toDeleteAttachments);
 
-        if (toUpdateItems.length) await itemRepo.save(itemRepo.create(toUpdateItems));
+        if (toUpdateItems.length)
+          await itemRepo.save(itemRepo.create(toUpdateItems));
         if (toAddItems.length) await itemRepo.save(itemRepo.create(toAddItems));
 
-        if (toUpdateAttachments.length) await attRepo.save(attRepo.create(toUpdateAttachments));
-        if (toAddAttachments.length) await attRepo.save(attRepo.create(toAddAttachments));
+        if (toUpdateAttachments.length)
+          await attRepo.save(attRepo.create(toUpdateAttachments));
+        if (toAddAttachments.length)
+          await attRepo.save(attRepo.create(toAddAttachments));
 
         // const { invoiceItems, invoiceAttachments, ...rest } = invoice;
         const updatedInvoice = invRepo.create({
@@ -254,7 +283,11 @@ export class InvoiceService {
         recipient: {
           ...fresh.recipient,
           key: fresh.recipient.id.toString(),
-          value: [fresh.recipient.firstName, fresh.recipient.middleName, fresh.recipient.lastName]
+          value: [
+            fresh.recipient.firstName,
+            fresh.recipient.middleName,
+            fresh.recipient.lastName,
+          ]
             .filter(Boolean)
             .join(' '),
           metaData: fresh?.recipient?.email || '',
@@ -263,8 +296,7 @@ export class InvoiceService {
 
       this.loggerService.log(`InvoiceService.updateInvoice(): End`);
       return view;
-    }
-    catch (error) {
+    } catch (error) {
       this.loggerService.error(
         `InvoiceService: updateInvoice: Error updating invoice: ${error.message}`,
         null,
@@ -273,26 +305,32 @@ export class InvoiceService {
         `Failed to update invoice with ID ${invoice.id}: ${error.message}`,
       );
     }
-
   }
 
   async deleteInvoice(id: number) {
     try {
-      this.loggerService.log(`InvoiceService.deleteInvoice(): invoiceId: ${id} start`);
+      this.loggerService.log(
+        `InvoiceService.deleteInvoice(): invoiceId: ${id} start`,
+      );
       const result = await this.invoiceRepository.delete(id);
       if (!result.affected) {
-        this.loggerService.log(`InvoiceService.deleteInvoice(): invoiceId: ${id} not found`);
+        this.loggerService.log(
+          `InvoiceService.deleteInvoice(): invoiceId: ${id} not found`,
+        );
+        this.loggerService.log(`InvoiceService.deleteInvoice(): End`);
+        return result.affected;
+      } else {
+        this.loggerService.log(
+          `InvoiceService.deleteInvoice(): invoiceId: ${id} deleted successfully`,
+        );
         this.loggerService.log(`InvoiceService.deleteInvoice(): End`);
         return result.affected;
       }
-      else {
-        this.loggerService.log(`InvoiceService.deleteInvoice(): invoiceId: ${id} deleted successfully`);
-        this.loggerService.log(`InvoiceService.deleteInvoice(): End`);
-        return result.affected;
-      }
-    }
-    catch (error) {
-      this.loggerService.error(`InvoiceService: deleteInvoice: Error deleting invoice: ${error.message}`, null);
+    } catch (error) {
+      this.loggerService.error(
+        `InvoiceService: deleteInvoice: Error deleting invoice: ${error.message}`,
+        null,
+      );
       throw new Error(`Failed to delete invoice: ${error.message}`);
     }
   }
@@ -305,12 +343,16 @@ export class InvoiceService {
         invoice.body,
         'text',
         'normal',
-        attachment
+        attachment,
       );
-    }
-    catch (error) {
-      this.loggerService.error(`InvoiceService: generateInvoicePdf: Error generating PDF: ${error.message}`, null);
-      throw new Error(`Failed to generate PDF for invoice ID ${invoice?.invoiceId}: ${error.message}`);
+    } catch (error) {
+      this.loggerService.error(
+        `InvoiceService: generateInvoicePdf: Error generating PDF: ${error.message}`,
+        null,
+      );
+      throw new Error(
+        `Failed to generate PDF for invoice ID ${invoice?.invoiceId}: ${error.message}`,
+      );
     }
   }
 }

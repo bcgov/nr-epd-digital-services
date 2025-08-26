@@ -11,7 +11,7 @@
     <div id="page" class="drawer-layout">
       <div id="sidebar">
         <div class="sidebar-top-container">
-          <div id="logo"> </div>
+          <div id="logo"></div>
           <button class="close-button" type="button">
             <span aria-hidden="true">×</span>
             <span class="sr-only">Close menu</span>
@@ -88,10 +88,14 @@
                 <a href="#definition-ExternalUser">ExternalUser</a>
               </li>
               <li>
-                <a href="#definition-FetchOrganizationTypeResponse">FetchOrganizationTypeResponse</a>
+                <a href="#definition-FetchOrganizationTypeResponse"
+                  >FetchOrganizationTypeResponse</a
+                >
               </li>
               <li>
-                <a href="#definition-FetchRegionResponse">FetchRegionResponse</a>
+                <a href="#definition-FetchRegionResponse"
+                  >FetchRegionResponse</a
+                >
               </li>
               <li>
                 <a href="#definition-FetchUserResponse">FetchUserResponse</a>
@@ -148,21 +152,36 @@
                 <div class="example-section welcome-license-section">
                   <h5>License</h5>
                 </div>
-                <div class="example-section welcome-api-endpoints-section example-section-is-code">
-                  <h5>API Endpoints</h5> <pre><code># Development:
+                <div
+                  class="example-section welcome-api-endpoints-section example-section-is-code"
+                >
+                  <h5>API Endpoints</h5>
+                  <pre><code># Development:
 https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
-</code></pre> </div>
+</code></pre>
+                </div>
               </div>
             </div>
           </div>
-          <h1 id="group-Operations-Queries" class="group-heading" data-traverse-target="group-Operations-Queries">Queries</h1>
-          <section id="query-_entities" class="operation operation-query" data-traverse-target="query-_entities">
-            <h2 class="operation-heading "> <code>_entities</code> </h2>
+          <h1
+            id="group-Operations-Queries"
+            class="group-heading"
+            data-traverse-target="group-Operations-Queries"
+          >
+            Queries
+          </h1>
+          <section
+            id="query-_entities"
+            class="operation operation-query"
+            data-traverse-target="query-_entities"
+          >
+            <h2 class="operation-heading"><code>_entities</code></h2>
             <div class="doc-row">
               <div class="doc-copy">
                 <div class="operation-response doc-copy-section">
                   <h5>Response</h5>
-                  <p> Returns
+                  <p>
+                    Returns
                     <a href="#definition-_Entity"><code>[_Entity]!</code></a>
                   </p>
                 </div>
@@ -178,12 +197,15 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                     <tbody>
                       <tr>
                         <td>
-                          <span class="property-name"><code>representations</code></span> -
+                          <span class="property-name"
+                            ><code>representations</code></span
+                          >
+                          -
                           <span class="property-type">
                             <a href="#definition-_Any"><code>[_Any!]!</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>
@@ -191,99 +213,134 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
               </div>
               <div class="doc-examples">
                 <h4 class="example-heading">Example</h4>
-                <div class="example-section example-section-is-code operation-query-example">
+                <div
+                  class="example-section example-section-is-code operation-query-example"
+                >
                   <h5>Query</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> _entities<span class="hljs-tag">(<span class="hljs-code">$representations</span>: [_Any!]!)</span> <span class="hljs-tag">{
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> _entities<span class="hljs-tag">(<span class="hljs-code">$representations</span>: [_Any!]!)</span> <span class="hljs-tag">{
   <span class="hljs-symbol">_entities<span class="hljs-tag">(representations: <span class="hljs-code">$representations</span>)</span> <span class="hljs-tag">{
    <span class="hljs-type"> ... on ExternalUser <span class="hljs-tag">{
       <span class="hljs-type">...ExternalUserFragment</span>
     }</span>
   }</span>
 }</span></span></span></span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
-                <div class="example-section example-section-is-code operation-variables-example">
+                <div
+                  class="example-section example-section-is-code operation-variables-example"
+                >
                   <h5>Variables</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"representations"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">_Any</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span>
-</code></pre> </body>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"representations"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">_Any</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span>
+</code></pre>
+                    </body>
                   </html>
                 </div>
-                <div class="example-section example-section-is-code operation-response-example">
+                <div
+                  class="example-section example-section-is-code operation-response-example"
+                >
                   <h5>Response</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">"_entities"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">ExternalUser</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span>
-</code></pre> </body>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">"_entities"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">ExternalUser</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="query-_service" class="operation operation-query" data-traverse-target="query-_service">
+          <section
+            id="query-_service"
+            class="operation operation-query"
+            data-traverse-target="query-_service"
+          >
             <div class="operation-group-name">
               <a href="#group-Operations-Queries">Queries</a>
             </div>
-            <h2 class="operation-heading "> <code>_service</code> </h2>
+            <h2 class="operation-heading"><code>_service</code></h2>
             <div class="doc-row">
               <div class="doc-copy">
                 <div class="operation-response doc-copy-section">
                   <h5>Response</h5>
-                  <p> Returns a
+                  <p>
+                    Returns a
                     <a href="#definition-_Service"><code>_Service!</code></a>
                   </p>
                 </div>
               </div>
               <div class="doc-examples">
                 <h4 class="example-heading">Example</h4>
-                <div class="example-section example-section-is-code operation-query-example">
+                <div
+                  class="example-section example-section-is-code operation-query-example"
+                >
                   <h5>Query</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> _service <span class="hljs-tag">{
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> _service <span class="hljs-tag">{
   <span class="hljs-symbol">_service <span class="hljs-tag">{
     <span class="hljs-symbol">sdl</span>
   }</span></span>
 }</span></span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
-                <div class="example-section example-section-is-code operation-response-example">
+                <div
+                  class="example-section example-section-is-code operation-response-example"
+                >
                   <h5>Response</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">"_service"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">"sdl"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xyz789"</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span>
-</code></pre> </body>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">"_service"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">"sdl"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xyz789"</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="query-organizationTypes" class="operation operation-query" data-traverse-target="query-organizationTypes">
+          <section
+            id="query-organizationTypes"
+            class="operation operation-query"
+            data-traverse-target="query-organizationTypes"
+          >
             <div class="operation-group-name">
               <a href="#group-Operations-Queries">Queries</a>
             </div>
-            <h2 class="operation-heading "> <code>organizationTypes</code> </h2>
+            <h2 class="operation-heading"><code>organizationTypes</code></h2>
             <div class="doc-row">
               <div class="doc-copy">
                 <div class="operation-response doc-copy-section">
                   <h5>Response</h5>
-                  <p> Returns a
-                    <a href="#definition-FetchOrganizationTypeResponse"><code>FetchOrganizationTypeResponse!</code></a>
+                  <p>
+                    Returns a
+                    <a href="#definition-FetchOrganizationTypeResponse"
+                      ><code>FetchOrganizationTypeResponse!</code></a
+                    >
                   </p>
                 </div>
               </div>
               <div class="doc-examples">
                 <h4 class="example-heading">Example</h4>
-                <div class="example-section example-section-is-code operation-query-example">
+                <div
+                  class="example-section example-section-is-code operation-query-example"
+                >
                   <h5>Query</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> organizationTypes <span class="hljs-tag">{
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> organizationTypes <span class="hljs-tag">{
   <span class="hljs-symbol">organizationTypes <span class="hljs-tag">{
     <span class="hljs-symbol">httpStatusCode</span>
     <span class="hljs-symbol">data <span class="hljs-tag">{
@@ -291,14 +348,18 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
     }</span></span>
   }</span></span>
 }</span></span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
-                <div class="example-section example-section-is-code operation-response-example">
+                <div
+                  class="example-section example-section-is-code operation-response-example"
+                >
                   <h5>Response</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">"organizationTypes"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
       <span class="hljs-attr">"httpStatusCode"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">123</span><span class="hljs-punctuation">,</span>
@@ -306,22 +367,28 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
     <span class="hljs-punctuation">}</span>
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="query-region" class="operation operation-query" data-traverse-target="query-region">
+          <section
+            id="query-region"
+            class="operation operation-query"
+            data-traverse-target="query-region"
+          >
             <div class="operation-group-name">
               <a href="#group-Operations-Queries">Queries</a>
             </div>
-            <h2 class="operation-heading "> <code>region</code> </h2>
+            <h2 class="operation-heading"><code>region</code></h2>
             <div class="doc-row">
               <div class="doc-copy">
                 <div class="operation-response doc-copy-section">
                   <h5>Response</h5>
-                  <p> Returns a
+                  <p>
+                    Returns a
                     <a href="#definition-Region"><code>Region!</code></a>
                   </p>
                 </div>
@@ -342,7 +409,7 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                             <a href="#definition-Int"><code>Int!</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>
@@ -350,32 +417,43 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
               </div>
               <div class="doc-examples">
                 <h4 class="example-heading">Example</h4>
-                <div class="example-section example-section-is-code operation-query-example">
+                <div
+                  class="example-section example-section-is-code operation-query-example"
+                >
                   <h5>Query</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> region<span class="hljs-tag">(<span class="hljs-code">$id</span>:<span class="hljs-type"> Int!</span>)</span> <span class="hljs-tag">{
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> region<span class="hljs-tag">(<span class="hljs-code">$id</span>:<span class="hljs-type"> Int!</span>)</span> <span class="hljs-tag">{
   <span class="hljs-symbol">region<span class="hljs-tag">(id: <span class="hljs-code">$id</span>)</span> <span class="hljs-tag">{
     <span class="hljs-symbol">id</span>
     <span class="hljs-symbol">region_name</span>
   }</span></span>
 }</span></span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
-                <div class="example-section example-section-is-code operation-variables-example">
+                <div
+                  class="example-section example-section-is-code operation-variables-example"
+                >
                   <h5>Variables</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">123</span><span class="hljs-punctuation">}</span>
-</code></pre> </body>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">123</span><span class="hljs-punctuation">}</span>
+</code></pre>
+                    </body>
                   </html>
                 </div>
-                <div class="example-section example-section-is-code operation-response-example">
+                <div
+                  class="example-section example-section-is-code operation-response-example"
+                >
                   <h5>Response</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">"region"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
       <span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">,</span>
@@ -383,33 +461,44 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
     <span class="hljs-punctuation">}</span>
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="query-regions" class="operation operation-query" data-traverse-target="query-regions">
+          <section
+            id="query-regions"
+            class="operation operation-query"
+            data-traverse-target="query-regions"
+          >
             <div class="operation-group-name">
               <a href="#group-Operations-Queries">Queries</a>
             </div>
-            <h2 class="operation-heading "> <code>regions</code> </h2>
+            <h2 class="operation-heading"><code>regions</code></h2>
             <div class="doc-row">
               <div class="doc-copy">
                 <div class="operation-response doc-copy-section">
                   <h5>Response</h5>
-                  <p> Returns a
-                    <a href="#definition-FetchRegionResponse"><code>FetchRegionResponse!</code></a>
+                  <p>
+                    Returns a
+                    <a href="#definition-FetchRegionResponse"
+                      ><code>FetchRegionResponse!</code></a
+                    >
                   </p>
                 </div>
               </div>
               <div class="doc-examples">
                 <h4 class="example-heading">Example</h4>
-                <div class="example-section example-section-is-code operation-query-example">
+                <div
+                  class="example-section example-section-is-code operation-query-example"
+                >
                   <h5>Query</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> regions <span class="hljs-tag">{
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> regions <span class="hljs-tag">{
   <span class="hljs-symbol">regions <span class="hljs-tag">{
     <span class="hljs-symbol">httpStatusCode</span>
     <span class="hljs-symbol">data <span class="hljs-tag">{
@@ -417,35 +506,47 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
     }</span></span>
   }</span></span>
 }</span></span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
-                <div class="example-section example-section-is-code operation-response-example">
+                <div
+                  class="example-section example-section-is-code operation-response-example"
+                >
                   <h5>Response</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">"regions"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">"httpStatusCode"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">987</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">Region</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span>
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="query-user" class="operation operation-query" data-traverse-target="query-user">
+          <section
+            id="query-user"
+            class="operation operation-query"
+            data-traverse-target="query-user"
+          >
             <div class="operation-group-name">
               <a href="#group-Operations-Queries">Queries</a>
             </div>
-            <h2 class="operation-heading "> <code>user</code> </h2>
+            <h2 class="operation-heading"><code>user</code></h2>
             <div class="doc-row">
               <div class="doc-copy">
                 <div class="operation-response doc-copy-section">
                   <h5>Response</h5>
-                  <p> Returns an
-                    <a href="#definition-ExternalUser"><code>ExternalUser!</code></a>
+                  <p>
+                    Returns an
+                    <a href="#definition-ExternalUser"
+                      ><code>ExternalUser!</code></a
+                    >
                   </p>
                 </div>
                 <div class="operation-arguments doc-copy-section">
@@ -465,7 +566,7 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                             <a href="#definition-Int"><code>Int!</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>
@@ -473,11 +574,14 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
               </div>
               <div class="doc-examples">
                 <h4 class="example-heading">Example</h4>
-                <div class="example-section example-section-is-code operation-query-example">
+                <div
+                  class="example-section example-section-is-code operation-query-example"
+                >
                   <h5>Query</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> user<span class="hljs-tag">(<span class="hljs-code">$id</span>:<span class="hljs-type"> Int!</span>)</span> <span class="hljs-tag">{
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> user<span class="hljs-tag">(<span class="hljs-code">$id</span>:<span class="hljs-type"> Int!</span>)</span> <span class="hljs-tag">{
   <span class="hljs-symbol">user<span class="hljs-tag">(id: <span class="hljs-code">$id</span>)</span> <span class="hljs-tag">{
     <span class="hljs-symbol">id</span>
     <span class="hljs-symbol">firstName</span>
@@ -504,22 +608,30 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
     <span class="hljs-symbol">isProfileVerified</span>
   }</span></span>
 }</span></span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
-                <div class="example-section example-section-is-code operation-variables-example">
+                <div
+                  class="example-section example-section-is-code operation-variables-example"
+                >
                   <h5>Variables</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">987</span><span class="hljs-punctuation">}</span>
-</code></pre> </body>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">987</span><span class="hljs-punctuation">}</span>
+</code></pre>
+                    </body>
                   </html>
                 </div>
-                <div class="example-section example-section-is-code operation-response-example">
+                <div
+                  class="example-section example-section-is-code operation-response-example"
+                >
                   <h5>Response</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">"user"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
       <span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">,</span>
@@ -544,33 +656,44 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
     <span class="hljs-punctuation">}</span>
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="query-users" class="operation operation-query" data-traverse-target="query-users">
+          <section
+            id="query-users"
+            class="operation operation-query"
+            data-traverse-target="query-users"
+          >
             <div class="operation-group-name">
               <a href="#group-Operations-Queries">Queries</a>
             </div>
-            <h2 class="operation-heading "> <code>users</code> </h2>
+            <h2 class="operation-heading"><code>users</code></h2>
             <div class="doc-row">
               <div class="doc-copy">
                 <div class="operation-response doc-copy-section">
                   <h5>Response</h5>
-                  <p> Returns a
-                    <a href="#definition-FetchUserResponse"><code>FetchUserResponse!</code></a>
+                  <p>
+                    Returns a
+                    <a href="#definition-FetchUserResponse"
+                      ><code>FetchUserResponse!</code></a
+                    >
                   </p>
                 </div>
               </div>
               <div class="doc-examples">
                 <h4 class="example-heading">Example</h4>
-                <div class="example-section example-section-is-code operation-query-example">
+                <div
+                  class="example-section example-section-is-code operation-query-example"
+                >
                   <h5>Query</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> users <span class="hljs-tag">{
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> users <span class="hljs-tag">{
   <span class="hljs-symbol">users <span class="hljs-tag">{
     <span class="hljs-symbol">httpStatusCode</span>
     <span class="hljs-symbol">data <span class="hljs-tag">{
@@ -578,14 +701,18 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
     }</span></span>
   }</span></span>
 }</span></span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
-                <div class="example-section example-section-is-code operation-response-example">
+                <div
+                  class="example-section example-section-is-code operation-response-example"
+                >
                   <h5>Response</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">"users"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
       <span class="hljs-attr">"httpStatusCode"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">123</span><span class="hljs-punctuation">,</span>
@@ -593,21 +720,35 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
     <span class="hljs-punctuation">}</span>
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <h1 id="group-Operations-Mutations" class="group-heading" data-traverse-target="group-Operations-Mutations">Mutations</h1>
-          <section id="mutation-createUser" class="operation operation-mutation" data-traverse-target="mutation-createUser">
-            <h2 class="operation-heading "> <code>createUser</code> </h2>
+          <h1
+            id="group-Operations-Mutations"
+            class="group-heading"
+            data-traverse-target="group-Operations-Mutations"
+          >
+            Mutations
+          </h1>
+          <section
+            id="mutation-createUser"
+            class="operation operation-mutation"
+            data-traverse-target="mutation-createUser"
+          >
+            <h2 class="operation-heading"><code>createUser</code></h2>
             <div class="doc-row">
               <div class="doc-copy">
                 <div class="operation-response doc-copy-section">
                   <h5>Response</h5>
-                  <p> Returns an
-                    <a href="#definition-ExternalUser"><code>ExternalUser!</code></a>
+                  <p>
+                    Returns an
+                    <a href="#definition-ExternalUser"
+                      ><code>ExternalUser!</code></a
+                    >
                   </p>
                 </div>
                 <div class="operation-arguments doc-copy-section">
@@ -622,12 +763,17 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                     <tbody>
                       <tr>
                         <td>
-                          <span class="property-name"><code>createUserInput</code></span> -
+                          <span class="property-name"
+                            ><code>createUserInput</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-CreateUserInput"><code>CreateUserInput!</code></a>
+                            <a href="#definition-CreateUserInput"
+                              ><code>CreateUserInput!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>
@@ -635,11 +781,14 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
               </div>
               <div class="doc-examples">
                 <h4 class="example-heading">Example</h4>
-                <div class="example-section example-section-is-code operation-query-example">
+                <div
+                  class="example-section example-section-is-code operation-query-example"
+                >
                   <h5>Query</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> createUser<span class="hljs-tag">(<span class="hljs-code">$createUserInput</span>:<span class="hljs-type"> CreateUserInput!</span>)</span> <span class="hljs-tag">{
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> createUser<span class="hljs-tag">(<span class="hljs-code">$createUserInput</span>:<span class="hljs-type"> CreateUserInput!</span>)</span> <span class="hljs-tag">{
   <span class="hljs-symbol">createUser<span class="hljs-tag">(createUserInput: <span class="hljs-code">$createUserInput</span>)</span> <span class="hljs-tag">{
     <span class="hljs-symbol">id</span>
     <span class="hljs-symbol">firstName</span>
@@ -666,22 +815,30 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
     <span class="hljs-symbol">isProfileVerified</span>
   }</span></span>
 }</span></span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
-                <div class="example-section example-section-is-code operation-variables-example">
+                <div
+                  class="example-section example-section-is-code operation-variables-example"
+                >
                   <h5>Variables</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"createUserInput"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">CreateUserInput</span><span class="hljs-punctuation">}</span>
-</code></pre> </body>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"createUserInput"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">CreateUserInput</span><span class="hljs-punctuation">}</span>
+</code></pre>
+                    </body>
                   </html>
                 </div>
-                <div class="example-section example-section-is-code operation-response-example">
+                <div
+                  class="example-section example-section-is-code operation-response-example"
+                >
                   <h5>Response</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">"createUser"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
       <span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">,</span>
@@ -706,23 +863,31 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
     <span class="hljs-punctuation">}</span>
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="mutation-removeUser" class="operation operation-mutation" data-traverse-target="mutation-removeUser">
+          <section
+            id="mutation-removeUser"
+            class="operation operation-mutation"
+            data-traverse-target="mutation-removeUser"
+          >
             <div class="operation-group-name">
               <a href="#group-Operations-Mutations">Mutations</a>
             </div>
-            <h2 class="operation-heading "> <code>removeUser</code> </h2>
+            <h2 class="operation-heading"><code>removeUser</code></h2>
             <div class="doc-row">
               <div class="doc-copy">
                 <div class="operation-response doc-copy-section">
                   <h5>Response</h5>
-                  <p> Returns an
-                    <a href="#definition-ExternalUser"><code>ExternalUser!</code></a>
+                  <p>
+                    Returns an
+                    <a href="#definition-ExternalUser"
+                      ><code>ExternalUser!</code></a
+                    >
                   </p>
                 </div>
                 <div class="operation-arguments doc-copy-section">
@@ -742,7 +907,7 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                             <a href="#definition-Int"><code>Int!</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>
@@ -750,11 +915,14 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
               </div>
               <div class="doc-examples">
                 <h4 class="example-heading">Example</h4>
-                <div class="example-section example-section-is-code operation-query-example">
+                <div
+                  class="example-section example-section-is-code operation-query-example"
+                >
                   <h5>Query</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> removeUser<span class="hljs-tag">(<span class="hljs-code">$id</span>:<span class="hljs-type"> Int!</span>)</span> <span class="hljs-tag">{
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> removeUser<span class="hljs-tag">(<span class="hljs-code">$id</span>:<span class="hljs-type"> Int!</span>)</span> <span class="hljs-tag">{
   <span class="hljs-symbol">removeUser<span class="hljs-tag">(id: <span class="hljs-code">$id</span>)</span> <span class="hljs-tag">{
     <span class="hljs-symbol">id</span>
     <span class="hljs-symbol">firstName</span>
@@ -781,22 +949,30 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
     <span class="hljs-symbol">isProfileVerified</span>
   }</span></span>
 }</span></span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
-                <div class="example-section example-section-is-code operation-variables-example">
+                <div
+                  class="example-section example-section-is-code operation-variables-example"
+                >
                   <h5>Variables</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">987</span><span class="hljs-punctuation">}</span>
-</code></pre> </body>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">987</span><span class="hljs-punctuation">}</span>
+</code></pre>
+                    </body>
                   </html>
                 </div>
-                <div class="example-section example-section-is-code operation-response-example">
+                <div
+                  class="example-section example-section-is-code operation-response-example"
+                >
                   <h5>Response</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">"removeUser"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
       <span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xyz789"</span><span class="hljs-punctuation">,</span>
@@ -821,23 +997,31 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
     <span class="hljs-punctuation">}</span>
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="mutation-updateUser" class="operation operation-mutation" data-traverse-target="mutation-updateUser">
+          <section
+            id="mutation-updateUser"
+            class="operation operation-mutation"
+            data-traverse-target="mutation-updateUser"
+          >
             <div class="operation-group-name">
               <a href="#group-Operations-Mutations">Mutations</a>
             </div>
-            <h2 class="operation-heading "> <code>updateUser</code> </h2>
+            <h2 class="operation-heading"><code>updateUser</code></h2>
             <div class="doc-row">
               <div class="doc-copy">
                 <div class="operation-response doc-copy-section">
                   <h5>Response</h5>
-                  <p> Returns an
-                    <a href="#definition-ExternalUser"><code>ExternalUser!</code></a>
+                  <p>
+                    Returns an
+                    <a href="#definition-ExternalUser"
+                      ><code>ExternalUser!</code></a
+                    >
                   </p>
                 </div>
                 <div class="operation-arguments doc-copy-section">
@@ -852,12 +1036,17 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                     <tbody>
                       <tr>
                         <td>
-                          <span class="property-name"><code>updateUserInput</code></span> -
+                          <span class="property-name"
+                            ><code>updateUserInput</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-UpdateUserInput"><code>UpdateUserInput!</code></a>
+                            <a href="#definition-UpdateUserInput"
+                              ><code>UpdateUserInput!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>
@@ -865,11 +1054,14 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
               </div>
               <div class="doc-examples">
                 <h4 class="example-heading">Example</h4>
-                <div class="example-section example-section-is-code operation-query-example">
+                <div
+                  class="example-section example-section-is-code operation-query-example"
+                >
                   <h5>Query</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> updateUser<span class="hljs-tag">(<span class="hljs-code">$updateUserInput</span>:<span class="hljs-type"> UpdateUserInput!</span>)</span> <span class="hljs-tag">{
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> updateUser<span class="hljs-tag">(<span class="hljs-code">$updateUserInput</span>:<span class="hljs-type"> UpdateUserInput!</span>)</span> <span class="hljs-tag">{
   <span class="hljs-symbol">updateUser<span class="hljs-tag">(updateUserInput: <span class="hljs-code">$updateUserInput</span>)</span> <span class="hljs-tag">{
     <span class="hljs-symbol">id</span>
     <span class="hljs-symbol">firstName</span>
@@ -896,22 +1088,30 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
     <span class="hljs-symbol">isProfileVerified</span>
   }</span></span>
 }</span></span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
-                <div class="example-section example-section-is-code operation-variables-example">
+                <div
+                  class="example-section example-section-is-code operation-variables-example"
+                >
                   <h5>Variables</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"updateUserInput"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">UpdateUserInput</span><span class="hljs-punctuation">}</span>
-</code></pre> </body>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"updateUserInput"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">UpdateUserInput</span><span class="hljs-punctuation">}</span>
+</code></pre>
+                    </body>
                   </html>
                 </div>
-                <div class="example-section example-section-is-code operation-response-example">
+                <div
+                  class="example-section example-section-is-code operation-response-example"
+                >
                   <h5>Response</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">"updateUser"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
       <span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">,</span>
@@ -936,26 +1136,44 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
     <span class="hljs-punctuation">}</span>
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <h1 id="group-Types" class="group-heading" data-traverse-target="group-Types">Types</h1>
-          <section id="definition-Boolean" class="definition definition-scalar" data-traverse-target="definition-Boolean">
+          <h1
+            id="group-Types"
+            class="group-heading"
+            data-traverse-target="group-Types"
+          >
+            Types
+          </h1>
+          <section
+            id="definition-Boolean"
+            class="definition definition-scalar"
+            data-traverse-target="definition-Boolean"
+          >
             <h2 class="definition-heading">Boolean</h2>
             <div class="doc-row">
               <div class="doc-copy">
                 <div class="definition-description doc-copy-section">
                   <h5>Description</h5>
-                  <p>The <code>Boolean</code> scalar type represents <code>true</code> or <code>false</code>.</p>
+                  <p>
+                    The <code>Boolean</code> scalar type represents
+                    <code>true</code> or <code>false</code>.
+                  </p>
                 </div>
               </div>
-              <div class="doc-examples"> </div>
+              <div class="doc-examples"></div>
             </div>
           </section>
-          <section id="definition-CreateUserInput" class="definition definition-input-object" data-traverse-target="definition-CreateUserInput">
+          <section
+            id="definition-CreateUserInput"
+            class="definition definition-input-object"
+            data-traverse-target="definition-CreateUserInput"
+          >
             <div class="definition-group-name">
               <a href="#group-Types">Types</a>
             </div>
@@ -974,174 +1192,262 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                     <tbody>
                       <tr>
                         <td>
-                          <span class="property-name"><code>userId</code></span> -
+                          <span class="property-name"><code>userId</code></span>
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>firstName</code></span> -
+                          <span class="property-name"
+                            ><code>firstName</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>lastName</code></span> -
+                          <span class="property-name"
+                            ><code>lastName</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>addressLine</code></span> -
+                          <span class="property-name"
+                            ><code>addressLine</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
                           <span class="property-name"><code>city</code></span> -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>province</code></span> -
+                          <span class="property-name"
+                            ><code>province</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>country</code></span> -
+                          <span class="property-name"
+                            ><code>country</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>postalCode</code></span> -
+                          <span class="property-name"
+                            ><code>postalCode</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>email</code></span> -
+                          <span class="property-name"><code>email</code></span>
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>phoneNumber</code></span> -
+                          <span class="property-name"
+                            ><code>phoneNumber</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>organization</code></span> -
+                          <span class="property-name"
+                            ><code>organization</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>userWorkStatus</code></span> -
+                          <span class="property-name"
+                            ><code>userWorkStatus</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>userFNStatus</code></span> -
+                          <span class="property-name"
+                            ><code>userFNStatus</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>isGstExempt</code></span> -
+                          <span class="property-name"
+                            ><code>isGstExempt</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-Boolean"><code>Boolean!</code></a>
+                            <a href="#definition-Boolean"
+                              ><code>Boolean!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>isBillingContact</code></span> -
+                          <span class="property-name"
+                            ><code>isBillingContact</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-Boolean"><code>Boolean!</code></a>
+                            <a href="#definition-Boolean"
+                              ><code>Boolean!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>isProfileVerified</code></span> -
+                          <span class="property-name"
+                            ><code>isProfileVerified</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-Boolean"><code>Boolean!</code></a>
+                            <a href="#definition-Boolean"
+                              ><code>Boolean!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>industry</code></span> -
+                          <span class="property-name"
+                            ><code>industry</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>regionId</code></span> -
+                          <span class="property-name"
+                            ><code>regionId</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>organizationTypeId</code></span> -
+                          <span class="property-name"
+                            ><code>organizationTypeId</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>
@@ -1151,8 +1457,9 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                 <div class="example-section example-section-is-code">
                   <h5>Example</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">"userId"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xyz789"</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">"firstName"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">"lastName"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xyz789"</span><span class="hljs-punctuation">,</span>
@@ -1173,13 +1480,18 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
   <span class="hljs-attr">"regionId"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xyz789"</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">"organizationTypeId"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span>
 <span class="hljs-punctuation">}</span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="definition-ExternalUser" class="definition definition-object" data-traverse-target="definition-ExternalUser">
+          <section
+            id="definition-ExternalUser"
+            class="definition definition-object"
+            data-traverse-target="definition-ExternalUser"
+          >
             <div class="definition-group-name">
               <a href="#group-Types">Types</a>
             </div>
@@ -1200,172 +1512,257 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                         <td data-property-name="">
                           <span class="property-name"><code>id</code></span> -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>firstName</code></span> -
+                          <span class="property-name"
+                            ><code>firstName</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>lastName</code></span> -
+                          <span class="property-name"
+                            ><code>lastName</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>addressLine</code></span> -
+                          <span class="property-name"
+                            ><code>addressLine</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
                           <span class="property-name"><code>city</code></span> -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>province</code></span> -
+                          <span class="property-name"
+                            ><code>province</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>country</code></span> -
+                          <span class="property-name"
+                            ><code>country</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>postalCode</code></span> -
+                          <span class="property-name"
+                            ><code>postalCode</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>email</code></span> -
+                          <span class="property-name"><code>email</code></span>
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>phoneNumber</code></span> -
+                          <span class="property-name"
+                            ><code>phoneNumber</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>industry</code></span> -
+                          <span class="property-name"
+                            ><code>industry</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>organization</code></span> -
+                          <span class="property-name"
+                            ><code>organization</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>isGstExempt</code></span> -
+                          <span class="property-name"
+                            ><code>isGstExempt</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-Boolean"><code>Boolean!</code></a>
+                            <a href="#definition-Boolean"
+                              ><code>Boolean!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>isBillingContact</code></span> -
+                          <span class="property-name"
+                            ><code>isBillingContact</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-Boolean"><code>Boolean!</code></a>
+                            <a href="#definition-Boolean"
+                              ><code>Boolean!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>organizationTypeId</code></span> -
+                          <span class="property-name"
+                            ><code>organizationTypeId</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>regionId</code></span> -
+                          <span class="property-name"
+                            ><code>regionId</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>organizationType</code></span> -
+                          <span class="property-name"
+                            ><code>organizationType</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-OrganizationType"><code>OrganizationType!</code></a>
+                            <a href="#definition-OrganizationType"
+                              ><code>OrganizationType!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>region</code></span> -
+                          <span class="property-name"><code>region</code></span>
+                          -
                           <span class="property-type">
-                            <a href="#definition-Region"><code>Region!</code></a>
+                            <a href="#definition-Region"
+                              ><code>Region!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>isProfileVerified</code></span> -
+                          <span class="property-name"
+                            ><code>isProfileVerified</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-Boolean"><code>Boolean!</code></a>
+                            <a href="#definition-Boolean"
+                              ><code>Boolean!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>
@@ -1375,8 +1772,9 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                 <div class="example-section example-section-is-code">
                   <h5>Example</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xyz789"</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">"firstName"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xyz789"</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">"lastName"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xyz789"</span><span class="hljs-punctuation">,</span>
@@ -1397,13 +1795,18 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
   <span class="hljs-attr">"region"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">Region</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">"isProfileVerified"</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span>
 <span class="hljs-punctuation">}</span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="definition-FetchOrganizationTypeResponse" class="definition definition-object" data-traverse-target="definition-FetchOrganizationTypeResponse">
+          <section
+            id="definition-FetchOrganizationTypeResponse"
+            class="definition definition-object"
+            data-traverse-target="definition-FetchOrganizationTypeResponse"
+          >
             <div class="definition-group-name">
               <a href="#group-Types">Types</a>
             </div>
@@ -1422,21 +1825,26 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                     <tbody>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>httpStatusCode</code></span> -
+                          <span class="property-name"
+                            ><code>httpStatusCode</code></span
+                          >
+                          -
                           <span class="property-type">
                             <a href="#definition-Int"><code>Int!</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
                           <span class="property-name"><code>data</code></span> -
                           <span class="property-type">
-                            <a href="#definition-OrganizationType"><code>[OrganizationType!]!</code></a>
+                            <a href="#definition-OrganizationType"
+                              ><code>[OrganizationType!]!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>
@@ -1446,15 +1854,21 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                 <div class="example-section example-section-is-code">
                   <h5>Example</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"httpStatusCode"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">987</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">OrganizationType</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span>
-</code></pre> </body>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"httpStatusCode"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">987</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">OrganizationType</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="definition-FetchRegionResponse" class="definition definition-object" data-traverse-target="definition-FetchRegionResponse">
+          <section
+            id="definition-FetchRegionResponse"
+            class="definition definition-object"
+            data-traverse-target="definition-FetchRegionResponse"
+          >
             <div class="definition-group-name">
               <a href="#group-Types">Types</a>
             </div>
@@ -1473,21 +1887,26 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                     <tbody>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>httpStatusCode</code></span> -
+                          <span class="property-name"
+                            ><code>httpStatusCode</code></span
+                          >
+                          -
                           <span class="property-type">
                             <a href="#definition-Int"><code>Int!</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
                           <span class="property-name"><code>data</code></span> -
                           <span class="property-type">
-                            <a href="#definition-Region"><code>[Region!]!</code></a>
+                            <a href="#definition-Region"
+                              ><code>[Region!]!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>
@@ -1497,15 +1916,21 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                 <div class="example-section example-section-is-code">
                   <h5>Example</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"httpStatusCode"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">123</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">Region</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span>
-</code></pre> </body>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"httpStatusCode"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">123</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">Region</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="definition-FetchUserResponse" class="definition definition-object" data-traverse-target="definition-FetchUserResponse">
+          <section
+            id="definition-FetchUserResponse"
+            class="definition definition-object"
+            data-traverse-target="definition-FetchUserResponse"
+          >
             <div class="definition-group-name">
               <a href="#group-Types">Types</a>
             </div>
@@ -1524,21 +1949,26 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                     <tbody>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>httpStatusCode</code></span> -
+                          <span class="property-name"
+                            ><code>httpStatusCode</code></span
+                          >
+                          -
                           <span class="property-type">
                             <a href="#definition-Int"><code>Int!</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
                           <span class="property-name"><code>data</code></span> -
                           <span class="property-type">
-                            <a href="#definition-ExternalUser"><code>[ExternalUser!]!</code></a>
+                            <a href="#definition-ExternalUser"
+                              ><code>[ExternalUser!]!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>
@@ -1548,15 +1978,21 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                 <div class="example-section example-section-is-code">
                   <h5>Example</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"httpStatusCode"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">987</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">ExternalUser</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span>
-</code></pre> </body>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"httpStatusCode"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">987</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">ExternalUser</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="definition-Int" class="definition definition-scalar" data-traverse-target="definition-Int">
+          <section
+            id="definition-Int"
+            class="definition definition-scalar"
+            data-traverse-target="definition-Int"
+          >
             <div class="definition-group-name">
               <a href="#group-Types">Types</a>
             </div>
@@ -1565,22 +2001,32 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
               <div class="doc-copy">
                 <div class="definition-description doc-copy-section">
                   <h5>Description</h5>
-                  <p>The <code>Int</code> scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.</p>
+                  <p>
+                    The <code>Int</code> scalar type represents non-fractional
+                    signed whole numeric values. Int can represent values
+                    between -(2^31) and 2^31 - 1.
+                  </p>
                 </div>
               </div>
               <div class="doc-examples">
                 <div class="example-section example-section-is-code">
                   <h5>Example</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-number">123</span>
-</code></pre> </body>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-number">123</span>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="definition-OrganizationType" class="definition definition-object" data-traverse-target="definition-OrganizationType">
+          <section
+            id="definition-OrganizationType"
+            class="definition definition-object"
+            data-traverse-target="definition-OrganizationType"
+          >
             <div class="definition-group-name">
               <a href="#group-Types">Types</a>
             </div>
@@ -1601,19 +2047,26 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                         <td data-property-name="">
                           <span class="property-name"><code>id</code></span> -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>org_name</code></span> -
+                          <span class="property-name"
+                            ><code>org_name</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>
@@ -1623,18 +2076,24 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                 <div class="example-section example-section-is-code">
                   <h5>Example</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">"org_name"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xyz789"</span>
 <span class="hljs-punctuation">}</span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="definition-Region" class="definition definition-object" data-traverse-target="definition-Region">
+          <section
+            id="definition-Region"
+            class="definition definition-object"
+            data-traverse-target="definition-Region"
+          >
             <div class="definition-group-name">
               <a href="#group-Types">Types</a>
             </div>
@@ -1655,19 +2114,26 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                         <td data-property-name="">
                           <span class="property-name"><code>id</code></span> -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td data-property-name="">
-                          <span class="property-name"><code>region_name</code></span> -
+                          <span class="property-name"
+                            ><code>region_name</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>
@@ -1677,18 +2143,24 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                 <div class="example-section example-section-is-code">
                   <h5>Example</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xyz789"</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">"region_name"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span>
 <span class="hljs-punctuation">}</span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="definition-String" class="definition definition-scalar" data-traverse-target="definition-String">
+          <section
+            id="definition-String"
+            class="definition definition-scalar"
+            data-traverse-target="definition-String"
+          >
             <div class="definition-group-name">
               <a href="#group-Types">Types</a>
             </div>
@@ -1697,22 +2169,33 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
               <div class="doc-copy">
                 <div class="definition-description doc-copy-section">
                   <h5>Description</h5>
-                  <p>The <code>String</code> scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.</p>
+                  <p>
+                    The <code>String</code> scalar type represents textual data,
+                    represented as UTF-8 character sequences. The String type is
+                    most often used by GraphQL to represent free-form
+                    human-readable text.
+                  </p>
                 </div>
               </div>
               <div class="doc-examples">
                 <div class="example-section example-section-is-code">
                   <h5>Example</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol">"xyz789"</span>
-</code></pre> </body>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-gql"><span class="hljs-symbol">"xyz789"</span>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="definition-UpdateUserInput" class="definition definition-input-object" data-traverse-target="definition-UpdateUserInput">
+          <section
+            id="definition-UpdateUserInput"
+            class="definition definition-input-object"
+            data-traverse-target="definition-UpdateUserInput"
+          >
             <div class="definition-group-name">
               <a href="#group-Types">Types</a>
             </div>
@@ -1731,39 +2214,49 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                     <tbody>
                       <tr>
                         <td>
-                          <span class="property-name"><code>userId</code></span> -
+                          <span class="property-name"><code>userId</code></span>
+                          -
                           <span class="property-type">
                             <a href="#definition-String"><code>String</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>firstName</code></span> -
+                          <span class="property-name"
+                            ><code>firstName</code></span
+                          >
+                          -
                           <span class="property-type">
                             <a href="#definition-String"><code>String</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>lastName</code></span> -
+                          <span class="property-name"
+                            ><code>lastName</code></span
+                          >
+                          -
                           <span class="property-type">
                             <a href="#definition-String"><code>String</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>addressLine</code></span> -
+                          <span class="property-name"
+                            ><code>addressLine</code></span
+                          >
+                          -
                           <span class="property-type">
                             <a href="#definition-String"><code>String</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
@@ -1772,142 +2265,190 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                             <a href="#definition-String"><code>String</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>province</code></span> -
+                          <span class="property-name"
+                            ><code>province</code></span
+                          >
+                          -
                           <span class="property-type">
                             <a href="#definition-String"><code>String</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>country</code></span> -
+                          <span class="property-name"
+                            ><code>country</code></span
+                          >
+                          -
                           <span class="property-type">
                             <a href="#definition-String"><code>String</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>postalCode</code></span> -
+                          <span class="property-name"
+                            ><code>postalCode</code></span
+                          >
+                          -
                           <span class="property-type">
                             <a href="#definition-String"><code>String</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>email</code></span> -
+                          <span class="property-name"><code>email</code></span>
+                          -
                           <span class="property-type">
                             <a href="#definition-String"><code>String</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>phoneNumber</code></span> -
+                          <span class="property-name"
+                            ><code>phoneNumber</code></span
+                          >
+                          -
                           <span class="property-type">
                             <a href="#definition-String"><code>String</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>organization</code></span> -
+                          <span class="property-name"
+                            ><code>organization</code></span
+                          >
+                          -
                           <span class="property-type">
                             <a href="#definition-String"><code>String</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>userWorkStatus</code></span> -
+                          <span class="property-name"
+                            ><code>userWorkStatus</code></span
+                          >
+                          -
                           <span class="property-type">
                             <a href="#definition-String"><code>String</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>userFNStatus</code></span> -
+                          <span class="property-name"
+                            ><code>userFNStatus</code></span
+                          >
+                          -
                           <span class="property-type">
                             <a href="#definition-String"><code>String</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>isGstExempt</code></span> -
+                          <span class="property-name"
+                            ><code>isGstExempt</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-Boolean"><code>Boolean</code></a>
+                            <a href="#definition-Boolean"
+                              ><code>Boolean</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>isBillingContact</code></span> -
+                          <span class="property-name"
+                            ><code>isBillingContact</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-Boolean"><code>Boolean</code></a>
+                            <a href="#definition-Boolean"
+                              ><code>Boolean</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>isProfileVerified</code></span> -
+                          <span class="property-name"
+                            ><code>isProfileVerified</code></span
+                          >
+                          -
                           <span class="property-type">
-                            <a href="#definition-Boolean"><code>Boolean</code></a>
+                            <a href="#definition-Boolean"
+                              ><code>Boolean</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>industry</code></span> -
+                          <span class="property-name"
+                            ><code>industry</code></span
+                          >
+                          -
                           <span class="property-type">
                             <a href="#definition-String"><code>String</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>regionId</code></span> -
+                          <span class="property-name"
+                            ><code>regionId</code></span
+                          >
+                          -
                           <span class="property-type">
                             <a href="#definition-String"><code>String</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
-                          <span class="property-name"><code>organizationTypeId</code></span> -
+                          <span class="property-name"
+                            ><code>organizationTypeId</code></span
+                          >
+                          -
                           <span class="property-type">
                             <a href="#definition-String"><code>String</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td>
                           <span class="property-name"><code>id</code></span> -
                           <span class="property-type">
-                            <a href="#definition-String"><code>String!</code></a>
+                            <a href="#definition-String"
+                              ><code>String!</code></a
+                            >
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>
@@ -1917,8 +2458,9 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                 <div class="example-section example-section-is-code">
                   <h5>Example</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">"userId"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xyz789"</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">"firstName"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">"lastName"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">,</span>
@@ -1940,32 +2482,43 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
   <span class="hljs-attr">"organizationTypeId"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span>
 <span class="hljs-punctuation">}</span>
-</code></pre> </body>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="definition-_Any" class="definition definition-scalar" data-traverse-target="definition-_Any">
+          <section
+            id="definition-_Any"
+            class="definition definition-scalar"
+            data-traverse-target="definition-_Any"
+          >
             <div class="definition-group-name">
               <a href="#group-Types">Types</a>
             </div>
             <h2 class="definition-heading">_Any</h2>
             <div class="doc-row">
-              <div class="doc-copy"> </div>
+              <div class="doc-copy"></div>
               <div class="doc-examples">
                 <div class="example-section example-section-is-code">
                   <h5>Example</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol">_Any</span>
-</code></pre> </body>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-gql"><span class="hljs-symbol">_Any</span>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="definition-_Entity" class="definition definition-union" data-traverse-target="definition-_Entity">
+          <section
+            id="definition-_Entity"
+            class="definition definition-union"
+            data-traverse-target="definition-_Entity"
+          >
             <div class="definition-group-name">
               <a href="#group-Types">Types</a>
             </div>
@@ -1984,7 +2537,9 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                       <tr>
                         <td>
                           <p>
-                            <a href="#definition-ExternalUser"><code>ExternalUser</code></a>
+                            <a href="#definition-ExternalUser"
+                              ><code>ExternalUser</code></a
+                            >
                           </p>
                         </td>
                       </tr>
@@ -1996,15 +2551,21 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                 <div class="example-section example-section-is-code">
                   <h5>Example</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol">ExternalUser</span>
-</code></pre> </body>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-gql"><span class="hljs-symbol">ExternalUser</span>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="definition-_Service" class="definition definition-object" data-traverse-target="definition-_Service">
+          <section
+            id="definition-_Service"
+            class="definition definition-object"
+            data-traverse-target="definition-_Service"
+          >
             <div class="definition-group-name">
               <a href="#group-Types">Types</a>
             </div>
@@ -2028,7 +2589,7 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                             <a href="#definition-String"><code>String</code></a>
                           </span>
                         </td>
-                        <td> </td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>
@@ -2038,28 +2599,36 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
                 <div class="example-section example-section-is-code">
                   <h5>Example</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"sdl"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">}</span>
-</code></pre> </body>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"sdl"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">}</span>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
             </div>
           </section>
-          <section id="definition-link__Import" class="definition definition-scalar" data-traverse-target="definition-link__Import">
+          <section
+            id="definition-link__Import"
+            class="definition definition-scalar"
+            data-traverse-target="definition-link__Import"
+          >
             <div class="definition-group-name">
               <a href="#group-Types">Types</a>
             </div>
             <h2 class="definition-heading">link__Import</h2>
             <div class="doc-row">
-              <div class="doc-copy"> </div>
+              <div class="doc-copy"></div>
               <div class="doc-examples">
                 <div class="example-section example-section-is-code">
                   <h5>Example</h5>
                   <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol">link__Import</span>
-</code></pre> </body>
+                    <head></head>
+                    <body>
+                      <pre><code class="hljs language-gql"><span class="hljs-symbol">link__Import</span>
+</code></pre>
+                    </body>
                   </html>
                 </div>
               </div>
@@ -2067,7 +2636,8 @@ https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
           </section>
           <div class="doc-row no-margin">
             <div class="doc-copy doc-separator">
-              <a class="powered-by" href="https://github.com/anvilco/spectaql">Documentation by
+              <a class="powered-by" href="https://github.com/anvilco/spectaql"
+                >Documentation by
                 <span>Anvil SpectaQL</span>
               </a>
             </div>

@@ -12,40 +12,69 @@ export type SearchApplicationsQueryVariables = Types.Exact<{
   sortByDir: Types.ApplicationSortByDirection;
 }>;
 
-
-export type SearchApplicationsQuery = { __typename?: 'Query', searchApplications: { __typename?: 'ApplicationSearchResponse', count?: number | null, page?: number | null, pageSize?: number | null, applications: Array<{ __typename?: 'ApplicationResultDto', id: string, siteId: string, siteAddress: string, applicationType: string, lastUpdated: string, status: string, priority: string, url: string, staffAssigned: Array<{ __typename?: 'ApplicationResultPersonDto', firstName: string, lastName: string }> }> } };
-
+export type SearchApplicationsQuery = {
+  __typename?: 'Query';
+  searchApplications: {
+    __typename?: 'ApplicationSearchResponse';
+    count?: number | null;
+    page?: number | null;
+    pageSize?: number | null;
+    applications: Array<{
+      __typename?: 'ApplicationResultDto';
+      id: string;
+      siteId: string;
+      siteAddress: string;
+      applicationType: string;
+      lastUpdated: string;
+      status: string;
+      priority: string;
+      url: string;
+      staffAssigned: Array<{
+        __typename?: 'ApplicationResultPersonDto';
+        firstName: string;
+        lastName: string;
+      }>;
+    }>;
+  };
+};
 
 export const SearchApplicationsDocument = gql`
-    query SearchApplications($searchParam: String!, $page: Int!, $pageSize: Int!, $filter: Filter!, $sortBy: ApplicationSortByField!, $sortByDir: ApplicationSortByDirection!) {
-  searchApplications(
-    searchParam: $searchParam
-    page: $page
-    pageSize: $pageSize
-    filter: $filter
-    sortBy: $sortBy
-    sortByDir: $sortByDir
+  query SearchApplications(
+    $searchParam: String!
+    $page: Int!
+    $pageSize: Int!
+    $filter: Filter!
+    $sortBy: ApplicationSortByField!
+    $sortByDir: ApplicationSortByDirection!
   ) {
-    applications {
-      id
-      siteId
-      siteAddress
-      applicationType
-      lastUpdated
-      status
-      staffAssigned {
-        firstName
-        lastName
+    searchApplications(
+      searchParam: $searchParam
+      page: $page
+      pageSize: $pageSize
+      filter: $filter
+      sortBy: $sortBy
+      sortByDir: $sortByDir
+    ) {
+      applications {
+        id
+        siteId
+        siteAddress
+        applicationType
+        lastUpdated
+        status
+        staffAssigned {
+          firstName
+          lastName
+        }
+        priority
+        url
       }
-      priority
-      url
+      count
+      page
+      pageSize
     }
-    count
-    page
-    pageSize
   }
-}
-    `;
+`;
 
 /**
  * __useSearchApplicationsQuery__
@@ -68,19 +97,61 @@ export const SearchApplicationsDocument = gql`
  *   },
  * });
  */
-export function useSearchApplicationsQuery(baseOptions: Apollo.QueryHookOptions<SearchApplicationsQuery, SearchApplicationsQueryVariables> & ({ variables: SearchApplicationsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SearchApplicationsQuery, SearchApplicationsQueryVariables>(SearchApplicationsDocument, options);
-      }
-export function useSearchApplicationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchApplicationsQuery, SearchApplicationsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SearchApplicationsQuery, SearchApplicationsQueryVariables>(SearchApplicationsDocument, options);
-        }
-export function useSearchApplicationsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<SearchApplicationsQuery, SearchApplicationsQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<SearchApplicationsQuery, SearchApplicationsQueryVariables>(SearchApplicationsDocument, options);
-        }
-export type SearchApplicationsQueryHookResult = ReturnType<typeof useSearchApplicationsQuery>;
-export type SearchApplicationsLazyQueryHookResult = ReturnType<typeof useSearchApplicationsLazyQuery>;
-export type SearchApplicationsSuspenseQueryHookResult = ReturnType<typeof useSearchApplicationsSuspenseQuery>;
-export type SearchApplicationsQueryResult = Apollo.QueryResult<SearchApplicationsQuery, SearchApplicationsQueryVariables>;
+export function useSearchApplicationsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    SearchApplicationsQuery,
+    SearchApplicationsQueryVariables
+  > &
+    (
+      | { variables: SearchApplicationsQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    SearchApplicationsQuery,
+    SearchApplicationsQueryVariables
+  >(SearchApplicationsDocument, options);
+}
+export function useSearchApplicationsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    SearchApplicationsQuery,
+    SearchApplicationsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    SearchApplicationsQuery,
+    SearchApplicationsQueryVariables
+  >(SearchApplicationsDocument, options);
+}
+export function useSearchApplicationsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        SearchApplicationsQuery,
+        SearchApplicationsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    SearchApplicationsQuery,
+    SearchApplicationsQueryVariables
+  >(SearchApplicationsDocument, options);
+}
+export type SearchApplicationsQueryHookResult = ReturnType<
+  typeof useSearchApplicationsQuery
+>;
+export type SearchApplicationsLazyQueryHookResult = ReturnType<
+  typeof useSearchApplicationsLazyQuery
+>;
+export type SearchApplicationsSuspenseQueryHookResult = ReturnType<
+  typeof useSearchApplicationsSuspenseQuery
+>;
+export type SearchApplicationsQueryResult = Apollo.QueryResult<
+  SearchApplicationsQuery,
+  SearchApplicationsQueryVariables
+>;

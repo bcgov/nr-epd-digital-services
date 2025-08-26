@@ -8,73 +8,196 @@ export type GetAppParticipantsByAppIdQueryVariables = Types.Exact<{
   filter: Types.AppParticipantFilter;
 }>;
 
+export type GetAppParticipantsByAppIdQuery = {
+  __typename?: 'Query';
+  getAppParticipantsByAppId: {
+    __typename?: 'AppParticipantsResponse';
+    httpStatusCode?: number | null;
+    success?: boolean | null;
+    message?: string | null;
+    timestamp?: string | null;
+    data?: Array<{
+      __typename?: 'ViewAppParticipantsDto';
+      id: number;
+      applicationId: number;
+      isMainParticipant: boolean;
+      effectiveStartDate: any;
+      effectiveEndDate?: any | null;
+      isMinistry: boolean;
+      organization?: {
+        __typename?: 'ViewOrganizationsDto';
+        id?: number | null;
+        name: string;
+      } | null;
+      person: {
+        __typename?: 'ViewParticipantNamesDto';
+        id: number;
+        fullName: string;
+      };
+      participantRole: {
+        __typename?: 'ViewParticipantsRolesDto';
+        id: number;
+        description: string;
+      };
+    }> | null;
+  };
+};
 
-export type GetAppParticipantsByAppIdQuery = { __typename?: 'Query', getAppParticipantsByAppId: { __typename?: 'AppParticipantsResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewAppParticipantsDto', id: number, applicationId: number, isMainParticipant: boolean, effectiveStartDate: any, effectiveEndDate?: any | null, isMinistry: boolean, organization?: { __typename?: 'ViewOrganizationsDto', id?: number | null, name: string } | null, person: { __typename?: 'ViewParticipantNamesDto', id: number, fullName: string }, participantRole: { __typename?: 'ViewParticipantsRolesDto', id: number, description: string } }> | null } };
+export type GetParticipantRolesQueryVariables = Types.Exact<{
+  [key: string]: never;
+}>;
 
-export type GetParticipantRolesQueryVariables = Types.Exact<{ [key: string]: never; }>;
-
-
-export type GetParticipantRolesQuery = { __typename?: 'Query', getAllParticipantRoles: { __typename?: 'ParticipantsRolesResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewParticipantsRolesDto', id: number, description: string }> | null } };
+export type GetParticipantRolesQuery = {
+  __typename?: 'Query';
+  getAllParticipantRoles: {
+    __typename?: 'ParticipantsRolesResponse';
+    httpStatusCode?: number | null;
+    success?: boolean | null;
+    message?: string | null;
+    timestamp?: string | null;
+    data?: Array<{
+      __typename?: 'ViewParticipantsRolesDto';
+      id: number;
+      description: string;
+    }> | null;
+  };
+};
 
 export type GetParticipantNamesQueryVariables = Types.Exact<{
   searchParam: Types.Scalars['String']['input'];
 }>;
 
-
-export type GetParticipantNamesQuery = { __typename?: 'Query', getParticipantNames: { __typename?: 'DropdownResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'DropdownDto', key: string, value: string }> | null } };
+export type GetParticipantNamesQuery = {
+  __typename?: 'Query';
+  getParticipantNames: {
+    __typename?: 'DropdownResponse';
+    httpStatusCode?: number | null;
+    success?: boolean | null;
+    message?: string | null;
+    timestamp?: string | null;
+    data?: Array<{
+      __typename?: 'DropdownDto';
+      key: string;
+      value: string;
+    }> | null;
+  };
+};
 
 export type GetOrganizationsQueryVariables = Types.Exact<{
   searchParamForOrg: Types.Scalars['String']['input'];
 }>;
 
-
-export type GetOrganizationsQuery = { __typename?: 'Query', getOrganizations: { __typename?: 'DropdownResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'DropdownDto', key: string, value: string }> | null } };
+export type GetOrganizationsQuery = {
+  __typename?: 'Query';
+  getOrganizations: {
+    __typename?: 'DropdownResponse';
+    httpStatusCode?: number | null;
+    success?: boolean | null;
+    message?: string | null;
+    timestamp?: string | null;
+    data?: Array<{
+      __typename?: 'DropdownDto';
+      key: string;
+      value: string;
+    }> | null;
+  };
+};
 
 export type CreateAppParticipantMutationVariables = Types.Exact<{
   newAppParticipant: Types.CreateAppParticipantDto;
 }>;
 
-
-export type CreateAppParticipantMutation = { __typename?: 'Mutation', createAppParticipant: { __typename?: 'CreateAppParticipantsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewAppParticipantEntityDto', id: number, applicationId: number, personId: number, participantRoleId: number, organizationId?: number | null, isMainParticipant: boolean, effectiveStartDate: any, effectiveEndDate?: any | null, createdBy: string, createdDateTime: any, rowVersionCount?: number | null, updatedBy?: string | null, updatedDateTime?: any | null }> | null } };
+export type CreateAppParticipantMutation = {
+  __typename?: 'Mutation';
+  createAppParticipant: {
+    __typename?: 'CreateAppParticipantsResponse';
+    message?: string | null;
+    httpStatusCode?: number | null;
+    success?: boolean | null;
+    timestamp?: string | null;
+    data?: Array<{
+      __typename?: 'ViewAppParticipantEntityDto';
+      id: number;
+      applicationId: number;
+      personId: number;
+      participantRoleId: number;
+      organizationId?: number | null;
+      isMainParticipant: boolean;
+      effectiveStartDate: any;
+      effectiveEndDate?: any | null;
+      createdBy: string;
+      createdDateTime: any;
+      rowVersionCount?: number | null;
+      updatedBy?: string | null;
+      updatedDateTime?: any | null;
+    }> | null;
+  };
+};
 
 export type UpdateAppParticipantMutationVariables = Types.Exact<{
   updateAppParticipant: Types.UpdateAppParticipantDto;
 }>;
 
-
-export type UpdateAppParticipantMutation = { __typename?: 'Mutation', updateAppParticipant: { __typename?: 'UpdateAppParticipantsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewAppParticipantEntityDto', id: number, applicationId: number, personId: number, participantRoleId: number, organizationId?: number | null, isMainParticipant: boolean, effectiveStartDate: any, effectiveEndDate?: any | null, createdBy: string, createdDateTime: any, rowVersionCount?: number | null, updatedBy?: string | null, updatedDateTime?: any | null }> | null } };
-
+export type UpdateAppParticipantMutation = {
+  __typename?: 'Mutation';
+  updateAppParticipant: {
+    __typename?: 'UpdateAppParticipantsResponse';
+    message?: string | null;
+    httpStatusCode?: number | null;
+    success?: boolean | null;
+    timestamp?: string | null;
+    data?: Array<{
+      __typename?: 'ViewAppParticipantEntityDto';
+      id: number;
+      applicationId: number;
+      personId: number;
+      participantRoleId: number;
+      organizationId?: number | null;
+      isMainParticipant: boolean;
+      effectiveStartDate: any;
+      effectiveEndDate?: any | null;
+      createdBy: string;
+      createdDateTime: any;
+      rowVersionCount?: number | null;
+      updatedBy?: string | null;
+      updatedDateTime?: any | null;
+    }> | null;
+  };
+};
 
 export const GetAppParticipantsByAppIdDocument = gql`
-    query getAppParticipantsByAppId($applicationId: Int!, $filter: AppParticipantFilter!) {
-  getAppParticipantsByAppId(applicationId: $applicationId, filter: $filter) {
-    httpStatusCode
-    success
-    message
-    timestamp
-    data {
-      id
-      applicationId
-      isMainParticipant
-      organization {
+  query getAppParticipantsByAppId(
+    $applicationId: Int!
+    $filter: AppParticipantFilter!
+  ) {
+    getAppParticipantsByAppId(applicationId: $applicationId, filter: $filter) {
+      httpStatusCode
+      success
+      message
+      timestamp
+      data {
         id
-        name
+        applicationId
+        isMainParticipant
+        organization {
+          id
+          name
+        }
+        person {
+          id
+          fullName
+        }
+        participantRole {
+          id
+          description
+        }
+        effectiveStartDate
+        effectiveEndDate
+        isMinistry
       }
-      person {
-        id
-        fullName
-      }
-      participantRole {
-        id
-        description
-      }
-      effectiveStartDate
-      effectiveEndDate
-      isMinistry
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetAppParticipantsByAppIdQuery__
@@ -93,36 +216,78 @@ export const GetAppParticipantsByAppIdDocument = gql`
  *   },
  * });
  */
-export function useGetAppParticipantsByAppIdQuery(baseOptions: Apollo.QueryHookOptions<GetAppParticipantsByAppIdQuery, GetAppParticipantsByAppIdQueryVariables> & ({ variables: GetAppParticipantsByAppIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAppParticipantsByAppIdQuery, GetAppParticipantsByAppIdQueryVariables>(GetAppParticipantsByAppIdDocument, options);
-      }
-export function useGetAppParticipantsByAppIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAppParticipantsByAppIdQuery, GetAppParticipantsByAppIdQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAppParticipantsByAppIdQuery, GetAppParticipantsByAppIdQueryVariables>(GetAppParticipantsByAppIdDocument, options);
-        }
-export function useGetAppParticipantsByAppIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAppParticipantsByAppIdQuery, GetAppParticipantsByAppIdQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetAppParticipantsByAppIdQuery, GetAppParticipantsByAppIdQueryVariables>(GetAppParticipantsByAppIdDocument, options);
-        }
-export type GetAppParticipantsByAppIdQueryHookResult = ReturnType<typeof useGetAppParticipantsByAppIdQuery>;
-export type GetAppParticipantsByAppIdLazyQueryHookResult = ReturnType<typeof useGetAppParticipantsByAppIdLazyQuery>;
-export type GetAppParticipantsByAppIdSuspenseQueryHookResult = ReturnType<typeof useGetAppParticipantsByAppIdSuspenseQuery>;
-export type GetAppParticipantsByAppIdQueryResult = Apollo.QueryResult<GetAppParticipantsByAppIdQuery, GetAppParticipantsByAppIdQueryVariables>;
+export function useGetAppParticipantsByAppIdQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetAppParticipantsByAppIdQuery,
+    GetAppParticipantsByAppIdQueryVariables
+  > &
+    (
+      | { variables: GetAppParticipantsByAppIdQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetAppParticipantsByAppIdQuery,
+    GetAppParticipantsByAppIdQueryVariables
+  >(GetAppParticipantsByAppIdDocument, options);
+}
+export function useGetAppParticipantsByAppIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetAppParticipantsByAppIdQuery,
+    GetAppParticipantsByAppIdQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetAppParticipantsByAppIdQuery,
+    GetAppParticipantsByAppIdQueryVariables
+  >(GetAppParticipantsByAppIdDocument, options);
+}
+export function useGetAppParticipantsByAppIdSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetAppParticipantsByAppIdQuery,
+        GetAppParticipantsByAppIdQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetAppParticipantsByAppIdQuery,
+    GetAppParticipantsByAppIdQueryVariables
+  >(GetAppParticipantsByAppIdDocument, options);
+}
+export type GetAppParticipantsByAppIdQueryHookResult = ReturnType<
+  typeof useGetAppParticipantsByAppIdQuery
+>;
+export type GetAppParticipantsByAppIdLazyQueryHookResult = ReturnType<
+  typeof useGetAppParticipantsByAppIdLazyQuery
+>;
+export type GetAppParticipantsByAppIdSuspenseQueryHookResult = ReturnType<
+  typeof useGetAppParticipantsByAppIdSuspenseQuery
+>;
+export type GetAppParticipantsByAppIdQueryResult = Apollo.QueryResult<
+  GetAppParticipantsByAppIdQuery,
+  GetAppParticipantsByAppIdQueryVariables
+>;
 export const GetParticipantRolesDocument = gql`
-    query getParticipantRoles {
-  getAllParticipantRoles {
-    httpStatusCode
-    success
-    message
-    timestamp
-    data {
-      id
-      description
+  query getParticipantRoles {
+    getAllParticipantRoles {
+      httpStatusCode
+      success
+      message
+      timestamp
+      data {
+        id
+        description
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetParticipantRolesQuery__
@@ -139,36 +304,74 @@ export const GetParticipantRolesDocument = gql`
  *   },
  * });
  */
-export function useGetParticipantRolesQuery(baseOptions?: Apollo.QueryHookOptions<GetParticipantRolesQuery, GetParticipantRolesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetParticipantRolesQuery, GetParticipantRolesQueryVariables>(GetParticipantRolesDocument, options);
-      }
-export function useGetParticipantRolesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetParticipantRolesQuery, GetParticipantRolesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetParticipantRolesQuery, GetParticipantRolesQueryVariables>(GetParticipantRolesDocument, options);
-        }
-export function useGetParticipantRolesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetParticipantRolesQuery, GetParticipantRolesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetParticipantRolesQuery, GetParticipantRolesQueryVariables>(GetParticipantRolesDocument, options);
-        }
-export type GetParticipantRolesQueryHookResult = ReturnType<typeof useGetParticipantRolesQuery>;
-export type GetParticipantRolesLazyQueryHookResult = ReturnType<typeof useGetParticipantRolesLazyQuery>;
-export type GetParticipantRolesSuspenseQueryHookResult = ReturnType<typeof useGetParticipantRolesSuspenseQuery>;
-export type GetParticipantRolesQueryResult = Apollo.QueryResult<GetParticipantRolesQuery, GetParticipantRolesQueryVariables>;
+export function useGetParticipantRolesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetParticipantRolesQuery,
+    GetParticipantRolesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetParticipantRolesQuery,
+    GetParticipantRolesQueryVariables
+  >(GetParticipantRolesDocument, options);
+}
+export function useGetParticipantRolesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetParticipantRolesQuery,
+    GetParticipantRolesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetParticipantRolesQuery,
+    GetParticipantRolesQueryVariables
+  >(GetParticipantRolesDocument, options);
+}
+export function useGetParticipantRolesSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetParticipantRolesQuery,
+        GetParticipantRolesQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetParticipantRolesQuery,
+    GetParticipantRolesQueryVariables
+  >(GetParticipantRolesDocument, options);
+}
+export type GetParticipantRolesQueryHookResult = ReturnType<
+  typeof useGetParticipantRolesQuery
+>;
+export type GetParticipantRolesLazyQueryHookResult = ReturnType<
+  typeof useGetParticipantRolesLazyQuery
+>;
+export type GetParticipantRolesSuspenseQueryHookResult = ReturnType<
+  typeof useGetParticipantRolesSuspenseQuery
+>;
+export type GetParticipantRolesQueryResult = Apollo.QueryResult<
+  GetParticipantRolesQuery,
+  GetParticipantRolesQueryVariables
+>;
 export const GetParticipantNamesDocument = gql`
-    query getParticipantNames($searchParam: String!) {
-  getParticipantNames(searchParam: $searchParam) {
-    httpStatusCode
-    success
-    message
-    timestamp
-    data {
-      key
-      value
+  query getParticipantNames($searchParam: String!) {
+    getParticipantNames(searchParam: $searchParam) {
+      httpStatusCode
+      success
+      message
+      timestamp
+      data {
+        key
+        value
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetParticipantNamesQuery__
@@ -186,36 +389,78 @@ export const GetParticipantNamesDocument = gql`
  *   },
  * });
  */
-export function useGetParticipantNamesQuery(baseOptions: Apollo.QueryHookOptions<GetParticipantNamesQuery, GetParticipantNamesQueryVariables> & ({ variables: GetParticipantNamesQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetParticipantNamesQuery, GetParticipantNamesQueryVariables>(GetParticipantNamesDocument, options);
-      }
-export function useGetParticipantNamesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetParticipantNamesQuery, GetParticipantNamesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetParticipantNamesQuery, GetParticipantNamesQueryVariables>(GetParticipantNamesDocument, options);
-        }
-export function useGetParticipantNamesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetParticipantNamesQuery, GetParticipantNamesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetParticipantNamesQuery, GetParticipantNamesQueryVariables>(GetParticipantNamesDocument, options);
-        }
-export type GetParticipantNamesQueryHookResult = ReturnType<typeof useGetParticipantNamesQuery>;
-export type GetParticipantNamesLazyQueryHookResult = ReturnType<typeof useGetParticipantNamesLazyQuery>;
-export type GetParticipantNamesSuspenseQueryHookResult = ReturnType<typeof useGetParticipantNamesSuspenseQuery>;
-export type GetParticipantNamesQueryResult = Apollo.QueryResult<GetParticipantNamesQuery, GetParticipantNamesQueryVariables>;
+export function useGetParticipantNamesQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetParticipantNamesQuery,
+    GetParticipantNamesQueryVariables
+  > &
+    (
+      | { variables: GetParticipantNamesQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetParticipantNamesQuery,
+    GetParticipantNamesQueryVariables
+  >(GetParticipantNamesDocument, options);
+}
+export function useGetParticipantNamesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetParticipantNamesQuery,
+    GetParticipantNamesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetParticipantNamesQuery,
+    GetParticipantNamesQueryVariables
+  >(GetParticipantNamesDocument, options);
+}
+export function useGetParticipantNamesSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetParticipantNamesQuery,
+        GetParticipantNamesQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetParticipantNamesQuery,
+    GetParticipantNamesQueryVariables
+  >(GetParticipantNamesDocument, options);
+}
+export type GetParticipantNamesQueryHookResult = ReturnType<
+  typeof useGetParticipantNamesQuery
+>;
+export type GetParticipantNamesLazyQueryHookResult = ReturnType<
+  typeof useGetParticipantNamesLazyQuery
+>;
+export type GetParticipantNamesSuspenseQueryHookResult = ReturnType<
+  typeof useGetParticipantNamesSuspenseQuery
+>;
+export type GetParticipantNamesQueryResult = Apollo.QueryResult<
+  GetParticipantNamesQuery,
+  GetParticipantNamesQueryVariables
+>;
 export const GetOrganizationsDocument = gql`
-    query getOrganizations($searchParamForOrg: String!) {
-  getOrganizations(searchParamForOrg: $searchParamForOrg) {
-    httpStatusCode
-    success
-    message
-    timestamp
-    data {
-      key
-      value
+  query getOrganizations($searchParamForOrg: String!) {
+    getOrganizations(searchParamForOrg: $searchParamForOrg) {
+      httpStatusCode
+      success
+      message
+      timestamp
+      data {
+        key
+        value
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetOrganizationsQuery__
@@ -233,48 +478,93 @@ export const GetOrganizationsDocument = gql`
  *   },
  * });
  */
-export function useGetOrganizationsQuery(baseOptions: Apollo.QueryHookOptions<GetOrganizationsQuery, GetOrganizationsQueryVariables> & ({ variables: GetOrganizationsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetOrganizationsQuery, GetOrganizationsQueryVariables>(GetOrganizationsDocument, options);
-      }
-export function useGetOrganizationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrganizationsQuery, GetOrganizationsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetOrganizationsQuery, GetOrganizationsQueryVariables>(GetOrganizationsDocument, options);
-        }
-export function useGetOrganizationsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetOrganizationsQuery, GetOrganizationsQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetOrganizationsQuery, GetOrganizationsQueryVariables>(GetOrganizationsDocument, options);
-        }
-export type GetOrganizationsQueryHookResult = ReturnType<typeof useGetOrganizationsQuery>;
-export type GetOrganizationsLazyQueryHookResult = ReturnType<typeof useGetOrganizationsLazyQuery>;
-export type GetOrganizationsSuspenseQueryHookResult = ReturnType<typeof useGetOrganizationsSuspenseQuery>;
-export type GetOrganizationsQueryResult = Apollo.QueryResult<GetOrganizationsQuery, GetOrganizationsQueryVariables>;
+export function useGetOrganizationsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetOrganizationsQuery,
+    GetOrganizationsQueryVariables
+  > &
+    (
+      | { variables: GetOrganizationsQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetOrganizationsQuery, GetOrganizationsQueryVariables>(
+    GetOrganizationsDocument,
+    options,
+  );
+}
+export function useGetOrganizationsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetOrganizationsQuery,
+    GetOrganizationsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetOrganizationsQuery,
+    GetOrganizationsQueryVariables
+  >(GetOrganizationsDocument, options);
+}
+export function useGetOrganizationsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetOrganizationsQuery,
+        GetOrganizationsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetOrganizationsQuery,
+    GetOrganizationsQueryVariables
+  >(GetOrganizationsDocument, options);
+}
+export type GetOrganizationsQueryHookResult = ReturnType<
+  typeof useGetOrganizationsQuery
+>;
+export type GetOrganizationsLazyQueryHookResult = ReturnType<
+  typeof useGetOrganizationsLazyQuery
+>;
+export type GetOrganizationsSuspenseQueryHookResult = ReturnType<
+  typeof useGetOrganizationsSuspenseQuery
+>;
+export type GetOrganizationsQueryResult = Apollo.QueryResult<
+  GetOrganizationsQuery,
+  GetOrganizationsQueryVariables
+>;
 export const CreateAppParticipantDocument = gql`
-    mutation createAppParticipant($newAppParticipant: CreateAppParticipantDto!) {
-  createAppParticipant(newAppParticipant: $newAppParticipant) {
-    message
-    httpStatusCode
-    success
-    timestamp
-    data {
-      id
-      applicationId
-      personId
-      participantRoleId
-      organizationId
-      isMainParticipant
-      effectiveStartDate
-      effectiveEndDate
-      createdBy
-      createdDateTime
-      rowVersionCount
-      updatedBy
-      updatedDateTime
+  mutation createAppParticipant($newAppParticipant: CreateAppParticipantDto!) {
+    createAppParticipant(newAppParticipant: $newAppParticipant) {
+      message
+      httpStatusCode
+      success
+      timestamp
+      data {
+        id
+        applicationId
+        personId
+        participantRoleId
+        organizationId
+        isMainParticipant
+        effectiveStartDate
+        effectiveEndDate
+        createdBy
+        createdDateTime
+        rowVersionCount
+        updatedBy
+        updatedDateTime
+      }
     }
   }
-}
-    `;
-export type CreateAppParticipantMutationFn = Apollo.MutationFunction<CreateAppParticipantMutation, CreateAppParticipantMutationVariables>;
+`;
+export type CreateAppParticipantMutationFn = Apollo.MutationFunction<
+  CreateAppParticipantMutation,
+  CreateAppParticipantMutationVariables
+>;
 
 /**
  * __useCreateAppParticipantMutation__
@@ -293,39 +583,58 @@ export type CreateAppParticipantMutationFn = Apollo.MutationFunction<CreateAppPa
  *   },
  * });
  */
-export function useCreateAppParticipantMutation(baseOptions?: Apollo.MutationHookOptions<CreateAppParticipantMutation, CreateAppParticipantMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateAppParticipantMutation, CreateAppParticipantMutationVariables>(CreateAppParticipantDocument, options);
-      }
-export type CreateAppParticipantMutationHookResult = ReturnType<typeof useCreateAppParticipantMutation>;
-export type CreateAppParticipantMutationResult = Apollo.MutationResult<CreateAppParticipantMutation>;
-export type CreateAppParticipantMutationOptions = Apollo.BaseMutationOptions<CreateAppParticipantMutation, CreateAppParticipantMutationVariables>;
+export function useCreateAppParticipantMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateAppParticipantMutation,
+    CreateAppParticipantMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateAppParticipantMutation,
+    CreateAppParticipantMutationVariables
+  >(CreateAppParticipantDocument, options);
+}
+export type CreateAppParticipantMutationHookResult = ReturnType<
+  typeof useCreateAppParticipantMutation
+>;
+export type CreateAppParticipantMutationResult =
+  Apollo.MutationResult<CreateAppParticipantMutation>;
+export type CreateAppParticipantMutationOptions = Apollo.BaseMutationOptions<
+  CreateAppParticipantMutation,
+  CreateAppParticipantMutationVariables
+>;
 export const UpdateAppParticipantDocument = gql`
-    mutation updateAppParticipant($updateAppParticipant: UpdateAppParticipantDto!) {
-  updateAppParticipant(updateAppParticipant: $updateAppParticipant) {
-    message
-    httpStatusCode
-    success
-    timestamp
-    data {
-      id
-      applicationId
-      personId
-      participantRoleId
-      organizationId
-      isMainParticipant
-      effectiveStartDate
-      effectiveEndDate
-      createdBy
-      createdDateTime
-      rowVersionCount
-      updatedBy
-      updatedDateTime
+  mutation updateAppParticipant(
+    $updateAppParticipant: UpdateAppParticipantDto!
+  ) {
+    updateAppParticipant(updateAppParticipant: $updateAppParticipant) {
+      message
+      httpStatusCode
+      success
+      timestamp
+      data {
+        id
+        applicationId
+        personId
+        participantRoleId
+        organizationId
+        isMainParticipant
+        effectiveStartDate
+        effectiveEndDate
+        createdBy
+        createdDateTime
+        rowVersionCount
+        updatedBy
+        updatedDateTime
+      }
     }
   }
-}
-    `;
-export type UpdateAppParticipantMutationFn = Apollo.MutationFunction<UpdateAppParticipantMutation, UpdateAppParticipantMutationVariables>;
+`;
+export type UpdateAppParticipantMutationFn = Apollo.MutationFunction<
+  UpdateAppParticipantMutation,
+  UpdateAppParticipantMutationVariables
+>;
 
 /**
  * __useUpdateAppParticipantMutation__
@@ -344,10 +653,24 @@ export type UpdateAppParticipantMutationFn = Apollo.MutationFunction<UpdateAppPa
  *   },
  * });
  */
-export function useUpdateAppParticipantMutation(baseOptions?: Apollo.MutationHookOptions<UpdateAppParticipantMutation, UpdateAppParticipantMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateAppParticipantMutation, UpdateAppParticipantMutationVariables>(UpdateAppParticipantDocument, options);
-      }
-export type UpdateAppParticipantMutationHookResult = ReturnType<typeof useUpdateAppParticipantMutation>;
-export type UpdateAppParticipantMutationResult = Apollo.MutationResult<UpdateAppParticipantMutation>;
-export type UpdateAppParticipantMutationOptions = Apollo.BaseMutationOptions<UpdateAppParticipantMutation, UpdateAppParticipantMutationVariables>;
+export function useUpdateAppParticipantMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateAppParticipantMutation,
+    UpdateAppParticipantMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateAppParticipantMutation,
+    UpdateAppParticipantMutationVariables
+  >(UpdateAppParticipantDocument, options);
+}
+export type UpdateAppParticipantMutationHookResult = ReturnType<
+  typeof useUpdateAppParticipantMutation
+>;
+export type UpdateAppParticipantMutationResult =
+  Apollo.MutationResult<UpdateAppParticipantMutation>;
+export type UpdateAppParticipantMutationOptions = Apollo.BaseMutationOptions<
+  UpdateAppParticipantMutation,
+  UpdateAppParticipantMutationVariables
+>;

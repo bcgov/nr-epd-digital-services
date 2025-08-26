@@ -37,14 +37,12 @@
   }
 }
 
-.AA
-{
+.AA {
   width: 70%;
   height: 500px;
 }
 
-
 .leaflet-container {
-  width: 100wh; 
+  width: 100wh;
   height: 100vh;
 }

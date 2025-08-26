@@ -15,7 +15,7 @@ import { setFormDeleteStatus } from "../../../actions/formActions";
 import {
   getFormProcesses,
   resetFormProcessData,
-  getAllApplicationCount
+  getAllApplicationCount,
 } from "../../../apiManager/services/processServices";
 
 import { Translation } from "react-i18next";
@@ -27,12 +27,20 @@ const FormOperations = React.memo(({ formData }) => {
   const dispatch = useDispatch();
   const userRoles = useSelector((state) => state.user.roles);
   const submitNewForm = (formData) => {
-    dispatch(push(`${redirectUrl}${formData.formType === TYPE_BUNDLE ? 'bundle' : 'form'}/${formData._id}`));
+    dispatch(
+      push(
+        `${redirectUrl}${formData.formType === TYPE_BUNDLE ? "bundle" : "form"}/${formData._id}`,
+      ),
+    );
   };
   const viewOrEditForm = (formData) => {
     dispatch(resetFormProcessData());
     dispatch(setResetProcess());
-    dispatch(push(`${redirectUrl}${formData.formType === TYPE_BUNDLE ? 'bundleflow' : 'formflow'}/${formData._id}/view-edit`));
+    dispatch(
+      push(
+        `${redirectUrl}${formData.formType === TYPE_BUNDLE ? "bundleflow" : "formflow"}/${formData._id}/view-edit`,
+      ),
+    );
   };
   const deleteForms = (formData) => {
     dispatch(setIsApplicationCountLoading(true));
@@ -47,19 +55,19 @@ const FormOperations = React.memo(({ formData }) => {
         if (data) {
           dispatch(
             // eslint-disable-next-line no-unused-vars
-              getAllApplicationCount(formData._id,(err, res) => {
+            getAllApplicationCount(formData._id, (err, res) => {
               dispatch(setIsApplicationCountLoading(false));
               dispatch(setFormDeleteStatus(formDetails));
-            })
+            }),
           );
         } else {
           dispatch(setIsApplicationCountLoading(false));
           dispatch(setFormDeleteStatus(formDetails));
         }
-      })
+      }),
     );
   };
-  
+
   const submitNew = (
     <button
       className="custom-button-primary"
@@ -74,7 +82,7 @@ const FormOperations = React.memo(({ formData }) => {
       className="btn  btn-outline-primary"
       onClick={() => viewOrEditForm(formData)}
     >
-      <i className="fa fa-pencil-square-o mr-1"  />
+      <i className="fa fa-pencil-square-o mr-1" />
       <Translation>{(t) => t("View/Edit Form")}</Translation>{" "}
     </button>
   );

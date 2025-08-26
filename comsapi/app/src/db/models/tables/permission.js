@@ -21,9 +21,9 @@ class Permission extends Timestamps(Model) {
         modelClass: ObjectPermission,
         join: {
           from: 'permission.permCode',
-          to: 'object_permission.permCode'
-        }
-      }
+          to: 'object_permission.permCode',
+        },
+      },
     };
   }
 
@@ -34,7 +34,7 @@ class Permission extends Timestamps(Model) {
       },
       orderDefault(builder) {
         builder.orderByRaw('lower("permission"."permCode")');
-      }
+      },
     };
   }
 
@@ -45,12 +45,11 @@ class Permission extends Timestamps(Model) {
       properties: {
         permCode: { type: 'string', minLength: 1, maxLength: 255 },
         active: { type: 'boolean' },
-        ...stamps
+        ...stamps,
       },
-      additionalProperties: false
+      additionalProperties: false,
     };
   }
-
 }
 
 module.exports = Permission;

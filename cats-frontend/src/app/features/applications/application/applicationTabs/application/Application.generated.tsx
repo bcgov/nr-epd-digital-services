@@ -7,21 +7,30 @@ export type GetApplicationByIdQueryVariables = Types.Exact<{
   applicationId: Types.Scalars['Int']['input'];
 }>;
 
-
-export type GetApplicationByIdQuery = { __typename?: 'Query', getApplicationDetailsById: { __typename?: 'ApplicationDetailsResponse', data?: { __typename?: 'ViewApplicationDetails', id: number, formId?: string | null, submissionId?: string | null } | null } };
-
+export type GetApplicationByIdQuery = {
+  __typename?: 'Query';
+  getApplicationDetailsById: {
+    __typename?: 'ApplicationDetailsResponse';
+    data?: {
+      __typename?: 'ViewApplicationDetails';
+      id: number;
+      formId?: string | null;
+      submissionId?: string | null;
+    } | null;
+  };
+};
 
 export const GetApplicationByIdDocument = gql`
-    query getApplicationById($applicationId: Int!) {
-  getApplicationDetailsById(id: $applicationId) {
-    data {
-      id
-      formId
-      submissionId
+  query getApplicationById($applicationId: Int!) {
+    getApplicationDetailsById(id: $applicationId) {
+      data {
+        id
+        formId
+        submissionId
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetApplicationByIdQuery__
@@ -39,19 +48,61 @@ export const GetApplicationByIdDocument = gql`
  *   },
  * });
  */
-export function useGetApplicationByIdQuery(baseOptions: Apollo.QueryHookOptions<GetApplicationByIdQuery, GetApplicationByIdQueryVariables> & ({ variables: GetApplicationByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetApplicationByIdQuery, GetApplicationByIdQueryVariables>(GetApplicationByIdDocument, options);
-      }
-export function useGetApplicationByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplicationByIdQuery, GetApplicationByIdQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetApplicationByIdQuery, GetApplicationByIdQueryVariables>(GetApplicationByIdDocument, options);
-        }
-export function useGetApplicationByIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetApplicationByIdQuery, GetApplicationByIdQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetApplicationByIdQuery, GetApplicationByIdQueryVariables>(GetApplicationByIdDocument, options);
-        }
-export type GetApplicationByIdQueryHookResult = ReturnType<typeof useGetApplicationByIdQuery>;
-export type GetApplicationByIdLazyQueryHookResult = ReturnType<typeof useGetApplicationByIdLazyQuery>;
-export type GetApplicationByIdSuspenseQueryHookResult = ReturnType<typeof useGetApplicationByIdSuspenseQuery>;
-export type GetApplicationByIdQueryResult = Apollo.QueryResult<GetApplicationByIdQuery, GetApplicationByIdQueryVariables>;
+export function useGetApplicationByIdQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetApplicationByIdQuery,
+    GetApplicationByIdQueryVariables
+  > &
+    (
+      | { variables: GetApplicationByIdQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetApplicationByIdQuery,
+    GetApplicationByIdQueryVariables
+  >(GetApplicationByIdDocument, options);
+}
+export function useGetApplicationByIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetApplicationByIdQuery,
+    GetApplicationByIdQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetApplicationByIdQuery,
+    GetApplicationByIdQueryVariables
+  >(GetApplicationByIdDocument, options);
+}
+export function useGetApplicationByIdSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetApplicationByIdQuery,
+        GetApplicationByIdQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetApplicationByIdQuery,
+    GetApplicationByIdQueryVariables
+  >(GetApplicationByIdDocument, options);
+}
+export type GetApplicationByIdQueryHookResult = ReturnType<
+  typeof useGetApplicationByIdQuery
+>;
+export type GetApplicationByIdLazyQueryHookResult = ReturnType<
+  typeof useGetApplicationByIdLazyQuery
+>;
+export type GetApplicationByIdSuspenseQueryHookResult = ReturnType<
+  typeof useGetApplicationByIdSuspenseQuery
+>;
+export type GetApplicationByIdQueryResult = Apollo.QueryResult<
+  GetApplicationByIdQuery,
+  GetApplicationByIdQueryVariables
+>;

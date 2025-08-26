@@ -5,6 +5,6 @@ import { IsNotEmpty, IsUUID } from 'class-validator';
 // DTO for creating a person
 @InputType()
 export class CreatePersonNote extends BasePersonNote {
-    @Field()
-    personId: number; // ID of the person related to this note
+  @Field()
+  personId: number; // ID of the person related to this note
 }

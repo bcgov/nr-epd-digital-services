@@ -22,8 +22,8 @@ describe('errorToProblem', () => {
     const e = {
       response: {
         data: { detail: 'detail' },
-        status: 422
-      }
+        status: 422,
+      },
     };
     const result = errorToProblem(SERVICE, e);
 
@@ -39,8 +39,8 @@ describe('errorToProblem', () => {
     const e = {
       response: {
         data: { detail: 'detail' },
-        status: 409
-      }
+        status: 409,
+      },
     };
     const result = errorToProblem(SERVICE, e);
 
@@ -55,7 +55,7 @@ describe('errorToProblem', () => {
   it('should return a problem given an error with statusCode', () => {
     const e = {
       statusCode: 404,
-      message: 'NotFoundError'
+      message: 'NotFoundError',
     };
     const result = errorToProblem(SERVICE, e);
 
@@ -72,7 +72,7 @@ describe('errorToProblem', () => {
       $metadata: {
         httpStatusCode: 404,
       },
-      message: 'NotFoundError'
+      message: 'NotFoundError',
     };
     const result = errorToProblem(SERVICE, e);
 
@@ -80,7 +80,9 @@ describe('errorToProblem', () => {
     expect(result instanceof Problem).toBeTruthy();
     expect(result.title).toMatch('Not Found');
     expect(result.status).toBe(404);
-    expect(result.detail).toEqual(expect.objectContaining({ message: e.message }));
+    expect(result.detail).toEqual(
+      expect.objectContaining({ message: e.message }),
+    );
     expect(result.errors).toBeUndefined();
   });
 
@@ -88,8 +90,8 @@ describe('errorToProblem', () => {
     const e = {
       response: {
         data: '{ "detail": "d" }',
-        status: 422
-      }
+        status: 422,
+      },
     };
     const result = errorToProblem(SERVICE, e);
 
@@ -103,7 +105,7 @@ describe('errorToProblem', () => {
 
   it('should throw a 500 problem', () => {
     const e = {
-      message: 'msg'
+      message: 'msg',
     };
     const result = errorToProblem(SERVICE, e);
 

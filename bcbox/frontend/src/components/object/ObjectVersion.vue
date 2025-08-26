@@ -135,7 +135,7 @@ watch(getVersions, async () => {
           <template #body="{ data }">
             <div>
               <span>
-                {{ formatDateLong(data.s3VersionId ? data.createdAt : data.createdAt ?? data.updatedAt) }}
+                {{ formatDateLong(data.s3VersionId ? data.createdAt : (data.createdAt ?? data.updatedAt)) }}
               </span>
             </div>
           </template>

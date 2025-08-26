@@ -15,10 +15,10 @@ module.exports = (webpackConfigEnv, argv) => {
       headers: {
         "Access-Control-Allow-Origin": "*",
       },
-      port: 3008
+      port: 3008,
     },
-    output:{
-      filename:"forms-flow-theme.js"
+    output: {
+      filename: "forms-flow-theme.js",
     },
     module: {
       rules: [

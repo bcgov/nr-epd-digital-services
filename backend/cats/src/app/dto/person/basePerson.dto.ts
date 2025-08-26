@@ -1,5 +1,11 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { IsBoolean, IsOptional, IsString, Length, IsEmail } from 'class-validator';
+import {
+  IsBoolean,
+  IsOptional,
+  IsString,
+  Length,
+  IsEmail,
+} from 'class-validator';
 
 @ObjectType()
 @InputType()
@@ -20,7 +26,7 @@ export class BasePerson {
   @Length(1, 50)
   lastName: string;
 
-  @Field({defaultValue: false})
+  @Field({ defaultValue: false })
   @IsBoolean()
   isTaxExempt: boolean;
 
@@ -96,11 +102,11 @@ export class BasePerson {
   @IsEmail()
   email: string | null;
 
-  @Field({defaultValue: false})
+  @Field({ defaultValue: false })
   @IsBoolean()
   isActive: boolean;
 
-  @Field({defaultValue: false})
+  @Field({ defaultValue: false })
   @IsBoolean()
   isDeleted?: boolean;
 }

@@ -23,8 +23,8 @@ jobs:
         uses: azure/setup-helm@v1
         with:
           version: v3.4.0
-      
-      - name: Package Formsflow 
+
+      - name: Package Formsflow
         uses: helm/chart-releaser-action@v1.2.1
         with:
           charts_dir: charts

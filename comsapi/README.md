@@ -1,4 +1,3 @@
-
 # Common Object Management Service
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE) [![Lifecycle:Stable](https://img.shields.io/badge/Lifecycle-Stable-97ca00)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
@@ -46,11 +45,11 @@ SECURITY.md                - Security Policy and Reporting
 
 ## Documentation
 
-* [Application Readme](app/README.md)
-* [API Specification](app/README.md#openapi-specification)
-* [Product Roadmap](https://github.com/bcgov/common-object-management-service/wiki/Product-Roadmap)
-* [Product Wiki](https://github.com/bcgov/common-object-management-service/wiki)
-* [Security Reporting](SECURITY.md)
+- [Application Readme](app/README.md)
+- [API Specification](app/README.md#openapi-specification)
+- [Product Roadmap](https://github.com/bcgov/common-object-management-service/wiki/Product-Roadmap)
+- [Product Wiki](https://github.com/bcgov/common-object-management-service/wiki)
+- [Security Reporting](SECURITY.md)
 
 ## Getting Help or Reporting an Issue
 

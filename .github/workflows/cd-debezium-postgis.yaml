@@ -14,8 +14,8 @@ on:
       - feat/srs-25-etl-deploy
       - srs-338
     paths:
-      - 'etl/**'
-      - '.github/workflows/**'
+      - "etl/**"
+      - ".github/workflows/**"
 
 defaults:
   run:
@@ -76,9 +76,7 @@ jobs:
         run: |
           oc start-build ${{ env.APP_NAME }}-build --wait
 
-
       - name: Tag+Deploy for ${{ env.TAG_NAME }}
         shell: bash
         run: |
           oc tag ${{ env.APP_NAME }}:latest ${{ env.APP_NAME }}:${{ env.TAG_NAME }}
-

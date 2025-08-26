@@ -364,14 +364,14 @@ const Assignment: React.FC<AssignmentProps> = ({
               <div>
                 {siteData?.getSiteDetailsBySiteId?.data?.addrLine_1 ||
                   '' +
-                  ' ' +
-                  siteData?.getSiteDetailsBySiteId?.data?.addrLine_2 ||
+                    ' ' +
+                    siteData?.getSiteDetailsBySiteId?.data?.addrLine_2 ||
                   '' +
-                  ' ' +
-                  siteData?.getSiteDetailsBySiteId?.data?.addrLine_3 ||
+                    ' ' +
+                    siteData?.getSiteDetailsBySiteId?.data?.addrLine_3 ||
                   '' +
-                  ' ' +
-                  siteData?.getSiteDetailsBySiteId?.data?.addrLine_4 ||
+                    ' ' +
+                    siteData?.getSiteDetailsBySiteId?.data?.addrLine_4 ||
                   ''}
               </div>
             </div>
@@ -449,11 +449,11 @@ const Assignment: React.FC<AssignmentProps> = ({
                 );
               }
             }}
-            handleWidgetCheckBox={() => { }}
+            handleWidgetCheckBox={() => {}}
             tableColumnConfig={internalRow}
             formData={staffRecords.filter((item) => item.action !== 'remove')}
             status={RequestStatus.success}
-            handleTableSort={() => { }}
+            handleTableSort={() => {}}
             handleAddParticipant={() => {
               let tempRecords = [
                 ...staffRecords,
@@ -469,8 +469,8 @@ const Assignment: React.FC<AssignmentProps> = ({
               setStaffRecords(tempRecords);
             }}
             selectedRows={[]}
-            handleRemoveParticipant={() => { }}
-            handleItemClick={() => { }}
+            handleRemoveParticipant={() => {}}
+            handleItemClick={() => {}}
           />
           <div className={`custom-modal-actions-footer`}>
             <CancelButton

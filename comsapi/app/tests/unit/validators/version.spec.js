@@ -32,11 +32,8 @@ describe('fetchMetadata', () => {
   });
 });
 
-
 describe('fetchTags', () => {
-
   describe('query', () => {
-
     const query = schema.fetchTags.query.describe();
 
     describe('s3VersionId', () => {
@@ -52,6 +49,5 @@ describe('fetchTags', () => {
     it('is the expected schema', () => {
       expect(tagset).toEqual(type.tagset().describe());
     });
-
   });
 });

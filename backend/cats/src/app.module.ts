@@ -90,4 +90,4 @@ import { GraphQLAuthExceptionFilter } from './app/filters/graphql-exception.filt
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

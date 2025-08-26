@@ -11,12 +11,12 @@ on:
     branches:
       - dev
       - main
-      
+
     paths:
-      - 'backend/**'
-      - 'frontend/**'
-      - 'forms-flow-ai/**'
-      - '.github/workflows/**'
+      - "backend/**"
+      - "frontend/**"
+      - "forms-flow-ai/**"
+      - ".github/workflows/**"
 
 defaults:
   run:

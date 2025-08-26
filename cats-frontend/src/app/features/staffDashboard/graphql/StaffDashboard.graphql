@@ -1,18 +1,28 @@
-
-query   getStaffs($page: Int!, $pageSize: Int!, $filter: Filter, $sortBy: StaffSortByField,  $sortByDir: ApplicationSortByDirection ) {
-    getStaffs( page: $page, pageSize: $pageSize, filter: $filter, sortBy: $sortBy, sortByDir: $sortByDir)  
-    {
-        message
-        httpStatusCode
-        success
-        count
-        page
-        pageSize
-        data {
-            id
-            name
-            assignments
-            capacity
-        }
+query getStaffs(
+  $page: Int!
+  $pageSize: Int!
+  $filter: Filter
+  $sortBy: StaffSortByField
+  $sortByDir: ApplicationSortByDirection
+) {
+  getStaffs(
+    page: $page
+    pageSize: $pageSize
+    filter: $filter
+    sortBy: $sortBy
+    sortByDir: $sortByDir
+  ) {
+    message
+    httpStatusCode
+    success
+    count
+    page
+    pageSize
+    data {
+      id
+      name
+      assignments
+      capacity
     }
   }
+}

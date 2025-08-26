@@ -3,104 +3,104 @@ kind: Template
 apiVersion: template.openshift.io/v1
 metadata:
   name: "${API_NAME}-${ENV_TAG}-build-template"
-  creationTimestamp: 
+  creationTimestamp:
 objects:
-- kind: ImageStream
-  apiVersion: v1
-  metadata:
-    name: "${API_NAME}"
-- kind: BuildConfig
-  apiVersion: v1
-  metadata:
-    name: "${API_NAME}-${ENV_TAG}-build"
-    labels:
-      app: "${API_NAME}-${ENV_TAG}-build"
-  spec:
-    runPolicy: Serial
-    source:
-      type: Git
-      git:
-        uri: "${GIT_REPO_URL}"
-        ref: "${GIT_REF}"
-      contextDir: "${SOURCE_CONTEXT_DIR}"
-    strategy:
-      type: Docker
-      dockerStrategy:
-        dockerfilePath: "${DOCKER_FILE_PATH}"
-        env:
-          - name: "DEBEZIUM_VERSION"
-            value: "${DEBEZIUM_VERSION}"
-          - name: "ORACLE_JDBC_VERSION"
-            value: "${ORACLE_JDBC_VERSION}"
-          - name: "ORACLE_JDBC_MD5"
-            value: "${ORACLE_JDBC_MD5}"
-          - name: "KAFKA_JDBC_VERSION"
-            value: "${KAFKA_JDBC_VERSION}"
-          - name: "ORACLE_DB_HOST"
-            value: "${ORACLE_DB_HOST}"
-          - name: "ORACLE_DB_PORT"
-            value: "${ORACLE_DB_PORT}"          
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: "${API_NAME}"
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      name: "${API_NAME}-${ENV_TAG}-build"
+      labels:
+        app: "${API_NAME}-${ENV_TAG}-build"
+    spec:
+      runPolicy: Serial
+      source:
+        type: Git
+        git:
+          uri: "${GIT_REPO_URL}"
+          ref: "${GIT_REF}"
+        contextDir: "${SOURCE_CONTEXT_DIR}"
+      strategy:
+        type: Docker
+        dockerStrategy:
+          dockerfilePath: "${DOCKER_FILE_PATH}"
+          env:
+            - name: "DEBEZIUM_VERSION"
+              value: "${DEBEZIUM_VERSION}"
+            - name: "ORACLE_JDBC_VERSION"
+              value: "${ORACLE_JDBC_VERSION}"
+            - name: "ORACLE_JDBC_MD5"
+              value: "${ORACLE_JDBC_MD5}"
+            - name: "KAFKA_JDBC_VERSION"
+              value: "${KAFKA_JDBC_VERSION}"
+            - name: "ORACLE_DB_HOST"
+              value: "${ORACLE_DB_HOST}"
+            - name: "ORACLE_DB_PORT"
+              value: "${ORACLE_DB_PORT}"
 
-    output:
-      to:
-        kind: ImageStreamTag
-        name: "${API_NAME}:${ENV_TAG}"
+      output:
+        to:
+          kind: ImageStreamTag
+          name: "${API_NAME}:${ENV_TAG}"
 parameters:
-- name: API_NAME
-  displayName: Name
-  description: The name assigned to all of the resources defined in this template.
-  required: true
-  value: debezium-jdbc
-- name: ENV_TAG
-  displayName: Environment name
-  description: The name of the environment, in build names and image stream tags
-  required: true
-  value:  dev 
-- name: GIT_REPO_URL
-  displayName: Git Repo URL
-  description: The URL to your GIT repo.
-  required: true
-  value: https://github.com/bcgov/nr-epd-digital-services
-- name: GIT_REF
-  displayName: Git Reference
-  description: The git reference or branch.
-  required: true
-  value: dev
-- name: SOURCE_CONTEXT_DIR
-  displayName: Source Context Directory
-  description: The source context directory.
-  required: false
-  value: etl/debezium-jdbc
-- name: DOCKER_FILE_PATH
-  displayName: Docker File Path
-  description: The path to the docker file defining the build.
-  required: false
-  value: "Dockerfile"
-- name: DEBEZIUM_VERSION
-  displayName: Debezium Version
-  description: Debezium image version.
-  required: false
-  value: "2.5"
-- name: ORACLE_JDBC_VERSION
-  displayName: Oracle JDBC Version
-  description: Oracle JDBC Version.
-  required: false
-  value: "21.6.0.0"
-- name: ORACLE_JDBC_MD5
-  displayName: Oracle JDBC Checksum
-  description: Oracle JDBC File Checksum.
-  required: false
-  value: "312e6f4ec9932bbf74a4461669970c4b"
-- name: KAFKA_JDBC_VERSION
-  displayName: Kafka JDBC Version
-  description: Kafka Jdbc Version.
-  required: false
-  value: "5.3.1"    
-- name: ORACLE_DB_HOST
-  displayName: Oracle DB Host
-  description: Oracle Database Host Name
-  required: true
-- name: ORACLE_DB_PORT
-  displayName: Oracle DB Port
-  description: Oracle Database Port.
-  required: true           
+  - name: API_NAME
+    displayName: Name
+    description: The name assigned to all of the resources defined in this template.
+    required: true
+    value: debezium-jdbc
+  - name: ENV_TAG
+    displayName: Environment name
+    description: The name of the environment, in build names and image stream tags
+    required: true
+    value: dev
+  - name: GIT_REPO_URL
+    displayName: Git Repo URL
+    description: The URL to your GIT repo.
+    required: true
+    value: https://github.com/bcgov/nr-epd-digital-services
+  - name: GIT_REF
+    displayName: Git Reference
+    description: The git reference or branch.
+    required: true
+    value: dev
+  - name: SOURCE_CONTEXT_DIR
+    displayName: Source Context Directory
+    description: The source context directory.
+    required: false
+    value: etl/debezium-jdbc
+  - name: DOCKER_FILE_PATH
+    displayName: Docker File Path
+    description: The path to the docker file defining the build.
+    required: false
+    value: "Dockerfile"
+  - name: DEBEZIUM_VERSION
+    displayName: Debezium Version
+    description: Debezium image version.
+    required: false
+    value: "2.5"
+  - name: ORACLE_JDBC_VERSION
+    displayName: Oracle JDBC Version
+    description: Oracle JDBC Version.
+    required: false
+    value: "21.6.0.0"
+  - name: ORACLE_JDBC_MD5
+    displayName: Oracle JDBC Checksum
+    description: Oracle JDBC File Checksum.
+    required: false
+    value: "312e6f4ec9932bbf74a4461669970c4b"
+  - name: KAFKA_JDBC_VERSION
+    displayName: Kafka JDBC Version
+    description: Kafka Jdbc Version.
+    required: false
+    value: "5.3.1"
+  - name: ORACLE_DB_HOST
+    displayName: Oracle DB Host
+    description: Oracle Database Host Name
+    required: true
+  - name: ORACLE_DB_PORT
+    displayName: Oracle DB Port
+    description: Oracle Database Port.
+    required: true

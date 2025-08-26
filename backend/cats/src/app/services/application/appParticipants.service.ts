@@ -32,7 +32,7 @@ export class AppParticipantService {
 
     @InjectRepository(Organization)
     private readonly organizationRepository: Repository<Organization>,
-  ) { }
+  ) {}
 
   /**
    * Retrieves app participants for a given app ID and transforms the data into DTOs.
@@ -112,7 +112,9 @@ export class AppParticipantService {
    * Retrieves all participant roles and transforms the data into DTOs.
    * @returns An array of ParticipantRole objects containing participant roles.
    */
-  async getAllParticipantRoles(roleType?: string | null): Promise<ViewParticipantsRolesDto[]> {
+  async getAllParticipantRoles(
+    roleType?: string | null,
+  ): Promise<ViewParticipantsRolesDto[]> {
     try {
       this.loggerService.log('at service layer getAllParticipantRoles start');
       const condition = roleType ? { roleType } : {};
@@ -156,7 +158,9 @@ export class AppParticipantService {
       } else {
         const transformedObjects = persons.map((person) => ({
           key: person.id.toString(),
-          value: [person.firstName, person.middleName, person.lastName].filter(Boolean).join(' '),
+          value: [person.firstName, person.middleName, person.lastName]
+            .filter(Boolean)
+            .join(' '),
           metaData: person?.email || '', // Assuming email is the metadata you want to include
         }));
 
@@ -312,7 +316,8 @@ export class AppParticipantService {
     try {
       // Log the input parameters for better traceability
       this.loggerService.debug(
-        `updateAppParticipant: participantId=${updateParticipant.applicationId
+        `updateAppParticipant: participantId=${
+          updateParticipant.applicationId
         }, updateData=${JSON.stringify(updateParticipant)}`,
       );
 
@@ -338,9 +343,8 @@ export class AppParticipantService {
       existingParticipant.updatedDateTime = new Date();
 
       // Save the updated participant
-      const updatedParticipant = await this.appParticsRepository.save(
-        existingParticipant,
-      );
+      const updatedParticipant =
+        await this.appParticsRepository.save(existingParticipant);
 
       this.loggerService.log(
         `App Participant updated successfully with ID: ${updatedParticipant.id}`,

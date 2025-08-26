@@ -13,11 +13,11 @@ formsflow:
   configmap: forms-flow-ai # name of formsflow.ai configmap
   secret: forms-flow-ai #name of formsflow.ai secret
   analytics: forms-flow-analytics #name of forms-flow-analytics component
-  auth: forms-flow-ai-auth 
+  auth: forms-flow-ai-auth
 ingress:
   ingressClassName: ""
   annotations:
- 
+
   enabled: true # create an ingress for this component
   hostname: "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}"
   port: 5000
@@ -29,4 +29,4 @@ image:
   registry: docker.io
   repository: formsflow/forms-flow-webapi
   tag: v5.2.0-epd #The image tag to pull from
-  
+

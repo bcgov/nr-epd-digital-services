@@ -20,25 +20,25 @@ class ObjectPermission extends Timestamps(Model) {
         modelClass: ObjectModel,
         join: {
           from: 'object_permission.objectId',
-          to: 'object.id'
-        }
+          to: 'object.id',
+        },
       },
       permission: {
         relation: Model.HasOneRelation,
         modelClass: Permission,
         join: {
           from: 'object_permission.permCode',
-          to: 'permission.permCode'
-        }
+          to: 'permission.permCode',
+        },
       },
       user: {
         relation: Model.HasOneRelation,
         modelClass: User,
         join: {
           from: 'object_permission.userId',
-          to: 'user.userId'
-        }
-      }
+          to: 'user.userId',
+        },
+      },
     };
   }
 
@@ -60,7 +60,7 @@ class ObjectPermission extends Timestamps(Model) {
       },
       filterPermissionCode(query, value) {
         filterOneOrMany(query, value, 'permCode');
-      }
+      },
     };
   }
 
@@ -73,9 +73,9 @@ class ObjectPermission extends Timestamps(Model) {
         userId: { type: 'string', maxLength: 255 },
         objectId: { type: 'string', maxLength: 255 },
         permCode: { type: 'string', maxLength: 255 },
-        ...stamps
+        ...stamps,
       },
-      additionalProperties: false
+      additionalProperties: false,
     };
   }
 }

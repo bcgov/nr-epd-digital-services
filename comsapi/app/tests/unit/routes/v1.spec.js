@@ -18,17 +18,18 @@ describe(`GET ${basePath}`, () => {
     expect(response.body).toBeTruthy();
     expect(Array.isArray(response.body.endpoints)).toBeTruthy();
     expect(response.body.endpoints).toHaveLength(9);
-    expect(response.body.endpoints).toEqual(expect.arrayContaining([
-      '/bucket',
-      '/docs',
-      '/metadata',
-      '/object',
-      '/permission',
-      '/sync',
-      '/tagging',
-      '/user',
-      '/version'
-    ]));
+    expect(response.body.endpoints).toEqual(
+      expect.arrayContaining([
+        '/bucket',
+        '/docs',
+        '/metadata',
+        '/object',
+        '/permission',
+        '/sync',
+        '/tagging',
+        '/user',
+        '/version',
+      ]),
+    );
   });
 });
-

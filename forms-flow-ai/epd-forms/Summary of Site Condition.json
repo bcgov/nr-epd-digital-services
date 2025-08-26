@@ -6,9 +6,7 @@
       "type": "form",
       "name": "soscForm",
       "path": "soscform",
-      "tags": [
-        "common"
-      ],
+      "tags": ["common"],
       "components": [
         {
           "title": "Application Documents",
@@ -35883,9 +35881,7 @@
               "initEmpty": false,
               "hideLabel": true,
               "tableView": false,
-              "defaultValue": [
-                {}
-              ],
+              "defaultValue": [{}],
               "key": "dataGrid13",
               "type": "datagrid",
               "input": true,
@@ -37012,9 +37008,7 @@
               "initEmpty": false,
               "hideLabel": true,
               "tableView": false,
-              "defaultValue": [
-                {}
-              ],
+              "defaultValue": [{}],
               "key": "dataGrid14",
               "type": "datagrid",
               "input": true,

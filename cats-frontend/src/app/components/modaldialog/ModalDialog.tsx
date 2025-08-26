@@ -247,20 +247,20 @@ export const ModalDialogWrapperWithHeader: React.FC<
   customModalCss,
   customContentCss,
 }) => {
-    return (
-      <div>
-        <ModalDialogWrapper
+  return (
+    <div>
+      <ModalDialogWrapper
+        closeHandler={ModalDialogHeaderOnly}
+        customModalCss={customModalCss}
+        customContentCss={customContentCss}
+      >
+        <ModalDialogHeaderOnly
           closeHandler={ModalDialogHeaderOnly}
-          customModalCss={customModalCss}
-          customContentCss={customContentCss}
+          customHeaderCss={customHeaderCss}
         >
-          <ModalDialogHeaderOnly
-            closeHandler={ModalDialogHeaderOnly}
-            customHeaderCss={customHeaderCss}
-          >
-            {children}
-          </ModalDialogHeaderOnly>
-        </ModalDialogWrapper>
-      </div>
-    );
-  };
+          {children}
+        </ModalDialogHeaderOnly>
+      </ModalDialogWrapper>
+    </div>
+  );
+};

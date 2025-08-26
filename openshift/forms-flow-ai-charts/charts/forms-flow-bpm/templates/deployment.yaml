@@ -22,194 +22,194 @@ spec:
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: name
-                operator: In
-                values:
-                - "{{ .Chart.Name }}"
-            topologyKey: kubernetes.io/hostname
+            - labelSelector:
+                matchExpressions:
+                  - key: name
+                    operator: In
+                    values:
+                      - "{{ .Chart.Name }}"
+              topologyKey: kubernetes.io/hostname
       containers:
-      - envFrom:
-        - configMapRef:
-            name: "{{ .Chart.Name }}" # bpm environment variables 
-        - secretRef:
-            name: "{{ .Chart.Name }}" # bpm environment variables
-        env:
-        - name: CAMUNDA_DATABASE_NAME
-          valueFrom:
-            configMapKeyRef:
-              key: CAMUNDA_DATABASE_NAME
-              name: "{{ .Chart.Name }}"
-        - name: CAMUNDA_DATABASE_PORT
-          valueFrom:
-            configMapKeyRef:
-              key: CAMUNDA_DATABASE_PORT
-              name: "{{ .Chart.Name }}"
-        - name: CAMUNDA_DATABASE_SERVICE_NAME
-          valueFrom:
-            configMapKeyRef:
-              key: DATABASE_SERVICE_NAME
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: KEYCLOAK_URL
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_URL
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: KEYCLOAK_URL_REALM
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_URL_REALM
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: KEYCLOAK_CLIENTID
-          valueFrom:
-            secretKeyRef:
-              key: KEYCLOAK_CLIENTID
-              name: "{{ .Values.formsflow.secret }}"
-        - name: KEYCLOAK_CLIENTSECRET
-          valueFrom:
-            secretKeyRef:
-              key: KEYCLOAK_CLIENTSECRET
-              name: "{{ .Values.formsflow.secret }}"
-        - name: MAIL_CONFIG
-          value: /app/mail-config.properties
-        - name: CAMUNDA_FORMBUILDER_PIPELINE_BPM_URL
-          valueFrom:
-            configMapKeyRef:
-              key: BPM_API_URL
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: FORMSFLOW_API_URL
-          valueFrom:
-            configMapKeyRef:
-              key: WEB_API_URL
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: FORMIO_URL
-          valueFrom:
-            configMapKeyRef:
-              key: FORMIO_URL
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: FORMIO_ROOT_EMAIL
-          valueFrom:
-            secretKeyRef:
-              key: FORMIO_ROOT_EMAIL
-              name: "{{ .Values.formsflow.secret }}"
-        - name: FORMIO_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: FORMIO_ROOT_PASSWORD
-              name: "{{ .Values.formsflow.secret }}"
-        - name: WEBSOCKET_ENCRYPT_KEY
-          valueFrom:
-            secretKeyRef:
-              key: WEBSOCKET_ENCRYPT_KEY
-              name: "{{ .Values.formsflow.secret }}"
-        - name: DATA_ANALYSIS_URL
-          valueFrom:
-            configMapKeyRef:
-              key: DATA_ANALYSIS_URL
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: KEYCLOAK_ENABLE_CLIENT_AUTH
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_ENABLE_CLIENT_AUTH
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: KEYCLOAK_WEB_CLIENTID
-          valueFrom:
-            secretKeyRef:
-              key: WEB_CLIENTID
-              name: "{{ .Values.formsflow.secret }}"
-        - name: MULTI_TENANCY_ENABLED
-          valueFrom:
-            configMapKeyRef:
-              key: MULTI_TENANCY_ENABLED
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: FORMSFLOW_ADMIN_URL
-          valueFrom:
-            configMapKeyRef:
-              key: FORMSFLOW_ADMIN_URL
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: CUSTOM_SUBMISSION_URL
-          valueFrom:
-            configMapKeyRef:
-              key: CUSTOM_SUBMISSION_URL
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: CUSTOM_SUBMISSION_ENABLED
-          valueFrom:
-            configMapKeyRef:
-              key: CUSTOM_SUBMISSION_ENABLED
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: REDIS_ENABLED
-          valueFrom:
-            configMapKeyRef:
-              key: REDIS_ENABLED
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: REDIS_HOST
-          valueFrom:
-            configMapKeyRef:
-              key: REDIS_HOST
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: REDIS_PORT
-          valueFrom:
-            configMapKeyRef:
-              key: REDIS_PORT
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: REDIS_PASSCODE
-          valueFrom:
-            secretKeyRef:
-              key: REDIS_PASSCODE
-              name: "{{ .Values.formsflow.secret }}"
+        - envFrom:
+            - configMapRef:
+                name: "{{ .Chart.Name }}" # bpm environment variables
+            - secretRef:
+                name: "{{ .Chart.Name }}" # bpm environment variables
+          env:
+            - name: CAMUNDA_DATABASE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  key: CAMUNDA_DATABASE_NAME
+                  name: "{{ .Chart.Name }}"
+            - name: CAMUNDA_DATABASE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: CAMUNDA_DATABASE_PORT
+                  name: "{{ .Chart.Name }}"
+            - name: CAMUNDA_DATABASE_SERVICE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  key: DATABASE_SERVICE_NAME
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: KEYCLOAK_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_URL
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: KEYCLOAK_URL_REALM
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_URL_REALM
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: KEYCLOAK_CLIENTID
+              valueFrom:
+                secretKeyRef:
+                  key: KEYCLOAK_CLIENTID
+                  name: "{{ .Values.formsflow.secret }}"
+            - name: KEYCLOAK_CLIENTSECRET
+              valueFrom:
+                secretKeyRef:
+                  key: KEYCLOAK_CLIENTSECRET
+                  name: "{{ .Values.formsflow.secret }}"
+            - name: MAIL_CONFIG
+              value: /app/mail-config.properties
+            - name: CAMUNDA_FORMBUILDER_PIPELINE_BPM_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: BPM_API_URL
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: FORMSFLOW_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: WEB_API_URL
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: FORMIO_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: FORMIO_URL
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: FORMIO_ROOT_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  key: FORMIO_ROOT_EMAIL
+                  name: "{{ .Values.formsflow.secret }}"
+            - name: FORMIO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: FORMIO_ROOT_PASSWORD
+                  name: "{{ .Values.formsflow.secret }}"
+            - name: WEBSOCKET_ENCRYPT_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: WEBSOCKET_ENCRYPT_KEY
+                  name: "{{ .Values.formsflow.secret }}"
+            - name: DATA_ANALYSIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: DATA_ANALYSIS_URL
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: KEYCLOAK_ENABLE_CLIENT_AUTH
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_ENABLE_CLIENT_AUTH
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: KEYCLOAK_WEB_CLIENTID
+              valueFrom:
+                secretKeyRef:
+                  key: WEB_CLIENTID
+                  name: "{{ .Values.formsflow.secret }}"
+            - name: MULTI_TENANCY_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  key: MULTI_TENANCY_ENABLED
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: FORMSFLOW_ADMIN_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: FORMSFLOW_ADMIN_URL
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: CUSTOM_SUBMISSION_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: CUSTOM_SUBMISSION_URL
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: CUSTOM_SUBMISSION_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  key: CUSTOM_SUBMISSION_ENABLED
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: REDIS_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_ENABLED
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_HOST
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_PORT
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: REDIS_PASSCODE
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_PASSCODE
+                  name: "{{ .Values.formsflow.secret }}"
 
-        image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        imagePullPolicy: Always
-        livenessProbe:
-          failureThreshold: 5
-          httpGet:
-            path: /camunda/actuator/health
-            port: 8080
-            scheme: HTTP
-          initialDelaySeconds: 120
-          periodSeconds: 60
-          successThreshold: 1
-          timeoutSeconds: 3
-        name: "{{ .Chart.Name }}"
-        ports:
-        - containerPort: {{ int .Values.ingress.port }}
-          protocol: TCP
-        readinessProbe:
-          failureThreshold: 5
-          httpGet:
-            path: /camunda/actuator/health
-            port: 8080
-            scheme: HTTP
-          initialDelaySeconds: 120
-          periodSeconds: 60
-          successThreshold: 1
-          timeoutSeconds: 3
-        resources:
-          limits:
-            cpu: "{{ .Values.resources.limits.cpu }}"
-            memory: "{{ .Values.resources.limits.memory }}"
-          requests:
-            cpu: "{{ .Values.resources.requests.cpu }}"
-            memory: "{{ .Values.resources.requests.memory }}"
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-        volumeMounts:
-        - mountPath: /app/mail-config.properties
-          name: "{{ .Chart.Name }}-mail-config"
-          subPath: mail-config.properties
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /camunda/actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 120
+            periodSeconds: 60
+            successThreshold: 1
+            timeoutSeconds: 3
+          name: "{{ .Chart.Name }}"
+          ports:
+            - containerPort: { { int .Values.ingress.port } }
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /camunda/actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 120
+            periodSeconds: 60
+            successThreshold: 1
+            timeoutSeconds: 3
+          resources:
+            limits:
+              cpu: "{{ .Values.resources.limits.cpu }}"
+              memory: "{{ .Values.resources.limits.memory }}"
+            requests:
+              cpu: "{{ .Values.resources.requests.cpu }}"
+              memory: "{{ .Values.resources.requests.memory }}"
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /app/mail-config.properties
+              name: "{{ .Chart.Name }}-mail-config"
+              subPath: mail-config.properties
       imagePullSecrets:
-      - name: "{{ .Values.formsflow.auth }}"
+        - name: "{{ .Values.formsflow.auth }}"
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
       volumes:
-      - configMap:
-          defaultMode: 420
-          items:
-          - key: mail-config.properties
-            path: mail-config.properties
+        - configMap:
+            defaultMode: 420
+            items:
+              - key: mail-config.properties
+                path: mail-config.properties
+            name: "{{ .Chart.Name }}-mail-config"
           name: "{{ .Chart.Name }}-mail-config"
-        name: "{{ .Chart.Name }}-mail-config"

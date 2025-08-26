@@ -7,33 +7,56 @@ export type CreateInvoiceMutationVariables = Types.Exact<{
   invoiceData: Types.InvoiceInputDto;
 }>;
 
-
-export type CreateInvoiceMutation = { __typename?: 'Mutation', createInvoice: { __typename?: 'InvoiceResponse', success?: boolean | null, httpStatusCode?: number | null, message?: string | null, invoice?: { __typename?: 'InvoiceDto', id: number, subject: string, issuedDate: any, dueDate: any, status: Types.InvoiceStatus, taxExempt: boolean, subtotalInCents: number, gstInCents: number, pstInCents: number, totalInCents: number, notes?: string | null } | null } };
-
+export type CreateInvoiceMutation = {
+  __typename?: 'Mutation';
+  createInvoice: {
+    __typename?: 'InvoiceResponse';
+    success?: boolean | null;
+    httpStatusCode?: number | null;
+    message?: string | null;
+    invoice?: {
+      __typename?: 'InvoiceDto';
+      id: number;
+      subject: string;
+      issuedDate: any;
+      dueDate: any;
+      status: Types.InvoiceStatus;
+      taxExempt: boolean;
+      subtotalInCents: number;
+      gstInCents: number;
+      pstInCents: number;
+      totalInCents: number;
+      notes?: string | null;
+    } | null;
+  };
+};
 
 export const CreateInvoiceDocument = gql`
-    mutation CreateInvoice($invoiceData: InvoiceInputDto!) {
-  createInvoice(invoiceData: $invoiceData) {
-    success
-    httpStatusCode
-    message
-    invoice {
-      id
-      subject
-      issuedDate
-      dueDate
-      status
-      taxExempt
-      subtotalInCents
-      gstInCents
-      pstInCents
-      totalInCents
-      notes
+  mutation CreateInvoice($invoiceData: InvoiceInputDto!) {
+    createInvoice(invoiceData: $invoiceData) {
+      success
+      httpStatusCode
+      message
+      invoice {
+        id
+        subject
+        issuedDate
+        dueDate
+        status
+        taxExempt
+        subtotalInCents
+        gstInCents
+        pstInCents
+        totalInCents
+        notes
+      }
     }
   }
-}
-    `;
-export type CreateInvoiceMutationFn = Apollo.MutationFunction<CreateInvoiceMutation, CreateInvoiceMutationVariables>;
+`;
+export type CreateInvoiceMutationFn = Apollo.MutationFunction<
+  CreateInvoiceMutation,
+  CreateInvoiceMutationVariables
+>;
 
 /**
  * __useCreateInvoiceMutation__
@@ -52,10 +75,24 @@ export type CreateInvoiceMutationFn = Apollo.MutationFunction<CreateInvoiceMutat
  *   },
  * });
  */
-export function useCreateInvoiceMutation(baseOptions?: Apollo.MutationHookOptions<CreateInvoiceMutation, CreateInvoiceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateInvoiceMutation, CreateInvoiceMutationVariables>(CreateInvoiceDocument, options);
-      }
-export type CreateInvoiceMutationHookResult = ReturnType<typeof useCreateInvoiceMutation>;
-export type CreateInvoiceMutationResult = Apollo.MutationResult<CreateInvoiceMutation>;
-export type CreateInvoiceMutationOptions = Apollo.BaseMutationOptions<CreateInvoiceMutation, CreateInvoiceMutationVariables>;
+export function useCreateInvoiceMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateInvoiceMutation,
+    CreateInvoiceMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateInvoiceMutation,
+    CreateInvoiceMutationVariables
+  >(CreateInvoiceDocument, options);
+}
+export type CreateInvoiceMutationHookResult = ReturnType<
+  typeof useCreateInvoiceMutation
+>;
+export type CreateInvoiceMutationResult =
+  Apollo.MutationResult<CreateInvoiceMutation>;
+export type CreateInvoiceMutationOptions = Apollo.BaseMutationOptions<
+  CreateInvoiceMutation,
+  CreateInvoiceMutationVariables
+>;

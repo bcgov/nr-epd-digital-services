@@ -8,121 +8,121 @@ const schema = {
   addMetadata: {
     headers: type.metadata(),
     params: Joi.object({
-      objectId: type.uuidv4
+      objectId: type.uuidv4,
     }),
     query: Joi.object({
       s3VersionId: Joi.string(),
-      versionId: type.uuidv4
-    }).nand('s3VersionId', 'versionId')
+      versionId: type.uuidv4,
+    }).nand('s3VersionId', 'versionId'),
   },
 
   addTags: {
     params: Joi.object({
-      objectId: type.uuidv4
+      objectId: type.uuidv4,
     }),
     query: Joi.object({
       tagset: type.tagset(),
       s3VersionId: Joi.string(),
-      versionId: type.uuidv4
-    }).nand('s3VersionId', 'versionId')
+      versionId: type.uuidv4,
+    }).nand('s3VersionId', 'versionId'),
   },
 
   createObject: {
     headers: type.metadata(),
     query: Joi.object({
       tagset: type.tagset(),
-      bucketId: type.uuidv4
-    })
+      bucketId: type.uuidv4,
+    }),
   },
 
   deleteMetadata: {
     headers: type.metadata(),
     params: Joi.object({
-      objectId: type.uuidv4
+      objectId: type.uuidv4,
     }),
     query: Joi.object({
       s3VersionId: Joi.string(),
-      versionId: type.uuidv4
-    }).nand('s3VersionId', 'versionId')
+      versionId: type.uuidv4,
+    }).nand('s3VersionId', 'versionId'),
   },
 
   deleteObject: {
     params: Joi.object({
-      objectId: type.uuidv4
+      objectId: type.uuidv4,
     }),
     query: Joi.object({
       s3VersionId: Joi.string(),
-      versionId: type.uuidv4
-    }).nand('s3VersionId', 'versionId')
+      versionId: type.uuidv4,
+    }).nand('s3VersionId', 'versionId'),
   },
 
   deleteTags: {
     params: Joi.object({
-      objectId: type.uuidv4
+      objectId: type.uuidv4,
     }),
     query: Joi.object({
       tagset: type.tagset(),
       s3VersionId: Joi.string(),
-      versionId: type.uuidv4
-    }).nand('s3VersionId', 'versionId')
+      versionId: type.uuidv4,
+    }).nand('s3VersionId', 'versionId'),
   },
 
   fetchMetadata: {
     headers: type.metadata(),
     query: Joi.object({
       bucketId: scheme.guid,
-      objectId: scheme.guid
-    })
+      objectId: scheme.guid,
+    }),
   },
 
   headObject: {
     params: Joi.object({
-      objectId: type.uuidv4.required()
+      objectId: type.uuidv4.required(),
     }),
     query: Joi.object({
       s3VersionId: Joi.string(),
-      versionId: type.uuidv4
-    }).nand('s3VersionId', 'versionId')
+      versionId: type.uuidv4,
+    }).nand('s3VersionId', 'versionId'),
   },
 
   listObjectVersion: {
     params: Joi.object({
-      objectId: type.uuidv4
-    })
+      objectId: type.uuidv4,
+    }),
   },
 
   readObject: {
     params: Joi.object({
-      objectId: type.uuidv4
+      objectId: type.uuidv4,
     }),
     query: Joi.object({
       expiresIn: Joi.number(),
       download: Joi.string().valid(...Object.values(DownloadMode)),
       s3VersionId: Joi.string(),
-      versionId: type.uuidv4
-    }).nand('s3VersionId', 'versionId')
+      versionId: type.uuidv4,
+    }).nand('s3VersionId', 'versionId'),
   },
 
   replaceMetadata: {
     headers: type.metadata(),
     params: Joi.object({
-      objectId: type.uuidv4
+      objectId: type.uuidv4,
     }),
     query: Joi.object({
       s3VersionId: Joi.string(),
-      versionId: type.uuidv4
-    }).nand('s3VersionId', 'versionId')
+      versionId: type.uuidv4,
+    }).nand('s3VersionId', 'versionId'),
   },
 
   replaceTags: {
     params: Joi.object({
-      objectId: type.uuidv4
+      objectId: type.uuidv4,
     }),
     query: Joi.object({
       tagset: type.tagset(),
       s3VersionId: Joi.string(),
-      versionId: type.uuidv4
-    }).nand('s3VersionId', 'versionId')
+      versionId: type.uuidv4,
+    }).nand('s3VersionId', 'versionId'),
   },
 
   searchObjects: {
@@ -137,8 +137,8 @@ const schema = {
       public: type.truthy,
       active: type.truthy,
       deleteMarker: type.truthy,
-      latest: type.truthy
-    })
+      latest: type.truthy,
+    }),
   },
 
   fetchTags: {
@@ -146,32 +146,32 @@ const schema = {
       bucketId: scheme.guid,
       objectId: scheme.guid,
       tagset: type.tagset(),
-    })
+    }),
   },
 
   syncObject: {
     params: Joi.object({
-      objectId: type.uuidv4.required()
-    })
+      objectId: type.uuidv4.required(),
+    }),
   },
 
   togglePublic: {
     params: Joi.object({
-      objectId: type.uuidv4
+      objectId: type.uuidv4,
     }),
     query: Joi.object({
-      public: type.truthy
-    })
+      public: type.truthy,
+    }),
   },
 
   updateObject: {
     headers: type.metadata(),
     params: Joi.object({
-      objectId: type.uuidv4
+      objectId: type.uuidv4,
     }),
     query: Joi.object({
       tagset: type.tagset(),
-    })
+    }),
   },
 };
 
@@ -192,7 +192,7 @@ const validator = {
   searchObjects: validate(schema.searchObjects),
   syncObject: validate(schema.syncObject),
   togglePublic: validate(schema.togglePublic),
-  updateObject: validate(schema.updateObject)
+  updateObject: validate(schema.updateObject),
 };
 
 module.exports = validator;

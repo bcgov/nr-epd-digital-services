@@ -45,11 +45,13 @@ describe(`GET ${basePath}`, () => {
     validatorSpy.mockImplementation((req, res, next) => next());
     controllerSpy.mockImplementation((req, res, next) => res.status(200).end());
 
-    const response = await request(app).get(`${basePath}`).query({
-      userId: ['11bf5b37-e0b8-42e0-8dcf-dc8c4aefc000'],
-      idp: ['IDIR'],
-      active: 'true'
-    });
+    const response = await request(app)
+      .get(`${basePath}`)
+      .query({
+        userId: ['11bf5b37-e0b8-42e0-8dcf-dc8c4aefc000'],
+        idp: ['IDIR'],
+        active: 'true',
+      });
 
     expect(validatorSpy).toHaveBeenCalledTimes(1);
     expect(controllerSpy).toHaveBeenCalledTimes(1);
@@ -71,7 +73,9 @@ describe(`GET ${basePath}/idpList`, () => {
     validatorSpy.mockImplementation((req, res, next) => next());
     controllerSpy.mockImplementation((req, res, next) => res.status(200).end());
 
-    const response = await request(app).get(`${basePath}/idpList`).query({ active: 'true' });
+    const response = await request(app)
+      .get(`${basePath}/idpList`)
+      .query({ active: 'true' });
 
     expect(validatorSpy).toHaveBeenCalledTimes(1);
     expect(controllerSpy).toHaveBeenCalledTimes(1);

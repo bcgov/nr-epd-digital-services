@@ -3,37 +3,37 @@
 }
 
 .btn-danger {
-  border: 1px solid #2A4071;
-  color: #2A4071 !important;
+  border: 1px solid #2a4071;
+  color: #2a4071 !important;
   background-color: white !important;
 }
 
 .btn-danger:hover {
-  border: 1px solid #2A4071;
-  color: #2A4071 !important;
+  border: 1px solid #2a4071;
+  color: #2a4071 !important;
   background-color: white !important;
 }
 
 .btn-warning {
-  border: 1px solid #2A4071;
-  color: #2A4071 !important;
+  border: 1px solid #2a4071;
+  color: #2a4071 !important;
   background-color: white !important;
 }
 
 .btn-warning:hover {
-  border: 1px solid #2A4071;
-  color: #2A4071 !important;
+  border: 1px solid #2a4071;
+  color: #2a4071 !important;
   background-color: white !important;
 }
 
 .btn-success {
-  background: #2A4071 !important;
-  border: 1px solid #2A4071 !important;
+  background: #2a4071 !important;
+  border: 1px solid #2a4071 !important;
 }
 
 .btn-success:hover {
-  background: #2A4071 !important;
-  border: 1px solid #2A4071 !important;
+  background: #2a4071 !important;
+  border: 1px solid #2a4071 !important;
 }
 
 :root {
@@ -65,7 +65,7 @@
   --color-gray-800: #373a3c;
   --color-gray-900: #212529;
 
-  --color-bcgov--link: #38598A;
+  --color-bcgov--link: #38598a;
 
   --logo-path: "./logo.svg";
 
@@ -156,7 +156,9 @@ h4 {
 
 body {
   font-size: 16px;
-  font-family: Nunito Sans, SemiBold;
+  font-family:
+    Nunito Sans,
+    SemiBold;
   overflow: hidden;
 }
 
@@ -279,14 +281,16 @@ i.fa.fa-question-circle.text-muted {
   color: var(--navbar-active) !important;
 }
 
-.active-tab-dropdown>#dashboard-dropdown {
+.active-tab-dropdown > #dashboard-dropdown {
   background-color: transparent;
-  filter: invert(36%) sepia(38%) saturate(7152%) hue-rotate(227deg) brightness(101%) contrast(98%);
+  filter: invert(36%) sepia(38%) saturate(7152%) hue-rotate(227deg)
+    brightness(101%) contrast(98%);
 }
 
-.active-tab-dropdown>#task-dropdown {
+.active-tab-dropdown > #task-dropdown {
   background-color: transparent;
-  filter: invert(36%) sepia(38%) saturate(7152%) hue-rotate(227deg) brightness(101%) contrast(98%);
+  filter: invert(36%) sepia(38%) saturate(7152%) hue-rotate(227deg)
+    brightness(101%) contrast(98%);
 }
 
 .dropdown-item:hover {
@@ -330,26 +334,26 @@ i.fa.fa-question-circle.text-muted {
   content: "";
 }
 
-.taskDropdown>.dropdown-menu::before {
+.taskDropdown > .dropdown-menu::before {
   left: 10%;
   right: 100%;
 }
 
-.taskDropdown>.dasboard-icon-dropdown {
+.taskDropdown > .dasboard-icon-dropdown {
   margin-bottom: 5px;
 }
 
-.taskDropdown>.task-dropdown-icon {
+.taskDropdown > .task-dropdown-icon {
   margin-bottom: 1px;
 }
 
-.taskDropdown>.applications-icon-header {
+.taskDropdown > .applications-icon-header {
   width: 23px;
   height: 23px;
   margin-bottom: 5px;
 }
 
-.taskDropdown>.dropdown-menu::after {
+.taskDropdown > .dropdown-menu::after {
   left: 10%;
   right: 100%;
 }
@@ -527,9 +531,11 @@ select option:hover {
 #main {
   background-color: #fff;
   /* padding: 10px; */
-  box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2),
-    0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
-  padding: 2rem 6rem; 
+  box-shadow:
+    0 3px 3px -2px rgba(0, 0, 0, 0.2),
+    0px 3px 4px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+  padding: 2rem 6rem;
 }
 
 #sidebar {
@@ -540,7 +546,7 @@ select option:hover {
   background-color: #f8f8f8;
 }
 
-#sidebar ul li.active>a,
+#sidebar ul li.active > a,
 #sidebar a[aria-expanded="true"] {
   background: #fff;
 }
@@ -553,8 +559,10 @@ header nav {
   z-index: 2000;
   border-bottom: 2px solid #4d61fc !important;
   padding: 0 0.5rem !important;
-  box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2),
-    0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 3px 3px -2px rgba(0, 0, 0, 0.2),
+    0px 3px 4px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 8px 0px rgba(0, 0, 0, 0.12);
 }
 
 .rounded-circle {
@@ -579,7 +587,7 @@ header nav {
   background-color: #0071eb;
 }
 
-.sort-span:hover>.fa-lg-hover {
+.sort-span:hover > .fa-lg-hover {
   color: white;
 }
 
@@ -639,7 +647,7 @@ div[disabled] {
 
 .custom_primary_color {
   /* color: #0000ff; */
-  color: #2A3F71 !important;
+  color: #2a3f71 !important;
 }
 
 .tooltiptext {
@@ -666,7 +674,7 @@ div[disabled] {
 
 a {
   /* color: #0000ff; */
-  color: #2A3F71 !important;
+  color: #2a3f71 !important;
 }
 
 .info-background {
@@ -730,11 +738,11 @@ div.upload input[type="file"] {
   font-size: 14px;
 }
 
-.upload+.uploadButton {
+.upload + .uploadButton {
   height: 38px;
 }
 
-.admin-container>.header-container {
+.admin-container > .header-container {
   padding-top: 5rem !important;
   margin-left: 3.938rem;
   margin-right: 4.188rem;
@@ -743,14 +751,14 @@ div.upload input[type="file"] {
 }
 
 .head-item {
-  color: #ABABAB;
+  color: #ababab;
   cursor: pointer;
   padding-bottom: 3rem;
 }
 
 .head-active {
   color: #212529;
-  border-bottom: 4px solid #38598A;
+  border-bottom: 4px solid #38598a;
 }
 
 .padding-left-60 {
@@ -811,8 +819,9 @@ div.upload input[type="file"] {
   }
 }
 
-
-section.custom-grid.grid-forms .MuiTabs-scroller.MuiTabs-fixed > .MuiTabs-indicator  {
+section.custom-grid.grid-forms
+  .MuiTabs-scroller.MuiTabs-fixed
+  > .MuiTabs-indicator {
   background-color: var(--color-bcgov--link);
   height: 4px;
 }
@@ -829,19 +838,18 @@ section.custom-grid.grid-forms > div > .MuiTabs-root {
 }
 
 /* Target the "powered by Formsflow" footer */
-.main-container>.footer {
+.main-container > .footer {
   display: none;
 }
 
 /* tbody.table-bordered > tr > td[colspan=12] div { */
 td[colspan="12"] div {
-  border-color: var(--color-gray-300) !important
+  border-color: var(--color-gray-300) !important;
 }
-
 
 /* Applications page header */
 [data-testid="wrapper"] .table.table-bordered thead {
-  background-color: #f2f2f2
+  background-color: #f2f2f2;
 }
 
 /* #main > .container {
@@ -872,8 +880,17 @@ td[colspan="12"] div {
 }
 
 /* Style the datepicker in the table on Applications page */
-.react-bootstrap-table .react-daterange-picker .react-daterange-picker__inputGroup > span,
-.react-bootstrap-table .react-daterange-picker .react-daterange-picker__inputGroup > input::placeholder,
-.react-bootstrap-table .react-daterange-picker .react-daterange-picker__inputGroup svg {
+.react-bootstrap-table
+  .react-daterange-picker
+  .react-daterange-picker__inputGroup
+  > span,
+.react-bootstrap-table
+  .react-daterange-picker
+  .react-daterange-picker__inputGroup
+  > input::placeholder,
+.react-bootstrap-table
+  .react-daterange-picker
+  .react-daterange-picker__inputGroup
+  svg {
   color: #a7a7a7;
 }

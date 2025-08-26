@@ -1,25 +1,25 @@
-import { Field, ObjectType } from "@nestjs/graphql";
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class ViewApplications {
-    @Field()
-     id: number;
-   
-    @Field()
-    applicationId: number;
+  @Field()
+  id: number;
 
-    @Field()
-    roleId: number;
+  @Field()
+  applicationId: number;
 
-    @Field()
-    roleDescription: string;
+  @Field()
+  roleId: number;
 
-    @Field()
-    siteAddress: string;
+  @Field()
+  roleDescription: string;
 
-    @Field()
-    effectiveStartDate: Date;
+  @Field()
+  siteAddress: string;
 
-    @Field({ nullable: true })
-    effectiveEndDate?: Date | null;
+  @Field()
+  effectiveStartDate: Date;
+
+  @Field({ nullable: true })
+  effectiveEndDate?: Date | null;
 }

@@ -24,7 +24,7 @@ it("Renders Reviewer Dashboard", () => {
       <MemoryRouter>
         <Dashboard />
       </MemoryRouter>
-    </Provider>
+    </Provider>,
     //</AuthProvider>
   );
   const userListLink = screen.getByText(/Reviewer/i);
@@ -38,7 +38,7 @@ test("Renders External User Dashboard", () => {
       <MemoryRouter>
         <Dashboard />
       </MemoryRouter>
-    </Provider>
+    </Provider>,
     //</AuthProvider>
   );
   //console.log("screen",screen)

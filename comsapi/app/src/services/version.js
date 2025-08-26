@@ -20,29 +20,36 @@ const service = {
    * @returns {Promise<object>} The Version created in database
    * @throws The error encountered upon db transaction failure
    */
-  copy: async (sourceVersionId, targetVersionId, objectId, targetEtag, userId = SYSTEM_USER, etrx = undefined) => {
+  copy: async (
+    sourceVersionId,
+    targetVersionId,
+    objectId,
+    targetEtag,
+    userId = SYSTEM_USER,
+    etrx = undefined,
+  ) => {
     let trx;
     try {
       trx = etrx ? etrx : await Version.startTransaction();
 
       // if sourceVersionId is undefined, copy latest version
-      const sourceVersion = sourceVersionId ?
-        await Version.query(trx)
-          .where({
-            s3VersionId: sourceVersionId,
-            objectId: objectId
-          })
-          .first() :
-        await Version.query(trx)
-          .where({
-            objectId: objectId
-          })
-          // TODO: use isLatest where possible
-          .orderBy([
-            { column: 'createdAt', order: 'desc' },
-            { column: 'updatedAt', order: 'desc', nulls: 'last' }
-          ])
-          .first();
+      const sourceVersion = sourceVersionId
+        ? await Version.query(trx)
+            .where({
+              s3VersionId: sourceVersionId,
+              objectId: objectId,
+            })
+            .first()
+        : await Version.query(trx)
+            .where({
+              objectId: objectId,
+            })
+            // TODO: use isLatest where possible
+            .orderBy([
+              { column: 'createdAt', order: 'desc' },
+              { column: 'updatedAt', order: 'desc', nulls: 'last' },
+            ])
+            .first();
 
       const response = await Version.query(trx)
         .insert({
@@ -53,7 +60,7 @@ const service = {
           mimeType: sourceVersion.mimeType,
           deleteMarker: sourceVersion.deleteMarker,
           isLatest: true,
-          createdBy: userId
+          createdBy: userId,
         })
         .returning('*');
 
@@ -90,12 +97,13 @@ const service = {
           createdBy: userId,
           deleteMarker: data.deleteMarker,
           etag: data.etag,
-          isLatest: data.isLatest
+          isLatest: data.isLatest,
         })
         .returning('*');
 
       // if new version is latest, set all other versions to islatest: false
-      if (data.isLatest) await service.removeDuplicateLatest(response.id, data.id, trx);
+      if (data.isLatest)
+        await service.removeDuplicateLatest(response.id, data.id, trx);
 
       if (!etrx) await trx.commit();
       return Promise.resolve(response);
@@ -157,13 +165,11 @@ const service = {
         response = await Version.query(trx)
           .where({ s3VersionId: s3VersionId, objectId: objectId })
           .first();
-      }
-      else if (versionId) {
+      } else if (versionId) {
         response = await Version.query(trx)
           .where({ id: versionId, objectId: objectId })
           .first();
-      }
-      else {
+      } else {
         response = await Version.query(trx)
           .where('objectId', objectId)
           .andWhere('deleteMarker', false)
@@ -212,21 +218,23 @@ const service = {
    * @param {object} [etrx=undefined] An optional Objection Transaction object
    * @returns {Promise<Array<object>>} Array of versions that were updated
    */
-  removeDuplicateLatest: async(versionId, objectId, etrx = undefined) => {
+  removeDuplicateLatest: async (versionId, objectId, etrx = undefined) => {
     let trx;
     try {
       trx = etrx ? etrx : await Version.startTransaction();
 
-      const allVersions = await Version.query(trx)
-        .where('objectId', objectId);
+      const allVersions = await Version.query(trx).where('objectId', objectId);
 
       let updated = [];
-      if (allVersions.reduce((acc, curr) => curr.isLatest ? acc + 1 : acc, 0) > 1) {
+      if (
+        allVersions.reduce((acc, curr) => (curr.isLatest ? acc + 1 : acc), 0) >
+        1
+      ) {
         // set all other versions to islatest: false
         updated = await Version.query(trx)
           .update({ isLatest: false })
-          .whereNot({ 'id': versionId })
-          .andWhere('objectId',  objectId)
+          .whereNot({ id: versionId })
+          .andWhere('objectId', objectId)
           .andWhere({ isLatest: true });
       }
 
@@ -262,7 +270,7 @@ const service = {
           updatedBy: userId,
           mimeType: data.mimeType,
           etag: data.etag,
-          isLatest: data.isLatest
+          isLatest: data.isLatest,
         })
         .first()
         .returning('*');
@@ -294,11 +302,11 @@ const service = {
       const object = await objectService.read(objectId, trx);
       const s3Versions = await storageService.listAllObjectVersions({
         filePath: object.path,
-        bucketId: object.bucketId
+        bucketId: object.bucketId,
       });
-      const latestS3VersionId = s3Versions.DeleteMarkers
-        .concat(s3Versions.Versions)
-        .filter((v) => v.IsLatest)[0].VersionId;
+      const latestS3VersionId = s3Versions.DeleteMarkers.concat(
+        s3Versions.Versions,
+      ).filter((v) => v.IsLatest)[0].VersionId;
 
       // get same version from COMS db
       const current = await Version.query(trx)
@@ -308,8 +316,9 @@ const service = {
       let updated;
       // update as latest if not already and fetch
       if (!current.isLatest) {
-        updated = await Version.query(trx)
-          .updateAndFetchById(current.id, { isLatest: true });
+        updated = await Version.query(trx).updateAndFetchById(current.id, {
+          isLatest: true,
+        });
       }
       // set other versions in COMS db to isLatest=false
       await service.removeDuplicateLatest(current.id, current.objectId, trx);
@@ -320,8 +329,7 @@ const service = {
       if (!etrx && trx) await trx.rollback();
       throw err;
     }
-  }
-
+  },
 };
 
 module.exports = service;

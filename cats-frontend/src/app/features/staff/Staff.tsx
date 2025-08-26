@@ -104,15 +104,15 @@ const Staff = () => {
     // Define the mapping for sort fields based on whether it's the modal or main table
     const sortFields: any = isModal
       ? {
-        roleDescription: StaffSortByField.Role,
-        siteAddress: StaffSortByField.SiteAddress,
-        effectiveStartDate: StaffSortByField.StartDate,
-        effectiveEndDate: StaffSortByField.EndDate,
-      }
+          roleDescription: StaffSortByField.Role,
+          siteAddress: StaffSortByField.SiteAddress,
+          effectiveStartDate: StaffSortByField.StartDate,
+          effectiveEndDate: StaffSortByField.EndDate,
+        }
       : {
-        name: StaffSortByField.Name,
-        assignments: StaffSortByField.Assignment,
-      };
+          name: StaffSortByField.Name,
+          assignments: StaffSortByField.Assignment,
+        };
 
     // Default to 'Id' if the property name is not in the map
     const sortField =
@@ -273,9 +273,9 @@ const Staff = () => {
                 rolesLoading
                   ? []
                   : (roles?.getAllParticipantRoles?.data?.map((role) => ({
-                    key: role.id.toString(),
-                    value: role.description,
-                  })) ?? [])
+                      key: role.id.toString(),
+                      value: role.description,
+                    })) ?? [])
               }
               onChange={(value) => {
                 setQueryModalState((prev: IModalState) => ({

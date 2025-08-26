@@ -3,6 +3,7 @@
 This documentation covers the usage and features of the `Form` component, which renders a dynamic form with multiple input types and configurable fields. It is designed to handle a wide variety of form elements such as text inputs, dropdowns, date pickers, checkboxes, and more.
 
 ## Table of Contents
+
 1. [Overview](#overview)
 2. [Props](#props)
 3. [FormField Types](#formfield-types)
@@ -15,7 +16,7 @@ This documentation covers the usage and features of the `Form` component, which 
 
 ## Overview
 
-The `Form` component is a flexible and extensible form renderer built using **React**. It supports a wide variety of input types (e.g., text fields, checkboxes, dropdowns, date pickers) and is fully customizable. The component dynamically generates form fields based on the `formRows` prop, which contains a 2D array of field definitions. 
+The `Form` component is a flexible and extensible form renderer built using **React**. It supports a wide variety of input types (e.g., text fields, checkboxes, dropdowns, date pickers) and is fully customizable. The component dynamically generates form fields based on the `formRows` prop, which contains a 2D array of field definitions.
 
 ---
 
@@ -23,14 +24,14 @@ The `Form` component is a flexible and extensible form renderer built using **Re
 
 The `Form` component accepts the following props:
 
-| Prop Name            | Type                                     | Description |
-|----------------------|------------------------------------------|-------------|
-| `formRows`           | `IFormField[][]`                         | A 2D array representing the rows of form fields. Each field is defined by an object of type `IFormField`. |
-| `formData`           | `{ [key: string]: any | [Date, Date] }`  | An object that holds the data for each form field. The keys are field names, and values can be any type or a date range (for fields like DateRange). |
-| `editMode`           | `boolean` (optional)                     | Optional flag to indicate whether the form is in "edit mode". Defaults to `true`. |
-| `isLoading`          | `RequestStatus` (optional)               | Optional flag indicating whether data is being fetched or submitted. |
-| `srMode`             | `boolean` (optional)                     | Optional flag to render the form in a screen reader (accessibility) mode. |
-| `handleInputChange`  | `(graphQLPropertyName: string, value: string | [Date, Date]) => void` | Callback function to handle changes in input values. Receives the field's GraphQL property name and its updated value. |
+| Prop Name           | Type                                         | Description                                                                                               |
+| ------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `formRows`          | `IFormField[][]`                             | A 2D array representing the rows of form fields. Each field is defined by an object of type `IFormField`. |
+| `formData`          | `{ [key: string]: any                        | [Date, Date] }`                                                                                           | An object that holds the data for each form field. The keys are field names, and values can be any type or a date range (for fields like DateRange). |
+| `editMode`          | `boolean` (optional)                         | Optional flag to indicate whether the form is in "edit mode". Defaults to `true`.                         |
+| `isLoading`         | `RequestStatus` (optional)                   | Optional flag indicating whether data is being fetched or submitted.                                      |
+| `srMode`            | `boolean` (optional)                         | Optional flag to render the form in a screen reader (accessibility) mode.                                 |
+| `handleInputChange` | `(graphQLPropertyName: string, value: string | [Date, Date]) => void`                                                                                    | Callback function to handle changes in input values. Receives the field's GraphQL property name and its updated value.                               |
 
 ---
 
@@ -38,18 +39,18 @@ The `Form` component accepts the following props:
 
 The `IFormField` interface defines the different types of fields that can be used in the form. Here are the main field types supported:
 
-| Field Type              | Description |
-|-------------------------|-------------|
-| `FormFieldType.Text`     | A standard text input field. |
-| `FormFieldType.Search`   | A text input field with search capabilities. |
-| `FormFieldType.TextArea` | A multi-line text input (textarea). |
-| `FormFieldType.DropDown` | A dropdown select input. |
-| `FormFieldType.DropDownWithSearch` | A searchable dropdown input. |
-| `FormFieldType.DateRange` | A date range picker input. |
-| `FormFieldType.Date`     | A single date picker input. |
-| `FormFieldType.Checkbox` | A checkbox input. |
-| `FormFieldType.Group`    | A group of form fields, usually used to group related fields together. |
-| `FormFieldType.Link`     | A link or clickable text. |
+| Field Type                         | Description                                                            |
+| ---------------------------------- | ---------------------------------------------------------------------- |
+| `FormFieldType.Text`               | A standard text input field.                                           |
+| `FormFieldType.Search`             | A text input field with search capabilities.                           |
+| `FormFieldType.TextArea`           | A multi-line text input (textarea).                                    |
+| `FormFieldType.DropDown`           | A dropdown select input.                                               |
+| `FormFieldType.DropDownWithSearch` | A searchable dropdown input.                                           |
+| `FormFieldType.DateRange`          | A date range picker input.                                             |
+| `FormFieldType.Date`               | A single date picker input.                                            |
+| `FormFieldType.Checkbox`           | A checkbox input.                                                      |
+| `FormFieldType.Group`              | A group of form fields, usually used to group related fields together. |
+| `FormFieldType.Link`               | A link or clickable text.                                              |
 
 ---
 
@@ -154,16 +155,16 @@ The `FormFieldType` enum provides the possible types of fields that can be rende
 
 ```tsx
 export enum FormFieldType {
-  Text = "Text",
-  Search = "Search",
-  TextArea = "TextArea",
-  DropDown = "DropDown",
-  DropDownWithSearch = "DropDownWithSearch",
-  DateRange = "DateRange",
-  Date = "Date",
-  Checkbox = "Checkbox",
-  Group = "Group",
-  Link = "Link"
+  Text = 'Text',
+  Search = 'Search',
+  TextArea = 'TextArea',
+  DropDown = 'DropDown',
+  DropDownWithSearch = 'DropDownWithSearch',
+  DateRange = 'DateRange',
+  Date = 'Date',
+  Checkbox = 'Checkbox',
+  Group = 'Group',
+  Link = 'Link',
 }
 ```
 
@@ -277,6 +278,7 @@ export enum FormFieldType {
   - `customIcon`: Icon to display next to the link.
 
 ---
+
 # Example Usage
 
 Here is an example of how you can use the Form component to create a form with various field types.

@@ -3,7 +3,13 @@ const config = require('config');
 const { existsSync, readFileSync } = require('fs');
 const { join } = require('path');
 
-const { AuthMode, AuthType, DEFAULTREGION, MAXPARTCOUNT, MINPARTSIZE } = require('./constants');
+const {
+  AuthMode,
+  AuthType,
+  DEFAULTREGION,
+  MAXPARTCOUNT,
+  MINPARTSIZE,
+} = require('./constants');
 const log = require('./log')(module.filename);
 
 const DELIMITER = '/';
@@ -16,11 +22,12 @@ const utils = {
    * @returns {string} The string `str` but with dashes inserted, or `str` if not a string.
    */
   addDashesToUuid(str) {
-    if ((typeof str === 'string' || str instanceof String) && str.length === 32) {
-      return `${str.slice(0, 8)}-${str.slice(8, 12)}-${str.slice(12, 16)}-${str.slice(16, 20)}-${str.slice(20)}`
-        .toLowerCase();
-    }
-    else return str;
+    if (
+      (typeof str === 'string' || str instanceof String) &&
+      str.length === 32
+    ) {
+      return `${str.slice(0, 8)}-${str.slice(8, 12)}-${str.slice(12, 16)}-${str.slice(16, 20)}-${str.slice(20)}`.toLowerCase();
+    } else return str;
   },
 
   /**
@@ -83,7 +90,10 @@ const utils = {
         data.key = bucketData.key;
         data.secretAccessKey = bucketData.secretAccessKey;
         if (bucketData.region) data.region = bucketData.region;
-      } else if (config.has('objectStorage') && config.has('objectStorage.enabled')) {
+      } else if (
+        config.has('objectStorage') &&
+        config.has('objectStorage.enabled')
+      ) {
         data.accessKeyId = config.get('objectStorage.accessKeyId');
         data.bucket = config.get('objectStorage.bucket');
         data.endpoint = config.get('objectStorage.endpoint');
@@ -116,7 +126,8 @@ const utils = {
       bucketId = (await objectService.read(objId)).bucketId;
     } catch (err) {
       log.verbose(`${err.message}. Using default bucketId instead.`, {
-        function: 'getBucketId', objId: objId
+        function: 'getBucketId',
+        objId: objId,
       });
     }
     return bucketId;
@@ -131,9 +142,10 @@ const utils = {
    * @returns {string} The current user identifier if applicable, or `defaultValue`
    */
   getCurrentIdentity(currentUser, defaultValue = undefined) {
-    return utils.parseIdentityKeyClaims()
-      .map(claim => utils.getCurrentTokenClaim(currentUser, claim, undefined))
-      .filter(value => value) // Drop falsy values from array
+    return utils
+      .parseIdentityKeyClaims()
+      .map((claim) => utils.getCurrentTokenClaim(currentUser, claim, undefined))
+      .filter((value) => value) // Drop falsy values from array
       .concat(defaultValue)[0]; // Add defaultValue as last element of array
   },
 
@@ -157,7 +169,7 @@ const utils = {
    * @returns {object} The requested current token claim if applicable, or `defaultValue`
    */
   getCurrentTokenClaim(currentUser, claim, defaultValue = undefined) {
-    return (currentUser && currentUser.authType === AuthType.BEARER)
+    return currentUser && currentUser.authType === AuthType.BEARER
       ? currentUser.tokenPayload[claim]
       : defaultValue;
   },
@@ -171,7 +183,8 @@ const utils = {
   getGitRevision() {
     try {
       const gitDir = (() => {
-        let dir = '.git', i = 0;
+        let dir = '.git',
+          i = 0;
         while (!existsSync(join(__dirname, dir)) && i < 5) {
           dir = '../' + dir;
           i++;
@@ -179,10 +192,14 @@ const utils = {
         return dir;
       })();
 
-      const head = readFileSync(join(__dirname, `${gitDir}/HEAD`)).toString().trim();
-      return (head.indexOf(':') === -1)
+      const head = readFileSync(join(__dirname, `${gitDir}/HEAD`))
+        .toString()
+        .trim();
+      return head.indexOf(':') === -1
         ? head
-        : readFileSync(join(__dirname, `${gitDir}/${head.substring(5)}`)).toString().trim();
+        : readFileSync(join(__dirname, `${gitDir}/${head.substring(5)}`))
+            .toString()
+            .trim();
     } catch (err) {
       log.warn(err.message, { function: 'getGitRevision' });
       return '';
@@ -206,9 +223,10 @@ const utils = {
    * @returns {object | undefined} An object with metadata key/value pair attributes or undefined
    */
   getMetadata(obj) {
-    const metadata = Object.fromEntries(Object.keys(obj)
-      .filter((key) => key.toLowerCase().startsWith('x-amz-meta-'))
-      .map((key) => ([key.toLowerCase().substring(11), obj[key]]))
+    const metadata = Object.fromEntries(
+      Object.keys(obj)
+        .filter((key) => key.toLowerCase().startsWith('x-amz-meta-'))
+        .map((key) => [key.toLowerCase().substring(11), obj[key]]),
     );
     return Object.keys(metadata).length ? metadata : undefined;
   },
@@ -222,7 +240,7 @@ const utils = {
    * @returns {object} the matching object, or undefined
    */
   getObjectsByKeyValue(array, key, value) {
-    return array.find(obj => (obj.key === key && obj.value === value));
+    return array.find((obj) => obj.key === key && obj.value === value);
   },
 
   /**
@@ -240,7 +258,11 @@ const utils = {
       result = s3VersionId.toString();
     } else if (versionId) {
       const { versionService } = require('../services');
-      const version = await versionService.get({ versionId: versionId, s3VersionId: undefined, objectId: objectId });
+      const version = await versionService.get({
+        versionId: versionId,
+        s3VersionId: undefined,
+        objectId: objectId,
+      });
       if (version.s3VersionId) {
         result = version.s3VersionId;
       }
@@ -255,7 +277,7 @@ const utils = {
    * @returns array of unique objects based on value of a given property
    */
   getUniqueObjects(array, key) {
-    return [...new Map(array.map(item => [item[key], item])).values()];
+    return [...new Map(array.map((item) => [item[key], item])).values()];
   },
 
   /**
@@ -298,10 +320,12 @@ const utils = {
     if (prefix === path) return true; // Matching strings are always at the at the path
     if (path.endsWith(DELIMITER)) return false; // Trailing slashes references the folder
 
-    const pathParts = path.split(DELIMITER).filter(part => part);
-    const prefixParts = prefix.split(DELIMITER).filter(part => part);
-    return prefixParts.every((part, i) => pathParts[i] === part)
-      && pathParts.filter(part => !prefixParts.includes(part)).length === 1;
+    const pathParts = path.split(DELIMITER).filter((part) => part);
+    const prefixParts = prefix.split(DELIMITER).filter((part) => part);
+    return (
+      prefixParts.every((part, i) => pathParts[i] === part) &&
+      pathParts.filter((part) => !prefixParts.includes(part)).length === 1
+    );
   },
 
   /**
@@ -315,7 +339,11 @@ const utils = {
 
     const isStr = typeof value === 'string' || value instanceof String;
     const trueStrings = ['true', 't', 'yes', 'y', '1'];
-    return value === true || value === 1 || isStr && trueStrings.includes(value.toLowerCase());
+    return (
+      value === true ||
+      value === 1 ||
+      (isStr && trueStrings.includes(value.toLowerCase()))
+    );
   },
 
   /**
@@ -327,14 +355,14 @@ const utils = {
   joinPath(...items) {
     if (items && items.length) {
       const parts = [];
-      items.forEach(p => {
-        if (p) p.split(DELIMITER).forEach(x => {
-          if (x && x.trim().length) parts.push(x);
-        });
+      items.forEach((p) => {
+        if (p)
+          p.split(DELIMITER).forEach((x) => {
+            if (x && x.trim().length) parts.push(x);
+          });
       });
       return parts.join(DELIMITER);
-    }
-    else return '';
+    } else return '';
   },
 
   /**
@@ -347,8 +375,8 @@ const utils = {
     // Short circuit undefined if param is falsy
     if (!param) return undefined;
 
-    const parsed = (Array.isArray(param))
-      ? param.flatMap(p => utils.parseCSV(p))
+    const parsed = Array.isArray(param)
+      ? param.flatMap((p) => utils.parseCSV(p))
       : utils.parseCSV(param);
     const unique = [...new Set(parsed)];
 
@@ -362,8 +390,8 @@ const utils = {
    * @returns {string[]} An array of string values, or `value` if it is not a string
    */
   parseCSV(value) {
-    return (typeof value === 'string' || value instanceof String)
-      ? value.split(',').map(s => s.trim())
+    return typeof value === 'string' || value instanceof String
+      ? value.split(',').map((s) => s.trim())
       : value;
   },
 
@@ -382,13 +410,13 @@ const utils = {
   },
 
   /**
- * @function renameObjectProperty
- * Rename a property in given object
- * @param {object} obj The object with a property you are changing
- * @param {string} oldKey The property to rename
- * @param {string} newKey The new name for the property
- * @returns {object} the given object with property renamed
- */
+   * @function renameObjectProperty
+   * Rename a property in given object
+   * @param {object} obj The object with a property you are changing
+   * @param {string} oldKey The property to rename
+   * @param {string} newKey The new name for the property
+   * @returns {object} the given object with property renamed
+   */
   renameObjectProperty(obj, oldKey, newKey) {
     delete Object.assign(obj, { [newKey]: obj[oldKey] })[oldKey];
     return obj;
@@ -401,7 +429,8 @@ const utils = {
    * @param {Readable} stream A readable stream object
    * @returns {Buffer} A buffer usually formatted as an Uint8Array
    */
-  streamToBuffer(stream) { // Readable
+  streamToBuffer(stream) {
+    // Readable
     return new Promise((resolve, reject) => {
       const chunks = []; // Uint8Array[]
       stream.on('data', (chunk) => chunks.push(chunk));
@@ -417,7 +446,8 @@ const utils = {
    * @returns {string} The string `s` without the trailing delimiter, or an empty string.
    */
   stripDelimit(s) {
-    if (s) return s.endsWith(DELIMITER) ? utils.stripDelimit(s.slice(0, -1)) : s;
+    if (s)
+      return s.endsWith(DELIMITER) ? utils.stripDelimit(s.slice(0, -1)) : s;
     else return '';
   },
 
@@ -429,7 +459,7 @@ const utils = {
    */
   toLowerKeys(arr) {
     if (!arr || !Array.isArray(arr)) return undefined;
-    return arr.map(obj => {
+    return arr.map((obj) => {
       return Object.fromEntries(
         Object.entries(obj).map(([key, value]) => {
           return [key.toLowerCase(), value];

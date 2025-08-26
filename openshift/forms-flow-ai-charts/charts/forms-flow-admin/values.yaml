@@ -14,23 +14,22 @@ resources:
 formsflow:
   configmap: forms-flow-ai # name of formsflow.ai configmap
   secret: forms-flow-ai #name of formsflow.ai secret
-  analytics: forms-flow-analytics #name of analytics component 
-  
+  analytics: forms-flow-analytics #name of analytics component
 
 ingress:
   ingressClassName: ""
   annotations:
-#    kubernetes.io/ingress.class: nginx
-  enabled: true # create an ingress for this component 
+  #    kubernetes.io/ingress.class: nginx
+  enabled: true # create an ingress for this component
   hostname: "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}"
   port: 5000
   tls: true
   selfSigned: false
   extraTls:
-   - {}
-#    - secretName: "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}-tls"
-#      hosts:
-#        - "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}"
+    - {}
+  #    - secretName: "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}-tls"
+  #      hosts:
+  #        - "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}"
   path: /
 
 image:

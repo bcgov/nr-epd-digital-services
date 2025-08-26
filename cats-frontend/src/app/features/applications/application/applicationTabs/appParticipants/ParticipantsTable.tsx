@@ -205,7 +205,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
       const result =
         endDate &&
         endDate <
-        new Date(appParticipant.appParticipantDetails.effectiveStartDate);
+          new Date(appParticipant.appParticipantDetails.effectiveStartDate);
       if (graphQLPropertyName === 'effectiveEndDate') {
         if (result) {
           // If the end date is before the start date, reset it to null and alert user

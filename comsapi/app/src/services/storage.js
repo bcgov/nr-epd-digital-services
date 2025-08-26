@@ -19,14 +19,20 @@ const { Upload } = require('@aws-sdk/lib-storage');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const config = require('config');
 
-const { MetadataDirective, TaggingDirective } = require('../components/constants');
+const {
+  MetadataDirective,
+  TaggingDirective,
+} = require('../components/constants');
 const log = require('../components/log')(module.filename);
 const utils = require('../components/utils');
 
 const DELIMITER = '/';
 
 // Get app configuration
-const defaultTempExpiresIn = parseInt(config.get('server.defaultTempExpiresIn'), 10);
+const defaultTempExpiresIn = parseInt(
+  config.get('server.defaultTempExpiresIn'),
+  10,
+);
 
 /**
  * The Core S3 Object Storage Service
@@ -46,18 +52,22 @@ const objectStorageService = {
    */
   _getS3Client: ({ accessKeyId, endpoint, region, secretAccessKey } = {}) => {
     if (!accessKeyId || !endpoint || !region || !secretAccessKey) {
-      log.error('Unable to generate S3Client due to missing arguments', { function: '_getS3Client' });
+      log.error('Unable to generate S3Client due to missing arguments', {
+        function: '_getS3Client',
+      });
     }
 
     return new S3Client({
       credentials: {
         accessKeyId: accessKeyId,
-        secretAccessKey: secretAccessKey
+        secretAccessKey: secretAccessKey,
       },
       endpoint: endpoint,
       forcePathStyle: true,
-      logger: ['silly', 'debug'].includes(config.get('server.logLevel')) ? log : undefined,
-      region: region
+      logger: ['silly', 'debug'].includes(config.get('server.logLevel'))
+        ? log
+        : undefined,
+      region: region,
     });
   },
 
@@ -82,7 +92,7 @@ const objectStorageService = {
     metadataDirective = MetadataDirective.COPY,
     taggingDirective = TaggingDirective.COPY,
     s3VersionId = undefined,
-    bucketId = undefined
+    bucketId = undefined,
   }) {
     const data = await utils.getBucket(bucketId);
     const params = {
@@ -92,13 +102,15 @@ const objectStorageService = {
       Metadata: metadata,
       MetadataDirective: metadataDirective,
       TaggingDirective: taggingDirective,
-      VersionId: s3VersionId
+      VersionId: s3VersionId,
     };
 
     if (tags) {
-      params.Tagging = Object.entries(tags).map(([key, value]) => {
-        return `${key}=${encodeURIComponent(value)}`;
-      }).join('&');
+      params.Tagging = Object.entries(tags)
+        .map(([key, value]) => {
+          return `${key}=${encodeURIComponent(value)}`;
+        })
+        .join('&');
     }
 
     return this._getS3Client(data).send(new CopyObjectCommand(params));
@@ -112,12 +124,16 @@ const objectStorageService = {
    * @param {string} [options.bucketId] Optional bucketId
    * @returns {Promise<object>} The response of the delete object operation
    */
-  async deleteObject({ filePath, s3VersionId = undefined, bucketId = undefined }) {
+  async deleteObject({
+    filePath,
+    s3VersionId = undefined,
+    bucketId = undefined,
+  }) {
     const data = await utils.getBucket(bucketId);
     const params = {
       Bucket: data.bucket,
       Key: filePath,
-      VersionId: s3VersionId
+      VersionId: s3VersionId,
     };
 
     return this._getS3Client(data).send(new DeleteObjectCommand(params));
@@ -131,12 +147,16 @@ const objectStorageService = {
    * @param {string} [options.bucketId] Optional bucketId
    * @returns {Promise<object>} The response of the delete object tagging operation
    */
-  async deleteObjectTagging({ filePath, s3VersionId = undefined, bucketId = undefined }) {
+  async deleteObjectTagging({
+    filePath,
+    s3VersionId = undefined,
+    bucketId = undefined,
+  }) {
     const data = await utils.getBucket(bucketId);
     const params = {
       Bucket: data.bucket,
       Key: filePath,
-      VersionId: s3VersionId
+      VersionId: s3VersionId,
     };
 
     return this._getS3Client(data).send(new DeleteObjectTaggingCommand(params));
@@ -151,7 +171,7 @@ const objectStorageService = {
   async getBucketEncryption(bucketId = undefined) {
     const data = await utils.getBucket(bucketId);
     const params = {
-      Bucket: data.bucket
+      Bucket: data.bucket,
     };
 
     return this._getS3Client(data).send(new GetBucketEncryptionCommand(params));
@@ -166,9 +186,11 @@ const objectStorageService = {
   async getBucketVersioning(bucketId = undefined) {
     const data = await utils.getBucket(bucketId);
     const params = {
-      Bucket: data.bucket
+      Bucket: data.bucket,
     };
-    const response = await this._getS3Client(data).send(new GetBucketVersioningCommand(params));
+    const response = await this._getS3Client(data).send(
+      new GetBucketVersioningCommand(params),
+    );
     return Promise.resolve(response.Status === 'Enabled');
   },
 
@@ -180,12 +202,16 @@ const objectStorageService = {
    * @param {string} [options.bucketId] Optional bucketId
    * @returns {Promise<object>} The response of the get object tagging operation
    */
-  async getObjectTagging({ filePath, s3VersionId = undefined, bucketId = undefined }) {
+  async getObjectTagging({
+    filePath,
+    s3VersionId = undefined,
+    bucketId = undefined,
+  }) {
     const data = await utils.getBucket(bucketId);
     const params = {
       Bucket: data.bucket,
       Key: filePath,
-      VersionId: s3VersionId
+      VersionId: s3VersionId,
     };
 
     return this._getS3Client(data).send(new GetObjectTaggingCommand(params));
@@ -224,12 +250,16 @@ const objectStorageService = {
    * @returns {Promise<HeadObjectCommandOutput>} The response of the head object operation
    * @throws If object is not found
    */
-  async headObject({ filePath, s3VersionId = undefined, bucketId = undefined }) {
+  async headObject({
+    filePath,
+    s3VersionId = undefined,
+    bucketId = undefined,
+  }) {
     const data = await utils.getBucket(bucketId);
     const params = {
       Bucket: data.bucket,
       Key: filePath,
-      VersionId: s3VersionId
+      VersionId: s3VersionId,
     };
     return this._getS3Client(data).send(new HeadObjectCommand(params));
   },
@@ -243,7 +273,11 @@ const objectStorageService = {
    * @param {boolean} [options.precisePath=true] Optional boolean for filtering results based on the precise path
    * @returns {Promise<object[]>} An array of objects matching the criteria
    */
-  async listAllObjects({ filePath = undefined, bucketId = undefined, precisePath = true } = {}) {
+  async listAllObjects({
+    filePath = undefined,
+    bucketId = undefined,
+    precisePath = true,
+  } = {}) {
     const key = filePath ?? (await utils.getBucket(bucketId)).key;
     const path = key !== DELIMITER ? key : '';
 
@@ -252,15 +286,19 @@ const objectStorageService = {
     let incomplete = false;
     let nextToken = undefined;
     do {
-      const { Contents, IsTruncated, NextContinuationToken } = await this.listObjectsV2({
-        filePath: path,
-        continuationToken: nextToken,
-        bucketId: bucketId
-      });
+      const { Contents, IsTruncated, NextContinuationToken } =
+        await this.listObjectsV2({
+          filePath: path,
+          continuationToken: nextToken,
+          bucketId: bucketId,
+        });
 
-      if (Contents) objects.push(
-        ...Contents.filter(object => !precisePath || utils.isAtPath(path, object.Key))
-      );
+      if (Contents)
+        objects.push(
+          ...Contents.filter(
+            (object) => !precisePath || utils.isAtPath(path, object.Key),
+          ),
+        );
       incomplete = IsTruncated;
       nextToken = NextContinuationToken;
     } while (incomplete);
@@ -278,7 +316,12 @@ const objectStorageService = {
    * @param {boolean} [options.filterLatest=false] Optional boolean for filtering results to only entries with IsLatest being true
    * @returns {Promise<object>} An object containg an array of DeleteMarkers and Versions
    */
-  async listAllObjectVersions({ filePath = undefined, bucketId = undefined, precisePath = true, filterLatest = false } = {}) {
+  async listAllObjectVersions({
+    filePath = undefined,
+    bucketId = undefined,
+    precisePath = true,
+    filterLatest = false,
+  } = {}) {
     const key = filePath ?? (await utils.getBucket(bucketId)).key;
     const path = key !== DELIMITER ? key : '';
 
@@ -288,27 +331,33 @@ const objectStorageService = {
     let incomplete = false;
     let nextKeyMarker = undefined;
     do {
-      const { DeleteMarkers, Versions, IsTruncated, NextKeyMarker } = await this.listObjectVersion({
-        filePath: path,
-        keyMarker: nextKeyMarker,
-        bucketId: bucketId
-      });
+      const { DeleteMarkers, Versions, IsTruncated, NextKeyMarker } =
+        await this.listObjectVersion({
+          filePath: path,
+          keyMarker: nextKeyMarker,
+          bucketId: bucketId,
+        });
 
-      if (DeleteMarkers) deleteMarkers.push(
-        ...DeleteMarkers
-          .filter(object => !precisePath || utils.isAtPath(path, object.Key))
-          .filter(object => !filterLatest || object.IsLatest === true)
-      );
-      if (Versions) versions.push(
-        ...Versions
-          .filter(object => !precisePath || utils.isAtPath(path, object.Key))
-          .filter(object => !filterLatest || object.IsLatest === true)
-      );
+      if (DeleteMarkers)
+        deleteMarkers.push(
+          ...DeleteMarkers.filter(
+            (object) => !precisePath || utils.isAtPath(path, object.Key),
+          ).filter((object) => !filterLatest || object.IsLatest === true),
+        );
+      if (Versions)
+        versions.push(
+          ...Versions.filter(
+            (object) => !precisePath || utils.isAtPath(path, object.Key),
+          ).filter((object) => !filterLatest || object.IsLatest === true),
+        );
       incomplete = IsTruncated;
       nextKeyMarker = NextKeyMarker;
     } while (incomplete);
 
-    return Promise.resolve({ DeleteMarkers: deleteMarkers, Versions: versions });
+    return Promise.resolve({
+      DeleteMarkers: deleteMarkers,
+      Versions: versions,
+    });
   },
 
   /**
@@ -320,14 +369,19 @@ const objectStorageService = {
    * @param {string} [options.bucketId=undefined] Optional bucketId
    * @returns {Promise<object>} The response of the list objects v2 operation
    */
-  async listObjectsV2({ filePath = undefined, continuationToken = undefined, maxKeys = undefined, bucketId = undefined } = {}) {
+  async listObjectsV2({
+    filePath = undefined,
+    continuationToken = undefined,
+    maxKeys = undefined,
+    bucketId = undefined,
+  } = {}) {
     const data = await utils.getBucket(bucketId);
     const prefix = data.key !== DELIMITER ? data.key : '';
     const params = {
       Bucket: data.bucket,
       ContinuationToken: continuationToken,
       MaxKeys: maxKeys,
-      Prefix: filePath ?? prefix // Must filter via "prefix" - https://stackoverflow.com/a/56569856
+      Prefix: filePath ?? prefix, // Must filter via "prefix" - https://stackoverflow.com/a/56569856
     };
 
     return this._getS3Client(data).send(new ListObjectsV2Command(params));
@@ -342,14 +396,19 @@ const objectStorageService = {
    * @param {string} [options.bucketId=undefined] Optional bucketId
    * @returns {Promise<object>} The response of the list object version operation
    */
-  async listObjectVersion({ filePath = undefined, keyMarker = undefined, maxKeys = undefined, bucketId = undefined } = {}) {
+  async listObjectVersion({
+    filePath = undefined,
+    keyMarker = undefined,
+    maxKeys = undefined,
+    bucketId = undefined,
+  } = {}) {
     const data = await utils.getBucket(bucketId);
     const prefix = data.key !== DELIMITER ? data.key : '';
     const params = {
       Bucket: data.bucket,
       KeyMarker: keyMarker,
       MaxKeys: maxKeys,
-      Prefix: filePath ?? prefix // Must filter via "prefix" - https://stackoverflow.com/a/56569856
+      Prefix: filePath ?? prefix, // Must filter via "prefix" - https://stackoverflow.com/a/56569856
     };
 
     return this._getS3Client(data).send(new ListObjectVersionsCommand(params));
@@ -364,7 +423,11 @@ const objectStorageService = {
    * @param {string} [bucketId] Optional bucketId
    * @returns {Promise<string>} A presigned url for the direct S3 REST `command` operation
    */
-  async presignUrl(command, expiresIn = defaultTempExpiresIn, bucketId = undefined) {
+  async presignUrl(
+    command,
+    expiresIn = defaultTempExpiresIn,
+    bucketId = undefined,
+  ) {
     const data = await utils.getBucket(bucketId);
     return getSignedUrl(this._getS3Client(data), command, { expiresIn });
   },
@@ -379,12 +442,14 @@ const objectStorageService = {
     const params = {
       Bucket: data.bucket,
       ServerSideEncryptionConfiguration: {
-        Rules: [{
-          ApplyServerSideEncryptionByDefault: {
-            SSEAlgorithm: 'AES256'
-          }
-        }]
-      }
+        Rules: [
+          {
+            ApplyServerSideEncryptionByDefault: {
+              SSEAlgorithm: 'AES256',
+            },
+          },
+        ],
+      },
     };
 
     return this._getS3Client(data).send(new PutBucketEncryptionCommand(params));
@@ -402,7 +467,15 @@ const objectStorageService = {
    * @param {string} [options.bucketId] Optional bucketId
    * @returns {Promise<object>} The response of the put object operation
    */
-  async putObject({ stream, name, length, mimeType, metadata, tags, bucketId = undefined }) {
+  async putObject({
+    stream,
+    name,
+    length,
+    mimeType,
+    metadata,
+    tags,
+    bucketId = undefined,
+  }) {
     const data = await utils.getBucket(bucketId);
     const params = {
       Bucket: data.bucket,
@@ -411,7 +484,9 @@ const objectStorageService = {
       ContentLength: length,
       ContentType: mimeType,
       Metadata: metadata,
-      Tagging: Object.entries({ ...tags }).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&')
+      Tagging: Object.entries({ ...tags })
+        .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+        .join('&'),
       // TODO: Consider adding API param support for Server Side Encryption
       // ServerSideEncryption: 'AES256'
     };
@@ -428,15 +503,20 @@ const objectStorageService = {
    * @param {string} [options.bucketId] Optional bucketId
    * @returns {Promise<object>} The response of the put object tagging operation
    */
-  async putObjectTagging({ filePath, tags, s3VersionId = undefined, bucketId = undefined }) {
+  async putObjectTagging({
+    filePath,
+    tags,
+    s3VersionId = undefined,
+    bucketId = undefined,
+  }) {
     const data = await utils.getBucket(bucketId);
     const params = {
       Bucket: data.bucket,
       Key: filePath,
       Tagging: {
-        TagSet: tags
+        TagSet: tags,
       },
-      VersionId: s3VersionId
+      VersionId: s3VersionId,
     };
 
     return this._getS3Client(data).send(new PutObjectTaggingCommand(params));
@@ -450,12 +530,16 @@ const objectStorageService = {
    * @param {string} [options.bucketId] Optional bucketId
    * @returns {Promise<object>} The response of the get object operation
    */
-  async readObject({ filePath, s3VersionId = undefined, bucketId = undefined }) {
+  async readObject({
+    filePath,
+    s3VersionId = undefined,
+    bucketId = undefined,
+  }) {
     const data = await utils.getBucket(bucketId);
     const params = {
       Bucket: data.bucket,
       Key: filePath,
-      VersionId: s3VersionId
+      VersionId: s3VersionId,
     };
 
     return this._getS3Client(data).send(new GetObjectCommand(params));
@@ -470,13 +554,18 @@ const objectStorageService = {
    * @param {string} [options.bucketId] Optional bucketId
    * @returns {Promise<string>} A presigned url for the direct S3 REST `command` operation
    */
-  async readSignedUrl({ filePath, expiresIn, s3VersionId = undefined, bucketId = undefined }) {
+  async readSignedUrl({
+    filePath,
+    expiresIn,
+    s3VersionId = undefined,
+    bucketId = undefined,
+  }) {
     const data = await utils.getBucket(bucketId);
     const expires = expiresIn || defaultTempExpiresIn;
     const params = {
       Bucket: data.bucket,
       Key: filePath,
-      VersionId: s3VersionId
+      VersionId: s3VersionId,
     };
 
     return this.presignUrl(new GetObjectCommand(params), expires, bucketId);
@@ -494,7 +583,15 @@ const objectStorageService = {
    * @param {string} [options.bucketId] Optional bucketId
    * @returns {Promise<CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput>} The response of the put object operation
    */
-  async upload({ stream, name, length, mimeType, metadata, tags, bucketId = undefined }) {
+  async upload({
+    stream,
+    name,
+    length,
+    mimeType,
+    metadata,
+    tags,
+    bucketId = undefined,
+  }) {
     const data = await utils.getBucket(bucketId);
 
     const upload = new Upload({
@@ -505,19 +602,21 @@ const objectStorageService = {
         Body: stream,
         ContentType: mimeType,
         Metadata: metadata,
-        Tagging: Object.entries({ ...tags }).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&')
+        Tagging: Object.entries({ ...tags })
+          .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+          .join('&'),
         // TODO: Consider adding API param support for Server Side Encryption
         // ServerSideEncryption: 'AES256'
       },
-      partSize: utils.calculatePartSize(length)
+      partSize: utils.calculatePartSize(length),
     });
 
-    upload.on('httpUploadProgress', progress => {
+    upload.on('httpUploadProgress', (progress) => {
       log.debug(progress, { function: 'onhttpUploadProgress' });
     });
 
     return upload.done();
-  }
+  },
 };
 
 module.exports = objectStorageService;

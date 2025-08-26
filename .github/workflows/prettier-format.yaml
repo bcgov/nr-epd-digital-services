@@ -25,7 +25,7 @@ jobs:
           prettier_options: --check ./cats-frontend/src/**/*.{js,ts,jsx,tsx,json,css} --ignore-path ./cats-frontend/.prettierignore --config ./cats-frontend/.prettierrc
           only_changed: True
           dry: True
-      
+
       - name: Formatting issues found
         if: failure()
         run: echo "::warning::Code formatting check failed. Try running npm run format in the project that caused the error and commit your changes"

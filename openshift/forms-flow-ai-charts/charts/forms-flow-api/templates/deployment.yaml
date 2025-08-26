@@ -21,158 +21,158 @@ spec:
         app: "{{ .Chart.Name }}"
     spec:
       containers:
-      - env:
-        - name: MONGODB_URI
-          valueFrom:
-            configMapKeyRef:
-              key: MONGODB_URI
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: BPM_API_URL
-          valueFrom:
-            configMapKeyRef:
-              key: BPM_API_URL
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: BPM_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              key: KEYCLOAK_CLIENTID
-              name: "{{ .Values.formsflow.secret }}"
-        - name: BPM_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              key: KEYCLOAK_CLIENTSECRET
-              name: "{{ .Values.formsflow.secret }}"
-        - name: BPM_TOKEN_API
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_TOKEN_URL
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: DATABASE_NAME
-          valueFrom:
-            configMapKeyRef:
-              key: DATABASE_NAME
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: DATABASE_PORT
-          valueFrom:
-            configMapKeyRef:
-              key: DATABASE_PORT
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: DATABASE_SERVICE_NAME
-          valueFrom:
-            configMapKeyRef:
-              key: DATABASE_SERVICE_NAME
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: DATABASE_URL
-          valueFrom:
-            configMapKeyRef:
-              key: DATABASE_URL
-              name: "{{ .Chart.Name }}"
-        - name: JWT_OIDC_ALGORITHMS
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_JWT_OIDC_ALGORITHMS
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: JWT_OIDC_AUDIENCE
-          valueFrom:
-            secretKeyRef:
-              key: WEB_CLIENTID
-              name: "{{ .Values.formsflow.secret }}"
-        - name: JWT_OIDC_CACHING_ENABLED
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_JWT_OIDC_CACHING_ENABLED
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: JWT_OIDC_ISSUER
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_JWT_OIDC_ISSUER
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: JWT_OIDC_JWKS_CACHE_TIMEOUT
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_JWT_OIDC_JWKS_CACHE_TIMEOUT
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: JWT_OIDC_JWKS_URI
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_JWT_OIDC_JWKS_URI
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: JWT_OIDC_WELL_KNOWN_CONFIG
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_JWT_OIDC_CONFIG
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: KEYCLOAK_URL
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_URL
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: WEB_API_BASE_URL
-          valueFrom:
-            configMapKeyRef:
-              key: WEB_API_URL
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: KEYCLOAK_URL_REALM
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_URL_REALM
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: INSIGHT_API_URL
-          valueFrom:
-            configMapKeyRef:
-              key: INSIGHT_API_URL
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: INSIGHT_API_KEY
-          valueFrom:
-            secretKeyRef:
-              key: INSIGHT_API_KEY
-              name: "{{ .Values.formsflow.secret }}"
-        - name: KEYCLOAK_ENABLE_CLIENT_AUTH
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_ENABLE_CLIENT_AUTH
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: MULTI_TENANCY_ENABLED
-          valueFrom:
-            configMapKeyRef:
-              key: MULTI_TENANCY_ENABLED
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: FORMIO_URL
-          valueFrom:
-            configMapKeyRef:
-              key: FORMIO_URL
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: FORMIO_ROOT_EMAIL
-          valueFrom:
-            secretKeyRef:
-              key: FORMIO_ROOT_EMAIL
-              name: "{{ .Values.formsflow.secret }}"
-        - name: FORMIO_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: FORMIO_ROOT_PASSWORD
-              name: "{{ .Values.formsflow.secret }}"
-        - name: FORMIO_JWT_SECRET
-          valueFrom:
-            secretKeyRef:
-              key: FORMIO_JWT_SECRET
-              name: "{{ .Values.formsflow.secret }}"
+        - env:
+            - name: MONGODB_URI
+              valueFrom:
+                configMapKeyRef:
+                  key: MONGODB_URI
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: BPM_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: BPM_API_URL
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: BPM_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  key: KEYCLOAK_CLIENTID
+                  name: "{{ .Values.formsflow.secret }}"
+            - name: BPM_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: KEYCLOAK_CLIENTSECRET
+                  name: "{{ .Values.formsflow.secret }}"
+            - name: BPM_TOKEN_API
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_TOKEN_URL
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: DATABASE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  key: DATABASE_NAME
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: DATABASE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: DATABASE_PORT
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: DATABASE_SERVICE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  key: DATABASE_SERVICE_NAME
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: DATABASE_URL
+                  name: "{{ .Chart.Name }}"
+            - name: JWT_OIDC_ALGORITHMS
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_JWT_OIDC_ALGORITHMS
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: JWT_OIDC_AUDIENCE
+              valueFrom:
+                secretKeyRef:
+                  key: WEB_CLIENTID
+                  name: "{{ .Values.formsflow.secret }}"
+            - name: JWT_OIDC_CACHING_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_JWT_OIDC_CACHING_ENABLED
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: JWT_OIDC_ISSUER
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_JWT_OIDC_ISSUER
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: JWT_OIDC_JWKS_CACHE_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_JWT_OIDC_JWKS_CACHE_TIMEOUT
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: JWT_OIDC_JWKS_URI
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_JWT_OIDC_JWKS_URI
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: JWT_OIDC_WELL_KNOWN_CONFIG
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_JWT_OIDC_CONFIG
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: KEYCLOAK_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_URL
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: WEB_API_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: WEB_API_URL
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: KEYCLOAK_URL_REALM
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_URL_REALM
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: INSIGHT_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: INSIGHT_API_URL
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: INSIGHT_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: INSIGHT_API_KEY
+                  name: "{{ .Values.formsflow.secret }}"
+            - name: KEYCLOAK_ENABLE_CLIENT_AUTH
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_ENABLE_CLIENT_AUTH
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: MULTI_TENANCY_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  key: MULTI_TENANCY_ENABLED
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: FORMIO_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: FORMIO_URL
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: FORMIO_ROOT_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  key: FORMIO_ROOT_EMAIL
+                  name: "{{ .Values.formsflow.secret }}"
+            - name: FORMIO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: FORMIO_ROOT_PASSWORD
+                  name: "{{ .Values.formsflow.secret }}"
+            - name: FORMIO_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: FORMIO_JWT_SECRET
+                  name: "{{ .Values.formsflow.secret }}"
 
-        - name: FORMSFLOW_API_CORS_ORIGINS
-          value: '*'
-        image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        name: "{{ .Chart.Name }}"
-        ports:
-        - containerPort: {{ .Values.ingress.port }}
-        resources:
-          limits:
-            cpu: "{{ .Values.resources.limits.cpu }}"
-            memory: "{{ .Values.resources.limits.memory }}"
-          requests:
-            cpu: "{{ .Values.resources.requests.cpu }}"
-            memory: "{{ .Values.resources.requests.memory }}"
-        stdin: true
-        tty: true
+            - name: FORMSFLOW_API_CORS_ORIGINS
+              value: "*"
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          name: "{{ .Chart.Name }}"
+          ports:
+            - containerPort: { { .Values.ingress.port } }
+          resources:
+            limits:
+              cpu: "{{ .Values.resources.limits.cpu }}"
+              memory: "{{ .Values.resources.limits.memory }}"
+            requests:
+              cpu: "{{ .Values.resources.requests.cpu }}"
+              memory: "{{ .Values.resources.requests.memory }}"
+          stdin: true
+          tty: true
       restartPolicy: Always
       imagePullSecrets:
-      - name: "{{ .Values.formsflow.auth }}"
+        - name: "{{ .Values.formsflow.auth }}"

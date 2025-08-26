@@ -3,7 +3,9 @@ import Map from "../../../../node_modules/react-parcelmap-bc/dist/Map";
 
 export default React.memo(() => {
   const [data, setData] = useState();
-  const [location, setLocation] = useState([48.41974533439947, -123.36781242160622]);
+  const [location, setLocation] = useState([
+    48.41974533439947, -123.36781242160622,
+  ]);
   const [readOnly, setReadOnly] = useState(false);
 
   useEffect(() => {

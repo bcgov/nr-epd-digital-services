@@ -7,25 +7,38 @@ export type GetPersonByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['Float']['input'];
 }>;
 
-
-export type GetPersonByIdQuery = { __typename?: 'Query', findPersonById: { __typename?: 'PersonResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, data?: Array<{ __typename?: 'ViewPerson', id: number, firstName: string, middleName?: string | null, lastName: string }> | null } };
-
+export type GetPersonByIdQuery = {
+  __typename?: 'Query';
+  findPersonById: {
+    __typename?: 'PersonResponse';
+    httpStatusCode?: number | null;
+    success?: boolean | null;
+    message?: string | null;
+    data?: Array<{
+      __typename?: 'ViewPerson';
+      id: number;
+      firstName: string;
+      middleName?: string | null;
+      lastName: string;
+    }> | null;
+  };
+};
 
 export const GetPersonByIdDocument = gql`
-    query GetPersonById($id: Float!) {
-  findPersonById(id: $id) {
-    data {
-      id
-      firstName
-      middleName
-      lastName
+  query GetPersonById($id: Float!) {
+    findPersonById(id: $id) {
+      data {
+        id
+        firstName
+        middleName
+        lastName
+      }
+      httpStatusCode
+      success
+      message
     }
-    httpStatusCode
-    success
-    message
   }
-}
-    `;
+`;
 
 /**
  * __useGetPersonByIdQuery__
@@ -43,19 +56,61 @@ export const GetPersonByIdDocument = gql`
  *   },
  * });
  */
-export function useGetPersonByIdQuery(baseOptions: Apollo.QueryHookOptions<GetPersonByIdQuery, GetPersonByIdQueryVariables> & ({ variables: GetPersonByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPersonByIdQuery, GetPersonByIdQueryVariables>(GetPersonByIdDocument, options);
-      }
-export function useGetPersonByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPersonByIdQuery, GetPersonByIdQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPersonByIdQuery, GetPersonByIdQueryVariables>(GetPersonByIdDocument, options);
-        }
-export function useGetPersonByIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetPersonByIdQuery, GetPersonByIdQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetPersonByIdQuery, GetPersonByIdQueryVariables>(GetPersonByIdDocument, options);
-        }
-export type GetPersonByIdQueryHookResult = ReturnType<typeof useGetPersonByIdQuery>;
-export type GetPersonByIdLazyQueryHookResult = ReturnType<typeof useGetPersonByIdLazyQuery>;
-export type GetPersonByIdSuspenseQueryHookResult = ReturnType<typeof useGetPersonByIdSuspenseQuery>;
-export type GetPersonByIdQueryResult = Apollo.QueryResult<GetPersonByIdQuery, GetPersonByIdQueryVariables>;
+export function useGetPersonByIdQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetPersonByIdQuery,
+    GetPersonByIdQueryVariables
+  > &
+    (
+      | { variables: GetPersonByIdQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetPersonByIdQuery, GetPersonByIdQueryVariables>(
+    GetPersonByIdDocument,
+    options,
+  );
+}
+export function useGetPersonByIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetPersonByIdQuery,
+    GetPersonByIdQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetPersonByIdQuery, GetPersonByIdQueryVariables>(
+    GetPersonByIdDocument,
+    options,
+  );
+}
+export function useGetPersonByIdSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetPersonByIdQuery,
+        GetPersonByIdQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetPersonByIdQuery,
+    GetPersonByIdQueryVariables
+  >(GetPersonByIdDocument, options);
+}
+export type GetPersonByIdQueryHookResult = ReturnType<
+  typeof useGetPersonByIdQuery
+>;
+export type GetPersonByIdLazyQueryHookResult = ReturnType<
+  typeof useGetPersonByIdLazyQuery
+>;
+export type GetPersonByIdSuspenseQueryHookResult = ReturnType<
+  typeof useGetPersonByIdSuspenseQuery
+>;
+export type GetPersonByIdQueryResult = Apollo.QueryResult<
+  GetPersonByIdQuery,
+  GetPersonByIdQueryVariables
+>;

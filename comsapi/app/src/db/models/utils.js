@@ -33,7 +33,7 @@ const utils = {
   },
 
   inArrayClause(column, values) {
-    return values.map(p => `'${p}' = ANY("${column}")`).join(' or ');
+    return values.map((p) => `'${p}' = ANY("${column}")`).join(' or ');
   },
 
   inArrayFilter(column, values) {
@@ -50,7 +50,7 @@ const utils = {
    */
   redactSecrets(data, fields) {
     if (fields && Array.isArray(fields) && fields.length) {
-      fields.forEach(field => {
+      fields.forEach((field) => {
         if (data[field]) data[field] = 'REDACTED';
       });
     }
@@ -59,7 +59,9 @@ const utils = {
 
   toArray(values) {
     if (values) {
-      return Array.isArray(values) ? values.filter(p => p && p.trim().length > 0) : [values].filter(p => p && p.trim().length > 0);
+      return Array.isArray(values)
+        ? values.filter((p) => p && p.trim().length > 0)
+        : [values].filter((p) => p && p.trim().length > 0);
     }
     return [];
   },
@@ -82,7 +84,6 @@ const utils = {
       throw err;
     }
   },
-
 };
 
 module.exports = utils;

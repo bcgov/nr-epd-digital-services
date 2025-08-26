@@ -34,23 +34,24 @@ const ViewApplication = React.memo(() => {
   const { t } = useTranslation();
   const { applicationId } = useParams();
   const applicationDetail = useSelector(
-    (state) => state.applications.applicationDetail
+    (state) => state.applications.applicationDetail,
   );
   const applicationDetailStatusCode = useSelector(
-    (state) => state.applications.applicationDetailStatusCode
+    (state) => state.applications.applicationDetailStatusCode,
   );
   const isApplicationDetailLoading = useSelector(
-    (state) => state.applications.isApplicationDetailLoading
+    (state) => state.applications.isApplicationDetailLoading,
   );
 
   const applicationProcess = useSelector(
-    (state) => state.applications.applicationProcess
+    (state) => state.applications.applicationProcess,
   );
   const currentForm = useSelector((state) => state.form?.form);
   const tenantKey = useSelector((state) => state.tenants?.tenantId);
   const dispatch = useDispatch();
   const redirectUrl = MULTITENANCY_ENABLED ? `/tenant/${tenantKey}/` : "/";
-  const [customSubmissionAPIFailed, setCustomSubmissionAPIFailed] = useState(false);
+  const [customSubmissionAPIFailed, setCustomSubmissionAPIFailed] =
+    useState(false);
 
   useEffect(() => {
     dispatch(setApplicationDetailLoader(true));
@@ -68,14 +69,13 @@ const ViewApplication = React.memo(() => {
                     if (err) {
                       setCustomSubmissionAPIFailed(true);
                       dispatch(setBundleSubmissionData({ data: null }));
-                    }
-                    else {
+                    } else {
                       if (res.formType === TYPE_BUNDLE) {
                         dispatch(setBundleSubmissionData({ data: data.data }));
                       }
                     }
-                  }
-                )
+                  },
+                ),
               );
             } else {
               dispatch(
@@ -87,13 +87,13 @@ const ViewApplication = React.memo(() => {
                     if (res.formType === TYPE_BUNDLE) {
                       dispatch(setBundleSubmissionData({ data: data.data }));
                     }
-                  }
-                )
+                  },
+                ),
               );
             }
           }
         }
-      })
+      }),
     );
     return () => {
       dispatch(setApplicationDetailLoader(true));
@@ -132,7 +132,11 @@ const ViewApplication = React.memo(() => {
         <h3 className="ml-3 text-truncate" style={{ height: "45px" }}>
           <span className="application-head-details">
             <i className="fa fa-list-alt" aria-hidden="true" />
-            &nbsp; <Translation>{(t) => t("Applications Package Dashboard")}</Translation> /
+            &nbsp;{" "}
+            <Translation>
+              {(t) => t("Applications Package Dashboard")}
+            </Translation>{" "}
+            /
           </span>{" "}
           {`${startCase(applicationDetail.applicationName)}`}
         </h3>
@@ -150,27 +154,23 @@ const ViewApplication = React.memo(() => {
           title={
             <Translation>
               {(t) =>
-                t(
-                  applicationDetail.formType === TYPE_BUNDLE ? "Forms" : "Form"
-                )
+                t(applicationDetail.formType === TYPE_BUNDLE ? "Forms" : "Form")
               }
             </Translation>
           }
         >
-          {
-
-            customSubmissionAPIFailed ? (<Nodata />) :
-              applicationDetail.formType === TYPE_BUNDLE &&
-                currentForm.isBundle ? (
-                <BundleView
-                  bundleIdProp={applicationDetail.formId}
-                  submissionIdProp={applicationDetail.submissionId}
-                  showPrintButton={true}
-                />
-              ) : (
-                <View page="application-detail" />
-              )
-          }
+          {customSubmissionAPIFailed ? (
+            <Nodata />
+          ) : applicationDetail.formType === TYPE_BUNDLE &&
+            currentForm.isBundle ? (
+            <BundleView
+              bundleIdProp={applicationDetail.formId}
+              submissionIdProp={applicationDetail.submissionId}
+              showPrintButton={true}
+            />
+          ) : (
+            <View page="application-detail" />
+          )}
         </Tab>
         <Tab
           eventKey="history"

@@ -6,9 +6,7 @@
       "type": "form",
       "name": "p6Form",
       "path": "p6form",
-      "tags": [
-        "common"
-      ],
+      "tags": ["common"],
       "components": [
         {
           "id": "eldw6z6",

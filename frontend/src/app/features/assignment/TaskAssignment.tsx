@@ -86,7 +86,7 @@ const TaskAssignment = () => {
       auth.user?.profile.identity_provider !== "bceid"
     ) {
       alert(
-        "You are not logged in using BCeID. Please close this window and try again using BCeID."
+        "You are not logged in using BCeID. Please close this window and try again using BCeID.",
       );
     }
   }, [actualTaskId]);

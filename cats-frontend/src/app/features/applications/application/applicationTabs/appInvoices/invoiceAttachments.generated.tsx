@@ -7,50 +7,111 @@ export type GetInvoiceAttachmentsQueryVariables = Types.Exact<{
   invoiceId: Types.Scalars['Int']['input'];
 }>;
 
-
-export type GetInvoiceAttachmentsQuery = { __typename?: 'Query', getInvoiceAttachments: { __typename?: 'InvoiceAttachmentsResponse', success?: boolean | null, httpStatusCode?: number | null, message?: string | null, attachments?: Array<{ __typename?: 'InvoiceAttachmentDto', id: number, invoiceId: number, fileName: string, fileSize: number, mimeType: string, objectStorageId: string, createdAt: any, createdBy: string }> | null } };
+export type GetInvoiceAttachmentsQuery = {
+  __typename?: 'Query';
+  getInvoiceAttachments: {
+    __typename?: 'InvoiceAttachmentsResponse';
+    success?: boolean | null;
+    httpStatusCode?: number | null;
+    message?: string | null;
+    attachments?: Array<{
+      __typename?: 'InvoiceAttachmentDto';
+      id: number;
+      invoiceId: number;
+      fileName: string;
+      fileSize: number;
+      mimeType: string;
+      objectStorageId: string;
+      createdAt: any;
+      createdBy: string;
+    }> | null;
+  };
+};
 
 export type CreateInvoiceAttachmentMutationVariables = Types.Exact<{
   input: Types.InvoiceAttachmentInputDto;
 }>;
 
-
-export type CreateInvoiceAttachmentMutation = { __typename?: 'Mutation', createInvoiceAttachment: { __typename?: 'InvoiceAttachmentResponse', success?: boolean | null, httpStatusCode?: number | null, message?: string | null, attachment?: { __typename?: 'InvoiceAttachmentDto', id: number, invoiceId: number, fileName: string, fileSize: number, mimeType: string, objectStorageId: string, createdAt: any, createdBy: string } | null } };
+export type CreateInvoiceAttachmentMutation = {
+  __typename?: 'Mutation';
+  createInvoiceAttachment: {
+    __typename?: 'InvoiceAttachmentResponse';
+    success?: boolean | null;
+    httpStatusCode?: number | null;
+    message?: string | null;
+    attachment?: {
+      __typename?: 'InvoiceAttachmentDto';
+      id: number;
+      invoiceId: number;
+      fileName: string;
+      fileSize: number;
+      mimeType: string;
+      objectStorageId: string;
+      createdAt: any;
+      createdBy: string;
+    } | null;
+  };
+};
 
 export type DeleteInvoiceAttachmentMutationVariables = Types.Exact<{
   id: Types.Scalars['Int']['input'];
 }>;
 
-
-export type DeleteInvoiceAttachmentMutation = { __typename?: 'Mutation', deleteInvoiceAttachment: { __typename?: 'ResponseDto', success?: boolean | null, httpStatusCode?: number | null, message?: string | null } };
+export type DeleteInvoiceAttachmentMutation = {
+  __typename?: 'Mutation';
+  deleteInvoiceAttachment: {
+    __typename?: 'ResponseDto';
+    success?: boolean | null;
+    httpStatusCode?: number | null;
+    message?: string | null;
+  };
+};
 
 export type UploadFileToInvoiceMutationVariables = Types.Exact<{
   input: Types.FileUploadInputDto;
 }>;
 
-
-export type UploadFileToInvoiceMutation = { __typename?: 'Mutation', uploadFileToInvoice: { __typename?: 'FileUploadResponse', success?: boolean | null, httpStatusCode?: number | null, message?: string | null, objectStorageId?: string | null, attachment?: { __typename?: 'InvoiceAttachmentDto', id: number, invoiceId: number, fileName: string, fileSize: number, mimeType: string, objectStorageId: string, createdAt: any, createdBy: string } | null } };
-
+export type UploadFileToInvoiceMutation = {
+  __typename?: 'Mutation';
+  uploadFileToInvoice: {
+    __typename?: 'FileUploadResponse';
+    success?: boolean | null;
+    httpStatusCode?: number | null;
+    message?: string | null;
+    objectStorageId?: string | null;
+    attachment?: {
+      __typename?: 'InvoiceAttachmentDto';
+      id: number;
+      invoiceId: number;
+      fileName: string;
+      fileSize: number;
+      mimeType: string;
+      objectStorageId: string;
+      createdAt: any;
+      createdBy: string;
+    } | null;
+  };
+};
 
 export const GetInvoiceAttachmentsDocument = gql`
-    query GetInvoiceAttachments($invoiceId: Int!) {
-  getInvoiceAttachments(invoiceId: $invoiceId) {
-    success
-    httpStatusCode
-    message
-    attachments {
-      id
-      invoiceId
-      fileName
-      fileSize
-      mimeType
-      objectStorageId
-      createdAt
-      createdBy
+  query GetInvoiceAttachments($invoiceId: Int!) {
+    getInvoiceAttachments(invoiceId: $invoiceId) {
+      success
+      httpStatusCode
+      message
+      attachments {
+        id
+        invoiceId
+        fileName
+        fileSize
+        mimeType
+        objectStorageId
+        createdAt
+        createdBy
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetInvoiceAttachmentsQuery__
@@ -68,42 +129,87 @@ export const GetInvoiceAttachmentsDocument = gql`
  *   },
  * });
  */
-export function useGetInvoiceAttachmentsQuery(baseOptions: Apollo.QueryHookOptions<GetInvoiceAttachmentsQuery, GetInvoiceAttachmentsQueryVariables> & ({ variables: GetInvoiceAttachmentsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetInvoiceAttachmentsQuery, GetInvoiceAttachmentsQueryVariables>(GetInvoiceAttachmentsDocument, options);
-      }
-export function useGetInvoiceAttachmentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetInvoiceAttachmentsQuery, GetInvoiceAttachmentsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetInvoiceAttachmentsQuery, GetInvoiceAttachmentsQueryVariables>(GetInvoiceAttachmentsDocument, options);
-        }
-export function useGetInvoiceAttachmentsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetInvoiceAttachmentsQuery, GetInvoiceAttachmentsQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetInvoiceAttachmentsQuery, GetInvoiceAttachmentsQueryVariables>(GetInvoiceAttachmentsDocument, options);
-        }
-export type GetInvoiceAttachmentsQueryHookResult = ReturnType<typeof useGetInvoiceAttachmentsQuery>;
-export type GetInvoiceAttachmentsLazyQueryHookResult = ReturnType<typeof useGetInvoiceAttachmentsLazyQuery>;
-export type GetInvoiceAttachmentsSuspenseQueryHookResult = ReturnType<typeof useGetInvoiceAttachmentsSuspenseQuery>;
-export type GetInvoiceAttachmentsQueryResult = Apollo.QueryResult<GetInvoiceAttachmentsQuery, GetInvoiceAttachmentsQueryVariables>;
+export function useGetInvoiceAttachmentsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetInvoiceAttachmentsQuery,
+    GetInvoiceAttachmentsQueryVariables
+  > &
+    (
+      | { variables: GetInvoiceAttachmentsQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetInvoiceAttachmentsQuery,
+    GetInvoiceAttachmentsQueryVariables
+  >(GetInvoiceAttachmentsDocument, options);
+}
+export function useGetInvoiceAttachmentsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetInvoiceAttachmentsQuery,
+    GetInvoiceAttachmentsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetInvoiceAttachmentsQuery,
+    GetInvoiceAttachmentsQueryVariables
+  >(GetInvoiceAttachmentsDocument, options);
+}
+export function useGetInvoiceAttachmentsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetInvoiceAttachmentsQuery,
+        GetInvoiceAttachmentsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetInvoiceAttachmentsQuery,
+    GetInvoiceAttachmentsQueryVariables
+  >(GetInvoiceAttachmentsDocument, options);
+}
+export type GetInvoiceAttachmentsQueryHookResult = ReturnType<
+  typeof useGetInvoiceAttachmentsQuery
+>;
+export type GetInvoiceAttachmentsLazyQueryHookResult = ReturnType<
+  typeof useGetInvoiceAttachmentsLazyQuery
+>;
+export type GetInvoiceAttachmentsSuspenseQueryHookResult = ReturnType<
+  typeof useGetInvoiceAttachmentsSuspenseQuery
+>;
+export type GetInvoiceAttachmentsQueryResult = Apollo.QueryResult<
+  GetInvoiceAttachmentsQuery,
+  GetInvoiceAttachmentsQueryVariables
+>;
 export const CreateInvoiceAttachmentDocument = gql`
-    mutation CreateInvoiceAttachment($input: InvoiceAttachmentInputDto!) {
-  createInvoiceAttachment(input: $input) {
-    success
-    httpStatusCode
-    message
-    attachment {
-      id
-      invoiceId
-      fileName
-      fileSize
-      mimeType
-      objectStorageId
-      createdAt
-      createdBy
+  mutation CreateInvoiceAttachment($input: InvoiceAttachmentInputDto!) {
+    createInvoiceAttachment(input: $input) {
+      success
+      httpStatusCode
+      message
+      attachment {
+        id
+        invoiceId
+        fileName
+        fileSize
+        mimeType
+        objectStorageId
+        createdAt
+        createdBy
+      }
     }
   }
-}
-    `;
-export type CreateInvoiceAttachmentMutationFn = Apollo.MutationFunction<CreateInvoiceAttachmentMutation, CreateInvoiceAttachmentMutationVariables>;
+`;
+export type CreateInvoiceAttachmentMutationFn = Apollo.MutationFunction<
+  CreateInvoiceAttachmentMutation,
+  CreateInvoiceAttachmentMutationVariables
+>;
 
 /**
  * __useCreateInvoiceAttachmentMutation__
@@ -122,23 +228,40 @@ export type CreateInvoiceAttachmentMutationFn = Apollo.MutationFunction<CreateIn
  *   },
  * });
  */
-export function useCreateInvoiceAttachmentMutation(baseOptions?: Apollo.MutationHookOptions<CreateInvoiceAttachmentMutation, CreateInvoiceAttachmentMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateInvoiceAttachmentMutation, CreateInvoiceAttachmentMutationVariables>(CreateInvoiceAttachmentDocument, options);
-      }
-export type CreateInvoiceAttachmentMutationHookResult = ReturnType<typeof useCreateInvoiceAttachmentMutation>;
-export type CreateInvoiceAttachmentMutationResult = Apollo.MutationResult<CreateInvoiceAttachmentMutation>;
-export type CreateInvoiceAttachmentMutationOptions = Apollo.BaseMutationOptions<CreateInvoiceAttachmentMutation, CreateInvoiceAttachmentMutationVariables>;
-export const DeleteInvoiceAttachmentDocument = gql`
-    mutation DeleteInvoiceAttachment($id: Int!) {
-  deleteInvoiceAttachment(id: $id) {
-    success
-    httpStatusCode
-    message
-  }
+export function useCreateInvoiceAttachmentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateInvoiceAttachmentMutation,
+    CreateInvoiceAttachmentMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateInvoiceAttachmentMutation,
+    CreateInvoiceAttachmentMutationVariables
+  >(CreateInvoiceAttachmentDocument, options);
 }
-    `;
-export type DeleteInvoiceAttachmentMutationFn = Apollo.MutationFunction<DeleteInvoiceAttachmentMutation, DeleteInvoiceAttachmentMutationVariables>;
+export type CreateInvoiceAttachmentMutationHookResult = ReturnType<
+  typeof useCreateInvoiceAttachmentMutation
+>;
+export type CreateInvoiceAttachmentMutationResult =
+  Apollo.MutationResult<CreateInvoiceAttachmentMutation>;
+export type CreateInvoiceAttachmentMutationOptions = Apollo.BaseMutationOptions<
+  CreateInvoiceAttachmentMutation,
+  CreateInvoiceAttachmentMutationVariables
+>;
+export const DeleteInvoiceAttachmentDocument = gql`
+  mutation DeleteInvoiceAttachment($id: Int!) {
+    deleteInvoiceAttachment(id: $id) {
+      success
+      httpStatusCode
+      message
+    }
+  }
+`;
+export type DeleteInvoiceAttachmentMutationFn = Apollo.MutationFunction<
+  DeleteInvoiceAttachmentMutation,
+  DeleteInvoiceAttachmentMutationVariables
+>;
 
 /**
  * __useDeleteInvoiceAttachmentMutation__
@@ -157,34 +280,51 @@ export type DeleteInvoiceAttachmentMutationFn = Apollo.MutationFunction<DeleteIn
  *   },
  * });
  */
-export function useDeleteInvoiceAttachmentMutation(baseOptions?: Apollo.MutationHookOptions<DeleteInvoiceAttachmentMutation, DeleteInvoiceAttachmentMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteInvoiceAttachmentMutation, DeleteInvoiceAttachmentMutationVariables>(DeleteInvoiceAttachmentDocument, options);
-      }
-export type DeleteInvoiceAttachmentMutationHookResult = ReturnType<typeof useDeleteInvoiceAttachmentMutation>;
-export type DeleteInvoiceAttachmentMutationResult = Apollo.MutationResult<DeleteInvoiceAttachmentMutation>;
-export type DeleteInvoiceAttachmentMutationOptions = Apollo.BaseMutationOptions<DeleteInvoiceAttachmentMutation, DeleteInvoiceAttachmentMutationVariables>;
+export function useDeleteInvoiceAttachmentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteInvoiceAttachmentMutation,
+    DeleteInvoiceAttachmentMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    DeleteInvoiceAttachmentMutation,
+    DeleteInvoiceAttachmentMutationVariables
+  >(DeleteInvoiceAttachmentDocument, options);
+}
+export type DeleteInvoiceAttachmentMutationHookResult = ReturnType<
+  typeof useDeleteInvoiceAttachmentMutation
+>;
+export type DeleteInvoiceAttachmentMutationResult =
+  Apollo.MutationResult<DeleteInvoiceAttachmentMutation>;
+export type DeleteInvoiceAttachmentMutationOptions = Apollo.BaseMutationOptions<
+  DeleteInvoiceAttachmentMutation,
+  DeleteInvoiceAttachmentMutationVariables
+>;
 export const UploadFileToInvoiceDocument = gql`
-    mutation UploadFileToInvoice($input: FileUploadInputDto!) {
-  uploadFileToInvoice(input: $input) {
-    success
-    httpStatusCode
-    message
-    objectStorageId
-    attachment {
-      id
-      invoiceId
-      fileName
-      fileSize
-      mimeType
+  mutation UploadFileToInvoice($input: FileUploadInputDto!) {
+    uploadFileToInvoice(input: $input) {
+      success
+      httpStatusCode
+      message
       objectStorageId
-      createdAt
-      createdBy
+      attachment {
+        id
+        invoiceId
+        fileName
+        fileSize
+        mimeType
+        objectStorageId
+        createdAt
+        createdBy
+      }
     }
   }
-}
-    `;
-export type UploadFileToInvoiceMutationFn = Apollo.MutationFunction<UploadFileToInvoiceMutation, UploadFileToInvoiceMutationVariables>;
+`;
+export type UploadFileToInvoiceMutationFn = Apollo.MutationFunction<
+  UploadFileToInvoiceMutation,
+  UploadFileToInvoiceMutationVariables
+>;
 
 /**
  * __useUploadFileToInvoiceMutation__
@@ -203,10 +343,24 @@ export type UploadFileToInvoiceMutationFn = Apollo.MutationFunction<UploadFileTo
  *   },
  * });
  */
-export function useUploadFileToInvoiceMutation(baseOptions?: Apollo.MutationHookOptions<UploadFileToInvoiceMutation, UploadFileToInvoiceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UploadFileToInvoiceMutation, UploadFileToInvoiceMutationVariables>(UploadFileToInvoiceDocument, options);
-      }
-export type UploadFileToInvoiceMutationHookResult = ReturnType<typeof useUploadFileToInvoiceMutation>;
-export type UploadFileToInvoiceMutationResult = Apollo.MutationResult<UploadFileToInvoiceMutation>;
-export type UploadFileToInvoiceMutationOptions = Apollo.BaseMutationOptions<UploadFileToInvoiceMutation, UploadFileToInvoiceMutationVariables>;
+export function useUploadFileToInvoiceMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UploadFileToInvoiceMutation,
+    UploadFileToInvoiceMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UploadFileToInvoiceMutation,
+    UploadFileToInvoiceMutationVariables
+  >(UploadFileToInvoiceDocument, options);
+}
+export type UploadFileToInvoiceMutationHookResult = ReturnType<
+  typeof useUploadFileToInvoiceMutation
+>;
+export type UploadFileToInvoiceMutationResult =
+  Apollo.MutationResult<UploadFileToInvoiceMutation>;
+export type UploadFileToInvoiceMutationOptions = Apollo.BaseMutationOptions<
+  UploadFileToInvoiceMutation,
+  UploadFileToInvoiceMutationVariables
+>;

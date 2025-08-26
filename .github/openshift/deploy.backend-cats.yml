@@ -57,12 +57,12 @@ objects:
       lookupPolicy:
         local: false
       tags:
-      - name: ${IMAGE_TAG}
-        from:
-          kind: DockerImage
-          name: ${REGISTRY}/${PROMOTE}:${IMAGE_TAG}
-        referencePolicy:
-          type: Local
+        - name: ${IMAGE_TAG}
+          from:
+            kind: DockerImage
+            name: ${REGISTRY}/${PROMOTE}:${IMAGE_TAG}
+          referencePolicy:
+            type: Local
   - apiVersion: v1
     kind: ImageStream
     metadata:
@@ -73,12 +73,12 @@ objects:
       lookupPolicy:
         local: false
       tags:
-      - name: ${IMAGE_TAG}
-        from:
-          kind: DockerImage
-          name: ${REGISTRY}/${INIT_IMAGE}:${IMAGE_TAG}
-        referencePolicy:
-          type: Local
+        - name: ${IMAGE_TAG}
+          from:
+            kind: DockerImage
+            name: ${REGISTRY}/${INIT_IMAGE}:${IMAGE_TAG}
+          referencePolicy:
+            type: Local
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -99,176 +99,176 @@ objects:
             app: ${NAME}-${COMPONENT}
         spec:
           containers:
-          - image: "${REGISTRY}/${PROMOTE}:${IMAGE_TAG}"
-            imagePullPolicy: Always
-            name: ${NAME}-${COMPONENT}
-            env:
-            - name: POSTGRESQL_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRESQL_HOST
-            - name: POSTGRESQL_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRESQL_PORT
-            - name: POSTGRES_DATABASE
-              valueFrom:
-                configMapKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRES_DATABASE
-            - name: POSTGRES_DB_SCHEMA
-              valueFrom:
-                configMapKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRES_DB_SCHEMA
-            - name: POSTGRES_ADMIN_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRES_ADMIN_USERNAME
-            - name: POSTGRES_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRES_ADMIN_PASSWORD
-            - name: POSTGRES_DB_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRES_DB_USERNAME
-            - name: POSTGRES_DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRES_DB_PASSWORD
-            - name: KEYCLOCK_CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak
-                  key: KEYCLOCK_CLIENT_ID
-            - name: KEYCLOCK_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak
-                  key: KEYCLOCK_SECRET
-            - name: KEYCLOCK_AUTH_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: keycloak-config
-                  key: KEYCLOCK_AUTH_URL
-            - name: KEYCLOCK_REALM
-              valueFrom:
-                configMapKeyRef:
-                  name: keycloak-config
-                  key: KEYCLOCK_REALM
-            - name: LOG_FILE_LOCATION
-              value: ./logs/sites-%DATE%.log
-            - name: LOG_FILE_MAX_SIZE
-              value: 25m
-            - name: LOG_FILE_MAX_FILES
-              value: 7d
-            - name: KEYCLOCK_MASTER_REALM
-              value: master
-            - name: KEYCLOCK_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak
-                  key: KEYCLOCK_USERNAME
-            - name: KEYCLOCK_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak
-                  key: KEYCLOCK_PASSWORD
-            - name: KEYCLOCK_ADMIN_CLIENT_ID
-              value: admin-cli
-            - name: KEYCLOCK_GRANT_TYPE
-              value: password
-            - name: LRS_APPROVING_AUTHORITY_GROUP_NAME
-              value: lrs-approving-authority
-            ports:
-            - containerPort: ${{CONTAINER_PORT}}
-              protocol: TCP
-            resources:
-              requests:
-                cpu: ${CPU_REQUEST}
-                memory: ${MEMORY_REQUEST}
-              limits:
-                cpu: ${CPU_LIMIT}
-                memory: ${MEMORY_LIMIT}
-            readinessProbe:
-              httpGet:
-                port: ${{CONTAINER_PORT}}
-                scheme: HTTP
-              initialDelaySeconds: 10
-              periodSeconds: 30
-              timeoutSeconds: 5
-              failureThreshold: 30
-              successThreshold: 1
-            livenessProbe:
-              successThreshold: 1
-              failureThreshold: 3
-              httpGet:
-                path: /
-                port: ${{CONTAINER_PORT}}
-                scheme: HTTP
-              initialDelaySeconds: 10
-              periodSeconds: 30
-              timeoutSeconds: 5
+            - image: "${REGISTRY}/${PROMOTE}:${IMAGE_TAG}"
+              imagePullPolicy: Always
+              name: ${NAME}-${COMPONENT}
+              env:
+                - name: POSTGRESQL_HOST
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRESQL_HOST
+                - name: POSTGRESQL_PORT
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRESQL_PORT
+                - name: POSTGRES_DATABASE
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRES_DATABASE
+                - name: POSTGRES_DB_SCHEMA
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRES_DB_SCHEMA
+                - name: POSTGRES_ADMIN_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRES_ADMIN_USERNAME
+                - name: POSTGRES_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRES_ADMIN_PASSWORD
+                - name: POSTGRES_DB_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRES_DB_USERNAME
+                - name: POSTGRES_DB_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRES_DB_PASSWORD
+                - name: KEYCLOCK_CLIENT_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: keycloak
+                      key: KEYCLOCK_CLIENT_ID
+                - name: KEYCLOCK_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      name: keycloak
+                      key: KEYCLOCK_SECRET
+                - name: KEYCLOCK_AUTH_URL
+                  valueFrom:
+                    configMapKeyRef:
+                      name: keycloak-config
+                      key: KEYCLOCK_AUTH_URL
+                - name: KEYCLOCK_REALM
+                  valueFrom:
+                    configMapKeyRef:
+                      name: keycloak-config
+                      key: KEYCLOCK_REALM
+                - name: LOG_FILE_LOCATION
+                  value: ./logs/sites-%DATE%.log
+                - name: LOG_FILE_MAX_SIZE
+                  value: 25m
+                - name: LOG_FILE_MAX_FILES
+                  value: 7d
+                - name: KEYCLOCK_MASTER_REALM
+                  value: master
+                - name: KEYCLOCK_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: keycloak
+                      key: KEYCLOCK_USERNAME
+                - name: KEYCLOCK_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: keycloak
+                      key: KEYCLOCK_PASSWORD
+                - name: KEYCLOCK_ADMIN_CLIENT_ID
+                  value: admin-cli
+                - name: KEYCLOCK_GRANT_TYPE
+                  value: password
+                - name: LRS_APPROVING_AUTHORITY_GROUP_NAME
+                  value: lrs-approving-authority
+              ports:
+                - containerPort: ${{CONTAINER_PORT}}
+                  protocol: TCP
+              resources:
+                requests:
+                  cpu: ${CPU_REQUEST}
+                  memory: ${MEMORY_REQUEST}
+                limits:
+                  cpu: ${CPU_LIMIT}
+                  memory: ${MEMORY_LIMIT}
+              readinessProbe:
+                httpGet:
+                  port: ${{CONTAINER_PORT}}
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 30
+                timeoutSeconds: 5
+                failureThreshold: 30
+                successThreshold: 1
+              livenessProbe:
+                successThreshold: 1
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: ${{CONTAINER_PORT}}
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 30
+                timeoutSeconds: 5
           initContainers:
-          - name: epd-db-migration
-            image: "image-registry.openshift-image-registry.svc:5000/e38158-${ENV}/${NAME}-${COMPONENT}-migration:${IMAGE_TAG}"
-            env:
-            - name: Typeorm-migration
-              value: "jdbc:postgresql://${COMPONENT}-postgres:5432/${COMPONENT}"
-            - name: POSTGRESQL_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRESQL_HOST
-            - name: POSTGRESQL_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRESQL_PORT
-            - name: POSTGRES_DATABASE
-              valueFrom:
-                configMapKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRES_DATABASE
-            - name: POSTGRES_DB_SCHEMA
-              valueFrom:
-                configMapKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRES_DB_SCHEMA
-            - name: POSTGRES_ADMIN_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRES_ADMIN_USERNAME
-            - name: POSTGRES_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRES_ADMIN_PASSWORD
-            - name: POSTGRES_DB_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRES_DB_USERNAME
-            - name: POSTGRES_DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRES_DB_PASSWORD
-            resources:
-              limits:
-                cpu: 100m
-                memory: 150Mi
-              requests:
-                cpu: 50m
-                memory: 50Mi
+            - name: epd-db-migration
+              image: "image-registry.openshift-image-registry.svc:5000/e38158-${ENV}/${NAME}-${COMPONENT}-migration:${IMAGE_TAG}"
+              env:
+                - name: Typeorm-migration
+                  value: "jdbc:postgresql://${COMPONENT}-postgres:5432/${COMPONENT}"
+                - name: POSTGRESQL_HOST
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRESQL_HOST
+                - name: POSTGRESQL_PORT
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRESQL_PORT
+                - name: POSTGRES_DATABASE
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRES_DATABASE
+                - name: POSTGRES_DB_SCHEMA
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRES_DB_SCHEMA
+                - name: POSTGRES_ADMIN_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRES_ADMIN_USERNAME
+                - name: POSTGRES_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRES_ADMIN_PASSWORD
+                - name: POSTGRES_DB_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRES_DB_USERNAME
+                - name: POSTGRES_DB_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-database
+                      key: POSTGRES_DB_PASSWORD
+              resources:
+                limits:
+                  cpu: 100m
+                  memory: 150Mi
+                requests:
+                  cpu: 50m
+                  memory: 50Mi
   - apiVersion: v1
     kind: Service
     metadata:
@@ -277,10 +277,10 @@ objects:
       name: ${NAME}-${COMPONENT}
     spec:
       ports:
-      - name: ${CONTAINER_PORT}-tcp
-        protocol: TCP
-        port: 80
-        targetPort: ${{CONTAINER_PORT}}
+        - name: ${CONTAINER_PORT}-tcp
+          protocol: TCP
+          port: 80
+          targetPort: ${{CONTAINER_PORT}}
       selector:
         app: ${NAME}-${COMPONENT}
   - apiVersion: route.openshift.io/v1

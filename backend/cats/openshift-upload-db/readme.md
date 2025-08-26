@@ -38,6 +38,7 @@ oc apply -f temp-pod.yaml
 oc cp ./data_migration.sql temp-pod:/mnt/sql/data_migration.sql
 
 ```
+
 3. Cleanup:
 
 ```bash
@@ -46,8 +47,6 @@ oc delete pod temp-pod
 
 Your SQL file is now available for read access by any pod that mounts the associated PersistentVolumeClaim (PVC).
 
-
 4. Ensure migrations are updated
 
 initDB.sh / migrations.sh
-

@@ -165,7 +165,8 @@ a.custom-dashboard-input-txt:hover {
   min-width: 140px;
   height: 36px;
   border-radius: var(--layout-margin-xsmall);
-  padding: var(--layout-padding-medium) var(--layout-padding-large) var(--layout-padding-medium) var(--layout-padding-large) !important;
+  padding: var(--layout-padding-medium) var(--layout-padding-large)
+    var(--layout-padding-medium) var(--layout-padding-large) !important;
 }
 
 .dashboard-view-all-link {

@@ -9,42 +9,83 @@ export type GetTimesheetDaysForAssignedStaffQueryVariables = Types.Exact<{
   endDate: Types.Scalars['String']['input'];
 }>;
 
-
-export type GetTimesheetDaysForAssignedStaffQuery = { __typename?: 'Query', getTimesheetDaysForAssignedStaff: { __typename?: 'PersonWithTimesheetDaysResponse', data?: Array<{ __typename?: 'PersonWithTimesheetDaysDto', personId: number, firstName: string, lastName: string, roleId?: number | null, roleDescription?: string | null, startDate?: any | null, endDate?: any | null, timesheetDays: Array<{ __typename?: 'TimesheetDayDto', id: number, date: any, hours?: number | null, comment?: string | null }> }> | null } };
+export type GetTimesheetDaysForAssignedStaffQuery = {
+  __typename?: 'Query';
+  getTimesheetDaysForAssignedStaff: {
+    __typename?: 'PersonWithTimesheetDaysResponse';
+    data?: Array<{
+      __typename?: 'PersonWithTimesheetDaysDto';
+      personId: number;
+      firstName: string;
+      lastName: string;
+      roleId?: number | null;
+      roleDescription?: string | null;
+      startDate?: any | null;
+      endDate?: any | null;
+      timesheetDays: Array<{
+        __typename?: 'TimesheetDayDto';
+        id: number;
+        date: any;
+        hours?: number | null;
+        comment?: string | null;
+      }>;
+    }> | null;
+  };
+};
 
 export type UpsertTimesheetDaysMutationVariables = Types.Exact<{
-  entries: Array<Types.TimesheetDayUpsertInputDto> | Types.TimesheetDayUpsertInputDto;
+  entries:
+    | Array<Types.TimesheetDayUpsertInputDto>
+    | Types.TimesheetDayUpsertInputDto;
 }>;
 
-
-export type UpsertTimesheetDaysMutation = { __typename?: 'Mutation', upsertTimesheetDays: { __typename?: 'TimesheetDayResponse', message?: string | null, success?: boolean | null, data: Array<{ __typename?: 'TimesheetDayDto', id: number, applicationId: number, personId: number, date: any, hours?: number | null, comment?: string | null }> } };
-
+export type UpsertTimesheetDaysMutation = {
+  __typename?: 'Mutation';
+  upsertTimesheetDays: {
+    __typename?: 'TimesheetDayResponse';
+    message?: string | null;
+    success?: boolean | null;
+    data: Array<{
+      __typename?: 'TimesheetDayDto';
+      id: number;
+      applicationId: number;
+      personId: number;
+      date: any;
+      hours?: number | null;
+      comment?: string | null;
+    }>;
+  };
+};
 
 export const GetTimesheetDaysForAssignedStaffDocument = gql`
-    query getTimesheetDaysForAssignedStaff($applicationId: Int!, $startDate: String!, $endDate: String!) {
-  getTimesheetDaysForAssignedStaff(
-    applicationId: $applicationId
-    startDate: $startDate
-    endDate: $endDate
+  query getTimesheetDaysForAssignedStaff(
+    $applicationId: Int!
+    $startDate: String!
+    $endDate: String!
   ) {
-    data {
-      personId
-      firstName
-      lastName
-      roleId
-      roleDescription
-      startDate
-      endDate
-      timesheetDays {
-        id
-        date
-        hours
-        comment
+    getTimesheetDaysForAssignedStaff(
+      applicationId: $applicationId
+      startDate: $startDate
+      endDate: $endDate
+    ) {
+      data {
+        personId
+        firstName
+        lastName
+        roleId
+        roleDescription
+        startDate
+        endDate
+        timesheetDays {
+          id
+          date
+          hours
+          comment
+        }
       }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetTimesheetDaysForAssignedStaffQuery__
@@ -64,39 +105,86 @@ export const GetTimesheetDaysForAssignedStaffDocument = gql`
  *   },
  * });
  */
-export function useGetTimesheetDaysForAssignedStaffQuery(baseOptions: Apollo.QueryHookOptions<GetTimesheetDaysForAssignedStaffQuery, GetTimesheetDaysForAssignedStaffQueryVariables> & ({ variables: GetTimesheetDaysForAssignedStaffQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTimesheetDaysForAssignedStaffQuery, GetTimesheetDaysForAssignedStaffQueryVariables>(GetTimesheetDaysForAssignedStaffDocument, options);
-      }
-export function useGetTimesheetDaysForAssignedStaffLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTimesheetDaysForAssignedStaffQuery, GetTimesheetDaysForAssignedStaffQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTimesheetDaysForAssignedStaffQuery, GetTimesheetDaysForAssignedStaffQueryVariables>(GetTimesheetDaysForAssignedStaffDocument, options);
+export function useGetTimesheetDaysForAssignedStaffQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetTimesheetDaysForAssignedStaffQuery,
+    GetTimesheetDaysForAssignedStaffQueryVariables
+  > &
+    (
+      | {
+          variables: GetTimesheetDaysForAssignedStaffQueryVariables;
+          skip?: boolean;
         }
-export function useGetTimesheetDaysForAssignedStaffSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetTimesheetDaysForAssignedStaffQuery, GetTimesheetDaysForAssignedStaffQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetTimesheetDaysForAssignedStaffQuery, GetTimesheetDaysForAssignedStaffQueryVariables>(GetTimesheetDaysForAssignedStaffDocument, options);
-        }
-export type GetTimesheetDaysForAssignedStaffQueryHookResult = ReturnType<typeof useGetTimesheetDaysForAssignedStaffQuery>;
-export type GetTimesheetDaysForAssignedStaffLazyQueryHookResult = ReturnType<typeof useGetTimesheetDaysForAssignedStaffLazyQuery>;
-export type GetTimesheetDaysForAssignedStaffSuspenseQueryHookResult = ReturnType<typeof useGetTimesheetDaysForAssignedStaffSuspenseQuery>;
-export type GetTimesheetDaysForAssignedStaffQueryResult = Apollo.QueryResult<GetTimesheetDaysForAssignedStaffQuery, GetTimesheetDaysForAssignedStaffQueryVariables>;
-export const UpsertTimesheetDaysDocument = gql`
-    mutation upsertTimesheetDays($entries: [TimesheetDayUpsertInputDto!]!) {
-  upsertTimesheetDays(input: {entries: $entries}) {
-    data {
-      id
-      applicationId
-      personId
-      date
-      hours
-      comment
-    }
-    message
-    success
-  }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetTimesheetDaysForAssignedStaffQuery,
+    GetTimesheetDaysForAssignedStaffQueryVariables
+  >(GetTimesheetDaysForAssignedStaffDocument, options);
 }
-    `;
-export type UpsertTimesheetDaysMutationFn = Apollo.MutationFunction<UpsertTimesheetDaysMutation, UpsertTimesheetDaysMutationVariables>;
+export function useGetTimesheetDaysForAssignedStaffLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetTimesheetDaysForAssignedStaffQuery,
+    GetTimesheetDaysForAssignedStaffQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetTimesheetDaysForAssignedStaffQuery,
+    GetTimesheetDaysForAssignedStaffQueryVariables
+  >(GetTimesheetDaysForAssignedStaffDocument, options);
+}
+export function useGetTimesheetDaysForAssignedStaffSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetTimesheetDaysForAssignedStaffQuery,
+        GetTimesheetDaysForAssignedStaffQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetTimesheetDaysForAssignedStaffQuery,
+    GetTimesheetDaysForAssignedStaffQueryVariables
+  >(GetTimesheetDaysForAssignedStaffDocument, options);
+}
+export type GetTimesheetDaysForAssignedStaffQueryHookResult = ReturnType<
+  typeof useGetTimesheetDaysForAssignedStaffQuery
+>;
+export type GetTimesheetDaysForAssignedStaffLazyQueryHookResult = ReturnType<
+  typeof useGetTimesheetDaysForAssignedStaffLazyQuery
+>;
+export type GetTimesheetDaysForAssignedStaffSuspenseQueryHookResult =
+  ReturnType<typeof useGetTimesheetDaysForAssignedStaffSuspenseQuery>;
+export type GetTimesheetDaysForAssignedStaffQueryResult = Apollo.QueryResult<
+  GetTimesheetDaysForAssignedStaffQuery,
+  GetTimesheetDaysForAssignedStaffQueryVariables
+>;
+export const UpsertTimesheetDaysDocument = gql`
+  mutation upsertTimesheetDays($entries: [TimesheetDayUpsertInputDto!]!) {
+    upsertTimesheetDays(input: { entries: $entries }) {
+      data {
+        id
+        applicationId
+        personId
+        date
+        hours
+        comment
+      }
+      message
+      success
+    }
+  }
+`;
+export type UpsertTimesheetDaysMutationFn = Apollo.MutationFunction<
+  UpsertTimesheetDaysMutation,
+  UpsertTimesheetDaysMutationVariables
+>;
 
 /**
  * __useUpsertTimesheetDaysMutation__
@@ -115,10 +203,24 @@ export type UpsertTimesheetDaysMutationFn = Apollo.MutationFunction<UpsertTimesh
  *   },
  * });
  */
-export function useUpsertTimesheetDaysMutation(baseOptions?: Apollo.MutationHookOptions<UpsertTimesheetDaysMutation, UpsertTimesheetDaysMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpsertTimesheetDaysMutation, UpsertTimesheetDaysMutationVariables>(UpsertTimesheetDaysDocument, options);
-      }
-export type UpsertTimesheetDaysMutationHookResult = ReturnType<typeof useUpsertTimesheetDaysMutation>;
-export type UpsertTimesheetDaysMutationResult = Apollo.MutationResult<UpsertTimesheetDaysMutation>;
-export type UpsertTimesheetDaysMutationOptions = Apollo.BaseMutationOptions<UpsertTimesheetDaysMutation, UpsertTimesheetDaysMutationVariables>;
+export function useUpsertTimesheetDaysMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpsertTimesheetDaysMutation,
+    UpsertTimesheetDaysMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpsertTimesheetDaysMutation,
+    UpsertTimesheetDaysMutationVariables
+  >(UpsertTimesheetDaysDocument, options);
+}
+export type UpsertTimesheetDaysMutationHookResult = ReturnType<
+  typeof useUpsertTimesheetDaysMutation
+>;
+export type UpsertTimesheetDaysMutationResult =
+  Apollo.MutationResult<UpsertTimesheetDaysMutation>;
+export type UpsertTimesheetDaysMutationOptions = Apollo.BaseMutationOptions<
+  UpsertTimesheetDaysMutation,
+  UpsertTimesheetDaysMutationVariables
+>;

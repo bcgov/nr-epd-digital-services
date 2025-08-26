@@ -27,7 +27,7 @@ jobs:
           # - component: backend/legacy
           #   triggers: ('backend/legacy/')
           - component: backend/cats
-            triggers:  ('backend/cats/')
+            triggers: ('backend/cats/')
           # - component: backend/sites
           #   triggers:  ('backend/sites/')
           - component: frontend
@@ -40,13 +40,12 @@ jobs:
       img_fallback: "test" # The test image will be tagged with prod release version as in input.
       triggers: ${{ matrix.triggers }}
 
-
   deploys:
     name: Deploys
     needs:
       - builds
     # If any of the previous created a build, then deploy
-  #  if: contains(needs.*.outputs.build, 'true')
+    #  if: contains(needs.*.outputs.build, 'true')
     uses: ./.github/workflows/_deploy.yml
     strategy:
       matrix:
@@ -108,7 +107,7 @@ jobs:
           body: |
             Changes in this Release
             - Test release notes
-            
+
           draft: false
           prerelease: false
     # steps:
@@ -117,7 +116,6 @@ jobs:
     #     with:
     #       tag: "release/${{ inputs.RELEASE_VERSION }}"
     #       message: "Release version ${{ inputs.RELEASE_VERSION }}"
-
 
   forms-flow-root-config-and-microfrontends-bpm-changes:
     runs-on: ubuntu-20.04
@@ -154,9 +152,7 @@ jobs:
           oc tag forms-flow-web-ee:test forms-flow-web-ee:prod
           oc tag forms-flow-bpm:test forms-flow-bpm:prod
 
-
       - name: Start Build Openshift
         shell: bash
         run: |
           oc start-build forms-flow-web-root-config-prod-build --wait
-   

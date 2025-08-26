@@ -188,9 +188,8 @@ export class ApplicationNotesResolver {
       )}`,
     );
 
-    const result = await this.applicationNotesService.deleteApplicationNotes(
-      noteIds,
-    );
+    const result =
+      await this.applicationNotesService.deleteApplicationNotes(noteIds);
 
     return this.genericResponseProvider.createResponse(
       'Application notes deleted successfully',

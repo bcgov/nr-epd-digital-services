@@ -20,4 +20,4 @@ import { CatsService } from './services/cats.service';
   ],
   controllers: [FormController],
 })
-export class ApplicationModule { }
+export class ApplicationModule {}

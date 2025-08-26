@@ -3,22 +3,19 @@ module.exports = {
     browser: true,
     es2021: true,
     jest: true,
-    node: true
+    node: true,
   },
   extends: [
-    'plugin:import/errors',
-    'plugin:import/warnings',
-    'plugin:import/typescript',
-    'standard'
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "standard",
   ],
-  parser: '@typescript-eslint/parser',
+  parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module'
+    ecmaVersion: "latest",
+    sourceType: "module",
   },
-  plugins: [
-    '@typescript-eslint'
-  ],
-  rules: {
-  }
-}
+  plugins: ["@typescript-eslint"],
+  rules: {},
+};

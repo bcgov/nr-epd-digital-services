@@ -14,7 +14,7 @@ on:
         type: string
       directory:
         description: Chart directory
-        default:  'charts/app'
+        default: "charts/app"
         required: false
         type: string
       environment:
@@ -23,12 +23,12 @@ on:
         type: string
       oc_server:
         default: https://api.silver.devops.gov.bc.ca:6443
-        description: 'OpenShift server'
+        description: "OpenShift server"
         required: false
         type: string
       params:
-        description: 'Extra parameters to pass to helm upgrade'
-        default: ''
+        description: "Extra parameters to pass to helm upgrade"
+        default: ""
         required: false
         type: string
       tag:
@@ -43,26 +43,26 @@ on:
         description: The database user
         required: false
         type: string
-        default: 'cats'
+        default: "cats"
       ### Usually a bad idea / not recommended
       timeout-minutes:
-        description: 'Timeout minutes'
+        description: "Timeout minutes"
         default: 20
         required: false
         type: number
       values:
-        description: 'Values file'
-        default: 'values.yaml'
+        description: "Values file"
+        default: "values.yaml"
         required: false
         type: string
       redirect_uri:
-        description: 'Redirect URI for Keycloak'
+        description: "Redirect URI for Keycloak"
         required: false
         type: string
 
     outputs:
       triggered:
-        description: 'Has a deployment has been triggered?'
+        description: "Has a deployment has been triggered?"
         value: ${{ jobs.deployer.outputs.triggered }}
 
 jobs:
@@ -96,10 +96,10 @@ jobs:
 
           # Release name includes run numbers to ensure uniqueness
           release=${{ github.event.repository.name }}-${{ inputs.environment || steps.pr.outputs.pr || inputs.tag }}
-          
+
           # version, to support helm packaging for non-pr based releases (workflow_dispatch). default to 1.0.0+github run number
           version=1.0.0+${{ github.run_number }}
-          
+
             # Summary
           echo "tag=${tag}"
           echo "release=${release}"
@@ -116,7 +116,6 @@ jobs:
         uses: redhat-actions/openshift-tools-installer@v1
         with:
           oc: "4"
-
 
       # OC login and acquire short lived token
       - if: steps.triggers.outputs.triggered == 'true'
@@ -155,7 +154,7 @@ jobs:
         run: |
           # 1 minute less for HELM to do atomic deployment and rollback if not completed within the time.
           DEPLOY_TIMEOUT=$((${{ inputs.timeout-minutes }}-1)) 
-          
+
           # Helm upgrade/rollout - atomic, timeout
 
           helm upgrade --debug \

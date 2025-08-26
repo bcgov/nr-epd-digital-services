@@ -77,10 +77,17 @@ export class InvoiceV2 {
   })
   whoUpdated: string | null;
 
-  @CreateDateColumn({ name: 'when_created', type: 'timestamp without time zone' })
+  @CreateDateColumn({
+    name: 'when_created',
+    type: 'timestamp without time zone',
+  })
   whenCreated: Date;
 
-  @UpdateDateColumn({ name: 'when_updated', type: 'timestamp without time zone', nullable: true })
+  @UpdateDateColumn({
+    name: 'when_updated',
+    type: 'timestamp without time zone',
+    nullable: true,
+  })
   whenUpdated: Date | null;
 
   @ManyToOne(() => Application, (application) => application.invoices)
@@ -91,9 +98,15 @@ export class InvoiceV2 {
   @JoinColumn([{ name: 'person_id', referencedColumnName: 'id' }])
   recipient: Person;
 
-  @OneToMany(() => InvoiceItem, (lineItem) => lineItem.invoice, { cascade: true, onDelete: 'CASCADE' })
+  @OneToMany(() => InvoiceItem, (lineItem) => lineItem.invoice, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   invoiceItems: InvoiceItem[];
 
-  @OneToMany(() => InvoiceAttachment, (attachment) => attachment.invoice, { cascade: true, onDelete: 'CASCADE' })
+  @OneToMany(() => InvoiceAttachment, (attachment) => attachment.invoice, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   invoiceAttachments: InvoiceAttachment[];
 }

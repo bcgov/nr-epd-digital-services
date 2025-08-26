@@ -1,9 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { ReactComponent } from 'react-formio';
-import settingsForm from './fileUpload.settingsForm';
+import React from "react";
+import ReactDOM from "react-dom";
+import { ReactComponent } from "react-formio";
+import settingsForm from "./fileUpload.settingsForm";
 import FileUpload from "./fileUploadInputComponent";
-
 
 export default class UploadFile extends ReactComponent {
   /**
@@ -13,12 +12,12 @@ export default class UploadFile extends ReactComponent {
    */
   static get builderInfo() {
     return {
-      title: 'CMIS File Upload',
-      icon: 'upload',
-      group: 'basic',
-      documentation: '', //TODO
+      title: "CMIS File Upload",
+      icon: "upload",
+      group: "basic",
+      documentation: "", //TODO
       weight: 110,
-      schema: UploadFile.schema()
+      schema: UploadFile.schema(),
     };
   }
 
@@ -31,8 +30,8 @@ export default class UploadFile extends ReactComponent {
    */
   static schema() {
     return ReactComponent.schema({
-      type: 'fileUpload',
-      label: 'File Upload',
+      type: "fileUpload",
+      label: "File Upload",
     });
   }
 
@@ -47,11 +46,10 @@ export default class UploadFile extends ReactComponent {
    * @param DOMElement
    * #returns ReactInstance
    */
-   attachReact(element) {
+  attachReact(element) {
     let instance;
     // eslint-disable-next-line react/no-render-return-value
     return ReactDOM.render(
-      
       <FileUpload
         ref={(refer) => {
           instance = refer;
@@ -66,10 +64,9 @@ export default class UploadFile extends ReactComponent {
         // The onChange event to call when the value changes.
       />,
       element,
-      () => (this.reactInstance = instance)
+      () => (this.reactInstance = instance),
     );
   }
-  
 
   /**
    * Automatically detach any react components.

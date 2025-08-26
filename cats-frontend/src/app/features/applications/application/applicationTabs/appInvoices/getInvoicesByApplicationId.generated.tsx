@@ -7,27 +7,42 @@ export type GetInvoicesByApplicationIdQueryVariables = Types.Exact<{
   applicationId: Types.Scalars['Int']['input'];
 }>;
 
-
-export type GetInvoicesByApplicationIdQuery = { __typename?: 'Query', getInvoicesByApplicationId: { __typename?: 'InvoicesByApplicationIdResponse', success?: boolean | null, httpStatusCode?: number | null, message?: string | null, invoices?: Array<{ __typename?: 'InvoiceByApplicationIdDto', id: number, subject: string, issuedDate: any, dueDate: any, status: string, totalInCents: number }> | null } };
-
+export type GetInvoicesByApplicationIdQuery = {
+  __typename?: 'Query';
+  getInvoicesByApplicationId: {
+    __typename?: 'InvoicesByApplicationIdResponse';
+    success?: boolean | null;
+    httpStatusCode?: number | null;
+    message?: string | null;
+    invoices?: Array<{
+      __typename?: 'InvoiceByApplicationIdDto';
+      id: number;
+      subject: string;
+      issuedDate: any;
+      dueDate: any;
+      status: string;
+      totalInCents: number;
+    }> | null;
+  };
+};
 
 export const GetInvoicesByApplicationIdDocument = gql`
-    query GetInvoicesByApplicationId($applicationId: Int!) {
-  getInvoicesByApplicationId(applicationId: $applicationId) {
-    success
-    httpStatusCode
-    message
-    invoices {
-      id
-      subject
-      issuedDate
-      dueDate
-      status
-      totalInCents
+  query GetInvoicesByApplicationId($applicationId: Int!) {
+    getInvoicesByApplicationId(applicationId: $applicationId) {
+      success
+      httpStatusCode
+      message
+      invoices {
+        id
+        subject
+        issuedDate
+        dueDate
+        status
+        totalInCents
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetInvoicesByApplicationIdQuery__
@@ -45,19 +60,61 @@ export const GetInvoicesByApplicationIdDocument = gql`
  *   },
  * });
  */
-export function useGetInvoicesByApplicationIdQuery(baseOptions: Apollo.QueryHookOptions<GetInvoicesByApplicationIdQuery, GetInvoicesByApplicationIdQueryVariables> & ({ variables: GetInvoicesByApplicationIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetInvoicesByApplicationIdQuery, GetInvoicesByApplicationIdQueryVariables>(GetInvoicesByApplicationIdDocument, options);
-      }
-export function useGetInvoicesByApplicationIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetInvoicesByApplicationIdQuery, GetInvoicesByApplicationIdQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetInvoicesByApplicationIdQuery, GetInvoicesByApplicationIdQueryVariables>(GetInvoicesByApplicationIdDocument, options);
-        }
-export function useGetInvoicesByApplicationIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetInvoicesByApplicationIdQuery, GetInvoicesByApplicationIdQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetInvoicesByApplicationIdQuery, GetInvoicesByApplicationIdQueryVariables>(GetInvoicesByApplicationIdDocument, options);
-        }
-export type GetInvoicesByApplicationIdQueryHookResult = ReturnType<typeof useGetInvoicesByApplicationIdQuery>;
-export type GetInvoicesByApplicationIdLazyQueryHookResult = ReturnType<typeof useGetInvoicesByApplicationIdLazyQuery>;
-export type GetInvoicesByApplicationIdSuspenseQueryHookResult = ReturnType<typeof useGetInvoicesByApplicationIdSuspenseQuery>;
-export type GetInvoicesByApplicationIdQueryResult = Apollo.QueryResult<GetInvoicesByApplicationIdQuery, GetInvoicesByApplicationIdQueryVariables>;
+export function useGetInvoicesByApplicationIdQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetInvoicesByApplicationIdQuery,
+    GetInvoicesByApplicationIdQueryVariables
+  > &
+    (
+      | { variables: GetInvoicesByApplicationIdQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetInvoicesByApplicationIdQuery,
+    GetInvoicesByApplicationIdQueryVariables
+  >(GetInvoicesByApplicationIdDocument, options);
+}
+export function useGetInvoicesByApplicationIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetInvoicesByApplicationIdQuery,
+    GetInvoicesByApplicationIdQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetInvoicesByApplicationIdQuery,
+    GetInvoicesByApplicationIdQueryVariables
+  >(GetInvoicesByApplicationIdDocument, options);
+}
+export function useGetInvoicesByApplicationIdSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetInvoicesByApplicationIdQuery,
+        GetInvoicesByApplicationIdQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetInvoicesByApplicationIdQuery,
+    GetInvoicesByApplicationIdQueryVariables
+  >(GetInvoicesByApplicationIdDocument, options);
+}
+export type GetInvoicesByApplicationIdQueryHookResult = ReturnType<
+  typeof useGetInvoicesByApplicationIdQuery
+>;
+export type GetInvoicesByApplicationIdLazyQueryHookResult = ReturnType<
+  typeof useGetInvoicesByApplicationIdLazyQuery
+>;
+export type GetInvoicesByApplicationIdSuspenseQueryHookResult = ReturnType<
+  typeof useGetInvoicesByApplicationIdSuspenseQuery
+>;
+export type GetInvoicesByApplicationIdQueryResult = Apollo.QueryResult<
+  GetInvoicesByApplicationIdQuery,
+  GetInvoicesByApplicationIdQueryVariables
+>;

@@ -20,25 +20,25 @@ class BucketPermission extends Timestamps(Model) {
         modelClass: Bucket,
         join: {
           from: 'bucket_permission.bucketId',
-          to: 'bucket.bucketId'
-        }
+          to: 'bucket.bucketId',
+        },
       },
       permission: {
         relation: Model.HasOneRelation,
         modelClass: Permission,
         join: {
           from: 'bucket_permission.permCode',
-          to: 'permission.permCode'
-        }
+          to: 'permission.permCode',
+        },
       },
       user: {
         relation: Model.HasOneRelation,
         modelClass: User,
         join: {
           from: 'bucket_permission.userId',
-          to: 'user.userId'
-        }
-      }
+          to: 'user.userId',
+        },
+      },
     };
   }
 
@@ -52,7 +52,7 @@ class BucketPermission extends Timestamps(Model) {
       },
       filterPermissionCode(query, value) {
         filterOneOrMany(query, value, 'permCode');
-      }
+      },
     };
   }
 
@@ -65,9 +65,9 @@ class BucketPermission extends Timestamps(Model) {
         userId: { type: 'string', maxLength: 255 },
         bucketId: { type: 'string', maxLength: 255 },
         permCode: { type: 'string', maxLength: 255 },
-        ...stamps
+        ...stamps,
       },
-      additionalProperties: false
+      additionalProperties: false,
     };
   }
 }
