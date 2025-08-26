@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
-import { getNavComponents } from '../../navigation/NavigationPillsConfig';
+import { useEffect, useState, useRef } from 'react';
 import { useAuth } from 'react-oidc-context';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, Outlet } from 'react-router-dom';
 import Actions from '../../../components/action/Actions';
 import PageContainer from '../../../components/simple/PageContainer';
 import NavigationPills from '../../../components/navigation/navigationpills/NavigationPills';
@@ -21,18 +20,13 @@ import LoadingOverlay from '../../../components/loader/LoadingOverlay';
 import cx from 'classnames';
 
 const ApplicationDetails = () => {
-  const [edit, setEdit] = useState(false);
-  const [viewMode, setViewMode] = useState(UserMode.Default);
-  const [isVisible, setIsVisible] = useState(false);
-  const [save, setSave] = useState(false);
-  const navComponents = getNavComponents(true);
-  const [userType, setUserType] = useState<UserType>(UserType.STAFF);
   const location = useLocation();
-  const fromScreen = location.state?.from || 'Applications'; // Default to "Unknown Screen" if no state is passed
-  const auth = useAuth();
   const navigate = useNavigate();
   const { id = '' } = useParams();
+  const fromScreen = location.state?.from || 'Applications'; // Default to "Unknown Screen" if no state is passed
+  const fromScreenRef = useRef(fromScreen);
   const applicationId = parseInt(id, 10);
+  const [isVisible, setIsVisible] = useState(false);
 
   const { data, loading } = useGetHeaderDetailsByApplicationIdQuery({
     variables: {
@@ -44,7 +38,7 @@ const ApplicationDetails = () => {
   const application = data?.getApplicationDetailsById.data;
 
   const onClickBackButton = () => {
-    navigate('/applications');
+    navigate(`/${fromScreenRef.current.replace(/\s+/g, '').toLowerCase()}`);
   };
 
   useEffect(() => {
@@ -74,29 +68,6 @@ const ApplicationDetails = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [isVisible]); // Depend on `isVisible` so we update when visibility changes
-
-  const handleItemClick = async (value: string) => {
-    console.log('nupur - handleItemClick value is: ', value);
-    switch (value) {
-      case UserMode.Default:
-        setEdit(false);
-        setViewMode(UserMode.Default);
-        break;
-      case UserMode.EditMode:
-        setEdit(true);
-        setViewMode(UserMode.EditMode);
-        break;
-      case UserAction.SAVE:
-        setSave(true);
-        setViewMode(UserMode.Default);
-        break;
-      case UserAction.CANCEL: // Cancel the changes
-        setViewMode(UserMode.Default);
-        break;
-      default:
-        break;
-    }
-  };
 
   const appId = application?.id?.toString() ?? '';
   const appDescription = application?.appType?.description ?? '';
@@ -128,49 +99,6 @@ const ApplicationDetails = () => {
   }
 
   const siteDescription: string = parts.join(' ');
-
-  const navigationBarChildern = (
-    <>
-      {viewMode === UserMode.Default && userType === UserType.STAFF && (
-        <Actions
-          label="Actions"
-          items={ActionItems}
-          onItemClick={handleItemClick}
-        />
-      )}
-      <div className="gap-3 align-items-center d-none d-md-flex d-lg-flex d-xl-flex">
-        {viewMode === UserMode.EditMode && userType === UserType.STAFF && (
-          <>
-            {id && <CustomLabel labelType="c-b" label={`${'Edit Mode'}`} />}
-            <SaveButton clickHandler={() => handleItemClick(UserAction.SAVE)} />
-            <CancelButton
-              variant="secondary"
-              clickHandler={() => handleItemClick(UserAction.CANCEL)}
-            />
-          </>
-        )}
-      </div>
-      {viewMode === UserMode.EditMode && (
-        <div className="d-flex d-md-none d-lg-none d-xl-none">
-          <Actions
-            label="Actions"
-            items={[
-              {
-                label: UserAction.SAVE,
-                value: UserAction.SAVE,
-              },
-              {
-                label: UserAction.CANCEL,
-                value: UserAction.CANCEL,
-              },
-            ]}
-            onItemClick={handleItemClick}
-          />
-        </div>
-      )}
-    </>
-  );
-
   const showNavigationBar = isVisible && id;
 
   const navigationBarText =
@@ -216,9 +144,8 @@ const ApplicationDetails = () => {
         isVisible={isVisible}
         onClickBackButton={onClickBackButton}
         backButtonProps={{ variant: 'secondary' }}
-        backButtonText={`Back to ${fromScreen}`}
+        backButtonText={`Back to ${fromScreenRef.current}`}
         navigationBarText={navigationBarText}
-        childern={navigationBarChildern}
       />
       <PageContainer
         customContainerClass={styles.applicationPageContainer}
@@ -239,7 +166,10 @@ const ApplicationDetails = () => {
             )}
           </div>
         )}
-        <NavigationPills components={navComponents} tabSearchKey="tab" />
+        <NavigationPills />
+        <div className="mt-4">
+          <Outlet />
+        </div>
       </PageContainer>
     </div>
   );

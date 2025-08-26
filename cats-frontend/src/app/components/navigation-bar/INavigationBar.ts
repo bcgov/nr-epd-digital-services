@@ -10,4 +10,5 @@ export interface NavigationBarProps {
   customNavigationBarTxtCss?: string;
   customChildernCss?: string;
   childern?: any;
+  buttonIcon?: ReactNode;
 }

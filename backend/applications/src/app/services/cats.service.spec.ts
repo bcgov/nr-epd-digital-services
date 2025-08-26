@@ -16,7 +16,7 @@ describe('CatsService', () => {
     const submissionId = 'sub123';
     const formId = 'form123';
     const formData = {
-      siteId: 101,
+      siteId: '101, 123',
       hdnAppType: 'TYPE_A',
       applicationId: 100001,
     };
@@ -44,38 +44,28 @@ describe('CatsService', () => {
 
       expect(mockedAxios.post).toHaveBeenCalledWith(
         process.env.CATS_API,
-        expect.objectContaining({
+        {
           query: expect.stringContaining('mutation CreateNewApplication'),
           variables: {
             application: expect.objectContaining({
-              siteId: formData.siteId,
-              appTypeAbbrev: formData.hdnAppType,
+              siteIds: [101, 123],
+              appTypeAbbrev: 'TYPE_A',
+              receivedDate: expect.anything(), // could be string or Date
               applicationStatus: expect.arrayContaining([
                 expect.objectContaining({
-                  formId,
-                  submissionId,
-                  formsflowAppId: formData.applicationId,
+                  applicationId: 0,
+                  formId: 'form123',
+                  submissionId: 'sub123',
+                  formsflowAppId: 100001,
+                  isCurrent: true,
+                  statusTypeAbbrev: 'New',
                 }),
               ]),
             }),
           },
-        }),
-        { headers: { 'Content-Type': 'application/json' } }
+        },
+        { headers: { 'Content-Type': 'application/json' } },
       );
-    });
-
-    it('should not call axios.post and log error if siteId is missing', async () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-      const invalidFormData = { ...formData, siteId: null };
-
-      await service.submitToCats(invalidFormData, submissionId, formId);
-
-      expect(mockedAxios.post).not.toHaveBeenCalled();
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Site Id not available, application not created in CATS'),
-      );
-
-      consoleSpy.mockRestore();
     });
 
     it('should log error if axios.post throws', async () => {
@@ -95,7 +85,14 @@ describe('CatsService', () => {
   describe('updateCatsApplication', () => {
     const submissionId = 'sub456';
     const formId = 'form456';
-    const formData = { applicationId: 99999 };
+    const formData = {
+      applicationId: 99999,
+      applicationStatus: 'New',
+      siteId: '123,111',
+    };
+
+    const statusTypeAbbrev = 'New';
+    const siteIds = [123, 111];
 
     it('should call axios.post and return the response data', async () => {
       const mockResponse = {
@@ -116,7 +113,11 @@ describe('CatsService', () => {
 
       mockedAxios.post.mockResolvedValueOnce(mockResponse);
 
-      const result = await service.updateCatsApplication(submissionId, formId, formData);
+      const result = await service.updateCatsApplication(
+        submissionId,
+        formId,
+        formData,
+      );
 
       expect(mockedAxios.post).toHaveBeenCalledWith(
         process.env.CATS_API,
@@ -126,11 +127,13 @@ describe('CatsService', () => {
             appStatusInput: {
               submissionId,
               formId,
-              formsflowAppId: formData.applicationId,
+              formsflowAppId: Number(formData.applicationId),
+              statusTypeAbbrev,
+              siteIds,
             },
           },
         }),
-        { headers: { 'Content-Type': 'application/json' } }
+        { headers: { 'Content-Type': 'application/json' } },
       );
 
       expect(result).toEqual(mockResponse.data);
@@ -140,7 +143,9 @@ describe('CatsService', () => {
       const error = new Error('Update failed');
       mockedAxios.post.mockRejectedValueOnce(error);
 
-      await expect(service.updateCatsApplication(submissionId, formId, formData)).rejects.toThrow('Update failed');
+      await expect(
+        service.updateCatsApplication(submissionId, formId, formData),
+      ).rejects.toThrow('Update failed');
     });
   });
 });

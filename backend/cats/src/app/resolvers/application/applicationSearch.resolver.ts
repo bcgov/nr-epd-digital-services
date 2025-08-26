@@ -9,6 +9,7 @@ import { HttpStatus } from '@nestjs/common';
 import { LoggerService } from '../../logger/logger.service';
 import { SortByDirection } from '../../utilities/enums/application/sortByDirection.enum';
 import { SortByField } from '../../utilities/enums/application/sortByField.enum';
+import { AuthenticatedUser } from 'nest-keycloak-connect';
 
 @Resolver()
 export class ApplicationSearchResolver {
@@ -19,6 +20,7 @@ export class ApplicationSearchResolver {
 
   @Query(() => ApplicationSearchResponse)
   async searchApplications(
+    @AuthenticatedUser() user: any,
     @Args('searchParam') searchParam: string,
     @Args({ name: 'page', type: () => Int }) page: number,
     @Args({ name: 'pageSize', type: () => Int }) pageSize: number,
@@ -29,6 +31,7 @@ export class ApplicationSearchResolver {
     @Args({ name: 'sortByDir', type: () => SortByDirection, nullable: true })
     sortByDir?: SortByDirection,
   ): Promise<ApplicationSearchResponse> {
+    console.log(user);
     this.loggerService.log(
       `ApplicationSearchResolver: searchParam: ${searchParam}, page: ${page}, pageSize: ${pageSize}, filter: ${filter}, sortBy: ${sortBy}, sortByDir: ${sortByDir}.`,
     );
@@ -40,6 +43,7 @@ export class ApplicationSearchResolver {
         filter,
         sortBy,
         sortByDir,
+        user,
       );
     if (!result || result.error) {
       this.loggerService.error(

@@ -12,16 +12,17 @@ import {
   Filter,
   StaffSortByField,
 } from '../../../generated/types';
-import { AngleLeft, Plus } from '../../components/common/icon';
+import { AngleLeft, FilterIcon, Plus } from '../../components/common/icon';
 import PageContainer from '../../components/simple/PageContainer';
 import Widget from '../../components/widget/Widget';
-import FilterControls from './FilterControls';
+import FilterControls from '../../components/filter/FilterControls';
 import './Staff.css';
 import { RequestStatus } from '@cats/helpers/requests/status';
 import { TableColumn } from '@cats/components/table/TableColumn';
 import ModalDialog from '@cats/components/modaldialog/ModalDialog';
 import { DropdownInput } from '@cats/components/input-controls/InputControls';
 import { FormFieldType } from '@cats/components/input-controls/IFormField';
+import { IFilterOption } from '@cats/components/filter/IFilterControls';
 
 interface IStaff {
   page: number;
@@ -157,6 +158,41 @@ const Staff = () => {
     }
   };
 
+  const handleFilterChange = (filter: Filter) => {
+    setQueryState((prev: IStaff) => ({
+      ...prev,
+      filter,
+      page: 1,
+    }));
+  };
+
+  const options: IFilterOption[] = [
+    {
+      label: 'All',
+      value: Filter.All,
+      onClick: () => handleFilterChange(Filter.All),
+      isSelected: queryState.filter === Filter.All,
+    },
+    {
+      label: 'Unassigned',
+      value: Filter.Unassigned,
+      onClick: () => handleFilterChange(Filter.Unassigned),
+      isSelected: queryState.filter === Filter.Unassigned,
+    },
+    {
+      label: 'Overcapacity',
+      value: Filter.Overcapacity,
+      onClick: () => handleFilterChange(Filter.Overcapacity),
+      isSelected: queryState.filter === Filter.Overcapacity,
+    },
+    // {
+    //   label: 'Filter',
+    //   value: 'filter',
+    //   onClick: () => setShowFilterSelect((prev) => !prev),
+    //   icon: <FilterIcon />,
+    // },
+  ];
+
   return (
     <PageContainer role="staff">
       <div>
@@ -197,21 +233,7 @@ const Staff = () => {
         resultsPerPage={queryState?.pageSize}
         tableData={data?.getStaffs?.data ?? []}
         totalResults={data?.getStaffs?.count ?? 0}
-        filter={
-          <FilterControls
-            toggleColumnSelect={() => {
-              setShowFilterSelect(!showFilterSelect);
-            }}
-            handleFilterChange={(filter) => {
-              setQueryState((prev: IStaff) => ({
-                ...prev,
-                filter,
-                page: 1,
-              }));
-            }}
-            filter={queryState?.filter ?? Filter.All}
-          />
-        }
+        filter={<FilterControls options={options} />}
       >
         <div className="d-flex gap-2 flex-wrap">
           <Button
@@ -229,6 +251,7 @@ const Staff = () => {
         <ModalDialog
           headerLabel={`Viewing: ${queryModalState?.personName ?? ''}`}
           noFooterOptions={true}
+          customContentCss="custom-staff-modal-content"
           closeHandler={() =>
             setQueryModalState((prev: IModalState) => ({
               ...prev,
@@ -298,7 +321,7 @@ const Staff = () => {
             resultsPerPage={queryModalState?.pageSize}
             tableData={applications?.getApplicationsByStaff?.data ?? []}
             totalResults={applications?.getApplicationsByStaff?.count ?? 0}
-          ></Widget>
+          />
         </ModalDialog>
       )}
     </PageContainer>

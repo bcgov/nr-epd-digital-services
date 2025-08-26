@@ -7,7 +7,7 @@ import { Form } from '../entities/form.entity';
 export class FormService {
   constructor(
     @InjectRepository(Form) private readonly formRepository: Repository<Form>,
-  ) { }
+  ) {}
 
   /**
    * Checks if table exists
@@ -80,22 +80,25 @@ export class FormService {
         } else {
           objectName = property;
         }
+        // no need to update data
+        // we only want to update status while partial update
+        if (objectName !== 'dataGrid') {
+          const pathText = "'{" + objectName + "}'";
 
-        const pathText = "'{" + objectName + "}'";
+          const newValue = '\'"' + partialUpdateObject[property] + '"\'';
 
-        const newValue = '\'"' + partialUpdateObject[property] + '"\'';
-
-        await this.formRepository
-          .createQueryBuilder()
-          .update(Form)
-          .set({
-            formData: () => this.buildUpdateString(pathText, newValue),
-          })
-          .where('formId =  :formId and id = :submissionId', {
-            formId: formId,
-            submissionId: submissionId,
-          })
-          .execute();
+          await this.formRepository
+            .createQueryBuilder()
+            .update(Form)
+            .set({
+              formData: () => this.buildUpdateString(pathText, newValue),
+            })
+            .where('formId =  :formId and id = :submissionId', {
+              formId: formId,
+              submissionId: submissionId,
+            })
+            .execute();
+        }
       }
     }
   };

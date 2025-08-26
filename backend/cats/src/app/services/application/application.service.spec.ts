@@ -11,11 +11,13 @@ import { DashboardService } from '../dashboard/dashboard.service';
 import { AppStatus } from '../../entities/appStatus.entity';
 import { StatusTypeService } from '../statusType/statusType.service';
 import { UpdateApplicationStatusDto } from '../../dto/application/updateApplicationStatus.dto';
+import { ApplicationSite } from '../../entities/applicationSite.entity';
 
 describe('ApplicationService', () => {
   let applicationService: ApplicationService;
   let applicationRepository: Repository<Application>;
   let appStatusRepository: Repository<AppStatus>;
+  let applicationSiteRepository: Repository<ApplicationSite>;
   let loggerService: LoggerService;
   let appTypeService: AppTypeService;
   let statusTypeService: StatusTypeService;
@@ -32,6 +34,12 @@ describe('ApplicationService', () => {
     save: jest.Mock;
     findOne: jest.Mock;
     createQueryBuilder: jest.Mock;
+  };
+
+  let applicationSiteRepositoryMock: {
+    create: jest.Mock;
+    save: jest.Mock;
+    delete: jest.Mock;
   };
 
   let applicationRepositoryMock: {
@@ -55,6 +63,12 @@ describe('ApplicationService', () => {
       }),
     };
 
+    applicationSiteRepositoryMock = {
+      create: jest.fn(),
+      save: jest.fn(),
+      delete: jest.fn(),
+    };
+
     applicationRepositoryMock = {
       create: jest.fn(),
       save: jest.fn(),
@@ -67,6 +81,10 @@ describe('ApplicationService', () => {
         {
           provide: getRepositoryToken(AppStatus),
           useValue: appStatusRepositoryMock,
+        },
+        {
+          provide: getRepositoryToken(ApplicationSite),
+          useValue: applicationSiteRepositoryMock,
         },
         {
           provide: getRepositoryToken(Application),
@@ -106,6 +124,7 @@ describe('ApplicationService', () => {
     (statusTypeServiceMock.getStatusTypeByAbbrev as jest.Mock).mockResolvedValue({ id: 1 });
     applicationRepository = module.get<Repository<Application>>(getRepositoryToken(Application));
     appStatusRepository = module.get<Repository<AppStatus>>(getRepositoryToken(AppStatus));
+    applicationSiteRepository = module.get<Repository<ApplicationSite>>(getRepositoryToken(ApplicationSite));
     loggerService = module.get<LoggerService>(LoggerService);
     dashboardService = module.get<DashboardService>(DashboardService);
   });
@@ -114,7 +133,7 @@ describe('ApplicationService', () => {
   describe('createApplication', () => {
     it('should create an application successfully', async () => {
       const mockCreateApplication = {
-        siteId: 67890,
+        siteIds: [67890, 67891],
         appTypeAbbrev: 'CSR',
         receivedDate: new Date(),
         applicationStatus: [
@@ -138,6 +157,11 @@ describe('ApplicationService', () => {
         statusTypeId: 1,
         application: mockNewApplication,
       };
+      const mockAppSiteEntity = {
+        id: 1,
+        siteId: 67890,
+        application: mockNewApplication,
+      };
 
       // Mock external service and repo calls
       (appTypeService.getAppTypeByAbbrev as jest.Mock).mockResolvedValue(mockAppType);
@@ -146,6 +170,8 @@ describe('ApplicationService', () => {
       applicationRepositoryMock.save.mockResolvedValue(mockNewApplication);
       appStatusRepositoryMock.create.mockReturnValue(mockAppStatusEntity);
       appStatusRepositoryMock.save.mockResolvedValue([mockAppStatusEntity]);
+      applicationSiteRepositoryMock.create.mockReturnValue(mockAppSiteEntity);
+      applicationSiteRepositoryMock.save.mockResolvedValue([mockAppSiteEntity]);
 
       const result = await applicationService.createApplication(mockCreateApplication);
 
@@ -156,6 +182,10 @@ describe('ApplicationService', () => {
       expect(appStatusRepositoryMock.create).toHaveBeenCalled();
       expect(appStatusRepositoryMock.save).toHaveBeenCalled();
       expect(appStatusRepositoryMock.save).toHaveBeenCalledTimes(1);
+      expect(applicationSiteRepositoryMock.create).toHaveBeenCalled();
+      expect(applicationSiteRepositoryMock.save).toHaveBeenCalled();
+      expect(applicationSiteRepositoryMock.save).toHaveBeenCalledTimes(1);
+
 
       expect(result).toEqual({ id: 1 });
     });
