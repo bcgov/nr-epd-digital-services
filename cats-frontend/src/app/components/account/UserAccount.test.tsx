@@ -5,6 +5,7 @@ import avatar from '../../images/avatar.png';
 import { Provider } from 'react-redux';
 import configureStore, { MockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { BrowserRouter } from 'react-router-dom';
 
 vi.mock('react-oidc-context', () => ({
   useAuth: () => ({
@@ -31,17 +32,21 @@ describe('UserAccount component', () => {
 
   it('renders without crashing', () => {
     render(
-      <Provider store={store}>
-        <UserAccount />
-      </Provider>,
+      <BrowserRouter>
+        <Provider store={store}>
+          <UserAccount />
+        </Provider>
+      </BrowserRouter>,
     );
   });
 
   it('toggles dropdown arrow on click', () => {
     const { getByLabelText } = render(
-      <Provider store={store}>
-        <UserAccount />
-      </Provider>,
+      <BrowserRouter>
+        <Provider store={store}>
+          <UserAccount />
+        </Provider>
+      </BrowserRouter>,
     );
     const toggleButton = getByLabelText('Account Menu');
     fireEvent.click(toggleButton);
@@ -50,10 +55,13 @@ describe('UserAccount component', () => {
 
   it('shows account menu when dropdown is expanded', () => {
     const { getByLabelText, getByRole } = render(
-      <Provider store={store}>
-        <UserAccount />
-      </Provider>,
+      <BrowserRouter>
+        <Provider store={store}>
+          <UserAccount />
+        </Provider>
+      </BrowserRouter>,
     );
+
     const toggleButton = getByLabelText('Account Menu');
     fireEvent.click(toggleButton);
     const accountMenu = getByRole('menu', { name: 'Account Menu' });

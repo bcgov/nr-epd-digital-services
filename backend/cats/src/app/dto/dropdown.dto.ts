@@ -15,6 +15,6 @@ export class DropdownDto {
   @Field()
   value: string;
 
-  @Field()
-  metaData?: string;
+  @Field({ nullable: true })
+  metaData?: string | null;
 }

@@ -3,12 +3,89 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Form } from '../entities/form.entity';
 import axios from 'axios';
+import ApplicationType from '../constants/applicationType';
 
 @Injectable()
 export class CatsService {
-  constructor() {
+  constructor() { }
 
-  }
+  getSiteIdsFromFormData = (formData: any) => {
+    switch (formData.hdnAppType) {
+      case ApplicationType.SIR:
+        // SIR form has 2 fields
+        const combinedSiteIds = [
+          ...(formData.siteSpecificSiteId?.toString()?.split(',') || []),
+          ...(formData.documentsSiteId?.toString()?.split(',') || []),
+        ];
+        return combinedSiteIds
+          .map((id: string | undefined) => (id ? id.trim() : ''))
+          .filter((id: string) => id !== '' && !isNaN(Number(id)))
+          .map((id: string) => Number(id));
+      case ApplicationType.DERA:
+      case ApplicationType.NIR:
+        return (
+          formData.siteIdNumber
+            ?.toString()
+            .split(',')
+            .map((id) => id.trim())
+            .filter(Boolean) // removes empty strings
+            .map(Number)
+            .filter((num) => !isNaN(num)) ?? // removes NaN
+          []
+        );
+      case ApplicationType.NOM:
+        let dataGrid = [];
+        if (typeof formData.dataGrid === 'string') {
+          try {
+            dataGrid = JSON.parse(formData.dataGrid);
+          } catch {
+            dataGrid = [];
+          }
+        }
+        const nomSiteIds = [
+          ...(dataGrid?.flatMap((item: any) =>
+            item['contactParcelSiteIdNumber']?.toString().split(','),
+          ) || []),
+          ...(formData.siteIdNumber?.toString().split(',') || []),
+        ];
+
+        return nomSiteIds
+          .filter(
+            (id: any) =>
+              typeof id === 'string' && id.trim() !== '' && !isNaN(Number(id)),
+          ) // keep only non-empty strings
+          .map((id: string) => Number(id.trim()));
+
+      case ApplicationType.SRCR:
+        return (
+          formData.siteIdNumber
+            ?.toString()
+            .split(',')
+            .map((id: string | undefined) => (id ? id.trim() : ''))
+            .filter((id: string) => id !== '' && !isNaN(Number(id)))
+            .map((id: string) => Number(id)) || []
+        );
+
+      case ApplicationType.SoSC:
+        const soscSiteIds: number[] =
+          formData.dataGrid?.map((item: any) => Number(item.siteId))
+            .filter((id: number) => !isNaN(id)) || [];
+
+        return soscSiteIds;
+
+      default:
+        return (
+          formData.siteId
+            ?.toString()
+            .split(',')
+            .map((id) => id.trim())
+            .filter(Boolean) // removes empty strings
+            .map(Number)
+            .filter((num) => !isNaN(num)) ?? // removes NaN
+          []
+        );
+    }
+  };
 
   /**
    * To create a new application in CATS once a submission is received
@@ -19,6 +96,9 @@ export class CatsService {
    */
   async submitToCats(formData: any, submissionId: string, formId: string) {
     const GRAPHQL_URL = process.env.CATS_API;
+
+    // Parse and split comma-separated site IDs
+    const siteIds = this.getSiteIdsFromFormData(formData);
 
     const createApplicationMutation = {
       query: `
@@ -36,38 +116,36 @@ export class CatsService {
   `,
       variables: {
         application: {
-          siteId: Number(formData.siteId),            // Float!          
-          appTypeAbbrev: formData.hdnAppType,           // String!
+          siteIds: siteIds, // array of site id's
+          appTypeAbbrev: formData.hdnAppType, // String!
           receivedDate: new Date(),
           applicationStatus: [
             {
               statusTypeAbbrev: 'New',
               isCurrent: true,
-              applicationId: 0,// Will be overwritten by the backend
+              applicationId: 0, // Will be overwritten by the backend
               formId: formId,
               submissionId: submissionId,
-              formsflowAppId: Number(formData.applicationId),            // Float!
-            }
-          ]
-        }
-      }
+              formsflowAppId: Number(formData.applicationId), // Float!
+            },
+          ],
+        },
+      },
     };
 
-    if (formData.siteId) {
-      try {
-        const response = await axios.post(GRAPHQL_URL, createApplicationMutation, {
+    try {
+      const response = await axios.post(
+        GRAPHQL_URL,
+        createApplicationMutation,
+        {
           headers: {
-            "Content-Type": "application/json"
-          }
-        });
-
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    } else {
-      console.error('Site Id not available, application not created in CATS for formID:' + formId + ' submissionId:' + submissionId);
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+    } catch (error) {
+      console.error('Error:', error);
     }
-
   }
 
   /**
@@ -76,8 +154,25 @@ export class CatsService {
    * @param formId saved form
    * @returns id, submissionId, formId
    */
-  async updateCatsApplication(submissionId: string, formId: string, formData: any) {
+  async updateCatsApplication(
+    submissionId: string,
+    formId: string,
+    formData: any,
+  ) {
+    if (!formData.applicationStatus) {
+      console.log('No application status received');
+      return;
+    }
+
     const GRAPHQL_URL = process.env.CATS_API;
+
+    if (!formData.applicationStatus) {
+      console.log('No application status received');
+      return;
+    }
+
+    // Parse and split comma-separated site IDs
+    const siteIds = this.getSiteIdsFromFormData(formData);
 
     const updateApplicationMutation = {
       query: `
@@ -99,16 +194,21 @@ export class CatsService {
           formId: formId,
           formsflowAppId: Number(formData.applicationId),
           statusTypeAbbrev: formData.applicationStatus,
-        }
+          siteIds: siteIds, // array of site id's
+        },
       },
     };
 
     try {
-      const response = await axios.post(GRAPHQL_URL, updateApplicationMutation, {
-        headers: {
-          "Content-Type": "application/json",
+      const response = await axios.post(
+        GRAPHQL_URL,
+        updateApplicationMutation,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-      });
+      );
 
       return response.data;
     } catch (error) {
@@ -116,5 +216,4 @@ export class CatsService {
       throw error;
     }
   }
-
 }
