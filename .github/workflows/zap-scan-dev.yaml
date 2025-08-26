@@ -5,19 +5,19 @@ on:
     branches:
       - dev
       - main
-
+         
   workflow_dispatch:
     inputs:
       environment:
-        description: "The environment to deploy to"
+        description: 'The environment to deploy to'
         required: true
-        default: "dev"
+        default: 'dev'
         type: choice
         options:
-          - "dev"
-          - "test"
-          - "prod"
-
+          - 'dev'
+          - 'test'
+          - 'prod'
+          
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -33,7 +33,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_EPD_FRONTEND_URL }}
 
   zap_scan_applications_dev:
@@ -46,7 +46,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_EPD_APPLICATIONS_URL }}
 
   zap_scan_gateway_dev:
@@ -59,7 +59,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_EPD_GATEWAY_URL }}
 
   zap_scan_users_dev:
@@ -72,7 +72,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_EPD_USERS_URL }}
   zap_scan_forms-flow-analytics_dev:
     runs-on: ubuntu-latest
@@ -84,7 +84,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_ANALYTICS_URL }}
   zap_scan_forms-flow-api_dev:
     runs-on: ubuntu-latest
@@ -96,7 +96,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_API_URL }}
   zap_scan_forms-flow-bpm_dev:
     runs-on: ubuntu-latest
@@ -108,7 +108,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_BPM_URL }}
   zap_scan_forms-flow-data-analysis_dev:
     runs-on: ubuntu-latest
@@ -120,7 +120,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_DATA_ANALYSIS_URL }}
   # zap_scan_forms-flow-documents_dev:
   #   runs-on: ubuntu-latest
@@ -144,7 +144,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_FORMS_URL }}
   zap_scan_forms-flow-web_dev:
     runs-on: ubuntu-latest
@@ -156,7 +156,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_DEV_FORMSFLOW_WEB_URL }}
   zap_scan_frontend_test:
     runs-on: ubuntu-latest
@@ -168,7 +168,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_TEST_EPD_FRONTEND_URL }}
 
   zap_scan_applications_test:
@@ -181,7 +181,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_TEST_EPD_APPLICATIONS_URL }}
 
   zap_scan_gateway_test:
@@ -194,7 +194,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_TEST_EPD_GATEWAY_URL }}
 
   zap_scan_users_test:
@@ -207,7 +207,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_TEST_EPD_USERS_URL }}
   zap_scan_forms-flow-analytics_test:
     runs-on: ubuntu-latest
@@ -219,7 +219,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_TEST_FORMSFLOW_ANALYTICS_URL }}
   zap_scan_forms-flow-api_test:
     runs-on: ubuntu-latest
@@ -231,7 +231,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_TEST_FORMSFLOW_API_URL }}
   zap_scan_forms-flow-bpm_test:
     runs-on: ubuntu-latest
@@ -243,7 +243,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_TEST_FORMSFLOW_BPM_URL }}
   zap_scan_forms-flow-data-analysis_test:
     runs-on: ubuntu-latest
@@ -255,7 +255,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_TEST_FORMSFLOW_DATA_ANALYSIS_URL }}
   # zap_scan_forms-flow-documents_test:
   #   runs-on: ubuntu-latest
@@ -279,7 +279,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_TEST_FORMSFLOW_FORMS_URL }}
   zap_scan_forms-flow-web_test:
     runs-on: ubuntu-latest
@@ -291,7 +291,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_TEST_FORMSFLOW_WEB_URL }}
   zap_scan_frontend_prod:
     runs-on: ubuntu-latest
@@ -303,7 +303,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_PROD_EPD_FRONTEND_URL }}
 
   zap_scan_applications_prod:
@@ -316,7 +316,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_PROD_EPD_APPLICATIONS_URL }}
 
   zap_scan_gateway_prod:
@@ -329,7 +329,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_PROD_EPD_GATEWAY_URL }}
 
   zap_scan_users_prod:
@@ -342,7 +342,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_PROD_EPD_USERS_URL }}
   zap_scan_forms-flow-analytics_prod:
     runs-on: ubuntu-latest
@@ -354,7 +354,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_PROD_FORMSFLOW_ANALYTICS_URL }}
   zap_scan_forms-flow-api_prod:
     runs-on: ubuntu-latest
@@ -366,7 +366,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_PROD_FORMSFLOW_API_URL }}
   zap_scan_forms-flow-bpm_prod:
     runs-on: ubuntu-latest
@@ -378,7 +378,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_PROD_FORMSFLOW_BPM_URL }}
   zap_scan_forms-flow-data-analysis_prod:
     runs-on: ubuntu-latest
@@ -390,7 +390,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_PROD_FORMSFLOW_DATA_ANALYSIS_URL }}
   # zap_scan_forms-flow-documents_prod:
   #   runs-on: ubuntu-latest
@@ -414,7 +414,7 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_PROD_FORMSFLOW_FORMS_URL }}
   zap_scan_forms-flow-web_prod:
     runs-on: ubuntu-latest
@@ -426,5 +426,9 @@ jobs:
         with:
           allow_issue_writing: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: "ZAP Scan Report"
+          issue_title: 'ZAP Scan Report'
           target: ${{ secrets.ZAP_PROD_FORMSFLOW_WEB_URL }}
+  
+
+   
+  

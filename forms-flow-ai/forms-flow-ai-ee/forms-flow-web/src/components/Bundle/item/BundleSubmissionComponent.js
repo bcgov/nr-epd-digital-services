@@ -42,11 +42,11 @@ const BundleSubmissionComponent = ({
   const [getFormLoading, setGetFormLoading] = useState(false);
   const [form, setForm] = useState({});
   const bundleSubmission = useSelector(
-    (state) => state.bundle.bundleSubmission,
+    (state) => state.bundle.bundleSubmission
   );
   const [submission, setSubmission] = useState(null);
   const bundleSubmitLoading = useSelector(
-    (state) => state.bundle.bundleSubmitLoading,
+    (state) => state.bundle.bundleSubmitLoading
   );
   const formRef = useRef();
   const [formCache, setFormCache] = useState({});
@@ -73,7 +73,7 @@ const BundleSubmissionComponent = ({
         })
         .catch((err) => {
           dispatch(
-            setFormFailureErrorData("form", err.response?.data || err.message),
+            setFormFailureErrorData("form", err.response?.data || err.message)
           );
         })
         .finally(() => {
@@ -87,7 +87,7 @@ const BundleSubmissionComponent = ({
     dispatch(
       setBundleSubmissionData({
         data: { ...bundleSubmission.data, ...submission.data },
-      }),
+      })
     );
   };
 
@@ -142,7 +142,7 @@ const BundleSubmissionComponent = ({
       return;
     }
     handleSubmisionData();
-    // try to submit current form if any validation error it through
+    // try to submit current form if any validation error it through 
     formRef.current
       .submit()
       .then(() => {
@@ -161,7 +161,8 @@ const BundleSubmissionComponent = ({
             let updatedStep = null;
             if (changed !== null) {
               updatedStep = changed;
-              if (selectedForms.length > 1) {
+              if(selectedForms.length > 1)
+              {
                 updatedStep = formStep.step + 1;
               }
             } else if (data?.length - 1 > formStep.step) {
@@ -179,7 +180,7 @@ const BundleSubmissionComponent = ({
           });
       })
       .catch(() => {
-        // if any error caught it will show here
+        // if any error caught it will show here 
         setValidationErroIndex(formStep.step);
         setValidationError(true);
       });
@@ -190,7 +191,7 @@ const BundleSubmissionComponent = ({
   };
 
   const bundleFormValidation = async (valid, index) => {
-    // the form is not valid
+    // the form is not valid 
     //form validationNotOver is once this variable true then don't need to check other forms
     if (!valid && isFormValidationPending) {
       isFormValidationPending = valid;
@@ -200,19 +201,15 @@ const BundleSubmissionComponent = ({
       dispatch(setBundleSubmitLoading(false));
       return;
     }
-    if (
-      valid &&
-      index === selectedForms?.length - 1 &&
-      isFormValidationPending
-    ) {
+    if (valid && index === selectedForms?.length - 1 && isFormValidationPending) {
       isFormValidationPending = false;
       // maybe the current form is not be last one so need to execute rule again
       const response = await executeRule(
         { data: submission.data },
-        bundleData.id,
+        bundleData.id
       );
       if (response && response.data?.length !== selectedForms?.length) {
-        // if the previous lenght of form and response form length are not same
+        // if the previous lenght of form and response form length are not same 
         const changed = checkFormStepChange(response.data);
         dispatch(setBundleSelectedForms(response.data));
         setFormStep({ step: changed });
@@ -281,7 +278,7 @@ const BundleSubmissionComponent = ({
     onSubmit(
       { data: formRef.current.data },
       bundleData.formId,
-      customEventData,
+      customEventData
     );
   };
 

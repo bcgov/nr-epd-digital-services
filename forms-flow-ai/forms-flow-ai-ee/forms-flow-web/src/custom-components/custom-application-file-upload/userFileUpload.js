@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { ReactComponent } from "react-formio";
 import settingsForm from "./appFileUpload.settingsForm";
 
+
 export default class AppFileUpload extends ReactComponent {
   /**
    * This function tells the form builder about your component. It's name, icon and what group it should be in.
@@ -52,22 +53,22 @@ export default class AppFileUpload extends ReactComponent {
   attachReact(element) {
     let instance;
 
-    ReactDOM.render(
+    ReactDOM.render(   
       <a
         href="javascript:void(0)"
         onClick={() => {
-          console.log("file upload");
+          console.log('file upload');
           var customeApplicationId = this.data.applicationId;
+      
 
-          let mapURL =
-            process.env.REACT_APP_CUSTOM_FILE_UPLOAD ||
-            window._env_.REACT_APP_CUSTOM_FILE_UPLOAD;
-
+          let mapURL = 
+          process.env.REACT_APP_CUSTOM_FILE_UPLOAD || window._env_.REACT_APP_CUSTOM_FILE_UPLOAD;
+       
           window.open(
-            mapURL + "?appId=" + customeApplicationId,
+            mapURL + "?appId=" + customeApplicationId ,
             "_blank",
-            "popup=yes,width=500px,heigth=500px",
-          );
+            "popup=yes,width=500px,heigth=500px"
+          );      
 
           console.log("adding listner end");
 
@@ -77,7 +78,7 @@ export default class AppFileUpload extends ReactComponent {
         View / Upload Documents
       </a>,
       element,
-      () => (this.reactInstance = instance),
+      () => (this.reactInstance = instance)
     );
   }
 

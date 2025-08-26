@@ -54,14 +54,13 @@ describe('ApplicationResolver', () => {
     resolver = module.get<ApplicationResolver>(ApplicationResolver);
     applicationService = module.get<ApplicationService>(ApplicationService);
     loggerService = module.get<LoggerService>(LoggerService);
-    genericResponseProvider = module.get<
-      GenericResponseProvider<ApplicationResponse[]>
-    >(GenericResponseProvider);
+    genericResponseProvider = module.get<GenericResponseProvider<ApplicationResponse[]>>(GenericResponseProvider);
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
+
 
   it('should create an application successfully', async () => {
     const createApplicationDto: CreateApplication = {
@@ -76,8 +75,8 @@ describe('ApplicationResolver', () => {
           applicationId: 0,
           formId: '67e70d854d238fa5ddcfc3b0',
           submissionId: '54f678b8-963e-449c-a414-71a21b5e0b66',
-        },
-      ],
+        }
+      ]
     };
 
     const createdApplication = {
@@ -91,16 +90,12 @@ describe('ApplicationResolver', () => {
       data: [createdApplication],
     };
 
-    jest
-      .spyOn(applicationService, 'createApplication')
-      .mockResolvedValue(createdApplication);
+    jest.spyOn(applicationService, 'createApplication').mockResolvedValue(createdApplication);
 
     const result = await resolver.createApplication(createApplicationDto);
 
     expect(result).toEqual(expectedResult);
-    expect(applicationService.createApplication).toHaveBeenCalledWith(
-      createApplicationDto,
-    );
+    expect(applicationService.createApplication).toHaveBeenCalledWith(createApplicationDto);
     expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
       'Application created successfully',
       HttpStatus.CREATED,
@@ -122,8 +117,8 @@ describe('ApplicationResolver', () => {
           applicationId: 0,
           formId: '67e70d854d238fa5ddcfc3b0',
           submissionId: '54f678b8-963e-449c-a414-71a21b5e0b66',
-        },
-      ],
+        }
+      ]
     };
 
     const expectedResult = {
@@ -138,9 +133,7 @@ describe('ApplicationResolver', () => {
     const result = await resolver.createApplication(createApplicationDto);
 
     expect(result).toEqual(expectedResult);
-    expect(applicationService.createApplication).toHaveBeenCalledWith(
-      createApplicationDto,
-    );
+    expect(applicationService.createApplication).toHaveBeenCalledWith(createApplicationDto);
     expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
       'Failed to create application',
       HttpStatus.BAD_REQUEST,
@@ -167,19 +160,18 @@ describe('ApplicationResolver', () => {
       success: true,
       message: 'Application status updated successfully',
       httpStatusCode: 200,
-      data: [mockServiceResponse],
+      data: [
+        mockServiceResponse,
+      ],
     };
 
-    jest
-      .spyOn(applicationService, 'updateFormsflowAppId')
-      .mockResolvedValue(mockServiceResponse);
+    jest.spyOn(applicationService, 'updateFormsflowAppId').mockResolvedValue(mockServiceResponse);
 
     const result = await resolver.updateFormsflowAppId(input);
 
     expect(applicationService.updateFormsflowAppId).toHaveBeenCalledWith(input);
     expect(result).toEqual(expectedResponse);
-    expect(loggerService.log).toHaveBeenCalledWith(
-      'ApplicationResolver.updateFormsflowAppId() start',
-    );
+    expect(loggerService.log).toHaveBeenCalledWith('ApplicationResolver.updateFormsflowAppId() start');
   });
+
 });

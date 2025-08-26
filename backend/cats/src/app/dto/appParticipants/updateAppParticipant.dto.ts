@@ -4,9 +4,9 @@ import { BaseAppParticipantsDto } from './baseAppParticipants.dto';
 
 @InputType()
 export class UpdateAppParticipantDto extends BaseAppParticipantsDto {
-  @Field()
-  id: number;
-
-  @Field()
-  applicationId: number;
+    @Field()
+    id: number;
+    
+    @Field()
+    applicationId: number;
 }

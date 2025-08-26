@@ -1,7 +1,7 @@
 Domain: #<DEFINE_ME>
 
 database:
-  username: postgres
+  username: postgres 
   password: postgres
   servicename: forms-flow-ai-postgresql
   port: 5432
@@ -10,29 +10,29 @@ database:
 formsflow:
   auth: forms-flow-ai-auth
 ingress:
-  ingressClassName: ""
+  ingressClassName: "" 
   annotations:
-  #    kubernetes.io/ingress.class: nginx
+#    kubernetes.io/ingress.class: nginx 
   enabled: true # create an ingress for this component
   hostname: "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}"
   port: 5000
   tls: true
   selfSigned: false
   extraTls:
-    - {}
+    - {}  
 redis-exporter:
   exporter:
-    image:
+    image:  
       registry: docker.io
       repository: oliver006/redis_exporter
       tag: v1.14.0-alpine
   redis:
-    image:
+    image:  
       registry: docker.io
       repository: redis
       tag: 7.0-rc3-alpine
   persistentVolumeClaim:
-    size: 2Gi
+    size: 2Gi  
     storageClass: ""
   resources:
     limits:
@@ -44,7 +44,7 @@ redis-exporter:
 redash:
   image:
     registry: docker.io #registry to use
-    repository: formsflow/redash # repoisitory for redash image
+    repository: formsflow/redash # repoisitory for redash image  
     tag: 10.1.5 # tag of image being used
   database:
     password: postgres # admin password

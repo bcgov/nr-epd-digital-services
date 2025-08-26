@@ -30,7 +30,7 @@ const service = {
       const bucket = await service.readUnique({
         bucket: data.bucket,
         endpoint: data.endpoint,
-        key: data.key ? data.key : '/',
+        key: data.key ? data.key : '/'
       });
 
       if (
@@ -41,14 +41,9 @@ const service = {
         if (data.userId && data.userId !== SYSTEM_USER) {
           const perms = Object.values(Permissions).map((p) => ({
             userId: data.userId,
-            permCode: p,
+            permCode: p
           }));
-          await bucketPermissionService.addPermissions(
-            bucket.bucketId,
-            perms,
-            data.userId,
-            trx,
-          );
+          await bucketPermissionService.addPermissions(bucket.bucketId, perms, data.userId, trx);
         }
       } else {
         throw new Error('Bucket credential mismatch');
@@ -93,7 +88,7 @@ const service = {
         secretAccessKey: data.secretAccessKey,
         region: data.region,
         active: data.active,
-        createdBy: data.userId,
+        createdBy: data.userId
       };
 
       const response = await Bucket.query(trx).insert(obj).returning('*');
@@ -102,14 +97,9 @@ const service = {
       if (data.userId && data.userId !== SYSTEM_USER) {
         const perms = Object.values(Permissions).map((p) => ({
           userId: data.userId,
-          permCode: p,
+          permCode: p
         }));
-        await bucketPermissionService.addPermissions(
-          obj.bucketId,
-          perms,
-          data.userId,
-          trx,
-        );
+        await bucketPermissionService.addPermissions(obj.bucketId, perms, data.userId, trx);
       }
 
       if (!etrx) await trx.commit();
@@ -166,13 +156,11 @@ const service = {
       .modify('filterKey', params.key)
       .modify('filterActive', params.active)
       .modify('filterUserId', params.userId)
-      .then((result) =>
-        result.map((row) => {
-          // eslint-disable-next-line no-unused-vars
-          const { bucketPermission, ...bucket } = row;
-          return bucket;
-        }),
-      );
+      .then(result => result.map(row => {
+        // eslint-disable-next-line no-unused-vars
+        const { bucketPermission, ...bucket } = row;
+        return bucket;
+      }));
   },
 
   /**
@@ -183,7 +171,9 @@ const service = {
    * @throws If there are no records found
    */
   read: (bucketId) => {
-    return Bucket.query().findById(bucketId).throwIfNotFound();
+    return Bucket.query()
+      .findById(bucketId)
+      .throwIfNotFound();
   },
 
   /**
@@ -225,19 +215,16 @@ const service = {
       trx = etrx ? etrx : await Bucket.startTransaction();
 
       // Update bucket record in DB
-      const response = await Bucket.query(trx).patchAndFetchById(
-        data.bucketId,
-        {
-          bucketName: data.bucketName,
-          accessKeyId: data.accessKeyId,
-          bucket: data.bucket,
-          endpoint: data.endpoint,
-          secretAccessKey: data.secretAccessKey,
-          region: data.region,
-          active: data.active,
-          updatedBy: data.userId,
-        },
-      );
+      const response = await Bucket.query(trx).patchAndFetchById(data.bucketId, {
+        bucketName: data.bucketName,
+        accessKeyId: data.accessKeyId,
+        bucket: data.bucket,
+        endpoint: data.endpoint,
+        secretAccessKey: data.secretAccessKey,
+        region: data.region,
+        active: data.active,
+        updatedBy: data.userId
+      });
 
       if (!etrx) await trx.commit();
       return response;

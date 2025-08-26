@@ -18,7 +18,7 @@ module.exports = Object.freeze({
     /** OIDC JWT Authentication header provided */
     BEARER: 'BEARER',
     /** No Authentication header provided */
-    NONE: 'NONE',
+    NONE: 'NONE'
   },
 
   /** Default CORS settings used across the entire application */
@@ -26,7 +26,7 @@ module.exports = Object.freeze({
     /** Tells browsers to cache preflight requests for Access-Control-Max-Age seconds */
     maxAge: 600,
     /** Set true to dynamically set Access-Control-Allow-Origin based on Origin */
-    origin: true,
+    origin: true
   },
 
   /** Need to specify valid AWS region or it'll explode ('us-east-1' is default, 'ca-central-1' for Canada) */
@@ -37,15 +37,14 @@ module.exports = Object.freeze({
     /** Proxies payload data through COMS */
     PROXY: 'proxy',
     /** Returns only a pre-signed S3 url */
-    URL: 'url',
+    URL: 'url'
   },
 
   /**
    * Generic email regex modified to require domain of at least 2 characters
    * @see {@link https://emailregex.com/}
    */
-  EMAILREGEX:
-    '^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]{2,})+$',
+  EMAILREGEX: '^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]{2,})+$',
 
   /** Maximum number of parts supported by lib-storage upload */
   MAXPARTCOUNT: 10000,
@@ -61,7 +60,7 @@ module.exports = Object.freeze({
     /** The original metadata is copied to the new version as-is where applicable. */
     COPY: 'COPY',
     /** All original metadata is replaced by the metadata you specify. */
-    REPLACE: 'REPLACE',
+    REPLACE: 'REPLACE'
   },
 
   /** Minimum part size supported by lib-storage upload */
@@ -72,7 +71,7 @@ module.exports = Object.freeze({
     /** The original tags are copied to the new version as-is where applicable. */
     COPY: 'COPY',
     /** All original tags are replaced by the tags you specify. */
-    REPLACE: 'REPLACE',
+    REPLACE: 'REPLACE'
   },
 
   /** Resource permissions */
@@ -86,6 +85,6 @@ module.exports = Object.freeze({
     /** Grants resource deletion permission */
     DELETE: 'DELETE',
     /** Grants resource permission management */
-    MANAGE: 'MANAGE',
-  },
+    MANAGE: 'MANAGE'
+  }
 });

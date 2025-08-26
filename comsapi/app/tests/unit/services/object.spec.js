@@ -19,7 +19,7 @@ jest.mock('../../../src/db/models/tables/objectModel', () => ({
   query: jest.fn(),
   returning: jest.fn(),
   select: jest.fn(),
-  throwIfNotFound: jest.fn(),
+  throwIfNotFound: jest.fn()
 }));
 
 const service = require('../../../src/services/object');
@@ -32,7 +32,7 @@ const data = {
   public: 'true',
   active: 'true',
   createdBy: SYSTEM_USER,
-  userId: SYSTEM_USER,
+  userId: SYSTEM_USER
 };
 
 beforeEach(() => {
@@ -41,10 +41,7 @@ beforeEach(() => {
 });
 
 describe('create', () => {
-  const addPermissionsSpy = jest.spyOn(
-    objectPermissionService,
-    'addPermissions',
-  );
+  const addPermissionsSpy = jest.spyOn(objectPermissionService, 'addPermissions');
 
   beforeEach(() => {
     addPermissionsSpy.mockReset();
@@ -107,13 +104,13 @@ describe('getBucketKey', () => {
 
 describe('searchObjects', () => {
   it('Search and filter for specific object records', async () => {
-    ObjectModel.then.mockImplementation(() => {});
+    ObjectModel.then.mockImplementation(() => { });
     const params = {
       bucketId: BUCKET_ID,
       bucketName: 'bucketName',
       active: 'true',
       key: 'key',
-      userId: SYSTEM_USER,
+      userId: SYSTEM_USER
     };
 
     await service.searchObjects(params);
@@ -123,65 +120,20 @@ describe('searchObjects', () => {
     expect(ObjectModel.query).toHaveBeenCalledWith(expect.anything());
     expect(ObjectModel.allowGraph).toHaveBeenCalledTimes(1);
     expect(ObjectModel.modify).toHaveBeenCalledTimes(11);
-    expect(ObjectModel.modify).toHaveBeenNthCalledWith(
-      1,
-      'filterIds',
-      params.id,
-    );
-    expect(ObjectModel.modify).toHaveBeenNthCalledWith(
-      2,
-      'filterBucketIds',
-      params.bucketId,
-    );
-    expect(ObjectModel.modify).toHaveBeenNthCalledWith(
-      3,
-      'filterName',
-      params.name,
-    );
-    expect(ObjectModel.modify).toHaveBeenNthCalledWith(
-      4,
-      'filterPath',
-      params.path,
-    );
-    expect(ObjectModel.modify).toHaveBeenNthCalledWith(
-      5,
-      'filterPublic',
-      params.public,
-    );
-    expect(ObjectModel.modify).toHaveBeenNthCalledWith(
-      6,
-      'filterActive',
-      params.active,
-    );
-    expect(ObjectModel.modify).toHaveBeenNthCalledWith(
-      7,
-      'filterMimeType',
-      params.mimeType,
-    );
-    expect(ObjectModel.modify).toHaveBeenNthCalledWith(
-      8,
-      'filterDeleteMarker',
-      params.deleteMarker,
-    );
-    expect(ObjectModel.modify).toHaveBeenNthCalledWith(
-      9,
-      'filterLatest',
-      params.latest,
-    );
-    expect(ObjectModel.modify).toHaveBeenNthCalledWith(
-      10,
-      'filterMetadataTag',
-      {
-        metadata: params.metadata,
-        tag: params.tag,
-      },
-    );
-    expect(ObjectModel.modify).toHaveBeenNthCalledWith(
-      11,
-      'hasPermission',
-      params.userId,
-      'READ',
-    );
+    expect(ObjectModel.modify).toHaveBeenNthCalledWith(1, 'filterIds', params.id);
+    expect(ObjectModel.modify).toHaveBeenNthCalledWith(2, 'filterBucketIds', params.bucketId);
+    expect(ObjectModel.modify).toHaveBeenNthCalledWith(3, 'filterName', params.name);
+    expect(ObjectModel.modify).toHaveBeenNthCalledWith(4, 'filterPath', params.path);
+    expect(ObjectModel.modify).toHaveBeenNthCalledWith(5, 'filterPublic', params.public);
+    expect(ObjectModel.modify).toHaveBeenNthCalledWith(6, 'filterActive', params.active);
+    expect(ObjectModel.modify).toHaveBeenNthCalledWith(7, 'filterMimeType', params.mimeType);
+    expect(ObjectModel.modify).toHaveBeenNthCalledWith(8, 'filterDeleteMarker', params.deleteMarker);
+    expect(ObjectModel.modify).toHaveBeenNthCalledWith(9, 'filterLatest', params.latest);
+    expect(ObjectModel.modify).toHaveBeenNthCalledWith(10, 'filterMetadataTag', {
+      metadata: params.metadata,
+      tag: params.tag
+    });
+    expect(ObjectModel.modify).toHaveBeenNthCalledWith(11, 'hasPermission', params.userId, 'READ');
     expect(ObjectModel.then).toHaveBeenCalledTimes(1);
     expect(objectModelTrx.commit).toHaveBeenCalledTimes(1);
   });
@@ -213,7 +165,7 @@ describe('update', () => {
       path: data.path,
       public: data.public,
       active: data.active,
-      updatedBy: data.userId,
+      updatedBy: data.userId
     });
     expect(objectModelTrx.commit).toHaveBeenCalledTimes(1);
   });

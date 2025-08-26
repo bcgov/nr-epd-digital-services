@@ -1,8 +1,0 @@
-.table-controls__button--selected {
-  font-weight: bold;
-  color: var(--surface-color-primary-default) !important;
-}
-
-.table-controls__button--selected:hover {
-  color: var(--surface-color-primary-default) !important;
-}

@@ -16,7 +16,7 @@ services:
       - NODE_ENV=development
       - BACKEND_URL=backend
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4000"]
+      test: [ "CMD", "curl", "-f", "http://localhost:4000" ]
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -49,7 +49,7 @@ services:
     image: postgis/postgis:15-3.3
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: [ "CMD-SHELL", "pg_isready" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -76,7 +76,7 @@ services:
     volumes:
       - ./backend/cats:/app:z
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4005"]
+      test: [ "CMD", "curl", "-f", "http://localhost:4005" ]
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -103,7 +103,7 @@ services:
       - ./backend/applications:/app:z
       - /app/node_modules
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4006"]
+      test: [ "CMD", "curl", "-f", "http://localhost:4006" ]
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -124,7 +124,7 @@ services:
     hostname: site-database
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: [ "CMD-SHELL", "pg_isready" ]
       interval: 30s
       timeout: 25s
       retries: 5
@@ -152,7 +152,7 @@ services:
       - ./backend/sites:/app:z
       - /app/node_modules
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4007"]
+      test: [ "CMD", "curl", "-f", "http://localhost:4007" ]
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -175,7 +175,7 @@ services:
       CATS_MICROSERVICE_ENDPOINT: http://cats:4005/graphql
       SITE_MICROSERVICE_ENDPOINT: http://sites:4007/graphql
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4010"]
+      test: [ "CMD", "curl", "-f", "http://localhost:4010" ]
       interval: 1m30s
       timeout: 10s
       retries: 3

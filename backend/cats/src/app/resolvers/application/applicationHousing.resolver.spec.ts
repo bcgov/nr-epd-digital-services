@@ -76,8 +76,9 @@ describe('ApplicationHousingResolver', () => {
 
       const mockApplicationId = 123;
 
-      const result =
-        await resolver.getApplicationHousingByApplicationId(mockApplicationId);
+      const result = await resolver.getApplicationHousingByApplicationId(
+        mockApplicationId,
+      );
 
       expect(service.getApplicationHousingByApplicationId).toHaveBeenCalledWith(
         mockApplicationId,

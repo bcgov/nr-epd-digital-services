@@ -55,6 +55,7 @@ jobs:
         run: |
           oc login --server=${{secrets.OC_SERVER}} --token=${{secrets.OC_TOKEN}}
 
+
       - name: Tools project
         shell: bash
         run: |
@@ -70,6 +71,7 @@ jobs:
         run: |
           oc start-build ${{ env.APP_NAME }}-build --wait
 
+
       - name: Tag+Deploy for ${{ env.TAG_NAME }}
         shell: bash
         run: |
@@ -80,3 +82,4 @@ jobs:
       #   shell: bash
       #   run: |
       #     oc rollout status dc/${{ env.APP_NAME }} -n ${{ env.TOOLS_NAME }}-${{ env.ENV_NAME }} -w
+

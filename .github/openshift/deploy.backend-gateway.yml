@@ -149,15 +149,15 @@ objects:
             - name: init-${NAME}-backend-applications
               image: registry.access.redhat.com/ubi8/ubi:latest
               command:
-                - "sh"
-                - "-c"
-                - "until getent hosts epd-backend-applications; do echo waiting for applications; sleep 2; done;"
+                - 'sh'
+                - '-c'
+                - 'until getent hosts epd-backend-applications; do echo waiting for applications; sleep 2; done;'
             - name: init-${NAME}-backend-users
               image: registry.access.redhat.com/ubi8/ubi:latest
               command:
-                - "sh"
-                - "-c"
-                - "until getent hosts epd-backend-users; do echo waiting for users; sleep 2; done;"
+                - 'sh'
+                - '-c'
+                - 'until getent hosts epd-backend-users; do echo waiting for users; sleep 2; done;'
   - apiVersion: v1
     kind: Service
     metadata:

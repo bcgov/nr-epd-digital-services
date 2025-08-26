@@ -13,8 +13,8 @@ on:
       - main
       - srs-338
     paths:
-      - "backend/**"
-      - "frontend/**"
+      - 'backend/**'
+      - 'frontend/**'
 
 defaults:
   run:
@@ -75,7 +75,9 @@ jobs:
         run: |
           oc start-build ${{ env.APP_NAME }}-build --wait
 
+
       - name: Tag+Deploy for ${{ env.TAG_NAME }}
         shell: bash
         run: |
           oc tag ${{ env.APP_NAME }}:latest ${{ env.APP_NAME }}:${{ env.TAG_NAME }}
+

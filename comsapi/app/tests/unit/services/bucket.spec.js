@@ -18,7 +18,7 @@ jest.mock('../../../src/db/models/tables/bucket', () => ({
   query: jest.fn(),
   returning: jest.fn(),
   throwIfNotFound: jest.fn(),
-  where: jest.fn(),
+  where: jest.fn()
 }));
 
 const service = require('../../../src/services/bucket');
@@ -35,7 +35,7 @@ const data = {
   region: 'region',
   active: 'true',
   createdBy: SYSTEM_USER,
-  userId: SYSTEM_USER,
+  userId: SYSTEM_USER
 };
 
 beforeEach(() => {
@@ -55,10 +55,7 @@ describe('checkGrantPermissions', () => {
   });
 
   it('Grants a user full permissions to the bucket if the data precisely matches', async () => {
-    readUniqueSpy.mockResolvedValue({
-      accessKeyId: data.accessKeyId,
-      secretAccessKey: data.secretAccessKey,
-    });
+    readUniqueSpy.mockResolvedValue({ accessKeyId: data.accessKeyId, secretAccessKey: data.secretAccessKey });
 
     await service.checkGrantPermissions(data);
 
@@ -68,10 +65,7 @@ describe('checkGrantPermissions', () => {
 });
 
 describe('create', () => {
-  const addPermissionsSpy = jest.spyOn(
-    bucketPermissionService,
-    'addPermissions',
-  );
+  const addPermissionsSpy = jest.spyOn(bucketPermissionService, 'addPermissions');
 
   beforeEach(() => {
     addPermissionsSpy.mockReset();
@@ -114,7 +108,7 @@ describe('delete', () => {
 
 describe('searchBuckets', () => {
   it('search and filter for specific bucket records', async () => {
-    Bucket.then.mockImplementation(() => {});
+    Bucket.then.mockImplementation(() => { });
 
     await service.searchBuckets([]);
 
@@ -168,7 +162,7 @@ describe('update', () => {
       secretAccessKey: data.secretAccessKey,
       region: data.region,
       active: data.active,
-      updatedBy: data.userId,
+      updatedBy: data.userId
     });
     expect(bucketTrx.commit).toHaveBeenCalledTimes(1);
   });

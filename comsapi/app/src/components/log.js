@@ -39,7 +39,7 @@ const log = createLogger({
     format.timestamp(), // Add ISO timestamp to each entry
     format.json(), // Force output to be in JSON format
   ),
-  level: config.get('server.logLevel'),
+  level: config.get('server.logLevel')
 });
 
 if (process.env.NODE_ENV !== 'test') {
@@ -49,12 +49,10 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 if (config.has('server.logFile')) {
-  log.add(
-    new transports.File({
-      filename: config.get('server.logFile'),
-      handleExceptions: true,
-    }),
-  );
+  log.add(new transports.File({
+    filename: config.get('server.logFile'),
+    handleExceptions: true
+  }));
 }
 
 /**
@@ -76,7 +74,7 @@ const httpLogger = logger({
   dynamicMeta: (req, res) => {
     const token = jwt.decode((req.get('authorization') || '').slice(7));
     return {
-      azp: (token && token.azp) || undefined,
+      azp: token && token.azp || undefined,
       contentLength: res.get('content-length'),
       httpVersion: req.httpVersion,
       ip: req.ip,
@@ -85,7 +83,7 @@ const httpLogger = logger({
       query: Object.keys(req.query).length ? req.query : undefined,
       responseTime: res.responseTime,
       statusCode: res.statusCode,
-      userAgent: req.get('user-agent'),
+      userAgent: req.get('user-agent')
     };
   },
   expressFormat: true, // Use express style message strings
@@ -95,8 +93,7 @@ const httpLogger = logger({
   requestWhitelist: [], // Suppress default value output
   responseWhitelist: [], // Suppress default value output
   // Skip logging kube-probe requests
-  skip: (req) =>
-    req.get('user-agent') && req.get('user-agent').includes('kube-probe'),
+  skip: (req) => req.get('user-agent') && req.get('user-agent').includes('kube-probe'),
   winstonInstance: log,
 });
 

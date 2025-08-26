@@ -14,19 +14,13 @@ const log = require('../components/log')(module.filename);
 const _basicAuthConfig = {
   // Must be a synchronous function
   authorizer: (username, password) => {
-    const userMatch = basicAuth.safeCompare(
-      username,
-      config.get('basicAuth.username'),
-    );
-    const pwMatch = basicAuth.safeCompare(
-      password,
-      config.get('basicAuth.password'),
-    );
+    const userMatch = basicAuth.safeCompare(username, config.get('basicAuth.username'));
+    const pwMatch = basicAuth.safeCompare(password, config.get('basicAuth.password'));
     return userMatch & pwMatch;
   },
   unauthorizedResponse: () => {
     return new Problem(401, { detail: 'Invalid authorization credentials' });
-  },
+  }
 };
 
 /**
@@ -41,8 +35,7 @@ const _checkBasicAuth = basicAuth(_basicAuthConfig);
  * @param {string} spki The PEM-encoded Simple public-key infrastructure string
  * @returns {string} The PEM-encoded SPKI with PEM header and footer
  */
-const _spkiWrapper = (spki) =>
-  `-----BEGIN PUBLIC KEY-----\n${spki}\n-----END PUBLIC KEY-----`;
+const _spkiWrapper = (spki) => `-----BEGIN PUBLIC KEY-----\n${spki}\n-----END PUBLIC KEY-----`;
 
 /**
  * @function currentUser
@@ -57,25 +50,19 @@ const _spkiWrapper = (spki) =>
 const currentUser = async (req, res, next) => {
   const authorization = req.get('Authorization');
   const currentUser = {
-    authType: AuthType.NONE,
+    authType: AuthType.NONE
   };
 
   if (authorization) {
     log.info('step - 0 ');
     // Basic Authorization
-    if (
-      config.has('basicAuth.enabled') &&
-      authorization.toLowerCase().startsWith('basic ')
-    ) {
+    if (config.has('basicAuth.enabled') && authorization.toLowerCase().startsWith('basic ')) {
       log.info('step - 1 ');
       currentUser.authType = AuthType.BASIC;
     }
 
     // OIDC JWT Authorization
-    else if (
-      config.has('keycloak.enabled') &&
-      authorization.toLowerCase().startsWith('bearer ')
-    ) {
+    else if (config.has('keycloak.enabled') && authorization.toLowerCase().startsWith('bearer ')) {
       log.info('step - 2 ');
       currentUser.authType = AuthType.BEARER;
 
@@ -90,29 +77,24 @@ const currentUser = async (req, res, next) => {
             ? publicKey
             : _spkiWrapper(publicKey);
           isValid = jwt.verify(bearerToken, pemKey, {
-            issuer: `${config.get('keycloak.serverUrl')}/realms/${config.get('keycloak.realm')}`,
+            issuer: `${config.get('keycloak.serverUrl')}/realms/${config.get('keycloak.realm')}`
           });
           log.info('step - 4 ', isValid);
         } else {
-          throw new Error(
-            'OIDC environment variable KC_PUBLICKEY or keycloak.publicKey must be defined',
-          );
+          throw new Error('OIDC environment variable KC_PUBLICKEY or keycloak.publicKey must be defined');
         }
 
         if (isValid) {
           log.info('step - 5 ');
-          currentUser.tokenPayload =
-            typeof isValid === 'object' ? isValid : jwt.decode(bearerToken);
+          currentUser.tokenPayload = typeof isValid === 'object' ? isValid : jwt.decode(bearerToken);
           await userService.login(currentUser.tokenPayload);
           log.info('step - 6 ');
         } else {
           throw new Error('Invalid authorization token');
         }
       } catch (err) {
-        log.info('step - 7 ', err);
-        return next(
-          new Problem(403, { detail: err.message, instance: req.originalUrl }),
-        );
+        log.info('step - 7 ',err);
+        return next(new Problem(403, { detail: err.message, instance: req.originalUrl }));
       }
     }
   }
@@ -123,12 +105,10 @@ const currentUser = async (req, res, next) => {
   // Continue middleware stack based on detected AuthType
   if (currentUser.authType === AuthType.BASIC) {
     _checkBasicAuth(req, res, next);
-  } else next();
+  }
+  else next();
 };
 
 module.exports = {
-  _basicAuthConfig,
-  _checkBasicAuth,
-  currentUser,
-  _spkiWrapper,
+  _basicAuthConfig, _checkBasicAuth, currentUser, _spkiWrapper
 };

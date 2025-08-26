@@ -30,7 +30,7 @@ import {
   setBundleSubmissionData,
 } from "../../../../actions/bundleActions";
 //import {setApiCallError} from "../../../../actions/ErroHandling";
-import NoData from "../../../../components/Nodata";
+import NoData from '../../../../components/Nodata';
 
 const Item = React.memo(() => {
   const { bundleId, submissionId } = useParams();
@@ -38,19 +38,18 @@ const Item = React.memo(() => {
   // const showViewSubmissions= useSelector((state) => state.user.showViewSubmissions);
   //const path = props.location.pathname;
   const applicationId = useSelector(
-    (state) => state.bundle?.bundleSubmission?.data?.applicationId || null,
+    (state) => state.bundle?.bundleSubmission?.data?.applicationId || null
   );
   const userRoles = useSelector((state) => {
     return selectRoot("user", state).roles;
   });
   const applicationStatus = useSelector(
-    (state) => state.applications.applicationDetail?.applicationStatus || "",
+    (state) => state.applications.applicationDetail?.applicationStatus || ""
   );
   const [showSubmissionLoading, setShowSubmissionLoading] = useState(true);
   const [editAllowed, setEditAllowed] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [customSubmissionAPIFailed, setCustomSubmissionAPIFailed] =
-    useState(false);
+  const [customSubmissionAPIFailed,setCustomSubmissionAPIFailed]  = useState(false);
 
   useEffect(() => {
     dispatch(clearSubmissionError("submission"));
@@ -63,19 +62,23 @@ const Item = React.memo(() => {
       console.log("invoking here 1 ");
       dispatch(
         getCustomSubmission(submissionId, bundleId, (err, res) => {
-          console.log("here i am ");
-          if (err) {
-            if (window.location.href.indexOf("undefined") != -1) {
-              console.log("error occurred", err, res);
-            } else {
+          console.log('here i am ');
+            if(err)
+          {
+            if(window.location.href.indexOf("undefined") != -1)
+            {
+              console.log("error occurred",err,res);
+            }
+            else
+            {
               setCustomSubmissionAPIFailed(true);
               //dispatch(setApiCallError({message: 'Unable to fetch form data. Please contact support.'}));
-              console.log("error occurred dp ", err, res);
-            }
+              console.log("error occurred dp ",err,res);
+            }        
           }
           dispatch(setBundleSubmissionData({ data: res.data }));
           setLoading(false);
-        }),
+        })
       );
     } else {
       formioGetSubmission(bundleId, submissionId)
@@ -111,42 +114,47 @@ const Item = React.memo(() => {
     if (editAllowed && applicationStatus) setShowSubmissionLoading(false);
   }, [applicationStatus, editAllowed]);
 
-  if (customSubmissionAPIFailed) {
-    return <NoData />;
-  } else {
+  if (customSubmissionAPIFailed)
+  {
     return (
-      <div>
-        <Switch>
-          <Route
-            exact
-            path={`${BASE_ROUTE}bundle/:bundleId/submission/:submissionId`}
-            component={loading ? Loading : View}
-          />
-          <Redirect
-            exact
-            from={`${BASE_ROUTE}bundle/:bundleId/submission/:submissionId/edit/:notavailable`}
-            to="/404"
-          />
-          {showSubmissionLoading ? (
-            <Route
-              path={`${BASE_ROUTE}bundle/:bundleId/submission/:submissionId/edit`}
-              component={Loading}
-            />
-          ) : null}
-          {editAllowed ? (
-            <Route
-              path={`${BASE_ROUTE}bundle/:bundleId/submission/:submissionId/edit`}
-              component={loading ? Loading : Edit}
-            />
-          ) : null}
-          <Route
-            path={`${BASE_ROUTE}bundle/:bundleId/submission/:submissionId/:notavailable`}
-            component={NotFound}
-          />
-        </Switch>
-      </div>
+      <NoData/>
     );
-  }
+  } 
+  else
+  {
+  return (
+    <div>
+      <Switch>
+        <Route
+          exact
+          path={`${BASE_ROUTE}bundle/:bundleId/submission/:submissionId`}
+          component={loading ? Loading : View}
+        />
+        <Redirect
+          exact
+          from={`${BASE_ROUTE}bundle/:bundleId/submission/:submissionId/edit/:notavailable`}
+          to="/404"
+        />
+        {showSubmissionLoading ? (
+          <Route
+            path={`${BASE_ROUTE}bundle/:bundleId/submission/:submissionId/edit`}
+            component={Loading}
+          />
+        ) : null}
+        {editAllowed ? (
+          <Route
+            path={`${BASE_ROUTE}bundle/:bundleId/submission/:submissionId/edit`}
+            component={loading ? Loading : Edit}
+          />
+        ) : null}
+        <Route
+          path={`${BASE_ROUTE}bundle/:bundleId/submission/:submissionId/:notavailable`}
+          component={NotFound}
+        />
+      </Switch>
+    </div>
+  );
+        }
 });
 
 export default Item;

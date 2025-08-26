@@ -37,14 +37,7 @@ jobs:
     uses: ./.github/workflows/_code-cov.yml
     strategy:
       matrix:
-        component:
-          [
-            backend/applications,
-            backend/gateway,
-            backend/cats,
-            frontend,
-            cats-frontend,
-          ]
+        component: [backend/applications, backend/gateway, backend/cats, frontend, cats-frontend]
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
@@ -95,7 +88,7 @@ jobs:
   #           -Dsonar.sources=backend/applications/src/,backend/gateway/src/,backend/users/src/,frontend/src/,.github/workflows/,forms-flow-ai/epd-forms/,forms-flow-ai/forms-flow-ai-ee/,forms-flow-ai/forms-flow-ai-micro-front-ends/,map-package/src/
   #           -Dsonar.tests=backend/applications/src/,backend/gateway/src/,backend/users/src/,forms-flow-ai/epd-forms/,forms-flow-ai/forms-flow-ai-ee/,forms-flow-ai/forms-flow-ai-micro-front-ends/,.github/workflows/,map-package/src/
   #           -Dsonar.test.inclusions=backend/applications/src/*.spec.ts,backend/gateway/src/*.spec.ts,backend/users/src/*.spec.ts,backend/applications/src/**/*.spec.ts,backend/gateway/src/**/*.spec.ts,backend/users/src/**/*.spec.ts
-
+    
   # deploys:
   #   name: Deploys
   #   needs:

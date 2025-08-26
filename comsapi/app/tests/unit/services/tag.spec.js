@@ -17,7 +17,7 @@ jest.mock('../../../src/db/models/tables/objectModel', () => ({
   modifyGraph: jest.fn(),
   query: jest.fn(),
   select: jest.fn(),
-  withGraphJoined: jest.fn(),
+  withGraphJoined: jest.fn()
 }));
 
 const tagTrx = trxBuilder();
@@ -38,7 +38,7 @@ jest.mock('../../../src/db/models/tables/tag', () => ({
   where: jest.fn(),
   whereIn: jest.fn(),
   whereNull: jest.fn(),
-  withGraphJoined: jest.fn(),
+  withGraphJoined: jest.fn()
 }));
 
 const versionTrx = trxBuilder();
@@ -52,7 +52,7 @@ jest.mock('../../../src/db/models/tables/version', () => ({
   orderBy: jest.fn(),
   query: jest.fn(),
   select: jest.fn(),
-  withGraphJoined: jest.fn(),
+  withGraphJoined: jest.fn()
 }));
 
 const versionTagTrx = trxBuilder();
@@ -66,20 +66,13 @@ jest.mock('../../../src/db/models/tables/versionTag', () => ({
   query: jest.fn(),
   some: jest.fn(),
   where: jest.fn(),
-  withGraphJoined: jest.fn(),
+  withGraphJoined: jest.fn()
 }));
 
 const service = require('../../../src/services/tag');
 
-const params = {
-  tagset: [{ key: 'C', value: '10' }],
-  objectIds: [OBJECT_ID],
-  userId: SYSTEM_USER,
-};
-const tags = [
-  { key: 'A', value: '1' },
-  { key: 'B', value: '2' },
-];
+const params = { tagset: [{ key: 'C', value: '10' }], objectIds: [OBJECT_ID], userId: SYSTEM_USER };
+const tags = [{ key: 'A', value: '1' }, { key: 'B', value: '2' }];
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -94,8 +87,8 @@ describe('dissociateTags', () => {
     Tag.whereNull.mockResolvedValue([
       {
         ...tags,
-        map: jest.fn(),
-      },
+        map: jest.fn()
+      }
     ]);
 
     await service.dissociateTags(VERSION_ID, tags);
@@ -139,8 +132,8 @@ describe('replaceTags', () => {
     Tag.where.mockResolvedValue([
       {
         ...tags,
-        filter: jest.fn(),
-      },
+        filter: jest.fn()
+      }
     ]);
     await service.replaceTags(VERSION_ID, tags);
 
@@ -170,8 +163,8 @@ describe('associateTags', () => {
     createTagsSpy.mockResolvedValue([{ key: 'C', value: '10' }]);
     VersionTag.modify.mockResolvedValue([
       {
-        some: jest.fn(),
-      },
+        some: jest.fn()
+      }
     ]);
 
     await service.associateTags(VERSION_ID, tags);
@@ -180,10 +173,7 @@ describe('associateTags', () => {
     expect(VersionTag.query).toHaveBeenCalledTimes(1);
     expect(VersionTag.query).toHaveBeenCalledWith(expect.anything());
     expect(VersionTag.modify).toHaveBeenCalledTimes(1);
-    expect(VersionTag.modify).toHaveBeenCalledWith(
-      'filterVersionId',
-      VERSION_ID,
-    );
+    expect(VersionTag.modify).toHaveBeenCalledWith('filterVersionId', VERSION_ID);
     expect(tagTrx.commit).toHaveBeenCalledTimes(1);
   });
 });
@@ -193,8 +183,8 @@ describe('pruneOrphanedTags', () => {
     Tag.whereNull.mockResolvedValue([
       {
         ...tags,
-        map: jest.fn(),
-      },
+        map: jest.fn()
+      }
     ]);
 
     await service.pruneOrphanedTags();
@@ -233,8 +223,8 @@ describe('createTags', () => {
     Tag.select.mockResolvedValue([
       {
         ...tags,
-        find: jest.fn(),
-      },
+        find: jest.fn()
+      }
     ]);
 
     getObjectsByKeyValueSpy.mockResolvedValue(...tags);
@@ -254,18 +244,15 @@ describe('fetchTagsForObject', () => {
     ObjectModel.then.mockResolvedValue([
       {
         ...tags,
-        map: jest.fn(),
-      },
+        map: jest.fn()
+      }
     ]);
 
     service.fetchTagsForObject(params);
 
     expect(ObjectModel.query).toHaveBeenCalledTimes(1);
     expect(ObjectModel.select).toHaveBeenCalledTimes(1);
-    expect(ObjectModel.select).toBeCalledWith(
-      'object.id AS objectId',
-      'object.bucketId as bucketId',
-    );
+    expect(ObjectModel.select).toBeCalledWith('object.id AS objectId', 'object.bucketId as bucketId');
     expect(ObjectModel.allowGraph).toHaveBeenCalledTimes(1);
     expect(ObjectModel.allowGraph).toBeCalledWith('version.tag');
     expect(ObjectModel.withGraphJoined).toHaveBeenCalledTimes(1);
@@ -282,8 +269,8 @@ describe('fetchTagsForVersion', () => {
     Version.then.mockResolvedValue([
       {
         ...tags,
-        map: jest.fn(),
-      },
+        map: jest.fn()
+      }
     ]);
 
     await service.fetchTagsForVersion(params);
@@ -291,10 +278,7 @@ describe('fetchTagsForVersion', () => {
     expect(Tag.startTransaction).toHaveBeenCalledTimes(1);
     expect(Version.query).toHaveBeenCalledTimes(1);
     expect(Version.select).toHaveBeenCalledTimes(1);
-    expect(Version.select).toBeCalledWith(
-      'version.id as versionId',
-      'version.s3VersionId',
-    );
+    expect(Version.select).toBeCalledWith('version.id as versionId', 'version.s3VersionId');
     expect(Version.allowGraph).toHaveBeenCalledTimes(1);
     expect(Version.allowGraph).toBeCalledWith('tag as tagset');
     expect(Version.withGraphJoined).toHaveBeenCalledTimes(1);

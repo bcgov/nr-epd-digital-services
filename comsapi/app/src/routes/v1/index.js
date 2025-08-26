@@ -15,8 +15,8 @@ router.get('/', (_req, res) => {
       '/sync',
       '/tagging',
       '/user',
-      '/version',
-    ],
+      '/version'
+    ]
   });
 });
 

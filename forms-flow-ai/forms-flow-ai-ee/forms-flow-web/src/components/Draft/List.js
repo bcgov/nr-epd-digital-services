@@ -40,19 +40,19 @@ export const DraftList = React.memo(() => {
   const draftDelete = useSelector((state) => state.draft?.draftDelete);
 
   const isDraftListLoading = useSelector(
-    (state) => state.draft.isDraftListLoading,
+    (state) => state.draft.isDraftListLoading
   );
   const applicationCount = useSelector(
-    (state) => state.applications.applicationCount,
+    (state) => state.applications.applicationCount
   );
   const draftCount = useSelector((state) => state.draft.draftCount);
   const dispatch = useDispatch();
   const page = useSelector((state) => state.draft.activePage);
   const iserror = useSelector(
-    (state) => state.draft.draftSubmissionError.error,
+    (state) => state.draft.draftSubmissionError.error
   );
   const error = useSelector(
-    (state) => state.draft.draftSubmissionError.message,
+    (state) => state.draft.draftSubmissionError.message
   );
   const [filtermode, setfiltermode] = React.useState(false);
   const tenantKey = useSelector((state) => state.tenants?.tenantId);
@@ -95,7 +95,7 @@ export const DraftList = React.memo(() => {
             modalOpen: false,
             draftId: null,
             draftName: "",
-          }),
+          })
         );
       });
   };
@@ -106,7 +106,7 @@ export const DraftList = React.memo(() => {
         modalOpen: false,
         draftId: null,
         draftName: "",
-      }),
+      })
     );
   };
   if (isDraftListLoading) {
@@ -193,7 +193,7 @@ export const DraftList = React.memo(() => {
         setLastModified,
         t,
         redirectUrl,
-        invalidFilters,
+        invalidFilters
       )}
       search
     >
@@ -201,23 +201,16 @@ export const DraftList = React.memo(() => {
         <div className="container" id="main" role="definition">
           <Confirm
             modalOpen={draftDelete.modalOpen}
-            message={
-              <div>
-                {t("Are you sure you wish to delete the draft")}
-                <span style={{ fontWeight: "bold" }}>
-                  {" "}
-                  {draftDelete.draftName.includes(" ")
-                    ? draftDelete.draftName
-                    : textTruncate(50, 40, draftDelete.draftName)}{" "}
-                </span>
-                {t("with ID")}
-                <span style={{ fontWeight: "bold" }}>
-                  {" "}
-                  {draftDelete.draftId}
-                </span>
-                ?
-              </div>
+            message=
+            {
+            <div>
+            {t("Are you sure you wish to delete the draft")}
+            <span style={{ fontWeight: "bold" }} > {draftDelete.draftName.includes(' ') ? draftDelete.draftName : textTruncate(50,40,draftDelete.draftName)} </span>
+            {t("with ID")} 
+            <span style={{fontWeight: "bold"}}> {draftDelete.draftId}</span>?
+            </div>
             }
+            
             onNo={() => onNo()}
             onYes={onYes}
           />
@@ -230,7 +223,7 @@ export const DraftList = React.memo(() => {
                 loading={isLoading}
                 filter={filterFactory()}
                 pagination={paginationFactory(
-                  getoptions(draftCount, page, countPerPage),
+                  getoptions(draftCount, page, countPerPage)
                 )}
                 onTableChange={handlePageChange}
                 filterPosition={"top"}

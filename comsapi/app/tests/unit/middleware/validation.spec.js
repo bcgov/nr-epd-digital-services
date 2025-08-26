@@ -15,7 +15,7 @@ describe('validate', () => {
     req = {
       originalUrl: 'originalUrl',
       params: { id: 'id' },
-      query: { foo: 'bar', bool: false },
+      query: { foo: 'bar', bool: false }
     };
     res = {};
     next = jest.fn();
@@ -50,7 +50,7 @@ describe('validate', () => {
     const errors = { error: { details: [{ message: 'message' }] } };
     const schema = {
       params: { validate: jest.fn().mockReturnValue(errors) },
-      query: { validate: jest.fn().mockReturnValue(errors) },
+      query: { validate: jest.fn().mockReturnValue(errors) }
     };
 
     const result = validate(schema);

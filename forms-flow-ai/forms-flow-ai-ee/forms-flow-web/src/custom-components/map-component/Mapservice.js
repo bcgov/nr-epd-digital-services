@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { ReactComponent } from "react-formio";
 import settingsForm from "./maps.settingsForm";
 
+
 export default class Maps extends ReactComponent {
   /**
    * This function tells the form builder about your component. It's name, icon and what group it should be in.
@@ -62,7 +63,7 @@ export default class Maps extends ReactComponent {
     };
 
     let ConvertDMSToDD = (degrees, minutes, seconds, lng) => {
-      var dd = degrees + minutes / 60 + seconds / (60 * 60);
+      var dd = degrees + ( minutes / 60 ) + ( seconds / (60 * 60) );
 
       if (lng) {
         dd = dd * -1;
@@ -74,22 +75,27 @@ export default class Maps extends ReactComponent {
       currentInstance,
       formId,
       componentName,
-      newValue,
+      newValue
     ) => {
-      for (let i in currentInstance.Formio.forms) {
-        if (currentInstance.Formio.forms[i].components.length > 0) {
-          currentInstance.Formio.forms[i].everyComponent(
-            (componentInstance) => {
-              if (componentInstance.key === componentName) {
-                componentInstance.setValue(newValue);
+
+      for(let i in currentInstance.Formio.forms)
+      {
+          if(currentInstance.Formio.forms[i].components.length > 0)
+          {
+            currentInstance.Formio.forms[i].everyComponent(
+              (componentInstance) => {
+                if (componentInstance.key === componentName) {
+                  componentInstance.setValue(newValue);
+                }         
               }
-            },
-          );
-        }
+            );
+          }
       }
+
+      
     };
 
-    ReactDOM.render(
+    ReactDOM.render(   
       <a
         href="javascript:void(0)"
         onClick={() => {
@@ -109,26 +115,24 @@ export default class Maps extends ReactComponent {
             this.data.applicationId != "" &&
             this.data.applicationStatus != "Resubmit";
 
-          let mapURL =
-            process.env.REACT_APP_CUSTOM_MAP_URL ||
-            window._env_.REACT_APP_CUSTOM_MAP_URL;
-
+          let mapURL = 
+          process.env.REACT_APP_CUSTOM_MAP_URL || window._env_.REACT_APP_CUSTOM_MAP_URL;
+       
           window.open(
-            mapURL +
-              "?lat=" +
+            mapURL + "?lat=" +
               formLat +
               "&long=" +
               formLong +
               "&readOnly=" +
               readOnly,
             "_blank",
-            "popup=yes,width=500px,heigth=500px",
-          );
+            "popup=yes,width=500px,heigth=500px"
+          );      
 
           console.log(
             "adding listner ",
             this.eventRegistered,
-            this.reactInstance,
+            this.reactInstance
           );
 
           var myListener = function (e) {
@@ -147,41 +151,42 @@ export default class Maps extends ReactComponent {
               this,
               formId,
               "section2LatitudeDegrees",
-              result.deg,
+              result.deg
             );
             updateComponentValue(
               this,
               formId,
               "section2LatitudeMinutes",
-              result.min,
+              result.min
             );
             updateComponentValue(
               this,
               formId,
               "section2LatitudeSeconds",
-              result.sec,
+              result.sec
             );
-
+    
             result = ConvertDDToDMS(e.data.long, true);
 
             updateComponentValue(
               this,
               formId,
               "section2LongitudeDegrees",
-              result.deg,
+              result.deg
             );
             updateComponentValue(
               this,
               formId,
               "section2LongitudeMinutes",
-              result.min,
+              result.min
             );
             updateComponentValue(
               this,
               formId,
               "section2LongitudeSeconds",
-              result.sec,
+              result.sec
             );
+
           };
 
           window.addEventListener("message", myListener, { once: true });
@@ -194,7 +199,7 @@ export default class Maps extends ReactComponent {
         Show Map
       </a>,
       element,
-      () => (this.reactInstance = instance),
+      () => (this.reactInstance = instance)
     );
   }
 

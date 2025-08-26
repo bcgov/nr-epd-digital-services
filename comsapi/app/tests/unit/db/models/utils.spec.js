@@ -4,7 +4,7 @@ const {
   inArrayClause,
   inArrayFilter,
   redactSecrets,
-  toArray,
+  toArray
 } = require('../../../../src/db/models/utils');
 
 describe('filterOneOrMany', () => {
@@ -70,9 +70,7 @@ describe('inArrayClause', () => {
   it('should return the desired clause for multiple values joined with OR', () => {
     const col = 'user';
     const vals = ['1', '2', '3'];
-    expect(inArrayClause(col, vals)).toEqual(
-      '\'1\' = ANY("user") or \'2\' = ANY("user") or \'3\' = ANY("user")',
-    );
+    expect(inArrayClause(col, vals)).toEqual('\'1\' = ANY("user") or \'2\' = ANY("user") or \'3\' = ANY("user")');
   });
 
   it('should return a blank string for a blank array', () => {
@@ -86,9 +84,7 @@ describe('inArrayFilter', () => {
   it('should return the desired clause for multiple values joined with OR', () => {
     const col = 'user';
     const vals = ['1', '2', '3'];
-    expect(inArrayFilter(col, vals)).toEqual(
-      '(array_length("user", 1) > 0 and (\'1\' = ANY("user") or \'2\' = ANY("user") or \'3\' = ANY("user")))',
-    );
+    expect(inArrayFilter(col, vals)).toEqual('(array_length("user", 1) > 0 and (\'1\' = ANY("user") or \'2\' = ANY("user") or \'3\' = ANY("user")))');
   });
 });
 
@@ -96,13 +92,11 @@ describe('redactSecrets', () => {
   const data = {
     foo: 'foo',
     bar: 'bar',
-    baz: 'baz',
+    baz: 'baz'
   };
 
   it('should do nothing if fields is undefined', () => {
-    expect(redactSecrets(data, undefined)).toEqual(
-      expect.objectContaining(data),
-    );
+    expect(redactSecrets(data, undefined)).toEqual(expect.objectContaining(data));
   });
 
   it('should do nothing if fields is empty array', () => {
@@ -110,9 +104,8 @@ describe('redactSecrets', () => {
   });
 
   it('should redact the specified fields if they exist', () => {
-    expect(redactSecrets(data, ['bar', 'garbage'])).toEqual(
-      expect.objectContaining({ ...data, bar: 'REDACTED' }),
-    );
+    expect(redactSecrets(data, ['bar', 'garbage']))
+      .toEqual(expect.objectContaining({ ...data, bar: 'REDACTED' }));
   });
 });
 

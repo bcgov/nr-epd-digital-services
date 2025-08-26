@@ -17,16 +17,13 @@ const helper = {
     const app = express();
 
     app.use(express.json());
-    app.use(
-      express.urlencoded({
-        extended: false,
-      }),
-    );
+    app.use(express.urlencoded({
+      extended: false
+    }));
     app.use(basePath, router);
 
     // Handle 404
-    app.use((req, _res) => {
-      // eslint-disable-line no-unused-vars
+    app.use((req, _res) => { // eslint-disable-line no-unused-vars
       throw new Problem(404, { instance: req.originalUrl });
     });
 
@@ -36,10 +33,7 @@ const helper = {
       if (err instanceof Problem) {
         err.send(res);
       } else {
-        new Problem(500, {
-          detail: err.message ?? err,
-          instance: req.originalUrl,
-        }).send(res);
+        new Problem(500, { detail: err.message ?? err, instance: req.originalUrl }).send(res);
       }
     });
 
@@ -68,8 +62,8 @@ const helper = {
    */
   trxBuilder: () => ({
     commit: jest.fn(),
-    rollback: jest.fn(),
-  }),
+    rollback: jest.fn()
+  })
 };
 
 module.exports = helper;

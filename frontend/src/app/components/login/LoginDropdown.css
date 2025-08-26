@@ -1,21 +1,22 @@
-#login-selector-dropdown-toggle {
-  /* width: 250px; */
-  color: white;
-  background-color: #003366;
-  border-color: #003366;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 22px;
-}
-#login-selector-dropdown-menu {
-  /* width: 250px; */
-}
-
-#login-selector-dropdown-toggle::after {
-  margin-left: 0.5rem;
+#login-selector-dropdown-toggle{
+    /* width: 250px; */
+    color: white;
+    background-color: #003366;
+    border-color: #003366;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    }
+#login-selector-dropdown-menu{
+    /* width: 250px; */
 }
 
-.login-btn-lh {
-  line-height: 2 !important;
+#login-selector-dropdown-toggle::after{
+    margin-left: .5rem;
+}
+
+.login-btn-lh
+{
+    line-height: 2 !important;
 }

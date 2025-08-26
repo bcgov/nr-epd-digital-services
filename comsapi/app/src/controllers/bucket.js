@@ -11,7 +11,7 @@ const {
   isTruthy,
   joinPath,
   mixedQueryToArray,
-  stripDelimit,
+  stripDelimit
 } = require('../components/utils');
 const { redactSecrets } = require('../db/models/utils');
 
@@ -108,32 +108,23 @@ const controller = {
     const data = {
       ...req.body,
       endpoint: stripDelimit(req.body.endpoint),
-      key: req.body.key ? joinPath(stripDelimit(req.body.key)) : undefined,
+      key: req.body.key ? joinPath(stripDelimit(req.body.key)) : undefined
     };
     let response = undefined;
 
     try {
       // Check for credential accessibility/validity first
       await controller._validateCredentials(data);
-      data.userId = await userService.getCurrentUserId(
-        getCurrentIdentity(req.currentUser, SYSTEM_USER),
-      );
+      data.userId = await userService.getCurrentUserId(getCurrentIdentity(req.currentUser, SYSTEM_USER));
 
       response = await bucketService.create(data);
     } catch (e) {
       // If bucket exists, check if credentials precisely match
       if (e instanceof UniqueViolationError) {
         // Grant all permissions if credentials precisely match
-        response = await bucketService
-          .checkGrantPermissions(data)
-          .catch((permErr) => {
-            next(
-              new Problem(403, {
-                detail: permErr.message,
-                instance: req.originalUrl,
-              }),
-            );
-          });
+        response = await bucketService.checkGrantPermissions(data).catch(permErr => {
+          next(new Problem(403, { detail: permErr.message, instance: req.originalUrl }));
+        });
       } else {
         next(errorToProblem(SERVICE, e));
       }
@@ -209,18 +200,14 @@ const controller = {
     try {
       const bucketIds = mixedQueryToArray(req.query.bucketId);
       const params = {
-        bucketId: bucketIds
-          ? bucketIds.map((id) => addDashesToUuid(id))
-          : bucketIds,
+        bucketId: bucketIds ? bucketIds.map(id => addDashesToUuid(id)) : bucketIds,
         bucketName: req.query.bucketName,
         key: req.query.key,
-        active: isTruthy(req.query.active),
+        active: isTruthy(req.query.active)
       };
 
       const response = await bucketService.searchBuckets(params);
-      res
-        .status(200)
-        .json(response.map((bucket) => redactSecrets(bucket, secretFields)));
+      res.status(200).json(response.map(bucket => redactSecrets(bucket, secretFields)));
     } catch (error) {
       next(error);
     }
@@ -244,34 +231,27 @@ const controller = {
       await controller._validateCredentials({
         ...currentBucket,
         ...req.body,
-        endpoint: req.body.endpoint
-          ? stripDelimit(req.body.endpoint)
-          : currentBucket.endpoint,
+        endpoint: req.body.endpoint ? stripDelimit(req.body.endpoint) : currentBucket.endpoint
       });
 
-      const userId = await userService.getCurrentUserId(
-        getCurrentIdentity(req.currentUser, SYSTEM_USER),
-        SYSTEM_USER,
-      );
+      const userId = await userService.getCurrentUserId(getCurrentIdentity(req.currentUser, SYSTEM_USER), SYSTEM_USER);
       const response = await bucketService.update({
         bucketId: bucketId,
         bucketName: req.body.bucketName,
         accessKeyId: req.body.accessKeyId,
         bucket: req.body.bucket,
-        endpoint: req.body.endpoint
-          ? stripDelimit(req.body.endpoint)
-          : undefined,
+        endpoint: req.body.endpoint ? stripDelimit(req.body.endpoint) : undefined,
         secretAccessKey: req.body.secretAccessKey,
         region: req.body.region,
         active: isTruthy(req.body.active),
-        userId: userId,
+        userId: userId
       });
 
       res.status(200).json(redactSecrets(response, secretFields));
     } catch (e) {
       next(errorToProblem(SERVICE, e));
     }
-  },
+  }
 };
 
 module.exports = controller;

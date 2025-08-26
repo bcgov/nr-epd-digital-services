@@ -15,9 +15,7 @@ describe(`GET ${basePath}`, () => {
     const response = await request(app).get(`${basePath}`);
 
     expect(response.statusCode).toBe(200);
-    expect(response.text).toContain(
-      '<title>Common Object Management Service API - Documentation',
-    );
+    expect(response.text).toContain('<title>Common Object Management Service API - Documentation');
   });
 });
 
@@ -28,13 +26,9 @@ describe(`GET ${basePath}/api-spec.yaml`, () => {
     expect(response.statusCode).toBe(200);
     expect(response.body).toBeTruthy();
     expect(response.headers['content-type']).toBeTruthy();
-    expect(response.headers['content-type']).toMatch(
-      'application/yaml; charset=utf-8',
-    );
+    expect(response.headers['content-type']).toMatch('application/yaml; charset=utf-8');
     expect(response.text).toContain('openapi: 3.0.2');
-    expect(response.text).toContain(
-      'title: Common Object Management Service (COMS)',
-    );
+    expect(response.text).toContain('title: Common Object Management Service (COMS)');
   });
 });
 
@@ -44,13 +38,9 @@ describe(`GET ${basePath}/api-spec.json`, () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.headers['content-type']).toBeTruthy();
-    expect(response.headers['content-type']).toMatch(
-      'application/json; charset=utf-8',
-    );
+    expect(response.headers['content-type']).toMatch('application/json; charset=utf-8');
     expect(response.body).toBeTruthy();
     expect(response.body.openapi).toMatch('3.0.2');
-    expect(response.body.info.title).toMatch(
-      'Common Object Management Service (COMS)',
-    );
+    expect(response.body.info.title).toMatch('Common Object Management Service (COMS)');
   });
 });

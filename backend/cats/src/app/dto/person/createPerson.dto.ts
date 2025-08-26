@@ -5,13 +5,13 @@ import { IsOptional } from 'class-validator';
 // DTO for creating a person
 @InputType()
 export class CreatePerson extends BasePerson {
-  @Field({ nullable: true })
-  createdBy: string;
+    @Field({nullable:true})
+    createdBy: string;
+  
+    @Field({nullable: true})
+    createdDatetime: Date;
 
-  @Field({ nullable: true })
-  createdDatetime: Date;
-
-  @Field(() => [Int], { defaultValue: [], nullable: true })
-  @IsOptional()
-  permissionIds?: number[] | null;
+    @Field(() => [Int], { defaultValue: [], nullable: true })
+    @IsOptional()
+    permissionIds?: number[] | null;
 }

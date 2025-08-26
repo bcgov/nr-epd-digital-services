@@ -25,14 +25,8 @@ describe('addDashesToUuid', () => {
     [123, 123],
     [{}, {}],
     ['123456789012345678901234567890', '123456789012345678901234567890'],
-    [
-      'e0603b59-2edc-45f7-acc7-b0cccd6656e1',
-      'e0603b592edc45f7acc7b0cccd6656e1',
-    ],
-    [
-      'e0603b59-2edc-45f7-acc7-b0cccd6656e1',
-      'E0603B592EDC45F7ACC7B0CCCD6656E1',
-    ],
+    ['e0603b59-2edc-45f7-acc7-b0cccd6656e1', 'e0603b592edc45f7acc7b0cccd6656e1'],
+    ['e0603b59-2edc-45f7-acc7-b0cccd6656e1', 'E0603B592EDC45F7ACC7B0CCCD6656E1']
   ])('should return %o given %j', (expected, str) => {
     expect(utils.addDashesToUuid(str)).toEqual(expected);
   });
@@ -76,7 +70,7 @@ describe('delimit', () => {
     ['/', '/'],
     // Strings without trailing delimiters should have delimiter appended
     ['1234/', '1234'],
-    ['    /', '    '],
+    ['    /', '    ']
   ])('should return %o given %j', (expected, str) => {
     expect(utils.delimit(str)).toEqual(expected);
   });
@@ -87,20 +81,17 @@ describe('getAppAuthMode', () => {
     [AuthMode.NOAUTH, false, false],
     [AuthMode.BASICAUTH, true, false],
     [AuthMode.OIDCAUTH, false, true],
-    [AuthMode.FULLAUTH, true, true],
-  ])(
-    'should return %s when basicAuth.enabled %s and keycloak.enabled %s',
-    (expected, basicAuth, keycloak) => {
-      config.has
-        .mockReturnValueOnce(basicAuth) // basicAuth.enabled
-        .mockReturnValueOnce(keycloak); // keycloak.enabled
+    [AuthMode.FULLAUTH, true, true]
+  ])('should return %s when basicAuth.enabled %s and keycloak.enabled %s', (expected, basicAuth, keycloak) => {
+    config.has
+      .mockReturnValueOnce(basicAuth) // basicAuth.enabled
+      .mockReturnValueOnce(keycloak); // keycloak.enabled
 
-      const result = utils.getAppAuthMode();
+    const result = utils.getAppAuthMode();
 
-      expect(result).toEqual(expected);
-      expect(config.has).toHaveBeenCalledTimes(2);
-    },
-  );
+    expect(result).toEqual(expected);
+    expect(config.has).toHaveBeenCalledTimes(2);
+  });
 });
 
 describe('getBucket', () => {
@@ -110,7 +101,7 @@ describe('getBucket', () => {
     endpoint: 'https://endpoint.com',
     key: 'filePath',
     region: DEFAULTREGION,
-    secretAccessKey: 'secretAccessKey',
+    secretAccessKey: 'secretAccessKey'
   };
   const ddata = {
     accessKeyId: 'foo',
@@ -118,7 +109,7 @@ describe('getBucket', () => {
     endpoint: 'https://baz.com',
     key: 'koo',
     region: DEFAULTREGION,
-    secretAccessKey: 'soo',
+    secretAccessKey: 'soo'
   };
   const readBucketSpy = jest.spyOn(bucketService, 'read');
 
@@ -171,9 +162,7 @@ describe('getBucket', () => {
   });
 
   it('should throw given a bad bucketId', () => {
-    readBucketSpy.mockImplementation(() => {
-      throw new Problem(422);
-    });
+    readBucketSpy.mockImplementation(() => { throw new Problem(422); });
 
     const result = (() => utils.getBucket('bad bucketId'))();
 
@@ -191,7 +180,7 @@ describe('getCurrentIdentity', () => {
   const subClaim = 'sub';
 
   beforeEach(() => {
-    getCurrentTokenClaimSpy.mockReset().mockImplementation(() => {});
+    getCurrentTokenClaimSpy.mockReset().mockImplementation(() => { });
     parseIdentityKeyClaimsSpy.mockReset();
   });
 
@@ -205,24 +194,15 @@ describe('getCurrentIdentity', () => {
     [[], [subClaim]],
     [[], [idirClaim, subClaim]],
     [{}, [subClaim]],
-    [{}, [idirClaim, subClaim]],
+    [{}, [idirClaim, subClaim]]
   ])('should call functions correctly given %j', (currentUser, idKeys) => {
     parseIdentityKeyClaimsSpy.mockReturnValue(idKeys);
 
     utils.getCurrentIdentity(currentUser);
 
     expect(getCurrentTokenClaimSpy).toHaveBeenCalledTimes(idKeys.length);
-    if (idKeys.length > 1)
-      expect(getCurrentTokenClaimSpy).toHaveBeenCalledWith(
-        currentUser,
-        idirClaim,
-        undefined,
-      );
-    expect(getCurrentTokenClaimSpy).toHaveBeenCalledWith(
-      currentUser,
-      subClaim,
-      undefined,
-    );
+    if (idKeys.length > 1) expect(getCurrentTokenClaimSpy).toHaveBeenCalledWith(currentUser, idirClaim, undefined);
+    expect(getCurrentTokenClaimSpy).toHaveBeenCalledWith(currentUser, subClaim, undefined);
     expect(parseIdentityKeyClaimsSpy).toHaveBeenCalledTimes(1);
     expect(parseIdentityKeyClaimsSpy).toHaveBeenCalledWith();
   });
@@ -237,68 +217,42 @@ describe('getCurrentIdentity', () => {
     [[], [subClaim]],
     [[], [idirClaim, subClaim]],
     [{}, [subClaim]],
-    [{}, [idirClaim, subClaim]],
-  ])(
-    "should call functions correctly given %j and defaultValue 'default'",
-    (currentUser, idKeys) => {
-      const defaultValue = 'default';
-      parseIdentityKeyClaimsSpy.mockReturnValue(idKeys);
+    [{}, [idirClaim, subClaim]]
+  ])('should call functions correctly given %j and defaultValue \'default\'', (currentUser, idKeys) => {
+    const defaultValue = 'default';
+    parseIdentityKeyClaimsSpy.mockReturnValue(idKeys);
 
-      utils.getCurrentIdentity(currentUser, defaultValue);
+    utils.getCurrentIdentity(currentUser, defaultValue);
 
-      expect(getCurrentTokenClaimSpy).toHaveBeenCalledTimes(idKeys.length);
-      if (idKeys.length > 1)
-        expect(getCurrentTokenClaimSpy).toHaveBeenCalledWith(
-          currentUser,
-          idirClaim,
-          undefined,
-        );
-      expect(getCurrentTokenClaimSpy).toHaveBeenCalledWith(
-        currentUser,
-        subClaim,
-        undefined,
-      );
-      expect(parseIdentityKeyClaimsSpy).toHaveBeenCalledTimes(1);
-      expect(parseIdentityKeyClaimsSpy).toHaveBeenCalledWith();
-    },
-  );
+    expect(getCurrentTokenClaimSpy).toHaveBeenCalledTimes(idKeys.length);
+    if (idKeys.length > 1) expect(getCurrentTokenClaimSpy).toHaveBeenCalledWith(currentUser, idirClaim, undefined);
+    expect(getCurrentTokenClaimSpy).toHaveBeenCalledWith(currentUser, subClaim, undefined);
+    expect(parseIdentityKeyClaimsSpy).toHaveBeenCalledTimes(1);
+    expect(parseIdentityKeyClaimsSpy).toHaveBeenCalledWith();
+  });
 });
 
 describe('getCurrentSubject', () => {
   const getCurrentTokenClaimSpy = jest.spyOn(utils, 'getCurrentTokenClaim');
 
   beforeEach(() => {
-    getCurrentTokenClaimSpy.mockReset().mockImplementation(() => {});
+    getCurrentTokenClaimSpy.mockReset().mockImplementation(() => { });
   });
 
-  it.each([undefined, null, '', [], {}])(
-    'should call getCurrentTokenClaim correctly given %j',
-    (currentUser) => {
-      utils.getCurrentSubject(currentUser);
+  it.each([undefined, null, '', [], {}])('should call getCurrentTokenClaim correctly given %j', (currentUser) => {
+    utils.getCurrentSubject(currentUser);
 
-      expect(getCurrentTokenClaimSpy).toHaveBeenCalledTimes(1);
-      expect(getCurrentTokenClaimSpy).toHaveBeenCalledWith(
-        currentUser,
-        'sub',
-        undefined,
-      );
-    },
-  );
+    expect(getCurrentTokenClaimSpy).toHaveBeenCalledTimes(1);
+    expect(getCurrentTokenClaimSpy).toHaveBeenCalledWith(currentUser, 'sub', undefined);
+  });
 
-  it.each([undefined, null, '', [], {}])(
-    "should call getCurrentTokenClaim correctly given %j and defaultValue 'default'",
-    (currentUser) => {
-      const defaultValue = 'default';
-      utils.getCurrentSubject(currentUser, defaultValue);
+  it.each([undefined, null, '', [], {}])('should call getCurrentTokenClaim correctly given %j and defaultValue \'default\'', (currentUser) => {
+    const defaultValue = 'default';
+    utils.getCurrentSubject(currentUser, defaultValue);
 
-      expect(getCurrentTokenClaimSpy).toHaveBeenCalledTimes(1);
-      expect(getCurrentTokenClaimSpy).toHaveBeenCalledWith(
-        currentUser,
-        'sub',
-        defaultValue,
-      );
-    },
-  );
+    expect(getCurrentTokenClaimSpy).toHaveBeenCalledTimes(1);
+    expect(getCurrentTokenClaimSpy).toHaveBeenCalledWith(currentUser, 'sub', defaultValue);
+  });
 });
 
 describe('getCurrentTokenClaim', () => {
@@ -333,23 +287,12 @@ describe('getCurrentTokenClaim', () => {
     [undefined, { authType: AuthType.BASIC }, 'bad'],
     [undefined, { authType: AuthType.BASIC }, 'sub'],
     // Should return claim value if authType Bearer
-    [
-      undefined,
-      { authType: AuthType.BEARER, tokenPayload: { sub: 'foo' } },
-      undefined,
-    ],
-    [
-      undefined,
-      { authType: AuthType.BEARER, tokenPayload: { sub: 'foo' } },
-      'bad',
-    ],
+    [undefined, { authType: AuthType.BEARER, tokenPayload: { sub: 'foo' } }, undefined],
+    [undefined, { authType: AuthType.BEARER, tokenPayload: { sub: 'foo' } }, 'bad'],
     ['foo', { authType: AuthType.BEARER, tokenPayload: { sub: 'foo' } }, 'sub'],
-  ])(
-    'should return %j given currentUser %j and claim %j',
-    (expected, currentUser, claim) => {
-      expect(utils.getCurrentTokenClaim(currentUser, claim)).toBe(expected);
-    },
-  );
+  ])('should return %j given currentUser %j and claim %j', (expected, currentUser, claim) => {
+    expect(utils.getCurrentTokenClaim(currentUser, claim)).toBe(expected);
+  });
 
   it.each([
     // Should return defaultValue if no currentUser
@@ -374,25 +317,12 @@ describe('getCurrentTokenClaim', () => {
     [defaultValue, { authType: AuthType.BASIC }, 'bad'],
     [defaultValue, { authType: AuthType.BASIC }, 'sub'],
     // Should return claim value if authType Bearer
-    [
-      undefined,
-      { authType: AuthType.BEARER, tokenPayload: { sub: 'foo' } },
-      undefined,
-    ],
-    [
-      undefined,
-      { authType: AuthType.BEARER, tokenPayload: { sub: 'foo' } },
-      'bad',
-    ],
+    [undefined, { authType: AuthType.BEARER, tokenPayload: { sub: 'foo' } }, undefined],
+    [undefined, { authType: AuthType.BEARER, tokenPayload: { sub: 'foo' } }, 'bad'],
     ['foo', { authType: AuthType.BEARER, tokenPayload: { sub: 'foo' } }, 'sub'],
-  ])(
-    "should return %j given currentUser %j, claim %j and defaultValue 'default'",
-    (expected, currentUser, claim) => {
-      expect(utils.getCurrentTokenClaim(currentUser, claim, defaultValue)).toBe(
-        expected,
-      );
-    },
-  );
+  ])('should return %j given currentUser %j, claim %j and defaultValue \'default\'', (expected, currentUser, claim) => {
+    expect(utils.getCurrentTokenClaim(currentUser, claim, defaultValue)).toBe(expected);
+  });
 });
 
 describe('getGitRevision', () => {
@@ -406,13 +336,7 @@ describe('getKeyValue', () => {
     [[], []],
     [[], {}],
     [[{ key: 'foo', value: 'bar' }], { foo: 'bar' }],
-    [
-      [
-        { key: 'k1', value: 'v1' },
-        { key: 'k2', value: 'v2' },
-      ],
-      { k1: 'v1', k2: 'v2' },
-    ],
+    [[{ key: 'k1', value: 'v1' }, { key: 'k2', value: 'v2' }], { k1: 'v1', k2: 'v2' }],
   ])('should yield %j when given %j', (expected, input) => {
     expect(utils.getKeyValue(input)).toEqual(expected);
   });
@@ -423,22 +347,8 @@ describe('getMetadata', () => {
     [undefined, {}],
     [undefined, { 'Content-Length': 1234 }],
     [{ foo: 'bar' }, { 'Content-Length': 1234, 'x-amz-meta-foo': 'bar' }],
-    [
-      { foo: 'bar', baz: 'quz' },
-      {
-        'Content-Length': 1234,
-        'x-amz-meta-foo': 'bar',
-        'x-amz-meta-baz': 'quz',
-      },
-    ],
-    [
-      { bam: 'blam', run: 'ran' },
-      {
-        'Content-Length': 1234,
-        'X-Amz-Meta-Bam': 'blam',
-        'x-AmZ-mEtA-rUn': 'ran',
-      },
-    ],
+    [{ foo: 'bar', baz: 'quz' }, { 'Content-Length': 1234, 'x-amz-meta-foo': 'bar', 'x-amz-meta-baz': 'quz' }],
+    [{ bam: 'blam', run: 'ran' }, { 'Content-Length': 1234, 'X-Amz-Meta-Bam': 'blam', 'x-AmZ-mEtA-rUn': 'ran' }],
   ])('should yield %j when given %j', (expected, input) => {
     expect(utils.getMetadata(input)).toEqual(expected);
   });
@@ -448,30 +358,11 @@ describe('getObjectsByKeyValue', () => {
   it.each([
     [undefined, [], undefined, undefined],
     [undefined, [], 'foo', 'bar'],
-    [
-      { key: 'a', value: '1' },
-      [
-        { key: 'a', value: '1' },
-        { key: 'b', value: '1' },
-      ],
-      'a',
-      '1',
-    ],
-    [
-      { key: 'b', value: '1' },
-      [
-        { key: 'a', value: '1' },
-        { key: 'b', value: '1' },
-      ],
-      'b',
-      '1',
-    ],
-  ])(
-    'should yield %j when given array %j, key %s and value %s',
-    (expected, array, key, value) => {
-      expect(utils.getObjectsByKeyValue(array, key, value)).toEqual(expected);
-    },
-  );
+    [{ key: 'a', value: '1' }, [{ key: 'a', value: '1' }, { key: 'b', value: '1' }], 'a', '1'],
+    [{ key: 'b', value: '1' }, [{ key: 'a', value: '1' }, { key: 'b', value: '1' }], 'b', '1'],
+  ])('should yield %j when given array %j, key %s and value %s', (expected, array, key, value) => {
+    expect(utils.getObjectsByKeyValue(array, key, value)).toEqual(expected);
+  });
 });
 
 describe('groupByObject', () => {
@@ -483,23 +374,10 @@ describe('groupByObject', () => {
     [[], 'foo', 'bar', []],
     [[{ foo: 'baz', bar: [test1] }], 'foo', 'bar', [test1]],
     [[{ foo: 'baz', bar: [test1, test2] }], 'foo', 'bar', [test1, test2]],
-    [
-      [
-        { foo: 'baz', bar: [test1, test2] },
-        { foo: 'free', bar: [test3] },
-      ],
-      'foo',
-      'bar',
-      [test1, test2, test3],
-    ],
-  ])(
-    'should return %j given property %s, group %s and objectArray %j',
-    (expected, property, group, objectArray) => {
-      expect(utils.groupByObject(property, group, objectArray)).toEqual(
-        expected,
-      );
-    },
-  );
+    [[{ foo: 'baz', bar: [test1, test2] }, { foo: 'free', bar: [test3] }], 'foo', 'bar', [test1, test2, test3]]
+  ])('should return %j given property %s, group %s and objectArray %j', (expected, property, group, objectArray) => {
+    expect(utils.groupByObject(property, group, objectArray)).toEqual(expected);
+  });
 });
 
 describe('isAtPath', () => {
@@ -529,12 +407,9 @@ describe('isAtPath', () => {
     [false, 'c/a/b', 'a/b/c/bar.png'],
     [false, 'a/b/c', 'a/c/b/bar.png'],
     [true, 'a/b/c', 'a/b/c/bar.png'],
-  ])(
-    'should return %j given prefix %j and path %j',
-    (expected, prefix, path) => {
-      expect(utils.isAtPath(prefix, path)).toEqual(expected);
-    },
-  );
+  ])('should return %j given prefix %j and path %j', (expected, prefix, path) => {
+    expect(utils.isAtPath(prefix, path)).toEqual(expected);
+  });
 });
 
 describe('isTruthy', () => {
@@ -543,36 +418,13 @@ describe('isTruthy', () => {
   });
 
   it.each([
-    true,
-    1,
-    'true',
-    'TRUE',
-    't',
-    'T',
-    'yes',
-    'yEs',
-    'y',
-    'Y',
-    '1',
-    new String('true'),
+    true, 1, 'true', 'TRUE', 't', 'T', 'yes', 'yEs', 'y', 'Y', '1', new String('true')
   ])('should return true given %j', (value) => {
     expect(utils.isTruthy(value)).toBeTruthy();
   });
 
   it.each([
-    false,
-    0,
-    'false',
-    'FALSE',
-    'f',
-    'F',
-    'no',
-    'nO',
-    'n',
-    'N',
-    '0',
-    new String('false'),
-    {},
+    false, 0, 'false', 'FALSE', 'f', 'F', 'no', 'nO', 'n', 'N', '0', new String('false'), {}
   ])('should return false given %j', (value) => {
     expect(utils.isTruthy(value)).toBeFalsy();
   });
@@ -592,9 +444,7 @@ describe('joinPath', () => {
   it('should return multiple parts joined with the delimiter', () => {
     expect(utils.joinPath('my', 'file', 'path')).toEqual('my/file/path');
     expect(utils.joinPath('my', '', 'path')).toEqual('my/path');
-    expect(utils.joinPath('my', 'file/path/123', 'abc')).toEqual(
-      'my/file/path/123/abc',
-    );
+    expect(utils.joinPath('my', 'file/path/123', 'abc')).toEqual('my/file/path/123/abc');
   });
 
   it('should handle no-length sections', () => {
@@ -617,42 +467,20 @@ describe('mixedQueryToArray', () => {
 
   it('should return a one item array for a single string', () => {
     expect(utils.mixedQueryToArray('word')).toEqual(['word']);
-    expect(utils.mixedQueryToArray('more than than one word word')).toEqual([
-      'more than than one word word',
-    ]);
+    expect(utils.mixedQueryToArray('more than than one word word')).toEqual(['more than than one word word']);
     expect(utils.mixedQueryToArray(['word'])).toEqual(['word']);
   });
 
   it('should return an array with the appropriate set when there are multiples', () => {
-    expect(
-      utils.mixedQueryToArray(
-        'there,are,duplicates,here,yes,here,there,is,here',
-      ),
-    ).toEqual(['there', 'are', 'duplicates', 'here', 'yes', 'is']);
+    expect(utils.mixedQueryToArray('there,are,duplicates,here,yes,here,there,is,here')).toEqual(['there', 'are', 'duplicates', 'here', 'yes', 'is']);
   });
 
   it('should return an array with the appropriate set when there are multiples and spaces', () => {
-    expect(
-      utils.mixedQueryToArray(
-        'there,  are, duplicates,  here ,yes ,here ,there,is,here ',
-      ),
-    ).toEqual(['there', 'are', 'duplicates', 'here', 'yes', 'is']);
+    expect(utils.mixedQueryToArray('there,  are, duplicates,  here ,yes ,here ,there,is,here ')).toEqual(['there', 'are', 'duplicates', 'here', 'yes', 'is']);
   });
 
   it('should return an array with the appropriate set when there are multiples and spaces', () => {
-    expect(
-      utils.mixedQueryToArray([
-        'there',
-        '  are',
-        ' duplicates',
-        '  here ',
-        'yes ',
-        'here ',
-        'there',
-        'is',
-        'here ',
-      ]),
-    ).toEqual(['there', 'are', 'duplicates', 'here', 'yes', 'is']);
+    expect(utils.mixedQueryToArray(['there', '  are', ' duplicates', '  here ', 'yes ', 'here ', 'there', 'is', 'here '])).toEqual(['there', 'are', 'duplicates', 'here', 'yes', 'is']);
   });
 });
 
@@ -662,19 +490,13 @@ describe('parseCSV', () => {
     [undefined, undefined],
     [12, 12],
     [null, null],
-    [
-      ['a', 'b'],
-      ['a', 'b'],
-    ],
-    [
-      { a: 'a', b: 'b' },
-      { a: 'a', b: 'b' },
-    ],
+    [['a', 'b'], ['a', 'b']],
+    [{ a: 'a', b: 'b' }, { a: 'a', b: 'b' }],
     // Should return an array of split trimmed strings for blanks
     [[''], ''],
     [['', ''], '   ,   '],
     // Should return an array of split trimmed strings
-    [['this', 'is', 'a', 'test'], 'this, is , a,test  '],
+    [['this', 'is', 'a', 'test'], 'this, is , a,test  ']
   ])('should return %j given %j', (expected, value) => {
     expect(utils.parseCSV(value)).toEqual(expected);
   });
@@ -694,7 +516,7 @@ describe('parseIdentityKeyClaims', () => {
 
   it.each([
     [['foo', 'sub'], 'foo'],
-    [['foo', 'bar', 'sub'], 'foo,bar'],
+    [['foo', 'bar', 'sub'], 'foo,bar']
   ])('should return %j when identityKey is %j', (expected, value) => {
     config.has.mockReturnValueOnce(true); // keycloak.identityKey
     config.get.mockReturnValueOnce(value); // keycloak.identityKey
@@ -711,7 +533,7 @@ describe('streamToBuffer', () => {
   it('should return a buffer', () => {
     const Readable = require('stream').Readable;
     const s = new Readable();
-    s._read = () => {}; // redundant? see update below
+    s._read = () => { }; // redundant? see update below
     s.push('your text here');
     s.push(null);
 
@@ -748,16 +570,7 @@ describe('toLowerKeys', () => {
     [undefined, 1],
     [undefined, {}],
     [[{ key: 'k1', value: 'V1' }], [{ Key: 'k1', Value: 'V1' }]],
-    [
-      [
-        { key: 'k1', value: 'V1' },
-        { key: 'k2', value: 'V2' },
-      ],
-      [
-        { Key: 'k1', Value: 'V1' },
-        { Key: 'k2', Value: 'V2' },
-      ],
-    ],
+    [[{ key: 'k1', value: 'V1' }, { key: 'k2', value: 'V2' }], [{ Key: 'k1', Value: 'V1' }, { Key: 'k2', Value: 'V2' }]]
   ])('should return %j given %j', (expected, value) => {
     expect(utils.toLowerKeys(value)).toEqual(expected);
   });

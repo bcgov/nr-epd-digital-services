@@ -4,14 +4,15 @@ on:
   workflow_dispatch: # TODO this is there for testing purposes, once the pipelines are all done, remove this
   push:
     branches:
-      - "dev"
-      - "srs-870-fixingenv" #test
-
+      - 'dev'
+      - 'srs-870-fixingenv' #test
+     
+                             
     paths:
-      - "backend/**"
-      - "frontend/**"
-      - ".github/workflows/ci-cd-openshift-dev.yaml"
-
+      - 'backend/**'
+      - 'frontend/**'
+      - '.github/workflows/ci-cd-openshift-dev.yaml'
+      
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -31,7 +32,7 @@ jobs:
           # - component: backend/legacy
           #   triggers: ('backend/legacy/')
           - component: backend/cats
-            triggers: ('backend/cats/')
+            triggers:  ('backend/cats/')
           - component: frontend
             triggers: ('frontend/')
     secrets:
@@ -41,7 +42,7 @@ jobs:
       img_build: "dev" # ask the team dev or latest
       img_fallback: dev
       triggers: ${{ matrix.triggers }}
-
+   
   # TODO - REIMPLMENET BEFORE MERGING, JUST TESTING WITHOUT THESE TO VERIFY DEPLOYS
   tests:
     name: Unit Tests
@@ -87,12 +88,13 @@ jobs:
           - component: backend/cats
             overwrite: true
             template_file: .github/openshift/deploy.backend-cats.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/cats -p CONTAINER_PORT=4005 -p ENV=dev -p IMAGE_TAG=dev
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/cats -p CONTAINER_PORT=4005 -p ENV=dev -p IMAGE_TAG=dev  
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=8080 -p ENV=dev -p IMAGE_TAG=dev
-
+            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=8080 -p ENV=dev -p IMAGE_TAG=dev 
+    
+    
     secrets:
       oc_namespace: ${{ secrets.OC_NAMESPACE }}
       oc_server: ${{ secrets.OC_SERVER }}

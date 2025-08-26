@@ -1,4 +1,4 @@
-spectaql:
+spectaql:  
   displayAllServers: true
 
 introspection:
@@ -8,12 +8,12 @@ info:
   title: Users GraphQL API Reference
   description: Describes all APIs for the Users Microservice
   contact:
-    name:
-    url:
-    email:
+    name: 
+    url: 
+    email: 
   license:
     name:
-    url:
+    url: 
 servers:
   - url: https://epd-backend-users-dev.apps.silver.devops.gov.bc.ca/graphql
     description: Development

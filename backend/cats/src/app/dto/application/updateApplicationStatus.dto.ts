@@ -4,11 +4,11 @@ import { ApplicationStatusDto } from './applicationStatus.dto';
 
 @InputType()
 export class UpdateApplicationStatusDto extends PickType(ApplicationStatusDto, [
-  'formId',
-  'submissionId',
-  'formsflowAppId',
-  'statusTypeAbbrev',
+    'formId',
+    'submissionId',
+    'formsflowAppId',
+    'statusTypeAbbrev',
 ]) {
-  @Field(() => [Number], { nullable: true })
-  siteIds?: number[];
+    @Field(() => [Number], { nullable: true })
+    siteIds?: number[];
 }

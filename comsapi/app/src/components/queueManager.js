@@ -56,17 +56,11 @@ class QueueManager {
    */
   checkQueue() {
     if (!this.isBusy && !this.toClose) {
-      objectQueueService
-        .queueSize()
-        .then((size) => {
-          if (size > 0) this.processNextJob();
-        })
-        .catch((err) => {
-          log.error(`Error encountered while checking queue: ${err.message}`, {
-            function: 'checkQueue',
-            error: err,
-          });
-        });
+      objectQueueService.queueSize().then(size => {
+        if (size > 0) this.processNextJob();
+      }).catch((err) => {
+        log.error(`Error encountered while checking queue: ${err.message}`, { function: 'checkQueue', error: err });
+      });
     }
   }
 
@@ -99,61 +93,33 @@ class QueueManager {
         this.isBusy = true;
         job = response[0];
 
-        log.verbose(`Started processing job id ${job.id}`, {
-          function: 'processNextJob',
-          job: job,
-        });
+        log.verbose(`Started processing job id ${job.id}`, { function: 'processNextJob', job: job });
 
-        const objectId = await syncService.syncJob(
-          job.path,
-          job.bucketId,
-          job.full,
-          job.createdBy,
-        );
+        const objectId = await syncService.syncJob(job.path, job.bucketId, job.full, job.createdBy);
 
-        log.verbose(`Finished processing job id ${job.id}`, {
-          function: 'processNextJob',
-          job: job,
-          objectId: objectId,
-        });
+        log.verbose(`Finished processing job id ${job.id}`, { function: 'processNextJob', job: job, objectId: objectId });
 
         this.isBusy = false;
         // If job is completed, check if there are more jobs
         if (!this.toClose) this.checkQueue();
       }
     } catch (err) {
-      log.error(`Error encountered on job id ${job.id}: ${err.message}`, {
-        function: 'processNextJob',
-        job: job,
-        error: err,
-      });
+      log.error(`Error encountered on job id ${job.id}: ${err.message}`, { function: 'processNextJob', job: job, error: err });
 
       const maxRetries = parseInt(config.get('server.maxRetries'));
       if (job.retries + 1 > maxRetries) {
-        log.warn(
-          `Job has exceeded the ${maxRetries} maximum retries permitted`,
-          { function: 'processNextJob', job: job, maxRetries: maxRetries },
-        );
+        log.warn(`Job has exceeded the ${maxRetries} maximum retries permitted`, { function: 'processNextJob', job: job, maxRetries: maxRetries });
       } else {
-        objectQueueService
-          .enqueue({
-            jobs: [{ bucketId: job.bucketId, path: job.path }],
-            full: job.full,
-            retries: job.retries + 1,
-            createdBy: job.createdBy,
-          })
-          .then(() => {
-            log.verbose('Job has been reenqueued', {
-              function: 'processNextJob',
-              job: job,
-            });
-          })
-          .catch((e) => {
-            log.error(`Failed to reenqueue job id ${job.id}: ${e.message}`, {
-              function: 'processNextJob',
-              job: job,
-            });
-          });
+        objectQueueService.enqueue({
+          jobs: [{ bucketId: job.bucketId, path: job.path }],
+          full: job.full,
+          retries: job.retries + 1,
+          createdBy: job.createdBy
+        }).then(() => {
+          log.verbose('Job has been reenqueued', { function: 'processNextJob', job: job });
+        }).catch((e) => {
+          log.error(`Failed to reenqueue job id ${job.id}: ${e.message}`, { function: 'processNextJob', job: job });
+        });
       }
 
       this.isBusy = false;

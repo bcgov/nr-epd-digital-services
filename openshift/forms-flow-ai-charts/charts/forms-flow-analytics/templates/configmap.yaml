@@ -9,3 +9,4 @@ data:
   REDASH_HOST: "{{ tpl .Values.ingress.hostname . }}"
   REDASH_DATABASE_URL: "{{ tpl .Values.database.url . }}"
   REDASH_DATABASE_USERNAME: "{{ .Values.database.username }}"
+

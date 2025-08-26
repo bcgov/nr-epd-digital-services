@@ -1,7 +1,4 @@
-const {
-  requireBasicAuth,
-  requireSomeAuth,
-} = require('../../../src/middleware/featureToggle');
+const { requireBasicAuth, requireSomeAuth } = require('../../../src/middleware/featureToggle');
 const { AuthMode, AuthType } = require('../../../src/components/constants');
 const utils = require('../../../src/components/utils');
 
@@ -45,21 +42,18 @@ describe('requireBasicAuth', () => {
     [0, AuthMode.FULLAUTH, undefined],
     [0, AuthMode.FULLAUTH, AuthType.NONE],
     [1, AuthMode.FULLAUTH, AuthType.BASIC],
-    [0, AuthMode.FULLAUTH, AuthType.BEARER],
-  ])(
-    'should call next %i times given authMode %s and authType %s',
-    (nextCount, mode, type) => {
-      const sendCount = 1 - nextCount;
-      getAppAuthModeSpy.mockReturnValue(mode);
-      if (type) req.currentUser = { authType: type };
+    [0, AuthMode.FULLAUTH, AuthType.BEARER]
+  ])('should call next %i times given authMode %s and authType %s', (nextCount, mode, type) => {
+    const sendCount = 1 - nextCount;
+    getAppAuthModeSpy.mockReturnValue(mode);
+    if (type) req.currentUser = { authType: type };
 
-      if (sendCount) expect(() => requireBasicAuth(req, res, next)).toThrow();
-      else expect(() => requireBasicAuth(req, res, next)).not.toThrow();
+    if (sendCount) expect(() => requireBasicAuth(req, res, next)).toThrow();
+    else expect(() => requireBasicAuth(req, res, next)).not.toThrow();
 
-      expect(next).toHaveBeenCalledTimes(nextCount);
-      if (nextCount) expect(next).toHaveBeenCalledWith();
-    },
-  );
+    expect(next).toHaveBeenCalledTimes(nextCount);
+    if (nextCount) expect(next).toHaveBeenCalledWith();
+  });
 });
 
 describe('requireSomeAuth', () => {
@@ -89,19 +83,16 @@ describe('requireSomeAuth', () => {
     [0, AuthMode.FULLAUTH, undefined],
     [0, AuthMode.FULLAUTH, AuthType.NONE],
     [1, AuthMode.FULLAUTH, AuthType.BASIC],
-    [1, AuthMode.FULLAUTH, AuthType.BEARER],
-  ])(
-    'should call next %i times given authMode %s and authType %s',
-    (nextCount, mode, type) => {
-      const sendCount = 1 - nextCount;
-      getAppAuthModeSpy.mockReturnValue(mode);
-      if (type) req.currentUser = { authType: type };
+    [1, AuthMode.FULLAUTH, AuthType.BEARER]
+  ])('should call next %i times given authMode %s and authType %s', (nextCount, mode, type) => {
+    const sendCount = 1 - nextCount;
+    getAppAuthModeSpy.mockReturnValue(mode);
+    if (type) req.currentUser = { authType: type };
 
-      if (sendCount) expect(() => requireSomeAuth(req, res, next)).toThrow();
-      else expect(() => requireSomeAuth(req, res, next)).not.toThrow();
+    if (sendCount) expect(() => requireSomeAuth(req, res, next)).toThrow();
+    else expect(() => requireSomeAuth(req, res, next)).not.toThrow();
 
-      expect(next).toHaveBeenCalledTimes(nextCount);
-      if (nextCount) expect(next).toHaveBeenCalledWith();
-    },
-  );
+    expect(next).toHaveBeenCalledTimes(nextCount);
+    if (nextCount) expect(next).toHaveBeenCalledWith();
+  });
 });

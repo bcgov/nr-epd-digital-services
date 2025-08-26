@@ -6,6 +6,6 @@
     "eamodio.gitlens",
     "editorconfig.editorconfig",
     "redhat.vscode-yaml",
-    "ryanluker.vscode-coverage-gutters"
+    "ryanluker.vscode-coverage-gutters",
   ]
 }

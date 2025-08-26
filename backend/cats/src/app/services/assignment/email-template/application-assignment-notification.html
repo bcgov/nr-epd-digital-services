@@ -1,121 +1,79 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>New Application Assignment – Site ID ${site.id}</title>
-  </head>
-  <body
-    style="
-      font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
-      margin: 0;
-      padding: 20px;
-    "
-  >
-    <table
-      width="100%"
-      cellpadding="0"
-      cellspacing="0"
-      style="background-color: #ffffff; padding: 20px"
-    >
-      <tr>
-        <td>
-          <h2 style="color: #333333">
-            New Application Assignment – Site ID ${site.id}
-          </h2>
-          <p>
-            You have been assigned the following application as the
-            <strong>${role}</strong>. Please review the details below:
-          </p>
+<head>
+  <meta charset="UTF-8">
+  <title>New Application Assignment – Site ID ${site.id}</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 20px;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #ffffff; padding: 20px;">
+    <tr>
+      <td>
+        <h2 style="color: #333333;">New Application Assignment – Site ID ${site.id}</h2>
+        <p>You have been assigned the following application as the <strong>${role}</strong>. Please review the details below:</p>
+        
+        <p>🔗 <a href="${applicationURL}" style="color: #1a73e8;">Access the application file</a></p>
 
-          <p>
-            🔗
-            <a href="${applicationURL}" style="color: #1a73e8"
-              >Access the application file</a
-            >
-          </p>
+        <h3 style="color: #555555;">Assignment Details</h3>
+        <table width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">
+          <tr>
+            <td style="width: 40%; font-weight: bold;">Site ID:</td>
+            <td>${site.id}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold;">Application #:</td>
+            <td>${application.id}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold;">Service Requested:</td>
+            <td>${serviceRequested}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold;">Address:</td>
+            <td>${site.address}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold;">Date Queued:</td>
+            <td>${application.queueDate}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold;">Date Assigned:</td>
+            <td>${staff.effectiveStartDate}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold;">Site Risk:</td>
+            <td>${application.risk}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold;">Housing Priority:</td>
+            <td>${priority}</td>
+          </tr>
+        </table>
 
-          <h3 style="color: #555555">Assignment Details</h3>
-          <table
-            width="100%"
-            cellpadding="5"
-            cellspacing="0"
-            style="border-collapse: collapse"
-          >
-            <tr>
-              <td style="width: 40%; font-weight: bold">Site ID:</td>
-              <td>${site.id}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold">Application #:</td>
-              <td>${application.id}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold">Service Requested:</td>
-              <td>${serviceRequested}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold">Address:</td>
-              <td>${site.address}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold">Date Queued:</td>
-              <td>${application.queueDate}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold">Date Assigned:</td>
-              <td>${staff.effectiveStartDate}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold">Site Risk:</td>
-              <td>${application.risk}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold">Housing Priority:</td>
-              <td>${priority}</td>
-            </tr>
-          </table>
+        <h3 style="color: #555555;">Roles</h3>
+        <span>  <strong>Casefile Reviewer:</strong></span>
+        <ul>
+          ${caseWorkerList}          
+        </ul>
+        <span>  <strong>SDM:</strong></span>
+        <ul>
+          ${sdmList}
+        </ul>
+         <span>  <strong>Mentor:</strong></span>
+        <ul>
+          ${mentorList}
+        </ul>
+        <h3 style="color: #555555;">Need Additional Resources?</h3>
+        <p>If, during your review, you determine that additional resources are needed:</p>
+        <ol>
+          <li>Please speak with your supervisor or manager to obtain reassignment approval.</li>
+          <li>Once approved, update the status in CATS to <strong>"Review in Progress: Additional Resources"</strong>.</li>
+          <li>Add a detailed note in CATS explaining why additional support or reassignment is being requested.</li>
+        </ol>
+        <p>The LRMT will then review these requests at the weekly meeting.</p>
 
-          <h3 style="color: #555555">Roles</h3>
-          <span> <strong>Casefile Reviewer:</strong></span>
-          <ul>
-            ${caseWorkerList}
-          </ul>
-          <span> <strong>SDM:</strong></span>
-          <ul>
-            ${sdmList}
-          </ul>
-          <span> <strong>Mentor:</strong></span>
-          <ul>
-            ${mentorList}
-          </ul>
-          <h3 style="color: #555555">Need Additional Resources?</h3>
-          <p>
-            If, during your review, you determine that additional resources are
-            needed:
-          </p>
-          <ol>
-            <li>
-              Please speak with your supervisor or manager to obtain
-              reassignment approval.
-            </li>
-            <li>
-              Once approved, update the status in CATS to
-              <strong>"Review in Progress: Additional Resources"</strong>.
-            </li>
-            <li>
-              Add a detailed note in CATS explaining why additional support or
-              reassignment is being requested.
-            </li>
-          </ol>
-          <p>The LRMT will then review these requests at the weekly meeting.</p>
-
-          <p style="color: #888888; font-size: 12px">
-            This is an automated message. Please do not reply directly to this
-            email.
-          </p>
-        </td>
-      </tr>
-    </table>
-  </body>
+        <p style="color: #888888; font-size: 12px;">This is an automated message. Please do not reply directly to this email.</p>
+      </td>
+    </tr>
+  </table>
+</body>
 </html>

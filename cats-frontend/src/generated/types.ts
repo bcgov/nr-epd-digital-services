@@ -1,34 +1,21 @@
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
-export type MakeEmpty<
-  T extends { [key: string]: unknown },
-  K extends keyof T,
-> = { [_ in K]?: never };
-export type Incremental<T> =
-  | T
-  | {
-      [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
-    };
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string };
-  String: { input: string; output: string };
-  Boolean: { input: boolean; output: boolean };
-  Int: { input: number; output: number };
-  Float: { input: number; output: number };
-  DateTime: { input: any; output: any };
-  _Any: { input: any; output: any };
-  _FieldSet: { input: any; output: any };
-  link__Import: { input: any; output: any };
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
+  DateTime: { input: any; output: any; }
+  _Any: { input: any; output: any; }
+  _FieldSet: { input: any; output: any; }
+  link__Import: { input: any; output: any; }
 };
 
 export type AddHousingInputDto = {
@@ -57,7 +44,7 @@ export type AppNoteDto = {
 
 export enum AppParticipantFilter {
   All = 'ALL',
-  Main = 'MAIN',
+  Main = 'MAIN'
 }
 
 export type AppParticipantsResponse = {
@@ -144,7 +131,7 @@ export type ApplicationSearchResponse = {
 
 export enum ApplicationSortByDirection {
   Asc = 'ASC',
-  Desc = 'DESC',
+  Desc = 'DESC'
 }
 
 export enum ApplicationSortByField {
@@ -154,7 +141,7 @@ export enum ApplicationSortByField {
   Priority = 'PRIORITY',
   SiteAddress = 'SITE_ADDRESS',
   SiteId = 'SITE_ID',
-  Status = 'STATUS',
+  Status = 'STATUS'
 }
 
 export type ApplicationStatusDto = {
@@ -303,7 +290,7 @@ export type DetailField = {
 
 export enum DownloadType {
   Proxy = 'PROXY',
-  Url = 'URL',
+  Url = 'URL'
 }
 
 export type DropdownDto = {
@@ -327,7 +314,7 @@ export enum Filter {
   Assigned = 'ASSIGNED',
   Completed = 'COMPLETED',
   Overcapacity = 'OVERCAPACITY',
-  Unassigned = 'UNASSIGNED',
+  Unassigned = 'UNASSIGNED'
 }
 
 export type HousingDto = {
@@ -378,7 +365,7 @@ export enum InvoiceStatus {
   Draft = 'DRAFT',
   Paid = 'PAID',
   Received = 'RECEIVED',
-  Sent = 'SENT',
+  Sent = 'SENT'
 }
 
 export type InvoicesResponse = {
@@ -416,17 +403,21 @@ export type Mutation = {
   upsertTimesheetDays: TimesheetDayResponse;
 };
 
+
 export type MutationAddHousingToApplicationArgs = {
   input: AddHousingInputDto;
 };
+
 
 export type MutationCreateAppParticipantArgs = {
   newAppParticipant: CreateAppParticipantDto;
 };
 
+
 export type MutationCreateApplicationArgs = {
   application: CreateApplication;
 };
+
 
 export type MutationCreateApplicationNoteArgs = {
   applicationId: Scalars['Int']['input'];
@@ -434,51 +425,63 @@ export type MutationCreateApplicationNoteArgs = {
   noteText: Scalars['String']['input'];
 };
 
+
 export type MutationCreateBucketArgs = {
   bucketKey: Scalars['String']['input'];
   bucketName: Scalars['String']['input'];
 };
 
+
 export type MutationCreateInvoiceArgs = {
   invoice: CreateInvoice;
 };
+
 
 export type MutationCreatePersonArgs = {
   person: CreatePerson;
 };
 
+
 export type MutationCreatePersonNoteArgs = {
   note: CreatePersonNote;
 };
+
 
 export type MutationDeleteApplicationNotesArgs = {
   noteIds: Array<Scalars['Int']['input']>;
 };
 
+
 export type MutationDeleteBucketArgs = {
   bucketId: Scalars['String']['input'];
 };
 
+
 export type MutationDeleteInvoiceArgs = {
   invoiceId: Scalars['Int']['input'];
 };
+
 
 export type MutationDeleteObjectArgs = {
   objectId: Scalars['String']['input'];
   versionId?: InputMaybe<Scalars['String']['input']>;
 };
 
+
 export type MutationDeletePersonNoteArgs = {
   notes: Array<DeletePersonNote>;
 };
+
 
 export type MutationUpdateAppParticipantArgs = {
   updateAppParticipant: UpdateAppParticipantDto;
 };
 
+
 export type MutationUpdateApplicationHousingArgs = {
   input: UpdateHousingInputDto;
 };
+
 
 export type MutationUpdateApplicationNoteArgs = {
   noteDate: Scalars['DateTime']['input'];
@@ -486,28 +489,34 @@ export type MutationUpdateApplicationNoteArgs = {
   noteText: Scalars['String']['input'];
 };
 
+
 export type MutationUpdateFormsflowAppIdArgs = {
   appStatusInput: UpdateApplicationStatusDto;
 };
+
 
 export type MutationUpdateInvoiceArgs = {
   invoice: UpdateInvoice;
 };
 
+
 export type MutationUpdatePersonArgs = {
   input: Array<UpdatePerson>;
 };
+
 
 export type MutationUpdatePersonNoteArgs = {
   id: Scalars['String']['input'];
   note: UpdatePersonNote;
 };
 
+
 export type MutationUpdateStaffAssignedArgs = {
   applicationId: Scalars['Int']['input'];
   applicationServiceTypeId: Scalars['Int']['input'];
   staffInput: Array<UpdateStaffAssignedDto>;
 };
+
 
 export type MutationUpsertTimesheetDaysArgs = {
   input: UpsertTimesheetDaysInputDto;
@@ -604,34 +613,42 @@ export type Query = {
   searchPerson: SearchPersonResponse;
 };
 
+
 export type QueryFindPersonByIdArgs = {
   id: Scalars['Float']['input'];
 };
+
 
 export type QueryGetAllActiveStaffMembersForApplicationServiceTypeArgs = {
   applicationServiceTypeId: Scalars['Int']['input'];
 };
 
+
 export type QueryGetAllParticipantRolesArgs = {
   roleType?: InputMaybe<Scalars['String']['input']>;
 };
+
 
 export type QueryGetAppParticipantsByAppIdArgs = {
   applicationId: Scalars['Int']['input'];
   filter?: InputMaybe<AppParticipantFilter>;
 };
 
+
 export type QueryGetApplicationDetailsByIdArgs = {
   id: Scalars['Int']['input'];
 };
+
 
 export type QueryGetApplicationHousingByApplicationIdArgs = {
   applicationId: Scalars['Int']['input'];
 };
 
+
 export type QueryGetApplicationNotesByApplicationIdArgs = {
   applicationId: Scalars['Int']['input'];
 };
+
 
 export type QueryGetApplicationsByStaffArgs = {
   page: Scalars['Int']['input'];
@@ -642,38 +659,47 @@ export type QueryGetApplicationsByStaffArgs = {
   sortByDir?: InputMaybe<ApplicationSortByDirection>;
 };
 
+
 export type QueryGetInvoiceByIdArgs = {
   invoiceId: Scalars['Int']['input'];
 };
 
+
 export type QueryGetInvoicesArgs = {
   applicationId: Scalars['Int']['input'];
 };
+
 
 export type QueryGetObjectArgs = {
   downloadType?: InputMaybe<DownloadType>;
   objectId: Scalars['String']['input'];
 };
 
+
 export type QueryGetOrganizationsArgs = {
   searchParamForOrg: Scalars['String']['input'];
 };
+
 
 export type QueryGetParticipantNamesArgs = {
   searchParam: Scalars['String']['input'];
 };
 
+
 export type QueryGetPersonNotesByPersonIdArgs = {
   id: Scalars['Float']['input'];
 };
+
 
 export type QueryGetSiteDetailsBySiteIdArgs = {
   siteId: Scalars['String']['input'];
 };
 
+
 export type QueryGetStaffAssignedByAppIdArgs = {
   applicationId: Scalars['Int']['input'];
 };
+
 
 export type QueryGetStaffsArgs = {
   filter?: InputMaybe<Filter>;
@@ -683,11 +709,13 @@ export type QueryGetStaffsArgs = {
   sortByDir?: InputMaybe<ApplicationSortByDirection>;
 };
 
+
 export type QueryGetTimesheetDaysForAssignedStaffArgs = {
   applicationId: Scalars['Int']['input'];
   endDate: Scalars['String']['input'];
   startDate: Scalars['String']['input'];
 };
+
 
 export type QuerySearchApplicationsArgs = {
   filter: Filter;
@@ -698,9 +726,11 @@ export type QuerySearchApplicationsArgs = {
   sortByDir?: InputMaybe<ApplicationSortByDirection>;
 };
 
+
 export type QuerySearchApplicationsByIdArgs = {
   query: Scalars['String']['input'];
 };
+
 
 export type QuerySearchPersonArgs = {
   page: Scalars['Int']['input'];
@@ -787,7 +817,7 @@ export enum StaffSortByField {
   Name = 'NAME',
   Role = 'ROLE',
   SiteAddress = 'SITE_ADDRESS',
-  StartDate = 'START_DATE',
+  StartDate = 'START_DATE'
 }
 
 export type TimesheetDayDto = {

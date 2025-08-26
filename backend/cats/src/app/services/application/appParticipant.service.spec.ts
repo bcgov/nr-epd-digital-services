@@ -18,6 +18,7 @@ import { ViewParticipantsRolesDto } from '../../dto/appParticipants/viewParticip
 import { Person } from '../../entities/person.entity';
 import { DropdownDto } from 'src/app/dto/dropdown.dto';
 
+
 describe('AppParticipantsService', () => {
   let service: AppParticipantService;
   let appParticsRepo: Repository<AppParticipant>;
@@ -37,7 +38,7 @@ describe('AppParticipantsService', () => {
             createAppParticipant: jest.fn(),
             save: jest.fn(),
             create: jest.fn(),
-            findOne: jest.fn(),
+            findOne : jest.fn(),
           },
         },
         {
@@ -67,19 +68,14 @@ describe('AppParticipantsService', () => {
             debug: jest.fn(),
           },
         },
+       
       ],
     }).compile();
 
     service = module.get<AppParticipantService>(AppParticipantService);
-    appParticsRepo = module.get<Repository<AppParticipant>>(
-      getRepositoryToken(AppParticipant),
-    );
-    rolesRepo = module.get<Repository<ParticipantRole>>(
-      getRepositoryToken(ParticipantRole),
-    );
-    orgRepo = module.get<Repository<Organization>>(
-      getRepositoryToken(Organization),
-    );
+    appParticsRepo = module.get<Repository<AppParticipant>>(getRepositoryToken(AppParticipant));
+    rolesRepo = module.get<Repository<ParticipantRole>>(getRepositoryToken(ParticipantRole));
+    orgRepo = module.get<Repository<Organization>>(getRepositoryToken(Organization));
     loggerService = module.get<LoggerService>(LoggerService);
   });
 
@@ -114,11 +110,7 @@ describe('AppParticipantsService', () => {
         ),
       );
 
-      const result = await service.getAppParticipantsByAppId(
-        1,
-        'user',
-        AppParticipantFilter.MAIN,
-      );
+      const result = await service.getAppParticipantsByAppId(1, 'user', AppParticipantFilter.MAIN);
       expect(result).toEqual(
         plainToInstance(ViewAppParticipantsDto, [
           {
@@ -158,36 +150,41 @@ describe('AppParticipantsService', () => {
         { id: 2, description: 'Role 2' },
       ];
 
-      jest
-        .spyOn(service, 'getAllParticipantRoles')
-        .mockResolvedValue(mockRoles);
+      jest.spyOn(service, 'getAllParticipantRoles').mockResolvedValue(mockRoles);
 
       const result = await service.getAllParticipantRoles();
       expect(result).toEqual(mockRoles);
+    
     });
   });
 
   describe('getOrganizations', () => {
     it('should return searched organizations successfully', async () => {
       const searchParam = 'Org';
-      const mockRoles: DropdownDto[] = [{ key: '1', value: 'Org1' }];
+      const mockRoles: DropdownDto[] = [
+        { key: '1', value: 'Org1' },
+      ];
 
       jest.spyOn(service, 'getOrganizations').mockResolvedValue(mockRoles);
 
       const result = await service.getOrganizations(searchParam);
       expect(result).toEqual(mockRoles);
+    
     });
   });
 
   describe('getParticipantNames', () => {
     it('should return searched participant names successfully', async () => {
       const searchParam = 'Nam';
-      const mockRoles: DropdownDto[] = [{ key: '1', value: 'Name1' }];
+      const mockRoles: DropdownDto[] = [
+        { key: '1', value: 'Name1' },
+      ];
 
       jest.spyOn(service, 'getParticipantNames').mockResolvedValue(mockRoles);
 
       const result = await service.getParticipantNames(searchParam);
       expect(result).toEqual(mockRoles);
+    
     });
   });
 
@@ -204,15 +201,15 @@ describe('AppParticipantsService', () => {
       createdDateTime: new Date('2025-02-05T18:43:03.244Z'),
     };
 
-    const addedParticipant = {
+    const addedParticipant= {
       id: 27912,
       ...input,
       createdBy: 'system',
-      createdDateTime: new Date('2025-02-05T18:43:03.244Z'),
+      createdDateTime:new Date('2025-02-05T18:43:03.244Z'),
       rowVersionCount: null,
       updatedBy: null,
       updatedDateTime: null,
-    };
+    }
 
     const user = {
       identity_provider: 'idir', // IDIR provider
@@ -223,32 +220,24 @@ describe('AppParticipantsService', () => {
       message: 'Participant created successfully',
       httpStatusCode: HttpStatus.CREATED,
       success: true,
-      data: [addedParticipant],
+      data: [addedParticipant]
     };
     it('should log start message and create a participant successfully', async () => {
-      jest
-        .spyOn(appParticsRepo, 'create')
-        .mockReturnValue(addedParticipant as any);
-      jest
-        .spyOn(appParticsRepo, 'save')
-        .mockResolvedValue(addedParticipant as any);
+      
+
+      jest.spyOn(appParticsRepo, 'create').mockReturnValue(addedParticipant as any);
+      jest.spyOn(appParticsRepo, 'save').mockResolvedValue(addedParticipant as any);
       const result = await service.createAppParticipant(input, user);
       expect(result).toBeDefined();
       expect(result.id).toBe(addedParticipant.id);
       expect(result.isMainParticipant).toBe(addedParticipant.isMainParticipant);
+    
     });
 
     it('should throw HttpException when participant creation fails', async () => {
-      jest
-        .spyOn(appParticsRepo, 'findOne')
-        .mockReturnValue(addedParticipant as any);
-      await expect(
-        service.createAppParticipant(input, user),
-      ).rejects.toThrowError(
-        new HttpException(
-          'Failed to add app Participant',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        ),
+      jest.spyOn(appParticsRepo, 'findOne').mockReturnValue(addedParticipant as any);
+      await expect(service.createAppParticipant(input, user)).rejects.toThrowError(
+        new HttpException('Failed to add app Participant', HttpStatus.INTERNAL_SERVER_ERROR),
       );
     });
   });
@@ -280,7 +269,7 @@ describe('AppParticipantsService', () => {
       rowVersionCount: null,
       updatedBy: 'TestUser',
       updatedDateTime: new Date('2025-02-05T18:43:03.244Z'),
-    };
+    }
     it('should update a participant successfully', async () => {
       const expectedResponse = {
         message: 'App Participant updated successfully with ID: 1',
@@ -288,30 +277,29 @@ describe('AppParticipantsService', () => {
         success: true,
         timestamp: new Date(),
         data: [updatedParticipant],
-      };
-      jest
-        .spyOn(appParticsRepo, 'save')
-        .mockResolvedValue(updatedParticipant as any);
+      }
+      jest.spyOn(appParticsRepo, 'save').mockResolvedValue(updatedParticipant as any);
 
       jest
         .spyOn(appParticsRepo, 'findOne')
         .mockResolvedValue([updatedParticipant] as any);
-
+  
       const result = await service.updateAppParticipant(input, user);
       expect(result).toBeDefined();
     });
 
     it('should throw HttpException when participant is not found', async () => {
-      jest.spyOn(appParticsRepo, 'findOne').mockResolvedValue(null); // Simulate no participant found
+      jest
+        .spyOn(appParticsRepo, 'findOne')
+        .mockResolvedValue(null); // Simulate no participant found
 
       await expect(
         service.updateAppParticipant(input, user),
       ).rejects.toThrowError(
-        new HttpException(
-          'Failed to update App Participant',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        ),
+        new HttpException('Failed to update App Participant', HttpStatus.INTERNAL_SERVER_ERROR),
       );
     });
+    });
   });
-});
+  
+

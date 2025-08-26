@@ -4,7 +4,7 @@ import CustomMap from "./map/Map";
 import { useEffect, useState } from "react";
 
 function App() {
-  const [location, setLocation] = useState([48.44577, -123.35826]);
+  const [location, setLocation] = useState([48.44577, -123.35826 ]);
   const [readOnly, setReadOnly] = useState(false);
 
   useEffect(() => {
@@ -15,7 +15,8 @@ function App() {
     let readOnly = urlParams.get("readOnly") === "true" ? true : false;
     console.log("lat,long", lat, long);
     setLocation([lat, long]);
-    if (readOnly) setReadOnly(readOnly);
+    if(readOnly)
+    setReadOnly(readOnly);
   }, []);
 
   const handleCallback = (data) => {
@@ -24,11 +25,7 @@ function App() {
 
   return (
     <div className="parentCustomStyles">
-      <CustomMap
-        callback={handleCallback}
-        initLocation={location}
-        readOnly={readOnly}
-      ></CustomMap>
+      <CustomMap callback={handleCallback} initLocation={location} readOnly={readOnly} ></CustomMap>
     </div>
   );
 }

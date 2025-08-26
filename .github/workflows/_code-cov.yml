@@ -29,7 +29,7 @@ jobs:
       - name: Add Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "22.x"
+          node-version: '22.x'
 
       - name: Get npm cache directory
         id: npm-cache-dir
@@ -51,7 +51,7 @@ jobs:
           key: coverage-${{ inputs.component }}-${{ github.run_number }}
           restore-keys: |
             coverage-${{ inputs.component }}-
-
+      
       - name: Tests
         run: |
           cd ${{ inputs.component }}

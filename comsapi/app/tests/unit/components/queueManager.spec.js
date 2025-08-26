@@ -152,7 +152,7 @@ describe('close', () => {
   });
 
   it('should store but not run the callback when busy', () => {
-    const cb = jest.fn(() => {});
+    const cb = jest.fn(() => { });
     qm._isBusy = true;
 
     qm.close(cb);
@@ -173,7 +173,7 @@ describe('close', () => {
   });
 
   it('should run the callback when not busy', () => {
-    const cb = jest.fn(() => {});
+    const cb = jest.fn(() => { });
 
     qm.close(cb);
 
@@ -198,7 +198,7 @@ describe('processNextJob', () => {
     full: false,
     id: 'id',
     path: 'path',
-    retries: 0,
+    retries: 0
   };
 
   beforeEach(() => {
@@ -248,12 +248,7 @@ describe('processNextJob', () => {
     expect(enqueueSpy).toHaveBeenCalledTimes(0);
     expect(dequeueSpy).toHaveBeenCalledTimes(1);
     expect(syncJobSpy).toHaveBeenCalledTimes(1);
-    expect(syncJobSpy).toHaveBeenCalledWith(
-      job.path,
-      job.bucketId,
-      job.full,
-      job.createdBy,
-    );
+    expect(syncJobSpy).toHaveBeenCalledWith(job.path, job.bucketId, job.full, job.createdBy);
   });
 
   it('should do the next syncJob successfully and not check queue when toClose', async () => {
@@ -270,20 +265,13 @@ describe('processNextJob', () => {
     expect(enqueueSpy).toHaveBeenCalledTimes(0);
     expect(dequeueSpy).toHaveBeenCalledTimes(1);
     expect(syncJobSpy).toHaveBeenCalledTimes(1);
-    expect(syncJobSpy).toHaveBeenCalledWith(
-      job.path,
-      job.bucketId,
-      job.full,
-      job.createdBy,
-    );
+    expect(syncJobSpy).toHaveBeenCalledWith(job.path, job.bucketId, job.full, job.createdBy);
   });
 
   it('should re-enqueue a failed job when less than max retries', async () => {
     enqueueSpy.mockResolvedValue(1);
     dequeueSpy.mockResolvedValue([job]);
-    syncJobSpy.mockImplementation(() => {
-      throw new Error('error');
-    });
+    syncJobSpy.mockImplementation(() => { throw new Error('error'); });
 
     await qm.processNextJob();
 
@@ -292,32 +280,21 @@ describe('processNextJob', () => {
     expect(qm.toClose).toBeFalsy();
     expect(checkQueueSpy).toHaveBeenCalledTimes(0);
     expect(enqueueSpy).toHaveBeenCalledTimes(1);
-    expect(enqueueSpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        jobs: expect.arrayContaining([
-          { bucketId: job.bucketId, path: job.path },
-        ]),
-        full: job.full,
-        retries: job.retries + 1,
-        createdBy: job.createdBy,
-      }),
-    );
+    expect(enqueueSpy).toHaveBeenCalledWith(expect.objectContaining({
+      jobs: expect.arrayContaining([{ bucketId: job.bucketId, path: job.path }]),
+      full: job.full,
+      retries: job.retries + 1,
+      createdBy: job.createdBy
+    }));
     expect(dequeueSpy).toHaveBeenCalledTimes(1);
     expect(syncJobSpy).toHaveBeenCalledTimes(1);
-    expect(syncJobSpy).toHaveBeenCalledWith(
-      job.path,
-      job.bucketId,
-      job.full,
-      job.createdBy,
-    );
+    expect(syncJobSpy).toHaveBeenCalledWith(job.path, job.bucketId, job.full, job.createdBy);
   });
 
   it('should re-enqueue a failed job when less than max retries and fail gracefully', async () => {
     enqueueSpy.mockRejectedValue('error');
     dequeueSpy.mockResolvedValue([job]);
-    syncJobSpy.mockImplementation(() => {
-      throw new Error('error');
-    });
+    syncJobSpy.mockImplementation(() => { throw new Error('error'); });
 
     await qm.processNextJob();
 
@@ -326,31 +303,20 @@ describe('processNextJob', () => {
     expect(qm.toClose).toBeFalsy();
     expect(checkQueueSpy).toHaveBeenCalledTimes(0);
     expect(enqueueSpy).toHaveBeenCalledTimes(1);
-    expect(enqueueSpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        jobs: expect.arrayContaining([
-          { bucketId: job.bucketId, path: job.path },
-        ]),
-        full: job.full,
-        retries: job.retries + 1,
-        createdBy: job.createdBy,
-      }),
-    );
+    expect(enqueueSpy).toHaveBeenCalledWith(expect.objectContaining({
+      jobs: expect.arrayContaining([{ bucketId: job.bucketId, path: job.path }]),
+      full: job.full,
+      retries: job.retries + 1,
+      createdBy: job.createdBy
+    }));
     expect(dequeueSpy).toHaveBeenCalledTimes(1);
     expect(syncJobSpy).toHaveBeenCalledTimes(1);
-    expect(syncJobSpy).toHaveBeenCalledWith(
-      job.path,
-      job.bucketId,
-      job.full,
-      job.createdBy,
-    );
+    expect(syncJobSpy).toHaveBeenCalledWith(job.path, job.bucketId, job.full, job.createdBy);
   });
 
   it('should not re-enqueue a failed job when at max retries', async () => {
     dequeueSpy.mockResolvedValue([{ ...job, retries: 3 }]);
-    syncJobSpy.mockImplementation(() => {
-      throw new Error('error');
-    });
+    syncJobSpy.mockImplementation(() => { throw new Error('error'); });
 
     await qm.processNextJob();
 
@@ -361,11 +327,7 @@ describe('processNextJob', () => {
     expect(enqueueSpy).toHaveBeenCalledTimes(0);
     expect(dequeueSpy).toHaveBeenCalledTimes(1);
     expect(syncJobSpy).toHaveBeenCalledTimes(1);
-    expect(syncJobSpy).toHaveBeenCalledWith(
-      job.path,
-      job.bucketId,
-      job.full,
-      job.createdBy,
-    );
+    expect(syncJobSpy).toHaveBeenCalledWith(job.path, job.bucketId, job.full, job.createdBy);
   });
 });
+

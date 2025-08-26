@@ -13,4 +13,5 @@ router.get('/', tagValidator.searchTags, (req, res, next) => {
   tagController.searchTags(req, res, next);
 });
 
+
 module.exports = router;

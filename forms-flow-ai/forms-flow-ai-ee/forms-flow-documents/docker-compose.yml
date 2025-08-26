@@ -1,4 +1,4 @@
-version: "3.7"
+version: '3.7'
 
 services:
   forms-flow-documents-api:
@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     ports:
-      - "5006:5006"
+      - '5006:5006'
     volumes:
       - ./:/app:rw
     environment:
@@ -17,7 +17,7 @@ services:
       JWT_OIDC_JWKS_URI: ${KEYCLOAK_URL}/auth/realms/${KEYCLOAK_URL_REALM:-forms-flow-ai}/protocol/openid-connect/certs
       JWT_OIDC_ISSUER: ${KEYCLOAK_URL}/auth/realms/${KEYCLOAK_URL_REALM:-forms-flow-ai}
       JWT_OIDC_AUDIENCE: ${KEYCLOAK_WEB_CLIENT_ID:-forms-flow-web}
-      JWT_OIDC_CACHING_ENABLED: "True"
+      JWT_OIDC_CACHING_ENABLED: 'True'
       KEYCLOAK_URL: ${KEYCLOAK_URL}
       KEYCLOAK_URL_REALM: ${KEYCLOAK_URL_REALM:-forms-flow-ai}
       FORMSFLOW_API_URL: ${FORMSFLOW_API_URL}
@@ -38,7 +38,7 @@ services:
 
 networks:
   forms-flow-webapi-network:
-    driver: "bridge"
+    driver: 'bridge'
 
 volumes:
   mdb-data:

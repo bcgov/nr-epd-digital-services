@@ -17,20 +17,18 @@ const service = {
    */
   _tokenToUser: (token) => {
     const identityId = parseIdentityKeyClaims()
-      .map((idKey) => token[idKey])
-      .filter((claims) => claims) // Drop falsy values from array
+      .map(idKey => token[idKey])
+      .filter(claims => claims) // Drop falsy values from array
       .concat(undefined)[0]; // Set undefined as last element of array
 
     return {
       identityId: identityId,
-      username: token.identity_provider_identity
-        ? token.identity_provider_identity
-        : token.preferred_username,
+      username: token.identity_provider_identity ? token.identity_provider_identity : token.preferred_username,
       firstName: token.given_name,
       fullName: token.name,
       lastName: token.family_name,
       email: token.email,
-      idp: token.identity_provider,
+      idp: token.identity_provider
     };
   },
 
@@ -49,7 +47,7 @@ const service = {
 
       const obj = {
         idp: idp,
-        createdBy: SYSTEM_USER,
+        createdBy: SYSTEM_USER
       };
 
       const response = await IdentityProvider.query(trx).insertAndFetch(obj);
@@ -76,15 +74,13 @@ const service = {
       trx = etrx ? etrx : await User.startTransaction();
 
       const exists = await User.query(trx)
-        .where({ identityId: data.identityId, idp: data.idp })
+        .where({ 'identityId': data.identityId, idp: data.idp })
         .first();
 
       if (exists) {
         response = exists;
-      } else {
-        // else add new user
-        if (data.idp) {
-          // add idp if not in db
+      } else { // else add new user
+        if (data.idp) { // add idp if not in db
           const identityProvider = await service.readIdp(data.idp, trx);
           if (!identityProvider) await service.createIdp(data.idp, trx);
         }
@@ -99,7 +95,7 @@ const service = {
             firstName: data.firstName,
             lastName: data.lastName,
             idp: data.idp,
-            createdBy: data.userId,
+            createdBy: data.userId
           })
           .returning('*');
       }
@@ -154,10 +150,7 @@ const service = {
     return await utils.trxWrapper(async (trx) => {
       // check if user exists in db
       const oldUser = await User.query(trx)
-        .where({
-          identityId: newUser.identityId,
-          idp: newUser.idp ? newUser.idp : null,
-        })
+        .where({ 'identityId': newUser.identityId, idp: newUser.idp ?  newUser.idp : null  })
         .first();
 
       if (!oldUser) {
@@ -200,7 +193,9 @@ const service = {
    * @throws If no record is found
    */
   readUser: (userId) => {
-    return User.query().findById(userId).throwIfNotFound();
+    return User.query()
+      .findById(userId)
+      .throwIfNotFound();
   },
 
   /**
@@ -248,12 +243,9 @@ const service = {
     try {
       // Check if any user values have changed
       const oldUser = await service.readUser(userId);
-      const diff = Object.entries(data).some(
-        ([key, value]) => oldUser[key] !== value,
-      );
+      const diff = Object.entries(data).some(([key, value]) => oldUser[key] !== value);
 
-      if (diff) {
-        // Patch existing user
+      if (diff) { // Patch existing user
         trx = etrx ? etrx : await User.startTransaction();
 
         if (data.idp) {
@@ -269,22 +261,21 @@ const service = {
           firstName: data.firstName,
           lastName: data.lastName,
           idp: data.idp,
-          updatedBy: data.userId,
+          updatedBy: data.userId
         };
 
         // TODO: add support for updating userId primary key in the event it changes
         const response = await User.query(trx).patchAndFetchById(userId, obj);
         if (!etrx) await trx.commit();
         return response;
-      } else {
-        // Nothing to update
+      } else { // Nothing to update
         return oldUser;
       }
     } catch (err) {
       if (!etrx && trx) await trx.rollback();
       throw err;
     }
-  },
+  }
 };
 
 module.exports = service;

@@ -10,7 +10,7 @@ export class AppTypeService {
     @InjectRepository(AppType)
     private readonly appTypeRepository: Repository<AppType>,
     private readonly loggerService: LoggerService,
-  ) {}
+  ) { }
 
   async getAppTypeByAbbrev(appTypeAbbrev: string) {
     this.loggerService.log('AppTypeService.getAppTypeByAbbrev() start'); // Log the start of the method
@@ -22,16 +22,20 @@ export class AppTypeService {
       );
 
       const appType = await this.appTypeRepository.findOne({
-        where: { abbrev: appTypeAbbrev },
+        where: { abbrev: appTypeAbbrev }
       });
 
       if (appType) {
-        this.loggerService.log(`Application type found with ID: ${appType.id}`);
+        this.loggerService.log(
+          `Application type found with ID: ${appType.id}`,
+        );
         return {
           id: appType.id,
         };
       } else {
-        this.loggerService.warn('`Application type not found');
+        this.loggerService.warn(
+          '`Application type not found',
+        );
         return null;
       }
     } catch (err) {
@@ -40,10 +44,7 @@ export class AppTypeService {
         'Exception occurred in AppTypeService.getAppTypeByAbbrev()',
         JSON.stringify(err),
       );
-      throw new HttpException(
-        'Failed to fetch application type',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException('Failed to fetch application type', HttpStatus.BAD_REQUEST);
     } finally {
       // Log the end of the method
       this.loggerService.log('AppTypeService.getAppTypeByAbbrev() end');

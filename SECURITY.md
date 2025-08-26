@@ -2,7 +2,8 @@
 
 ## Supported Versions
 
-This product currently has no support and is experimental. That could change in future.
+This product currently has no support and is experimental.  That could change in future.
+
 
 ## Reporting a Vulnerability
 

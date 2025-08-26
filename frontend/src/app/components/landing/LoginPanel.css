@@ -1,32 +1,35 @@
-#login-panel {
-  background-color: #e3e8ee;
-  height: 250px;
+#login-panel{
+    background-color: #E3E8EE;
+    height: 250px;
 }
 
 #idir-login-panel {
-  justify-content: center;
-  display: flex;
-  align-items: center;
-  margin-top: 46px; /* button-height */
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    margin-top: 46px; /* button-height */
 }
 
-#lrs-signup-button {
-  background-color: #ffffff;
-  border-color: #ffffff;
-  width: 250px;
-  color: #003366;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 22px;
+#lrs-signup-button{
+    background-color: #FFFFFF;
+    border-color: #FFFFFF;
+    width: 250px;
+    color: #003366;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
 }
 
-#lrs-signup-button:hover {
-  background-color: #405c8c;
-  border-color: #405c8c;
-  color: #ffffff;
+#lrs-signup-button:hover{
+    background-color: #405c8c;
+    border-color: #405c8c;
+    color:#FFFFFF;
+
 }
 
-.login-btn-lh {
-  line-height: 2 !important;
+
+.login-btn-lh
+{
+    line-height: 2 !important;
 }

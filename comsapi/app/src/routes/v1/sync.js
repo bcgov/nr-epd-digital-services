@@ -2,10 +2,7 @@ const router = require('express').Router();
 
 const { syncController } = require('../../controllers');
 const { checkAppMode } = require('../../middleware/authorization');
-const {
-  requireBasicAuth,
-  requireSomeAuth,
-} = require('../../middleware/featureToggle');
+const { requireBasicAuth, requireSomeAuth } = require('../../middleware/featureToggle');
 
 router.use(checkAppMode);
 router.use(requireSomeAuth);

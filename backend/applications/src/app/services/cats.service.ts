@@ -7,7 +7,7 @@ import ApplicationType from '../constants/applicationType';
 
 @Injectable()
 export class CatsService {
-  constructor() {}
+  constructor() { }
 
   getSiteIdsFromFormData = (formData: any) => {
     switch (formData.hdnAppType) {
@@ -30,7 +30,8 @@ export class CatsService {
             .map((id) => id.trim())
             .filter(Boolean) // removes empty strings
             .map(Number)
-            .filter((num) => !isNaN(num)) ?? [] // removes NaN
+            .filter((num) => !isNaN(num)) ?? // removes NaN
+          []
         );
       case ApplicationType.NOM:
         let dataGrid = [];
@@ -67,8 +68,7 @@ export class CatsService {
 
       case ApplicationType.SoSC:
         const soscSiteIds: number[] =
-          formData.dataGrid
-            ?.map((item: any) => Number(item.siteId))
+          formData.dataGrid?.map((item: any) => Number(item.siteId))
             .filter((id: number) => !isNaN(id)) || [];
 
         return soscSiteIds;
@@ -81,7 +81,8 @@ export class CatsService {
             .map((id) => id.trim())
             .filter(Boolean) // removes empty strings
             .map(Number)
-            .filter((num) => !isNaN(num)) ?? [] // removes NaN
+            .filter((num) => !isNaN(num)) ?? // removes NaN
+          []
         );
     }
   };

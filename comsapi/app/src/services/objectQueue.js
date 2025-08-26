@@ -43,36 +43,27 @@ const service = {
    * @param {object} [etrx=undefined] Optional Objection Transaction object
    * @returns {Promise<integer>} Number of records added to the queue
    */
-  async enqueue(
-    { jobs = [], full = false, retries = 0, createdBy = SYSTEM_USER } = {},
-    etrx = undefined,
-  ) {
+  async enqueue({ jobs = [], full = false, retries = 0, createdBy = SYSTEM_USER } = {}, etrx = undefined) {
     let trx;
     try {
       trx = etrx ? etrx : await ObjectQueue.startTransaction();
 
-      const jobsArray = jobs.map((job) => ({
+      const jobsArray = jobs.map(job => ({
         bucketId: job.bucketId,
         path: job.path,
         full: full,
         retries: retries,
-        createdBy: createdBy,
+        createdBy: createdBy
       }));
 
       // Short circuit when nothing to add or there are missing paths
-      if (!jobsArray.length || !jobsArray.every((job) => !!job.path))
-        return Promise.resolve(0);
+      if (!jobsArray.length || !jobsArray.every(job => !!job.path)) return Promise.resolve(0);
 
       // Only insert jobs in if it does not already exist
-      const response = await ObjectQueue.query(trx)
-        .insert(jobsArray)
-        .onConflict()
-        .ignore();
+      const response = await ObjectQueue.query(trx).insert(jobsArray).onConflict().ignore();
 
       if (!etrx) await trx.commit();
-      return Promise.resolve(
-        response.reduce((acc, job) => (job?.id ? acc + 1 : acc), 0),
-      );
+      return Promise.resolve(response.reduce((acc, job) => job?.id ? acc + 1 : acc, 0));
     } catch (err) {
       if (!etrx && trx) await trx.rollback();
       throw err;
@@ -85,10 +76,8 @@ const service = {
    * @returns {Promise<number>} An integer representing how many jobs are in the queue.
    */
   async queueSize() {
-    return ObjectQueue.query()
-      .count()
-      .first()
-      .then((response) => parseInt(response.count));
+    return ObjectQueue.query().count().first()
+      .then(response => parseInt(response.count));
   },
 };
 

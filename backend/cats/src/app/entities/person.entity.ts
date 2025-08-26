@@ -126,9 +126,6 @@ export class Person {
   @OneToMany(() => InvoiceV2, (invoice) => invoice.recipient)
   invoices?: InvoiceV2[];
 
-  @OneToMany(
-    () => PersonPermission,
-    (personPermission) => personPermission.person,
-  )
+  @OneToMany(() => PersonPermission, personPermission => personPermission.person)
   personPermissions: PersonPermission[];
 }

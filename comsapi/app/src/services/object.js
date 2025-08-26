@@ -34,7 +34,7 @@ const service = {
         public: data.public,
         active: data.active,
         bucketId: data.bucketId,
-        createdBy: data.userId ?? SYSTEM_USER,
+        createdBy: data.userId ?? SYSTEM_USER
       };
       const response = await ObjectModel.query(trx).insert(obj).returning('*');
 
@@ -42,14 +42,9 @@ const service = {
       if (data.userId && data.userId !== SYSTEM_USER) {
         const perms = Object.values(Permissions).map((p) => ({
           userId: data.userId,
-          permCode: p,
+          permCode: p
         }));
-        await objectPermissionService.addPermissions(
-          data.id,
-          perms,
-          data.userId,
-          trx,
-        );
+        await objectPermissionService.addPermissions(data.id, perms, data.userId, trx);
       }
 
       if (!etrx) await trx.commit();
@@ -138,20 +133,19 @@ const service = {
         .modify('filterLatest', params.latest)
         .modify('filterMetadataTag', {
           metadata: params.metadata,
-          tag: params.tag,
+          tag: params.tag
         })
         .modify('hasPermission', params.userId, 'READ')
         // format result
-        .then((result) => {
+        .then(result => {
           // just return object table records
-          const res = result.map((row) => {
+          const res = result.map(row => {
             // eslint-disable-next-line no-unused-vars
-            const { objectPermission, bucketPermission, version, ...object } =
-              row;
+            const { objectPermission, bucketPermission, version, ...object } = row;
             return object;
           });
           // remove duplicates
-          return [...new Map(res.map((item) => [item.id, item])).values()];
+          return [...new Map(res.map(item => [item.id, item])).values()];
         });
 
       if (!etrx) await trx.commit();
@@ -209,7 +203,7 @@ const service = {
         path: data.path,
         public: data.public,
         active: data.active,
-        updatedBy: data.userId ?? SYSTEM_USER,
+        updatedBy: data.userId ?? SYSTEM_USER
       });
 
       if (!etrx) await trx.commit();

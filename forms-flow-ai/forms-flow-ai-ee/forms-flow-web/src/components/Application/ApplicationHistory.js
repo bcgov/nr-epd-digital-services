@@ -21,7 +21,7 @@ import { CLIENT } from "../../constants/constants";
 const HistoryList = React.memo((props) => {
   const dispatch = useDispatch();
   const isHistoryListLoading = useSelector(
-    (state) => state.taskAppHistory.isHistoryListLoading,
+    (state) => state.taskAppHistory.isHistoryListLoading
   );
   const userRoles = useSelector((state) => state.user?.roles);
   const appHistory = useSelector((state) => state.taskAppHistory.appHistory);
@@ -72,7 +72,7 @@ const HistoryList = React.memo((props) => {
         getUserRolePermission(userRoles, CLIENT)
       ) {
         history.applicationStatus = getClientApplicationStatus(
-          history.applicationStatus,
+          history.applicationStatus
         );
         return history;
       } else {

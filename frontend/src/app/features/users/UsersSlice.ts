@@ -15,14 +15,14 @@ import { RequestStatus } from "../../helpers/requests/status";
 import { ExternalUser } from "./dto/ExternalUser";
 
 const initialState: UserState = {
-  users: [],
-  isProfileVerified: null,
-  error: "",
-  fetchStatus: "idle",
-  deleteStatus: "idle",
-  addedStatus: "idle",
+  users:[],
+  isProfileVerified:null,
+  error:'',
+  fetchStatus: 'idle',
+  deleteStatus: 'idle',
+  addedStatus: 'idle',
   externalUser: null,
-  updateStatus: "idle",
+  updateStatus: 'idle'
 };
 
 export const fetchUsers = createAsyncThunk("fetchUsers", async () => {
@@ -44,7 +44,7 @@ export const fetchUserProfileVerification = createAsyncThunk(
     });
 
     return request.data;
-  },
+  }
 );
 
 export const addNewUser = createAsyncThunk(
@@ -59,7 +59,7 @@ export const addNewUser = createAsyncThunk(
       },
     });
     return request.data;
-  },
+  }
 );
 
 export const addNewExternalUser = createAsyncThunk(
@@ -92,7 +92,7 @@ export const addNewExternalUser = createAsyncThunk(
       },
     });
     return request.data;
-  },
+  }
 );
 
 export const deleteUser = createAsyncThunk(
@@ -105,7 +105,7 @@ export const deleteUser = createAsyncThunk(
       },
     });
     return request;
-  },
+  }
 );
 
 export const updateUser = createAsyncThunk("updateUser", async (user: User) => {
@@ -128,7 +128,7 @@ export const updateExternalUser = createAsyncThunk(
       },
     });
     return request.data;
-  },
+  }
 );
 
 const usersSlice = createSlice({
@@ -226,7 +226,7 @@ const usersSlice = createSlice({
       .addCase(addNewExternalUser.fulfilled, (state, action) => {
         const newState = { ...state };
 
-        console.log("action.payload", action.payload);
+        console.log("action.payload",action.payload)
 
         if (action.payload.errors?.length > 0) {
           newState.addedStatus = RequestStatus.failed;

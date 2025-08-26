@@ -1,10 +1,6 @@
 const errorToProblem = require('../components/errorToProblem');
 const { addDashesToUuid } = require('../components/utils');
-const {
-  objectService,
-  storageService,
-  objectQueueService,
-} = require('../services');
+const { objectService, storageService, objectQueueService } = require('../services');
 
 const SERVICE = 'ObjectQueueService';
 
@@ -28,20 +24,15 @@ const controller = {
 
       const [dbResponse, s3Response] = await Promise.all([
         objectService.searchObjects({ bucketId: bucketId }),
-        storageService.listAllObjectVersions({
-          bucketId: bucketId,
-          filterLatest: true,
-        }),
+        storageService.listAllObjectVersions({ bucketId: bucketId, filterLatest: true })
       ]);
 
       // Aggregate and dedupe all file paths to consider
-      const jobs = [
-        ...new Set([
-          ...dbResponse.map((object) => object.path),
-          ...s3Response.DeleteMarkers.map((object) => object.Key),
-          ...s3Response.Versions.map((object) => object.Key),
-        ]),
-      ].map((path) => ({ path: path, bucketId: bucketId }));
+      const jobs = [...new Set([
+        ...dbResponse.map(object => object.path),
+        ...s3Response.DeleteMarkers.map(object => object.Key),
+        ...s3Response.Versions.map(object => object.Key)
+      ])].map(path => ({ path: path, bucketId: bucketId }));
 
       const response = await objectQueueService.enqueue({ jobs: jobs });
       res.status(202).json(response);
@@ -63,9 +54,7 @@ const controller = {
       const bucketId = req.currentObject?.bucketId;
       const path = req.currentObject?.path;
 
-      const response = await objectQueueService.enqueue({
-        jobs: [{ path: path, bucketId: bucketId }],
-      });
+      const response = await objectQueueService.enqueue({ jobs: [{ path: path, bucketId: bucketId }] });
       res.status(202).json(response);
     } catch (e) {
       next(errorToProblem(SERVICE, e));
@@ -87,7 +76,7 @@ const controller = {
     } catch (e) {
       next(errorToProblem(SERVICE, e));
     }
-  },
+  }
 };
 
 module.exports = controller;
