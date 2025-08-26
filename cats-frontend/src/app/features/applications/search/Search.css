@@ -1,0 +1,77 @@
+.custom-app-container{
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 36px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    vertical-align: middle;
+    color: var(--typography-color-primary, #2D2D2D);
+}
+.custom-app-childern-container {
+    border-bottom: 1px solid var(--surface-border-light, #d8d8d8);
+}
+  
+.custom-applications-input-txt {
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  line-height: 16px !important;
+  text-align: left !important;
+}
+
+a.custom-applications-input-txt:hover {
+  color: var(--typography-color-link-hover, #1a3f6b) !important;
+}
+
+a.custom-applications-input-txt {
+  color: var(--typography-color-link, #255a90) !important;
+  text-decoration: underline !important;
+  justify-content: left !important;
+}
+
+.custom-applications-link-wrapper:hover .custom-applications-input-txt,
+.custom-applications-link-wrapper:hover .custom-applications-external-link {
+  color: var(--typography-color-link-hover, #1a3f6b) !important;
+}
+
+.custom-applications-header {
+  font-family: Noto Sans !important;
+  vertical-align: middle !important;
+  min-width: 100px !important;
+}
+
+
+.custom-applications-edit-lbl {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: var(--typography-color-primary, #2d2d2d);
+}
+
+a.custom-applications-edit-lbl {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  gap: var(--layout-margin-xsmall);
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--surface-color-primary-default, #053662);
+}
+
+.custom-applications-tbl-header {
+  font-family: Noto Sans;
+  text-align: center;
+  vertical-align: middle;
+  min-width: 100px;
+}
+
+@media (max-width: 1360px) {
+  .custom-applications-column-position {
+    position: sticky;
+    right: 0;
+    z-index: 1;
+    box-shadow:
+      -3px 0 3px 0 #00000021,
+      -0.6px 0 1.8px 0 #0000001a !important;
+  }
+}

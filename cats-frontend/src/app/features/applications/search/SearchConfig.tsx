@@ -1,15 +1,9 @@
-import {
-  ExternalLink,
-  FileLinesIcon,
-} from '../../../../components/common/icon';
-import { FormFieldType } from '../../../../components/input-controls/IFormField';
-import {
-  TableColumn,
-  ColumnSize,
-} from '../../../../components/table/TableColumn';
-import { formatDateUTC } from '../../../../helpers/utility';
-import StaffAssigned from './staffAssigned';
-import './table.css';
+import { ExternalLink, FileLinesIcon } from "@cats/components/common/icon";
+import { FormFieldType } from "@cats/components/input-controls/IFormField";
+import { ColumnSize } from "@cats/components/table/TableColumn";
+import { formatDateUTC } from "@cats/helpers/utility";
+import StaffAssigned from "./StaffAssigned";
+
 export const applicationResultColumns = (fromMyTasks: boolean = false) => [
   {
     id: 1,
@@ -185,11 +179,11 @@ export const applicationResultColumns = (fromMyTasks: boolean = false) => [
       customLinkValue: 'View',
       customIcon: <FileLinesIcon />,
       componentName: fromMyTasks ? 'My Tasks' : 'Applications',
-      customInputTextCss: 'application-results__view-link',
+      customInputTextCss: 'custom-applications-edit-lbl',
     },
-    dynamicColumn: false,
+    dynamicColumn: true,
     columnSize: ColumnSize.Default,
-    customHeaderCss: '',
+    customHeaderCss: 'custom-applications-tbl-header',
   },
   {
     id: 9,
@@ -202,19 +196,20 @@ export const applicationResultColumns = (fromMyTasks: boolean = false) => [
     sortOrder: 10,
     isChecked: true,
     displayType: {
-      type: FormFieldType.IconButton,
+      type: FormFieldType.Link,
       label: 'Manage Staff',
       graphQLPropertyName: 'assignStaff',
       value: '',
       tableMode: true,
-      href: '/applications/',
+      href: '#',
       customLinkValue: 'Manage Staff',
       customIcon: <FileLinesIcon />,
       componentName: 'Applications',
-      customInputTextCss: 'application-results__view-link',
+      customInputTextCss: 'custom-applications-edit-lbl',
+      customContainerCss: 'custom-applications-column-position',
     },
-    dynamicColumn: false,
+    dynamicColumn: true,
     columnSize: ColumnSize.Default,
-    customHeaderCss: '',
+    customHeaderCss: 'custom-applications-tbl-header custom-applications-column-position',
   },
 ];
