@@ -17,7 +17,12 @@ const service = {
    * @returns {Promise<object>} The result of running the insert operation
    * @throws The error encountered upon db transaction failure
    */
-  addPermissions: async (bucketId, data, currentUserId = SYSTEM_USER, etrx = undefined) => {
+  addPermissions: async (
+    bucketId,
+    data,
+    currentUserId = SYSTEM_USER,
+    etrx = undefined,
+  ) => {
     if (!bucketId) {
       throw new Error('Invalid bucketId supplied');
     }
@@ -33,18 +38,25 @@ const service = {
       const currentPerms = await service.searchPermissions({ bucketId });
       const obj = data
         // Ensure all codes are upper cased
-        .map(p => ({ ...p, code: p.permCode.toUpperCase().trim() }))
+        .map((p) => ({ ...p, code: p.permCode.toUpperCase().trim() }))
         // Filter out any invalid code values
-        .filter(p => Object.values(Permissions).some(perm => perm === p.permCode))
+        .filter((p) =>
+          Object.values(Permissions).some((perm) => perm === p.permCode),
+        )
         // Filter entry tuples that already exist
-        .filter(p => !currentPerms.some(cp => cp.userId === p.userId && cp.permCode === p.permCode))
+        .filter(
+          (p) =>
+            !currentPerms.some(
+              (cp) => cp.userId === p.userId && cp.permCode === p.permCode,
+            ),
+        )
         // Create DB buckets to insert
-        .map(p => ({
+        .map((p) => ({
           id: uuidv4(),
           userId: p.userId,
           bucketId: bucketId,
           permCode: p.permCode,
-          createdBy: currentUserId
+          createdBy: currentUserId,
         }));
 
       // Insert missing entries
@@ -71,7 +83,12 @@ const service = {
    * @returns {Promise<object>} The result of running the delete operation
    * @throws The error encountered upon db transaction failure
    */
-  removePermissions: async (bucketId, userIds = undefined, permissions = undefined, etrx = undefined) => {
+  removePermissions: async (
+    bucketId,
+    userIds = undefined,
+    permissions = undefined,
+    etrx = undefined,
+  ) => {
     if (!bucketId) {
       throw new Error('Invalid bucketId supplied');
     }
@@ -84,11 +101,11 @@ const service = {
       if (permissions && Array.isArray(permissions) && permissions.length) {
         const cleanPerms = permissions
           // Ensure all codes are upper cased
-          .map(p => p.toUpperCase().trim())
+          .map((p) => p.toUpperCase().trim())
           // Filter out any invalid code values
-          .filter(p => Object.values(Permissions).some(perm => perm === p));
+          .filter((p) => Object.values(Permissions).some((perm) => perm === p));
         // Set as undefined if empty array
-        perms = (cleanPerms.length) ? cleanPerms : undefined;
+        perms = cleanPerms.length ? cleanPerms : undefined;
       }
 
       const response = await BucketPermission.query(trx)
@@ -121,7 +138,7 @@ const service = {
       .joinRelated('object')
       .modify('filterUserId', userIds)
       .whereNotNull('bucketId')
-      .then(response => response.map(entry => entry.bucketId));
+      .then((response) => response.map((entry) => entry.bucketId));
   },
 
   /**
@@ -137,7 +154,7 @@ const service = {
       .modify('filterUserId', params.userId)
       .modify('filterBucketId', params.bucketId)
       .modify('filterPermissionCode', params.permCode);
-  }
+  },
 };
 
 module.exports = service;

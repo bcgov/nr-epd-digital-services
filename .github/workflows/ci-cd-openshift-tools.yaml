@@ -4,12 +4,12 @@ on:
   workflow_dispatch: # TODO this is there for testing purposes, once the pipelines are all done, remove this
   push:
     branches:
-    #  - 'dev
-       - 'ss-79' #test
+      #  - 'dev
+      - "ss-79" #test
     paths:
-      - 'backend/**'
-      - 'frontend/**'
-      - '.github/workflows/ci-cd-openshift-tools.yaml'      
+      - "backend/**"
+      - "frontend/**"
+      - ".github/workflows/ci-cd-openshift-tools.yaml"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -21,14 +21,15 @@ jobs:
     uses: ./.github/workflows/_build.yml
     strategy:
       matrix:
-        component: [ backend/applications, backend/gateway, backend/cats, frontend ]
+        component:
+          [backend/applications, backend/gateway, backend/cats, frontend]
         include:
           - component: backend/applications
             triggers: ('backend/applications/')
           - component: backend/gateway
             triggers: ('backend/gateway/')
           - component: backend/cats
-            triggers:  ('backend/cats/')
+            triggers: ('backend/cats/')
           - component: frontend
             triggers: ('frontend/')
     secrets:
@@ -44,7 +45,8 @@ jobs:
     uses: ./.github/workflows/_code-cov.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/gateway, backend/cats, frontend]
+        component:
+          [backend/applications, backend/gateway, backend/cats, frontend]
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
@@ -61,7 +63,14 @@ jobs:
     uses: ./.github/workflows/_deploy.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/gateway, backend/cats, database, frontend]
+        component:
+          [
+            backend/applications,
+            backend/gateway,
+            backend/cats,
+            database,
+            frontend,
+          ]
         include:
           - component: database
             overwrite: false

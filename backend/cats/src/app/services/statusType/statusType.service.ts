@@ -10,7 +10,7 @@ export class StatusTypeService {
     @InjectRepository(StatusType)
     private readonly statusTypeRepository: Repository<StatusType>,
     private readonly loggerService: LoggerService,
-  ) { }
+  ) {}
 
   async getStatusTypeByAbbrev(statusTypeAbbrev: string) {
     this.loggerService.log('StatusTypeService.getStatusTypeByAbbrev() start'); // Log the start of the method
@@ -22,20 +22,16 @@ export class StatusTypeService {
       );
 
       const statusType = await this.statusTypeRepository.findOne({
-        where: { abbrev: statusTypeAbbrev }
+        where: { abbrev: statusTypeAbbrev },
       });
 
       if (statusType) {
-        this.loggerService.log(
-          `Status type found with ID: ${statusType.id}`,
-        );
+        this.loggerService.log(`Status type found with ID: ${statusType.id}`);
         return {
           id: statusType.id,
         };
       } else {
-        this.loggerService.warn(
-          'Status type not found',
-        );
+        this.loggerService.warn('Status type not found');
         return null;
       }
     } catch (err) {
@@ -44,7 +40,10 @@ export class StatusTypeService {
         'Exception occurred in StatusTypeService.getStatusTypeByAbbrev()',
         JSON.stringify(err),
       );
-      throw new HttpException('Failed to fetch status type', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Failed to fetch status type',
+        HttpStatus.BAD_REQUEST,
+      );
     } finally {
       // Log the end of the method
       this.loggerService.log('StatusTypeService.getStatusTypeByAbbrev() end');

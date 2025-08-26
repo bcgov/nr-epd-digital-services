@@ -8,61 +8,62 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserTypeEum } from '../../utilities/enums/userType';
 
 describe('PersonResolver', () => {
-
   let personResolver: PersonResolver;
   let personService: PersonService;
   let loggerService: LoggerService;
   let genericResponseProvider: GenericResponseProvider<PersonResponse[]>;
 
   beforeEach(async () => {
-        const module: TestingModule = await Test.createTestingModule({
-          providers: [
-            PersonResolver,
-            {
-              provide: PersonService,
-              useValue: {
-                findAll: jest.fn(),
-                findOne: jest.fn(),
-                create: jest.fn(),
-                update: jest.fn(),
-                delete: jest.fn(),
-                searchPerson: jest.fn(),
-              },
-            },
-            {
-              provide: LoggerService,
-              useValue: {
-                log: jest.fn(),
-                error: jest.fn(),
-                warn: jest.fn(),
-                debug: jest.fn(),
-              },
-            },
-            {
-              provide: GenericResponseProvider,
-              useValue: {
-                createResponse: jest.fn(
-                  (
-                    message: string,
-                    httpStatusCode: number,
-                    success: boolean,
-                    data?: PersonResponse[],
-                  ) => ({
-                    message,
-                    httpStatusCode,
-                    success,
-                    data,
-                  }),
-                ),
-              },
-            },
-          ],
-        }).compile();
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        PersonResolver,
+        {
+          provide: PersonService,
+          useValue: {
+            findAll: jest.fn(),
+            findOne: jest.fn(),
+            create: jest.fn(),
+            update: jest.fn(),
+            delete: jest.fn(),
+            searchPerson: jest.fn(),
+          },
+        },
+        {
+          provide: LoggerService,
+          useValue: {
+            log: jest.fn(),
+            error: jest.fn(),
+            warn: jest.fn(),
+            debug: jest.fn(),
+          },
+        },
+        {
+          provide: GenericResponseProvider,
+          useValue: {
+            createResponse: jest.fn(
+              (
+                message: string,
+                httpStatusCode: number,
+                success: boolean,
+                data?: PersonResponse[],
+              ) => ({
+                message,
+                httpStatusCode,
+                success,
+                data,
+              }),
+            ),
+          },
+        },
+      ],
+    }).compile();
 
     personResolver = module.get<PersonResolver>(PersonResolver);
     personService = module.get<PersonService>(PersonService);
     loggerService = module.get<LoggerService>(LoggerService);
-    genericResponseProvider = module.get<GenericResponseProvider<PersonResponse[]>>(GenericResponseProvider);
+    genericResponseProvider = module.get<
+      GenericResponseProvider<PersonResponse[]>
+    >(GenericResponseProvider);
   });
 
   it('findAll should return an array of persons', async () => {
@@ -73,10 +74,12 @@ describe('PersonResolver', () => {
       message: 'Person records fetched successfully',
       httpStatusCode: HttpStatus.OK,
       success: true,
-      data:[{
-        id: 1,
-        name: 'Test',
-      }]
+      data: [
+        {
+          id: 1,
+          name: 'Test',
+        },
+      ],
     };
     const result = await personResolver.findAll();
     expect(result).toEqual(expectedResult);
@@ -91,10 +94,12 @@ describe('PersonResolver', () => {
       message: 'Person record fetched successfully',
       httpStatusCode: HttpStatus.OK,
       success: true,
-      data:[{
-        id: 1,
-        name: 'Test',
-      }]
+      data: [
+        {
+          id: 1,
+          name: 'Test',
+        },
+      ],
     };
     const result = await personResolver.findOne(1);
     expect(result).toEqual(expectedResult);
@@ -105,16 +110,16 @@ describe('PersonResolver', () => {
       message: 'No person records found',
       httpStatusCode: HttpStatus.NOT_FOUND,
       success: false,
-      data:[]
+      data: [],
     };
     jest.spyOn(personService, 'findOne').mockResolvedValue(null);
-    const response = await personResolver.findOne(1)
+    const response = await personResolver.findOne(1);
     expect(response).toEqual(expectedResult);
     expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
       'No person records found',
       HttpStatus.NOT_FOUND,
       false,
-      []
+      [],
     );
   });
 

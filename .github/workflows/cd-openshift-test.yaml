@@ -4,14 +4,14 @@ on:
   workflow_dispatch: # TODO this is there for testing purposes, once the pipelines are all done, remove this
   push:
     branches:
-      - 'main' 
+      - "main"
       #- 'dev'1
-            
+
     paths:
-      - 'backend/**'
-      - 'frontend/**'
-      - '.github/workflows/cd-openshift-test.yaml'
-     
+      - "backend/**"
+      - "frontend/**"
+      - ".github/workflows/cd-openshift-test.yaml"
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -31,7 +31,7 @@ jobs:
           # - component: backend/legacy
           #   triggers: ('backend/legacy/')
           - component: backend/cats
-            triggers:  ('backend/cats/')
+            triggers: ('backend/cats/')
           # - component: backend/sites
           #   triggers:  ('backend/sites/')
           - component: frontend
@@ -43,7 +43,7 @@ jobs:
       img_build: "test" # ask the team test or latest
       img_fallback: test
       triggers: ${{ matrix.triggers }}
-   
+
   # TODO - REIMPLMENET BEFORE MERGING, JUST TESTING WITHOUT THESE TO VERIFY DEPLOYS
   tests:
     name: Unit Tests
@@ -77,11 +77,11 @@ jobs:
           - component: backend/applications
             overwrite: true
             template_file: .github/openshift/deploy.backend-applications.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=4006 -p ENV=test -p IMAGE_TAG=test 
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=4006 -p ENV=test -p IMAGE_TAG=test
           # - component: backend/gateway
           #   overwrite: true
           #   template_file: .github/openshift/deploy.backend-gateway.yml
-          #   template_vars: -p PROMOTE=${{ github.repository }}/backend/gateway -p CONTAINER_PORT=4010 -p ENV=test -p IMAGE_TAG=test 
+          #   template_vars: -p PROMOTE=${{ github.repository }}/backend/gateway -p CONTAINER_PORT=4010 -p ENV=test -p IMAGE_TAG=test
           # - component: backend/legacy
           #   overwrite: true
           #   template_file: .github/openshift/deploy.backend-legacy.yml
@@ -89,7 +89,7 @@ jobs:
           - component: backend/cats
             overwrite: true
             template_file: .github/openshift/deploy.backend-cats.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/cats -p CONTAINER_PORT=4005 -p ENV=test -p IMAGE_TAG=test 
+            template_vars: -p PROMOTE=${{ github.repository }}/backend/cats -p CONTAINER_PORT=4005 -p ENV=test -p IMAGE_TAG=test
           # - component: backend/sites
           #   overwrite: true
           #   template_file: .github/openshift/deploy.backend-sites.yml
@@ -97,9 +97,8 @@ jobs:
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=8080 -p ENV=test -p IMAGE_TAG=test 
-    
-    
+            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=8080 -p ENV=test -p IMAGE_TAG=test
+
     secrets:
       oc_namespace: ${{ secrets.OC_NAMESPACE }}
       oc_server: ${{ secrets.OC_SERVER }}
@@ -113,41 +112,40 @@ jobs:
 
   forms-flow-root-config-and-microfrontends-bpm-changes:
     runs-on: ubuntu-20.04
-    
+
     if: github.repository == 'bcgov/nr-epd-digital-services'
     steps:
-          - uses: actions/checkout@v2
-          - name: Set ENV variables
-            id: set-variable
-            # make sure to update the TOOLS_NAME once all the environment for forms-flow-ai-web is ready
-            run: |
-              echo "For ${{ github.ref_name }} branch for TEST"
-              echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
-              echo "TAG_NAME="test"" >> $GITHUB_ENV
-              echo "BRANCH_NAME="main"" >> $GITHUB_ENV
-              echo "ENV_NAME="test"" >> $GITHUB_ENV
-            shell: bash
-    
-          - name: Login Openshift
-            shell: bash
-            run: |
-              oc login --server=${{secrets.OC_SERVER}} --token=${{secrets.OC_TOKEN}}
-    
-          - name: Tools project
-            shell: bash
-            run: |
-              oc project ${{ secrets.OC_NAMESPACE_NAMEPLATE }}-tools
-    
-          - name: Tag Microfrontends from Dev
-            shell: bash
-            run: |
-              oc tag forms-flow-nav:dev forms-flow-nav:test
-              oc tag forms-flow-theme:dev forms-flow-theme:test
-              oc tag forms-flow-web-ee:dev forms-flow-web-ee:test
-              oc tag forms-flow-bpm:dev forms-flow-bpm:test
-    
-    
-          - name: Start Build Openshift
-            shell: bash
-            run: |
-              oc start-build forms-flow-web-root-config-test-build --wait  
+      - uses: actions/checkout@v2
+      - name: Set ENV variables
+        id: set-variable
+        # make sure to update the TOOLS_NAME once all the environment for forms-flow-ai-web is ready
+        run: |
+          echo "For ${{ github.ref_name }} branch for TEST"
+          echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
+          echo "TAG_NAME="test"" >> $GITHUB_ENV
+          echo "BRANCH_NAME="main"" >> $GITHUB_ENV
+          echo "ENV_NAME="test"" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Login Openshift
+        shell: bash
+        run: |
+          oc login --server=${{secrets.OC_SERVER}} --token=${{secrets.OC_TOKEN}}
+
+      - name: Tools project
+        shell: bash
+        run: |
+          oc project ${{ secrets.OC_NAMESPACE_NAMEPLATE }}-tools
+
+      - name: Tag Microfrontends from Dev
+        shell: bash
+        run: |
+          oc tag forms-flow-nav:dev forms-flow-nav:test
+          oc tag forms-flow-theme:dev forms-flow-theme:test
+          oc tag forms-flow-web-ee:dev forms-flow-web-ee:test
+          oc tag forms-flow-bpm:dev forms-flow-bpm:test
+
+      - name: Start Build Openshift
+        shell: bash
+        run: |
+          oc start-build forms-flow-web-root-config-test-build --wait

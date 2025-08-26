@@ -13,5 +13,3 @@ export enum SortBy {
 registerEnumType(SortBy, {
   name: 'StaffSortByField',
 });
-
-

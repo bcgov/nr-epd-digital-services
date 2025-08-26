@@ -1,4 +1,4 @@
-# Readme SSH Deploy Key 
+# Readme SSH Deploy Key
 
 1. Create deploy key
 2. Upload to github repo
@@ -8,7 +8,6 @@
 ## Create deploy Key
 ssh-keygen -t ed25519 -C "adam.coard@aot-technologies.com" -f /Users/adamcoard/Dev/nr-epd-digital-services/notes/id_rsa_epd
 ```
-
 
 ## Docker build command - note, update paths to deploy key as appropriate
 
@@ -29,8 +28,6 @@ docker run --name ff-ee-web -p 3004:8080 --rm ff-ee-web
 # Debug container
 docker run --name ff-ee-web --rm -p 8080:8080 ff-ee-web cat /etc/nginx/nginx.conf
 ```
-
-
 
 ## Upload SSH Key to OpenShift
 

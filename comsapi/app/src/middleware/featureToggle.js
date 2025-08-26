@@ -16,19 +16,20 @@ const requireBasicAuth = (req, _res, next) => {
   const authMode = getAppAuthMode();
   const authType = req.currentUser ? req.currentUser.authType : undefined;
 
-  const canBasicMode = (mode) => [AuthMode.BASICAUTH, AuthMode.FULLAUTH].includes(mode);
+  const canBasicMode = (mode) =>
+    [AuthMode.BASICAUTH, AuthMode.FULLAUTH].includes(mode);
 
   if (authMode === AuthMode.OIDCAUTH) {
     throw new Problem(501, {
       detail: 'This action is not supported in the current authentication mode',
-      instance: req.originalUrl
+      instance: req.originalUrl,
     });
   }
 
   if (canBasicMode(authMode) && authType !== AuthType.BASIC) {
     throw new Problem(403, {
       detail: 'User lacks permission to complete this action',
-      instance: req.originalUrl
+      instance: req.originalUrl,
     });
   }
 
@@ -48,10 +49,13 @@ const requireSomeAuth = (req, _res, next) => {
   const authMode = getAppAuthMode();
   const authType = req.currentUser ? req.currentUser.authType : undefined;
 
-  if (authMode !== AuthMode.NOAUTH && (!authType || authType === AuthType.NONE)) {
+  if (
+    authMode !== AuthMode.NOAUTH &&
+    (!authType || authType === AuthType.NONE)
+  ) {
     throw new Problem(403, {
       detail: 'User lacks permission to complete this action',
-      instance: req.originalUrl
+      instance: req.originalUrl,
     });
   }
 
@@ -59,5 +63,6 @@ const requireSomeAuth = (req, _res, next) => {
 };
 
 module.exports = {
-  requireBasicAuth, requireSomeAuth
+  requireBasicAuth,
+  requireSomeAuth,
 };

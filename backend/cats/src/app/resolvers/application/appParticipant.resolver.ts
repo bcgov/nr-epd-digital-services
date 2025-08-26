@@ -95,9 +95,12 @@ export class AppParticipantResolver {
 
   @Query(() => ParticipantsRolesResponse, { name: 'getAllParticipantRoles' })
   async getAllParticipantRoles(
-    @Args('roleType', { type: () => String, nullable: true }) roleType?: string | null) {
+    @Args('roleType', { type: () => String, nullable: true })
+    roleType?: string | null,
+  ) {
     try {
-      const result = await this.appParticipantService.getAllParticipantRoles(roleType);
+      const result =
+        await this.appParticipantService.getAllParticipantRoles(roleType);
       if (result?.length > 0) {
         this.loggerService.log(
           'AppParticipantResolver.getAllParticipantRoles() RES:200 end',
@@ -139,9 +142,8 @@ export class AppParticipantResolver {
     @AuthenticatedUser() user: any,
   ) {
     try {
-      const result = await this.appParticipantService.getParticipantNames(
-        searchParam,
-      );
+      const result =
+        await this.appParticipantService.getParticipantNames(searchParam);
       if (result?.length > 0) {
         this.loggerService.log(
           'AppParticipantResolver.getParticipantNames() RES:200 end',
@@ -184,9 +186,8 @@ export class AppParticipantResolver {
     @AuthenticatedUser() user: any,
   ) {
     try {
-      const result = await this.appParticipantService.getOrganizations(
-        searchParamForOrg,
-      );
+      const result =
+        await this.appParticipantService.getOrganizations(searchParamForOrg);
       if (result?.length > 0) {
         this.loggerService.log(
           'AppParticipantResolver.getOrganizations() RES:200 end',
@@ -207,7 +208,7 @@ export class AppParticipantResolver {
           false,
           result,
         );
-      } 
+      }
     } catch (error) {
       this.loggerService.log(
         `AppParticipantResolver.getOrganizations() Error: ${error.message}`,

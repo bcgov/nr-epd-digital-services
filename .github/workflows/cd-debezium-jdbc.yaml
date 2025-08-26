@@ -13,8 +13,8 @@ on:
       - main
       - feat/srs-25-etl-deploy
     paths:
-      - 'etl/**'
-      - '.github/workflows/**'
+      - "etl/**"
+      - ".github/workflows/**"
 
 defaults:
   run:
@@ -63,9 +63,8 @@ jobs:
         shell: bash
         run: |
           oc project ${{ secrets.OC_ETL_NAMESPACE_NAMEPLATE }}-tools
-          
+
       - name: Start Build Openshift
         shell: bash
         run: |
           oc start-build ${{ env.APP_NAME }}-${{ env.TAG_NAME }}-build --wait
-

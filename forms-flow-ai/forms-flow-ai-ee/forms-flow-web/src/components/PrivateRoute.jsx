@@ -58,7 +58,7 @@ export const kcServiceInstance = (tenantId = null) => {
   return KeycloakService.getInstance(
     KEYCLOAK_AUTH_URL,
     KEYCLOAK_REALM,
-    tenantId ? `${tenantId}-${Keycloak_Client}` : Keycloak_Client
+    tenantId ? `${tenantId}-${Keycloak_Client}` : Keycloak_Client,
   );
 };
 
@@ -83,7 +83,9 @@ const PrivateRoute = React.memo((props) => {
 
   const authenticate = (instance, store) => {
     store.dispatch(
-      setUserRole(JSON.parse(StorageService.get(StorageService.User.USER_ROLE)))
+      setUserRole(
+        JSON.parse(StorageService.get(StorageService.User.USER_ROLE)),
+      ),
     );
     dispatch(setUserAuth(instance.isAuthenticated()));
     store.dispatch(setUserToken(instance.getToken()));
@@ -99,13 +101,13 @@ const PrivateRoute = React.memo((props) => {
         } else {
           store.dispatch(
             setUserDetails(
-              JSON.parse(StorageService.get(StorageService.User.USER_DETAILS))
-            )
+              JSON.parse(StorageService.get(StorageService.User.USER_DETAILS)),
+            ),
           );
 
           // onAuthenticatedCallback();
         }
-      })
+      }),
     );
   };
 
@@ -136,96 +138,90 @@ const PrivateRoute = React.memo((props) => {
 
   const DesignerRoute = useMemo(
     () =>
-      ({ component: Component, ...rest }) =>
-        (
-          <Route
-            {...rest}
-            render={(props) =>
-              userRoles.includes(STAFF_DESIGNER) ? (
-                <Component {...props} />
-              ) : (
-                <Redirect exact to="/404" />
-              )
-            }
-          />
-        ),
-    [userRoles]
+      ({ component: Component, ...rest }) => (
+        <Route
+          {...rest}
+          render={(props) =>
+            userRoles.includes(STAFF_DESIGNER) ? (
+              <Component {...props} />
+            ) : (
+              <Redirect exact to="/404" />
+            )
+          }
+        />
+      ),
+    [userRoles],
   );
 
   const ReviewerRoute = useMemo(
     () =>
-      ({ component: Component, ...rest }) =>
-        (
-          <Route
-            {...rest}
-            render={(props) =>
-              userRoles.includes(STAFF_REVIEWER) ? (
-                <Component {...props} />
-              ) : (
-                <Redirect exact to="/404" />
-              )
-            }
-          />
-        ),
-    [userRoles]
+      ({ component: Component, ...rest }) => (
+        <Route
+          {...rest}
+          render={(props) =>
+            userRoles.includes(STAFF_REVIEWER) ? (
+              <Component {...props} />
+            ) : (
+              <Redirect exact to="/404" />
+            )
+          }
+        />
+      ),
+    [userRoles],
   );
 
   const ReviewerDashboardRoute = useMemo(
     () =>
-      ({ component: Component, ...rest }) =>
-        (
-          <Route
-            {...rest}
-            render={(props) =>
-              userRoles.includes(STAFF_REVIEWER) &&
-              !userRoles.includes(CLIENT_REVIEWER) ? (
-                <Component {...props} />
-              ) : (
-                <Redirect exact to="/404" />
-              )
-            }
-          />
-        ),
-    [userRoles]
+      ({ component: Component, ...rest }) => (
+        <Route
+          {...rest}
+          render={(props) =>
+            userRoles.includes(STAFF_REVIEWER) &&
+            !userRoles.includes(CLIENT_REVIEWER) ? (
+              <Component {...props} />
+            ) : (
+              <Redirect exact to="/404" />
+            )
+          }
+        />
+      ),
+    [userRoles],
   );
 
   const ClientReviewerRoute = useMemo(
     () =>
-      ({ component: Component, ...rest }) =>
-        (
-          <Route
-            {...rest}
-            render={(props) =>
-              userRoles.includes(STAFF_REVIEWER) ||
-              userRoles.includes(CLIENT) ? (
-                <Component {...props} />
-              ) : (
-                <Redirect exact to="/404" />
-              )
-            }
-          />
-        ),
-    [userRoles]
+      ({ component: Component, ...rest }) => (
+        <Route
+          {...rest}
+          render={(props) =>
+            userRoles.includes(STAFF_REVIEWER) || userRoles.includes(CLIENT) ? (
+              <Component {...props} />
+            ) : (
+              <Redirect exact to="/404" />
+            )
+          }
+        />
+      ),
+    [userRoles],
   );
 
   const DraftRoute = useMemo(
     () =>
-      ({ component: Component, ...rest }) =>
-        (
-          <Route
-            {...rest}
-            render={(props) =>
-              DRAFT_ENABLED &&
-              (userRoles.includes(STAFF_REVIEWER) ||
-                userRoles.includes(CLIENT)) ? (
-                <Component {...props} />
-              ) : (
-                <Redirect exact to="/404" />
-              )
-            }
-          />
-        ),
-    [userRoles]
+      ({ component: Component, ...rest }) => (
+        <Route
+          {...rest}
+          render={(props) =>
+            DRAFT_ENABLED &&
+            (userRoles.includes(STAFF_REVIEWER) ||
+              userRoles.includes(CLIENT)) ? (
+              <Component {...props} />
+            ) : (
+              <Redirect exact to="/404" />
+            )
+          }
+        />
+      ),
+    [userRoles],
   );
   return (
     <>

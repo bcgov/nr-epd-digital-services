@@ -31,7 +31,7 @@ it("Renders SDM Dashboard", () => {
       <MemoryRouter>
         <Dashboard />
       </MemoryRouter>
-    </Provider>
+    </Provider>,
     //</AuthProvider>
   );
   const userListLink = screen.getByText(/Reviewer/i);

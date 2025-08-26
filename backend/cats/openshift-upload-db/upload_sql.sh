@@ -39,7 +39,6 @@ else
     exit 1
 fi
 
-
 # Cleanup pod
 echo "Cleaning up..."
 oc delete pod "$TEMP_POD" -n "$NAMESPACE" --wait=true

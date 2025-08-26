@@ -22,16 +22,16 @@ class ObjectModel extends Timestamps(Model) {
         modelClass: Bucket,
         join: {
           from: 'object.bucketId',
-          to: 'bucket.bucketId'
-        }
+          to: 'bucket.bucketId',
+        },
       },
       objectPermission: {
         relation: Model.HasManyRelation,
         modelClass: ObjectPermission,
         join: {
           from: 'object.id',
-          to: 'object_permission.objectId'
-        }
+          to: 'object_permission.objectId',
+        },
       },
       version: {
         relation: Model.HasManyRelation,
@@ -39,16 +39,16 @@ class ObjectModel extends Timestamps(Model) {
         join: {
           from: 'object.id',
           to: 'version.objectId',
-        }
+        },
       },
       bucketPermission: {
         relation: Model.HasManyRelation,
         modelClass: BucketPermission,
         join: {
           from: 'object.bucketId',
-          to: 'bucket_permission.bucketId'
-        }
-      }
+          to: 'bucket_permission.bucketId',
+        },
+      },
     };
   }
 
@@ -80,38 +80,32 @@ class ObjectModel extends Timestamps(Model) {
       },
       filterMimeType(query, value) {
         if (value) {
-          query
-            .withGraphJoined('version')
-            .whereIn('version.id', builder => {
-              builder.select('version.id')
-                .where('version.mimeType', 'ilike', `%${value}%`);
-            });
+          query.withGraphJoined('version').whereIn('version.id', (builder) => {
+            builder
+              .select('version.id')
+              .where('version.mimeType', 'ilike', `%${value}%`);
+          });
         }
       },
       filterDeleteMarker(query, value) {
         if (value !== undefined) {
-          query
-            .withGraphJoined('version')
-            .where('version.deleteMarker', value);
+          query.withGraphJoined('version').where('version.deleteMarker', value);
         }
       },
       filterLatest(query, value) {
         if (value !== undefined) {
-
           query.withGraphJoined('version');
           if (value) {
             // join on version where isLatest = true
-            query.modifyGraph('version', builder => {
-              builder
-                .select('version.*')
-                .where('version.isLatest', true);
+            query.modifyGraph('version', (builder) => {
+              builder.select('version.*').where('version.isLatest', true);
             });
           } else {
             // join on ALL versions where isLatest = false
             const subquery = Version.query()
               .select('version.id')
               .where('version.isLatest', false);
-            query.whereIn('version.id', builder => {
+            query.whereIn('version.id', (builder) => {
               builder.intersect(subquery);
             });
           }
@@ -143,11 +137,9 @@ class ObjectModel extends Timestamps(Model) {
         }
 
         if (subqueries.length) {
-          query
-            .withGraphJoined('version')
-            .whereIn('version.id', builder => {
-              builder.intersect(subqueries);
-            });
+          query.withGraphJoined('version').whereIn('version.id', (builder) => {
+            builder.intersect(subqueries);
+          });
         }
       },
       findPath(query, value) {
@@ -158,25 +150,23 @@ class ObjectModel extends Timestamps(Model) {
           query
             .fullOuterJoinRelated('[objectPermission, bucketPermission]')
             // wrap in WHERE to make contained clauses exclusive of root query
-            .where(query => {
+            .where((query) => {
               query
-                .where(query => {
-                  query
-                    .where({
-                      'objectPermission.permCode': permCode,
-                      'objectPermission.userId': userId
-                    });
+                .where((query) => {
+                  query.where({
+                    'objectPermission.permCode': permCode,
+                    'objectPermission.userId': userId,
+                  });
                 })
-                .orWhere(query => {
-                  query
-                    .where({
-                      'bucketPermission.permCode': permCode,
-                      'bucketPermission.userId': userId
-                    });
+                .orWhere((query) => {
+                  query.where({
+                    'bucketPermission.permCode': permCode,
+                    'bucketPermission.userId': userId,
+                  });
                 });
             });
         }
-      }
+      },
     };
   }
 
@@ -191,9 +181,9 @@ class ObjectModel extends Timestamps(Model) {
         active: { type: 'boolean' },
         bucketId: { type: 'string', maxLength: 255, nullable: true },
         name: { type: 'string', maxLength: 1024 },
-        ...stamps
+        ...stamps,
       },
-      additionalProperties: false
+      additionalProperties: false,
     };
   }
 }

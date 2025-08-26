@@ -6,7 +6,7 @@ const { filterOneOrMany, filterILike } = require('../utils');
 
 class Bucket extends mixin(Model, [
   Encrypt({ fields: ['secretAccessKey'] }),
-  Timestamps
+  Timestamps,
 ]) {
   static get tableName() {
     return 'bucket';
@@ -26,8 +26,8 @@ class Bucket extends mixin(Model, [
         modelClass: BucketPermission,
         join: {
           from: 'bucket.bucketId',
-          to: 'bucket_permission.bucketId'
-        }
+          to: 'bucket_permission.bucketId',
+        },
       },
       object: {
         relation: Model.HasManyRelation,
@@ -35,7 +35,7 @@ class Bucket extends mixin(Model, [
         join: {
           from: 'bucket.bucketId',
           to: 'object.bucketId',
-        }
+        },
       },
     };
   }
@@ -58,8 +58,9 @@ class Bucket extends mixin(Model, [
         if (value) {
           query
             .withGraphJoined('bucketPermission')
-            .whereIn('bucketPermission.bucketId', builder => {
-              builder.distinct('bucketPermission.bucketId')
+            .whereIn('bucketPermission.bucketId', (builder) => {
+              builder
+                .distinct('bucketPermission.bucketId')
                 .where('bucketPermission.userId', value);
             });
         }
@@ -76,7 +77,7 @@ class Bucket extends mixin(Model, [
         'accessKeyId',
         'bucket',
         'endpoint',
-        'secretAccessKey'
+        'secretAccessKey',
       ],
       properties: {
         bucketId: { type: 'string', minLength: 1, maxLength: 255 },
@@ -88,9 +89,9 @@ class Bucket extends mixin(Model, [
         secretAccessKey: { type: 'string', minLength: 1, maxLength: 255 },
         region: { type: 'string', maxLength: 255 },
         active: { type: 'boolean' },
-        ...stamps
+        ...stamps,
       },
-      additionalProperties: false
+      additionalProperties: false,
     };
   }
 }

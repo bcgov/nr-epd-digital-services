@@ -20,8 +20,8 @@ class Version extends Timestamps(Model) {
         modelClass: ObjectModel,
         join: {
           from: 'version.objectId',
-          to: 'object.id'
-        }
+          to: 'object.id',
+        },
       },
 
       metadata: {
@@ -31,10 +31,10 @@ class Version extends Timestamps(Model) {
           from: 'version.id',
           through: {
             from: 'version_metadata.versionId',
-            to: 'version_metadata.metadataId'
+            to: 'version_metadata.metadataId',
           },
-          to: 'metadata.id'
-        }
+          to: 'metadata.id',
+        },
       },
 
       tag: {
@@ -44,11 +44,11 @@ class Version extends Timestamps(Model) {
           from: 'version.id',
           through: {
             from: 'version_tag.versionId',
-            to: 'version_tag.tagId'
+            to: 'version_tag.tagId',
           },
-          to: 'tag.id'
-        }
-      }
+          to: 'tag.id',
+        },
+      },
     };
   }
 
@@ -90,9 +90,9 @@ class Version extends Timestamps(Model) {
         deleteMarker: { type: 'boolean' },
         etag: { type: 'string', maxLength: 65536 },
         isLatest: { type: 'boolean' },
-        ...stamps
+        ...stamps,
       },
-      additionalProperties: false
+      additionalProperties: false,
     };
   }
 }

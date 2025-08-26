@@ -5,7 +5,8 @@ const crypto = require('crypto');
 // CBC mode is older, but is sufficiently secure with high performance for short payloads
 const algorithm = 'aes-256-cbc';
 const encoding = 'base64';
-const encodingCheck = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}={2})$/;
+const encodingCheck =
+  /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}={2})$/;
 const hashAlgorithm = 'sha256';
 
 const crypt = {
@@ -19,7 +20,9 @@ const crypt = {
   encrypt(text) {
     if (crypt.isEncrypted(text)) return text;
 
-    const passphrase = config.has('server.passphrase') ? config.get('server.passphrase') : undefined;
+    const passphrase = config.has('server.passphrase')
+      ? config.get('server.passphrase')
+      : undefined;
     if (passphrase && passphrase.length) {
       let content = Buffer.from(text);
       const iv = crypto.randomBytes(16);
@@ -45,9 +48,13 @@ const crypt = {
   decrypt(text) {
     if (!crypt.isEncrypted(text)) return text;
 
-    const passphrase = config.has('server.passphrase') ? config.get('server.passphrase') : undefined;
+    const passphrase = config.has('server.passphrase')
+      ? config.get('server.passphrase')
+      : undefined;
     if (passphrase && passphrase.length) {
-      const [iv, encrypted] = text.split(':').map(p => Buffer.from(p, encoding));
+      const [iv, encrypted] = text
+        .split(':')
+        .map((p) => Buffer.from(p, encoding));
       let content = encrypted;
       const hash = crypto.createHash(hashAlgorithm);
       // AES-256 key length must be exactly 32 bytes
@@ -78,7 +85,7 @@ const crypt = {
       encodingCheck.test(textParts[0]) &&
       encodingCheck.test(textParts[1])
     );
-  }
+  },
 };
 
 module.exports = crypt;

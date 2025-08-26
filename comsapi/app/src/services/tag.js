@@ -6,7 +6,6 @@ const { getObjectsByKeyValue } = require('../components/utils');
  * The Tag DB Service
  */
 const service = {
-
   /**
    * @function replaceTags
    * Makes the incoming list of tags the definitive set associated with versionId
@@ -17,25 +16,36 @@ const service = {
    * @returns {Promise<object>} The result of running the insert operation
    * @throws The error encountered upon db transaction failure
    */
-  replaceTags: async (versionId, tags, currentUserId = SYSTEM_USER, etrx = undefined) => {
+  replaceTags: async (
+    versionId,
+    tags,
+    currentUserId = SYSTEM_USER,
+    etrx = undefined,
+  ) => {
     let trx;
     try {
       trx = etrx ? etrx : await Tag.startTransaction();
       let response = [];
       if (tags && tags.length) {
-
         // get all currently associated tags (before update)
         const current = await Tag.query(trx)
           .joinRelated('versionTag')
           .where('versionId', versionId);
 
         // dissociate tags that are no longer associated
-        const dissociateTags = current
-          .filter(({ key, value }) => !getObjectsByKeyValue(tags, key, value));
-        if (dissociateTags.length) await service.dissociateTags(versionId, dissociateTags, trx);
+        const dissociateTags = current.filter(
+          ({ key, value }) => !getObjectsByKeyValue(tags, key, value),
+        );
+        if (dissociateTags.length)
+          await service.dissociateTags(versionId, dissociateTags, trx);
 
         // associate tags
-        response = await service.associateTags(versionId, tags, currentUserId, trx);
+        response = await service.associateTags(
+          versionId,
+          tags,
+          currentUserId,
+          trx,
+        );
       }
 
       if (!etrx) await trx.commit();
@@ -57,19 +67,25 @@ const service = {
    * @returns {Promise<object>} array of all associated tags
    * @throws The error encountered upon db transaction failure
    */
-  associateTags: async (versionId, tags, currentUserId = SYSTEM_USER, etrx = undefined) => {
+  associateTags: async (
+    versionId,
+    tags,
+    currentUserId = SYSTEM_USER,
+    etrx = undefined,
+  ) => {
     let trx;
     try {
       trx = etrx ? etrx : await Tag.startTransaction();
       let response = [];
 
       if (tags && tags.length) {
-
         // create any new tags, gets id's of all input tags
         const dbTags = await service.createTags(tags, trx);
         // get all currently associated tags
-        const associatedTags = await VersionTag.query(trx)
-          .modify('filterVersionId', versionId);
+        const associatedTags = await VersionTag.query(trx).modify(
+          'filterVersionId',
+          versionId,
+        );
 
         // associate remaining tags
         const newJoins = dbTags.filter(({ id }) => {
@@ -77,12 +93,13 @@ const service = {
         });
 
         if (newJoins.length) {
-          await VersionTag.query(trx)
-            .insert(newJoins.map(({ id }) => ({
+          await VersionTag.query(trx).insert(
+            newJoins.map(({ id }) => ({
               versionId: versionId,
               tagId: id,
-              createdBy: currentUserId
-            })));
+              createdBy: currentUserId,
+            })),
+          );
         }
         response = dbTags;
       }
@@ -110,8 +127,7 @@ const service = {
       trx = etrx ? etrx : await Tag.startTransaction();
       let response = 0;
 
-      await tags.forEach(async tag => {
-
+      await tags.forEach(async (tag) => {
         // match on key
         const params = { 'tag.key': tag.key };
         // if tag has a value match key and value
@@ -159,7 +175,10 @@ const service = {
 
       const response = await Tag.query(trx)
         .delete()
-        .whereIn('id', deletedTagIds.map(({ id }) => id));
+        .whereIn(
+          'id',
+          deletedTagIds.map(({ id }) => id),
+        );
 
       if (!etrx) await trx.commit();
       return Promise.resolve(response);
@@ -191,7 +210,11 @@ const service = {
       tags.forEach(({ key, value }) => {
         // if tag is already in db
         if (getObjectsByKeyValue(allTags, key, value)) {
-          existingTags.push({ id: getObjectsByKeyValue(allTags, key, value).id, key: key, value: value });
+          existingTags.push({
+            id: getObjectsByKeyValue(allTags, key, value).id,
+            key: key,
+            value: value,
+          });
         }
         // else add to array for inserting
         else {
@@ -201,13 +224,10 @@ const service = {
 
       // insert new tags
       if (newTags.length) {
-        const newTagset = await Tag.query(trx)
-          .insert(newTags)
-          .returning('*');
+        const newTagset = await Tag.query(trx).insert(newTags).returning('*');
         // merge newTags with existing tags
         response = existingTags.concat(newTagset);
-      }
-      else {
+      } else {
         response = existingTags;
       }
 
@@ -220,61 +240,65 @@ const service = {
   },
 
   /**
-  * @function fetchTagsForObject
-  * Fetch matching tags on latest version of provided objects, optionally scoped to a user's object/bucket READ permission
-  * @param {string[]} [params.bucketIds] An array of uuids representing buckets
-  * @param {string[]} [params.objectIds] An array of uuids representing objects
-  * @param {object} [params.tagset] Optional object of tags key/value pairs
-  * @param {string} [params.userId] Optional uuid representing a user
-  * @returns {Promise<object[]>} The result of running the database select
-  */
+   * @function fetchTagsForObject
+   * Fetch matching tags on latest version of provided objects, optionally scoped to a user's object/bucket READ permission
+   * @param {string[]} [params.bucketIds] An array of uuids representing buckets
+   * @param {string[]} [params.objectIds] An array of uuids representing objects
+   * @param {object} [params.tagset] Optional object of tags key/value pairs
+   * @param {string} [params.userId] Optional uuid representing a user
+   * @returns {Promise<object[]>} The result of running the database select
+   */
   fetchTagsForObject: (params) => {
-    return ObjectModel.query()
-      .select('object.id AS objectId', 'object.bucketId as bucketId')
-      .allowGraph('version.tag')
-      .withGraphJoined('version.tag')
-      // get latest version that isn't a delete marker by default
-      .modifyGraph('version', builder => {
-        builder
-          .select('version.id', 'version.objectId')
-          .orderBy([
-            'version.objectId',
-            { column: 'version.createdAt', order: 'desc' }
-          ])
-          .where('deleteMarker', false)
-          .distinctOn('version.objectId');
-      })
-      // match on tagset parameter
-      .modifyGraph('version.tag', builder => {
-        builder
-          .select('key', 'value')
-          .modify('filterKeyValue', { tag: params.tagset });
-      })
-      // match on objectIds parameter
-      .modify('filterIds', params.objectIds)
-      // match on bucketIds parameter
-      .modify('filterBucketIds', params.bucketIds)
-      // scope to objects that user(s) has READ permission at object or bucket-level
-      .modify('hasPermission', params.userId, 'READ')
-      // re-structure result like: [{ objectId: abc, tagset: [{ key: a, value: b }] }]
-      .then(result => result.map(row => {
-        return {
-          objectId: row.objectId,
-          tagset: row.version[0].tag
-        };
-      }));
+    return (
+      ObjectModel.query()
+        .select('object.id AS objectId', 'object.bucketId as bucketId')
+        .allowGraph('version.tag')
+        .withGraphJoined('version.tag')
+        // get latest version that isn't a delete marker by default
+        .modifyGraph('version', (builder) => {
+          builder
+            .select('version.id', 'version.objectId')
+            .orderBy([
+              'version.objectId',
+              { column: 'version.createdAt', order: 'desc' },
+            ])
+            .where('deleteMarker', false)
+            .distinctOn('version.objectId');
+        })
+        // match on tagset parameter
+        .modifyGraph('version.tag', (builder) => {
+          builder
+            .select('key', 'value')
+            .modify('filterKeyValue', { tag: params.tagset });
+        })
+        // match on objectIds parameter
+        .modify('filterIds', params.objectIds)
+        // match on bucketIds parameter
+        .modify('filterBucketIds', params.bucketIds)
+        // scope to objects that user(s) has READ permission at object or bucket-level
+        .modify('hasPermission', params.userId, 'READ')
+        // re-structure result like: [{ objectId: abc, tagset: [{ key: a, value: b }] }]
+        .then((result) =>
+          result.map((row) => {
+            return {
+              objectId: row.objectId,
+              tagset: row.version[0].tag,
+            };
+          }),
+        )
+    );
   },
 
   /**
-  * @function fetchTagsForVersion
-  * Fetch tags for specific versions, optionally scoped to a user's object/bucket READ permission
-  * @param {string[]} [params.s3VersionIds] An array of S3 version identifiers
-  * @param {string[]} [params.versionIds] An array of uuids representing versions
-  * @param {object} [params.tags] Optional object of tags key/value pairs
-  * @param {string} [params.userId] Optional uuid representing a user
-  * @param {object} [etrx=undefined] An optional Objection Transaction object
-  * @returns {Promise<object[]>} The result of running the database select
-  */
+   * @function fetchTagsForVersion
+   * Fetch tags for specific versions, optionally scoped to a user's object/bucket READ permission
+   * @param {string[]} [params.s3VersionIds] An array of S3 version identifiers
+   * @param {string[]} [params.versionIds] An array of uuids representing versions
+   * @param {object} [params.tags] Optional object of tags key/value pairs
+   * @param {string} [params.userId] Optional uuid representing a user
+   * @param {object} [etrx=undefined] An optional Objection Transaction object
+   * @returns {Promise<object[]>} The result of running the database select
+   */
   fetchTagsForVersion: async (params, etrx = undefined) => {
     let trx;
     try {
@@ -284,13 +308,14 @@ const service = {
         .select('version.id as versionId', 'version.s3VersionId')
         .allowGraph('tag as tagset')
         .withGraphJoined('tag as tagset')
-        .modifyGraph('tagset', builder => {
+        .modifyGraph('tagset', (builder) => {
           builder
             .select('key', 'value')
             .modify('filterKeyValue', { tag: params.tags });
         })
         .modify((query) => {
-          if (params.s3VersionIds) query.modify('filterS3VersionId', params.s3VersionIds);
+          if (params.s3VersionIds)
+            query.modify('filterS3VersionId', params.s3VersionIds);
           else query.modify('filterId', params.versionIds);
         })
         // filter by objects that user(s) has READ permission at object or bucket-level
@@ -299,16 +324,20 @@ const service = {
             query
               .allowGraph('object')
               .withGraphJoined('object')
-              .modifyGraph('object', query => { query.modify('hasPermission', params.userId, 'READ'); })
+              .modifyGraph('object', (query) => {
+                query.modify('hasPermission', params.userId, 'READ');
+              })
               .whereNotNull('object.id');
           }
         })
         .orderBy('version.createdAt', 'desc')
-        .then(result => result.map(row => {
-          // eslint-disable-next-line no-unused-vars
-          const { object, ...data } = row;
-          return data;
-        }));
+        .then((result) =>
+          result.map((row) => {
+            // eslint-disable-next-line no-unused-vars
+            const { object, ...data } = row;
+            return data;
+          }),
+        );
 
       if (!etrx) await trx.commit();
       return Promise.resolve(response);
@@ -326,21 +355,16 @@ const service = {
    * @returns {Promise<object[]>} The result of running the find operation
    */
   searchTags: (params) => {
-    return Tag.query()
-      .modify((query) => {
-        if (params.privacyMask) {
-          query
-            .select('key')
-            .modify('filterKey', { tag: params.tag });
-        }
-        else {
-          query
-            .select('key', 'value')
-            .modify('filterKeyValue', { tag: params.tag });
-        }
-      });
+    return Tag.query().modify((query) => {
+      if (params.privacyMask) {
+        query.select('key').modify('filterKey', { tag: params.tag });
+      } else {
+        query
+          .select('key', 'value')
+          .modify('filterKeyValue', { tag: params.tag });
+      }
+    });
   },
-
 };
 
 module.exports = service;

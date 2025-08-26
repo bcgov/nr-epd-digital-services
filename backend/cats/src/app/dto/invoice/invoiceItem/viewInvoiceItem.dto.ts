@@ -1,21 +1,20 @@
-import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { BaseInvoiceItem } from "./baseInvoiceItem.dto";
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { BaseInvoiceItem } from './baseInvoiceItem.dto';
 
 @ObjectType()
-export class ViewInvoiceItem extends BaseInvoiceItem{
+export class ViewInvoiceItem extends BaseInvoiceItem {
+  @Field(() => Int)
+  id: number;
 
-    @Field(() => Int)
-    id: number;
+  @Field(() => Date)
+  whenCreated: Date;
 
-    @Field(() => Date)
-    whenCreated: Date;
-  
-    @Field(() => Date)
-    whenUpdated: Date;
-  
-    @Field(() => String)
-    whoCreated: string;
-  
-    @Field(() => String)
-    whoUpdated: string;
+  @Field(() => Date)
+  whenUpdated: Date;
+
+  @Field(() => String)
+  whoCreated: string;
+
+  @Field(() => String)
+  whoUpdated: string;
 }

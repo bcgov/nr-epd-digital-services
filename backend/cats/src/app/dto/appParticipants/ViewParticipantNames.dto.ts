@@ -8,12 +8,12 @@ export class ViewParticipantNamesDto {
   @Field()
   firstName: string;
 
-  @Field(({ nullable: true }))
+  @Field({ nullable: true })
   middleName: string;
 
   @Field()
   lastName: string;
-  
+
   @Field()
-  fullName: string; 
+  fullName: string;
 }

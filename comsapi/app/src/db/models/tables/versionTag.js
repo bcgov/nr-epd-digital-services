@@ -23,16 +23,16 @@ class VersionTag extends Timestamps(Model) {
         modelClass: Version,
         join: {
           from: 'version_tag.versionId',
-          to: 'version.id'
-        }
+          to: 'version.id',
+        },
       },
       tag: {
         relation: Model.HasOneRelation,
         modelClass: Tag,
         join: {
           from: 'version_tag.tagId',
-          to: 'tag.id'
-        }
+          to: 'tag.id',
+        },
       },
     };
   }
@@ -44,7 +44,7 @@ class VersionTag extends Timestamps(Model) {
       },
       filterVersionId(query, value) {
         filterOneOrMany(query, value, 'versionId');
-      }
+      },
     };
   }
 
@@ -55,9 +55,9 @@ class VersionTag extends Timestamps(Model) {
       properties: {
         tagId: { type: 'integer' },
         versionId: { type: 'string', minLength: 1, maxLength: 255 },
-        ...stamps
+        ...stamps,
       },
-      additionalProperties: false
+      additionalProperties: false,
     };
   }
 }

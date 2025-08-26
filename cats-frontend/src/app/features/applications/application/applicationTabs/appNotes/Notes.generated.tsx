@@ -7,8 +7,23 @@ export type GetApplicationNotesByApplicationIdQueryVariables = Types.Exact<{
   applicationId: Types.Scalars['Int']['input'];
 }>;
 
-
-export type GetApplicationNotesByApplicationIdQuery = { __typename?: 'Query', getApplicationNotesByApplicationId: { __typename?: 'ApplicationNotesResponse', data: Array<{ __typename?: 'AppNoteDto', id: number, applicationId: number, noteDate: string, noteText: string, createdBy: string, createdDateTime: any, updatedBy: string, updatedDateTime: any }> } };
+export type GetApplicationNotesByApplicationIdQuery = {
+  __typename?: 'Query';
+  getApplicationNotesByApplicationId: {
+    __typename?: 'ApplicationNotesResponse';
+    data: Array<{
+      __typename?: 'AppNoteDto';
+      id: number;
+      applicationId: number;
+      noteDate: string;
+      noteText: string;
+      createdBy: string;
+      createdDateTime: any;
+      updatedBy: string;
+      updatedDateTime: any;
+    }>;
+  };
+};
 
 export type CreateApplicationNoteMutationVariables = Types.Exact<{
   applicationId: Types.Scalars['Int']['input'];
@@ -16,8 +31,13 @@ export type CreateApplicationNoteMutationVariables = Types.Exact<{
   noteText: Types.Scalars['String']['input'];
 }>;
 
-
-export type CreateApplicationNoteMutation = { __typename?: 'Mutation', createApplicationNote: { __typename?: 'ApplicationNotesResponse', success?: boolean | null } };
+export type CreateApplicationNoteMutation = {
+  __typename?: 'Mutation';
+  createApplicationNote: {
+    __typename?: 'ApplicationNotesResponse';
+    success?: boolean | null;
+  };
+};
 
 export type UpdateApplicationNoteMutationVariables = Types.Exact<{
   noteId: Types.Scalars['Int']['input'];
@@ -25,33 +45,42 @@ export type UpdateApplicationNoteMutationVariables = Types.Exact<{
   noteText: Types.Scalars['String']['input'];
 }>;
 
-
-export type UpdateApplicationNoteMutation = { __typename?: 'Mutation', updateApplicationNote: { __typename?: 'ApplicationNotesResponse', success?: boolean | null } };
+export type UpdateApplicationNoteMutation = {
+  __typename?: 'Mutation';
+  updateApplicationNote: {
+    __typename?: 'ApplicationNotesResponse';
+    success?: boolean | null;
+  };
+};
 
 export type DeleteApplicationNotesMutationVariables = Types.Exact<{
   noteIds: Array<Types.Scalars['Int']['input']> | Types.Scalars['Int']['input'];
 }>;
 
-
-export type DeleteApplicationNotesMutation = { __typename?: 'Mutation', deleteApplicationNotes: { __typename?: 'ApplicationNotesResponse', success?: boolean | null } };
-
+export type DeleteApplicationNotesMutation = {
+  __typename?: 'Mutation';
+  deleteApplicationNotes: {
+    __typename?: 'ApplicationNotesResponse';
+    success?: boolean | null;
+  };
+};
 
 export const GetApplicationNotesByApplicationIdDocument = gql`
-    query getApplicationNotesByApplicationId($applicationId: Int!) {
-  getApplicationNotesByApplicationId(applicationId: $applicationId) {
-    data {
-      id
-      applicationId
-      noteDate
-      noteText
-      createdBy
-      createdDateTime
-      updatedBy
-      updatedDateTime
+  query getApplicationNotesByApplicationId($applicationId: Int!) {
+    getApplicationNotesByApplicationId(applicationId: $applicationId) {
+      data {
+        id
+        applicationId
+        noteDate
+        noteText
+        createdBy
+        createdDateTime
+        updatedBy
+        updatedDateTime
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetApplicationNotesByApplicationIdQuery__
@@ -69,34 +98,85 @@ export const GetApplicationNotesByApplicationIdDocument = gql`
  *   },
  * });
  */
-export function useGetApplicationNotesByApplicationIdQuery(baseOptions: Apollo.QueryHookOptions<GetApplicationNotesByApplicationIdQuery, GetApplicationNotesByApplicationIdQueryVariables> & ({ variables: GetApplicationNotesByApplicationIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetApplicationNotesByApplicationIdQuery, GetApplicationNotesByApplicationIdQueryVariables>(GetApplicationNotesByApplicationIdDocument, options);
-      }
-export function useGetApplicationNotesByApplicationIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplicationNotesByApplicationIdQuery, GetApplicationNotesByApplicationIdQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetApplicationNotesByApplicationIdQuery, GetApplicationNotesByApplicationIdQueryVariables>(GetApplicationNotesByApplicationIdDocument, options);
+export function useGetApplicationNotesByApplicationIdQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetApplicationNotesByApplicationIdQuery,
+    GetApplicationNotesByApplicationIdQueryVariables
+  > &
+    (
+      | {
+          variables: GetApplicationNotesByApplicationIdQueryVariables;
+          skip?: boolean;
         }
-export function useGetApplicationNotesByApplicationIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetApplicationNotesByApplicationIdQuery, GetApplicationNotesByApplicationIdQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetApplicationNotesByApplicationIdQuery, GetApplicationNotesByApplicationIdQueryVariables>(GetApplicationNotesByApplicationIdDocument, options);
-        }
-export type GetApplicationNotesByApplicationIdQueryHookResult = ReturnType<typeof useGetApplicationNotesByApplicationIdQuery>;
-export type GetApplicationNotesByApplicationIdLazyQueryHookResult = ReturnType<typeof useGetApplicationNotesByApplicationIdLazyQuery>;
-export type GetApplicationNotesByApplicationIdSuspenseQueryHookResult = ReturnType<typeof useGetApplicationNotesByApplicationIdSuspenseQuery>;
-export type GetApplicationNotesByApplicationIdQueryResult = Apollo.QueryResult<GetApplicationNotesByApplicationIdQuery, GetApplicationNotesByApplicationIdQueryVariables>;
-export const CreateApplicationNoteDocument = gql`
-    mutation createApplicationNote($applicationId: Int!, $noteDate: DateTime!, $noteText: String!) {
-  createApplicationNote(
-    applicationId: $applicationId
-    noteDate: $noteDate
-    noteText: $noteText
-  ) {
-    success
-  }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetApplicationNotesByApplicationIdQuery,
+    GetApplicationNotesByApplicationIdQueryVariables
+  >(GetApplicationNotesByApplicationIdDocument, options);
 }
-    `;
-export type CreateApplicationNoteMutationFn = Apollo.MutationFunction<CreateApplicationNoteMutation, CreateApplicationNoteMutationVariables>;
+export function useGetApplicationNotesByApplicationIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetApplicationNotesByApplicationIdQuery,
+    GetApplicationNotesByApplicationIdQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetApplicationNotesByApplicationIdQuery,
+    GetApplicationNotesByApplicationIdQueryVariables
+  >(GetApplicationNotesByApplicationIdDocument, options);
+}
+export function useGetApplicationNotesByApplicationIdSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetApplicationNotesByApplicationIdQuery,
+        GetApplicationNotesByApplicationIdQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetApplicationNotesByApplicationIdQuery,
+    GetApplicationNotesByApplicationIdQueryVariables
+  >(GetApplicationNotesByApplicationIdDocument, options);
+}
+export type GetApplicationNotesByApplicationIdQueryHookResult = ReturnType<
+  typeof useGetApplicationNotesByApplicationIdQuery
+>;
+export type GetApplicationNotesByApplicationIdLazyQueryHookResult = ReturnType<
+  typeof useGetApplicationNotesByApplicationIdLazyQuery
+>;
+export type GetApplicationNotesByApplicationIdSuspenseQueryHookResult =
+  ReturnType<typeof useGetApplicationNotesByApplicationIdSuspenseQuery>;
+export type GetApplicationNotesByApplicationIdQueryResult = Apollo.QueryResult<
+  GetApplicationNotesByApplicationIdQuery,
+  GetApplicationNotesByApplicationIdQueryVariables
+>;
+export const CreateApplicationNoteDocument = gql`
+  mutation createApplicationNote(
+    $applicationId: Int!
+    $noteDate: DateTime!
+    $noteText: String!
+  ) {
+    createApplicationNote(
+      applicationId: $applicationId
+      noteDate: $noteDate
+      noteText: $noteText
+    ) {
+      success
+    }
+  }
+`;
+export type CreateApplicationNoteMutationFn = Apollo.MutationFunction<
+  CreateApplicationNoteMutation,
+  CreateApplicationNoteMutationVariables
+>;
 
 /**
  * __useCreateApplicationNoteMutation__
@@ -117,21 +197,46 @@ export type CreateApplicationNoteMutationFn = Apollo.MutationFunction<CreateAppl
  *   },
  * });
  */
-export function useCreateApplicationNoteMutation(baseOptions?: Apollo.MutationHookOptions<CreateApplicationNoteMutation, CreateApplicationNoteMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateApplicationNoteMutation, CreateApplicationNoteMutationVariables>(CreateApplicationNoteDocument, options);
-      }
-export type CreateApplicationNoteMutationHookResult = ReturnType<typeof useCreateApplicationNoteMutation>;
-export type CreateApplicationNoteMutationResult = Apollo.MutationResult<CreateApplicationNoteMutation>;
-export type CreateApplicationNoteMutationOptions = Apollo.BaseMutationOptions<CreateApplicationNoteMutation, CreateApplicationNoteMutationVariables>;
-export const UpdateApplicationNoteDocument = gql`
-    mutation updateApplicationNote($noteId: Int!, $noteDate: DateTime!, $noteText: String!) {
-  updateApplicationNote(noteId: $noteId, noteDate: $noteDate, noteText: $noteText) {
-    success
-  }
+export function useCreateApplicationNoteMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateApplicationNoteMutation,
+    CreateApplicationNoteMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateApplicationNoteMutation,
+    CreateApplicationNoteMutationVariables
+  >(CreateApplicationNoteDocument, options);
 }
-    `;
-export type UpdateApplicationNoteMutationFn = Apollo.MutationFunction<UpdateApplicationNoteMutation, UpdateApplicationNoteMutationVariables>;
+export type CreateApplicationNoteMutationHookResult = ReturnType<
+  typeof useCreateApplicationNoteMutation
+>;
+export type CreateApplicationNoteMutationResult =
+  Apollo.MutationResult<CreateApplicationNoteMutation>;
+export type CreateApplicationNoteMutationOptions = Apollo.BaseMutationOptions<
+  CreateApplicationNoteMutation,
+  CreateApplicationNoteMutationVariables
+>;
+export const UpdateApplicationNoteDocument = gql`
+  mutation updateApplicationNote(
+    $noteId: Int!
+    $noteDate: DateTime!
+    $noteText: String!
+  ) {
+    updateApplicationNote(
+      noteId: $noteId
+      noteDate: $noteDate
+      noteText: $noteText
+    ) {
+      success
+    }
+  }
+`;
+export type UpdateApplicationNoteMutationFn = Apollo.MutationFunction<
+  UpdateApplicationNoteMutation,
+  UpdateApplicationNoteMutationVariables
+>;
 
 /**
  * __useUpdateApplicationNoteMutation__
@@ -152,21 +257,38 @@ export type UpdateApplicationNoteMutationFn = Apollo.MutationFunction<UpdateAppl
  *   },
  * });
  */
-export function useUpdateApplicationNoteMutation(baseOptions?: Apollo.MutationHookOptions<UpdateApplicationNoteMutation, UpdateApplicationNoteMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateApplicationNoteMutation, UpdateApplicationNoteMutationVariables>(UpdateApplicationNoteDocument, options);
-      }
-export type UpdateApplicationNoteMutationHookResult = ReturnType<typeof useUpdateApplicationNoteMutation>;
-export type UpdateApplicationNoteMutationResult = Apollo.MutationResult<UpdateApplicationNoteMutation>;
-export type UpdateApplicationNoteMutationOptions = Apollo.BaseMutationOptions<UpdateApplicationNoteMutation, UpdateApplicationNoteMutationVariables>;
-export const DeleteApplicationNotesDocument = gql`
-    mutation deleteApplicationNotes($noteIds: [Int!]!) {
-  deleteApplicationNotes(noteIds: $noteIds) {
-    success
-  }
+export function useUpdateApplicationNoteMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateApplicationNoteMutation,
+    UpdateApplicationNoteMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateApplicationNoteMutation,
+    UpdateApplicationNoteMutationVariables
+  >(UpdateApplicationNoteDocument, options);
 }
-    `;
-export type DeleteApplicationNotesMutationFn = Apollo.MutationFunction<DeleteApplicationNotesMutation, DeleteApplicationNotesMutationVariables>;
+export type UpdateApplicationNoteMutationHookResult = ReturnType<
+  typeof useUpdateApplicationNoteMutation
+>;
+export type UpdateApplicationNoteMutationResult =
+  Apollo.MutationResult<UpdateApplicationNoteMutation>;
+export type UpdateApplicationNoteMutationOptions = Apollo.BaseMutationOptions<
+  UpdateApplicationNoteMutation,
+  UpdateApplicationNoteMutationVariables
+>;
+export const DeleteApplicationNotesDocument = gql`
+  mutation deleteApplicationNotes($noteIds: [Int!]!) {
+    deleteApplicationNotes(noteIds: $noteIds) {
+      success
+    }
+  }
+`;
+export type DeleteApplicationNotesMutationFn = Apollo.MutationFunction<
+  DeleteApplicationNotesMutation,
+  DeleteApplicationNotesMutationVariables
+>;
 
 /**
  * __useDeleteApplicationNotesMutation__
@@ -185,10 +307,24 @@ export type DeleteApplicationNotesMutationFn = Apollo.MutationFunction<DeleteApp
  *   },
  * });
  */
-export function useDeleteApplicationNotesMutation(baseOptions?: Apollo.MutationHookOptions<DeleteApplicationNotesMutation, DeleteApplicationNotesMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteApplicationNotesMutation, DeleteApplicationNotesMutationVariables>(DeleteApplicationNotesDocument, options);
-      }
-export type DeleteApplicationNotesMutationHookResult = ReturnType<typeof useDeleteApplicationNotesMutation>;
-export type DeleteApplicationNotesMutationResult = Apollo.MutationResult<DeleteApplicationNotesMutation>;
-export type DeleteApplicationNotesMutationOptions = Apollo.BaseMutationOptions<DeleteApplicationNotesMutation, DeleteApplicationNotesMutationVariables>;
+export function useDeleteApplicationNotesMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteApplicationNotesMutation,
+    DeleteApplicationNotesMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    DeleteApplicationNotesMutation,
+    DeleteApplicationNotesMutationVariables
+  >(DeleteApplicationNotesDocument, options);
+}
+export type DeleteApplicationNotesMutationHookResult = ReturnType<
+  typeof useDeleteApplicationNotesMutation
+>;
+export type DeleteApplicationNotesMutationResult =
+  Apollo.MutationResult<DeleteApplicationNotesMutation>;
+export type DeleteApplicationNotesMutationOptions = Apollo.BaseMutationOptions<
+  DeleteApplicationNotesMutation,
+  DeleteApplicationNotesMutationVariables
+>;

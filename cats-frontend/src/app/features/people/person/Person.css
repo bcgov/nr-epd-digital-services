@@ -68,8 +68,10 @@ a.custom-people-edit-lbl {
     var(--layout-margin-xxlarge);
   gap: var(--layout-margin-xxlarge);
 }
+
 .custom-person-sticky-header {
-  position: -webkit-sticky; /* For Safari */
+  position: -webkit-sticky;
+  /* For Safari */
   position: sticky;
   z-index: 999 !important;
   top: 65px;

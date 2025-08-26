@@ -11,12 +11,12 @@ on:
     branches:
       - dev
       - main
-      
+
     paths:
-      - 'backend/**'
-      - 'frontend/**'
-      - 'forms-flow-ai/**'
-      - '.github/workflows/**'
+      - "backend/**"
+      - "frontend/**"
+      - "forms-flow-ai/**"
+      - ".github/workflows/**"
 
 defaults:
   run:
@@ -81,4 +81,3 @@ jobs:
         shell: bash
         run: |
           oc tag ${{ env.APP_NAME }}:latest ${{ env.APP_NAME }}:${{ env.TAG_NAME }}
-

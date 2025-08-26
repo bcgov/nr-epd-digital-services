@@ -1,19 +1,20 @@
 ---
 name: Feature request / user story
 about: Suggest an idea from the perspective of a user
-title: ''
+title: ""
 labels: ["dev", "story"]
-assignees: ''
-
+assignees: ""
 ---
 
-**As a** *(User Type/Persona)* **I want** *(Feature/enhancement)* **So That** *(Value, why is this wanted, what is the user trying to accomplish)*
+**As a** _(User Type/Persona)_ **I want** _(Feature/enhancement)_ **So That** _(Value, why is this wanted, what is the user trying to accomplish)_
 
 **Additional Context**
+
 - enter text here
 - enter text here
 
 **Acceptance Criteria**
+
 - [ ] Given (Context), When (action carried out), Then (expected outcome)
 - [ ] Given (Context), When (action carried out), Then (expected outcome)
 
@@ -21,6 +22,7 @@ assignees: ''
 Link any designs here
 
 **Definition of Done**
+
 - [ ] Ready to Demo in Sprint Review
 - [ ] Does what I have made have appropriate test coverage?
 - [ ] Documentation and/or scientific documentation exists and can be found

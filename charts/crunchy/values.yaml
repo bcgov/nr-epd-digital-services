@@ -4,7 +4,7 @@ global:
 crunchy: # enable it for TEST and PROD, for PR based pipelines simply use single postgres
   enabled: true
   postgresVersion: 16
-  postGISVersion: '3.4'
+  postGISVersion: "3.4"
   imagePullPolicy: IfNotPresent
   # enable below to start a new crunchy cluster after disaster from a backed-up location, crunchy will choose the best place to recover from.
   # follow https://access.crunchydata.com/documentation/postgres-operator/5.2.0/tutorial/disaster-recovery/
@@ -28,8 +28,8 @@ crunchy: # enable it for TEST and PROD, for PR based pipelines simply use single
     replicas: 2 # 2 or 3 for high availability in TEST and PROD.
     metadata:
       annotations:
-        prometheus.io/scrape: 'true'
-        prometheus.io/port: '9187'
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9187"
     dataVolumeClaimSpec:
       storage: 2000Mi
       storageClassName: netapp-block-standard

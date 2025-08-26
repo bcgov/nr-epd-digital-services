@@ -131,7 +131,7 @@ const Dashboard = () => {
       ((window as any)._env_ && (window as any)._env_.VITE_FORMSFLOW_WEB_URL) ||
       "";
     const locationBeforeAuthRedirect = sessionStorage.getItem(
-      "locationBeforeAuthRedirect"
+      "locationBeforeAuthRedirect",
     );
     if (
       locationBeforeAuthRedirect !== "" &&

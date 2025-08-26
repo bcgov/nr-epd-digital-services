@@ -232,10 +232,7 @@ describe('StaffAssignmentService', () => {
         current_factors: 1,
       },
     ]);
-    const result =
-      await service.getActiveStaffWithCapacityByServiceType(
-        1,
-      );
+    const result = await service.getActiveStaffWithCapacityByServiceType(1);
     expect(result).toEqual([
       {
         personId: 1,

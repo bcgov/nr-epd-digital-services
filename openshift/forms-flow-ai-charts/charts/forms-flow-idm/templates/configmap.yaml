@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-    name: "forms-flow-idm"
+  name: "forms-flow-idm"
 data:
-  "realm.json": |- 
+  "realm.json": |-
     {
       "id": "forms-flow-ai",
       "realm": "forms-flow-ai",

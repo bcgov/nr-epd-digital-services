@@ -1,5 +1,5 @@
 const docs = {
-  getDocHTML: version => `<!DOCTYPE html>
+  getDocHTML: (version) => `<!DOCTYPE html>
   <html>
     <head>
       <title>Common Object Management Service API - Documentation ${version}</title>
@@ -17,7 +17,7 @@ const docs = {
       <redoc spec-url='/api/${version}/docs/api-spec.yaml' />
       <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"></script>
     </body>
-  </html>`
+  </html>`,
 };
 
 module.exports = docs;

@@ -37,7 +37,7 @@ module.exports = {
     user: config.get('db.username'),
     password: config.get('db.password'),
     database: config.get('db.database'),
-    port: config.get('db.port')
+    port: config.get('db.port'),
   },
   debug: ['silly', 'debug'].includes(config.get('server.logLevel')),
   log: {
@@ -50,16 +50,16 @@ module.exports = {
     warn: (msg) => logWrapper('warn', msg),
   },
   migrations: {
-    directory: __dirname + '/src/db/migrations'
+    directory: __dirname + '/src/db/migrations',
   },
   pool: {
     min: parseInt(config.get('db.poolMin')),
-    max: parseInt(config.get('db.poolMax'))
+    max: parseInt(config.get('db.poolMax')),
     // This shouldn't be here: https://github.com/knex/knex/issues/3455#issuecomment-535554401
     // propagateCreateError: false
   },
   searchPath: ['public', 'queue'], // Define postgres schemas to match on
   seeds: {
-    directory: __dirname + '/src/db/seeds'
-  }
+    directory: __dirname + '/src/db/seeds',
+  },
 };

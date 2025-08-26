@@ -1,7 +1,7 @@
-import { Field, InputType, ObjectType } from "@nestjs/graphql";
-import { IsDate } from "class-validator";
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import { IsDate } from 'class-validator';
 
-@ObjectType() 
+@ObjectType()
 export class ViewAppParticipantEntityDto {
   @Field()
   id: number;
@@ -15,10 +15,10 @@ export class ViewAppParticipantEntityDto {
   @Field()
   participantRoleId: number;
 
-  @Field({nullable: true} )
+  @Field({ nullable: true })
   organizationId: number | null;
 
-  @Field({defaultValue: false})
+  @Field({ defaultValue: false })
   isMainParticipant: boolean;
 
   @Field()

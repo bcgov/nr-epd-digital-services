@@ -14,7 +14,7 @@ export class DashboardService {
     private readonly loggerService: LoggerService,
     private readonly siteService: SiteService,
     private readonly dataSource: DataSource,
-  ) { }
+  ) {}
 
   async getRecentViewedApplications(user: any) {
     this.loggerService.log(
@@ -251,7 +251,8 @@ export class DashboardService {
           application?.appType.description;
         recentViewedApplication.visitedBy = userInfo?.givenName || '';
         recentViewedApplication.visitedDateTime = new Date();
-        recentViewedApplication.siteId = site?.findSiteBySiteIdLoggedInUser?.data?.id ?? null;
+        recentViewedApplication.siteId =
+          site?.findSiteBySiteIdLoggedInUser?.data?.id ?? null;
 
         recentViewedApplication.address = siteAddress.trim();
 

@@ -4,9 +4,9 @@ metadata:
   name: "{{ .Chart.Name }}"
 spec:
   ports:
-  - name: "{{ .Chart.Name }}"
-    port: {{ .Values.ingress.port }}
-    protocol: TCP
-    targetPort: {{ .Values.ingress.port }}
+    - name: "{{ .Chart.Name }}"
+      port: { { .Values.ingress.port } }
+      protocol: TCP
+      targetPort: { { .Values.ingress.port } }
   selector:
     app: "{{ .Chart.Name }}"

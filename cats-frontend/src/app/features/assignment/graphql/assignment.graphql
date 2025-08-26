@@ -41,8 +41,12 @@ query getAllActiveStaffMembers {
   }
 }
 
-query getAllActiveStaffMembersForApplicationServiceType($applicationServiceTypeId: Int!) {
-  getAllActiveStaffMembersForApplicationServiceType(applicationServiceTypeId: $applicationServiceTypeId) {
+query getAllActiveStaffMembersForApplicationServiceType(
+  $applicationServiceTypeId: Int!
+) {
+  getAllActiveStaffMembersForApplicationServiceType(
+    applicationServiceTypeId: $applicationServiceTypeId
+  ) {
     data {
       personId
       personFullName

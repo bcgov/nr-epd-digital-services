@@ -38,7 +38,7 @@ describe("testing sdm dashboards", () => {
         <MemoryRouter>
           <Dashboard />
         </MemoryRouter>
-      </Provider>
+      </Provider>,
       // </AuthProvider>
     );
     const userListLink = screen.getByText(/SDM/i);

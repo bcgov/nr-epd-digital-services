@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Patch, Post, Put, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Put,
+  Req,
+} from '@nestjs/common';
 import { Unprotected } from 'nest-keycloak-connect';
 import { SubmissionResponse } from '../dto/submissionResponse.dto';
 import { Form } from '../entities/form.entity';
@@ -11,8 +20,8 @@ import { CatsService } from '../services/cats.service';
 export class FormController {
   constructor(
     private formService: FormService,
-    private catsService: CatsService
-  ) { }
+    private catsService: CatsService,
+  ) {}
 
   /**
    * Checks if table exists
@@ -66,14 +75,19 @@ export class FormController {
    */
   @Post(':formId/submission') async save(
     @Param('formId') formId,
-    @Body() content, @Req() request,
+    @Body() content,
+    @Req() request,
   ): Promise<SubmissionResponse> {
     const origin = request.headers.origin;
     const savedSubmission = await this.formService.create(formId, content.data);
     const submissionResponse: SubmissionResponse =
       this.transformResult(savedSubmission);
     if (origin)
-      await this.catsService.submitToCats(content.data, savedSubmission.id, savedSubmission.formId);
+      await this.catsService.submitToCats(
+        content.data,
+        savedSubmission.id,
+        savedSubmission.formId,
+      );
     return submissionResponse;
   }
 
@@ -102,9 +116,14 @@ export class FormController {
   @Put(':formId/submission/:submissionId') async updateSubmission(
     @Param('formId') formId,
     @Param('submissionId') submissionId,
-    @Body() content, @Req() request,
+    @Body() content,
+    @Req() request,
   ): Promise<any> {
-    const updatedSubmission = await this.formService.update(submissionId, formId, content.data);
+    const updatedSubmission = await this.formService.update(
+      submissionId,
+      formId,
+      content.data,
+    );
     return updatedSubmission;
   }
 
@@ -118,7 +137,8 @@ export class FormController {
   @Patch(':formId/submission/:submissionId') async partialUpdateSubmission(
     @Param('formId') formId,
     @Param('submissionId') submissionId,
-    @Body() content, @Req() request,
+    @Body() content,
+    @Req() request,
   ) {
     const partialUpdatedSubmission = await this.formService.partialUpdate(
       submissionId,
@@ -126,7 +146,11 @@ export class FormController {
       content.data,
     );
 
-    await this.catsService.updateCatsApplication(submissionId, formId, content.data);
+    await this.catsService.updateCatsApplication(
+      submissionId,
+      formId,
+      content.data,
+    );
     return partialUpdatedSubmission;
   }
 }

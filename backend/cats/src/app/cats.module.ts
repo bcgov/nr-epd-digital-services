@@ -204,8 +204,8 @@ import { UploadController } from './controllers/upload.controller';
     DashboardService,
     DashboardResolver,
     ComsService,
-    ComsResolver
+    ComsResolver,
   ],
   controllers: [UserController, EmailController, UploadController],
 })
-export class CatsModule { }
+export class CatsModule {}

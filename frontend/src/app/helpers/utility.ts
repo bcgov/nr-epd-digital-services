@@ -9,7 +9,7 @@ export function getUser() {
     `oidc.user:` +
       getClientSettings().authority +
       `:` +
-      getClientSettings().client_id
+      getClientSettings().client_id,
   );
   if (!oidcStorage) {
     return null;

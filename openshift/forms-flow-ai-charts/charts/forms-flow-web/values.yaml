@@ -2,7 +2,7 @@
 Domain: #<DEFINE_ME>
 analytics:
   configmap: forms-flow-analytics # name of formsflow analytics configmap
-  secret: forms-flow-analytics #name of formsflow analytics secret 
+  secret: forms-flow-analytics #name of formsflow analytics secret
 formsflow:
   configmap: forms-flow-ai # name of formsflow.ai configmap
   secret: forms-flow-ai #name of formsflow.ai secret
@@ -14,13 +14,13 @@ ingress:
   ingressClassName: ""
   annotations:
 
-  enabled: true # create an ingress for this component 
+  enabled: true # create an ingress for this component
   hostname: "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}"
   port: 8080
   tls: true
   selfSigned: false
   extraTls:
-   - {}
+    - {}
 resources:
   limits:
     cpu: 400m

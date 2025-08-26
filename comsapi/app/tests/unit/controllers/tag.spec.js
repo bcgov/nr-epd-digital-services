@@ -20,7 +20,6 @@ afterEach(() => {
   jest.resetAllMocks();
 });
 
-
 describe('searchTags', () => {
   // mock service calls
   const tagSearchTagsSpy = jest.spyOn(tagService, 'searchTags');
@@ -32,17 +31,19 @@ describe('searchTags', () => {
     const req = {
       currentUser: { authType: 'BEARER' },
       headers: {},
-      query: {}
+      query: {},
     };
 
-    const GoodResponse = [{
-      key: 'foo',
-      value: 'bar'
-    },
-    {
-      key: 'baz',
-      value: 'quz'
-    }];
+    const GoodResponse = [
+      {
+        key: 'foo',
+        value: 'bar',
+      },
+      {
+        key: 'baz',
+        value: 'quz',
+      },
+    ];
 
     tagSearchTagsSpy.mockReturnValue(GoodResponse);
 
@@ -63,15 +64,17 @@ describe('searchTags', () => {
       headers: {},
       query: {
         tagset: {
-          foo: ''
-        }
-      }
+          foo: '',
+        },
+      },
     };
 
-    const GoodResponse = [{
-      key: 'foo',
-      value: 'bar'
-    }];
+    const GoodResponse = [
+      {
+        key: 'foo',
+        value: 'bar',
+      },
+    ];
 
     tagSearchTagsSpy.mockReturnValue(GoodResponse);
 

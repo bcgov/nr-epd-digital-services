@@ -1,4 +1,7 @@
-query getAppParticipantsByAppId($applicationId: Int!, $filter: AppParticipantFilter!) {
+query getAppParticipantsByAppId(
+  $applicationId: Int!
+  $filter: AppParticipantFilter!
+) {
   getAppParticipantsByAppId(applicationId: $applicationId, filter: $filter) {
     httpStatusCode
     success
@@ -66,7 +69,6 @@ query getOrganizations($searchParamForOrg: String!) {
   }
 }
 
-
 mutation createAppParticipant($newAppParticipant: CreateAppParticipantDto!) {
   createAppParticipant(newAppParticipant: $newAppParticipant) {
     message
@@ -114,4 +116,3 @@ mutation updateAppParticipant($updateAppParticipant: UpdateAppParticipantDto!) {
     }
   }
 }
-

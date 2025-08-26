@@ -79,7 +79,10 @@ describe('ApplicationDetailsResolver', () => {
       const user = { givenName: 'John', identity_provider: UserTypeEum.IDIR };
       const result = await resolver.getApplicationDetailsById(999, user);
 
-      expect(service.findApplicationDetailsById).toHaveBeenCalledWith(999, user);
+      expect(service.findApplicationDetailsById).toHaveBeenCalledWith(
+        999,
+        user,
+      );
       expect(result).toMatchObject({
         message: 'Application not found',
         httpStatusCode: 404,

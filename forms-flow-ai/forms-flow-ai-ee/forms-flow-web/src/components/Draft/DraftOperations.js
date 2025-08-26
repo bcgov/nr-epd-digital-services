@@ -6,7 +6,7 @@ import { MULTITENANCY_ENABLED } from "../../constants/constants";
 import { setDraftDelete } from "../../actions/draftActions";
 
 const DraftOperations = ({ row }) => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const tenantKey = useSelector((state) => state.tenants?.tenantId);
   const redirectUrl = MULTITENANCY_ENABLED ? `/tenant/${tenantKey}/` : "/";
@@ -19,16 +19,16 @@ const DraftOperations = ({ row }) => {
       setDraftDelete({
         modalOpen: true,
         draftId: row.id,
-        draftName: row.DraftName
-      })
+        draftName: row.DraftName,
+      }),
     );
   };
- 
+
   return (
     <>
       <div>
         <Link to={url} style={{ textDecoration: "none" }}>
-          <span style={{  color: "#2A3F71", cursor: "pointer" }}>
+          <span style={{ color: "#2A3F71", cursor: "pointer" }}>
             <span>
               <i className={icon} />
               &nbsp;

@@ -14,7 +14,6 @@ beforeEach(() => {
 });
 
 describe('addMetadata', () => {
-
   describe('headers', () => {
     const headers = schema.addMetadata.headers.describe();
 
@@ -49,7 +48,6 @@ describe('addMetadata', () => {
 });
 
 describe('addTags', () => {
-
   describe('params', () => {
     const params = schema.addTags.params.describe();
 
@@ -84,7 +82,6 @@ describe('addTags', () => {
 });
 
 describe('createObject', () => {
-
   describe('headers', () => {
     const headers = schema.createObject.headers.describe();
 
@@ -113,7 +110,6 @@ describe('createObject', () => {
 });
 
 describe('deleteMetadata', () => {
-
   describe('headers', () => {
     const headers = schema.deleteMetadata.headers.describe();
 
@@ -148,7 +144,6 @@ describe('deleteMetadata', () => {
 });
 
 describe('deleteObject', () => {
-
   describe('params', () => {
     const params = schema.deleteObject.params.describe();
 
@@ -175,7 +170,6 @@ describe('deleteObject', () => {
 });
 
 describe('deleteTags', () => {
-
   describe('params', () => {
     const params = schema.deleteTags.params.describe();
 
@@ -210,7 +204,6 @@ describe('deleteTags', () => {
 });
 
 describe('headObject', () => {
-
   describe('params', () => {
     const params = schema.headObject.params.describe();
 
@@ -220,7 +213,7 @@ describe('headObject', () => {
       it('is the expected schema', () => {
         expect(objectId).toEqual({
           flags: { presence: 'required' },
-          ...type.uuidv4.describe()
+          ...type.uuidv4.describe(),
         });
       });
     });
@@ -240,7 +233,6 @@ describe('headObject', () => {
 });
 
 describe('listObjectVersion', () => {
-
   describe('params', () => {
     const params = schema.listObjectVersion.params.describe();
 
@@ -255,7 +247,6 @@ describe('listObjectVersion', () => {
 });
 
 describe('readObject', () => {
-
   describe('params', () => {
     const params = schema.readObject.params.describe();
 
@@ -291,17 +282,18 @@ describe('readObject', () => {
       const download = query.keys.download;
 
       it('is the expected schema', () => {
-        expect(download).toEqual(expect.objectContaining({
-          type: 'string',
-          allow: expect.arrayContaining(Object.values(DownloadMode))
-        }));
+        expect(download).toEqual(
+          expect.objectContaining({
+            type: 'string',
+            allow: expect.arrayContaining(Object.values(DownloadMode)),
+          }),
+        );
       });
     });
   });
 });
 
 describe('replaceMetadata', () => {
-
   describe('headers', () => {
     const headers = schema.replaceMetadata.headers.describe();
 
@@ -335,9 +327,7 @@ describe('replaceMetadata', () => {
   });
 });
 
-
 describe('replaceTags', () => {
-
   describe('params', () => {
     const params = schema.replaceTags.params.describe();
 
@@ -372,7 +362,6 @@ describe('replaceTags', () => {
 });
 
 describe('searchObjects', () => {
-
   describe('headers', () => {
     const headers = schema.searchObjects.headers.describe();
 
@@ -383,28 +372,32 @@ describe('searchObjects', () => {
 
     it('permits other attributes', () => {
       expect(headers.flags).toBeTruthy();
-      expect(headers.flags).toEqual(expect.objectContaining({
-        unknown: true
-      }));
+      expect(headers.flags).toEqual(
+        expect.objectContaining({
+          unknown: true,
+        }),
+      );
     });
 
     it('enforces general metadata pattern', () => {
-      expect(headers.patterns).toEqual(expect.arrayContaining([
-        expect.objectContaining({
-          regex: '/^x-amz-meta-\\S+$/i',
-          rule: expect.objectContaining({
-            type: 'string',
-            rules: expect.arrayContaining([
-              expect.objectContaining({
-                name: 'min',
-                args: expect.objectContaining({
-                  limit: 1
-                })
-              })
-            ])
-          })
-        })
-      ]));
+      expect(headers.patterns).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            regex: '/^x-amz-meta-\\S+$/i',
+            rule: expect.objectContaining({
+              type: 'string',
+              rules: expect.arrayContaining([
+                expect.objectContaining({
+                  name: 'min',
+                  args: expect.objectContaining({
+                    limit: 1,
+                  }),
+                }),
+              ]),
+            }),
+          }),
+        ]),
+      );
     });
   });
 
@@ -438,14 +431,16 @@ describe('searchObjects', () => {
       it('has a max length of 1024', () => {
         expect(Array.isArray(path.rules)).toBeTruthy();
         expect(path.rules).toHaveLength(1);
-        expect(path.rules).toEqual(expect.arrayContaining([
-          expect.objectContaining({
-            'args': {
-              'limit': 1024
-            },
-            'name': 'max'
-          }),
-        ]));
+        expect(path.rules).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              args: {
+                limit: 1024,
+              },
+              name: 'max',
+            }),
+          ]),
+        );
       });
 
       it('matches the schema', () => {
@@ -469,14 +464,16 @@ describe('searchObjects', () => {
       it('has a max length of 255', () => {
         expect(Array.isArray(mimeType.rules)).toBeTruthy();
         expect(mimeType.rules).toHaveLength(1);
-        expect(mimeType.rules).toEqual(expect.arrayContaining([
-          expect.objectContaining({
-            'args': {
-              'limit': 255
-            },
-            'name': 'max'
-          }),
-        ]));
+        expect(mimeType.rules).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              args: {
+                limit: 255,
+              },
+              name: 'max',
+            }),
+          ]),
+        );
       });
 
       it('matches the schema', () => {
@@ -516,7 +513,6 @@ describe('searchObjects', () => {
 });
 
 describe('syncObject', () => {
-
   describe('params', () => {
     const params = schema.syncObject.params.describe();
 
@@ -531,7 +527,6 @@ describe('syncObject', () => {
 });
 
 describe('togglePublic', () => {
-
   describe('params', () => {
     const params = schema.togglePublic.params.describe();
 
@@ -557,9 +552,7 @@ describe('togglePublic', () => {
   });
 });
 
-
 describe('updateObject', () => {
-
   describe('headers', () => {
     const headers = schema.updateObject.headers.describe();
 

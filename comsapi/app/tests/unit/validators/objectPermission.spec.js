@@ -7,7 +7,6 @@ const { scheme, type } = require('../../../src/validators/common');
 const { Permissions } = require('../../../src/components/constants');
 
 describe('searchPermissions', () => {
-
   describe('query', () => {
     const query = schema.searchPermissions.query.describe();
 
@@ -16,15 +15,17 @@ describe('searchPermissions', () => {
 
       // TODO: test against schema in our code instead of recreating object
       it('is the expected schema', () => {
-        expect(userId).toEqual(Joi.alternatives()
-          .conditional('bucketPerms', {
-            is: true,
-            then: type.uuidv4
-              .required()
-              .messages({
+        expect(userId).toEqual(
+          Joi.alternatives()
+            .conditional('bucketPerms', {
+              is: true,
+              then: type.uuidv4.required().messages({
                 'string.guid': 'One userId required when `bucketPerms=true`',
               }),
-            otherwise: scheme.guid }).describe());
+              otherwise: scheme.guid,
+            })
+            .describe(),
+        );
       });
     });
 
@@ -63,7 +64,6 @@ describe('searchPermissions', () => {
 });
 
 describe('listPermissions', () => {
-
   describe('query', () => {
     const params = schema.listPermissions.params.describe();
     const query = schema.listPermissions.query.describe();
@@ -95,7 +95,6 @@ describe('listPermissions', () => {
 });
 
 describe('addPermissions', () => {
-
   describe('params', () => {
     const params = schema.addPermissions.params.describe();
 
@@ -119,48 +118,53 @@ describe('addPermissions', () => {
 
     it('is required', () => {
       expect(body.flags).toBeTruthy();
-      expect(body.flags).toEqual(expect.objectContaining({ presence: 'required' }));
+      expect(body.flags).toEqual(
+        expect.objectContaining({ presence: 'required' }),
+      );
     });
 
     it('should contain userId', () => {
-      expect(body.items).toEqual(expect.arrayContaining([
-        expect.objectContaining({
-          keys: expect.objectContaining({
-            userId: expect.objectContaining({
-              type: 'string',
-              flags: expect.objectContaining({ presence: 'required' }),
-              rules: expect.arrayContaining([
-                expect.objectContaining({
-                  name: 'guid',
-                  args: {
-                    options: { version: 'uuidv4' }
-                  }
-                })
-              ])
-            })
-          })
-        })
-      ]));
+      expect(body.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            keys: expect.objectContaining({
+              userId: expect.objectContaining({
+                type: 'string',
+                flags: expect.objectContaining({ presence: 'required' }),
+                rules: expect.arrayContaining([
+                  expect.objectContaining({
+                    name: 'guid',
+                    args: {
+                      options: { version: 'uuidv4' },
+                    },
+                  }),
+                ]),
+              }),
+            }),
+          }),
+        ]),
+      );
     });
 
     it('should contain a valid permCode', () => {
-      expect(body.items).toEqual(expect.arrayContaining([
-        expect.objectContaining({
-          keys: expect.objectContaining({
-            permCode: expect.objectContaining({
-              type: 'string',
-              flags: expect.objectContaining({ presence: 'required' }),
-              allow: expect.arrayContaining(Object.values(Permissions))
-            })
-          })
-        })
-      ]));
+      expect(body.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            keys: expect.objectContaining({
+              permCode: expect.objectContaining({
+                type: 'string',
+                flags: expect.objectContaining({ presence: 'required' }),
+                allow: expect.arrayContaining(Object.values(Permissions)),
+              }),
+            }),
+          }),
+        ]),
+      );
     });
   });
 });
 
 describe('removePermissions', () => {
-
   describe('params', () => {
     const params = schema.removePermissions.params.describe();
 

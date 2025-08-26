@@ -91,7 +91,7 @@ app.use((err: Problem, _req: Request, res: Response, _next: () => void): void =>
     err.send(res, null);
   } else {
     new Problem(500, 'Server Error', {
-      detail: (err.message) ? err.message : err
+      detail: err.message ? err.message : err
     }).send(res);
   }
 });

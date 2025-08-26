@@ -1,0 +1,20 @@
+mutation CreateInvoice($invoiceData: InvoiceInputDto!) {
+  createInvoice(invoiceData: $invoiceData) {
+    success
+    httpStatusCode
+    message
+    invoice {
+      id
+      subject
+      issuedDate
+      dueDate
+      status
+      taxExempt
+      subtotalInCents
+      gstInCents
+      pstInCents
+      totalInCents
+      notes
+    }
+  }
+}

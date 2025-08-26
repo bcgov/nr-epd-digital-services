@@ -7,5 +7,5 @@ module.exports = {
   syncController: require('./sync'),
   userController: require('./user'),
   tagController: require('./tag'),
-  versionController: require('./version')
+  versionController: require('./version'),
 };

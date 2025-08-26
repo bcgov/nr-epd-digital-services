@@ -117,9 +117,8 @@ mutation UpdateInvoice($invoice: UpdateInvoice!) {
 }
 
 mutation deleteInvoice($invoiceId: Int!) {
-  deleteInvoice(invoiceId: $invoiceId)
-  {
- 		message
+  deleteInvoice(invoiceId: $invoiceId) {
+    message
     httpStatusCode
     success
     timestamp
@@ -140,7 +139,7 @@ query getInvoiceRecipientNames($searchParam: String!) {
   }
 }
 
-mutation createBucket($bucketName: String!, $bucketKey: String!){
+mutation createBucket($bucketName: String!, $bucketKey: String!) {
   createBucket(bucketName: $bucketName, bucketKey: $bucketKey) {
     message
     httpStatusCode

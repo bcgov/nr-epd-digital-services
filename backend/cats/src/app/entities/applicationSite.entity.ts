@@ -1,10 +1,4 @@
-import {
-  Column,
-  Entity,
-  Index,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Index('idx_application_site_application_id', ['applicationId'], {})
 @Entity('application_site')

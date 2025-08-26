@@ -5,9 +5,7 @@ expect.extend(jestJoi.matchers);
 const { schema } = require('../../../src/validators/user');
 const { scheme, type } = require('../../../src/validators/common');
 
-
 describe('listIdps', () => {
-
   describe('query', () => {
     const query = schema.listIdps.query.describe();
 
@@ -25,13 +23,33 @@ describe('listIdps', () => {
       });
 
       it.each([
-        true, 1, 'true', 'TRUE', 't', 'T', 'yes', 'yEs', 'y', 'Y', '1',
-        false, 0, 'false', 'FALSE', 'f', 'F', 'no', 'nO', 'n', 'N', '0'
+        true,
+        1,
+        'true',
+        'TRUE',
+        't',
+        'T',
+        'yes',
+        'yEs',
+        'y',
+        'Y',
+        '1',
+        false,
+        0,
+        'false',
+        'FALSE',
+        'f',
+        'F',
+        'no',
+        'nO',
+        'n',
+        'N',
+        '0',
       ])('accepts the schema given %j', (value) => {
         const req = {
           query: {
-            active: value
-          }
+            active: value,
+          },
         };
 
         expect(req).toMatchSchema(schema.listIdps);
@@ -41,20 +59,21 @@ describe('listIdps', () => {
 });
 
 describe('searchUsers', () => {
-
   describe('query', () => {
     const query = schema.searchUsers.query.describe();
     const longStr = crypto.randomBytes(256).toString('hex');
 
     it('requires at least 1 parameter', () => {
-      expect(query.rules).toEqual(expect.arrayContaining([
-        expect.objectContaining({
-          name: 'min',
-          args: {
-            limit: 1
-          }
-        })
-      ]));
+      expect(query.rules).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: 'min',
+            args: {
+              limit: 1,
+            },
+          }),
+        ]),
+      );
     });
 
     describe('active', () => {
@@ -88,35 +107,38 @@ describe('searchUsers', () => {
       it('is a regex', () => {
         expect(Array.isArray(fullName.rules)).toBeTruthy();
         expect(fullName.rules).toHaveLength(2);
-        expect(fullName.rules).toEqual(expect.arrayContaining([
-          expect.objectContaining({
-            'args': {
-              'regex': '/^[\\w\\-\\s]+$/'
-            },
-            'name': 'pattern'
-          })
-        ]));
+        expect(fullName.rules).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              args: {
+                regex: '/^[\\w\\-\\s]+$/',
+              },
+              name: 'pattern',
+            }),
+          ]),
+        );
       });
 
       it('has a max length of 255', () => {
         expect(Array.isArray(fullName.rules)).toBeTruthy();
         expect(fullName.rules).toHaveLength(2);
-        expect(fullName.rules).toEqual(expect.arrayContaining([
-          expect.objectContaining(
-            {
-              'args': {
-                'limit': 255
+        expect(fullName.rules).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              args: {
+                limit: 255,
               },
-              'name': 'max'
+              name: 'max',
             }),
-        ]));
+          ]),
+        );
       });
 
       it('matches the schema', () => {
         const req = {
           query: {
-            fullName: 'Bob Smith'
-          }
+            fullName: 'Bob Smith',
+          },
         };
 
         expect(req).toMatchSchema(schema.searchUsers);
@@ -125,8 +147,8 @@ describe('searchUsers', () => {
       it('must be less than or equal to 255 characters long', () => {
         const req = {
           query: {
-            fullName: longStr
-          }
+            fullName: longStr,
+          },
         };
 
         expect(req).not.toMatchSchema(schema.searchUsers);
@@ -162,8 +184,8 @@ describe('searchUsers', () => {
       it('matches the schema', () => {
         const req = {
           query: {
-            search: 'someMatcher'
-          }
+            search: 'someMatcher',
+          },
         };
 
         expect(req).toMatchSchema(schema.searchUsers);

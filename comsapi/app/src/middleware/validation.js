@@ -14,21 +14,20 @@ const validate = (schema) => {
         const result = def.validate(req[prop], { abortEarly: false })?.error;
         return result ? [prop, result?.details] : undefined;
       })
-      .filter(error => !!error);
+      .filter((error) => !!error);
 
     if (Object.keys(validationErrors).length) {
       throw new Problem(422, {
         detail: validationErrors
-          .flatMap(groups => groups[1]?.map(error => error?.message))
+          .flatMap((groups) => groups[1]?.map((error) => error?.message))
           .join('; '),
         instance: req.originalUrl,
-        errors: Object.fromEntries(validationErrors)
+        errors: Object.fromEntries(validationErrors),
       });
-    }
-    else next();
+    } else next();
   };
 };
 
 module.exports = {
-  validate
+  validate,
 };

@@ -33,12 +33,12 @@ import {
   setFormSearchLoading,
   setFormUploadList,
   updateFormUploadCounter,
-  formUploadFailureCount
+  formUploadFailureCount,
 } from "../../actions/checkListActions";
 import FileModal from "./FileUpload/fileUploadModal";
 import { useTranslation, Translation } from "react-i18next";
 import { addHiddenApplicationComponent } from "../../constants/applicationComponent";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import {
   getFormProcesses,
   saveFormProcessMapperPost,
@@ -50,14 +50,17 @@ import {
 import { addTenantkey, getUrlLastPath } from "../../helper/helper";
 import { formCreate, formUpdate } from "../../apiManager/services/FormServices";
 import { getFormattedForm, INACTIVE } from "./constants/formListConstants";
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 import BundleTable from "./constants/BundleTable";
 import FormTable from "./constants/FormTable";
 import { push } from "connected-react-router";
 import { TYPE_BUNDLE, TYPE_FORM } from "../../constants/applicationConstants";
 
-import { addClients, addUsers } from "../../apiManager/services/authorizationService";
+import {
+  addClients,
+  addUsers,
+} from "../../apiManager/services/authorizationService";
 const List = React.memo((props) => {
   const { t } = useTranslation();
   const location = useLocation();
@@ -76,7 +79,7 @@ const List = React.memo((props) => {
   } = props;
   const isBPMFormListLoading = useSelector((state) => state.bpmForms.isActive);
   const designerFormLoading = useSelector(
-    (state) => state.formCheckList.designerFormLoading
+    (state) => state.formCheckList.designerFormLoading,
   );
   const searchText = useSelector((state) => state.bpmForms.searchText);
   const formType = useSelector((state) => state.bpmForms.formType);
@@ -87,25 +90,22 @@ const List = React.memo((props) => {
   const sortOrder = useSelector((state) => state.bpmForms.sortOrder);
   const formCheckList = useSelector((state) => state.formCheckList.formList);
 
-
-
-
   const formAccess = useSelector((state) => state.user?.formAccess || []);
   const [tabValue, setTabValue] = useState(0);
 
   const submissionAccess = useSelector(
-    (state) => state.user?.submissionAccess || []
+    (state) => state.user?.submissionAccess || [],
   );
 
   const searchFormLoading = useSelector(
-    (state) => state.formCheckList.searchFormLoading
+    (state) => state.formCheckList.searchFormLoading,
   );
   const applicationCountResponse = useSelector(
-    (state) => state.process?.applicationCountResponse
+    (state) => state.process?.applicationCountResponse,
   );
   const formProcessData = useSelector((state) => state.process.formProcessList);
   const applicationCount = useSelector(
-    (state) => state.process?.applicationCount
+    (state) => state.process?.applicationCount,
   );
   const tenantKey = tenants?.tenantId;
   const redirectUrl = MULTITENANCY_ENABLED ? `/tenant/${tenantKey}/` : "/";
@@ -114,14 +114,11 @@ const List = React.memo((props) => {
     dispatch(setFormCheckList([]));
   }, [dispatch]);
 
-
-
-
   useEffect(() => {
     // setIsLoading(false);
     dispatch(setBPMFormListLoading(true));
-    if(formType === TYPE_BUNDLE){
-      return () =>{
+    if (formType === TYPE_BUNDLE) {
+      return () => {
         dispatch(setBpmFormType(null));
       };
     }
@@ -137,29 +134,26 @@ const List = React.memo((props) => {
     dispatch(fetchBPMFormList(...filters));
   };
 
-
-
-  useEffect(()=>{
+  useEffect(() => {
     const lastPathOfUrl = getUrlLastPath(location.pathname);
-    if(lastPathOfUrl === TYPE_FORM){
+    if (lastPathOfUrl === TYPE_FORM) {
       const type = formType && formType !== TYPE_BUNDLE ? formType : TYPE_FORM;
-     setTabValue(0);
-     dispatch(setBpmFormType(type));
-    }else if(lastPathOfUrl === TYPE_BUNDLE) {
-      if(isDesigner){
+      setTabValue(0);
+      dispatch(setBpmFormType(type));
+    } else if (lastPathOfUrl === TYPE_BUNDLE) {
+      if (isDesigner) {
         setTabValue(1);
-        dispatch(setBpmFormType('bundle'));
-      }else{
+        dispatch(setBpmFormType("bundle"));
+      } else {
         dispatch(push(`${redirectUrl}form`));
       }
     }
- },[location.pathname]);
-
+  }, [location.pathname]);
 
   useEffect(() => {
-      if(formType){
-        fetchForms();
-      }
+    if (formType) {
+      fetchForms();
+    }
   }, [
     getFormsInit,
     dispatch,
@@ -181,29 +175,30 @@ const List = React.memo((props) => {
     let response = "";
 
     if (result.resource) {
-      response = `${result.resource} ${result.resource == 1 ? t("Resource") : t("Resources")
-        }`;
+      response = `${result.resource} ${
+        result.resource == 1 ? t("Resource") : t("Resources")
+      }`;
     }
     if (result.form) {
-      response += `${result.resource ? " ," : ""} ${result.form} ${result.form == 1 ? t("Form") : t("Forms")
-        }`;
+      response += `${result.resource ? " ," : ""} ${result.form} ${
+        result.form == 1 ? t("Form") : t("Forms")
+      }`;
     }
     return toast.success(`${response} ${t("Downloaded Successfully")}`);
   };
 
-  const handleTabChange = (e,value)=>{
+  const handleTabChange = (e, value) => {
     setTabValue(value);
     dispatch(setBPMFormLimit(5));
     dispatch(setBPMFormListPage(1));
-    dispatch(setBpmFormSearch(''));
-    if(value === 1){
-      dispatch(setBpmFormType('bundle'));
+    dispatch(setBpmFormSearch(""));
+    if (value === 1) {
+      dispatch(setBpmFormType("bundle"));
       dispatch(push(`${redirectUrl}bundle`));
-    }else{
-      dispatch(setBpmFormType('form'));
+    } else {
+      dispatch(setBpmFormType("form"));
       dispatch(push(`${redirectUrl}form`));
     }
-
   };
 
   const downloadForms = async () => {
@@ -251,11 +246,9 @@ const List = React.memo((props) => {
         } else {
           dispatch(formUploadFailureCount());
         }
-      })
+      }),
     );
   };
-
-
 
   const isMapperSaveNeeded = (mapperData, formdata, applicationData) => {
     const applicationCount = applicationData?.data.value;
@@ -271,17 +264,15 @@ const List = React.memo((props) => {
     }
   };
 
-
   const setDefaultAuthorization = (parentFormId) => {
     let payload = {
-      resourceId:parentFormId,
+      resourceId: parentFormId,
       resourceDetails: {},
-      roles : []
+      roles: [],
     };
     addUsers(payload).catch((error) => console.error("error", error));
     addClients(payload).catch((error) => console.error("error", error));
-
-  }; 
+  };
 
   // upload file
   const uploadFileContents = async (fileContent) => {
@@ -319,85 +310,100 @@ const List = React.memo((props) => {
                   dispatch(
                     fetchFormByAlias(newFormData.path, async (err, formObj) => {
                       if (!err) {
-
                         dispatch(
                           // eslint-disable-next-line no-unused-vars
                           getFormProcesses(formObj._id, (err, mapperData) => {
                             // just update form
                             if (mapperData) {
                               dispatch(
-                                getApplicationCount(mapperData.id, (error, applicationCount) => {
-                                  if (!error) {
-                                    newFormData._id = formObj._id;
-                                    newFormData.access = formObj.access;
-                                    newFormData.submissionAccess = formObj.submissionAccess;
-                                    newFormData.componentChanged =
-                                      (!_isEquial(newFormData.components, formObj.components) ||
-                                        newFormData.display !== formObj.display ||
-                                        newFormData.type !== formObj.type
-                                      );
-                                    newFormData.parentFormId = mapperData.parentFormId;
-                                    formUpdate(newFormData._id, newFormData)
-                                      .then((formupdated) => {
-                                        const updatedForm = formupdated.data;
-                                        const data = {
-                                          anonymous:
-                                            mapperData.anonymous === null
-                                              ? false
-                                              : mapperData.anonymous,
-                                          formName: updatedForm.title,
-                                          formType: updatedForm.type,
-                                          parentFormId: mapperData.parentFormId,
-                                          status: mapperData.status
-                                            ? mapperData.status
-                                            : INACTIVE,
-                                          taskVariable: mapperData.taskVariable
-                                            ? mapperData.taskVariable
-                                            : [],
-                                          id: mapperData.id,
-                                          formId: updatedForm._id,
-                                          formTypeChanged:
-                                            mapperData.formType !==
-                                            updatedForm.type,
-                                          titleChanged:
-                                            mapperData.formName !==
-                                            updatedForm.title,
-                                        };
+                                getApplicationCount(
+                                  mapperData.id,
+                                  (error, applicationCount) => {
+                                    if (!error) {
+                                      newFormData._id = formObj._id;
+                                      newFormData.access = formObj.access;
+                                      newFormData.submissionAccess =
+                                        formObj.submissionAccess;
+                                      newFormData.componentChanged =
+                                        !_isEquial(
+                                          newFormData.components,
+                                          formObj.components,
+                                        ) ||
+                                        newFormData.display !==
+                                          formObj.display ||
+                                        newFormData.type !== formObj.type;
+                                      newFormData.parentFormId =
+                                        mapperData.parentFormId;
+                                      formUpdate(newFormData._id, newFormData)
+                                        .then((formupdated) => {
+                                          const updatedForm = formupdated.data;
+                                          const data = {
+                                            anonymous:
+                                              mapperData.anonymous === null
+                                                ? false
+                                                : mapperData.anonymous,
+                                            formName: updatedForm.title,
+                                            formType: updatedForm.type,
+                                            parentFormId:
+                                              mapperData.parentFormId,
+                                            status: mapperData.status
+                                              ? mapperData.status
+                                              : INACTIVE,
+                                            taskVariable:
+                                              mapperData.taskVariable
+                                                ? mapperData.taskVariable
+                                                : [],
+                                            id: mapperData.id,
+                                            formId: updatedForm._id,
+                                            formTypeChanged:
+                                              mapperData.formType !==
+                                              updatedForm.type,
+                                            titleChanged:
+                                              mapperData.formName !==
+                                              updatedForm.title,
+                                          };
 
-                                        const isMapperNeed = isMapperSaveNeeded(
-                                          mapperData,
-                                          updatedForm,
-                                          applicationCount
-                                        );
+                                          const isMapperNeed =
+                                            isMapperSaveNeeded(
+                                              mapperData,
+                                              updatedForm,
+                                              applicationCount,
+                                            );
 
-                                        if (isMapperNeed === "new") {
-                                          data["version"] = String(
-                                            +mapperData.version + 1
-                                          );
+                                          if (isMapperNeed === "new") {
+                                            data["version"] = String(
+                                              +mapperData.version + 1,
+                                            );
+                                            dispatch(
+                                              saveFormProcessMapperPost(data),
+                                            );
+                                          } else if (
+                                            isMapperNeed === "update"
+                                          ) {
+                                            dispatch(
+                                              saveFormProcessMapperPut(data),
+                                            );
+                                          }
+                                          fetchForms();
+                                          dispatch(updateFormUploadCounter());
+                                          resolve();
+                                        })
+                                        .catch((err) => {
                                           dispatch(
-                                            saveFormProcessMapperPost(data)
+                                            setFormFailureErrorData(
+                                              "form",
+                                              err,
+                                            ),
                                           );
-                                        } else if (isMapperNeed === "update") {
-                                          dispatch(
-                                            saveFormProcessMapperPut(data)
-                                          );
-                                        }
-                                        fetchForms();
-                                        dispatch(updateFormUploadCounter());
-                                        resolve();
-                                      })
-                                      .catch((err) => {
-                                        dispatch(
-                                          setFormFailureErrorData("form", err)
-                                        );
-                                        dispatch(formUploadFailureCount());
-                                        reject();
-                                      });
-                                  } else {
-                                    reject();
-                                    toast.error("Error in application count");
-                                  }
-                                })
+                                          dispatch(formUploadFailureCount());
+                                          reject();
+                                        });
+                                    } else {
+                                      reject();
+                                      toast.error("Error in application count");
+                                    }
+                                  },
+                                ),
                               );
                             } else if (!mapperData) {
                               newFormData.componentChanged = true;
@@ -415,28 +421,28 @@ const List = React.memo((props) => {
                                   resolve();
                                 })
                                 .catch((err) => {
-                                  err ? dispatch(formUploadFailureCount()) : '';
+                                  err ? dispatch(formUploadFailureCount()) : "";
                                   reject();
                                 });
                             } else {
                               toast.error(err);
                               reject();
                             }
-                          })
+                          }),
                         );
                       } else {
                         dispatch(formUploadFailureCount());
                         reject();
                       }
-                    })
+                    }),
                   );
                 });
             });
-          })
+          }),
         );
       }
     } catch (err) {
-      err ? dispatch(formUploadFailureCount()) : '';
+      err ? dispatch(formUploadFailureCount()) : "";
     }
   };
 
@@ -446,29 +452,28 @@ const List = React.memo((props) => {
       if ("forms" in fileContent) {
         if (Array.isArray(fileContent.forms)) {
           formToUpload = fileContent;
-        }
-        else {
+        } else {
           const resourcesArray = Object.entries(fileContent.resources);
-          const formsData = Object.entries(fileContent.forms).concat(resourcesArray);
+          const formsData = Object.entries(fileContent.forms).concat(
+            resourcesArray,
+          );
           const formsArray = formsData.map(([, value]) => value);
-          formToUpload = { "forms": formsArray };
+          formToUpload = { forms: formsArray };
         }
-      }
-      else {
-        const keysToRemove = ['_id', 'created', 'modified', 'machineName'];
+      } else {
+        const keysToRemove = ["_id", "created", "modified", "machineName"];
         let newArray = [];
         if (Array.isArray(fileContent)) {
-          newArray = fileContent.map(obj => {
+          newArray = fileContent.map((obj) => {
             const newObj = { ...obj };
-            keysToRemove.forEach(key => delete newObj[key]);
+            keysToRemove.forEach((key) => delete newObj[key]);
             return newObj;
           });
-        }
-        else {
-          keysToRemove.forEach(e => delete fileContent[e]);
+        } else {
+          keysToRemove.forEach((e) => delete fileContent[e]);
           newArray.push(fileContent);
         }
-        formToUpload = { "forms": newArray };
+        formToUpload = { forms: newArray };
       }
 
       if (formToUpload) {
@@ -487,7 +492,7 @@ const List = React.memo((props) => {
         onClose={() => setShowFormUploadModal(false)}
       />
       {(forms.isActive || designerFormLoading || isBPMFormListLoading) &&
-        !searchFormLoading ? (
+      !searchFormLoading ? (
         <div data-testid="Form-list-component-loader">
           <Loading />
         </div>
@@ -498,30 +503,41 @@ const List = React.memo((props) => {
             message={
               formProcessData.id && applicationCount ? (
                 applicationCountResponse ? (
-                  
-                 <div>
-                 {applicationCount}  
-                 {
-                    applicationCount > 1
-                      ? <span>{`${t(" Applications are submitted against")} `}</span> 
-                      : <span>{`${t(" Application is submitted against")} `}</span> 
-                  } 
-                    <span style={{ fontWeight: "bold" }}>{props.formName.includes(' ') ? props.formName : textTruncate(50, 40, props.formName)}</span>
-                  .
-                   {t("Are you sure you wish to delete the form?")}
-                  
-                   </div>
+                  <div>
+                    {applicationCount}
+                    {applicationCount > 1 ? (
+                      <span>{`${t(" Applications are submitted against")} `}</span>
+                    ) : (
+                      <span>{`${t(" Application is submitted against")} `}</span>
+                    )}
+                    <span style={{ fontWeight: "bold" }}>
+                      {props.formName.includes(" ")
+                        ? props.formName
+                        : textTruncate(50, 40, props.formName)}
+                    </span>
+                    .{t("Are you sure you wish to delete the form?")}
+                  </div>
                 ) : (
                   <div>
                     {`${t("Are you sure you wish to delete the form ")}`}
-                      <span style={{ fontWeight: "bold" }}>{props.formName.includes(' ') ? props.formName : textTruncate(50, 40, props.formName)}</span>
+                    <span style={{ fontWeight: "bold" }}>
+                      {props.formName.includes(" ")
+                        ? props.formName
+                        : textTruncate(50, 40, props.formName)}
+                    </span>
                     ?
                   </div>
                 )
               ) : (
                 <div>
-                  {t(`Are you sure you wish to delete the ${formType === 'form' ? 'form' : 'bundle'} `)}
-                    <span style={{ fontWeight: "bold" }}>{props.formName.includes(' ') ? props.formName : textTruncate(50, 40, props.formName)}</span>
+                  {t(
+                    `Are you sure you wish to delete the ${formType === "form" ? "form" : "bundle"} `,
+                  )}
+                  <span style={{ fontWeight: "bold" }}>
+                    {props.formName.includes(" ")
+                      ? props.formName
+                      : textTruncate(50, 40, props.formName)}
+                  </span>
                   ?
                 </div>
               )
@@ -535,7 +551,7 @@ const List = React.memo((props) => {
                 formCheckList,
                 applicationCount,
                 fetchForms,
-                formType
+                formType,
               );
             }}
           />
@@ -543,84 +559,71 @@ const List = React.memo((props) => {
             <Errors errors={errors} />
 
             <div className="d-flex align-items-center justify-content-between">
-            <Tabs
-        value={tabValue}
-        indicatorColor="primary"
-        textColor="primary"
-        onChange={handleTabChange}
-      >
-        {/* <Tab label= {t("Forms")} /> */}
-        <div>Create an Application Package</div>
-       { isDesigner && <Tab label= {t("Form Bundle")} />}
-    
-      </Tabs>
-      <div className="flex-item-right">
-             {(isDesigner && tabValue === 1) ?
-                <Link
-                  to={`${redirectUrl}bundleflow/create`}
-                  className="btn btn-primary btn-left btn-sm"
-                >
-                  <i className="fa fa-plus fa-lg" />{" "}
-                  <Translation>{(t) => t("Create Bundle")}</Translation>
-                </Link>
-
-               : ""}
-              {(isDesigner && tabValue === 0) && (
-                <>
-                 <Link
-                  to={`${redirectUrl}formflow/create`}
-                  className="btn btn-primary btn-left btn-sm"
-                >
-                  <i className="fa fa-plus fa-lg" />{" "}
-                  <Translation>{(t) => t("Create Form")}</Translation>
-                </Link>
-
-
-                  <Button
-                    className="btn btn-primary btn-sm form-btn pull-right btn-left"
-                    onClick={uploadClick}
-                    title={t("Upload json form only")}
+              <Tabs
+                value={tabValue}
+                indicatorColor="primary"
+                textColor="primary"
+                onChange={handleTabChange}
+              >
+                {/* <Tab label= {t("Forms")} /> */}
+                <div>Create an Application Package</div>
+                {isDesigner && <Tab label={t("Form Bundle")} />}
+              </Tabs>
+              <div className="flex-item-right">
+                {isDesigner && tabValue === 1 ? (
+                  <Link
+                    to={`${redirectUrl}bundleflow/create`}
+                    className="btn btn-primary btn-left btn-sm"
                   >
-                    <i className="fa fa-upload fa-lg" aria-hidden="true" />{" "}
-                    {t("Upload Form")}{" "}
-                  </Button>
-                  <input
-                    type="file"
-                    value=''
-                    className="d-none"
-                    multiple={false}
-                    accept=".json,application/json"
-                    onChange={(e) => {
-                      fileUploaded(e);
-                    }}
-                    ref={uploadFormNode}
-                  />
-                  <button
-                    className="btn btn-outline-primary pull-right btn-left "
-                    onClick={downloadForms}
-                    disabled={formCheckList.length === 0}
-                  >
-                    <i className="fa fa-download fa-lg" aria-hidden="true" />{" "}
-                    {t("Download Form")}{" "}
-                  </button>
-                </>
-              )}
+                    <i className="fa fa-plus fa-lg" />{" "}
+                    <Translation>{(t) => t("Create Bundle")}</Translation>
+                  </Link>
+                ) : (
+                  ""
+                )}
+                {isDesigner && tabValue === 0 && (
+                  <>
+                    <Link
+                      to={`${redirectUrl}formflow/create`}
+                      className="btn btn-primary btn-left btn-sm"
+                    >
+                      <i className="fa fa-plus fa-lg" />{" "}
+                      <Translation>{(t) => t("Create Form")}</Translation>
+                    </Link>
+
+                    <Button
+                      className="btn btn-primary btn-sm form-btn pull-right btn-left"
+                      onClick={uploadClick}
+                      title={t("Upload json form only")}
+                    >
+                      <i className="fa fa-upload fa-lg" aria-hidden="true" />{" "}
+                      {t("Upload Form")}{" "}
+                    </Button>
+                    <input
+                      type="file"
+                      value=""
+                      className="d-none"
+                      multiple={false}
+                      accept=".json,application/json"
+                      onChange={(e) => {
+                        fileUploaded(e);
+                      }}
+                      ref={uploadFormNode}
+                    />
+                    <button
+                      className="btn btn-outline-primary pull-right btn-left "
+                      onClick={downloadForms}
+                      disabled={formCheckList.length === 0}
+                    >
+                      <i className="fa fa-download fa-lg" aria-hidden="true" />{" "}
+                      {t("Download Form")}{" "}
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
 
-            </div>
-
-          {
-            tabValue === 0 ? (
-            <FormTable />
-            ) : (
-
-              <BundleTable />
-            )
-          }
-
-
-
-
+            {tabValue === 0 ? <FormTable /> : <BundleTable />}
           </section>
         </div>
       )}
@@ -652,7 +655,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       formCheckList,
       applicationCount,
       fetchForms,
-      formType
+      formType,
     ) => {
       e.currentTarget.disabled = true;
       if (!applicationCount) {
@@ -660,27 +663,37 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       }
       if (formProcessData.id) {
         // need to delete form from bundle table when form delete
-        const deleteBundle = true ;
+        const deleteBundle = true;
         dispatch(
-          deleteFormProcessMapper(formProcessData.id,deleteBundle, (err) => {
+          deleteFormProcessMapper(formProcessData.id, deleteBundle, (err) => {
             if (err) {
               toast.error(
                 <Translation>
-                  {(t) => t(`${formType === 'form' ? 'Form' : 'Bundle'}  delete unsuccessfull`)}
-                </Translation>
+                  {(t) =>
+                    t(
+                      `${formType === "form" ? "Form" : "Bundle"}  delete unsuccessfull`,
+                    )
+                  }
+                </Translation>,
               );
             } else {
               dispatch(resetFormProcessData());
               toast.success(
-                <Translation>{(t) => t(`${formType === 'form' ? 'Form' : 'Bundle'} deleted successfully`)}</Translation>
+                <Translation>
+                  {(t) =>
+                    t(
+                      `${formType === "form" ? "Form" : "Bundle"} deleted successfully`,
+                    )
+                  }
+                </Translation>,
               );
               const newFormCheckList = formCheckList.filter(
-                (i) => i.formId !== formId
+                (i) => i.formId !== formId,
               );
               dispatch(setFormCheckList(newFormCheckList));
             }
             fetchForms();
-          })
+          }),
         );
       }
       const formDetails = {

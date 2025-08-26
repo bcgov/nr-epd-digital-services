@@ -1,396 +1,937 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class masterScript1738714892597 implements MigrationInterface {
-    name = 'masterScript1738714892597'
+  name = 'masterScript1738714892597';
 
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`CREATE TABLE "cats"."app_expense" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "expense_amt" numeric(10,2) NOT NULL, "description" character varying(100) NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_954a38504aab44cae54517200c9" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_app_expense" ON "cats"."app_expense" ("id") `);
-        await queryRunner.query(`CREATE INDEX "idx_app_expense_application_id" ON "cats"."app_expense" ("application_id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."app_note" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "note_date" date NOT NULL, "note_text" character varying(4000) NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_4cda7882e1e397f9d548f2c77a9" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_app_note" ON "cats"."app_note" ("id") `);
-        await queryRunner.query(`CREATE INDEX "idx_app_note_application_id" ON "cats"."app_note" ("application_id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."organization" ("id" SERIAL NOT NULL, "name" character varying(250) NOT NULL, "is_tax_exempt" boolean NOT NULL, "is_env_consultant" boolean NOT NULL, "is_ministry" boolean NOT NULL, "address1" character varying(50), "address2" character varying(50), "city" character varying(50), "prov" character varying(2), "country" character varying(50), "postal" character varying(15), "phone" character varying(50), "mobile" character varying(50), "fax" character varying(50), "email" character varying(50), "is_active" boolean NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_472c1f99a32def1b0abb219cd67" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_organization" ON "cats"."organization" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."participant_role" ("id" SERIAL NOT NULL, "abbrev" character varying(20), "description" character varying(250) NOT NULL, "is_ministry" boolean NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_ca809535b62b26dc27fe525ff50" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_participant_role" ON "cats"."participant_role" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."timesheet_week" ("start_date" date NOT NULL, "end_date" date, "description" character varying(63), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_190718e322621b606b66fbb96e5" PRIMARY KEY ("start_date"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_timesheet_week" ON "cats"."timesheet_week" ("start_date") `);
-        await queryRunner.query(`CREATE INDEX "idx_timesheet_week_end_date" ON "cats"."timesheet_week" ("end_date") `);
-        await queryRunner.query(`CREATE TABLE "cats"."timesheet_detail" ("id" SERIAL NOT NULL, "timesheet_id" integer NOT NULL, "date_offset" smallint NOT NULL, "hours" numeric(5,2), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_ea6f7f9ec31527e14a783a7cbe2" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE INDEX "idx_timesheet_detail_timesheet_id" ON "cats"."timesheet_detail" ("timesheet_id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_timesheet_detail" ON "cats"."timesheet_detail" ("id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "uidx_timesheet_detail_timesheet_id_date_offset" ON "cats"."timesheet_detail" ("date_offset", "timesheet_id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."timesheet" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "person_id" integer NOT NULL, "week_start_date" date NOT NULL, "comment" character varying(4000), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_53c30fa094ae81f166955fb1036" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE INDEX "idx_timesheet_week_start_date" ON "cats"."timesheet" ("week_start_date") `);
-        await queryRunner.query(`CREATE INDEX "idx_timesheet_person_id" ON "cats"."timesheet" ("person_id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_timesheet" ON "cats"."timesheet" ("id") `);
-        await queryRunner.query(`CREATE INDEX "idx_timesheet_application_id" ON "cats"."timesheet" ("application_id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."person" ("id" SERIAL NOT NULL, "first_name" character varying(50) NOT NULL, "middle_name" character varying(50), "last_name" character varying(50) NOT NULL, "is_tax_exempt" boolean NOT NULL, "is_env_consultant" boolean NOT NULL, "login_user_name" character varying(20), "address_1" character varying(50), "address_2" character varying(50), "city" character varying(50), "prov" character varying(2), "country" character varying(50), "postal" character varying(15), "phone" character varying(50), "mobile" character varying(50), "fax" character varying(50), "email" character varying(100), "is_active" boolean NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_datetime" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_datetime" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_5fdaf670315c4b7e70cce85daa3" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_person" ON "cats"."person" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."app_participant" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "person_id" integer NOT NULL, "participant_role_id" integer NOT NULL, "organization_id" integer, "is_main_participant" boolean NOT NULL, "effective_start_date" date NOT NULL, "effective_end_date" date, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_ae694476d44446b69c2c7279f86" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE INDEX "idx_app_participant_person_id" ON "cats"."app_participant" ("person_id") `);
-        await queryRunner.query(`CREATE INDEX "idx_app_participant_participant_role_id" ON "cats"."app_participant" ("participant_role_id") `);
-        await queryRunner.query(`CREATE INDEX "idx_app_participant_organization_id" ON "cats"."app_participant" ("organization_id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_app_participant" ON "cats"."app_participant" ("id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "uidx_application_id_participant_role_id" ON "cats"."app_participant" ("application_id", "participant_role_id") `);
-        await queryRunner.query(`CREATE INDEX "idx_app_participant_application_id" ON "cats"."app_participant" ("application_id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."priority" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_413921aa4a118e20f361ceba8b4" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_priority" ON "cats"."priority" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."app_priority" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "priority_id" integer NOT NULL, "is_current" boolean NOT NULL, "comment" character varying(4000), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_0734028447966e0277b8b6ee51f" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE INDEX "idx_app_priority_priority_id" ON "cats"."app_priority" ("priority_id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_app_priority" ON "cats"."app_priority" ("id") `);
-        await queryRunner.query(`CREATE INDEX "idx_app_priority_application_id" ON "cats"."app_priority" ("application_id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."sediment_use" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_89b62a79faac99ba6b9bcd8aae0" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_sediment_use" ON "cats"."sediment_use" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."app_sediment_use" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "sediment_use_id" integer NOT NULL, "is_current" boolean NOT NULL, "comment" character varying(4000), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_e6469a8cc346fbe537d63aafff5" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE INDEX "idx_app_sediment_use_sediment_use_id" ON "cats"."app_sediment_use" ("sediment_use_id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_app_sediment_use" ON "cats"."app_sediment_use" ("id") `);
-        await queryRunner.query(`CREATE INDEX "idx_app_sediment_use_application_id" ON "cats"."app_sediment_use" ("application_id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."app_type" ("id" SERIAL NOT NULL, "abbrev" character varying(20), "description" character varying(250) NOT NULL, "fore_colour" integer NOT NULL, "back_colour" integer NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_315897c37411b6ff1b98f5cc7dd" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_app_type" ON "cats"."app_type" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."app_type_default_service" ("id" SERIAL NOT NULL, "app_type_id" integer NOT NULL, "service_id" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_b3b1a8d4896a0327afa437ecdbc" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE INDEX "idx_app_type_default_service_service_id" ON "cats"."app_type_default_service" ("service_id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_app_type_default_service" ON "cats"."app_type_default_service" ("id") `);
-        await queryRunner.query(`CREATE INDEX "idx_app_type_default_service_app_type_id" ON "cats"."app_type_default_service" ("app_type_id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."service_fee_schedule" ("id" SERIAL NOT NULL, "service_id" integer NOT NULL, "fee" numeric(10,2) NOT NULL, "credit_hours" numeric(8,2) NOT NULL, "resubmission_fee" numeric(10,2) NOT NULL, "resubmission_credit_hours" numeric(8,2) NOT NULL, "effective_start_date" date NOT NULL, "effective_end_date" date, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_a51e90acac990b97616cddf551c" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE INDEX "idx_service_fee_schedule_service_id" ON "cats"."service_fee_schedule" ("service_id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_service_fee_schedule" ON "cats"."service_fee_schedule" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."service_category_type" ("id" SERIAL NOT NULL, "abbrev" character varying(20), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_47d79097a01eb43afd0e80244e0" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_service_category_type" ON "cats"."service_category_type" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."service_category" ("id" SERIAL NOT NULL, "service_category_type_id" integer NOT NULL, "abbrev" character varying(20), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_9d513b39d251063f98f2a7b941d" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE INDEX "idx_service_category_service_category_type_id" ON "cats"."service_category" ("service_category_type_id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_service_category" ON "cats"."service_category" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."service_service_category" ("id" SERIAL NOT NULL, "service_id" integer NOT NULL, "service_category_id" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_a52ed144010ffdd7d13bb40bb6b" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE INDEX "idx_service_service_category_service_id" ON "cats"."service_service_category" ("service_id") `);
-        await queryRunner.query(`CREATE INDEX "idx_service_service_category_service_category_id" ON "cats"."service_service_category" ("service_category_id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_service_service_category" ON "cats"."service_service_category" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."service" ("id" SERIAL NOT NULL, "abbrev" character varying(100), "description" character varying(250) NOT NULL, "is_risk_assessment" boolean NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_85a21558c006647cd76fdce044b" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_service" ON "cats"."service" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."app_service" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "service_id" integer NOT NULL, "is_resubmission" boolean NOT NULL, "default_credit_hours" numeric(8,2) NOT NULL, "default_fee" numeric(10,2) NOT NULL, "override_credit_hours" numeric(8,2), "override_fee" numeric(10,2), "fee" numeric(10,2) NOT NULL, "credit_hours" numeric(8,2) NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_48ce728e9b22d2d21bee663baa8" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE INDEX "idx_app_service_service_id" ON "cats"."app_service" ("service_id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_app_service" ON "cats"."app_service" ("id") `);
-        await queryRunner.query(`CREATE INDEX "idx_app_service_application_id" ON "cats"."app_service" ("application_id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."status_type" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_548d1ae2bf8b0817504031487b7" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_status_type" ON "cats"."status_type" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."app_status" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "status_type_id" integer NOT NULL, "is_current" boolean NOT NULL, "comment" character varying(4000), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "REL_33e54882e3e4e9145299f480de" UNIQUE ("application_id"), CONSTRAINT "PK_0c2381457cdd4aa4e55e3ff293d" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE INDEX "idx_app_status_status_type_id" ON "cats"."app_status" ("status_type_id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_app_status" ON "cats"."app_status" ("id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "uidx_app_status_is_current_application_id" ON "cats"."app_status" ("application_id") `);
-        await queryRunner.query(`CREATE INDEX "idx_app_status_application_id" ON "cats"."app_status" ("application_id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."vapour_use" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_c9830219879e0b7944c08546f48" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_vapour_use" ON "cats"."vapour_use" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."app_vapour_use" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "vapour_use_id" integer NOT NULL, "is_current" boolean NOT NULL, "comment" character varying(4000), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_9b17773b5ef081ff0d9160d7aef" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE INDEX "idx_app_vapour_use_vapour_use_id" ON "cats"."app_vapour_use" ("vapour_use_id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_app_vapour_use" ON "cats"."app_vapour_use" ("id") `);
-        await queryRunner.query(`CREATE INDEX "idx_app_vapour_use_application_id" ON "cats"."app_vapour_use" ("application_id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."water_use" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_41fabf887acabb93dc668ff4c4c" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_water_use" ON "cats"."water_use" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."app_water_use" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "water_use_id" integer NOT NULL, "is_current" boolean NOT NULL, "comment" character varying(4000), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_f67841ed1a372695d46d179f937" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE INDEX "idx_app_water_use_water_use_id" ON "cats"."app_water_use" ("water_use_id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_app_water_use" ON "cats"."app_water_use" ("id") `);
-        await queryRunner.query(`CREATE INDEX "idx_app_water_use_application_id" ON "cats"."app_water_use" ("application_id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."media" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_f4e0fcac36e050de337b670d8bd" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_media" ON "cats"."media" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."oceans" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_df38836fe61206d749ba9d571c3" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_oceans" ON "cats"."oceans" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."outcome" ("id" SERIAL NOT NULL, "abbrev" character varying(20), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_d721e56b4240f79aaa14cb54775" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_outcome" ON "cats"."outcome" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."review_process" ("id" SERIAL NOT NULL, "abbrev" character varying(20), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_628f8d6614f77da4340cdf96b9c" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_review_process" ON "cats"."review_process" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."risk" ("id" SERIAL NOT NULL, "abbrev" character varying(20), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_955c5a23813b1704181c9a5f7c8" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_risk" ON "cats"."risk" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."region" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_5f48ffc3af96bc486f5f3f3a6da" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_region" ON "cats"."region" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."site" ("id" integer NOT NULL, "common_name" character varying(50) NOT NULL, "regional_file" character varying(50), "victoria_file" character varying(50), "address" character varying(50), "city" character varying(50), "is_active" boolean NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, "region_id" integer, CONSTRAINT "PK_635c0eeabda8862d5b0237b42b4" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_site" ON "cats"."site" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."site_type" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_1e979abce770c3cabdb5838a9a1" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_site_type" ON "cats"."site_type" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."housing_type" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_fb994d482ff1062f6751f1af510" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_housing_type" ON "cats"."housing_type" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."yes_no_code" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_76644df805d6c7e21cf82478aa9" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_yes_no_code" ON "cats"."yes_no_code" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."housing" ("id" SERIAL NOT NULL, "number_of_units" integer NOT NULL, "effective_date" TIMESTAMP NOT NULL, "expiry_date" TIMESTAMP, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, "housing_type_id" integer, "is_indigenous_led" integer, "is_rental" integer, "is_social" integer, CONSTRAINT "PK_fac21a104febb2697b71464c579" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_housing" ON "cats"."housing" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."housing_application_xref" ("id" SERIAL NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, "application_id" integer, "housing_id" integer, CONSTRAINT "PK_d9da53664f01a26ea41e7cdcfa1" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_housing_application_xref" ON "cats"."housing_application_xref" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."payment_method" ("id" SERIAL NOT NULL, "abbrev" character varying(20), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_7744c2b2dd932c9cf42f2b9bc3a" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_payment_method" ON "cats"."payment_method" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."payment" ("id" SERIAL NOT NULL, "invoice_id" integer NOT NULL, "payment_method_id" integer NOT NULL, "payment_date" date NOT NULL, "payment_amt" numeric(10,2) NOT NULL, "cheque_number" character varying(20), "cheque_amt" numeric(10,2), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_fcaec7df5adf9cac408c686b2ab" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE INDEX "idx_payment_payment_method_id" ON "cats"."payment" ("payment_method_id") `);
-        await queryRunner.query(`CREATE INDEX "idx_payment_invoice_id" ON "cats"."payment" ("invoice_id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_payment" ON "cats"."payment" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."invoice" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "invoice_num" smallint NOT NULL, "sent_to_revenue_date" date, "invoice_subtotal_amt" numeric(10,2) NOT NULL, "invoice_tax_amt" numeric(10,2) NOT NULL, "invoice_total_amt" numeric(11,2), "comment" character varying(4000), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_15d25c200d9bcd8a33f698daf18" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_invoice" ON "cats"."invoice" ("id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "uidx_invoice_application_id_invoice_num" ON "cats"."invoice" ("application_id", "invoice_num") `);
-        await queryRunner.query(`CREATE INDEX "idx_invoice_application_id" ON "cats"."invoice" ("application_id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."application" ("id" SERIAL NOT NULL, "site_id" integer, "app_type_id" integer NOT NULL, "outcome_id" integer, "review_process_id" integer, "risk_id" integer, "received_date" date NOT NULL, "end_date" date, "app_description" character varying(50), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, "csap_ref_number" character varying(50), "media_id" integer, "oceans_id" integer, "site_type_id" integer, CONSTRAINT "PK_569e0c3e863ebdf5f2408ee1670" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE INDEX "idx_application_site_id" ON "cats"."application" ("site_id") `);
-        await queryRunner.query(`CREATE INDEX "idx_application_risk_id" ON "cats"."application" ("risk_id") `);
-        await queryRunner.query(`CREATE INDEX "idx_application_review_process_id" ON "cats"."application" ("review_process_id") `);
-        await queryRunner.query(`CREATE INDEX "idx_application_outcome_id" ON "cats"."application" ("outcome_id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_application" ON "cats"."application" ("id") `);
-        await queryRunner.query(`CREATE INDEX "idx_application_app_type_id" ON "cats"."application" ("app_type_id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."land_use" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_dc99c1b34400daf4849cb9ead46" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_land_use" ON "cats"."land_use" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."app_land_use" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "land_use_id" integer NOT NULL, "is_current" boolean NOT NULL, "comment" character varying(4000), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_5be47d0e5ed32310172e4489d6f" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE INDEX "idx_app_land_use_land_use_id" ON "cats"."app_land_use" ("land_use_id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_app_land_use" ON "cats"."app_land_use" ("id") `);
-        await queryRunner.query(`CREATE INDEX "idx_app_land_use_application_id" ON "cats"."app_land_use" ("application_id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."application_fee_schedule" ("id" SERIAL NOT NULL, "hourly_fee" numeric(10,2) NOT NULL, "effective_start_date" date NOT NULL, "effective_end_date" date, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_99b5ea76226fee66deb0c4a24ab" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_application_fee_schedule" ON "cats"."application_fee_schedule" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."help_screen" ("id" SERIAL NOT NULL, "screen_identifier_code" character varying(100) NOT NULL, "screen_description" character varying(100) NOT NULL, "help_html" text, "is_help_author_only" boolean NOT NULL, "is_admin_only" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(100) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(100) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_6505681527654ceebeb77ecf306" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "udx_help_screen_screen_identifier_code" ON "cats"."help_screen" ("screen_identifier_code") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_help_screen" ON "cats"."help_screen" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."housing_site_xref" ("id" SERIAL NOT NULL, "site_id" integer NOT NULL, "housing_id" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_10819b2ba5cb426ef2987be4553" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_housing_site_xref" ON "cats"."housing_site_xref" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."system_setting" ("id" smallint NOT NULL, "environment" character varying(20), "ministry" character varying(100), "branch" character varying(100), "report_folder_path" character varying(500), "export_folder_path" character varying(500), "invoice_folder_path" character varying(500), "admin_sql_server_role" character varying(100), "manager_sql_server_role" character varying(100), "caseworker_sql_server_role" character varying(100), "guest_sql_server_role" character varying(100), "help_author_sql_server_role" character varying(100), "admin_domain_group" character varying(100), "manager_domain_group" character varying(100), "caseworker_domain_group" character varying(100), "guest_domain_group" character varying(100), "help_author_domain_group" character varying(100), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_88dbc9b10c8558420acf7ea642f" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_system_setting" ON "cats"."system_setting" ("id") `);
-        await queryRunner.query(`CREATE TABLE "cats"."tax_schedule" ("id" SERIAL NOT NULL, "tax_name" character varying(20) NOT NULL, "tax_rate" numeric(5,4) NOT NULL, "effective_start_date" date NOT NULL, "effective_end_date" date, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_ef16ab96a4bb2f25c914881bdc2" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE UNIQUE INDEX "pk_tax_schedule" ON "cats"."tax_schedule" ("id") `);
-        await queryRunner.query(`ALTER TABLE "cats"."app_expense" ADD CONSTRAINT "FK_db71a568d1a95c4bef76245552c" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_note" ADD CONSTRAINT "FK_cccdae52ee54df6328e85084546" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."timesheet_detail" ADD CONSTRAINT "FK_2b5e9174464779a604f1ef5a8a5" FOREIGN KEY ("timesheet_id") REFERENCES "cats"."timesheet"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."timesheet" ADD CONSTRAINT "FK_d864834c35c2219ed371cb11c54" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."timesheet" ADD CONSTRAINT "FK_b0470c34c655edce944d475188c" FOREIGN KEY ("person_id") REFERENCES "cats"."person"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."timesheet" ADD CONSTRAINT "FK_190718e322621b606b66fbb96e5" FOREIGN KEY ("week_start_date") REFERENCES "cats"."timesheet_week"("start_date") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_participant" ADD CONSTRAINT "FK_32ee91a97d76a2288392955a653" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_participant" ADD CONSTRAINT "FK_fc8b05f5ffce6e5605e459c0b33" FOREIGN KEY ("organization_id") REFERENCES "cats"."organization"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_participant" ADD CONSTRAINT "FK_754c602cbf069fe52083bffbb33" FOREIGN KEY ("participant_role_id") REFERENCES "cats"."participant_role"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_participant" ADD CONSTRAINT "FK_d69adf33c561ad7ed370aeab9c3" FOREIGN KEY ("person_id") REFERENCES "cats"."person"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_priority" ADD CONSTRAINT "FK_bedd2bad24c5c20b74f4824d0c5" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_priority" ADD CONSTRAINT "FK_6ecdba4c530ad1a5048e470debc" FOREIGN KEY ("priority_id") REFERENCES "cats"."priority"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_sediment_use" ADD CONSTRAINT "FK_b382d5521fb8ea18a230610a97f" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_sediment_use" ADD CONSTRAINT "FK_6109bdd19eceef0cc3184e548a0" FOREIGN KEY ("sediment_use_id") REFERENCES "cats"."sediment_use"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_type_default_service" ADD CONSTRAINT "FK_10fab1c9f5cb61fc28d5ad744ea" FOREIGN KEY ("app_type_id") REFERENCES "cats"."app_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_type_default_service" ADD CONSTRAINT "FK_ccd20cc0606ce30ffa4b81a2065" FOREIGN KEY ("service_id") REFERENCES "cats"."service"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."service_fee_schedule" ADD CONSTRAINT "FK_d79bc793f73abc1b99f487216e4" FOREIGN KEY ("service_id") REFERENCES "cats"."service"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."service_category" ADD CONSTRAINT "FK_ea16da07fd0fae24fec2d96c904" FOREIGN KEY ("service_category_type_id") REFERENCES "cats"."service_category_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."service_service_category" ADD CONSTRAINT "FK_10a41f665313750b2f5604a5f84" FOREIGN KEY ("service_category_id") REFERENCES "cats"."service_category"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."service_service_category" ADD CONSTRAINT "FK_aa877d7a01e847d846f82d62f30" FOREIGN KEY ("service_id") REFERENCES "cats"."service"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_service" ADD CONSTRAINT "FK_fe93388593bc658d85ea273ff7c" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_service" ADD CONSTRAINT "FK_26bca45f32897d3c7be10ea3f87" FOREIGN KEY ("service_id") REFERENCES "cats"."service"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_status" ADD CONSTRAINT "FK_33e54882e3e4e9145299f480dea" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_status" ADD CONSTRAINT "FK_8ac58b4e9716be7e66f5b38f3aa" FOREIGN KEY ("status_type_id") REFERENCES "cats"."status_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_vapour_use" ADD CONSTRAINT "FK_62337cd602186247eac2b453b48" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_vapour_use" ADD CONSTRAINT "FK_c3e4aaf2a61ceb002cddffb9b33" FOREIGN KEY ("vapour_use_id") REFERENCES "cats"."vapour_use"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_water_use" ADD CONSTRAINT "FK_dd567f0204670d80558e3bc3fa7" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_water_use" ADD CONSTRAINT "FK_95c83bae855454fa326c382b5c6" FOREIGN KEY ("water_use_id") REFERENCES "cats"."water_use"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."site" ADD CONSTRAINT "FK_ff7a13fae129f15180a3e36f9e2" FOREIGN KEY ("region_id") REFERENCES "cats"."region"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."housing" ADD CONSTRAINT "FK_0e288c856dc8d10953704f0e093" FOREIGN KEY ("housing_type_id") REFERENCES "cats"."housing_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."housing" ADD CONSTRAINT "FK_e18d567d7b9042c9e0e5a695706" FOREIGN KEY ("is_indigenous_led") REFERENCES "cats"."yes_no_code"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."housing" ADD CONSTRAINT "FK_6a5c141ba37b75909cc5484e241" FOREIGN KEY ("is_rental") REFERENCES "cats"."yes_no_code"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."housing" ADD CONSTRAINT "FK_d3cf51a2379d9618f4514a3a3a6" FOREIGN KEY ("is_social") REFERENCES "cats"."yes_no_code"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."housing_application_xref" ADD CONSTRAINT "FK_4c801486a962180131ff41580f0" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."housing_application_xref" ADD CONSTRAINT "FK_6a80a2d561fc495de35abfff2fd" FOREIGN KEY ("housing_id") REFERENCES "cats"."housing"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."payment" ADD CONSTRAINT "FK_20cc84d8a2274ae86f551360c11" FOREIGN KEY ("invoice_id") REFERENCES "cats"."invoice"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."payment" ADD CONSTRAINT "FK_365af7f69f9142427cf30395b00" FOREIGN KEY ("payment_method_id") REFERENCES "cats"."payment_method"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."invoice" ADD CONSTRAINT "FK_9c4e6e7c45a8240bd8632552ad0" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."application" ADD CONSTRAINT "FK_753214ec5e2f67cb923e3f75a93" FOREIGN KEY ("app_type_id") REFERENCES "cats"."app_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."application" ADD CONSTRAINT "FK_b3ed1ffeb29725824857c9b3b58" FOREIGN KEY ("media_id") REFERENCES "cats"."media"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."application" ADD CONSTRAINT "FK_e28ef34074f6502daf04ad80592" FOREIGN KEY ("oceans_id") REFERENCES "cats"."oceans"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."application" ADD CONSTRAINT "FK_a4c2c8329e94672b3d7512037f9" FOREIGN KEY ("outcome_id") REFERENCES "cats"."outcome"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."application" ADD CONSTRAINT "FK_d82c4cf283861e30b84be8ccff8" FOREIGN KEY ("review_process_id") REFERENCES "cats"."review_process"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."application" ADD CONSTRAINT "FK_a88f28341d5b1ab658773d9be55" FOREIGN KEY ("risk_id") REFERENCES "cats"."risk"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."application" ADD CONSTRAINT "FK_b26ef2c7ff60863c8194498b290" FOREIGN KEY ("site_id") REFERENCES "cats"."site"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."application" ADD CONSTRAINT "FK_f5887b15e9f84cdcf52fb500ecc" FOREIGN KEY ("site_type_id") REFERENCES "cats"."site_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_land_use" ADD CONSTRAINT "FK_47aca9a1d59b048c56134a1471a" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_land_use" ADD CONSTRAINT "FK_8500127b10941a7f8b2c6cd06fb" FOREIGN KEY ("land_use_id") REFERENCES "cats"."land_use"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-    }
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+      `CREATE TABLE "cats"."app_expense" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "expense_amt" numeric(10,2) NOT NULL, "description" character varying(100) NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_954a38504aab44cae54517200c9" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_app_expense" ON "cats"."app_expense" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_expense_application_id" ON "cats"."app_expense" ("application_id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."app_note" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "note_date" date NOT NULL, "note_text" character varying(4000) NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_4cda7882e1e397f9d548f2c77a9" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_app_note" ON "cats"."app_note" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_note_application_id" ON "cats"."app_note" ("application_id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."organization" ("id" SERIAL NOT NULL, "name" character varying(250) NOT NULL, "is_tax_exempt" boolean NOT NULL, "is_env_consultant" boolean NOT NULL, "is_ministry" boolean NOT NULL, "address1" character varying(50), "address2" character varying(50), "city" character varying(50), "prov" character varying(2), "country" character varying(50), "postal" character varying(15), "phone" character varying(50), "mobile" character varying(50), "fax" character varying(50), "email" character varying(50), "is_active" boolean NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_472c1f99a32def1b0abb219cd67" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_organization" ON "cats"."organization" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."participant_role" ("id" SERIAL NOT NULL, "abbrev" character varying(20), "description" character varying(250) NOT NULL, "is_ministry" boolean NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_ca809535b62b26dc27fe525ff50" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_participant_role" ON "cats"."participant_role" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."timesheet_week" ("start_date" date NOT NULL, "end_date" date, "description" character varying(63), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_190718e322621b606b66fbb96e5" PRIMARY KEY ("start_date"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_timesheet_week" ON "cats"."timesheet_week" ("start_date") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_timesheet_week_end_date" ON "cats"."timesheet_week" ("end_date") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."timesheet_detail" ("id" SERIAL NOT NULL, "timesheet_id" integer NOT NULL, "date_offset" smallint NOT NULL, "hours" numeric(5,2), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_ea6f7f9ec31527e14a783a7cbe2" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_timesheet_detail_timesheet_id" ON "cats"."timesheet_detail" ("timesheet_id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_timesheet_detail" ON "cats"."timesheet_detail" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "uidx_timesheet_detail_timesheet_id_date_offset" ON "cats"."timesheet_detail" ("date_offset", "timesheet_id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."timesheet" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "person_id" integer NOT NULL, "week_start_date" date NOT NULL, "comment" character varying(4000), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_53c30fa094ae81f166955fb1036" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_timesheet_week_start_date" ON "cats"."timesheet" ("week_start_date") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_timesheet_person_id" ON "cats"."timesheet" ("person_id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_timesheet" ON "cats"."timesheet" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_timesheet_application_id" ON "cats"."timesheet" ("application_id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."person" ("id" SERIAL NOT NULL, "first_name" character varying(50) NOT NULL, "middle_name" character varying(50), "last_name" character varying(50) NOT NULL, "is_tax_exempt" boolean NOT NULL, "is_env_consultant" boolean NOT NULL, "login_user_name" character varying(20), "address_1" character varying(50), "address_2" character varying(50), "city" character varying(50), "prov" character varying(2), "country" character varying(50), "postal" character varying(15), "phone" character varying(50), "mobile" character varying(50), "fax" character varying(50), "email" character varying(100), "is_active" boolean NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_datetime" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_datetime" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_5fdaf670315c4b7e70cce85daa3" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_person" ON "cats"."person" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."app_participant" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "person_id" integer NOT NULL, "participant_role_id" integer NOT NULL, "organization_id" integer, "is_main_participant" boolean NOT NULL, "effective_start_date" date NOT NULL, "effective_end_date" date, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_ae694476d44446b69c2c7279f86" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_participant_person_id" ON "cats"."app_participant" ("person_id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_participant_participant_role_id" ON "cats"."app_participant" ("participant_role_id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_participant_organization_id" ON "cats"."app_participant" ("organization_id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_app_participant" ON "cats"."app_participant" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "uidx_application_id_participant_role_id" ON "cats"."app_participant" ("application_id", "participant_role_id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_participant_application_id" ON "cats"."app_participant" ("application_id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."priority" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_413921aa4a118e20f361ceba8b4" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_priority" ON "cats"."priority" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."app_priority" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "priority_id" integer NOT NULL, "is_current" boolean NOT NULL, "comment" character varying(4000), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_0734028447966e0277b8b6ee51f" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_priority_priority_id" ON "cats"."app_priority" ("priority_id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_app_priority" ON "cats"."app_priority" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_priority_application_id" ON "cats"."app_priority" ("application_id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."sediment_use" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_89b62a79faac99ba6b9bcd8aae0" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_sediment_use" ON "cats"."sediment_use" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."app_sediment_use" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "sediment_use_id" integer NOT NULL, "is_current" boolean NOT NULL, "comment" character varying(4000), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_e6469a8cc346fbe537d63aafff5" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_sediment_use_sediment_use_id" ON "cats"."app_sediment_use" ("sediment_use_id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_app_sediment_use" ON "cats"."app_sediment_use" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_sediment_use_application_id" ON "cats"."app_sediment_use" ("application_id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."app_type" ("id" SERIAL NOT NULL, "abbrev" character varying(20), "description" character varying(250) NOT NULL, "fore_colour" integer NOT NULL, "back_colour" integer NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_315897c37411b6ff1b98f5cc7dd" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_app_type" ON "cats"."app_type" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."app_type_default_service" ("id" SERIAL NOT NULL, "app_type_id" integer NOT NULL, "service_id" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_b3b1a8d4896a0327afa437ecdbc" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_type_default_service_service_id" ON "cats"."app_type_default_service" ("service_id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_app_type_default_service" ON "cats"."app_type_default_service" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_type_default_service_app_type_id" ON "cats"."app_type_default_service" ("app_type_id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."service_fee_schedule" ("id" SERIAL NOT NULL, "service_id" integer NOT NULL, "fee" numeric(10,2) NOT NULL, "credit_hours" numeric(8,2) NOT NULL, "resubmission_fee" numeric(10,2) NOT NULL, "resubmission_credit_hours" numeric(8,2) NOT NULL, "effective_start_date" date NOT NULL, "effective_end_date" date, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_a51e90acac990b97616cddf551c" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_service_fee_schedule_service_id" ON "cats"."service_fee_schedule" ("service_id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_service_fee_schedule" ON "cats"."service_fee_schedule" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."service_category_type" ("id" SERIAL NOT NULL, "abbrev" character varying(20), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_47d79097a01eb43afd0e80244e0" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_service_category_type" ON "cats"."service_category_type" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."service_category" ("id" SERIAL NOT NULL, "service_category_type_id" integer NOT NULL, "abbrev" character varying(20), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_9d513b39d251063f98f2a7b941d" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_service_category_service_category_type_id" ON "cats"."service_category" ("service_category_type_id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_service_category" ON "cats"."service_category" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."service_service_category" ("id" SERIAL NOT NULL, "service_id" integer NOT NULL, "service_category_id" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_a52ed144010ffdd7d13bb40bb6b" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_service_service_category_service_id" ON "cats"."service_service_category" ("service_id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_service_service_category_service_category_id" ON "cats"."service_service_category" ("service_category_id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_service_service_category" ON "cats"."service_service_category" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."service" ("id" SERIAL NOT NULL, "abbrev" character varying(100), "description" character varying(250) NOT NULL, "is_risk_assessment" boolean NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_85a21558c006647cd76fdce044b" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_service" ON "cats"."service" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."app_service" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "service_id" integer NOT NULL, "is_resubmission" boolean NOT NULL, "default_credit_hours" numeric(8,2) NOT NULL, "default_fee" numeric(10,2) NOT NULL, "override_credit_hours" numeric(8,2), "override_fee" numeric(10,2), "fee" numeric(10,2) NOT NULL, "credit_hours" numeric(8,2) NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_48ce728e9b22d2d21bee663baa8" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_service_service_id" ON "cats"."app_service" ("service_id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_app_service" ON "cats"."app_service" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_service_application_id" ON "cats"."app_service" ("application_id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."status_type" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_548d1ae2bf8b0817504031487b7" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_status_type" ON "cats"."status_type" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."app_status" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "status_type_id" integer NOT NULL, "is_current" boolean NOT NULL, "comment" character varying(4000), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "REL_33e54882e3e4e9145299f480de" UNIQUE ("application_id"), CONSTRAINT "PK_0c2381457cdd4aa4e55e3ff293d" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_status_status_type_id" ON "cats"."app_status" ("status_type_id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_app_status" ON "cats"."app_status" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "uidx_app_status_is_current_application_id" ON "cats"."app_status" ("application_id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_status_application_id" ON "cats"."app_status" ("application_id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."vapour_use" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_c9830219879e0b7944c08546f48" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_vapour_use" ON "cats"."vapour_use" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."app_vapour_use" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "vapour_use_id" integer NOT NULL, "is_current" boolean NOT NULL, "comment" character varying(4000), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_9b17773b5ef081ff0d9160d7aef" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_vapour_use_vapour_use_id" ON "cats"."app_vapour_use" ("vapour_use_id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_app_vapour_use" ON "cats"."app_vapour_use" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_vapour_use_application_id" ON "cats"."app_vapour_use" ("application_id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."water_use" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_41fabf887acabb93dc668ff4c4c" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_water_use" ON "cats"."water_use" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."app_water_use" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "water_use_id" integer NOT NULL, "is_current" boolean NOT NULL, "comment" character varying(4000), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_f67841ed1a372695d46d179f937" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_water_use_water_use_id" ON "cats"."app_water_use" ("water_use_id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_app_water_use" ON "cats"."app_water_use" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_water_use_application_id" ON "cats"."app_water_use" ("application_id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."media" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_f4e0fcac36e050de337b670d8bd" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_media" ON "cats"."media" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."oceans" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_df38836fe61206d749ba9d571c3" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_oceans" ON "cats"."oceans" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."outcome" ("id" SERIAL NOT NULL, "abbrev" character varying(20), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_d721e56b4240f79aaa14cb54775" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_outcome" ON "cats"."outcome" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."review_process" ("id" SERIAL NOT NULL, "abbrev" character varying(20), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_628f8d6614f77da4340cdf96b9c" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_review_process" ON "cats"."review_process" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."risk" ("id" SERIAL NOT NULL, "abbrev" character varying(20), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_955c5a23813b1704181c9a5f7c8" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_risk" ON "cats"."risk" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."region" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_5f48ffc3af96bc486f5f3f3a6da" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_region" ON "cats"."region" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."site" ("id" integer NOT NULL, "common_name" character varying(50) NOT NULL, "regional_file" character varying(50), "victoria_file" character varying(50), "address" character varying(50), "city" character varying(50), "is_active" boolean NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, "region_id" integer, CONSTRAINT "PK_635c0eeabda8862d5b0237b42b4" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_site" ON "cats"."site" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."site_type" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_1e979abce770c3cabdb5838a9a1" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_site_type" ON "cats"."site_type" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."housing_type" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_fb994d482ff1062f6751f1af510" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_housing_type" ON "cats"."housing_type" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."yes_no_code" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_76644df805d6c7e21cf82478aa9" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_yes_no_code" ON "cats"."yes_no_code" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."housing" ("id" SERIAL NOT NULL, "number_of_units" integer NOT NULL, "effective_date" TIMESTAMP NOT NULL, "expiry_date" TIMESTAMP, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, "housing_type_id" integer, "is_indigenous_led" integer, "is_rental" integer, "is_social" integer, CONSTRAINT "PK_fac21a104febb2697b71464c579" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_housing" ON "cats"."housing" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."housing_application_xref" ("id" SERIAL NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, "application_id" integer, "housing_id" integer, CONSTRAINT "PK_d9da53664f01a26ea41e7cdcfa1" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_housing_application_xref" ON "cats"."housing_application_xref" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."payment_method" ("id" SERIAL NOT NULL, "abbrev" character varying(20), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_7744c2b2dd932c9cf42f2b9bc3a" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_payment_method" ON "cats"."payment_method" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."payment" ("id" SERIAL NOT NULL, "invoice_id" integer NOT NULL, "payment_method_id" integer NOT NULL, "payment_date" date NOT NULL, "payment_amt" numeric(10,2) NOT NULL, "cheque_number" character varying(20), "cheque_amt" numeric(10,2), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_fcaec7df5adf9cac408c686b2ab" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_payment_payment_method_id" ON "cats"."payment" ("payment_method_id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_payment_invoice_id" ON "cats"."payment" ("invoice_id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_payment" ON "cats"."payment" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."invoice" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "invoice_num" smallint NOT NULL, "sent_to_revenue_date" date, "invoice_subtotal_amt" numeric(10,2) NOT NULL, "invoice_tax_amt" numeric(10,2) NOT NULL, "invoice_total_amt" numeric(11,2), "comment" character varying(4000), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_15d25c200d9bcd8a33f698daf18" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_invoice" ON "cats"."invoice" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "uidx_invoice_application_id_invoice_num" ON "cats"."invoice" ("application_id", "invoice_num") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_invoice_application_id" ON "cats"."invoice" ("application_id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."application" ("id" SERIAL NOT NULL, "site_id" integer, "app_type_id" integer NOT NULL, "outcome_id" integer, "review_process_id" integer, "risk_id" integer, "received_date" date NOT NULL, "end_date" date, "app_description" character varying(50), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, "csap_ref_number" character varying(50), "media_id" integer, "oceans_id" integer, "site_type_id" integer, CONSTRAINT "PK_569e0c3e863ebdf5f2408ee1670" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_application_site_id" ON "cats"."application" ("site_id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_application_risk_id" ON "cats"."application" ("risk_id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_application_review_process_id" ON "cats"."application" ("review_process_id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_application_outcome_id" ON "cats"."application" ("outcome_id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_application" ON "cats"."application" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_application_app_type_id" ON "cats"."application" ("app_type_id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."land_use" ("id" SERIAL NOT NULL, "abbrev" character varying(50), "description" character varying(250) NOT NULL, "is_active" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_dc99c1b34400daf4849cb9ead46" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_land_use" ON "cats"."land_use" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."app_land_use" ("id" SERIAL NOT NULL, "application_id" integer NOT NULL, "land_use_id" integer NOT NULL, "is_current" boolean NOT NULL, "comment" character varying(4000), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_5be47d0e5ed32310172e4489d6f" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_land_use_land_use_id" ON "cats"."app_land_use" ("land_use_id") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_app_land_use" ON "cats"."app_land_use" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_app_land_use_application_id" ON "cats"."app_land_use" ("application_id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."application_fee_schedule" ("id" SERIAL NOT NULL, "hourly_fee" numeric(10,2) NOT NULL, "effective_start_date" date NOT NULL, "effective_end_date" date, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_99b5ea76226fee66deb0c4a24ab" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_application_fee_schedule" ON "cats"."application_fee_schedule" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."help_screen" ("id" SERIAL NOT NULL, "screen_identifier_code" character varying(100) NOT NULL, "screen_description" character varying(100) NOT NULL, "help_html" text, "is_help_author_only" boolean NOT NULL, "is_admin_only" boolean NOT NULL, "display_order" integer NOT NULL, "row_version_count" integer NOT NULL, "created_by" character varying(100) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(100) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_6505681527654ceebeb77ecf306" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "udx_help_screen_screen_identifier_code" ON "cats"."help_screen" ("screen_identifier_code") `,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_help_screen" ON "cats"."help_screen" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."housing_site_xref" ("id" SERIAL NOT NULL, "site_id" integer NOT NULL, "housing_id" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_10819b2ba5cb426ef2987be4553" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_housing_site_xref" ON "cats"."housing_site_xref" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."system_setting" ("id" smallint NOT NULL, "environment" character varying(20), "ministry" character varying(100), "branch" character varying(100), "report_folder_path" character varying(500), "export_folder_path" character varying(500), "invoice_folder_path" character varying(500), "admin_sql_server_role" character varying(100), "manager_sql_server_role" character varying(100), "caseworker_sql_server_role" character varying(100), "guest_sql_server_role" character varying(100), "help_author_sql_server_role" character varying(100), "admin_domain_group" character varying(100), "manager_domain_group" character varying(100), "caseworker_domain_group" character varying(100), "guest_domain_group" character varying(100), "help_author_domain_group" character varying(100), "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_88dbc9b10c8558420acf7ea642f" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_system_setting" ON "cats"."system_setting" ("id") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "cats"."tax_schedule" ("id" SERIAL NOT NULL, "tax_name" character varying(20) NOT NULL, "tax_rate" numeric(5,4) NOT NULL, "effective_start_date" date NOT NULL, "effective_end_date" date, "row_version_count" integer NOT NULL, "created_by" character varying(20) NOT NULL, "created_date_time" TIMESTAMP NOT NULL, "updated_by" character varying(20) NOT NULL, "updated_date_time" TIMESTAMP NOT NULL, "ts" bytea NOT NULL, CONSTRAINT "PK_ef16ab96a4bb2f25c914881bdc2" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "pk_tax_schedule" ON "cats"."tax_schedule" ("id") `,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_expense" ADD CONSTRAINT "FK_db71a568d1a95c4bef76245552c" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_note" ADD CONSTRAINT "FK_cccdae52ee54df6328e85084546" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."timesheet_detail" ADD CONSTRAINT "FK_2b5e9174464779a604f1ef5a8a5" FOREIGN KEY ("timesheet_id") REFERENCES "cats"."timesheet"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."timesheet" ADD CONSTRAINT "FK_d864834c35c2219ed371cb11c54" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."timesheet" ADD CONSTRAINT "FK_b0470c34c655edce944d475188c" FOREIGN KEY ("person_id") REFERENCES "cats"."person"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."timesheet" ADD CONSTRAINT "FK_190718e322621b606b66fbb96e5" FOREIGN KEY ("week_start_date") REFERENCES "cats"."timesheet_week"("start_date") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_participant" ADD CONSTRAINT "FK_32ee91a97d76a2288392955a653" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_participant" ADD CONSTRAINT "FK_fc8b05f5ffce6e5605e459c0b33" FOREIGN KEY ("organization_id") REFERENCES "cats"."organization"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_participant" ADD CONSTRAINT "FK_754c602cbf069fe52083bffbb33" FOREIGN KEY ("participant_role_id") REFERENCES "cats"."participant_role"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_participant" ADD CONSTRAINT "FK_d69adf33c561ad7ed370aeab9c3" FOREIGN KEY ("person_id") REFERENCES "cats"."person"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_priority" ADD CONSTRAINT "FK_bedd2bad24c5c20b74f4824d0c5" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_priority" ADD CONSTRAINT "FK_6ecdba4c530ad1a5048e470debc" FOREIGN KEY ("priority_id") REFERENCES "cats"."priority"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_sediment_use" ADD CONSTRAINT "FK_b382d5521fb8ea18a230610a97f" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_sediment_use" ADD CONSTRAINT "FK_6109bdd19eceef0cc3184e548a0" FOREIGN KEY ("sediment_use_id") REFERENCES "cats"."sediment_use"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_type_default_service" ADD CONSTRAINT "FK_10fab1c9f5cb61fc28d5ad744ea" FOREIGN KEY ("app_type_id") REFERENCES "cats"."app_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_type_default_service" ADD CONSTRAINT "FK_ccd20cc0606ce30ffa4b81a2065" FOREIGN KEY ("service_id") REFERENCES "cats"."service"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."service_fee_schedule" ADD CONSTRAINT "FK_d79bc793f73abc1b99f487216e4" FOREIGN KEY ("service_id") REFERENCES "cats"."service"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."service_category" ADD CONSTRAINT "FK_ea16da07fd0fae24fec2d96c904" FOREIGN KEY ("service_category_type_id") REFERENCES "cats"."service_category_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."service_service_category" ADD CONSTRAINT "FK_10a41f665313750b2f5604a5f84" FOREIGN KEY ("service_category_id") REFERENCES "cats"."service_category"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."service_service_category" ADD CONSTRAINT "FK_aa877d7a01e847d846f82d62f30" FOREIGN KEY ("service_id") REFERENCES "cats"."service"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_service" ADD CONSTRAINT "FK_fe93388593bc658d85ea273ff7c" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_service" ADD CONSTRAINT "FK_26bca45f32897d3c7be10ea3f87" FOREIGN KEY ("service_id") REFERENCES "cats"."service"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_status" ADD CONSTRAINT "FK_33e54882e3e4e9145299f480dea" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_status" ADD CONSTRAINT "FK_8ac58b4e9716be7e66f5b38f3aa" FOREIGN KEY ("status_type_id") REFERENCES "cats"."status_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_vapour_use" ADD CONSTRAINT "FK_62337cd602186247eac2b453b48" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_vapour_use" ADD CONSTRAINT "FK_c3e4aaf2a61ceb002cddffb9b33" FOREIGN KEY ("vapour_use_id") REFERENCES "cats"."vapour_use"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_water_use" ADD CONSTRAINT "FK_dd567f0204670d80558e3bc3fa7" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_water_use" ADD CONSTRAINT "FK_95c83bae855454fa326c382b5c6" FOREIGN KEY ("water_use_id") REFERENCES "cats"."water_use"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."site" ADD CONSTRAINT "FK_ff7a13fae129f15180a3e36f9e2" FOREIGN KEY ("region_id") REFERENCES "cats"."region"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."housing" ADD CONSTRAINT "FK_0e288c856dc8d10953704f0e093" FOREIGN KEY ("housing_type_id") REFERENCES "cats"."housing_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."housing" ADD CONSTRAINT "FK_e18d567d7b9042c9e0e5a695706" FOREIGN KEY ("is_indigenous_led") REFERENCES "cats"."yes_no_code"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."housing" ADD CONSTRAINT "FK_6a5c141ba37b75909cc5484e241" FOREIGN KEY ("is_rental") REFERENCES "cats"."yes_no_code"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."housing" ADD CONSTRAINT "FK_d3cf51a2379d9618f4514a3a3a6" FOREIGN KEY ("is_social") REFERENCES "cats"."yes_no_code"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."housing_application_xref" ADD CONSTRAINT "FK_4c801486a962180131ff41580f0" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."housing_application_xref" ADD CONSTRAINT "FK_6a80a2d561fc495de35abfff2fd" FOREIGN KEY ("housing_id") REFERENCES "cats"."housing"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."payment" ADD CONSTRAINT "FK_20cc84d8a2274ae86f551360c11" FOREIGN KEY ("invoice_id") REFERENCES "cats"."invoice"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."payment" ADD CONSTRAINT "FK_365af7f69f9142427cf30395b00" FOREIGN KEY ("payment_method_id") REFERENCES "cats"."payment_method"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."invoice" ADD CONSTRAINT "FK_9c4e6e7c45a8240bd8632552ad0" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."application" ADD CONSTRAINT "FK_753214ec5e2f67cb923e3f75a93" FOREIGN KEY ("app_type_id") REFERENCES "cats"."app_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."application" ADD CONSTRAINT "FK_b3ed1ffeb29725824857c9b3b58" FOREIGN KEY ("media_id") REFERENCES "cats"."media"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."application" ADD CONSTRAINT "FK_e28ef34074f6502daf04ad80592" FOREIGN KEY ("oceans_id") REFERENCES "cats"."oceans"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."application" ADD CONSTRAINT "FK_a4c2c8329e94672b3d7512037f9" FOREIGN KEY ("outcome_id") REFERENCES "cats"."outcome"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."application" ADD CONSTRAINT "FK_d82c4cf283861e30b84be8ccff8" FOREIGN KEY ("review_process_id") REFERENCES "cats"."review_process"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."application" ADD CONSTRAINT "FK_a88f28341d5b1ab658773d9be55" FOREIGN KEY ("risk_id") REFERENCES "cats"."risk"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."application" ADD CONSTRAINT "FK_b26ef2c7ff60863c8194498b290" FOREIGN KEY ("site_id") REFERENCES "cats"."site"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."application" ADD CONSTRAINT "FK_f5887b15e9f84cdcf52fb500ecc" FOREIGN KEY ("site_type_id") REFERENCES "cats"."site_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_land_use" ADD CONSTRAINT "FK_47aca9a1d59b048c56134a1471a" FOREIGN KEY ("application_id") REFERENCES "cats"."application"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_land_use" ADD CONSTRAINT "FK_8500127b10941a7f8b2c6cd06fb" FOREIGN KEY ("land_use_id") REFERENCES "cats"."land_use"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE "cats"."app_land_use" DROP CONSTRAINT "FK_8500127b10941a7f8b2c6cd06fb"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_land_use" DROP CONSTRAINT "FK_47aca9a1d59b048c56134a1471a"`);
-        await queryRunner.query(`ALTER TABLE "cats"."application" DROP CONSTRAINT "FK_f5887b15e9f84cdcf52fb500ecc"`);
-        await queryRunner.query(`ALTER TABLE "cats"."application" DROP CONSTRAINT "FK_b26ef2c7ff60863c8194498b290"`);
-        await queryRunner.query(`ALTER TABLE "cats"."application" DROP CONSTRAINT "FK_a88f28341d5b1ab658773d9be55"`);
-        await queryRunner.query(`ALTER TABLE "cats"."application" DROP CONSTRAINT "FK_d82c4cf283861e30b84be8ccff8"`);
-        await queryRunner.query(`ALTER TABLE "cats"."application" DROP CONSTRAINT "FK_a4c2c8329e94672b3d7512037f9"`);
-        await queryRunner.query(`ALTER TABLE "cats"."application" DROP CONSTRAINT "FK_e28ef34074f6502daf04ad80592"`);
-        await queryRunner.query(`ALTER TABLE "cats"."application" DROP CONSTRAINT "FK_b3ed1ffeb29725824857c9b3b58"`);
-        await queryRunner.query(`ALTER TABLE "cats"."application" DROP CONSTRAINT "FK_753214ec5e2f67cb923e3f75a93"`);
-        await queryRunner.query(`ALTER TABLE "cats"."invoice" DROP CONSTRAINT "FK_9c4e6e7c45a8240bd8632552ad0"`);
-        await queryRunner.query(`ALTER TABLE "cats"."payment" DROP CONSTRAINT "FK_365af7f69f9142427cf30395b00"`);
-        await queryRunner.query(`ALTER TABLE "cats"."payment" DROP CONSTRAINT "FK_20cc84d8a2274ae86f551360c11"`);
-        await queryRunner.query(`ALTER TABLE "cats"."housing_application_xref" DROP CONSTRAINT "FK_6a80a2d561fc495de35abfff2fd"`);
-        await queryRunner.query(`ALTER TABLE "cats"."housing_application_xref" DROP CONSTRAINT "FK_4c801486a962180131ff41580f0"`);
-        await queryRunner.query(`ALTER TABLE "cats"."housing" DROP CONSTRAINT "FK_d3cf51a2379d9618f4514a3a3a6"`);
-        await queryRunner.query(`ALTER TABLE "cats"."housing" DROP CONSTRAINT "FK_6a5c141ba37b75909cc5484e241"`);
-        await queryRunner.query(`ALTER TABLE "cats"."housing" DROP CONSTRAINT "FK_e18d567d7b9042c9e0e5a695706"`);
-        await queryRunner.query(`ALTER TABLE "cats"."housing" DROP CONSTRAINT "FK_0e288c856dc8d10953704f0e093"`);
-        await queryRunner.query(`ALTER TABLE "cats"."site" DROP CONSTRAINT "FK_ff7a13fae129f15180a3e36f9e2"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_water_use" DROP CONSTRAINT "FK_95c83bae855454fa326c382b5c6"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_water_use" DROP CONSTRAINT "FK_dd567f0204670d80558e3bc3fa7"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_vapour_use" DROP CONSTRAINT "FK_c3e4aaf2a61ceb002cddffb9b33"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_vapour_use" DROP CONSTRAINT "FK_62337cd602186247eac2b453b48"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_status" DROP CONSTRAINT "FK_8ac58b4e9716be7e66f5b38f3aa"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_status" DROP CONSTRAINT "FK_33e54882e3e4e9145299f480dea"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_service" DROP CONSTRAINT "FK_26bca45f32897d3c7be10ea3f87"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_service" DROP CONSTRAINT "FK_fe93388593bc658d85ea273ff7c"`);
-        await queryRunner.query(`ALTER TABLE "cats"."service_service_category" DROP CONSTRAINT "FK_aa877d7a01e847d846f82d62f30"`);
-        await queryRunner.query(`ALTER TABLE "cats"."service_service_category" DROP CONSTRAINT "FK_10a41f665313750b2f5604a5f84"`);
-        await queryRunner.query(`ALTER TABLE "cats"."service_category" DROP CONSTRAINT "FK_ea16da07fd0fae24fec2d96c904"`);
-        await queryRunner.query(`ALTER TABLE "cats"."service_fee_schedule" DROP CONSTRAINT "FK_d79bc793f73abc1b99f487216e4"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_type_default_service" DROP CONSTRAINT "FK_ccd20cc0606ce30ffa4b81a2065"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_type_default_service" DROP CONSTRAINT "FK_10fab1c9f5cb61fc28d5ad744ea"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_sediment_use" DROP CONSTRAINT "FK_6109bdd19eceef0cc3184e548a0"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_sediment_use" DROP CONSTRAINT "FK_b382d5521fb8ea18a230610a97f"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_priority" DROP CONSTRAINT "FK_6ecdba4c530ad1a5048e470debc"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_priority" DROP CONSTRAINT "FK_bedd2bad24c5c20b74f4824d0c5"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_participant" DROP CONSTRAINT "FK_d69adf33c561ad7ed370aeab9c3"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_participant" DROP CONSTRAINT "FK_754c602cbf069fe52083bffbb33"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_participant" DROP CONSTRAINT "FK_fc8b05f5ffce6e5605e459c0b33"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_participant" DROP CONSTRAINT "FK_32ee91a97d76a2288392955a653"`);
-        await queryRunner.query(`ALTER TABLE "cats"."timesheet" DROP CONSTRAINT "FK_190718e322621b606b66fbb96e5"`);
-        await queryRunner.query(`ALTER TABLE "cats"."timesheet" DROP CONSTRAINT "FK_b0470c34c655edce944d475188c"`);
-        await queryRunner.query(`ALTER TABLE "cats"."timesheet" DROP CONSTRAINT "FK_d864834c35c2219ed371cb11c54"`);
-        await queryRunner.query(`ALTER TABLE "cats"."timesheet_detail" DROP CONSTRAINT "FK_2b5e9174464779a604f1ef5a8a5"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_note" DROP CONSTRAINT "FK_cccdae52ee54df6328e85084546"`);
-        await queryRunner.query(`ALTER TABLE "cats"."app_expense" DROP CONSTRAINT "FK_db71a568d1a95c4bef76245552c"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_tax_schedule"`);
-        await queryRunner.query(`DROP TABLE "cats"."tax_schedule"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_system_setting"`);
-        await queryRunner.query(`DROP TABLE "cats"."system_setting"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_housing_site_xref"`);
-        await queryRunner.query(`DROP TABLE "cats"."housing_site_xref"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_help_screen"`);
-        await queryRunner.query(`DROP INDEX "cats"."udx_help_screen_screen_identifier_code"`);
-        await queryRunner.query(`DROP TABLE "cats"."help_screen"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_application_fee_schedule"`);
-        await queryRunner.query(`DROP TABLE "cats"."application_fee_schedule"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_land_use_application_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_app_land_use"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_land_use_land_use_id"`);
-        await queryRunner.query(`DROP TABLE "cats"."app_land_use"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_land_use"`);
-        await queryRunner.query(`DROP TABLE "cats"."land_use"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_application_app_type_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_application"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_application_outcome_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_application_review_process_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_application_risk_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_application_site_id"`);
-        await queryRunner.query(`DROP TABLE "cats"."application"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_invoice_application_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."uidx_invoice_application_id_invoice_num"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_invoice"`);
-        await queryRunner.query(`DROP TABLE "cats"."invoice"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_payment"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_payment_invoice_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_payment_payment_method_id"`);
-        await queryRunner.query(`DROP TABLE "cats"."payment"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_payment_method"`);
-        await queryRunner.query(`DROP TABLE "cats"."payment_method"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_housing_application_xref"`);
-        await queryRunner.query(`DROP TABLE "cats"."housing_application_xref"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_housing"`);
-        await queryRunner.query(`DROP TABLE "cats"."housing"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_yes_no_code"`);
-        await queryRunner.query(`DROP TABLE "cats"."yes_no_code"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_housing_type"`);
-        await queryRunner.query(`DROP TABLE "cats"."housing_type"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_site_type"`);
-        await queryRunner.query(`DROP TABLE "cats"."site_type"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_site"`);
-        await queryRunner.query(`DROP TABLE "cats"."site"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_region"`);
-        await queryRunner.query(`DROP TABLE "cats"."region"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_risk"`);
-        await queryRunner.query(`DROP TABLE "cats"."risk"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_review_process"`);
-        await queryRunner.query(`DROP TABLE "cats"."review_process"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_outcome"`);
-        await queryRunner.query(`DROP TABLE "cats"."outcome"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_oceans"`);
-        await queryRunner.query(`DROP TABLE "cats"."oceans"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_media"`);
-        await queryRunner.query(`DROP TABLE "cats"."media"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_water_use_application_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_app_water_use"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_water_use_water_use_id"`);
-        await queryRunner.query(`DROP TABLE "cats"."app_water_use"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_water_use"`);
-        await queryRunner.query(`DROP TABLE "cats"."water_use"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_vapour_use_application_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_app_vapour_use"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_vapour_use_vapour_use_id"`);
-        await queryRunner.query(`DROP TABLE "cats"."app_vapour_use"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_vapour_use"`);
-        await queryRunner.query(`DROP TABLE "cats"."vapour_use"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_status_application_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."uidx_app_status_is_current_application_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_app_status"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_status_status_type_id"`);
-        await queryRunner.query(`DROP TABLE "cats"."app_status"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_status_type"`);
-        await queryRunner.query(`DROP TABLE "cats"."status_type"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_service_application_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_app_service"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_service_service_id"`);
-        await queryRunner.query(`DROP TABLE "cats"."app_service"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_service"`);
-        await queryRunner.query(`DROP TABLE "cats"."service"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_service_service_category"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_service_service_category_service_category_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_service_service_category_service_id"`);
-        await queryRunner.query(`DROP TABLE "cats"."service_service_category"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_service_category"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_service_category_service_category_type_id"`);
-        await queryRunner.query(`DROP TABLE "cats"."service_category"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_service_category_type"`);
-        await queryRunner.query(`DROP TABLE "cats"."service_category_type"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_service_fee_schedule"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_service_fee_schedule_service_id"`);
-        await queryRunner.query(`DROP TABLE "cats"."service_fee_schedule"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_type_default_service_app_type_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_app_type_default_service"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_type_default_service_service_id"`);
-        await queryRunner.query(`DROP TABLE "cats"."app_type_default_service"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_app_type"`);
-        await queryRunner.query(`DROP TABLE "cats"."app_type"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_sediment_use_application_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_app_sediment_use"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_sediment_use_sediment_use_id"`);
-        await queryRunner.query(`DROP TABLE "cats"."app_sediment_use"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_sediment_use"`);
-        await queryRunner.query(`DROP TABLE "cats"."sediment_use"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_priority_application_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_app_priority"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_priority_priority_id"`);
-        await queryRunner.query(`DROP TABLE "cats"."app_priority"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_priority"`);
-        await queryRunner.query(`DROP TABLE "cats"."priority"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_participant_application_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."uidx_application_id_participant_role_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_app_participant"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_participant_organization_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_participant_participant_role_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_participant_person_id"`);
-        await queryRunner.query(`DROP TABLE "cats"."app_participant"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_person"`);
-        await queryRunner.query(`DROP TABLE "cats"."person"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_timesheet_application_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_timesheet"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_timesheet_person_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_timesheet_week_start_date"`);
-        await queryRunner.query(`DROP TABLE "cats"."timesheet"`);
-        await queryRunner.query(`DROP INDEX "cats"."uidx_timesheet_detail_timesheet_id_date_offset"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_timesheet_detail"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_timesheet_detail_timesheet_id"`);
-        await queryRunner.query(`DROP TABLE "cats"."timesheet_detail"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_timesheet_week_end_date"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_timesheet_week"`);
-        await queryRunner.query(`DROP TABLE "cats"."timesheet_week"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_participant_role"`);
-        await queryRunner.query(`DROP TABLE "cats"."participant_role"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_organization"`);
-        await queryRunner.query(`DROP TABLE "cats"."organization"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_note_application_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_app_note"`);
-        await queryRunner.query(`DROP TABLE "cats"."app_note"`);
-        await queryRunner.query(`DROP INDEX "cats"."idx_app_expense_application_id"`);
-        await queryRunner.query(`DROP INDEX "cats"."pk_app_expense"`);
-        await queryRunner.query(`DROP TABLE "cats"."app_expense"`);
-    }
-
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_land_use" DROP CONSTRAINT "FK_8500127b10941a7f8b2c6cd06fb"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_land_use" DROP CONSTRAINT "FK_47aca9a1d59b048c56134a1471a"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."application" DROP CONSTRAINT "FK_f5887b15e9f84cdcf52fb500ecc"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."application" DROP CONSTRAINT "FK_b26ef2c7ff60863c8194498b290"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."application" DROP CONSTRAINT "FK_a88f28341d5b1ab658773d9be55"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."application" DROP CONSTRAINT "FK_d82c4cf283861e30b84be8ccff8"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."application" DROP CONSTRAINT "FK_a4c2c8329e94672b3d7512037f9"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."application" DROP CONSTRAINT "FK_e28ef34074f6502daf04ad80592"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."application" DROP CONSTRAINT "FK_b3ed1ffeb29725824857c9b3b58"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."application" DROP CONSTRAINT "FK_753214ec5e2f67cb923e3f75a93"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."invoice" DROP CONSTRAINT "FK_9c4e6e7c45a8240bd8632552ad0"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."payment" DROP CONSTRAINT "FK_365af7f69f9142427cf30395b00"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."payment" DROP CONSTRAINT "FK_20cc84d8a2274ae86f551360c11"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."housing_application_xref" DROP CONSTRAINT "FK_6a80a2d561fc495de35abfff2fd"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."housing_application_xref" DROP CONSTRAINT "FK_4c801486a962180131ff41580f0"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."housing" DROP CONSTRAINT "FK_d3cf51a2379d9618f4514a3a3a6"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."housing" DROP CONSTRAINT "FK_6a5c141ba37b75909cc5484e241"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."housing" DROP CONSTRAINT "FK_e18d567d7b9042c9e0e5a695706"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."housing" DROP CONSTRAINT "FK_0e288c856dc8d10953704f0e093"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."site" DROP CONSTRAINT "FK_ff7a13fae129f15180a3e36f9e2"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_water_use" DROP CONSTRAINT "FK_95c83bae855454fa326c382b5c6"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_water_use" DROP CONSTRAINT "FK_dd567f0204670d80558e3bc3fa7"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_vapour_use" DROP CONSTRAINT "FK_c3e4aaf2a61ceb002cddffb9b33"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_vapour_use" DROP CONSTRAINT "FK_62337cd602186247eac2b453b48"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_status" DROP CONSTRAINT "FK_8ac58b4e9716be7e66f5b38f3aa"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_status" DROP CONSTRAINT "FK_33e54882e3e4e9145299f480dea"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_service" DROP CONSTRAINT "FK_26bca45f32897d3c7be10ea3f87"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_service" DROP CONSTRAINT "FK_fe93388593bc658d85ea273ff7c"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."service_service_category" DROP CONSTRAINT "FK_aa877d7a01e847d846f82d62f30"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."service_service_category" DROP CONSTRAINT "FK_10a41f665313750b2f5604a5f84"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."service_category" DROP CONSTRAINT "FK_ea16da07fd0fae24fec2d96c904"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."service_fee_schedule" DROP CONSTRAINT "FK_d79bc793f73abc1b99f487216e4"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_type_default_service" DROP CONSTRAINT "FK_ccd20cc0606ce30ffa4b81a2065"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_type_default_service" DROP CONSTRAINT "FK_10fab1c9f5cb61fc28d5ad744ea"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_sediment_use" DROP CONSTRAINT "FK_6109bdd19eceef0cc3184e548a0"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_sediment_use" DROP CONSTRAINT "FK_b382d5521fb8ea18a230610a97f"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_priority" DROP CONSTRAINT "FK_6ecdba4c530ad1a5048e470debc"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_priority" DROP CONSTRAINT "FK_bedd2bad24c5c20b74f4824d0c5"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_participant" DROP CONSTRAINT "FK_d69adf33c561ad7ed370aeab9c3"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_participant" DROP CONSTRAINT "FK_754c602cbf069fe52083bffbb33"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_participant" DROP CONSTRAINT "FK_fc8b05f5ffce6e5605e459c0b33"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_participant" DROP CONSTRAINT "FK_32ee91a97d76a2288392955a653"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."timesheet" DROP CONSTRAINT "FK_190718e322621b606b66fbb96e5"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."timesheet" DROP CONSTRAINT "FK_b0470c34c655edce944d475188c"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."timesheet" DROP CONSTRAINT "FK_d864834c35c2219ed371cb11c54"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."timesheet_detail" DROP CONSTRAINT "FK_2b5e9174464779a604f1ef5a8a5"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_note" DROP CONSTRAINT "FK_cccdae52ee54df6328e85084546"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "cats"."app_expense" DROP CONSTRAINT "FK_db71a568d1a95c4bef76245552c"`,
+    );
+    await queryRunner.query(`DROP INDEX "cats"."pk_tax_schedule"`);
+    await queryRunner.query(`DROP TABLE "cats"."tax_schedule"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_system_setting"`);
+    await queryRunner.query(`DROP TABLE "cats"."system_setting"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_housing_site_xref"`);
+    await queryRunner.query(`DROP TABLE "cats"."housing_site_xref"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_help_screen"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."udx_help_screen_screen_identifier_code"`,
+    );
+    await queryRunner.query(`DROP TABLE "cats"."help_screen"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_application_fee_schedule"`);
+    await queryRunner.query(`DROP TABLE "cats"."application_fee_schedule"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_app_land_use_application_id"`,
+    );
+    await queryRunner.query(`DROP INDEX "cats"."pk_app_land_use"`);
+    await queryRunner.query(`DROP INDEX "cats"."idx_app_land_use_land_use_id"`);
+    await queryRunner.query(`DROP TABLE "cats"."app_land_use"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_land_use"`);
+    await queryRunner.query(`DROP TABLE "cats"."land_use"`);
+    await queryRunner.query(`DROP INDEX "cats"."idx_application_app_type_id"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_application"`);
+    await queryRunner.query(`DROP INDEX "cats"."idx_application_outcome_id"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_application_review_process_id"`,
+    );
+    await queryRunner.query(`DROP INDEX "cats"."idx_application_risk_id"`);
+    await queryRunner.query(`DROP INDEX "cats"."idx_application_site_id"`);
+    await queryRunner.query(`DROP TABLE "cats"."application"`);
+    await queryRunner.query(`DROP INDEX "cats"."idx_invoice_application_id"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."uidx_invoice_application_id_invoice_num"`,
+    );
+    await queryRunner.query(`DROP INDEX "cats"."pk_invoice"`);
+    await queryRunner.query(`DROP TABLE "cats"."invoice"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_payment"`);
+    await queryRunner.query(`DROP INDEX "cats"."idx_payment_invoice_id"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_payment_payment_method_id"`,
+    );
+    await queryRunner.query(`DROP TABLE "cats"."payment"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_payment_method"`);
+    await queryRunner.query(`DROP TABLE "cats"."payment_method"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_housing_application_xref"`);
+    await queryRunner.query(`DROP TABLE "cats"."housing_application_xref"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_housing"`);
+    await queryRunner.query(`DROP TABLE "cats"."housing"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_yes_no_code"`);
+    await queryRunner.query(`DROP TABLE "cats"."yes_no_code"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_housing_type"`);
+    await queryRunner.query(`DROP TABLE "cats"."housing_type"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_site_type"`);
+    await queryRunner.query(`DROP TABLE "cats"."site_type"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_site"`);
+    await queryRunner.query(`DROP TABLE "cats"."site"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_region"`);
+    await queryRunner.query(`DROP TABLE "cats"."region"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_risk"`);
+    await queryRunner.query(`DROP TABLE "cats"."risk"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_review_process"`);
+    await queryRunner.query(`DROP TABLE "cats"."review_process"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_outcome"`);
+    await queryRunner.query(`DROP TABLE "cats"."outcome"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_oceans"`);
+    await queryRunner.query(`DROP TABLE "cats"."oceans"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_media"`);
+    await queryRunner.query(`DROP TABLE "cats"."media"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_app_water_use_application_id"`,
+    );
+    await queryRunner.query(`DROP INDEX "cats"."pk_app_water_use"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_app_water_use_water_use_id"`,
+    );
+    await queryRunner.query(`DROP TABLE "cats"."app_water_use"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_water_use"`);
+    await queryRunner.query(`DROP TABLE "cats"."water_use"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_app_vapour_use_application_id"`,
+    );
+    await queryRunner.query(`DROP INDEX "cats"."pk_app_vapour_use"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_app_vapour_use_vapour_use_id"`,
+    );
+    await queryRunner.query(`DROP TABLE "cats"."app_vapour_use"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_vapour_use"`);
+    await queryRunner.query(`DROP TABLE "cats"."vapour_use"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_app_status_application_id"`,
+    );
+    await queryRunner.query(
+      `DROP INDEX "cats"."uidx_app_status_is_current_application_id"`,
+    );
+    await queryRunner.query(`DROP INDEX "cats"."pk_app_status"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_app_status_status_type_id"`,
+    );
+    await queryRunner.query(`DROP TABLE "cats"."app_status"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_status_type"`);
+    await queryRunner.query(`DROP TABLE "cats"."status_type"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_app_service_application_id"`,
+    );
+    await queryRunner.query(`DROP INDEX "cats"."pk_app_service"`);
+    await queryRunner.query(`DROP INDEX "cats"."idx_app_service_service_id"`);
+    await queryRunner.query(`DROP TABLE "cats"."app_service"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_service"`);
+    await queryRunner.query(`DROP TABLE "cats"."service"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_service_service_category"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_service_service_category_service_category_id"`,
+    );
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_service_service_category_service_id"`,
+    );
+    await queryRunner.query(`DROP TABLE "cats"."service_service_category"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_service_category"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_service_category_service_category_type_id"`,
+    );
+    await queryRunner.query(`DROP TABLE "cats"."service_category"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_service_category_type"`);
+    await queryRunner.query(`DROP TABLE "cats"."service_category_type"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_service_fee_schedule"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_service_fee_schedule_service_id"`,
+    );
+    await queryRunner.query(`DROP TABLE "cats"."service_fee_schedule"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_app_type_default_service_app_type_id"`,
+    );
+    await queryRunner.query(`DROP INDEX "cats"."pk_app_type_default_service"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_app_type_default_service_service_id"`,
+    );
+    await queryRunner.query(`DROP TABLE "cats"."app_type_default_service"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_app_type"`);
+    await queryRunner.query(`DROP TABLE "cats"."app_type"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_app_sediment_use_application_id"`,
+    );
+    await queryRunner.query(`DROP INDEX "cats"."pk_app_sediment_use"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_app_sediment_use_sediment_use_id"`,
+    );
+    await queryRunner.query(`DROP TABLE "cats"."app_sediment_use"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_sediment_use"`);
+    await queryRunner.query(`DROP TABLE "cats"."sediment_use"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_app_priority_application_id"`,
+    );
+    await queryRunner.query(`DROP INDEX "cats"."pk_app_priority"`);
+    await queryRunner.query(`DROP INDEX "cats"."idx_app_priority_priority_id"`);
+    await queryRunner.query(`DROP TABLE "cats"."app_priority"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_priority"`);
+    await queryRunner.query(`DROP TABLE "cats"."priority"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_app_participant_application_id"`,
+    );
+    await queryRunner.query(
+      `DROP INDEX "cats"."uidx_application_id_participant_role_id"`,
+    );
+    await queryRunner.query(`DROP INDEX "cats"."pk_app_participant"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_app_participant_organization_id"`,
+    );
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_app_participant_participant_role_id"`,
+    );
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_app_participant_person_id"`,
+    );
+    await queryRunner.query(`DROP TABLE "cats"."app_participant"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_person"`);
+    await queryRunner.query(`DROP TABLE "cats"."person"`);
+    await queryRunner.query(`DROP INDEX "cats"."idx_timesheet_application_id"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_timesheet"`);
+    await queryRunner.query(`DROP INDEX "cats"."idx_timesheet_person_id"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_timesheet_week_start_date"`,
+    );
+    await queryRunner.query(`DROP TABLE "cats"."timesheet"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."uidx_timesheet_detail_timesheet_id_date_offset"`,
+    );
+    await queryRunner.query(`DROP INDEX "cats"."pk_timesheet_detail"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_timesheet_detail_timesheet_id"`,
+    );
+    await queryRunner.query(`DROP TABLE "cats"."timesheet_detail"`);
+    await queryRunner.query(`DROP INDEX "cats"."idx_timesheet_week_end_date"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_timesheet_week"`);
+    await queryRunner.query(`DROP TABLE "cats"."timesheet_week"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_participant_role"`);
+    await queryRunner.query(`DROP TABLE "cats"."participant_role"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_organization"`);
+    await queryRunner.query(`DROP TABLE "cats"."organization"`);
+    await queryRunner.query(`DROP INDEX "cats"."idx_app_note_application_id"`);
+    await queryRunner.query(`DROP INDEX "cats"."pk_app_note"`);
+    await queryRunner.query(`DROP TABLE "cats"."app_note"`);
+    await queryRunner.query(
+      `DROP INDEX "cats"."idx_app_expense_application_id"`,
+    );
+    await queryRunner.query(`DROP INDEX "cats"."pk_app_expense"`);
+    await queryRunner.query(`DROP TABLE "cats"."app_expense"`);
+  }
 }

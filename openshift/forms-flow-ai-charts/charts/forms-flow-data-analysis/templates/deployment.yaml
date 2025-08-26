@@ -21,71 +21,71 @@ spec:
         app: "{{ .Chart.Name }}"
     spec:
       containers:
-      - env:
-        # - name: DATABASE_URL
-        #   valueFrom:
-        #     configMapKeyRef:
-        #       key: DATABASE_URL
-        #       name: "{{ .Chart.Name }}"
-        - name: JWT_OIDC_ALGORITHMS
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_JWT_OIDC_ALGORITHMS
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: JWT_OIDC_AUDIENCE
-          valueFrom:
-            secretKeyRef:
-              key: ADMIN_WEB_CLIENTID
-              name: "{{ .Values.formsflow.secret }}"
-        - name: JWT_OIDC_CACHING_ENABLED
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_JWT_OIDC_CACHING_ENABLED
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: JWT_OIDC_ISSUER
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_JWT_OIDC_ISSUER
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: JWT_OIDC_JWKS_CACHE_TIMEOUT
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_JWT_OIDC_JWKS_CACHE_TIMEOUT
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: JWT_OIDC_JWKS_URI
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_JWT_OIDC_JWKS_URI
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: JWT_OIDC_WELL_KNOWN_CONFIG
-          valueFrom:
-            configMapKeyRef:
-              key: KEYCLOAK_JWT_OIDC_CONFIG
-              name: "{{ .Values.formsflow.configmap }}"
-        - name: DATABASE_SUPPORT
-          valueFrom:
-            configMapKeyRef:
-              key: DATABASE_SUPPORT
-              name: "{{ .Chart.Name }}"
-        - name: MODEL_ID
-          valueFrom:
-            configMapKeyRef:
-              key: MODEL_ID
-              name: "{{ .Values.formsflow.configmap }}"
+        - env:
+            # - name: DATABASE_URL
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       key: DATABASE_URL
+            #       name: "{{ .Chart.Name }}"
+            - name: JWT_OIDC_ALGORITHMS
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_JWT_OIDC_ALGORITHMS
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: JWT_OIDC_AUDIENCE
+              valueFrom:
+                secretKeyRef:
+                  key: ADMIN_WEB_CLIENTID
+                  name: "{{ .Values.formsflow.secret }}"
+            - name: JWT_OIDC_CACHING_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_JWT_OIDC_CACHING_ENABLED
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: JWT_OIDC_ISSUER
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_JWT_OIDC_ISSUER
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: JWT_OIDC_JWKS_CACHE_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_JWT_OIDC_JWKS_CACHE_TIMEOUT
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: JWT_OIDC_JWKS_URI
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_JWT_OIDC_JWKS_URI
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: JWT_OIDC_WELL_KNOWN_CONFIG
+              valueFrom:
+                configMapKeyRef:
+                  key: KEYCLOAK_JWT_OIDC_CONFIG
+                  name: "{{ .Values.formsflow.configmap }}"
+            - name: DATABASE_SUPPORT
+              valueFrom:
+                configMapKeyRef:
+                  key: DATABASE_SUPPORT
+                  name: "{{ .Chart.Name }}"
+            - name: MODEL_ID
+              valueFrom:
+                configMapKeyRef:
+                  key: MODEL_ID
+                  name: "{{ .Values.formsflow.configmap }}"
 
-        image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        name: "{{ .Chart.Name }}"
-        ports:
-        - containerPort: {{ .Values.ingress.port }}
-        resources:
-          limits:
-            cpu: "{{ .Values.resources.limits.cpu }}"
-            memory: "{{ .Values.resources.limits.memory }}"
-          requests:
-            cpu: "{{ .Values.resources.requests.cpu }}"
-            memory: "{{ .Values.resources.requests.memory }}"
-        stdin: true
-        tty: true
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          name: "{{ .Chart.Name }}"
+          ports:
+            - containerPort: { { .Values.ingress.port } }
+          resources:
+            limits:
+              cpu: "{{ .Values.resources.limits.cpu }}"
+              memory: "{{ .Values.resources.limits.memory }}"
+            requests:
+              cpu: "{{ .Values.resources.requests.cpu }}"
+              memory: "{{ .Values.resources.requests.memory }}"
+          stdin: true
+          tty: true
       restartPolicy: Always
       imagePullSecrets:
-      - name: "{{ .Values.formsflow.auth }}"      
+        - name: "{{ .Values.formsflow.auth }}"

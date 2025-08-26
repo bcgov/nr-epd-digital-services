@@ -18,7 +18,7 @@ class ObjectModel extends Timestamps(Model) {
         filterILike(query, value, 'object_queue.path');
       },
       findNextJob(query) {
-        query.where('object_queue.id', builder => {
+        query.where('object_queue.id', (builder) => {
           builder
             .select('object_queue.id')
             .from('object_queue')
@@ -29,7 +29,7 @@ class ObjectModel extends Timestamps(Model) {
             .skipLocked()
             .limit(1);
         });
-      }
+      },
     };
   }
 
@@ -43,9 +43,9 @@ class ObjectModel extends Timestamps(Model) {
         path: { type: 'string', minLength: 1, maxLength: 1024 },
         full: { type: 'boolean' },
         retries: { type: 'integer' },
-        ...stamps
+        ...stamps,
       },
-      additionalProperties: false
+      additionalProperties: false,
     };
   }
 }

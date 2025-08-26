@@ -1,43 +1,42 @@
-import { Field, InputType, Int, ObjectType } from "@nestjs/graphql";
-import { InvoiceStatus } from "../../utilities/enums/invoice/invoiceStatus.enum";
+import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
+import { InvoiceStatus } from '../../utilities/enums/invoice/invoiceStatus.enum';
 
 @InputType({ isAbstract: true })
 @ObjectType({ isAbstract: true })
 export class BaseInvoice {
+  @Field(() => String)
+  personId: string;
 
-   @Field(() => String)
-   personId: string;
+  @Field(() => String)
+  subject: string;
 
-   @Field(() => String)
-   subject: string;
- 
-   @Field(() => Date)
-   issuedDate: Date;
- 
-   @Field(() => Date)
-   dueDate: Date;
- 
-   @Field(() => InvoiceStatus)
-   invoiceStatus: InvoiceStatus;
+  @Field(() => Date)
+  issuedDate: Date;
 
-   @Field(() => Boolean)
-   taxExempt: boolean;
+  @Field(() => Date)
+  dueDate: Date;
 
-   @Field(() => Boolean)
-   pstExempt: boolean;
+  @Field(() => InvoiceStatus)
+  invoiceStatus: InvoiceStatus;
 
-   @Field(() => Int)
-   subtotalInCents: number;
+  @Field(() => Boolean)
+  taxExempt: boolean;
 
-   @Field(() => Int)
-   gstInCents: number;
+  @Field(() => Boolean)
+  pstExempt: boolean;
 
-   @Field(() => Int)
-   pstInCents: number;
+  @Field(() => Int)
+  subtotalInCents: number;
 
-   @Field(() => Int)
-   totalInCents: number;
+  @Field(() => Int)
+  gstInCents: number;
 
-   @Field(() => String, { nullable: true })
-   invoiceNotes: string;
+  @Field(() => Int)
+  pstInCents: number;
+
+  @Field(() => Int)
+  totalInCents: number;
+
+  @Field(() => String, { nullable: true })
+  invoiceNotes: string;
 }

@@ -5,12 +5,12 @@ on:
     inputs: ### Required
       directory:
         description: Crunchy Chart directory
-        default: 'charts/crunchy'
+        default: "charts/crunchy"
         required: false
         type: string
       oc_server:
         default: https://api.silver.devops.gov.bc.ca:6443
-        description: 'OpenShift server'
+        description: "OpenShift server"
         required: false
         type: string
       environment:
@@ -23,22 +23,22 @@ on:
         default: true
         type: boolean
       values:
-        description: 'Values file'
-        default: 'values.yaml'
+        description: "Values file"
+        default: "values.yaml"
         required: false
         type: string
       app_values:
-        description: 'App specific values file which is present inside charts/app'
-        default: 'values.yaml'
+        description: "App specific values file which is present inside charts/app"
+        default: "values.yaml"
         required: false
         type: string
       enabled:
-        description: 'Enable the deployment of the crunchy database, easy switch to turn it on/off'
+        description: "Enable the deployment of the crunchy database, easy switch to turn it on/off"
         default: true
         required: false
         type: boolean
       timeout-minutes:
-        description: 'Timeout minutes'
+        description: "Timeout minutes"
         default: 20
         required: false
         type: number
@@ -121,30 +121,30 @@ jobs:
         shell: bash
         if: github.event_name == 'pull_request'
         run: |
-            echo 'Adding PR specific user to Crunchy DB'
-            NEW_USER='{"databases":["cats-${{ github.event.number }}"],"name":"cats-${{ github.event.number }}"}'
-            CURRENT_USERS=$(oc get PostgresCluster/postgres-crunchy -o json | jq '.spec.users')
-            echo "${CURRENT_USERS}"
+          echo 'Adding PR specific user to Crunchy DB'
+          NEW_USER='{"databases":["cats-${{ github.event.number }}"],"name":"cats-${{ github.event.number }}"}'
+          CURRENT_USERS=$(oc get PostgresCluster/postgres-crunchy -o json | jq '.spec.users')
+          echo "${CURRENT_USERS}"
 
-            # check if current_users already contains the new_user
-            if echo "${CURRENT_USERS}" | jq -e ".[] | select(.name == \"cats-${{ github.event.number }}\")" > /dev/null; then
-              echo "User already exists"
-              exit 0
-            fi
+          # check if current_users already contains the new_user
+          if echo "${CURRENT_USERS}" | jq -e ".[] | select(.name == \"cats-${{ github.event.number }}\")" > /dev/null; then
+            echo "User already exists"
+            exit 0
+          fi
 
-            UPDATED_USERS=$(echo "$CURRENT_USERS" | jq --argjson NEW_USER "$NEW_USER" '. + [$NEW_USER]')
-            echo "$UPDATED_USERS"
-            PATCH_JSON=$(jq -n --argjson users "$UPDATED_USERS" '{"spec": {"users": $users}}')
-            echo "$PATCH_JSON"
-            oc patch PostgresCluster/postgres-crunchy --type=merge -p "${PATCH_JSON}"
+          UPDATED_USERS=$(echo "$CURRENT_USERS" | jq --argjson NEW_USER "$NEW_USER" '. + [$NEW_USER]')
+          echo "$UPDATED_USERS"
+          PATCH_JSON=$(jq -n --argjson users "$UPDATED_USERS" '{"spec": {"users": $users}}')
+          echo "$PATCH_JSON"
+          oc patch PostgresCluster/postgres-crunchy --type=merge -p "${PATCH_JSON}"
 
-            # wait for sometime as it takes time to create the user, query the secret and check if it is created, otherwise wait in a loop for 10 rounds
-            for i in {1..10}; do
-            if oc get secret postgres-crunchy-pguser-cats-${{ github.event.number }} -o jsonpath='{.metadata.name}' > /dev/null; then
-                echo "Secret created"
-                break
-            else
-                echo "Secret not created, waiting for 60 seconds"
-                sleep 60
-            fi
-            done
+          # wait for sometime as it takes time to create the user, query the secret and check if it is created, otherwise wait in a loop for 10 rounds
+          for i in {1..10}; do
+          if oc get secret postgres-crunchy-pguser-cats-${{ github.event.number }} -o jsonpath='{.metadata.name}' > /dev/null; then
+              echo "Secret created"
+              break
+          else
+              echo "Secret not created, waiting for 60 seconds"
+              sleep 60
+          fi
+          done

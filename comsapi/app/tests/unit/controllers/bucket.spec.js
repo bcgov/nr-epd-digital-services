@@ -38,7 +38,10 @@ const REQUEST_BUCKET_ID = 'ec4ef891-6304-4976-90b8-0f6a6fca6fac';
 describe('createBucket', () => {
   // mock service calls
   const createSpy = jest.spyOn(bucketService, 'create');
-  const checkGrantPermissionsSpy = jest.spyOn(bucketService, 'checkGrantPermissions');
+  const checkGrantPermissionsSpy = jest.spyOn(
+    bucketService,
+    'checkGrantPermissions',
+  );
   const getCurrentIdentitySpy = jest.spyOn(utils, 'getCurrentIdentity');
   const getCurrentUserIdSpy = jest.spyOn(userService, 'getCurrentUserId');
   const headBucketSpy = jest.spyOn(storageService, 'headBucket');
@@ -65,11 +68,13 @@ describe('createBucket', () => {
     await controller.createBucket(req, res, next);
 
     expect(headBucketSpy).toHaveBeenCalledTimes(1);
-    expect(headBucketSpy).toHaveBeenCalledWith(expect.objectContaining(req.body));
+    expect(headBucketSpy).toHaveBeenCalledWith(
+      expect.objectContaining(req.body),
+    );
     expect(getCurrentIdentitySpy).toHaveBeenCalledTimes(1);
     expect(getCurrentIdentitySpy).toHaveBeenCalledWith(
       CURRENT_USER,
-      SYSTEM_USER
+      SYSTEM_USER,
     );
     expect(getCurrentUserIdSpy).toHaveBeenCalledTimes(1);
     expect(getCurrentUserIdSpy).toHaveBeenCalledWith(USR_IDENTITY);
@@ -103,7 +108,7 @@ describe('createBucket', () => {
         secretAccessKey: 'REDACTED',
         other: 'some field',
         xyz: 123,
-      })
+      }),
     );
   });
 
@@ -129,7 +134,9 @@ describe('createBucket', () => {
     await controller.createBucket(req, res, next);
 
     expect(headBucketSpy).toHaveBeenCalledTimes(1);
-    expect(headBucketSpy).toHaveBeenCalledWith(expect.objectContaining(req.body));
+    expect(headBucketSpy).toHaveBeenCalledWith(
+      expect.objectContaining(req.body),
+    );
     expect(getCurrentIdentitySpy).toHaveBeenCalledTimes(0);
     expect(getCurrentUserIdSpy).toHaveBeenCalledTimes(0);
     expect(createSpy).toHaveBeenCalledTimes(0);
@@ -159,11 +166,13 @@ describe('createBucket', () => {
     await controller.createBucket(req, res, next);
 
     expect(headBucketSpy).toHaveBeenCalledTimes(1);
-    expect(headBucketSpy).toHaveBeenCalledWith(expect.objectContaining(req.body));
+    expect(headBucketSpy).toHaveBeenCalledWith(
+      expect.objectContaining(req.body),
+    );
     expect(getCurrentIdentitySpy).toHaveBeenCalledTimes(1);
     expect(getCurrentIdentitySpy).toHaveBeenCalledWith(
       CURRENT_USER,
-      SYSTEM_USER
+      SYSTEM_USER,
     );
     expect(getCurrentUserIdSpy).toHaveBeenCalledTimes(1);
     expect(getCurrentUserIdSpy).toHaveBeenCalledWith(USR_IDENTITY);
@@ -171,7 +180,9 @@ describe('createBucket', () => {
     expect(createSpy).toHaveBeenCalledWith({ ...req.body, userId: USR_ID });
 
     expect(next).toHaveBeenCalledTimes(1);
-    expect(next).toHaveBeenCalledWith(new Problem(500, 'Internal Server Error'));
+    expect(next).toHaveBeenCalledWith(
+      new Problem(500, 'Internal Server Error'),
+    );
   });
 
   // Skipping until someone can figure out the instanceof issue in the catch block
@@ -201,18 +212,22 @@ describe('createBucket', () => {
     await controller.createBucket(req, res, next);
 
     expect(headBucketSpy).toHaveBeenCalledTimes(1);
-    expect(headBucketSpy).toHaveBeenCalledWith(expect.objectContaining(req.body));
+    expect(headBucketSpy).toHaveBeenCalledWith(
+      expect.objectContaining(req.body),
+    );
     expect(getCurrentIdentitySpy).toHaveBeenCalledTimes(1);
     expect(getCurrentIdentitySpy).toHaveBeenCalledWith(
       CURRENT_USER,
-      SYSTEM_USER
+      SYSTEM_USER,
     );
     expect(getCurrentUserIdSpy).toHaveBeenCalledTimes(1);
     expect(getCurrentUserIdSpy).toHaveBeenCalledWith(USR_IDENTITY);
     expect(createSpy).toHaveBeenCalledTimes(1);
     expect(createSpy).toHaveBeenCalledWith({ ...req.body, userId: USR_ID });
     expect(checkGrantPermissionsSpy).toHaveBeenCalledTimes(1);
-    expect(checkGrantPermissionsSpy).toHaveBeenCalledWith(expect.objectContaining({ ...req.body, userId: USR_ID }));
+    expect(checkGrantPermissionsSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ ...req.body, userId: USR_ID }),
+    );
 
     expect(res.status).toHaveBeenCalledWith(201);
   });
@@ -266,7 +281,7 @@ describe('deleteBucket', () => {
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(
-      new Problem(502, 'Unknown BucketService Error')
+      new Problem(502, 'Unknown BucketService Error'),
     );
   });
 });
@@ -323,7 +338,7 @@ describe('headBucket', () => {
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(
-      new Problem(502, 'Unknown BucketService Error')
+      new Problem(502, 'Unknown BucketService Error'),
     );
   });
 });
@@ -376,7 +391,7 @@ describe('readBucket', () => {
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(
-      new Problem(502, 'Unknown BucketService Error')
+      new Problem(502, 'Unknown BucketService Error'),
     );
   });
 
@@ -404,8 +419,7 @@ describe('readBucket', () => {
         secretAccessKey: 'REDACTED',
         other: 'some field',
         xyz: 123,
-      })
+      }),
     );
   });
-
 });

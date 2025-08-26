@@ -13,7 +13,7 @@ jest.mock('../../../src/db/models/tables/bucketPermission', () => ({
   insertAndFetch: jest.fn(),
   modify: jest.fn(),
   query: jest.fn(),
-  returning: jest.fn()
+  returning: jest.fn(),
 }));
 
 const objectPermissionTrx = trxBuilder();
@@ -26,20 +26,22 @@ jest.mock('../../../src/db/models/tables/objectPermission', () => ({
   modify: jest.fn(),
   query: jest.fn(),
   select: jest.fn(),
-  whereNotNull: jest.fn()
+  whereNotNull: jest.fn(),
 }));
 
 const service = require('../../../src/services/bucketPermission');
 
-const data = [{
-  id: OBJECT_ID,
-  bucketId: BUCKET_ID,
-  path: 'path',
-  public: 'true',
-  active: 'true',
-  createdBy: SYSTEM_USER,
-  permCode: 'READ'
-}];
+const data = [
+  {
+    id: OBJECT_ID,
+    bucketId: BUCKET_ID,
+    path: 'path',
+    public: 'true',
+    active: 'true',
+    createdBy: SYSTEM_USER,
+    permCode: 'READ',
+  },
+];
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -59,7 +61,9 @@ describe('addPermissions', () => {
   });
 
   it('Grants bucket permissions to users', async () => {
-    searchPermissionsSpy.mockResolvedValue([{ userId: SYSTEM_USER, permCode: 'READ' }]);
+    searchPermissionsSpy.mockResolvedValue([
+      { userId: SYSTEM_USER, permCode: 'READ' },
+    ]);
 
     await service.addPermissions(BUCKET_ID, data);
 
@@ -78,7 +82,9 @@ describe('removePermissions', () => {
     expect(BucketPermission.delete).toHaveBeenCalledTimes(1);
     expect(BucketPermission.delete).toBeCalledWith();
     expect(BucketPermission.modify).toHaveBeenCalledTimes(3);
-    expect(BucketPermission.modify).toBeCalledWith('filterUserId', [SYSTEM_USER]);
+    expect(BucketPermission.modify).toBeCalledWith('filterUserId', [
+      SYSTEM_USER,
+    ]);
     expect(BucketPermission.modify).toBeCalledWith('filterBucketId', BUCKET_ID);
     expect(BucketPermission.returning).toHaveBeenCalledTimes(1);
     expect(BucketPermission.returning).toBeCalledWith('*');
@@ -104,13 +110,20 @@ describe('listInheritedBucketIds', () => {
 
 describe('searchPermissions', () => {
   it('Search and filter for specific bucket permissions', () => {
-    service.searchPermissions({ userId: SYSTEM_USER, bucketId: BUCKET_ID, permCode: 'READ' });
+    service.searchPermissions({
+      userId: SYSTEM_USER,
+      bucketId: BUCKET_ID,
+      permCode: 'READ',
+    });
 
     expect(BucketPermission.query).toHaveBeenCalledTimes(1);
     expect(BucketPermission.modify).toHaveBeenCalledTimes(3);
     expect(BucketPermission.modify).toBeCalledWith('filterUserId', SYSTEM_USER);
     expect(BucketPermission.modify).toBeCalledWith('filterBucketId', BUCKET_ID);
-    expect(BucketPermission.modify).toBeCalledWith('filterPermissionCode', 'READ');
+    expect(BucketPermission.modify).toBeCalledWith(
+      'filterPermissionCode',
+      'READ',
+    );
     expect(BucketPermission.modify).toHaveBeenCalledTimes(3);
   });
 });

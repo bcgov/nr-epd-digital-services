@@ -34,7 +34,7 @@ function FormTable() {
   const sortOrder = useSelector((state) => state.bpmForms.sortOrder);
   const formType = useSelector((state) => state.bpmForms.formType);
   const searchFormLoading = useSelector(
-    (state) => state.formCheckList.searchFormLoading
+    (state) => state.formCheckList.searchFormLoading,
   );
   const isDesigner = userRoles.includes(STAFF_DESIGNER);
   const [pageLimit, setPageLimit] = useState(5);
@@ -127,16 +127,25 @@ function FormTable() {
     return (
       <tr>
         <td colSpan={12}>
-          <div style={{display: 'flex'}}>
-            <div style={{flex: 1, minWidth: '600px', padding: '20px', borderRight: '1px solid #dee2e6'}}>
+          <div style={{ display: "flex" }}>
+            <div
+              style={{
+                flex: 1,
+                minWidth: "600px",
+                padding: "20px",
+                borderRight: "1px solid #dee2e6",
+              }}
+            >
               <h4 className="font-weight-bold">{t("Description")}</h4>
               <p>{data}</p>
             </div>
-            <div style={{flex: 2, padding: '20px'}} className="ml-5">
-            <div className="d-flex justify-content-between align-items-center mb-3">
-      <h4 className="font-weight-bold">{t("Forms included under the package")}</h4>
-    </div>
-              <table className="table" style={{minWidth: '600px'}}>
+            <div style={{ flex: 2, padding: "20px" }} className="ml-5">
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <h4 className="font-weight-bold">
+                  {t("Forms included under the package")}
+                </h4>
+              </div>
+              <table className="table" style={{ minWidth: "600px" }}>
                 <thead>
                   <tr>
                     <th>{t("Form Order")}</th>
@@ -184,14 +193,14 @@ function FormTable() {
             <thead>
               <tr>
                 <th colSpan="4">
-                  <InputGroup className="input-group col-4 p-0">             
+                  <InputGroup className="input-group col-4 p-0">
                     <FormControl
                       value={search}
                       onChange={(e) => {
                         setSearch(e.target.value);
                       }}
-                      onKeyDown={(e)=> e.keyCode == 13 ? handleSearch() : ""}
-                      placeholder= {t("Search for a package")}
+                      onKeyDown={(e) => (e.keyCode == 13 ? handleSearch() : "")}
+                      placeholder={t("Search for a package")}
                       style={{ backgroundColor: "#ffff" }}
                     />
                     {search && (
@@ -206,8 +215,7 @@ function FormTable() {
                       disabled={!search?.trim()}
                     >
                       <InputGroup.Text style={{ backgroundColor: "#ffff" }}>
-                        <i className="fa fa-search"></i>  &nbsp;
-                        Search
+                        <i className="fa fa-search"></i> &nbsp; Search
                       </InputGroup.Text>
                     </InputGroup.Append>
 
@@ -235,49 +243,52 @@ function FormTable() {
                 </th>
               </tr>
               <tr className="table-header table-bordered">
-              <th scope="col">
-              <span className="sort-cell" style={{ display: 'flex', gap: '1rem' }}>
+                <th scope="col">
+                  <span
+                    className="sort-cell"
+                    style={{ display: "flex", gap: "1rem" }}
+                  >
                     <span> {t("Form Name")}</span>
-                      <span > 
-                     {isAscending ? (
+                    <span>
+                      {isAscending ? (
                         <i
-                        className="fa fa-sort-alpha-asc m"
-                        onClick={() => {updateSort("desc");}}
-                        data-toggle="tooltip"  title={t("Descending")}
-                        style={{
-                          cursor: "pointer",
-                          fontSize : "16px",
-                          marginTop : "3px"
-  
-                        }}
+                          className="fa fa-sort-alpha-asc m"
+                          onClick={() => {
+                            updateSort("desc");
+                          }}
+                          data-toggle="tooltip"
+                          title={t("Descending")}
+                          style={{
+                            cursor: "pointer",
+                            fontSize: "16px",
+                            marginTop: "3px",
+                          }}
                         ></i>
-                        ) : (
+                      ) : (
                         <i
-                        className="fa fa-sort-alpha-desc"
-                        onClick={() => {updateSort("asc");}}
-                        data-toggle="tooltip"  title={t("Ascending" )}
-                        style={{
-                          cursor: "pointer",
-                          fontSize : "16px",
-                          marginTop : "3px"
-                          
-                        }}
+                          className="fa fa-sort-alpha-desc"
+                          onClick={() => {
+                            updateSort("asc");
+                          }}
+                          data-toggle="tooltip"
+                          title={t("Ascending")}
+                          style={{
+                            cursor: "pointer",
+                            fontSize: "16px",
+                            marginTop: "3px",
+                          }}
                         ></i>
-                        )
-                      }
-                      </span>
-              </span>
-              </th>
+                      )}
+                    </span>
+                  </span>
+                </th>
                 <th scope="col">{t("Operations")}</th>
                 {isDesigner && (
                   <th scope="col">
                     <SelectFormForDownload type="all" />
                   </th>
                 )}
-                {!isDesigner && (
-                  <td>
-                  </td>
-                )}
+                {!isDesigner && <td></td>}
               </tr>
             </thead>
 
@@ -306,13 +317,15 @@ function FormTable() {
                                 onClick={() =>
                                   handleRowExpansion(e.mapperId, index)
                                 }
-                                style={{cursor:'pointer'}}
+                                style={{ cursor: "pointer" }}
                               ></i>
                             )}
                           </td>
                         )}
                       </tr>
-                      {selectedRow === index && <>{bundleFormsData(e.description)}</>}
+                      {selectedRow === index && (
+                        <>{bundleFormsData(e.description)}</>
+                      )}
                     </>
                   );
                 })}
@@ -329,7 +342,7 @@ function FormTable() {
       {formData.length ? (
         <div className="d-flex justify-content-between align-items-center">
           <div>
-            <span>             
+            <span>
               <DropdownButton
                 className="ml-2"
                 drop="down"
@@ -351,9 +364,9 @@ function FormTable() {
               </DropdownButton>
             </span>
             <span className="ml-2 mb-3">
-            {t("Showing")} {(limit * pageNo ) - (limit - 1)} {t("to")}{" "}
-                  {limit * pageNo > totalForms ? totalForms : limit * pageNo} {t("of")}{" "}
-                  {totalForms} {t("entries")}
+              {t("Showing")} {limit * pageNo - (limit - 1)} {t("to")}{" "}
+              {limit * pageNo > totalForms ? totalForms : limit * pageNo}{" "}
+              {t("of")} {totalForms} {t("entries")}
             </span>
           </div>
           <div className="d-flex align-items-center">
