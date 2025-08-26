@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import SideBar from './app/components/navigation/SideBar';
 import { useState } from 'react';
-import { useAutoSignin } from './hooks/useAutoSignIn';
+import { useAutoSignin } from '@cats/hooks/useAutoSignIn';
 
 import 'react-toastify/dist/ReactToastify.css';
 import '@bcgov/design-tokens/css/variables.css';

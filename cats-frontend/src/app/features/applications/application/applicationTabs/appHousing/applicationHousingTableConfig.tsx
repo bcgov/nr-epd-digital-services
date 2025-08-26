@@ -191,6 +191,7 @@ const housingFormFields: {
     validation: {
       pattern: /^[0-9]*$/,
       customMessage: 'Number of Units must be a positive integer',
+      required: true,
     },
     colSize: 'col-lg-6 col-md-6 col-sm-12',
   },
@@ -255,13 +256,13 @@ export const getHousingFormFields = ({
   relatedApplicationsValue: string;
   setRelatedApplicationsValue: (value: string) => void;
 }): IFormField[][] => [
-  [getHousingTypeField(housingTypes), housingFormFields['numberOfUnits']],
-  [housingFormFields['effectiveDate'], housingFormFields['expiryDate']],
-  [housingFormFields['replaceFileRow']],
-  [
-    getRelatedApplicationsField(
-      relatedApplicationsValue,
-      setRelatedApplicationsValue,
-    ),
-  ],
-];
+    [getHousingTypeField(housingTypes), housingFormFields['numberOfUnits']],
+    [housingFormFields['effectiveDate'], housingFormFields['expiryDate']],
+    [housingFormFields['replaceFileRow']],
+    [
+      getRelatedApplicationsField(
+        relatedApplicationsValue,
+        setRelatedApplicationsValue,
+      ),
+    ],
+  ];

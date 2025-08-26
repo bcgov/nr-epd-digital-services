@@ -68,7 +68,6 @@ import { AppTypeService } from './services/appType/appType.service';
 import { SiteResolver } from './resolvers/site/site.resolver';
 import { SiteService } from './services/site/site.service';
 import { InvoiceV2 } from './entities/invoiceV2.entity';
-import { InvoiceLineItem } from './entities/invoiceLineItem.entity';
 import { InvoiceAttachment } from './entities/invoiceAttachment.entity';
 import { InvoiceResolver } from './resolvers/invoice/invoice.resolver';
 import { InvoiceService } from './services/invoice/invoice.service';
@@ -92,12 +91,14 @@ import { DashboardService } from './services/dashboard/dashboard.service';
 import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
 import { RecentViewedApplication } from './entities/recentViewedApplication.entity';
 import { StatusTypeService } from './services/statusType/statusType.service';
-
 import { ServiceAssignmentFactor } from './entities/serviceAssignmentFactor';
 import { PermissionServiceType } from './entities/permissionServiceType';
-import { InvoiceAttachmentResolver } from './resolvers/invoice/invoiceAttachment.resolver';
-import { InvoiceAttachmentService } from './services/invoice/invoiceAttachment.service';
+import { ApplicationSite } from './entities/applicationSite.entity';
+import { InvoiceItem } from './entities/invoiceItem.entity';
+import { EmailController } from './controllers/email.controller';
 import { ComsService } from './services/coms/coms.service';
+import { ComsResolver } from './resolvers/coms/coms.resolver';
+import { UploadController } from './controllers/upload.controller';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -154,7 +155,7 @@ import { ComsService } from './services/coms/coms.service';
       ParticipantRole,
       PersonNote,
       InvoiceV2,
-      InvoiceLineItem,
+      InvoiceItem,
       InvoiceAttachment,
       ApplicationServiceType,
       Permissions,
@@ -162,6 +163,7 @@ import { ComsService } from './services/coms/coms.service';
       RecentViewedApplication,
       ServiceAssignmentFactor,
       PermissionServiceType,
+      ApplicationSite,
     ]),
     HttpModule,
   ],
@@ -201,10 +203,9 @@ import { ComsService } from './services/coms/coms.service';
     TimesheetDayResolver,
     DashboardService,
     DashboardResolver,
-    InvoiceAttachmentResolver,
-    InvoiceAttachmentService,
     ComsService,
+    ComsResolver
   ],
-  controllers: [UserController],
+  controllers: [UserController, EmailController, UploadController],
 })
-export class CatsModule {}
+export class CatsModule { }

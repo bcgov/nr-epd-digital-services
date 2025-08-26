@@ -36,8 +36,7 @@ const Widget: React.FC<IWidget> = ({
   filter,
   widgetLabelContainerCss,
 }) => {
-  let widgetSortHandler = sortHandler ?? (() => {});
-
+  let widgetSortHandler = sortHandler ?? (() => { });
   return (
     <div
       className={`d-flex flex-column ${styles.widgetContainer} ${customWidgetCss ?? ''}`}
@@ -49,7 +48,7 @@ const Widget: React.FC<IWidget> = ({
               type={FormFieldType.Checkbox}
               label={''}
               isLabel={false}
-              onChange={handleCheckBoxChange ?? (() => {})}
+              onChange={handleCheckBoxChange ?? (() => { })}
               srMode={srMode}
               isChecked={widgetIschecked}
             />
@@ -76,7 +75,7 @@ const Widget: React.FC<IWidget> = ({
             data={tableData ?? []}
             showPageOptions={showPageOptions}
             allowRowsSelect={allowRowsSelect}
-            changeHandler={changeHandler ?? (() => {})}
+            changeHandler={changeHandler ?? (() => { })}
             editMode={editMode ?? false}
             srMode={srMode ?? false}
             idColumnName={primaryKeycolumnName ?? ''}
