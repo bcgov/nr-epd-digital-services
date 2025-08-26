@@ -67,6 +67,7 @@ const mockRecentViewedApplications: RecentViewedApplication[] = [
   },
 ];
 
+
 describe('DashboardResolver', () => {
   let resolver: DashboardResolver;
   let dashboardService: DashboardService;
@@ -96,15 +97,13 @@ describe('DashboardResolver', () => {
         {
           provide: GenericResponseProvider,
           useValue: {
-            createResponse: jest
-              .fn()
-              .mockImplementation((message, status, success, data) => ({
-                message,
-                httpStatusCode: status,
-                success,
-                data,
-                timestamp: expect.any(String),
-              })),
+            createResponse: jest.fn().mockImplementation((message, status, success, data) => ({
+              message,
+              httpStatusCode: status,
+              success,
+              data,
+              timestamp: expect.any(String),
+            })),
           },
         },
       ],
@@ -113,9 +112,7 @@ describe('DashboardResolver', () => {
     resolver = module.get<DashboardResolver>(DashboardResolver);
     dashboardService = module.get<DashboardService>(DashboardService);
     loggerService = module.get<LoggerService>(LoggerService);
-    dashboardResponse = module.get<GenericResponseProvider<ViewDashboard[]>>(
-      GenericResponseProvider,
-    );
+    dashboardResponse = module.get<GenericResponseProvider<ViewDashboard[]>>(GenericResponseProvider);
   });
 
   it('should be defined', () => {
@@ -130,13 +127,13 @@ describe('DashboardResolver', () => {
         const result = await resolver.getRecentViewedApplications(user as any);
 
         expect(loggerService.log).toHaveBeenCalledWith(
-          'An invalid user was passed into DashboardResolver.getRecentViewedApplications() end',
+          'An invalid user was passed into DashboardResolver.getRecentViewedApplications() end'
         );
         expect(dashboardResponse.createResponse).toHaveBeenCalledWith(
           'Invalid user',
           400,
           false,
-          null,
+          null
         );
         expect(result).toEqual({
           message: 'Invalid user',
@@ -150,36 +147,31 @@ describe('DashboardResolver', () => {
 
     it('should return recent viewed applications when found', async () => {
       const user = { sub: 'user-123' };
-      const mockResult: RecentViewedApplication[] =
-        mockRecentViewedApplications;
+      const mockResult: RecentViewedApplication[] = mockRecentViewedApplications;
 
-      dashboardService.getRecentViewedApplications = jest
-        .fn()
-        .mockResolvedValue(mockResult);
+      dashboardService.getRecentViewedApplications = jest.fn().mockResolvedValue(mockResult);
 
       const result = await resolver.getRecentViewedApplications(user);
 
       expect(loggerService.log).toHaveBeenCalledWith(
-        `DashboardResolver.getRecentViewedApplications() user: ${user.sub}`,
+        `DashboardResolver.getRecentViewedApplications() user: ${user.sub}`
       );
       expect(loggerService.log).toHaveBeenCalledWith(
-        'DashboardResolver.getRecentViewedApplications() calling DashboardService.getRecentViewedApplications()',
+        'DashboardResolver.getRecentViewedApplications() calling DashboardService.getRecentViewedApplications()'
       );
       expect(loggerService.log).toHaveBeenCalledWith(
-        'DashboardResolver.getRecentViewedApplications() start',
+        'DashboardResolver.getRecentViewedApplications() start'
       );
-      expect(dashboardService.getRecentViewedApplications).toHaveBeenCalledWith(
-        user,
-      );
+      expect(dashboardService.getRecentViewedApplications).toHaveBeenCalledWith(user);
       expect(loggerService.log).toHaveBeenCalledWith(
-        'DashboardResolver.getRecentViewedApplications() RES:200 end',
+        'DashboardResolver.getRecentViewedApplications() RES:200 end'
       );
 
       expect(dashboardResponse.createResponse).toHaveBeenCalledWith(
         'Recent viewed applications retrieved successfully',
         HttpStatus.OK,
         true,
-        mockResult,
+        mockResult
       );
 
       expect(result).toEqual({
@@ -193,33 +185,29 @@ describe('DashboardResolver', () => {
 
     it('should return not found response when no recent viewed applications found', async () => {
       const user = { sub: 'user-123' };
-      dashboardService.getRecentViewedApplications = jest
-        .fn()
-        .mockResolvedValue([]);
+      dashboardService.getRecentViewedApplications = jest.fn().mockResolvedValue([]);
 
       const result = await resolver.getRecentViewedApplications(user);
 
       expect(loggerService.log).toHaveBeenCalledWith(
-        `DashboardResolver.getRecentViewedApplications() user: ${user.sub}`,
+        `DashboardResolver.getRecentViewedApplications() user: ${user.sub}`
       );
       expect(loggerService.log).toHaveBeenCalledWith(
-        'DashboardResolver.getRecentViewedApplications() calling DashboardService.getRecentViewedApplications()',
+        'DashboardResolver.getRecentViewedApplications() calling DashboardService.getRecentViewedApplications()'
       );
       expect(loggerService.log).toHaveBeenCalledWith(
-        'DashboardResolver.getRecentViewedApplications() start',
+        'DashboardResolver.getRecentViewedApplications() start'
       );
-      expect(dashboardService.getRecentViewedApplications).toHaveBeenCalledWith(
-        user,
-      );
+      expect(dashboardService.getRecentViewedApplications).toHaveBeenCalledWith(user);
       expect(loggerService.log).toHaveBeenCalledWith(
-        'DashboardResolver.getRecentViewedApplications() RES:404 end',
+        'DashboardResolver.getRecentViewedApplications() RES:404 end'
       );
 
       expect(dashboardResponse.createResponse).toHaveBeenCalledWith(
         'No recent viewed applications found',
         HttpStatus.NOT_FOUND,
         false,
-        null,
+        null
       );
 
       expect(result).toEqual({
@@ -235,21 +223,19 @@ describe('DashboardResolver', () => {
       const user = { sub: 'user-123' };
       const error = new Error('Service failure');
 
-      jest
-        .spyOn(dashboardService, 'getRecentViewedApplications')
-        .mockRejectedValue(error);
+      jest.spyOn(dashboardService, 'getRecentViewedApplications').mockRejectedValue(error);
 
       const result = await resolver.getRecentViewedApplications(user);
 
       expect(loggerService.error).toHaveBeenCalledWith(
         `Error in getRecentViewedApplications: ${error.message}`,
-        error,
+        error
       );
       expect(dashboardResponse.createResponse).toHaveBeenCalledWith(
         'Failed to retrieve recent viewed applications',
         HttpStatus.INTERNAL_SERVER_ERROR,
         false,
-        null,
+        null
       );
       expect(result).toEqual({
         message: 'Failed to retrieve recent viewed applications',
@@ -259,6 +245,8 @@ describe('DashboardResolver', () => {
         timestamp: expect.any(String),
       });
     });
+
+
   });
 
   describe('getApplications', () => {
@@ -275,27 +263,19 @@ describe('DashboardResolver', () => {
         },
       ];
 
-      jest
-        .spyOn(dashboardService, 'getApplications')
-        .mockResolvedValue(mockApplications);
+      jest.spyOn(dashboardService, 'getApplications').mockResolvedValue(mockApplications);
 
       const result = await resolver.getApplications();
 
-      expect(loggerService.log).toHaveBeenCalledWith(
-        'DashboardResolver.getApplications() start',
-      );
-      expect(loggerService.log).toHaveBeenCalledWith(
-        'DashboardResolver.getApplications() calling DashboardService.getApplications()',
-      );
-      expect(loggerService.log).toHaveBeenCalledWith(
-        'DashboardResolver.getApplications() RES:200 end',
-      );
+      expect(loggerService.log).toHaveBeenCalledWith('DashboardResolver.getApplications() start');
+      expect(loggerService.log).toHaveBeenCalledWith('DashboardResolver.getApplications() calling DashboardService.getApplications()');
+      expect(loggerService.log).toHaveBeenCalledWith('DashboardResolver.getApplications() RES:200 end');
 
       expect(dashboardResponse.createResponse).toHaveBeenCalledWith(
         'Recent viewed applications retrieved successfully',
         HttpStatus.OK,
         true,
-        mockApplications,
+        mockApplications
       );
 
       expect(result).toEqual({
@@ -312,14 +292,12 @@ describe('DashboardResolver', () => {
 
       const result = await resolver.getApplications();
 
-      expect(loggerService.log).toHaveBeenCalledWith(
-        'DashboardResolver.getApplications() RES:404 end',
-      );
+      expect(loggerService.log).toHaveBeenCalledWith('DashboardResolver.getApplications() RES:404 end');
       expect(dashboardResponse.createResponse).toHaveBeenCalledWith(
         'No recent viewed applications found',
         HttpStatus.NOT_FOUND,
         false,
-        null,
+        null
       );
 
       expect(result).toEqual({
@@ -339,13 +317,13 @@ describe('DashboardResolver', () => {
 
       expect(loggerService.error).toHaveBeenCalledWith(
         `Error in getApplications: ${error.message}`,
-        error,
+        error
       );
       expect(dashboardResponse.createResponse).toHaveBeenCalledWith(
         'Failed to retrieve applications',
         HttpStatus.INTERNAL_SERVER_ERROR,
         false,
-        null,
+        null
       );
 
       expect(result).toEqual({
@@ -366,15 +344,14 @@ describe('DashboardResolver', () => {
           priority: 'Medium',
           receivedDate: '2024-06-01',
           siteId: 202,
-          address: '456 Elm St\n\n  Suite 200\n  \n',
-        },
+          address: '456 Elm St\n\n  Suite 200\n  \n'
+        }
       ];
 
-      jest
-        .spyOn(dashboardService, 'getApplications')
-        .mockResolvedValue(mockApplications);
+      jest.spyOn(dashboardService, 'getApplications').mockResolvedValue(mockApplications);
 
       const result = await resolver.getApplications();
+
 
       expect(result.data[0].address).toBe('456 Elm St\n\n  Suite 200\n  \n');
     });
@@ -389,12 +366,10 @@ describe('DashboardResolver', () => {
           receivedDate: '2024-06-10',
           siteId: 303,
           address: null,
-        },
+        }
       ];
 
-      jest
-        .spyOn(dashboardService, 'getApplications')
-        .mockResolvedValue(mockApplications);
+      jest.spyOn(dashboardService, 'getApplications').mockResolvedValue(mockApplications);
 
       const result = await resolver.getApplications();
 
@@ -422,12 +397,10 @@ describe('DashboardResolver', () => {
           receivedDate: '2024-05-15',
           siteId: 505,
           address: null,
-        },
+        }
       ];
 
-      jest
-        .spyOn(dashboardService, 'getApplications')
-        .mockResolvedValue(mockApplications);
+      jest.spyOn(dashboardService, 'getApplications').mockResolvedValue(mockApplications);
 
       const result = await resolver.getApplications();
 
@@ -449,5 +422,6 @@ describe('DashboardResolver', () => {
         timestamp: expect.any(String),
       });
     });
+
   });
 });

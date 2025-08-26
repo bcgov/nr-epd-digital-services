@@ -15,11 +15,10 @@ const currentUpload = (strict = false) => {
     // Check Content-Length Header
     const contentLength = parseInt(req.get('Content-Length'));
     // TODO: Figure out what's killing and returning a 400 in response stack
-    if (!contentLength)
-      throw new Problem(411, {
-        detail: 'Content-Length must be greater than 0',
-        instance: req.originalUrl,
-      });
+    if (!contentLength) throw new Problem(411, {
+      detail: 'Content-Length must be greater than 0',
+      instance: req.originalUrl
+    });
 
     // Check Content-Disposition Header
     let filename;
@@ -27,25 +26,21 @@ const currentUpload = (strict = false) => {
     if (disposition) {
       try {
         const { type, parameters } = contentDisposition.parse(disposition);
-        if ((strict && !type) || type !== 'attachment')
-          throw new Error("Disposition type is not 'attachment'");
-        if (strict && !parameters?.filename)
-          throw new Error("Disposition missing 'filename' parameter");
+        if (strict && !type || type !== 'attachment') throw new Error('Disposition type is not \'attachment\'');
+        if (strict && !parameters?.filename) throw new Error('Disposition missing \'filename\' parameter');
         filename = parameters?.filename;
       } catch (e) {
         // Ignore improperly formatted Content-Disposition when not in strict mode
-        if (strict)
-          throw new Problem(400, {
-            detail: `Content-Disposition header error: ${e.message}`,
-            instance: req.originalUrl,
-          });
+        if (strict) throw new Problem(400, {
+          detail: `Content-Disposition header error: ${e.message}`,
+          instance: req.originalUrl
+        });
       }
     } else {
-      if (strict)
-        throw new Problem(415, {
-          detail: 'Content-Disposition header missing',
-          instance: req.originalUrl,
-        });
+      if (strict) throw new Problem(415, {
+        detail: 'Content-Disposition header missing',
+        instance: req.originalUrl
+      });
     }
 
     // Check Content-Type Header
@@ -54,7 +49,7 @@ const currentUpload = (strict = false) => {
     req.currentUpload = Object.freeze({
       contentLength: contentLength,
       filename: filename,
-      mimeType: mimeType,
+      mimeType: mimeType
     });
 
     /**
@@ -70,5 +65,5 @@ const currentUpload = (strict = false) => {
 };
 
 module.exports = {
-  currentUpload,
+  currentUpload
 };

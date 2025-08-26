@@ -8,6 +8,7 @@ const SERVICE = 'TagService';
  * The Tag Controller
  */
 const controller = {
+
   /**
    * @function searchTags
    * Search and filter for specific tags
@@ -21,10 +22,7 @@ const controller = {
       const tagging = req.query.tagset;
       const params = {
         tag: tagging && Object.keys(tagging).length ? tagging : undefined,
-        privacyMask:
-          req.currentUser.authType !== 'BASIC'
-            ? config.has('server.privacyMask')
-            : false,
+        privacyMask : req.currentUser.authType !== 'BASIC' ? config.has('server.privacyMask') : false
       };
 
       const response = await tagService.searchTags(params);
@@ -33,6 +31,7 @@ const controller = {
       next(errorToProblem(SERVICE, e));
     }
   },
+
 };
 
 module.exports = controller;

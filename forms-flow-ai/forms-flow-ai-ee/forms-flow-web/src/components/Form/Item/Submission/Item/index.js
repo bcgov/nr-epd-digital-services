@@ -16,7 +16,7 @@ import {
 } from "../../../../../constants/constants";
 import { CLIENT_EDIT_STATUS } from "../../../../../constants/applicationConstants";
 import Loading from "../../../../../containers/Loading";
-import { clearSubmissionError } from "../../../../../actions/formActions";
+import { clearSubmissionError} from "../../../../../actions/formActions";
 import { getCustomSubmission } from "../../../../../apiManager/services/FormServices";
 import { useTranslation } from "react-i18next";
 import NotFound from "../../../../NotFound";
@@ -29,14 +29,14 @@ const Item = React.memo(() => {
 
   const applicationId = useSelector(
     (state) =>
-      state[CUSTOM_SUBMISSION_ENABLE ? "customSubmission" : "submission"]
-        ?.submission?.data?.applicationId || null,
+      state[CUSTOM_SUBMISSION_ENABLE ? "customSubmission" : "submission"]?.submission?.data?.applicationId ||
+      null
   );
   const userRoles = useSelector((state) => {
     return selectRoot("user", state).roles;
   });
   const applicationStatus = useSelector(
-    (state) => state.applications.applicationDetail?.applicationStatus || "",
+    (state) => state.applications.applicationDetail?.applicationStatus || ""
   );
   const [showSubmissionLoading, setShowSubmissionLoading] = useState(true);
   const [editAllowed, setEditAllowed] = useState(false);
@@ -44,29 +44,31 @@ const Item = React.memo(() => {
 
   // const redirectUrl = MULTITENANCY_ENABLED ? `/tenant/${tenantKey}/` : `/`
 
+
+
   useEffect(() => {
     dispatch(clearSubmissionError("submission"));
-    if (CUSTOM_SUBMISSION_URL && CUSTOM_SUBMISSION_ENABLE) {
-      dispatch(
-        getCustomSubmission(submissionId, formId, (err, data) => {
-          if (err) {
-            if (window.location.href.indexOf("undefined") != -1) {
-              console.log("error occurred", err, data);
-            } else {
-              dispatch(
-                setApiCallError({
-                  message: "Unable to fetch form data. Please contact support.",
-                }),
-              );
-              console.log("error occurred", err, data);
-            }
+    if(CUSTOM_SUBMISSION_URL && CUSTOM_SUBMISSION_ENABLE) {
+     
+       dispatch(getCustomSubmission(submissionId,formId, (err, data) => {
+        if(err)
+        {
+          if(window.location.href.indexOf("undefined") != -1)
+          {
+            console.log("error occurred",err,data);
           }
-        }),
-      );
+          else
+          {
+            dispatch(setApiCallError({message: 'Unable to fetch form data. Please contact support.'}));
+            console.log("error occurred",err,data);
+          }        
+        }
+       }));
     } else {
       dispatch(getSubmission("submission", submissionId, formId));
     }
   }, [submissionId, formId, dispatch]);
+
 
   useEffect(() => {
     if (applicationId) {
@@ -115,14 +117,15 @@ const Item = React.memo(() => {
       </ul>
       <Switch>
         {!submissionError ? (
-          <Route
-            exact
-            path={`${BASE_ROUTE}form/:formId/submission/:submissionId`}
-            component={View}
-          />
-        ) : (
-          <NotFound errorMessage={t("Bad Request")} errorCode={400} />
-        )}
+        <Route
+          exact
+          path={`${BASE_ROUTE}form/:formId/submission/:submissionId`}
+          component={View}
+        />
+        ) : <NotFound
+        errorMessage={t("Bad Request")}
+        errorCode={400}
+      /> }
         <Redirect
           exact
           from={`${BASE_ROUTE}form/:formId/submission/:submissionId/edit/:notavailable`}

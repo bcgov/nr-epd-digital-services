@@ -4,7 +4,7 @@ const {
   mixedQueryToArray,
   getCurrentIdentity,
   groupByObject,
-  isTruthy,
+  isTruthy
 } = require('../components/utils');
 const { NIL: SYSTEM_USER } = require('uuid');
 const { bucketPermissionService, userService } = require('../services');
@@ -27,36 +27,25 @@ const controller = {
     try {
       const bucketIds = mixedQueryToArray(req.query.bucketId);
       const userIds = mixedQueryToArray(req.query.userId);
-      const bucketPermissions = await bucketPermissionService.searchPermissions(
-        {
-          bucketId: bucketIds
-            ? bucketIds.map((id) => addDashesToUuid(id))
-            : bucketIds,
-          userId: userIds ? userIds.map((id) => addDashesToUuid(id)) : userIds,
-          permCode: mixedQueryToArray(req.query.permCode),
-        },
-      );
-      const response = groupByObject(
-        'bucketId',
-        'permissions',
-        bucketPermissions,
-      );
+      const bucketPermissions = await bucketPermissionService.searchPermissions({
+        bucketId: bucketIds ? bucketIds.map(id => addDashesToUuid(id)) : bucketIds,
+        userId: userIds ? userIds.map(id => addDashesToUuid(id)) : userIds,
+        permCode: mixedQueryToArray(req.query.permCode)
+      });
+      const response = groupByObject('bucketId', 'permissions', bucketPermissions);
 
       // if also returning buckets with implicit object permissions
       if (isTruthy(req.query.objectPerms)) {
-        const buckets =
-          await bucketPermissionService.listInheritedBucketIds(userIds);
+        const buckets = await bucketPermissionService.listInheritedBucketIds(userIds);
 
         // merge list of bucket permissions
-        buckets.forEach((bucketId) => {
-          if (
-            !response.map((r) => r.bucketId).includes(bucketId) &&
+        buckets.forEach(bucketId => {
+          if (!response.map(r => r.bucketId).includes(bucketId) &&
             // limit to to bucketId(s) request query parameter if given
-            (!bucketIds?.length || bucketIds?.includes(bucketId))
-          ) {
+            (!bucketIds?.length || bucketIds?.includes(bucketId))) {
             response.push({
               bucketId: bucketId,
-              permissions: [],
+              permissions: []
             });
           }
         });
@@ -81,8 +70,8 @@ const controller = {
       const userIds = mixedQueryToArray(req.query.userId);
       const response = await bucketPermissionService.searchPermissions({
         bucketId: addDashesToUuid(req.params.bucketId),
-        userId: userIds ? userIds.map((id) => addDashesToUuid(id)) : userIds,
-        permCode: mixedQueryToArray(req.query.permCode),
+        userId: userIds ? userIds.map(id => addDashesToUuid(id)) : userIds,
+        permCode: mixedQueryToArray(req.query.permCode)
       });
       res.status(200).json(response);
     } catch (e) {
@@ -100,14 +89,8 @@ const controller = {
    */
   async addPermissions(req, res, next) {
     try {
-      const userId = await userService.getCurrentUserId(
-        getCurrentIdentity(req.currentUser, SYSTEM_USER),
-      );
-      const response = await bucketPermissionService.addPermissions(
-        addDashesToUuid(req.params.bucketId),
-        req.body,
-        userId,
-      );
+      const userId = await userService.getCurrentUserId(getCurrentIdentity(req.currentUser, SYSTEM_USER));
+      const response = await bucketPermissionService.addPermissions(addDashesToUuid(req.params.bucketId), req.body, userId);
       res.status(201).json(response);
     } catch (e) {
       next(errorToProblem(SERVICE, e));
@@ -125,20 +108,16 @@ const controller = {
   async removePermissions(req, res, next) {
     try {
       const userArray = mixedQueryToArray(req.query.userId);
-      const userIds = userArray
-        ? userArray.map((id) => addDashesToUuid(id))
-        : userArray;
+      const userIds = userArray ? userArray.map(id => addDashesToUuid(id)) : userArray;
       const permissions = mixedQueryToArray(req.query.permCode);
-      const response = await bucketPermissionService.removePermissions(
-        req.params.bucketId,
-        userIds,
-        permissions,
-      );
+      const response = await bucketPermissionService.removePermissions(req.params.bucketId, userIds, permissions);
       res.status(200).json(response);
     } catch (e) {
       next(errorToProblem(SERVICE, e));
     }
   },
+
+
 };
 
 module.exports = controller;

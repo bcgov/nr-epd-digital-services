@@ -10,15 +10,15 @@ module.exports = (webpackConfigEnv, argv) => {
   });
 
   return merge(defaultConfig, {
-    externals: ["@formsflow/*"],
+    externals: ['@formsflow/*'],
     devServer: {
       headers: {
         "Access-Control-Allow-Origin": "*",
       },
-      port: 3005,
+      port: 3005
     },
-    output: {
-      filename: "forms-flow-nav.js",
+    output:{
+      filename:"forms-flow-nav.js"
     },
     module: {
       rules: [

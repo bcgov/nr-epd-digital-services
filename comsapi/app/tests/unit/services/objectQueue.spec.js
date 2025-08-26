@@ -16,7 +16,7 @@ jest.mock('../../../src/db/models/tables/objectQueue', () => ({
   modify: jest.fn(),
   onConflict: jest.fn(),
   query: jest.fn(),
-  returning: jest.fn(),
+  returning: jest.fn()
 }));
 
 const service = require('../../../src/services/objectQueue');
@@ -46,15 +46,13 @@ describe('enqueue', () => {
   it('Inserts a job into the object queue only if it is not already present', async () => {
     ObjectQueue.ignore.mockReturnValue([]);
     const data = {
-      jobs: [
-        {
-          path: 'path',
-          bucketId: BUCKET_ID,
-        },
-      ],
+      jobs: [{
+        path: 'path',
+        bucketId: BUCKET_ID
+      }],
       full: true,
       retries: 0,
-      createdBy: SYSTEM_USER,
+      createdBy: SYSTEM_USER
     };
 
     await service.enqueue(data);
@@ -63,17 +61,15 @@ describe('enqueue', () => {
     expect(ObjectQueue.query).toHaveBeenCalledTimes(1);
     expect(ObjectQueue.query).toBeCalledWith(expect.anything());
     expect(ObjectQueue.insert).toHaveBeenCalledTimes(1);
-    expect(ObjectQueue.insert).toBeCalledWith(
-      expect.arrayContaining([
-        expect.objectContaining({
-          bucketId: data.jobs[0].bucketId,
-          createdBy: data.createdBy,
-          full: data.full,
-          path: data.jobs[0].path,
-          retries: data.retries,
-        }),
-      ]),
-    );
+    expect(ObjectQueue.insert).toBeCalledWith(expect.arrayContaining([
+      expect.objectContaining({
+        bucketId: data.jobs[0].bucketId,
+        createdBy: data.createdBy,
+        full: data.full,
+        path: data.jobs[0].path,
+        retries: data.retries
+      })
+    ]));
     expect(ObjectQueue.onConflict).toHaveBeenCalledTimes(1);
     expect(ObjectQueue.ignore).toHaveBeenCalledTimes(1);
     expect(objectQueueTrx.commit).toHaveBeenCalledTimes(1);

@@ -29,8 +29,8 @@ jobs:
     secrets: inherit
     with:
       environment: prod
-      values: "values-prod.yaml"
-      app_values: "values.yaml" # PROD env specific values file for the APP
+      values: 'values-prod.yaml'
+      app_values: 'values.yaml' # PROD env specific values file for the APP
   deploys:
     name: Deploys to PROD
     uses: ./.github/workflows/.deployer.yml
@@ -38,8 +38,8 @@ jobs:
     needs: [get-pr-info, deploy_db]
     with:
       environment: prod
-      tag: "${{ needs.get-pr-info.outputs.pr }}"
-      values: "values.yaml" # PROD env specific values file
+      tag:  '${{ needs.get-pr-info.outputs.pr }}'
+      values: 'values.yaml' # PROD env specific values file
 
   schemaspy:
     name: Schemaspy

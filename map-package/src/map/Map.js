@@ -1,12 +1,6 @@
 import { MapContainer, Marker, Popup } from "react-leaflet";
-import {
-  TileLayer,
-  WMSTileLayer,
-  useMapEvents,
-  Rectangle,
-  Pane,
-} from "react-leaflet";
-import { useMap } from "react-leaflet";
+import { TileLayer, WMSTileLayer, useMapEvents,Rectangle,Pane } from "react-leaflet";
+import { useMap  } from "react-leaflet";
 import * as L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
@@ -20,28 +14,27 @@ const Map = (props) => {
   const identifyBufferDistance = 4;
   const [show, setShow] = useState(false);
   const [address, setAddress] = useState("");
-  const [location, setLocation] = useState([48.46762, -123.25458]);
+  const [location, setLocation] = useState([ 48.46762, -123.25458  ]);
   const [zoom, setZoom] = useState(13);
   const [searchTrue, setSerachTrue] = useState(true);
   //const [info, setInfo] = useState({});
   let info;
 
   useEffect(() => {
-    if (
-      props.initLocation.length > 0 &&
-      props.initLocation !== null &&
-      props.initLocation !== undefined &&
-      (location[0] !== props.initLocation[0] ||
-        location[1] !== props.initLocation[1])
-    ) {
-      const timeoutId = setTimeout(() => {
+    if (props.initLocation.length > 0 && props.initLocation !== null && props.initLocation !== undefined && ( location[0] !== props.initLocation[0] ||   location[1] !== props.initLocation[1]   )) {
+     
+     
+
+      const timeoutId =  setTimeout(()=>{
         //setSerachTrue(false);
         setZoom(18);
         setLocation(props.initLocation);
-        if (!props.readOnly) {
+        if(!props.readOnly)
+        {
           setShow(true);
-        }
-      }, 1000);
+        } 
+
+      },1000);
 
       return () => {
         clearTimeout(timeoutId);
@@ -111,11 +104,11 @@ const Map = (props) => {
             .getSouthWest()
             .distanceTo(map.getBounds().getNorthEast());
           const mapSizeDiag = Math.sqrt(
-            Math.pow(map.getSize().x, 2) + Math.pow(map.getSize().y, 2),
+            Math.pow(map.getSize().x, 2) + Math.pow(map.getSize().y, 2)
           );
           const metresPerPixel = mapDistanceDiag / mapSizeDiag;
           const bufferedClickLocation = e.latlng.toBounds(
-            metresPerPixel * identifyBufferDistance,
+            metresPerPixel * identifyBufferDistance
           );
           const bbox =
             bufferedClickLocation.getSouth() +
@@ -152,7 +145,7 @@ const Map = (props) => {
                 bbox: bbox,
               },
               "",
-              true,
+              true
             );
 
           console.log("getFeatureInfoUrl--", getFeatureInfoUrl);
@@ -170,7 +163,7 @@ const Map = (props) => {
                 // WMS layers anyhow. There are better ways of doing this that are more
                 // flexible for other layer sources.
                 const targetLayer = visibleLayers.find(
-                  (vl) => feature.id.indexOf(vl.featureIdPrefix) > -1,
+                  (vl) => feature.id.indexOf(vl.featureIdPrefix) > -1
                 );
                 console.log("targetLayer---", targetLayer?.layer);
                 console.log("data.features---", data.features);
@@ -199,7 +192,7 @@ const Map = (props) => {
                         feature.properties[targetLayer.longitude] +
                         "<br/>" +
                         "Address: " +
-                        feature.properties[targetLayer.bottomLineProperty],
+                        feature.properties[targetLayer.bottomLineProperty]
                     )
                     .openOn(map);
                 } else if (
@@ -230,7 +223,7 @@ const Map = (props) => {
                         feature.properties[targetLayer.bottomLineProperty] +
                         "<br/>" +
                         "Municipality: " +
-                        feature.properties[targetLayer.municipality],
+                        feature.properties[targetLayer.municipality]
                     )
 
                     .openOn(map);
@@ -251,13 +244,13 @@ const Map = (props) => {
                 L.popup()
                   .setLatLng(e.latlng)
                   .setContent(
-                    e.latlng.lat.toFixed(5) + ", " + e.latlng.lng.toFixed(5),
+                    e.latlng.lat.toFixed(5) + ", " + e.latlng.lng.toFixed(5)
                   )
                   .openOn(map);
               }
             })
             .catch((error) =>
-              console.error("Could not fetch WMS features", error),
+              console.error("Could not fetch WMS features", error)
             );
         } else {
           // If there are none of our overlay layers visible, just show the
@@ -266,7 +259,7 @@ const Map = (props) => {
           L.popup()
             .setLatLng(e.latlng)
             .setContent(
-              e.latlng.lat.toFixed(5) + ", " + e.latlng.lng.toFixed(5),
+              e.latlng.lat.toFixed(5) + ", " + e.latlng.lng.toFixed(5)
             )
             .openOn(map);
         }
@@ -275,7 +268,7 @@ const Map = (props) => {
         //When a layer is toggled on from the layer control, set visibility
         //to true in the layer details array
         const layerDetails = overlayLayerDetails.find(
-          (ol) => ol.name === e.name,
+          (ol) => ol.name === e.name
         );
         layerDetails.visible = true;
       },
@@ -283,7 +276,7 @@ const Map = (props) => {
         //When a layer is toggled off from the layer control, set visibility
         //to false in the layer details array
         const layerDetails = overlayLayerDetails.find(
-          (ol) => ol.name === e.name,
+          (ol) => ol.name === e.name
         );
         layerDetails.visible = false;
       },
@@ -347,7 +340,7 @@ const Map = (props) => {
     queryParams.set("addressString", addressQuery);
 
     return fetch(`${GEOCODER_API_URL}?${queryParams.toString()}`).then((resp) =>
-      resp.json(),
+      resp.json()
     );
   };
 
@@ -358,16 +351,18 @@ const Map = (props) => {
 
   const RecenterAutomatically = () => {
     const map = useMap();
-    useEffect(() => {
+    useEffect(() => {    
       map.setZoom(zoom);
-
-      if (searchTrue) {
-        map.setView(location, zoom);
+      
+      if(searchTrue)
+      {
+      map.setView(location,zoom);
       }
-
+     
       map.fire("click", {
         latlng: L.latLng(location),
       });
+
     }, [map]);
     return null;
   };
@@ -386,17 +381,19 @@ const Map = (props) => {
             <div>
               <input
                 type="text"
-                style={{
-                  display: "inline-block",
-                  padding: ".375rem",
-                  fontSize: "1rem",
-                  lineHeight: "0.5",
-                  color: "#495057",
-                  backgroundColor: " #fff",
-                  backgroundClip: "padding-box",
-                  border: "1px solid #ced4da",
-                  " borderRadius": ".25rem",
-                }}
+                style={
+                  {
+                    "display": "inline-block",
+                    "padding": ".375rem",
+                    "fontSize": "1rem",
+                    "lineHeight":"0.5",
+                    "color": "#495057",
+                   "backgroundColor":" #fff",
+                   "backgroundClip": "padding-box",
+                   "border": "1px solid #ced4da",
+                   " borderRadius": ".25rem"
+                  }
+                } 
                 value={address}
                 placeholder="Type address "
                 onChange={(e) => {
@@ -406,14 +403,14 @@ const Map = (props) => {
               <input
                 type="button"
                 style={{
-                  fontSize: ".875rem",
-                  padding: ".375rem",
-                  borderRadius: ".2rem",
-                  cursor: "pointer",
-                  color: "#fff",
-                  backgroundColor: "#007bff",
-                  borderColor: "#007bff",
-                  marginLeft: "5px",
+                  "fontSize": ".875rem",                
+                  "padding": ".375rem",
+                  "borderRadius": ".2rem",
+                  "cursor": "pointer",
+                  "color": "#fff",
+                  "backgroundColor": "#007bff",
+                  "borderColor": "#007bff",
+                  "marginLeft" : "5px"
                 }}
                 onClick={() => {
                   handleSubmit();
@@ -424,14 +421,16 @@ const Map = (props) => {
             <br />
             <div>
               <input
+              
                 style={{
-                  fontSize: ".875rem",
-                  lineHeight: "1.5",
-                  borderRadius: ".2rem",
-                  cursor: "pointer",
-                  color: "#fff",
-                  backgroundColor: "#28a745",
-                  borderColor: "#28a745",
+                  "fontSize": ".875rem",
+                  "lineHeight": "1.5",
+                  "borderRadius": ".2rem",
+                  "cursor": "pointer",
+                  "color": "#fff",
+                  "backgroundColor": "#28a745",
+                  "borderColor": "#28a745",
+
                 }}
                 type="button"
                 onClick={(e) => {
@@ -445,14 +444,7 @@ const Map = (props) => {
         )}
       </div>
       <br />
-      <MapContainer
-        center={location}
-        zoom={zoom}
-        minZoom={10}
-        maxBounds={maxBounds}
-        bounds={maxBounds}
-        maxBoundsViscosity={1.0}
-      >
+      <MapContainer center={location}  zoom={zoom} minZoom={10}  maxBounds={maxBounds} bounds={maxBounds} maxBoundsViscosity={1.0} >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -463,13 +455,14 @@ const Map = (props) => {
           transparent={true}
           format="image/png"
         />  */}
-        <WMSTileLayer
-          url="https://openmaps.gov.bc.ca/geo/pub/ows"
-          layers="pub:WHSE_CADASTRE.PMBC_PARCEL_FABRIC_POLY_FA_SVW"
+         <WMSTileLayer
+          url="https://openmaps.gov.bc.ca/geo/pub/ows"                      
+          layers="pub:WHSE_CADASTRE.PMBC_PARCEL_FABRIC_POLY_FA_SVW" 
           transparent={true}
           format="image/png"
-        />
-
+        /> 
+      
+     
         <MyComponent />
         {/* <Marker position={[-123.3599322,48.4433726]}>
           <Popup>

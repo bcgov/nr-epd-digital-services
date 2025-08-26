@@ -6,12 +6,12 @@ const { EMAILREGEX, Permissions } = require('../components/constants');
  * @constant Joi
  * Extend Base Joi with a custom 'csvArray' parser
  */
-const Joi = baseJoi.extend((joi) => ({
+const Joi = baseJoi.extend(joi => ({
   type: 'csvArray',
   base: joi.array(),
   coerce: (value) => ({
-    value: value.split ? value.split(',').map((item) => item.trim()) : value,
-  }),
+    value: value.split ? value.split(',').map(item => item.trim()) : value,
+  })
 }));
 
 /**
@@ -34,25 +34,13 @@ function oneOrMany(param) {
 const type = {
   alphanum: Joi.string().alphanum().max(255),
 
-  truthy: Joi.boolean().truthy(
-    'true',
-    1,
-    '1',
-    't',
-    'yes',
-    'y',
-    'false',
-    0,
-    '0',
-    'f',
-    'no',
-    'n',
-  ),
+  truthy: Joi.boolean()
+    .truthy('true', 1, '1', 't', 'yes', 'y', 'false', 0, '0', 'f', 'no', 'n'),
 
   email: Joi.string().pattern(new RegExp(EMAILREGEX)).max(255),
 
   uuidv4: Joi.string().guid({
-    version: 'uuidv4',
+    version: 'uuidv4'
   }),
 
   /**
@@ -63,12 +51,9 @@ const type = {
    * @returns {object} Joi object
    */
   // TODO: Simplify by changing from arrow function to property
-  metadata: ({ minKeyCount = 0, minValueStringLength = 1 } = {}) =>
-    Joi.object()
-      .pattern(/^x-amz-meta-\S+$/i, Joi.string().min(minValueStringLength), {
-        matches: Joi.array().min(minKeyCount),
-      })
-      .unknown(),
+  metadata: ({ minKeyCount = 0, minValueStringLength = 1 } = {}) => Joi.object()
+    .pattern(/^x-amz-meta-\S+$/i, Joi.string().min(minValueStringLength), { matches: Joi.array().min(minKeyCount) })
+    .unknown(),
 
   /**
    * @function tagset
@@ -80,16 +65,12 @@ const type = {
    * @returns {object} Joi object
    */
   // TODO: Simplify by changing from arrow function to property
-  tagset: ({
-    maxKeyCount = 9,
-    minKeyCount = 0,
-    minValueStringLength = 0,
-  } = {}) =>
-    Joi.object().pattern(
+  tagset: ({ maxKeyCount = 9, minKeyCount = 0, minValueStringLength = 0 } = {}) => Joi.object()
+    .pattern(
       /^(?!coms-id$).{1,255}$/, // don't allow key 'coms-id'
       Joi.string().min(minValueStringLength).max(255),
-      { matches: Joi.array().min(minKeyCount).max(maxKeyCount) },
-    ),
+      { matches: Joi.array().min(minKeyCount).max(maxKeyCount) }
+    )
 };
 
 /**
@@ -101,7 +82,7 @@ const scheme = {
 
   string: oneOrMany(Joi.string().max(255)),
 
-  permCode: oneOrMany(Joi.string().valid(...Object.values(Permissions))),
+  permCode: oneOrMany(Joi.string().valid(...Object.values(Permissions)))
 };
 
 module.exports = { oneOrMany, scheme, type };

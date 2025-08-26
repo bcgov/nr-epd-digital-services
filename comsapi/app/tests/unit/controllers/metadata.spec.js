@@ -22,29 +22,24 @@ afterEach(() => {
 
 describe('searchMetadata', () => {
   // mock service calls
-  const metadataSearchMetadataSpy = jest.spyOn(
-    metadataService,
-    'searchMetadata',
-  );
+  const metadataSearchMetadataSpy = jest.spyOn(metadataService, 'searchMetadata');
   const next = jest.fn();
 
   it('should return all metadata with no params', async () => {
     // request object
     const req = {
       currentUser: { authType: 'BEARER' },
-      headers: {},
+      headers: {}
     };
 
-    const GoodResponse = [
-      {
-        key: 'foo',
-        value: 'bar',
-      },
-      {
-        key: 'baz',
-        value: 'quz',
-      },
-    ];
+    const GoodResponse = [{
+      key: 'foo',
+      value: 'bar'
+    },
+    {
+      key: 'baz',
+      value: 'quz'
+    }];
 
     metadataSearchMetadataSpy.mockReturnValue(GoodResponse);
 
@@ -62,15 +57,13 @@ describe('searchMetadata', () => {
     // request object
     const req = {
       currentUser: { authType: 'BEARER' },
-      headers: { 'x-amz-meta-foo': '' },
+      headers: { 'x-amz-meta-foo': '' }
     };
 
-    const GoodResponse = [
-      {
-        key: 'foo',
-        value: 'bar',
-      },
-    ];
+    const GoodResponse = [{
+      key: 'foo',
+      value: 'bar'
+    }];
 
     metadataSearchMetadataSpy.mockReturnValue(GoodResponse);
 

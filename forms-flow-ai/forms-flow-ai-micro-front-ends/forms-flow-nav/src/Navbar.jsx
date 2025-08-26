@@ -35,18 +35,16 @@ const NavBar = React.memo(({ props }) => {
   const [selectLanguages, setSelectLanguages] = React.useState([]);
   const [applicationTitle, setApplicationTitle] = React.useState("");
   const [tenantLogo, setTenantLogo] = React.useState("/logo_skeleton.svg");
-  const defaultLogoPath =
-    document.documentElement.style.getPropertyValue("--navbar-logo-path") ||
-    "/logo.svg";
+  const defaultLogoPath = document.documentElement.style.getPropertyValue("--navbar-logo-path") || "/logo.svg";
   React.useEffect(() => {
     props.subscribe("FF_AUTH", (msg, data) => {
       setInstance(data);
     });
 
     props.subscribe("FF_PUBLIC", () => {
-      if (MULTITENANCY_ENABLED) {
-        setApplicationTitle(APPLICATION_NAME);
-        setTenantLogo(defaultLogoPath);
+      if(MULTITENANCY_ENABLED){
+        setApplicationTitle(APPLICATION_NAME)
+        setTenantLogo(defaultLogoPath)
       }
     });
 
@@ -90,7 +88,7 @@ const NavBar = React.memo(({ props }) => {
 
   const [lang, setLang] = React.useState(userDetail?.locale);
   const userRoles = JSON.parse(
-    StorageService.get(StorageService.User.USER_ROLE),
+    StorageService.get(StorageService.User.USER_ROLE)
   );
   const showApplications = setShowApplications(userDetail?.groups);
   const tenantKey = tenant?.tenantId;
@@ -105,7 +103,9 @@ const NavBar = React.memo(({ props }) => {
 
   const [loginUrl, setLoginUrl] = useState(baseUrl);
 
-  const logoPath = MULTITENANCY_ENABLED ? tenantLogo : defaultLogoPath;
+  const logoPath = MULTITENANCY_ENABLED
+    ? tenantLogo
+    : defaultLogoPath;
   const getAppName = useMemo(
     () => () => {
       if (!MULTITENANCY_ENABLED) {
@@ -114,7 +114,7 @@ const NavBar = React.memo(({ props }) => {
       // TODO: Need a propper fallback component prefered a skeleton.
       return applicationTitle || "";
     },
-    [MULTITENANCY_ENABLED, applicationTitle],
+    [MULTITENANCY_ENABLED, applicationTitle]
   );
   const appName = getAppName();
   const { t } = useTranslation();
@@ -140,7 +140,7 @@ const NavBar = React.memo(({ props }) => {
 
   React.useEffect(() => {
     setUserDetail(
-      JSON.parse(StorageService.get(StorageService.User.USER_DETAILS)),
+      JSON.parse(StorageService.get(StorageService.User.USER_DETAILS))
     );
   }, [instance]);
 
@@ -160,19 +160,15 @@ const NavBar = React.memo(({ props }) => {
     history.push(baseUrl);
     console.log("logout form nav app");
     instance.kc.logout({
-      redirectUri: window._env_.REACT_APP_CUSTOM_LOGOUT_URL,
-    });
+      redirectUri: window._env_.REACT_APP_CUSTOM_LOGOUT_URL
+    })
     //instance.userLogout();
   };
 
   return (
     <BrowserRouter>
       <header>
-        <Navbar
-          expand="lg"
-          className="topheading-border-bottom position-relative"
-          fixed="top"
-        >
+        <Navbar expand="lg" className="topheading-border-bottom position-relative" fixed="top">
           <Container fluid>
             <Navbar.Brand className="d-flex">
               <Link to={`${baseUrl}`}>
@@ -196,25 +192,20 @@ const NavBar = React.memo(({ props }) => {
                   id="main-menu-nav"
                   className="active align-items-lg-center"
                 >
-                  {getUserRolePermission(userRoles, CLIENT_REVIEWER) ||
-                  !getUserRolePermission(userRoles, STAFF_REVIEWER)
-                    ? ENABLE_FORMS_MODULE && (
-                        <Nav.Link
-                          as={Link}
-                          to={`${baseUrl}form`}
-                          className={`main-nav nav-item custom-nav-item-style ${
-                            pathname.match(
-                              createURLPathMatchExp("form", baseUrl),
-                            )
-                              ? "active-tab"
-                              : "inactive-tab"
-                          }`}
-                        >
-                          <i className="fa fa-wpforms fa-fw fa-lg mr-2" />
-                          {t("Forms")}
-                        </Nav.Link>
-                      )
-                    : null}
+                  {(getUserRolePermission(userRoles, CLIENT_REVIEWER) || !getUserRolePermission(userRoles, STAFF_REVIEWER)) ? ENABLE_FORMS_MODULE && (
+                    <Nav.Link
+                      as={Link}
+                      to={`${baseUrl}form`}
+                      className={`main-nav nav-item custom-nav-item-style ${
+                        pathname.match(createURLPathMatchExp("form", baseUrl))
+                          ? "active-tab"
+                          : "inactive-tab"
+                      }`}
+                    >
+                      <i className="fa fa-wpforms fa-fw fa-lg mr-2" />
+                      {t("Forms")}
+                    </Nav.Link>
+                  ):null}
 
                   {getUserRolePermission(userRoles, ADMIN_ROLE) ? (
                     <Nav.Link
@@ -238,7 +229,7 @@ const NavBar = React.memo(({ props }) => {
                           to={`${baseUrl}processes`}
                           className={`main-nav nav-item custom-nav-item-style ${
                             pathname.match(
-                              createURLPathMatchExp("processes", baseUrl),
+                              createURLPathMatchExp("processes", baseUrl)
                             )
                               ? "active-tab"
                               : "inactive-tab"
@@ -259,14 +250,14 @@ const NavBar = React.memo(({ props }) => {
                             to={`${baseUrl}application`}
                             className={`main-nav nav-item custom-nav-item-style ${
                               pathname.match(
-                                createURLPathMatchExp("application", baseUrl),
+                                createURLPathMatchExp("application", baseUrl)
                               )
                                 ? "active-tab"
                                 : pathname.match(
-                                      createURLPathMatchExp("draft", baseUrl),
-                                    )
-                                  ? "active-tab"
-                                  : "inactive-tab"
+                                    createURLPathMatchExp("draft", baseUrl)
+                                  )
+                                ? "active-tab"
+                                : "inactive-tab"
                             }`}
                           >
                             {" "}
@@ -283,7 +274,7 @@ const NavBar = React.memo(({ props }) => {
                           to={`${baseUrl}task`}
                           className={`main-nav nav-item custom-nav-item-style taskDropdown ${
                             pathname.match(
-                              createURLPathMatchExp("task", baseUrl),
+                              createURLPathMatchExp("task", baseUrl)
                             )
                               ? "active-tab"
                               : "inactive-tab"
@@ -297,18 +288,17 @@ const NavBar = React.memo(({ props }) => {
                     : null}
 
                   {getUserRolePermission(userRoles, STAFF_REVIEWER)
-                    ? ENABLE_DASHBOARDS_MODULE &&
-                      !getUserRolePermission(userRoles, CLIENT_REVIEWER) && (
+                    ? ENABLE_DASHBOARDS_MODULE && !getUserRolePermission(userRoles,CLIENT_REVIEWER) && (
                         <Nav.Link
                           as={Link}
                           to={`${baseUrl}metrics`}
                           data-testid="Dashboards"
                           className={`main-nav nav-item custom-nav-item-style ${
                             pathname.match(
-                              createURLPathMatchExp("metrics", baseUrl),
+                              createURLPathMatchExp("metrics", baseUrl)
                             ) ||
                             pathname.match(
-                              createURLPathMatchExp("insights", baseUrl),
+                              createURLPathMatchExp("insights", baseUrl)
                             )
                               ? "active-tab"
                               : "inactive-tab"
@@ -333,8 +323,7 @@ const NavBar = React.memo(({ props }) => {
                       );
                     })
                   ) : (
-                    <NavDropdown
-                      className="custom-nav-item-style"
+                    <NavDropdown className="custom-nav-item-style"
                       title={
                         <>
                           <i className="fa fa-globe fa-lg mr-2" />
@@ -383,11 +372,9 @@ const NavBar = React.memo(({ props }) => {
                 </Nav>
               </Navbar.Collapse>
             ) : (
-              !MULTITENANCY_ENABLED && (
-                <Link to={loginUrl} className="btn btn-primary">
-                  Login
-                </Link>
-              )
+            !MULTITENANCY_ENABLED && <Link to={loginUrl} className="btn btn-primary">
+              Login
+            </Link>
             )}
           </Container>
         </Navbar>

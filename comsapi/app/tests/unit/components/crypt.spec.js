@@ -21,15 +21,16 @@ describe('encrypt', () => {
       config.has.mockReturnValueOnce(false); // server.passphrase
     });
 
-    it.each([[''], ['foobar'], ['1bazbam']])(
-      'should return the same string given %j',
-      (plaintext) => {
-        const result = crypt.encrypt(plaintext);
-        expect(typeof result).toEqual('string');
-        expect(result).not.toContain(':');
-        expect(result).toEqual(plaintext);
-      },
-    );
+    it.each([
+      [''],
+      ['foobar'],
+      ['1bazbam']
+    ])('should return the same string given %j', (plaintext) => {
+      const result = crypt.encrypt(plaintext);
+      expect(typeof result).toEqual('string');
+      expect(result).not.toContain(':');
+      expect(result).toEqual(plaintext);
+    });
   });
 
   describe('with a passphrase', () => {
@@ -44,7 +45,7 @@ describe('encrypt', () => {
       ['1bazbam'],
       ['ZOWviyZrzhIhjSo38rtpag==:4Lq5+MmjDjK5JE7J1osSJA=='],
       ['V8nPQy/0b+Rj2NefzaY+rg==:9p1TC9i4jFZX7OXcUgUSrA=='],
-      ['WnF471CEo8U4BVcHXAe2bA==:2iER6Is+gtPPCVCoAYzkOw=='],
+      ['WnF471CEo8U4BVcHXAe2bA==:2iER6Is+gtPPCVCoAYzkOw==']
     ])('should return a string given %j', (plaintext) => {
       const result = crypt.encrypt(plaintext);
       expect(result).toBeTruthy();
@@ -68,18 +69,9 @@ describe('decrypt', () => {
       ['', ''],
       ['foobar', 'foobar'],
       ['1bazbam', '1bazbam'],
-      [
-        'ZOWviyZrzhIhjSo38rtpag==:4Lq5+MmjDjK5JE7J1osSJA==',
-        'ZOWviyZrzhIhjSo38rtpag==:4Lq5+MmjDjK5JE7J1osSJA==',
-      ],
-      [
-        'V8nPQy/0b+Rj2NefzaY+rg==:9p1TC9i4jFZX7OXcUgUSrA==',
-        'V8nPQy/0b+Rj2NefzaY+rg==:9p1TC9i4jFZX7OXcUgUSrA==',
-      ],
-      [
-        'WnF471CEo8U4BVcHXAe2bA==:2iER6Is+gtPPCVCoAYzkOw==',
-        'WnF471CEo8U4BVcHXAe2bA==:2iER6Is+gtPPCVCoAYzkOw==',
-      ],
+      ['ZOWviyZrzhIhjSo38rtpag==:4Lq5+MmjDjK5JE7J1osSJA==', 'ZOWviyZrzhIhjSo38rtpag==:4Lq5+MmjDjK5JE7J1osSJA=='],
+      ['V8nPQy/0b+Rj2NefzaY+rg==:9p1TC9i4jFZX7OXcUgUSrA==', 'V8nPQy/0b+Rj2NefzaY+rg==:9p1TC9i4jFZX7OXcUgUSrA=='],
+      ['WnF471CEo8U4BVcHXAe2bA==:2iER6Is+gtPPCVCoAYzkOw==', 'WnF471CEo8U4BVcHXAe2bA==:2iER6Is+gtPPCVCoAYzkOw==']
     ])('should return %j given %j', (plaintext, ciphertext) => {
       const result = crypt.decrypt(ciphertext);
       expect(typeof result).toEqual('string');
@@ -99,7 +91,7 @@ describe('decrypt', () => {
       ['1bazbam', '1bazbam'],
       ['', 'ZOWviyZrzhIhjSo38rtpag==:4Lq5+MmjDjK5JE7J1osSJA=='],
       ['foobar', 'V8nPQy/0b+Rj2NefzaY+rg==:9p1TC9i4jFZX7OXcUgUSrA=='],
-      ['1bazbam', 'WnF471CEo8U4BVcHXAe2bA==:2iER6Is+gtPPCVCoAYzkOw=='],
+      ['1bazbam', 'WnF471CEo8U4BVcHXAe2bA==:2iER6Is+gtPPCVCoAYzkOw==']
     ])('should return %j given %j', (plaintext, ciphertext) => {
       const result = crypt.decrypt(ciphertext);
       expect(typeof result).toEqual('string');
@@ -120,7 +112,7 @@ describe('isEncrypted', () => {
     [false, 'InvalidIVLengthGarbage:4Lq5+MmjDjK5JE7J1osSJA=='],
     [true, 'ZOWviyZrzhIhjSo38rtpag==:4Lq5+MmjDjK5JE7J1osSJA=='],
     [true, 'V8nPQy/0b+Rj2NefzaY+rg==:9p1TC9i4jFZX7OXcUgUSrA=='],
-    [true, 'WnF471CEo8U4BVcHXAe2bA==:2iER6Is+gtPPCVCoAYzkOw=='],
+    [true, 'WnF471CEo8U4BVcHXAe2bA==:2iER6Is+gtPPCVCoAYzkOw==']
   ])('should return %j given %j', (expected, content) => {
     const result = crypt.isEncrypted(content);
     expect(typeof result).toEqual('boolean');

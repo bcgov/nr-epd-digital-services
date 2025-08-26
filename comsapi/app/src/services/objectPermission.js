@@ -17,12 +17,7 @@ const service = {
    * @returns {Promise<object>} The result of running the insert operation
    * @throws The error encountered upon db transaction failure
    */
-  addPermissions: async (
-    objId,
-    data,
-    currentUserId = SYSTEM_USER,
-    etrx = undefined,
-  ) => {
+  addPermissions: async (objId, data, currentUserId = SYSTEM_USER, etrx = undefined) => {
     if (!objId) {
       throw new Error('Invalid objId supplied');
     }
@@ -38,20 +33,13 @@ const service = {
       const currentPerms = await service.searchPermissions({ objId });
       const obj = data
         // Ensure all codes are upper cased
-        .map((p) => ({ ...p, code: p.permCode.toUpperCase().trim() }))
+        .map(p => ({ ...p, code: p.permCode.toUpperCase().trim() }))
         // Filter out any invalid code values
-        .filter((p) =>
-          Object.values(Permissions).some((perm) => perm === p.permCode),
-        )
+        .filter(p => Object.values(Permissions).some(perm => perm === p.permCode))
         // Filter entry tuples that already exist
-        .filter(
-          (p) =>
-            !currentPerms.some(
-              (cp) => cp.userId === p.userId && cp.permCode === p.permCode,
-            ),
-        )
+        .filter(p => !currentPerms.some(cp => cp.userId === p.userId && cp.permCode === p.permCode))
         // Create DB objects to insert
-        .map((p) => ({
+        .map(p => ({
           id: uuidv4(),
           userId: p.userId,
           objectId: objId,
@@ -81,12 +69,8 @@ const service = {
    * @param {string[]} [params.bucketIds] Optional array of bucket id(s)
    * @param {string[]} [params.permCodes] Optional array of PermCode(s)
    * @returns {Promise<object>} The result of running the find operation
-   */
-  listInheritedObjectIds: async (
-    userIds = [],
-    bucketIds = [],
-    permCodes = [],
-  ) => {
+  */
+  listInheritedObjectIds: async (userIds = [], bucketIds = [], permCodes = []) => {
     return BucketPermission.query()
       .distinct('object.id AS objectId')
       .rightJoin('object', 'bucket_permission.bucketId', '=', 'object.bucketId')
@@ -94,12 +78,10 @@ const service = {
         if (userIds.length) query.modify('filterUserId', userIds);
       })
       .modify((query) => {
-        if (bucketIds.length)
-          query.whereIn('bucket_permission.bucketId', bucketIds);
-        if (permCodes.length)
-          query.whereIn('bucket_permission.permCode', permCodes);
+        if (bucketIds.length) query.whereIn('bucket_permission.bucketId', bucketIds);
+        if (permCodes.length) query.whereIn('bucket_permission.permCode', permCodes);
       })
-      .then((response) => response.map((entry) => entry.objectId));
+      .then(response => response.map(entry => entry.objectId));
   },
 
   /**
@@ -112,12 +94,7 @@ const service = {
    * @returns {Promise<object>} The result of running the delete operation
    * @throws The error encountered upon db transaction failure
    */
-  removePermissions: async (
-    objId,
-    userIds = undefined,
-    permissions = undefined,
-    etrx = undefined,
-  ) => {
+  removePermissions: async (objId, userIds = undefined, permissions = undefined, etrx = undefined) => {
     if (!objId) {
       throw new Error('Invalid objId supplied');
     }
@@ -130,11 +107,11 @@ const service = {
       if (permissions && Array.isArray(permissions) && permissions.length) {
         const cleanPerms = permissions
           // Ensure all codes are upper cased
-          .map((p) => p.toUpperCase().trim())
+          .map(p => p.toUpperCase().trim())
           // Filter out any invalid code values
-          .filter((p) => Object.values(Permissions).some((perm) => perm === p));
+          .filter(p => Object.values(Permissions).some(perm => perm === p));
         // Set as undefined if empty array
-        perms = cleanPerms.length ? cleanPerms : undefined;
+        perms = (cleanPerms.length) ? cleanPerms : undefined;
       }
 
       const response = await ObjectPermission.query(trx)
@@ -169,7 +146,7 @@ const service = {
       .modify('filterUserId', params.userId)
       .modify('filterObjectId', params.objId)
       .modify('filterPermissionCode', params.permCode);
-  },
+  }
 };
 
 module.exports = service;

@@ -22,7 +22,7 @@ const state = {
   connections: {},
   gitRev: getGitRevision(),
   ready: false,
-  shutdown: false,
+  shutdown: false
 };
 
 let probeId;
@@ -55,14 +55,9 @@ switch (state.authMode) {
     log.info('Running COMS in full (basic + oidc) auth mode');
     break;
 }
-if (
-  state.authMode === AuthMode.OIDCAUTH ||
-  state.authMode === AuthMode.FULLAUTH
-) {
+if (state.authMode === AuthMode.OIDCAUTH || state.authMode === AuthMode.FULLAUTH) {
   if (!config.has('keycloak.publicKey')) {
-    log.error(
-      'OIDC environment variable KC_PUBLICKEY or keycloak.publicKey must be defined',
-    );
+    log.error('OIDC environment variable KC_PUBLICKEY or keycloak.publicKey must be defined');
     process.exitCode = 1;
     shutdown();
   }
@@ -98,10 +93,10 @@ apiRouter.get('/', (_req, res) => {
         name: process.env.npm_package_name,
         nodeVersion: process.version,
         privacyMask: config.has('server.privacyMask'),
-        version: process.env.npm_package_version,
+        version: process.env.npm_package_version
       },
       endpoints: ['/api/v1'],
-      versions: [1],
+      versions: [1]
     });
   }
 });
@@ -113,44 +108,34 @@ apiRouter.use('/v1', v1Router);
 app.use(/(\/api)?/, apiRouter);
 
 // Handle 404
-app.use((req, _res) => {
-  // eslint-disable-line no-unused-vars
+app.use((req, _res) => { // eslint-disable-line no-unused-vars
   throw new Problem(404, { instance: req.originalUrl });
 });
 
 // Handle Problem Responses
-app.use((err, req, res, _next) => {
-  // eslint-disable-line no-unused-vars
+app.use((err, req, res, _next) => { // eslint-disable-line no-unused-vars
   if (err instanceof Problem) {
     err.send(res);
   } else {
     if (err.stack) log.error(err); // Only log unexpected errors
-    new Problem(500, {
-      detail: err.message ?? err,
-      instance: req.originalUrl,
-    }).send(res);
+    new Problem(500, { detail: err.message ?? err, instance: req.originalUrl }).send(res);
   }
 });
 
 // Ensure unhandled errors gracefully shut down the application
-process.on('unhandledRejection', (err) => {
-  log.error(`Unhandled Rejection: ${err.message ?? err}`, {
-    function: 'onUnhandledRejection',
-  });
+process.on('unhandledRejection', err => {
+  log.error(`Unhandled Rejection: ${err.message ?? err}`, { function: 'onUnhandledRejection' });
   fatalErrorHandler();
 });
-process.on('uncaughtException', (err) => {
-  log.error(`Unhandled Exception: ${err.message ?? err}`, {
-    function: 'onUncaughtException',
-  });
+process.on('uncaughtException', err => {
+  log.error(`Unhandled Exception: ${err.message ?? err}`, { function: 'onUncaughtException' });
   fatalErrorHandler();
 });
 
 // Graceful shutdown support
-['SIGHUP', 'SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGUSR1', 'SIGUSR2'].forEach(
-  (signal) => process.on(signal, shutdown),
-);
-process.on('exit', (code) => {
+['SIGHUP', 'SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGUSR1', 'SIGUSR2']
+  .forEach(signal => process.on(signal, shutdown));
+process.on('exit', code => {
   log.info(`Exiting with code ${code}`, { function: 'onExit' });
 });
 
@@ -165,11 +150,9 @@ function cleanup() {
 
   clearInterval(probeId);
   clearInterval(queueId);
-  queueManager.close(() =>
-    setTimeout(() => {
-      dataConnection.close(process.exit);
-    }, 4050),
-  );
+  queueManager.close(() => setTimeout(() => {
+    dataConnection.close(process.exit);
+  }, 4050));
 }
 
 /**
@@ -180,17 +163,11 @@ function cleanup() {
 function checkConnections() {
   const wasReady = state.ready;
   if (!state.shutdown) {
-    dataConnection.checkConnection().then((results) => {
+    dataConnection.checkConnection().then(results => {
       state.connections.data = results;
-      state.ready = Object.values(state.connections).every((x) => x);
-      if (!wasReady && state.ready)
-        log.info('Application ready to accept traffic', {
-          function: 'checkConnections',
-        });
-      if (wasReady && !state.ready)
-        log.warn('Application not ready to accept traffic', {
-          function: 'checkConnections',
-        });
+      state.ready = Object.values(state.connections).every(x => x);
+      if (!wasReady && state.ready) log.info('Application ready to accept traffic', { function: 'checkConnections' });
+      if (wasReady && !state.ready) log.warn('Application not ready to accept traffic', { function: 'checkConnections' });
       log.silly('App state', { function: 'checkConnections', state: state });
       if (!state.ready) notReadyHandler();
     });
@@ -213,43 +190,28 @@ function fatalErrorHandler() {
  */
 function initializeConnections() {
   // Initialize connections and exit if unsuccessful
-  dataConnection
-    .checkAll()
-    .then((results) => {
+  dataConnection.checkAll()
+    .then(results => {
       state.connections.data = results;
 
       if (state.connections.data) {
-        log.info('DataConnection Reachable', {
-          function: 'initializeConnections',
-        });
+        log.info('DataConnection Reachable', { function: 'initializeConnections' });
       }
       if (config.has('objectStorage.enabled')) {
-        readUnique(config.get('objectStorage'))
-          .then(() => {
-            log.error('Default bucket cannot also exist in database', {
-              function: 'initializeConnections',
-            });
-            fatalErrorHandler();
-          })
-          .catch(() => {});
+        readUnique(config.get('objectStorage')).then(() => {
+          log.error('Default bucket cannot also exist in database', { function: 'initializeConnections' });
+          fatalErrorHandler();
+        }).catch(() => { });
       }
     })
-    .catch((error) => {
-      log.error(
-        `Initialization failed: Database OK = ${state.connections.data}`,
-        { function: 'initializeConnections' },
-      );
-      log.error('Connection initialization failure', error.message, {
-        function: 'initializeConnections',
-      });
+    .catch(error => {
+      log.error(`Initialization failed: Database OK = ${state.connections.data}`, { function: 'initializeConnections' });
+      log.error('Connection initialization failure', error.message, { function: 'initializeConnections' });
       if (!state.ready) notReadyHandler();
     })
     .finally(() => {
-      state.ready = Object.values(state.connections).every((x) => x);
-      if (state.ready)
-        log.info('Application ready to accept traffic', {
-          function: 'initializeConnections',
-        });
+      state.ready = Object.values(state.connections).every(x => x);
+      if (state.ready) log.info('Application ready to accept traffic', { function: 'initializeConnections' });
 
       // Start periodic 10 second connection probes
       probeId = setInterval(checkConnections, 10000);
@@ -277,9 +239,7 @@ function shutdown() {
   log.info('Shutting down', { function: 'shutdown' });
   if (!state.shutdown) {
     state.shutdown = true;
-    log.info('Application no longer accepting traffic', {
-      function: 'shutdown',
-    });
+    log.info('Application no longer accepting traffic', { function: 'shutdown' });
     cleanup();
   }
 }

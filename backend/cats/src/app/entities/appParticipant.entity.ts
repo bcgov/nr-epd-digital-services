@@ -51,17 +51,10 @@ export class AppParticipant {
   @Column('timestamp without time zone', { name: 'created_date_time' })
   createdDateTime: Date;
 
-  @Column('character varying', {
-    name: 'updated_by',
-    length: 20,
-    nullable: true,
-  })
+  @Column('character varying', { name: 'updated_by', length: 20, nullable: true })
   updatedBy: string;
 
-  @Column('timestamp without time zone', {
-    name: 'updated_date_time',
-    nullable: true,
-  })
+  @Column('timestamp without time zone', { name: 'updated_date_time', nullable: true })
   updatedDateTime: Date;
 
   @Column('bytea', { name: 'ts', nullable: true })

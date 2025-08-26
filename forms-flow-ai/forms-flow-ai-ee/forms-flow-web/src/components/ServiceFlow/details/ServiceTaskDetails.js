@@ -41,7 +41,7 @@ import {
   CUSTOM_SUBMISSION_ENABLE,
   MULTITENANCY_ENABLED,
 } from "../../../constants/constants";
-import { getCustomSubmission } from "../../../apiManager/services/FormServices";
+import {  getCustomSubmission } from "../../../apiManager/services/FormServices";
 import { getFormioRoleIds } from "../../../apiManager/services/userservices";
 import { setBundleSubmissionData } from "../../../actions/bundleActions";
 import BundleHistory from "../../Application/BundleHistory";
@@ -57,20 +57,20 @@ const ServiceFlowTaskDetails = React.memo(() => {
   const bpmTaskId = useSelector((state) => state.bpmTasks.taskId);
   const task = useSelector((state) => state.bpmTasks.taskDetail);
   const processList = useSelector((state) => state.bpmTasks.processList);
-  const currentForm = useSelector((state) => state.form?.form || {});
+  const currentForm = useSelector((state) => state.form?.form || {} );
   const isTaskLoading = useSelector(
-    (state) => state.bpmTasks.isTaskDetailLoading,
+    (state) => state.bpmTasks.isTaskDetailLoading
   );
   const isTaskUpdating = useSelector(
-    (state) => state.bpmTasks.isTaskDetailUpdating,
+    (state) => state.bpmTasks.isTaskDetailUpdating
   );
   const reqData = useSelector((state) => state.bpmTasks.listReqParams);
   const taskFormSubmissionReload = useSelector(
-    (state) => state.bpmTasks.taskFormSubmissionReload,
+    (state) => state.bpmTasks.taskFormSubmissionReload
   );
   const dispatch = useDispatch();
   const currentUser = useSelector(
-    (state) => state.user?.userDetail?.preferred_username || "",
+    (state) => state.user?.userDetail?.preferred_username || ""
   );
   const selectedFilter = useSelector((state) => state.bpmTasks.selectedFilter);
   const firstResult = useSelector((state) => state.bpmTasks.firstResult);
@@ -80,8 +80,8 @@ const ServiceFlowTaskDetails = React.memo(() => {
   const tenantKey = useSelector((state) => state.tenants?.tenantId);
   const redirectUrl = MULTITENANCY_ENABLED ? `/tenant/${tenantKey}/` : "/";
   const error = useSelector((state) => state.bpmTasks.error);
-  const [customSubmissionAPIFailed, setCustomSubmissionAPIFailed] =
-    useState(false);
+  const [customSubmissionAPIFailed, setCustomSubmissionAPIFailed] = useState(false);
+  
 
   useEffect(() => {
     if (taskId) {
@@ -102,18 +102,18 @@ const ServiceFlowTaskDetails = React.memo(() => {
 
   useEffect(() => {
     if (error) {
-      dispatch(push("/404"));
+      dispatch(push('/404'));
     }
     return () => {
-      dispatch(bpmActionError(""));
+      dispatch(bpmActionError(''));
     };
-  }, [error, dispatch]);
-
+  }, [error,dispatch]);
+  
   useEffect(() => {
     if (processList.length && task?.processDefinitionId) {
       const pKey = getProcessDataObjectFromList(
         processList,
-        task?.processDefinitionId,
+        task?.processDefinitionId
       );
       setProcessKey(pKey["key"]);
       setProcessTenant(pKey["tenantId"]);
@@ -132,43 +132,38 @@ const ServiceFlowTaskDetails = React.memo(() => {
       Formio.clearCache();
       dispatch(resetFormData("form"));
       const isBundle = taskDetail?.formType === TYPE_BUNDLE;
-      if (isBundle) {
+      if(isBundle){
         dispatch(setBundleSubmissionData({}));
       }
-      const isBundleSubmissionSaveCallBack = (err, res, formResult) => {
-        if (isBundle && formResult.isBundle) {
-          dispatch(setBundleSubmissionData({ data: res.data }));
+      const isBundleSubmissionSaveCallBack = (err,res,formResult)=>{
+        if(isBundle && formResult.isBundle){
+         dispatch(setBundleSubmissionData({data:res.data}));
         }
         dispatch(setBPMTaskDetailLoader(false));
-      };
+       };
       function fetchForm() {
         dispatch(
-          getForm("form", formId, (err, formResult) => {
+          getForm("form", formId, (err,formResult) => {
             if (!err) {
-              if (CUSTOM_SUBMISSION_URL && CUSTOM_SUBMISSION_ENABLE) {
+              if (CUSTOM_SUBMISSION_URL && CUSTOM_SUBMISSION_ENABLE) {             
                 dispatch(setCustomSubmission({}));
-                dispatch(
-                  getCustomSubmission(submissionId, formId, (err, res) => {
-                    if (err) {
-                      setCustomSubmissionAPIFailed(true);
-                    }
+                dispatch(getCustomSubmission(submissionId, formId,(err,res)=>{
 
-                    isBundleSubmissionSaveCallBack(err, res, formResult);
-                  }),
-                );
+                  if(err)
+                  {                  
+                  setCustomSubmissionAPIFailed(true);
+                  }                  
+                 
+                  isBundleSubmissionSaveCallBack(err,res,formResult);
+                 
+                }));
               } else {
                 dispatch(resetSubmission("submission"));
-                dispatch(
-                  getSubmission(
-                    "submission",
-                    submissionId,
-                    formId,
-                    (err, res) => {
-                      isBundleSubmissionSaveCallBack(err, res, formResult);
-                    },
-                  ),
-                );
-              }
+                dispatch(getSubmission("submission", submissionId, formId,(err,res)=>{
+                  isBundleSubmissionSaveCallBack(err,res,formResult);
+
+                }));
+              } 
               dispatch(setFormSubmissionLoading(false));
             } else {
               if (err === "Bad Token" || err === "Token Expired") {
@@ -180,18 +175,18 @@ const ServiceFlowTaskDetails = React.memo(() => {
                     } else {
                       dispatch(setFormSubmissionLoading(false));
                     }
-                  }),
+                  })
                 );
               } else {
                 dispatch(setFormSubmissionLoading(false));
               }
             }
-          }),
+          })
         );
       }
       fetchForm();
     },
-    [dispatch],
+    [dispatch]
   );
 
   useEffect(() => {
@@ -229,7 +224,7 @@ const ServiceFlowTaskDetails = React.memo(() => {
             dispatch(setFormSubmissionLoading(true));
             getFormSubmissionData(taskDetail?.formUrl, taskDetail);
           }
-        }),
+        })
       ); // Refresh the Task Selected
       dispatch(getBPMGroups(task.id));
       dispatch(fetchServiceTaskList(selectedFilter.id, firstResult, reqData)); //Refreshes the Tasks
@@ -256,7 +251,7 @@ const ServiceFlowTaskDetails = React.memo(() => {
     if (bpmTaskId) {
       dispatch(setBPMTaskDetailLoader(true));
       const { formId, submissionId } = getFormIdSubmissionIdFromURL(
-        task?.formUrl,
+        task?.formUrl
       );
       const formUrl = getFormUrlWithFormIdSubmissionId(formId, submissionId);
       const origin = `${window.location.origin}${redirectUrl}`;
@@ -268,7 +263,7 @@ const ServiceFlowTaskDetails = React.memo(() => {
             formUrl,
             task?.applicationId,
             actionType,
-            webFormUrl,
+            webFormUrl
           ),
           (err) => {
             if (!err) {
@@ -276,8 +271,8 @@ const ServiceFlowTaskDetails = React.memo(() => {
             } else {
               dispatch(setBPMTaskDetailLoader(false));
             }
-          },
-        ),
+          }
+        )
       );
     } else {
       reloadCurrentTask();
@@ -291,13 +286,16 @@ const ServiceFlowTaskDetails = React.memo(() => {
         {t("Select a task in the list.")}
       </Row>
     );
-  } else if (customSubmissionAPIFailed) {
+  }
+  else if (customSubmissionAPIFailed)
+  {
     return (
       <div className="service-task-details">
-        <Nodata />
+        <Nodata/>
       </div>
     );
-  } else if (isTaskLoading) {
+  } 
+  else if (isTaskLoading) {
     return (
       <div className="service-task-details">
         <Loading />
@@ -310,34 +308,28 @@ const ServiceFlowTaskDetails = React.memo(() => {
         <LoadingOverlay active={isTaskUpdating} spinner text={t("Loading...")}>
           <TaskHeader />
           <Tabs defaultActiveKey="form" id="service-task-details" mountOnEnter>
-            <Tab
-              eventKey="form"
-              title={t(task?.formType === TYPE_BUNDLE ? "Forms" : "Form")}
-            >
-              {task?.formType === TYPE_BUNDLE && currentForm.isBundle ? (
-                <div style={{ marginBottom: "100px" }}>
-                  {task?.assignee === currentUser ? (
-                    <BundleEdit
-                      bundleIdProp={
-                        getFormIdSubmissionIdFromURL(task?.formUrl).formId
-                      }
-                      submitButtonDisable={true}
-                      submissionIdProp={
-                        getFormIdSubmissionIdFromURL(task?.formUrl).submissionId
-                      }
-                      onCustomEvent={onCustomEventCallBack}
-                      onBundleSubmit={onFormSubmitCallback}
-                    />
+            <Tab eventKey="form" title={t(task?.formType === TYPE_BUNDLE ? "Forms" : "Form")}>
+            
+              {
+                  task?.formType === TYPE_BUNDLE && currentForm.isBundle ? (
+                   <div style={{marginBottom:"100px"}}>
+                    {
+                       task?.assignee === currentUser ? (
+                        <BundleEdit
+                          bundleIdProp={getFormIdSubmissionIdFromURL(task?.formUrl).formId}
+                          submitButtonDisable = {true}
+                          submissionIdProp=
+                          {getFormIdSubmissionIdFromURL(task?.formUrl).submissionId}
+                          onCustomEvent={onCustomEventCallBack}
+                          onBundleSubmit={onFormSubmitCallback}
+                        />
+                      ) : (
+                        <BundleVIew showPrintButton={false} 
+                         bundleIdProp={getFormIdSubmissionIdFromURL(task?.formUrl).formId}/>
+                      )
+                    }
+                   </div>
                   ) : (
-                    <BundleVIew
-                      showPrintButton={false}
-                      bundleIdProp={
-                        getFormIdSubmissionIdFromURL(task?.formUrl).formId
-                      }
-                    />
-                  )}
-                </div>
-              ) : (
                 <LoadingOverlay
                   active={task?.assignee !== currentUser}
                   styles={{

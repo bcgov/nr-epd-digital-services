@@ -194,9 +194,6 @@ export class Application {
   ])
   serviceType: ApplicationServiceType;
 
-  @OneToMany(
-    () => RecentViewedApplication,
-    (recentViewedApplications) => recentViewedApplications.application,
-  )
+  @OneToMany(() => RecentViewedApplication, (recentViewedApplications) => recentViewedApplications.application)
   recentViewedApplications: RecentViewedApplication[];
 }

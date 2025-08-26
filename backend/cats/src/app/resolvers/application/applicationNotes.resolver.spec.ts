@@ -101,8 +101,9 @@ describe('ApplicationNotesResolver', () => {
 
       const mockApplicationId = 123;
 
-      const result =
-        await resolver.getApplicationNotesByApplicationId(mockApplicationId);
+      const result = await resolver.getApplicationNotesByApplicationId(
+        mockApplicationId,
+      );
 
       expect(service.getApplicationNotesByApplicationId).toHaveBeenCalledWith(
         mockApplicationId,

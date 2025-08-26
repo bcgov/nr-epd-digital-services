@@ -11,25 +11,8 @@ export type GetStaffsQueryVariables = Types.Exact<{
   sortByDir?: Types.InputMaybe<Types.ApplicationSortByDirection>;
 }>;
 
-export type GetStaffsQuery = {
-  __typename?: 'Query';
-  getStaffs: {
-    __typename?: 'StaffResponse';
-    message?: string | null;
-    httpStatusCode?: number | null;
-    success?: boolean | null;
-    count?: number | null;
-    page?: number | null;
-    pageSize?: number | null;
-    data: Array<{
-      __typename?: 'ViewStaff';
-      id: number;
-      name: string;
-      assignments: number;
-      capacity: number;
-    }>;
-  };
-};
+
+export type GetStaffsQuery = { __typename?: 'Query', getStaffs: { __typename?: 'StaffResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, count?: number | null, page?: number | null, pageSize?: number | null, data: Array<{ __typename?: 'ViewStaff', id: number, name: string, assignments: number, capacity: number }> } };
 
 export type GetApplicationsByStaffQueryVariables = Types.Exact<{
   page: Types.Scalars['Int']['input'];
@@ -40,80 +23,41 @@ export type GetApplicationsByStaffQueryVariables = Types.Exact<{
   roleId?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
-export type GetApplicationsByStaffQuery = {
-  __typename?: 'Query';
-  getApplicationsByStaff: {
-    __typename?: 'ViewApplicationResponse';
-    message?: string | null;
-    httpStatusCode?: number | null;
-    success?: boolean | null;
-    count?: number | null;
-    page?: number | null;
-    pageSize?: number | null;
-    data: Array<{
-      __typename?: 'ViewApplications';
-      id: number;
-      applicationId: number;
-      roleId: number;
-      roleDescription: string;
-      siteAddress: string;
-      effectiveStartDate: any;
-      effectiveEndDate?: any | null;
-    }>;
-  };
-};
+
+export type GetApplicationsByStaffQuery = { __typename?: 'Query', getApplicationsByStaff: { __typename?: 'ViewApplicationResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, count?: number | null, page?: number | null, pageSize?: number | null, data: Array<{ __typename?: 'ViewApplications', id: number, applicationId: number, roleId: number, roleDescription: string, siteAddress: string, effectiveStartDate: any, effectiveEndDate?: any | null }> } };
 
 export type GetRolesQueryVariables = Types.Exact<{
   roleType?: Types.InputMaybe<Types.Scalars['String']['input']>;
 }>;
 
-export type GetRolesQuery = {
-  __typename?: 'Query';
-  getAllParticipantRoles: {
-    __typename?: 'ParticipantsRolesResponse';
-    httpStatusCode?: number | null;
-    success?: boolean | null;
-    message?: string | null;
-    timestamp?: string | null;
-    data?: Array<{
-      __typename?: 'ViewParticipantsRolesDto';
-      id: number;
-      description: string;
-      roleType?: string | null;
-    }> | null;
-  };
-};
+
+export type GetRolesQuery = { __typename?: 'Query', getAllParticipantRoles: { __typename?: 'ParticipantsRolesResponse', httpStatusCode?: number | null, success?: boolean | null, message?: string | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewParticipantsRolesDto', id: number, description: string, roleType?: string | null }> | null } };
+
 
 export const GetStaffsDocument = gql`
-  query getStaffs(
-    $page: Int!
-    $pageSize: Int!
-    $filter: Filter
-    $sortBy: StaffSortByField
-    $sortByDir: ApplicationSortByDirection
+    query getStaffs($page: Int!, $pageSize: Int!, $filter: Filter, $sortBy: StaffSortByField, $sortByDir: ApplicationSortByDirection) {
+  getStaffs(
+    page: $page
+    pageSize: $pageSize
+    filter: $filter
+    sortBy: $sortBy
+    sortByDir: $sortByDir
   ) {
-    getStaffs(
-      page: $page
-      pageSize: $pageSize
-      filter: $filter
-      sortBy: $sortBy
-      sortByDir: $sortByDir
-    ) {
-      message
-      httpStatusCode
-      success
-      count
-      page
-      pageSize
-      data {
-        id
-        name
-        assignments
-        capacity
-      }
+    message
+    httpStatusCode
+    success
+    count
+    page
+    pageSize
+    data {
+      id
+      name
+      assignments
+      capacity
     }
   }
-`;
+}
+    `;
 
 /**
  * __useGetStaffsQuery__
@@ -135,94 +79,50 @@ export const GetStaffsDocument = gql`
  *   },
  * });
  */
-export function useGetStaffsQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetStaffsQuery,
-    GetStaffsQueryVariables
-  > &
-    (
-      | { variables: GetStaffsQueryVariables; skip?: boolean }
-      | { skip: boolean }
-    ),
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetStaffsQuery, GetStaffsQueryVariables>(
-    GetStaffsDocument,
-    options,
-  );
-}
-export function useGetStaffsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetStaffsQuery,
-    GetStaffsQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetStaffsQuery, GetStaffsQueryVariables>(
-    GetStaffsDocument,
-    options,
-  );
-}
-export function useGetStaffsSuspenseQuery(
-  baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<GetStaffsQuery, GetStaffsQueryVariables>,
-) {
-  const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<GetStaffsQuery, GetStaffsQueryVariables>(
-    GetStaffsDocument,
-    options,
-  );
-}
-export type GetStaffsQueryHookResult = ReturnType<typeof useGetStaffsQuery>;
-export type GetStaffsLazyQueryHookResult = ReturnType<
-  typeof useGetStaffsLazyQuery
->;
-export type GetStaffsSuspenseQueryHookResult = ReturnType<
-  typeof useGetStaffsSuspenseQuery
->;
-export type GetStaffsQueryResult = Apollo.QueryResult<
-  GetStaffsQuery,
-  GetStaffsQueryVariables
->;
-export const GetApplicationsByStaffDocument = gql`
-  query getApplicationsByStaff(
-    $page: Int!
-    $pageSize: Int!
-    $sortBy: StaffSortByField
-    $sortByDir: ApplicationSortByDirection
-    $personId: Int!
-    $roleId: Int
-  ) {
-    getApplicationsByStaff(
-      page: $page
-      pageSize: $pageSize
-      sortBy: $sortBy
-      sortByDir: $sortByDir
-      personId: $personId
-      roleId: $roleId
-    ) {
-      message
-      httpStatusCode
-      success
-      count
-      page
-      pageSize
-      data {
-        id
-        applicationId
-        roleId
-        roleDescription
-        siteAddress
-        effectiveStartDate
-        effectiveEndDate
+export function useGetStaffsQuery(baseOptions: Apollo.QueryHookOptions<GetStaffsQuery, GetStaffsQueryVariables> & ({ variables: GetStaffsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetStaffsQuery, GetStaffsQueryVariables>(GetStaffsDocument, options);
       }
+export function useGetStaffsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetStaffsQuery, GetStaffsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetStaffsQuery, GetStaffsQueryVariables>(GetStaffsDocument, options);
+        }
+export function useGetStaffsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetStaffsQuery, GetStaffsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetStaffsQuery, GetStaffsQueryVariables>(GetStaffsDocument, options);
+        }
+export type GetStaffsQueryHookResult = ReturnType<typeof useGetStaffsQuery>;
+export type GetStaffsLazyQueryHookResult = ReturnType<typeof useGetStaffsLazyQuery>;
+export type GetStaffsSuspenseQueryHookResult = ReturnType<typeof useGetStaffsSuspenseQuery>;
+export type GetStaffsQueryResult = Apollo.QueryResult<GetStaffsQuery, GetStaffsQueryVariables>;
+export const GetApplicationsByStaffDocument = gql`
+    query getApplicationsByStaff($page: Int!, $pageSize: Int!, $sortBy: StaffSortByField, $sortByDir: ApplicationSortByDirection, $personId: Int!, $roleId: Int) {
+  getApplicationsByStaff(
+    page: $page
+    pageSize: $pageSize
+    sortBy: $sortBy
+    sortByDir: $sortByDir
+    personId: $personId
+    roleId: $roleId
+  ) {
+    message
+    httpStatusCode
+    success
+    count
+    page
+    pageSize
+    data {
+      id
+      applicationId
+      roleId
+      roleDescription
+      siteAddress
+      effectiveStartDate
+      effectiveEndDate
     }
   }
-`;
+}
+    `;
 
 /**
  * __useGetApplicationsByStaffQuery__
@@ -245,79 +145,37 @@ export const GetApplicationsByStaffDocument = gql`
  *   },
  * });
  */
-export function useGetApplicationsByStaffQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetApplicationsByStaffQuery,
-    GetApplicationsByStaffQueryVariables
-  > &
-    (
-      | { variables: GetApplicationsByStaffQueryVariables; skip?: boolean }
-      | { skip: boolean }
-    ),
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<
-    GetApplicationsByStaffQuery,
-    GetApplicationsByStaffQueryVariables
-  >(GetApplicationsByStaffDocument, options);
-}
-export function useGetApplicationsByStaffLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetApplicationsByStaffQuery,
-    GetApplicationsByStaffQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetApplicationsByStaffQuery,
-    GetApplicationsByStaffQueryVariables
-  >(GetApplicationsByStaffDocument, options);
-}
-export function useGetApplicationsByStaffSuspenseQuery(
-  baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<
-        GetApplicationsByStaffQuery,
-        GetApplicationsByStaffQueryVariables
-      >,
-) {
-  const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<
-    GetApplicationsByStaffQuery,
-    GetApplicationsByStaffQueryVariables
-  >(GetApplicationsByStaffDocument, options);
-}
-export type GetApplicationsByStaffQueryHookResult = ReturnType<
-  typeof useGetApplicationsByStaffQuery
->;
-export type GetApplicationsByStaffLazyQueryHookResult = ReturnType<
-  typeof useGetApplicationsByStaffLazyQuery
->;
-export type GetApplicationsByStaffSuspenseQueryHookResult = ReturnType<
-  typeof useGetApplicationsByStaffSuspenseQuery
->;
-export type GetApplicationsByStaffQueryResult = Apollo.QueryResult<
-  GetApplicationsByStaffQuery,
-  GetApplicationsByStaffQueryVariables
->;
-export const GetRolesDocument = gql`
-  query getRoles($roleType: String) {
-    getAllParticipantRoles(roleType: $roleType) {
-      httpStatusCode
-      success
-      message
-      timestamp
-      data {
-        id
-        description
-        roleType
+export function useGetApplicationsByStaffQuery(baseOptions: Apollo.QueryHookOptions<GetApplicationsByStaffQuery, GetApplicationsByStaffQueryVariables> & ({ variables: GetApplicationsByStaffQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetApplicationsByStaffQuery, GetApplicationsByStaffQueryVariables>(GetApplicationsByStaffDocument, options);
       }
+export function useGetApplicationsByStaffLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplicationsByStaffQuery, GetApplicationsByStaffQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetApplicationsByStaffQuery, GetApplicationsByStaffQueryVariables>(GetApplicationsByStaffDocument, options);
+        }
+export function useGetApplicationsByStaffSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetApplicationsByStaffQuery, GetApplicationsByStaffQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetApplicationsByStaffQuery, GetApplicationsByStaffQueryVariables>(GetApplicationsByStaffDocument, options);
+        }
+export type GetApplicationsByStaffQueryHookResult = ReturnType<typeof useGetApplicationsByStaffQuery>;
+export type GetApplicationsByStaffLazyQueryHookResult = ReturnType<typeof useGetApplicationsByStaffLazyQuery>;
+export type GetApplicationsByStaffSuspenseQueryHookResult = ReturnType<typeof useGetApplicationsByStaffSuspenseQuery>;
+export type GetApplicationsByStaffQueryResult = Apollo.QueryResult<GetApplicationsByStaffQuery, GetApplicationsByStaffQueryVariables>;
+export const GetRolesDocument = gql`
+    query getRoles($roleType: String) {
+  getAllParticipantRoles(roleType: $roleType) {
+    httpStatusCode
+    success
+    message
+    timestamp
+    data {
+      id
+      description
+      roleType
     }
   }
-`;
+}
+    `;
 
 /**
  * __useGetRolesQuery__
@@ -335,49 +193,19 @@ export const GetRolesDocument = gql`
  *   },
  * });
  */
-export function useGetRolesQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetRolesQuery, GetRolesQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetRolesQuery, GetRolesQueryVariables>(
-    GetRolesDocument,
-    options,
-  );
-}
-export function useGetRolesLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetRolesQuery,
-    GetRolesQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetRolesQuery, GetRolesQueryVariables>(
-    GetRolesDocument,
-    options,
-  );
-}
-export function useGetRolesSuspenseQuery(
-  baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<GetRolesQuery, GetRolesQueryVariables>,
-) {
-  const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<GetRolesQuery, GetRolesQueryVariables>(
-    GetRolesDocument,
-    options,
-  );
-}
+export function useGetRolesQuery(baseOptions?: Apollo.QueryHookOptions<GetRolesQuery, GetRolesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRolesQuery, GetRolesQueryVariables>(GetRolesDocument, options);
+      }
+export function useGetRolesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRolesQuery, GetRolesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRolesQuery, GetRolesQueryVariables>(GetRolesDocument, options);
+        }
+export function useGetRolesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetRolesQuery, GetRolesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetRolesQuery, GetRolesQueryVariables>(GetRolesDocument, options);
+        }
 export type GetRolesQueryHookResult = ReturnType<typeof useGetRolesQuery>;
-export type GetRolesLazyQueryHookResult = ReturnType<
-  typeof useGetRolesLazyQuery
->;
-export type GetRolesSuspenseQueryHookResult = ReturnType<
-  typeof useGetRolesSuspenseQuery
->;
-export type GetRolesQueryResult = Apollo.QueryResult<
-  GetRolesQuery,
-  GetRolesQueryVariables
->;
+export type GetRolesLazyQueryHookResult = ReturnType<typeof useGetRolesLazyQuery>;
+export type GetRolesSuspenseQueryHookResult = ReturnType<typeof useGetRolesSuspenseQuery>;
+export type GetRolesQueryResult = Apollo.QueryResult<GetRolesQuery, GetRolesQueryVariables>;

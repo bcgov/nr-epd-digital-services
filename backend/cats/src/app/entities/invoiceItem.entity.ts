@@ -1,13 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { InvoiceV2 } from './invoiceV2.entity';
 import { InvoiceItemType } from '../utilities/enums/invoice/invoiceItemType.enum';
 
@@ -29,13 +20,13 @@ export class InvoiceItem {
   @Column({ name: 'description', length: 255 })
   description: string;
 
-  @Column('int', { name: 'quantity' })
+  @Column('int', {name: 'quantity'})
   quantity: number;
 
-  @Column('int', { name: 'unit_price_in_cents' })
+  @Column('int', {name: 'unit_price_in_cents'})
   unitPriceInCents: number;
 
-  @Column('int', { name: 'total_in_cents' })
+  @Column('int', {name: 'total_in_cents'})
   totalInCents: number;
 
   @Column('character varying', { name: 'who_created', length: 30 })
@@ -48,22 +39,13 @@ export class InvoiceItem {
   })
   whoUpdated: string | null;
 
-  @CreateDateColumn({
-    name: 'when_created',
-    type: 'timestamp without time zone',
-  })
+  @CreateDateColumn({ name: 'when_created', type: 'timestamp without time zone' })
   whenCreated: Date;
 
-  @UpdateDateColumn({
-    name: 'when_updated',
-    type: 'timestamp without time zone',
-    nullable: true,
-  })
+  @UpdateDateColumn({ name: 'when_updated', type: 'timestamp without time zone', nullable: true })
   whenUpdated: Date | null;
 
-  @ManyToOne(() => InvoiceV2, (invoice) => invoice.invoiceItems, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(() => InvoiceV2, (invoice) => invoice.invoiceItems, { onDelete: 'CASCADE' })
   @JoinColumn([{ name: 'invoice_id', referencedColumnName: 'id' }])
   invoice: InvoiceV2;
 }

@@ -1,44 +1,48 @@
 {
-  "forms": [
-    {
-      "name": "Contaminated Sites Services Application (CSSA)",
-      "copy": "This is the first sample lrs form, please use this for lrs things",
-      "url": "https://chefs.nrs.gov.bc.ca/app/form/submit?f=f003bc9e-0296-4a55-aa43-d8adaf0a022d"
-    },
-    {
-      "name": "Contaminated Soil Relocation Agreement",
-      "copy": "This is a sample lrs form, please use this for lrs things",
-      "url": "https://chefs.nrs.gov.bc.ca/app/form/submit?f=f003bc9e-0296-4a55-aa43-d8adaf0a022d"
-    },
-    {
-      "name": "Detailed Ecological Risk Assessment Checklist",
-      "copy": "This is a sample lrs form, please use this for lrs things",
-      "url": "https://chefs.nrs.gov.bc.ca/app/form/submit?f=f003bc9e-0296-4a55-aa43-d8adaf0a022d"
-    },
-    {
-      "name": "Notification of Independent Remediation",
-      "copy": "This is a sample lrs form, please use this for lrs things",
-      "url": "https://chefs.nrs.gov.bc.ca/app/form/submit?f=f003bc9e-0296-4a55-aa43-d8adaf0a022d"
-    },
-    {
-      "name": "Notification of Likely or Actual Migration",
-      "copy": "This is a sample lrs form, please use this for lrs things",
-      "url": "https://chefs.nrs.gov.bc.ca/app/form/submit?f=f003bc9e-0296-4a55-aa43-d8adaf0a022d"
-    },
-    {
-      "name": "Protocol 6 Pre-Approval Application",
-      "copy": "This is a sample lrs form, please use this for lrs things",
-      "url": "https://chefs.nrs.gov.bc.ca/app/form/submit?f=f003bc9e-0296-4a55-aa43-d8adaf0a022d"
-    },
-    {
-      "name": "Site Disclosure Statements",
-      "copy": "This is a sample lrs form, please use this for lrs things",
-      "url": "https://chefs.nrs.gov.bc.ca/app/form/submit?f=f003bc9e-0296-4a55-aa43-d8adaf0a022d"
-    },
-    {
-      "name": "Site Information Request Application",
-      "copy": "This is a sample lrs form, please use this for lrs things",
-      "url": "https://chefs.nrs.gov.bc.ca/app/form/submit?f=f003bc9e-0296-4a55-aa43-d8adaf0a022d"
-    }
-  ]
+    "forms":
+    [
+        {
+            "name":"Contaminated Sites Services Application (CSSA)",
+            "copy":"This is the first sample lrs form, please use this for lrs things",
+            "url":"https://chefs.nrs.gov.bc.ca/app/form/submit?f=f003bc9e-0296-4a55-aa43-d8adaf0a022d"
+        },
+        {
+            "name":"Contaminated Soil Relocation Agreement",
+            "copy":"This is a sample lrs form, please use this for lrs things",
+            "url":"https://chefs.nrs.gov.bc.ca/app/form/submit?f=f003bc9e-0296-4a55-aa43-d8adaf0a022d"
+        },
+        {
+            "name":"Detailed Ecological Risk Assessment Checklist",
+            "copy":"This is a sample lrs form, please use this for lrs things",
+            "url":"https://chefs.nrs.gov.bc.ca/app/form/submit?f=f003bc9e-0296-4a55-aa43-d8adaf0a022d"
+        },
+        {
+            "name":"Notification of Independent Remediation",
+            "copy":"This is a sample lrs form, please use this for lrs things",
+            "url":"https://chefs.nrs.gov.bc.ca/app/form/submit?f=f003bc9e-0296-4a55-aa43-d8adaf0a022d"
+        },
+        {
+            "name":"Notification of Likely or Actual Migration",
+            "copy":"This is a sample lrs form, please use this for lrs things",
+            "url":"https://chefs.nrs.gov.bc.ca/app/form/submit?f=f003bc9e-0296-4a55-aa43-d8adaf0a022d"
+        },
+        {
+            "name":"Protocol 6 Pre-Approval Application",
+            "copy":"This is a sample lrs form, please use this for lrs things",
+            "url":"https://chefs.nrs.gov.bc.ca/app/form/submit?f=f003bc9e-0296-4a55-aa43-d8adaf0a022d"
+        },
+        {
+            "name":"Site Disclosure Statements",
+            "copy":"This is a sample lrs form, please use this for lrs things",
+            "url":"https://chefs.nrs.gov.bc.ca/app/form/submit?f=f003bc9e-0296-4a55-aa43-d8adaf0a022d"
+        },
+        {
+            "name":"Site Information Request Application",
+            "copy":"This is a sample lrs form, please use this for lrs things",
+            "url":"https://chefs.nrs.gov.bc.ca/app/form/submit?f=f003bc9e-0296-4a55-aa43-d8adaf0a022d"
+        }
+        
+    ]
+
+    
 }

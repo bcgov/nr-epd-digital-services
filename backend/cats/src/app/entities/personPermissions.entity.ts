@@ -1,11 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  Column,
-  JoinColumn,
-  Unique,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, Column, JoinColumn, Unique } from 'typeorm';
 import { Person } from './person.entity';
 import { Permissions } from './permissions.entity';
 
@@ -15,24 +8,24 @@ export class PersonPermission {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('integer', { name: 'person_id' })
+  @Column( 'integer', {name: 'person_id'})
   personId: number;
 
-  @Column('integer', { name: 'permission_id' })
+  @Column( 'integer', {name: 'permission_id'})
   permissionId: number;
 
   @Column('character varying', { name: 'created_by', length: 20 })
-  createdBy: string;
+  createdBy: string;   
 
   @Column('timestamp without time zone', { name: 'created_datetime' })
-  createdDatetime: Date;
+  createdDatetime: Date;  
 
-  @Column('character varying', {
+  @Column('character varying', {    
     name: 'updated_by',
     length: 20,
     nullable: true,
   })
-  updatedBy: string;
+  updatedBy: string;   
 
   @Column('timestamp without time zone', {
     name: 'updated_datetime',
@@ -40,15 +33,11 @@ export class PersonPermission {
   })
   updatedDatetime: Date;
 
-  @ManyToOne(() => Person, (person) => person.personPermissions, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(() => Person, person => person.personPermissions, { onDelete: 'CASCADE' })
   @JoinColumn([{ name: 'person_id', referencedColumnName: 'id' }])
   person: Person;
 
-  @ManyToOne(() => Permissions, (permission) => permission.personPermissions, {
-    eager: true,
-  })
+  @ManyToOne(() => Permissions, permission => permission.personPermissions, { eager: true })
   @JoinColumn([{ name: 'permission_id', referencedColumnName: 'id' }])
   permission: Permissions;
 }

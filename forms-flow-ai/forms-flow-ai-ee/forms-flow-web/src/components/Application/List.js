@@ -40,17 +40,17 @@ import { getClientApplicationStatus } from "../../helper/helper";
 export const ApplicationList = React.memo(() => {
   const { t } = useTranslation();
   const applications = useSelector(
-    (state) => state.applications.applicationsList,
+    (state) => state.applications.applicationsList
   );
   const countPerPage = useSelector((state) => state.applications.countPerPage);
   const applicationStatus = useSelector(
-    (state) => state.applications.applicationStatus,
+    (state) => state.applications.applicationStatus
   );
   const isApplicationListLoading = useSelector(
-    (state) => state.applications.isApplicationListLoading,
+    (state) => state.applications.isApplicationListLoading
   );
   const applicationCount = useSelector(
-    (state) => state.applications.applicationCount,
+    (state) => state.applications.applicationCount
   );
   const draftCount = useSelector((state) => state.draft.draftCount);
   const dispatch = useDispatch();
@@ -152,7 +152,7 @@ export const ApplicationList = React.memo(() => {
       application.isClientEdit = isClientEdit(application.applicationStatus);
       if (getUserRolePermission(userRoles, CLIENT)) {
         application.applicationStatus = getClientApplicationStatus(
-          application.applicationStatus,
+          application.applicationStatus
         );
       }
       return application;
@@ -194,7 +194,7 @@ export const ApplicationList = React.memo(() => {
         setLastModified,
         t,
         redirectUrl,
-        invalidFilters,
+        invalidFilters
       )}
       search
     >
@@ -209,7 +209,7 @@ export const ApplicationList = React.memo(() => {
                 loading={isLoading}
                 filter={filterFactory()}
                 pagination={paginationFactory(
-                  getoptions(applicationCount, page, countPerPage),
+                  getoptions(applicationCount, page, countPerPage)
                 )}
                 onTableChange={handlePageChange}
                 filterPosition={"top"}

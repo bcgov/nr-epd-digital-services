@@ -1,51 +1,44 @@
-#dropdown-toggle::after {
-  display: none;
+#dropdown-toggle::after{
+    display:none
 }
 
-#dropdown-toggle {
-  text-align: left;
-  font-family:
-    ‘BCSans’,
-    ‘Noto Sans’,
-    Verdana,
-    Arial,
-    sans-serif;
-  background-color: #1a5a96;
-  color: white;
+#dropdown-toggle{
+    text-align: left;
+    font-family: ‘BCSans’, ‘Noto Sans’, Verdana, Arial, sans-serif; 
+    background-color: #1A5A96;
+    color: white;
 }
 
-#dropdown-menu {
-  font-family:
-    ‘BCSans’,
-    ‘Noto Sans’,
-    Verdana,
-    Arial,
-    sans-serif;
-  font-style: normal;
-  color: #1a5a96;
-  width: 100%;
+
+#dropdown-menu{
+    font-family: ‘BCSans’, ‘Noto Sans’, Verdana, Arial, sans-serif; 
+    font-style: normal;
+    color: #1A5A96;
+    width: 100%;
+} 
+
+#toggle-icon{
+    margin-top: 4px !important;
+    float:right;
+    vertical-align: middle;
 }
 
-#toggle-icon {
-  margin-top: 4px !important;
-  float: right;
-  vertical-align: middle;
+#nav-panel #nav-link{
+    font-family: 'BCSans', 'Noto Sans', Verdana, Arial, sans-serif;
+    font-style: normal;
+    color: #1A5A96;
+    text-decoration-line: underline;
+    border: #F2F2F2,1px;
 }
 
-#nav-panel #nav-link {
-  font-family: "BCSans", "Noto Sans", Verdana, Arial, sans-serif;
-  font-style: normal;
-  color: #1a5a96;
-  text-decoration-line: underline;
-  border: #f2f2f2, 1px;
+#nav-panel-row{
+    margin-left: 1rem; 
+    margin-right: 1rem;
+    padding-bottom: 50%;
+
 }
 
-#nav-panel-row {
-  margin-left: 1rem;
-  margin-right: 1rem;
-  padding-bottom: 50%;
-}
-
-.navPanelBoxShadow {
-  box-shadow: 1px 1px 1px 1px #eee;
+.navPanelBoxShadow
+{
+    box-shadow: 1px 1px 1px 1px #eee;
 }

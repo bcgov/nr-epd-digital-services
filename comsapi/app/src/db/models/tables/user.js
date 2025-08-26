@@ -23,17 +23,17 @@ class User extends Timestamps(Model) {
         modelClass: IdentityProvider,
         join: {
           from: 'user.idp',
-          to: 'identity_provider.idp',
-        },
+          to: 'identity_provider.idp'
+        }
       },
       objectPermission: {
         relation: Model.HasManyRelation,
         modelClass: ObjectPermission,
         join: {
           from: 'user.userId',
-          to: 'object_permission.userId',
-        },
-      },
+          to: 'object_permission.userId'
+        }
+      }
     };
   }
 
@@ -70,9 +70,8 @@ class User extends Timestamps(Model) {
       filterSearch(query, value) {
         // Must be written as subquery function to force parentheses grouping
         if (value) {
-          query.where((subquery) => {
-            subquery
-              .where('username', 'ilike', `%${value}%`)
+          query.where(subquery => {
+            subquery.where('username', 'ilike', `%${value}%`)
               .orWhere('email', 'ilike', `%${value}%`)
               .orWhere('fullName', 'ilike', `%${value}%`);
           });
@@ -80,7 +79,7 @@ class User extends Timestamps(Model) {
       },
       orderLastFirstAscending(builder) {
         builder.orderByRaw('lower("lastName"), lower("firstName")');
-      },
+      }
     };
   }
 
@@ -98,9 +97,9 @@ class User extends Timestamps(Model) {
         username: { type: 'string', maxLength: 255 },
         email: { type: 'string', maxLength: 255 },
         active: { type: 'boolean' },
-        ...stamps,
+        ...stamps
       },
-      additionalProperties: false,
+      additionalProperties: false
     };
   }
 }

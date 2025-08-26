@@ -22,7 +22,7 @@ jest.mock('../../../src/db/models/tables/metadata', () => ({
   select: jest.fn(),
   whereIn: jest.fn(),
   whereNull: jest.fn(),
-  withGraphJoined: jest.fn(),
+  withGraphJoined: jest.fn()
 }));
 
 const objectModelTrx = trxBuilder();
@@ -35,7 +35,7 @@ jest.mock('../../../src/db/models/tables/objectModel', () => ({
   modifyGraph: jest.fn(),
   query: jest.fn(),
   select: jest.fn(),
-  withGraphJoined: jest.fn(),
+  withGraphJoined: jest.fn()
 }));
 
 const versionTrx = trxBuilder();
@@ -49,7 +49,7 @@ jest.mock('../../../src/db/models/tables/version', () => ({
   orderBy: jest.fn(),
   query: jest.fn(),
   select: jest.fn(),
-  withGraphJoined: jest.fn(),
+  withGraphJoined: jest.fn()
 }));
 
 const versionMetadataTrx = trxBuilder();
@@ -58,22 +58,14 @@ jest.mock('../../../src/db/models/tables/versionMetadata', () => ({
   then: jest.fn(),
 
   modify: jest.fn(),
-  query: jest.fn(),
+  query: jest.fn()
 }));
 
 const service = require('../../../src/services/metadata');
 const utils = require('../../../src/components/utils');
 
-const metadata = [
-  { key: 'a', value: '1' },
-  { key: 'B', value: '2' },
-];
-const params = {
-  objId: 1,
-  metadata: metadata,
-  userId: SYSTEM_USER,
-  privacyMask: 'privacyMask',
-};
+const metadata = [{ key: 'a', value: '1' }, { key: 'B', value: '2' }];
+const params = { objId: 1, metadata: metadata, userId: SYSTEM_USER, privacyMask: 'privacyMask' };
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -99,7 +91,7 @@ describe('associateMetadata', () => {
 
   it('Makes the incoming list of metadata the definitive set associated with versionId', async () => {
     createMetadataSpy.mockResolvedValue({ ...metadata });
-    pruneOrphanedMetadataSpy.mockImplementation(() => {});
+    pruneOrphanedMetadataSpy.mockImplementation(() => { });
 
     await service.associateMetadata(VERSION_ID, metadata);
 
@@ -107,10 +99,7 @@ describe('associateMetadata', () => {
     expect(VersionMetadata.query).toHaveBeenCalledTimes(1);
     expect(VersionMetadata.query).toHaveBeenCalledWith(expect.anything());
     expect(VersionMetadata.modify).toHaveBeenCalledTimes(1);
-    expect(VersionMetadata.modify).toHaveBeenCalledWith(
-      'filterVersionId',
-      VERSION_ID,
-    );
+    expect(VersionMetadata.modify).toHaveBeenCalledWith('filterVersionId', VERSION_ID);
     expect(metadataTrx.commit).toHaveBeenCalledTimes(1);
     expect(createMetadataSpy).toHaveBeenCalledTimes(1);
     expect(createMetadataSpy).toHaveBeenCalledWith(metadata, expect.anything());
@@ -124,8 +113,8 @@ describe('pruneOrphanedMetadata', () => {
     Metadata.whereNull.mockResolvedValue([
       {
         ...metadata,
-        map: jest.fn(),
-      },
+        map: jest.fn()
+      }
     ]);
 
     await service.pruneOrphanedMetadata();
@@ -138,9 +127,7 @@ describe('pruneOrphanedMetadata', () => {
     expect(Metadata.select).toHaveBeenCalledTimes(1);
     expect(Metadata.select).toHaveBeenCalledWith('metadata.id');
     expect(Metadata.whereNull).toHaveBeenCalledTimes(1);
-    expect(Metadata.whereNull).toHaveBeenCalledWith(
-      'versionMetadata.metadataId',
-    );
+    expect(Metadata.whereNull).toHaveBeenCalledWith('versionMetadata.metadataId');
     expect(Metadata.delete).toHaveBeenCalledTimes(1);
     expect(Metadata.whereIn).toHaveBeenCalledTimes(1);
   });
@@ -161,8 +148,8 @@ describe('createMetadata', () => {
     Metadata.select.mockResolvedValue([
       {
         ...metadata,
-        find: jest.fn(),
-      },
+        find: jest.fn()
+      }
     ]);
 
     getObjectsByKeyValueSpy.mockResolvedValue({ key: 'a', value: '1' });
@@ -182,40 +169,25 @@ describe('fetchMetadataForObject', () => {
     ObjectModel.then.mockResolvedValue([
       {
         ...metadata,
-        map: jest.fn(),
-      },
+        map: jest.fn()
+      }
     ]);
 
     service.fetchMetadataForObject(params);
 
     expect(ObjectModel.query).toHaveBeenCalledTimes(1);
     expect(ObjectModel.select).toHaveBeenCalledTimes(1);
-    expect(ObjectModel.select).toHaveBeenCalledWith(
-      'object.id AS objectId',
-      'object.bucketId as bucketId',
-    );
+    expect(ObjectModel.select).toHaveBeenCalledWith('object.id AS objectId', 'object.bucketId as bucketId');
     expect(ObjectModel.allowGraph).toHaveBeenCalledTimes(1);
     expect(ObjectModel.allowGraph).toHaveBeenCalledWith('version.metadata');
     expect(ObjectModel.withGraphJoined).toHaveBeenCalledTimes(1);
-    expect(ObjectModel.withGraphJoined).toHaveBeenCalledWith(
-      'version.metadata',
-    );
+    expect(ObjectModel.withGraphJoined).toHaveBeenCalledWith('version.metadata');
     expect(ObjectModel.modifyGraph).toHaveBeenCalledTimes(2);
-    expect(ObjectModel.modifyGraph).toHaveBeenCalledWith(
-      'version',
-      expect.anything(),
-    );
-    expect(ObjectModel.modifyGraph).toHaveBeenCalledWith(
-      'version.metadata',
-      expect.anything(),
-    );
+    expect(ObjectModel.modifyGraph).toHaveBeenCalledWith('version', expect.anything());
+    expect(ObjectModel.modifyGraph).toHaveBeenCalledWith('version.metadata', expect.anything());
     expect(ObjectModel.modify).toHaveBeenCalledTimes(3);
     expect(ObjectModel.modify).toHaveBeenCalledWith('filterIds', params.objId);
-    expect(ObjectModel.modify).toHaveBeenCalledWith(
-      'hasPermission',
-      params.userId,
-      'READ',
-    );
+    expect(ObjectModel.modify).toHaveBeenCalledWith('hasPermission', params.userId, 'READ');
     expect(ObjectModel.then).toHaveBeenCalledTimes(1);
   });
 });
@@ -225,8 +197,8 @@ describe('fetchMetadataForVersion', () => {
     Version.then.mockResolvedValue([
       {
         ...metadata,
-        map: jest.fn(),
-      },
+        map: jest.fn()
+      }
     ]);
 
     await service.fetchMetadataForVersion(params);
@@ -234,19 +206,13 @@ describe('fetchMetadataForVersion', () => {
     expect(Metadata.startTransaction).toHaveBeenCalledTimes(1);
     expect(Version.query).toHaveBeenCalledTimes(1);
     expect(Version.select).toHaveBeenCalledTimes(1);
-    expect(Version.select).toHaveBeenCalledWith(
-      'version.id as versionId',
-      'version.s3VersionId',
-    );
+    expect(Version.select).toHaveBeenCalledWith('version.id as versionId', 'version.s3VersionId');
     expect(Version.allowGraph).toHaveBeenCalledTimes(1);
     expect(Version.allowGraph).toHaveBeenCalledWith('metadata');
     expect(Version.withGraphJoined).toHaveBeenCalledTimes(1);
     expect(Version.withGraphJoined).toHaveBeenCalledWith('metadata');
     expect(Version.modifyGraph).toHaveBeenCalledTimes(1);
-    expect(Version.modifyGraph).toHaveBeenCalledWith(
-      'metadata',
-      expect.anything(),
-    );
+    expect(Version.modifyGraph).toHaveBeenCalledWith('metadata', expect.anything());
     expect(Version.modify).toHaveBeenCalledTimes(3);
     expect(Version.modify).toHaveBeenCalledWith('filterId', params.versionId);
     expect(Version.orderBy).toHaveBeenCalledTimes(1);

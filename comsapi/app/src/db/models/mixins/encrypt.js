@@ -11,17 +11,17 @@ const { encrypt, decrypt } = require('../../../components/crypt');
  * @see module:knex
  * @see module:objection
  */
-const Encrypt = (opts) => {
+const Encrypt = opts => {
   // Provide good default options if possible.
   const options = Object.assign(
     {
-      fields: [],
+      fields: []
     },
-    opts,
+    opts
   );
 
   // Return the mixin
-  return (Model) => {
+  return Model => {
     return class extends Model {
       async $beforeInsert(context) {
         await super.$beforeInsert(context);
@@ -48,7 +48,7 @@ const Encrypt = (opts) => {
        * Encrypts specified fields
        */
       encryptFields() {
-        options.fields.forEach((field) => {
+        options.fields.forEach(field => {
           const value = this[field];
           if (value) this[field] = encrypt(value);
         });
@@ -58,7 +58,7 @@ const Encrypt = (opts) => {
        * Decrypts specified fields
        */
       decryptFields() {
-        options.fields.forEach((field) => {
+        options.fields.forEach(field => {
           const value = this[field];
           if (value) this[field] = decrypt(value);
         });

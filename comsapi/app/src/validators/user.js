@@ -12,25 +12,23 @@ const schema = {
       username: type.alphanum,
       email: type.email,
       firstName: type.alphanum,
-      fullName: Joi.string()
-        .pattern(/^[\w\-\s]+$/)
-        .max(255),
+      fullName: Joi.string().pattern(/^[\w\-\s]+$/).max(255),
       lastName: type.alphanum,
       active: type.truthy,
-      search: Joi.string(),
-    }).min(1),
+      search: Joi.string()
+    }).min(1)
   },
 
   listIdps: {
     query: Joi.object({
-      active: type.truthy,
-    }),
-  },
+      active: type.truthy
+    })
+  }
 };
 
 const validator = {
   searchUsers: validate(schema.searchUsers),
-  listIdps: validate(schema.listIdps),
+  listIdps: validate(schema.listIdps)
 };
 
 module.exports = validator;

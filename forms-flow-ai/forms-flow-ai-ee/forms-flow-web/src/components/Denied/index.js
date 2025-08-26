@@ -1,6 +1,6 @@
 import React from "react";
 import "./pagenotfound.scss";
-import { SUPPORT_EMAIL } from "../../constants/constants";
+import {SUPPORT_EMAIL} from '../../constants/constants';
 
 const NotFound = React.memo(({ errorMessage, errorCode }) => {
   return (
@@ -20,10 +20,7 @@ const NotFound = React.memo(({ errorMessage, errorCode }) => {
 });
 
 NotFound.defaultProps = {
-  errorMessage:
-    "You do not have sufficient permissions to access this page. Please contact " +
-    SUPPORT_EMAIL +
-    " for further clarification.",
+  errorMessage: "You do not have sufficient permissions to access this page. Please contact " + SUPPORT_EMAIL + " for further clarification.",
   errorCode: "403",
 };
 

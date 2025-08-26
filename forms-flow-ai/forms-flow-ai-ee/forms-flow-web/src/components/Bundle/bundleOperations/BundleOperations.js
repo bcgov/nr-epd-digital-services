@@ -15,7 +15,7 @@ import { setFormDeleteStatus } from "../../../actions/formActions";
 import {
   getFormProcesses,
   resetFormProcessData,
-  getAllApplicationCount,
+  getAllApplicationCount
 } from "../../../apiManager/services/processServices";
 
 import { Translation } from "react-i18next";
@@ -46,19 +46,19 @@ const BundleOperations = React.memo(({ formData }) => {
         if (data) {
           dispatch(
             // eslint-disable-next-line no-unused-vars
-            getAllApplicationCount(formData._id, (err, res) => {
+              getAllApplicationCount(formData._id,(err, res) => {
               dispatch(setIsApplicationCountLoading(false));
               dispatch(setFormDeleteStatus(formDetails));
-            }),
+            })
           );
         } else {
           dispatch(setIsApplicationCountLoading(false));
           dispatch(setFormDeleteStatus(formDetails));
         }
-      }),
+      })
     );
   };
-
+  
   const submitNew = (
     <button
       className="custom-button-primary"
@@ -73,7 +73,7 @@ const BundleOperations = React.memo(({ formData }) => {
       className="custom-button-primary"
       onClick={() => viewOrEditForm(formData._id)}
     >
-      <i className="fa fa-pencil-square-o mr-1" />
+      <i className="fa fa-pencil-square-o mr-1"  />
       <Translation>{(t) => t("View/Edit")}</Translation>{" "}
     </button>
   );

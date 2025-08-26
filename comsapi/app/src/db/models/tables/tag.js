@@ -15,8 +15,8 @@ class Tag extends Model {
         modelClass: VersionTag,
         join: {
           from: 'tag.id',
-          to: 'version_tag.tagId',
-        },
+          to: 'version_tag.tagId'
+        }
       },
 
       version: {
@@ -26,11 +26,11 @@ class Tag extends Model {
           from: 'tag.id',
           through: {
             from: 'version_tag.tagId',
-            to: 'version_tag.versionId',
+            to: 'version_tag.versionId'
           },
-          to: 'version.id',
-        },
-      },
+          to: 'version.id'
+        }
+      }
     };
   }
 
@@ -39,17 +39,16 @@ class Tag extends Model {
       filterKey(query, value) {
         const subqueries = [];
         if (value.tag && Object.keys(value.tag).length) {
-          Object.entries(value.tag).forEach((tag) => {
-            const q = Tag.query()
-              .select('tag.id')
-              .where('key', 'ilike', `%${tag[0]}%`);
+          Object.entries(value.tag).forEach(tag => {
+            const q = Tag.query().select('tag.id').where('key', 'ilike', `%${tag[0]}%`);
             subqueries.push(q);
           });
         }
         if (subqueries.length) {
-          query.whereIn('tag.id', (builder) => {
-            builder.intersect(subqueries);
-          });
+          query
+            .whereIn('tag.id', builder => {
+              builder.intersect(subqueries);
+            });
         }
       },
 
@@ -57,17 +56,16 @@ class Tag extends Model {
         const subqueries = [];
         if (value.tag && Object.keys(value.tag).length) {
           Object.entries(value.tag).forEach(([key, val]) => {
-            const q = Tag.query()
-              .select('tag.id')
-              .where('key', 'ilike', `%${key}%`);
+            const q = Tag.query().select('tag.id').where('key', 'ilike', `%${key}%`);
             if (val.length) q.where('value', 'ilike', `%${val}%`);
             subqueries.push(q);
           });
         }
         if (subqueries.length) {
-          query.whereIn('tag.id', (builder) => {
-            builder.intersect(subqueries);
-          });
+          query
+            .whereIn('tag.id', builder => {
+              builder.intersect(subqueries);
+            });
         }
       },
     };
@@ -80,9 +78,9 @@ class Tag extends Model {
       properties: {
         id: { type: 'integer' },
         key: { type: 'string', minLength: 1, maxLength: 128 },
-        value: { type: 'string', maxLength: 256 },
+        value: { type: 'string', maxLength: 256 }
       },
-      additionalProperties: false,
+      additionalProperties: false
     };
   }
 }

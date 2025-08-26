@@ -67,8 +67,8 @@ export class StaffAssignmentResolver {
         error instanceof Error
           ? error.message
           : typeof error === 'string'
-            ? error
-            : JSON.stringify(error);
+          ? error
+          : JSON.stringify(error);
 
       this.loggerService.error(
         `StaffAssignmentResolver.getStaffAssignedByAppId() - Error: ${errorMessage}`,
@@ -116,8 +116,8 @@ export class StaffAssignmentResolver {
         error instanceof Error
           ? error.message
           : typeof error === 'string'
-            ? error
-            : JSON.stringify(error);
+          ? error
+          : JSON.stringify(error);
 
       this.loggerService.error(
         `StaffAssignmentResolver.getStaffAssignedByAppId() - Error: ${errorMessage}`,
@@ -140,9 +140,10 @@ export class StaffAssignmentResolver {
     applicationServiceTypeId: number,
   ) {
     try {
-      const result = await this.service.getActiveStaffWithCapacityByServiceType(
-        applicationServiceTypeId,
-      );
+      const result =
+        await this.service.getActiveStaffWithCapacityByServiceType(
+          applicationServiceTypeId,
+        );
 
       if (result?.length > 0) {
         this.loggerService.log(
@@ -170,8 +171,8 @@ export class StaffAssignmentResolver {
         error instanceof Error
           ? error.message
           : typeof error === 'string'
-            ? error
-            : JSON.stringify(error);
+          ? error
+          : JSON.stringify(error);
 
       this.loggerService.error(
         `StaffAssignmentResolver.getStaffAssignedByAppId() - Error: ${errorMessage}`,
@@ -216,8 +217,8 @@ export class StaffAssignmentResolver {
         error instanceof Error
           ? error.message
           : typeof error === 'string'
-            ? error
-            : JSON.stringify(error);
+          ? error
+          : JSON.stringify(error);
 
       this.loggerService.error(
         `StaffAssignmentResolver.getStaffAssignedByAppId() - Error: ${errorMessage}`,
@@ -275,8 +276,8 @@ export class StaffAssignmentResolver {
         error instanceof Error
           ? error.message
           : typeof error === 'string'
-            ? error
-            : JSON.stringify(error);
+          ? error
+          : JSON.stringify(error);
 
       this.loggerService.error(
         `StaffAssignmentResolver.getStaffAssignedByAppId() - Error: ${errorMessage}`,

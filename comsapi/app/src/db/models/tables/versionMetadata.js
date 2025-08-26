@@ -23,16 +23,16 @@ class VersionMetadata extends Timestamps(Model) {
         modelClass: Version,
         join: {
           from: 'version_metadata.versionId',
-          to: 'version.id',
-        },
+          to: 'version.id'
+        }
       },
       metadata: {
         relation: Model.HasOneRelation,
         modelClass: Metadata,
         join: {
           from: 'version_metadata.metadataId',
-          to: 'metadata.id',
-        },
+          to: 'metadata.id'
+        }
       },
     };
   }
@@ -44,7 +44,7 @@ class VersionMetadata extends Timestamps(Model) {
       },
       filterVersionId(query, value) {
         filterOneOrMany(query, value, 'versionId');
-      },
+      }
     };
   }
 
@@ -55,9 +55,9 @@ class VersionMetadata extends Timestamps(Model) {
       properties: {
         metadataId: { type: 'integer' },
         versionId: { type: 'string', minLength: 1, maxLength: 255 },
-        ...stamps,
+        ...stamps
       },
-      additionalProperties: false,
+      additionalProperties: false
     };
   }
 }

@@ -84,12 +84,12 @@ export const FileUpload = () => {
             console.log(result);
             if (result.data != null && result.data.bucketId != "")
               window.location.assign(
-                bcBoxAPPUI + "/list/objects?bucketId=" + result.data.bucketId,
+                bcBoxAPPUI + "/list/objects?bucketId=" + result.data.bucketId
               );
           },
           (error) => {
             alert("Unable to Proceed. Please try again.");
-          },
+          }
         );
     }
   }, [appId]);

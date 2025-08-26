@@ -27,6 +27,7 @@ describe('ApplicationService', () => {
     getStatusTypeByAbbrev: jest.fn(),
   } as Partial<jest.Mocked<StatusTypeService>>;
 
+
   // Manual mocks for repository methods with jest.fn()
   let appStatusRepositoryMock: {
     create: jest.Mock;
@@ -120,21 +121,14 @@ describe('ApplicationService', () => {
     applicationService = module.get<ApplicationService>(ApplicationService);
     appTypeService = module.get<AppTypeService>(AppTypeService);
     statusTypeService = module.get(StatusTypeService);
-    (
-      statusTypeServiceMock.getStatusTypeByAbbrev as jest.Mock
-    ).mockResolvedValue({ id: 1 });
-    applicationRepository = module.get<Repository<Application>>(
-      getRepositoryToken(Application),
-    );
-    appStatusRepository = module.get<Repository<AppStatus>>(
-      getRepositoryToken(AppStatus),
-    );
-    applicationSiteRepository = module.get<Repository<ApplicationSite>>(
-      getRepositoryToken(ApplicationSite),
-    );
+    (statusTypeServiceMock.getStatusTypeByAbbrev as jest.Mock).mockResolvedValue({ id: 1 });
+    applicationRepository = module.get<Repository<Application>>(getRepositoryToken(Application));
+    appStatusRepository = module.get<Repository<AppStatus>>(getRepositoryToken(AppStatus));
+    applicationSiteRepository = module.get<Repository<ApplicationSite>>(getRepositoryToken(ApplicationSite));
     loggerService = module.get<LoggerService>(LoggerService);
     dashboardService = module.get<DashboardService>(DashboardService);
   });
+
 
   describe('createApplication', () => {
     it('should create an application successfully', async () => {
@@ -170,12 +164,8 @@ describe('ApplicationService', () => {
       };
 
       // Mock external service and repo calls
-      (appTypeService.getAppTypeByAbbrev as jest.Mock).mockResolvedValue(
-        mockAppType,
-      );
-      (statusTypeService.getStatusTypeByAbbrev as jest.Mock).mockResolvedValue(
-        mockStatusType,
-      );
+      (appTypeService.getAppTypeByAbbrev as jest.Mock).mockResolvedValue(mockAppType);
+      (statusTypeService.getStatusTypeByAbbrev as jest.Mock).mockResolvedValue(mockStatusType);
       applicationRepositoryMock.create.mockReturnValue(mockNewApplication);
       applicationRepositoryMock.save.mockResolvedValue(mockNewApplication);
       appStatusRepositoryMock.create.mockReturnValue(mockAppStatusEntity);
@@ -183,14 +173,10 @@ describe('ApplicationService', () => {
       applicationSiteRepositoryMock.create.mockReturnValue(mockAppSiteEntity);
       applicationSiteRepositoryMock.save.mockResolvedValue([mockAppSiteEntity]);
 
-      const result = await applicationService.createApplication(
-        mockCreateApplication,
-      );
+      const result = await applicationService.createApplication(mockCreateApplication);
 
       expect(appTypeService.getAppTypeByAbbrev).toHaveBeenCalledWith('CSR');
-      expect(statusTypeService.getStatusTypeByAbbrev).toHaveBeenCalledWith(
-        'New',
-      );
+      expect(statusTypeService.getStatusTypeByAbbrev).toHaveBeenCalledWith('New');
       expect(applicationRepositoryMock.create).toHaveBeenCalled();
       expect(applicationRepositoryMock.save).toHaveBeenCalledTimes(1);
       expect(appStatusRepositoryMock.create).toHaveBeenCalled();
@@ -199,6 +185,7 @@ describe('ApplicationService', () => {
       expect(applicationSiteRepositoryMock.create).toHaveBeenCalled();
       expect(applicationSiteRepositoryMock.save).toHaveBeenCalled();
       expect(applicationSiteRepositoryMock.save).toHaveBeenCalledTimes(1);
+
 
       expect(result).toEqual({ id: 1 });
     });
@@ -293,9 +280,7 @@ describe('ApplicationService', () => {
         return Promise.resolve(undefined);
       });
 
-      (
-        statusTypeServiceMock.getStatusTypeByAbbrev as jest.Mock
-      ).mockResolvedValue({ id: 1 });
+      (statusTypeServiceMock.getStatusTypeByAbbrev as jest.Mock).mockResolvedValue({ id: 1 });
 
       appStatusRepositoryMock.create.mockImplementation((data) => data);
 
@@ -323,9 +308,7 @@ describe('ApplicationService', () => {
 
       const result = await applicationService.updateFormsflowAppId(input);
 
-      expect(statusTypeService.getStatusTypeByAbbrev).toHaveBeenCalledWith(
-        'Accepted',
-      );
+      expect(statusTypeService.getStatusTypeByAbbrev).toHaveBeenCalledWith('Accepted');
       expect(appStatusRepositoryMock.save).toHaveBeenCalled();
       expect(result).toEqual({
         success: true,
@@ -333,6 +316,7 @@ describe('ApplicationService', () => {
         formsflowAppId: input.formsflowAppId,
       });
     });
+
 
     it('should throw 404 if AppStatus not found', async () => {
       const input: UpdateApplicationStatusDto = {
@@ -344,13 +328,8 @@ describe('ApplicationService', () => {
 
       appStatusRepositoryMock.findOne.mockResolvedValue(null);
 
-      await expect(
-        applicationService.updateFormsflowAppId(input),
-      ).rejects.toThrow(
-        new HttpException(
-          'Failed to update  Formsflow App ID',
-          HttpStatus.NOT_FOUND,
-        ),
+      await expect(applicationService.updateFormsflowAppId(input)).rejects.toThrow(
+        new HttpException('Failed to update  Formsflow App ID', HttpStatus.NOT_FOUND),
       );
     });
 
@@ -362,17 +341,10 @@ describe('ApplicationService', () => {
         statusTypeAbbrev: 'Accepted',
       };
 
-      appStatusRepositoryMock.findOne.mockRejectedValue(
-        new Error('DB is down'),
-      );
+      appStatusRepositoryMock.findOne.mockRejectedValue(new Error('DB is down'));
 
-      await expect(
-        applicationService.updateFormsflowAppId(input),
-      ).rejects.toThrow(
-        new HttpException(
-          'Failed to update  Formsflow App ID',
-          HttpStatus.BAD_REQUEST,
-        ),
+      await expect(applicationService.updateFormsflowAppId(input)).rejects.toThrow(
+        new HttpException('Failed to update  Formsflow App ID', HttpStatus.BAD_REQUEST),
       );
 
       expect(loggerService.error).toHaveBeenCalledWith(
@@ -432,10 +404,7 @@ describe('ApplicationService', () => {
 
       const user = { givenName: 'John', identity_provider: UserTypeEum.IDIR };
 
-      const result = await applicationService.findApplicationDetailsById(
-        1,
-        user,
-      );
+      const result = await applicationService.findApplicationDetailsById(1, user);
 
       // Assert using the correct mock object
       expect(applicationRepositoryMock.findOne).toHaveBeenCalledWith(
@@ -468,10 +437,7 @@ describe('ApplicationService', () => {
       applicationRepositoryMock.findOne.mockResolvedValue(null);
       const user = { givenName: 'John', identity_provider: UserTypeEum.IDIR };
 
-      const result = await applicationService.findApplicationDetailsById(
-        999,
-        user,
-      );
+      const result = await applicationService.findApplicationDetailsById(999, user);
 
       expect(applicationRepositoryMock.findOne).toHaveBeenCalled();
       expect(result).toBeNull();
@@ -494,4 +460,5 @@ describe('ApplicationService', () => {
       expect(loggerService.error).toHaveBeenCalled();
     });
   });
+
 });

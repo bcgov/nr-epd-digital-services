@@ -63,7 +63,7 @@ function RequestStatus({ requests }) {
                 <td>
                   <span className="btn status-button" disabled>
                     {showClientStatus(
-                      e.items[e.items.length - 1].requestStatus,
+                      e.items[e.items.length - 1].requestStatus
                     )}
                   </span>
                 </td>

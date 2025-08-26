@@ -17,7 +17,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   bucketId: '',
   objectId: '',
-  labelText: ''
+  labelText:''
 });
 
 // State

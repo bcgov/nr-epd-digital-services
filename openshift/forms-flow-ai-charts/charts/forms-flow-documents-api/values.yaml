@@ -16,13 +16,13 @@ ingress:
   ingressClassName: ""
   annotations:
 
-  enabled: true # create an ingress for this component
+  enabled: true # create an ingress for this component 
   hostname: "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}"
   port: 5006
   tls: true
   selfSigned: false
   extraTls:
-    - {}
+   - {}  
 image:
   registry: docker.io
   repository: formsflow/forms-flow-documents-api

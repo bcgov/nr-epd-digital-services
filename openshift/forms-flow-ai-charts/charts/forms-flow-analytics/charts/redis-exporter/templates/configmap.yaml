@@ -29,5 +29,5 @@ data:
 kind: ConfigMap
 metadata:
   labels:
-    app: { { .Chart.Name } }
-  name: { { .Chart.Name } }
+    app: {{ .Chart.Name }}
+  name: {{ .Chart.Name }}

@@ -4,21 +4,21 @@ on:
   workflow_dispatch: # TODO this is there for testing purposes, once the pipelines are all done, remove this
   push:
     branches:
-      - "feature/**"
-      - "Feature/**"
-      - "feat/**"
-      - "Feat/**"
-      - "fix/*"
-      - "Fix/*"
+      - 'feature/**'
+      - 'Feature/**'
+      - 'feat/**'
+      - 'Feat/**'
+      - 'fix/*'
+      - 'Fix/*'
     paths:
-      - "backend/**"
-      - "frontend/**"
-      - ".github/workflows/ci-cd-openshift-dev.yaml" # Only for dev / testing purposes
+      - 'backend/**'
+      - 'frontend/**'
+      - '.github/workflows/ci-cd-openshift-dev.yaml' # Only for dev / testing purposes
   pull_request:
-    branches: [dev]
+    branches: [ dev ]
     paths:
-      - "backend/**"
-      - "frontend/**"
+      - 'backend/**'
+      - 'frontend/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

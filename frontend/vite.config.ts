@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
 function setEnv(mode: string) {
   Object.assign(
     process.env,
-    loadEnv(mode, ".", ["VITE_", "NODE_ENV", "PUBLIC_URL"]),
+    loadEnv(mode, ".", ["VITE_", "NODE_ENV", "PUBLIC_URL"])
   );
   process.env.NODE_ENV ||= mode;
   const { homepage } = JSON.parse(readFileSync("package.json", "utf-8"));
@@ -58,7 +58,7 @@ function envPlugin(): Plugin {
           Object.entries(env).map(([key, value]) => [
             `process.env.${key}`,
             JSON.stringify(value),
-          ]),
+          ])
         ),
       };
     },
@@ -77,7 +77,7 @@ function devServerPlugin(): Plugin {
       const { HOST, PORT, HTTPS, SSL_CRT_FILE, SSL_KEY_FILE } = loadEnv(
         mode,
         ".",
-        ["HOST", "PORT", "HTTPS", "SSL_CRT_FILE", "SSL_KEY_FILE"],
+        ["HOST", "PORT", "HTTPS", "SSL_CRT_FILE", "SSL_KEY_FILE"]
       );
       const https = HTTPS === "true";
       return {

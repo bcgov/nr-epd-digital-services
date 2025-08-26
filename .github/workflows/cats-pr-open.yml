@@ -41,6 +41,7 @@ jobs:
           build_file: ${{ matrix.build_file }}
           build_context: ${{ matrix.build_context }}
 
+
   deploy_db:
     name: Deploys Database
     if: ${{ ! github.event.pull_request.draft }}
@@ -50,8 +51,8 @@ jobs:
       # Can revert to below trigger, this line just forces db deploy when updating this file, good for active dev.
       # triggers: ('charts/crunchy/' '.github/workflows/cats-pr-open.yml')
       triggers: ('charts/crunchy/')
-      values: "values-dev.yaml"
-      app_values: "values-pr.yaml" # PR specific values file.
+      values: 'values-dev.yaml'
+      app_values:  'values-pr.yaml' # PR specific values file.
     # https://github.com/bcgov/quickstart-openshift-helpers
   deploys:
     name: Deploys
@@ -61,11 +62,11 @@ jobs:
     secrets: inherit
     with:
       triggers: ('backend/cats/' 'cats-frontend/' 'charts/' '.github/workflows/')
-      values: "values-pr.yaml" # PR specific values file.
+      values: 'values-pr.yaml' # PR specific values file.
       redirect_uri: https://logontest7.gov.bc.ca/clp-cgi/logoff.cgi?retnow=1&returl=https://epd-keycloak-dev.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/protocol/openid-connect/logout?post_logout_redirect_uri=https://nr-epd-digital-services-${{ github.event.pull_request.number}}-frontend.apps.silver.devops.gov.bc.ca/
       db_user: cats-${{ github.event.number }}
       timeout-minutes: 20
-
+  
   results:
     name: PR Results
     needs: [builds, deploys]

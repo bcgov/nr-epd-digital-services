@@ -69,28 +69,26 @@ const View = React.memo((props) => {
   const lang = useSelector((state) => state.user.lang);
   const pubSub = useSelector((state) => state.pubSub);
   const formStatusLoading = useSelector(
-    (state) => state.process?.formStatusLoading,
+    (state) => state.process?.formStatusLoading
   );
   const isFormSubmissionLoading = useSelector(
-    (state) => state.formDelete.isFormSubmissionLoading,
+    (state) => state.formDelete.isFormSubmissionLoading
   );
   const isPublicStatusLoading = useSelector(
-    (state) => state.applications.isPublicStatusLoading,
+    (state) => state.applications.isPublicStatusLoading
   );
 
   const isFormSubmitted = useSelector(
-    (state) => state.formDelete.formSubmitted,
+    (state) => state.formDelete.formSubmitted
   );
   const publicFormStatus = useSelector(
-    (state) => state.formDelete.publicFormStatus,
+    (state) => state.formDelete.publicFormStatus
   );
   const draftSubmissionId = useSelector(
-    (state) => state.draft.draftSubmission?.id,
+    (state) => state.draft.draftSubmission?.id
   );
   // Holds the latest data saved by the server
-  const processLoadError = useSelector(
-    (state) => state.process?.processLoadError,
-  );
+  const processLoadError = useSelector((state) => state.process?.processLoadError);
   const lastUpdatedDraft = useSelector((state) => state.draft.lastUpdated);
   const isPublic = !props.isAuthenticated;
   const tenantKey = useSelector((state) => state.tenants?.tenantId);
@@ -148,18 +146,18 @@ const View = React.memo((props) => {
                   setFormRequestData(
                     "form",
                     form_id,
-                    `${Formio.getProjectUrl()}/form/${form_id}`,
-                  ),
+                    `${Formio.getProjectUrl()}/form/${form_id}`
+                  )
                 );
                 dispatch(setFormSuccessData("form", formObj));
                 dispatch(setFormStatusLoading(false));
               }
             }
           }
-        }),
+        })
       );
     },
-    [dispatch, isPublic],
+    [dispatch, isPublic]
   );
   const getFormData = useCallback(() => {
     const isObjectId = checkIsObjectId(formId);
@@ -176,7 +174,7 @@ const View = React.memo((props) => {
           } else {
             dispatch(setFormFailureErrorData("form", err));
           }
-        }),
+        })
       );
     }
   }, [formId, dispatch, getPublicForm]);
@@ -200,7 +198,7 @@ const View = React.memo((props) => {
             } else {
               setDraftSaved(false);
             }
-          }),
+          })
         );
       }
     }
@@ -248,7 +246,7 @@ const View = React.memo((props) => {
       let payload = getDraftReqFormat(validFormId, { ...draftData?.data });
       saveDraft(payload);
     },
-    poll ? DRAFT_POLLING_RATE : null,
+    poll ? DRAFT_POLLING_RATE : null
   );
 
   /**
@@ -271,10 +269,10 @@ const View = React.memo((props) => {
             dispatch(getApplicationCount(data.id));
             setFormStatus(data.status);
             dispatch(setFormStatusLoading(false));
-          } else {
+          }else{
             dispatch(setFormStatusLoading(false));
           }
-        }),
+        })
       );
     }
   }, [isAuthenticated]);
@@ -300,11 +298,11 @@ const View = React.memo((props) => {
     }
   }, [publicFormStatus]);
 
-  useEffect(() => {
-    if (pubSub.publish) {
-      pubSub.publish("ES_FORM", form);
+  useEffect(()=>{
+    if(pubSub.publish){
+      pubSub.publish('ES_FORM', form);
     }
-  }, [form, pubSub.publish]);
+  },[form, pubSub.publish]);
 
   if (isActive || isPublicStatusLoading || formStatusLoading) {
     return (
@@ -344,7 +342,7 @@ const View = React.memo((props) => {
                 <span className="text-primary">
                   <i className="fa fa-info-circle mr-2" aria-hidden="true"></i>
                   {t(
-                    "Unfinished applications will be saved to Applications/Drafts.",
+                    "Unfinished applications will be saved to Applications/Drafts."
                   )}
                 </span>
               )}
@@ -395,33 +393,33 @@ const View = React.memo((props) => {
         text={<Translation>{(t) => t("Loading...")}</Translation>}
         className="col-12"
       >
-        <div className="ml-4 mr-4">
-          {isPublic || formStatus === "active" ? (
-            <Form
-              form={form}
-              submission={submission}
-              url={url}
-              options={{
-                ...options,
-                language: lang,
-                i18n: formio_resourceBundles,
-              }}
-              hideComponents={hideComponents}
-              onChange={(data) => {
-                setDraftData(data);
-                draftRef.current = data;
-              }}
-              onSubmit={(data) => {
-                setPoll(false);
-                exitType.current = "SUBMIT";
-                onSubmit(data, form._id, isPublic);
-              }}
-              onCustomEvent={(evt) => onCustomEvent(evt, redirectUrl)}
-            />
-          ) : (
-            renderPage(formStatus, processLoadError)
-          )}
-        </div>
+  <div className="ml-4 mr-4">
+    {isPublic || formStatus === "active" ? (
+      <Form
+        form={form}
+        submission={submission}
+        url={url}
+        options={{
+          ...options,
+          language: lang,
+          i18n: formio_resourceBundles,
+        }}
+        hideComponents={hideComponents}
+        onChange={(data) => {
+          setDraftData(data);
+          draftRef.current = data;
+        }}
+        onSubmit={(data) => {
+          setPoll(false);
+          exitType.current = "SUBMIT";
+          onSubmit(data, form._id, isPublic);
+        }}
+        onCustomEvent={(evt) => onCustomEvent(evt, redirectUrl)}
+      />
+    ) : (
+      renderPage(formStatus, processLoadError)
+    )}
+  </div>
       </LoadingOverlay>
     </div>
   );
@@ -443,7 +441,7 @@ const doProcessActions = (submission, ownProps) => {
     const applicationCreateAPI = selectApplicationCreateAPI(
       isAuth,
       isDraftCreated,
-      DRAFT_ENABLED,
+      DRAFT_ENABLED
     );
 
     dispatch(
@@ -452,7 +450,7 @@ const doProcessActions = (submission, ownProps) => {
         dispatch(setFormSubmissionLoading(false));
         if (!err) {
           toast.success(
-            <Translation>{(t) => t("Submission Saved")}</Translation>,
+            <Translation>{(t) => t("Submission Saved")}</Translation>
           );
           dispatch(setFormSubmitted(true));
           if (isAuth) {
@@ -461,10 +459,10 @@ const doProcessActions = (submission, ownProps) => {
           }
         } else {
           toast.error(
-            <Translation>{(t) => t("Submission Failed.")}</Translation>,
+            <Translation>{(t) => t("Submission Failed.")}</Translation>
           );
         }
-      }),
+      })
     );
   };
 };
@@ -506,7 +504,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             ),
           };
           toast.error(
-            <Translation>{(t) => t("Submission cannot be done.")}</Translation>,
+            <Translation>{(t) => t("Submission cannot be done.")}</Translation>
           );
           dispatch(setFormSubmissionLoading(false));
           dispatch(setFormSubmissionError(ErrorDetails));

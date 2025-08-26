@@ -1,3 +1,4 @@
+
 # BCBox
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
@@ -48,10 +49,10 @@ SECURITY.md                - Security Policy and Reporting
 
 ## Documentation
 
-- [Application Readme](frontend/README.md)
-- [Product Roadmap](https://github.com/bcgov/bcbox/wiki/Product-Roadmap)
-- [Product Wiki](https://github.com/bcgov/bcbox/wiki)
-- [Security Reporting](SECURITY.md)
+* [Application Readme](frontend/README.md)
+* [Product Roadmap](https://github.com/bcgov/bcbox/wiki/Product-Roadmap)
+* [Product Wiki](https://github.com/bcgov/bcbox/wiki)
+* [Security Reporting](SECURITY.md)
 
 ## Getting Help or Reporting an Issue
 

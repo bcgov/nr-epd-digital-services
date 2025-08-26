@@ -107,12 +107,7 @@ describe('FormController', () => {
     } as unknown as Request;
 
     mockFormService.update.mockResolvedValue(response);
-    const result = await controller.updateSubmission(
-      'abc',
-      '123',
-      { data: { test: true } },
-      mockRequest,
-    );
+    const result = await controller.updateSubmission('abc', '123', { data: { test: true } }, mockRequest);
     expect(result).toEqual(response);
   });
 
@@ -123,9 +118,7 @@ describe('FormController', () => {
     const patchData = { patch: true };
 
     mockFormService.partialUpdate.mockResolvedValue(response);
-    mockCatsService.updateCatsApplication = jest
-      .fn()
-      .mockResolvedValue(undefined); // Add this method
+    mockCatsService.updateCatsApplication = jest.fn().mockResolvedValue(undefined); // Add this method
 
     const mockRequest = {
       headers: { origin: 'https://example.com' },
@@ -138,16 +131,8 @@ describe('FormController', () => {
       mockRequest,
     );
 
-    expect(mockFormService.partialUpdate).toHaveBeenCalledWith(
-      submissionId,
-      formId,
-      patchData,
-    );
-    expect(mockCatsService.updateCatsApplication).toHaveBeenCalledWith(
-      submissionId,
-      formId,
-      patchData,
-    );
+    expect(mockFormService.partialUpdate).toHaveBeenCalledWith(submissionId, formId, patchData);
+    expect(mockCatsService.updateCatsApplication).toHaveBeenCalledWith(submissionId, formId, patchData);
     expect(result).toEqual(response);
   });
 });

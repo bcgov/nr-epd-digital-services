@@ -21,12 +21,8 @@ const controller = {
     try {
       const metadata = getMetadata(req.headers);
       const params = {
-        metadata:
-          metadata && Object.keys(metadata).length ? metadata : undefined,
-        privacyMask:
-          req.currentUser.authType !== 'BASIC'
-            ? config.has('server.privacyMask')
-            : false,
+        metadata: metadata && Object.keys(metadata).length ? metadata : undefined,
+        privacyMask : req.currentUser.authType !== 'BASIC' ? config.has('server.privacyMask') : false
       };
 
       const response = await metadataService.searchMetadata(params);

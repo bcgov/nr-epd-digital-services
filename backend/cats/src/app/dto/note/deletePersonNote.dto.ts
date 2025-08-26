@@ -4,6 +4,7 @@ import { BasePersonNote } from './basePersonNote.dto';
 
 @InputType()
 export class DeletePersonNote {
+  
   @Field()
   @IsUUID()
   id: string; // UUID as the primary key (this will be a string)

@@ -5,6 +5,7 @@ const { schema } = require('../../../src/validators/bucket');
 const { scheme, type } = require('../../../src/validators/common');
 
 describe('createBucket', () => {
+
   describe('body', () => {
     const body = schema.createBucket.body.describe();
 
@@ -19,40 +20,34 @@ describe('createBucket', () => {
       it('is a valid uri', () => {
         expect(Array.isArray(endpoint.rules)).toBeTruthy();
         expect(endpoint.rules).toHaveLength(2);
-        expect(endpoint.rules).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              args: {
-                options: { scheme: /https?/ },
-              },
-              name: 'uri',
-            }),
-          ]),
-        );
+        expect(endpoint.rules).toEqual(expect.arrayContaining([
+          expect.objectContaining({
+            args: {
+              options: { scheme: /https?/ }
+            },
+            name: 'uri'
+          }),
+        ]));
       });
 
       it('has a max length of 255', () => {
         expect(Array.isArray(endpoint.rules)).toBeTruthy();
         expect(endpoint.rules).toHaveLength(2);
-        expect(endpoint.rules).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              args: {
-                limit: 255,
-              },
-              name: 'max',
-            }),
-          ]),
-        );
+        expect(endpoint.rules).toEqual(expect.arrayContaining([
+          expect.objectContaining({
+            args: {
+              limit: 255
+            },
+            name: 'max'
+          }),
+        ]));
       });
 
       it('is required', () => {
         expect(endpoint.flags).toBeTruthy();
-        expect(endpoint.flags).toEqual(
-          expect.objectContaining({
-            presence: 'required',
-          }),
-        );
+        expect(endpoint.flags).toEqual(expect.objectContaining({
+          presence: 'required'
+        }));
       });
     });
 
@@ -67,31 +62,27 @@ describe('createBucket', () => {
       it('trims whitespace', () => {
         expect(Array.isArray(key.rules)).toBeTruthy();
         expect(key.rules).toHaveLength(2);
-        expect(key.rules).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              args: {
-                enabled: true,
-              },
-              name: 'trim',
-            }),
-          ]),
-        );
+        expect(key.rules).toEqual(expect.arrayContaining([
+          expect.objectContaining({
+            args: {
+              enabled: true
+            },
+            name: 'trim'
+          }),
+        ]));
       });
 
       it('has a max length of 255', () => {
         expect(Array.isArray(key.rules)).toBeTruthy();
         expect(key.rules).toHaveLength(2);
-        expect(key.rules).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              args: {
-                limit: 255,
-              },
-              name: 'max',
-            }),
-          ]),
-        );
+        expect(key.rules).toEqual(expect.arrayContaining([
+          expect.objectContaining({
+            args: {
+              limit: 255
+            },
+            name: 'max'
+          }),
+        ]));
       });
     });
 
@@ -103,22 +94,22 @@ describe('createBucket', () => {
           bucket: 'ccc',
           endpoint: 'https://s3.ca',
           bucketName: 'My Bucket',
-          active: true,
-        },
+          active: true
+        }
       };
       expect(value).toMatchSchema(schema.createBucket);
     });
 
+
     it('is required', () => {
       expect(body.flags).toBeTruthy();
-      expect(body.flags).toEqual(
-        expect.objectContaining({ presence: 'required' }),
-      );
+      expect(body.flags).toEqual(expect.objectContaining({ presence: 'required' }));
     });
   });
 });
 
 describe('deleteBucket', () => {
+
   describe('params', () => {
     const params = schema.deleteBucket.params.describe();
 
@@ -133,6 +124,7 @@ describe('deleteBucket', () => {
 });
 
 describe('headBucket', () => {
+
   describe('params', () => {
     const params = schema.headBucket.params.describe();
 
@@ -143,14 +135,16 @@ describe('headBucket', () => {
         expect(bucketId).toEqual({
           flags: { presence: 'required' },
           rules: [{ args: { options: { version: 'uuidv4' } }, name: 'guid' }],
-          type: 'string',
+          type: 'string'
         });
       });
     });
   });
+
 });
 
 describe('readBucket', () => {
+
   describe('params', () => {
     const params = schema.readBucket.params.describe();
 
@@ -162,9 +156,11 @@ describe('readBucket', () => {
       });
     });
   });
+
 });
 
 describe('searchBuckets', () => {
+
   describe('query', () => {
     const query = schema.searchBuckets.query.describe();
 
@@ -186,11 +182,9 @@ describe('searchBuckets', () => {
       it('has a max length of 255', () => {
         expect(Array.isArray(bucketName.rules)).toBeTruthy();
         expect(bucketName.rules).toHaveLength(1);
-        expect(bucketName.rules).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({ args: { limit: 255 }, name: 'max' }),
-          ]),
-        );
+        expect(bucketName.rules).toEqual(expect.arrayContaining([
+          expect.objectContaining({ 'args': { 'limit': 255 }, 'name': 'max' }),
+        ]));
       });
     });
 
@@ -204,11 +198,9 @@ describe('searchBuckets', () => {
       it('has a max length of 255', () => {
         expect(Array.isArray(key.rules)).toBeTruthy();
         expect(key.rules).toHaveLength(1);
-        expect(key.rules).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({ args: { limit: 255 }, name: 'max' }),
-          ]),
-        );
+        expect(key.rules).toEqual(expect.arrayContaining([
+          expect.objectContaining({ 'args': { 'limit': 255 }, 'name': 'max' }),
+        ]));
       });
     });
 
@@ -223,6 +215,7 @@ describe('searchBuckets', () => {
 });
 
 describe('syncBucket', () => {
+
   describe('params', () => {
     const params = schema.syncBucket.params.describe();
 
@@ -237,6 +230,7 @@ describe('syncBucket', () => {
 });
 
 describe('updateBucket', () => {
+
   describe('body', () => {
     const body = schema.updateBucket.body.describe();
 
@@ -251,31 +245,27 @@ describe('updateBucket', () => {
       it('is a valid uri', () => {
         expect(Array.isArray(endpoint.rules)).toBeTruthy();
         expect(endpoint.rules).toHaveLength(2);
-        expect(endpoint.rules).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              args: {
-                options: { scheme: /https?/ },
-              },
-              name: 'uri',
-            }),
-          ]),
-        );
+        expect(endpoint.rules).toEqual(expect.arrayContaining([
+          expect.objectContaining({
+            args: {
+              options: { scheme: /https?/ }
+            },
+            name: 'uri'
+          }),
+        ]));
       });
 
       it('has a max length of 255', () => {
         expect(Array.isArray(endpoint.rules)).toBeTruthy();
         expect(endpoint.rules).toHaveLength(2);
-        expect(endpoint.rules).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              args: {
-                limit: 255,
-              },
-              name: 'max',
-            }),
-          ]),
-        );
+        expect(endpoint.rules).toEqual(expect.arrayContaining([
+          expect.objectContaining({
+            args: {
+              limit: 255
+            },
+            name: 'max'
+          }),
+        ]));
       });
     });
 
@@ -288,7 +278,7 @@ describe('updateBucket', () => {
       const value = {
         body: {
           bucketName: 'My Re-named Bucket',
-        },
+        }
       };
       expect(value).toMatchSchema(schema.updateBucket);
     });
@@ -305,4 +295,5 @@ describe('updateBucket', () => {
       });
     });
   });
+
 });

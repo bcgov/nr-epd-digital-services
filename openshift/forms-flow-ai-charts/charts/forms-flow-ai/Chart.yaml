@@ -2,11 +2,11 @@
 apiVersion: v2
 name: forms-flow-ai
 dependencies:
-  - name: postgresql-ha
+  - name: postgresql-ha 
     repository: https://charts.bitnami.com/bitnami
     version: 10.0.9
   - name: mongodb
-    condition: mongodb.enabled
+    condition: mongodb.enabled 
     repository: https://charts.bitnami.com/bitnami
     version: 13.6.3
 version: v2.1.5

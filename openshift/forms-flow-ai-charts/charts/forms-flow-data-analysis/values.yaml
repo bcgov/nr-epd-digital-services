@@ -12,8 +12,8 @@ formsflow:
   configmap: forms-flow-ai # name of formsflow.ai configmap
   secret: forms-flow-ai #name of formsflow.ai secret
   auth: forms-flow-ai-auth
-ingress:
-  enabled: true # create an ingress for this component
+ingress: 
+  enabled: true # create an ingress for this component 
   hostname: "{{.Chart.Name}}-{{.Release.Namespace}}.{{tpl .Values.Domain .}}"
   port: 5000
 image:

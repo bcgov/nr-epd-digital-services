@@ -26,7 +26,8 @@ describe('StaffAssignmentResolver', () => {
             updateStaffAssigned: jest.fn(),
             getApplicationServiceTypes: jest.fn(),
             getAllActiveStaffMembersWithCurrentCapacity: jest.fn(),
-            getActiveStaffWithCapacityByServiceType: jest.fn(),
+            getActiveStaffWithCapacityByServiceType :
+              jest.fn(),
           },
         },
         {
@@ -237,7 +238,8 @@ describe('StaffAssignmentResolver', () => {
     ).mockResolvedValue(result);
 
     (genericResponseProvider.createResponse as jest.Mock).mockReturnValue({
-      message: 'getActiveStaffWithCapacityByServiceType  fetched successfully',
+      message:
+        'getActiveStaffWithCapacityByServiceType  fetched successfully',
       httpStatusCode: 200,
       success: true,
       data: result,
@@ -246,7 +248,8 @@ describe('StaffAssignmentResolver', () => {
     const response =
       await resolver.getAllActiveStaffMembersForApplicationServiceType(1);
     expect(response).toEqual({
-      message: 'getActiveStaffWithCapacityByServiceType  fetched successfully',
+      message:
+        'getActiveStaffWithCapacityByServiceType  fetched successfully',
       httpStatusCode: HttpStatus.OK,
       success: true,
       data: result,

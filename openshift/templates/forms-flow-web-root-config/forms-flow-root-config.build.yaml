@@ -3,105 +3,105 @@ kind: Template
 apiVersion: v1
 metadata:
   name: "${API_NAME}-${ENV_TAG}-build-template"
-  creationTimestamp:
+  creationTimestamp: 
 objects:
-  - kind: ImageStream
-    apiVersion: v1
-    metadata:
-      name: "${API_NAME}"
-  - kind: BuildConfig
-    apiVersion: v1
-    metadata:
-      name: "${API_NAME}-${ENV_TAG}-build"
-      labels:
-        app: "${API_NAME}-${ENV_TAG}-build"
-    spec:
-      completionDeadlineSeconds: 3600 # NOT WORKING?: Custom build time of 1hr, as builds are looong - STILL FAILS AFTER 30m
-      resources:
-        limits:
-          cpu: "1500m"
-          memory: "4Gi"
-        requests:
-          cpu: "500m"
-          memory: "2Gi"
-      runPolicy: Serial
-      source:
-        type: Git
-        git:
-          uri: "${GIT_REPO_URL}"
-          ref: "${GIT_REF}"
-        contextDir: "${SOURCE_CONTEXT_DIR}"
-      strategy:
-        type: Docker
-        dockerStrategy:
-          dockerfilePath: "${DOCKER_FILE_PATH}"
-          env:
-            - name: ssh_prv_key
-              valueFrom:
-                secretKeyRef:
-                  name: ff-ee-deploy-key
-                  key: ssh-privatekey
-            - name: ssh_pub_key
-              valueFrom:
-                secretKeyRef:
-                  name: ff-ee-deploy-key-pub
-                  key: ssh-privatekey
+- kind: ImageStream
+  apiVersion: v1
+  metadata:
+    name: "${API_NAME}"
+- kind: BuildConfig
+  apiVersion: v1
+  metadata:
+    name: "${API_NAME}-${ENV_TAG}-build"
+    labels:
+      app: "${API_NAME}-${ENV_TAG}-build"
+  spec:
+    completionDeadlineSeconds: 3600 # NOT WORKING?: Custom build time of 1hr, as builds are looong - STILL FAILS AFTER 30m
+    resources:
+      limits:
+        cpu: "1500m" 
+        memory: "4Gi"    
+      requests:
+        cpu: "500m"
+        memory: "2Gi" 
+    runPolicy: Serial
+    source:
+      type: Git
+      git:
+        uri: "${GIT_REPO_URL}"
+        ref: "${GIT_REF}"
+      contextDir: "${SOURCE_CONTEXT_DIR}"
+    strategy:
+      type: Docker
+      dockerStrategy:
+        dockerfilePath: "${DOCKER_FILE_PATH}"
+        env:
+        - name: ssh_prv_key
+          valueFrom:
+            secretKeyRef:
+              name: ff-ee-deploy-key
+              key: ssh-privatekey
+        - name: ssh_pub_key
+          valueFrom:
+            secretKeyRef:
+              name: ff-ee-deploy-key-pub
+              key: ssh-privatekey
 
-                  # ARC: TODO IN URLS USE ${ENV_TAG}
-            - name: MF_FORMSFLOW_WEB_URL
-              value: "https://forms-flow-web-ee-${ENV_TAG}.apps.silver.devops.gov.bc.ca/forms-flow-web.js"
-            - name: MF_FORMSFLOW_SERVICE_URL
-              value: "https://forms-flow-microfrontends.aot-technologies.com/forms-flow-service@v5.2.1-alpha/forms-flow-service.gz.js"
-            - name: MF_FORMSFLOW_ADMIN_URL
-              value: "https://forms-flow-microfrontends.aot-technologies.com/forms-flow-admin@v5.2.1-alpha/forms-flow-admin.gz.js"
-            - name: MF_FORMSFLOW_NAV_URL
-              value: "https://forms-flow-nav-${ENV_TAG}.apps.silver.devops.gov.bc.ca/forms-flow-nav.js"
-            - name: MF_FORMSFLOW_THEME_URL
-              value: "https://forms-flow-theme-${ENV_TAG}.apps.silver.devops.gov.bc.ca/forms-flow-theme.js"
-            - name: FORMIO_DEFAULT_PROJECT_URL
-              value: "https://forms-flow-forms-e38158-${ENV_TAG}.apps.silver.devops.gov.bc.ca"
-            - name: KEYCLOAK_URL
-              value: "https://epd-keycloak-${ENV_TAG}.apps.silver.devops.gov.bc.ca"
-            - name: FORMSFLOW_API_URL
-              value: "https://forms-flow-api-e38158-${ENV_TAG}.apps.silver.devops.gov.bc.ca"
-            - name: BPM_API_URL
-              value: "https://forms-flow-bpm-e38158-${ENV_TAG}.apps.silver.devops.gov.bc.ca/camunda"
-            - name: APPLICATION_NAME
-              value: "EPD"
-            - name: EPD_CUSTOM_MAP_URL
-              value: "https://epd-frontend-${ENV_TAG}.apps.silver.devops.gov.bc.ca/map"
-      output:
-        to:
-          kind: ImageStreamTag
-          name: "${API_NAME}:${ENV_TAG}"
+              # ARC: TODO IN URLS USE ${ENV_TAG}
+        - name: MF_FORMSFLOW_WEB_URL
+          value: "https://forms-flow-web-ee-${ENV_TAG}.apps.silver.devops.gov.bc.ca/forms-flow-web.js"
+        - name: MF_FORMSFLOW_SERVICE_URL
+          value: "https://forms-flow-microfrontends.aot-technologies.com/forms-flow-service@v5.2.1-alpha/forms-flow-service.gz.js"
+        - name: MF_FORMSFLOW_ADMIN_URL
+          value: "https://forms-flow-microfrontends.aot-technologies.com/forms-flow-admin@v5.2.1-alpha/forms-flow-admin.gz.js"
+        - name: MF_FORMSFLOW_NAV_URL
+          value: "https://forms-flow-nav-${ENV_TAG}.apps.silver.devops.gov.bc.ca/forms-flow-nav.js"
+        - name: MF_FORMSFLOW_THEME_URL
+          value: "https://forms-flow-theme-${ENV_TAG}.apps.silver.devops.gov.bc.ca/forms-flow-theme.js"
+        - name: FORMIO_DEFAULT_PROJECT_URL
+          value: "https://forms-flow-forms-e38158-${ENV_TAG}.apps.silver.devops.gov.bc.ca"
+        - name: KEYCLOAK_URL
+          value: "https://epd-keycloak-${ENV_TAG}.apps.silver.devops.gov.bc.ca"
+        - name: FORMSFLOW_API_URL
+          value: "https://forms-flow-api-e38158-${ENV_TAG}.apps.silver.devops.gov.bc.ca"
+        - name: BPM_API_URL
+          value: "https://forms-flow-bpm-e38158-${ENV_TAG}.apps.silver.devops.gov.bc.ca/camunda"
+        - name: APPLICATION_NAME
+          value: "EPD"
+        - name: EPD_CUSTOM_MAP_URL
+          value: "https://epd-frontend-${ENV_TAG}.apps.silver.devops.gov.bc.ca/map"
+    output:
+      to:
+        kind: ImageStreamTag
+        name: "${API_NAME}:${ENV_TAG}"
 parameters:
-  - name: API_NAME
-    displayName: Name
-    description: The name assigned to all of the resources defined in this template.
-    required: true
-    value: forms-flow-web-root-config
-  - name: ENV_TAG
-    displayName: Environment name
-    description: The name of the environment, in build names and image stream tags
-    required: true
-    value: prod
-  - name: GIT_REPO_URL
-    displayName: Git Repo URL
-    description: The URL to your GIT repo.
-    required: true
-    value: https://github.com/bcgov/nr-epd-digital-services
-  - name: GIT_REF
-    displayName: Git Reference
-    description: The git reference or branch.
-    required: true
-    value: main
-  - name: SOURCE_CONTEXT_DIR
-    displayName: Source Context Directory
-    description: The source context directory.
-    required: false
-    value: forms-flow-ai/forms-flow-ai-ee/forms-flow-web-root-config
-  - name: DOCKER_FILE_PATH
-    displayName: Docker File Path
-    description: The path to the docker file defining the build.
-    required: false
-    value: "Dockerfile"
+- name: API_NAME
+  displayName: Name
+  description: The name assigned to all of the resources defined in this template.
+  required: true
+  value: forms-flow-web-root-config
+- name: ENV_TAG
+  displayName: Environment name
+  description: The name of the environment, in build names and image stream tags
+  required: true
+  value: prod
+- name: GIT_REPO_URL
+  displayName: Git Repo URL
+  description: The URL to your GIT repo.
+  required: true
+  value: https://github.com/bcgov/nr-epd-digital-services
+- name: GIT_REF
+  displayName: Git Reference
+  description: The git reference or branch.
+  required: true
+  value: main
+- name: SOURCE_CONTEXT_DIR
+  displayName: Source Context Directory
+  description: The source context directory.
+  required: false
+  value: forms-flow-ai/forms-flow-ai-ee/forms-flow-web-root-config
+- name: DOCKER_FILE_PATH
+  displayName: Docker File Path
+  description: The path to the docker file defining the build.
+  required: false
+  value: "Dockerfile"

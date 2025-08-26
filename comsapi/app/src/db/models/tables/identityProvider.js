@@ -21,9 +21,9 @@ class IdentityProvider extends Timestamps(Model) {
         modelClass: IdentityProvider,
         join: {
           from: 'user.idp',
-          to: 'identity_provider.idp',
-        },
-      },
+          to: 'identity_provider.idp'
+        }
+      }
     };
   }
 
@@ -34,7 +34,7 @@ class IdentityProvider extends Timestamps(Model) {
       },
       orderDefault(builder) {
         builder.orderByRaw('lower("identity_provider"."idp")');
-      },
+      }
     };
   }
 
@@ -45,11 +45,12 @@ class IdentityProvider extends Timestamps(Model) {
       properties: {
         idp: { type: 'string', minLength: 1, maxLength: 255 },
         active: { type: 'boolean' },
-        ...stamps,
+        ...stamps
       },
-      additionalProperties: false,
+      additionalProperties: false
     };
   }
+
 }
 
 module.exports = IdentityProvider;

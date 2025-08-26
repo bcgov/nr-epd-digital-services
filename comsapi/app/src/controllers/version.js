@@ -1,12 +1,7 @@
 const config = require('config');
 const { NIL: SYSTEM_USER } = require('uuid');
 const errorToProblem = require('../components/errorToProblem');
-const {
-  addDashesToUuid,
-  getCurrentIdentity,
-  getMetadata,
-  mixedQueryToArray,
-} = require('../components/utils');
+const { addDashesToUuid, getCurrentIdentity, getMetadata, mixedQueryToArray } = require('../components/utils');
 const { metadataService, tagService, userService } = require('../services');
 
 const SERVICE = 'VersionService';
@@ -30,20 +25,13 @@ const controller = {
       const metadata = getMetadata(req.headers);
 
       const params = {
-        versionIds: versionIds
-          ? versionIds.map((id) => addDashesToUuid(id))
-          : versionIds,
-        s3VersionIds: s3VersionIds
-          ? s3VersionIds.map((id) => id.toString())
-          : s3VersionIds,
-        metadata:
-          metadata && Object.keys(metadata).length ? metadata : undefined,
+        versionIds: versionIds ? versionIds.map(id => addDashesToUuid(id)) : versionIds,
+        s3VersionIds: s3VersionIds ? s3VersionIds.map(id => id.toString()) : s3VersionIds,
+        metadata: metadata && Object.keys(metadata).length ? metadata : undefined,
       };
       // if scoping to current user permissions on objects
       if (config.has('server.privacyMask')) {
-        params.userId = await userService.getCurrentUserId(
-          getCurrentIdentity(req.currentUser, SYSTEM_USER),
-        );
+        params.userId = await userService.getCurrentUserId(getCurrentIdentity(req.currentUser, SYSTEM_USER));
       }
       const response = await metadataService.fetchMetadataForVersion(params);
       res.status(200).json(response);
@@ -67,19 +55,13 @@ const controller = {
       const tagging = req.query.tagset;
 
       const params = {
-        versionIds: versionIds
-          ? versionIds.map((id) => addDashesToUuid(id))
-          : versionIds,
-        s3VersionIds: s3VersionIds
-          ? s3VersionIds.map((id) => id.toString())
-          : s3VersionIds,
+        versionIds: versionIds ? versionIds.map(id => addDashesToUuid(id)) : versionIds,
+        s3VersionIds: s3VersionIds ? s3VersionIds.map(id => id.toString()) : s3VersionIds,
         tags: tagging && Object.keys(tagging).length ? tagging : undefined,
       };
       // if scoping to current user permissions on objects
       if (config.has('server.privacyMask')) {
-        params.userId = await userService.getCurrentUserId(
-          getCurrentIdentity(req.currentUser, SYSTEM_USER),
-        );
+        params.userId = await userService.getCurrentUserId(getCurrentIdentity(req.currentUser, SYSTEM_USER));
       }
       const response = await tagService.fetchTagsForVersion(params);
       res.status(200).json(response);
@@ -87,6 +69,7 @@ const controller = {
       next(errorToProblem(SERVICE, e));
     }
   },
+
 };
 
 module.exports = controller;

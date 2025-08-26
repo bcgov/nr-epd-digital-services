@@ -20,7 +20,7 @@ export class ApplicationDetailsResolver {
   })
   async getApplicationDetailsById(
     @Args('id', { type: () => Int }) id: number,
-    @AuthenticatedUser() user: any,
+    @AuthenticatedUser() user: any
   ) {
     this.loggerService.log(
       'ApplicationDetailsResolver.getApplicationDetailsById() start',
@@ -29,7 +29,7 @@ export class ApplicationDetailsResolver {
     try {
       const result = await this.applicationService.findApplicationDetailsById(
         id,
-        user,
+        user
       );
 
       if (result) {

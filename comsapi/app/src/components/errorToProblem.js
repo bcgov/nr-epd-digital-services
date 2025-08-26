@@ -16,25 +16,18 @@ function errorToProblem(service, e) {
   } else if (e.response) {
     // Handle raw data
     let data;
-    if (
-      typeof e.response.data === 'string' ||
-      e.response.data instanceof String
-    ) {
+    if (typeof e.response.data === 'string' || e.response.data instanceof String) {
       data = JSON.parse(e.response.data);
     } else {
       data = e.response.data;
     }
 
-    log.error(`Error from ${service}`, {
-      function: 'errorToProblem',
-      status: e.response.status,
-      data: data,
-    });
+    log.error(`Error from ${service}`, { function: 'errorToProblem', status: e.response.status, data: data });
     // Validation Error
     if (e.response.status === 422) {
       return new Problem(e.response.status, {
         detail: data.detail,
-        errors: data.errors,
+        errors: data.errors
       });
     }
     // Something else happened but there's a response
