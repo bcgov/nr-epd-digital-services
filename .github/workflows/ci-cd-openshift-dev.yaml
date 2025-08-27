@@ -23,7 +23,7 @@ jobs:
     uses: ./.github/workflows/_build.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/cats, frontend]
+        component: [backend/applications, frontend]
         include:
           - component: backend/applications
             triggers: ('backend/applications/')
@@ -31,8 +31,8 @@ jobs:
           #   triggers: ('backend/gateway/')
           # - component: backend/legacy
           #   triggers: ('backend/legacy/')
-          - component: backend/cats
-            triggers:  ('backend/cats/')
+          # - component: backend/cats
+          #   triggers:  ('backend/cats/')
           - component: frontend
             triggers: ('frontend/')
     secrets:
@@ -67,7 +67,7 @@ jobs:
     uses: ./.github/workflows/_deploy.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/cats, database, frontend]
+        component: [backend/applications, database, frontend]
         include:
           - component: database
             overwrite: false
@@ -85,10 +85,10 @@ jobs:
           #   overwrite: true
           #   template_file: .github/openshift/deploy.backend-legacy.yml
           #   template_vars: -p PROMOTE=${{ github.repository }}/backend/legacy -p CONTAINER_PORT=4011 -p ENV=dev -p IMAGE_TAG=dev
-          - component: backend/cats
-            overwrite: true
-            template_file: .github/openshift/deploy.backend-cats.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/cats -p CONTAINER_PORT=4005 -p ENV=dev -p IMAGE_TAG=dev  
+          # - component: backend/cats
+          #   overwrite: true
+          #   template_file: .github/openshift/deploy.backend-cats.yml
+          #   template_vars: -p PROMOTE=${{ github.repository }}/backend/cats -p CONTAINER_PORT=4005 -p ENV=dev -p IMAGE_TAG=dev  
           - component: frontend
             overwrite: true
             template_file: .github/openshift/deploy.frontend.yml
