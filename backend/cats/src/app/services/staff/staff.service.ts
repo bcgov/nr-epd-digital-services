@@ -20,7 +20,7 @@ export class StaffService {
     private readonly dataSource: DataSource,
     private readonly siteService: SiteService,
     private readonly staffAssignmentService: StaffAssignmentService,
-  ) { }
+  ) {}
 
   async getStaffs(
     page: number,
@@ -170,17 +170,21 @@ export class StaffService {
           );
           let siteAddress = '';
           if (siteDetails) {
-            siteAddress = `${siteDetails?.findSiteBySiteIdLoggedInUser?.data?.addrLine_1 ?? ''
-              }
-                        ${siteDetails?.findSiteBySiteIdLoggedInUser?.data
-                ?.addrLine_2 ?? ''
-              }
-                        ${siteDetails?.findSiteBySiteIdLoggedInUser?.data
-                ?.addrLine_3 ?? ''
-              }
-                        ${siteDetails?.findSiteBySiteIdLoggedInUser?.data
-                ?.addrLine_4 ?? ''
-              }`;
+            siteAddress = `${
+              siteDetails?.findSiteBySiteIdLoggedInUser?.data?.addrLine_1 ?? ''
+            }
+                        ${
+                          siteDetails?.findSiteBySiteIdLoggedInUser?.data
+                            ?.addrLine_2 ?? ''
+                        }
+                        ${
+                          siteDetails?.findSiteBySiteIdLoggedInUser?.data
+                            ?.addrLine_3 ?? ''
+                        }
+                        ${
+                          siteDetails?.findSiteBySiteIdLoggedInUser?.data
+                            ?.addrLine_4 ?? ''
+                        }`;
           }
 
           return {

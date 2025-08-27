@@ -43,7 +43,7 @@ export const FindSiteBySiteIdLoggedInUserDocument = gql`
 }
     ${SiteDetailsFragmentDoc}`;
 
-export type SdkFunctionWrapper = <T>(action: (requestHeaders?: Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
+export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType, _variables) => action();
@@ -51,7 +51,7 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
     findSiteBySiteIdLoggedInUser(variables: FindSiteBySiteIdLoggedInUserQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<FindSiteBySiteIdLoggedInUserQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<FindSiteBySiteIdLoggedInUserQuery>(FindSiteBySiteIdLoggedInUserDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'findSiteBySiteIdLoggedInUser', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<FindSiteBySiteIdLoggedInUserQuery>(FindSiteBySiteIdLoggedInUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'findSiteBySiteIdLoggedInUser', 'query', variables);
     }
   };
 }

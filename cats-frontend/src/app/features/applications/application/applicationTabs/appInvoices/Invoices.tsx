@@ -214,7 +214,7 @@ export const Invoices: React.FC = () => {
     {
       label: 'Filters',
       value: 'filters',
-      onClick: () => { },
+      onClick: () => {},
       icon: <FilterIcon />,
     },
   ];
@@ -248,7 +248,7 @@ export const Invoices: React.FC = () => {
             <Button
               variant="secondary"
               disabled={selectedRows.length <= 0}
-              onClick={() => { }}
+              onClick={() => {}}
             >
               <span>Send Invoice to Client</span>
             </Button>

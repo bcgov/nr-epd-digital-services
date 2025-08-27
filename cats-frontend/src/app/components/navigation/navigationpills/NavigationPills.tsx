@@ -94,7 +94,7 @@ const NavigationPills: React.FC<INavigationPills> = ({ disabled = false }) => {
               customCssMenu={'custom-nav-action-menu'}
               disable={disabled}
               toggleButtonVariant={'secondary'}
-            // toggleButtonSize={isMobileScreen ? 'medium' : 'small'}
+              // toggleButtonSize={isMobileScreen ? 'medium' : 'small'}
             />
           </div>
           <div>

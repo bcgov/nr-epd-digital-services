@@ -32,10 +32,10 @@ export class InvoiceV2 {
   @Column({ type: 'varchar', length: 255 })
   subject: string;
 
-  @Column('timestamp without time zone', { name: 'issued_date' })
+  @Column('timestamp without time zone', {name: 'issued_date'})
   issuedDate: Date;
 
-  @Column('timestamp without time zone', { name: 'due_date' })
+  @Column('timestamp without time zone', {name: 'due_date'})
   dueDate: Date;
 
   @Column({
@@ -52,16 +52,16 @@ export class InvoiceV2 {
   @Column({ default: false, name: 'pst_exempt' })
   pstExempt: boolean;
 
-  @Column('int', { name: 'subtotal_in_cents' })
+  @Column('int', {name: 'subtotal_in_cents'})
   subtotalInCents: number;
 
-  @Column('int', { name: 'gst_in_cents' })
+  @Column('int', {name: 'gst_in_cents'})
   gstInCents: number;
 
-  @Column('int', { name: 'pst_in_cents' })
+  @Column('int', {name: 'pst_in_cents'})
   pstInCents: number;
 
-  @Column('int', { name: 'total_in_cents' })
+  @Column('int', {name: 'total_in_cents'})
   totalInCents: number;
 
   @Column({ type: 'text', nullable: true, name: 'invoice_notes' })
@@ -91,9 +91,9 @@ export class InvoiceV2 {
   @JoinColumn([{ name: 'person_id', referencedColumnName: 'id' }])
   recipient: Person;
 
-  @OneToMany(() => InvoiceItem, (lineItem) => lineItem.invoice, { cascade: true, onDelete: 'CASCADE' })
+  @OneToMany(() => InvoiceItem, (lineItem) => lineItem.invoice, { cascade: true, onDelete: 'CASCADE'})
   invoiceItems: InvoiceItem[];
 
-  @OneToMany(() => InvoiceAttachment, (attachment) => attachment.invoice, { cascade: true, onDelete: 'CASCADE' })
+  @OneToMany(() => InvoiceAttachment, (attachment) => attachment.invoice, { cascade: true, onDelete: 'CASCADE'})
   invoiceAttachments: InvoiceAttachment[];
 }

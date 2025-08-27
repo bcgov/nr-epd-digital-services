@@ -23,10 +23,10 @@ export class InvoiceAttachment {
   @Column({ name: 'file_name', length: 255 })
   fileName: string;
 
-  @Column('uuid', { name: 'bucket_id' })
+  @Column('uuid', { name: 'bucket_id'})
   bucketId: string;
 
-  @Column('uuid', { name: 'object_id' })
+  @Column('uuid', { name: 'object_id'})
   objectId: string;
 
   @Column('character varying', { name: 'who_created', length: 30 })

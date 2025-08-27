@@ -9,7 +9,7 @@ export class SiteResolver {
   constructor(
     private readonly siteService: SiteService,
     private readonly loggerService: LoggerService,
-  ) { }
+  ) {}
 
   @Query(() => SiteDetailsResponse, {
     name: 'getSiteDetailsBySiteId',

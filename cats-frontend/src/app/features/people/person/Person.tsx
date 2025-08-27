@@ -120,10 +120,10 @@ const Person = () => {
       } else {
         setPersonName(
           (personData?.firstName ?? '') +
-          ' ' +
-          (personData?.middleName ?? '') +
-          ' ' +
-          (personData?.lastName ?? ''),
+            ' ' +
+            (personData?.middleName ?? '') +
+            ' ' +
+            (personData?.lastName ?? ''),
         );
         originalPersonDataRef.current = personData;
         setFormData(personData);

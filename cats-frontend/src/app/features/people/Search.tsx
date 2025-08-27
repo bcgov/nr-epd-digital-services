@@ -81,7 +81,7 @@ const Search = () => {
     }
   };
 
-  useEffect(() => { }, [selectedRows]);
+  useEffect(() => {}, [selectedRows]);
 
   useEffect(() => {
     if (currSearchVal.searchQuery !== '') {
@@ -320,8 +320,9 @@ const Search = () => {
                   onChange={handleTextChange}
                   value={searchText}
                   type="text"
-                  className={`textSearch custom-text-search-control  ${!noUserAction ? `addBorder` : ``
-                    }`}
+                  className={`textSearch custom-text-search-control  ${
+                    !noUserAction ? `addBorder` : ``
+                  }`}
                 />
               </div>
               {noUserAction ? null : (

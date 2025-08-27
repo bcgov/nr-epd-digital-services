@@ -86,18 +86,18 @@ export const GetApplicationDetailsByIdDocument = gql`
  *   },
  * });
  */
-export function useGetApplicationDetailsByIdQuery(baseOptions: Apollo.QueryHookOptions<GetApplicationDetailsByIdQuery, GetApplicationDetailsByIdQueryVariables> & ({ variables: GetApplicationDetailsByIdQueryVariables; skip?: boolean; } | { skip: boolean; })) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<GetApplicationDetailsByIdQuery, GetApplicationDetailsByIdQueryVariables>(GetApplicationDetailsByIdDocument, options);
-}
+export function useGetApplicationDetailsByIdQuery(baseOptions: Apollo.QueryHookOptions<GetApplicationDetailsByIdQuery, GetApplicationDetailsByIdQueryVariables> & ({ variables: GetApplicationDetailsByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetApplicationDetailsByIdQuery, GetApplicationDetailsByIdQueryVariables>(GetApplicationDetailsByIdDocument, options);
+      }
 export function useGetApplicationDetailsByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplicationDetailsByIdQuery, GetApplicationDetailsByIdQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<GetApplicationDetailsByIdQuery, GetApplicationDetailsByIdQueryVariables>(GetApplicationDetailsByIdDocument, options);
-}
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetApplicationDetailsByIdQuery, GetApplicationDetailsByIdQueryVariables>(GetApplicationDetailsByIdDocument, options);
+        }
 export function useGetApplicationDetailsByIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetApplicationDetailsByIdQuery, GetApplicationDetailsByIdQueryVariables>) {
-  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
-  return Apollo.useSuspenseQuery<GetApplicationDetailsByIdQuery, GetApplicationDetailsByIdQueryVariables>(GetApplicationDetailsByIdDocument, options);
-}
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetApplicationDetailsByIdQuery, GetApplicationDetailsByIdQueryVariables>(GetApplicationDetailsByIdDocument, options);
+        }
 export type GetApplicationDetailsByIdQueryHookResult = ReturnType<typeof useGetApplicationDetailsByIdQuery>;
 export type GetApplicationDetailsByIdLazyQueryHookResult = ReturnType<typeof useGetApplicationDetailsByIdLazyQuery>;
 export type GetApplicationDetailsByIdSuspenseQueryHookResult = ReturnType<typeof useGetApplicationDetailsByIdSuspenseQuery>;
@@ -133,18 +133,18 @@ export const GetSiteDetailsBySiteIdDocument = gql`
  *   },
  * });
  */
-export function useGetSiteDetailsBySiteIdQuery(baseOptions: Apollo.QueryHookOptions<GetSiteDetailsBySiteIdQuery, GetSiteDetailsBySiteIdQueryVariables> & ({ variables: GetSiteDetailsBySiteIdQueryVariables; skip?: boolean; } | { skip: boolean; })) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<GetSiteDetailsBySiteIdQuery, GetSiteDetailsBySiteIdQueryVariables>(GetSiteDetailsBySiteIdDocument, options);
-}
+export function useGetSiteDetailsBySiteIdQuery(baseOptions: Apollo.QueryHookOptions<GetSiteDetailsBySiteIdQuery, GetSiteDetailsBySiteIdQueryVariables> & ({ variables: GetSiteDetailsBySiteIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSiteDetailsBySiteIdQuery, GetSiteDetailsBySiteIdQueryVariables>(GetSiteDetailsBySiteIdDocument, options);
+      }
 export function useGetSiteDetailsBySiteIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSiteDetailsBySiteIdQuery, GetSiteDetailsBySiteIdQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<GetSiteDetailsBySiteIdQuery, GetSiteDetailsBySiteIdQueryVariables>(GetSiteDetailsBySiteIdDocument, options);
-}
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSiteDetailsBySiteIdQuery, GetSiteDetailsBySiteIdQueryVariables>(GetSiteDetailsBySiteIdDocument, options);
+        }
 export function useGetSiteDetailsBySiteIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetSiteDetailsBySiteIdQuery, GetSiteDetailsBySiteIdQueryVariables>) {
-  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
-  return Apollo.useSuspenseQuery<GetSiteDetailsBySiteIdQuery, GetSiteDetailsBySiteIdQueryVariables>(GetSiteDetailsBySiteIdDocument, options);
-}
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetSiteDetailsBySiteIdQuery, GetSiteDetailsBySiteIdQueryVariables>(GetSiteDetailsBySiteIdDocument, options);
+        }
 export type GetSiteDetailsBySiteIdQueryHookResult = ReturnType<typeof useGetSiteDetailsBySiteIdQuery>;
 export type GetSiteDetailsBySiteIdLazyQueryHookResult = ReturnType<typeof useGetSiteDetailsBySiteIdLazyQuery>;
 export type GetSiteDetailsBySiteIdSuspenseQueryHookResult = ReturnType<typeof useGetSiteDetailsBySiteIdSuspenseQuery>;

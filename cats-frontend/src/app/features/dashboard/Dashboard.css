@@ -160,12 +160,12 @@ a.custom-dashboard-input-txt:hover {
 }
 
 .dashboard-btn {
-  width: 100%;
-  /* Mobile-first */
+  width: 100%; /* Mobile-first */
   min-width: 140px;
   height: 36px;
   border-radius: var(--layout-margin-xsmall);
-  padding: var(--layout-padding-medium) var(--layout-padding-large) var(--layout-padding-medium) var(--layout-padding-large) !important;
+  padding: var(--layout-padding-medium) var(--layout-padding-large)
+    var(--layout-padding-medium) var(--layout-padding-large) !important;
 }
 
 .dashboard-view-all-link {
@@ -222,7 +222,6 @@ a.custom-dashboard-input-txt:hover {
     padding: var(--layout-padding-medium) var(--layout-padding-large);
     border-radius: var(--layout-margin-xsmall);
   }
-
   .dashboard-btn-text,
   .dashboard-btn-icon {
     font-size: 18px;

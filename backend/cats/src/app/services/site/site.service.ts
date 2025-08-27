@@ -13,7 +13,7 @@ export class SiteService implements OnModuleInit {
   private accessToken: string;
   private tokenExpiry: number; // in UNIX timestamp seconds
 
-  constructor(private readonly loggerService: LoggerService) { }
+  constructor(private readonly loggerService: LoggerService) {}
 
   onModuleInit() {
     this.validateEnv();
@@ -99,7 +99,8 @@ export class SiteService implements OnModuleInit {
       return siteData;
     } catch (error: unknown) {
       this.loggerService.error(
-        `Error in getSiteById: ${error instanceof Error ? error.message : 'Unknown error'
+        `Error in getSiteById: ${
+          error instanceof Error ? error.message : 'Unknown error'
         }`,
         error.toString(),
       );

@@ -68,7 +68,7 @@ export class StaffAssignmentService {
     private readonly siteService: SiteService,
 
     private readonly configService: ConfigService,
-  ) { }
+  ) {}
 
   async getApplicationServiceTypes(): Promise<DropdownDto[]> {
     try {
@@ -184,8 +184,9 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
           personFirstName: person.first_name,
           personMiddleName: person.middle_name,
           personLastName: person.last_name,
-          personFullName: `${person.first_name} ${person.middle_name ?? ''} ${person.last_name
-            }`,
+          personFullName: `${person.first_name} ${person.middle_name ?? ''} ${
+            person.last_name
+          }`,
 
           currentCapacity: person.current_factors,
         }));
@@ -229,8 +230,9 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
           personFirstName: person.first_name,
           personMiddleName: person.middle_name,
           personLastName: person.last_name,
-          personFullName: `${person.first_name} ${person.middle_name ?? ''} ${person.last_name
-            } - (${person.roles})`,
+          personFullName: `${person.first_name} ${person.middle_name ?? ''} ${
+            person.last_name
+          } - (${person.roles})`,
           currentCapacity: person.current_factors,
         }));
 
@@ -575,10 +577,10 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
       .replace(
         /\$\{site\.address\}/g,
         site?.findSiteBySiteIdLoggedInUser?.data?.addrLine_1 ||
-        '' + ' ' + site?.findSiteBySiteIdLoggedInUser?.data?.addrLine_2 ||
-        '' + ' ' + site?.findSiteBySiteIdLoggedInUser?.data?.addrLine_3 ||
-        '' + ' ' + site?.findSiteBySiteIdLoggedInUser?.data?.addrLine_4 ||
-        '',
+          '' + ' ' + site?.findSiteBySiteIdLoggedInUser?.data?.addrLine_2 ||
+          '' + ' ' + site?.findSiteBySiteIdLoggedInUser?.data?.addrLine_3 ||
+          '' + ' ' + site?.findSiteBySiteIdLoggedInUser?.data?.addrLine_4 ||
+          '',
       )
       .replace(
         /\$\{application\.queueDate\}/g,

@@ -35,40 +35,40 @@ const PersonPermissions: React.FC<IPersonPermission> = ({
             />
             {editMode
               ? enabledRoles[role.roleId] &&
-              role.permissions.map((permission: ViewPermissions, index) => (
-                <div
-                  className="col-lg-4 col-md-6 col-sm-12 px-4"
-                  key={permission.id}
-                >
-                  <CheckBoxInput
-                    isLabel={true}
-                    label={permission.description}
-                    isChecked={selectedPermissions.has(permission.id)}
-                    onChange={() => onCheckboxToggle(permission?.id)}
-                    type={FormFieldType.Checkbox}
-                    isEditing={editMode || false}
-                    customLabelCss="custom-people-lbl"
-                    customEditLabelCss="custom-people-permission-edit-lbl"
-                    wrapperClassName="d-flex gap-2 py-1"
-                  />
-                </div>
-              ))
-              : enabledRoles[role.roleId] && (
-                <div>
-                  <div className="custom-people-lbl">Permissions</div>
-                  <div className="d-flex flex-wrap custom-people-txt">
-                    {role.permissions
-                      .filter((permission: ViewPermissions) =>
-                        selectedPermissions.has(permission.id),
-                      )
-                      .map(
-                        (permission: ViewPermissions) =>
-                          permission.description,
-                      )
-                      .join(', ')}
+                role.permissions.map((permission: ViewPermissions, index) => (
+                  <div
+                    className="col-lg-4 col-md-6 col-sm-12 px-4"
+                    key={permission.id}
+                  >
+                    <CheckBoxInput
+                      isLabel={true}
+                      label={permission.description}
+                      isChecked={selectedPermissions.has(permission.id)}
+                      onChange={() => onCheckboxToggle(permission?.id)}
+                      type={FormFieldType.Checkbox}
+                      isEditing={editMode || false}
+                      customLabelCss="custom-people-lbl"
+                      customEditLabelCss="custom-people-permission-edit-lbl"
+                      wrapperClassName="d-flex gap-2 py-1"
+                    />
                   </div>
-                </div>
-              )}
+                ))
+              : enabledRoles[role.roleId] && (
+                  <div>
+                    <div className="custom-people-lbl">Permissions</div>
+                    <div className="d-flex flex-wrap custom-people-txt">
+                      {role.permissions
+                        .filter((permission: ViewPermissions) =>
+                          selectedPermissions.has(permission.id),
+                        )
+                        .map(
+                          (permission: ViewPermissions) =>
+                            permission.description,
+                        )
+                        .join(', ')}
+                    </div>
+                  </div>
+                )}
           </div>
         );
       })}

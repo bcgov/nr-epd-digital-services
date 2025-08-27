@@ -16,7 +16,7 @@ export class ApplicationSearchResolver {
   constructor(
     private readonly applicationSearchService: ApplicationSearchService,
     private readonly loggerService: LoggerService,
-  ) { }
+  ) {}
 
   @Query(() => ApplicationSearchResponse)
   async searchApplications(
