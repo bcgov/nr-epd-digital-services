@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef } from 'react';
 import {
   format,
   startOfWeek,
@@ -22,6 +22,7 @@ import {
   TimesheetChange,
   StaffRow,
 } from './types';
+import { useUnsavedChangesWarning } from '@cats/hooks/useUnsavedChangesWarning';
 
 function getWeekRange(date: Date) {
   const monday = startOfWeek(date, { weekStartsOn: 1 });
@@ -108,6 +109,7 @@ function denormalizeTimesheetData(
 
 export const Timesheets = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const isRefetchingRef = useRef(false);
 
   const [selectedDate, setSelectedDate] = useState<Date>(() => {
     const startDate = searchParams.get('startDate');
@@ -129,6 +131,13 @@ export const Timesheets = () => {
 
   const [edits, setEdits] = useState<EditsData>({});
 
+  const hasUnsavedChanges = Object.keys(edits).length > 0;
+  useUnsavedChangesWarning({
+    hasUnsavedChanges,
+    message:
+      'You have unsaved timesheet changes. Are you sure you want to leave?',
+  });
+
   const { data, refetch } = useGetTimesheetDaysForAssignedStaffQuery({
     variables: {
       applicationId,
@@ -137,7 +146,12 @@ export const Timesheets = () => {
     },
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
-      setEdits({});
+      // We want to clear the edits only when refetching the existing data, not when making new queries.
+      // This makes sure the changes are not lost when navigation between dates and the entered values don't flicker after mutation
+      if (isRefetchingRef.current) {
+        setEdits({});
+        isRefetchingRef.current = false;
+      }
     },
   });
 
@@ -201,12 +215,12 @@ export const Timesheets = () => {
       applicationId,
     );
     if (changes.length > 0) {
-      console.log('Timesheet changes to save:', changes);
       await saveTimesheetDays({
         variables: {
           entries: changes,
         },
       });
+      isRefetchingRef.current = true;
       refetch();
     }
   };
@@ -257,7 +271,7 @@ export const Timesheets = () => {
       <TimesheetsTableFooter totalHoursForAllStaff={totalHoursForAllStaff} />
       <TimesheetsActions
         onSave={handleSave}
-        hasEdits={Object.keys(edits).length > 0}
+        hasEdits={hasUnsavedChanges}
         disabled={saveTimesheetDaysLoading}
       />
     </div>

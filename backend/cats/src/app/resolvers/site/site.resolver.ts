@@ -9,7 +9,7 @@ export class SiteResolver {
   constructor(
     private readonly siteService: SiteService,
     private readonly loggerService: LoggerService,
-  ) {}
+  ) { }
 
   @Query(() => SiteDetailsResponse, {
     name: 'getSiteDetailsBySiteId',
@@ -22,7 +22,7 @@ export class SiteResolver {
     try {
       const result = await this.siteService.getSiteById(siteId);
 
-      if (result?.findSiteBySiteId?.data) {
+      if (result?.findSiteBySiteIdLoggedInUser?.data) {
         this.loggerService.log(
           'SiteResolver.getSiteDetailsBySiteId() RES:200 end',
         );
@@ -30,7 +30,7 @@ export class SiteResolver {
           'Site details retrieved successfully',
           HttpStatus.OK,
           true,
-          result.findSiteBySiteId.data,
+          result.findSiteBySiteIdLoggedInUser?.data,
         );
       } else {
         this.loggerService.log(

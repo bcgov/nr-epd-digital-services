@@ -20,6 +20,7 @@ interface ApplicationResultsTableProps {
   filter: Filter;
   sortHandler: (column: TableColumn, ascending: boolean) => void;
   changeHandler: (eventRecord: any) => void;
+  filterMyTasks?: boolean;
 }
 
 const ApplicationResultsTable: React.FC<ApplicationResultsTableProps> = ({
@@ -37,6 +38,7 @@ const ApplicationResultsTable: React.FC<ApplicationResultsTableProps> = ({
   filter,
   sortHandler,
   changeHandler,
+  filterMyTasks,
 }) => {
   return (
     <div>
@@ -45,11 +47,12 @@ const ApplicationResultsTable: React.FC<ApplicationResultsTableProps> = ({
         handleColumnChange={handleColumnChange}
         handleFilterChange={handleFilterChange}
         filter={filter}
+        filterMyTasks={filterMyTasks}
       />
       <Table
         label="Search Results"
         isLoading={requestStatus}
-        columns={columns.filter((column) => column.isChecked)}
+        columns={columns}
         data={results}
         changeHandler={changeHandler}
         editMode={false}

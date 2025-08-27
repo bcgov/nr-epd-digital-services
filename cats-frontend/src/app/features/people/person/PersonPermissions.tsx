@@ -21,7 +21,7 @@ const PersonPermissions: React.FC<IPersonPermission> = ({
     <div>
       {permissions?.map((role: RoleWithPermissions, index) => {
         return (
-          <div key={index} className="row py-2 px-0">
+          <div key={role.roleId} className="row py-2 px-0">
             <SwitchInput
               label={role.roleDescription}
               value={!!enabledRoles[role.roleId]}
@@ -35,38 +35,40 @@ const PersonPermissions: React.FC<IPersonPermission> = ({
             />
             {editMode
               ? enabledRoles[role.roleId] &&
-                role.permissions.map((permission: ViewPermissions, index) => (
-                  <div className="col-lg-4 col-md-6 col-sm-12 px-4" key={index}>
-                    <CheckBoxInput
-                      key={permission.id}
-                      isLabel={true}
-                      label={permission.description}
-                      isChecked={selectedPermissions.has(permission.id)}
-                      onChange={() => onCheckboxToggle(permission?.id)}
-                      type={FormFieldType.Checkbox}
-                      isEditing={editMode || false}
-                      customLabelCss="custom-people-lbl"
-                      customEditLabelCss="custom-people-permission-edit-lbl"
-                      wrapperClassName="d-flex gap-2 py-1"
-                    />
-                  </div>
-                ))
+              role.permissions.map((permission: ViewPermissions, index) => (
+                <div
+                  className="col-lg-4 col-md-6 col-sm-12 px-4"
+                  key={permission.id}
+                >
+                  <CheckBoxInput
+                    isLabel={true}
+                    label={permission.description}
+                    isChecked={selectedPermissions.has(permission.id)}
+                    onChange={() => onCheckboxToggle(permission?.id)}
+                    type={FormFieldType.Checkbox}
+                    isEditing={editMode || false}
+                    customLabelCss="custom-people-lbl"
+                    customEditLabelCss="custom-people-permission-edit-lbl"
+                    wrapperClassName="d-flex gap-2 py-1"
+                  />
+                </div>
+              ))
               : enabledRoles[role.roleId] && (
-                  <div>
-                    <div className="custom-people-lbl">Permissions</div>
-                    <div className="d-flex flex-wrap custom-people-txt">
-                      {role.permissions
-                        .filter((permission: ViewPermissions) =>
-                          selectedPermissions.has(permission.id),
-                        )
-                        .map(
-                          (permission: ViewPermissions) =>
-                            permission.description,
-                        )
-                        .join(', ')}
-                    </div>
+                <div>
+                  <div className="custom-people-lbl">Permissions</div>
+                  <div className="d-flex flex-wrap custom-people-txt">
+                    {role.permissions
+                      .filter((permission: ViewPermissions) =>
+                        selectedPermissions.has(permission.id),
+                      )
+                      .map(
+                        (permission: ViewPermissions) =>
+                          permission.description,
+                      )
+                      .join(', ')}
                   </div>
-                )}
+                </div>
+              )}
           </div>
         );
       })}

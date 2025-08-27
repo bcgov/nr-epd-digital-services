@@ -139,7 +139,7 @@ system.out.println ("site owner flow");</camunda:script>
         </camunda:executionListener>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
           <camunda:field name="fields">
-            <camunda:expression>["applicationId", "applicationStatus"]</camunda:expression>
+            <camunda:expression>["applicationId", "applicationStatus","siteId"]</camunda:expression>
           </camunda:field>
         </camunda:executionListener>
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
@@ -1222,6 +1222,8 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
       <bpmn:incoming>Flow_1stifo9</bpmn:incoming>
       <bpmn:outgoing>Flow_05pndkl</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
+var siteId= execution.getVariable('siteId');
+system.out.println ("siteId"+siteId);
 var riskclassification = execution.getVariable('riskclassification');
 system.out.println ("riskclassification "+riskclassification);
 var typeOfReview = execution.getVariable('typeOfReview');

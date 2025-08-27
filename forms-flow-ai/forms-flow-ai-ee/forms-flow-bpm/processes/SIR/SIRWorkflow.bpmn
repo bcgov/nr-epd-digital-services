@@ -43,15 +43,19 @@
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_07ndmfw" name="Resubmitted" sourceRef="Task_05ulff4" targetRef="Activity_1ozfgid">
       <bpmn:extensionElements>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormBPMFilteredDataPipelineListener" event="take" />
         <camunda:executionListener event="take">
-          <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', 'Resubmitted');</camunda:script>
+          <camunda:script scriptFormat="javascript">
+            execution.setVariable('applicationStatus', "Resubmitted");
+				</camunda:script>
         </camunda:executionListener>
-        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="take" />
         <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="take">
           <camunda:field name="fields">
-            <camunda:expression>["applicationId", "applicationStatus"]</camunda:expression>
+            <camunda:expression>["applicationId", "applicationStatus", "siteSpecificSiteId","documentsSiteId","hdnAppType"]</camunda:expression>
           </camunda:field>
         </camunda:executionListener>
+        <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="take" />
       </bpmn:extensionElements>
     </bpmn:sequenceFlow>
     <bpmn:scriptTask id="Activity_1ozfgid" name="Set Application Context For BPM" scriptFormat="javascript">
@@ -200,12 +204,12 @@ system.out.println ("Reviewed by SDM");</bpmn:script>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus!='New'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1bvw0ti" sourceRef="Gateway_0vtit18" targetRef="Activity_06nypz0" />
-    <bpmn:sequenceFlow id="Flow_06fygyw" sourceRef="Gateway_0vtit18" targetRef="Gateway_0w9hujc" />
     <bpmn:parallelGateway id="Gateway_0vtit18">
       <bpmn:incoming>Flow_0unffch</bpmn:incoming>
       <bpmn:outgoing>Flow_1bvw0ti</bpmn:outgoing>
       <bpmn:outgoing>Flow_06fygyw</bpmn:outgoing>
     </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_06fygyw" sourceRef="Gateway_0vtit18" targetRef="Gateway_0w9hujc" />
   </bpmn:process>
   <bpmn:message id="Message_1ngb2eg" name="application_resubmitted" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">

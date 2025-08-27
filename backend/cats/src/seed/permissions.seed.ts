@@ -9,12 +9,10 @@ import {
 } from './permissions';
 import { ApplicationServiceType } from '../app/entities/applicationServiceType.entity';
 import { PermissionServiceType } from '../app/entities/permissionServiceType';
-import { PersonService } from '../app/services/people/people.service';
 import { StaffRoles } from '../app/services/assignment/staffRoles.enum';
 
-
-
-export const PermissionsSeeder = async (manager: EntityManager) => { 
+export const PermissionsSeeder = async (manager: EntityManager) => {
+  console.log('PermissionsSeeder start');
   try {
     const roles = await manager.find(ParticipantRole, {
       where: { roleType: 'STAFF' },
@@ -37,8 +35,6 @@ export const PermissionsSeeder = async (manager: EntityManager) => {
           return [];
       }
     };
-
-    const permissionEntities: Permissions[] = [];
 
     for (const role of roles) {
       const permissions = getPermissionsForRole(role.abbrev);
@@ -66,6 +62,7 @@ export const PermissionsSeeder = async (manager: EntityManager) => {
         permission.updatedBy = 'sysadmin';
         permission.updatedDatetime = new Date();
         await manager.save(Permissions, permission);
+        console.log('permission created', permission.description);
 
         if (perm.serviceTypesDetails && perm.serviceTypesDetails.length > 0) {
           for (const serviceTypeDetail of perm.serviceTypesDetails) {
@@ -102,6 +99,10 @@ export const PermissionsSeeder = async (manager: EntityManager) => {
                   PermissionServiceType,
                   permissionServiceTypeMapping,
                 );
+                console.log(
+                  'permissionServiceTypeMapping created',
+                  permissionServiceTypeMapping,
+                );
               }
             }
           }
@@ -109,6 +110,6 @@ export const PermissionsSeeder = async (manager: EntityManager) => {
       }
     }
   } catch (error) {
-     console.log('PermissionsSeeder error:', error);
+    console.log('PermissionsSeeder error:', error);
   }
 };
