@@ -20,6 +20,10 @@ a.custom-dashboard-input-txt {
   justify-content: left;
 }
 
+a.custom-dashboard-input-txt:hover {
+  color: var(--typography-color-link-hover, #1a3f6b);
+}
+
 .custom-dashboard-link-wrapper:hover .custom-dashboard-input-txt,
 .custom-dashboard-link-wrapper:hover .custom-dashboard-external-link {
   color: var(--typography-color-link-hover, #1a3f6b);
@@ -156,12 +160,12 @@ a.custom-dashboard-input-txt {
 }
 
 .dashboard-btn {
-  width: 100%; /* Mobile-first */
+  width: 100%;
+  /* Mobile-first */
   min-width: 140px;
   height: 36px;
   border-radius: var(--layout-margin-xsmall);
-  padding: var(--layout-padding-medium) var(--layout-padding-large)
-    var(--layout-padding-medium) var(--layout-padding-large) !important;
+  padding: var(--layout-padding-medium) var(--layout-padding-large) var(--layout-padding-medium) var(--layout-padding-large) !important;
 }
 
 .dashboard-view-all-link {
@@ -218,6 +222,7 @@ a.custom-dashboard-input-txt {
     padding: var(--layout-padding-medium) var(--layout-padding-large);
     border-radius: var(--layout-margin-xsmall);
   }
+
   .dashboard-btn-text,
   .dashboard-btn-icon {
     font-size: 18px;

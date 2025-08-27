@@ -31,6 +31,7 @@ import {
   flattenFormRows,
   formatDateRange,
   getUser,
+  isBCEIDUserType,
 } from '../../helpers/utility';
 import FilterPills from './filters/FilterPills';
 import { formRows } from './dto/PeopleFilterConfig';
@@ -80,7 +81,7 @@ const Search = () => {
     }
   };
 
-  useEffect(() => {}, [selectedRows]);
+  useEffect(() => { }, [selectedRows]);
 
   useEffect(() => {
     if (currSearchVal.searchQuery !== '') {
@@ -112,10 +113,18 @@ const Search = () => {
   };
 
   useEffect(() => {
-    // const loggedInUser = getUser();
-    // if (loggedInUser === null) {
-    //   auth.signinRedirect({ extraQueryParams: { kc_idp_hint: "idir" } });
-    // }
+    const loggedInUserBCEID = isBCEIDUserType();
+    if (loggedInUserBCEID) {
+      navigate('/error');
+    }
+  }, []);
+
+  useEffect(() => {
+    const loggedInUserBCEID = isBCEIDUserType();
+    if (loggedInUserBCEID) {
+      auth.signinRedirect({ extraQueryParams: { kc_idp_hint: 'idir' } });
+    }
+
     if (currSearchVal.searchQuery !== '') {
       setUserAction(false);
       setSearchText(currSearchVal.searchQuery);
@@ -311,9 +320,8 @@ const Search = () => {
                   onChange={handleTextChange}
                   value={searchText}
                   type="text"
-                  className={`textSearch custom-text-search-control  ${
-                    !noUserAction ? `addBorder` : ``
-                  }`}
+                  className={`textSearch custom-text-search-control  ${!noUserAction ? `addBorder` : ``
+                    }`}
                 />
               </div>
               {noUserAction ? null : (

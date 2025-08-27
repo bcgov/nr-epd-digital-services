@@ -1,4 +1,7 @@
-import { FileLinesIcon } from '../../../../components/common/icon';
+import {
+  ExternalLink,
+  FileLinesIcon,
+} from '../../../../components/common/icon';
 import { FormFieldType } from '../../../../components/input-controls/IFormField';
 import {
   TableColumn,
@@ -7,38 +10,58 @@ import {
 import { formatDateUTC } from '../../../../helpers/utility';
 import StaffAssigned from './staffAssigned';
 import './table.css';
-export const applicationResultColumns: TableColumn[] = [
+export const applicationResultColumns = (fromMyTasks: boolean = false) => [
   {
     id: 1,
     displayName: 'Application ID',
     active: true,
     graphQLPropertyName: 'id',
-    groupId: 1,
-    disabled: false,
-    isDefault: true,
-    sortOrder: 1,
-    isChecked: true,
-    displayType: { type: FormFieldType.Label, label: 'ID' },
-    linkRedirectionURL: undefined,
-    dynamicColumn: false,
+    displayType: {
+      type: FormFieldType.Link,
+      label: 'Application ID',
+      graphQLPropertyName: 'id',
+      value: '',
+      customInputTextCss: 'custom-applications-input-txt',
+      tableMode: true,
+      href: '/applications/',
+      componentName: 'Applications',
+    },
     columnSize: ColumnSize.Default,
-    customHeaderCss: '',
+    dynamicColumn: false,
+    customHeaderCss: 'custom-applications-header',
+    isDefault: true,
+    sortOrder: 3,
+    isChecked: true,
   },
   {
     id: 2,
     displayName: 'Site ID',
     active: true,
     graphQLPropertyName: 'siteId',
-    groupId: 1,
-    disabled: false,
-    isDefault: true,
-    sortOrder: 2,
-    isChecked: true,
-    displayType: { type: FormFieldType.Label, label: 'Site ID' },
-    linkRedirectionURL: undefined,
+    displayType: { type: FormFieldType.Label },
+    renderCell: (value: any) => {
+      return (
+        <div className="custom-applications-link-wrapper">
+          <a
+            href={`${import.meta.env.VITE_SITE_REGISTRY_URL}/site/details/${value}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={'custom-applications-input-txt'}
+          >
+            {value}
+            <span className="ps-2 custom-applications-external-link">
+              <ExternalLink />
+            </span>
+          </a>
+        </div>
+      );
+    },
+    columnSize: ColumnSize.Small,
     dynamicColumn: false,
-    columnSize: ColumnSize.Default,
-    customHeaderCss: '',
+    customHeaderCss: 'custom-applications-header',
+    isDefault: true,
+    sortOrder: 3,
+    isChecked: true,
   },
   {
     id: 3,
@@ -161,7 +184,7 @@ export const applicationResultColumns: TableColumn[] = [
       href: '/applications/',
       customLinkValue: 'View',
       customIcon: <FileLinesIcon />,
-      componentName: 'Applications',
+      componentName: fromMyTasks ? 'My Tasks' : 'Applications',
       customInputTextCss: 'application-results__view-link',
     },
     dynamicColumn: false,
@@ -176,7 +199,7 @@ export const applicationResultColumns: TableColumn[] = [
     groupId: 1,
     disabled: false,
     isDefault: true,
-    sortOrder: 9,
+    sortOrder: 10,
     isChecked: true,
     displayType: {
       type: FormFieldType.IconButton,

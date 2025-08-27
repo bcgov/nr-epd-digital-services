@@ -8,7 +8,7 @@ export class masterScript1748473281251 implements MigrationInterface {
       `ALTER TABLE "cats"."application_service_type" DROP COLUMN "assignment_factor"`,
     );
     await queryRunner.query(
-      `ALTER TABLE "cats"."application_service_type" ADD "assignment_factor" numeric(3,5) NOT NULL`,
+      `ALTER TABLE "cats"."application_service_type" ADD "assignment_factor" numeric(8,5) NOT NULL`,
     );
   }
 

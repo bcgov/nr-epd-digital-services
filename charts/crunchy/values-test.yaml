@@ -16,7 +16,7 @@ crunchy: # enable it for TEST and PROD, for PR based pipelines simply use single
     clusterCounter: 4 # for some reason 1, did not work, putting it to 2 worked, so updating it in pipelines.
     backupPath: /backups/test/cluster/version # change it for PROD, create values-prod.yaml
     s3:
-      enabled: true
+      enabled: false
       retention: 1 # one day backup in object store for test environment
       bucket: whiskas
       endpoint: nrs.objectstore.gov.bc.ca
@@ -25,4 +25,4 @@ crunchy: # enable it for TEST and PROD, for PR based pipelines simply use single
       fullBackupSchedule: 0 9 * * * # full backup at GMT 9
       incrementalBackupSchedule: 0 0/4 * * * # every four hours
     pvc:
-      enabled: false
+      enabled: true

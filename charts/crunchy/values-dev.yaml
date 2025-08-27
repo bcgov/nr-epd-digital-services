@@ -15,11 +15,15 @@ crunchy: # enable it for TEST and PROD, for PR based pipelines simply use single
     backupPath: /backups/dev/cluster/version
     clusterCounter: 9 # each time a namespace change or crunchy recreated from scratch, update this counter. Otherwise, it will NOT start the backups and cluster wont work.
     s3:
-      enabled: true # if enabled, below must be provided, in dev environment, it's not necessary to enable s3.
+      enabled: false # if enabled, below must be provided, in dev environment, it's not necessary to enable s3.
       retention: 1 # one day backup in object store.
       bucket: friskies
       endpoint: nrs.objectstore.gov.bc.ca
       fullBackupSchedule: 0 9 * * * # full backup at GMT 9
       incrementalBackupSchedule: 0 0/4 * * * # every four hours
     pvc:
-      enabled: false
+      enabled: true
+      volume:
+        accessModes: "ReadWriteOnce"
+        storage: 1024Mi
+        storageClassName: netapp-file-backup

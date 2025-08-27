@@ -48,7 +48,8 @@ const CustomProgressBar: React.FC<ProgressBarProps> = ({ inputValue }) => {
             fontWeight: 500,
           }}
         >
-          {Math.round(actualPercentage)}%
+          {Number.isFinite(actualPercentage) ? Math.round(actualPercentage) : 0}
+          %
         </div>
       </div>
     </div>

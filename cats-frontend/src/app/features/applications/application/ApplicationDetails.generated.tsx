@@ -8,7 +8,7 @@ export type GetHeaderDetailsByApplicationIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetHeaderDetailsByApplicationIdQuery = { __typename?: 'Query', getApplicationDetailsById: { __typename?: 'ApplicationDetailsResponse', data?: { __typename?: 'ViewApplicationDetails', id: number, siteId: number, siteAddress: string, siteCity: string, appType?: { __typename?: 'DetailField', description: string } | null } | null } };
+export type GetHeaderDetailsByApplicationIdQuery = { __typename?: 'Query', getApplicationDetailsById: { __typename?: 'ApplicationDetailsResponse', data?: { __typename?: 'ViewApplicationDetails', id: number, siteId?: number | null, siteAddress?: string | null, siteCity?: string | null, appType?: { __typename?: 'DetailField', description: string } | null } | null } };
 
 
 export const GetHeaderDetailsByApplicationIdDocument = gql`
@@ -43,18 +43,18 @@ export const GetHeaderDetailsByApplicationIdDocument = gql`
  *   },
  * });
  */
-export function useGetHeaderDetailsByApplicationIdQuery(baseOptions: Apollo.QueryHookOptions<GetHeaderDetailsByApplicationIdQuery, GetHeaderDetailsByApplicationIdQueryVariables> & ({ variables: GetHeaderDetailsByApplicationIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetHeaderDetailsByApplicationIdQuery, GetHeaderDetailsByApplicationIdQueryVariables>(GetHeaderDetailsByApplicationIdDocument, options);
-      }
+export function useGetHeaderDetailsByApplicationIdQuery(baseOptions: Apollo.QueryHookOptions<GetHeaderDetailsByApplicationIdQuery, GetHeaderDetailsByApplicationIdQueryVariables> & ({ variables: GetHeaderDetailsByApplicationIdQueryVariables; skip?: boolean; } | { skip: boolean; })) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetHeaderDetailsByApplicationIdQuery, GetHeaderDetailsByApplicationIdQueryVariables>(GetHeaderDetailsByApplicationIdDocument, options);
+}
 export function useGetHeaderDetailsByApplicationIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetHeaderDetailsByApplicationIdQuery, GetHeaderDetailsByApplicationIdQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetHeaderDetailsByApplicationIdQuery, GetHeaderDetailsByApplicationIdQueryVariables>(GetHeaderDetailsByApplicationIdDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetHeaderDetailsByApplicationIdQuery, GetHeaderDetailsByApplicationIdQueryVariables>(GetHeaderDetailsByApplicationIdDocument, options);
+}
 export function useGetHeaderDetailsByApplicationIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetHeaderDetailsByApplicationIdQuery, GetHeaderDetailsByApplicationIdQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetHeaderDetailsByApplicationIdQuery, GetHeaderDetailsByApplicationIdQueryVariables>(GetHeaderDetailsByApplicationIdDocument, options);
-        }
+  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<GetHeaderDetailsByApplicationIdQuery, GetHeaderDetailsByApplicationIdQueryVariables>(GetHeaderDetailsByApplicationIdDocument, options);
+}
 export type GetHeaderDetailsByApplicationIdQueryHookResult = ReturnType<typeof useGetHeaderDetailsByApplicationIdQuery>;
 export type GetHeaderDetailsByApplicationIdLazyQueryHookResult = ReturnType<typeof useGetHeaderDetailsByApplicationIdLazyQuery>;
 export type GetHeaderDetailsByApplicationIdSuspenseQueryHookResult = ReturnType<typeof useGetHeaderDetailsByApplicationIdSuspenseQuery>;

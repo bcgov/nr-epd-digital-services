@@ -1,8 +1,10 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { FindSiteBySiteIdQuery } from '../services/site/graphql/Site.generated';
+import { FindSiteBySiteIdLoggedInUserQuery } from '../services/site/graphql/Site.generated';
 import { GenericResponse } from './response/genericResponse';
 
-type SiteData = NonNullable<FindSiteBySiteIdQuery['findSiteBySiteId']['data']>;
+type SiteData = NonNullable<
+  FindSiteBySiteIdLoggedInUserQuery['findSiteBySiteIdLoggedInUser']['data']
+>;
 
 @ObjectType()
 class SiteDetailsDTO {

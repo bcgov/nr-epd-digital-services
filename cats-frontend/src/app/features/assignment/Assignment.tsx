@@ -28,6 +28,7 @@ import {
   useGetApplicationDetailsByIdQuery,
   useGetSiteDetailsBySiteIdQuery,
 } from '../applications/application/applicationTabs/appDetails/Details.generated';
+import ModalDialog from '../../components/modaldialog/ModalDialog';
 
 interface AssignmentProps {
   id?: string;
@@ -40,6 +41,9 @@ const Assignment: React.FC<AssignmentProps> = ({
   modalCloseHandler,
   modalSaveHandler,
 }) => {
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
+  const [messageContent, setMessageContent] = useState('');
+
   const applicationId = id ? Number(id) : 0;
 
   const [roleList, setRoleList] = useState<any[]>([]);
@@ -145,6 +149,36 @@ const Assignment: React.FC<AssignmentProps> = ({
   }, [staffData]);
 
   const handleSave = () => {
+    if (
+      assignmentServiceType === undefined ||
+      assignmentServiceType === null ||
+      assignmentServiceType === ''
+    ) {
+      setMessageContent('Please select an Application Service Type.');
+      setIsMessageModalOpen(true);
+      return;
+    }
+
+    const inCompleteRecords = staffRecords.filter(
+      (item) =>
+        item.personId === undefined ||
+        item.personId === null ||
+        item.personId === '' ||
+        item.roleId === undefined ||
+        item.roleId === null ||
+        item.roleId === '' ||
+        item.startDate === undefined ||
+        item.startDate === null ||
+        item.startDate === '',
+    );
+    if (inCompleteRecords.length > 0) {
+      setMessageContent('Please fill all the required fields.');
+      setIsMessageModalOpen(true);
+    }
+    if (id === undefined || id === null || id === '') {
+      setMessageContent('Application Id not found, Please refresh the page.');
+      setIsMessageModalOpen(true);
+    }
     let tempStaffRecords = staffRecords.map((item) => {
       if (typeof item.id === 'string' && item.id.includes('new')) {
         return {
@@ -303,12 +337,16 @@ const Assignment: React.FC<AssignmentProps> = ({
 
   return (
     <div role="assign staff" className="assign-section">
-      <Details applicationIdParam={applicationId} showSiteDetails={false} />
+      <Details
+        applicationIdParam={applicationId}
+        showSiteDetails={false}
+        defaultOpen={false}
+      />
       <CollapsiblePanel
         showBorder={false}
         showPadding={false}
         smallFont={true}
-        defaultOpen={true}
+        defaultOpen={false}
         label="Site Information"
         defaultCloseBtnPosition="left"
         content={
@@ -326,14 +364,14 @@ const Assignment: React.FC<AssignmentProps> = ({
               <div>
                 {siteData?.getSiteDetailsBySiteId?.data?.addrLine_1 ||
                   '' +
-                    ' ' +
-                    siteData?.getSiteDetailsBySiteId?.data?.addrLine_2 ||
+                  ' ' +
+                  siteData?.getSiteDetailsBySiteId?.data?.addrLine_2 ||
                   '' +
-                    ' ' +
-                    siteData?.getSiteDetailsBySiteId?.data?.addrLine_3 ||
+                  ' ' +
+                  siteData?.getSiteDetailsBySiteId?.data?.addrLine_3 ||
                   '' +
-                    ' ' +
-                    siteData?.getSiteDetailsBySiteId?.data?.addrLine_4 ||
+                  ' ' +
+                  siteData?.getSiteDetailsBySiteId?.data?.addrLine_4 ||
                   ''}
               </div>
             </div>
@@ -411,11 +449,11 @@ const Assignment: React.FC<AssignmentProps> = ({
                 );
               }
             }}
-            handleWidgetCheckBox={() => {}}
+            handleWidgetCheckBox={() => { }}
             tableColumnConfig={internalRow}
             formData={staffRecords.filter((item) => item.action !== 'remove')}
             status={RequestStatus.success}
-            handleTableSort={() => {}}
+            handleTableSort={() => { }}
             handleAddParticipant={() => {
               let tempRecords = [
                 ...staffRecords,
@@ -431,8 +469,8 @@ const Assignment: React.FC<AssignmentProps> = ({
               setStaffRecords(tempRecords);
             }}
             selectedRows={[]}
-            handleRemoveParticipant={() => {}}
-            handleItemClick={() => {}}
+            handleRemoveParticipant={() => { }}
+            handleItemClick={() => { }}
           />
           <div className={`custom-modal-actions-footer`}>
             <CancelButton
@@ -451,6 +489,17 @@ const Assignment: React.FC<AssignmentProps> = ({
           </div>
         </div>
       </div>
+      {isMessageModalOpen && (
+        <ModalDialog
+          headerLabel="Validation Errors"
+          closeHandler={() => {
+            setIsMessageModalOpen(false);
+          }}
+          noFooterOptions={true}
+        >
+          <div>{messageContent}</div>
+        </ModalDialog>
+      )}
     </div>
   );
 };
