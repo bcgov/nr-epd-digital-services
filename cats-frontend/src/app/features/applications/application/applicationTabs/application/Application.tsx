@@ -4,6 +4,7 @@ import {
   getApplicationForm,
   getApplicationFormData,
   getBundleForms,
+  getExecuteRules,
   getFormDetails,
 } from './FormioEndpoints';
 import { getUser } from '../../../../../helpers/utility';
@@ -15,6 +16,7 @@ import {
 import LoadingOverlay from '../../../../../components/loader/LoadingOverlay';
 import { Form } from '@formio/react';
 import '@formio/js/dist/formio.full.min.css';
+import { set } from 'date-fns';
 
 type ApplicationDetails =
   GetApplicationByIdQuery['getApplicationDetailsById']['data'];
@@ -35,7 +37,7 @@ interface ApplicationForm {
   formJson: FormJson;
 }
 
-interface ApplicationProps {}
+interface ApplicationProps { }
 
 export const Application: React.FC<ApplicationProps> = () => {
   const userDetails = getUser();
@@ -52,9 +54,54 @@ export const Application: React.FC<ApplicationProps> = () => {
   });
   const [formType, setFormType] = useState<string | null>(null);
   const [selectedForms, setSelectedForms] = useState<ApplicationForm[]>([]);
+  const [formsToBeFiltered, setFormsToBeFiltered] = useState<ApplicationForm[]>(
+    [],
+  );
   const [activeStep, setActiveStep] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [rules, setRules] = useState<any[]>([]);
+
+  const evaluateRule = (rule: any, data: any) => {
+    // Normalize operators
+    let expr = rule
+      .replace(/\s+or\s+/gi, ' || ')
+      .replace(/\s+and\s+/gi, ' && ')
+      .replace(/==/g, '===')
+      .replace(/!=/g, '!==');
+
+    // Replace object keys with actual values
+    expr = expr.replace(/\b\w+\b/g, (match: any) => {
+      if (Object.prototype.hasOwnProperty.call(data, match)) {
+        const val = data[match];
+        return typeof val === 'string' ? `"${val}"` : val;
+      }
+      return match;
+    });
+
+    try {
+      // eslint-disable-next-line no-new-func
+      return new Function(`return (${expr});`)();
+    } catch (e) {
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    if (rules.length > 0 && formsToBeFiltered.length > 0) {
+      const filteredForms = formsToBeFiltered.filter((form) => {
+        const formRule = rules.find((rule) => rule.formId === form.formId);
+
+        if (formRule) {
+          return formRule.rules.every((rule: any) => {
+            return evaluateRule(rule, formData?.data);
+          });
+        }
+      });
+      setSelectedForms(filteredForms);
+      setFormJson(filteredForms[0]?.formJson);
+    }
+  }, [rules, formsToBeFiltered]);
 
   const applicationId = parseInt(id ?? '', 10);
   const {
@@ -106,7 +153,12 @@ export const Application: React.FC<ApplicationProps> = () => {
             });
 
             const forms = await Promise.all(formPromises);
+            getExecuteRules(id, formData?.data).then((response) => {
+              setRules(response?.data ?? []);
+            });
+
             setSelectedForms(forms);
+            setFormsToBeFiltered(forms);
             setFormJson(forms[0]?.formJson);
           }
 
