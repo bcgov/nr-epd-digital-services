@@ -60,6 +60,19 @@ export const getApplicationForm = async (formId?: string) => {
   }
 };
 
+export const getExecuteRules = async (bundleId?: string, data?: any) => {
+  try {
+    const ENDPOINT = `${COMS_ENDPOINTS.FORM}/${bundleId}${COMS_ENDPOINTS.BUNDLES}/execute-rules`;
+    const response = await getAxiosInstance(FORM_API).post(ENDPOINT, {
+      ...data,
+    });
+    return response;
+  } catch (error) {
+    console.error('Error in getting getExecuteRules:', error);
+    throw error;
+  }
+};
+
 /**
  * @description Fetches the form data for a given form ID and submission ID from the FormFlow API.
  * @param {string} formId - The ID of the form to retrieve the data of
