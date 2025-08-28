@@ -29,10 +29,13 @@ export const actionRequiredColumns: TableColumn[] = [
     graphQLPropertyName: 'siteId',
     displayType: { type: FormFieldType.Label },
     renderCell: (value: any) => {
+      const baseUrl = import.meta.env.VITE_SITE_REGISTRY_URL;
+      console.log('baseUrl', baseUrl);
+      console.log('Url called',`${baseUrl}/site/details/${value}`);
       return (
         <div className="custom-dashboard-link-wrapper">
           <a
-            href={`${import.meta.env.VITE_SITE_REGISTRY_URL}/site/details/${value}`}
+            href={`${baseUrl}/site/details/${value}`}
             target="_blank"
             rel="noopener noreferrer"
             className={'custom-dashboard-input-txt'}
