@@ -36,7 +36,7 @@ const getSiteDetailsColumns = (primarySiteId: string): TableColumn[] => [
     renderCell: (value: any) => {
       return (
         <a
-          href={`${import.meta.env.VITE_SITE_REGISTRY_URL}/site/details/${value}`}
+          href={`${import.meta.env.VITE_SITE_REGISTRY_URL || window?._env_?.VITE_SITE_REGISTRY_URL}/site/details/${value}`}
           target="_blank"
           rel="noopener noreferrer"
           className={styles.siteLink}
@@ -127,7 +127,7 @@ export const SiteDetails = ({
           <span>Site Information</span>
           {primarySite?.id && !associatedSites.length && (
             <a
-              href={`${import.meta.env.VITE_SITE_REGISTRY_URL}/site/details/${primarySite.id}`}
+              href={`${import.meta.env.VITE_SITE_REGISTRY_URL || window?._env_?.VITE_SITE_REGISTRY_URL}/site/details/${primarySite.id}`}
               target="_blank"
               rel="noopener noreferrer"
               className="d-flex text-decoration-none"
@@ -202,7 +202,7 @@ export const SiteDetails = ({
                     <label>Site ID</label>
                     <div>
                       <a
-                        href={`${import.meta.env.VITE_SITE_REGISTRY_URL}/site/details/${primarySite?.id}`}
+                        href={`${import.meta.env.VITE_SITE_REGISTRY_URL || window?._env_?.VITE_SITE_REGISTRY_URL}/site/details/${primarySite?.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={styles.siteLink}
