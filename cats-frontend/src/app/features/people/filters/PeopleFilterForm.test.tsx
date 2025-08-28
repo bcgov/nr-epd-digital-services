@@ -5,12 +5,12 @@ import PeopleFilterForm from './PeopleFilterForm';
 // Mocking the Form component
 vi.mock('../../../components/form/Form', () => {
   return {
-    default: function MockForm(props) {
+    default: function MockForm(props : any) {
       return (
         <div>
-          {props.formRows.map((row, index) => (
+          {props.formRows.map((row: any, index : number) => (
             <div key={index}>
-              {row.map((field) => (
+              {row.map((field: any) => (
                 <input
                   key={field.graphQLPropertyName}
                   data-testid={field.graphQLPropertyName}
