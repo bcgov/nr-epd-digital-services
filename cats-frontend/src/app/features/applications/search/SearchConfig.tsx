@@ -37,7 +37,7 @@ export const applicationResultColumns = (fromMyTasks: boolean = false) => [
       return (
         <div className="custom-applications-link-wrapper">
           <a
-            href={`${import.meta.env.VITE_SITE_REGISTRY_URL}/site/details/${value}`}
+            href={`${import.meta.env.VITE_SITE_REGISTRY_URL || window?._env_?.VITE_SITE_REGISTRY_URL}/site/details/${value}`}
             target="_blank"
             rel="noopener noreferrer"
             className={'custom-applications-input-txt'}
