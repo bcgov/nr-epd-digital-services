@@ -29,9 +29,9 @@ export const actionRequiredColumns: TableColumn[] = [
     graphQLPropertyName: 'siteId',
     displayType: { type: FormFieldType.Label },
     renderCell: (value: any) => {
-      const baseUrl = import.meta.env.VITE_SITE_REGISTRY_URL ||   window?._env_?.VITE_SITE_REGISTRY_URL;
-      console.log('baseUrl', baseUrl);
-      console.log('Url called',`${baseUrl}/site/details/${value}`);
+      const baseUrl =
+        import.meta.env.VITE_SITE_REGISTRY_URL ||
+        window?._env_?.VITE_SITE_REGISTRY_URL;
       return (
         <div className="custom-dashboard-link-wrapper">
           <a
