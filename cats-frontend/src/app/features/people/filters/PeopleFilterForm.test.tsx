@@ -5,10 +5,10 @@ import PeopleFilterForm from './PeopleFilterForm';
 // Mocking the Form component
 vi.mock('../../../components/form/Form', () => {
   return {
-    default: function MockForm(props : any) {
+    default: function MockForm(props: any) {
       return (
         <div>
-          {props.formRows.map((row: any, index : number) => (
+          {props.formRows.map((row: any, index: number) => (
             <div key={index}>
               {row.map((field: any) => (
                 <input
