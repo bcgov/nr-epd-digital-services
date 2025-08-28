@@ -1,16 +1,16 @@
-.custom-app-container{
-    font-weight: 700;
-    font-style: Bold;
-    font-size: 36px;
-    line-height: 100%;
-    letter-spacing: 0%;
-    vertical-align: middle;
-    color: var(--typography-color-primary, #2D2D2D);
+.custom-app-container {
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 36px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  color: var(--typography-color-primary, #2d2d2d);
 }
 .custom-app-childern-container {
-    border-bottom: 1px solid var(--surface-border-light, #d8d8d8);
+  border-bottom: 1px solid var(--surface-border-light, #d8d8d8);
 }
-  
+
 .custom-applications-input-txt {
   font-size: 12px !important;
   font-weight: 400 !important;
@@ -38,7 +38,6 @@ a.custom-applications-input-txt {
   vertical-align: middle !important;
   min-width: 100px !important;
 }
-
 
 .custom-applications-edit-lbl {
   font-size: 12px;

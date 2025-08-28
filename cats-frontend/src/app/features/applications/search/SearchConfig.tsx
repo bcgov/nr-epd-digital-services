@@ -1,8 +1,8 @@
-import { ExternalLink, FileLinesIcon } from "@cats/components/common/icon";
-import { FormFieldType } from "@cats/components/input-controls/IFormField";
-import { ColumnSize } from "@cats/components/table/TableColumn";
-import { formatDateUTC } from "@cats/helpers/utility";
-import StaffAssigned from "./StaffAssigned";
+import { ExternalLink, FileLinesIcon } from '@cats/components/common/icon';
+import { FormFieldType } from '@cats/components/input-controls/IFormField';
+import { ColumnSize } from '@cats/components/table/TableColumn';
+import { formatDateUTC } from '@cats/helpers/utility';
+import StaffAssigned from './StaffAssigned';
 
 export const applicationResultColumns = (fromMyTasks: boolean = false) => [
   {
@@ -210,6 +210,7 @@ export const applicationResultColumns = (fromMyTasks: boolean = false) => [
     },
     dynamicColumn: true,
     columnSize: ColumnSize.Default,
-    customHeaderCss: 'custom-applications-tbl-header custom-applications-column-position',
+    customHeaderCss:
+      'custom-applications-tbl-header custom-applications-column-position',
   },
 ];

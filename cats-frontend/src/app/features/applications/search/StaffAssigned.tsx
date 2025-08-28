@@ -17,7 +17,10 @@ const StaffAssigned: React.FC<StaffAssignedProps> = ({ staff }) => {
     <Popover id="staff-popover" className="staff-assigned-popup">
       <div className="staff-assigned-popup__list">
         {staff.map((person, index) => (
-          <div key={`${person.firstName}-${person.lastName}-${index}`} className="staff-assigned-popup__item">
+          <div
+            key={`${person.firstName}-${person.lastName}-${index}`}
+            className="staff-assigned-popup__item"
+          >
             <div className="staff-assigned__avatar">
               <Avatar firstName={person.firstName} lastName={person.lastName} />
             </div>
@@ -40,7 +43,10 @@ const StaffAssigned: React.FC<StaffAssignedProps> = ({ staff }) => {
     >
       <button className="staff-assigned" aria-label="Staff assigned">
         {visibleStaff.map((person, index) => (
-          <div key={`${person.firstName}-${person.lastName}-${index}`} className="staff-assigned__avatar">
+          <div
+            key={`${person.firstName}-${person.lastName}-${index}`}
+            className="staff-assigned__avatar"
+          >
             <Avatar firstName={person.firstName} lastName={person.lastName} />
           </div>
         ))}

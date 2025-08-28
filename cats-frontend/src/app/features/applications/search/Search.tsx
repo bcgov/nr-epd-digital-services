@@ -173,19 +173,19 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
   };
 
   const sharedOptions: IFilterOption[] = [
-  {
-    label: 'Columns',
-    value: Filter.Assigned, // Or use a custom string if needed
-    onClick: () => setShowColumnSelect(!showColumnSelect),
-    icon: <TableColumnsIcon />,
-  },
-  // You can add more shared items here (e.g., Filter icon toggle)
-  // {
-  //   label: 'Filter',
-  //   value: 'filter',
-  //   onClick: () => setShowFilterSelect(prev => !prev),
-  //   icon: <FilterIcon />,
-  // },
+    {
+      label: 'Columns',
+      value: Filter.Assigned, // Or use a custom string if needed
+      onClick: () => setShowColumnSelect(!showColumnSelect),
+      icon: <TableColumnsIcon />,
+    },
+    // You can add more shared items here (e.g., Filter icon toggle)
+    // {
+    //   label: 'Filter',
+    //   value: 'filter',
+    //   onClick: () => setShowFilterSelect(prev => !prev),
+    //   icon: <FilterIcon />,
+    // },
   ];
 
   const tasksOptions: IFilterOption[] = [
@@ -229,10 +229,12 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
     // ...sharedOptions, uncomment once filter and columns are implemented
   ];
 
-
   return (
     <PageContainer role="Search">
-      <div className='custom-app-container'> {filterMyTasks ? 'My Tasks' : ' All Applications'}</div>
+      <div className="custom-app-container">
+        {' '}
+        {filterMyTasks ? 'My Tasks' : ' All Applications'}
+      </div>
       <SearchInput
         searchTerm={searchTerm}
         handleSearchChange={handleSearchChange}
@@ -260,8 +262,8 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
         totalResults={totalResults}
         filter={<FilterControls options={options} />}
       >
-       {/* uncomment it once the column and filter design is created */}
-       {/* { 
+        {/* uncomment it once the column and filter design is created */}
+        {/* { 
         showColumnSelect && 
           <div className="custom-app-childern-container">
               <ColumnSelect
