@@ -63,7 +63,6 @@ frontend:
     REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT: "true"
     VITE_SITE_REGISTRAR_USER_ROLE: "site-registrar"
     VITE_INTERNAL_USER_ROLE: "site-internal-user"
-    VITE_SITE_REGISTRY_URL: ~
     VITE_FORM_API: "https://forms-flow-api-e38158-dev.apps.silver.devops.gov.bc.ca"
     VITE_FORM_BACKEND_API: "https://epd-backend-applications-dev.apps.silver.devops.gov.bc.ca"
     VITE_FORM_FLOW_API: "https://forms-flow-forms-e38158-dev.apps.silver.devops.gov.bc.ca"
