@@ -70,3 +70,13 @@
   align-items: center;
   margin-left: auto; /* Pushes the element to the far right */
 }
+
+/* Hide the arrow entirely */
+.popover .popover-arrow {
+  display: none !important;
+}
+
+.popover .popover-arrow::before,
+.popover .popover-arrow::after {
+  display: none !important;
+}
