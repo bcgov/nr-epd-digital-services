@@ -112,6 +112,7 @@ frontend:
     REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS: "true"
     REACT_APP_AUTH_LOAD_USER_INFO: "true"
     REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT: "true"
+    VITE_SITE_REGISTRY_URL: "https://nr-site-registry-test-frontend.apps.silver.devops.gov.bc.ca"
     VITE_GEOCODER_API: "https://geocoder.api.gov.bc.ca"
 crunchy: # Increase WAL storage as we ran out of it in PR/dev when importing prod oracle data, and will likely need 2gb WAL for all envs.
   instances:

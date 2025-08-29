@@ -508,6 +508,32 @@
           <text>"epd-support@gov.bc.ca"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0d0oo4s">
+        <inputEntry id="UnaryTests_0j2yab0">
+          <text>"sds_generic_response"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ek27j9">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ckslsn">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ez4aii">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_05n322e">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02yd97a">
+          <text>"Site Disclosure Statement Received"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_057rbum">
+          <text>"templates/sds_generic_response.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03yrt95">
+          <text>"epd-support@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
