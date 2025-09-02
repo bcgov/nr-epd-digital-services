@@ -31,6 +31,14 @@ global:
 backend:
   pdb:
     enabled: true
+  autoscaling:
+    # Temporarily set to 1 to avoid issues with duplicate migrations run at once.
+    #-- enable or disable autoscaling.
+    enabled: true
+    #-- the minimum number of replicas.
+    minReplicas: 1
+    #-- the maximum number of replicas.
+    maxReplicas: 1
 
 frontend:
   pdb:
