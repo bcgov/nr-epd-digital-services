@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - main
-      - feat/cats-prod # todo: this can be removed in future, just for active dev.
+      - feat/srs-1034 # Remove once merged to main, this is just to test prod deploy without needing to PR merge all the time.
+      # TODO: After removing this, also test out merge main and make sure the pr # and image pull issues work.
 
 concurrency:
   # Cancel in progress for PR open and close
