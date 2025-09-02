@@ -27,6 +27,7 @@ global:
     VITE_COMS_BUCKET: 'bucket'
     VITE_COMS_OBJECT: 'object'
 
+
 backend:
   pdb:
     enabled: true
