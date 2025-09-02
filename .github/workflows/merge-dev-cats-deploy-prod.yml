@@ -40,7 +40,7 @@ jobs:
     with:
       environment: prod
       tag:  '${{ needs.get-pr-info.outputs.pr }}'
-      values: 'values.yaml' # PROD env specific values file
+      values: 'values-prod.yaml' # PROD env specific values file
 
   schemaspy:
     name: Schemaspy
