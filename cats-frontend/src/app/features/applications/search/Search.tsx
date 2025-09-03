@@ -217,10 +217,10 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
       isSelected: filter === Filter.Unassigned,
     },
     {
-      label: 'Overcapacity',
-      value: Filter.Overcapacity,
-      onClick: () => handleFilterChange(Filter.Overcapacity),
-      isSelected: filter === Filter.Overcapacity,
+      label: 'Completed',
+      value: Filter.Completed,
+      onClick: () => handleFilterChange(Filter.Completed),
+      isSelected: filter === Filter.Completed,
     },
   ];
 
