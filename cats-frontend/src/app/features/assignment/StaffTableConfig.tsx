@@ -1,6 +1,4 @@
-import {
-  XmarkIcon,
-} from '../../components/common/icon';
+import { XmarkIcon } from '../../components/common/icon';
 import { FormFieldType } from '../../components/input-controls/IFormField';
 import { ColumnSize, TableColumn } from '../../components/table/TableColumn';
 import { RequestStatus } from '../../helpers/requests/status';

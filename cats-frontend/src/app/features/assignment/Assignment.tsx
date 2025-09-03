@@ -38,15 +38,14 @@ const Assignment: React.FC<AssignmentProps> = ({
 }) => {
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [messageContent, setMessageContent] = useState('');
-  const [assignmentServiceType, setAssignmentServiceType] = useState<string>('');
+  const [assignmentServiceType, setAssignmentServiceType] =
+    useState<string>('');
   const [staffRecords, setStaffRecords] = useState<any[]>([]);
 
   const applicationId = id ? Number(id) : 0;
   const { data: rolesData } = useGetParticipantRolesQuery();
-  const {
-    data: staffMemebersList,
-    refetch: staffMemebersRefetch,
-  } = useGetAllActiveStaffMembersQuery();
+  const { data: staffMemebersList, refetch: staffMemebersRefetch } =
+    useGetAllActiveStaffMembersQuery();
 
   const {
     data: staffMemebersListForServiceType,
@@ -59,7 +58,6 @@ const Assignment: React.FC<AssignmentProps> = ({
     },
   });
 
- 
   const { data: serviceTypesList } = useGetApplicationServiceTypesQuery();
   const [updateStaffAssigned] = useUpdateStaffAssignedMutation();
 
@@ -83,42 +81,56 @@ const Assignment: React.FC<AssignmentProps> = ({
     },
     skip: !application?.siteId,
   });
-  
+
   const {
     data: staffData,
     loading: dataLoading,
     refetch: staffRefetch,
   } = useGetStaffAssignedByAppIdQuery({ variables: { applicationId } });
-  
+
   const [searchParam, setSearchParam] = useState('');
   const { staffColumnInternal } = GetConfig({
     setSearchParam,
-    options: staffMemebersList?.getAllActiveStaffMembers?.data?.map((item: any) => ({
+    options: staffMemebersList?.getAllActiveStaffMembers?.data?.map(
+      (item: any) => ({
+        key: item.personId.toString(),
+        value: item.personFullName,
+      }),
+    ) as [{ key: string; value: string }],
+    filteredOptions:
+      staffMemebersListForServiceType?.getAllActiveStaffMembersForApplicationServiceType?.data
+        ?.filter(
+          (item: any) =>
+            !staffRecords
+              ?.map((item) => item.personId)
+              ?.includes(item.personId),
+        )
+        ?.filter((item: any) =>
+          item.personFullName
+            .toLowerCase()
+            .includes(searchParam?.trim()?.toLowerCase()),
+        )
+        .map((item: any) => ({
           key: item.personId.toString(),
-          value: item.personFullName,
+          value:
+            item.personFullName +
+            ' - (' +
+            ((item.currentCapacity / 160) * 100).toFixed(2) +
+            '%)',
         })) as [{ key: string; value: string }],
-    filteredOptions: staffMemebersListForServiceType?.getAllActiveStaffMembersForApplicationServiceType?.data
-            ?.filter((item: any) => !staffRecords?.map((item) => item.personId)?.includes(item.personId))
-            ?.filter((item: any) =>
-              item.personFullName.toLowerCase().includes(searchParam?.trim()?.toLowerCase()),
-            )
-            .map((item: any) => ({
-              key: item.personId.toString(),
-              value:
-                item.personFullName +
-                ' - (' +
-                ((item.currentCapacity / 160) * 100).toFixed(2) +
-                '%)',
-            })) as [{ key: string; value: string }],
-    rolesOptions: rolesData?.getAllParticipantRoles?.data?.filter((item: any) =>
-                    item.description === 'Caseworker' ||
-                    item.description === 'Statutory Decision Maker' ||
-                    item.description === 'Mentor')?.map((item: any) => ({
-                      key: item.id,
-                      value: item.description,
-                    })) as [{ key: string; value: string }]
+    rolesOptions: rolesData?.getAllParticipantRoles?.data
+      ?.filter(
+        (item: any) =>
+          item.description === 'Caseworker' ||
+          item.description === 'Statutory Decision Maker' ||
+          item.description === 'Mentor',
+      )
+      ?.map((item: any) => ({
+        key: item.id,
+        value: item.description,
+      })) as [{ key: string; value: string }],
   });
-  
+
   useEffect(() => {
     if (assignmentServiceType) {
       staffMemebersRefetchForServiceType({
@@ -265,10 +277,12 @@ const Assignment: React.FC<AssignmentProps> = ({
             label={'Application Service Type'}
             customLabelCss={''}
             placeholder={'Select Service Type'}
-            options={serviceTypesList?.getApplicationServiceTypes?.data?.map((item) => ({
-              key: item.key,
-              value: item.value,
-            }))}
+            options={serviceTypesList?.getApplicationServiceTypes?.data?.map(
+              (item) => ({
+                key: item.key,
+                value: item.value,
+              }),
+            )}
             customInputTextCss="panelLabel"
             value={assignmentServiceType}
             onChange={(value) => {
