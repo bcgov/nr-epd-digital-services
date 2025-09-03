@@ -99,17 +99,17 @@ a.custom-apps-modal-lbl {
 
 /* These classes are automatically applied by React-Bootstrap based on the `variant` prop */
 .bg-under-half {
-  background-color: var(--support-border-color-success, #42814A) !important;
+  background-color: var(--support-border-color-success, #42814a) !important;
 }
 
 .bg-over-half {
-  background-color: var(--theme-gold-80, #F9C462) !important;
+  background-color: var(--theme-gold-80, #f9c462) !important;
 }
 
 .bg-at-capacity {
-  background-color: var(--theme-gold-100, #FCBA19) !important;
+  background-color: var(--theme-gold-100, #fcba19) !important;
 }
 
 .bg-over-capacity {
-  background-color: var(--support-border-color-danger, #CE3E39) !important;
+  background-color: var(--support-border-color-danger, #ce3e39) !important;
 }

@@ -49,15 +49,12 @@ export const StaffColumns: TableColumn[] = [
       if (roundedValue > row.capacity) {
         variant = 'over-capacity';
         Icon = CircleExclamation;
-      } 
-      else if (roundedValue === row.capacity) {
+      } else if (roundedValue === row.capacity) {
         variant = 'at-capacity';
         Icon = ExclamationTriangleIcon;
-      } 
-      else if (roundedValue >= row.capacity / 2) {
+      } else if (roundedValue >= row.capacity / 2) {
         variant = 'over-half';
-      } 
-      else {
+      } else {
         variant = 'under-half';
       }
 
