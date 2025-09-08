@@ -3198,46 +3198,27 @@
                             "addons": []
                         },
                         {
-                            "html": "<p>If yes, then the metes and bounds field should be visible but no legal description.</p><p>If no, then no metes and bounds field but legal description</p>",
+                            "html": "<p>Legal description and/or metes and bounds must be provided:</p>",
                             "label": "Text/Images",
-                            "customClass": "",
                             "refreshOnChange": false,
-                            "hidden": false,
-                            "modalEdit": false,
                             "key": "simplecontent",
-                            "tags": [],
-                            "properties": {},
-                            "conditional": {
-                                "show": null,
-                                "when": null,
-                                "eq": "",
-                                "json": ""
-                            },
-                            "customConditional": "",
-                            "logic": [],
-                            "attributes": {},
-                            "overlay": {
-                                "style": "",
-                                "page": "",
-                                "left": "",
-                                "top": "",
-                                "width": "",
-                                "height": ""
-                            },
                             "type": "content",
                             "input": false,
                             "tableView": false,
                             "placeholder": "",
                             "prefix": "",
+                            "customClass": "",
                             "suffix": "",
                             "multiple": false,
                             "defaultValue": null,
                             "protected": false,
                             "unique": false,
                             "persistent": true,
+                            "hidden": false,
                             "clearOnHide": true,
                             "refreshOn": "",
                             "redrawOn": "",
+                            "modalEdit": false,
                             "dataGridLabel": false,
                             "labelPosition": "top",
                             "description": "",
@@ -3252,6 +3233,7 @@
                             "calculateValue": "",
                             "calculateServer": false,
                             "widget": null,
+                            "attributes": {},
                             "validateOn": "change",
                             "validate": {
                                 "required": false,
@@ -3261,13 +3243,26 @@
                                 "multiple": false,
                                 "unique": false
                             },
+                            "conditional": {
+                                "show": null,
+                                "when": null,
+                                "eq": ""
+                            },
+                            "overlay": {
+                                "style": "",
+                                "left": "",
+                                "top": "",
+                                "width": "",
+                                "height": ""
+                            },
                             "allowCalculateOverride": false,
                             "encrypted": false,
                             "showCharCount": false,
                             "showWordCount": false,
+                            "properties": {},
                             "allowMultipleMasks": false,
                             "addons": [],
-                            "id": "eix92e"
+                            "id": "ehm8la"
                         },
                         {
                             "label": "Provide metes and bounds,",
@@ -3332,9 +3327,9 @@
                             "tags": [],
                             "properties": {},
                             "conditional": {
-                                "show": null,
-                                "when": null,
-                                "eq": "",
+                                "show": true,
+                                "when": "isTheLandPartOfASite",
+                                "eq": "yes",
                                 "json": ""
                             },
                             "customConditional": "",
@@ -3360,7 +3355,7 @@
                             "inputType": "text",
                             "inputMask": "",
                             "fixedSize": true,
-                            "id": "e0cs3al",
+                            "id": "ewvoxn8",
                             "defaultValue": ""
                         },
                         {
@@ -3426,9 +3421,9 @@
                             "tags": [],
                             "properties": {},
                             "conditional": {
-                                "show": null,
-                                "when": null,
-                                "eq": "",
+                                "show": true,
+                                "when": "isTheLandPartOfASite",
+                                "eq": "no",
                                 "json": ""
                             },
                             "customConditional": "",
@@ -3454,7 +3449,7 @@
                             "inputType": "text",
                             "inputMask": "",
                             "fixedSize": true,
-                            "id": "e5la2c",
+                            "id": "epzgyh",
                             "defaultValue": ""
                         },
                         {
@@ -4967,7 +4962,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ele95t00000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ele95t0000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "spropertyOwnerAndOrOperator",
                                     "tree": false,
                                     "type": "panel",
@@ -14427,7 +14422,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eks0gu000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eks0gu00000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "exposurePathwayQuestionnaireAffectedParcel",
                                     "tree": false,
                                     "type": "panel",
@@ -18371,7 +18366,7 @@
                                         }
                                     ],
                                     "collapsible": false,
-                                    "id": "eo5mwyp000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eo5mwyp00000000000000000000000000000000000000000000000000000000000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
