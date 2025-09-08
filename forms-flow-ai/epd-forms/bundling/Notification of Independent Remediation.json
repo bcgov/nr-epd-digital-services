@@ -5094,7 +5094,7 @@
                             "addons": []
                         },
                         {
-                            "label": "I understand and will include a land title record with my submission (if applicable)",
+                            "label": "I will include a land title record with my submission (if applicable)",
                             "description": "",
                             "tooltip": "",
                             "shortcut": "",
@@ -5168,83 +5168,84 @@
                             "showWordCount": false,
                             "allowMultipleMasks": false,
                             "addons": [],
-                            "id": "ebh62ys"
+                            "id": "ev1rdf6"
                         },
                         {
-                            "id": "enicwse",
-                            "key": "iUnderstandAndWillAttachAMapWithMySubmission4",
-                            "name": "",
-                            "tags": [],
-                            "type": "checkbox",
-                            "input": true,
-                            "label": "I understand and will include a site plan with my submission",
-                            "logic": [],
-                            "value": "",
+                            "label": "I will include a site plan with my submission",
+                            "description": "",
+                            "tooltip": "",
+                            "shortcut": "",
+                            "inputType": "checkbox",
+                            "customClass": "",
+                            "tabindex": "",
                             "hidden": false,
-                            "prefix": "",
-                            "suffix": "",
-                            "unique": false,
-                            "widget": null,
+                            "hideLabel": false,
+                            "autofocus": false,
+                            "disabled": false,
+                            "tableView": false,
+                            "modalEdit": false,
+                            "defaultValue": false,
+                            "persistent": true,
+                            "protected": false,
                             "dbIndex": false,
+                            "encrypted": false,
+                            "redrawOn": "",
+                            "clearOnHide": true,
+                            "customDefaultValue": "",
+                            "calculateValue": "",
+                            "calculateServer": false,
+                            "allowCalculateOverride": false,
+                            "validate": {
+                                "required": true,
+                                "customMessage": "",
+                                "custom": "",
+                                "customPrivate": false,
+                                "json": "",
+                                "strictDateValidation": false,
+                                "multiple": false,
+                                "unique": false
+                            },
+                            "errorLabel": "",
+                            "errors": "",
+                            "key": "iUnderstandAndWillAttachAMapWithMySubmission4",
+                            "tags": [],
+                            "properties": {},
+                            "conditional": {
+                                "show": null,
+                                "when": null,
+                                "eq": "",
+                                "json": ""
+                            },
+                            "customConditional": "",
+                            "logic": [],
+                            "attributes": {},
                             "overlay": {
-                                "top": "",
-                                "left": "",
-                                "page": "",
                                 "style": "",
+                                "page": "",
+                                "left": "",
+                                "top": "",
                                 "width": "",
                                 "height": ""
                             },
-                            "tooltip": "",
-                            "disabled": false,
-                            "multiple": false,
-                            "redrawOn": "",
-                            "shortcut": "",
-                            "tabindex": "",
-                            "validate": {
-                                "json": "",
-                                "custom": "",
-                                "unique": false,
-                                "multiple": false,
-                                "required": true,
-                                "customMessage": "",
-                                "customPrivate": false,
-                                "strictDateValidation": false
-                            },
-                            "autofocus": false,
-                            "encrypted": false,
-                            "hideLabel": false,
-                            "inputType": "checkbox",
-                            "modalEdit": false,
-                            "protected": false,
-                            "refreshOn": "",
-                            "tableView": false,
-                            "attributes": {},
-                            "errorLabel": "",
-                            "persistent": true,
-                            "properties": {},
-                            "validateOn": "change",
-                            "clearOnHide": true,
-                            "conditional": {
-                                "eq": "",
-                                "json": "",
-                                "show": null,
-                                "when": null
-                            },
-                            "customClass": "",
-                            "description": "",
+                            "type": "checkbox",
+                            "name": "",
+                            "value": "",
+                            "input": true,
                             "placeholder": "",
-                            "defaultValue": false,
+                            "prefix": "",
+                            "suffix": "",
+                            "multiple": false,
+                            "unique": false,
+                            "refreshOn": "",
                             "dataGridLabel": true,
                             "labelPosition": "right",
+                            "widget": null,
+                            "validateOn": "change",
                             "showCharCount": false,
                             "showWordCount": false,
-                            "calculateValue": "",
-                            "calculateServer": false,
-                            "customConditional": "",
                             "allowMultipleMasks": false,
-                            "customDefaultValue": "",
-                            "allowCalculateOverride": false,
-                            "addons": []
+                            "addons": [],
+                            "id": "evqp5zj"
                         }
                     ],
                     "errorLabel": "",
@@ -9372,7 +9373,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "epivnsp0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "epivnsp000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "contaminant",
                                     "mask": false,
                                     "type": "textfield",
@@ -9449,7 +9450,7 @@
                                     "truncateMultipleSpaces": false
                                 },
                                 {
-                                    "id": "el3hlvr0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "el3hlvr000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "maximumConcentration",
                                     "mask": false,
                                     "type": "number",
@@ -10110,7 +10111,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "esedw40000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "esedw4000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "contaminant",
                                     "mask": false,
                                     "type": "textfield",
@@ -10187,7 +10188,7 @@
                                     "truncateMultipleSpaces": false
                                 },
                                 {
-                                    "id": "esor9060000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "esor906000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "maximumConcentration",
                                     "mask": false,
                                     "type": "number",
@@ -10845,7 +10846,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ej0y410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ej0y41000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "contaminant",
                                     "mask": false,
                                     "type": "textfield",
@@ -10922,7 +10923,7 @@
                                     "truncateMultipleSpaces": false
                                 },
                                 {
-                                    "id": "e8qg9fh0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "e8qg9fh000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "maximumConcentration",
                                     "mask": false,
                                     "type": "number",
@@ -11586,7 +11587,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "eevqmo9000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "eevqmo900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "contaminant",
                                     "mask": false,
                                     "type": "textfield",
@@ -11663,7 +11664,7 @@
                                     "truncateMultipleSpaces": false
                                 },
                                 {
-                                    "id": "et223l3000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "et223l300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "maximumConcentration",
                                     "mask": false,
                                     "type": "number",
@@ -12451,7 +12452,7 @@
                     "breadcrumb": "default",
                     "components": [
                         {
-                            "html": "<p>In situ treatment of contaminants may generate substances which could be deemed a waste requiring a discharge authorization,</p>",
+                            "html": "<p>In situ treatment of contaminants may generate substances which could be deemed a waste requiring a discharge authorization.</p>",
                             "label": "Text/Images",
                             "customClass": "",
                             "refreshOnChange": false,
@@ -12521,7 +12522,7 @@
                             "showWordCount": false,
                             "allowMultipleMasks": false,
                             "addons": [],
-                            "id": "ev76dic"
+                            "id": "eamhfo"
                         },
                         {
                             "label": "Did or does a discharge associated with the remediation require an authorization under the Environmental Management Act?",
