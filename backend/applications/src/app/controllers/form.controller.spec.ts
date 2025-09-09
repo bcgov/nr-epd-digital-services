@@ -73,6 +73,7 @@ describe('FormController', () => {
   });
 
   it('should save a form submission and call catsService', async () => {
+    process.env.CATS_INTEGRATION_ENABLED = 'true';
     const formId = 'abc';
     const formData = { name: 'Jane' };
     const content = { data: formData };

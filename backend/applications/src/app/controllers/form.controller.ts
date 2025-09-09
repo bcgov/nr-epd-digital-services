@@ -72,7 +72,7 @@ export class FormController {
     const savedSubmission = await this.formService.create(formId, content.data);
     const submissionResponse: SubmissionResponse =
       this.transformResult(savedSubmission);
-    if (origin)
+    if (origin && process.env.CATS_INTEGRATION_ENABLED === 'true')
       await this.catsService.submitToCats(content.data, savedSubmission.id, savedSubmission.formId);
     return submissionResponse;
   }
@@ -126,7 +126,9 @@ export class FormController {
       content.data,
     );
 
-    await this.catsService.updateCatsApplication(submissionId, formId, content.data);
+    if (process.env.CATS_INTEGRATION_ENABLED === 'true') {
+      await this.catsService.updateCatsApplication(submissionId, formId, content.data);
+    }
     return partialUpdatedSubmission;
   }
 }
