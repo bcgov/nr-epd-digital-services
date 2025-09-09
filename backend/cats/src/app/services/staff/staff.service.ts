@@ -32,7 +32,7 @@ export class StaffService {
     try {
       this.loggerService.log('StaffService: getStaffs start');
 
-      const capacity = 10;
+      const capacity = 160;
       const offset = (page - 1) * pageSize;
       let havingClause = '';
       const assignmentExpr = `

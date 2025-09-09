@@ -2,7 +2,7 @@
 
 
 # Maven build
-FROM maven:3.8.1-openjdk-17-slim AS MAVEN_TOOL_CHAIN
+FROM maven:3.8.4-openjdk-17-slim AS MAVEN_TOOL_CHAIN
 RUN apt-get update \
     && apt-get install -y git
 

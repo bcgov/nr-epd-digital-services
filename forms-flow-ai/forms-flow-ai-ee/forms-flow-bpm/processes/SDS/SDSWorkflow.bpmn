@@ -42,8 +42,11 @@
       <bpmn:script>var system = java.lang.System;
 var clientEmail= execution.getVariable('contactPersonEmailAddress');
 execution.setVariable('clientEmail',clientEmail);
+var aaEmail= execution.getVariable('approvingAuthorityEmailAddress');
 var emailsToArray = [];
-emailsToArray.push(clientEmail)
+emailsToArray.push(clientEmail);
+
+
 execution.setVariable('emailTo',JSON.stringify(emailsToArray));
 var siteOwnerEmail = execution.getVariable('ownerEmailAddress');
 execution.setVariable('siteOwnerEmail',siteOwnerEmail);
@@ -74,13 +77,20 @@ var emailsIdsToProcess = [];
 emailsIdsToProcess.push(clientEmail);
 
 emailsIdsToProcess.push(siteOwnerEmail);
+
+var section5DeclarationSectionLocalGovernmentPermits = execution.getVariable('section5DeclarationSectionLocalGovernmentPermits');
+if(section5DeclarationSectionLocalGovernmentPermits === true || section5DeclarationSectionLocalGovernmentPermits === "true")
+{
+	emailsIdsToProcess.push(aaEmail);
+}
+
 execution.setVariable('emailsIdsToProcess',JSON.stringify(emailsIdsToProcess));
 
 var emailsIdsToProcessForSO = [];
 emailsIdsToProcessForSO.push(siteOwnerEmail);
 execution.setVariable('emailsIdsToProcessSO',JSON.stringify(emailsIdsToProcessForSO));
 
-var aaEmail= execution.getVariable('approvingAuthorityEmailAddress');
+
 var emailsIdsToProcessForTaskAssignmentArr = [];
 
 emailsIdsToProcessForTaskAssignmentArr.push(aaEmail);
@@ -489,6 +499,10 @@ execution.setVariable('siteAddress',siteAddress);
         <dc:Bounds x="190" y="90" width="980" height="410" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1qps1ys_di" bpmnElement="Flow_1qps1ys">
+        <di:waypoint x="378" y="700" />
+        <di:waypoint x="520" y="700" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0r4070a_di" bpmnElement="Flow_0r4070a">
         <di:waypoint x="480" y="590" />
         <di:waypoint x="410" y="590" />
@@ -631,10 +645,6 @@ execution.setVariable('siteAddress',siteAddress);
         <bpmndi:BPMNLabel>
           <dc:Bounds x="527" y="441" width="18" height="14" />
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1qps1ys_di" bpmnElement="Flow_1qps1ys">
-        <di:waypoint x="378" y="700" />
-        <di:waypoint x="520" y="700" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BPMNShape_0zk5qh7" bpmnElement="Activity_1ozfgid">
         <dc:Bounds x="303" y="222" width="100" height="80" />

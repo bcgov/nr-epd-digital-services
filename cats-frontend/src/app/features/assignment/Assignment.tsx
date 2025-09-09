@@ -7,7 +7,6 @@ import GetConfig from './StaffTableConfig';
 import StaffTable from './StaffTable';
 import { RequestStatus } from '../../helpers/requests/status';
 import { useGetParticipantRolesQuery } from '../applications/application/applicationTabs/appParticipants/graphql/Participants.generated';
-
 import {
   useGetAllActiveStaffMembersForApplicationServiceTypeQuery,
   useGetAllActiveStaffMembersQuery,
@@ -15,10 +14,6 @@ import {
   useGetStaffAssignedByAppIdQuery,
   useUpdateStaffAssignedMutation,
 } from './graphql/assignment.generated';
-import {
-  UpdateDisplayTypeParams,
-  updateTableColumn,
-} from '../../helpers/utility';
 import {
   CancelButton,
   SaveButton,
@@ -43,31 +38,17 @@ const Assignment: React.FC<AssignmentProps> = ({
 }) => {
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [messageContent, setMessageContent] = useState('');
-
-  const applicationId = id ? Number(id) : 0;
-
-  const [roleList, setRoleList] = useState<any[]>([]);
-
-  const [serviceTypes, SetServiceTypes] = useState<any[]>([]);
-
   const [assignmentServiceType, setAssignmentServiceType] =
     useState<string>('');
+  const [staffRecords, setStaffRecords] = useState<any[]>([]);
 
-  const { staffColumnInternal } = GetConfig();
-
-  const [internalRow, setInternalRow] = useState(staffColumnInternal);
-
+  const applicationId = id ? Number(id) : 0;
   const { data: rolesData } = useGetParticipantRolesQuery();
-
-  const {
-    data: staffMemebersList,
-    loading: staffMemebersLoading,
-    refetch: staffMemebersRefetch,
-  } = useGetAllActiveStaffMembersQuery();
+  const { data: staffMemebersList, refetch: staffMemebersRefetch } =
+    useGetAllActiveStaffMembersQuery();
 
   const {
     data: staffMemebersListForServiceType,
-    loading: staffMemebersLoadingForServiceType,
     refetch: staffMemebersRefetchForServiceType,
   } = useGetAllActiveStaffMembersForApplicationServiceTypeQuery({
     variables: {
@@ -77,26 +58,7 @@ const Assignment: React.FC<AssignmentProps> = ({
     },
   });
 
-  useEffect(() => {
-    if (assignmentServiceType) {
-      staffMemebersRefetchForServiceType({
-        applicationServiceTypeId: Number(assignmentServiceType),
-      });
-    }
-  }, [assignmentServiceType]);
-
-  useEffect(() => {
-    if (staffMemebersListForServiceType) {
-      processStaffMemebersList(
-        staffMemebersList?.getAllActiveStaffMembers?.data || [],
-        staffMemebersListForServiceType
-          ?.getAllActiveStaffMembersForApplicationServiceType?.data || [],
-      );
-    }
-  }, [staffMemebersListForServiceType]);
-
   const { data: serviceTypesList } = useGetApplicationServiceTypesQuery();
-
   const [updateStaffAssigned] = useUpdateStaffAssignedMutation();
 
   const { data: applicationData, loading: applicationDataLoading } =
@@ -120,21 +82,62 @@ const Assignment: React.FC<AssignmentProps> = ({
     skip: !application?.siteId,
   });
 
-  useEffect(() => {
-    SetServiceTypes(serviceTypesList?.getApplicationServiceTypes?.data || []);
-  }, [serviceTypesList]);
-
-  useEffect(() => {
-    setRoleList(rolesData?.getAllParticipantRoles?.data || []);
-  }, [rolesData]);
-
-  const [staffRecords, setStaffRecords] = useState<any[]>([]);
-
   const {
     data: staffData,
     loading: dataLoading,
     refetch: staffRefetch,
   } = useGetStaffAssignedByAppIdQuery({ variables: { applicationId } });
+
+  const [searchParam, setSearchParam] = useState('');
+  const { staffColumnInternal } = GetConfig({
+    setSearchParam,
+    options: staffMemebersList?.getAllActiveStaffMembers?.data?.map(
+      (item: any) => ({
+        key: item.personId.toString(),
+        value: item.personFullName,
+      }),
+    ) as [{ key: string; value: string }],
+    filteredOptions:
+      staffMemebersListForServiceType?.getAllActiveStaffMembersForApplicationServiceType?.data
+        ?.filter(
+          (item: any) =>
+            !staffRecords
+              ?.map((item) => item.personId)
+              ?.includes(item.personId),
+        )
+        ?.filter((item: any) =>
+          item.personFullName
+            .toLowerCase()
+            .includes(searchParam?.trim()?.toLowerCase()),
+        )
+        .map((item: any) => ({
+          key: item.personId.toString(),
+          value:
+            item.personFullName +
+            ' - (' +
+            ((item.currentCapacity / 160) * 100).toFixed(2) +
+            '%)',
+        })) as [{ key: string; value: string }],
+    rolesOptions: rolesData?.getAllParticipantRoles?.data
+      ?.filter(
+        (item: any) =>
+          item.description === 'Caseworker' ||
+          item.description === 'Statutory Decision Maker' ||
+          item.description === 'Mentor',
+      )
+      ?.map((item: any) => ({
+        key: item.id,
+        value: item.description,
+      })) as [{ key: string; value: string }],
+  });
+
+  useEffect(() => {
+    if (assignmentServiceType) {
+      staffMemebersRefetchForServiceType({
+        applicationServiceTypeId: Number(assignmentServiceType),
+      });
+    }
+  }, [assignmentServiceType]);
 
   useEffect(() => {
     setStaffRecords(staffData?.getStaffAssignedByAppId?.data?.staffList || []);
@@ -219,121 +222,10 @@ const Assignment: React.FC<AssignmentProps> = ({
     });
   };
 
-  // Handle search action
-  const handleSearch = (
-    value: any,
-    staffMemebersArray: any,
-    staffMemberArrayForServieType: any,
-  ) => {
-    let existingStaffIds = staffRecords.map((item) => item.personId);
-    value.trim();
-
-    setInternalRow((prev) =>
-      updateTableColumn(prev, {
-        indexToUpdate: prev.findIndex(
-          (item) => item.displayType?.graphQLPropertyName === 'personId',
-        ),
-        updates: {
-          isLoading: RequestStatus.success,
-          filteredOptions: staffMemberArrayForServieType
-            ?.filter((item: any) => !existingStaffIds.includes(item.personId))
-            ?.filter((item: any) =>
-              item.personFullName.toLowerCase().includes(value.toLowerCase()),
-            )
-            .map((item: any) => ({
-              key: item.personId.toString(),
-              value:
-                item.personFullName +
-                ' - (' +
-                ((item.currentCapacity / 160) * 100).toFixed(2) +
-                '%)',
-            })),
-          handleSearch: (term: any) =>
-            handleSearch(
-              term,
-              staffMemebersArray,
-              staffMemberArrayForServieType,
-            ),
-          customInfoMessage: <></>,
-        },
-      }),
-    );
-  };
-
-  const processStaffMemebersList = (
-    staffMemebersList: any,
-    staffMemberArrayForServieType: any,
-  ) => {
-    if (!staffMemebersList) {
-      return false;
-    }
-    let options = staffMemebersList.map((item: any) => ({
-      key: item.personId.toString(),
-      value: item.personFullName,
-    }));
-
-    let params: UpdateDisplayTypeParams = {
-      indexToUpdate: staffColumnInternal.findIndex(
-        (item) => item.displayType?.graphQLPropertyName === 'personId',
-      ),
-      updates: {
-        isLoading: RequestStatus.success,
-        options: options,
-        filteredOptions: options,
-        handleSearch: (term: string) =>
-          handleSearch(term, staffMemebersList, staffMemberArrayForServieType),
-        customInfoMessage: <></>,
-      },
-    };
-    setInternalRow(updateTableColumn(internalRow, params));
-  };
-
-  useEffect(() => {
-    processStaffMemebersList(
-      staffMemebersList?.getAllActiveStaffMembers?.data || [],
-      staffMemebersListForServiceType
-        ?.getAllActiveStaffMembersForApplicationServiceType?.data || [],
-    );
-  }, [staffMemebersLoading, staffMemebersLoadingForServiceType]);
-
   useEffect(() => {
     staffMemebersRefetch();
     staffRefetch({ applicationId: applicationId });
   }, []);
-
-  useEffect(() => {
-    let uniqueRoles = roleList.map((item: any) => ({
-      key: item.id,
-      value: item.description,
-    }));
-
-    uniqueRoles = uniqueRoles.filter(
-      (item: any) =>
-        item.value === 'Caseworker' ||
-        item.value === 'Statutory Decision Maker' ||
-        item.value === 'Mentor',
-    );
-
-    let params: UpdateDisplayTypeParams = {
-      indexToUpdate: staffColumnInternal.findIndex(
-        (item) => item.displayType?.graphQLPropertyName === 'roleId',
-      ),
-      updates: {
-        isLoading: RequestStatus.success,
-        options: uniqueRoles,
-        filteredOptions: uniqueRoles,
-        handleSearch: (term: string) =>
-          handleSearch(
-            term,
-            staffMemebersList?.getAllActiveStaffMembers?.data || [],
-            staffMemebersListForServiceType
-              ?.getAllActiveStaffMembersForApplicationServiceType?.data || [],
-          ),
-        customInfoMessage: <></>,
-      },
-    };
-    setInternalRow(updateTableColumn(internalRow, params));
-  }, [roleList]);
 
   return (
     <div role="assign staff" className="assign-section">
@@ -385,10 +277,12 @@ const Assignment: React.FC<AssignmentProps> = ({
             label={'Application Service Type'}
             customLabelCss={''}
             placeholder={'Select Service Type'}
-            options={serviceTypes.map((item) => ({
-              key: item.key,
-              value: item.value,
-            }))}
+            options={serviceTypesList?.getApplicationServiceTypes?.data?.map(
+              (item) => ({
+                key: item.key,
+                value: item.value,
+              }),
+            )}
             customInputTextCss="panelLabel"
             value={assignmentServiceType}
             onChange={(value) => {
@@ -450,7 +344,7 @@ const Assignment: React.FC<AssignmentProps> = ({
               }
             }}
             handleWidgetCheckBox={() => {}}
-            tableColumnConfig={internalRow}
+            tableColumnConfig={staffColumnInternal}
             formData={staffRecords.filter((item) => item.action !== 'remove')}
             status={RequestStatus.success}
             handleTableSort={() => {}}
