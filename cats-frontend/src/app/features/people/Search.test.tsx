@@ -8,6 +8,15 @@ import { RequestStatus } from '../../helpers/requests/status';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 const mockStore = configureStore([thunk]);
+const mockNavigate = vi.fn();
+
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -25,7 +34,7 @@ Object.defineProperty(window, 'matchMedia', {
 
 // I am confident these tests were copy-pasted from the SITE repo and were never actually green
 // PLEASE FIX
-describe.skip('Search Component', () => {
+describe('Search Component', () => {
   let store: MockStore;
 
   const client = new ApolloClient({
@@ -37,6 +46,9 @@ describe.skip('Search Component', () => {
       sites: {
         sites: [],
       },
+      peoples: {
+        peoples: [],
+      },
       error: '',
       fetchStatus: RequestStatus.idle,
       deleteStatus: RequestStatus.idle,
@@ -45,6 +57,10 @@ describe.skip('Search Component', () => {
     });
   });
 
+  afterEach(() => {
+    vi.clearAllMocks();
+    mockNavigate.mockReset();
+  });
   test('renders search input', () => {
     const { getByPlaceholderText } = render(
       <Provider store={store}>
@@ -53,9 +69,7 @@ describe.skip('Search Component', () => {
         </ApolloProvider>
       </Provider>,
     );
-    const searchInput = screen.getByPlaceholderText(
-      'Search for site address or name',
-    );
-    expect(searchInput).toBeInTheDocument();
+
+    expect(screen.getByRole('Search')).toBeInTheDocument();
   });
 });

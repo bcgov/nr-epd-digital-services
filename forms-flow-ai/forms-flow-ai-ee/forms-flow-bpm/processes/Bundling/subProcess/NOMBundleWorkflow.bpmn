@@ -48,8 +48,14 @@ var riskclassification = execution.getVariable('riskclassification');
 system.out.println ("riskclassification "+riskclassification );
 execution.setVariable('riskclassification',riskclassification);
 var siteRiskClassification = execution.getVariable('siteRiskClassificationAtTimeOfApplication');
-system.out.println ("siteRiskClassification "+siteRiskClassification );
-execution.setVariable('siteRiskClassification',siteRiskClassification);
+if (siteRiskClassification) {   
+    var siteRiskClassificationObj = JSON.parse(siteRiskClassification);
+    system.out.println("siteRiskClassification value: " + siteRiskClassificationObj.value);
+    execution.setVariable('siteRiskClassificationFromParent', siteRiskClassificationObj.value);
+} else {
+    system.out.println("siteRiskClassification is undefined or null");
+   execution.setVariable('siteRiskClassificationFromParent', '');
+}
 
 system.out.println ("formUrl "+execution.getVariable('formUrl'));
 execution.setVariable('emailTo',clientEmail);
@@ -434,10 +440,10 @@ execution.setVariable('srcrStatus', "Resubmitted");</camunda:script>
         </bpmn:extensionElements>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_0agixvg" name="No" sourceRef="Gateway_0ynmdzk" targetRef="Activity_15cbea9">
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${siteRiskClassification == 'nonHighRisk'}</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${siteRiskClassificationFromParent== 'nonHighRisk'}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_12du94k" name="No" sourceRef="Gateway_1hhucce" targetRef="Activity_15cbea9">
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${siteRiskClassification == 'notHighRisk' }</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${siteRiskClassificationFromParent== 'notHighRisk' }</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_0sob9l8" sourceRef="Activity_15cbea9" targetRef="Activity_1voobmv" />
       <bpmn:sequenceFlow id="Flow_0jq9w2c" sourceRef="Activity_1voobmv" targetRef="Gateway_01ys7kk">
@@ -473,7 +479,7 @@ execution.setVariable('srcrStatus', "Resubmitted");</camunda:script>
             </camunda:field>
           </camunda:executionListener>
         </bpmn:extensionElements>
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Review In Progress'}</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Review In Progress SDM'}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_053df1n" name="Recheck" sourceRef="Gateway_0wyokmr" targetRef="Activity_12sm7v1">
         <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Recheck'}</bpmn:conditionExpression>
@@ -503,7 +509,7 @@ execution.setVariable('srcrStatus', "Resubmitted");</camunda:script>
         </bpmn:extensionElements>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_03tdbh3" name="Yes" sourceRef="Gateway_0ynmdzk" targetRef="Activity_15ke6f4">
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${siteRiskClassification != 'nonHighRisk'}</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${siteRiskClassificationFromParent!= 'nonHighRisk'}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_1rgu84x" sourceRef="Activity_15ke6f4" targetRef="Activity_026ojgg" />
       <bpmn:sequenceFlow id="Flow_1j4ubaw" sourceRef="Activity_026ojgg" targetRef="Gateway_1bl74qu">
@@ -579,7 +585,7 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.CombineSubmissionBundleListener" event="take" />
           <camunda:executionListener class="org.camunda.bpm.extension.hooks.listeners.RequestStateListener" event="take" />
         </bpmn:extensionElements>
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${siteRiskClassification != 'notHighRisk' }</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${siteRiskClassificationFromParent!= 'notHighRisk' }</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_1g0e5n9" sourceRef="Activity_12sm7v1" targetRef="Activity_0idq8ua" />
       <bpmn:sequenceFlow id="Flow_1obpc5x" name="Review In Progress" sourceRef="Gateway_102i3iq" targetRef="Gateway_0ynmdzk">
@@ -828,6 +834,10 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
         <dc:Bounds x="160" y="830" width="1239" height="1940" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1qeqv4j_di" bpmnElement="Flow_1qeqv4j">
+        <di:waypoint x="386" y="260" />
+        <di:waypoint x="836" y="260" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0oif1h7_di" bpmnElement="Flow_0oif1h7">
         <di:waypoint x="361" y="285" />
         <di:waypoint x="361" y="350" />
@@ -967,10 +977,6 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
       <bpmndi:BPMNEdge id="BPMNEdge_180n8hx" bpmnElement="Flow_1la2yud">
         <di:waypoint x="259" y="145" />
         <di:waypoint x="311" y="145" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1qeqv4j_di" bpmnElement="Flow_1qeqv4j">
-        <di:waypoint x="386" y="260" />
-        <di:waypoint x="836" y="260" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BPMNShape_0s7tget" bpmnElement="Event_02fettt">
         <dc:Bounds x="223" y="127" width="36" height="36" />
