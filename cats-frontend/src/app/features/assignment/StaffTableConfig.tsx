@@ -1,14 +1,20 @@
-import {
-  CircleExclamation,
-  ExclamationTriangleIcon,
-  XmarkIcon,
-} from '../../components/common/icon';
+import { XmarkIcon } from '../../components/common/icon';
 import { FormFieldType } from '../../components/input-controls/IFormField';
 import { ColumnSize, TableColumn } from '../../components/table/TableColumn';
 import { RequestStatus } from '../../helpers/requests/status';
 import CustomProgressBar from '../../components/progress-bar/progressBar';
 
-export const GetConfig = () => {
+export const GetConfig = ({
+  setSearchParam,
+  options,
+  filteredOptions,
+  rolesOptions,
+}: {
+  setSearchParam: (term: string) => void;
+  options: [{ key: string; value: string }] | undefined;
+  filteredOptions: [{ key: string; value: string }] | undefined;
+  rolesOptions: [{ key: string; value: string }] | undefined;
+}) => {
   const staffColumnInternal: TableColumn[] = [
     {
       id: 1,
@@ -24,8 +30,6 @@ export const GetConfig = () => {
         placeholder: 'Search Staff',
         isLoading: RequestStatus.idle,
         value: '',
-        options: [],
-        filteredOptions: [],
         colSize: 'col-lg-6 col-md-6 col-sm-12',
         customLabelCss: 'custom-participant-lbl-text',
         customInputTextCss: 'custom-participant-input-text',
@@ -34,7 +38,9 @@ export const GetConfig = () => {
         customPlaceholderCss: 'custom-participant-search-placeholder',
         customMenuMessage: <span>Please select site participant name:</span>,
         tableMode: true,
-        handleSearch: () => {},
+        options: options || [],
+        filteredOptions: filteredOptions || [],
+        handleSearch: setSearchParam,
         validation: {
           required: true,
           customMessage: 'Staff Member is required.',
@@ -72,7 +78,7 @@ export const GetConfig = () => {
         graphQLPropertyName: 'roleId',
         placeholder: 'Select Role',
         value: '',
-        options: [],
+        options: rolesOptions || [],
         colSize: 'col-lg-6 col-md-6 col-sm-12',
         customLabelCss: 'custom-participant-lbl-text',
         customInputTextCss: 'custom-participant-input-text',

@@ -42,25 +42,31 @@ export const StaffColumns: TableColumn[] = [
     },
 
     renderCell: (value: any, row: any) => {
+      const roundedValue = Math.round(value);
       let variant = 'success';
       let Icon;
 
-      if (value >= row.capacity) {
-        variant = 'danger';
+      if (roundedValue > row.capacity) {
+        variant = 'over-capacity';
         Icon = CircleExclamation;
-      } else if (value > row.capacity / 2) {
-        variant = 'warning';
+      } else if (roundedValue === row.capacity) {
+        variant = 'at-capacity';
         Icon = ExclamationTriangleIcon;
+      } else if (roundedValue >= row.capacity / 2) {
+        variant = 'over-half';
+      } else {
+        variant = 'under-half';
       }
+
       return (
         <div className="d-flex align-items-center justify-content-start gap-3 w-100">
           <span className="text-nowrap " style={{ width: '20px' }}>
-            {value}
+            {roundedValue}
           </span>
           <ProgressBar
             className={`flex-grow-1`}
             variant={variant}
-            now={value}
+            now={roundedValue}
             max={row.capacity}
             label={
               Icon && (

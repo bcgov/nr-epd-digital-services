@@ -93,7 +93,7 @@ describe('StaffService', () => {
       id: 1,
       name: 'John Doe',
       assignments: 3,
-      capacity: 10,
+      capacity: 160,
     });
     expect(dataSourceMock.query).toHaveBeenCalledTimes(2);
   });

@@ -9,7 +9,7 @@ const MobileNavMenu = (props: any) => {
   const menuOptions = getSideBarNavList(getLoggedInUserType());
 
   return (
-    <div className="mobile-nav">
+    <div className="mobile-nav" role="navigation">
       <div className="mobile-nav-top">
         {menuOptions.map((item: any, index: number) => {
           return (
