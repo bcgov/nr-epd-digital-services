@@ -278,7 +278,7 @@ task.execution.setVariable('userRole','Site Information Advisor');</camunda:scri
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1jou1jo" sourceRef="Activity_0yw5we4" targetRef="Event_06jjxcg" />
     <bpmn:sequenceFlow id="Flow_0d3zok7" sourceRef="Gateway_0l22xcz" targetRef="Event_06jjxcg">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus!='New'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus=='Resubmitted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0mzdaba" sourceRef="Gateway_0l6sbm8" targetRef="Gateway_1cvtuda" />
     <bpmn:callActivity id="Activity_0yw5we4" name="Create BC Box Bucket &#38; Notify" calledElement="create-bucket">
@@ -306,7 +306,6 @@ task.execution.setVariable('userRole','Site Information Advisor');</camunda:scri
       <bpmn:outgoing>Flow_0mzdaba</bpmn:outgoing>
       <bpmn:outgoing>Flow_118d8q0</bpmn:outgoing>
     </bpmn:parallelGateway>
-    <bpmn:sequenceFlow id="Flow_118d8q0" sourceRef="Gateway_0l6sbm8" targetRef="Gateway_0l22xcz" />
     <bpmn:userTask id="Activity_0b45bvb" name="Municipality Updates Form" camunda:candidateGroups="formsflow/formsflow-reviewer/lrs-approving-authority">
       <bpmn:extensionElements>
         <camunda:formData>
@@ -475,6 +474,7 @@ execution.setVariable('siteAddress',siteAddress);
       <bpmn:incoming>Flow_10l984p</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1qps1ys" sourceRef="Gateway_1tekveb" targetRef="Activity_1av5zy0" />
+    <bpmn:sequenceFlow id="Flow_118d8q0" sourceRef="Gateway_0l6sbm8" targetRef="Gateway_0l22xcz" />
   </bpmn:process>
   <bpmn:message id="Message_1ngb2eg" name="application_resubmitted" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
