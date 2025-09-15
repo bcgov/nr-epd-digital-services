@@ -38,7 +38,8 @@
                   Dear ${name},
                 </p>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                    We wanted to inform you that your site information request has been successfully received and acknowledged by our site information officer. We are currently in the process of reviewing and processing your application. We will promptly send the requested documents to you via a separate email.
+                    We wanted to inform you that your site information request has been successfully received and acknowledged by our site information team. All requests are processed on a first-come, first-served basis and will be responded to as soon as possible. Responses can typically be expected within two to four weeks. However, requests for copies of paper records stored offsite can take longer.  You will be contacted in the event your request involves paper record scanning.
+For further information about site remediation in BC and the SRS Web App, please refer to the <a class="link" href="https://www2.gov.bc.ca/gov/content?id=FC30BA123F5B46EA9F4CDE122D8FBE9D" style="overflow: visible;line-height: 24px;text-align: left;overflow-wrap: break-word;word-wrap: break-word;font-style: normal;font-weight: normal;font-size: 16px;color: #1A5A96;text-decoration: underline;">Site Remediation Homepage </a> or to the <a class="link" href="https://www2.gov.bc.ca/gov/content/environment/air-land-water/site-remediation/site-information" style="overflow: visible;line-height: 24px;text-align: left;overflow-wrap: break-word;word-wrap: break-word;font-style: normal;font-weight: normal;font-size: 16px;color: #1A5A96;text-decoration: underline;">Site Information webpage</a>.
                 </p>               
             </td>
         </tr>
