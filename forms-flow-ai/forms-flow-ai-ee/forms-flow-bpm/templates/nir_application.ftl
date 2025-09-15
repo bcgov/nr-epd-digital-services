@@ -19,7 +19,7 @@
             </td>
         </tr>
     </table>
-    <table style="width: 580px;">
+    <table style="width: 780px;">
         <tr>
             <td>
                 <hr color="#DBDCDC" size="1px">
@@ -40,6 +40,13 @@
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
                     Your Notification of Independent Remediation application has been updated. Current status is ${action}.
                 </p>
+            </td>
+        </tr>
+        <tr>
+          <td>
+                  <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: bold;font-size: 16px;color: #313132;letter-spacing: 0px;">
+               For further information about site remediation in BC and the SRS Web App, please refer to the <a class="link" href="https://www2.gov.bc.ca/gov/content?id=FC30BA123F5B46EA9F4CDE122D8FBE9D" style="overflow: visible;line-height: 24px;text-align: left;overflow-wrap: break-word;word-wrap: break-word;font-style: normal;font-weight: normal;font-size: 16px;color: #1A5A96;text-decoration: underline;">Site Remediation Homepage </a> or to the Independent remediation webpage.
+                </p>                
             </td>
         </tr>
         <tr>
