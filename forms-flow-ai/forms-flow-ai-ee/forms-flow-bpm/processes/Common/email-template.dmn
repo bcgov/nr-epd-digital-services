@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_1h338s2" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.0.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_1h338s2" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.12.0">
   <decision id="decide-email-template" name="email-template">
     <decisionTable id="decisionTable_1">
       <input id="input_1" label="category">
@@ -37,7 +37,7 @@
           <text>"templates/sir_application_rejected.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0q4faet">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1ntr60u">
@@ -63,7 +63,7 @@
           <text>"templates/sir_application_approved.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0326fv6">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ygn6ai">
@@ -89,7 +89,7 @@
           <text>"templates/nom_application.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1l601us">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0acnxxf">
@@ -115,7 +115,7 @@
           <text>"templates/nom_application.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1iiimqa">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1vzpiut">
@@ -141,7 +141,7 @@
           <text>"templates/nom_application.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0fm9kmi">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1ylcp2y">
@@ -167,7 +167,7 @@
           <text>"templates/nom_application.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_01cbgvj">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0uj0rou">
@@ -193,7 +193,7 @@
           <text>"templates/request_updated.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1gsjmsa">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0rvcfe1">
@@ -219,7 +219,7 @@
           <text>"templates/request_updated.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1avpxvu">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ftap7p">
@@ -245,7 +245,7 @@
           <text>"templates/nom_application.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0gjfcbj">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_169f9ov">
@@ -271,7 +271,7 @@
           <text>"templates/srcr_application.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1it5ctl">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_09zqlk8">
@@ -297,7 +297,7 @@
           <text>"templates/sosc_application.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1a38vm8">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0dewt8h">
@@ -323,7 +323,7 @@
           <text>"templates/upload_doc.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0f9z5vn">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1ja11nr">
@@ -349,7 +349,7 @@
           <text>"templates/user_search_failed.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ak6s00">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1s5z54g">
@@ -375,7 +375,7 @@
           <text>"templates/request_updated.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1yt92el">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ll7m2g">
@@ -401,7 +401,7 @@
           <text>"templates/task_assign.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0ldepns">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ypz8vw">
@@ -427,7 +427,7 @@
           <text>"templates/sds_response_1.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1gfnxkr">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_05r21tq">
@@ -453,7 +453,7 @@
           <text>"templates/sds_response_2.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_04xcdpi">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_12azim2">
@@ -479,7 +479,7 @@
           <text>"templates/sds_response_3.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0gwr1ot">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_04b39xg">
@@ -505,7 +505,7 @@
           <text>"templates/sds_response_4.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0kgpids">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0d0oo4s">
@@ -531,7 +531,7 @@
           <text>"templates/sds_generic_response.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_03yrt95">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
     </decisionTable>
