@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_1h338s2" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.12.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_1h338s2" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.0.0">
   <decision id="decide-email-template" name="email-template">
     <decisionTable id="decisionTable_1">
       <input id="input_1" label="category">
@@ -112,7 +112,7 @@
           <text>"Detailed Ecological Risk Assessment Checklist"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_01beqp6">
-          <text>"templates/nom_application.ftl"</text>
+          <text>"templates/common_application_status.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1iiimqa">
           <text>"siteremediation@gov.bc.ca"</text>
@@ -138,7 +138,7 @@
           <text>"Notification of Independent Remediation Application Status Updated"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ndgbup">
-          <text>"templates/nom_application.ftl"</text>
+          <text>"templates/nir_application.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0fm9kmi">
           <text>"siteremediation@gov.bc.ca"</text>
@@ -164,7 +164,7 @@
           <text>"Contaminated Sites Services Application Updated"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0oyjcx5">
-          <text>"templates/nom_application.ftl"</text>
+          <text>"templates/common_application_status.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_01cbgvj">
           <text>"siteremediation@gov.bc.ca"</text>
@@ -242,7 +242,7 @@
           <text>"Site Disclosure Statements"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_16tjxob">
-          <text>"templates/nom_application.ftl"</text>
+          <text>"templates/common_application_status.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0gjfcbj">
           <text>"siteremediation@gov.bc.ca"</text>
