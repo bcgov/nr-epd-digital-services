@@ -339,7 +339,7 @@ if (typeof task !== "undefined" &amp;&amp; task !== null) {
 }
 </camunda:script>
         </camunda:taskListener>
-        <camunda:taskListener expression="${execution.getProcessEngineServices().getRuntimeService().createMessageCorrelation(&#34;Message_Email_Updated&#34;).setVariable(&#34;category&#34;, &#34;task_assign&#34;).setVariable(&#34;name&#34;, &#34;test_midhun&#34;).setVariable(&#34;applicationId&#34;, execution.getVariable(&#39;applicationId&#39;)).setVariable(&#34;taskId&#34;,  execution.getVariable(&#39;taskId&#39;)) .setVariable(&#34;emailsIdsToProcessForTaskAssignment&#34;, execution.getVariable(&#39;emailsIdsToProcessForTaskAssignment&#39;)) .correlateWithResult()}" event="create" />
+        <camunda:taskListener expression="${execution.getProcessEngineServices().getRuntimeService().createMessageCorrelation(&#34;Message_Email_Updated&#34;).setVariable(&#34;category&#34;, &#34;task_assign&#34;).setVariable(&#34;name&#34;, &#34;&#34;).setVariable(&#34;applicationId&#34;, execution.getVariable(&#39;applicationId&#39;)).setVariable(&#34;taskId&#34;,  execution.getVariable(&#39;taskId&#39;)) .setVariable(&#34;emailsIdsToProcessForTaskAssignment&#34;, execution.getVariable(&#39;emailsIdsToProcessForTaskAssignment&#39;)) .correlateWithResult()}" event="create" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1lqa1uz</bpmn:incoming>
       <bpmn:incoming>Flow_0ci62kp</bpmn:incoming>
@@ -397,7 +397,7 @@ if (typeof task !== "undefined" &amp;&amp; task !== null) {
 }
 </camunda:script>
         </camunda:taskListener>
-        <camunda:taskListener expression="${execution.getProcessEngineServices().getRuntimeService().createMessageCorrelation(&#34;Message_Email_Updated&#34;).setVariable(&#34;category&#34;, &#34;task_assign&#34;).setVariable(&#34;name&#34;, &#34;test_midhun&#34;).setVariable(&#34;applicationId&#34;, execution.getVariable(&#39;applicationId&#39;)).setVariable(&#34;taskId&#34;,  execution.getVariable(&#39;taskId&#39;)) .setVariable(&#34;emailsIdsToProcessForTaskAssignment&#34;, execution.getVariable(&#39;emailsIdsToProcessSO&#39;)) .correlateWithResult()}" event="create" />
+        <camunda:taskListener expression="${execution.getProcessEngineServices().getRuntimeService().createMessageCorrelation(&#34;Message_Email_Updated&#34;).setVariable(&#34;category&#34;, &#34;task_assign&#34;).setVariable(&#34;name&#34;, &#34;&#34;).setVariable(&#34;applicationId&#34;, execution.getVariable(&#39;applicationId&#39;)).setVariable(&#34;taskId&#34;,  execution.getVariable(&#39;taskId&#39;)) .setVariable(&#34;emailsIdsToProcessForTaskAssignment&#34;, execution.getVariable(&#39;emailsIdsToProcessSO&#39;)) .correlateWithResult()}" event="create" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1ezlpcw</bpmn:incoming>
       <bpmn:outgoing>Flow_0axurx6</bpmn:outgoing>
