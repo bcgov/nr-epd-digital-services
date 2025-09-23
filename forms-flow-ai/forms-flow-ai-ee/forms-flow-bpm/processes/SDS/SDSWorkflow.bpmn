@@ -26,7 +26,10 @@
         <bpmn:flowNodeRef>Event_1jftbqf</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1xvosjx</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_04rmut7</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_04rmut7</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_0132o9i</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1vuyckp</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1kk2jy4</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1vuyckp</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_1kk2jy4</bpmn:flowNodeRef>
       </bpmn:lane>
