@@ -32,7 +32,7 @@ export class StaffService {
     try {
       this.loggerService.log('StaffService: getStaffs start');
 
-      const capacity = 10;
+      const capacity = 160;
       const offset = (page - 1) * pageSize;
       let havingClause = '';
       const assignmentExpr = `
@@ -171,12 +171,19 @@ export class StaffService {
           let siteAddress = '';
           if (siteDetails) {
             siteAddress = `${
-              siteDetails?.findSiteBySiteId?.data?.addrLine_1 ?? ''
+              siteDetails?.findSiteBySiteIdLoggedInUser?.data?.addrLine_1 ?? ''
             }
-                        ${siteDetails?.findSiteBySiteId?.data?.addrLine_2 ?? ''}
-                        ${siteDetails?.findSiteBySiteId?.data?.addrLine_3 ?? ''}
                         ${
-                          siteDetails?.findSiteBySiteId?.data?.addrLine_4 ?? ''
+                          siteDetails?.findSiteBySiteIdLoggedInUser?.data
+                            ?.addrLine_2 ?? ''
+                        }
+                        ${
+                          siteDetails?.findSiteBySiteIdLoggedInUser?.data
+                            ?.addrLine_3 ?? ''
+                        }
+                        ${
+                          siteDetails?.findSiteBySiteIdLoggedInUser?.data
+                            ?.addrLine_4 ?? ''
                         }`;
           }
 

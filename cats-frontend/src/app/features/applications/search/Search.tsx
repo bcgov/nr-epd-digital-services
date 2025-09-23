@@ -3,9 +3,7 @@ import debounce from 'lodash/debounce';
 import PageContainer from '../../../components/simple/PageContainer';
 import SearchInput from '../../../components/search/SearchInput';
 import { RequestStatus } from '../../../helpers/requests/status';
-import ApplicationResultsTable from './applicationResults/table';
 import { TableColumn } from '../../../components/table/TableColumn';
-import { applicationResultColumns } from './applicationResults/tableColumnConfig';
 import {
   Filter,
   ApplicationResultDto,
@@ -15,16 +13,28 @@ import {
 import { useSearchApplicationsQuery } from './hooks/SearchApplications.generated';
 import ModalDialog from '../../../components/modaldialog/ModalDialog';
 import Assignment from '../../assignment/Assignment';
+import Widget from '@cats/components/widget/Widget';
+import FilterControls from '@cats/components/filter/FilterControls';
+import { IFilterOption } from '@cats/components/filter/IFilterControls';
+import { TableColumnsIcon } from '@cats/components/common/icon';
+import { applicationResultColumns } from './SearchConfig';
+import './Search.css';
 
-const Search: React.FC = () => {
+interface SearchProps {
+  filterMyTasks?: boolean;
+}
+
+const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [assignStaffModalOpen, setAssignStaffModalOpen] = useState(false);
   const [results, setResults] = useState<ApplicationResultDto[]>([]);
   const [requestStatus, setRequestStatus] = useState(RequestStatus.idle);
   const [columns, setColumns] = useState<TableColumn[]>(
-    applicationResultColumns,
+    applicationResultColumns(filterMyTasks),
   );
-  const [filter, setFilter] = useState<Filter>(Filter.All);
+  const [filter, setFilter] = useState<Filter>(
+    filterMyTasks === true ? Filter.Assigned : Filter.All,
+  );
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
   const [totalResults, setTotalResults] = useState<number>(0);
@@ -34,12 +44,12 @@ const Search: React.FC = () => {
   const [sortByDir, setSortByDir] = useState<ApplicationSortByDirection>(
     ApplicationSortByDirection.Asc,
   );
-
+  const [showColumnSelect, setShowColumnSelect] = useState(false);
   const [searchParams, setSearchParams] = useState({
     searchTerm: '',
     page: 1,
     pageSize: 5,
-    filter: Filter.All,
+    filter: filterMyTasks === true ? Filter.Assigned : Filter.All,
     sortBy: ApplicationSortByField.Id,
     sortByDir: ApplicationSortByDirection.Asc,
   });
@@ -162,31 +172,108 @@ const Search: React.FC = () => {
     debouncedSearch(searchTerm, page, pageSize, filter, sortBy, sortByDir);
   };
 
+  const sharedOptions: IFilterOption[] = [
+    {
+      label: 'Columns',
+      value: Filter.Assigned, // Or use a custom string if needed
+      onClick: () => setShowColumnSelect(!showColumnSelect),
+      icon: <TableColumnsIcon />,
+    },
+    // You can add more shared items here (e.g., Filter icon toggle)
+    // {
+    //   label: 'Filter',
+    //   value: 'filter',
+    //   onClick: () => setShowFilterSelect(prev => !prev),
+    //   icon: <FilterIcon />,
+    // },
+  ];
+
+  const tasksOptions: IFilterOption[] = [
+    {
+      label: 'Action Required',
+      value: Filter.All,
+      onClick: () => handleFilterChange(Filter.All),
+      isSelected: filter === Filter.All,
+    },
+    {
+      label: 'Assigned to Me',
+      value: Filter.Assigned,
+      onClick: () => handleFilterChange(Filter.Assigned),
+      isSelected: filter === Filter.Assigned,
+    },
+  ];
+
+  const generalOptions: IFilterOption[] = [
+    {
+      label: 'All',
+      value: Filter.All,
+      onClick: () => handleFilterChange(Filter.All),
+      isSelected: filter === Filter.All,
+    },
+    {
+      label: 'Unassigned',
+      value: Filter.Unassigned,
+      onClick: () => handleFilterChange(Filter.Unassigned),
+      isSelected: filter === Filter.Unassigned,
+    },
+    {
+      label: 'Completed',
+      value: Filter.Completed,
+      onClick: () => handleFilterChange(Filter.Completed),
+      isSelected: filter === Filter.Completed,
+    },
+  ];
+
+  const options: IFilterOption[] = [
+    ...(filterMyTasks ? tasksOptions : generalOptions),
+    // ...sharedOptions, uncomment once filter and columns are implemented
+  ];
+
   return (
     <PageContainer role="Search">
-      <h1>All Applications</h1>
+      <div className="custom-app-container">
+        {' '}
+        {filterMyTasks ? 'My Tasks' : ' All Applications'}
+      </div>
       <SearchInput
         searchTerm={searchTerm}
         handleSearchChange={handleSearchChange}
         clearSearch={() => setSearchTerm('')}
         placeHolderText="Search"
       />
-      <ApplicationResultsTable
-        columns={columns}
-        results={results}
-        requestStatus={requestStatus}
-        changeHandler={handleChangeEventHandler}
-        handleColumnChange={setColumns}
-        handleFilterChange={handleFilterChange}
-        page={page}
-        pageSize={pageSize}
-        handlePageChange={handlePageChange}
-        handlePageSizeChange={handlePageSizeChange}
-        showPageOptions={true}
-        totalResults={totalResults}
-        filter={filter}
+      {/* Widget for applications and tasks */}
+      <Widget
+        customWidgetCss="gap-4"
+        widgetLabelContainerCss={`${showColumnSelect ? '' : ''}`}
+        title="Applications"
+        aria-label="Applications Widget"
+        tableIsLoading={requestStatus}
+        tableColumns={columns}
+        tableData={results}
         sortHandler={handleSortChange}
-      />
+        changeHandler={handleChangeEventHandler}
+        currentPage={page}
+        allowRowsSelect={false}
+        primaryKeycolumnName="id"
+        showPageOptions={true}
+        selectPage={handlePageChange}
+        changeResultsPerPage={handlePageSizeChange}
+        resultsPerPage={pageSize}
+        totalResults={totalResults}
+        filter={<FilterControls options={options} />}
+      >
+        {/* uncomment it once the column and filter design is created */}
+        {/* { 
+        showColumnSelect && 
+          <div className="custom-app-childern-container">
+              <ColumnSelect
+                columns={columns}
+                handleColumnChange={setColumns}
+              />
+          </div>
+        } */}
+      </Widget>
+
       {assignStaffModalOpen && (
         <ModalDialog
           headerLabel="Assign Application to Staff"

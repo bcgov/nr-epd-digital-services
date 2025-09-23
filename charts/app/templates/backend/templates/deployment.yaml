@@ -29,62 +29,12 @@ spec:
         - name: {{ include "backend.fullname" . }}-init
           image: "{{.Values.global.registry}}/{{.Values.global.repository}}/backend-migration:{{ .Values.global.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ default "Always" .Values.backend.imagePullPolicy }}
-          env:
-            - name: POSTGRES_DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: password
-                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
-            - name: POSTGRES_DB_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  key: user
-                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
-            - name: POSTGRES_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  key: dbname
-                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
-            - name: POSTGRES_DB_SCHEMA
-              value: {{ .Values.global.config.schemaName }}
-            - name: POSTGRESQL_HOST
-              valueFrom:
-                secretKeyRef:
-                  key: host
-                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
-            - name: POSTGRESQL_PORT
-              valueFrom:
-                secretKeyRef:
-                  key: port
-                  name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
-            - name: POSTGRES_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: password
-                  name: postgres-crunchy-pguser-postgres
-            - name: POSTGRES_ADMIN_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  key: user
-                  name: postgres-crunchy-pguser-postgres
-          resources: # this is optional
-            requests:
-              cpu: {{ .Values.backend.resources.requests.cpu }}
-              memory: {{ .Values.backend.resources.requests.memory }}
-        {{- if .Values.global.config.seed.enabled }}
-        - name: {{ include "backend.fullname" . }}-seed
-          image: "artifacts.developer.gov.bc.ca/github-docker-remote/bcgov/nr-containers/alpine:3.20" # here we just need a prebuilt image with psql and shell, just use postgres alpine image
-          imagePullPolicy: {{ default "Always" .Values.backend.imagePullPolicy }}
-          command: ["/bin/sh"]
-          args: ["-c", "sh /mnt/scripts/seed.sh"]
           volumeMounts:
             - mountPath: /mnt/sql
               name: seed-data-mount
             - mountPath: /mnt/scripts
               name: seed-data-scripts
           env:
-            - name: SEED_ENABLED
-              value: {{.Values.global.config.seed.enabled | quote}}
             - name: POSTGRES_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -122,6 +72,8 @@ spec:
                 secretKeyRef:
                   key: user
                   name: postgres-crunchy-pguser-postgres
+            - name: SEED_ENABLED
+              value: {{.Values.global.config.seed.enabled | quote}}
             - name: SEED_DATA_PATH
               value: "/mnt/sql/data_migration.sql"
             - name: VITE_CATS_CSSA_MANAGER_ROLE
@@ -130,7 +82,6 @@ spec:
             requests:
               cpu: {{ .Values.backend.resources.requests.cpu }}
               memory: {{ .Values.backend.resources.requests.memory }}
-        {{- end }}
       containers:
         - name: {{ include "backend.fullname" . }}
           {{- if .Values.backend.securityContext }}
@@ -206,6 +157,31 @@ spec:
               value: {{ .Values.global.config.CHES_EMAIL_FROM | quote }}
             - name: CATS_APPLICATION_URL
               value: {{ .Values.global.config.CATS_APPLICATION_URL | quote }}
+            - name: KEYCLOAK_TOKEN_URL
+              value: {{ .Values.global.config.KEYCLOAK_TOKEN_URL | quote }}
+            - name: KEYCLOAK_SITE_SERVICE_CLIENT_ID
+              value: {{ .Values.global.config.KEYCLOAK_SITE_SERVICE_CLIENT_ID | quote }}
+            - name: VITE_COMS_API
+              value: {{ .Values.global.config.VITE_COMS_API | quote }}
+            - name: VITE_S3_STORAGE_REGION
+              value: {{ .Values.global.config.VITE_S3_STORAGE_REGION | quote }}
+            - name: VITE_COMS_BUCKET
+              value: {{ .Values.global.config.VITE_COMS_BUCKET | quote }}
+            - name: VITE_COMS_OBJECT
+              value: {{ .Values.global.config.VITE_COMS_OBJECT | quote }}
+            - name: KEYCLOAK_SITE_SERVICE_CLIENT_SECRET
+              value: {{ .Values.global.secrets.KEYCLOAK_SITE_SERVICE_CLIENT_SECRET | quote }}
+            - name: VITE_S3_STORAGE_SECRET_ACCESS_KEY
+              value: {{ .Values.global.secrets.s3StorageSecretAccessKey | quote }}
+            - name: VITE_S3_STORAGE_BUCKET
+              value: {{ .Values.global.secrets.s3StorageBucket | quote }}
+            - name: VITE_S3_STORAGE_ACCESS_KEY_ID
+              value: {{ .Values.global.secrets.s3StorageAccessKeyId | quote }}
+            - name: VITE_S3_STORAGE_ENDPOINT
+              value: {{ .Values.global.secrets.s3StorageEndpoint | quote }}
+            - name: CATS_INTEGRATION_ENABLED
+              value: "false"
+
           ports:
             - name: http
               containerPort: {{ .Values.backend.service.targetPort }}

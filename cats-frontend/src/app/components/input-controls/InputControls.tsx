@@ -65,8 +65,9 @@ export const Link: React.FC<InputProps> = ({
   customContainerCss,
   href,
   componentName,
+  tableMode,
 }) => {
-  return renderTableCell(
+  const routerLink = (
     <RouterLink
       to={href + value}
       className={`d-flex pt-1 ${styles.baseTableLinkStyles} ${customInputTextCss ?? ''}`}
@@ -76,9 +77,10 @@ export const Link: React.FC<InputProps> = ({
     >
       {customIcon && customIcon}{' '}
       <span className="ps-1">{customLinkValue ?? value}</span>
-    </RouterLink>,
-    customContainerCss,
+    </RouterLink>
   );
+  if (tableMode) return renderTableCell(routerLink, customContainerCss);
+  return <div className={`${customContainerCss ?? ''}`}>{routerLink}</div>;
 };
 
 export const IconButton: React.FC<InputProps> = ({
@@ -90,7 +92,10 @@ export const IconButton: React.FC<InputProps> = ({
   customContainerCss,
 }) => {
   return renderTableCell(
-    <div onClick={onChange} className={`${customInputTextCss ?? ''}`}>
+    <div
+      onClick={onChange}
+      className={`${styles.baseTableLinkStyles} ${customInputTextCss ?? ''}`}
+    >
       {customIcon && customIcon}{' '}
       <span className="ps-1">{customLinkValue ?? value}</span>
     </div>,
@@ -175,12 +180,16 @@ export const TextInput: React.FC<InputProps> = ({
 
   const validateInput = (inputValue: any) => {
     if (validation) {
-      if (validation?.pattern && !validation.pattern?.test(inputValue)) {
-        setError(validation.customMessage || '');
+      if (
+        validation.required &&
+        typeof inputValue === 'string' &&
+        !inputValue.trim()
+      ) {
+        setError(validation.customMessage || ' ');
         return false;
       }
-      if (validation.required && !inputValue.trim()) {
-        setError(validation.customMessage || ' ');
+      if (validation?.pattern && !validation.pattern?.test(inputValue)) {
+        setError(validation.customMessage || '');
         return false;
       }
     }
@@ -800,6 +809,12 @@ export const DateInput: React.FC<InputProps> = ({
           onChange={handleDateChange}
           oneTap
           readOnly={isDisabled}
+          renderValue={(value, format): string => {
+            if (value) {
+              return formatDate(value, format ?? 'MMM dd, yyyy');
+            }
+            return '';
+          }}
         />
       ) : (
         <span
@@ -1054,10 +1069,10 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
 
   const handler = handleSearch ?? ((e) => {});
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilteredOpts([]);
     const searchTerm = event.target.value;
-    handler(searchTerm);
     setSearchTerm(searchTerm);
+    setFilteredOpts([]);
+    handler(searchTerm);
   };
 
   useEffect(() => {
@@ -1069,7 +1084,7 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
     setSearchTerm('');
     setFilteredOpts([]);
     setIsClear(true);
-    //handler('');
+    handler('');
   };
 
   // Function to handle clicks outside the div element
@@ -1117,8 +1132,7 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
             data-testid={drdownId}
             className={`form-control d-flex align-items-center justify-content-between 
                             custom-select custom-input custom-dropdown
-                            ${customEditInputTextCss ?? 'custom-input-text'}
-                            ${customPlaceholderCss ?? ''}`}
+                            ${value ? (customEditInputTextCss ?? 'custom-input-text') : (customPlaceholderCss ?? '')}`}
           >
             {value
               ? options?.find((opt) => opt.key === value)?.value

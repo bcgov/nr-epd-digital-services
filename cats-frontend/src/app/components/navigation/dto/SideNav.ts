@@ -11,6 +11,7 @@ import {
   ListCheckIcon,
   UserTie,
   AddressBookIcon,
+  FileContractIcon,
 } from '../../common/icon';
 import { UserRoleType } from '../../../helpers/utility';
 
@@ -88,6 +89,7 @@ const icons = {
   srReference: ListCheckIcon,
   userTie: UserTie,
   AddressBook: AddressBookIcon,
+  tasks: FileContractIcon,
 };
 
 // Refactored role-based navigation lists using a Record type
@@ -110,6 +112,12 @@ const roleBasedSideBarList: Record<string, SideNav[]> = {
           hasChildren: false,
           icon: icons.folios,
           linkTo: '/applications',
+        }),
+        createSideNav({
+          displayText: 'My Tasks',
+          hasChildren: false,
+          icon: icons.tasks,
+          linkTo: '/mytasks',
         }),
       ],
     }),

@@ -24,6 +24,12 @@ global:
     dbUser: ~ # either site or pr specific user.
     seed:
       enabled: false
+    KEYCLOAK_SITE_SERVICE_CLIENT_ID: site-service # note: KEYCLOAK_SITE_SERVICE_CLIENT_SECRET is handled in github secrets.
+    KEYCLOAK_TOKEN_URL: https://epd-keycloak-prod.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/protocol/openid-connect/token
+    VITE_COMS_API: 'https://epd-coms-dev.apps.silver.devops.gov.bc.ca/api/v1/'
+    VITE_S3_STORAGE_REGION: 'ca-central-1'
+    VITE_COMS_BUCKET: 'bucket'
+    VITE_COMS_OBJECT: 'object'
   #-- domain of the application, it is required, apps.silver.devops.gov.bc.ca for silver cluster and apps.devops.gov.bc.ca for gold cluster
   domain: "apps.silver.devops.gov.bc.ca" # it is apps.gold.devops.gov.bc.ca for gold cluster
   #-- the database Alias gives a nice way to switch to different databases, crunchy, patroni ... etc.
@@ -60,7 +66,7 @@ backend:
   pdb:
     enabled: true # enable it in PRODUCTION for having pod disruption budget.
     minAvailable: 1 # the minimum number of pods that must be available during the disruption budget.
-
+#-- the components of the application, frontend.
 frontend:
   # -- enable or disable a component deployment.
   enabled: true
@@ -105,6 +111,10 @@ frontend:
     REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS: "true"
     REACT_APP_AUTH_LOAD_USER_INFO: "true"
     REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT: "true"
+    VITE_SITE_REGISTRY_URL: "https://nr-site-registry-test-frontend.apps.silver.devops.gov.bc.ca"
     VITE_GEOCODER_API: "https://geocoder.api.gov.bc.ca"
-
+crunchy: # Increase WAL storage as we ran out of it in PR/dev when importing prod oracle data, and will likely need 2gb WAL for all envs.
+  instances:
+    dataVolumeClaimSpec:
+      walStorage: 2Gi
 

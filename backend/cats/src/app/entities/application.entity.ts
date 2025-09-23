@@ -96,6 +96,9 @@ export class Application {
   })
   csapRefNumber: string | null;
 
+  @Column('boolean', { name: 'is_multi_site', default: false })
+  isMultiSite: boolean;
+
   @OneToMany(() => AppExpense, (appExpense) => appExpense.application)
   appExpenses: AppExpense[];
 

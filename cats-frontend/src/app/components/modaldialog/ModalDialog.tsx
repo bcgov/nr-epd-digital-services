@@ -1,12 +1,13 @@
-import React, { Children, ReactNode, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import './ModalDialog.css';
-import { XmarkIcon, FloppyDisk } from '../common/icon';
+import { XmarkIcon } from '../common/icon';
 import {
   CancelButton,
   DiscardButton,
   SaveButton,
 } from '../simple/CustomButtons';
 import { Button, ButtonVariant } from '../button/Button';
+import clsx from 'clsx';
 
 interface ModalDialogCloseHandlerProps {
   closeHandler: (save: any) => void;
@@ -19,6 +20,9 @@ interface ModalDialogCloseHandlerProps {
   customHeaderCss?: string;
   customHeaderTextCss?: string;
   customFooterCss?: string;
+  customChildrenCss?: string;
+  customModalCss?: string;
+  customContentCss?: string;
   discardOption?: boolean;
   errorOption?: boolean;
   cancelButtonVariant?: ButtonVariant;
@@ -28,6 +32,13 @@ interface ModalDialogCloseHandlerProps {
   saveButtonDisabled?: boolean;
   discardButtonDisabled?: boolean;
   noFooterOptions?: boolean;
+  showTickIcon?: boolean;
+  showIcon?: boolean;
+  customSaveIcon?: React.ReactNode;
+  customCancelIcon?: React.ReactNode;
+  customDiscardIcon?: React.ReactNode;
+  validator?: () => boolean;
+  discardHandler?: () => void;
 }
 
 const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
@@ -43,6 +54,9 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
   customHeaderCss,
   customHeaderTextCss,
   customFooterCss,
+  customChildrenCss,
+  customModalCss,
+  customContentCss,
   saveButtonVariant,
   cancelButtonVariant,
   discardButtonVariant,
@@ -50,6 +64,13 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
   cancelButtonDisabled,
   saveButtonDisabled,
   noFooterOptions,
+  showTickIcon = false,
+  showIcon = true,
+  customSaveIcon,
+  customCancelIcon,
+  customDiscardIcon,
+  validator,
+  discardHandler,
 }) => {
   saveBtnLabel = saveBtnLabel ?? '';
   cancelBtnLabel = cancelBtnLabel ?? '';
@@ -64,11 +85,21 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
   };
 
   const handleDiscard = () => {
-    setOpen(false);
-    closeHandler('discard');
+    // Add discard logic here
+    if (discardHandler) {
+      discardHandler();
+    } else {
+      // Close the modal after discarding
+      setOpen(false);
+      closeHandler('discard');
+    }
   };
 
   const handleSave = () => {
+    if (validator && !validator()) {
+      return;
+    }
+
     // Add save logic here
     setOpen(false);
     closeHandler(true);
@@ -77,10 +108,14 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
   return (
     <div>
       {open && (
-        <ModalDialogWrapper closeHandler={handleClose}>
-          <div className={`${customHeaderCss || 'custom-modal-header'}`}>
+        <ModalDialogWrapper
+          customModalCss={customModalCss}
+          customContentCss={customContentCss}
+          closeHandler={handleClose}
+        >
+          <div className={clsx('custom-modal-header', customHeaderCss)}>
             <span
-              className={`${customHeaderTextCss || 'custom-modal-header-text'}`}
+              className={clsx('custom-modal-header-text', customHeaderTextCss)}
             >
               {headerLabel || displayLabel}
             </span>
@@ -93,22 +128,31 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
               <XmarkIcon />
             </Button>
           </div>
-          {children && <div className="custom-modal-data">{children}</div>}
+          {children && (
+            <div className={clsx('custom-modal-data', customChildrenCss)}>
+              {children}
+            </div>
+          )}
           {!noFooterOptions && !discardOption && !errorOption && (
             <div
-              className={`${customFooterCss || 'custom-modal-actions-footer'}`}
+              className={clsx('custom-modal-actions-footer', customFooterCss)}
             >
               <CancelButton
                 variant={cancelButtonVariant ?? 'tertiary'}
                 clickHandler={handleClose}
                 label={cancelBtnLabel}
                 isDisabled={cancelButtonDisabled}
+                showIcon={showIcon}
+                customIcon={customCancelIcon}
               />
               <SaveButton
                 variant={saveButtonVariant ?? 'primary'}
                 clickHandler={handleSave}
                 label={saveBtnLabel}
                 isDisabled={saveButtonDisabled}
+                showTickIcon={showTickIcon}
+                showIcon={showIcon}
+                customIcon={customSaveIcon}
               />
             </div>
           )}
@@ -121,6 +165,8 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
                 clickHandler={handleClose}
                 label={cancelBtnLabel}
                 isDisabled={cancelButtonDisabled}
+                showIcon={showIcon}
+                customIcon={customCancelIcon}
               />
               <DiscardButton
                 clickHandler={handleDiscard}
@@ -128,12 +174,16 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
                 showIcon={false}
                 variant={discardButtonVariant}
                 isDisabled={discardButtonDisabled}
+                customIcon={customDiscardIcon}
               />
               <SaveButton
                 clickHandler={handleSave}
                 label={saveBtnLabel}
                 variant={saveButtonVariant}
                 isDisabled={saveButtonDisabled}
+                showTickIcon={showTickIcon}
+                showIcon={showIcon}
+                customIcon={customSaveIcon}
               />
             </div>
           )}
@@ -146,6 +196,8 @@ const ModalDialog: React.FC<ModalDialogCloseHandlerProps> = ({
                 label={cancelBtnLabel}
                 variant={cancelButtonVariant}
                 isDisabled={cancelButtonDisabled}
+                showIcon={showIcon}
+                customIcon={customCancelIcon}
               />
             </div>
           )}
@@ -160,11 +212,15 @@ export default ModalDialog;
 export const ModalDialogWrapper: React.FC<ModalDialogCloseHandlerProps> = ({
   closeHandler,
   children,
+  customModalCss,
+  customContentCss,
 }) => {
   return (
     <div>
-      <div className="custom-modal">
-        <div className="custom-modal-content">{children}</div>
+      <div className={clsx('custom-modal', customModalCss)}>
+        <div className={clsx('custom-modal-content', customContentCss)}>
+          {children}
+        </div>
       </div>
     </div>
   );
@@ -173,17 +229,35 @@ export const ModalDialogWrapper: React.FC<ModalDialogCloseHandlerProps> = ({
 export const ModalDialogHeaderOnly: React.FC<ModalDialogCloseHandlerProps> = ({
   closeHandler,
   children,
+  customHeaderCss,
 }) => {
-  return <div className="custom-modal-header">{children}</div>;
+  return (
+    <div className={clsx('custom-modal-header', customHeaderCss)}>
+      {children}
+    </div>
+  );
 };
 
 export const ModalDialogWrapperWithHeader: React.FC<
   ModalDialogCloseHandlerProps
-> = ({ closeHandler, children }) => {
+> = ({
+  closeHandler,
+  children,
+  customHeaderCss,
+  customModalCss,
+  customContentCss,
+}) => {
   return (
     <div>
-      <ModalDialogWrapper closeHandler={ModalDialogHeaderOnly}>
-        <ModalDialogHeaderOnly closeHandler={ModalDialogHeaderOnly}>
+      <ModalDialogWrapper
+        closeHandler={ModalDialogHeaderOnly}
+        customModalCss={customModalCss}
+        customContentCss={customContentCss}
+      >
+        <ModalDialogHeaderOnly
+          closeHandler={ModalDialogHeaderOnly}
+          customHeaderCss={customHeaderCss}
+        >
           {children}
         </ModalDialogHeaderOnly>
       </ModalDialogWrapper>

@@ -41,7 +41,10 @@ describe('StaffService', () => {
         StaffService,
         { provide: DataSource, useValue: dataSourceMock },
         { provide: LoggerService, useValue: loggerServiceMock },
-        { provide: getRepositoryToken(AppParticipant), useValue: applicationParticRepo },
+        {
+          provide: getRepositoryToken(AppParticipant),
+          useValue: applicationParticRepo,
+        },
         { provide: SiteService, useValue: siteServiceMock },
         {
           provide: StaffAssignmentService,
@@ -90,7 +93,7 @@ describe('StaffService', () => {
       id: 1,
       name: 'John Doe',
       assignments: 3,
-      capacity: 10,
+      capacity: 160,
     });
     expect(dataSourceMock.query).toHaveBeenCalledTimes(2);
   });
@@ -175,15 +178,27 @@ describe('StaffService', () => {
     expect(loggerServiceMock.error).toHaveBeenCalled();
   });
 
-   it('should throw error on invalid staffId', async () => {
+  it('should throw error on invalid staffId', async () => {
     await expect(
-      staffService.getApplicationsByStaff(1, 10, SortBy.ID, SortByDirection.ASC, 0),
+      staffService.getApplicationsByStaff(
+        1,
+        10,
+        SortBy.ID,
+        SortByDirection.ASC,
+        0,
+      ),
     ).rejects.toThrow('Invalid staffId');
   });
 
   it('should throw error on invalid page or pageSize', async () => {
     await expect(
-      staffService.getApplicationsByStaff(0, 0, SortBy.ID, SortByDirection.ASC, 1),
+      staffService.getApplicationsByStaff(
+        0,
+        0,
+        SortBy.ID,
+        SortByDirection.ASC,
+        1,
+      ),
     ).rejects.toThrow('Invalid page or pageSize value');
   });
 
@@ -208,10 +223,12 @@ describe('StaffService', () => {
       getManyAndCount: jest.fn().mockResolvedValue([[mockAppParticipant], 1]),
     };
 
-    (applicationParticRepo.createQueryBuilder as jest.Mock).mockReturnValue(mockQueryBuilder);
+    (applicationParticRepo.createQueryBuilder as jest.Mock).mockReturnValue(
+      mockQueryBuilder,
+    );
 
     (siteServiceMock.getSiteById as jest.Mock).mockResolvedValue({
-      findSiteBySiteId: {
+      findSiteBySiteIdLoggedInUser: {
         data: {
           addrLine_1: '123 Main St',
           addrLine_2: '',
@@ -221,7 +238,13 @@ describe('StaffService', () => {
       },
     });
 
-    const result = await staffService.getApplicationsByStaff(1, 10, SortBy.SITE_ADDRESS, SortByDirection.ASC, 1);
+    const result = await staffService.getApplicationsByStaff(
+      1,
+      10,
+      SortBy.SITE_ADDRESS,
+      SortByDirection.ASC,
+      1,
+    );
 
     expect(result.data).toHaveLength(1);
     expect(result.data[0].siteAddress).toContain('123 Main St');
@@ -250,7 +273,9 @@ describe('StaffService', () => {
       getManyAndCount: jest.fn().mockResolvedValue([[mockAppParticipant], 1]),
     };
 
-    (applicationParticRepo.createQueryBuilder as jest.Mock).mockReturnValue(mockQueryBuilder);
+    (applicationParticRepo.createQueryBuilder as jest.Mock).mockReturnValue(
+      mockQueryBuilder,
+    );
 
     (siteServiceMock.getSiteById as jest.Mock).mockResolvedValue({
       findSiteBySiteId: {
@@ -263,22 +288,36 @@ describe('StaffService', () => {
       },
     });
 
-    const result = await staffService.getApplicationsByStaff(1, 10, SortBy.ROLE, SortByDirection.DESC, 1, 2);
+    const result = await staffService.getApplicationsByStaff(
+      1,
+      10,
+      SortBy.ROLE,
+      SortByDirection.DESC,
+      1,
+      2,
+    );
 
     expect(result.data[0].roleDescription).toBe('Inspector');
     expect(result.count).toBe(1);
   });
 
   it('should handle and log internal errors', async () => {
-    (applicationParticRepo.createQueryBuilder as jest.Mock).mockImplementation(() => {
-      throw new Error('Internal failure');
-    });
+    (applicationParticRepo.createQueryBuilder as jest.Mock).mockImplementation(
+      () => {
+        throw new Error('Internal failure');
+      },
+    );
 
     await expect(
-      staffService.getApplicationsByStaff(1, 10, SortBy.ID, SortByDirection.ASC, 1),
+      staffService.getApplicationsByStaff(
+        1,
+        10,
+        SortBy.ID,
+        SortByDirection.ASC,
+        1,
+      ),
     ).rejects.toThrow('Failed to fetch staff applications: Internal failure');
 
     expect(loggerServiceMock.error).toHaveBeenCalled();
   });
-  
 });

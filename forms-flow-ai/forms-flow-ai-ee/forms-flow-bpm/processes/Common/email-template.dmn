@@ -37,7 +37,7 @@
           <text>"templates/sir_application_rejected.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0q4faet">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1ntr60u">
@@ -63,7 +63,7 @@
           <text>"templates/sir_application_approved.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0326fv6">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ygn6ai">
@@ -89,7 +89,7 @@
           <text>"templates/nom_application.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1l601us">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0acnxxf">
@@ -112,10 +112,10 @@
           <text>"Detailed Ecological Risk Assessment Checklist"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_01beqp6">
-          <text>"templates/nom_application.ftl"</text>
+          <text>"templates/common_application_status.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1iiimqa">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1vzpiut">
@@ -138,10 +138,10 @@
           <text>"Notification of Independent Remediation Application Status Updated"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ndgbup">
-          <text>"templates/nom_application.ftl"</text>
+          <text>"templates/nir_application.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0fm9kmi">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1ylcp2y">
@@ -164,10 +164,10 @@
           <text>"Contaminated Sites Services Application Updated"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0oyjcx5">
-          <text>"templates/nom_application.ftl"</text>
+          <text>"templates/common_application_status.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_01cbgvj">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0uj0rou">
@@ -193,7 +193,7 @@
           <text>"templates/request_updated.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1gsjmsa">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0rvcfe1">
@@ -219,7 +219,7 @@
           <text>"templates/request_updated.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1avpxvu">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ftap7p">
@@ -242,10 +242,10 @@
           <text>"Site Disclosure Statements"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_16tjxob">
-          <text>"templates/nom_application.ftl"</text>
+          <text>"templates/common_application_status.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0gjfcbj">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_169f9ov">
@@ -271,7 +271,7 @@
           <text>"templates/srcr_application.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1it5ctl">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_09zqlk8">
@@ -297,7 +297,7 @@
           <text>"templates/sosc_application.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1a38vm8">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0dewt8h">
@@ -317,13 +317,13 @@
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0a1kzk1">
-          <text>"File Upload Notification"</text>
+          <text>"Action Required – Upload Documents for Application"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1b09d2q">
           <text>"templates/upload_doc.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0f9z5vn">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1ja11nr">
@@ -349,7 +349,7 @@
           <text>"templates/user_search_failed.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ak6s00">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1s5z54g">
@@ -375,7 +375,7 @@
           <text>"templates/request_updated.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1yt92el">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ll7m2g">
@@ -401,7 +401,7 @@
           <text>"templates/task_assign.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0ldepns">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ypz8vw">
@@ -427,7 +427,7 @@
           <text>"templates/sds_response_1.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1gfnxkr">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_05r21tq">
@@ -453,7 +453,7 @@
           <text>"templates/sds_response_2.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_04xcdpi">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_12azim2">
@@ -479,7 +479,7 @@
           <text>"templates/sds_response_3.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0gwr1ot">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_04b39xg">
@@ -505,7 +505,33 @@
           <text>"templates/sds_response_4.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0kgpids">
-          <text>"epd-support@gov.bc.ca"</text>
+          <text>"siteremediation@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0d0oo4s">
+        <inputEntry id="UnaryTests_0j2yab0">
+          <text>"sds_generic_response"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ek27j9">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ckslsn">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ez4aii">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_05n322e">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02yd97a">
+          <text>"Site Disclosure Statement Received"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_057rbum">
+          <text>"templates/sds_generic_response.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03yrt95">
+          <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
     </decisionTable>
