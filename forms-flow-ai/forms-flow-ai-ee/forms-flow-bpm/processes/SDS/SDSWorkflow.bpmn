@@ -26,7 +26,10 @@
         <bpmn:flowNodeRef>Event_1jftbqf</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1xvosjx</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_04rmut7</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_04rmut7</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_0132o9i</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1vuyckp</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1kk2jy4</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1vuyckp</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_1kk2jy4</bpmn:flowNodeRef>
       </bpmn:lane>
@@ -790,6 +793,15 @@ else
         <bpmndi:BPMNLabel>
           <dc:Bounds x="527" y="441" width="18" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12izkye_di" bpmnElement="Flow_12izkye">
+        <di:waypoint x="510" y="1465" />
+        <di:waypoint x="510" y="1510" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_17oe5fh_di" bpmnElement="Flow_17oe5fh">
+        <di:waypoint x="535" y="1440" />
+        <di:waypoint x="1023" y="1440" />
+        <di:waypoint x="1023" y="1492" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BPMNShape_0zk5qh7" bpmnElement="Activity_1ozfgid">
         <dc:Bounds x="303" y="222" width="100" height="80" />
