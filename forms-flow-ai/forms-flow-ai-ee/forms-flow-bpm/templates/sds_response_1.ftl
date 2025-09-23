@@ -5,7 +5,6 @@
     <meta charset="utf-8" style="margin: 0;padding: 0;box-sizing: border-box;border: none;">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" style="margin: 0;padding: 0;box-sizing: border-box;border: none;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" style="margin: 0;padding: 0;box-sizing: border-box;border: none;">
-    
 </head>
 
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;color: #313132;">
@@ -32,27 +31,29 @@
                 </p>
             </td>
         </tr>
-       <#if siteId?? && siteAddress?? && siteCity?? 
-    && siteId?has_content && siteAddress?has_content && siteCity?has_content>
-    <tr>
-        <td>
-            <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;
-                                   line-height:27px;text-align: left;font-style: normal;
-                                   font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
-                <span style="font-weight: bold;">SITE ID:</span> ${siteId}, ${siteAddress}, ${siteCity}
-            </p>
-        </td>
-    </tr>
-</#if>
-  <tr>
-        <td>
-            <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;
-                                   line-height:27px;text-align: left;font-style: normal;
-                                   font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
-                <span style="font-weight: bold;">Application ID:</span> ${applicationId}
-            </p>
-        </td>
-    </tr>
+      
+        <#if siteId??>
+        <tr>
+            <td>
+                <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;
+                                    line-height:27px;text-align: left;font-style: normal;
+                                    font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
+                    <span style="font-weight: bold;">SITE ID:</span> ${siteId}, ${siteAddress!""}, ${siteCity!""}
+                </p>
+            </td>
+        </tr>
+        </#if>
+
+        <tr>
+            <td>
+                <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;
+                                       line-height:27px;text-align: left;font-style: normal;
+                                       font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
+                    <span style="font-weight: bold;">Application ID:</span> ${applicationId}
+                </p>
+            </td>
+        </tr>
+
         <tr>
             <td>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
