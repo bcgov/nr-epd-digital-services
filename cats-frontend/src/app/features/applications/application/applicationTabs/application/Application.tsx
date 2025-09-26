@@ -83,6 +83,7 @@ export const Application: React.FC<ApplicationProps> = () => {
       // eslint-disable-next-line no-new-func
       return new Function(`return (${expr});`)();
     } catch (e) {
+      console.error('Rule evaluation failed:', e);
       return false;
     }
   };
@@ -97,11 +98,18 @@ export const Application: React.FC<ApplicationProps> = () => {
             return evaluateRule(rule, formData?.data);
           });
         }
+
+        return true;
       });
-      setSelectedForms(filteredForms);
-      setFormJson(filteredForms[0]?.formJson);
+
+      if (filteredForms.length > 0) {
+        setSelectedForms(filteredForms);
+        setFormJson(filteredForms[0]?.formJson);
+      } else {
+        console.log('No forms passed the filter rules');
+      }
     }
-  }, [rules, formsToBeFiltered]);
+  }, [rules, formsToBeFiltered, formData?.data]);
 
   const applicationId = parseInt(id ?? '', 10);
   const {
@@ -157,9 +165,7 @@ export const Application: React.FC<ApplicationProps> = () => {
               setRules(response?.data ?? []);
             });
 
-            setSelectedForms(forms);
             setFormsToBeFiltered(forms);
-            setFormJson(forms[0]?.formJson);
           }
 
           if (formType !== 'bundle') {
