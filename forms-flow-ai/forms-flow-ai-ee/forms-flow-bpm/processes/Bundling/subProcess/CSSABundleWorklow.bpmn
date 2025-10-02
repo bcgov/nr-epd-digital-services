@@ -1275,9 +1275,26 @@ listOwnerEmailAddress.push(csapEmailAddress);
 }
 
 
-execution.setVariable('emailsIdsToProcess',JSON.stringify(listOwnerEmailAddress));
+var approvedProfessionals = execution.getVariable('approvedProfessionalQualifiedProfessional');
+system.out.println("approvedProfessionalQualifiedProfessional raw: " + approvedProfessionals);
 
-</bpmn:script>
+if (approvedProfessionals) {
+    approvedProfessionals = JSON.parse(approvedProfessionals);
+
+   
+    for (var i = 0; i &lt; approvedProfessionals.length; i++) {
+        var row = approvedProfessionals[i];
+        var apEmailAddress = row.cssaApsimpleemail;
+
+        if (apEmailAddress &amp;&amp; apEmailAddress !== '') {
+            system.out.println("Adding AP Email: " + apEmailAddress);
+            listOwnerEmailAddress.push(apEmailAddress);
+        }
+    }
+}
+
+
+execution.setVariable('emailsIdsToProcess',JSON.stringify(listOwnerEmailAddress));</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:scriptTask id="Activity_0k6ixqm" name="Set Variables" scriptFormat="javascript">
       <bpmn:incoming>Flow_1rc30l8</bpmn:incoming>
@@ -2129,6 +2146,10 @@ system.out.println ("soscStatus "+execution.getVariable('soscStatus') );</camund
         <dc:Bounds x="190" y="1800" width="4000" height="610" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0720sp0_di" bpmnElement="Flow_0720sp0">
+        <di:waypoint x="1885" y="275" />
+        <di:waypoint x="1885" y="475" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_03phi1y_di" bpmnElement="Flow_03phi1y">
         <di:waypoint x="1860" y="250" />
         <di:waypoint x="1805" y="250" />
@@ -2585,10 +2606,6 @@ system.out.println ("soscStatus "+execution.getVariable('soscStatus') );</camund
       <bpmndi:BPMNEdge id="Flow_0jxnrvm_di" bpmnElement="Flow_0jxnrvm">
         <di:waypoint x="4050" y="3080" />
         <di:waypoint x="4102" y="3080" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0720sp0_di" bpmnElement="Flow_0720sp0">
-        <di:waypoint x="1885" y="275" />
-        <di:waypoint x="1885" y="475" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_1n5addo_di" bpmnElement="Event_1n5addo">
         <dc:Bounds x="4102" y="3062" width="36" height="36" />
