@@ -351,6 +351,9 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
       <bpmn:incoming>Flow_1stifo9</bpmn:incoming>
       <bpmn:outgoing>Flow_05pndkl</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
+var submitterEmail= execution.getVariable('hiddenUserEmail');
+execution.setVariable('submitterEmail',submitterEmail);
+system.out.println ("submitterEmail "+submitterEmail);
 var dataGridRaw = execution.getVariable('dataGrid');
 system.out.println("dataGrid (raw): " + dataGridRaw);
 var hdnAppType= execution.getVariable('hdnAppType');
@@ -375,6 +378,7 @@ system.out.println("agentEmail"+agentEmail);
 
 var emailsToArray = [];
 emailsToArray.push(clientEmail);
+emailsToArray.push(submitterEmail);
 if(applicantEmail){
   emailsToArray.push(applicantEmail);
 }
