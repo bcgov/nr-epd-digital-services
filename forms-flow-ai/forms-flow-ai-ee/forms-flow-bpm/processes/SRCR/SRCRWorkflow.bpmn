@@ -68,6 +68,10 @@
       <bpmn:outgoing>Flow_0xiuxfc</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
 
+var submitterEmail= execution.getVariable('hiddenUserEmail');
+execution.setVariable('submitterEmail',submitterEmail);
+system.out.println ("submitterEmail"+submitterEmail);
+
 var hdnAppType= execution.getVariable('hdnAppType');
 system.out.println ("hdnAppType"+hdnAppType);
 var siteIdNumber= execution.getVariable('siteIdNumber');
@@ -137,7 +141,7 @@ system.out.println ("csapEmailAddress"+csapEmailAddress);
 listOwnerEmailAddress.push(csapEmailAddress);
 }
 
-
+listOwnerEmailAddress.push(submitterEmail);
 execution.setVariable('emailsIdsToProcess',JSON.stringify(listOwnerEmailAddress));</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:exclusiveGateway id="Gateway_0qeiyw3" name="Is Application Resubmitted">

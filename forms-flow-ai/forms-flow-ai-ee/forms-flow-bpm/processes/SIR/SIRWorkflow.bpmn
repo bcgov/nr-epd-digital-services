@@ -16,7 +16,6 @@
       </bpmn:lane>
       <bpmn:lane id="Lane_1xv1agn" name="Site Information Advisor (SIA)">
         <bpmn:flowNodeRef>Activity_06nypz0</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1os7sys</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Event_1lsroft</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_08g50qy</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1lbc6o5</bpmn:flowNodeRef>
@@ -63,10 +62,14 @@
       <bpmn:incoming>Flow_07ndmfw</bpmn:incoming>
       <bpmn:outgoing>Flow_0unffch</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
+var submitterEmail= execution.getVariable('hiddenUserEmail');
+execution.setVariable('submitterEmail',submitterEmail);
+system.out.println ("submitterEmail"+submitterEmail);
 system.out.println ("simpleemail"+execution.getVariable('simpleemail'));
 var clientEmail = execution.getVariable('simpleemail');
 var emailsToArray = [];
-emailsToArray.push(clientEmail)
+emailsToArray.push(submitterEmail);
+emailsToArray.push(clientEmail);
 execution.setVariable('emailTo',JSON.stringify(emailsToArray));
 system.out.println ("emailTo"+execution.getVariable('emailTo'));
 system.out.println ("firstname "+execution.getVariable('s1-firstname'));
@@ -123,27 +126,16 @@ execution.setVariable('emailsIdsToProcess',JSON.stringify(emailsToArray));
     <bpmn:sequenceFlow id="Flow_036aw17" name="Rejected" sourceRef="Activity_06nypz0" targetRef="Activity_08g50qy">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_00vwzxv" sourceRef="Activity_1os7sys" targetRef="Event_1lsroft" />
-    <bpmn:callActivity id="Activity_1os7sys" name="Send Email - Rejected" calledElement="common-email-workflow">
-      <bpmn:extensionElements>
-        <camunda:in variables="all" />
-        <camunda:inputOutput>
-          <camunda:inputParameter name="category">sir_status_rejected</camunda:inputParameter>
-        </camunda:inputOutput>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0c55q6w</bpmn:incoming>
-      <bpmn:outgoing>Flow_00vwzxv</bpmn:outgoing>
-    </bpmn:callActivity>
     <bpmn:endEvent id="Event_1lsroft" name="End">
-      <bpmn:incoming>Flow_00vwzxv</bpmn:incoming>
+      <bpmn:incoming>Flow_0c55q6w</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:scriptTask id="Activity_08g50qy" name="Debug Log" scriptFormat="javascript">
       <bpmn:incoming>Flow_036aw17</bpmn:incoming>
       <bpmn:outgoing>Flow_0c55q6w</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
-system.out.println ("Reviewed by SDM");</bpmn:script>
+system.out.println ("Review Complete- Rejected");</bpmn:script>
     </bpmn:scriptTask>
-    <bpmn:sequenceFlow id="Flow_0c55q6w" sourceRef="Activity_08g50qy" targetRef="Activity_1os7sys" />
+    <bpmn:sequenceFlow id="Flow_0c55q6w" sourceRef="Activity_08g50qy" targetRef="Event_1lsroft" />
     <bpmn:sequenceFlow id="Flow_04l5mhw" sourceRef="Activity_0ro66yt" targetRef="Activity_0v6lyrk" />
     <bpmn:sequenceFlow id="Flow_1e1420i" name="Accepted" sourceRef="Activity_06nypz0" targetRef="Activity_1lbc6o5">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Accepted'}</bpmn:conditionExpression>
@@ -242,10 +234,6 @@ system.out.println ("Reviewed by SDM");</bpmn:script>
       <bpmndi:BPMNShape id="ReceiveTask_1pd77zg_di" bpmnElement="Task_05ulff4">
         <dc:Bounds x="590" y="140" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0970wc1" bpmnElement="Activity_1os7sys">
-        <dc:Bounds x="710" y="580" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1lsroft_di" bpmnElement="Event_1lsroft">
         <dc:Bounds x="912" y="602" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -325,13 +313,9 @@ system.out.println ("Reviewed by SDM");</bpmn:script>
           <dc:Bounds x="378" y="603" width="44" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_00vwzxv_di" bpmnElement="Flow_00vwzxv">
-        <di:waypoint x="810" y="620" />
-        <di:waypoint x="912" y="620" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0c55q6w_di" bpmnElement="Flow_0c55q6w">
         <di:waypoint x="570" y="620" />
-        <di:waypoint x="710" y="620" />
+        <di:waypoint x="912" y="620" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_04l5mhw_di" bpmnElement="Flow_04l5mhw">
         <di:waypoint x="800" y="750" />
