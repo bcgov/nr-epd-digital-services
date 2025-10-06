@@ -9456,7 +9456,7 @@
                                     "refreshOn": "",
                                     "addons": [],
                                     "inputType": "text",
-                                    "id": "ez8vnij0",
+                                    "id": "ez8vnij00000",
                                     "defaultValue": ""
                                 },
                                 {
@@ -9542,7 +9542,7 @@
                                     "showWordCount": false,
                                     "allowMultipleMasks": false,
                                     "addons": [],
-                                    "id": "ea6hu360000",
+                                    "id": "ea6hu3600000000",
                                     "defaultValue": null
                                 }
                             ],
@@ -10212,7 +10212,7 @@
                                     "refreshOn": "",
                                     "addons": [],
                                     "inputType": "text",
-                                    "id": "ep92ecf0000",
+                                    "id": "ep92ecf00000000",
                                     "defaultValue": ""
                                 },
                                 {
@@ -10298,7 +10298,7 @@
                                     "showWordCount": false,
                                     "allowMultipleMasks": false,
                                     "addons": [],
-                                    "id": "eyilpe0",
+                                    "id": "eyilpe00000",
                                     "defaultValue": null
                                 }
                             ],
@@ -10965,7 +10965,7 @@
                                     "refreshOn": "",
                                     "addons": [],
                                     "inputType": "text",
-                                    "id": "e0i6bi0000",
+                                    "id": "e0i6bi00000000",
                                     "defaultValue": ""
                                 },
                                 {
@@ -11051,7 +11051,7 @@
                                     "showWordCount": false,
                                     "allowMultipleMasks": false,
                                     "addons": [],
-                                    "id": "eduv7hp0",
+                                    "id": "eduv7hp00000",
                                     "defaultValue": null
                                 }
                             ],
@@ -11724,7 +11724,7 @@
                                     "refreshOn": "",
                                     "addons": [],
                                     "inputType": "text",
-                                    "id": "ea0c6lo0000",
+                                    "id": "ea0c6lo00000000",
                                     "defaultValue": ""
                                 },
                                 {
@@ -11810,7 +11810,7 @@
                                     "showWordCount": false,
                                     "allowMultipleMasks": false,
                                     "addons": [],
-                                    "id": "eux9zcf0",
+                                    "id": "eux9zcf00000",
                                     "defaultValue": null
                                 }
                             ],
@@ -13926,6 +13926,75 @@
                     "addons": [],
                     "inputType": "hidden",
                     "id": "eh96g8m"
+                },
+                {
+                    "label": "hiddenUserEmail",
+                    "calculateValue": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\nconst submitterEmail = UserDetails?UserDetails[\"email\"]:'';\nvalue = submitterEmail;\nconsole.log('submitterEmail----', value);\n",
+                    "key": "hiddenUserEmail",
+                    "type": "hidden",
+                    "input": true,
+                    "tableView": false,
+                    "keyModified": true,
+                    "placeholder": "",
+                    "prefix": "",
+                    "customClass": "",
+                    "suffix": "",
+                    "multiple": false,
+                    "defaultValue": null,
+                    "protected": false,
+                    "unique": false,
+                    "persistent": true,
+                    "hidden": false,
+                    "clearOnHide": true,
+                    "refreshOn": "",
+                    "redrawOn": "",
+                    "modalEdit": false,
+                    "dataGridLabel": false,
+                    "labelPosition": "top",
+                    "description": "",
+                    "errorLabel": "",
+                    "tooltip": "",
+                    "hideLabel": false,
+                    "tabindex": "",
+                    "disabled": false,
+                    "autofocus": false,
+                    "dbIndex": false,
+                    "customDefaultValue": "",
+                    "calculateServer": false,
+                    "widget": {
+                        "type": "input"
+                    },
+                    "attributes": {},
+                    "validateOn": "change",
+                    "validate": {
+                        "required": false,
+                        "custom": "",
+                        "customPrivate": false,
+                        "strictDateValidation": false,
+                        "multiple": false,
+                        "unique": false
+                    },
+                    "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                    },
+                    "overlay": {
+                        "style": "",
+                        "left": "",
+                        "top": "",
+                        "width": "",
+                        "height": ""
+                    },
+                    "allowCalculateOverride": false,
+                    "encrypted": false,
+                    "showCharCount": false,
+                    "showWordCount": false,
+                    "properties": {},
+                    "allowMultipleMasks": false,
+                    "addons": [],
+                    "inputType": "hidden",
+                    "id": "e27rdic"
                 }
             ]
         }

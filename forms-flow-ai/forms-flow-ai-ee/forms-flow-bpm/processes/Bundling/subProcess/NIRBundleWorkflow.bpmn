@@ -56,6 +56,10 @@
       <bpmn:incoming>Flow_07ndmfw</bpmn:incoming>
       <bpmn:outgoing>Flow_0unffch</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
+var submitterEmail= execution.getVariable('hiddenUserEmail');
+execution.setVariable('submitterEmail',submitterEmail);
+system.out.println ("submitterEmail"+submitterEmail);
+
 var hdnAppType= execution.getVariable('hdnAppType');
 system.out.println ("hdnAppType"+hdnAppType);
 var siteIdNumber= execution.getVariable('siteIdNumber');
@@ -63,6 +67,7 @@ system.out.println ("siteIdNumber"+siteIdNumber);
 var clientEmail = execution.getVariable('simpleemail3');
 var emailsToArray = [];
 emailsToArray.push(clientEmail);
+emailsToArray.push(submitterEmail);
 execution.setVariable("emailTo", JSON.stringify(emailsToArray));
 var riskclassification = execution.getVariable('riskclassification');
 execution.setVariable('riskclassification',riskclassification);

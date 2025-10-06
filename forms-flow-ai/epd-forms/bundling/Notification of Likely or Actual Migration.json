@@ -2002,7 +2002,7 @@
                             "attributes": {},
                             "components": [
                                 {
-                                    "id": "ea2btv000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                    "id": "ea2btv0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                                     "key": "Panel-InformationForAffectedAndLikelyAffectedParcels",
                                     "tree": false,
                                     "type": "panel",
@@ -9942,7 +9942,7 @@
                                     "input": false,
                                     "tableView": false,
                                     "hideOnChildrenHidden": false,
-                                    "id": "e2ur7fq0000000000",
+                                    "id": "e2ur7fq00000000000000",
                                     "placeholder": "",
                                     "prefix": "",
                                     "customClass": "",
@@ -11879,6 +11879,75 @@
                     "id": "e6z1qd99",
                     "description": "",
                     "addons": []
+                },
+                {
+                    "label": "hiddenUserEmail",
+                    "calculateValue": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\nconst submitterEmail = UserDetails?UserDetails[\"email\"]:'';\nvalue = submitterEmail;\nconsole.log('submitterEmail----', value);\n",
+                    "key": "hiddenUserEmail",
+                    "type": "hidden",
+                    "input": true,
+                    "tableView": false,
+                    "keyModified": true,
+                    "placeholder": "",
+                    "prefix": "",
+                    "customClass": "",
+                    "suffix": "",
+                    "multiple": false,
+                    "defaultValue": null,
+                    "protected": false,
+                    "unique": false,
+                    "persistent": true,
+                    "hidden": false,
+                    "clearOnHide": true,
+                    "refreshOn": "",
+                    "redrawOn": "",
+                    "modalEdit": false,
+                    "dataGridLabel": false,
+                    "labelPosition": "top",
+                    "description": "",
+                    "errorLabel": "",
+                    "tooltip": "",
+                    "hideLabel": false,
+                    "tabindex": "",
+                    "disabled": false,
+                    "autofocus": false,
+                    "dbIndex": false,
+                    "customDefaultValue": "",
+                    "calculateServer": false,
+                    "widget": {
+                        "type": "input"
+                    },
+                    "attributes": {},
+                    "validateOn": "change",
+                    "validate": {
+                        "required": false,
+                        "custom": "",
+                        "customPrivate": false,
+                        "strictDateValidation": false,
+                        "multiple": false,
+                        "unique": false
+                    },
+                    "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                    },
+                    "overlay": {
+                        "style": "",
+                        "left": "",
+                        "top": "",
+                        "width": "",
+                        "height": ""
+                    },
+                    "allowCalculateOverride": false,
+                    "encrypted": false,
+                    "showCharCount": false,
+                    "showWordCount": false,
+                    "properties": {},
+                    "allowMultipleMasks": false,
+                    "addons": [],
+                    "inputType": "hidden",
+                    "id": "e27rdic"
                 }
             ]
         }
