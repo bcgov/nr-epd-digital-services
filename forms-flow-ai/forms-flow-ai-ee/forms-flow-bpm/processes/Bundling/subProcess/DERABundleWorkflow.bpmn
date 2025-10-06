@@ -1584,6 +1584,10 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
       <bpmn:incoming>Flow_1stifo9</bpmn:incoming>
       <bpmn:outgoing>Flow_05pndkl</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
+var submitterEmail= execution.getVariable('hiddenUserEmail');
+execution.setVariable('submitterEmail',submitterEmail);
+system.out.println ("submitterEmail"+submitterEmail);
+
 var siteIdNumber= execution.getVariable('siteIdNumber');
 system.out.println ("siteIdNumber"+siteIdNumber);
 var riskclassification = execution.getVariable('riskclassification');
@@ -1601,7 +1605,8 @@ execution.setVariable('formName','Detailed Ecological Risk Assessment Checklist'
 execution.setVariable('EmailType','DERA');
 execution.setVariable('name','User');
 var emailsToArray = [];
-emailsToArray.push(clientEmail)
+emailsToArray.push(clientEmail);
+emailsToArray.push(submitterEmail);
 execution.setVariable("emailTo", JSON.stringify(emailsToArray));
 execution.setVariable('isSoscAvailable',true);
 var csapEmailAddress = execution.getVariable('csapEmailAddress');

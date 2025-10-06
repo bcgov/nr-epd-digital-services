@@ -42,6 +42,10 @@
       <bpmn:incoming>Flow_10r3k9c</bpmn:incoming>
       <bpmn:outgoing>Flow_0unffch</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
+var submitterEmail= execution.getVariable('hiddenUserEmail');
+execution.setVariable('submitterEmail',submitterEmail);
+system.out.println ("submitterEmail"+submitterEmail);
+
 var clientEmail = execution.getVariable('ownerContactEmail');
 execution.setVariable('clientEmail',clientEmail);
 var riskclassification = execution.getVariable('riskclassification');
@@ -74,6 +78,7 @@ dataGridObject = JSON.parse(dataGrid);
 
 
 var listOwnerEmailAddress = [];
+listOwnerEmailAddress.push(submitterEmail);
 
 for(i in dataGridObject)
 {
@@ -82,7 +87,7 @@ for(i in dataGridObject)
      var ownerEmailAddress = dataGridObject[i].ownerContactEmail;
      if(ownerEmailAddress !== '')
      {
-	listOwnerEmailAddress.push(ownerEmailAddress)
+	listOwnerEmailAddress.push(ownerEmailAddress);
      }
   }
 }
