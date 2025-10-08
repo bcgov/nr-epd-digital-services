@@ -163,6 +163,21 @@ export type ApplicationStatusResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type Coms = {
+  __typename?: 'Coms';
+  bucketId?: Maybe<Scalars['String']['output']>;
+  downloadUrl?: Maybe<Scalars['String']['output']>;
+};
+
+export type ComsResponse = {
+  __typename?: 'ComsResponse';
+  data?: Maybe<Coms>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type CreateAppParticipantDto = {
   applicationId: Scalars['Float']['input'];
   createdBy?: InputMaybe<Scalars['String']['input']>;
@@ -188,7 +203,40 @@ export type CreateApplication = {
   appTypeAbbrev: Scalars['String']['input'];
   applicationStatus: Array<ApplicationStatusDto>;
   receivedDate: Scalars['DateTime']['input'];
-  siteId: Scalars['Float']['input'];
+  siteIds: Array<Scalars['Float']['input']>;
+};
+
+export type CreateInvoice = {
+  applicationId: Scalars['Int']['input'];
+  dueDate: Scalars['DateTime']['input'];
+  gstInCents: Scalars['Int']['input'];
+  invoiceAttachments?: InputMaybe<Array<CreateInvoiceAttachment>>;
+  invoiceItems: Array<CreateInvoiceItem>;
+  invoiceNotes?: InputMaybe<Scalars['String']['input']>;
+  invoiceStatus: InvoiceStatus;
+  issuedDate: Scalars['DateTime']['input'];
+  personId: Scalars['String']['input'];
+  pstExempt: Scalars['Boolean']['input'];
+  pstInCents: Scalars['Int']['input'];
+  subject: Scalars['String']['input'];
+  subtotalInCents: Scalars['Int']['input'];
+  taxExempt: Scalars['Boolean']['input'];
+  totalInCents: Scalars['Int']['input'];
+};
+
+export type CreateInvoiceAttachment = {
+  bucketId: Scalars['String']['input'];
+  fileName: Scalars['String']['input'];
+  invoiceId: Scalars['Int']['input'];
+  objectId: Scalars['String']['input'];
+};
+
+export type CreateInvoiceItem = {
+  description: Scalars['String']['input'];
+  itemType: Scalars['String']['input'];
+  quantity: Scalars['Int']['input'];
+  totalInCents: Scalars['Int']['input'];
+  unitPriceInCents: Scalars['Int']['input'];
 };
 
 export type CreatePerson = {
@@ -240,10 +288,15 @@ export type DetailField = {
   id: Scalars['Float']['output'];
 };
 
+export enum DownloadType {
+  Proxy = 'PROXY',
+  Url = 'URL'
+}
+
 export type DropdownDto = {
   __typename?: 'DropdownDto';
   key: Scalars['String']['output'];
-  metaData: Scalars['String']['output'];
+  metaData?: Maybe<Scalars['String']['output']>;
   value: Scalars['String']['output'];
 };
 
@@ -252,29 +305,6 @@ export type DropdownResponse = {
   data?: Maybe<Array<DropdownDto>>;
   httpStatusCode?: Maybe<Scalars['Int']['output']>;
   message?: Maybe<Scalars['String']['output']>;
-  success?: Maybe<Scalars['Boolean']['output']>;
-  timestamp?: Maybe<Scalars['String']['output']>;
-};
-
-export type FileUploadInputDto = {
-  applicationId: Scalars['Int']['input'];
-  fileContent: Scalars['String']['input'];
-  fileName: Scalars['String']['input'];
-  invoiceId?: InputMaybe<Scalars['Int']['input']>;
-  mimeType: Scalars['String']['input'];
-};
-
-export type FileUploadMultipartInputDto = {
-  applicationId: Scalars['Int']['input'];
-  invoiceId?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type FileUploadResponse = {
-  __typename?: 'FileUploadResponse';
-  attachment?: Maybe<InvoiceAttachmentDto>;
-  httpStatusCode?: Maybe<Scalars['Int']['output']>;
-  message?: Maybe<Scalars['String']['output']>;
-  objectStorageId?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
 };
@@ -321,126 +351,10 @@ export type HousingTypeResponse = {
   data: Array<HousingTypeDto>;
 };
 
-export type InvoiceAttachmentDto = {
-  __typename?: 'InvoiceAttachmentDto';
-  createdAt: Scalars['DateTime']['output'];
-  createdBy: Scalars['String']['output'];
-  fileName: Scalars['String']['output'];
-  fileSize: Scalars['Int']['output'];
-  id: Scalars['Int']['output'];
-  invoiceId: Scalars['Int']['output'];
-  mimeType: Scalars['String']['output'];
-  objectStorageId: Scalars['String']['output'];
-};
-
-export type InvoiceAttachmentInputDto = {
-  fileName: Scalars['String']['input'];
-  fileSize: Scalars['Int']['input'];
-  invoiceId: Scalars['Int']['input'];
-  mimeType: Scalars['String']['input'];
-  objectStorageId: Scalars['String']['input'];
-};
-
-export type InvoiceAttachmentResponse = {
-  __typename?: 'InvoiceAttachmentResponse';
-  attachment?: Maybe<InvoiceAttachmentDto>;
-  httpStatusCode?: Maybe<Scalars['Int']['output']>;
-  message?: Maybe<Scalars['String']['output']>;
-  success?: Maybe<Scalars['Boolean']['output']>;
-  timestamp?: Maybe<Scalars['String']['output']>;
-};
-
-export type InvoiceAttachmentsResponse = {
-  __typename?: 'InvoiceAttachmentsResponse';
-  attachments?: Maybe<Array<InvoiceAttachmentDto>>;
-  httpStatusCode?: Maybe<Scalars['Int']['output']>;
-  message?: Maybe<Scalars['String']['output']>;
-  success?: Maybe<Scalars['Boolean']['output']>;
-  timestamp?: Maybe<Scalars['String']['output']>;
-};
-
-export type InvoiceByApplicationIdDto = {
-  __typename?: 'InvoiceByApplicationIdDto';
-  dueDate: Scalars['DateTime']['output'];
-  id: Scalars['Int']['output'];
-  issuedDate: Scalars['DateTime']['output'];
-  notes?: Maybe<Scalars['String']['output']>;
-  status: Scalars['String']['output'];
-  subject: Scalars['String']['output'];
-  totalInCents: Scalars['Int']['output'];
-};
-
-export type InvoiceDto = {
-  __typename?: 'InvoiceDto';
-  applicationId: Scalars['Int']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  createdBy?: Maybe<Scalars['String']['output']>;
-  dueDate: Scalars['DateTime']['output'];
-  gstInCents: Scalars['Int']['output'];
-  id: Scalars['Int']['output'];
-  invoiceId?: Maybe<Scalars['Int']['output']>;
-  issuedDate: Scalars['DateTime']['output'];
-  lineItems: Array<InvoiceLineItemDto>;
-  notes?: Maybe<Scalars['String']['output']>;
-  pstExempt: Scalars['Boolean']['output'];
-  pstInCents: Scalars['Int']['output'];
-  recipientId: Scalars['Int']['output'];
-  status: InvoiceStatus;
-  subject: Scalars['String']['output'];
-  subtotalInCents: Scalars['Int']['output'];
-  taxExempt: Scalars['Boolean']['output'];
-  totalInCents: Scalars['Int']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-  updatedBy: Scalars['String']['output'];
-};
-
-export type InvoiceInputDto = {
-  applicationId: Scalars['Int']['input'];
-  dueDate: Scalars['DateTime']['input'];
-  gstInCents: Scalars['Int']['input'];
-  invoiceId?: InputMaybe<Scalars['Int']['input']>;
-  issuedDate: Scalars['DateTime']['input'];
-  lineItems: Array<InvoiceLineItemInputDto>;
-  notes?: InputMaybe<Scalars['String']['input']>;
-  pstExempt: Scalars['Boolean']['input'];
-  pstInCents: Scalars['Int']['input'];
-  recipientId: Scalars['Int']['input'];
-  status: InvoiceStatus;
-  subject: Scalars['String']['input'];
-  subtotalInCents: Scalars['Int']['input'];
-  taxExempt: Scalars['Boolean']['input'];
-  totalInCents: Scalars['Int']['input'];
-};
-
-export type InvoiceLineItemDto = {
-  __typename?: 'InvoiceLineItemDto';
-  createdAt: Scalars['DateTime']['output'];
-  createdBy: Scalars['String']['output'];
-  description: Scalars['String']['output'];
-  id: Scalars['Int']['output'];
-  quantity: Scalars['Int']['output'];
-  totalInCents: Scalars['Int']['output'];
-  type: Scalars['String']['output'];
-  unitPriceInCents: Scalars['Int']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-  updatedBy: Scalars['String']['output'];
-};
-
-export type InvoiceLineItemInputDto = {
-  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
-  createdBy?: InputMaybe<Scalars['String']['input']>;
-  description: Scalars['String']['input'];
-  id?: InputMaybe<Scalars['Float']['input']>;
-  quantity: Scalars['Int']['input'];
-  totalInCents: Scalars['Int']['input'];
-  type: Scalars['String']['input'];
-  unitPriceInCents: Scalars['Int']['input'];
-};
-
 export type InvoiceResponse = {
   __typename?: 'InvoiceResponse';
+  data?: Maybe<ViewInvoice>;
   httpStatusCode?: Maybe<Scalars['Int']['output']>;
-  invoice?: Maybe<InvoiceDto>;
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
@@ -454,10 +368,10 @@ export enum InvoiceStatus {
   Sent = 'SENT'
 }
 
-export type InvoicesByApplicationIdResponse = {
-  __typename?: 'InvoicesByApplicationIdResponse';
+export type InvoicesResponse = {
+  __typename?: 'InvoicesResponse';
+  data?: Maybe<Array<ViewInvoice>>;
   httpStatusCode?: Maybe<Scalars['Int']['output']>;
-  invoices?: Maybe<Array<InvoiceByApplicationIdDto>>;
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
@@ -469,13 +383,14 @@ export type Mutation = {
   createAppParticipant: CreateAppParticipantsResponse;
   createApplication: ApplicationResponse;
   createApplicationNote: ApplicationNotesResponse;
+  createBucket: ComsResponse;
   createInvoice: InvoiceResponse;
-  createInvoiceAttachment: InvoiceAttachmentResponse;
   createPerson: PersonResponse;
   createPersonNote: PersonNoteResponse;
   deleteApplicationNotes: ApplicationNotesResponse;
-  deleteInvoice: ResponseDto;
-  deleteInvoiceAttachment: ResponseDto;
+  deleteBucket: ComsResponse;
+  deleteInvoice: InvoiceResponse;
+  deleteObject: ComsResponse;
   deletePersonNote: PersonNoteResponse;
   updateAppParticipant: UpdateAppParticipantsResponse;
   updateApplicationHousing: ApplicationHousingResponse;
@@ -485,9 +400,6 @@ export type Mutation = {
   updatePerson: PersonResponse;
   updatePersonNote: PersonNoteResponse;
   updateStaffAssigned: ResponseDto;
-  uploadFileToComsForInvoice: FileUploadResponse;
-  uploadFileToInvoice: FileUploadResponse;
-  uploadFileToInvoiceMultipart: FileUploadResponse;
   upsertTimesheetDays: TimesheetDayResponse;
 };
 
@@ -514,13 +426,14 @@ export type MutationCreateApplicationNoteArgs = {
 };
 
 
-export type MutationCreateInvoiceArgs = {
-  invoiceData: InvoiceInputDto;
+export type MutationCreateBucketArgs = {
+  bucketKey: Scalars['String']['input'];
+  bucketName: Scalars['String']['input'];
 };
 
 
-export type MutationCreateInvoiceAttachmentArgs = {
-  input: InvoiceAttachmentInputDto;
+export type MutationCreateInvoiceArgs = {
+  invoice: CreateInvoice;
 };
 
 
@@ -539,13 +452,19 @@ export type MutationDeleteApplicationNotesArgs = {
 };
 
 
-export type MutationDeleteInvoiceArgs = {
-  id: Scalars['Int']['input'];
+export type MutationDeleteBucketArgs = {
+  bucketId: Scalars['String']['input'];
 };
 
 
-export type MutationDeleteInvoiceAttachmentArgs = {
-  id: Scalars['Int']['input'];
+export type MutationDeleteInvoiceArgs = {
+  invoiceId: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteObjectArgs = {
+  objectId: Scalars['String']['input'];
+  versionId?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -577,8 +496,7 @@ export type MutationUpdateFormsflowAppIdArgs = {
 
 
 export type MutationUpdateInvoiceArgs = {
-  id: Scalars['Int']['input'];
-  updateData: InvoiceInputDto;
+  invoice: UpdateInvoice;
 };
 
 
@@ -597,21 +515,6 @@ export type MutationUpdateStaffAssignedArgs = {
   applicationId: Scalars['Int']['input'];
   applicationServiceTypeId: Scalars['Int']['input'];
   staffInput: Array<UpdateStaffAssignedDto>;
-};
-
-
-export type MutationUploadFileToComsForInvoiceArgs = {
-  input: FileUploadInputDto;
-};
-
-
-export type MutationUploadFileToInvoiceArgs = {
-  input: FileUploadInputDto;
-};
-
-
-export type MutationUploadFileToInvoiceMultipartArgs = {
-  input: FileUploadMultipartInputDto;
 };
 
 
@@ -693,9 +596,9 @@ export type Query = {
   getApplications: DashboardResponse;
   getApplicationsByStaff: ViewApplicationResponse;
   getHousingTypes: HousingTypeResponse;
-  getInvoiceAttachments: InvoiceAttachmentsResponse;
   getInvoiceById: InvoiceResponse;
-  getInvoicesByApplicationId: InvoicesByApplicationIdResponse;
+  getInvoices: InvoicesResponse;
+  getObject: ComsResponse;
   getOrganizations: DropdownResponse;
   getParticipantNames: DropdownResponse;
   getPermissions: PermissionsResponse;
@@ -757,18 +660,19 @@ export type QueryGetApplicationsByStaffArgs = {
 };
 
 
-export type QueryGetInvoiceAttachmentsArgs = {
+export type QueryGetInvoiceByIdArgs = {
   invoiceId: Scalars['Int']['input'];
 };
 
 
-export type QueryGetInvoiceByIdArgs = {
-  id: Scalars['Int']['input'];
+export type QueryGetInvoicesArgs = {
+  applicationId: Scalars['Int']['input'];
 };
 
 
-export type QueryGetInvoicesByApplicationIdArgs = {
-  applicationId: Scalars['Int']['input'];
+export type QueryGetObjectArgs = {
+  downloadType?: InputMaybe<DownloadType>;
+  objectId: Scalars['String']['input'];
 };
 
 
@@ -963,6 +867,7 @@ export type UpdateAppParticipantsResponse = {
 export type UpdateApplicationStatusDto = {
   formId: Scalars['String']['input'];
   formsflowAppId: Scalars['Float']['input'];
+  siteIds?: InputMaybe<Array<Scalars['Float']['input']>>;
   statusTypeAbbrev: Scalars['String']['input'];
   submissionId: Scalars['String']['input'];
 };
@@ -977,6 +882,42 @@ export type UpdateHousingInputDto = {
   isSocial?: InputMaybe<Scalars['Boolean']['input']>;
   numberOfUnits?: InputMaybe<Scalars['Int']['input']>;
   relatedApplicationIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
+export type UpdateInvoice = {
+  applicationId: Scalars['Int']['input'];
+  dueDate: Scalars['DateTime']['input'];
+  gstInCents: Scalars['Int']['input'];
+  id: Scalars['Int']['input'];
+  invoiceAttachments?: InputMaybe<Array<UpdateInvoiceAttachment>>;
+  invoiceItems: Array<UpdateInvoiceItem>;
+  invoiceNotes?: InputMaybe<Scalars['String']['input']>;
+  invoiceStatus: InvoiceStatus;
+  issuedDate: Scalars['DateTime']['input'];
+  personId: Scalars['String']['input'];
+  pstExempt: Scalars['Boolean']['input'];
+  pstInCents: Scalars['Int']['input'];
+  subject: Scalars['String']['input'];
+  subtotalInCents: Scalars['Int']['input'];
+  taxExempt: Scalars['Boolean']['input'];
+  totalInCents: Scalars['Int']['input'];
+};
+
+export type UpdateInvoiceAttachment = {
+  bucketId: Scalars['String']['input'];
+  fileName: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['Int']['input']>;
+  invoiceId: Scalars['Int']['input'];
+  objectId: Scalars['String']['input'];
+};
+
+export type UpdateInvoiceItem = {
+  description: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['Int']['input']>;
+  itemType: Scalars['String']['input'];
+  quantity: Scalars['Int']['input'];
+  totalInCents: Scalars['Int']['input'];
+  unitPriceInCents: Scalars['Int']['input'];
 };
 
 export type UpdatePerson = {
@@ -1083,9 +1024,9 @@ export type ViewApplicationDetails = {
   queuedDate?: Maybe<Scalars['DateTime']['output']>;
   receivedDate: Scalars['DateTime']['output'];
   reviewProcess?: Maybe<DetailField>;
-  siteAddress: Scalars['String']['output'];
-  siteCity: Scalars['String']['output'];
-  siteId: Scalars['Float']['output'];
+  siteAddress?: Maybe<Scalars['String']['output']>;
+  siteCity?: Maybe<Scalars['String']['output']>;
+  siteId?: Maybe<Scalars['Float']['output']>;
   siteType?: Maybe<DetailField>;
   submissionId?: Maybe<Scalars['String']['output']>;
 };
@@ -1127,6 +1068,51 @@ export type ViewDashboard = {
   priority?: Maybe<Scalars['String']['output']>;
   receivedDate?: Maybe<Scalars['DateTime']['output']>;
   siteId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type ViewInvoice = {
+  __typename?: 'ViewInvoice';
+  applicationId: Scalars['Int']['output'];
+  dueDate: Scalars['DateTime']['output'];
+  gstInCents: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  invoiceAttachments: Array<ViewInvoiceAttachment>;
+  invoiceItems: Array<ViewInvoiceItem>;
+  invoiceNotes?: Maybe<Scalars['String']['output']>;
+  invoiceStatus: InvoiceStatus;
+  issuedDate: Scalars['DateTime']['output'];
+  personId: Scalars['String']['output'];
+  pstExempt: Scalars['Boolean']['output'];
+  pstInCents: Scalars['Int']['output'];
+  recipient: DropdownDto;
+  subject: Scalars['String']['output'];
+  subtotalInCents: Scalars['Int']['output'];
+  taxExempt: Scalars['Boolean']['output'];
+  totalInCents: Scalars['Int']['output'];
+  whoUpdated: Scalars['String']['output'];
+};
+
+export type ViewInvoiceAttachment = {
+  __typename?: 'ViewInvoiceAttachment';
+  bucketId: Scalars['String']['output'];
+  fileName: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  invoiceId: Scalars['Int']['output'];
+  objectId: Scalars['String']['output'];
+};
+
+export type ViewInvoiceItem = {
+  __typename?: 'ViewInvoiceItem';
+  description: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  itemType: Scalars['String']['output'];
+  quantity: Scalars['Int']['output'];
+  totalInCents: Scalars['Int']['output'];
+  unitPriceInCents: Scalars['Int']['output'];
+  whenCreated: Scalars['DateTime']['output'];
+  whenUpdated: Scalars['DateTime']['output'];
+  whoCreated: Scalars['String']['output'];
+  whoUpdated: Scalars['String']['output'];
 };
 
 export type ViewOrganizationsDto = {

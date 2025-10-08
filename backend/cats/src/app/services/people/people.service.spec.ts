@@ -7,22 +7,29 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SearchPersonResponse } from '../../dto/response/person/fetchSearchPerson';
 import { CreatePerson } from '../../dto/person/createPerson.dto';
 import { UserTypeEum } from '../../utilities/enums/userType';
+import { PermissionsService } from '../permissions/permissions.service';
+import { PersonPermission } from '../../entities/personPermissions.entity';
+import { Permissions } from '../../entities/permissions.entity';
 
-describe.skip('PersonService', () => {
+describe('PersonService', () => {
   let personService: PersonService;
   let personRepository: Repository<Person>;
+  let permissionsService: PermissionsService;
+  let permissionsRepo: Repository<Permissions>;
+  let personPermissionRepo: Repository<PersonPermission>;
   let loggerService: LoggerService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PersonService,
+        PermissionsService,
         LoggerService,
         {
           provide: getRepositoryToken(Person),
           useValue: {
             find: jest.fn(),
-            findOneBy: jest.fn(),
+            findOne: jest.fn(),
             delete: jest.fn(),
             create: jest.fn(),
             save: jest.fn(),
@@ -34,6 +41,25 @@ describe.skip('PersonService', () => {
             }),
           }, // Mock the repository method you will use
         },
+        {
+          provide: getRepositoryToken(Permissions),
+          useValue: {
+            find: jest.fn(),
+          },
+        },
+        {
+          provide: getRepositoryToken(PersonPermission),
+          useValue: {
+            delete: jest.fn(),
+            save: jest.fn(),
+          },
+        },
+        {
+          provide: LoggerService,
+          useValue: {
+            log: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -42,6 +68,9 @@ describe.skip('PersonService', () => {
       getRepositoryToken(Person),
     ); // If you need direct access to the repo
     loggerService = module.get<LoggerService>(LoggerService);
+    permissionsService = module.get<PermissionsService>(PermissionsService);
+    permissionsRepo = module.get<Repository<Permissions>>(getRepositoryToken(Permissions));
+    personPermissionRepo = module.get<Repository<PersonPermission>>(getRepositoryToken(PersonPermission));
   });
 
   it('should find all persons', async () => {
@@ -103,12 +132,12 @@ describe.skip('PersonService', () => {
   });
 
   it('should find one person by id', async () => {
-    (personRepository.findOneBy as jest.Mock).mockResolvedValue({
+    (personRepository.findOne as jest.Mock).mockResolvedValue({
       id: 1,
       firstName: 'John',
     });
     const result = await personService.findOne(1);
-    expect(result).toEqual({ id: 1, firstName: 'John' });
+    expect(result).toEqual({ id: 1, firstName: 'John', permissionIds: [] });
   });
 
   it('should delete a person by id', async () => {

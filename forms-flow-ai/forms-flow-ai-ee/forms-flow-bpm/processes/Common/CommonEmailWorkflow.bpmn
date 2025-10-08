@@ -59,15 +59,26 @@ system.out.println ("name: "+name);</bpmn:script>
             <camunda:inputParameter name="method">POST</camunda:inputParameter>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="javascript">var toEmailAddresses = JSON.parse(execution.getVariable("emailTo"));
-var toEmailAddressesArr =  Java.to(toEmailAddresses, "java.lang.Object[]");
+var toEmailAddressesArr = Java.to(toEmailAddresses, "java.lang.Object[]");
 
-
+var toCCAddresses = execution.getVariable("emailCC");
+var ccArr = [];
+if (toCCAddresses) {
+  try {
+    var parsedCC = JSON.parse(toCCAddresses);
+    if (parsedCC &amp;&amp; parsedCC.length &gt; 0) {
+      ccArr = Java.to(parsedCC, "java.lang.Object[]");
+    }
+  } catch (e) {
+    console.log("Invalid CC JSON, skipping CC assignment.");
+  }
+}
 
 var p = {
   "bcc": [],
   "bodyType": "html",
   "body": execution.getVariable("text"),
-  "cc": [],
+  "cc": ccArr,
   "delayTS": 0,
   "encoding": "utf-8",
   "from": "NOREPLYEPD@gov.bc.ca",
@@ -76,11 +87,12 @@ var p = {
   "to": toEmailAddressesArr,
   "tag": "",
   "attachments": []
-}
+};
 
-console.log("Payload")
-console.log(JSON.stringify(p))
-JSON.stringify(p)</camunda:script>
+console.log("Payload");
+console.log(JSON.stringify(p));
+JSON.stringify(p);
+</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="url">
               <camunda:script scriptFormat="groovy">System.getenv("CHES_HOST_URL") + "/api/v1/email"</camunda:script>
@@ -102,6 +114,9 @@ JSON.stringify(p)</camunda:script>
           </camunda:inputParameter>
           <camunda:inputParameter name="toEmailListArray">
             <camunda:script scriptFormat="groovy">execution.getVariable("emailsToArray")</camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="emailCC">
+            <camunda:script scriptFormat="groovy">execution.getVariable("emailCC")</camunda:script>
           </camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>

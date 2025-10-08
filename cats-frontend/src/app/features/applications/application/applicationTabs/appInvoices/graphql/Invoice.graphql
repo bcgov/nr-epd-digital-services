@@ -1,0 +1,183 @@
+query GetInvoices($applicationId: Int!) {
+  getInvoices(applicationId: $applicationId) {
+    message
+    httpStatusCode
+    success
+    timestamp
+    data {
+      id
+      subject
+      issuedDate
+      dueDate
+      invoiceStatus
+      totalInCents
+    }
+  }
+}
+
+query GetInvoiceById($invoiceId: Int!) {
+  getInvoiceById(invoiceId: $invoiceId) {
+    message
+    httpStatusCode
+    success
+    timestamp
+    data {
+      id
+      applicationId
+      personId
+      subject
+      issuedDate
+      dueDate
+      invoiceStatus
+      taxExempt
+      pstExempt
+      invoiceNotes
+      subtotalInCents
+      gstInCents
+      pstInCents
+      totalInCents
+      whoUpdated
+      invoiceItems {
+        id
+        itemType
+        description
+        quantity
+        unitPriceInCents
+        totalInCents
+      }
+      invoiceAttachments {
+        id
+        fileName
+        bucketId
+        objectId
+        invoiceId
+      }
+      recipient {
+        key
+        value
+        metaData
+      }
+    }
+  }
+}
+
+mutation CreateInvoice($invoice: CreateInvoice!) {
+  createInvoice(invoice: $invoice) {
+    message
+    httpStatusCode
+    success
+    timestamp
+    data {
+      id
+      applicationId
+      personId
+      subject
+      issuedDate
+      dueDate
+      invoiceStatus
+      taxExempt
+      pstExempt
+      invoiceNotes
+      subtotalInCents
+      gstInCents
+      pstInCents
+      totalInCents
+      whoUpdated
+      invoiceItems {
+        id
+        itemType
+        description
+        quantity
+        unitPriceInCents
+        totalInCents
+      }
+      invoiceAttachments {
+        id
+        fileName
+        bucketId
+        objectId
+        invoiceId
+      }
+      recipient {
+        key
+        value
+        metaData
+      }
+    }
+  }
+}
+
+mutation UpdateInvoice($invoice: UpdateInvoice!) {
+  updateInvoice(invoice: $invoice) {
+    success
+    httpStatusCode
+    message
+    timestamp
+  }
+}
+
+mutation deleteInvoice($invoiceId: Int!) {
+  deleteInvoice(invoiceId: $invoiceId)
+  {
+ 		message
+    httpStatusCode
+    success
+    timestamp
+  }
+}
+
+query getInvoiceRecipientNames($searchParam: String!) {
+  getParticipantNames(searchParam: $searchParam) {
+    httpStatusCode
+    success
+    message
+    timestamp
+    data {
+      key
+      value
+      metaData
+    }
+  }
+}
+
+mutation createBucket($bucketName: String!, $bucketKey: String!){
+  createBucket(bucketName: $bucketName, bucketKey: $bucketKey) {
+    message
+    httpStatusCode
+    success
+    timestamp
+    data {
+      bucketId
+    }
+  }
+}
+
+mutation deleteBucket($bucketId: String!) {
+  deleteBucket(bucketId: $bucketId) {
+    message
+    httpStatusCode
+    success
+    timestamp
+  }
+}
+
+query getObject($objectId: String!, $downloadType: DownloadType) {
+  getObject(objectId: $objectId, downloadType: $downloadType) {
+    message
+    httpStatusCode
+    success
+    timestamp
+    data {
+      downloadUrl
+    }
+  }
+}
+
+mutation deleteObject($objectId: String!, $versionId: String) {
+  deleteObject(objectId: $objectId, versionId: $versionId) {
+    message
+    httpStatusCode
+    success
+    timestamp
+  }
+}

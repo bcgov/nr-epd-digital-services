@@ -631,6 +631,7 @@ const Person = () => {
             key={v4()}
             label={`Are you sure you want to delete ${isDeleteNote ? 'note(s)' : 'person'}  ?`}
             saveBtnLabel={isDeleteNote ? 'Delete Notes' : 'Delete Person'}
+            cancelBtnLabel="Cancel"
             closeHandler={async (response) => {
               if (response) {
                 if (isDeleteNote) {
@@ -664,6 +665,7 @@ const Person = () => {
             headerLabel={note?.noteType}
             saveButtonDisabled={note?.noteData?.noteDescription?.length <= 0}
             saveBtnLabel="Save Note"
+            cancelBtnLabel="Cancel"
             closeHandler={(response) => {
               if (response) {
                 if (note.noteType === 'New Note') {

@@ -24,6 +24,10 @@ global:
     CHES_EMAIL_FROM: NOREPLYEPD@gov.bc.ca
     CATS_APPLICATION_URL: http://localhost:3000/applications
     KEYCLOAK_TOKEN_URL: https://epd-keycloak-test.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/protocol/openid-connect/token
+    VITE_COMS_API: 'https://epd-coms-dev.apps.silver.devops.gov.bc.ca/api/v1/'
+    VITE_S3_STORAGE_REGION: 'ca-central-1'
+    VITE_COMS_BUCKET: 'bucket'
+    VITE_COMS_OBJECT: 'object'
 #-- the components of the application, backend.
 backend:
   #-- enable or disable backend
@@ -54,11 +58,11 @@ frontend:
     REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS: "true"
     REACT_APP_AUTH_LOAD_USER_INFO: "true"
     REACT_APP_AUTH_REVOKE_TOKENS_ON_SIGNOUT: "true"
-
     VITE_SITE_REGISTRAR_USER_ROLE: "site-registrar"
     VITE_INTERNAL_USER_ROLE: "site-internal-user"
-    VITE_SITE_REGISTRY_URL: ~
+    VITE_SITE_REGISTRY_URL: "https://nr-site-registry-test-frontend.apps.silver.devops.gov.bc.ca"
     VITE_FORM_API: "https://forms-flow-api-e38158-test.apps.silver.devops.gov.bc.ca"
     VITE_FORM_BACKEND_API: "https://epd-backend-applications-test.apps.silver.devops.gov.bc.ca"
     VITE_FORM_FLOW_API: "https://forms-flow-forms-e38158-test.apps.silver.devops.gov.bc.ca"
+    VITE_GEOCODER_API: "https://geocoder.api.gov.bc.ca"
 

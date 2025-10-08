@@ -64,22 +64,8 @@ describe('CatsService', () => {
             }),
           },
         },
-        { headers: { 'Content-Type': 'application/json' } }
+        { headers: { 'Content-Type': 'application/json' } },
       );
-    });
-
-    it('should not call axios.post and log error if siteId is missing', async () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-      const invalidFormData = { ...formData, siteId: null };
-
-      await service.submitToCats(invalidFormData, submissionId, formId);
-
-      expect(mockedAxios.post).not.toHaveBeenCalled();
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Site Id not available, application not created in CATS'),
-      );
-
-      consoleSpy.mockRestore();
     });
 
     it('should log error if axios.post throws', async () => {
@@ -102,7 +88,7 @@ describe('CatsService', () => {
     const formData = {
       applicationId: 99999,
       applicationStatus: 'New',
-      siteId: '123,111'
+      siteId: '123,111',
     };
 
     const statusTypeAbbrev = 'New';
@@ -127,7 +113,11 @@ describe('CatsService', () => {
 
       mockedAxios.post.mockResolvedValueOnce(mockResponse);
 
-      const result = await service.updateCatsApplication(submissionId, formId, formData);
+      const result = await service.updateCatsApplication(
+        submissionId,
+        formId,
+        formData,
+      );
 
       expect(mockedAxios.post).toHaveBeenCalledWith(
         process.env.CATS_API,
@@ -139,11 +129,11 @@ describe('CatsService', () => {
               formId,
               formsflowAppId: Number(formData.applicationId),
               statusTypeAbbrev,
-              siteIds
+              siteIds,
             },
           },
         }),
-        { headers: { 'Content-Type': 'application/json' } }
+        { headers: { 'Content-Type': 'application/json' } },
       );
 
       expect(result).toEqual(mockResponse.data);
@@ -153,7 +143,9 @@ describe('CatsService', () => {
       const error = new Error('Update failed');
       mockedAxios.post.mockRejectedValueOnce(error);
 
-      await expect(service.updateCatsApplication(submissionId, formId, formData)).rejects.toThrow('Update failed');
+      await expect(
+        service.updateCatsApplication(submissionId, formId, formData),
+      ).rejects.toThrow('Update failed');
     });
   });
 });

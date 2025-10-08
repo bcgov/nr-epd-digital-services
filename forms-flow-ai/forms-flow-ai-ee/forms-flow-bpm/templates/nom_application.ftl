@@ -19,7 +19,7 @@
             </td>
         </tr>
     </table>
-    <table style="width: 580px;">
+    <table style="width: 780px;">
         <tr>
             <td>
                 <hr color="#DBDCDC" size="1px">
@@ -38,8 +38,18 @@
                   Hello,
                 </p>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                   Your <b>${formName}</b> application # ${applicationId} has been updated. Current status is <b>${action}</b> by ${userRole}.
+                Your <b>Notification of Likely or Actual Migration submission</b> # ${applicationId} has been received.
                 </p>
+                <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
+                  Current status is <b>${action}</b> by ${userRole}.
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                  <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: bold;font-size: 16px;color: #313132;letter-spacing: 0px;">
+               For further information about site remediation in BC and the SRS Web App, please refer to the <a class="link" href="https://www2.gov.bc.ca/gov/content?id=FC30BA123F5B46EA9F4CDE122D8FBE9D" style="overflow: visible;line-height: 24px;text-align: left;overflow-wrap: break-word;word-wrap: break-word;font-style: normal;font-weight: normal;font-size: 16px;color: #1A5A96;text-decoration: underline;">Site Remediation Homepage </a> or to the <a class="link" href="https://www2.gov.bc.ca/gov/content/environment/air-land-water/site-remediation/contamination-migration" style="overflow: visible;line-height: 24px;text-align: left;overflow-wrap: break-word;word-wrap: break-word;font-style: normal;font-weight: normal;font-size: 16px;color: #1A5A96;text-decoration: underline;">Contaminant Migration webpage</a>.
+                </p>                
             </td>
         </tr>
         <tr>

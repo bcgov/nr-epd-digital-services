@@ -361,6 +361,8 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         )}
         {appParticipant.isAppParticipantModal && (
           <ModalDialog
+            cancelBtnLabel="Cancel"
+            saveBtnLabel="Confirm"
             headerLabel={actionType}
             saveButtonDisabled={
               appParticipant.appParticipantDetails.person === '' ||

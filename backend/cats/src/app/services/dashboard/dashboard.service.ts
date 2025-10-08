@@ -14,7 +14,7 @@ export class DashboardService {
     private readonly loggerService: LoggerService,
     private readonly siteService: SiteService,
     private readonly dataSource: DataSource,
-  ) {}
+  ) { }
 
   async getRecentViewedApplications(user: any) {
     this.loggerService.log(
@@ -174,14 +174,18 @@ export class DashboardService {
         );
         return null;
       }
-      const site = await this.siteService.getSiteById(
-        application?.siteId.toString(),
-      );
+
+      let site = null;
+      if (application?.siteId != null) {
+        site = await this.siteService.getSiteById(
+          application?.siteId.toString(),
+        );
+      }
+
       if (!site) {
         this.loggerService.log(
-          'An invalid site was passed into DashboardService.createRecentViewedApplication() end',
+          'This application has no siteId DashboardService.createRecentViewedApplication() end',
         );
-        return null;
       }
 
       const maxVisitedApplications = 4; // Maximum number of recently visited applications to keep
@@ -247,9 +251,8 @@ export class DashboardService {
           application?.appType.description;
         recentViewedApplication.visitedBy = userInfo?.givenName || '';
         recentViewedApplication.visitedDateTime = new Date();
-        recentViewedApplication.siteId = parseInt(
-          site?.findSiteBySiteIdLoggedInUser?.data?.id,
-        );
+        recentViewedApplication.siteId = site?.findSiteBySiteIdLoggedInUser?.data?.id ?? null;
+
         recentViewedApplication.address = siteAddress.trim();
 
         const createdRecentViewedApplication =

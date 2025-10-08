@@ -1,0 +1,216 @@
+import { ExternalLink, FileLinesIcon } from '@cats/components/common/icon';
+import { FormFieldType } from '@cats/components/input-controls/IFormField';
+import { ColumnSize } from '@cats/components/table/TableColumn';
+import { formatDateUTC } from '@cats/helpers/utility';
+import StaffAssigned from './StaffAssigned';
+
+export const applicationResultColumns = (fromMyTasks: boolean = false) => [
+  {
+    id: 1,
+    displayName: 'Application ID',
+    active: true,
+    graphQLPropertyName: 'id',
+    displayType: {
+      type: FormFieldType.Link,
+      label: 'Application ID',
+      graphQLPropertyName: 'id',
+      value: '',
+      customInputTextCss: 'custom-applications-input-txt',
+      tableMode: true,
+      href: '/applications/',
+      componentName: 'Applications',
+    },
+    columnSize: ColumnSize.Default,
+    dynamicColumn: false,
+    customHeaderCss: 'custom-applications-header',
+    isDefault: true,
+    sortOrder: 3,
+    isChecked: true,
+  },
+  {
+    id: 2,
+    displayName: 'Site ID',
+    active: true,
+    graphQLPropertyName: 'siteId',
+    displayType: { type: FormFieldType.Label },
+    renderCell: (value: any) => {
+      return (
+        <div className="custom-applications-link-wrapper">
+          <a
+            href={`${import.meta.env.VITE_SITE_REGISTRY_URL || window?._env_?.VITE_SITE_REGISTRY_URL}/site/details/${value}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={'custom-applications-input-txt'}
+          >
+            {value}
+            <span className="ps-2 custom-applications-external-link">
+              <ExternalLink />
+            </span>
+          </a>
+        </div>
+      );
+    },
+    columnSize: ColumnSize.Small,
+    dynamicColumn: false,
+    customHeaderCss: 'custom-applications-header',
+    isDefault: true,
+    sortOrder: 3,
+    isChecked: true,
+  },
+  {
+    id: 3,
+    displayName: 'Site Address',
+    active: true,
+    graphQLPropertyName: 'siteAddress',
+    groupId: 1,
+    disabled: false,
+    isDefault: true,
+    sortOrder: 3,
+    isChecked: true,
+    displayType: { type: FormFieldType.Label, label: 'Site Address' },
+    linkRedirectionURL: undefined,
+    dynamicColumn: false,
+    columnSize: ColumnSize.Default,
+    customHeaderCss: '',
+  },
+  {
+    id: 4,
+    displayName: 'Application Type',
+    active: true,
+    graphQLPropertyName: 'applicationType',
+    groupId: 1,
+    disabled: false,
+    isDefault: true,
+    sortOrder: 4,
+    isChecked: true,
+    displayType: { type: FormFieldType.Label, label: 'Application Type' },
+    linkRedirectionURL: undefined,
+    dynamicColumn: false,
+    columnSize: ColumnSize.Default,
+    customHeaderCss: '',
+  },
+  {
+    id: 5,
+    displayName: 'Last Updated',
+    active: true,
+    graphQLPropertyName: 'lastUpdated',
+    groupId: 1,
+    disabled: false,
+    isDefault: true,
+    sortOrder: 5,
+    isChecked: true,
+    displayType: { type: FormFieldType.Label, label: 'Last Updated' },
+    linkRedirectionURL: undefined,
+    dynamicColumn: false,
+    columnSize: ColumnSize.Default,
+    customHeaderCss: '',
+    renderCell: (value: any) => {
+      return formatDateUTC(value);
+    },
+  },
+  {
+    id: 6,
+    displayName: 'Status',
+    active: true,
+    graphQLPropertyName: 'status',
+    groupId: 1,
+    disabled: false,
+    isDefault: true,
+    sortOrder: 6,
+    isChecked: true,
+    displayType: { type: FormFieldType.Label, label: 'Status' },
+    linkRedirectionURL: undefined,
+    dynamicColumn: false,
+    columnSize: ColumnSize.Default,
+    customHeaderCss: '',
+  },
+  {
+    id: 7,
+    displayName: 'Staff Assigned',
+    active: true,
+    graphQLPropertyName: 'staffAssigned',
+    groupId: 1,
+    disabled: false,
+    isDefault: true,
+    sortOrder: 7,
+    isChecked: true,
+    displayType: { type: FormFieldType.Label, label: 'Staff Assigned' },
+    linkRedirectionURL: undefined,
+    dynamicColumn: false,
+    columnSize: ColumnSize.Default,
+    customHeaderCss: '',
+    renderCell: (value: any) => {
+      return <StaffAssigned staff={value} />;
+    },
+  },
+  {
+    id: 8,
+    displayName: 'Priority',
+    active: true,
+    graphQLPropertyName: 'priority',
+    groupId: 1,
+    disabled: false,
+    isDefault: true,
+    sortOrder: 8,
+    isChecked: true,
+    displayType: { type: FormFieldType.Label, label: 'Priority' },
+    linkRedirectionURL: undefined,
+    dynamicColumn: false,
+    columnSize: ColumnSize.Default,
+    customHeaderCss: '',
+  },
+  {
+    id: 9,
+    displayName: 'View',
+    active: true,
+    graphQLPropertyName: 'id',
+    groupId: 1,
+    disabled: false,
+    isDefault: true,
+    sortOrder: 9,
+    isChecked: true,
+    displayType: {
+      type: FormFieldType.Link,
+      label: 'View',
+      graphQLPropertyName: 'id',
+      value: '',
+      tableMode: true,
+      href: '/applications/',
+      customLinkValue: 'View',
+      customIcon: <FileLinesIcon />,
+      componentName: fromMyTasks ? 'My Tasks' : 'Applications',
+      customInputTextCss: 'custom-applications-edit-lbl',
+    },
+    dynamicColumn: true,
+    columnSize: ColumnSize.Default,
+    customHeaderCss: 'custom-applications-tbl-header',
+  },
+  {
+    id: 9,
+    displayName: 'Actions',
+    active: true,
+    graphQLPropertyName: 'id',
+    groupId: 1,
+    disabled: false,
+    isDefault: true,
+    sortOrder: 10,
+    isChecked: true,
+    displayType: {
+      type: FormFieldType.Link,
+      label: 'Manage Staff',
+      graphQLPropertyName: 'assignStaff',
+      value: '',
+      tableMode: true,
+      href: '#',
+      customLinkValue: 'Manage Staff',
+      customIcon: <FileLinesIcon />,
+      componentName: 'Applications',
+      customInputTextCss: 'custom-applications-edit-lbl',
+      customContainerCss: 'custom-applications-column-position',
+    },
+    dynamicColumn: true,
+    columnSize: ColumnSize.Default,
+    customHeaderCss:
+      'custom-applications-tbl-header custom-applications-column-position',
+  },
+];

@@ -42,6 +42,10 @@ import {
   FaArrowRight,
   FaClock,
   FaMessage,
+  FaPaperPlane,
+  FaFilePdf,
+  FaPaperclip,
+  FaFileContract,
 } from 'react-icons/fa6';
 
 import {
@@ -111,3 +115,7 @@ export const ArrowLeft = FaArrowLeft;
 export const ArrowRight = FaArrowRight;
 export const ClockIcon = FaClock;
 export const MessageIcon = FaMessage;
+export const PaperPlaneIcon = FaPaperPlane;
+export const FilePdfIcon = FaFilePdf;
+export const PaperclipIcon = FaPaperclip;
+export const FileContractIcon = FaFileContract;

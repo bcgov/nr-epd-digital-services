@@ -1,0 +1,82 @@
+.staff-assigned {
+  display: flex;
+  position: relative;
+  align-items: center;
+  /* Adjust for extra margin added by the enclosing d-flex class. It looks nice for text, but not for the avatars. */
+  margin-top: -8px;
+  height: 36px; /* Adjusted height to match scaled avatar size */
+  width: 100%; /* This allows the dropdown arrow to be pushed to the far right */
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.staff-assigned__avatar {
+  margin-left: -10px; /* Overlap amount */
+  transform: scale(0.75);
+  transform-origin: center;
+  /* Explicit sizing for scaled avatar fixes some whitespace layout issues. */
+  width: 36px;
+  height: 36px;
+}
+
+.staff-assigned__avatar:first-child {
+  margin-left: 0; /* No overlap for the first avatar */
+}
+
+.staff-assigned-popup__list {
+  position: absolute; /* Ensures the the table does not reflow the page */
+  z-index: 1000; /* Ensures it appears above other elements */
+  top: 100%;
+  left: 0;
+  background-color: var(--surface-color-background-white);
+  box-shadow: var(--surface-shadow-medium);
+  border: var(--layout-border-width-small) solid
+    var(--surface-color-border-default);
+  border-radius: var(--border-radius-small);
+  width: max-content;
+  padding: var(--layout-padding-small);
+  overflow-y: scroll;
+  max-height: 236px; /* Enough room for 6 items plus padding */
+}
+
+.staff-assigned-popup__item {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* Adds spacing between the avatar and the name */
+  height: 36px; /* Adjusted height to match scaled avatar size */
+}
+
+.staff-assigned-popup__name {
+  font-size: var(--typography-font-size-small-body);
+  margin-top: 6px; /* Adjusts the vertical alignment of the name */
+}
+
+.staff-assigned-popup__item .staff-assigned__avatar {
+  transform: scale(0.5);
+  transform-origin: center;
+  width: 24;
+  height: 24;
+}
+
+.staff-assigned__extra {
+  margin-left: 8px;
+  color: var(--typography-color-disabled);
+}
+
+.staff-assigned__dropdown-arrow {
+  display: flex;
+  align-items: center;
+  margin-left: auto; /* Pushes the element to the far right */
+}
+
+/* Hide the arrow entirely */
+.popover .popover-arrow {
+  display: none !important;
+}
+
+.popover .popover-arrow::before,
+.popover .popover-arrow::after {
+  display: none !important;
+}

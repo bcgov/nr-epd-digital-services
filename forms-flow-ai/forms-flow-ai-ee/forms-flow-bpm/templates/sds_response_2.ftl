@@ -32,17 +32,32 @@
                 </p>
             </td>
         </tr>
+      
+        <#if siteId??>
         <tr>
             <td>
-                <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height:27px;text-align: left;font-style: normal;font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
-                    <span style="font-weight: bold;">SITE ID:</span> ${siteId}, ${siteAddress}, ${siteCity}</p>
+                <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;
+                                    line-height:27px;text-align: left;font-style: normal;
+                                    font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
+                    <span style="font-weight: bold;">SITE ID:</span> ${siteId}, ${siteAddress!""}, ${siteCity!""}
                 </p>
             </td>
         </tr>
+        </#if>
+
+        <tr>
+        <td>
+            <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;
+                                   line-height:27px;text-align: left;font-style: normal;
+                                   font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
+                <span style="font-weight: bold;">Application ID:</span> ${applicationId}
+            </p>
+        </td>
+    </tr>
         <tr>
             <td>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                    This letter is to acknowledge receipt of a satisfactorily completed Site Disclosure Statement (SDS) pertaining to the above-referenced site. Based on the SDS submitted to the ministry, a <a href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/375_96_04" style="color: #1A5A96;text-decoration: underline;">Schedule 2</a> commercial or industrial use has occurred on your site and it may be contaminated.
+                    This letter is to acknowledge receipt of a satisfactorily completed Site Disclosure Statement (SDS) pertaining to the above-referenced site/application ID. Based on the SDS submitted to the ministry, a <a href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/375_96_04" style="color: #1A5A96;text-decoration: underline;">Schedule 2</a> commercial or industrial use has occurred on your site and it may be contaminated.
                 </p>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
                     In accordance with the <a href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/03053_04#part4" style="color: #1A5A96;text-decoration: underline;">Environmental Management Act</a> and <a href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/375_96_00" style="color: #1A5A96;text-decoration: underline;">Contaminated Sites Regulation (CSR)</a>, this has triggered the <a href="https://www2.gov.bc.ca/gov/content/environment/air-land-water/site-remediation/identifying-and-disclosing-sites-that-may-be-contaminated" style="color: #1A5A96;text-decoration: underline;">Site Identification process</a>, and site investigation is required. 

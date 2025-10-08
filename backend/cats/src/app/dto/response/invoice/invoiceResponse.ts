@@ -1,9 +1,15 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { ResponseDto } from '../response.dto';
-import { InvoiceDto } from '../../invoice/invoice.dto';
+import { ViewInvoice } from '../../invoice/viewInvoice.dto';
 
 @ObjectType()
 export class InvoiceResponse extends ResponseDto {
-  @Field(() => InvoiceDto, { nullable: true })
-  invoice?: InvoiceDto;
+  @Field(() => ViewInvoice, { nullable: true })
+  data: ViewInvoice | null;
+}
+
+@ObjectType()
+export class InvoicesResponse extends ResponseDto {
+  @Field(() => [ViewInvoice], { nullable: true })
+  data: ViewInvoice[] | null;
 }
