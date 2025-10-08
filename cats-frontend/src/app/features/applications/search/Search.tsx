@@ -29,7 +29,7 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
     applicationResultColumns(filterMyTasks),
   );
   const [filter, setFilter] = useState<Filter>(
-    filterMyTasks === true ? Filter.Assigned : Filter.All,
+    filterMyTasks === true ? Filter.MyAssigned : Filter.All,
   );
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
@@ -45,7 +45,7 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
     searchTerm: '',
     page: 1,
     pageSize: 5,
-    filter: filterMyTasks === true ? Filter.Assigned : Filter.All,
+    filter: filterMyTasks === true ? Filter.MyAssigned : Filter.All,
     sortBy: ApplicationSortByField.Id,
     sortByDir: ApplicationSortByDirection.Asc,
   });
@@ -63,6 +63,7 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
       sortBy: searchParams.sortBy,
       sortByDir: searchParams.sortByDir,
     },
+    fetchPolicy: 'network-only',
   });
 
   useEffect(() => {

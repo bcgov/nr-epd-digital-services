@@ -86,8 +86,65 @@ describe('ApplicationSearchService', () => {
       `ApplicationSearchService: searchParam: ${searchParam}, page: ${page}, pageSize: ${pageSize}, filter: ${filter}, sortBy: ${sortBy}, sortByDir: ${sortByDir}.`,
     );
     expect(loggerService.log).toHaveBeenNthCalledWith(
-      2,
+      3,
       'ApplicationSearchService: 1 applications found.',
+    );
+  });
+
+  it('should filter applications by MY_ASSIGNED filter with user email', async () => {
+    const searchParam = 'test';
+    const page = 1;
+    const pageSize = 10;
+    const filter = Filter.MY_ASSIGNED;
+    const sortBy = SortByField.ID;
+    const sortByDir = SortByDirection.ASC;
+    const user = { email: 'test@example.com' };
+
+    const mockApplication = new Application();
+    mockApplication.id = 1;
+    mockApplication.siteId = 1;
+    mockApplication.updatedDateTime = new Date();
+    mockApplication.appParticipants = [];
+    mockApplication.appPriorities = [];
+
+    const queryBuilderMock = {
+      leftJoinAndSelect: jest.fn().mockReturnThis(),
+      andWhere: jest.fn().mockReturnThis(),
+      orWhere: jest.fn().mockReturnThis(),
+      skip: jest.fn().mockReturnThis(),
+      take: jest.fn().mockReturnThis(),
+      orderBy: jest.fn().mockReturnThis(),
+      getManyAndCount: jest.fn().mockResolvedValue([[mockApplication], 1]),
+    };
+
+    jest
+      .spyOn(repository, 'createQueryBuilder')
+      .mockReturnValue(queryBuilderMock as any);
+
+    const result = await service.searchApplications(
+      searchParam,
+      page,
+      pageSize,
+      filter,
+      sortBy,
+      sortByDir,
+      user,
+    );
+
+    expect(result).toBeInstanceOf(ApplicationSearchResult);
+    expect(result.applications.length).toBe(1);
+    expect(result.count).toBe(1);
+
+    // Verify that the user email filter was applied
+    expect(queryBuilderMock.andWhere).toHaveBeenCalledWith(
+      'person.email = :email',
+      { email: 'test@example.com' },
+    );
+
+    // Verify the user email log was called
+    expect(loggerService.log).toHaveBeenNthCalledWith(
+      2,
+      'ApplicationSearchService: Logged in user email: test@example.com.',
     );
   });
 

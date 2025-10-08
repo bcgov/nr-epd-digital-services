@@ -30,6 +30,11 @@ export class ApplicationSearchService {
     this.loggerService.log(
       `ApplicationSearchService: searchParam: ${searchParam}, page: ${page}, pageSize: ${pageSize}, filter: ${filter}, sortBy: ${sortBy}, sortByDir: ${sortByDir}.`,
     );
+    this.loggerService.log(
+      `ApplicationSearchService: Logged in user email: ${
+        user?.email || 'No email found'
+      }.`,
+    );
 
     const result = new ApplicationSearchResult();
     if (page <= 0 || pageSize <= 0) {
@@ -87,6 +92,10 @@ export class ApplicationSearchService {
     );
 
     if (filter && filter.toLowerCase() === Filter.ASSIGNED) {
+      query.andWhere('person.email = :email', { email: user.email });
+    }
+
+    if (filter && filter.toLowerCase() === Filter.MY_ASSIGNED) {
       query.andWhere('person.email = :email', { email: user.email });
     }
 
