@@ -91,12 +91,12 @@ export class ApplicationSearchService {
       }),
     );
 
-    if (filter && filter.toLowerCase() === Filter.ASSIGNED) {
+    if (filter && filter.toLowerCase() === Filter.MY_ASSIGNED) {
       query.andWhere('person.email = :email', { email: user.email });
     }
 
-    if (filter && filter.toLowerCase() === Filter.MY_ASSIGNED) {
-      query.andWhere('person.email = :email', { email: user.email });
+    if (filter && filter.toLowerCase() === Filter.ASSIGNED) {
+      query.andWhere('appParticipant.personId IS NOT NULL');
     }
 
     if (filter === Filter.UNASSIGNED) {

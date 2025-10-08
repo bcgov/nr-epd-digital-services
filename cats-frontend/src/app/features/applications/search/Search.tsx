@@ -199,7 +199,7 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
     {
       label: 'Assigned to Me',
       value: Filter.Assigned,
-      onClick: () => handleFilterChange(Filter.Assigned),
+      onClick: () => handleFilterChange(Filter.MyAssigned),
       isSelected: filter === Filter.Assigned,
     },
   ];
