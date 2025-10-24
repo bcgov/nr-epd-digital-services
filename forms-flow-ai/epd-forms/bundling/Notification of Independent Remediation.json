@@ -5607,7 +5607,7 @@
                       "allowCalculateOverride": false,
                       "validateOn": "change",
                       "validate": {
-                        "required": true,
+                        "required": false,
                         "pattern": "^\\+?[0-9\\-().\\s]{10,17}$",
                         "customMessage": "Please enter a valid phone number",
                         "custom": "",
