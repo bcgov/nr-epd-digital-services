@@ -2893,7 +2893,7 @@
                   "label": "Scope of Remediation:",
                   "labelPosition": "top",
                   "optionsLabelPosition": "right",
-                  "description": "If you expect that remediation of the entire site will take longer than one year attach a remediation schedule.",
+                  "description": "",
                   "tooltip": "",
                   "customClass": "",
                   "tabindex": "",
@@ -2977,7 +2977,7 @@
                   "addons": [],
                   "inputType": "radio",
                   "fieldSet": false,
-                  "id": "erdu4",
+                  "id": "ejrzi1f",
                   "defaultValue": ""
                 }
               ],
@@ -5649,7 +5649,7 @@
                       "dataGridLabel": false,
                       "addons": [],
                       "inputType": "text",
-                      "id": "ejnyz7k",
+                      "id": "eeu94pi",
                       "defaultValue": ""
                     }
                   ],
@@ -11734,7 +11734,12 @@
           "validateOn": "change",
           "clearOnHide": false,
           "collapsible": false,
-          "conditional": { "eq": "", "json": "", "show": null, "when": null },
+          "conditional": {
+            "eq": "",
+            "json": "",
+            "show": null,
+            "when": null
+          },
           "customClass": "",
           "description": "",
           "placeholder": "",
@@ -11820,7 +11825,11 @@
                   "value": "demolition",
                   "shortcut": ""
                 },
-                { "label": "Upgrade", "value": "upgrade", "shortcut": "" },
+                {
+                    "label": "Upgrade",
+                    "value": "upgrade",
+                    "shortcut": ""
+                },
                 {
                   "label": "Other (describe):",
                   "value": "otherDescribe",
