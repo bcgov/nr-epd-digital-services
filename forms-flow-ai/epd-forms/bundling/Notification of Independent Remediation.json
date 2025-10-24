@@ -2897,7 +2897,7 @@
                   "label": "Scope of Remediation:",
                   "labelPosition": "top",
                   "optionsLabelPosition": "right",
-                  "description": "If you expect that remediation of the entire site will take longer than one year attach a remediation schedule.",
+                  "description": "",
                   "tooltip": "",
                   "customClass": "",
                   "tabindex": "",
@@ -2981,7 +2981,7 @@
                   "addons": [],
                   "inputType": "radio",
                   "fieldSet": false,
-                  "id": "erdu4",
+                  "id": "exkwq7b",
                   "defaultValue": ""
                 }
               ],
@@ -9060,7 +9060,7 @@
                   "key": "contaminant",
                   "type": "textfield",
                   "input": true,
-                  "id": "etrp3s00",
+                  "id": "etrp3s0000",
                   "placeholder": "",
                   "prefix": "",
                   "customClass": "",
@@ -9206,7 +9206,7 @@
                   "showWordCount": false,
                   "allowMultipleMasks": false,
                   "addons": [],
-                  "id": "ea6hu3600000000000000000000",
+                  "id": "ea6hu360000000000000000000000",
                   "defaultValue": null
                 }
               ],
@@ -9778,7 +9778,7 @@
                   "key": "contaminant",
                   "type": "textfield",
                   "input": true,
-                  "id": "eilq56q00",
+                  "id": "eilq56q0000",
                   "placeholder": "",
                   "prefix": "",
                   "customClass": "",
@@ -9924,7 +9924,7 @@
                   "showWordCount": false,
                   "allowMultipleMasks": false,
                   "addons": [],
-                  "id": "eyilpe00000000000000000",
+                  "id": "eyilpe0000000000000000000",
                   "defaultValue": null
                 }
               ],
@@ -10569,7 +10569,7 @@
                   "refreshOn": "",
                   "addons": [],
                   "inputType": "text",
-                  "id": "e0i6bi000000000000000000",
+                  "id": "e0i6bi00000000000000000000",
                   "defaultValue": ""
                 },
                 {
@@ -10653,7 +10653,7 @@
                   "showWordCount": false,
                   "allowMultipleMasks": false,
                   "addons": [],
-                  "id": "eduv7hp000000000000000",
+                  "id": "eduv7hp00000000000000000",
                   "defaultValue": null
                 }
               ],
@@ -11304,7 +11304,7 @@
                   "refreshOn": "",
                   "addons": [],
                   "inputType": "text",
-                  "id": "ea0c6lo000000000000000000",
+                  "id": "ea0c6lo00000000000000000000",
                   "defaultValue": ""
                 },
                 {
@@ -11388,7 +11388,7 @@
                   "showWordCount": false,
                   "allowMultipleMasks": false,
                   "addons": [],
-                  "id": "eux9zcf000000000000000",
+                  "id": "eux9zcf00000000000000000",
                   "defaultValue": null
                 }
               ],
