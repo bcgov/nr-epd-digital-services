@@ -5,7 +5,7 @@
             "display": "form",
             "type": "form",
             "name": "srcrBundleForm",
-            "path": "srcrBundleForm",
+            "path": "srcrbundleform",
             "tags": [
                 "common"
             ],
