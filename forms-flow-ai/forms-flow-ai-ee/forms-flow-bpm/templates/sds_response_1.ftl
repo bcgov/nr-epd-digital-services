@@ -38,7 +38,11 @@
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;
                                     line-height:27px;text-align: left;font-style: normal;
                                     font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
-                    <span style="font-weight: bold;">SITE ID:</span> ${siteId}, ${siteAddress!""}, ${siteCity!""}
+                    <span style="font-weight: bold;">SITE ID:</span>
+                    ${siteId}
+                    <#if siteAddress?? && siteAddress?has_content>, ${siteAddress}</#if>
+                    <#if siteCity?? && siteCity?has_content>, ${siteCity}</#if>
+
                 </p>
             </td>
         </tr>
