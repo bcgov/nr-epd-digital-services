@@ -5,7 +5,7 @@
             "display": "form",
             "type": "form",
             "name": "srcrBundleForm",
-            "path": "srcrbundleform",
+            "path": "srcrBundleForm",
             "tags": [
                 "common"
             ],
@@ -1660,7 +1660,7 @@
                                                 "height": ""
                                             },
                                             "type": "button",
-                                            "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst filteredData = _.pick(data, data.srcrUtilKeys);\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": filteredData};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Returned'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Returned'\r\n    }); \r\n});",
+                                            "custom": "const submissionId = form._submission._id;\r\nconst formId = form._submission.form;\r\nconst formDataReqUrl = form.formio?form.formio.formUrl:(localStorage.getItem('customSubmissionUrl')+'/form/'+formId)+'/submission/'+submissionId;\r\nconst filteredData = _.pick(data, data.srcrUtilKeys);\r\nconst formDataReqObj1 =  {  \"_id\": submissionId,  \"data\": filteredData};\r\nconst formio = new Formio(formDataReqUrl);\r\nformio.saveSubmission(formDataReqObj1).then( result => {\r\nform.emit('customEvent', {\r\n          type: \"actionComplete\",   \r\n          component: component,\r\n          actionType: 'Additional Information Requested'\r\n    }); \r\n}).catch((error)=>{\r\n//Error callback on not Save\r\nform.emit('customEvent', {\r\n          type: \"actionError\",   \r\n          component: component,\r\n          actionType:'Additional Information Requested'\r\n    }); \r\n});",
                                             "input": true,
                                             "placeholder": "",
                                             "prefix": "",
