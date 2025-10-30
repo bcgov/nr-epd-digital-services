@@ -25,7 +25,7 @@ a.custom-invoices-txt {
 }
 
 a.custom-invoices-txt:hover {
-  color: var(--typography-color-link-hover, #1a3f6b);
+  color: var(--typography-color-link, #255A90);
 }
 
 .custom-invoices-txt {
