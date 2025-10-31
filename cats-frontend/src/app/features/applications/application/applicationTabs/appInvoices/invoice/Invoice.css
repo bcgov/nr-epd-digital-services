@@ -97,7 +97,7 @@ a.custom-invoice-items-txt {
 }
 
 .custom-invoice-items-txt > a {
-  color: var(--typography-color-link, #255A90);
+  color: var(--typography-color-link, #255a90);
 }
 
 .custom-invoice-items-tbl-header {
