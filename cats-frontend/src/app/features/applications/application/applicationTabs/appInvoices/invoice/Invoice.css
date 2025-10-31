@@ -92,6 +92,13 @@ a.custom-invoice-txt:hover {
   line-height: 16px !important;
   color: var(--typography-color-secondary, #474543) !important;
 }
+a.custom-invoice-items-txt {
+  color: var(--surface-color-primary-default, #053662) !important;
+}
+
+.custom-invoice-items-txt > a {
+  color: var(--typography-color-link, #255a90);
+}
 
 .custom-invoice-items-tbl-header {
   font-family: Noto Sans;

@@ -313,6 +313,7 @@ export enum Filter {
   All = 'ALL',
   Assigned = 'ASSIGNED',
   Completed = 'COMPLETED',
+  MyAssigned = 'MY_ASSIGNED',
   Overcapacity = 'OVERCAPACITY',
   Unassigned = 'UNASSIGNED'
 }
