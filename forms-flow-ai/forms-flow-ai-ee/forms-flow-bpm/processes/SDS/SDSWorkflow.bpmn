@@ -14,7 +14,6 @@
         <bpmn:flowNodeRef>Event_06jjxcg</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_0l6sbm8</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_1cvtuda</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_12bfkk7</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_1th7fqb" name="Approving Authority">
         <bpmn:flowNodeRef>Gateway_0ojnh7a</bpmn:flowNodeRef>
@@ -87,6 +86,7 @@ var emailsIdsToProcess = [];
 
 emailsIdsToProcess.push(clientEmail);
 emailsIdsToProcess.push(submitterEmail);
+
 
 var section5DeclarationSectionLocalGovernmentPermits = execution.getVariable('section5DeclarationSectionLocalGovernmentPermits');
 if(section5DeclarationSectionLocalGovernmentPermits === true || section5DeclarationSectionLocalGovernmentPermits === "true")
@@ -243,7 +243,7 @@ execution.setVariable('siteAddress',siteAddress);</bpmn:script>
     <bpmn:sequenceFlow id="Flow_0q4y5zz" name="Accepted" sourceRef="Gateway_0ojnh7a" targetRef="Activity_06nypz0">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Received from municipality'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_1yl0zu1" name="Returned" sourceRef="Gateway_0ojnh7a" targetRef="Activity_12bfkk7">
+    <bpmn:sequenceFlow id="Flow_1yl0zu1" name="Returned" sourceRef="Gateway_0ojnh7a" targetRef="Task_05ulff4">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Returned'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:exclusiveGateway id="Gateway_0rg109d" name="Is Municipal Approval Reqd">
