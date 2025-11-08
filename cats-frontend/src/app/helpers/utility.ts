@@ -90,6 +90,8 @@ export const formatDateUTC = (
   date: Date | string,
   dateFormat: string = 'MMMM do, yyyy',
 ) => {
+  if (date === null) return '';
+
   const utcDate = new UTCDate(date);
   return formatDate(utcDate, dateFormat);
 };
@@ -235,8 +237,10 @@ export enum UserRoleType {
 
 export const isUserOfType = (roleType: UserRoleType) => {
   const user = getUser();
+  console.log(user);
   if (user !== null) {
     const userRoles: any = user.profile?.role;
+    console.table(userRoles);
     switch (roleType) {
       case UserRoleType.INTERNAL:
         const internalUserRole =
