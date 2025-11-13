@@ -34,6 +34,7 @@
         <bpmn:flowNodeRef>Gateway_1m36jwe</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_0nmj3dm</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_1qrhl19</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0w2f3q4</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_1i2r1qv" name="Society">
         <bpmn:flowNodeRef>Gateway_0yisf6v</bpmn:flowNodeRef>
@@ -46,6 +47,7 @@
         <bpmn:flowNodeRef>Gateway_1gzq005</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1os7sys</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Event_0bwdoce</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0kw2jm7</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_0bf59ja" name="Approved Professional">
         <bpmn:flowNodeRef>Gateway_00nmer9</bpmn:flowNodeRef>
@@ -59,9 +61,6 @@
         <bpmn:flowNodeRef>Activity_0k6ixqm</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1ozfgid</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1v5ffpw</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_15772wo</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Gateway_1qqphxe</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_0a9pnut</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_1gvu1qg</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_0o1oxx6</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Event_0z3ea6o</bpmn:flowNodeRef>
@@ -71,9 +70,9 @@
     <bpmn:sequenceFlow id="Flow_0jxnrvm" sourceRef="Activity_0q362ss" targetRef="Event_1n5addo" />
     <bpmn:sequenceFlow id="Flow_14qx1q0" sourceRef="Activity_1os7sys" targetRef="Event_0bwdoce" />
     <bpmn:sequenceFlow id="Flow_15f3evi" sourceRef="Gateway_0pty1fn" targetRef="Gateway_0o9l3lp" />
-    <bpmn:sequenceFlow id="Flow_1i04zkp" sourceRef="Gateway_0pty1fn" targetRef="Activity_0q362ss" />
-    <bpmn:sequenceFlow id="Flow_17tf2x2" sourceRef="Gateway_1l4bqor" targetRef="Activity_0q362ss" />
-    <bpmn:sequenceFlow id="Flow_16ek6dk" sourceRef="Gateway_1gzq005" targetRef="Activity_1os7sys" />
+    <bpmn:sequenceFlow id="Flow_1i04zkp" sourceRef="Gateway_0pty1fn" targetRef="Activity_0w2f3q4" />
+    <bpmn:sequenceFlow id="Flow_17tf2x2" sourceRef="Gateway_1l4bqor" targetRef="Activity_0w2f3q4" />
+    <bpmn:sequenceFlow id="Flow_16ek6dk" sourceRef="Gateway_1gzq005" targetRef="Activity_0kw2jm7" />
     <bpmn:sequenceFlow id="Flow_0qbjx6e" name="Rejected" sourceRef="Gateway_0oobb3z" targetRef="Activity_0kxdigs">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Rejected'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
@@ -88,15 +87,6 @@
         </camunda:executionListener>
       </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Submitted'}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_1xx7tz6" name="Yes" sourceRef="Gateway_1qqphxe" targetRef="Activity_0a9pnut">
-      <bpmn:extensionElements>
-        <camunda:executionListener event="take">
-          <camunda:script scriptFormat="javascript">var system = java.lang.System;
-system.out.println ("site owner flow");</camunda:script>
-        </camunda:executionListener>
-      </bpmn:extensionElements>
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${owneroperatorradioGroup=='different'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0qw9o9a" name="Returned" sourceRef="Gateway_15p5urd" targetRef="Activity_1v5ffpw">
       <bpmn:extensionElements>
@@ -185,13 +175,6 @@ system.out.println ("isSentFromSociety "+ execution.getVariable('isSentFromSocie
       <bpmn:extensionElements />
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${typeOfReview!= 'directToMinistryApplication'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_1asq9fa" name="No" sourceRef="Gateway_1qqphxe" targetRef="Activity_15772wo">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${owneroperatorradioGroup=='sameAsApplicant'}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_16fwgn1" sourceRef="Activity_0a9pnut" targetRef="Activity_15772wo">
-      <bpmn:extensionElements />
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus== 'Signed'}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1xj96i6" name="No" sourceRef="Gateway_17raw62" targetRef="Gateway_08cgufe">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus!= 'Resubmitted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
@@ -204,7 +187,6 @@ system.out.println ("isSentFromSociety "+ execution.getVariable('isSentFromSocie
     <bpmn:sequenceFlow id="Flow_0wr0mei" sourceRef="Gateway_17raw62" targetRef="Activity_08ykdar">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus== 'Resubmitted' and isCssaTeam== true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0ohuh4k" sourceRef="Activity_15772wo" targetRef="Gateway_17raw62" />
     <bpmn:sequenceFlow id="Flow_1esdw3m" name="Recheck" sourceRef="Gateway_0o9l3lp" targetRef="Activity_0vo5rls">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Recheck'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
@@ -221,10 +203,10 @@ system.out.println ("isSentFromSociety "+ execution.getVariable('isSentFromSocie
       </bpmn:extensionElements>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Queued'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_01zmsuo" sourceRef="Gateway_00nmer9" targetRef="Activity_1os7sys" />
+    <bpmn:sequenceFlow id="Flow_01zmsuo" sourceRef="Gateway_00nmer9" targetRef="Activity_0kw2jm7" />
     <bpmn:sequenceFlow id="Flow_0kumbes" sourceRef="Gateway_00nmer9" targetRef="Gateway_04o747e" />
     <bpmn:sequenceFlow id="Flow_0b418rv" sourceRef="Activity_1uc1xs1" targetRef="Gateway_00nmer9" />
-    <bpmn:sequenceFlow id="Flow_1258dam" sourceRef="Gateway_0yisf6v" targetRef="Activity_1os7sys" />
+    <bpmn:sequenceFlow id="Flow_1258dam" sourceRef="Gateway_0yisf6v" targetRef="Activity_0kw2jm7" />
     <bpmn:sequenceFlow id="Flow_0itdetv" sourceRef="Gateway_0yisf6v" targetRef="Gateway_15p5urd" />
     <bpmn:sequenceFlow id="Flow_0d8ruax" sourceRef="Activity_1ao3zkj" targetRef="Gateway_0yisf6v" />
     <bpmn:sequenceFlow id="Flow_0n61nyr" sourceRef="Activity_0kxdigs" targetRef="Event_0sdygwc" />
@@ -420,11 +402,10 @@ system.out.println('srcrBundleURL'+execution.getVariable('bundleUrl'));</camunda
       <bpmn:extensionElements>
         <camunda:in variables="all" />
         <camunda:inputOutput>
-          <camunda:inputParameter name="category">cssa_updated</camunda:inputParameter>
+          <camunda:inputParameter name="category">${cssa_email_category}</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1i04zkp</bpmn:incoming>
-      <bpmn:incoming>Flow_17tf2x2</bpmn:incoming>
+      <bpmn:incoming>Flow_1qcygaa</bpmn:incoming>
       <bpmn:outgoing>Flow_0jxnrvm</bpmn:outgoing>
     </bpmn:callActivity>
     <bpmn:subProcess id="Activity_12e3zvm" name="SoSC Flow">
@@ -570,11 +551,10 @@ system.out.println ("isSentFromSociety "+execution.getVariable('isSentFromSociet
         <bpmn:extensionElements>
           <camunda:in variables="all" />
           <camunda:inputOutput>
-            <camunda:inputParameter name="category">cssa_subforms_updated</camunda:inputParameter>
+            <camunda:inputParameter name="category">${cssa_email_category}</camunda:inputParameter>
           </camunda:inputOutput>
         </bpmn:extensionElements>
-        <bpmn:incoming>Flow_0vixcwm</bpmn:incoming>
-        <bpmn:incoming>Flow_1n9gcsu</bpmn:incoming>
+        <bpmn:incoming>Flow_1lendj6</bpmn:incoming>
         <bpmn:outgoing>Flow_11sb4e2</bpmn:outgoing>
       </bpmn:callActivity>
       <bpmn:parallelGateway id="Gateway_0kk8s26" camunda:asyncAfter="true">
@@ -761,9 +741,28 @@ execution.setVariable('requestType', 'SoSC');</camunda:script>
         </bpmn:extensionElements>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_0xnsojj" sourceRef="Activity_0iwvier" targetRef="Gateway_1oj5hmh" />
-      <bpmn:sequenceFlow id="Flow_0vixcwm" sourceRef="Gateway_0kk8s26" targetRef="Activity_1pxaocl" />
-      <bpmn:sequenceFlow id="Flow_1n9gcsu" sourceRef="Gateway_07klrhx" targetRef="Activity_1pxaocl" />
+      <bpmn:sequenceFlow id="Flow_0vixcwm" sourceRef="Gateway_0kk8s26" targetRef="Activity_1gmd3vf" />
+      <bpmn:sequenceFlow id="Flow_1n9gcsu" sourceRef="Gateway_07klrhx" targetRef="Activity_1gmd3vf" />
       <bpmn:sequenceFlow id="Flow_11sb4e2" sourceRef="Activity_1pxaocl" targetRef="Event_09p87ef" />
+      <bpmn:scriptTask id="Activity_1gmd3vf" name="Setting Email Category" scriptFormat="javascript">
+        <bpmn:incoming>Flow_0vixcwm</bpmn:incoming>
+        <bpmn:incoming>Flow_1n9gcsu</bpmn:incoming>
+        <bpmn:outgoing>Flow_1lendj6</bpmn:outgoing>
+        <bpmn:script>var system = java.lang.System;
+var emailCategory = 'cssa_subforms_updated';
+execution.setVariable('cssa_email_category',emailCategory);
+system.out.println ("cssa_email_category"+emailCategory);
+var applicationStatus = execution.getVariable('action');
+system.out.println ("applicationStatus"+applicationStatus);
+if (applicationStatus === 'Additional Information Requested')
+{
+	emailCategory = 'srs_status_resubmit';
+}
+
+execution.setVariable('cssa_email_category',emailCategory);
+system.out.println ("cssa_email_category"+emailCategory);</bpmn:script>
+      </bpmn:scriptTask>
+      <bpmn:sequenceFlow id="Flow_1lendj6" sourceRef="Activity_1gmd3vf" targetRef="Activity_1pxaocl" />
     </bpmn:subProcess>
     <bpmn:subProcess id="Activity_07ttn7q" name="CSSA Flow">
       <bpmn:incoming>Flow_1kyum71</bpmn:incoming>
@@ -1023,11 +1022,10 @@ execution.setVariable('bundleStatus', "SDM Approved CSSA Form");</camunda:script
         <bpmn:extensionElements>
           <camunda:in variables="all" />
           <camunda:inputOutput>
-            <camunda:inputParameter name="category">cssa_subforms_updated</camunda:inputParameter>
+            <camunda:inputParameter name="category">${cssa_email_category}</camunda:inputParameter>
           </camunda:inputOutput>
         </bpmn:extensionElements>
-        <bpmn:incoming>Flow_1sbxvgx</bpmn:incoming>
-        <bpmn:incoming>Flow_0rsx4qs</bpmn:incoming>
+        <bpmn:incoming>Flow_1fv425i</bpmn:incoming>
         <bpmn:outgoing>Flow_0jf2e1l</bpmn:outgoing>
       </bpmn:callActivity>
       <bpmn:sequenceFlow id="Flow_16qbig6" sourceRef="Gateway_0w2ecc8" targetRef="Gateway_11ub1p6" />
@@ -1036,7 +1034,7 @@ execution.setVariable('bundleStatus', "SDM Approved CSSA Form");</camunda:script
         <bpmn:outgoing>Flow_16qbig6</bpmn:outgoing>
         <bpmn:outgoing>Flow_1sbxvgx</bpmn:outgoing>
       </bpmn:parallelGateway>
-      <bpmn:sequenceFlow id="Flow_1sbxvgx" sourceRef="Gateway_0w2ecc8" targetRef="Activity_1cc5o6q" />
+      <bpmn:sequenceFlow id="Flow_1sbxvgx" sourceRef="Gateway_0w2ecc8" targetRef="Activity_1m4ozaw" />
       <bpmn:endEvent id="Event_15tig9k">
         <bpmn:incoming>Flow_0jf2e1l</bpmn:incoming>
       </bpmn:endEvent>
@@ -1047,7 +1045,7 @@ execution.setVariable('bundleStatus', "SDM Approved CSSA Form");</camunda:script
         <bpmn:outgoing>Flow_0xnspeg</bpmn:outgoing>
         <bpmn:outgoing>Flow_0rsx4qs</bpmn:outgoing>
       </bpmn:parallelGateway>
-      <bpmn:sequenceFlow id="Flow_0rsx4qs" sourceRef="Gateway_1q522rt" targetRef="Activity_1cc5o6q" />
+      <bpmn:sequenceFlow id="Flow_0rsx4qs" sourceRef="Gateway_1q522rt" targetRef="Activity_1m4ozaw" />
       <bpmn:sequenceFlow id="Flow_0orrcue" sourceRef="Activity_0l3ry1z" targetRef="Gateway_0a8dxa4">
         <bpmn:extensionElements />
       </bpmn:sequenceFlow>
@@ -1104,6 +1102,25 @@ system.out.println ("Begin CSSA Flow - Sent To Caseworker");
 execution.setVariable('isCaseworker',false);
 system.out.println ("isSentFromSociety "+execution.getVariable('isSentFromSociety'));</bpmn:script>
       </bpmn:scriptTask>
+      <bpmn:scriptTask id="Activity_1m4ozaw" name="Setting Email Category" scriptFormat="javascript">
+        <bpmn:incoming>Flow_1sbxvgx</bpmn:incoming>
+        <bpmn:incoming>Flow_0rsx4qs</bpmn:incoming>
+        <bpmn:outgoing>Flow_1fv425i</bpmn:outgoing>
+        <bpmn:script>var system = java.lang.System;
+var emailCategory = 'cssa_subforms_updated';
+execution.setVariable('cssa_email_category',emailCategory);
+system.out.println ("cssa_email_category"+emailCategory);
+var applicationStatus = execution.getVariable('action');
+system.out.println ("applicationStatus"+applicationStatus);
+if (applicationStatus === 'Additional Information Requested')
+{
+	emailCategory = 'srs_status_resubmit';
+}
+
+execution.setVariable('cssa_email_category',emailCategory);
+system.out.println ("cssa_email_category"+emailCategory);</bpmn:script>
+      </bpmn:scriptTask>
+      <bpmn:sequenceFlow id="Flow_1fv425i" sourceRef="Activity_1m4ozaw" targetRef="Activity_1cc5o6q" />
     </bpmn:subProcess>
     <bpmn:endEvent id="Event_0bwdoce">
       <bpmn:incoming>Flow_14qx1q0</bpmn:incoming>
@@ -1112,13 +1129,10 @@ system.out.println ("isSentFromSociety "+execution.getVariable('isSentFromSociet
       <bpmn:extensionElements>
         <camunda:in variables="all" />
         <camunda:inputOutput>
-          <camunda:inputParameter name="category">cssa_updated</camunda:inputParameter>
+          <camunda:inputParameter name="category">${cssa_email_category}</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_16ek6dk</bpmn:incoming>
-      <bpmn:incoming>Flow_1258dam</bpmn:incoming>
-      <bpmn:incoming>Flow_01zmsuo</bpmn:incoming>
-      <bpmn:incoming>Flow_045t5oq</bpmn:incoming>
+      <bpmn:incoming>Flow_1h8bm6a</bpmn:incoming>
       <bpmn:outgoing>Flow_14qx1q0</bpmn:outgoing>
     </bpmn:callActivity>
     <bpmn:exclusiveGateway id="Gateway_0o9l3lp" name="Action Taken">
@@ -1222,6 +1236,13 @@ execution.setVariable('returnedBy', "cssaTeam");</camunda:script>
       <bpmn:incoming>Flow_1stifo9</bpmn:incoming>
       <bpmn:outgoing>Flow_05pndkl</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
+var submitterEmail= execution.getVariable('hiddenUserEmail');
+execution.setVariable('submitterEmail',submitterEmail);
+system.out.println ("submitterEmail"+submitterEmail);
+
+var ownerEmail= execution.getVariable('Email');
+execution.setVariable('ownerEmail',ownerEmail);
+
 var siteId= execution.getVariable('siteId');
 system.out.println ("siteId"+siteId);
 var riskclassification = execution.getVariable('riskclassification');
@@ -1266,10 +1287,11 @@ system.out.println ("userIdForSharing"+userIdForSharing);
 execution.setVariable('userIdForSharing',userIdForSharing);
 
 var listOwnerEmailAddress = [];
+listOwnerEmailAddress.push(submitterEmail);
 listOwnerEmailAddress.push(clientEmail);
 execution.setVariable('EmailType','CSSA');
 execution.setVariable('name','User');
-execution.setVariable("emailTo", JSON.stringify(listOwnerEmailAddress));
+
 execution.setVariable('formName','Contaminated Sites Services Application Form');
 
 var applicationsrequested = execution.getVariable('applicationsrequested');
@@ -1287,6 +1309,14 @@ applicationsrequested.approvalOfBackgroundConcentrations : false) || (certificat
 system.out.println ("isSoscAvailable "+isSoscAvailable );
 execution.setVariable('isSoscAvailable',isSoscAvailable);
 
+
+if(ownerEmail !== '' &amp;&amp; ownerEmail !== null)
+{
+system.out.println ("ownerEmail"+ownerEmail);
+listOwnerEmailAddress.push(ownerEmail);
+}
+
+
 var csapEmailAddress = execution.getVariable('csapEmailAddress');
 if(csapEmailAddress !== '' &amp;&amp; csapEmailAddress !== null &amp;&amp; typeOfReview !== 'directToMinistryApplication')
 {
@@ -1295,9 +1325,28 @@ listOwnerEmailAddress.push(csapEmailAddress);
 }
 
 
-execution.setVariable('emailsIdsToProcess',JSON.stringify(listOwnerEmailAddress));
+var approvedProfessionals = execution.getVariable('approvedProfessionalQualifiedProfessional');
+system.out.println("approvedProfessionalQualifiedProfessional raw: " + approvedProfessionals);
 
-</bpmn:script>
+if (approvedProfessionals) {
+    approvedProfessionals = JSON.parse(approvedProfessionals);
+
+   
+    for (var i = 0; i &lt; approvedProfessionals.length; i++) {
+        var row = approvedProfessionals[i];
+        var apEmailAddress = row.cssaApsimpleemail;
+	system.out.println ("apEmailAddress"+apEmailAddress);
+
+        if (apEmailAddress &amp;&amp; apEmailAddress !== '') {
+            system.out.println("Adding AP Email: " + apEmailAddress);
+            listOwnerEmailAddress.push(apEmailAddress);
+        }
+    }
+}
+
+
+execution.setVariable('emailsIdsToProcess',JSON.stringify(listOwnerEmailAddress));
+execution.setVariable("emailTo", JSON.stringify(listOwnerEmailAddress));</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:scriptTask id="Activity_0k6ixqm" name="Set Variables" scriptFormat="javascript">
       <bpmn:incoming>Flow_1rc30l8</bpmn:incoming>
@@ -1366,7 +1415,7 @@ task.execution.setVariable('userRole','Contaminated Sites Approved Professional'
       <bpmn:outgoing>Flow_0b418rv</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:exclusiveGateway id="Gateway_17raw62" name="Is Application Resubmitted">
-      <bpmn:incoming>Flow_0ohuh4k</bpmn:incoming>
+      <bpmn:incoming>Flow_0720sp0</bpmn:incoming>
       <bpmn:outgoing>Flow_1xj96i6</bpmn:outgoing>
       <bpmn:outgoing>Flow_0527h3y</bpmn:outgoing>
       <bpmn:outgoing>Flow_0543g25</bpmn:outgoing>
@@ -1832,12 +1881,10 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
         <bpmn:extensionElements>
           <camunda:in variables="all" />
           <camunda:inputOutput>
-            <camunda:inputParameter name="category">cssa_subforms_updated</camunda:inputParameter>
+            <camunda:inputParameter name="category">${cssa_email_category}</camunda:inputParameter>
           </camunda:inputOutput>
         </bpmn:extensionElements>
-        <bpmn:incoming>Flow_0dn9scp</bpmn:incoming>
-        <bpmn:incoming>Flow_0v3xmtu</bpmn:incoming>
-        <bpmn:incoming>Flow_007p6h2</bpmn:incoming>
+        <bpmn:incoming>Flow_13olh9t</bpmn:incoming>
         <bpmn:outgoing>Flow_1g9gkqq</bpmn:outgoing>
       </bpmn:callActivity>
       <bpmn:sequenceFlow id="Flow_168htzm" sourceRef="Gateway_0ps7zso" targetRef="Gateway_102i3iq" />
@@ -1846,14 +1893,14 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
         <bpmn:outgoing>Flow_168htzm</bpmn:outgoing>
         <bpmn:outgoing>Flow_0dn9scp</bpmn:outgoing>
       </bpmn:parallelGateway>
-      <bpmn:sequenceFlow id="Flow_0dn9scp" sourceRef="Gateway_0ps7zso" targetRef="Activity_1twm3ar" />
+      <bpmn:sequenceFlow id="Flow_0dn9scp" sourceRef="Gateway_0ps7zso" targetRef="Activity_1e2yen3" />
       <bpmn:sequenceFlow id="Flow_02gyla8" sourceRef="Gateway_0ntauoh" targetRef="Gateway_0wyokmr" />
       <bpmn:parallelGateway id="Gateway_0ntauoh" camunda:asyncAfter="true">
         <bpmn:incoming>Flow_1ccbyzk</bpmn:incoming>
         <bpmn:outgoing>Flow_02gyla8</bpmn:outgoing>
         <bpmn:outgoing>Flow_0v3xmtu</bpmn:outgoing>
       </bpmn:parallelGateway>
-      <bpmn:sequenceFlow id="Flow_0v3xmtu" sourceRef="Gateway_0ntauoh" targetRef="Activity_1twm3ar" />
+      <bpmn:sequenceFlow id="Flow_0v3xmtu" sourceRef="Gateway_0ntauoh" targetRef="Activity_1e2yen3" />
       <bpmn:endEvent id="Event_1weim34">
         <bpmn:incoming>Flow_1g9gkqq</bpmn:incoming>
       </bpmn:endEvent>
@@ -1863,7 +1910,7 @@ execution.setVariable('requestType', 'SRCR');</camunda:script>
         <bpmn:outgoing>Flow_007p6h2</bpmn:outgoing>
         <bpmn:outgoing>Flow_1jm1bhe</bpmn:outgoing>
       </bpmn:parallelGateway>
-      <bpmn:sequenceFlow id="Flow_007p6h2" sourceRef="Gateway_1g6waa1" targetRef="Activity_1twm3ar" />
+      <bpmn:sequenceFlow id="Flow_007p6h2" sourceRef="Gateway_1g6waa1" targetRef="Activity_1e2yen3" />
       <bpmn:exclusiveGateway id="Gateway_137ft2z" name="Action Taken">
         <bpmn:incoming>Flow_1jm1bhe</bpmn:incoming>
         <bpmn:outgoing>Flow_1kizv19</bpmn:outgoing>
@@ -1922,6 +1969,26 @@ execution.setVariable('bundleStatus', "SDM Approved SRCR Form");</camunda:script
         </bpmn:extensionElements>
         <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Outcome Decision Made - Satisfactory' or action == 'Outcome Decision Made - Unsatisfactory' }</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
+      <bpmn:scriptTask id="Activity_1e2yen3" name="Setting Email Category" scriptFormat="javascript">
+        <bpmn:incoming>Flow_0dn9scp</bpmn:incoming>
+        <bpmn:incoming>Flow_007p6h2</bpmn:incoming>
+        <bpmn:incoming>Flow_0v3xmtu</bpmn:incoming>
+        <bpmn:outgoing>Flow_13olh9t</bpmn:outgoing>
+        <bpmn:script>var system = java.lang.System;
+var emailCategory = 'cssa_subforms_updated';
+execution.setVariable('cssa_email_category',emailCategory);
+system.out.println ("cssa_email_category"+emailCategory);
+var applicationStatus = execution.getVariable('action');
+system.out.println ("applicationStatus"+applicationStatus);
+if (applicationStatus === 'Additional Information Requested')
+{
+	emailCategory = 'srs_status_resubmit';
+}
+
+execution.setVariable('cssa_email_category',emailCategory);
+system.out.println ("cssa_email_category"+emailCategory);</bpmn:script>
+      </bpmn:scriptTask>
+      <bpmn:sequenceFlow id="Flow_13olh9t" sourceRef="Activity_1e2yen3" targetRef="Activity_1twm3ar" />
     </bpmn:subProcess>
     <bpmn:parallelGateway id="Gateway_00nmer9" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_0b418rv</bpmn:incoming>
@@ -2082,40 +2149,7 @@ system.out.println ("soscStatus "+execution.getVariable('soscStatus') );</camund
       <bpmn:outgoing>Flow_1dtmwt0</bpmn:outgoing>
       <bpmn:outgoing>Flow_045t5oq</bpmn:outgoing>
     </bpmn:parallelGateway>
-    <bpmn:sequenceFlow id="Flow_045t5oq" sourceRef="Gateway_04645fs" targetRef="Activity_1os7sys" />
-    <bpmn:task id="Activity_15772wo" name="Debug Log">
-      <bpmn:extensionElements>
-        <camunda:executionListener event="start">
-          <camunda:script scriptFormat="javascript">var system = java.lang.System;
-system.out.println ("form signed");</camunda:script>
-        </camunda:executionListener>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1asq9fa</bpmn:incoming>
-      <bpmn:incoming>Flow_16fwgn1</bpmn:incoming>
-      <bpmn:outgoing>Flow_0ohuh4k</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:exclusiveGateway id="Gateway_1qqphxe" name="Is Site Owner Reqd">
-      <bpmn:incoming>Flow_1loq3ni</bpmn:incoming>
-      <bpmn:outgoing>Flow_1asq9fa</bpmn:outgoing>
-      <bpmn:outgoing>Flow_1xx7tz6</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:userTask id="Activity_0a9pnut" name="Form Signing" camunda:assignee="${userIdForSharing}">
-      <bpmn:extensionElements>
-        <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.FormSubmissionListener" event="create" />
-        <camunda:taskListener event="complete">
-          <camunda:script scriptFormat="javascript">task.execution.setVariable('applicationStatus', task.execution.getVariable('action'));
-task.execution.setVariable('deleteReason', "completed");</camunda:script>
-        </camunda:taskListener>
-        <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.ApplicationStateListener" event="complete" />
-        <camunda:taskListener class="org.camunda.bpm.extension.hooks.listeners.BPMFormDataPipelineListener" event="complete">
-          <camunda:field name="fields">
-            <camunda:expression>["applicationId", "applicationStatus"]</camunda:expression>
-          </camunda:field>
-        </camunda:taskListener>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1xx7tz6</bpmn:incoming>
-      <bpmn:outgoing>Flow_16fwgn1</bpmn:outgoing>
-    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_045t5oq" sourceRef="Gateway_04645fs" targetRef="Activity_0kw2jm7" />
     <bpmn:sequenceFlow id="Flow_1nigg0r" sourceRef="Activity_0yw5we4" targetRef="Event_0z3ea6o" />
     <bpmn:exclusiveGateway id="Gateway_1gvu1qg">
       <bpmn:incoming>Flow_03phi1y</bpmn:incoming>
@@ -2128,12 +2162,11 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
     <bpmn:sequenceFlow id="Flow_1b01psv" sourceRef="Gateway_1gvu1qg" targetRef="Activity_0yw5we4">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${applicationStatus=='New'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_1loq3ni" sourceRef="Gateway_0o1oxx6" targetRef="Gateway_1qqphxe" />
     <bpmn:sequenceFlow id="Flow_05pndkl" sourceRef="Activity_1ozfgid" targetRef="Gateway_0o1oxx6" />
     <bpmn:parallelGateway id="Gateway_0o1oxx6">
       <bpmn:incoming>Flow_05pndkl</bpmn:incoming>
-      <bpmn:outgoing>Flow_1loq3ni</bpmn:outgoing>
       <bpmn:outgoing>Flow_03phi1y</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0720sp0</bpmn:outgoing>
     </bpmn:parallelGateway>
     <bpmn:endEvent id="Event_0z3ea6o">
       <bpmn:incoming>Flow_1nigg0r</bpmn:incoming>
@@ -2150,6 +2183,47 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       <bpmn:outgoing>Flow_1nigg0r</bpmn:outgoing>
     </bpmn:callActivity>
     <bpmn:sequenceFlow id="Flow_03phi1y" sourceRef="Gateway_0o1oxx6" targetRef="Gateway_1gvu1qg" />
+    <bpmn:sequenceFlow id="Flow_0720sp0" sourceRef="Gateway_0o1oxx6" targetRef="Gateway_17raw62" />
+    <bpmn:sequenceFlow id="Flow_1h8bm6a" sourceRef="Activity_0kw2jm7" targetRef="Activity_1os7sys" />
+    <bpmn:scriptTask id="Activity_0kw2jm7" name="Setting Email Category" scriptFormat="javascript">
+      <bpmn:incoming>Flow_16ek6dk</bpmn:incoming>
+      <bpmn:incoming>Flow_1258dam</bpmn:incoming>
+      <bpmn:incoming>Flow_01zmsuo</bpmn:incoming>
+      <bpmn:incoming>Flow_045t5oq</bpmn:incoming>
+      <bpmn:outgoing>Flow_1h8bm6a</bpmn:outgoing>
+      <bpmn:script>var system = java.lang.System;
+var emailCategory = 'cssa_updated';
+execution.setVariable('cssa_email_category',emailCategory);
+system.out.println ("cssa_email_category"+emailCategory);
+var applicationStatus = execution.getVariable('action');
+system.out.println ("applicationStatus"+applicationStatus);
+if (applicationStatus === 'Additional Information Requested')
+{
+	emailCategory = 'srs_status_resubmit';
+}
+
+execution.setVariable('cssa_email_category',emailCategory);
+system.out.println ("cssa_email_category"+emailCategory);</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:scriptTask id="Activity_0w2f3q4" name="Setting Email Category" scriptFormat="javascript">
+      <bpmn:incoming>Flow_1i04zkp</bpmn:incoming>
+      <bpmn:incoming>Flow_17tf2x2</bpmn:incoming>
+      <bpmn:outgoing>Flow_1qcygaa</bpmn:outgoing>
+      <bpmn:script>var system = java.lang.System;
+var emailCategory = 'cssa_updated';
+execution.setVariable('cssa_email_category',emailCategory);
+system.out.println ("cssa_email_category"+emailCategory);
+var applicationStatus = execution.getVariable('action');
+system.out.println ("applicationStatus"+applicationStatus);
+if (applicationStatus === 'Additional Information Requested')
+{
+	emailCategory = 'srs_status_resubmit';
+}
+
+execution.setVariable('cssa_email_category',emailCategory);
+system.out.println ("cssa_email_category"+emailCategory);</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_1qcygaa" sourceRef="Activity_0w2f3q4" targetRef="Activity_0q362ss" />
   </bpmn:process>
   <bpmn:message id="Message_1ngb2eg" name="application_resubmitted" />
   <bpmn:message id="Message_0lm44we" name="application_resubmitted" />
@@ -2187,6 +2261,14 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_0ji5op1" bpmnElement="Activity_0q362ss">
         <dc:Bounds x="3950" y="3040" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_11ymku5" bpmnElement="Activity_0kw2jm7">
+        <dc:Bounds x="2550" y="1540" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0ix0g0z" bpmnElement="Activity_0w2f3q4">
+        <dc:Bounds x="3750" y="3050" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1bge67f_di" bpmnElement="Activity_12e3zvm" isExpanded="true">
@@ -2253,6 +2335,10 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1ukceof" bpmnElement="Gateway_07klrhx">
         <dc:Bounds x="1670" y="3475" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0zht2ik" bpmnElement="Activity_1gmd3vf">
+        <dc:Bounds x="1895" y="3130" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_0tgsjvd" bpmnElement="Flow_15z92rp">
         <di:waypoint x="1590" y="3275" />
@@ -2362,17 +2448,20 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_18026r9" bpmnElement="Flow_0vixcwm">
         <di:waypoint x="1615" y="3170" />
-        <di:waypoint x="1945" y="3170" />
-        <di:waypoint x="1945" y="3030" />
+        <di:waypoint x="1895" y="3170" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_0nx7a0j" bpmnElement="Flow_1n9gcsu">
         <di:waypoint x="1720" y="3500" />
-        <di:waypoint x="1945" y="3500" />
-        <di:waypoint x="1945" y="3030" />
+        <di:waypoint x="1955" y="3500" />
+        <di:waypoint x="1955" y="3210" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_13elf5b" bpmnElement="Flow_11sb4e2">
         <di:waypoint x="1945" y="2950" />
         <di:waypoint x="1945" y="2898" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1lendj6_di" bpmnElement="Flow_1lendj6">
+        <di:waypoint x="1945" y="3130" />
+        <di:waypoint x="1945" y="3030" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Activity_0lezdpf_di" bpmnElement="Activity_07ttn7q" isExpanded="true">
         <dc:Bounds x="520" y="2750" width="730" height="960" />
@@ -2438,6 +2527,10 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_0u5suzj" bpmnElement="Activity_0l3ry1z">
         <dc:Bounds x="670" y="2800" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1nuvwqc" bpmnElement="Activity_1m4ozaw">
+        <dc:Bounds x="1030" y="3140" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_0s49r3m" bpmnElement="Flow_0f731f5">
         <di:waypoint x="720" y="3285" />
@@ -2517,8 +2610,7 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1sbxvgx_di" bpmnElement="Flow_1sbxvgx">
         <di:waypoint x="745" y="3180" />
-        <di:waypoint x="1075" y="3180" />
-        <di:waypoint x="1075" y="3040" />
+        <di:waypoint x="1030" y="3180" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0jf2e1l_di" bpmnElement="Flow_0jf2e1l">
         <di:waypoint x="1075" y="2960" />
@@ -2531,8 +2623,8 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0rsx4qs_di" bpmnElement="Flow_0rsx4qs">
         <di:waypoint x="850" y="3510" />
-        <di:waypoint x="1075" y="3510" />
-        <di:waypoint x="1075" y="3040" />
+        <di:waypoint x="1080" y="3510" />
+        <di:waypoint x="1080" y="3220" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_0ijxnkx" bpmnElement="Flow_0orrcue">
         <di:waypoint x="720" y="2880" />
@@ -2558,6 +2650,10 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
         <bpmndi:BPMNLabel>
           <dc:Bounds x="988" y="3563" width="44" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1fv425i_di" bpmnElement="Flow_1fv425i">
+        <di:waypoint x="1080" y="3140" />
+        <di:waypoint x="1080" y="3040" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_0bwdoce_di" bpmnElement="Event_0bwdoce">
         <dc:Bounds x="2902" y="1562" width="36" height="36" />
@@ -2729,18 +2825,11 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
           <dc:Bounds x="2741" y="4086" width="64" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_11yj5rw" bpmnElement="Activity_1twm3ar">
-        <dc:Bounds x="2850" y="3230" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0uda94b_di" bpmnElement="Gateway_0ps7zso">
         <dc:Bounds x="2620" y="3005" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0egc8g2_di" bpmnElement="Gateway_0ntauoh">
         <dc:Bounds x="2620" y="3645" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1weim34_di" bpmnElement="Event_1weim34">
-        <dc:Bounds x="2982" y="3252" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_11ce59l_di" bpmnElement="Gateway_1g6waa1">
         <dc:Bounds x="2620" y="4125" width="50" height="50" />
@@ -2750,6 +2839,17 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
         <bpmndi:BPMNLabel>
           <dc:Bounds x="2563" y="4193" width="63" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_11yj5rw" bpmnElement="Activity_1twm3ar">
+        <dc:Bounds x="2920" y="3310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1weim34_di" bpmnElement="Event_1weim34">
+        <dc:Bounds x="2952" y="3462" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0jsiu25" bpmnElement="Activity_1e2yen3">
+        <dc:Bounds x="2840" y="3210" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_1w38rih" bpmnElement="Flow_05vthw4">
         <di:waypoint x="2840" y="4075" />
@@ -2930,8 +3030,8 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0dn9scp_di" bpmnElement="Flow_0dn9scp">
         <di:waypoint x="2670" y="3030" />
-        <di:waypoint x="2885" y="3030" />
-        <di:waypoint x="2885" y="3230" />
+        <di:waypoint x="2910" y="3030" />
+        <di:waypoint x="2910" y="3210" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_02gyla8_di" bpmnElement="Flow_02gyla8">
         <di:waypoint x="2645" y="3695" />
@@ -2939,17 +3039,17 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0v3xmtu_di" bpmnElement="Flow_0v3xmtu">
         <di:waypoint x="2670" y="3670" />
-        <di:waypoint x="2885" y="3670" />
-        <di:waypoint x="2885" y="3310" />
+        <di:waypoint x="2900" y="3670" />
+        <di:waypoint x="2900" y="3290" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1g9gkqq_di" bpmnElement="Flow_1g9gkqq">
-        <di:waypoint x="2950" y="3270" />
-        <di:waypoint x="2982" y="3270" />
+        <di:waypoint x="2970" y="3390" />
+        <di:waypoint x="2970" y="3462" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_007p6h2_di" bpmnElement="Flow_007p6h2">
         <di:waypoint x="2670" y="4150" />
-        <di:waypoint x="2885" y="4150" />
-        <di:waypoint x="2885" y="3310" />
+        <di:waypoint x="2900" y="4150" />
+        <di:waypoint x="2900" y="3290" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1kizv19_di" bpmnElement="Flow_1kizv19">
         <di:waypoint x="2670" y="4230" />
@@ -2976,6 +3076,11 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
         <bpmndi:BPMNLabel>
           <dc:Bounds x="2553" y="4267" width="82" height="27" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13olh9t_di" bpmnElement="Flow_13olh9t">
+        <di:waypoint x="2940" y="3250" />
+        <di:waypoint x="2970" y="3250" />
+        <di:waypoint x="2970" y="3310" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Gateway_1cm9lqd_di" bpmnElement="Gateway_00nmer9">
         <dc:Bounds x="2120" y="785" width="50" height="50" />
@@ -3054,20 +3159,6 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       <bpmndi:BPMNShape id="Gateway_16jqm7x_di" bpmnElement="Gateway_04645fs">
         <dc:Bounds x="2120" y="1945" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_15772wo_di" bpmnElement="Activity_15772wo">
-        <dc:Bounds x="1835" y="370" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1qqphxe_di" bpmnElement="Gateway_1qqphxe" isMarkerVisible="true">
-        <dc:Bounds x="1860" y="285" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1786" y="300" width="68" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0crarh0_di" bpmnElement="Activity_0a9pnut">
-        <dc:Bounds x="2090" y="270" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1gvu1qg_di" bpmnElement="Gateway_1gvu1qg" isMarkerVisible="true">
         <dc:Bounds x="1755" y="225" width="50" height="50" />
       </bpmndi:BPMNShape>
@@ -3095,17 +3186,17 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1i04zkp_di" bpmnElement="Flow_1i04zkp">
         <di:waypoint x="3485" y="3090" />
-        <di:waypoint x="3950" y="3090" />
+        <di:waypoint x="3750" y="3090" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_17tf2x2_di" bpmnElement="Flow_17tf2x2">
         <di:waypoint x="3600" y="3475" />
         <di:waypoint x="3600" y="3530" />
-        <di:waypoint x="4000" y="3530" />
-        <di:waypoint x="4000" y="3120" />
+        <di:waypoint x="3800" y="3530" />
+        <di:waypoint x="3800" y="3130" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_16ek6dk_di" bpmnElement="Flow_16ek6dk">
         <di:waypoint x="2170" y="1580" />
-        <di:waypoint x="2730" y="1580" />
+        <di:waypoint x="2550" y="1580" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0qbjx6e_di" bpmnElement="Flow_0qbjx6e">
         <di:waypoint x="2120" y="1680" />
@@ -3129,13 +3220,6 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
         <di:waypoint x="2145" y="1440" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="2152" y="1268" width="46" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1xx7tz6_di" bpmnElement="Flow_1xx7tz6">
-        <di:waypoint x="1910" y="310" />
-        <di:waypoint x="2090" y="310" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1948" y="292" width="18" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0qw9o9a_di" bpmnElement="Flow_0qw9o9a">
@@ -3230,18 +3314,6 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
           <dc:Bounds x="2021" y="582" width="15" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1asq9fa_di" bpmnElement="Flow_1asq9fa">
-        <di:waypoint x="1885" y="335" />
-        <di:waypoint x="1885" y="370" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1857" y="341" width="15" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_16fwgn1_di" bpmnElement="Flow_16fwgn1">
-        <di:waypoint x="2140" y="350" />
-        <di:waypoint x="2140" y="410" />
-        <di:waypoint x="1935" y="410" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1xj96i6_di" bpmnElement="Flow_1xj96i6">
         <di:waypoint x="1885" y="525" />
         <di:waypoint x="1885" y="575" />
@@ -3270,10 +3342,6 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
         <di:waypoint x="1695" y="1480" />
         <di:waypoint x="2095" y="1480" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0ohuh4k_di" bpmnElement="Flow_0ohuh4k">
-        <di:waypoint x="1885" y="450" />
-        <di:waypoint x="1885" y="475" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1esdw3m_di" bpmnElement="Flow_1esdw3m">
         <di:waypoint x="3435" y="3180" />
         <di:waypoint x="3220" y="3180" />
@@ -3292,8 +3360,8 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_01zmsuo_di" bpmnElement="Flow_01zmsuo">
         <di:waypoint x="2170" y="810" />
-        <di:waypoint x="2780" y="810" />
-        <di:waypoint x="2780" y="1540" />
+        <di:waypoint x="2600" y="810" />
+        <di:waypoint x="2600" y="1540" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0kumbes_di" bpmnElement="Flow_0kumbes">
         <di:waypoint x="2145" y="835" />
@@ -3305,8 +3373,8 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1258dam_di" bpmnElement="Flow_1258dam">
         <di:waypoint x="2170" y="1110" />
-        <di:waypoint x="2780" y="1110" />
-        <di:waypoint x="2780" y="1540" />
+        <di:waypoint x="2600" y="1110" />
+        <di:waypoint x="2600" y="1540" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0itdetv_di" bpmnElement="Flow_0itdetv">
         <di:waypoint x="2145" y="1135" />
@@ -3535,8 +3603,8 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_045t5oq_di" bpmnElement="Flow_045t5oq">
         <di:waypoint x="2170" y="1970" />
-        <di:waypoint x="2780" y="1970" />
-        <di:waypoint x="2780" y="1620" />
+        <di:waypoint x="2600" y="1970" />
+        <di:waypoint x="2600" y="1620" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1nigg0r_di" bpmnElement="Flow_1nigg0r">
         <di:waypoint x="1575" y="310" />
@@ -3553,10 +3621,6 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
         <di:waypoint x="1780" y="310" />
         <di:waypoint x="1675" y="310" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1loq3ni_di" bpmnElement="Flow_1loq3ni">
-        <di:waypoint x="1885" y="275" />
-        <di:waypoint x="1885" y="285" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_05pndkl_di" bpmnElement="Flow_05pndkl">
         <di:waypoint x="1885" y="200" />
         <di:waypoint x="1885" y="225" />
@@ -3564,6 +3628,18 @@ task.execution.setVariable('deleteReason', "completed");</camunda:script>
       <bpmndi:BPMNEdge id="Flow_03phi1y_di" bpmnElement="Flow_03phi1y">
         <di:waypoint x="1860" y="250" />
         <di:waypoint x="1805" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0720sp0_di" bpmnElement="Flow_0720sp0">
+        <di:waypoint x="1885" y="275" />
+        <di:waypoint x="1885" y="475" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1h8bm6a_di" bpmnElement="Flow_1h8bm6a">
+        <di:waypoint x="2650" y="1580" />
+        <di:waypoint x="2730" y="1580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qcygaa_di" bpmnElement="Flow_1qcygaa">
+        <di:waypoint x="3850" y="3090" />
+        <di:waypoint x="3950" y="3090" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

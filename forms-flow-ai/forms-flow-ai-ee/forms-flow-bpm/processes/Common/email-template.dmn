@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_1h338s2" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.0.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_1h338s2" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.12.0">
   <decision id="decide-email-template" name="email-template">
     <decisionTable id="decisionTable_1">
       <input id="input_1" label="category">
@@ -317,7 +317,7 @@
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0a1kzk1">
-          <text>"Action Required – Upload Documents for Application"</text>
+          <text>"Action Required – Upload Documents for your SRS Application"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1b09d2q">
           <text>"templates/upload_doc.ftl"</text>
@@ -531,6 +531,32 @@
           <text>"templates/sds_generic_response.ftl"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_03yrt95">
+          <text>"siteremediation@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_01m15cb">
+        <inputEntry id="UnaryTests_1qz30m3">
+          <text>"srs_status_resubmit"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0yv2l2y">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1yzehmk">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1bl0xq9">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0w0xi6b">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xwi69m">
+          <text>"Additional Information Required – SRS Application"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0fe5ysf">
+          <text>"templates/srs_resubmit.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1bylfdy">
           <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>

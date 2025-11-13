@@ -25,20 +25,39 @@
                 This message contains important information
             </p>
         </tr>
+      
+        <#if siteId??>
         <tr>
             <td>
-                <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height:27px;text-align: left;font-style: normal;font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
-                    <span style="font-weight: bold;">SITE ID:</span> ${siteId}, ${siteAddress}, ${siteCity}</p>
+                <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;
+                                    line-height:27px;text-align: left;font-style: normal;
+                                    font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
+                    <span style="font-weight: bold;">SITE ID:</span>
+                    ${siteId}
+                    <#if siteAddress?? && siteAddress?has_content>, ${siteAddress}</#if>
+                    <#if siteCity?? && siteCity?has_content>, ${siteCity}</#if>
+
+                </p>
+            </td>
+        </tr>
+        </#if>
+
+        <tr>
+            <td>
+                <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;
+                                    line-height:27px;text-align: left;font-style: normal;
+                                    font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
+                    <span style="font-weight: bold;">Application ID:</span> ${applicationId}
                 </p>
             </td>
         </tr>
         <tr>
             <td>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                    This letter is to acknowledge receipt of a satisfactorily completed Site Disclosure Statement pertaining to the above-referenced site. For information about how site identification requirements apply to operating areas under the Oil and Gas Activities Act, review the <a href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/03053_00"  style="color: #1A5A96;text-decoration: underline;">Environmental Management Act</a> and <a href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/375_96_00" style="color: #1A5A96;text-decoration: underline;">Contaminated Sites Regulation</a> as well as the ministry’s <a href="https://www2.gov.bc.ca/gov/content/environment/air-land-water/site-remediation/identifying-and-disclosing-sites-that-may-be-contaminated" style="color: #1A5A96;text-decoration: underline;">Site Identification</a> webpage.
+                    This letter is to acknowledge receipt of a satisfactorily completed Site Disclosure Statement pertaining to the above-referenced site/application ID. For information about how site identification requirements apply to operating areas under the Oil and Gas Activities Act, review the <a href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/03053_00"  style="color: #1A5A96;text-decoration: underline;">Environmental Management Act</a> and <a href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/375_96_00" style="color: #1A5A96;text-decoration: underline;">Contaminated Sites Regulation</a> as well as the ministry’s <a href="https://www2.gov.bc.ca/gov/content/environment/air-land-water/site-remediation/identifying-and-disclosing-sites-that-may-be-contaminated" style="color: #1A5A96;text-decoration: underline;">Site Identification</a> webpage.
                 </p>               
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                    If you have any questions about this letter, please send your enquiry to <a href="mailto:SiteID@gov.bc.ca" style="color: #1A5A96;text-decoration: underline;">SiteID@gov.bc.ca</a>.
+                    If you have any questions about the Site Identification process, please send your enquiry to <a href="mailto:SiteID@gov.bc.ca" style="color: #1A5A96;text-decoration: underline;">SiteID@gov.bc.ca</a>.
                 </p>
             </td>
         </tr>

@@ -28,13 +28,14 @@
         <tr>
             <td>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                  Thank you for your submission to the Site Remediation Services Web Application. 
+                  Thank you for your submission to the Site Remediation Services Web Application. Your application (ID: ${applicationId}) has been received and is currently under review by the Ministry.
+                
                 </p>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                  Your application or form may require supporting documents to be considered complete. Please upload all required documents related to <b>Application ID: ${applicationId}</b> using the link below: 
+                  To proceed with processing, we require all relevant supporting documents to complete your application. Please upload the necessary documents using the link below:
                 </p>
                 <p>
-                    <a href=${uploadLink}>Upload Documents</a>
+                     <b><a href=${uploadLink}>[Upload Documents]</a></b>
                 </p>
             </td>
         </tr>
@@ -51,7 +52,7 @@
         <tr>
             <td>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                    <span>If you have any questions, feel free to reach out to us at <a class="link" href="mailto:${support}" style="overflow: visible;line-height: 24px;text-align: left;overflow-wrap: break-word;word-wrap: break-word;font-style: normal;font-weight: normal;font-size: 16px;color: #1A5A96;text-decoration: underline;">${support}</a></span>
+                    <span>If you have any questions, feel free to contact us at <a class="link" href="mailto:${support}" style="overflow: visible;line-height: 24px;text-align: left;overflow-wrap: break-word;word-wrap: break-word;font-style: normal;font-weight: normal;font-size: 16px;color: #1A5A96;text-decoration: underline;">${support}</a></span>
                 </p>
             </td>
         </tr>
@@ -62,8 +63,8 @@
         </tr>
         <tr>
             <td>               
-                <p> Site Remediation Services will never send an email that asks you to provide, confirm or verify personal, log on or account information.
-                    DO NOT reply to this email as it was sent from an unmonitored account.
+                <p> Thank you,
+                    Site Remediation Services Team
                 </p>
             </td>
         </tr>
