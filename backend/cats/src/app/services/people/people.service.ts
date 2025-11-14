@@ -55,6 +55,58 @@ export class PersonService {
     }
   }
 
+  /** Check for duplicate person by name, email, or loginUserName */
+  async checkForDuplicate(input: CreatePerson): Promise<ViewPerson | null> {
+    try {
+      this.loggerSerivce.log('at service layer checkForDuplicate start');
+      const query = this.personRepository.createQueryBuilder('person');
+
+      query.andWhere('is_deleted is not true');
+      query.andWhere(
+        new Brackets((qb) => {
+          qb.where(
+            'LOWER(person.first_name) = LOWER(:firstName) AND LOWER(person.last_name) = LOWER(:lastName)',
+            {
+              firstName: input.firstName,
+              lastName: input.lastName,
+            },
+          );
+
+          if (input.email) {
+            qb.orWhere('LOWER(person.email) = LOWER(:email)', {
+              email: input.email,
+            });
+          }
+
+          if (input.loginUserName) {
+            qb.orWhere(
+              'LOWER(person.login_user_name) = LOWER(:loginUserName)',
+              {
+                loginUserName: input.loginUserName,
+              },
+            );
+          }
+        }),
+      );
+
+      const existingPerson = await query.getOne();
+
+      if (!existingPerson) {
+        this.loggerSerivce.log(
+          'at service layer checkForDuplicate end - no duplicate found',
+        );
+        return null;
+      }
+
+      this.loggerSerivce.log(
+        'at service layer checkForDuplicate end - duplicate found',
+      );
+      return existingPerson;
+    } catch (error) {
+      throw new Error(`Failed to check for duplicate person: ${error.message}`);
+    }
+  }
+
   /** Create a new person record */
   async create(input: CreatePerson, userInfo: any) {
     try {
