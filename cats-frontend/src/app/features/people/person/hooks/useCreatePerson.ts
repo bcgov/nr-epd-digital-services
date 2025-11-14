@@ -15,20 +15,23 @@ export const useCreatePerson = () => {
     setDuplicatePerson(null);
     try {
       const newPerson = await createPerson(person); // Call the service to create a new person
-      
+
       // Check if response indicates a duplicate
       if (newPerson && !newPerson.success && newPerson.httpStatusCode === 409) {
         const duplicate = newPerson.data?.[0] || null;
-        console.log('Extracted duplicate:', duplicate);
         setDuplicatePerson(duplicate);
-        return { success: false, isDuplicate: true, duplicatePerson: duplicate };
+        return {
+          success: false,
+          isDuplicate: true,
+          duplicatePerson: duplicate,
+        };
       }
-      
+
       if (newPerson?.success) {
         setResponse(newPerson);
         return newPerson;
       }
-      
+
       // Handle other failures
       setError(newPerson?.message || 'Failed to create person');
       return newPerson;

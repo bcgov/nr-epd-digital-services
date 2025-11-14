@@ -27,12 +27,13 @@ const DuplicatePersonModal: React.FC<DuplicatePersonModalProps> = ({
     >
       <div className={styles.modalContent}>
         <p className={styles.message}>
-          Someone with the name <strong>{getPersonName()}</strong> is already in the system.
+          Someone with the name <strong>{getPersonName()}</strong> is already in
+          the system.
         </p>
         <p className={styles.instruction}>
           Please review the existing record before proceeding.
         </p>
-        
+
         <div className={styles.details}>
           <h4>Existing Person Details:</h4>
           <table className={styles.detailTable}>
