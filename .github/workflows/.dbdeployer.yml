@@ -102,7 +102,7 @@ jobs:
           oc project ${{ secrets.oc_namespace }} # Safeguard!
 
       - name: Deploy Database
-        if: steps.triggers.outputs.triggered == 'true'
+        if: steps.triggers.outputs.triggered == 'false'
         working-directory: ${{ inputs.directory }}
         shell: bash
         run: |
