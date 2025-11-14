@@ -35,14 +35,14 @@ export type CreateAppParticipantMutationVariables = Types.Exact<{
 }>;
 
 
-export type CreateAppParticipantMutation = { __typename?: 'Mutation', createAppParticipant: { __typename?: 'CreateAppParticipantsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewAppParticipantEntityDto', id: number, applicationId: number, personId: number, participantRoleId: number, organizationId?: number | null, isMainParticipant: boolean, effectiveStartDate: any, effectiveEndDate?: any | null, createdBy: string, createdDateTime: any, rowVersionCount?: number | null, updatedBy?: string | null, updatedDateTime?: any | null }> | null } };
+export type CreateAppParticipantMutation = { __typename?: 'Mutation', createAppParticipant: { __typename?: 'CreateAppParticipantsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewAppParticipantEntityDto', id: number, applicationId: number, personId: number, participantRoleId: number, organizationId?: number | null, effectiveStartDate: any, effectiveEndDate?: any | null, createdBy: string, createdDateTime: any, rowVersionCount?: number | null, updatedBy?: string | null, updatedDateTime?: any | null }> | null } };
 
 export type UpdateAppParticipantMutationVariables = Types.Exact<{
   updateAppParticipant: Types.UpdateAppParticipantDto;
 }>;
 
 
-export type UpdateAppParticipantMutation = { __typename?: 'Mutation', updateAppParticipant: { __typename?: 'UpdateAppParticipantsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewAppParticipantEntityDto', id: number, applicationId: number, personId: number, participantRoleId: number, organizationId?: number | null, isMainParticipant: boolean, effectiveStartDate: any, effectiveEndDate?: any | null, createdBy: string, createdDateTime: any, rowVersionCount?: number | null, updatedBy?: string | null, updatedDateTime?: any | null }> | null } };
+export type UpdateAppParticipantMutation = { __typename?: 'Mutation', updateAppParticipant: { __typename?: 'UpdateAppParticipantsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewAppParticipantEntityDto', id: number, applicationId: number, personId: number, participantRoleId: number, organizationId?: number | null, effectiveStartDate: any, effectiveEndDate?: any | null, createdBy: string, createdDateTime: any, rowVersionCount?: number | null, updatedBy?: string | null, updatedDateTime?: any | null }> | null } };
 
 
 export const GetAppParticipantsByAppIdDocument = gql`
@@ -262,7 +262,6 @@ export const CreateAppParticipantDocument = gql`
       personId
       participantRoleId
       organizationId
-      isMainParticipant
       effectiveStartDate
       effectiveEndDate
       createdBy
@@ -313,7 +312,6 @@ export const UpdateAppParticipantDocument = gql`
       personId
       participantRoleId
       organizationId
-      isMainParticipant
       effectiveStartDate
       effectiveEndDate
       createdBy
