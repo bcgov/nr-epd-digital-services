@@ -73,13 +73,13 @@ export class PersonService {
           );
 
           if (input.email) {
-            qb.orWhere('LOWER(person.email) = LOWER(:email)', {
+            qb.andWhere('LOWER(person.email) = LOWER(:email)', {
               email: input.email,
             });
           }
 
           if (input.loginUserName) {
-            qb.orWhere(
+            qb.andWhere(
               'LOWER(person.login_user_name) = LOWER(:loginUserName)',
               {
                 loginUserName: input.loginUserName,
