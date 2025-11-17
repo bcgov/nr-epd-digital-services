@@ -35,9 +35,11 @@ describe('PersonService', () => {
             save: jest.fn(),
             createQueryBuilder: jest.fn().mockReturnValue({
               andWhere: jest.fn().mockReturnThis(),
+              leftJoinAndSelect: jest.fn().mockReturnThis(),
               skip: jest.fn().mockReturnThis(),
               take: jest.fn().mockReturnThis(),
               getManyAndCount: jest.fn(),
+              getOne: jest.fn(),
             }),
           }, // Mock the repository method you will use
         },
@@ -69,8 +71,12 @@ describe('PersonService', () => {
     ); // If you need direct access to the repo
     loggerService = module.get<LoggerService>(LoggerService);
     permissionsService = module.get<PermissionsService>(PermissionsService);
-    permissionsRepo = module.get<Repository<Permissions>>(getRepositoryToken(Permissions));
-    personPermissionRepo = module.get<Repository<PersonPermission>>(getRepositoryToken(PersonPermission));
+    permissionsRepo = module.get<Repository<Permissions>>(
+      getRepositoryToken(Permissions),
+    );
+    personPermissionRepo = module.get<Repository<PersonPermission>>(
+      getRepositoryToken(PersonPermission),
+    );
   });
 
   it('should find all persons', async () => {
@@ -229,5 +235,191 @@ describe('PersonService', () => {
       pageSize,
     );
     expect(result).toEqual(expect.objectContaining(expectedResponse));
+  });
+
+  describe('checkForDuplicate', () => {
+    it('should return null when no duplicate person exists', async () => {
+      const createPersonInput = {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john.doe@example.com',
+        isTaxExempt: false,
+        isActive: true,
+        createdBy: 'system',
+        createdDatetime: new Date(),
+      } as CreatePerson;
+
+      const mockQueryBuilder = {
+        andWhere: jest.fn().mockReturnThis(),
+        getOne: jest.fn().mockResolvedValue(null),
+      };
+
+      (personRepository.createQueryBuilder as jest.Mock).mockReturnValue(
+        mockQueryBuilder,
+      );
+
+      const result = await personService.checkForDuplicate(createPersonInput);
+
+      expect(result).toBeNull();
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledTimes(2);
+      expect(mockQueryBuilder.getOne).toHaveBeenCalled();
+    });
+
+    it('should return existing person when duplicate found by name', async () => {
+      const createPersonInput = {
+        firstName: 'John',
+        lastName: 'Doe',
+        isTaxExempt: false,
+        isActive: true,
+        createdBy: 'system',
+        createdDatetime: new Date(),
+      } as CreatePerson;
+
+      const existingPerson = {
+        id: 1,
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john.doe@example.com',
+        personPermissions: [{ permissionId: 1 }, { permissionId: 2 }],
+      };
+
+      const mockQueryBuilder = {
+        andWhere: jest.fn().mockReturnThis(),
+        getOne: jest.fn().mockResolvedValue(existingPerson),
+      };
+
+      (personRepository.createQueryBuilder as jest.Mock).mockReturnValue(
+        mockQueryBuilder,
+      );
+
+      const result = await personService.checkForDuplicate(createPersonInput);
+
+      expect(result).toEqual(existingPerson);
+      expect(mockQueryBuilder.getOne).toHaveBeenCalled();
+    });
+
+    it('should return existing person when duplicate found by email', async () => {
+      const createPersonInput = {
+        firstName: 'Jane',
+        lastName: 'Smith',
+        email: 'jane.smith@example.com',
+        isTaxExempt: false,
+        isActive: true,
+        createdBy: 'system',
+        createdDatetime: new Date(),
+      } as CreatePerson;
+
+      const existingPerson = {
+        id: 2,
+        firstName: 'Jane',
+        lastName: 'Smith',
+        email: 'jane.smith@example.com',
+        personPermissions: [],
+      };
+
+      const mockQueryBuilder = {
+        andWhere: jest.fn().mockReturnThis(),
+        getOne: jest.fn().mockResolvedValue(existingPerson),
+      };
+
+      (personRepository.createQueryBuilder as jest.Mock).mockReturnValue(
+        mockQueryBuilder,
+      );
+
+      const result = await personService.checkForDuplicate(createPersonInput);
+
+      expect(result).toEqual(existingPerson);
+    });
+
+    it('should return existing person when duplicate found by loginUserName', async () => {
+      const createPersonInput = {
+        firstName: 'Bob',
+        lastName: 'Johnson',
+        loginUserName: 'bjohnson',
+        isTaxExempt: false,
+        isActive: true,
+        createdBy: 'system',
+        createdDatetime: new Date(),
+      } as CreatePerson;
+
+      const existingPerson = {
+        id: 3,
+        firstName: 'Bob',
+        lastName: 'Johnson',
+        loginUserName: 'bjohnson',
+        personPermissions: [{ permissionId: 5 }],
+      };
+
+      const mockQueryBuilder = {
+        andWhere: jest.fn().mockReturnThis(),
+        getOne: jest.fn().mockResolvedValue(existingPerson),
+      };
+
+      (personRepository.createQueryBuilder as jest.Mock).mockReturnValue(
+        mockQueryBuilder,
+      );
+
+      const result = await personService.checkForDuplicate(createPersonInput);
+
+      expect(result).toEqual(existingPerson);
+    });
+
+    it('should not return deleted persons as duplicates', async () => {
+      const createPersonInput = {
+        firstName: 'Alice',
+        lastName: 'Williams',
+        isTaxExempt: false,
+        isActive: true,
+        createdBy: 'system',
+        createdDatetime: new Date(),
+      } as CreatePerson;
+
+      const mockQueryBuilder = {
+        andWhere: jest.fn().mockReturnThis(),
+        getOne: jest.fn().mockResolvedValue(null),
+      };
+
+      (personRepository.createQueryBuilder as jest.Mock).mockReturnValue(
+        mockQueryBuilder,
+      );
+
+      const result = await personService.checkForDuplicate(createPersonInput);
+
+      expect(result).toBeNull();
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'is_deleted is not true',
+      );
+    });
+
+    it('should handle case-insensitive name matching', async () => {
+      const createPersonInput = {
+        firstName: 'JOHN',
+        lastName: 'DOE',
+        isTaxExempt: false,
+        isActive: true,
+        createdBy: 'system',
+        createdDatetime: new Date(),
+      } as CreatePerson;
+
+      const existingPerson = {
+        id: 1,
+        firstName: 'john',
+        lastName: 'doe',
+        personPermissions: [],
+      };
+
+      const mockQueryBuilder = {
+        andWhere: jest.fn().mockReturnThis(),
+        getOne: jest.fn().mockResolvedValue(existingPerson),
+      };
+
+      (personRepository.createQueryBuilder as jest.Mock).mockReturnValue(
+        mockQueryBuilder,
+      );
+
+      const result = await personService.checkForDuplicate(createPersonInput);
+
+      expect(result).toEqual(existingPerson);
+    });
   });
 });
