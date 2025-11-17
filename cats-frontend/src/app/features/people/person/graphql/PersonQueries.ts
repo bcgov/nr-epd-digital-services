@@ -49,6 +49,24 @@ export const CREATE_PERSON = gql`
       httpStatusCode
       success
       timestamp
+      data {
+        id
+        firstName
+        middleName
+        lastName
+        loginUserName
+        address_1
+        address_2
+        city
+        prov
+        email
+        country
+        postal
+        phone
+        mobile
+        fax
+        isActive
+      }
     }
   }
 `;

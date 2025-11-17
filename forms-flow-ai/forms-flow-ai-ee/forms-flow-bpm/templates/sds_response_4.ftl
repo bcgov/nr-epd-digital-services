@@ -25,19 +25,24 @@
                 This message contains important information
             </p>
         </tr>
-<#if siteId?? && siteAddress?? && siteCity?? 
-    && siteId?has_content && siteAddress?has_content && siteCity?has_content>
-    <tr>
-        <td>
-            <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;
-                                   line-height:27px;text-align: left;font-style: normal;
-                                   font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
-                <span style="font-weight: bold;">SITE ID:</span> ${siteId}, ${siteAddress}, ${siteCity}
-            </p>
-        </td>
-    </tr>
-</#if>
-  <tr>
+      
+        <#if siteId??>
+        <tr>
+            <td>
+                <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;
+                                    line-height:27px;text-align: left;font-style: normal;
+                                    font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
+                    <span style="font-weight: bold;">SITE ID:</span>
+                    ${siteId}
+                    <#if siteAddress?? && siteAddress?has_content>, ${siteAddress}</#if>
+                    <#if siteCity?? && siteCity?has_content>, ${siteCity}</#if>
+
+                </p>
+            </td>
+        </tr>
+        </#if>
+
+        <tr>
         <td>
             <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;
                                    line-height:27px;text-align: left;font-style: normal;

@@ -200,7 +200,6 @@ export const Housing = () => {
     housingModal.housingData.housingType,
     housingModal.housingData.numberOfUnits,
     housingModal.housingData.effectiveDate,
-    housingModal.housingData.expiryDate,
   ].every(Boolean);
 
   return (

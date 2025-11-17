@@ -12,8 +12,8 @@ import { Application } from './applicationTabs/application/Application';
 const ApplicationTabsRouter: React.FC = () => {
   return (
     <Routes>
-      <Route path="application" element={<Application />} />
       <Route path="details" element={<Details />} />
+      <Route path="application" element={<Application />} />
       <Route path="participants" element={<Participants />} />
       <Route path="timesheets" element={<Timesheets />} />
       <Route path="invoices" element={<Invoices />} />
@@ -21,7 +21,7 @@ const ApplicationTabsRouter: React.FC = () => {
       <Route path="associated-files" element={<AssociatedFiles />} />
       <Route path="housing" element={<Housing />} />
       {/* Redirect to the first tab by default */}
-      <Route path="*" element={<Navigate to="application" replace />} />
+      <Route path="*" element={<Navigate to="details" replace />} />
     </Routes>
   );
 };
