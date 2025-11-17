@@ -60,6 +60,19 @@ export class PersonResolver {
   @Mutation(() => PersonResponse, { name: 'createPerson' })
   async createPerson(@Args('person') person: CreatePerson,  @AuthenticatedUser() userInfo: any) {
     try {
+      // Check for duplicate person
+      const existingPerson = await this.personService.checkForDuplicate(person);
+      
+      if (existingPerson) {
+        this.loggerSerivce.log('PersonResolver.createPerson() RES:409 duplicate found');
+        return this.personResponse.createResponse(
+          'A person with this name already exists', 
+          HttpStatus.CONFLICT, 
+          false,
+          [existingPerson]
+        );
+      }
+
       const result = await this.personService.create(person, userInfo);
       if(result) {
         this.loggerSerivce.log('PersonResolver.createPerson() RES:201 end');

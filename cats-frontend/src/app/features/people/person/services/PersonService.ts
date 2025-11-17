@@ -61,11 +61,7 @@ export const createPerson = async (person: any) => {
       },
     });
     const result = request?.data?.data?.createPerson; // Return the created person
-    if (result?.success) {
-      return result;
-    } else {
-      console.error(result?.message);
-    }
+    return result;
   } catch (error) {
     // Log the error and throw an exception
     console.error('Error creating person:', error);
