@@ -59,8 +59,12 @@ var emailsToArray = [];
 emailsToArray.push(clientEmail);
 emailsToArray.push(submitterEmail);
 
-var ownerEmails = execution.getVariable('additionalSiteOwners');
-system.out.println ("ownerEmails"+ownerEmails);
+var ownerEmail = execution.getVariable('ownerEmailAddress');
+system.out.println ("ownerEmail"+ownerEmail);
+emailsToArray.push(ownerEmail);
+
+var addnOwnerEmails = execution.getVariable('additionalSiteOwners');
+system.out.println ("addnOwnerEmails"+addnOwnerEmails);
 
 var isAgentFillingForm = execution.getVariable('section1BAgentCheckbox');
 execution.setVariable('isAgentFillingForm',isAgentFillingForm);
@@ -86,6 +90,7 @@ var emailsIdsToProcess = [];
 
 emailsIdsToProcess.push(clientEmail);
 emailsIdsToProcess.push(submitterEmail);
+emailsIdsToProcess.push(ownerEmail);
 
 
 var section5DeclarationSectionLocalGovernmentPermits = execution.getVariable('section5DeclarationSectionLocalGovernmentPermits');
@@ -97,11 +102,11 @@ if(section5DeclarationSectionLocalGovernmentPermits === true || section5Declarat
 
 var emailsIdsToProcessForSO = [];
 
-if (ownerEmails) {
-    ownerEmails = JSON.parse(ownerEmails);
+if (addnOwnerEmails) {
+    addnOwnerEmails = JSON.parse(addnOwnerEmails);
   
-    for (var i = 0; i &lt; ownerEmails.length; i++) {
-        var row = ownerEmails[i];
+    for (var i = 0; i &lt; addnOwnerEmails.length; i++) {
+        var row = addnOwnerEmails[i];
         var siteOwnerEmail = row.ownerEmailAddress;
 	system.out.println ("siteOwnerEmail"+siteOwnerEmail);
 
@@ -704,10 +709,6 @@ system.out.println ("sds_email_category"+emailCategory);</bpmn:script>
       <bpmndi:BPMNShape id="Gateway_1cbjc6o_di" bpmnElement="Gateway_0l6sbm8">
         <dc:Bounds x="328" y="325" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1wxdwc2" bpmnElement="Activity_0b45bvb">
-        <dc:Bounds x="690" y="902" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1cvtuda_di" bpmnElement="Gateway_1cvtuda" isMarkerVisible="true">
         <dc:Bounds x="328" y="435" width="50" height="50" />
         <bpmndi:BPMNLabel>
@@ -766,6 +767,10 @@ system.out.println ("sds_email_category"+emailCategory);</bpmn:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0ojnh7a_di" bpmnElement="Gateway_0ojnh7a" isMarkerVisible="true">
         <dc:Bounds x="445" y="1115" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1wxdwc2" bpmnElement="Activity_0b45bvb">
+        <dc:Bounds x="690" y="902" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_09c6l1m" bpmnElement="Gateway_0uf7stk">
         <dc:Bounds x="445" y="995" width="50" height="50" />
