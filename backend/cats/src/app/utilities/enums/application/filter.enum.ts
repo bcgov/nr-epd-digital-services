@@ -6,6 +6,7 @@ export enum Filter {
   COMPLETED = 'completed',
   OVERCAPACITY = 'overcapacity',
   ASSIGNED = 'assigned',
+  MY_ASSIGNED = 'my_assigned',
 }
 
 registerEnumType(Filter, {

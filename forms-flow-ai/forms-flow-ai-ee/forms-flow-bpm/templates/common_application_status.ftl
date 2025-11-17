@@ -15,11 +15,11 @@
                 <img style="width: 151px;" src="https://${host}/static/media/logo-banner.e5eec500e32dc7377862.png">
             </td>
             <td>
-                <span id="nir_notification" style="overflow: visible;line-height: 30px;text-align: left;font-style: normal;font-weight: bold;font-size: 20px;color: rgba(0, 51, 102, 1);letter-spacing: -0.2px;vertical-align: middle;">Site Remediation Services</span>
+                <span id="nom_notification" style="overflow: visible;line-height: 30px;text-align: left;font-style: normal;font-weight: bold;font-size: 20px;color: rgba(0, 51, 102, 1);letter-spacing: -0.2px;vertical-align: middle;">Site Remediation Services</span>
             </td>
         </tr>
     </table>
-    <table style="width: 780px;">
+    <table style="width: 580px;">
         <tr>
             <td>
                 <hr color="#DBDCDC" size="1px">
@@ -28,25 +28,18 @@
         <tr>
             <td>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height:27px;text-align: left;font-style: normal;font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
-                    Notification of Independent Remediation.
+                    ${formName}.
                 </p>
             </td>
         </tr>
         <tr>
             <td>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                  Dear ${name},
+                  Hello,
                 </p>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                    Your Notification of Independent Remediation application has been updated. Current status is ${action}.
+                   Your <b>${formName}</b> application # ${applicationId} has been updated. Current status is <b>${action}</b> by ${userRole}.
                 </p>
-            </td>
-        </tr>
-        <tr>
-          <td>
-                  <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: bold;font-size: 16px;color: #313132;letter-spacing: 0px;">
-               For further information about site remediation in BC and the SRS Web App, please refer to the <a class="link" href="https://www2.gov.bc.ca/gov/content?id=FC30BA123F5B46EA9F4CDE122D8FBE9D" style="overflow: visible;line-height: 24px;text-align: left;overflow-wrap: break-word;word-wrap: break-word;font-style: normal;font-weight: normal;font-size: 16px;color: #1A5A96;text-decoration: underline;">Site Remediation Homepage </a> or to the Independent remediation webpage.
-                </p>                
             </td>
         </tr>
         <tr>
@@ -66,7 +59,7 @@
                 <p class="footer">Have questions or need help? Please email us at:
                     <a class="footer_link" href="mailto:${support}">${support}</a>
                 </p>
-                <p> BC Public Services will never send an email that asks you to provide, confirm or verify personal, log on or account information.
+                <p> EPD will never send an email that asks you to provide, confirm or verify personal, log on or account information.
                     DO NOT reply to this email as it was sent from an unmonitored account.
                 </p>
             </td>

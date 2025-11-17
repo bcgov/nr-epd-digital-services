@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UploadedFiles, UseInterceptors} from '@nestjs/common';
+import { Body, Controller, Post, Req, UploadedFiles, UseInterceptors, Request } from '@nestjs/common';
 import { Resource } from 'nest-keycloak-connect';
 import { LoggerService } from '../logger/logger.service';
 import { FilesInterceptor } from '@nestjs/platform-express/multer/interceptors/files.interceptor';  // Updated for multiple files

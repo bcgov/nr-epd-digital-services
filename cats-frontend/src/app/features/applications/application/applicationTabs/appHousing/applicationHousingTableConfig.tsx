@@ -214,10 +214,6 @@ const housingFormFields: {
     dateFormat: 'EE MMM dd yyyy',
     graphQLPropertyName: 'expiryDate',
     colSize: 'col-lg-6 col-md-6 col-sm-12',
-    validation: {
-      required: true,
-      customMessage: 'Expiry Date is required.',
-    },
   },
 
   replaceFileRow: {

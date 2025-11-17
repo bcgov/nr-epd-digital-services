@@ -25,17 +25,36 @@
                 This message contains important information
             </p>
         </tr>
+      
+        <#if siteId??>
         <tr>
             <td>
-                <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height:27px;text-align: left;font-style: normal;font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
-                    <span style="font-weight: bold;">SITE ID:</span> ${siteId}, ${siteAddress}, ${siteCity}</p>
+                <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;
+                                    line-height:27px;text-align: left;font-style: normal;
+                                    font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
+                    <span style="font-weight: bold;">SITE ID:</span>
+                    ${siteId}
+                    <#if siteAddress?? && siteAddress?has_content>, ${siteAddress}</#if>
+                    <#if siteCity?? && siteCity?has_content>, ${siteCity}</#if>
+
                 </p>
             </td>
         </tr>
+        </#if>
+
+        <tr>
+        <td>
+            <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;
+                                   line-height:27px;text-align: left;font-style: normal;
+                                   font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
+                <span style="font-weight: bold;">Application ID:</span> ${applicationId}
+            </p>
+        </td>
+    </tr>
         <tr>
             <td>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                    This letter is to acknowledge receipt of a satisfactorily completed Site Disclosure Statement (SDS) pertaining to the above-referenced site. Based on the SDS submitted to the ministry, a <a href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/375_96_04" style="color: #1A5A96;text-decoration: underline;">Schedule 2</a> commercial or industrial use has occurred on your site and it may be contaminated.
+                    This letter is to acknowledge receipt of a satisfactorily completed Site Disclosure Statement (SDS) pertaining to the above-referenced site/application ID. Based on the SDS submitted to the ministry, a <a href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/375_96_04" style="color: #1A5A96;text-decoration: underline;">Schedule 2</a> commercial or industrial use has occurred on your site and it may be contaminated.
                 </p>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
                     In accordance with the <a href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/03053_04#part4" style="color: #1A5A96;text-decoration: underline;">Environmental Management Act</a> and <a href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/375_96_00" style="color: #1A5A96;text-decoration: underline;">Contaminated Sites Regulation (CSR)</a>, this has triggered the <a href="https://www2.gov.bc.ca/gov/content/environment/air-land-water/site-remediation/identifying-and-disclosing-sites-that-may-be-contaminated" style="color: #1A5A96;text-decoration: underline;">Site Identification process</a>.
@@ -50,17 +69,10 @@
                     If the SDS was submitted under order of the Director, the Director will contact the responsible person(s) if additional requirements are imposed.
                 </p>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                    If you have any questions about this letter, please send your enquiry to <a href="mailto:SiteID@gov.bc.ca" style="color: #1A5A96;text-decoration: underline;">SiteID@gov.bc.ca</a>.
+                    If you have any questions about the Site Identification process, please send your enquiry to <a href="mailto:SiteID@gov.bc.ca" style="color: #1A5A96;text-decoration: underline;">SiteID@gov.bc.ca</a>.
                 </p>
             </td>
-        </tr>
-        <tr>
-            <td>
-                <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                    <span>If you need any help, don’t hesitate to reach out to us at <a class="link" href="mailto:${support}" style="overflow: visible;line-height: 24px;text-align: left;overflow-wrap: break-word;word-wrap: break-word;font-style: normal;font-weight: normal;font-size: 16px;color: #1A5A96;text-decoration: underline;">${support}</a></span>
-                </p>
-            </td>
-        </tr>
+        </tr>       
         <tr>
             <td style="padding-top: 24px;">
                 <hr color="#DBDCDC" size="1px">

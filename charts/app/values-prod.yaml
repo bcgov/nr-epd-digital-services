@@ -46,3 +46,6 @@ frontend:
   pdb:
     enabled: true # enable it in PRODUCTION for having pod disruption budget.
 
+global:
+  config:
+    SITE_SERVICE_URL: "https://nr-site-registry-prod-backend.apps.silver.devops.gov.bc.ca/graphql"
