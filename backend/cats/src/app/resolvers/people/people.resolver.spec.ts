@@ -27,6 +27,7 @@ describe('PersonResolver', () => {
                 update: jest.fn(),
                 delete: jest.fn(),
                 searchPerson: jest.fn(),
+                checkForDuplicate: jest.fn(),
               },
             },
             {
@@ -150,15 +151,106 @@ describe('PersonResolver', () => {
       httpStatusCode: HttpStatus.CREATED,
       success: true,
     };
+    jest.spyOn(personService, 'checkForDuplicate').mockResolvedValue(null);
     jest.spyOn(personService, 'create').mockResolvedValue(createPersonInput);
 
     const user = { givenName: 'John', identity_provider: UserTypeEum.IDIR };
     const result = await personResolver.createPerson(createPersonInput, user);
     expect(result).toEqual(expectedResult);
+    expect(personService.checkForDuplicate).toHaveBeenCalledWith(createPersonInput);
     expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
       'Person created successfully',
       HttpStatus.CREATED,
       true,
     );
+  });
+
+  it('createPerson should return conflict when duplicate person exists', async () => {
+    const createPersonInput = {
+      firstName: 'John',
+      lastName: 'Doe',
+      id: 1,
+      isTaxExempt: true,
+      isEnvConsultant: true,
+      loginUserName: 'johndoe',
+      address_1: '123 Main St',
+      address_2: 'Apt 4B',
+      city: 'Anytown',
+      prov: 'CA',
+      country: 'USA',
+      postal: '12345',
+      phone: '123-456-7890',
+      mobile: '987-654-3210',
+      email: 'jU0V9@example.com',
+      middleName: '',
+      fax: '',
+      isActive: true,
+      rowVersionCount: 1,
+      createdBy: 'system',
+      createdDatetime: new Date('2025-02-05T18:43:03.244Z'),
+      updatedBy: 'system',
+      updatedDatetime: new Date('2025-02-05T18:43:03.244Z'),
+      personPermissions: [],
+    };
+    
+    const existingPerson = {
+      id: 2,
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'jU0V9@example.com',
+      permissionIds: [],
+    };
+
+    const expectedResult = {
+      message: 'A person with this name already exists',
+      httpStatusCode: HttpStatus.CONFLICT,
+      success: false,
+      data: [existingPerson],
+    };
+
+    jest.spyOn(personService, 'checkForDuplicate').mockResolvedValue(existingPerson as any);
+
+    const user = { givenName: 'John', identity_provider: UserTypeEum.IDIR };
+    const result = await personResolver.createPerson(createPersonInput, user);
+    
+    expect(result).toEqual(expectedResult);
+    expect(personService.checkForDuplicate).toHaveBeenCalledWith(createPersonInput);
+    expect(personService.create).not.toHaveBeenCalled();
+    expect(genericResponseProvider.createResponse).toHaveBeenCalledWith(
+      'A person with this name already exists',
+      HttpStatus.CONFLICT,
+      false,
+      [existingPerson],
+    );
+  });
+
+  it('createPerson should handle duplicate check by email', async () => {
+    const createPersonInput = {
+      firstName: 'Jane',
+      lastName: 'Smith',
+      email: 'existing@example.com',
+      isTaxExempt: false,
+      isActive: true,
+      createdBy: 'system',
+      createdDatetime: new Date('2025-02-05T18:43:03.244Z'),
+    };
+    
+    const existingPerson = {
+      id: 5,
+      firstName: 'Jane',
+      lastName: 'Smith',
+      email: 'existing@example.com',
+      permissionIds: [],
+    };
+
+    jest.spyOn(personService, 'checkForDuplicate').mockResolvedValue(existingPerson as any);
+
+    const user = { givenName: 'Admin', identity_provider: UserTypeEum.IDIR };
+    const result = await personResolver.createPerson(createPersonInput as any, user);
+    
+    expect(result.httpStatusCode).toBe(HttpStatus.CONFLICT);
+    expect(result.success).toBe(false);
+    expect(result.data).toEqual([existingPerson]);
+    expect(personService.create).not.toHaveBeenCalled();
   });
 });
