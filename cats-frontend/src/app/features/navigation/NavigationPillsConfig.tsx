@@ -9,8 +9,8 @@ export type NavComponent = {
 
 // Navigation configuration for the pills - used by NavigationPills component
 export const navigationItems: Omit<NavComponent, 'component'>[] = [
-  { label: 'Application', value: 'application', path: 'application' },
   { label: 'Details', value: 'details', path: 'details' },
+  { label: 'Application', value: 'application', path: 'application' },
   { label: 'Participants', value: 'participants', path: 'participants' },
   { label: 'Timesheets', value: 'timesheets', path: 'timesheets' },
   { label: 'Invoices', value: 'invoices', path: 'invoices' },

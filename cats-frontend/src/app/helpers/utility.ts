@@ -90,6 +90,8 @@ export const formatDateUTC = (
   date: Date | string,
   dateFormat: string = 'MMMM do, yyyy',
 ) => {
+  if (date === null) return '';
+
   const utcDate = new UTCDate(date);
   return formatDate(utcDate, dateFormat);
 };

@@ -1,0 +1,74 @@
+.modalContent {
+  padding: var(--layout-padding-medium);
+}
+
+.message {
+  font-size: var(--typography-font-size-body);
+  margin-bottom: var(--layout-margin-small);
+  color: var(--typography-color-primary);
+}
+
+.instruction {
+  font-size: var(--typography-font-size-small-body);
+  margin-bottom: var(--layout-margin-large);
+  color: var(--typography-color-secondary);
+}
+
+.details {
+  background-color: var(--surface-color-background-light-gray);
+  border: var(--layout-border-width-small) solid
+    var(--surface-color-border-default);
+  border-radius: var(--layout-border-radius-medium);
+  padding: var(--layout-padding-medium);
+}
+
+.details h4 {
+  margin-top: var(--layout-margin-none);
+  margin-bottom: var(--layout-margin-medium);
+  font-size: var(--typography-font-size-body);
+  font-weight: var(--typography-font-weights-bold);
+  color: var(--typography-color-primary);
+}
+
+.detailTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.detailTable tbody tr {
+  border-bottom: var(--layout-border-width-small) solid
+    var(--surface-color-border-default);
+}
+
+.detailTable tbody tr:last-child {
+  border-bottom: none;
+}
+
+.detailTable th {
+  text-align: left;
+  font-weight: var(--typography-font-weights-bold);
+  color: var(--typography-color-secondary);
+  padding: var(--layout-padding-small) var(--layout-padding-medium)
+    var(--layout-padding-small) var(--layout-padding-none);
+  width: 150px;
+  vertical-align: top;
+}
+
+.detailTable td {
+  color: var(--typography-color-primary);
+  padding: var(--layout-padding-small) var(--layout-padding-none);
+  vertical-align: top;
+}
+
+@media (max-width: 768px) {
+  .detailTable th {
+    width: 120px;
+    font-size: var(--typography-font-size-small-body);
+    padding: var(--layout-padding-small) var(--layout-padding-small)
+      var(--layout-padding-small) var(--layout-padding-none);
+  }
+
+  .detailTable td {
+    font-size: var(--typography-font-size-small-body);
+  }
+}
