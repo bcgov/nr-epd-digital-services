@@ -48,11 +48,14 @@ COPY ./processes /tmp/src/main/resources/processes
 RUN mvn -s /usr/share/maven/ref/settings-docker.xml package -P default
 
 # Final custom slim java image (for apk command see 17-jdk-alpine-slim)
-FROM openjdk:17-jdk-alpine
+FROM openjdk:21-ea-jdk
 
-ENV JAVA_VERSION=17-ea+14
-ENV JAVA_HOME=/opt/java/openjdk-17\
-    PATH="/opt/java/openjdk-17/bin:$PATH"
+# set label for image
+LABEL Name="formsflow"
+
+ENV JAVA_VERSION=21-ea+14
+ENV JAVA_HOME=/opt/java/openjdk-21\
+    PATH="/opt/java/openjdk-21/bin:$PATH"
 
 EXPOSE 8080
 # OpenShift has /app in the image, but it's missing when doing local development - Create it when missing
