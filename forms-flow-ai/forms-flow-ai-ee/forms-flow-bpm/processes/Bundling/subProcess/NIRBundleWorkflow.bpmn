@@ -869,12 +869,6 @@ task.execution.setVariable('userRole','Site Information Advisor');</camunda:scri
         <dc:Bounds x="651" y="910" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_18orl4v" bpmnElement="Gateway_0d6061w">
-        <dc:Bounds x="575" y="465" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0yag8nj" bpmnElement="Activity_152c6ni">
-        <dc:Bounds x="1171" y="440" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1d2xehj_di" bpmnElement="Activity_0truthe" isExpanded="true">
         <dc:Bounds x="231" y="1090" width="1200" height="1670" />
         <bpmndi:BPMNLabel />
