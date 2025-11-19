@@ -44,6 +44,7 @@ import { useDeleteNote } from './hooks/useDeleteNote';
 import PersonPermissions from './PersonPermissions';
 import { useGetPermissionsQuery } from './graphql/PersonPermissions.generated';
 import DuplicatePersonModal from './DuplicatePersonModal';
+import { notifyError } from '../../../components/alert/Alert';
 
 export type NoteTypes = 'Edit Note' | 'New Note' | 'View Note';
 
@@ -381,6 +382,7 @@ const Person = () => {
             getPersonData(id);
           } else {
             setError('Failed to update person');
+            notifyError('Failed to update person');
           }
         } else {
           setLoading(createLoading); // Set loading to true
@@ -392,11 +394,15 @@ const Person = () => {
               } else if (response?.success) {
                 setViewMode(UserMode.Default);
                 navigate(-1);
+              } else if (response?.error) {
+                notifyError(response.error);
               }
             })
             .catch((error) => {
               console.error('Error Create person:', error);
-              setError('Failed to update person');
+              const errorMsg = error?.message || 'Failed to create person';
+              setError(errorMsg);
+              notifyError(errorMsg);
             });
         }
         break;
