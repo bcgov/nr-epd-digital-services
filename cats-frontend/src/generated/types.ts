@@ -184,7 +184,6 @@ export type CreateAppParticipantDto = {
   createdDateTime?: InputMaybe<Scalars['DateTime']['input']>;
   effectiveEndDate?: InputMaybe<Scalars['DateTime']['input']>;
   effectiveStartDate: Scalars['DateTime']['input'];
-  isMainParticipant?: InputMaybe<Scalars['Boolean']['input']>;
   organizationId?: InputMaybe<Scalars['Float']['input']>;
   participantRoleId: Scalars['Float']['input'];
   personId: Scalars['Float']['input'];
