@@ -69,7 +69,7 @@ system.out.println ("siteIdNumber"+siteIdNumber);
 var clientEmail = execution.getVariable('simpleemail3');
 var emailsToArray = [];
 emailsToArray.push(clientEmail);
-if(submitterEmail !== null &amp;amp;&amp;amp; submitterEmail !== undefined)
+if(submitterEmail !== null &amp;&amp; submitterEmail !== undefined)
 {
 	emailsToArray.push(submitterEmail);
 }
