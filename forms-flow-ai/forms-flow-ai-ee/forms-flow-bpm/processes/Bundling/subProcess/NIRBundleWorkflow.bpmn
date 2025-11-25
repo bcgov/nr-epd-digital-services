@@ -69,7 +69,18 @@ system.out.println ("siteIdNumber"+siteIdNumber);
 var clientEmail = execution.getVariable('simpleemail3');
 var emailsToArray = [];
 emailsToArray.push(clientEmail);
-emailsToArray.push(submitterEmail);
+if(submitterEmail !== null &amp;amp;&amp;amp; submitterEmail !== undefined)
+{
+	emailsToArray.push(submitterEmail);
+}
+
+var isAgentAvailable = execution.getVariable('environmentalConsultantContractAgent');
+if (isAgentAvailable === "yes")
+{
+	var agentEmail = execution.getVariable('simpleemail4');
+	system.out.println ("agentEmail"+agentEmail);
+	emailsToArray.push(agentEmail);
+}
 
 var riskclassification = execution.getVariable('riskclassification');
 execution.setVariable('riskclassification',riskclassification);
