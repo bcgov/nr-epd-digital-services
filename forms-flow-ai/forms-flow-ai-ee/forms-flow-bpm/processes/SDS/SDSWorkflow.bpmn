@@ -59,8 +59,12 @@ var emailsToArray = [];
 emailsToArray.push(clientEmail);
 emailsToArray.push(submitterEmail);
 
-var ownerEmails = execution.getVariable('additionalSiteOwners');
-system.out.println ("ownerEmails"+ownerEmails);
+var ownerEmail = execution.getVariable('ownerEmailAddress');
+system.out.println ("ownerEmail"+ownerEmail);
+emailsToArray.push(ownerEmail);
+
+var addnOwnerEmails = execution.getVariable('additionalSiteOwners');
+system.out.println ("addnOwnerEmails"+addnOwnerEmails);
 
 var isAgentFillingForm = execution.getVariable('section1BAgentCheckbox');
 execution.setVariable('isAgentFillingForm',isAgentFillingForm);
@@ -86,6 +90,7 @@ var emailsIdsToProcess = [];
 
 emailsIdsToProcess.push(clientEmail);
 emailsIdsToProcess.push(submitterEmail);
+emailsIdsToProcess.push(ownerEmail);
 
 
 var section5DeclarationSectionLocalGovernmentPermits = execution.getVariable('section5DeclarationSectionLocalGovernmentPermits');
@@ -97,11 +102,11 @@ if(section5DeclarationSectionLocalGovernmentPermits === true || section5Declarat
 
 var emailsIdsToProcessForSO = [];
 
-if (ownerEmails) {
-    ownerEmails = JSON.parse(ownerEmails);
+if (addnOwnerEmails) {
+    addnOwnerEmails = JSON.parse(addnOwnerEmails);
   
-    for (var i = 0; i &lt; ownerEmails.length; i++) {
-        var row = ownerEmails[i];
+    for (var i = 0; i &lt; addnOwnerEmails.length; i++) {
+        var row = addnOwnerEmails[i];
         var siteOwnerEmail = row.ownerEmailAddress;
 	system.out.println ("siteOwnerEmail"+siteOwnerEmail);
 

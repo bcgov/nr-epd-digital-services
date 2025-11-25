@@ -47,8 +47,17 @@ var submitterEmail= execution.getVariable('hiddenUserEmail');
 execution.setVariable('submitterEmail',submitterEmail);
 system.out.println ("submitterEmail"+submitterEmail);
 
-var clientEmail = execution.getVariable('ownerContactEmail');
-execution.setVariable('clientEmail',clientEmail);
+var listOwnerEmailAddress=[];
+var ownerEmail= execution.getVariable('s3-email');
+execution.setVariable('ownerEmail',ownerEmail);
+system.out.println ("ownerEmail"+ownerEmail);
+listOwnerEmailAddress.push(ownerEmail);
+
+var agentEmail= execution.getVariable('s4-email');
+execution.setVariable('agentEmail',agentEmail);
+system.out.println ("agentEmail"+agentEmail);
+listOwnerEmailAddress.push(agentEmail);
+
 var riskclassification = execution.getVariable('riskclassification');
 system.out.println ("riskclassification "+riskclassification );
 execution.setVariable('riskclassification',riskclassification);
@@ -63,35 +72,8 @@ if (siteRiskClassification) {
 }
 
 system.out.println ("formUrl "+execution.getVariable('formUrl'));
-execution.setVariable('emailTo',clientEmail);
 execution.setVariable('name','User');
-system.out.println ("emailTo "+execution.getVariable('emailTo'));
 system.out.println ("name "+execution.getVariable('name'));
-
-system.out.println("dataGrid simple"+ dataGrid);
-system.out.println("dataGrid exe"+ execution.getVariable('dataGrid'));
-
-system.out.println ("emailsToArray before "+execution.getVariable('emailsToArray'));
-
-var dataGridObject = null;
-
-dataGridObject = JSON.parse(dataGrid);
-
-
-var listOwnerEmailAddress = [];
-listOwnerEmailAddress.push(submitterEmail);
-
-for(i in dataGridObject)
-{
-  if(dataGridObject[i] !== null &amp;&amp; dataGridObject[i] != undefined )
-  {
-     var ownerEmailAddress = dataGridObject[i].ownerContactEmail;
-     if(ownerEmailAddress !== '')
-     {
-	listOwnerEmailAddress.push(ownerEmailAddress);
-     }
-  }
-}
 
 if(listOwnerEmailAddress.length &gt; 0)
 {	
@@ -100,7 +82,7 @@ if(listOwnerEmailAddress.length &gt; 0)
 execution.setVariable('EmailType','nom');
 
 
-system.out.println ("emailsToArray after "+execution.getVariable('emailsToArray'));
+system.out.println ("emailTo "+execution.getVariable('emailTo'));
 execution.setVariable('formName','Notification of Likely or Actual Migration');
 execution.setVariable('emailsIdsToProcess',JSON.stringify(listOwnerEmailAddress));
 

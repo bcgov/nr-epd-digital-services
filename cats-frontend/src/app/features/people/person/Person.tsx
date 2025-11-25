@@ -43,6 +43,7 @@ import { useCreateNote } from './hooks/useCreateNote';
 import { useDeleteNote } from './hooks/useDeleteNote';
 import PersonPermissions from './PersonPermissions';
 import { useGetPermissionsQuery } from './graphql/PersonPermissions.generated';
+import DuplicatePersonModal from './DuplicatePersonModal';
 
 export type NoteTypes = 'Edit Note' | 'New Note' | 'View Note';
 
@@ -72,6 +73,7 @@ const Person = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isDeleteNote, setIsDeleteNote] = useState(false);
   const [isDeletePerson, setIsDeletePerson] = useState(false);
+  const [duplicatePerson, setDuplicatePerson] = useState<any | null>(null);
   const [note, setNote] = useState({
     isNotesModal: false,
     noteData: initialNote,
@@ -384,7 +386,10 @@ const Person = () => {
           setLoading(createLoading); // Set loading to true
           createNewPerson(formData)
             .then((response) => {
-              if (response) {
+              if (response?.isDuplicate) {
+                // Show duplicate person modal
+                setDuplicatePerson(response.duplicatePerson);
+              } else if (response?.success) {
                 setViewMode(UserMode.Default);
                 navigate(-1);
               }
@@ -415,6 +420,7 @@ const Person = () => {
         break;
       case UserAction.DELETE:
         setIsDeletePerson(true);
+        break;
       default:
         break;
     }
@@ -624,6 +630,12 @@ const Person = () => {
               </div>
             )}
           </Widget>
+        )}
+        {duplicatePerson && (
+          <DuplicatePersonModal
+            duplicatePerson={duplicatePerson}
+            onClose={() => setDuplicatePerson(null)}
+          />
         )}
         {(isDeleteNote || isDeletePerson) && (
           // Delete Modal
