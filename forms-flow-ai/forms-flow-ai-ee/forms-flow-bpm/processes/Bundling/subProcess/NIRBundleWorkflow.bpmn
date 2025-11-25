@@ -103,8 +103,7 @@ execution.setVariable('formName','Notification of Independent Remediation');
 execution.setVariable("emailsIdsToProcess", JSON.stringify(emailsToArray)); 
 execution.setVariable("emailTo", JSON.stringify(emailsToArray));
 
-//var professionalLicenseRegistrationNumber = execution.getVariable('professionalLicenseRegistration') || "";
-//execution.setVariable('csapNumber', professionalLicenseRegistrationNumber || "");
+
 var siteAddress = execution.getVariable('street2') || "";
 var safeSiteId = siteIdNumber || "";
 execution.setVariable('serviceType', 'NIR');
