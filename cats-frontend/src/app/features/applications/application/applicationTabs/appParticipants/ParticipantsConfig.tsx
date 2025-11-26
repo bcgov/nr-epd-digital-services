@@ -99,7 +99,6 @@ export const getAppParticipantsFormFields = ({
     options: GetOrganizationsQuery['getOrganizations']['data'];
   };
 }): IFormField[][] => [
-  [appParticipantsForm.isMainParticipant],
   [appParticipantsForm.startDate, appParticipantsForm.endDate],
   [participantRoleField(roles.options)],
   [participantNameField(participant)],
@@ -107,13 +106,6 @@ export const getAppParticipantsFormFields = ({
 ];
 
 const appParticipantsForm: { [key: string]: IFormField } = {
-  isMainParticipant: {
-    type: FormFieldType.Switch,
-    label: 'Main Participant',
-    graphQLPropertyName: 'isMainParticipant',
-    value: false,
-    colSize: 'col-lg-12 col-md-12 col-sm-12',
-  },
   startDate: {
     type: FormFieldType.Date,
     label: 'Start Date',
@@ -189,15 +181,6 @@ const editParticipantOrganizationField = ({
   colSize: 'col-lg-12 col-md-12 col-sm-12',
 });
 
-const isMainParticipantFieldForEdit: IFormField = {
-  type: FormFieldType.Switch,
-  label: 'Main Participant',
-  graphQLPropertyName: 'isMainParticipant',
-  value: false,
-  isDisabled: true,
-  colSize: 'col-lg-12 col-md-12 col-sm-12',
-};
-
 export const getEditAppParticipantsFormFields = ({
   roles,
   participant,
@@ -213,7 +196,6 @@ export const getEditAppParticipantsFormFields = ({
     options: GetOrganizationsQuery['getOrganizations']['data'];
   };
 }): IFormField[][] => [
-  [isMainParticipantFieldForEdit],
   [appParticipantsForm.startDate, appParticipantsForm.endDate],
   [editParticipantRoleField(roles.options)],
   [editParticipantNameField(participant)],

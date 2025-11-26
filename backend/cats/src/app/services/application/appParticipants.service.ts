@@ -242,6 +242,7 @@ export class AppParticipantService {
         } else {
           const createdAppParticipant = await this.appParticsRepository.create({
             ...newAppParticipant,
+            isMainParticipant: false,
             createdBy: user?.givenName,
             createdDateTime: new Date(),
           });
@@ -261,7 +262,6 @@ export class AppParticipantService {
               personId: savedAppParticipant.personId,
               participantRoleId: savedAppParticipant.participantRoleId,
               organizationId: savedAppParticipant.organizationId,
-              isMainParticipant: savedAppParticipant.isMainParticipant,
               effectiveStartDate: savedAppParticipant.effectiveStartDate,
               effectiveEndDate: savedAppParticipant.effectiveEndDate,
               createdBy: savedAppParticipant.createdBy,
@@ -351,7 +351,6 @@ export class AppParticipantService {
         personId: updatedParticipant.personId,
         participantRoleId: updatedParticipant.participantRoleId,
         organizationId: updatedParticipant.organizationId,
-        isMainParticipant: updatedParticipant.isMainParticipant,
         effectiveStartDate: updatedParticipant.effectiveStartDate,
         effectiveEndDate: updatedParticipant.effectiveEndDate,
         createdBy: updatedParticipant.createdBy,

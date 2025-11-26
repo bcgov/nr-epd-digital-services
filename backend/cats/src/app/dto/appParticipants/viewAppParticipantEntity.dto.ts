@@ -18,9 +18,6 @@ export class ViewAppParticipantEntityDto {
   @Field({nullable: true} )
   organizationId: number | null;
 
-  @Field({defaultValue: false})
-  isMainParticipant: boolean;
-
   @Field()
   @IsDate()
   effectiveStartDate: Date;

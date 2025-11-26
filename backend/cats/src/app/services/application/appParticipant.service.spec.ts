@@ -229,9 +229,7 @@ describe('AppParticipantsService', () => {
       jest.spyOn(appParticsRepo, 'save').mockResolvedValue(addedParticipant as any);
       const result = await service.createAppParticipant(input, user);
       expect(result).toBeDefined();
-      expect(result.id).toBe(addedParticipant.id);
-      expect(result.isMainParticipant).toBe(addedParticipant.isMainParticipant);
-    
+      expect(result.id).toBe(addedParticipant.id);    
     });
 
     it('should throw HttpException when participant creation fails', async () => {
@@ -261,7 +259,6 @@ describe('AppParticipantsService', () => {
       personId: 2,
       participantRoleId: 3,
       organizationId: 4,
-      isMainParticipant: true,
       effectiveStartDate: new Date('2021-01-01'),
       effectiveEndDate: new Date('2021-12-31'),
       createdBy: 'TestUser',
