@@ -25,10 +25,10 @@ import { ExternalUser } from './app/entities/externalUser.entity';
     KeycloakConnectModule.registerAsync({
       inject: [ConfigService],
       useFactory: () => ({
-        authServerUrl: process.env.KEYCLOCK_AUTH_URL,
-        realm: process.env.KEYCLOCK_REALM,
-        clientId: process.env.KEYCLOCK_CLIENT_ID,
-        secret: process.env.KEYCLOCK_SECRET,
+        authServerUrl: process.env.KEYCLOAK_AUTH_URL,
+        realm: process.env.KEYCLOAK_REALM,
+        clientId: process.env.KEYCLOAK_CLIENT_ID,
+        secret: process.env.KEYCLOAK_SECRET,
         policyEnforcement: PolicyEnforcementMode.PERMISSIVE,
       }),
       // Secret key of the client taken from keycloak server

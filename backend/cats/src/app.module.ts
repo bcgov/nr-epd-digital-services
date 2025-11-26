@@ -29,10 +29,10 @@ import { GraphQLAuthExceptionFilter } from './app/filters/graphql-exception.filt
     KeycloakConnectModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        authServerUrl: config.get('KEYCLOCK_AUTH_URL'),
-        realm: config.get('KEYCLOCK_REALM'),
-        clientId: config.get('KEYCLOCK_CLIENT_ID'),
-        secret: config.get('KEYCLOCK_SECRET'),
+        authServerUrl: config.get('KEYCLOAK_AUTH_URL'),
+        realm: config.get('KEYCLOAK_REALM'),
+        clientId: config.get('KEYCLOAK_CLIENT_ID'),
+        secret: config.get('KEYCLOAK_SECRET'),
       }),
       // Secret key of the client taken from keycloak server
     }),

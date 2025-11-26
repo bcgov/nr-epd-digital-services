@@ -127,26 +127,26 @@ objects:
                     secretKeyRef:
                       name: ${NAME}-database
                       key: POSTGRES_DB_APPLICATION_USERNAME
-                - name: KEYCLOCK_AUTH_URL
+                - name: KEYCLOAK_AUTH_URL
                   valueFrom:
                     configMapKeyRef:
                       name: keycloak-config
-                      key: KEYCLOCK_AUTH_URL
-                - name: KEYCLOCK_REALM
+                      key: KEYCLOAK_AUTH_URL
+                - name: KEYCLOAK_REALM
                   valueFrom:
                     configMapKeyRef:
                       name: keycloak-config
-                      key: KEYCLOCK_REALM
-                - name: KEYCLOCK_APP_CLIENT_ID
+                      key: KEYCLOAK_REALM
+                - name: KEYCLOAK_APP_CLIENT_ID
                   valueFrom:
                     secretKeyRef:
                       name: keycloak
-                      key: KEYCLOCK_APP_CLIENT_ID
-                - name: KEYCLOCK_APP_SECRET
+                      key: KEYCLOAK_APP_CLIENT_ID
+                - name: KEYCLOAK_APP_SECRET
                   valueFrom:
                     secretKeyRef:
                       name: keycloak
-                      key: KEYCLOCK_APP_SECRET
+                      key: KEYCLOAK_APP_SECRET
               ports:
                 - containerPort: ${{CONTAINER_PORT}}
                   protocol: TCP
@@ -222,26 +222,26 @@ objects:
                     secretKeyRef:
                       name: ${NAME}-database
                       key: POSTGRES_DB_APPLICATION_PASSWORD
-                - name: KEYCLOCK_AUTH_URL
+                - name: KEYCLOAK_AUTH_URL
                   valueFrom:
                     configMapKeyRef:
                       name: keycloak-config
-                      key: KEYCLOCK_AUTH_URL
-                - name: KEYCLOCK_REALM
+                      key: KEYCLOAK_AUTH_URL
+                - name: KEYCLOAK_REALM
                   valueFrom:
                     configMapKeyRef:
                       name: keycloak-config
-                      key: KEYCLOCK_REALM
-                - name: KEYCLOCK_APP_CLIENT_ID
+                      key: KEYCLOAK_REALM
+                - name: KEYCLOAK_APP_CLIENT_ID
                   valueFrom:
                     secretKeyRef:
                       name: keycloak
-                      key: KEYCLOCK_APP_CLIENT_ID
-                - name: KEYCLOCK_APP_SECRET
+                      key: KEYCLOAK_APP_CLIENT_ID
+                - name: KEYCLOAK_APP_SECRET
                   valueFrom:
                     secretKeyRef:
                       name: keycloak
-                      key: KEYCLOCK_APP_SECRET
+                      key: KEYCLOAK_APP_SECRET
               resources:
                 limits:
                   cpu: 100m

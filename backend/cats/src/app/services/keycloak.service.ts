@@ -12,12 +12,12 @@ export class KeycloakService {
    */
   async getToken(): Promise<any> {
     // Extract environment variables
-    const keycloakAuthUrl = this.configService.get<string>('KEYCLOCK_AUTH_URL');
-    const realm = this.configService.get<string>('KEYCLOCK_MASTER_REALM');
-    const username = this.configService.get<string>('KEYCLOCK_USERNAME');
-    const password = this.configService.get<string>('KEYCLOCK_PASSWORD');
-    const clientId = this.configService.get<string>('KEYCLOCK_ADMIN_CLIENT_ID');
-    const grantType = this.configService.get<string>('KEYCLOCK_GRANT_TYPE');
+    const keycloakAuthUrl = this.configService.get<string>('KEYCLOAK_AUTH_URL');
+    const realm = this.configService.get<string>('KEYCLOAK_REALM');
+    const username = this.configService.get<string>('KEYCLOAK_USERNAME');
+    const password = this.configService.get<string>('KEYCLOAK_PASSWORD');
+    const clientId = this.configService.get<string>('KEYCLOAK_ADMIN_CLIENT_ID');
+    const grantType = this.configService.get<string>('KEYCLOAK_GRANT_TYPE');
 
     // Construct URL for token request
     const url = `${keycloakAuthUrl}/realms/${realm}/protocol/openid-connect/token`;
@@ -57,8 +57,8 @@ export class KeycloakService {
     try {
       // Extract environment variables
       const keycloakAuthUrl =
-        this.configService.get<string>('KEYCLOCK_AUTH_URL');
-      const realm = this.configService.get<string>('KEYCLOCK_REALM');
+        this.configService.get<string>('KEYCLOAK_AUTH_URL');
+      const realm = this.configService.get<string>('KEYCLOAK_REALM');
       const url = `${keycloakAuthUrl}/admin/realms/${realm}/groups`;
 
       // Request group information from Keycloak
@@ -90,8 +90,8 @@ export class KeycloakService {
     try {
       // Extract environment variables
       const keycloakAuthUrl =
-        this.configService.get<string>('KEYCLOCK_AUTH_URL');
-      const realm = this.configService.get<string>('KEYCLOCK_REALM');
+        this.configService.get<string>('KEYCLOAK_AUTH_URL');
+      const realm = this.configService.get<string>('KEYCLOAK_REALM');
       const url = `${keycloakAuthUrl}/admin/realms/${realm}/users/${userId}/groups/${groupId}`;
 
       // Add user to group in Keycloak
@@ -124,8 +124,8 @@ export class KeycloakService {
     try {
       // Extract environment variables
       const keycloakAuthUrl =
-        this.configService.get<string>('KEYCLOCK_AUTH_URL');
-      const realm = this.configService.get<string>('KEYCLOCK_REALM');
+        this.configService.get<string>('KEYCLOAK_AUTH_URL');
+      const realm = this.configService.get<string>('KEYCLOAK_REALM');
       const url = `${keycloakAuthUrl}/admin/realms/${realm}/users/${userId}/groups/${groupId}`;
 
       // Add user to group in Keycloak
