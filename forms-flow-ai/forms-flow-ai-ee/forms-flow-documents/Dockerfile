@@ -1,5 +1,5 @@
 #Author: Kurian Benoy
-FROM python:3.9-slim-buster
+FROM --platform=linux/amd64 python:3.14-bookworm
 
 # set label for image
 LABEL Name="formsflow"
@@ -65,12 +65,11 @@ RUN mkdir -p /opt/chromedriver && \
     chmod +x /opt/chromedriver/chromedriver-linux64/chromedriver && \
     ln -fs /opt/chromedriver/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
 
-# Install Google Chrome
-RUN wget --no-verbose -O /tmp/chrome.deb https://formsflow-documentsapi.aot-technologies.com/google-chrome-stable_116.0.5845.140-1_amd64.deb &&\
-    apt-get update  && \
-    apt install -y /tmp/chrome.deb &&\
+# Install Google Chrome from local deb package
+COPY google-chrome-stable_116.0.5845.140-1_amd64.deb /tmp/chrome.deb
+RUN apt-get update && \
+    apt install -y /tmp/chrome.deb && \
     rm /tmp/chrome.deb
-
 
 # set display port to avoid crash
 ENV DISPLAY=:99
@@ -80,7 +79,7 @@ ENV PATH=/venv/bin:$PATH
 
 RUN : \
     && python3 -m venv /venv \
-    && pip install --upgrade pip \
+    && pip install --upgrade pip setuptools \
     && pip install -r requirements.txt 
 
 ADD . /forms-flow-documents/app
