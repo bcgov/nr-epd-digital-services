@@ -143,47 +143,47 @@ objects:
                 secretKeyRef:
                   name: ${NAME}-database
                   key: POSTGRES_DB_PASSWORD
-            - name: KEYCLOCK_CLIENT_ID
+            - name: KEYCLOAK_CLIENT_ID
               valueFrom:
                 secretKeyRef:
                   name: keycloak
-                  key: KEYCLOCK_CLIENT_ID
-            - name: KEYCLOCK_SECRET
+                  key: KEYCLOAK_CLIENT_ID
+            - name: KEYCLOAK_SECRET
               valueFrom:
                 secretKeyRef:
                   name: keycloak
-                  key: KEYCLOCK_SECRET
-            - name: KEYCLOCK_AUTH_URL
+                  key: KEYCLOAK_SECRET
+            - name: KEYCLOAK_AUTH_URL
               valueFrom:
                 configMapKeyRef:
                   name: keycloak-config
-                  key: KEYCLOCK_AUTH_URL
-            - name: KEYCLOCK_REALM
+                  key: KEYCLOAK_AUTH_URL
+            - name: KEYCLOAK_REALM
               valueFrom:
                 configMapKeyRef:
                   name: keycloak-config
-                  key: KEYCLOCK_REALM
+                  key: KEYCLOAK_REALM
             - name: LOG_FILE_LOCATION
               value: ./logs/sites-%DATE%.log
             - name: LOG_FILE_MAX_SIZE
               value: 25m
             - name: LOG_FILE_MAX_FILES
               value: 7d
-            - name: KEYCLOCK_MASTER_REALM
+            - name: KEYCLOAK_MASTER_REALM
               value: master
-            - name: KEYCLOCK_USERNAME
+            - name: KEYCLOAK_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: keycloak
-                  key: KEYCLOCK_USERNAME
-            - name: KEYCLOCK_PASSWORD
+                  key: KEYCLOAK_USERNAME
+            - name: KEYCLOAK_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: keycloak
-                  key: KEYCLOCK_PASSWORD
-            - name: KEYCLOCK_ADMIN_CLIENT_ID
+                  key: KEYCLOAK_PASSWORD
+            - name: KEYCLOAK_ADMIN_CLIENT_ID
               value: admin-cli
-            - name: KEYCLOCK_GRANT_TYPE
+            - name: KEYCLOAK_GRANT_TYPE
               value: password
             - name: LRS_APPROVING_AUTHORITY_GROUP_NAME
               value: lrs-approving-authority
