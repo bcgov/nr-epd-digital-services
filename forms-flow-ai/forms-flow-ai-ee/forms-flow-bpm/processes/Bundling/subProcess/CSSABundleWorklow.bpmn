@@ -1257,6 +1257,9 @@ var siteRiskClassification = execution.getVariable('siteRiskClassification');
 system.out.println ("siteRiskClassification "+siteRiskClassification );
 execution.setVariable('siteRiskClassification',siteRiskClassification);
 
+var ownerEmails = execution.getVariable('s3propertyOwnerOperator');
+system.out.println ("ownerEmails"+ownerEmails);
+
 
 var owneroperatorradioGroup = execution.getVariable('owneroperatorradioGroup');
 var hiddenUserIdForFormSharingApplicantAsOwner = execution.getVariable('hiddenUserIdForFormSharingApplicantAsOwner');
@@ -1293,6 +1296,21 @@ execution.setVariable('EmailType','CSSA');
 execution.setVariable('name','User');
 
 execution.setVariable('formName','Contaminated Sites Services Application Form');
+
+
+if (ownerEmails) {
+    ownerEmails = JSON.parse(ownerEmails);
+  
+    for (var i = 0; i &lt; ownerEmails.length; i++) {
+        var row = ownerEmails[i];
+        var siteOwnerEmail = row.Email;
+	system.out.println ("siteOwnerEmail"+siteOwnerEmail);
+
+        if (siteOwnerEmail &amp;&amp; siteOwnerEmail !== '') {
+            listOwnerEmailAddress.push(siteOwnerEmail);
+        }
+    }
+}
 
 var applicationsrequested = execution.getVariable('applicationsrequested');
 var certificationdocumentradioGroup = execution.getVariable('certificationdocumentradioGroup');
@@ -2263,14 +2281,6 @@ system.out.println ("cssa_email_category"+emailCategory);</bpmn:script>
         <dc:Bounds x="3950" y="3040" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_11ymku5" bpmnElement="Activity_0kw2jm7">
-        <dc:Bounds x="2550" y="1540" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0ix0g0z" bpmnElement="Activity_0w2f3q4">
-        <dc:Bounds x="3750" y="3050" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1bge67f_di" bpmnElement="Activity_12e3zvm" isExpanded="true">
         <dc:Bounds x="1370" y="2750" width="740" height="960" />
         <bpmndi:BPMNLabel />
@@ -2825,11 +2835,18 @@ system.out.println ("cssa_email_category"+emailCategory);</bpmn:script>
           <dc:Bounds x="2741" y="4086" width="64" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_11yj5rw" bpmnElement="Activity_1twm3ar">
+        <dc:Bounds x="2920" y="3310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0uda94b_di" bpmnElement="Gateway_0ps7zso">
         <dc:Bounds x="2620" y="3005" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0egc8g2_di" bpmnElement="Gateway_0ntauoh">
         <dc:Bounds x="2620" y="3645" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1weim34_di" bpmnElement="Event_1weim34">
+        <dc:Bounds x="2952" y="3462" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_11ce59l_di" bpmnElement="Gateway_1g6waa1">
         <dc:Bounds x="2620" y="4125" width="50" height="50" />
@@ -2839,13 +2856,6 @@ system.out.println ("cssa_email_category"+emailCategory);</bpmn:script>
         <bpmndi:BPMNLabel>
           <dc:Bounds x="2563" y="4193" width="63" height="14" />
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_11yj5rw" bpmnElement="Activity_1twm3ar">
-        <dc:Bounds x="2920" y="3310" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1weim34_di" bpmnElement="Event_1weim34">
-        <dc:Bounds x="2952" y="3462" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_0jsiu25" bpmnElement="Activity_1e2yen3">
         <dc:Bounds x="2840" y="3210" width="100" height="80" />
@@ -3170,6 +3180,14 @@ system.out.println ("cssa_email_category"+emailCategory);</bpmn:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1fbwq27" bpmnElement="Activity_0yw5we4">
         <dc:Bounds x="1575" y="280" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_11ymku5" bpmnElement="Activity_0kw2jm7">
+        <dc:Bounds x="2550" y="1540" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0ix0g0z" bpmnElement="Activity_0w2f3q4">
+        <dc:Bounds x="3750" y="3050" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0jxnrvm_di" bpmnElement="Flow_0jxnrvm">
