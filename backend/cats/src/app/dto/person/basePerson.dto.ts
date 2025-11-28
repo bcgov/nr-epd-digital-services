@@ -1,12 +1,12 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { IsBoolean, IsOptional, IsString, Length, IsEmail } from 'class-validator';
+import { IsBoolean, IsOptional, IsString, Length, IsEmail, IsNotEmpty } from 'class-validator';
 
 @ObjectType()
 @InputType()
 export class BasePerson {
-  @Field()
+  @Field({ nullable: true })
   @IsString()
-  @Length(1, 50)
+  @IsNotEmpty({ message: 'First name is required' })
   firstName: string;
 
   @Field({ nullable: true })
@@ -15,9 +15,9 @@ export class BasePerson {
   @IsOptional()
   middleName: string | null;
 
-  @Field()
+  @Field({ nullable: true })
   @IsString()
-  @Length(1, 50)
+  @IsNotEmpty({ message: 'Last name is required' })
   lastName: string;
 
   @Field({defaultValue: false})

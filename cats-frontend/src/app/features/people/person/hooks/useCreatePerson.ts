@@ -33,11 +33,13 @@ export const useCreatePerson = () => {
       }
 
       // Handle other failures
-      setError(newPerson?.message || 'Failed to create person');
-      return newPerson;
-    } catch (err) {
-      setError('Failed to create person'); // Log the error and set the error message
-      return null;
+      const errorMsg = newPerson?.message || 'Failed to create person';
+      setError(errorMsg);
+      return { success: false, error: errorMsg };
+    } catch (err: any) {
+      const errorMsg = err?.message || 'Failed to create person';
+      setError(errorMsg); // Log the error and set the error message
+      return { success: false, error: errorMsg };
     } finally {
       setLoading(false); // Set loading to false
     }
