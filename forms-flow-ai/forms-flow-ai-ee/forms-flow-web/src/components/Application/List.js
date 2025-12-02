@@ -62,6 +62,7 @@ export const ApplicationList = React.memo(() => {
   const tenantKey = useSelector((state) => state.tenants?.tenantId);
   const redirectUrl = MULTITENANCY_ENABLED ? `/tenant/${tenantKey}/` : "/";
   const [lastModified, setLastModified] = React.useState(null);
+  const [createdAt, setCreatedAt] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const [invalidFilters, setInvalidFilters] = React.useState({});
 
@@ -194,7 +195,9 @@ export const ApplicationList = React.memo(() => {
         setLastModified,
         t,
         redirectUrl,
-        invalidFilters
+        invalidFilters,
+        createdAt,
+        setCreatedAt
       )}
       search
     >

@@ -8,7 +8,11 @@ import {
   FILTER_TYPES,
 } from "react-bootstrap-table2-filter";
 import { getLocalDateTime } from "../../apiManager/services/formatterService";
-import { AWAITING_ACKNOWLEDGEMENT, TYPE_BUNDLE, TYPE_FORM } from "../../constants/applicationConstants";
+import {
+  AWAITING_ACKNOWLEDGEMENT,
+  TYPE_BUNDLE,
+  TYPE_FORM,
+} from "../../constants/applicationConstants";
 import { Translation } from "react-i18next";
 import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 import DropdownButton from "react-bootstrap/DropdownButton";
@@ -60,7 +64,14 @@ const linkSubmission = (cell, row, redirectUrl) => {
   const icon = row.isClientEdit ? "fa fa-edit" : "fa fa-eye";
   return (
     <div onClick={() => window.open(url, "_blank")}>
-      <span style={{ color: "#003366", cursor: "pointer", "font-weight": "bold", "font-size": "0.9rem" }}>
+      <span
+        style={{
+          color: "#003366",
+          cursor: "pointer",
+          "font-weight": "bold",
+          "font-size": "0.9rem",
+        }}
+      >
         <span>
           <i className={icon} />
           &nbsp;
@@ -79,13 +90,21 @@ function timeFormatter(cell) {
 const nameFormatter = (cell) => {
   const name = startCase(cell);
   return (
-    <label className="text-truncate w-100" style={{ maxWidth: "550px" }} title={name}>
+    <label
+      className="text-truncate w-100"
+      style={{ maxWidth: "550px" }}
+      title={name}
+    >
       {startCase(name)}
     </label>
   );
 };
 
-const customStyle = { border: "1px solid #a7a7a7", fontStyle: "normal", "border-radius": "7px" };
+const customStyle = {
+  border: "1px solid #a7a7a7",
+  fontStyle: "normal",
+  "border-radius": "7px",
+};
 
 const styleForValidationFail = { border: "1px solid red" };
 
@@ -116,7 +135,9 @@ export const columns = (
   callback,
   t,
   redirectUrl,
-  invalidFilters
+  invalidFilters,
+  createdAt,
+  setCreatedAt
 ) => {
   if (invalidFilters.APPLICATION_ID) {
     notifyValidationError();
@@ -177,6 +198,38 @@ export const columns = (
               onFilter(selectedRange);
             }}
             value={lastModified}
+            maxDate={new Date()}
+            minDate={new Date("January 1, 0999 01:01:00")}
+            dayPlaceholder="dd"
+            monthPlaceholder="mm"
+            yearPlaceholder="yyyy"
+            calendarAriaLabel={t("Select the date")}
+            dayAriaLabel="Select the day"
+            clearAriaLabel="Click to clear"
+          />
+        );
+      },
+    },
+    {
+      dataField: "created",
+      text: <Translation>{(t) => t("Created At")}</Translation>,
+      formatter: timeFormatter,
+      sort: true,
+      sortValue: (cell) => {
+        return cell ? new Date(cell).getTime() : 0;
+      },
+      filter: customFilter({
+        type: FILTER_TYPES.DATE,
+      }),
+      // eslint-disable-next-line no-unused-vars
+      filterRenderer: (onFilter, column) => {
+        return (
+          <DateRangePicker
+            onChange={(selectedRange) => {
+              setCreatedAt(selectedRange);
+              onFilter(selectedRange);
+            }}
+            value={createdAt}
             maxDate={new Date()}
             minDate={new Date("January 1, 0999 01:01:00")}
             dayPlaceholder="dd"
