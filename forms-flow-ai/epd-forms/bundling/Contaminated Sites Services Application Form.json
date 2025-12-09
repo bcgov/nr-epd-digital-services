@@ -4,8 +4,8 @@
             "title": "Contaminated Sites Services Application Form",
             "display": "form",
             "type": "form",
-            "name": "cssaBundleForm-1765234096608",
-            "path": "cssabundleform-1765234096608",
+            "name": "cssaBundleForm",
+            "path": "cssabundleform",
             "tags": [
                 "common"
             ],
