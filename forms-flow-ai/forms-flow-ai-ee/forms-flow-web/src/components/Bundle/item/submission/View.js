@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import BundleSubmissionView from "../BundleSubmissionComponent";
-import {
-  setBundleSelectedForms,
-} from "../../../../actions/bundleActions";
+import { setBundleSelectedForms } from "../../../../actions/bundleActions";
 import { getFormProcesses } from "../../../../apiManager/services/processServices";
 import { executeRule } from "../../../../apiManager/services/bundleServices";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,15 +9,24 @@ import { Errors } from "react-formio/lib/components";
 import Loading from "../../../../containers/Loading";
 import DownloadPdfButton from "../../../Form/ExportAsPdf/downloadPdfButton";
 
-const BundleView = ({ bundleIdProp, submissionIdProp, showPrintButton = true }) => {
+const BundleView = ({
+  bundleIdProp,
+  submissionIdProp,
+  showPrintButton = true,
+}) => {
   const { bundleId, submissionId } = useParams();
   const updatedBundleId = bundleIdProp || bundleId;
   const updatedSubmissionId = submissionIdProp || submissionId;
   const dispatch = useDispatch();
   const bundleData = useSelector((state) => state.process.formProcessList);
-  const selectedForms = useSelector((state) => state.bundle.selectedForms || []);
+  const selectedForms = useSelector(
+    (state) => state.bundle.selectedForms || []
+  );
   const bundleSubmission = useSelector(
     (state) => state.bundle.bundleSubmission
+  );
+  const applicationId = useSelector(
+    (state) => state.bundle?.bundleSubmission?.data?.applicationId || null
   );
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
@@ -69,12 +76,18 @@ const BundleView = ({ bundleIdProp, submissionIdProp, showPrintButton = true }) 
   return (
     <>
       <div className="d-flex align-items-center justify-content-between">
-        {showPrintButton && bundleData.id && updatedBundleId && <div className="btn-right d-flex flex-row px-4"><DownloadPdfButton form_id={updatedBundleId}
-          submission_id={updatedSubmissionId}
-          title={bundleData.formName}
-          isBundle={true}
-          bundleId={bundleData.id}
-        /></div>}
+        {showPrintButton && bundleData.id && updatedBundleId && (
+          <div className="btn-right d-flex flex-row px-4">
+            <DownloadPdfButton
+              form_id={updatedBundleId}
+              submission_id={updatedSubmissionId}
+              title={bundleData.formName}
+              isBundle={true}
+              bundleId={bundleData.id}
+              applicationId={applicationId}
+            />
+          </div>
+        )}
       </div>
       <hr />
 
