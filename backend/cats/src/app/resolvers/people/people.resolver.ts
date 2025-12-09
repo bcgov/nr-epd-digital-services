@@ -1,6 +1,6 @@
 import { Query, Resolver, Mutation, Args, Int } from '@nestjs/graphql';
 import { AuthenticatedUser, Public, Resource } from 'nest-keycloak-connect';
-import { HttpStatus} from '@nestjs/common';
+import { BadRequestException, HttpStatus, UsePipes, ValidationError, ValidationPipe } from '@nestjs/common';
 import { SearchPersonResponse } from '../../dto/response/person/fetchSearchPerson';
 import { LoggerService } from '../../logger/logger.service';
 import { PersonService } from '../../services/people/people.service';
@@ -58,6 +58,23 @@ export class PersonResolver {
   }
 
   @Mutation(() => PersonResponse, { name: 'createPerson' })
+  @UsePipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: false,
+      transform: true,
+      exceptionFactory: (errors: ValidationError[]) => {
+        const messages = errors.map((error) => {
+          const constraints = error.constraints;
+          if (constraints) {
+            return Object.values(constraints)[0];
+          }
+          return `${error.property} validation failed`;
+        });
+        return new BadRequestException(messages.join('. '));
+      },
+    }),
+  )
   async createPerson(@Args('person') person: CreatePerson,  @AuthenticatedUser() userInfo: any) {
     try {
       // Check for duplicate person

@@ -144,7 +144,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
 
   type appParticipantDetailsType = {
     id: string;
-    isMainParticipant: boolean;
     effectiveStartDate: Date | string | null;
     effectiveEndDate: Date | string | null;
     participantRole: string;
@@ -153,7 +152,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   };
   const initialAppParticipantDetails: appParticipantDetailsType = {
     id: '',
-    isMainParticipant: false,
     effectiveStartDate: null,
     effectiveEndDate: null,
     participantRole: '',
@@ -279,7 +277,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         isAppParticipantModal: true,
         appParticipantDetails: {
           id: appParticipantEditDetails.id,
-          isMainParticipant: appParticipantEditDetails.isMainParticipant,
           effectiveStartDate: appParticipantEditDetails.effectiveStartDate,
           effectiveEndDate: appParticipantEditDetails.effectiveEndDate || null,
           participantRole: appParticipantRole.id.toString(),
@@ -301,7 +298,6 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     };
 
     const newAppParticipant = {
-      isMainParticipant: appParticipant.appParticipantDetails.isMainParticipant,
       personId: parseFloat(appParticipant.appParticipantDetails.person),
       organizationId: parseFloat(
         appParticipant.appParticipantDetails.organization,
