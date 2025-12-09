@@ -46,9 +46,19 @@ export class FormService {
    * @returns form
    */
   async findOne(submissionId: string, formId: string): Promise<Form> {
-    return this.formRepository.findOne({
+    // First try to find with exact form_id match
+    let submission = await this.formRepository.findOne({
       where: { formId: formId, id: submissionId },
     });
+    
+    // If not found, try to find by submission_id only (for bundle cases where individual form is being exported)
+    if (!submission) {
+      submission = await this.formRepository.findOne({
+        where: { id: submissionId },
+      });
+    }
+    
+    return submission;
   }
 
   buildUpdateString = (pathText, newValue) => {

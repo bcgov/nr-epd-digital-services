@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Errors } from "react-formio/lib/components";
 import Loading from "../../../../containers/Loading";
-import DownloadPdfButton from "../../../Form/ExportAsPdf/downloadPdfButton";
 
 const BundleView = ({
   bundleIdProp,
@@ -15,7 +14,6 @@ const BundleView = ({
   showPrintButton = true,
 }) => {
   const { bundleId, submissionId } = useParams();
-  const updatedBundleId = bundleIdProp || bundleId;
   const updatedSubmissionId = submissionIdProp || submissionId;
   const dispatch = useDispatch();
   const bundleData = useSelector((state) => state.process.formProcessList);
@@ -73,27 +71,17 @@ const BundleView = ({
     );
   }
 
+  if (!selectedForms.length) return null;
+
   return (
     <>
-      <div className="d-flex align-items-center justify-content-between">
-        {showPrintButton && bundleData.id && updatedBundleId && (
-          <div className="btn-right d-flex flex-row px-4">
-            <DownloadPdfButton
-              form_id={updatedBundleId}
-              submission_id={updatedSubmissionId}
-              title={bundleData.formName}
-              isBundle={true}
-              bundleId={bundleData.id}
-              applicationId={applicationId}
-            />
-          </div>
-        )}
-      </div>
-      <hr />
-
-      <div>
-        {selectedForms.length ? <BundleSubmissionView readOnly={true} /> : ""}
-      </div>
+      <BundleSubmissionView
+        readOnly={true}
+        showPrintButton={showPrintButton}
+        submissionId={updatedSubmissionId}
+        applicationId={applicationId}
+        bundleId={bundleData.id}
+      />
     </>
   );
 };
