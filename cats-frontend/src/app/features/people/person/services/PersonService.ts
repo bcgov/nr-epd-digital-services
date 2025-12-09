@@ -60,19 +60,22 @@ export const createPerson = async (person: any) => {
         person: person,
       },
     });
-    
+
     // Check for GraphQL errors in successful response
     if (request?.data?.errors && request?.data?.errors.length > 0) {
       const err: any = new Error('GraphQL Error');
       err.response = { data: { errors: request.data.errors } };
       throw err;
     }
-    
+
     const result = request?.data?.data?.createPerson; // Return the created person
     return result;
   } catch (error: any) {
     // Format GraphQL errors for display
-    if (error?.response?.data?.errors && error.response.data.errors.length > 0) {
+    if (
+      error?.response?.data?.errors &&
+      error.response.data.errors.length > 0
+    ) {
       const errorMessages = error.response.data.errors
         .map((err: any) => {
           const message = err.message;
@@ -80,11 +83,11 @@ export const createPerson = async (person: any) => {
         })
         .flat()
         .join('\n');
-      
+
       console.error('GraphQL validation errors:', errorMessages);
       throw new Error(errorMessages);
     }
-    
+
     console.error('Error creating person:', error);
     throw error;
   }
