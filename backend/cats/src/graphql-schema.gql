@@ -2,130 +2,910 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-directive @key(fields: String!, resolvable: Boolean = true) repeatable on OBJECT | INTERFACE
-
-directive @extends on OBJECT | INTERFACE
-
-directive @external on OBJECT | FIELD_DEFINITION
-
-directive @requires(fields: String!) on FIELD_DEFINITION
-
-directive @provides(fields: String!) on FIELD_DEFINITION
-
-directive @shareable on FIELD_DEFINITION | OBJECT
-
-directive @link(url: String!, import: [link__Import]) on SCHEMA
-
-directive @tag(name: String!) repeatable on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUMENT_DEFINITION | SCALAR | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
-
-directive @inaccessible on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUMENT_DEFINITION | SCALAR | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
-
-directive @override(from: String!) on FIELD_DEFINITION
-
-type OrganizationType {
-  id: String!
-  org_name: String!
+type ViewPerson {
+  firstName: String!
+  middleName: String
+  lastName: String!
+  isTaxExempt: Boolean!
+  isEnvConsultant: Boolean
+  loginUserName: String
+  address_1: String
+  address_2: String
+  city: String
+  prov: String
+  country: String
+  postal: String
+  phone: String
+  mobile: String
+  fax: String
+  email: String
+  isActive: Boolean!
+  isDeleted: Boolean!
+  id: Float!
+  rowVersionCount: Float!
+  createdBy: String!
+  createdDatetime: DateTime!
+  updatedBy: String
+  updatedDatetime: DateTime
+  permissionIds: [Int!]
 }
 
-type Region {
-  id: String!
-  region_name: String!
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type ResponseDto {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
 }
 
-type ExternalUser {
-  id: String!
+type SearchPersonResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  count: Float
+  page: Float
+  pageSize: Float
+  persons: [ViewPerson!]!
+}
+
+type PersonResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [ViewPerson!]
+}
+
+type ApplicationResultPersonDto {
   firstName: String!
   lastName: String!
-  addressLine: String!
-  city: String!
-  province: String!
-  country: String!
-  postalCode: String!
-  email: String!
-  phoneNumber: String!
-  industry: String!
-  organization: String!
-  isGstExempt: Boolean!
-  isBillingContact: Boolean!
-  organizationTypeId: String!
-  regionId: String!
-  organizationType: OrganizationType!
-  region: Region!
-  isProfileVerified: Boolean!
 }
 
-type FetchUserResponse {
-  httpStatusCode: Int!
-  data: [ExternalUser!]!
+type ApplicationResultDto {
+  id: String!
+  siteId: String!
+  siteAddress: String!
+  applicationType: String!
+  lastUpdated: String!
+  status: String!
+  staffAssigned: [ApplicationResultPersonDto!]!
+  priority: String!
+  url: String!
 }
 
-type FetchRegionResponse {
-  httpStatusCode: Int!
-  data: [Region!]!
+type ApplicationSearchResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  count: Float
+  page: Float
+  pageSize: Float
+  applications: [ApplicationResultDto!]!
 }
 
-type FetchOrganizationTypeResponse {
-  httpStatusCode: Int!
-  data: [OrganizationType!]!
+type ViewOrganizationsDto {
+  id: Float
+  name: String!
+}
+
+type ViewParticipantNamesDto {
+  id: Float!
+  firstName: String!
+  middleName: String
+  lastName: String!
+  fullName: String!
+}
+
+type ViewParticipantsRolesDto {
+  id: Float!
+  description: String!
+  roleType: String
+}
+
+type ViewAppParticipantsDto {
+  effectiveStartDate: DateTime!
+  effectiveEndDate: DateTime
+  id: Float!
+  applicationId: Float!
+  isMainParticipant: Boolean!
+  firstName: String!
+  lastName: String!
+  fullName: String!
+  name: String!
+  description: String!
+  isMinistry: Boolean!
+  rowVersionCount: Float
+  createdBy: String!
+  createdDateTime: DateTime!
+  updatedBy: String
+  updatedDateTime: DateTime
+  organization: ViewOrganizationsDto
+  person: ViewParticipantNamesDto!
+  participantRole: ViewParticipantsRolesDto!
+}
+
+type AppParticipantsResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [ViewAppParticipantsDto!]
+}
+
+type ParticipantsRolesResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [ViewParticipantsRolesDto!]
+}
+
+type DropdownResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [DropdownDto!]
+}
+
+type DropdownDto {
+  key: String!
+  value: String!
+  metaData: String
+}
+
+type ViewAppParticipantEntityDto {
+  id: Float!
+  applicationId: Float!
+  personId: Float!
+  participantRoleId: Float!
+  organizationId: Float
+  isMainParticipant: Boolean!
+  effectiveStartDate: DateTime!
+  effectiveEndDate: DateTime
+  rowVersionCount: Float
+  createdBy: String!
+  createdDateTime: DateTime!
+  updatedBy: String
+  updatedDateTime: DateTime
+}
+
+type CreateAppParticipantsResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [ViewAppParticipantEntityDto!]
+}
+
+type UpdateAppParticipantsResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [ViewAppParticipantEntityDto!]
+}
+
+type ViewPersonNote {
+  noteDescription: String!
+  id: String!
+  user: String
+  date: DateTime
+}
+
+type PersonNoteResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [ViewPersonNote!]
+}
+
+type YesNoCodeDto {
+  id: Int!
+  abbrev: String!
+}
+
+type HousingType {
+  id: Int!
+  abbrev: String!
+  description: String!
+}
+
+type HousingDto {
+  id: Int!
+  numberOfUnits: Int!
+  effectiveDate: DateTime
+  expiryDate: DateTime
+  isRental: YesNoCodeDto!
+  isSocial: YesNoCodeDto!
+  isIndigenousLed: YesNoCodeDto!
+  housingType: HousingType!
+  relatedApplications: [Int!]!
+}
+
+type ApplicationHousingDto {
+  id: Int!
+  housing: HousingDto!
+}
+
+type HousingTypeDto {
+  id: Int!
+  abbrev: String
+  description: String!
+  isActive: Boolean!
+  displayOrder: Int!
+}
+
+type HousingTypeResponse {
+  data: [HousingTypeDto!]!
+}
+
+type ApplicationHousingResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [ApplicationHousingDto!]!
+}
+
+type ViewApplication {
+  id: Float!
+}
+
+type DetailField {
+  id: Float!
+  abbrev: String!
+  description: String!
+}
+
+type ViewApplicationDetails {
+  id: Float!
+  siteId: Float
+  siteAddress: String
+  siteCity: String
+  csapRefNumber: String
+  receivedDate: DateTime!
+  queuedDate: DateTime
+  endDate: DateTime
+  outcome: DetailField
+  appType: DetailField
+  currentStatus: DetailField
+  siteType: DetailField
+  reviewProcess: DetailField
+  priority: DetailField
+  isHousing: Boolean!
+  isTaxExempt: Boolean!
+  formId: String
+  submissionId: String
+}
+
+type ApplicationResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [ViewApplication!]
+}
+
+type ApplicationDetailsResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: ViewApplicationDetails
+}
+
+type ViewApplicationStatus {
+  formsflowAppId: Float!
+}
+
+type ApplicationStatusResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [ViewApplicationStatus!]
+}
+
+type SiteDetailsDTO {
+  id: String!
+  longdeg: Float
+  latdeg: Float
+  addrLine_1: String
+  addrLine_2: String
+  addrLine_3: String
+  addrLine_4: String
+  city: String
+  commonName: String
+  siteRiskCode: String
+  associatedSites: [SiteAssocs!]!
+  whenCreated: String!
+  whenUpdated: String
+}
+
+type SiteAssocs {
+  associatedSite: SiteDetailsDTO!
+}
+
+type SiteDetailsResponse {
+  data: SiteDetailsDTO
+}
+
+type ViewInvoiceItem {
+  description: String!
+  quantity: Int!
+  unitPriceInCents: Int!
+  totalInCents: Int!
+  itemType: String!
+  id: Int!
+  whenCreated: DateTime!
+  whenUpdated: DateTime!
+  whoCreated: String!
+  whoUpdated: String!
+}
+
+type ViewInvoiceAttachment {
+  invoiceId: Int!
+  fileName: String!
+  bucketId: String!
+  objectId: String!
+  id: Int!
+}
+
+type ViewInvoice {
+  personId: String!
+  subject: String!
+  issuedDate: DateTime!
+  dueDate: DateTime!
+  invoiceStatus: InvoiceStatus!
+  taxExempt: Boolean!
+  pstExempt: Boolean!
+  subtotalInCents: Int!
+  gstInCents: Int!
+  pstInCents: Int!
+  totalInCents: Int!
+  invoiceNotes: String
+  applicationId: Int!
+  id: Int!
+  whoUpdated: String!
+  recipient: DropdownDto!
+  invoiceItems: [ViewInvoiceItem!]!
+  invoiceAttachments: [ViewInvoiceAttachment!]!
+}
+
+"""The status of an invoice"""
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  RECEIVED
+  PAID
+}
+
+type InvoiceResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: ViewInvoice
+}
+
+type InvoicesResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [ViewInvoice!]
+}
+
+type AppNoteDto {
+  id: Int!
+  applicationId: Int!
+  noteDate: String!
+  noteText: String!
+  createdBy: String!
+  createdDateTime: DateTime!
+  updatedBy: String!
+  updatedDateTime: DateTime!
+}
+
+type ApplicationNotesResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [AppNoteDto!]!
+}
+
+type ViewStaff {
+  id: Float!
+  name: String!
+  assignments: Float!
+  capacity: Float!
+}
+
+type ViewApplications {
+  id: Float!
+  applicationId: Float!
+  roleId: Float!
+  roleDescription: String!
+  siteAddress: String!
+  effectiveStartDate: DateTime!
+  effectiveEndDate: DateTime
+}
+
+type StaffResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  count: Float
+  page: Float
+  pageSize: Float
+  data: [ViewStaff!]!
+}
+
+type ViewApplicationResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  count: Float
+  page: Float
+  pageSize: Float
+  data: [ViewApplications!]!
+}
+
+type ViewPermissions {
+  id: Float!
+  roleId: Float!
+  description: String!
+}
+
+type RoleWithPermissions {
+  roleId: Float!
+  roleDescription: String!
+  permissions: [ViewPermissions!]!
+}
+
+type PermissionsResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [RoleWithPermissions!]
+}
+
+type ViewStaffAssignedDto {
+  applicationId: Float!
+  personId: Float!
+  roleId: Float!
+  startDate: DateTime!
+  endDate: DateTime
+  id: Float!
+  currentCapacity: Float
+}
+
+type StaffAssignedDto {
+  applicationServiceTypeId: Float
+  staffList: [ViewStaffAssignedDto!]!
+}
+
+type ViewStaffAssignedResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: StaffAssignedDto
+}
+
+type ViewStaffWithCapacityDTO {
+  personId: Float!
+  personFullName: String!
+  currentCapacity: Float
+}
+
+type ViewStaffWithCapacityResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [ViewStaffWithCapacityDTO!]
+}
+
+type TimesheetDayDto {
+  id: Int!
+  applicationId: Int!
+  personId: Int!
+  date: DateTime!
+  hours: Float
+  comment: String
+}
+
+type TimesheetDayResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [TimesheetDayDto!]!
+}
+
+type PersonWithTimesheetDaysDto {
+  personId: Int!
+  firstName: String!
+  lastName: String!
+  email: String
+  roleId: Int
+  roleDescription: String
+  startDate: DateTime
+  endDate: DateTime
+  timesheetDays: [TimesheetDayDto!]!
+}
+
+type PersonWithTimesheetDaysResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [PersonWithTimesheetDaysDto!]
+}
+
+type ViewDashboard {
+  applicationId: Float!
+  siteId: Float
+  address: String
+  applicationType: String
+  applicationStatus: String
+  receivedDate: DateTime
+  priority: String
+}
+
+type DashboardResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [ViewDashboard!]
+}
+
+type Coms {
+  bucketId: String
+  downloadUrl: String
+}
+
+type ComsResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: Coms
 }
 
 type Query {
-  users: FetchUserResponse!
-  user(id: Int!): ExternalUser!
-  regions: FetchRegionResponse!
-  region(id: Int!): Region!
-  orgnizationTypes: FetchOrganizationTypeResponse!
+  findAllPerson: PersonResponse!
+  findPersonById(id: Float!): PersonResponse!
+  searchPerson(searchParam: String!, page: Int!, pageSize: Int!): SearchPersonResponse!
+  searchApplications(searchParam: String!, page: Int!, pageSize: Int!, filter: Filter!, sortBy: ApplicationSortByField, sortByDir: ApplicationSortByDirection): ApplicationSearchResponse!
+  searchApplicationsById(query: String!): ApplicationSearchResponse!
+  getAppParticipantsByAppId(applicationId: Int!, filter: AppParticipantFilter): AppParticipantsResponse!
+  getAllParticipantRoles(roleType: String): ParticipantsRolesResponse!
+  getParticipantNames(searchParam: String!): DropdownResponse!
+  getOrganizations(searchParamForOrg: String!): DropdownResponse!
+  getPersonNotesByPersonId(id: Float!): PersonNoteResponse!
+  getApplicationHousingByApplicationId(applicationId: Int!): ApplicationHousingResponse!
+  getHousingTypes: HousingTypeResponse!
+  getApplicationDetailsById(id: Int!): ApplicationDetailsResponse!
+  getSiteDetailsBySiteId(siteId: String!): SiteDetailsResponse!
+  getInvoices(applicationId: Int!): InvoicesResponse!
+  getInvoiceById(invoiceId: Int!): InvoiceResponse!
+  getApplicationNotesByApplicationId(applicationId: Int!): ApplicationNotesResponse!
+  getStaffs(page: Int!, pageSize: Int!, filter: Filter, sortBy: StaffSortByField, sortByDir: ApplicationSortByDirection): StaffResponse!
+  getApplicationsByStaff(page: Int!, pageSize: Int!, sortBy: StaffSortByField, sortByDir: ApplicationSortByDirection, personId: Int!, roleId: Int): ViewApplicationResponse!
+  getStaffAssignedByAppId(applicationId: Int!): ViewStaffAssignedResponse!
+  getAllActiveStaffMembers: ViewStaffWithCapacityResponse!
+  getAllActiveStaffMembersForApplicationServiceType(applicationServiceTypeId: Int!): ViewStaffWithCapacityResponse!
+  getApplicationServiceTypes: DropdownResponse!
+  getPermissions: PermissionsResponse!
+  getTimesheetDaysForAssignedStaff(applicationId: Int!, startDate: String!, endDate: String!): PersonWithTimesheetDaysResponse!
+  getRecentViewedApplications: DashboardResponse!
+  getApplications: DashboardResponse!
+  getObject(objectId: String!, downloadType: DownloadType! = URL): ComsResponse!
+}
+
+enum Filter {
+  ALL
+  UNASSIGNED
+  COMPLETED
+  OVERCAPACITY
+  ASSIGNED
+  MY_ASSIGNED
+}
+
+enum ApplicationSortByField {
+  ID
+  SITE_ID
+  SITE_ADDRESS
+  APPLICATION_TYPE
+  LAST_UPDATED
+  STATUS
+  PRIORITY
+}
+
+enum ApplicationSortByDirection {
+  ASC
+  DESC
+}
+
+enum AppParticipantFilter {
+  ALL
+  MAIN
+}
+
+enum StaffSortByField {
+  ID
+  NAME
+  ASSIGNMENT
+  SITE_ADDRESS
+  START_DATE
+  END_DATE
+  ROLE
+}
+
+enum DownloadType {
+  URL
+  PROXY
 }
 
 type Mutation {
-  createUser(createUserInput: CreateUserInput!): ExternalUser!
-  updateUser(updateUserInput: UpdateUserInput!): ExternalUser!
-  removeUser(id: Int!): ExternalUser!
+  createPerson(person: CreatePerson!): PersonResponse!
+  updatePerson(input: [UpdatePerson!]!): PersonResponse!
+  createAppParticipant(newAppParticipant: CreateAppParticipantDto!): CreateAppParticipantsResponse!
+  updateAppParticipant(updateAppParticipant: UpdateAppParticipantDto!): UpdateAppParticipantsResponse!
+  createPersonNote(note: CreatePersonNote!): PersonNoteResponse!
+  updatePersonNote(id: String!, note: UpdatePersonNote!): PersonNoteResponse!
+  deletePersonNote(notes: [DeletePersonNote!]!): PersonNoteResponse!
+  addHousingToApplication(input: AddHousingInputDto!): ApplicationHousingResponse!
+  updateApplicationHousing(input: UpdateHousingInputDto!): ApplicationHousingResponse!
+  createApplication(application: CreateApplication!): ApplicationResponse!
+  updateFormsflowAppId(appStatusInput: UpdateApplicationStatusDto!): ApplicationStatusResponse!
+  createInvoice(invoice: CreateInvoice!): InvoiceResponse!
+  deleteInvoice(invoiceId: Int!): InvoiceResponse!
+  updateInvoice(invoice: UpdateInvoice!): InvoiceResponse!
+  createApplicationNote(applicationId: Int!, noteDate: DateTime!, noteText: String!): ApplicationNotesResponse!
+  updateApplicationNote(noteId: Int!, noteDate: DateTime!, noteText: String!): ApplicationNotesResponse!
+  deleteApplicationNotes(noteIds: [Int!]!): ApplicationNotesResponse!
+  updateStaffAssigned(staffInput: [UpdateStaffAssignedDto!]!, applicationServiceTypeId: Int!, applicationId: Int!): ResponseDto!
+  upsertTimesheetDays(input: UpsertTimesheetDaysInputDto!): TimesheetDayResponse!
+  createBucket(bucketName: String!, bucketKey: String!): ComsResponse!
+  deleteBucket(bucketId: String!): ComsResponse!
+  deleteObject(objectId: String!, versionId: String): ComsResponse!
 }
 
-input CreateUserInput {
-  userId: String!
+input CreatePerson {
   firstName: String!
+  middleName: String
   lastName: String!
-  addressLine: String!
-  city: String!
-  province: String!
-  country: String!
-  postalCode: String!
-  email: String!
-  phoneNumber: String!
-  organization: String!
-  userWorkStatus: String!
-  userFNStatus: String!
-  isGstExempt: Boolean!
-  isBillingContact: Boolean!
-  isProfileVerified: Boolean!
-  industry: String!
-  regionId: String!
-  organizationTypeId: String!
+  isTaxExempt: Boolean! = false
+  isEnvConsultant: Boolean
+  loginUserName: String
+  address_1: String
+  address_2: String
+  city: String
+  prov: String
+  country: String
+  postal: String
+  phone: String
+  mobile: String
+  fax: String
+  email: String
+  isActive: Boolean! = false
+  isDeleted: Boolean! = false
+  createdBy: String
+  createdDatetime: DateTime
+  permissionIds: [Int!] = []
 }
 
-input UpdateUserInput {
-  userId: String
-  firstName: String
-  lastName: String
-  addressLine: String
+input UpdatePerson {
+  firstName: String!
+  middleName: String
+  lastName: String!
+  isTaxExempt: Boolean! = false
+  isEnvConsultant: Boolean
+  loginUserName: String
+  address_1: String
+  address_2: String
   city: String
-  province: String
+  prov: String
   country: String
-  postalCode: String
+  postal: String
+  phone: String
+  mobile: String
+  fax: String
   email: String
-  phoneNumber: String
-  organization: String
-  userWorkStatus: String
-  userFNStatus: String
-  isGstExempt: Boolean
-  isBillingContact: Boolean
-  isProfileVerified: Boolean
-  industry: String
-  regionId: String
-  organizationTypeId: String
+  isActive: Boolean! = false
+  isDeleted: Boolean! = false
+  id: Float!
+  updatedBy: String
+  updatedDatetime: DateTime
+  permissionIds: [Int!] = []
+}
+
+input CreateAppParticipantDto {
+  effectiveStartDate: DateTime!
+  effectiveEndDate: DateTime
+  applicationId: Float!
+  isMainParticipant: Boolean! = false
+  personId: Float!
+  participantRoleId: Float!
+  organizationId: Float
+  createdBy: String
+  createdDateTime: DateTime
+}
+
+input UpdateAppParticipantDto {
+  effectiveStartDate: DateTime!
+  effectiveEndDate: DateTime
+  id: Float!
+  applicationId: Float!
+}
+
+input CreatePersonNote {
+  noteDescription: String!
+  personId: Float!
+}
+
+input UpdatePersonNote {
+  noteDescription: String!
+}
+
+input DeletePersonNote {
   id: String!
 }
 
-scalar link__Import
+input AddHousingInputDto {
+  applicationId: Int!
+  housingTypeId: Int!
+  numberOfUnits: Int!
+  effectiveDate: DateTime!
+  expiryDate: DateTime
+  isRental: Boolean
+  isSocial: Boolean
+  isIndigenousLed: Boolean
+  relatedApplicationIds: [Int!]
+}
+
+input UpdateHousingInputDto {
+  applicationHousingId: Int!
+  housingTypeId: Int
+  numberOfUnits: Int
+  effectiveDate: DateTime
+  expiryDate: DateTime
+  isRental: Boolean
+  isSocial: Boolean
+  isIndigenousLed: Boolean
+  relatedApplicationIds: [Int!]
+}
+
+input CreateApplication {
+  siteIds: [Float!]!
+  appTypeAbbrev: String!
+  receivedDate: DateTime!
+  applicationStatus: [ApplicationStatusDto!]!
+}
+
+input ApplicationStatusDto {
+  id: Float
+  applicationId: Float!
+  statusTypeAbbrev: String!
+  isCurrent: Boolean!
+  formId: String!
+  submissionId: String!
+  formsflowAppId: Float!
+}
+
+input UpdateApplicationStatusDto {
+  statusTypeAbbrev: String!
+  formId: String!
+  submissionId: String!
+  formsflowAppId: Float!
+  siteIds: [Float!]
+}
+
+input CreateInvoice {
+  personId: String!
+  subject: String!
+  issuedDate: DateTime!
+  dueDate: DateTime!
+  invoiceStatus: InvoiceStatus!
+  taxExempt: Boolean!
+  pstExempt: Boolean!
+  subtotalInCents: Int!
+  gstInCents: Int!
+  pstInCents: Int!
+  totalInCents: Int!
+  invoiceNotes: String
+  applicationId: Int!
+  invoiceItems: [CreateInvoiceItem!]!
+  invoiceAttachments: [CreateInvoiceAttachment!]
+}
+
+input CreateInvoiceItem {
+  description: String!
+  quantity: Int!
+  unitPriceInCents: Int!
+  totalInCents: Int!
+  itemType: String!
+}
+
+input CreateInvoiceAttachment {
+  invoiceId: Int!
+  fileName: String!
+  bucketId: String!
+  objectId: String!
+}
+
+input UpdateInvoice {
+  personId: String!
+  subject: String!
+  issuedDate: DateTime!
+  dueDate: DateTime!
+  invoiceStatus: InvoiceStatus!
+  taxExempt: Boolean!
+  pstExempt: Boolean!
+  subtotalInCents: Int!
+  gstInCents: Int!
+  pstInCents: Int!
+  totalInCents: Int!
+  invoiceNotes: String
+  applicationId: Int!
+  id: Int!
+  invoiceItems: [UpdateInvoiceItem!]!
+  invoiceAttachments: [UpdateInvoiceAttachment!]
+}
+
+input UpdateInvoiceItem {
+  description: String!
+  quantity: Int!
+  unitPriceInCents: Int!
+  totalInCents: Int!
+  itemType: String!
+  id: Int
+}
+
+input UpdateInvoiceAttachment {
+  invoiceId: Int!
+  fileName: String!
+  bucketId: String!
+  objectId: String!
+  id: Int
+}
+
+input UpdateStaffAssignedDto {
+  applicationId: Float!
+  personId: Float!
+  roleId: Float!
+  startDate: DateTime!
+  endDate: DateTime
+  id: Float!
+  organizationId: Float
+  action: String!
+}
+
+input UpsertTimesheetDaysInputDto {
+  entries: [TimesheetDayUpsertInputDto!]!
+}
+
+input TimesheetDayUpsertInputDto {
+  timesheetDayId: Int
+  applicationId: Int!
+  personId: Int!
+  date: String!
+  hours: Float
+  comment: String
+}

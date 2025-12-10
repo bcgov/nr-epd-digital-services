@@ -11,7 +11,6 @@ import { Application } from '../../entities/application.entity';
 import { AppParticipantService } from '../application/appParticipants.service';
 import { ChesEmailService } from '../email/chesEmail.service';
 import { ParticipantRole } from '../../entities/participantRole.entity';
-import { Config } from 'apollo-server-express';
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { getRepositoryToken } from '@nestjs/typeorm';
@@ -232,10 +231,7 @@ describe('StaffAssignmentService', () => {
         current_factors: 1,
       },
     ]);
-    const result =
-      await service.getActiveStaffWithCapacityByServiceType(
-        1,
-      );
+    const result = await service.getActiveStaffWithCapacityByServiceType(1);
     expect(result).toEqual([
       {
         personId: 1,
