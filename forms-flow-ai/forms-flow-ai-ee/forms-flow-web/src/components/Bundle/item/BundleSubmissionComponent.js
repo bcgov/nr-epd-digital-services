@@ -22,12 +22,16 @@ import StepButton from "@material-ui/core/StepButton";
 import { textTruncate } from "../../../helper/helper";
 import { formio_resourceBundles } from "../../../resourceBundles/formio_resourceBundles";
 import { StepLabel } from "@material-ui/core";
+import DownloadPdfButton from "../../Form/ExportAsPdf/downloadPdfButton";
 
 const BundleSubmissionComponent = ({
   readOnly,
   onSubmit,
   onChange,
   submitButtonDisable = false,
+  showPrintButton = false,
+  submissionId,
+  applicationId,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -320,7 +324,19 @@ const BundleSubmissionComponent = ({
             <div className="px-3">
               <div>
                 <Errors errors={error} />
-                <h3 className="px-3 py-2 text-truncate">{form.title}</h3>
+                <div className="d-flex align-items-center justify-content-between px-3 py-2">
+                  <h3 className="text-truncate mb-0">{form.title}</h3>
+                  {showPrintButton && form._id && submissionId && (
+                    <div className="btn-right d-flex flex-row">
+                      <DownloadPdfButton
+                        form_id={form._id}
+                        submission_id={submissionId}
+                        title={form.title}
+                        applicationId={applicationId}
+                      />
+                    </div>
+                  )}
+                </div>
                 <div className="px-3 py-2">
                   <Errors errors={error} />
                   <Form
