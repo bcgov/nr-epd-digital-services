@@ -4,7 +4,7 @@ services:
   forms-flow-documents-api:
     build:
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: local.Dockerfile
       args:
         - ssh_prv_key=${SSH_PRV_KEY}
         - ssh_pub_key=${SSH_PUB_KEY}
@@ -13,6 +13,8 @@ services:
       - '5006:5006'
     volumes:
       - ./:/app:rw
+      - ./src:/local_src:ro
+    entrypoint: /local_entrypoint.sh
     environment:
       DATABASE_URL: ${FORMSFLOW_API_DB_URL:-postgresql://postgres:changeme@forms-flow-webapi-db:5432/webapi}
       FORMSFLOW_API_CORS_ORIGINS: ${FORMSFLOW_API_CORS_ORIGINS:-*}
