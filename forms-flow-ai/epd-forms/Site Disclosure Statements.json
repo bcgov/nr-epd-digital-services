@@ -455,7 +455,7 @@
           "encrypted": false,
           "redrawOn": "",
           "customDefaultValue": "",
-          "calculateValue": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\nconst submitterEmail = UserDetails?UserDetails[\"email\"]:'';\nvalue = submitterEmail;\nconsole.log('submitterEmail----', value);\n",
+          "calculateValue": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"));\nconst submitterEmail = UserDetails?UserDetails[\"email\"]:'';\nvalue = submitterEmail;",
           "calculateServer": false,
           "key": "hiddenUserEmail",
           "tags": [],
@@ -530,7 +530,12 @@
           "tags": [],
           "properties": {},
           "customConditional": "  const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n  const groups = UserDetails[\"groups\"];\r\n  \r\n  if(groups.includes(\"/formsflow/formsflow-client\")){\r\n    component.disabled = true;\r\n    component.theme = \"secondary\";\r\n  }\r\n  else\r\n  {\r\n    component.disabled = false;\r\n    component.theme = \"default\";\r\n  }",
-          "conditional": { "json": "", "show": null, "when": null, "eq": "" },
+          "conditional": {
+            "json": "",
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
           "logic": [],
           "attributes": {},
           "overlay": {
@@ -554,7 +559,9 @@
               "placeholder": "Staff must be able to enter one or more Site IDs.",
               "tableView": true,
               "multiple": true,
-              "defaultValue": [""],
+              "defaultValue": [
+                ""
+              ],
               "key": "officeUseOnlySiteIds",
               "type": "textfield",
               "input": true,
@@ -582,7 +589,9 @@
               "customDefaultValue": "",
               "calculateValue": "",
               "calculateServer": false,
-              "widget": { "type": "input" },
+              "widget": {
+                "type": "input"
+              },
               "attributes": {},
               "validateOn": "change",
               "validate": {
@@ -596,7 +605,11 @@
                 "maxLength": "",
                 "pattern": ""
               },
-              "conditional": { "show": null, "when": null, "eq": "" },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
               "overlay": {
                 "style": "",
                 "left": "",
@@ -1441,7 +1454,79 @@
           "id": "ef0ygz"
         },
         {
-          "label": "The Approving Authority email must be completed for all municipal and approving authority submissions.",
+          "html": "<p>Important:&nbsp;Only fill in this field if you are submitting an SDS because you applied for&nbsp;subdivision, zoning, development, or building.</p><p>Enter the email address provided by the local government or approving authority.</p>",
+          "label": "Static Text",
+          "customClass": "",
+          "refreshOnChange": false,
+          "hidden": false,
+          "modalEdit": false,
+          "key": "content6",
+          "tags": [],
+          "properties": {},
+          "conditional": {
+            "show": "",
+            "when": "",
+            "eq": "",
+            "json": ""
+          },
+          "customConditional": "",
+          "logic": [],
+          "attributes": {},
+          "overlay": {
+            "style": "",
+            "page": "",
+            "left": "",
+            "top": "",
+            "width": "",
+            "height": ""
+          },
+          "type": "content",
+          "input": false,
+          "tableView": false,
+          "placeholder": "",
+          "prefix": "",
+          "suffix": "",
+          "multiple": false,
+          "defaultValue": null,
+          "protected": false,
+          "unique": false,
+          "persistent": true,
+          "clearOnHide": true,
+          "refreshOn": "",
+          "redrawOn": "",
+          "dataGridLabel": false,
+          "labelPosition": "top",
+          "description": "",
+          "errorLabel": "",
+          "tooltip": "",
+          "hideLabel": false,
+          "tabindex": "",
+          "disabled": false,
+          "autofocus": false,
+          "dbIndex": false,
+          "customDefaultValue": "",
+          "calculateValue": "",
+          "calculateServer": false,
+          "widget": null,
+          "validateOn": "change",
+          "validate": {
+            "required": false,
+            "custom": "",
+            "customPrivate": false,
+            "strictDateValidation": false,
+            "multiple": false,
+            "unique": false
+          },
+          "allowCalculateOverride": false,
+          "encrypted": false,
+          "showCharCount": false,
+          "showWordCount": false,
+          "allowMultipleMasks": false,
+          "addons": [],
+          "id": "ezxmn9a"
+        },
+        {
+          "label": "For all other submission reasons, leave this field blank.",
           "labelPosition": "top",
           "placeholder": "",
           "description": "",
@@ -1527,7 +1612,7 @@
           "addons": [],
           "inputType": "email",
           "inputMask": "",
-          "id": "e72bpo",
+          "id": "e92ydr2",
           "defaultValue": ""
         },
         {
@@ -1639,72 +1724,76 @@
           "id": "edrxgw"
         },
         {
-          "id": "e8uvu7",
-          "key": "content5",
-          "html": "<p>If you answered NO to the question above, the form is not submitted to the ministry. As per Section 3.5 of the Contaminated Sites Regulation, a<span style=\"background-color:rgb(255,255,255);color:rgb(49,49,50);\"> municipality or approving officer may still request a person to complete a site disclosure statement for their records.</span></p>",
-          "type": "content",
-          "input": false,
+          "html": "<p><i>Attention:&nbsp;You selected&nbsp;No Schedule 2 use. This means you do not need to submit an SDS to the ministry.&nbsp;</i></p><p><i>If a local government or approving authority asked you to complete an SDS, please confirm with them if they require a&nbsp;</i><a href=\"https://www2.gov.bc.ca/assets/gov/environment/air-land-water/site-remediation/docs/forms/declaration_of_no_schedule_2_uses_template.docx\"><i>Declaration of No Schedule 2 Uses</i></a><i>, or&nbsp;</i><a href=\"https://submit.digital.gov.bc.ca/app/form/submit?f=32a95812-f9db-4fd2-99eb-7e362b0253b1\"><i>fillable SDS form</i></a><i>&nbsp;for their records. These forms cannot be completed through the SRS Web App.</i></p><p><i>If requested, use the provided links to complete the correct fillable form and email it to the local government or approving authority.</i></p>",
           "label": "Static Text",
+          "customClass": "",
+          "refreshOnChange": false,
           "hidden": false,
-          "prefix": "",
-          "suffix": "",
-          "unique": false,
-          "widget": null,
-          "dbIndex": false,
+          "modalEdit": false,
+          "key": "content5",
+          "tags": [],
+          "properties": {},
+          "conditional": {
+            "show": true,
+            "when": "checkboxHasTheSiteBeenUsedForIndustrialORCommercial",
+            "eq": "no",
+            "json": ""
+          },
+          "customConditional": "",
+          "logic": [],
+          "attributes": {},
           "overlay": {
-            "top": "",
-            "left": "",
             "style": "",
+            "page": "",
+            "left": "",
+            "top": "",
             "width": "",
             "height": ""
           },
-          "tooltip": "",
-          "disabled": false,
-          "multiple": false,
-          "redrawOn": "",
-          "tabindex": "",
-          "validate": {
-            "custom": "",
-            "unique": false,
-            "multiple": false,
-            "required": false,
-            "customPrivate": false,
-            "strictDateValidation": false
-          },
-          "autofocus": false,
-          "encrypted": false,
-          "hideLabel": false,
-          "modalEdit": false,
-          "protected": false,
-          "refreshOn": "",
+          "type": "content",
+          "input": false,
           "tableView": false,
-          "attributes": {},
-          "errorLabel": "",
-          "persistent": true,
-          "properties": {},
-          "validateOn": "change",
-          "clearOnHide": true,
-          "conditional": {
-            "eq": "no",
-            "json": "",
-            "show": true,
-            "when": "checkboxHasTheSiteBeenUsedForIndustrialORCommercial"
-          },
-          "customClass": "",
-          "description": "",
           "placeholder": "",
+          "prefix": "",
+          "suffix": "",
+          "multiple": false,
           "defaultValue": null,
+          "protected": false,
+          "unique": false,
+          "persistent": true,
+          "clearOnHide": true,
+          "refreshOn": "",
+          "redrawOn": "",
           "dataGridLabel": false,
           "labelPosition": "top",
-          "showCharCount": false,
-          "showWordCount": false,
+          "description": "",
+          "errorLabel": "",
+          "tooltip": "",
+          "hideLabel": false,
+          "tabindex": "",
+          "disabled": false,
+          "autofocus": false,
+          "dbIndex": false,
+          "customDefaultValue": "",
           "calculateValue": "",
           "calculateServer": false,
-          "customConditional": "",
-          "allowMultipleMasks": false,
-          "customDefaultValue": "",
+          "widget": null,
+          "validateOn": "change",
+          "validate": {
+            "required": false,
+            "custom": "",
+            "customPrivate": false,
+            "strictDateValidation": false,
+            "multiple": false,
+            "unique": false
+          },
           "allowCalculateOverride": false,
-          "addons": []
+          "encrypted": false,
+          "showCharCount": false,
+          "showWordCount": false,
+          "allowMultipleMasks": false,
+          "addons": [],
+          "id": "e8t9yop"
         },
         {
           "id": "e8rzsp",
@@ -1809,11 +1898,20 @@
           "tableView": false,
           "components": [
             {
-              "key": "ExemptionsDeclarationYesOrNo",
-              "type": "radio",
-              "input": true,
-              "label": "Do any of the exemptions from submitting a site disclosure statement apply? (see the <a href=\"https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/375_96_01\" target=\"_blank\">CONTAMINATED SITES REGULATION</a>, Division 3, Part 2)",
+              "label": "Do any of the exemptions from submitting a site disclosure statement apply? (see the <a href='https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/375_96_01' target='_blank'>CONTAMINATED SITES REGULATION</a>, Division 3, Part 2)",
+              "labelPosition": "top",
+              "optionsLabelPosition": "right",
+              "description": "",
+              "tooltip": "",
+              "customClass": "",
+              "tabindex": "",
               "inline": false,
+              "hidden": false,
+              "hideLabel": false,
+              "autofocus": false,
+              "disabled": false,
+              "tableView": false,
+              "modalEdit": false,
               "values": [
                 {
                   "label": "Yes",
@@ -1826,31 +1924,111 @@
                   "shortcut": ""
                 }
               ],
+              "dataType": "",
+              "persistent": true,
+              "protected": false,
+              "dbIndex": false,
+              "encrypted": false,
+              "redrawOn": "",
+              "clearOnHide": true,
+              "customDefaultValue": "",
+              "calculateValue": "",
+              "calculateServer": false,
+              "allowCalculateOverride": false,
               "validate": {
                 "required": true,
+                "onlyAvailableItems": false,
+                "customMessage": "",
                 "custom": "",
                 "customPrivate": false,
+                "json": "",
                 "strictDateValidation": false,
                 "multiple": false,
-                "unique": false,
-                "onlyAvailableItems": false
+                "unique": false
               },
-              "tableView": false,
-              "optionsLabelPosition": "right",
+              "errorLabel": "",
+              "errors": "",
+              "key": "ExemptionsDeclarationYesOrNo",
+              "tags": [],
+              "properties": {},
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": "",
+                "json": ""
+              },
+              "customConditional": "",
+              "logic": [],
+              "attributes": {},
+              "overlay": {
+                "style": "",
+                "page": "",
+                "left": "",
+                "top": "",
+                "width": "",
+                "height": ""
+              },
+              "type": "radio",
+              "input": true,
               "placeholder": "",
               "prefix": "",
+              "suffix": "",
+              "multiple": false,
+              "unique": false,
+              "refreshOn": "",
+              "dataGridLabel": false,
+              "widget": null,
+              "validateOn": "change",
+              "showCharCount": false,
+              "showWordCount": false,
+              "allowMultipleMasks": false,
+              "addons": [],
+              "inputType": "radio",
+              "fieldSet": false,
+              "id": "eza06ki",
+              "defaultValue": ""
+            },
+            {
+              "html": "<p><i>Attention:&nbsp;You selected&nbsp;Exemption applies, so this SDS cannot be completed through the SRS Web App.&nbsp;</i></p><p><i>If a local government or approving authority asked you to complete an SDS, fill out the&nbsp;</i><a href=\"https://submit.digital.gov.bc.ca/app/form/submit?f=32a95812-f9db-4fd2-99eb-7e362b0253b1\"><i>fillable SDS form</i></a><i>&nbsp;and email it to them along with your reason why you think the exemption applies, and any supporting documentation.</i></p>",
+              "label": "Static Text",
               "customClass": "",
+              "refreshOnChange": false,
+              "hidden": false,
+              "modalEdit": false,
+              "key": "content7",
+              "tags": [],
+              "properties": {},
+              "conditional": {
+                "show": true,
+                "when": "ExemptionsDeclarationYesOrNo",
+                "eq": "yes",
+                "json": ""
+              },
+              "customConditional": "",
+              "logic": [],
+              "attributes": {},
+              "overlay": {
+                "style": "",
+                "page": "",
+                "left": "",
+                "top": "",
+                "width": "",
+                "height": ""
+              },
+              "type": "content",
+              "input": false,
+              "tableView": false,
+              "placeholder": "",
+              "prefix": "",
               "suffix": "",
               "multiple": false,
               "defaultValue": null,
               "protected": false,
               "unique": false,
               "persistent": true,
-              "hidden": false,
               "clearOnHide": true,
               "refreshOn": "",
               "redrawOn": "",
-              "modalEdit": false,
               "dataGridLabel": false,
               "labelPosition": "top",
               "description": "",
@@ -1865,284 +2043,22 @@
               "calculateValue": "",
               "calculateServer": false,
               "widget": null,
-              "attributes": {},
-              "validateOn": "change",
-              "conditional": {
-                "show": null,
-                "when": null,
-                "eq": ""
-              },
-              "overlay": {
-                "style": "",
-                "left": "",
-                "top": "",
-                "width": "",
-                "height": ""
-              },
-              "allowCalculateOverride": false,
-              "encrypted": false,
-              "showCharCount": false,
-              "showWordCount": false,
-              "properties": {},
-              "allowMultipleMasks": false,
-              "addons": [],
-              "inputType": "radio",
-              "fieldSet": false,
-              "id": "ezbg6n"
-            },
-            {
-              "label": "Select one",
-              "labelPosition": "top",
-              "widget": "choicesjs",
-              "placeholder": "Select one",
-              "description": "",
-              "tooltip": "",
-              "customClass": "",
-              "tabindex": "",
-              "hidden": false,
-              "hideLabel": false,
-              "uniqueOptions": false,
-              "autofocus": false,
-              "disabled": false,
-              "tableView": true,
-              "modalEdit": false,
-              "multiple": false,
-              "dataSrc": "values",
-              "data": {
-                "values": [
-                  {
-                    "label": "CSR section 4(1) - other processes apply under the Act",
-                    "value": "csrSection41OtherProcessesApplyUnderTheAct"
-                  },
-                  {
-                    "label": "CSR section 4(2) - other processes apply under the Act",
-                    "value": "csrSection42OtherProcessesApplyUnderTheAct"
-                  },
-                  {
-                    "label": "CSR section 4(3) - other processes apply under the Act",
-                    "value": "csrSection43OtherProcessesApplyUnderTheAct"
-                  },
-                  {
-                    "label": "CSR section 4.1(1)(a) - persons applying to approving officers",
-                    "value": "csrSection411APersonsApplyingToApprovingOfficers"
-                  },
-                  {
-                    "label": "CSR section 4.1(1)(b) - persons applying to approving officers",
-                    "value": "csrSection411BPersonsApplyingToApprovingOfficers"
-                  },
-                  {
-                    "label": "CSR section 4.2(1) - persons applying to municipalities",
-                    "value": "csrSection421PersonsApplyingToMunicipalities"
-                  },
-                  {
-                    "label": "CSR section 4.2(2) - persons applying to municipalities",
-                    "value": "csrSection422PersonsApplyingToMunicipalities"
-                  },
-                  {
-                    "label": "CSR section 4.3 - municipalities undertaking zoning or rezoning",
-                    "value": "csrSection43MunicipalitiesUndertakingZoningOrRezoning"
-                  },
-                  {
-                    "label": "CSR section 4.4 - more than one owner or operator required to provide site disclosure statement when ceasing operations on land",
-                    "value": "csrSection44MoreThanOneOwnerOrOperatorRequiredToProvideSiteDisclosureStatementWhenCeasingOperationsOnLand"
-                  },
-                  {
-                    "label": "CSR section 4.5 - operating areas under the Oil and Gas Activities Act",
-                    "value": "csrSection45OperatingAreasUnderTheOilAndGasActivitiesAct"
-                  },
-                  {
-                    "label": "CSR section 4.6 - vendors of real property",
-                    "value": "csrSection46VendorsOfRealProperty"
-                  },
-                  {
-                    "label": "CSR section 4.7 - previous submission of site profile",
-                    "value": "csrSection47PreviousSubmissionOfSiteProfile"
-                  }
-                ],
-                "resource": "",
-                "json": "",
-                "url": "",
-                "custom": ""
-              },
-              "dataType": "auto",
-              "idPath": "id",
-              "valueProperty": "",
-              "template": "<span>{{ item.label }}</span>",
-              "refreshOn": "",
-              "refreshOnBlur": "",
-              "clearOnRefresh": false,
-              "searchEnabled": true,
-              "selectThreshold": 0.3,
-              "readOnlyValue": false,
-              "customOptions": {},
-              "useExactSearch": false,
-              "persistent": true,
-              "protected": false,
-              "dbIndex": false,
-              "encrypted": false,
-              "clearOnHide": true,
-              "customDefaultValue": "",
-              "calculateValue": "",
-              "calculateServer": false,
-              "allowCalculateOverride": false,
-              "validateOn": "change",
-              "validate": {
-                "required": true,
-                "onlyAvailableItems": false,
-                "customMessage": "",
-                "custom": "",
-                "customPrivate": false,
-                "json": "",
-                "strictDateValidation": false,
-                "multiple": false,
-                "unique": false
-              },
-              "unique": false,
-              "errorLabel": "",
-              "errors": "",
-              "key": "ifYesSelectAllThatApply",
-              "tags": [],
-              "properties": {},
-              "conditional": {
-                "show": true,
-                "when": "ExemptionsDeclarationYesOrNo",
-                "eq": "yes",
-                "json": ""
-              },
-              "customConditional": "show= false",
-              "logic": [],
-              "attributes": {},
-              "overlay": {
-                "style": "",
-                "page": "",
-                "left": "",
-                "top": "",
-                "width": "",
-                "height": ""
-              },
-              "type": "select",
-              "indexeddb": {
-                "filter": {}
-              },
-              "selectFields": "",
-              "searchField": "",
-              "searchDebounce": 0.3,
-              "minSearch": 0,
-              "filter": "",
-              "limit": 100,
-              "redrawOn": "",
-              "input": true,
-              "searchThreshold": 0.3,
-              "prefix": "",
-              "suffix": "",
-              "dataGridLabel": false,
-              "showCharCount": false,
-              "showWordCount": false,
-              "allowMultipleMasks": false,
-              "addons": [],
-              "lazyLoad": true,
-              "authenticate": false,
-              "ignoreCache": false,
-              "fuseOptions": {
-                "include": "score",
-                "threshold": 0.3
-              },
-              "id": "ekwbmmd",
-              "defaultValue": ""
-            },
-            {
-              "label": "Description",
-              "labelPosition": "top",
-              "placeholder": "Include additional information as needed",
-              "description": "",
-              "tooltip": "",
-              "prefix": "",
-              "suffix": "",
-              "widget": {
-                "type": "input"
-              },
-              "displayMask": "",
-              "editor": "",
-              "autoExpand": false,
-              "customClass": "",
-              "tabindex": "",
-              "autocomplete": "",
-              "hidden": false,
-              "hideLabel": false,
-              "showWordCount": false,
-              "showCharCount": false,
-              "autofocus": false,
-              "spellcheck": true,
-              "disabled": false,
-              "tableView": true,
-              "modalEdit": false,
-              "multiple": false,
-              "persistent": true,
-              "inputFormat": "plain",
-              "protected": false,
-              "dbIndex": false,
-              "case": "",
-              "truncateMultipleSpaces": false,
-              "encrypted": false,
-              "redrawOn": "",
-              "clearOnHide": true,
-              "customDefaultValue": "",
-              "calculateValue": "",
-              "calculateServer": false,
-              "allowCalculateOverride": false,
               "validateOn": "change",
               "validate": {
                 "required": false,
-                "pattern": "",
-                "customMessage": "",
                 "custom": "",
                 "customPrivate": false,
-                "json": "",
-                "minLength": "",
-                "maxLength": "",
-                "minWords": "",
-                "maxWords": "",
                 "strictDateValidation": false,
                 "multiple": false,
                 "unique": false
               },
-              "unique": false,
-              "errorLabel": "",
-              "errors": "",
-              "key": "description",
-              "tags": [],
-              "properties": {},
-              "conditional": {
-                "show": true,
-                "when": "ExemptionsDeclarationYesOrNo",
-                "eq": "yes",
-                "json": ""
-              },
-              "customConditional": "show = false",
-              "logic": [],
-              "attributes": {},
-              "overlay": {
-                "style": "",
-                "page": "",
-                "left": "",
-                "top": "",
-                "width": "",
-                "height": ""
-              },
-              "type": "textarea",
-              "rows": 3,
-              "wysiwyg": false,
-              "input": true,
-              "refreshOn": "",
-              "dataGridLabel": false,
+              "allowCalculateOverride": false,
+              "encrypted": false,
+              "showCharCount": false,
+              "showWordCount": false,
               "allowMultipleMasks": false,
               "addons": [],
-              "mask": false,
-              "inputType": "text",
-              "inputMask": "",
-              "fixedSize": true,
-              "id": "ekgrs5",
-              "defaultValue": ""
+              "id": "ecqcxv"
             }
           ],
           "collapsible": false,
@@ -4778,7 +4694,7 @@
                     }
                   ],
                   "keyModified": true,
-                  "id": "eyvarc00000000000000000000000000000000000000000000000000",
+                  "id": "eyvarc0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                   "placeholder": "",
                   "prefix": "",
                   "customClass": "",
@@ -6528,7 +6444,7 @@
                   "key": "siteId",
                   "type": "textfield",
                   "input": true,
-                  "id": "ecyhkan0000000000000000000000000000000000000000000000000000000000000",
+                  "id": "ecyhkan000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                   "placeholder": "",
                   "prefix": "",
                   "customClass": "",
@@ -8384,7 +8300,7 @@
                         }
                       ],
                       "collapsible": false,
-                      "id": "e7ra7840000000000000000000000000000000000000000000000000000000000000",
+                      "id": "e7ra784000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                       "placeholder": "",
                       "prefix": "",
                       "customClass": "",
@@ -8858,7 +8774,7 @@
                     }
                   ],
                   "collapsible": false,
-                  "id": "eamvgvl0000000000000000000000000000000000000000000000000000000000000",
+                  "id": "eamvgvl000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                   "placeholder": "",
                   "prefix": "",
                   "customClass": "",
@@ -9074,7 +8990,7 @@
                       "input": true,
                       "label": "Crown Land File Numbers",
                       "tableView": true,
-                      "id": "ei683c0000000000000000000000000000000000000000000000000000000000000",
+                      "id": "ei683c000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                       "placeholder": "",
                       "prefix": "",
                       "customClass": "",
@@ -11139,8 +11055,8 @@
           "customConditional": "if(data.ExemptionsDeclarationYesOrNo === \"yes\" || data.checkboxHasTheSiteBeenUsedForIndustrialORCommercial === \"no\")\r\n{\r\n  show=false\r\n}\r\nelse\r\n{\r\n  const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\n  const groups = UserDetails[\"groups\"];\r\n\r\n  if(groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\") || \r\n  groups.includes(\"/formsflow/formsflow-reviewer/lrs-approving-authority\") ||\r\n  groups.includes(\"/formsflow/formsflow-reviewer/site-information-advisor\") ||\r\n  (groups.includes(\"/formsflow/formsflow-client\") && !data.section1BAgentCheckbox)) {\r\n    show = true;\r\n    \r\n  }\r\n  else\r\n  {\r\n    show = false;\r\n  }\r\n}",
           "conditional": {
             "json": "",
-            "show": null,
-            "when": null,
+            "show": "",
+            "when": "",
             "eq": ""
           },
           "logic": [],
@@ -11227,7 +11143,7 @@
               "allowMultipleMasks": false,
               "addons": [],
               "attrs": [],
-              "id": "efqbptn"
+              "id": "estuigq"
             },
             {
               "key": "Signature-Column",
@@ -11244,8 +11160,15 @@
                   "components": [
                     {
                       "label": "SIGNATURE",
-                      "description": "For agents completing the SDS, forward the form to the owner/operator to complete this section",
                       "tableView": false,
+                      "validate": {
+                        "required": true,
+                        "custom": "",
+                        "customPrivate": false,
+                        "strictDateValidation": false,
+                        "multiple": false,
+                        "unique": false
+                      },
                       "key": "Signature",
                       "logic": [
                         {
@@ -11291,6 +11214,7 @@
                       "modalEdit": false,
                       "dataGridLabel": false,
                       "labelPosition": "top",
+                      "description": "",
                       "errorLabel": "",
                       "tooltip": "",
                       "hideLabel": false,
@@ -11306,14 +11230,6 @@
                       },
                       "attributes": {},
                       "validateOn": "change",
-                      "validate": {
-                        "required": false,
-                        "custom": "",
-                        "customPrivate": false,
-                        "strictDateValidation": false,
-                        "multiple": false,
-                        "unique": false
-                      },
                       "conditional": {
                         "show": null,
                         "when": null,
@@ -11341,7 +11257,7 @@
                       "minWidth": "0.5",
                       "maxWidth": "2.5",
                       "keepOverlayRatio": true,
-                      "id": "erqqzm"
+                      "id": "en9jo9k"
                     }
                   ],
                   "currentWidth": 6
@@ -11454,7 +11370,7 @@
                       "displayMask": "",
                       "spellcheck": true,
                       "truncateMultipleSpaces": false,
-                      "id": "ei3eun"
+                      "id": "evytaja"
                     },
                     {
                       "label": "Job Title",
@@ -11532,7 +11448,7 @@
                       "displayMask": "",
                       "spellcheck": true,
                       "truncateMultipleSpaces": false,
-                      "id": "eszv2hr"
+                      "id": "ettvkb3"
                     },
                     {
                       "logic": [
@@ -11640,7 +11556,7 @@
                       "addons": [],
                       "inputType": "radio",
                       "fieldSet": false,
-                      "id": "eq1m7zj"
+                      "id": "ex5ai7o"
                     },
                     {
                       "logic": [
@@ -11781,7 +11697,7 @@
                         "arrowkeys": true
                       },
                       "customOptions": {},
-                      "id": "e6faa9"
+                      "id": "eqxwj7"
                     }
                   ],
                   "currentWidth": 6
@@ -11849,7 +11765,7 @@
               "tree": false,
               "lazyLoad": false,
               "autoAdjust": false,
-              "id": "el7h7sj"
+              "id": "e4d7ofo"
             }
           ],
           "keyModified": true,
@@ -11891,7 +11807,669 @@
           "addons": [],
           "tree": false,
           "lazyLoad": false,
-          "id": "eq5bti5"
+          "id": "eahtm3"
+        },
+        {
+          "title": "Signature",
+          "theme": "default",
+          "tooltip": "",
+          "customClass": "",
+          "collapsible": false,
+          "hidden": true,
+          "hideLabel": false,
+          "disabled": false,
+          "modalEdit": false,
+          "key": "agentSignature",
+          "tags": [],
+          "properties": {},
+          "customConditional": "const UserDetails = JSON.parse(localStorage.getItem(\"UserDetails\"))\r\nconst groups = UserDetails[\"groups\"];  \r\n\r\n  if(groups.includes(\"/formsflow/formsflow-reviewer/formsflow-client-reviewer\")){\r\n    component.disabled = true; \r\n    component.theme = \"secondary\";\r\n  }\r\n  else\r\n  {\r\n    component.disabled = false;\r\n    component.theme = \"default\";\r\n  }\r\n\r\nif (data.section1BAgentCheckbox)\r\n{\t\r\n   component.hidden = false;\r\n   return true;\r\n} else \r\n{\r\n  component.hidden = true;\r\n  return false;\r\n}",
+          "conditional": {
+            "json": "",
+            "show": null,
+            "when": null,
+            "eq": ""
+          },
+          "logic": [],
+          "attributes": {},
+          "overlay": {
+            "style": "",
+            "page": "",
+            "left": "",
+            "top": "",
+            "width": "",
+            "height": ""
+          },
+          "type": "panel",
+          "label": "Panel",
+          "breadcrumb": "default",
+          "tabindex": "",
+          "input": false,
+          "tableView": false,
+          "components": [
+            {
+              "key": "heading12",
+              "tag": "h3",
+              "type": "htmlelement",
+              "input": false,
+              "label": "Heading",
+              "content": "By signing below, I confirm that the information in this form is complete and accurate to the best of my knowledge:",
+              "tableView": false,
+              "headingSize": "h1",
+              "placeholder": "",
+              "prefix": "",
+              "customClass": "",
+              "suffix": "",
+              "multiple": false,
+              "defaultValue": null,
+              "protected": false,
+              "unique": false,
+              "persistent": false,
+              "hidden": false,
+              "clearOnHide": true,
+              "refreshOn": "",
+              "redrawOn": "",
+              "modalEdit": false,
+              "dataGridLabel": false,
+              "labelPosition": "top",
+              "description": "",
+              "errorLabel": "",
+              "tooltip": "",
+              "hideLabel": false,
+              "tabindex": "",
+              "disabled": false,
+              "autofocus": false,
+              "dbIndex": false,
+              "customDefaultValue": "",
+              "calculateValue": "",
+              "calculateServer": false,
+              "widget": null,
+              "attributes": {},
+              "validateOn": "change",
+              "validate": {
+                "required": false,
+                "custom": "",
+                "customPrivate": false,
+                "strictDateValidation": false,
+                "multiple": false,
+                "unique": false
+              },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
+              "overlay": {
+                "style": "",
+                "left": "",
+                "top": "",
+                "width": "",
+                "height": ""
+              },
+              "allowCalculateOverride": false,
+              "encrypted": false,
+              "showCharCount": false,
+              "showWordCount": false,
+              "properties": {},
+              "allowMultipleMasks": false,
+              "addons": [],
+              "attrs": [],
+              "id": "eotyips"
+            },
+            {
+              "key": "Signature-Column1",
+              "type": "columns",
+              "input": false,
+              "label": "Columns - 2",
+              "columns": [
+                {
+                  "pull": 0,
+                  "push": 0,
+                  "size": "md",
+                  "width": 6,
+                  "offset": 0,
+                  "components": [
+                    {
+                      "label": "SIGNATURE",
+                      "description": "For agents completing the SDS, forward the form to the owner/operator to complete this section",
+                      "tableView": false,
+                      "validate": {
+                        "required": true,
+                        "custom": "",
+                        "customPrivate": false,
+                        "strictDateValidation": false,
+                        "multiple": false,
+                        "unique": false
+                      },
+                      "key": "Signature1",
+                      "logic": [
+                        {
+                          "name": "Disable For Approving Authority",
+                          "trigger": {
+                            "type": "simple",
+                            "simple": {
+                              "show": true,
+                              "when": "hiddenIsApprovingAuthority",
+                              "eq": "yes"
+                            }
+                          },
+                          "actions": [
+                            {
+                              "name": "Disable",
+                              "type": "property",
+                              "property": {
+                                "label": "Disabled",
+                                "value": "disabled",
+                                "type": "boolean"
+                              },
+                              "state": true
+                            }
+                          ]
+                        }
+                      ],
+                      "type": "signature",
+                      "input": true,
+                      "hideOnChildrenHidden": false,
+                      "placeholder": "",
+                      "prefix": "",
+                      "customClass": "",
+                      "suffix": "",
+                      "multiple": false,
+                      "defaultValue": null,
+                      "protected": false,
+                      "unique": false,
+                      "persistent": true,
+                      "hidden": false,
+                      "clearOnHide": true,
+                      "refreshOn": "",
+                      "redrawOn": "",
+                      "modalEdit": false,
+                      "dataGridLabel": false,
+                      "labelPosition": "top",
+                      "errorLabel": "",
+                      "tooltip": "",
+                      "hideLabel": false,
+                      "tabindex": "",
+                      "disabled": false,
+                      "autofocus": false,
+                      "dbIndex": false,
+                      "customDefaultValue": "",
+                      "calculateValue": "",
+                      "calculateServer": false,
+                      "widget": {
+                        "type": "input"
+                      },
+                      "attributes": {},
+                      "validateOn": "change",
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
+                      "overlay": {
+                        "style": "",
+                        "left": "",
+                        "top": "",
+                        "width": "",
+                        "height": ""
+                      },
+                      "allowCalculateOverride": false,
+                      "encrypted": false,
+                      "showCharCount": false,
+                      "showWordCount": false,
+                      "properties": {},
+                      "allowMultipleMasks": false,
+                      "addons": [],
+                      "footer": "Sign above",
+                      "width": "100%",
+                      "height": "150px",
+                      "penColor": "black",
+                      "backgroundColor": "rgb(245,245,235)",
+                      "minWidth": "0.5",
+                      "maxWidth": "2.5",
+                      "keepOverlayRatio": true,
+                      "id": "el18fwp"
+                    }
+                  ],
+                  "currentWidth": 6
+                },
+                {
+                  "pull": 0,
+                  "push": 0,
+                  "size": "md",
+                  "width": 6,
+                  "offset": 0,
+                  "components": [
+                    {
+                      "logic": [
+                        {
+                          "name": "Disable For Approving Authority",
+                          "trigger": {
+                            "type": "simple",
+                            "simple": {
+                              "show": true,
+                              "when": "hiddenIsApprovingAuthority",
+                              "eq": "yes"
+                            }
+                          },
+                          "actions": [
+                            {
+                              "name": "Disable",
+                              "type": "property",
+                              "property": {
+                                "label": "Disabled",
+                                "value": "disabled",
+                                "type": "boolean"
+                              },
+                              "state": true
+                            }
+                          ]
+                        }
+                      ],
+                      "key": "firstAndLastName1",
+                      "type": "textfield",
+                      "input": true,
+                      "label": "First and Last Name",
+                      "tableView": false,
+                      "hideOnChildrenHidden": false,
+                      "placeholder": "",
+                      "prefix": "",
+                      "customClass": "",
+                      "suffix": "",
+                      "multiple": false,
+                      "defaultValue": null,
+                      "protected": false,
+                      "unique": false,
+                      "persistent": true,
+                      "hidden": false,
+                      "clearOnHide": true,
+                      "refreshOn": "",
+                      "redrawOn": "",
+                      "modalEdit": false,
+                      "dataGridLabel": false,
+                      "labelPosition": "top",
+                      "description": "",
+                      "errorLabel": "",
+                      "tooltip": "",
+                      "hideLabel": false,
+                      "tabindex": "",
+                      "disabled": false,
+                      "autofocus": false,
+                      "dbIndex": false,
+                      "customDefaultValue": "",
+                      "calculateValue": "",
+                      "calculateServer": false,
+                      "widget": {
+                        "type": "input"
+                      },
+                      "attributes": {},
+                      "validateOn": "change",
+                      "validate": {
+                        "required": false,
+                        "custom": "",
+                        "customPrivate": false,
+                        "strictDateValidation": false,
+                        "multiple": false,
+                        "unique": false,
+                        "minLength": "",
+                        "maxLength": "",
+                        "pattern": ""
+                      },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
+                      "overlay": {
+                        "style": "",
+                        "left": "",
+                        "top": "",
+                        "width": "",
+                        "height": ""
+                      },
+                      "allowCalculateOverride": false,
+                      "encrypted": false,
+                      "showCharCount": false,
+                      "showWordCount": false,
+                      "properties": {},
+                      "allowMultipleMasks": false,
+                      "addons": [],
+                      "mask": false,
+                      "inputType": "text",
+                      "inputFormat": "plain",
+                      "inputMask": "",
+                      "displayMask": "",
+                      "spellcheck": true,
+                      "truncateMultipleSpaces": false,
+                      "id": "eksggtv"
+                    },
+                    {
+                      "label": "Job Title",
+                      "autoExpand": false,
+                      "tableView": true,
+                      "key": "jobTitle1",
+                      "type": "textfield",
+                      "input": true,
+                      "placeholder": "",
+                      "prefix": "",
+                      "customClass": "",
+                      "suffix": "",
+                      "multiple": false,
+                      "defaultValue": null,
+                      "protected": false,
+                      "unique": false,
+                      "persistent": true,
+                      "hidden": false,
+                      "clearOnHide": true,
+                      "refreshOn": "",
+                      "redrawOn": "",
+                      "modalEdit": false,
+                      "dataGridLabel": false,
+                      "labelPosition": "top",
+                      "description": "",
+                      "errorLabel": "",
+                      "tooltip": "",
+                      "hideLabel": false,
+                      "tabindex": "",
+                      "disabled": false,
+                      "autofocus": false,
+                      "dbIndex": false,
+                      "customDefaultValue": "",
+                      "calculateValue": "",
+                      "calculateServer": false,
+                      "widget": {
+                        "type": "input"
+                      },
+                      "attributes": {},
+                      "validateOn": "change",
+                      "validate": {
+                        "required": false,
+                        "custom": "",
+                        "customPrivate": false,
+                        "strictDateValidation": false,
+                        "multiple": false,
+                        "unique": false,
+                        "minLength": "",
+                        "maxLength": "",
+                        "pattern": ""
+                      },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
+                      "overlay": {
+                        "style": "",
+                        "left": "",
+                        "top": "",
+                        "width": "",
+                        "height": ""
+                      },
+                      "allowCalculateOverride": false,
+                      "encrypted": false,
+                      "showCharCount": false,
+                      "showWordCount": false,
+                      "properties": {},
+                      "allowMultipleMasks": false,
+                      "addons": [],
+                      "mask": false,
+                      "inputType": "text",
+                      "inputFormat": "plain",
+                      "inputMask": "",
+                      "displayMask": "",
+                      "spellcheck": true,
+                      "truncateMultipleSpaces": false,
+                      "id": "e0kuhh"
+                    },
+                    {
+                      "logic": [
+                        {
+                          "name": "Disable For Approving Authority",
+                          "trigger": {
+                            "type": "simple",
+                            "simple": {
+                              "show": true,
+                              "when": "hiddenIsApprovingAuthority",
+                              "eq": "yes"
+                            }
+                          },
+                          "actions": [
+                            {
+                              "name": "Disable",
+                              "type": "property",
+                              "property": {
+                                "label": "Disabled",
+                                "value": "disabled",
+                                "type": "boolean"
+                              },
+                              "state": true
+                            }
+                          ]
+                        }
+                      ],
+                      "key": "datesigned1",
+                      "type": "datetime",
+                      "input": true,
+                      "label": "Date Signed",
+                      "format": "yyyy-MM-dd",
+                      "widget": {
+                        "type": "calendar",
+                        "displayInTimezone": "viewer",
+                        "locale": "en",
+                        "useLocaleSettings": false,
+                        "allowInput": true,
+                        "mode": "single",
+                        "enableTime": false,
+                        "noCalendar": false,
+                        "format": "yyyy-MM-dd",
+                        "hourIncrement": 1,
+                        "minuteIncrement": 1,
+                        "time_24hr": false,
+                        "minDate": null,
+                        "disableWeekends": false,
+                        "disableWeekdays": false,
+                        "maxDate": null
+                      },
+                      "tableView": false,
+                      "datePicker": {
+                        "disableWeekdays": false,
+                        "disableWeekends": false,
+                        "showWeeks": true,
+                        "startingDay": 0,
+                        "initDate": "",
+                        "minMode": "day",
+                        "maxMode": "year",
+                        "yearRows": 4,
+                        "yearColumns": 5,
+                        "minDate": null,
+                        "maxDate": null
+                      },
+                      "enableTime": false,
+                      "enableMaxDateInput": false,
+                      "enableMinDateInput": false,
+                      "hideOnChildrenHidden": false,
+                      "placeholder": "",
+                      "prefix": "",
+                      "customClass": "",
+                      "suffix": "",
+                      "multiple": false,
+                      "defaultValue": "",
+                      "protected": false,
+                      "unique": false,
+                      "persistent": true,
+                      "hidden": false,
+                      "clearOnHide": true,
+                      "refreshOn": "",
+                      "redrawOn": "",
+                      "modalEdit": false,
+                      "dataGridLabel": false,
+                      "labelPosition": "top",
+                      "description": "",
+                      "errorLabel": "",
+                      "tooltip": "",
+                      "hideLabel": false,
+                      "tabindex": "",
+                      "disabled": false,
+                      "autofocus": false,
+                      "dbIndex": false,
+                      "customDefaultValue": "",
+                      "calculateValue": "",
+                      "calculateServer": false,
+                      "attributes": {},
+                      "validateOn": "change",
+                      "validate": {
+                        "required": false,
+                        "custom": "",
+                        "customPrivate": false,
+                        "strictDateValidation": false,
+                        "multiple": false,
+                        "unique": false
+                      },
+                      "conditional": {
+                        "show": null,
+                        "when": null,
+                        "eq": ""
+                      },
+                      "overlay": {
+                        "style": "",
+                        "left": "",
+                        "top": "",
+                        "width": "",
+                        "height": ""
+                      },
+                      "allowCalculateOverride": false,
+                      "encrypted": false,
+                      "showCharCount": false,
+                      "showWordCount": false,
+                      "properties": {},
+                      "allowMultipleMasks": false,
+                      "addons": [],
+                      "useLocaleSettings": false,
+                      "allowInput": true,
+                      "enableDate": true,
+                      "defaultDate": "",
+                      "displayInTimezone": "viewer",
+                      "timezone": "",
+                      "datepickerMode": "day",
+                      "timePicker": {
+                        "hourStep": 1,
+                        "minuteStep": 1,
+                        "showMeridian": true,
+                        "readonlyInput": false,
+                        "mousewheel": true,
+                        "arrowkeys": true
+                      },
+                      "customOptions": {},
+                      "id": "e23iyll"
+                    }
+                  ],
+                  "currentWidth": 6
+                }
+              ],
+              "tableView": false,
+              "hideOnChildrenHidden": false,
+              "placeholder": "",
+              "prefix": "",
+              "customClass": "",
+              "suffix": "",
+              "multiple": false,
+              "defaultValue": null,
+              "protected": false,
+              "unique": false,
+              "persistent": false,
+              "hidden": false,
+              "clearOnHide": false,
+              "refreshOn": "",
+              "redrawOn": "",
+              "modalEdit": false,
+              "dataGridLabel": false,
+              "labelPosition": "top",
+              "description": "",
+              "errorLabel": "",
+              "tooltip": "",
+              "hideLabel": false,
+              "tabindex": "",
+              "disabled": false,
+              "autofocus": false,
+              "dbIndex": false,
+              "customDefaultValue": "",
+              "calculateValue": "",
+              "calculateServer": false,
+              "widget": null,
+              "attributes": {},
+              "validateOn": "change",
+              "validate": {
+                "required": false,
+                "custom": "",
+                "customPrivate": false,
+                "strictDateValidation": false,
+                "multiple": false,
+                "unique": false
+              },
+              "conditional": {
+                "show": null,
+                "when": null,
+                "eq": ""
+              },
+              "overlay": {
+                "style": "",
+                "left": "",
+                "top": "",
+                "width": "",
+                "height": ""
+              },
+              "allowCalculateOverride": false,
+              "encrypted": false,
+              "showCharCount": false,
+              "showWordCount": false,
+              "properties": {},
+              "allowMultipleMasks": false,
+              "addons": [],
+              "tree": false,
+              "lazyLoad": false,
+              "autoAdjust": false,
+              "id": "er43fb"
+            }
+          ],
+          "keyModified": true,
+          "placeholder": "",
+          "prefix": "",
+          "suffix": "",
+          "multiple": false,
+          "defaultValue": null,
+          "protected": false,
+          "unique": false,
+          "persistent": false,
+          "clearOnHide": false,
+          "refreshOn": "",
+          "redrawOn": "",
+          "dataGridLabel": false,
+          "labelPosition": "top",
+          "description": "",
+          "errorLabel": "",
+          "autofocus": false,
+          "dbIndex": false,
+          "customDefaultValue": "",
+          "calculateValue": "",
+          "calculateServer": false,
+          "widget": null,
+          "validateOn": "change",
+          "validate": {
+            "required": false,
+            "custom": "",
+            "customPrivate": false,
+            "strictDateValidation": false,
+            "multiple": false,
+            "unique": false
+          },
+          "allowCalculateOverride": false,
+          "encrypted": false,
+          "showCharCount": false,
+          "showWordCount": false,
+          "allowMultipleMasks": false,
+          "addons": [],
+          "tree": false,
+          "lazyLoad": false,
+          "id": "edpa32c"
         },
         {
           "label": "Submit",
