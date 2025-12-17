@@ -10,33 +10,8 @@
   justify-content: space-between;
   min-height: calc(100vh - 65px) !important;
   border-right: 1px solid var(--surface-color-border-light, #d8d8d8);
-}
-
-.side-bar:hover {
   width: 240px;
   max-width: 240px;
-}
-
-.side-bar:hover .sideBar-Nav {
-  align-items: flex-start;
-  padding: 0px;
-}
-
-.side-bar:hover .sideBar-Nav .arrow-left {
-  display: none;
-}
-
-.side-bar:hover .sideBar-Nav .arrow-right {
-  display: block;
-}
-
-.side-bar:hover .arrows {
-  display: flex;
-  align-self: end;
-}
-
-.side-bar .sideBar-Nav .arrow-right {
-  display: none;
 }
 
 .sideBar-Nav {
@@ -44,11 +19,8 @@
   gap: 24px;
   flex-direction: column;
   list-style: none;
-  align-items: center;
-}
-
-.sideBar-Nav:hover {
   align-items: flex-start;
+  padding: 0px;
 }
 
 .sideBar-NavItem {
@@ -60,13 +32,9 @@
   gap: 5px;
 }
 
-.side-bar:hover .sideBarDisplayText {
+.sideBarDisplayText {
   display: block;
   text-decoration: none !important;
-}
-
-.sideBarDisplayText {
-  display: none;
 }
 
 .sideBar-NavLabel {
@@ -105,17 +73,13 @@
 .currentPath {
   background: var(--surface-color-primary-default);
   border-radius: 0px;
-  width: 40px;
-  justify-content: center;
+  width: 100%;
+  justify-content: flex-start;
 }
 
 .currentPath .sideBar-Icon,
 .currentPath .sideBarDisplayText {
   color: white !important;
-}
-
-.side-bar:hover .currentPath {
-  width: 100%;
 }
 
 .sideBarDisplayText:hover {
@@ -135,24 +99,16 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  align-items: center;
-}
-
-.side-bar:hover .sidebar-menu-group {
   align-items: flex-start;
   width: 100%;
 }
 
-.side-bar:hover .currentPath {
-  justify-content: flex-start;
-}
-
-.side-bar:hover .sideBar-menu-item-hover:hover {
+.sideBar-menu-item-hover:hover {
   background: var(--surface-color-primary-hover);
   width: 100%;
 }
 
-.side-bar:hover .sideBar-menu-item-hover:hover .sideBar-Icon,
-.side-bar:hover .sideBar-menu-item-hover:hover .sideBarDisplayText {
+.sideBar-menu-item-hover:hover .sideBar-Icon,
+.sideBar-menu-item-hover:hover .sideBarDisplayText {
   color: white !important;
 }

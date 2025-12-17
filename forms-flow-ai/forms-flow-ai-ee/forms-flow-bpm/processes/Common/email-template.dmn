@@ -560,6 +560,32 @@
           <text>"siteremediation@gov.bc.ca"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0i2nf4v">
+        <inputEntry id="UnaryTests_03hrgbg">
+          <text>"site_owner_signing"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xyu8zu">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0unn1en">
+          <text>"NOREPLYEPD@gov.bc.ca"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1yxp1in">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0kixwoi">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1sllu4c">
+          <text>"Site Disclosure Statement Received"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0n53puo">
+          <text>"templates/site_owner_signing.ftl"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1x3cnuh">
+          <text>"siteremediation@gov.bc.ca"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
