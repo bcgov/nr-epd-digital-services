@@ -14,6 +14,7 @@
         <bpmn:flowNodeRef>Event_06jjxcg</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_0l6sbm8</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_1cvtuda</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1pllbr2</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_1th7fqb" name="Approving Authority">
         <bpmn:flowNodeRef>Gateway_0ojnh7a</bpmn:flowNodeRef>
@@ -41,8 +42,8 @@
         <bpmn:flowNodeRef>Gateway_1tekveb</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1pkq9tl</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0upowfr</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1av5zy0</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Event_0gp0gdp</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1av5zy0</bpmn:flowNodeRef>
       </bpmn:lane>
     </bpmn:laneSet>
     <bpmn:scriptTask id="Activity_1ozfgid" name="Set Application Context For BPM" scriptFormat="javascript">
@@ -101,6 +102,7 @@ if(section5DeclarationSectionLocalGovernmentPermits === true || section5Declarat
 
 
 var emailsIdsToProcessForSO = [];
+emailsIdsToProcessForSO.push(ownerEmail);
 
 if (addnOwnerEmails) {
     addnOwnerEmails = JSON.parse(addnOwnerEmails);
@@ -158,7 +160,7 @@ execution.setVariable('siteAddress',siteAddress);</bpmn:script>
       <bpmn:incoming>Flow_16jzs4q</bpmn:incoming>
       <bpmn:outgoing>Flow_0di55l0</bpmn:outgoing>
     </bpmn:receiveTask>
-    <bpmn:sequenceFlow id="Flow_1ezlpcw" name="Yes" sourceRef="Gateway_1cvtuda" targetRef="Activity_1pkq9tl">
+    <bpmn:sequenceFlow id="Flow_1ezlpcw" name="Yes" sourceRef="Gateway_1cvtuda" targetRef="Gateway_1pllbr2">
       <bpmn:extensionElements>
         <camunda:executionListener event="take">
           <camunda:script scriptFormat="javascript">execution.setVariable('applicationStatus', 'Awaiting information from client');</camunda:script>
@@ -340,9 +342,9 @@ if (typeof task !== "undefined" &amp;&amp; task !== null) {
 }
 </camunda:script>
         </camunda:taskListener>
-        <camunda:taskListener expression="${execution.getProcessEngineServices().getRuntimeService().createMessageCorrelation(&#34;Message_Email_Updated&#34;).setVariable(&#34;category&#34;, &#34;task_assign&#34;).setVariable(&#34;name&#34;, &#34;&#34;).setVariable(&#34;applicationId&#34;, execution.getVariable(&#39;applicationId&#39;)).setVariable(&#34;taskId&#34;,  execution.getVariable(&#39;taskId&#39;)) .setVariable(&#34;emailsIdsToProcessForTaskAssignment&#34;, execution.getVariable(&#39;emailsIdsToProcessSO&#39;)) .correlateWithResult()}" event="create" />
+        <camunda:taskListener expression="${execution.getProcessEngineServices().getRuntimeService().createMessageCorrelation(&#34;Message_Email_Updated&#34;).setVariable(&#34;category&#34;, &#34;site_owner_signing&#34;).setVariable(&#34;name&#34;, &#34;&#34;).setVariable(&#34;applicationId&#34;, execution.getVariable(&#39;applicationId&#39;)).setVariable(&#34;taskId&#34;,  execution.getVariable(&#39;taskId&#39;)) .setVariable(&#34;emailsIdsToProcessForTaskAssignment&#34;, execution.getVariable(&#39;emailsIdsToProcessSO&#39;)) .correlateWithResult()}" event="create" />
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1ezlpcw</bpmn:incoming>
+      <bpmn:incoming>Flow_1g7zh4o</bpmn:incoming>
       <bpmn:outgoing>Flow_0axurx6</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:scriptTask id="Activity_0upowfr" name="Set Application Context For BPM" scriptFormat="javascript">
@@ -407,17 +409,6 @@ system.out.println ("siteAddress"+siteAddress);
 </bpmn:script>
     </bpmn:scriptTask>
     <bpmn:sequenceFlow id="Flow_0r4070a" sourceRef="Activity_0upowfr" targetRef="Activity_1gun2rz" />
-    <bpmn:callActivity id="Activity_1av5zy0" name="Send Email Notifications" calledElement="common-email-workflow">
-      <bpmn:extensionElements>
-        <camunda:in variables="all" />
-        <camunda:out variables="all" />
-        <camunda:inputOutput>
-          <camunda:inputParameter name="category">sds_generic_response</camunda:inputParameter>
-        </camunda:inputOutput>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1qps1ys</bpmn:incoming>
-      <bpmn:outgoing>Flow_10l984p</bpmn:outgoing>
-    </bpmn:callActivity>
     <bpmn:sequenceFlow id="Flow_1qps1ys" sourceRef="Gateway_1tekveb" targetRef="Activity_1av5zy0" />
     <bpmn:sequenceFlow id="Flow_118d8q0" sourceRef="Gateway_0l6sbm8" targetRef="Gateway_0l22xcz" />
     <bpmn:sequenceFlow id="Flow_0p8je31" sourceRef="Activity_1vuyckp" targetRef="Gateway_0132o9i" />
@@ -653,6 +644,22 @@ execution.setVariable('sds_email_category',emailCategory);
 system.out.println ("sds_email_category"+emailCategory);</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:sequenceFlow id="Flow_0xk62vd" sourceRef="Activity_0z30k0m" targetRef="Activity_0k1w0qb" />
+    <bpmn:callActivity id="Activity_1av5zy0" name="Send Email Notifications" calledElement="common-email-workflow">
+      <bpmn:extensionElements>
+        <camunda:in variables="all" />
+        <camunda:out variables="all" />
+        <camunda:inputOutput>
+          <camunda:inputParameter name="category">sds_generic_response</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1qps1ys</bpmn:incoming>
+      <bpmn:outgoing>Flow_10l984p</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:parallelGateway id="Gateway_1pllbr2">
+      <bpmn:incoming>Flow_1ezlpcw</bpmn:incoming>
+      <bpmn:outgoing>Flow_1g7zh4o</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_1g7zh4o" sourceRef="Gateway_1pllbr2" targetRef="Activity_1pkq9tl" />
   </bpmn:process>
   <bpmn:message id="Message_1ngb2eg" name="application_resubmitted" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -730,10 +737,6 @@ system.out.println ("sds_email_category"+emailCategory);</bpmn:script>
         <dc:Bounds x="480" y="550" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0ltp2wn" bpmnElement="Activity_1av5zy0">
-        <dc:Bounds x="520" y="660" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_01c6bt7" bpmnElement="Activity_1xvosjx">
         <dc:Bounds x="773" y="1660" width="100" height="80" />
         <bpmndi:BPMNLabel />
@@ -793,12 +796,18 @@ system.out.println ("sds_email_category"+emailCategory);</bpmn:script>
         <dc:Bounds x="900" y="1240" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0ltp2wn" bpmnElement="Activity_1av5zy0">
+        <dc:Bounds x="773" y="660" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1vqfwlx" bpmnElement="Gateway_1pllbr2">
+        <dc:Bounds x="665" y="435" width="50" height="50" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1ezlpcw_di" bpmnElement="Flow_1ezlpcw">
         <di:waypoint x="378" y="460" />
-        <di:waypoint x="690" y="460" />
-        <di:waypoint x="690" y="550" />
+        <di:waypoint x="665" y="460" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="527" y="441" width="18" height="14" />
+          <dc:Bounds x="514" y="441" width="18" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0axurx6_di" bpmnElement="Flow_0axurx6">
@@ -913,7 +922,7 @@ system.out.println ("sds_email_category"+emailCategory);</bpmn:script>
         <di:waypoint x="353" y="775" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_10l984p_di" bpmnElement="Flow_10l984p">
-        <di:waypoint x="620" y="700" />
+        <di:waypoint x="873" y="700" />
         <di:waypoint x="932" y="700" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0r4070a_di" bpmnElement="Flow_0r4070a">
@@ -922,7 +931,7 @@ system.out.println ("sds_email_category"+emailCategory);</bpmn:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1qps1ys_di" bpmnElement="Flow_1qps1ys">
         <di:waypoint x="378" y="700" />
-        <di:waypoint x="520" y="700" />
+        <di:waypoint x="773" y="700" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_118d8q0_di" bpmnElement="Flow_118d8q0">
         <di:waypoint x="378" y="350" />
@@ -993,6 +1002,10 @@ system.out.println ("sds_email_category"+emailCategory);</bpmn:script>
       <bpmndi:BPMNEdge id="Flow_0xk62vd_di" bpmnElement="Flow_0xk62vd">
         <di:waypoint x="950" y="1240" />
         <di:waypoint x="950" y="1060" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1g7zh4o_di" bpmnElement="Flow_1g7zh4o">
+        <di:waypoint x="690" y="485" />
+        <di:waypoint x="690" y="550" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
