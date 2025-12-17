@@ -42,11 +42,11 @@
         <tr>
             <td>
                 <p>Instructions for signing the statement:</p>
-                <p>1. Log in to the SRS Web App.</p>
+                <p>1. Log in to the SRS Web App using the following link: ${appURL}/${taskId}.</p>
                 <p>2. Navigate to the Application Package Dashboard.</p>
                 <p>3. Locate the Application ID (listed above) associated with the statement.</p>
                 <p>4. Open the statement and sign it</p>
-                <p>5.Select <b> Submit </b> to forward the statement to the appropriate local government or ministry.</p>
+                <p>5.Select <b> Send to Ministry </b> to forward the statement to the appropriate local government or ministry.</p>
             </td>
         </tr>
         <tr>
