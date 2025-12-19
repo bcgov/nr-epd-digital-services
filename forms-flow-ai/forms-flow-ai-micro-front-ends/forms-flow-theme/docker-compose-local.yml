@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  forms-flow-theme:
+    container_name: forms-flow-theme-local
+    build:
+      context: .
+      dockerfile: local.Dockerfile
+    ports:
+      - "3008:3008"
+    volumes:
+      - ./:/local_src:ro
+    tty: true
