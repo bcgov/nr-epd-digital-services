@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  forms-flow-nav:
+    container_name: forms-flow-nav-local
+    build:
+      context: .
+      dockerfile: local.Dockerfile
+    ports:
+      - "3005:3005"
+    volumes:
+      - ./:/local_src:ro
+    environment:
+      - REACT_APP_CUSTOM_LOGOUT_URL=${EPD_IDP_LOGOUT_URL}
+    tty: true
