@@ -1,9 +1,11 @@
 version: '3.7'
 
 services:
+  # Service 1: Forms Flow Documents
   forms-flow-documents-api:
+    container_name: forms-flow-documents-local
     build:
-      context: ./
+      context: ./forms-flow-ai/forms-flow-ai-ee/forms-flow-documents
       dockerfile: local.Dockerfile
       args:
         - ssh_prv_key=${SSH_PRV_KEY}
@@ -12,8 +14,8 @@ services:
     ports:
       - '5006:5006'
     volumes:
-      - ./:/app:rw
-      - ./src:/local_src:ro
+      - ./forms-flow-ai/forms-flow-ai-ee/forms-flow-documents:/app:rw
+      - ./forms-flow-ai/forms-flow-ai-ee/forms-flow-documents/src:/local_src:ro
     entrypoint: /local_entrypoint.sh
     environment:
       DATABASE_URL: ${FORMSFLOW_API_DB_URL:-postgresql://postgres:changeme@forms-flow-webapi-db:5432/webapi}
@@ -36,8 +38,38 @@ services:
       FORMIO_JWT_SECRET: ${FORMIO_JWT_SECRET:---- change me now ---}
       MULTI_TENANCY_ENABLED: ${MULTI_TENANCY_ENABLED:-false}
       KEYCLOAK_ENABLE_CLIENT_AUTH: ${KEYCLOAK_ENABLE_CLIENT_AUTH:-false}
-    stdin_open: true # -i
-    tty: true # -t
+    stdin_open: true
+    tty: true
+    networks:
+      - forms-flow-webapi-network
+
+  # Service 2: Forms Flow Nav
+  forms-flow-nav:
+    container_name: forms-flow-nav-local
+    build:
+      context: ./forms-flow-ai/forms-flow-ai-micro-front-ends/forms-flow-nav
+      dockerfile: local.Dockerfile
+    ports:
+      - "3005:3005"
+    volumes:
+      - ./forms-flow-ai/forms-flow-ai-micro-front-ends/forms-flow-nav:/local_src:ro
+    environment:
+      - REACT_APP_CUSTOM_LOGOUT_URL=${EPD_IDP_LOGOUT_URL}
+    tty: true
+    networks:
+      - forms-flow-webapi-network
+
+  # Service 3: Forms Flow Theme
+  forms-flow-theme:
+    container_name: forms-flow-theme-local
+    build:
+      context: ./forms-flow-ai/forms-flow-ai-micro-front-ends/forms-flow-theme
+      dockerfile: local.Dockerfile
+    ports:
+      - "3008:3008"
+    volumes:
+      - ./forms-flow-ai/forms-flow-ai-micro-front-ends/forms-flow-theme:/local_src:ro
+    tty: true
     networks:
       - forms-flow-webapi-network
 
