@@ -53,6 +53,7 @@ docker-compose -f docker-compose-formsflow-local.yml up --build forms-flow-nav
 *   **Forms Flow Documents**: `http://localhost:5006`
 *   **Forms Flow Nav**: `http://localhost:3005`
 *   **Forms Flow Theme**: `http://localhost:3008`
+*   **Forms Flow BPM**: `http://localhost:8000`
 
 ## How it Works
 
