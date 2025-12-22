@@ -68,24 +68,24 @@ system.getenv('COMS_API_HOST_URL')+"/api/v1/bucket"</camunda:script>
       <bpmn:incoming>Flow_ScriptError</bpmn:incoming>
       <bpmn:outgoing>Flow_ErrorToEnd</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
-var logger = java.util.logging.Logger.getLogger("BucketCreationError");
 
-// Get error context (safe information only)
+
+
 var applicationId = execution.getVariable('applicationId');
 var processInstanceId = execution.getProcessInstanceId();
 var activityId = execution.getCurrentActivityId();
 var timestamp = new java.util.Date().toString();
 
-// Secure logging without sensitive environment data
+
 var errorMessage = "BUCKET_CREATION_FAILED - " +
   "ApplicationId: " + applicationId + 
   ", ProcessInstanceId: " + processInstanceId +
   ", ActivityId: " + activityId +
   ", Timestamp: " + timestamp;
 
-// Log to multiple destinations
+
 system.out.println(errorMessage);
-logger.severe(errorMessage);
+
 
 // Store detailed error info for monitoring
 execution.setVariable('bucketCreationError', true);
