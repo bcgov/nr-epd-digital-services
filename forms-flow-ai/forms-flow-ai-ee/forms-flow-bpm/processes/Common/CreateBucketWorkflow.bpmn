@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_08oxgyg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.0.0" modeler:executionPlatform="Camunda Platform">
+  <bpmn:error id="Error_BucketCreation" name="BucketCreationError" errorCode="BUCKET_CREATION_FAILED" />
   <bpmn:process id="create-bucket" name="CreateBucketWorkflow" isExecutable="true" camunda:historyTimeToLive="300">
     <bpmn:startEvent id="Event_0kew5uc" name="Start">
       <bpmn:outgoing>Flow_15fflso</bpmn:outgoing>
@@ -44,7 +45,8 @@ JSON.stringify(p)</camunda:script>
               <camunda:script scriptFormat="groovy">var system = java.lang.System;
 system.getenv('COMS_API_HOST_URL')+"/api/v1/bucket"</camunda:script>
             </camunda:inputParameter>
-            <camunda:outputParameter name="bucketInfo">${S(response)}</camunda:outputParameter>
+            <camunda:outputParameter name="bucketResponse">${response}</camunda:outputParameter>
+            <camunda:outputParameter name="bucketStatusCode">${statusCode}</camunda:outputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
         </camunda:connector>
@@ -56,6 +58,56 @@ system.getenv('COMS_API_HOST_URL')+"/api/v1/bucket"</camunda:script>
       <bpmn:incoming>Flow_0bn2xps</bpmn:incoming>
       <bpmn:incoming>Flow_01w6ao9</bpmn:incoming>
     </bpmn:endEvent>
+    <bpmn:endEvent id="Event_ErrorEnd" name="Error End">
+      <bpmn:incoming>Flow_ErrorToEnd</bpmn:incoming>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_CreateBucket" errorRef="Error_BucketCreation" />
+    </bpmn:endEvent>
+    <bpmn:scriptTask id="Activity_HandleError" name="Handle Bucket Creation Error" scriptFormat="javascript">
+      <bpmn:incoming>Flow_TokenError</bpmn:incoming>
+      <bpmn:incoming>Flow_BucketError</bpmn:incoming>
+      <bpmn:incoming>Flow_ScriptError</bpmn:incoming>
+      <bpmn:outgoing>Flow_ErrorToEnd</bpmn:outgoing>
+      <bpmn:script>var system = java.lang.System;
+var logger = java.util.logging.Logger.getLogger("BucketCreationError");
+
+// Get error context (safe information only)
+var applicationId = execution.getVariable('applicationId');
+var processInstanceId = execution.getProcessInstanceId();
+var activityId = execution.getCurrentActivityId();
+var timestamp = new java.util.Date().toString();
+
+// Secure logging without sensitive environment data
+var errorMessage = "BUCKET_CREATION_FAILED - " +
+  "ApplicationId: " + applicationId + 
+  ", ProcessInstanceId: " + processInstanceId +
+  ", ActivityId: " + activityId +
+  ", Timestamp: " + timestamp;
+
+// Log to multiple destinations
+system.out.println(errorMessage);
+logger.severe(errorMessage);
+
+// Store detailed error info for monitoring
+execution.setVariable('bucketCreationError', true);
+execution.setVariable('bucketErrorTimestamp', timestamp);
+execution.setVariable('bucketErrorProcessId', processInstanceId);</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:boundaryEvent id="Event_TokenGenerationError" name="Token Error" attachedToRef="Activity_0nm63gf">
+      <bpmn:outgoing>Flow_TokenError</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_Token" />
+    </bpmn:boundaryEvent>
+    <bpmn:boundaryEvent id="Event_BucketCreationError" name="Bucket Error" attachedToRef="Activity_1w8sq4d">
+      <bpmn:outgoing>Flow_BucketError</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_Bucket" />
+    </bpmn:boundaryEvent>
+    <bpmn:boundaryEvent id="Event_ScriptError" name="Script Error" attachedToRef="Activity_1cy9bql">
+      <bpmn:outgoing>Flow_ScriptError</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_Script" />
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_TokenError" sourceRef="Event_TokenGenerationError" targetRef="Activity_HandleError" />
+    <bpmn:sequenceFlow id="Flow_BucketError" sourceRef="Event_BucketCreationError" targetRef="Activity_HandleError" />
+    <bpmn:sequenceFlow id="Flow_ScriptError" sourceRef="Event_ScriptError" targetRef="Activity_HandleError" />
+    <bpmn:sequenceFlow id="Flow_ErrorToEnd" sourceRef="Activity_HandleError" targetRef="Event_ErrorEnd" />
     <bpmn:sequenceFlow id="Flow_093urcj" sourceRef="Activity_1w8sq4d" targetRef="Activity_1cy9bql" />
     <bpmn:sequenceFlow id="Flow_15fflso" sourceRef="Event_0kew5uc" targetRef="Activity_04ks0sg">
       <bpmn:extensionElements>
@@ -67,9 +119,28 @@ system.getenv('COMS_API_HOST_URL')+"/api/v1/bucket"</camunda:script>
       <bpmn:incoming>Flow_093urcj</bpmn:incoming>
       <bpmn:outgoing>Flow_1lr16lw</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
-system.out.println ("bucketInfo:"+bucketInfo);
-execution.setVariable('bucketId',bucketInfo.prop("bucketId").value());
-system.out.println ("bucketId:"+execution.getVariable('bucketId'));
+system.out.println ("bucketResponse:"+bucketResponse);
+system.out.println ("bucketStatusCode:"+bucketStatusCode);
+
+// Parse bucket response safely
+try {
+    if (bucketResponse != null &amp;&amp; (bucketStatusCode == 200 || bucketStatusCode == 201)) {
+        var bucketData = S(bucketResponse);
+        if (bucketData.hasProp('bucketId')) {
+            execution.setVariable('bucketId', bucketData.prop('bucketId').value());
+            system.out.println ('bucketId:'+execution.getVariable('bucketId'));
+        } else {
+            system.out.println ('ERROR: No bucketId in response');
+            throw new org.camunda.bpm.engine.delegate.BpmnError('BUCKET_CREATION_FAILED', 'No bucketId in response');
+        }
+    } else {
+        system.out.println ('ERROR: Bucket creation failed - Status: ' + bucketStatusCode);
+        throw new org.camunda.bpm.engine.delegate.BpmnError('BUCKET_CREATION_FAILED', 'Bucket creation API call failed');
+    }
+} catch (e) {
+    system.out.println ('ERROR: Failed to parse bucket response: ' + e.message);
+    throw new org.camunda.bpm.engine.delegate.BpmnError('BUCKET_CREATION_FAILED', 'Failed to parse bucket response');
+}
 
 </bpmn:script>
     </bpmn:scriptTask>
@@ -115,7 +186,7 @@ JSON.stringify(p)</camunda:script>
               <camunda:script scriptFormat="groovy">var system = java.lang.System;
 system.getenv('COMS_API_HOST_URL')+"/api/v1/permission/bucket/"+execution.getVariable("bucketId")</camunda:script>
             </camunda:inputParameter>
-            <camunda:outputParameter name="permissionInfo">${S(response)}</camunda:outputParameter>
+            <camunda:outputParameter name="permissionResponse">${response}</camunda:outputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
         </camunda:connector>
@@ -132,7 +203,7 @@ system.getenv('COMS_API_HOST_URL')+"/api/v1/permission/bucket/"+execution.getVar
       <bpmn:incoming>Flow_0yp68e5</bpmn:incoming>
       <bpmn:outgoing>Flow_1kisrm5</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
-system.out.println ("permissionInfo:"+permissionInfo);
+system.out.println ("permissionResponse:"+permissionResponse);
 execution.setVariable('uploadLink',system.getenv('BCBOX_HOST_URL')+'/list/objects?bucketId='+execution.getVariable('bucketId'));
 execution.setVariable('name','User');
 
@@ -226,7 +297,7 @@ system.getenv('COMS_API_HOST_URL')+"/api/v1/user?email="+execution.getVariable("
             <camunda:outputParameter name="statusCode">
               <camunda:script scriptFormat="javascript">statusCode;</camunda:script>
             </camunda:outputParameter>
-            <camunda:outputParameter name="userInfoResponse">${S(response)}</camunda:outputParameter>
+            <camunda:outputParameter name="userInfoResponse">${response}</camunda:outputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
         </camunda:connector>
@@ -261,11 +332,25 @@ execution.setVariable('failedEmailIdsToProcess',JSON.stringify(failedEmailIdsToP
       <bpmn:outgoing>Flow_02ipbuj</bpmn:outgoing>
       <bpmn:script>var system = java.lang.System;
 system.out.println ("status"+statusCode);
-system.out.println ("userInfoResponse"+userInfoResponse);
-var responseArray = userInfoResponse.mapTo("java.util.ArrayList");
-if(responseArray.length == 0 )
-{
-execution.setVariable('noUserFound',true);
+system.out.println ("userResponse"+userInfoResponse);
+
+// Handle user search response safely
+execution.setVariable('noUserFound', true); // Default to not found
+
+try {
+    if (userInfoResponse != null &amp;&amp; statusCode == 200) {
+        var userData = S(userInfoResponse);
+        var responseArray = userData.mapTo('java.util.ArrayList');
+        if(responseArray.length &gt; 0) {
+            execution.setVariable('noUserFound', false);
+            execution.setVariable('userInfoResponse', userData); // Set for downstream processing
+        }
+    } else {
+        system.out.println ('User search failed - Status: ' + statusCode);
+    }
+} catch (e) {
+    system.out.println ('ERROR: Failed to parse user response: ' + e.message);
+    execution.setVariable('noUserFound', true);
 }</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:exclusiveGateway id="Gateway_19dzxjx">
@@ -355,7 +440,7 @@ mypayload;</camunda:script>
 var authUrl = system.getenv('BCBOX_AUTH_URL');
 authUrl;</camunda:script>
             </camunda:inputParameter>
-            <camunda:outputParameter name="token">${S(response).prop("access_token").value()}</camunda:outputParameter>
+            <camunda:outputParameter name="tokenResponse">${response}</camunda:outputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
         </camunda:connector>
@@ -369,7 +454,27 @@ authUrl;</camunda:script>
       <bpmn:script>var system = java.lang.System;
 
 system.out.println ("category: "+category);
-system.out.println ("name: "+name);</bpmn:script>
+system.out.println ("name: "+name);
+
+// Parse token from response safely
+try {
+    if (tokenResponse != null) {
+        var tokenData = S(tokenResponse);
+        if (tokenData.hasProp('access_token')) {
+            execution.setVariable('token', tokenData.prop('access_token').value());
+            system.out.println ('Token generated successfully');
+        } else {
+            system.out.println ('ERROR: No access_token in response');
+            throw new org.camunda.bpm.engine.delegate.BpmnError('TOKEN_GENERATION_FAILED', 'No access token in response');
+        }
+    } else {
+        system.out.println ('ERROR: Token generation failed - no response received');
+        throw new org.camunda.bpm.engine.delegate.BpmnError('TOKEN_GENERATION_FAILED', 'Failed to generate authentication token');
+    }
+} catch (e) {
+    system.out.println ('ERROR: Failed to parse token response: ' + e.message);
+    throw new org.camunda.bpm.engine.delegate.BpmnError('TOKEN_GENERATION_FAILED', 'Failed to parse token response');
+}</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:sequenceFlow id="Flow_0cog7s9" sourceRef="Activity_0nm63gf" targetRef="Activity_14p4bxs" />
     <bpmn:sequenceFlow id="Flow_1xs70ve" sourceRef="Activity_14p4bxs" targetRef="Activity_1w8sq4d" />
@@ -492,6 +597,28 @@ system.out.println ("name: "+name);</bpmn:script>
         <di:waypoint x="550" y="250" />
         <di:waypoint x="440" y="250" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ErrorToEnd_di" bpmnElement="Flow_ErrorToEnd">
+        <di:waypoint x="1250" y="190" />
+        <di:waypoint x="1466" y="190" />
+        <di:waypoint x="1466" y="160" />
+        <di:waypoint x="1682" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ScriptError_di" bpmnElement="Flow_ScriptError">
+        <di:waypoint x="440" y="308" />
+        <di:waypoint x="440" y="360" />
+        <di:waypoint x="1220" y="360" />
+        <di:waypoint x="1220" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BucketError_di" bpmnElement="Flow_BucketError">
+        <di:waypoint x="668" y="290" />
+        <di:waypoint x="1200" y="290" />
+        <di:waypoint x="1200" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_TokenError_di" bpmnElement="Flow_TokenError">
+        <di:waypoint x="510" y="178" />
+        <di:waypoint x="510" y="190" />
+        <di:waypoint x="1150" y="190" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_0kew5uc_di" bpmnElement="Event_0kew5uc">
         <dc:Bounds x="172" y="102" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -510,6 +637,16 @@ system.out.println ("name: "+name);</bpmn:script>
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1670" y="678" width="20" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ErrorEnd" bpmnElement="Event_ErrorEnd">
+        <dc:Bounds x="1682" y="142" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1676" y="185" width="48" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_HandleError" bpmnElement="Activity_HandleError">
+        <dc:Bounds x="1150" y="150" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_13xdoy5_di" bpmnElement="Activity_1cy9bql">
         <dc:Bounds x="340" y="210" width="100" height="80" />
@@ -574,6 +711,24 @@ system.out.println ("name: "+name);</bpmn:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_16v32xz" bpmnElement="Activity_14p4bxs">
         <dc:Bounds x="550" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_BucketError" bpmnElement="Event_BucketCreationError">
+        <dc:Bounds x="632" y="272" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="618.5" y="318" width="63" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_TokenError" bpmnElement="Event_TokenGenerationError">
+        <dc:Bounds x="492" y="142" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="538" y="153" width="58" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_ScriptError_di" bpmnElement="Event_ScriptError">
+        <dc:Bounds x="422" y="272" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="467.5" y="283" width="57" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
