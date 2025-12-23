@@ -79,7 +79,6 @@ mutation createAppParticipant($newAppParticipant: CreateAppParticipantDto!) {
       personId
       participantRoleId
       organizationId
-      isMainParticipant
       effectiveStartDate
       effectiveEndDate
       createdBy
@@ -103,7 +102,6 @@ mutation updateAppParticipant($updateAppParticipant: UpdateAppParticipantDto!) {
       personId
       participantRoleId
       organizationId
-      isMainParticipant
       effectiveStartDate
       effectiveEndDate
       createdBy

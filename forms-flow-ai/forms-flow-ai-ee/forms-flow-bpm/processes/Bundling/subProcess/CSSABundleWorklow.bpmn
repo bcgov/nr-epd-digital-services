@@ -1257,6 +1257,9 @@ var siteRiskClassification = execution.getVariable('siteRiskClassification');
 system.out.println ("siteRiskClassification "+siteRiskClassification );
 execution.setVariable('siteRiskClassification',siteRiskClassification);
 
+var ownerEmails = execution.getVariable('s3propertyOwnerOperator');
+system.out.println ("ownerEmails"+ownerEmails);
+
 
 var owneroperatorradioGroup = execution.getVariable('owneroperatorradioGroup');
 var hiddenUserIdForFormSharingApplicantAsOwner = execution.getVariable('hiddenUserIdForFormSharingApplicantAsOwner');
@@ -1293,6 +1296,21 @@ execution.setVariable('EmailType','CSSA');
 execution.setVariable('name','User');
 
 execution.setVariable('formName','Contaminated Sites Services Application Form');
+
+
+if (ownerEmails) {
+    ownerEmails = JSON.parse(ownerEmails);
+  
+    for (var i = 0; i &lt; ownerEmails.length; i++) {
+        var row = ownerEmails[i];
+        var siteOwnerEmail = row.Email;
+	system.out.println ("siteOwnerEmail"+siteOwnerEmail);
+
+        if (siteOwnerEmail &amp;&amp; siteOwnerEmail !== '') {
+            listOwnerEmailAddress.push(siteOwnerEmail);
+        }
+    }
+}
 
 var applicationsrequested = execution.getVariable('applicationsrequested');
 var certificationdocumentradioGroup = execution.getVariable('certificationdocumentradioGroup');
@@ -1362,10 +1380,7 @@ var todayVan = java.time.ZonedDateTime
         .now(java.time.ZoneId.of("America/Vancouver"))
         .toLocalDate();
 
-execution.setVariable("applicationSubmittedDate", todayVan.toString());
-
-
-</bpmn:script>
+execution.setVariable("applicationSubmittedDate", todayVan.toString());</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:scriptTask id="Activity_0k6ixqm" name="Set Variables" scriptFormat="javascript">
       <bpmn:incoming>Flow_1rc30l8</bpmn:incoming>

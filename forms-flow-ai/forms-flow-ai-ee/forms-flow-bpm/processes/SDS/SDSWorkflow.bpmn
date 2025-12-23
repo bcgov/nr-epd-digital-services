@@ -101,6 +101,7 @@ if(section5DeclarationSectionLocalGovernmentPermits === true || section5Declarat
 
 
 var emailsIdsToProcessForSO = [];
+emailsIdsToProcessForSO.push(ownerEmail);
 
 if (addnOwnerEmails) {
     addnOwnerEmails = JSON.parse(addnOwnerEmails);
@@ -137,7 +138,6 @@ execution.setVariable('siteCity',siteCity);
 
 var siteAddress= execution.getVariable('Section2-LegallyTitled-Address');
 execution.setVariable('siteAddress',siteAddress);
-
 
 var safeSiteId =  execution.getVariable('siteId') || "";
 execution.setVariable('serviceType', 'SDS');

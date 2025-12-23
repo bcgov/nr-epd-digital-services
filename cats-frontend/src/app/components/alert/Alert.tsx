@@ -20,38 +20,50 @@ const ErrorMsg: React.FC<ErrorMsgProps> = ({
   customMessage,
   customErrorHeading,
   customFooterMessage,
-}) => (
-  <div className="custom" role="alert">
-    <div className="custom custom-border">
-      <span className="error-heading ">
-        {' '}
-        {customErrorHeading
-          ? customErrorHeading
-          : 'Changes could not be saved'}{' '}
-      </span>
+}) => {
+  const messages = customMessage
+    ? customMessage.split(/\n|\.(?=\s)/).filter((m) => m.trim().length > 0)
+    : ['System error prevented changes from saved.'];
+
+  return (
+    <div className="custom" role="alert">
+      <div className="custom custom-border">
+        <span className="error-heading ">
+          {' '}
+          {customErrorHeading
+            ? customErrorHeading
+            : 'Changes could not be saved'}{' '}
+        </span>
+        <div className="error-text">
+          {messages.map((msg, index) => (
+            <div key={index}>{msg.trim()}</div>
+          ))}
+        </div>
+      </div>
       <span className="error-text">
-        {customMessage
-          ? customMessage
-          : 'System error prevented changes from saved.'}
+        {customFooterMessage
+          ? customFooterMessage
+          : 'Please try again or contact support.'}{' '}
       </span>
     </div>
-    <span className="error-text">
-      {customFooterMessage
-        ? customFooterMessage
-        : 'Please try again or contact support.'}{' '}
-    </span>
-  </div>
-);
+  );
+};
 
-const BasicAlertMsg: React.FC<ErrorMsgProps> = ({ customMessage }) => (
-  <div className="custom" role="alert">
-    <span className="error-text">
-      {customMessage
-        ? customMessage
-        : 'Error entering input. Please try again.'}
-    </span>
-  </div>
-);
+const BasicAlertMsg: React.FC<ErrorMsgProps> = ({ customMessage }) => {
+  const messages = customMessage
+    ? customMessage.split(/\n|\.(?=\s)/).filter((m) => m.trim().length > 0)
+    : ['Error entering input. Please try again.'];
+
+  return (
+    <div className="custom" role="alert">
+      <div className="error-text">
+        {messages.map((msg, index) => (
+          <div key={index}>{msg.trim()}</div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 interface SuccessMsgProps {
   customMessage?: string;
