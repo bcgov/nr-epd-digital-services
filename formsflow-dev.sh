@@ -35,7 +35,7 @@ start_services() {
     echo -e "${GREEN}Starting forms-flow-forms...${NC}"
     if [ -d "$FORMS_SERVICE_PATH" ]; then
         cd "$FORMS_SERVICE_PATH" || exit
-        docker compose up -d --build
+        docker compose up -d
     else
         echo -e "${RED}Error: Directory $FORMS_SERVICE_PATH not found.${NC}"
         exit 1
@@ -45,7 +45,7 @@ start_services() {
     echo -e "${GREEN}Starting forms-flow-api...${NC}"
     if [ -d "$API_SERVICE_PATH" ]; then
         cd "$API_SERVICE_PATH" || exit
-        docker compose up -d --build
+        docker compose up -d
     else
         echo -e "${RED}Error: Directory $API_SERVICE_PATH not found.${NC}"
         exit 1

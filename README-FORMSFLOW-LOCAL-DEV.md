@@ -6,11 +6,15 @@ This configuration allows you to run multiple Formsflow services locally with ho
 
 1.  **Docker & Docker Compose**: Ensure you have Docker installed.
 2.  **SSH Keys**: Required for to clone the private repository.
+3.  **DNS Setup**: Add the following line to your `/etc/hosts` file to ensure `host.docker.internal` resolves correctly in your browser:
+    ```
+    127.0.0.1 host.docker.internal
+    ```
 
 ## Configuration
 
 1.  Create a `.env` file in the root directory (`nr-epd-digital-services`).
-2.  Add the required environment variables. You can combine the requirements from the individual services.
+2.  Add the required environment variables. **Use `host.docker.internal` instead of your local IP address.**
 
     ```bash
     # .env content
@@ -21,7 +25,8 @@ This configuration allows you to run multiple Formsflow services locally with ho
     -----END OPENSSH PRIVATE KEY-----"
     SSH_PUB_KEY="ssh-rsa ...your public key content..."
 
-    # Keycloak / Auth (Adjust as needed for your local setup)
+    # Keycloak / Auth
+    # Use host.docker.internal to ensure connectivity from both browser and containers
     KEYCLOAK_URL=http://host.docker.internal:8080
     KEYCLOAK_URL_REALM=forms-flow-ai
     KEYCLOAK_WEB_CLIENT_ID=forms-flow-web
@@ -31,7 +36,7 @@ This configuration allows you to run multiple Formsflow services locally with ho
     FORMSFLOW_DOC_API_URL=http://host.docker.internal:5006
     
     # Micro-Frontends
-    EPD_IDP_LOGOUT_URL=http://localhost:3000/logout
+    EPD_IDP_LOGOUT_URL=http://host.docker.internal:3000/logout
 
     # External Service Paths (Required for formsflow-dev.sh)
     FORMS_SERVICE_PATH="/path/to/forms-flow-ai-ee/forms-flow-forms"

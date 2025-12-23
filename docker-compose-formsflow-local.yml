@@ -11,6 +11,8 @@ services:
         - ssh_prv_key=${SSH_PRV_KEY}
         - ssh_pub_key=${SSH_PUB_KEY}
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - '5006:5006'
     volumes:
@@ -51,6 +53,8 @@ services:
       dockerfile: local.Dockerfile
     ports:
       - "3005:3005"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./forms-flow-ai/forms-flow-ai-micro-front-ends/forms-flow-nav:/local_src:ro
     environment:
@@ -67,6 +71,8 @@ services:
       dockerfile: local.Dockerfile
     ports:
       - "3008:3008"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./forms-flow-ai/forms-flow-ai-micro-front-ends/forms-flow-theme:/local_src:ro
     tty: true
@@ -97,6 +103,8 @@ services:
         - ssh_prv_key=${SSH_PRV_KEY}
         - ssh_pub_key=${SSH_PUB_KEY}
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - forms-flow-bpm-db
     ports:
