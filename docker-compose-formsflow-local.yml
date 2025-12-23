@@ -143,7 +143,7 @@ services:
       - REDIS_PASSCODE=${REDIS_PASSCODE:-changeme}
       - SESSION_COOKIE_SECURE=${SESSION_COOKIE_SECURE:-false}
       - CHES_CLIENT_ID=CDACC9DF-68BE85E6452
-      - CHES_SECRET=56b613b2-fbf8-481a-b464-38967c66e066
+      - CHES_SECRET=${CHES_SECRET}
       - CHES_AUTH_URL=https://dev.loginproxy.gov.bc.ca/auth/realms/comsvcauth/protocol/openid-connect/token
       - CHES_HOST_URL=https://ches-dev.api.gov.bc.ca
       - COMS_ENDPOINT=${COMS_ENDPOINT}

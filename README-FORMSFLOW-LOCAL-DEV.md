@@ -2,6 +2,12 @@
 
 This configuration allows you to run multiple Formsflow services locally with hot-reloading enabled for most services, all from a single entry point.
 
+# NOTE
+
+`forms-flow-web` and `forms-flow-web-root-config` are not included in this centralized startup routine, this will come in a future update.
+
+For now, start (and reload) these servies like you did before with `docker compose up --build`
+
 ## Prerequisites
 
 1.  **Docker & Docker Compose**: Ensure you have Docker installed.
@@ -14,34 +20,7 @@ This configuration allows you to run multiple Formsflow services locally with ho
 ## Configuration
 
 1.  Create a `.env` file in the root directory (`nr-epd-digital-services`).
-2.  Add the required environment variables. **Use `host.docker.internal` instead of your local IP address.**
-
-    ```bash
-    # .env content
-
-    # SSH Keys (Required for forms-flow-documents)
-    SSH_PRV_KEY="-----BEGIN OPENSSH PRIVATE KEY-----
-    ...your private key content...
-    -----END OPENSSH PRIVATE KEY-----"
-    SSH_PUB_KEY="ssh-rsa ...your public key content..."
-
-    # Keycloak / Auth
-    # Use host.docker.internal to ensure connectivity from both browser and containers
-    KEYCLOAK_URL=http://host.docker.internal:8080
-    KEYCLOAK_URL_REALM=forms-flow-ai
-    KEYCLOAK_WEB_CLIENT_ID=forms-flow-web
-
-    # Forms Flow API URLs
-    FORMSFLOW_API_URL=http://host.docker.internal:5000
-    FORMSFLOW_DOC_API_URL=http://host.docker.internal:5006
-    
-    # Micro-Frontends
-    EPD_IDP_LOGOUT_URL=http://host.docker.internal:3000/logout
-
-    # External Service Paths (Required for formsflow-dev.sh)
-    FORMS_SERVICE_PATH="/path/to/forms-flow-ai-ee/forms-flow-forms"
-    API_SERVICE_PATH="/path/to/forms-flow-ai-ee/forms-flow-api"
-    ```
+2.  Add the required environment variables. **Use `.env.sample` as a reference**
 
 ## Running the Platform
 
@@ -77,13 +56,8 @@ To start a specific service (e.g., just the nav):
 docker-compose -f docker-compose-formsflow-local.yml up --build forms-flow-nav
 ```
 
-## Service Access
-
-*   **Forms Flow Documents**: `http://localhost:5006`
-*   **Forms Flow Nav**: `http://localhost:3005`
-*   **Forms Flow Theme**: `http://localhost:3008`
-*   **Forms Flow BPM**: `http://localhost:8000`
-
 ## How it Works
 
-This centralized compose file references the `local.Dockerfile` in each service's directory. It mounts the source code from your local workspace into the containers, enabling the hot-reloading mechanisms (watchdog/nodemon) defined in each service's local setup.
+This centralized compose file references the `local.Dockerfile` in each service's directory. It mounts the source code from your local workspace into the containers, enabling the hot-reloading mechanisms (watchdog/nodemon) defined in local setup of most services. 
+
+External services (`forms-flow-forms` and `forms-flow-api`) and `forms-flow-bpm` do not support hot-reloading (but we can add it to BPM if we ever need it)
