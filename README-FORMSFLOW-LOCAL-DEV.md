@@ -15,6 +15,7 @@ For now, start (and reload) these servies like you did before with `docker compo
 3.  **DNS Setup**: Add the following line to your `/etc/hosts` file to ensure `host.docker.internal` resolves correctly in your browser:
     ```
     127.0.0.1 host.docker.internal
+    # This removes the need to hardcode your local IP address and change it every time you switch networks
     ```
 
 ## Configuration
