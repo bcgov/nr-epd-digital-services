@@ -1,0 +1,115 @@
+## Trigger manually: oc create job --from=cronjob/restart-deployment-cronjob restart-deployment-manual-$(date +%s)
+## PURPOSE: Restart pgpool every ~2hr in a staggered manner to refresh connections.
+
+
+---
+# 1. ServiceAccount
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: staggered-restarter
+  namespace: e38158-dev
+
+---
+# 2. RoleBinding 
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: staggered-restarter-binding
+  namespace: e38158-dev
+subjects:
+  - kind: ServiceAccount
+    name: staggered-restarter
+    namespace: e38158-dev
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit 
+
+---
+# 3. CronJob (Unchanged from previous logic)
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: restart-deployment-cronjob
+  namespace: e38158-dev
+spec:
+  schedule: "0 * * * *" # Hourly
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: staggered-restarter
+          restartPolicy: OnFailure
+          containers:
+          - name: restarter
+            image: registry.redhat.io/openshift4/ose-cli:latest
+            command: ["/bin/bash", "-c"]
+            args:
+            - |
+              #!/bin/bash
+              set -e
+
+              echo "Processing Target: $TARGET_RESOURCE"
+
+              # 1. Determine Resource Kind (Deployment vs DeploymentConfig)
+              KIND=$(oc get "$TARGET_RESOURCE" -n "$NAMESPACE" -o jsonpath='{.kind}')
+              echo "Detected Kind: $KIND"
+
+              # 2. Extract the Label Selector based on the Kind
+              # Deployments use .spec.selector.matchLabels
+              # DeploymentConfigs use .spec.selector directly
+              if [[ "$KIND" == "Deployment" ]]; then
+                SELECTOR=$(oc get "$TARGET_RESOURCE" -n "$NAMESPACE" -o go-template='{{range $k,$v := .spec.selector.matchLabels}}{{$k}}={{$v}},{{end}}' | sed 's/,$//')
+              elif [[ "$KIND" == "DeploymentConfig" ]]; then
+                SELECTOR=$(oc get "$TARGET_RESOURCE" -n "$NAMESPACE" -o go-template='{{range $k,$v := .spec.selector}}{{$k}}={{$v}},{{end}}' | sed 's/,$//')
+              else
+                echo "Error: Unsupported resource kind '$KIND'. Must be Deployment or DeploymentConfig."
+                exit 1
+              fi
+
+              if [ -z "$SELECTOR" ]; then
+                echo "Error: Could not determine pod selector for $TARGET_RESOURCE"
+                exit 1
+              fi
+
+              echo "Targeting Pods with Selector: $SELECTOR"
+              
+              # 3. Find Pods
+              PODS=$(oc get pods -n "$NAMESPACE" -l "$SELECTOR" -o name)
+
+              if [ -z "$PODS" ]; then
+                 echo "No pods found. Is the application scaled to 0?"
+                 exit 0
+              fi
+
+              # 4. Loop and Restart
+              for pod in $PODS; do
+                echo "------------------------------------------------"
+                echo "Restarting: $pod"
+                
+                oc delete "$pod" -n "$NAMESPACE"
+
+                # Brief pause for API to register deletion
+                sleep 5 
+
+                echo "Waiting for cluster to return to full health..."
+                # Blocks until new replacement is Ready AND all others are stable
+                oc wait --for=condition=Ready pods -l "$SELECTOR" -n "$NAMESPACE" --timeout=300s
+
+                echo "Healthy. Sleeping ${SLEEP_SECONDS}s..."
+                sleep "$SLEEP_SECONDS"
+              done
+
+              echo "------------------------------------------------"
+              echo "Sequence complete."
+
+            env:
+            # Change this to "deployment/name" or "deploymentconfig/name"
+            - name: TARGET_RESOURCE
+              value: "deployment/epd-frontend" 
+            - name: NAMESPACE
+              value: "e38158-dev"
+            - name: SLEEP_SECONDS
+              value: "30"
