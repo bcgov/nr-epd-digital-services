@@ -10,9 +10,7 @@
   },
   "scripts": {
     "build": "SET NODE_ENV=production && rm -rf dist && mkdir dist && npx babel src/map --out-dir dist --copy-files",
-    "publish": "rm -rf dist && mkdir dist &&  babel src/map/Map.js -d dist --copy-files",
-    "test": "echo 'Open test.html in your browser to test the map component'",
-    "serve": "npx http-server . -p 3001 -o"
+    "publish": "rm -rf dist && mkdir dist &&  babel src/map/Map.js -d dist --copy-files"
   },
   "eslintConfig": {
     "extends": [
