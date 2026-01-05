@@ -1,5 +1,5 @@
-# RedHat UBI 8 with nodejs 14
-FROM node:14.5.0-alpine
+# Node.js 18 LTS
+FROM node:18-alpine
 #FROM artifacts.developer.gov.bc.ca/docker-remote/node:14.17.1-alpine
 
 # Install packages, build and keep only prod packages
@@ -19,8 +19,8 @@ COPY . ./
 
 RUN npm run build
 
-RUN set -x \
-        && chmod -R 777 /app/
+# RUN set -x \
+#         && chmod -R 777 /app/
 
 # Expose port - mostly a convention, for readability
 EXPOSE 4006
