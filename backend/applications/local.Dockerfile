@@ -19,8 +19,8 @@ COPY . ./
 
 RUN npm run build
 
-# RUN set -x \
-#         && chmod -R 777 /app/
+RUN set -x \
+        && chmod -R 777 /app/
 
 RUN apk add postgresql-client
 
