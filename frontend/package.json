@@ -30,7 +30,7 @@
     "react-icons": "^4.6.0",
     "react-leaflet": "^4.2.1",
     "react-oidc-context": "^2.2.0",
-    "react-parcelmap-bc": "^1.1.5-beta.1",
+    "react-parcelmap-bc": "^1.1.5",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.4.1",
     "react-toastify": "^9.0.8",
