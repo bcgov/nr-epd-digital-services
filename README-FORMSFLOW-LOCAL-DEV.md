@@ -2,12 +2,6 @@
 
 This configuration allows you to run multiple Formsflow services locally with hot-reloading enabled for most services, all from a single entry point.
 
-# NOTE
-
-`forms-flow-web` and `forms-flow-web-root-config` are not included in this centralized startup routine, this will come in a future update.
-
-For now, start (and reload) these servies like you did before with `docker compose up --build`
-
 ## Prerequisites
 
 1.  **Docker & Docker Compose**: Ensure you have Docker installed.
