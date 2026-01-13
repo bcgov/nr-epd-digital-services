@@ -99,6 +99,9 @@ import { EmailController } from './controllers/email.controller';
 import { ComsService } from './services/coms/coms.service';
 import { ComsResolver } from './resolvers/coms/coms.resolver';
 import { UploadController } from './controllers/upload.controller';
+import { ColumnPreferencesResolver } from './resolvers/application/columnPreferences.resolver';
+import { ColumnPreferencesService } from './services/application/columnPreferences.service';
+import { UserColumnPreferences } from './entities/userColumnPreferences.entity';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -164,6 +167,7 @@ import { UploadController } from './controllers/upload.controller';
       ServiceAssignmentFactor,
       PermissionServiceType,
       ApplicationSite,
+      UserColumnPreferences,
     ]),
     HttpModule,
   ],
@@ -204,8 +208,10 @@ import { UploadController } from './controllers/upload.controller';
     DashboardService,
     DashboardResolver,
     ComsService,
-    ComsResolver
+    ComsResolver,
+    ColumnPreferencesResolver,
+    ColumnPreferencesService,
   ],
   controllers: [UserController, EmailController, UploadController],
 })
-export class CatsModule { }
+export class CatsModule {}

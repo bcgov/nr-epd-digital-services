@@ -11,6 +11,7 @@ import {
   ApplicationSortByField,
 } from '../../../../generated/types';
 import { useSearchApplicationsQuery } from './hooks/SearchApplications.generated';
+import { useGetUserColumnPreferencesQuery } from '../../../graphql/columnPreferences.generated';
 import ModalDialog from '../../../components/modaldialog/ModalDialog';
 import Assignment from '../../assignment/Assignment';
 import Widget from '@cats/components/widget/Widget';
@@ -18,6 +19,7 @@ import FilterControls from '@cats/components/filter/FilterControls';
 import { IFilterOption } from '@cats/components/filter/IFilterControls';
 import { TableColumnsIcon } from '@cats/components/common/icon';
 import { applicationResultColumns } from './SearchConfig';
+import ColumnSelect from '../../../components/column-select';
 import './Search.css';
 
 interface SearchProps {
@@ -45,6 +47,9 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
     ApplicationSortByDirection.Asc,
   );
   const [showColumnSelect, setShowColumnSelect] = useState(false);
+  const [originalColumns, setOriginalColumns] = useState<TableColumn[]>(
+    applicationResultColumns(filterMyTasks),
+  );
   const [searchParams, setSearchParams] = useState({
     searchTerm: '',
     page: 1,
@@ -53,6 +58,12 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
     sortBy: ApplicationSortByField.Id,
     sortByDir: ApplicationSortByDirection.Asc,
   });
+
+  const { data: savedPreferences, loading: loadingPreferences } =
+    useGetUserColumnPreferencesQuery({
+      variables: { page: 'applications' },
+      skip: false,
+    });
 
   const {
     data,
@@ -79,6 +90,30 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
       setRequestStatus(RequestStatus.failed);
     }
   }, [data, error]);
+
+  useEffect(() => {
+    if (
+      savedPreferences?.getUserColumnPreferences?.data?.columns &&
+      !loadingPreferences
+    ) {
+      const savedColumns =
+        savedPreferences.getUserColumnPreferences.data.columns;
+      const defaultColumns = applicationResultColumns(filterMyTasks);
+
+      const updatedColumns = defaultColumns.map((column) => {
+        const savedColumn = savedColumns.find(
+          (saved: any) => saved.id === column.id,
+        );
+        if (savedColumn) {
+          return { ...column, active: savedColumn.active };
+        }
+        return column;
+      });
+
+      setColumns(updatedColumns);
+      setOriginalColumns(updatedColumns);
+    }
+  }, [savedPreferences, loadingPreferences, filterMyTasks]);
 
   const debouncedSearch = useCallback(
     debounce(
@@ -176,8 +211,9 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
   const sharedOptions: IFilterOption[] = [
     {
       label: 'Columns',
-      value: Filter.Assigned, // Or use a custom string if needed
+      value: Filter.All,
       onClick: () => setShowColumnSelect(!showColumnSelect),
+      isSelected: showColumnSelect,
       icon: <TableColumnsIcon />,
     },
     // You can add more shared items here (e.g., Filter icon toggle)
@@ -204,31 +240,30 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
     },
   ];
 
-  const generalOptions: IFilterOption[] = [
-    {
-      label: 'All',
-      value: Filter.All,
-      onClick: () => handleFilterChange(Filter.All),
-      isSelected: filter === Filter.All,
-    },
-    {
-      label: 'Unassigned',
-      value: Filter.Unassigned,
-      onClick: () => handleFilterChange(Filter.Unassigned),
-      isSelected: filter === Filter.Unassigned,
-    },
-    {
-      label: 'Completed',
-      value: Filter.Completed,
-      onClick: () => handleFilterChange(Filter.Completed),
-      isSelected: filter === Filter.Completed,
-    },
-  ];
+  const generalOptions: IFilterOption[] = [];
 
-  const options: IFilterOption[] = [
-    ...(filterMyTasks ? tasksOptions : generalOptions),
-    // ...sharedOptions, uncomment once filter and columns are implemented
-  ];
+  const options: IFilterOption[] = [...sharedOptions];
+
+  const handleResetColumns = () => {
+    const allActiveColumns = columns.map((column) => ({
+      ...column,
+      active: true,
+    }));
+    setColumns(allActiveColumns);
+  };
+
+  const handleSaveDefault = () => {
+    setOriginalColumns(columns);
+  };
+
+  const handleSubmitColumns = () => {
+    setShowColumnSelect(false);
+  };
+
+  const handleCancelColumns = () => {
+    setColumns(originalColumns);
+    setShowColumnSelect(false);
+  };
 
   return (
     <PageContainer role="Search">
@@ -249,7 +284,7 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
         title="Applications"
         aria-label="Applications Widget"
         tableIsLoading={requestStatus}
-        tableColumns={columns}
+        tableColumns={columns.filter((column) => column.active)}
         tableData={results}
         sortHandler={handleSortChange}
         changeHandler={handleChangeEventHandler}
@@ -263,16 +298,19 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
         totalResults={totalResults}
         filter={<FilterControls options={options} />}
       >
-        {/* uncomment it once the column and filter design is created */}
-        {/* { 
-        showColumnSelect && 
+        {showColumnSelect && (
           <div className="custom-app-childern-container">
-              <ColumnSelect
-                columns={columns}
-                handleColumnChange={setColumns}
-              />
+            <ColumnSelect
+              columns={columns}
+              handleColumnChange={setColumns}
+              onSubmit={handleSubmitColumns}
+              onCancel={handleCancelColumns}
+              onResetColumns={handleResetColumns}
+              onSaveDefault={handleSaveDefault}
+              page="applications"
+            />
           </div>
-        } */}
+        )}
       </Widget>
 
       {assignStaffModalOpen && (

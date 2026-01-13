@@ -7,9 +7,6 @@
   vertical-align: middle;
   color: var(--typography-color-primary, #2d2d2d);
 }
-.custom-app-childern-container {
-  border-bottom: 1px solid var(--surface-border-light, #d8d8d8);
-}
 
 .custom-applications-input-txt {
   font-size: 12px !important;
