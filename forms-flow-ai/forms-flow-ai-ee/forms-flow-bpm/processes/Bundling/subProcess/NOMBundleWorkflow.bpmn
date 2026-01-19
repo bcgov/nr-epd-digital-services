@@ -53,6 +53,11 @@ execution.setVariable('ownerEmail',ownerEmail);
 system.out.println ("ownerEmail"+ownerEmail);
 listOwnerEmailAddress.push(ownerEmail);
 
+if(submitterEmail !== null &amp;&amp; submitterEmail !== undefined)
+{
+	listOwnerEmailAddress.push(submitterEmail);
+}
+
 var agentEmail= execution.getVariable('s4-email');
 execution.setVariable('agentEmail',agentEmail);
 system.out.println ("agentEmail"+agentEmail);
