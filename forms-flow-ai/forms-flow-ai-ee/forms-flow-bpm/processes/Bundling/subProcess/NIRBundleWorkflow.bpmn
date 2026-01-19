@@ -628,7 +628,7 @@ execution.setVariable("applicationStatus", "Rejected");
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${riskclassification  != 'exempt'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1oam11w" sourceRef="Activity_06nypz0" targetRef="Gateway_1awj7az">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Queued' || action == 'Outcome Decision Made - Satisfactory' ||  action == 'Outcome Decision Made - Unsatisfactory'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${action == 'Queued' || action == 'Accepted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1ua4w6m" name="Need Info" sourceRef="Activity_06nypz0" targetRef="Gateway_0d6061w">
       <bpmn:extensionElements>
