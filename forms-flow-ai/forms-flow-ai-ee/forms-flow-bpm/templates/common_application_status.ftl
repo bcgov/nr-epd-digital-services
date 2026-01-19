@@ -38,7 +38,7 @@
                   Hello,
                 </p>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                   Your <b>${formName}</b> application # ${applicationId} has been updated. Current status is <b>${action}</b> by ${userRole}.
+                   Your <b>${formName}</b> application # ${applicationId?c} has been updated. Current status is <b>${action}</b> by ${userRole}.
                 </p>
             </td>
         </tr>
