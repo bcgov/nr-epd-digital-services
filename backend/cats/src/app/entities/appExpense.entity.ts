@@ -13,7 +13,7 @@ import { Application } from './application.entity';
 @Entity('app_expense')
 export class AppExpense {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
-  id: number;
+  id: number; // adding some comment
 
   @Column('integer', { name: 'application_id' })
   applicationId: number;
