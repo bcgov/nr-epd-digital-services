@@ -28,7 +28,7 @@
         <tr>
             <td>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                  Thank you for your submission to the Site Remediation Services Web Application. Your application (ID: ${applicationId}) has been received and is currently under review by the Ministry.
+                  Thank you for your submission to the Site Remediation Services Web Application. Your application (ID: ${applicationId?c} has been received and is currently under review by the Ministry.
                 
                 </p>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
