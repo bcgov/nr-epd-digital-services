@@ -2,10 +2,16 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type StatusType {
+  id: Int!
+  abbrev: String
+  description: String!
+}
+
 type ViewPerson {
-  firstName: String!
+  firstName: String
   middleName: String
-  lastName: String!
+  lastName: String
   isTaxExempt: Boolean!
   isEnvConsultant: Boolean
   loginUserName: String
@@ -76,6 +82,10 @@ type ApplicationResultDto {
   staffAssigned: [ApplicationResultPersonDto!]!
   priority: String!
   url: String!
+  siteRiskClassification: String!
+  csapReference: String!
+  serviceType: String!
+  commonName: String!
 }
 
 type ApplicationSearchResponse {
@@ -166,7 +176,6 @@ type ViewAppParticipantEntityDto {
   personId: Float!
   participantRoleId: Float!
   organizationId: Float
-  isMainParticipant: Boolean!
   effectiveStartDate: DateTime!
   effectiveEndDate: DateTime
   rowVersionCount: Float
@@ -587,11 +596,43 @@ type ComsResponse {
   data: Coms
 }
 
+type ColumnConfig {
+  id: Int!
+  displayName: String!
+  active: Boolean!
+  sortOrder: Int
+  selectionOrder: Int
+}
+
+type ViewColumnPreferences {
+  userId: String!
+  page: String!
+  columns: [ColumnConfig!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ColumnPreferencesResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: ViewColumnPreferences
+}
+
+input ColumnConfigInput {
+  id: Int!
+  displayName: String!
+  active: Boolean!
+  sortOrder: Int
+  selectionOrder: Int
+}
+
 type Query {
   findAllPerson: PersonResponse!
   findPersonById(id: Float!): PersonResponse!
   searchPerson(searchParam: String!, page: Int!, pageSize: Int!): SearchPersonResponse!
-  searchApplications(searchParam: String!, page: Int!, pageSize: Int!, filter: Filter!, sortBy: ApplicationSortByField, sortByDir: ApplicationSortByDirection): ApplicationSearchResponse!
+  searchApplications(searchParam: String!, page: Int!, pageSize: Int!, filter: Filter!, sortBy: ApplicationSortByField, sortByDir: ApplicationSortByDirection, filterId: String, filterServiceType: String, filterCommonName: String, filterCsapReference: String, filterSiteId: String, filterSiteRiskClassification: String, filterSiteAddress: String, filterApplicationType: String, filterStatus: String, filterStaffAssigned: String, filterPriority: String, filterDateReceivedFrom: DateTime, filterDateReceivedTo: DateTime, filterLastUpdatedFrom: DateTime, filterLastUpdatedTo: DateTime, filterDateCompletedFrom: DateTime, filterDateCompletedTo: DateTime, filterInvoiceStatus: String): ApplicationSearchResponse!
   searchApplicationsById(query: String!): ApplicationSearchResponse!
   getAppParticipantsByAppId(applicationId: Int!, filter: AppParticipantFilter): AppParticipantsResponse!
   getAllParticipantRoles(roleType: String): ParticipantsRolesResponse!
@@ -601,6 +642,7 @@ type Query {
   getApplicationHousingByApplicationId(applicationId: Int!): ApplicationHousingResponse!
   getHousingTypes: HousingTypeResponse!
   getApplicationDetailsById(id: Int!): ApplicationDetailsResponse!
+  getAllStatusTypes: [StatusType!]!
   getSiteDetailsBySiteId(siteId: String!): SiteDetailsResponse!
   getInvoices(applicationId: Int!): InvoicesResponse!
   getInvoiceById(invoiceId: Int!): InvoiceResponse!
@@ -616,6 +658,7 @@ type Query {
   getRecentViewedApplications: DashboardResponse!
   getApplications: DashboardResponse!
   getObject(objectId: String!, downloadType: DownloadType! = URL): ComsResponse!
+  getUserColumnPreferences(page: String!): ColumnPreferencesResponse!
 }
 
 enum Filter {
@@ -685,12 +728,13 @@ type Mutation {
   createBucket(bucketName: String!, bucketKey: String!): ComsResponse!
   deleteBucket(bucketId: String!): ComsResponse!
   deleteObject(objectId: String!, versionId: String): ComsResponse!
+  saveUserColumnPreferences(columnPreferences: SaveColumnPreferencesDto!): ColumnPreferencesResponse!
 }
 
 input CreatePerson {
-  firstName: String!
+  firstName: String
   middleName: String
-  lastName: String!
+  lastName: String
   isTaxExempt: Boolean! = false
   isEnvConsultant: Boolean
   loginUserName: String
@@ -712,9 +756,9 @@ input CreatePerson {
 }
 
 input UpdatePerson {
-  firstName: String!
+  firstName: String
   middleName: String
-  lastName: String!
+  lastName: String
   isTaxExempt: Boolean! = false
   isEnvConsultant: Boolean
   loginUserName: String
@@ -740,7 +784,6 @@ input CreateAppParticipantDto {
   effectiveStartDate: DateTime!
   effectiveEndDate: DateTime
   applicationId: Float!
-  isMainParticipant: Boolean! = false
   personId: Float!
   participantRoleId: Float!
   organizationId: Float
@@ -797,6 +840,7 @@ input CreateApplication {
   appTypeAbbrev: String!
   receivedDate: DateTime!
   applicationStatus: [ApplicationStatusDto!]!
+  applicationSpecificData: String
 }
 
 input ApplicationStatusDto {
@@ -908,4 +952,9 @@ input TimesheetDayUpsertInputDto {
   date: String!
   hours: Float
   comment: String
+}
+
+input SaveColumnPreferencesDto {
+  page: String!
+  columns: [ColumnConfigInput!]!
 }

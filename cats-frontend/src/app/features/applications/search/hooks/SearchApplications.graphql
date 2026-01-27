@@ -5,6 +5,24 @@ query SearchApplications(
   $filter: Filter!
   $sortBy: ApplicationSortByField!
   $sortByDir: ApplicationSortByDirection!
+  $filterId: String
+  $filterServiceType: String
+  $filterCommonName: String
+  $filterCsapReference: String
+  $filterSiteId: String
+  $filterSiteRiskClassification: String
+  $filterSiteAddress: String
+  $filterApplicationType: String
+  $filterStatus: String
+  $filterStaffAssigned: String
+  $filterPriority: String
+  $filterDateReceivedFrom: DateTime
+  $filterDateReceivedTo: DateTime
+  $filterLastUpdatedFrom: DateTime
+  $filterLastUpdatedTo: DateTime
+  $filterDateCompletedFrom: DateTime
+  $filterDateCompletedTo: DateTime
+  $filterInvoiceStatus: String
 ) {
   searchApplications(
     searchParam: $searchParam
@@ -13,6 +31,24 @@ query SearchApplications(
     filter: $filter
     sortBy: $sortBy
     sortByDir: $sortByDir
+    filterId: $filterId
+    filterServiceType: $filterServiceType
+    filterCommonName: $filterCommonName
+    filterCsapReference: $filterCsapReference
+    filterSiteId: $filterSiteId
+    filterSiteRiskClassification: $filterSiteRiskClassification
+    filterSiteAddress: $filterSiteAddress
+    filterApplicationType: $filterApplicationType
+    filterStatus: $filterStatus
+    filterStaffAssigned: $filterStaffAssigned
+    filterPriority: $filterPriority
+    filterDateReceivedFrom: $filterDateReceivedFrom
+    filterDateReceivedTo: $filterDateReceivedTo
+    filterLastUpdatedFrom: $filterLastUpdatedFrom
+    filterLastUpdatedTo: $filterLastUpdatedTo
+    filterDateCompletedFrom: $filterDateCompletedFrom
+    filterDateCompletedTo: $filterDateCompletedTo
+    filterInvoiceStatus: $filterInvoiceStatus
   ) {
     applications {
       id
@@ -27,9 +63,21 @@ query SearchApplications(
       }
       priority
       url
+      siteRiskClassification
+      csapReference         
+      serviceType           
+      commonName            
     }
     count
     page
     pageSize
+  }
+}
+
+query getAllStatusTypes {
+  getAllStatusTypes {
+    id
+    abbrev
+    description
   }
 }

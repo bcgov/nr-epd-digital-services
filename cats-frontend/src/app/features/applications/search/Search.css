@@ -7,9 +7,6 @@
   vertical-align: middle;
   color: var(--typography-color-primary, #2d2d2d);
 }
-.custom-app-childern-container {
-  border-bottom: 1px solid var(--surface-border-light, #d8d8d8);
-}
 
 .custom-applications-input-txt {
   font-size: 12px !important;
@@ -44,6 +41,18 @@ a.custom-applications-input-txt {
   font-weight: 400;
   line-height: 16px;
   color: var(--typography-color-primary, #2d2d2d);
+}
+
+div.custom-applications-edit-lbl {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  gap: var(--layout-margin-xsmall);
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--surface-color-primary-default, #053662);
+  cursor: pointer;
 }
 
 a.custom-applications-edit-lbl {

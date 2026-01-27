@@ -91,6 +91,7 @@ import { DashboardService } from './services/dashboard/dashboard.service';
 import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
 import { RecentViewedApplication } from './entities/recentViewedApplication.entity';
 import { StatusTypeService } from './services/statusType/statusType.service';
+import { StatusTypeResolver } from './resolvers/statusType/statusType.resolver';
 import { ServiceAssignmentFactor } from './entities/serviceAssignmentFactor';
 import { PermissionServiceType } from './entities/permissionServiceType';
 import { ApplicationSite } from './entities/applicationSite.entity';
@@ -99,6 +100,9 @@ import { EmailController } from './controllers/email.controller';
 import { ComsService } from './services/coms/coms.service';
 import { ComsResolver } from './resolvers/coms/coms.resolver';
 import { UploadController } from './controllers/upload.controller';
+import { ColumnPreferencesResolver } from './resolvers/application/columnPreferences.resolver';
+import { ColumnPreferencesService } from './services/application/columnPreferences.service';
+import { UserColumnPreferences } from './entities/userColumnPreferences.entity';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -164,6 +168,7 @@ import { UploadController } from './controllers/upload.controller';
       ServiceAssignmentFactor,
       PermissionServiceType,
       ApplicationSite,
+      UserColumnPreferences,
     ]),
     HttpModule,
   ],
@@ -186,6 +191,7 @@ import { UploadController } from './controllers/upload.controller';
     ApplicationDetailsResolver,
     AppTypeService,
     StatusTypeService,
+    StatusTypeResolver,
     SiteResolver,
     SiteService,
     InvoiceResolver,
@@ -204,8 +210,10 @@ import { UploadController } from './controllers/upload.controller';
     DashboardService,
     DashboardResolver,
     ComsService,
-    ComsResolver
+    ComsResolver,
+    ColumnPreferencesResolver,
+    ColumnPreferencesService,
   ],
   controllers: [UserController, EmailController, UploadController],
 })
-export class CatsModule { }
+export class CatsModule {}

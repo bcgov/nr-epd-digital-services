@@ -1,0 +1,43 @@
+query GetUserColumnPreferences($page: String!) {
+  getUserColumnPreferences(page: $page) {
+    message
+    httpStatusCode
+    success
+    timestamp
+    data {
+      userId
+      page
+      columns {
+        id
+        displayName
+        active
+        sortOrder
+        selectionOrder
+      }
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+mutation SaveUserColumnPreferences($columnPreferences: SaveColumnPreferencesDto!) {
+  saveUserColumnPreferences(columnPreferences: $columnPreferences) {
+    message
+    httpStatusCode
+    success
+    timestamp
+    data {
+      userId
+      page
+      columns {
+        id
+        displayName
+        active
+        sortOrder
+        selectionOrder
+      }
+      createdAt
+      updatedAt
+    }
+  }
+}
