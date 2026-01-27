@@ -20,4 +20,9 @@ export class ColumnConfigDto {
   @IsOptional()
   @IsNumber()
   sortOrder?: number;
+
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
+  @IsNumber()
+  selectionOrder?: number;
 }

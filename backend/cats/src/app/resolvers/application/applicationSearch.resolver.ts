@@ -30,17 +30,73 @@ export class ApplicationSearchResolver {
     sortBy?: SortByField,
     @Args({ name: 'sortByDir', type: () => SortByDirection, nullable: true })
     sortByDir?: SortByDirection,
+    // Filter parameters
+    @Args({ name: 'filterId', nullable: true }) filterId?: string,
+    @Args({ name: 'filterServiceType', nullable: true })
+    filterServiceType?: string,
+    @Args({ name: 'filterCommonName', nullable: true })
+    filterCommonName?: string,
+    @Args({ name: 'filterCsapReference', nullable: true })
+    filterCsapReference?: string,
+    @Args({ name: 'filterSiteId', nullable: true }) filterSiteId?: string,
+    @Args({ name: 'filterSiteRiskClassification', nullable: true })
+    filterSiteRiskClassification?: string,
+    @Args({ name: 'filterSiteAddress', nullable: true })
+    filterSiteAddress?: string,
+    @Args({ name: 'filterApplicationType', nullable: true })
+    filterApplicationType?: string,
+    @Args({ name: 'filterStatus', nullable: true }) filterStatus?: string,
+    @Args({ name: 'filterStaffAssigned', nullable: true })
+    filterStaffAssigned?: string,
+    @Args({ name: 'filterPriority', nullable: true }) filterPriority?: string,
+    @Args({ name: 'filterDateReceivedFrom', nullable: true })
+    filterDateReceivedFrom?: Date,
+    @Args({ name: 'filterDateReceivedTo', nullable: true })
+    filterDateReceivedTo?: Date,
+    @Args({ name: 'filterLastUpdatedFrom', nullable: true })
+    filterLastUpdatedFrom?: Date,
+    @Args({ name: 'filterLastUpdatedTo', nullable: true })
+    filterLastUpdatedTo?: Date,
+    @Args({ name: 'filterDateCompletedFrom', nullable: true })
+    filterDateCompletedFrom?: Date,
+    @Args({ name: 'filterDateCompletedTo', nullable: true })
+    filterDateCompletedTo?: Date,
+    @Args({ name: 'filterInvoiceStatus', nullable: true })
+    filterInvoiceStatus?: string,
   ): Promise<ApplicationSearchResponse> {
     console.log(user);
     this.loggerService.log(
       `ApplicationSearchResolver: searchParam: ${searchParam}, page: ${page}, pageSize: ${pageSize}, filter: ${filter}, sortBy: ${sortBy}, sortByDir: ${sortByDir}.`,
     );
+
+    const filters = {
+      id: filterId,
+      serviceType: filterServiceType,
+      commonName: filterCommonName,
+      csapReference: filterCsapReference,
+      siteId: filterSiteId,
+      siteRiskClassification: filterSiteRiskClassification,
+      siteAddress: filterSiteAddress,
+      applicationType: filterApplicationType,
+      status: filterStatus,
+      staffAssigned: filterStaffAssigned,
+      priority: filterPriority,
+      dateReceivedFrom: filterDateReceivedFrom,
+      dateReceivedTo: filterDateReceivedTo,
+      lastUpdatedFrom: filterLastUpdatedFrom,
+      lastUpdatedTo: filterLastUpdatedTo,
+      dateCompletedFrom: filterDateCompletedFrom,
+      dateCompletedTo: filterDateCompletedTo,
+      invoiceStatus: filterInvoiceStatus,
+    };
+
     const result: ApplicationSearchResult =
       await this.applicationSearchService.searchApplications(
         searchParam,
         page,
         pageSize,
         filter,
+        filters,
         sortBy,
         sortByDir,
         user,

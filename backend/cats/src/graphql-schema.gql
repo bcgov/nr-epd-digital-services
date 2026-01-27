@@ -2,6 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type StatusType {
+  id: Int!
+  abbrev: String
+  description: String!
+}
+
 type ViewPerson {
   firstName: String
   middleName: String
@@ -76,6 +82,10 @@ type ApplicationResultDto {
   staffAssigned: [ApplicationResultPersonDto!]!
   priority: String!
   url: String!
+  siteRiskClassification: String!
+  csapReference: String!
+  serviceType: String!
+  commonName: String!
 }
 
 type ApplicationSearchResponse {
@@ -591,6 +601,7 @@ type ColumnConfig {
   displayName: String!
   active: Boolean!
   sortOrder: Int
+  selectionOrder: Int
 }
 
 type ViewColumnPreferences {
@@ -614,13 +625,14 @@ input ColumnConfigInput {
   displayName: String!
   active: Boolean!
   sortOrder: Int
+  selectionOrder: Int
 }
 
 type Query {
   findAllPerson: PersonResponse!
   findPersonById(id: Float!): PersonResponse!
   searchPerson(searchParam: String!, page: Int!, pageSize: Int!): SearchPersonResponse!
-  searchApplications(searchParam: String!, page: Int!, pageSize: Int!, filter: Filter!, sortBy: ApplicationSortByField, sortByDir: ApplicationSortByDirection): ApplicationSearchResponse!
+  searchApplications(searchParam: String!, page: Int!, pageSize: Int!, filter: Filter!, sortBy: ApplicationSortByField, sortByDir: ApplicationSortByDirection, filterId: String, filterServiceType: String, filterCommonName: String, filterCsapReference: String, filterSiteId: String, filterSiteRiskClassification: String, filterSiteAddress: String, filterApplicationType: String, filterStatus: String, filterStaffAssigned: String, filterPriority: String, filterDateReceivedFrom: DateTime, filterDateReceivedTo: DateTime, filterLastUpdatedFrom: DateTime, filterLastUpdatedTo: DateTime, filterDateCompletedFrom: DateTime, filterDateCompletedTo: DateTime, filterInvoiceStatus: String): ApplicationSearchResponse!
   searchApplicationsById(query: String!): ApplicationSearchResponse!
   getAppParticipantsByAppId(applicationId: Int!, filter: AppParticipantFilter): AppParticipantsResponse!
   getAllParticipantRoles(roleType: String): ParticipantsRolesResponse!
@@ -630,6 +642,7 @@ type Query {
   getApplicationHousingByApplicationId(applicationId: Int!): ApplicationHousingResponse!
   getHousingTypes: HousingTypeResponse!
   getApplicationDetailsById(id: Int!): ApplicationDetailsResponse!
+  getAllStatusTypes: [StatusType!]!
   getSiteDetailsBySiteId(siteId: String!): SiteDetailsResponse!
   getInvoices(applicationId: Int!): InvoicesResponse!
   getInvoiceById(invoiceId: Int!): InvoiceResponse!
@@ -827,6 +840,7 @@ input CreateApplication {
   appTypeAbbrev: String!
   receivedDate: DateTime!
   applicationStatus: [ApplicationStatusDto!]!
+  applicationSpecificData: String
 }
 
 input ApplicationStatusDto {

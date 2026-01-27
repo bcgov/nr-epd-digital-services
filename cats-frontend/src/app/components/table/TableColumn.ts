@@ -26,6 +26,7 @@ export class TableColumn {
     public columnSize?: ColumnSize,
     public customHeaderCss?: string,
     public renderCell?: (value: any, rowData: any) => ReactNode,
+    public selectionOrder?: number,
   ) {
     this.dynamicColumn = dynamicColumn ?? false;
   }

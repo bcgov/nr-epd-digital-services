@@ -24,6 +24,9 @@ export const useAutoSignin = () => {
 
   useEffect(() => {
     if (shouldAttemptSignin) {
+      const currentUrl = window.location.href;
+      sessionStorage.setItem('returnUrl', currentUrl);
+
       void signinRedirect(signInParams);
 
       setHasTriedSignin(true);

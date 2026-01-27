@@ -91,6 +91,7 @@ import { DashboardService } from './services/dashboard/dashboard.service';
 import { DashboardResolver } from './resolvers/dashboard/dashboard.resolver';
 import { RecentViewedApplication } from './entities/recentViewedApplication.entity';
 import { StatusTypeService } from './services/statusType/statusType.service';
+import { StatusTypeResolver } from './resolvers/statusType/statusType.resolver';
 import { ServiceAssignmentFactor } from './entities/serviceAssignmentFactor';
 import { PermissionServiceType } from './entities/permissionServiceType';
 import { ApplicationSite } from './entities/applicationSite.entity';
@@ -190,6 +191,7 @@ import { UserColumnPreferences } from './entities/userColumnPreferences.entity';
     ApplicationDetailsResolver,
     AppTypeService,
     StatusTypeService,
+    StatusTypeResolver,
     SiteResolver,
     SiteService,
     InvoiceResolver,

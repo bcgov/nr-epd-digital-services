@@ -13,10 +13,11 @@
 .SITE-Button:disabled {
   cursor: not-allowed;
 }
-.SITE-Button:focus:not(:focus-visible) {
+
+/* .SITE-Button:focus:not(:focus-visible) {
   outline: solid var(--layout-border-width-medium)
     var(--surface-color-border-active);
-}
+} */
 
 /* Sizes */
 .SITE-Button.small {
@@ -27,6 +28,7 @@
   padding-left: var(--layout-padding-small);
   padding-right: var(--layout-padding-small);
 }
+
 .SITE-Button.medium {
   min-height: 40px;
 }
@@ -37,14 +39,17 @@
   border: 1px solid var(--surface-color-primary-default);
   color: var(--typography-color-primary-invert);
 }
+
 .SITE-Button.primary:disabled {
   background-color: var(--surface-color-primary-disabled);
   color: var(--typography-color-disabled);
   border-color: var(--surface-color-primary-disabled);
 }
+
 .SITE-Button.primary:hover:not(:disabled) {
   background-color: var(--surface-color-primary-hover);
 }
+
 .SITE-Button.primary:focus {
   background-color: var(--surface-color-primary-hover);
 }
@@ -55,11 +60,13 @@
   border: 1px solid var(--surface-color-border-dark);
   color: var(--typography-color-primary);
 }
+
 .SITE-Button.secondary:disabled {
   background-color: var(--surface-color-secondary-disabled);
   border-color: var(--surface-color-secondary-disabled);
   color: var(--typography-color-disabled);
 }
+
 .SITE-Button.secondary:hover:not(:disabled) {
   background-color: var(--surface-color-secondary-hover);
 }
@@ -69,10 +76,12 @@
   background-color: var(--surface-color-tertiary-default);
   color: var(--typography-color-primary);
 }
+
 .SITE-Button.tertiary:disabled {
   background-color: var(--surface-color-tertiary-disabled);
   color: var(--typography-color-disabled);
 }
+
 .SITE-Button.tertiary:hover:not(:disabled) {
   background-color: var(--surface-color-tertiary-hover);
 }
@@ -82,17 +91,21 @@
   border: 1px solid transparent;
   color: var(--surface-color-primary-default);
 }
+
 .SITE-Button.btn-icon:hover:not(:disabled) {
   background-color: var(--theme-blue-20);
 }
+
 .SITE-Button.btn-icon:focus {
   background-color: var(--theme-blue-20);
   border: 1px solid var(--surface-color-border-active);
 }
+
 .SITE-Button.btn-icon.btn-active {
   background: var(--surface-color-primary-default);
   color: var(--typography-color-primary-invert);
 }
+
 .SITE-Button.btn-icon.btn-active:hover {
   background: var(--surface-color-primary-default);
 }

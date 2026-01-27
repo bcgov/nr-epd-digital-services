@@ -12,6 +12,7 @@ query GetUserColumnPreferences($page: String!) {
         displayName
         active
         sortOrder
+        selectionOrder
       }
       createdAt
       updatedAt
@@ -33,6 +34,7 @@ mutation SaveUserColumnPreferences($columnPreferences: SaveColumnPreferencesDto!
         displayName
         active
         sortOrder
+        selectionOrder
       }
       createdAt
       updatedAt

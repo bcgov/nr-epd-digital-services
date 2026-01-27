@@ -57,6 +57,24 @@ describe('ApplicationSearchService', () => {
     mockApplication.updatedDateTime = new Date();
     mockApplication.appParticipants = [];
     mockApplication.appPriorities = [];
+    mockApplication.applicationSpecificData = {
+      siteRiskClassification: 'highRisk',
+      csapReference: 'CSAP-123',
+      serviceType: 'ReportReviews',
+    };
+    mockApplication.site = {
+      address: '123 Test St',
+      commonName: 'Test Site',
+    } as any;
+    mockApplication.appType = {
+      description: 'Test Type',
+    } as any;
+    mockApplication.appStatus = {
+      statusType: {
+        description: 'Active',
+        abbrev: 'ACT',
+      },
+    } as any;
 
     jest.spyOn(repository, 'createQueryBuilder').mockReturnValue({
       leftJoinAndSelect: jest.fn().mockReturnThis(),
@@ -73,6 +91,7 @@ describe('ApplicationSearchService', () => {
       page,
       pageSize,
       filter,
+      {},
       sortBy,
       sortByDir,
       null,
@@ -106,6 +125,24 @@ describe('ApplicationSearchService', () => {
     mockApplication.updatedDateTime = new Date();
     mockApplication.appParticipants = [];
     mockApplication.appPriorities = [];
+    mockApplication.applicationSpecificData = {
+      siteRiskClassification: 'highRisk',
+      csapReference: 'CSAP-123',
+      serviceType: 'ReportReviews',
+    };
+    mockApplication.site = {
+      address: '123 Test St',
+      commonName: 'Test Site',
+    } as any;
+    mockApplication.appType = {
+      description: 'Test Type',
+    } as any;
+    mockApplication.appStatus = {
+      statusType: {
+        description: 'Active',
+        abbrev: 'ACT',
+      },
+    } as any;
 
     const queryBuilderMock = {
       leftJoinAndSelect: jest.fn().mockReturnThis(),
@@ -126,6 +163,7 @@ describe('ApplicationSearchService', () => {
       page,
       pageSize,
       filter,
+      {},
       sortBy,
       sortByDir,
       user,
@@ -166,6 +204,7 @@ describe('ApplicationSearchService', () => {
       1,
       10,
       Filter.ALL,
+      {},
       SortByField.ID,
       SortByDirection.ASC,
       null,
@@ -183,6 +222,24 @@ describe('ApplicationSearchService', () => {
       mockApplication.updatedDateTime = new Date();
       mockApplication.appParticipants = [];
       mockApplication.appPriorities = [];
+      mockApplication.applicationSpecificData = {
+        siteRiskClassification: 'highRisk',
+        csapReference: 'CSAP-123',
+        serviceType: 'ReportReviews',
+      };
+      mockApplication.site = {
+        address: '123 Test St',
+        commonName: 'Test Site',
+      } as any;
+      mockApplication.appType = {
+        description: 'Test Type',
+      } as any;
+      mockApplication.appStatus = {
+        statusType: {
+          description: 'Active',
+          abbrev: 'ACT',
+        },
+      } as any;
 
       jest.spyOn(repository, 'createQueryBuilder').mockReturnValue({
         leftJoinAndSelect: jest.fn().mockReturnThis(),

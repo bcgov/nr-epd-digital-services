@@ -37,9 +37,15 @@ const ColumnSelect: React.FC<ColumnSelectProps> = ({
   });
 
   const handleColumnToggle = (columnId: number, isChecked: boolean) => {
+    const maxOrder = Math.max(...columns.map((c) => c.selectionOrder || 0), 0);
+
     const updatedColumns = columns.map((column) => {
       if (column.id === columnId) {
-        return { ...column, active: isChecked };
+        return {
+          ...column,
+          active: isChecked,
+          selectionOrder: isChecked ? maxOrder + 1 : undefined,
+        };
       }
       return column;
     });
@@ -59,6 +65,7 @@ const ColumnSelect: React.FC<ColumnSelectProps> = ({
         displayName: column.displayName,
         active: column.active,
         sortOrder: column.sortOrder || 0,
+        selectionOrder: column.selectionOrder || 0,
       }));
 
       const result = await saveColumnPreferences({
