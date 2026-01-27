@@ -1,32 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans');
 
 .selected-filter {
-    gap: var(--layout-margin-xsmall);
-    margin-top: 10px;
+  gap: var(--layout-margin-xsmall);
+  margin-top: 10px;
 }
 
 .custom-pill {
-    padding: var(--layout-padding-xsmall) var(--layout-padding-medium) var(--layout-padding-xsmall) var(--layout-padding-medium);
-    border-radius: 16px;
-    background-color: var(--surface-color-primary-default);
-    color: var(--typography-color-primary-invert);
-    font-family: 'Noto Sans', sans-serif !important;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 21px;
-    text-align: left;
-    gap: var(--layout-margin-xsmall);
+  padding: var(--layout-padding-xsmall) var(--layout-padding-medium)
+    var(--layout-padding-xsmall) var(--layout-padding-medium);
+  border-radius: 16px;
+  background-color: var(--surface-color-primary-default);
+  color: var(--typography-color-primary-invert);
+  font-family: 'Noto Sans', sans-serif !important;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  text-align: left;
+  gap: var(--layout-margin-xsmall);
 }
 
 .custom-pill:focus {
-    border: 3px solid #2e5dd7;
+  border: 3px solid #2e5dd7;
 }
 
 .custom-pill:hover {
-    background: var(--surface-color-primary-hover) !important;
+  background: var(--surface-color-primary-hover) !important;
 }
 
 .x-mark {
-    padding-top: 1px;
-    color: var(--typography-color-primary-invert);
+  padding-top: 1px;
+  color: var(--typography-color-primary-invert);
 }

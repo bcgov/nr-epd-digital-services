@@ -6,7 +6,8 @@
 }
 
 .custom-pill {
-  padding: var(--layout-padding-xsmall) var(--layout-padding-medium) var(--layout-padding-xsmall) var(--layout-padding-medium);
+  padding: var(--layout-padding-xsmall) var(--layout-padding-medium)
+    var(--layout-padding-xsmall) var(--layout-padding-medium);
   border-radius: 16px;
   background-color: var(--surface-color-primary-default);
   color: var(--typography-color-primary-invert);
