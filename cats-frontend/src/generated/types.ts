@@ -14,7 +14,7 @@ export type Scalars = {
   Float: { input: number; output: number; }
   DateTime: { input: any; output: any; }
   _Any: { input: any; output: any; }
-  _FieldSet: { input: any; output: any; }
+  federation__FieldSet: { input: any; output: any; }
   link__Import: { input: any; output: any; }
 };
 
@@ -101,11 +101,17 @@ export type ApplicationResponse = {
 export type ApplicationResultDto = {
   __typename?: 'ApplicationResultDto';
   applicationType: Scalars['String']['output'];
+  commonName: Scalars['String']['output'];
+  csapReference: Scalars['String']['output'];
+  dateCompleted?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
   lastUpdated: Scalars['String']['output'];
   priority: Scalars['String']['output'];
+  receivedDate?: Maybe<Scalars['String']['output']>;
+  serviceType: Scalars['String']['output'];
   siteAddress: Scalars['String']['output'];
   siteId: Scalars['String']['output'];
+  siteRiskClassification: Scalars['String']['output'];
   staffAssigned: Array<ApplicationResultPersonDto>;
   status: Scalars['String']['output'];
   url: Scalars['String']['output'];
@@ -136,9 +142,11 @@ export enum ApplicationSortByDirection {
 
 export enum ApplicationSortByField {
   ApplicationType = 'APPLICATION_TYPE',
+  DateCompleted = 'DATE_COMPLETED',
   Id = 'ID',
   LastUpdated = 'LAST_UPDATED',
   Priority = 'PRIORITY',
+  ReceivedDate = 'RECEIVED_DATE',
   SiteAddress = 'SITE_ADDRESS',
   SiteId = 'SITE_ID',
   Status = 'STATUS'
@@ -157,6 +165,32 @@ export type ApplicationStatusDto = {
 export type ApplicationStatusResponse = {
   __typename?: 'ApplicationStatusResponse';
   data?: Maybe<Array<ViewApplicationStatus>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type ColumnConfig = {
+  __typename?: 'ColumnConfig';
+  active: Scalars['Boolean']['output'];
+  displayName: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  selectionOrder?: Maybe<Scalars['Int']['output']>;
+  sortOrder?: Maybe<Scalars['Int']['output']>;
+};
+
+export type ColumnConfigInput = {
+  active: Scalars['Boolean']['input'];
+  displayName: Scalars['String']['input'];
+  id: Scalars['Int']['input'];
+  selectionOrder?: InputMaybe<Scalars['Int']['input']>;
+  sortOrder?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type ColumnPreferencesResponse = {
+  __typename?: 'ColumnPreferencesResponse';
+  data?: Maybe<ViewColumnPreferences>;
   httpStatusCode?: Maybe<Scalars['Int']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
@@ -200,6 +234,7 @@ export type CreateAppParticipantsResponse = {
 
 export type CreateApplication = {
   appTypeAbbrev: Scalars['String']['input'];
+  applicationSpecificData?: InputMaybe<Scalars['String']['input']>;
   applicationStatus: Array<ApplicationStatusDto>;
   receivedDate: Scalars['DateTime']['input'];
   siteIds: Array<Scalars['Float']['input']>;
@@ -247,12 +282,12 @@ export type CreatePerson = {
   createdDatetime?: InputMaybe<Scalars['DateTime']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   fax?: InputMaybe<Scalars['String']['input']>;
-  firstName: Scalars['String']['input'];
-  isActive?: InputMaybe<Scalars['Boolean']['input']>;
-  isDeleted?: InputMaybe<Scalars['Boolean']['input']>;
+  firstName?: InputMaybe<Scalars['String']['input']>;
+  isActive?: Scalars['Boolean']['input'];
+  isDeleted?: Scalars['Boolean']['input'];
   isEnvConsultant?: InputMaybe<Scalars['Boolean']['input']>;
-  isTaxExempt?: InputMaybe<Scalars['Boolean']['input']>;
-  lastName: Scalars['String']['input'];
+  isTaxExempt?: Scalars['Boolean']['input'];
+  lastName?: InputMaybe<Scalars['String']['input']>;
   loginUserName?: InputMaybe<Scalars['String']['input']>;
   middleName?: InputMaybe<Scalars['String']['input']>;
   mobile?: InputMaybe<Scalars['String']['input']>;
@@ -392,6 +427,7 @@ export type Mutation = {
   deleteInvoice: InvoiceResponse;
   deleteObject: ComsResponse;
   deletePersonNote: PersonNoteResponse;
+  saveUserColumnPreferences: ColumnPreferencesResponse;
   updateAppParticipant: UpdateAppParticipantsResponse;
   updateApplicationHousing: ApplicationHousingResponse;
   updateApplicationNote: ApplicationNotesResponse;
@@ -470,6 +506,11 @@ export type MutationDeleteObjectArgs = {
 
 export type MutationDeletePersonNoteArgs = {
   notes: Array<DeletePersonNote>;
+};
+
+
+export type MutationSaveUserColumnPreferencesArgs = {
+  columnPreferences: SaveColumnPreferencesDto;
 };
 
 
@@ -588,6 +629,7 @@ export type Query = {
   getAllActiveStaffMembers: ViewStaffWithCapacityResponse;
   getAllActiveStaffMembersForApplicationServiceType: ViewStaffWithCapacityResponse;
   getAllParticipantRoles: ParticipantsRolesResponse;
+  getAllStatusTypes: Array<StatusType>;
   getAppParticipantsByAppId: AppParticipantsResponse;
   getApplicationDetailsById: ApplicationDetailsResponse;
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
@@ -608,6 +650,7 @@ export type Query = {
   getStaffAssignedByAppId: ViewStaffAssignedResponse;
   getStaffs: StaffResponse;
   getTimesheetDaysForAssignedStaff: PersonWithTimesheetDaysResponse;
+  getUserColumnPreferences: ColumnPreferencesResponse;
   searchApplications: ApplicationSearchResponse;
   searchApplicationsById: ApplicationSearchResponse;
   searchPerson: SearchPersonResponse;
@@ -671,7 +714,7 @@ export type QueryGetInvoicesArgs = {
 
 
 export type QueryGetObjectArgs = {
-  downloadType?: InputMaybe<DownloadType>;
+  downloadType?: DownloadType;
   objectId: Scalars['String']['input'];
 };
 
@@ -717,8 +760,31 @@ export type QueryGetTimesheetDaysForAssignedStaffArgs = {
 };
 
 
+export type QueryGetUserColumnPreferencesArgs = {
+  page: Scalars['String']['input'];
+};
+
+
 export type QuerySearchApplicationsArgs = {
   filter: Filter;
+  filterApplicationType?: InputMaybe<Scalars['String']['input']>;
+  filterCommonName?: InputMaybe<Scalars['String']['input']>;
+  filterCsapReference?: InputMaybe<Scalars['String']['input']>;
+  filterDateCompletedFrom?: InputMaybe<Scalars['DateTime']['input']>;
+  filterDateCompletedTo?: InputMaybe<Scalars['DateTime']['input']>;
+  filterDateReceivedFrom?: InputMaybe<Scalars['DateTime']['input']>;
+  filterDateReceivedTo?: InputMaybe<Scalars['DateTime']['input']>;
+  filterId?: InputMaybe<Scalars['String']['input']>;
+  filterInvoiceStatus?: InputMaybe<Scalars['String']['input']>;
+  filterLastUpdatedFrom?: InputMaybe<Scalars['DateTime']['input']>;
+  filterLastUpdatedTo?: InputMaybe<Scalars['DateTime']['input']>;
+  filterPriority?: InputMaybe<Scalars['String']['input']>;
+  filterServiceType?: InputMaybe<Scalars['String']['input']>;
+  filterSiteAddress?: InputMaybe<Scalars['String']['input']>;
+  filterSiteId?: InputMaybe<Scalars['String']['input']>;
+  filterSiteRiskClassification?: InputMaybe<Scalars['String']['input']>;
+  filterStaffAssigned?: InputMaybe<Scalars['String']['input']>;
+  filterStatus?: InputMaybe<Scalars['String']['input']>;
   page: Scalars['Int']['input'];
   pageSize: Scalars['Int']['input'];
   searchParam: Scalars['String']['input'];
@@ -751,6 +817,11 @@ export type RoleWithPermissions = {
   permissions: Array<ViewPermissions>;
   roleDescription: Scalars['String']['output'];
   roleId: Scalars['Float']['output'];
+};
+
+export type SaveColumnPreferencesDto = {
+  columns: Array<ColumnConfigInput>;
+  page: Scalars['String']['input'];
 };
 
 export type SearchPersonResponse = {
@@ -819,6 +890,13 @@ export enum StaffSortByField {
   SiteAddress = 'SITE_ADDRESS',
   StartDate = 'START_DATE'
 }
+
+export type StatusType = {
+  __typename?: 'StatusType';
+  abbrev?: Maybe<Scalars['String']['output']>;
+  description: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+};
 
 export type TimesheetDayDto = {
   __typename?: 'TimesheetDayDto';
@@ -927,13 +1005,13 @@ export type UpdatePerson = {
   country?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   fax?: InputMaybe<Scalars['String']['input']>;
-  firstName: Scalars['String']['input'];
+  firstName?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['Float']['input'];
-  isActive?: InputMaybe<Scalars['Boolean']['input']>;
-  isDeleted?: InputMaybe<Scalars['Boolean']['input']>;
+  isActive?: Scalars['Boolean']['input'];
+  isDeleted?: Scalars['Boolean']['input'];
   isEnvConsultant?: InputMaybe<Scalars['Boolean']['input']>;
-  isTaxExempt?: InputMaybe<Scalars['Boolean']['input']>;
-  lastName: Scalars['String']['input'];
+  isTaxExempt?: Scalars['Boolean']['input'];
+  lastName?: InputMaybe<Scalars['String']['input']>;
   loginUserName?: InputMaybe<Scalars['String']['input']>;
   middleName?: InputMaybe<Scalars['String']['input']>;
   mobile?: InputMaybe<Scalars['String']['input']>;
@@ -972,7 +1050,6 @@ export type ViewAppParticipantEntityDto = {
   effectiveEndDate?: Maybe<Scalars['DateTime']['output']>;
   effectiveStartDate: Scalars['DateTime']['output'];
   id: Scalars['Float']['output'];
-  isMainParticipant: Scalars['Boolean']['output'];
   organizationId?: Maybe<Scalars['Float']['output']>;
   participantRoleId: Scalars['Float']['output'];
   personId: Scalars['Float']['output'];
@@ -1057,6 +1134,15 @@ export type ViewApplications = {
   roleDescription: Scalars['String']['output'];
   roleId: Scalars['Float']['output'];
   siteAddress: Scalars['String']['output'];
+};
+
+export type ViewColumnPreferences = {
+  __typename?: 'ViewColumnPreferences';
+  columns: Array<ColumnConfig>;
+  createdAt: Scalars['DateTime']['output'];
+  page: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  userId: Scalars['String']['output'];
 };
 
 export type ViewDashboard = {
@@ -1154,13 +1240,13 @@ export type ViewPerson = {
   createdDatetime: Scalars['DateTime']['output'];
   email?: Maybe<Scalars['String']['output']>;
   fax?: Maybe<Scalars['String']['output']>;
-  firstName: Scalars['String']['output'];
+  firstName?: Maybe<Scalars['String']['output']>;
   id: Scalars['Float']['output'];
   isActive: Scalars['Boolean']['output'];
   isDeleted: Scalars['Boolean']['output'];
   isEnvConsultant?: Maybe<Scalars['Boolean']['output']>;
   isTaxExempt: Scalars['Boolean']['output'];
-  lastName: Scalars['String']['output'];
+  lastName?: Maybe<Scalars['String']['output']>;
   loginUserName?: Maybe<Scalars['String']['output']>;
   middleName?: Maybe<Scalars['String']['output']>;
   mobile?: Maybe<Scalars['String']['output']>;
@@ -1235,3 +1321,10 @@ export type _Service = {
   __typename?: '_Service';
   sdl?: Maybe<Scalars['String']['output']>;
 };
+
+export enum Link__Purpose {
+  /** `EXECUTION` features provide metadata necessary for operation execution. */
+  Execution = 'EXECUTION',
+  /** `SECURITY` features provide metadata necessary to securely resolve fields. */
+  Security = 'SECURITY'
+}
