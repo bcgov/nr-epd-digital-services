@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import debounce from 'lodash/debounce';
 import PageContainer from '../../../components/simple/PageContainer';
@@ -56,10 +56,10 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
     (filterMyTasks ? Filter.MyAssigned : Filter.All);
   const sortBy =
     (urlParams.get('sortBy') as ApplicationSortByField) ||
-    ApplicationSortByField.Id;
+    ApplicationSortByField.ReceivedDate;
   const sortByDir =
     (urlParams.get('sortByDir') as ApplicationSortByDirection) ||
-    ApplicationSortByDirection.Asc;
+    ApplicationSortByDirection.Desc;
 
   // Applied filters from URL
   const appliedFilters = {
@@ -103,63 +103,73 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
 
   const [filterFormData, setFilterFormData] = useState(appliedFilters);
 
-  const filterPills: FilterPill[] = [];
+  const filterPills = useMemo(() => {
+    const pills: FilterPill[] = [];
 
-  const filterLabels: { [key: string]: string } = {
-    id: 'Application ID',
-    serviceType: 'Service Type',
-    commonName: 'Common Name',
-    csapReference: 'CSAP Reference',
-    siteId: 'Site ID',
-    siteRiskClassification: 'Site Risk Classification',
-    siteAddress: 'Site Address',
-    applicationType: 'Application Type',
-    status: 'Status',
-    staffAssigned: 'Staff Assigned',
-    priority: 'Priority',
-    invoiceStatus: 'Invoice Status',
-  };
+    const filterLabels: { [key: string]: string } = {
+      id: 'Application ID',
+      serviceType: 'Service Type',
+      commonName: 'Common Name',
+      csapReference: 'CSAP Reference',
+      siteId: 'Site ID',
+      siteRiskClassification: 'Site Risk Classification',
+      siteAddress: 'Site Address',
+      applicationType: 'Application Type',
+      status: 'Status',
+      staffAssigned: 'Staff Assigned',
+      priority: 'Priority',
+      invoiceStatus: 'Invoice Status',
+    };
 
-  const getDisplayValue = (key: string, value: string): string => {
-    const field = formRowsMap[key];
-    if (field?.options) {
-      const option = field.options.find((opt) => opt.key === value);
-      return option?.value?.toString() || value;
-    }
-    return value;
-  };
-
-  Object.entries(appliedFilters).forEach(([key, value]) => {
-    if (
-      key === 'dateReceived' ||
-      key === 'lastUpdated' ||
-      key === 'dateCompleted'
-    ) {
-      if (Array.isArray(value) && value.length > 0 && (value[0] || value[1])) {
-        const fromDate = value[0]
-          ? new Date(value[0]).toLocaleDateString()
-          : '';
-        const toDate = value[1] ? new Date(value[1]).toLocaleDateString() : '';
-        const dateRange =
-          fromDate && toDate ? `${fromDate} - ${toDate}` : fromDate || toDate;
-
-        const label =
-          key === 'dateReceived'
-            ? 'Date Received'
-            : key === 'lastUpdated'
-              ? 'Last Updated'
-              : 'Date Completed';
-
-        filterPills.push({ key, value: dateRange, label });
+    const getDisplayValue = (key: string, value: string): string => {
+      const field = formRowsMap[key];
+      if (field?.options) {
+        const option = field.options.find((opt) => opt.key === value);
+        return option?.value?.toString() || value;
       }
-    } else if (value && value !== '') {
-      filterPills.push({
-        key,
-        value: getDisplayValue(key, value.toString()),
-        label: filterLabels[key] || key,
-      });
-    }
-  });
+      return value;
+    };
+
+    Object.entries(appliedFilters).forEach(([key, value]) => {
+      if (
+        key === 'dateReceived' ||
+        key === 'lastUpdated' ||
+        key === 'dateCompleted'
+      ) {
+        if (
+          Array.isArray(value) &&
+          value.length > 0 &&
+          (value[0] || value[1])
+        ) {
+          const fromDate = value[0]
+            ? new Date(value[0]).toLocaleDateString()
+            : '';
+          const toDate = value[1]
+            ? new Date(value[1]).toLocaleDateString()
+            : '';
+          const dateRange =
+            fromDate && toDate ? `${fromDate} - ${toDate}` : fromDate || toDate;
+
+          const label =
+            key === 'dateReceived'
+              ? 'Date Received'
+              : key === 'lastUpdated'
+                ? 'Last Updated'
+                : 'Date Completed';
+
+          pills.push({ key, value: dateRange, label });
+        }
+      } else if (value && value !== '') {
+        pills.push({
+          key,
+          value: getDisplayValue(key, value.toString()),
+          label: filterLabels[key] || key,
+        });
+      }
+    });
+
+    return pills;
+  }, [appliedFilters]);
 
   const { data: savedPreferences, loading: loadingPreferences } =
     useGetUserColumnPreferencesQuery({
@@ -189,7 +199,12 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
         key: status.description,
         value: status.description,
       }));
-      updateStatusOptions(statusOptions);
+
+      const uniqueStatusOptions = Array.from(
+        new Map(statusOptions.map((item) => [item.key, item])).values(),
+      );
+
+      updateStatusOptions(uniqueStatusOptions);
     }
   }, [statusData]);
 

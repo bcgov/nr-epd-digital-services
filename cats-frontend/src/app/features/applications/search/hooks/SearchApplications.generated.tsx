@@ -31,7 +31,7 @@ export type SearchApplicationsQueryVariables = Types.Exact<{
 }>;
 
 
-export type SearchApplicationsQuery = { __typename?: 'Query', searchApplications: { __typename?: 'ApplicationSearchResponse', count?: number | null, page?: number | null, pageSize?: number | null, applications: Array<{ __typename?: 'ApplicationResultDto', id: string, siteId: string, siteAddress: string, applicationType: string, lastUpdated: string, status: string, priority: string, url: string, siteRiskClassification: string, csapReference: string, serviceType: string, commonName: string, staffAssigned: Array<{ __typename?: 'ApplicationResultPersonDto', firstName: string, lastName: string }> }> } };
+export type SearchApplicationsQuery = { __typename?: 'Query', searchApplications: { __typename?: 'ApplicationSearchResponse', count?: number | null, page?: number | null, pageSize?: number | null, applications: Array<{ __typename?: 'ApplicationResultDto', id: string, siteId: string, siteAddress: string, applicationType: string, lastUpdated: string, status: string, priority: string, url: string, siteRiskClassification: string, csapReference: string, serviceType: string, commonName: string, receivedDate?: string | null, dateCompleted?: string | null, staffAssigned: Array<{ __typename?: 'ApplicationResultPersonDto', firstName: string, lastName: string }> }> } };
 
 export type GetAllStatusTypesQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
@@ -84,6 +84,8 @@ export const SearchApplicationsDocument = gql`
       csapReference
       serviceType
       commonName
+      receivedDate
+      dateCompleted
     }
     count
     page

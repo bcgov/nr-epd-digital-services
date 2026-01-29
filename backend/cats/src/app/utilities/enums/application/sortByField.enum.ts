@@ -8,6 +8,8 @@ export enum SortByField {
   LAST_UPDATED = 'lastUpdated',
   STATUS = 'status',
   PRIORITY = 'priority',
+  RECEIVED_DATE = 'receivedDate',
+  DATE_COMPLETED = 'dateCompleted',
 }
 
 registerEnumType(SortByField, {

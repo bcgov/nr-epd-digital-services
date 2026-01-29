@@ -318,6 +318,12 @@ export class ApplicationSearchService {
       case SortByField.PRIORITY:
         query.orderBy('priority.displayOrder', sortDirection, 'NULLS LAST');
         break;
+      case SortByField.RECEIVED_DATE:
+        query.orderBy('application.receivedDate', sortDirection);
+        break;
+      case SortByField.DATE_COMPLETED:
+        query.orderBy('application.endDate', sortDirection);
+        break;
       default:
         this.loggerService.log(`Unsupported sort field: ${sortBy}`);
     }
@@ -366,6 +372,8 @@ export class ApplicationSearchService {
         true,
       ),
       commonName: app.site?.commonName || '',
+      receivedDate: app.receivedDate || null,
+      dateCompleted: app.endDate || null,
     }));
     result.count = count;
     result.page = page;
@@ -428,6 +436,8 @@ export class ApplicationSearchService {
         true,
       ),
       commonName: app.site?.commonName || '',
+      receivedDate: app.receivedDate || null,
+      dateCompleted: app.endDate || null,
     }));
 
     this.loggerService.log(
