@@ -42,4 +42,16 @@ export class ApplicationResultDto {
 
   @Field()
   url: string;
+
+  @Field()
+  siteRiskClassification: string;
+
+  @Field()
+  csapReference: string;
+
+  @Field()
+  serviceType: string;
+
+  @Field()
+  commonName: string;
 }
