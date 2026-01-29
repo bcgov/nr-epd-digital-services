@@ -54,4 +54,10 @@ export class ApplicationResultDto {
 
   @Field()
   commonName: string;
+
+  @Field({ nullable: true })
+  receivedDate?: string;
+
+  @Field({ nullable: true })
+  dateCompleted?: string;
 }
