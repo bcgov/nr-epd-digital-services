@@ -86,6 +86,8 @@ type ApplicationResultDto {
   csapReference: String!
   serviceType: String!
   commonName: String!
+  receivedDate: String
+  dateCompleted: String
 }
 
 type ApplicationSearchResponse {
@@ -678,6 +680,8 @@ enum ApplicationSortByField {
   LAST_UPDATED
   STATUS
   PRIORITY
+  RECEIVED_DATE
+  DATE_COMPLETED
 }
 
 enum ApplicationSortByDirection {
