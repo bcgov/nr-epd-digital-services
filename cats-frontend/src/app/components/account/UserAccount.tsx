@@ -85,15 +85,6 @@ const UserAccount = (props: any) => {
               aria-labelledby="account-dropdown"
               className="p-0"
             >
-              {/* Account settings */}
-              <div
-                role="menuitem"
-                aria-label="Account Settings"
-                tabIndex={0} // Make focusable with keyboard
-                className="account-custom-item-mobile"
-              >
-                Account Settings
-              </div>
               {/* Logout */}
               <div
                 role="menuitem"
@@ -163,15 +154,6 @@ const UserAccount = (props: any) => {
               </div>
             </Dropdown.Item>
             <div className="pt-3">
-              {/* Account settings */}
-              <Dropdown.Item
-                role="menuitem"
-                className="account-custom-item"
-                aria-label="Account Settings"
-              >
-                Account Settings
-              </Dropdown.Item>
-
               {/* Logout */}
               <Dropdown.Item
                 role="menuitem"
