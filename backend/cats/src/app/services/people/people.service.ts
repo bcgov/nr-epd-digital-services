@@ -176,53 +176,175 @@ export class PersonService {
     }
   }
 
-  /** Search person based on a search parameter */
+  private applyFieldConditions(
+    qb: any,
+    paramName: string,
+    isExclusion: boolean = false,
+  ): void {
+    if (isExclusion) {
+      qb.where(`CAST(person.id AS TEXT) NOT LIKE :${paramName}`)
+        .andWhere(
+          `(person.first_name IS NULL OR LOWER(person.first_name) NOT LIKE :${paramName})`,
+        )
+        .andWhere(
+          `(person.last_name IS NULL OR LOWER(person.last_name) NOT LIKE :${paramName})`,
+        )
+        .andWhere(
+          `(person.email IS NULL OR LOWER(person.email) NOT LIKE :${paramName})`,
+        )
+        .andWhere(
+          `(person.city IS NULL OR LOWER(person.city) NOT LIKE :${paramName})`,
+        )
+        .andWhere(
+          `(person.prov IS NULL OR LOWER(person.prov) NOT LIKE :${paramName})`,
+        )
+        .andWhere(
+          `(person.address_1 IS NULL OR LOWER(person.address_1) NOT LIKE :${paramName})`,
+        )
+        .andWhere(
+          `(person.address_2 IS NULL OR LOWER(person.address_2) NOT LIKE :${paramName})`,
+        )
+        .andWhere(
+          `(person.postal IS NULL OR LOWER(person.postal) NOT LIKE :${paramName})`,
+        )
+        .andWhere(
+          `LOWER(CONCAT(person.first_name, ' ', person.last_name)) NOT LIKE :${paramName}`,
+        );
+    } else {
+      qb.where(`CAST(person.id AS TEXT) LIKE :${paramName}`)
+        .orWhere(`LOWER(person.first_name) LIKE :${paramName}`)
+        .orWhere(`LOWER(person.last_name) LIKE :${paramName}`)
+        .orWhere(`LOWER(person.email) LIKE :${paramName}`)
+        .orWhere(`LOWER(person.city) LIKE :${paramName}`)
+        .orWhere(`LOWER(person.prov) LIKE :${paramName}`)
+        .orWhere(`LOWER(person.address_1) LIKE :${paramName}`)
+        .orWhere(`LOWER(person.address_2) LIKE :${paramName}`)
+        .orWhere(`LOWER(person.postal) LIKE :${paramName}`)
+        .orWhere(
+          `LOWER(CONCAT(person.first_name, ' ', person.last_name)) LIKE :${paramName}`,
+        );
+    }
+  }
+
   async searchPerson(
     userInfo: any,
     searchParam: string,
     page: number,
     pageSize: number,
+    searchMode: 'AND' | 'OR' = 'OR',
+    activeFilter: 'active' | 'inactive' | 'all' = 'all',
   ): Promise<SearchPersonResponse> {
     try {
       this.loggerSerivce.log(
-        `at service layer searchPerson start searchParam: ${searchParam}, page: ${page}, pageSize: ${pageSize}`,
+        `at service layer searchPerson start searchParam: ${searchParam}, page: ${page}, pageSize: ${pageSize}, searchMode: ${searchMode}, activeFilter: ${activeFilter}`,
       );
       const response = new SearchPersonResponse();
       const query = this.personRepository.createQueryBuilder('person');
       query.andWhere('is_deleted is not true');
 
       if (searchParam?.trim()) {
-        const keywords = searchParam.trim().toLowerCase().split(/\s+/); // split by whitespace
+        const trimmedSearch = searchParam.trim();
+        const keywords: Array<{
+          term: string;
+          operator: 'include' | 'exclude' | 'required';
+        }> = [];
 
-        for (const keyword of keywords) {
-          const searchPattern = `%${keyword}%`;
+        const tokens = trimmedSearch.split(/\s+/);
+
+        for (const token of tokens) {
+          if (token.startsWith('-')) {
+            const term = token.substring(1).replace(/\*/g, '');
+            if (term) {
+              keywords.push({ term: term.toLowerCase(), operator: 'exclude' });
+            }
+          } else if (token.startsWith('+')) {
+            const term = token.substring(1).replace(/\*/g, '');
+            if (term) {
+              keywords.push({ term: term.toLowerCase(), operator: 'required' });
+            }
+          } else {
+            const term = token.replace(/\*/g, '');
+            if (term) {
+              keywords.push({ term: term.toLowerCase(), operator: 'include' });
+            }
+          }
+        }
+
+        const includeTerms = keywords.filter((k) => k.operator === 'include');
+        const requiredTerms = keywords.filter((k) => k.operator === 'required');
+        const excludeTerms = keywords.filter((k) => k.operator === 'exclude');
+
+        if (includeTerms.length > 0) {
+          if (searchMode === 'AND') {
+            let termIndex = 0;
+            for (const { term } of includeTerms) {
+              const paramName = `kw_include_${termIndex++}`;
+              const searchPattern = `%${term}%`;
+              query.andWhere(
+                new Brackets((qb) => this.applyFieldConditions(qb, paramName)),
+              );
+              query.setParameter(paramName, searchPattern);
+            }
+          } else {
+            let termIndex = 0;
+            query.andWhere(
+              new Brackets((qb) => {
+                for (const { term } of includeTerms) {
+                  const paramName = `kw_include_${termIndex++}`;
+                  const searchPattern = `%${term}%`;
+                  qb.orWhere(
+                    new Brackets((subQb) =>
+                      this.applyFieldConditions(subQb, paramName),
+                    ),
+                  );
+                  query.setParameter(paramName, searchPattern);
+                }
+              }),
+            );
+          }
+        }
+
+        let requiredIndex = 0;
+        for (const { term } of requiredTerms) {
+          const paramName = `kw_required_${requiredIndex++}`;
+          const searchPattern = `%${term}%`;
           query.andWhere(
-            new Brackets((qb) => {
-              qb.where('CAST(person.id AS TEXT) LIKE :kw', {
-                kw: searchPattern,
-              })
-                .orWhere('LOWER(person.first_name) LIKE :kw', {
-                  kw: searchPattern,
-                })
-                .orWhere('LOWER(person.last_name) LIKE :kw', {
-                  kw: searchPattern,
-                })
-                .orWhere('LOWER(person.email) LIKE :kw', { kw: searchPattern })
-                .orWhere('LOWER(person.city) LIKE :kw', { kw: searchPattern })
-                .orWhere('LOWER(person.prov) LIKE :kw', { kw: searchPattern })
-                .orWhere('LOWER(person.address_1) LIKE :kw', {
-                  kw: searchPattern,
-                })
-                .orWhere('LOWER(person.address_2) LIKE :kw', {
-                  kw: searchPattern,
-                })
-                .orWhere('LOWER(person.postal) LIKE :kw', {
-                  kw: searchPattern,
-                });
-            }),
+            new Brackets((qb) =>
+              this.applyFieldConditions(qb, paramName, false),
+            ),
           );
+          query.setParameter(paramName, searchPattern);
+        }
+
+        let excludeIndex = 0;
+        for (const { term } of excludeTerms) {
+          const paramName = `kw_exclude_${excludeIndex++}`;
+          const searchPattern = `%${term}%`;
+          query.andWhere(
+            new Brackets((qb) =>
+              this.applyFieldConditions(qb, paramName, true),
+            ),
+          );
+          query.setParameter(paramName, searchPattern);
         }
       }
+
+      // Apply active/inactive filter
+      if (activeFilter === 'active') {
+        query.andWhere('person.is_active = :isActive', { isActive: true });
+      } else if (activeFilter === 'inactive') {
+        query.andWhere('person.is_active = :isActive', { isActive: false });
+      }
+
+      const sqlQuery = query.getSql();
+      const parameters = query.getParameters();
+      console.log('='.repeat(80));
+      console.log('PEOPLE SEARCH - Generated SQL Query:');
+      console.log(sqlQuery);
+      console.log('-'.repeat(80));
+      console.log('Query Parameters:');
+      console.log(JSON.stringify(parameters, null, 2));
+      console.log('='.repeat(80));
 
       const [personList, count] = await query
         .skip((page - 1) * pageSize)

@@ -2,11 +2,19 @@ import gql from 'graphql-tag';
 
 export const graphQlPeopleQuery = () => {
   return gql`
-    query searchPerson($searchParam: String!, $page: Int!, $pageSize: Int!) {
+    query searchPerson(
+      $searchParam: String!
+      $page: Int!
+      $pageSize: Int!
+      $searchMode: String
+      $activeFilter: String
+    ) {
       searchPerson(
         searchParam: $searchParam
         page: $page
         pageSize: $pageSize
+        searchMode: $searchMode
+        activeFilter: $activeFilter
       ) {
         persons {
           id
