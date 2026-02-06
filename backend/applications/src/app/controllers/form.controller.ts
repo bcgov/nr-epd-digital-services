@@ -6,6 +6,14 @@ import { Form } from '../entities/form.entity';
 import { FormService } from '../services/form.service';
 import { CatsService } from '../services/cats.service';
 
+/**
+ * Form Controller
+ * Handles all form submission related operations including create, read, update
+ * 
+ * @ApiTags - Groups all form endpoints under 'forms' tag in Swagger UI
+ * @Controller - Defines the base route as '/form'
+ * @Unprotected - Disables Keycloak authentication for all endpoints in this controller
+ */
 @ApiTags('forms')
 @Controller('form')
 //@Resource('application-service')
@@ -17,8 +25,14 @@ export class FormController {
   ) { }
 
   /**
-   * Checks if table exists
-   * @returns boolean
+   * Health check endpoint
+   * Verifies that the form table exists in the database
+   * 
+   * @returns {Promise<number>} Count of forms in the database
+   * @throws {404} If the form table doesn't exist
+   * 
+   * @ApiOperation - Documents the endpoint purpose in Swagger
+   * @ApiResponse - Documents possible response codes and their meanings
    */
   @Get('health')
   @ApiOperation({
@@ -50,10 +64,17 @@ export class FormController {
   }
 
   /**
-   * Get a submitted form using
-   * @param formId formId
-   * @param submissionId submissionId
-   * @returns saved form submission
+   * Get a specific form submission
+   * Retrieves a saved form submission by its form ID and submission ID
+   * 
+   * @param {string} formId - The unique identifier of the form
+   * @param {string} submissionId - The unique identifier of the submission
+   * @returns {Promise<SubmissionResponse>} The form submission data
+   * @throws {404} If the form submission is not found
+   * 
+   * @ApiOperation - Documents the endpoint in Swagger
+   * @ApiParam - Documents the path parameters
+   * @ApiResponse - Documents response structure and status codes
    */
   @Get(':formId/submission/:submissionId')
   @ApiOperation({
@@ -110,10 +131,18 @@ export class FormController {
   }
 
   /**
-   * Creates a new form submission
-   * @param formId formId
-   * @param content formContent in JSON format
-   * @returns saved form submission
+   * Create a new form submission
+   * Saves form data and optionally submits to CATS if integration is enabled
+   * 
+   * @param {string} formId - The unique identifier of the form
+   * @param {any} content - The form submission data containing a 'data' property
+   * @param {any} request - Express request object for accessing headers
+   * @returns {Promise<SubmissionResponse>} The saved form submission
+   * 
+   * @ApiOperation - Documents the endpoint purpose
+   * @ApiParam - Documents the formId path parameter
+   * @ApiBody - Defines the expected request body structure with examples
+   * @ApiResponse - Documents the successful response structure
    */
   @Post(':formId/submission')
   @ApiOperation({
@@ -160,19 +189,30 @@ export class FormController {
     @Param('formId') formId,
     @Body() content, @Req() request,
   ): Promise<SubmissionResponse> {
+    // Get the origin header to determine if CATS integration should be triggered
     const origin = request.headers.origin;
+
+    // Save the form submission to the database
     const savedSubmission = await this.formService.create(formId, content.data);
+
+    // Transform the entity to the expected response format
     const submissionResponse: SubmissionResponse =
       this.transformResult(savedSubmission);
+
+    // If CATS integration is enabled and request has origin, submit to CATS
     if (origin && process.env.CATS_INTEGRATION_ENABLED === 'true')
       await this.catsService.submitToCats(content.data, savedSubmission.id, savedSubmission.formId);
+
     return submissionResponse;
   }
 
   /**
-   * Transforming the form entity into formsflow expected response
-   * @param savedSubmission saved form
-   * @returns saved form in formflow expected format
+   * Transform form entity to response format
+   * Converts the database entity to the format expected by formsflow
+   * 
+   * @param {Form} savedSubmission - The form entity from the database
+   * @returns {SubmissionResponse} Transformed response object
+   * @private
    */
   transformResult(savedSubmission: Form) {
     const submissionResponse: SubmissionResponse = new SubmissionResponse();
@@ -185,11 +225,19 @@ export class FormController {
   }
 
   /**
-   * Updates the form submission
-   * @param formId formId
-   * @param submissionId submissionId
-   * @param content content
-   * @returns update result
+   * Update an existing form submission (full update)
+   * Replaces all form data with the new data provided
+   * 
+   * @param {string} formId - The unique identifier of the form
+   * @param {string} submissionId - The unique identifier of the submission
+   * @param {any} content - The updated form data
+   * @param {any} request - Express request object
+   * @returns {Promise<any>} The update result
+   * 
+   * @ApiOperation - Documents the endpoint purpose
+   * @ApiParam - Documents the path parameters
+   * @ApiBody - Defines the expected request body
+   * @ApiResponse - Documents the response
    */
   @Put(':formId/submission/:submissionId')
   @ApiOperation({
@@ -237,11 +285,20 @@ export class FormController {
   }
 
   /**
-   * Partially updates the form submission
-   * @param formId formId
-   * @param submissionId submissionId
-   * @param content content
-   * @returns update result
+   * Partially update an existing form submission
+   * Updates only the fields provided, leaving other fields unchanged
+   * Also updates the CATS application if integration is enabled
+   * 
+   * @param {string} formId - The unique identifier of the form
+   * @param {string} submissionId - The unique identifier of the submission
+   * @param {any} content - The partial form data to update
+   * @param {any} request - Express request object
+   * @returns {Promise<any>} The update result
+   * 
+   * @ApiOperation - Documents the endpoint purpose
+   * @ApiParam - Documents the path parameters
+   * @ApiBody - Defines the expected request body with partial data example
+   * @ApiResponse - Documents the response
    */
   @Patch(':formId/submission/:submissionId')
   @ApiOperation({
@@ -282,15 +339,18 @@ export class FormController {
     @Param('submissionId') submissionId,
     @Body() content, @Req() request,
   ) {
+    // Perform partial update on the form submission
     const partialUpdatedSubmission = await this.formService.partialUpdate(
       submissionId,
       formId,
       content.data,
     );
 
+    // If CATS integration is enabled, update the CATS application as well
     if (process.env.CATS_INTEGRATION_ENABLED === 'true') {
       await this.catsService.updateCatsApplication(submissionId, formId, content.data);
     }
+
     return partialUpdatedSubmission;
   }
 }
