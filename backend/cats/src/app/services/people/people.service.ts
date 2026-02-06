@@ -336,16 +336,6 @@ export class PersonService {
         query.andWhere('person.is_active = :isActive', { isActive: false });
       }
 
-      const sqlQuery = query.getSql();
-      const parameters = query.getParameters();
-      console.log('='.repeat(80));
-      console.log('PEOPLE SEARCH - Generated SQL Query:');
-      console.log(sqlQuery);
-      console.log('-'.repeat(80));
-      console.log('Query Parameters:');
-      console.log(JSON.stringify(parameters, null, 2));
-      console.log('='.repeat(80));
-
       const [personList, count] = await query
         .skip((page - 1) * pageSize)
         .take(pageSize)
