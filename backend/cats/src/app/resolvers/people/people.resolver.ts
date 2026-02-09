@@ -1,6 +1,12 @@
 import { Query, Resolver, Mutation, Args, Int } from '@nestjs/graphql';
 import { AuthenticatedUser, Public, Resource } from 'nest-keycloak-connect';
-import { BadRequestException, HttpStatus, UsePipes, ValidationError, ValidationPipe } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpStatus,
+  UsePipes,
+  ValidationError,
+  ValidationPipe,
+} from '@nestjs/common';
 import { SearchPersonResponse } from '../../dto/response/person/fetchSearchPerson';
 import { LoggerService } from '../../logger/logger.service';
 import { PersonService } from '../../services/people/people.service';
@@ -16,21 +22,29 @@ export class PersonResolver {
   constructor(
     private readonly personService: PersonService,
     private readonly loggerSerivce: LoggerService,
-    private readonly personResponse: GenericResponseProvider<ViewPerson[]>
+    private readonly personResponse: GenericResponseProvider<ViewPerson[]>,
   ) {}
 
   @Query(() => PersonResponse, { name: 'findAllPerson' })
   async findAll() {
     try {
       const result = await this.personService.findAll();
-      if(result?.length > 0) {
+      if (result?.length > 0) {
         this.loggerSerivce.log('PersonResolver.findAll() RES:200 end');
-        return this.personResponse.createResponse('Person records fetched successfully', HttpStatus.OK, true, result);
-      }
-      else
-      {
+        return this.personResponse.createResponse(
+          'Person records fetched successfully',
+          HttpStatus.OK,
+          true,
+          result,
+        );
+      } else {
         this.loggerSerivce.log('PersonResolver.findAll() RES:404 end');
-        return this.personResponse.createResponse('No person records found', HttpStatus.NOT_FOUND, false, []);
+        return this.personResponse.createResponse(
+          'No person records found',
+          HttpStatus.NOT_FOUND,
+          false,
+          [],
+        );
       }
     } catch (error) {
       throw new Error(`Failed to fetch person: ${error.message}`);
@@ -41,16 +55,22 @@ export class PersonResolver {
   async findOne(@Args('id') id: number) {
     try {
       const result = await this.personService.findOne(id);
-      if(result) {
-        this.loggerSerivce.log(
-          'PersonResolver.findOne() RES:200 end',
+      if (result) {
+        this.loggerSerivce.log('PersonResolver.findOne() RES:200 end');
+        return this.personResponse.createResponse(
+          'Person record fetched successfully',
+          HttpStatus.OK,
+          true,
+          [result],
         );
-        return this.personResponse.createResponse('Person record fetched successfully', HttpStatus.OK, true, [result]);
-      }
-      else
-      {
-        this.loggerSerivce.log( 'PersonResolver.findOne() RES:404 end');
-        return this.personResponse.createResponse('No person records found', HttpStatus.NOT_FOUND, false, []);
+      } else {
+        this.loggerSerivce.log('PersonResolver.findOne() RES:404 end');
+        return this.personResponse.createResponse(
+          'No person records found',
+          HttpStatus.NOT_FOUND,
+          false,
+          [],
+        );
       }
     } catch (error) {
       throw new Error(`Failed to find person: ${error.message}`);
@@ -75,30 +95,41 @@ export class PersonResolver {
       },
     }),
   )
-  async createPerson(@Args('person') person: CreatePerson,  @AuthenticatedUser() userInfo: any) {
+  async createPerson(
+    @Args('person') person: CreatePerson,
+    @AuthenticatedUser() userInfo: any,
+  ) {
     try {
       // Check for duplicate person
       const existingPerson = await this.personService.checkForDuplicate(person);
-      
+
       if (existingPerson) {
-        this.loggerSerivce.log('PersonResolver.createPerson() RES:409 duplicate found');
+        this.loggerSerivce.log(
+          'PersonResolver.createPerson() RES:409 duplicate found',
+        );
         return this.personResponse.createResponse(
-          'A person with this name already exists', 
-          HttpStatus.CONFLICT, 
+          'A person with this name already exists',
+          HttpStatus.CONFLICT,
           false,
-          [existingPerson]
+          [existingPerson],
         );
       }
 
       const result = await this.personService.create(person, userInfo);
-      if(result) {
+      if (result) {
         this.loggerSerivce.log('PersonResolver.createPerson() RES:201 end');
-        return this.personResponse.createResponse('Person created successfully', HttpStatus.CREATED, true);
-      }
-      else
-      {
+        return this.personResponse.createResponse(
+          'Person created successfully',
+          HttpStatus.CREATED,
+          true,
+        );
+      } else {
         this.loggerSerivce.log('PersonResolver.createPerson() RES:400 end');
-        return this.personResponse.createResponse('Person not created', HttpStatus.BAD_REQUEST, false);
+        return this.personResponse.createResponse(
+          'Person not created',
+          HttpStatus.BAD_REQUEST,
+          false,
+        );
       }
     } catch (error) {
       throw new Error(`Failed to create person: ${error.message}`);
@@ -107,19 +138,25 @@ export class PersonResolver {
 
   @Mutation(() => PersonResponse, { name: 'updatePerson' })
   async updatePersons(
-    @Args('input', { type: () => [UpdatePerson] })input: [UpdatePerson],
+    @Args('input', { type: () => [UpdatePerson] }) input: [UpdatePerson],
     @AuthenticatedUser() userInfo: any,
   ) {
     try {
       const result = await this.personService.update(input, userInfo);
-      if(result) {
+      if (result) {
         this.loggerSerivce.log('PersonResolver.updatePerson() RES:200 end');
-        return this.personResponse.createResponse('Person updated successfully', HttpStatus.OK, true);
-      }
-      else
-      {
+        return this.personResponse.createResponse(
+          'Person updated successfully',
+          HttpStatus.OK,
+          true,
+        );
+      } else {
         this.loggerSerivce.log('PersonResolver.updatePerson() RES:400 end');
-        return this.personResponse.createResponse('Person not updated', HttpStatus.BAD_REQUEST, false);
+        return this.personResponse.createResponse(
+          'Person not updated',
+          HttpStatus.BAD_REQUEST,
+          false,
+        );
       }
     } catch (error) {
       throw new Error(`Failed to update person: ${error.message}`);
@@ -139,16 +176,41 @@ export class PersonResolver {
     @Args('searchParam', { type: () => String }) searchParam: string,
     @Args('page', { type: () => Int }) page: number,
     @Args('pageSize', { type: () => Int }) pageSize: number,
+    @Args('searchMode', {
+      type: () => String,
+      nullable: true,
+      defaultValue: 'OR',
+    })
+    searchMode: string,
+    @Args('activeFilter', {
+      type: () => String,
+      nullable: true,
+      defaultValue: 'all',
+    })
+    activeFilter: string,
     //@Args('filters', { type: () => SiteFilters }) filters: SiteFilters,
   ) {
+    const validSearchMode = ['AND', 'OR'].includes(searchMode)
+      ? (searchMode as 'AND' | 'OR')
+      : 'OR';
+
+    const validActiveFilter = ['active', 'inactive', 'all'].includes(
+      activeFilter,
+    )
+      ? (activeFilter as 'active' | 'inactive' | 'all')
+      : 'all';
+
     this.loggerSerivce.log(
-      'searchPerson start ' + searchParam + ' ' + page + ' ' + pageSize,
+      `searchPerson start ${searchParam} ${page} ${pageSize} ${validSearchMode} ${validActiveFilter}`,
     );
+
     return await this.personService.searchPerson(
       userInfo,
       searchParam,
       page,
       pageSize,
+      validSearchMode,
+      validActiveFilter,
       //filters,
     );
   }

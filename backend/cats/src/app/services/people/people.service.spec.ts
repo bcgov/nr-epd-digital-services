@@ -237,6 +237,63 @@ describe('PersonService', () => {
     expect(result).toEqual(expect.objectContaining(expectedResponse));
   });
 
+  it('should search with AND mode', async () => {
+    const mockQueryBuilder = {
+      andWhere: jest.fn().mockReturnThis(),
+      skip: jest.fn().mockReturnThis(),
+      take: jest.fn().mockReturnThis(),
+      setParameter: jest.fn().mockReturnThis(),
+      getSql: jest.fn().mockReturnValue(''),
+      getParameters: jest.fn().mockReturnValue({}),
+      getManyAndCount: jest.fn().mockResolvedValue([[], 0]),
+    };
+    (personRepository.createQueryBuilder as jest.Mock).mockReturnValue(
+      mockQueryBuilder,
+    );
+    await personService.searchPerson({}, 'jane admin', 1, 10, 'AND');
+    expect(mockQueryBuilder.setParameter).toHaveBeenCalled();
+  });
+
+  it('should handle exclusion operator', async () => {
+    const mockQueryBuilder = {
+      andWhere: jest.fn().mockReturnThis(),
+      skip: jest.fn().mockReturnThis(),
+      take: jest.fn().mockReturnThis(),
+      setParameter: jest.fn().mockReturnThis(),
+      getSql: jest.fn().mockReturnValue(''),
+      getParameters: jest.fn().mockReturnValue({}),
+      getManyAndCount: jest.fn().mockResolvedValue([[], 0]),
+    };
+    (personRepository.createQueryBuilder as jest.Mock).mockReturnValue(
+      mockQueryBuilder,
+    );
+    await personService.searchPerson({}, 'jane -admin', 1, 10);
+    expect(mockQueryBuilder.setParameter).toHaveBeenCalledWith(
+      'kw_exclude_0',
+      '%admin%',
+    );
+  });
+
+  it('should filter active users', async () => {
+    const mockQueryBuilder = {
+      andWhere: jest.fn().mockReturnThis(),
+      skip: jest.fn().mockReturnThis(),
+      take: jest.fn().mockReturnThis(),
+      setParameter: jest.fn().mockReturnThis(),
+      getSql: jest.fn().mockReturnValue(''),
+      getParameters: jest.fn().mockReturnValue({}),
+      getManyAndCount: jest.fn().mockResolvedValue([[], 0]),
+    };
+    (personRepository.createQueryBuilder as jest.Mock).mockReturnValue(
+      mockQueryBuilder,
+    );
+    await personService.searchPerson({}, 'jane', 1, 10, 'OR', 'active');
+    expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+      'person.is_active = :isActive',
+      { isActive: true },
+    );
+  });
+
   describe('checkForDuplicate', () => {
     it('should return null when no duplicate person exists', async () => {
       const createPersonInput = {
