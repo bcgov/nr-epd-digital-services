@@ -18,7 +18,6 @@ async function bootstrap() {
     .setDescription('API documentation for the Application Service')
     .setVersion('1.0')
     // Add tags to group related endpoints together in the Swagger UI
-    .addTag('applications', 'Application management endpoints')
     .addTag('forms', 'Form submission endpoints')
     // Configure JWT Bearer token authentication for protected endpoints
     .addBearerAuth(
