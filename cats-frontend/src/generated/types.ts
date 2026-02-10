@@ -799,8 +799,10 @@ export type QuerySearchApplicationsByIdArgs = {
 
 
 export type QuerySearchPersonArgs = {
+  activeFilter?: InputMaybe<Scalars['String']['input']>;
   page: Scalars['Int']['input'];
   pageSize: Scalars['Int']['input'];
+  searchMode?: InputMaybe<Scalars['String']['input']>;
   searchParam: Scalars['String']['input'];
 };
 
