@@ -15,16 +15,19 @@ import { AddUserToGroupDto } from '../dto/addUserToGroup';
 import { Key } from 'readline';
 import { KeycloakService } from '../services/keycloak.service';
 import { ConfigService } from '@nestjs/config';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 // import { KeycloakService } from 'src/app/services/keycloak.service';
 // import { AddUserToGroupDto } from 'src/app/dto/addUserToGroup';
 
+@ApiTags('users')
+@ApiBearerAuth('JWT-auth')
 @Controller('users')
 @Resource('cats-service')
 export class UserController {
   constructor(
     private readonly keyCloakService: KeycloakService,
     private readonly configService: ConfigService,
-  ) {}
+  ) { }
 
   /**
    * Add user to a group in Keycloak.
@@ -33,6 +36,25 @@ export class UserController {
    */
   @Post('/addGroup')
   @Roles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
+  @ApiOperation({
+    summary: 'Add user to formsflow-client group',
+    description: 'Adds a user to the formsflow-client group in Keycloak. Requires user-admin role.'
+  })
+  @ApiBody({ type: AddUserToGroupDto })
+  @ApiResponse({
+    status: 200,
+    description: 'User successfully added to group',
+    schema: {
+      type: 'object',
+      properties: {
+        success: { type: 'boolean', example: true },
+        message: { type: 'string', example: 'User added to group successfully' }
+      }
+    }
+  })
+  @ApiResponse({ status: 400, description: 'Bad request - Invalid input' })
+  @ApiResponse({ status: 404, description: 'Group not found' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
   async addUserToGroup(
     @Body() addUserToGroupDto: AddUserToGroupDto,
   ): Promise<any> {
@@ -67,6 +89,25 @@ export class UserController {
    */
   @Post('/addUserToGroupForMuncipalUsers')
   @Roles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
+  @ApiOperation({
+    summary: 'Add user to approving authority group',
+    description: 'Adds a user to the LRS approving authority group in Keycloak and removes them from camunda-admin group. Requires user-admin role.'
+  })
+  @ApiBody({ type: AddUserToGroupDto })
+  @ApiResponse({
+    status: 200,
+    description: 'User successfully added to approving authority group',
+    schema: {
+      type: 'object',
+      properties: {
+        success: { type: 'boolean', example: true },
+        message: { type: 'string', example: 'User added to group successfully' }
+      }
+    }
+  })
+  @ApiResponse({ status: 400, description: 'Bad request - Invalid input' })
+  @ApiResponse({ status: 404, description: 'Group not found' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
   async addUserToGroupForMuncipalUsers(
     @Body() addUserToGroupDto: AddUserToGroupDto,
   ): Promise<any> {
@@ -101,6 +142,25 @@ export class UserController {
 
   @Post('/addUserToGroupForSiteOwners')
   @Roles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
+  @ApiOperation({
+    summary: 'Add user to site owners group',
+    description: 'Adds a user to the site owners group in Keycloak and removes them from camunda-admin group. Requires user-admin role.'
+  })
+  @ApiBody({ type: AddUserToGroupDto })
+  @ApiResponse({
+    status: 200,
+    description: 'User successfully added to site owners group',
+    schema: {
+      type: 'object',
+      properties: {
+        success: { type: 'boolean', example: true },
+        message: { type: 'string', example: 'User added to group successfully' }
+      }
+    }
+  })
+  @ApiResponse({ status: 400, description: 'Bad request - Invalid input' })
+  @ApiResponse({ status: 404, description: 'Group not found' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
   async addUserToGroupForSiteOwners(
     @Body() addUserToGroupDto: AddUserToGroupDto,
   ): Promise<any> {
