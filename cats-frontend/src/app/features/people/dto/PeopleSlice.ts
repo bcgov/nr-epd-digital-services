@@ -86,6 +86,8 @@ export const fetchPeoples = createAsyncThunk(
       page?: number;
       pageSize?: number;
       filter?: {};
+      searchMode?: 'AND' | 'OR';
+      activeFilter?: 'active' | 'inactive' | 'all';
     },
     { getState },
   ) => {
@@ -96,6 +98,8 @@ export const fetchPeoples = createAsyncThunk(
         searchParam: args.searchParam,
         page: state.peoples.currentPage ?? 1,
         pageSize: state.peoples.pageSize ?? 5,
+        searchMode: args.searchMode ?? 'OR',
+        activeFilter: args.activeFilter ?? 'all',
       },
     });
 

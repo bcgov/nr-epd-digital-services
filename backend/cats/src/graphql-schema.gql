@@ -633,7 +633,7 @@ input ColumnConfigInput {
 type Query {
   findAllPerson: PersonResponse!
   findPersonById(id: Float!): PersonResponse!
-  searchPerson(searchParam: String!, page: Int!, pageSize: Int!): SearchPersonResponse!
+  searchPerson(searchParam: String!, page: Int!, pageSize: Int!, searchMode: String = "OR", activeFilter: String = "all"): SearchPersonResponse!
   searchApplications(searchParam: String!, page: Int!, pageSize: Int!, filter: Filter!, sortBy: ApplicationSortByField, sortByDir: ApplicationSortByDirection, filterId: String, filterServiceType: String, filterCommonName: String, filterCsapReference: String, filterSiteId: String, filterSiteRiskClassification: String, filterSiteAddress: String, filterApplicationType: String, filterStatus: String, filterStaffAssigned: String, filterPriority: String, filterDateReceivedFrom: DateTime, filterDateReceivedTo: DateTime, filterLastUpdatedFrom: DateTime, filterLastUpdatedTo: DateTime, filterDateCompletedFrom: DateTime, filterDateCompletedTo: DateTime, filterInvoiceStatus: String): ApplicationSearchResponse!
   searchApplicationsById(query: String!): ApplicationSearchResponse!
   getAppParticipantsByAppId(applicationId: Int!, filter: AppParticipantFilter): AppParticipantsResponse!
