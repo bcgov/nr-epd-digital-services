@@ -4,15 +4,15 @@ Complete examples for all queries and mutations in the Cats Service GraphQL API.
 
 ## Table of Contents
 
-- [Person Management](#person-management)
-- [Application Management](#application-management)
+- [Person](#person-management)
+- [Application](#application-management)
 - [Application Participants](#application-participants)
-- [Notes Management](#notes-management)
-- [Housing Management](#housing-management)
-- [Invoice Management](#invoice-management)
-- [Staff Management](#staff-management)
-- [Timesheet Management](#timesheet-management)
-- [Site Management](#site-management)
+- [Notes](#notes-management)
+- [Housing](#housing-management)
+- [Invoice](#invoice-management)
+- [Staff](#staff-management)
+- [Timesheet](#timesheet-management)
+- [Site](#site-management)
 - [Permissions](#permissions)
 - [Dashboard](#dashboard)
 - [COMS (File Management)](#coms-file-management)
