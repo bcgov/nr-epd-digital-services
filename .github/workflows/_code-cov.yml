@@ -51,11 +51,20 @@ jobs:
           key: coverage-${{ inputs.component }}-${{ github.run_number }}
           restore-keys: |
             coverage-${{ inputs.component }}-
+
+      - name: Check default heap size (before NODE_OPTIONS)
+        run: |
+          echo "=== Default Heap Size (No NODE_OPTIONS) ==="
+          node -e "const v8 = require('v8'); const stats = v8.getHeapStatistics(); console.log('Default limit:', (stats.heap_size_limit / 1024 / 1024).toFixed(2), 'MB')"
       
       - name: Tests
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"
         run: |
           cd ${{ inputs.component }}
           npm ci
+          echo "=== Heap Size With NODE_OPTIONS ==="
+          node -e "const v8 = require('v8'); const stats = v8.getHeapStatistics(); console.log('With NODE_OPTIONS:', (stats.heap_size_limit / 1024 / 1024).toFixed(2), 'MB')"
           ${{ inputs.test_cmd }}
 
       - name: Report code coverage
