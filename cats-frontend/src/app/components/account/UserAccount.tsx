@@ -34,7 +34,7 @@ const UserAccount = (props: any) => {
       firstname: auth.user?.profile.given_name,
       lastName: auth.user?.profile.family_name,
     });
-  }, []);
+  }, [auth.user]);
 
   const signOut = () => {
     auth.removeUser();
