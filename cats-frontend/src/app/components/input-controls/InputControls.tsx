@@ -1084,7 +1084,7 @@ export const DropdownSearchInput: React.FC<InputProps> = ({
     setSearchTerm('');
     setFilteredOpts([]);
     setIsClear(true);
-    handler('');
+    //handler('');
   };
 
   // Function to handle clicks outside the div element

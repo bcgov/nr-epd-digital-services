@@ -34,7 +34,7 @@
         <tr>
             <td>
                 <p>Hello,</p>
-                <p>This message is to notify you that a Site Disclosure Statement (Application ID: ${applicationId}) is available for your signature in the SRS Web Application. 
+                <p>This message is to notify you that a Site Disclosure Statement (Application ID: ${applicationId?c}) is available for your signature in the SRS Web Application. 
                 Please ensure you sign the statement before submitting it.  
                 Unsigned Site Disclosure Statements cannot be processed.</p>
             </td>

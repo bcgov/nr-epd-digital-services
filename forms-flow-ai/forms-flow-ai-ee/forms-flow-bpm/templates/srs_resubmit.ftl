@@ -38,7 +38,7 @@
                   Hello,
                 </p>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                   Your <b>${formName}</b> submission # ${applicationId} requires more information from you to continue processing.
+                   Your <b>${formName}</b> submission # ${applicationId?c} requires more information from you to continue processing.
                 </p>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
                    Please log into your account on the SRS Web App and review the above application notes, then edit the application and resubmit. 

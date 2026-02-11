@@ -7,7 +7,7 @@ import ApplicationType from '../constants/applicationType';
 
 @Injectable()
 export class CatsService {
-  constructor() { }
+  constructor() {}
 
   getSiteIdsFromFormData = (formData: any) => {
     switch (formData.hdnAppType) {
@@ -68,7 +68,8 @@ export class CatsService {
 
       case ApplicationType.SoSC:
         const soscSiteIds: number[] =
-          formData.dataGrid?.map((item: any) => Number(item.siteId))
+          formData.dataGrid
+            ?.map((item: any) => Number(item.siteId))
             .filter((id: number) => !isNaN(id)) || [];
 
         return soscSiteIds;
@@ -87,6 +88,41 @@ export class CatsService {
     }
   };
 
+  getApplicationSpecificData = (formData: any): Record<string, any> | null => {
+    switch (formData.hdnAppType) {
+      case ApplicationType.CSSA:
+        return {
+          serviceType: formData.Servicetype,
+          siteRiskClassification:
+            formData.siteRiskClassificationAtTimeOfApplication,
+        };
+      case ApplicationType.DERA:
+        return {
+          siteIdNumber: formData.siteRiskClassificationAtTimeOfApplication,
+        };
+
+      case ApplicationType.NOM:
+        return {
+          siteRiskClassification:
+            formData.siteRiskClassificationAtTimeOfApplication,
+        };
+
+      case ApplicationType.NIR:
+        return {
+          siteRiskClassification:
+            formData.siteRiskClassificationAtTimeOfApplication,
+        };
+
+      case ApplicationType.SRCR:
+        return {
+          siteRiskClassification: formData.siteRiskClassification,
+        };
+
+      default:
+        return null;
+    }
+  };
+
   /**
    * To create a new application in CATS once a submission is received
    * @param formData
@@ -99,6 +135,9 @@ export class CatsService {
 
     // Parse and split comma-separated site IDs
     const siteIds = this.getSiteIdsFromFormData(formData);
+
+    // Get application-specific data
+    const applicationSpecificData = this.getApplicationSpecificData(formData);
 
     const createApplicationMutation = {
       query: `
@@ -119,6 +158,9 @@ export class CatsService {
           siteIds: siteIds, // array of site id's
           appTypeAbbrev: formData.hdnAppType, // String!
           receivedDate: new Date(),
+          applicationSpecificData: applicationSpecificData
+            ? JSON.stringify(applicationSpecificData)
+            : null, // JSON string
           applicationStatus: [
             {
               statusTypeAbbrev: 'New',

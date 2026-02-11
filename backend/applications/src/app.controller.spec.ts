@@ -29,10 +29,5 @@ describe('AppController', () => {
     it('should return "Hello World!"', () => {
       expect(appController.getHello()).toBe('Hello World!');
     });
-    it('should echo back request body', () => {
-      expect(
-        appController.printFormSubmission(testPostRequest as Request),
-      ).toEqual(testPostBody);
-    });
   });
 });

@@ -67,6 +67,11 @@ const Search = () => {
     [key: string]: any | [Date, Date];
   }>({});
 
+  const [searchMode, setSearchMode] = useState<'AND' | 'OR'>('OR');
+  const [activeFilter, setActiveFilter] = useState<
+    'active' | 'inactive' | 'all'
+  >('all');
+
   const navigate = useNavigate();
   const toggleColumnSelectionForDisplay = (column: TableColumn) => {
     const index = columnsToDisplay.findIndex((item) => item.id === column.id);
@@ -86,15 +91,23 @@ const Search = () => {
   useEffect(() => {
     if (currSearchVal.searchQuery !== '') {
       dispatch(
-        fetchPeoples({ searchParam: currSearchVal.searchQuery ?? searchText }),
+        fetchPeoples({
+          searchParam: currSearchVal.searchQuery ?? searchText,
+          searchMode,
+          activeFilter,
+        }),
       );
     }
-  }, [currentPageInState, updatePeopleStatusInState]);
+  }, [currentPageInState, updatePeopleStatusInState, searchMode, activeFilter]);
 
   useEffect(() => {
     if (currSearchVal.searchQuery !== '') {
       dispatch(
-        fetchPeoples({ searchParam: currSearchVal.searchQuery ?? searchText }),
+        fetchPeoples({
+          searchParam: currSearchVal.searchQuery ?? searchText,
+          searchMode,
+          activeFilter,
+        }),
       );
     }
   }, [currentPageSizeInState]);
@@ -128,7 +141,13 @@ const Search = () => {
     if (currSearchVal.searchQuery !== '') {
       setUserAction(false);
       setSearchText(currSearchVal.searchQuery);
-      dispatch(fetchPeoples({ searchParam: currSearchVal.searchQuery }));
+      dispatch(
+        fetchPeoples({
+          searchParam: currSearchVal.searchQuery,
+          searchMode,
+          activeFilter,
+        }),
+      );
     }
   }, []);
 
@@ -157,10 +176,18 @@ const Search = () => {
           fetchPeoples({
             searchParam: event.target.value,
             filter: filterData,
+            searchMode,
+            activeFilter,
           }),
         );
       } else {
-        dispatch(fetchPeoples({ searchParam: event.target.value }));
+        dispatch(
+          fetchPeoples({
+            searchParam: event.target.value,
+            searchMode,
+            activeFilter,
+          }),
+        );
       }
       dispatch(updateSearchQuery(event.target.value));
     } else {
@@ -244,6 +271,8 @@ const Search = () => {
         fetchPeoples({
           searchParam: currSearchVal.searchQuery,
           filter: filteredFormData,
+          searchMode,
+          activeFilter,
         }),
       );
       setSelectedFilters(filters);
@@ -280,6 +309,8 @@ const Search = () => {
         fetchPeoples({
           searchParam: currSearchVal.searchQuery,
           filter: newData,
+          searchMode,
+          activeFilter,
         }),
       );
       return newData;
@@ -335,6 +366,41 @@ const Search = () => {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+        <div className="search-controls">
+          <div className="search-mode-toggle">
+            <label>
+              <input
+                type="radio"
+                value="OR"
+                checked={searchMode === 'OR'}
+                onChange={(e) => setSearchMode(e.target.value as 'OR')}
+              />
+              Match Any (OR)
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="AND"
+                checked={searchMode === 'AND'}
+                onChange={(e) => setSearchMode(e.target.value as 'AND')}
+              />
+              Match All (AND)
+            </label>
+          </div>
+          <div className="active-filter-dropdown">
+            <label>Status:</label>
+            <select
+              value={activeFilter}
+              onChange={(e) =>
+                setActiveFilter(e.target.value as 'active' | 'inactive' | 'all')
+              }
+            >
+              <option value="all">All</option>
+              <option value="active">Active Only</option>
+              <option value="inactive">Inactive Only</option>
+            </select>
           </div>
         </div>
       </div>

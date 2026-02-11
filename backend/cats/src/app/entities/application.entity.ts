@@ -99,6 +99,9 @@ export class Application {
   @Column('boolean', { name: 'is_multi_site', default: false })
   isMultiSite: boolean;
 
+  @Column('jsonb', { name: 'application_specific_data', nullable: true })
+  applicationSpecificData: Record<string, any> | null;
+
   @OneToMany(() => AppExpense, (appExpense) => appExpense.application)
   appExpenses: AppExpense[];
 
@@ -194,6 +197,9 @@ export class Application {
   ])
   serviceType: ApplicationServiceType;
 
-  @OneToMany(() => RecentViewedApplication, (recentViewedApplications) => recentViewedApplications.application)
+  @OneToMany(
+    () => RecentViewedApplication,
+    (recentViewedApplications) => recentViewedApplications.application,
+  )
   recentViewedApplications: RecentViewedApplication[];
 }

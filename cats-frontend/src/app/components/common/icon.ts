@@ -46,6 +46,8 @@ import {
   FaFilePdf,
   FaPaperclip,
   FaFileContract,
+  FaSquareCheck,
+  FaSquare,
 } from 'react-icons/fa6';
 
 import {
@@ -119,3 +121,5 @@ export const PaperPlaneIcon = FaPaperPlane;
 export const FilePdfIcon = FaFilePdf;
 export const PaperclipIcon = FaPaperclip;
 export const FileContractIcon = FaFileContract;
+export const SquareCheck = FaSquareCheck;
+export const Square = FaSquare;

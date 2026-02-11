@@ -283,3 +283,32 @@ div.search-parent {
   line-height: 16px;
   color: var(--typography-color-secondary, #474543);
 }
+
+.search-controls {
+  margin-top: 16px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.search-mode-toggle {
+  display: flex;
+  gap: 12px;
+}
+
+.search-mode-toggle label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.active-filter-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.active-filter-dropdown select {
+  padding: 4px 8px;
+}

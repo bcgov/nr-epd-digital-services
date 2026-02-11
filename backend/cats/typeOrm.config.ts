@@ -13,6 +13,6 @@ export default new DataSource({
   schema: process.env.POSTGRES_DB_SCHEMA,
   synchronize: false,
   logging: true,
-  entities: ['src/app/entities/**/*.{js,ts}'],
+  entities: ['src/app/entities/**/!(*.spec).{js,ts}'], // Exclude .spec.ts files
   migrations: ['src/migrations/**/*.ts'],
 });

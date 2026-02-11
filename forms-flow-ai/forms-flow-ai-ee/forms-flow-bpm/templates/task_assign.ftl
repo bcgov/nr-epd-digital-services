@@ -38,7 +38,7 @@
                   Hello,
                 </p>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                   Please click to view the task assigned for <b>Application ID: ${applicationId}</b> by clicking on the below link. 
+                   Please click to view the task assigned for <b>Application ID: ${applicationId?c}</b> by clicking on the below link. 
                 </p>
                 <p>
                    ${appURL}/${taskId}

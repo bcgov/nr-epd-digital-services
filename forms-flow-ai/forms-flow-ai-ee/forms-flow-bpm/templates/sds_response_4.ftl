@@ -47,7 +47,7 @@
             <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;
                                    line-height:27px;text-align: left;font-style: normal;
                                    font-weight: bold;font-size: 20px;color: #313132;letter-spacing: 0px;">
-                <span style="font-weight: bold;">Application ID:</span> ${applicationId}
+                <span style="font-weight: bold;">Application ID:</span> ${applicationId?c}
             </p>
         </td>
     </tr>

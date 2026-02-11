@@ -38,7 +38,7 @@
                   Hello,
                 </p>
                 <p class="info" style="margin-top: 24px;margin-bottom: 0;overflow: visible;line-height: 24px;text-align: left;font-style: normal;font-weight: normal;font-size: 16px;color: #313132;letter-spacing: 0px;">
-                  The following users were not found while processing application # <b>Application ID : ${applicationId}</b> and is not notified regarding the document upload link/option. 
+                  The following users were not found while processing application # <b>Application ID : ${applicationId?c}</b> and is not notified regarding the document upload link/option. 
                 </p>
                 <p>
                     ${emailsToArray}

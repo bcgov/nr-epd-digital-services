@@ -1,10 +1,5 @@
-import {
-  ApolloFederationDriver,
-  ApolloFederationDriverConfig,
-} from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
-import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import {
@@ -17,7 +12,6 @@ import {
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ApplicationModule } from './app/application.module';
-import { ExternalUser } from './app/entities/externalUser.entity';
 
 @Module({
   imports: [
@@ -49,29 +43,6 @@ import { ExternalUser } from './app/entities/externalUser.entity';
       }),
       // This changes the DB schema to match changes to entities, which we might not want.
     }),
-    // TypeOrmModule.forRoot({
-    //   type: 'postgres',
-    //   host: process.env.POSTGRESQL_HOST || 'gldatabase',
-    //   port: parseInt(<string>process.env.POSTGRESQL_PORT) || 5432,
-    //   database: process.env.POSTGRESQL_DATABASE || 'admin',
-    //   username: process.env.POSTGRESQL_USER || 'admin',
-    //   password: process.env.POSTGRESQL_PASSWORD || 'admin',
-    //   // entities: [User],
-    //   autoLoadEntities: true, // Auto load all entities regiestered by typeorm forFeature method.
-    //   synchronize: false, // Auto load all entities regiestered by typeorm forFeature method.
-    //   // This changes the DB schema to match changes to entities, which we might not want.
-    //   logging: true,
-    // }),
-    GraphQLModule.forRoot<ApolloFederationDriverConfig>({
-      driver: ApolloFederationDriver,
-      // autoSchemaFile: join(process.cwd(), 'src/graphql-schema.gql'),
-      // TODO - Experiment with using old files for localhsot if need be, and true for prod
-      autoSchemaFile: true,
-      buildSchemaOptions: {
-        orphanedTypes: [ExternalUser],
-      },
-      cors: true,
-    }),
   ],
 
   controllers: [AppController],
@@ -91,4 +62,4 @@ import { ExternalUser } from './app/entities/externalUser.entity';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }
