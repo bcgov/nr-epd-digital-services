@@ -16,7 +16,7 @@ const UserAccount = (props: any) => {
     navigate('/error');
     auth.signinRedirect({ extraQueryParams: { kc_idp_hint: 'idir' } });
   }
-  
+
   const [dropdownArrow, setDropdownArrow] = useState(false);
   const toggleButton = (event: any) => {
     event.stopPropagation();
