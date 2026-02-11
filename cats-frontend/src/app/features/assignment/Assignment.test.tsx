@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import Assignment from './Assignment';
 import { MockedProvider } from '@apollo/client/testing';
@@ -15,9 +15,12 @@ describe('Assignment Component', () => {
           modalCloseHandler={mockClose}
           modalSaveHandler={mockSave}
         />
-      </MockedProvider>,
+      </MockedProvider>
     );
 
-    expect(screen.getByText('Site Information')).toBeInTheDocument();
+    // wait for the component to settle (flushes Apollo queries)
+    await waitFor(() => {
+      expect(screen.getByText('Site Information')).toBeInTheDocument();
+    });
   });
 });
