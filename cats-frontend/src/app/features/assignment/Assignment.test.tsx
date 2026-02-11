@@ -15,7 +15,7 @@ describe('Assignment Component', () => {
           modalCloseHandler={mockClose}
           modalSaveHandler={mockSave}
         />
-      </MockedProvider>
+      </MockedProvider>,
     );
 
     // wait for the component to settle (flushes Apollo queries)
