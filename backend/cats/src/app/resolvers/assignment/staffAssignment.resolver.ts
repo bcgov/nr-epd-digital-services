@@ -26,6 +26,8 @@ import { UpdateStaffAssignedDto } from '../../dto/assignment/updateStaffAssigned
 import {
   ViewStaffWithCapacityDTO,
   ViewStaffWithCapacityResponse,
+  StaffGroupedByRoleDTO,
+  StaffGroupedByRoleResponse,
 } from '../../dto/assignment/viewStaffWithCapacity';
 
 @Resolver()
@@ -38,6 +40,9 @@ export class StaffAssignmentResolver {
     private readonly loggerService: LoggerService,
     private readonly staffResponseProvider: GenericResponseProvider<
       ViewStaffWithCapacityDTO[]
+    >,
+    private readonly staffGroupedResponseProvider: GenericResponseProvider<
+      StaffGroupedByRoleDTO[]
     >,
     private readonly drowpDownResponseProvider: GenericResponseProvider<
       DropdownDto[]
@@ -140,27 +145,26 @@ export class StaffAssignmentResolver {
     applicationServiceTypeId: number,
   ) {
     try {
-      const result =
-        await this.service.getActiveStaffWithCapacityByServiceType(
-          applicationServiceTypeId,
-        );
+      const result = await this.service.getActiveStaffWithCapacityByServiceType(
+        applicationServiceTypeId,
+      );
 
       if (result?.length > 0) {
         this.loggerService.log(
-          'StaffAssignmentResolver.getActiveStaffWithCapacityByServiceType () RES:200 end',
+          'StaffAssignmentResolver.getAllActiveStaffMembersForApplicationServiceType() RES:200 end',
         );
         return this.staffResponseProvider.createResponse(
-          'Participant names fetched successfully',
+          'Staff fetched successfully',
           HttpStatus.OK,
           true,
           result,
         );
       } else {
         this.loggerService.log(
-          'StaffAssignmentResolver.getActiveStaffWithCapacityByServiceType () RES:404 end',
+          'StaffAssignmentResolver.getAllActiveStaffMembersForApplicationServiceType() RES:404 end',
         );
         return this.staffResponseProvider.createResponse(
-          'Participant names data not found',
+          'Staff data not found',
           HttpStatus.NOT_FOUND,
           false,
           result,
@@ -175,7 +179,61 @@ export class StaffAssignmentResolver {
           : JSON.stringify(error);
 
       this.loggerService.error(
-        `StaffAssignmentResolver.getStaffAssignedByAppId() - Error: ${errorMessage}`,
+        `StaffAssignmentResolver.getAllActiveStaffMembersForApplicationServiceType() - Error: ${errorMessage}`,
+        error instanceof Error ? error.stack : undefined,
+      );
+
+      throw new HttpException(
+        errorMessage || 'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Query(() => StaffGroupedByRoleResponse, {
+    name: 'getStaffGroupedByRoleForServiceType',
+  })
+  @UsePipes(new GenericValidationPipe())
+  async getStaffGroupedByRoleForServiceType(
+    @Args('applicationServiceTypeId', { type: () => Int })
+    applicationServiceTypeId: number,
+  ) {
+    try {
+      const result = await this.service.getStaffGroupedByRoleForServiceType(
+        applicationServiceTypeId,
+      );
+
+      if (result?.length > 0) {
+        this.loggerService.log(
+          'StaffAssignmentResolver.getStaffGroupedByRoleForServiceType() RES:200 end',
+        );
+        return this.staffGroupedResponseProvider.createResponse(
+          'Staff grouped by role fetched successfully',
+          HttpStatus.OK,
+          true,
+          result,
+        );
+      } else {
+        this.loggerService.log(
+          'StaffAssignmentResolver.getStaffGroupedByRoleForServiceType() RES:404 end',
+        );
+        return this.staffGroupedResponseProvider.createResponse(
+          'Staff data not found',
+          HttpStatus.NOT_FOUND,
+          false,
+          result,
+        );
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : typeof error === 'string'
+          ? error
+          : JSON.stringify(error);
+
+      this.loggerService.error(
+        `StaffAssignmentResolver.getStaffGroupedByRoleForServiceType() - Error: ${errorMessage}`,
         error instanceof Error ? error.stack : undefined,
       );
 

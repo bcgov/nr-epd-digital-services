@@ -13,6 +13,7 @@ import {
   useGetApplicationServiceTypesQuery,
   useGetStaffAssignedByAppIdQuery,
   useUpdateStaffAssignedMutation,
+  useGetStaffGroupedByRoleForServiceTypeQuery,
 } from './graphql/assignment.generated';
 import {
   CancelButton,
@@ -24,23 +25,27 @@ import {
   useGetSiteDetailsBySiteIdQuery,
 } from '../applications/application/applicationTabs/appDetails/Details.generated';
 import ModalDialog from '../../components/modaldialog/ModalDialog';
+import { useNavigate, useParams } from 'react-router-dom';
 
-interface AssignmentProps {
-  id?: string;
-  modalCloseHandler: () => void;
-  modalSaveHandler: () => void;
-}
+interface AssignmentProps {}
 
-const Assignment: React.FC<AssignmentProps> = ({
-  id,
-  modalCloseHandler,
-  modalSaveHandler,
-}) => {
+const Assignment: React.FC<AssignmentProps> = () => {
+  const { id } = useParams(); // or useSearchParams()
+  const navigate = useNavigate();
+
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [messageContent, setMessageContent] = useState('');
   const [assignmentServiceType, setAssignmentServiceType] =
     useState<string>('');
   const [staffRecords, setStaffRecords] = useState<any[]>([]);
+
+  const cleanStaffName = (fullName: string): string => {
+    return fullName
+      .replace(/\s*-\s*\(Caseworker\)\s*$/i, '')
+      .replace(/\s*-\s*\(Statutory Decision Maker\)\s*$/i, '')
+      .replace(/\s*-\s*\(Mentor\)\s*$/i, '')
+      .trim();
+  };
 
   const applicationId = id ? Number(id) : 0;
   const { data: rolesData } = useGetParticipantRolesQuery();
@@ -57,6 +62,16 @@ const Assignment: React.FC<AssignmentProps> = ({
         : 0,
     },
   });
+
+  const { data: staffGroupedByRole, refetch: staffGroupedByRoleRefetch } =
+    useGetStaffGroupedByRoleForServiceTypeQuery({
+      variables: {
+        applicationServiceTypeId: assignmentServiceType
+          ? Number(assignmentServiceType)
+          : 0,
+      },
+      skip: !assignmentServiceType,
+    });
 
   const { data: serviceTypesList } = useGetApplicationServiceTypesQuery();
   const [updateStaffAssigned] = useUpdateStaffAssignedMutation();
@@ -134,6 +149,9 @@ const Assignment: React.FC<AssignmentProps> = ({
   useEffect(() => {
     if (assignmentServiceType) {
       staffMemebersRefetchForServiceType({
+        applicationServiceTypeId: Number(assignmentServiceType),
+      });
+      staffGroupedByRoleRefetch({
         applicationServiceTypeId: Number(assignmentServiceType),
       });
     }
@@ -214,7 +232,7 @@ const Assignment: React.FC<AssignmentProps> = ({
         applicationServiceTypeId: parseInt(assignmentServiceType),
       },
       onCompleted: () => {
-        modalSaveHandler();
+        navigate(-1);
       },
       onError: (err) => {
         console.error('Error adding participant:', err);
@@ -228,51 +246,57 @@ const Assignment: React.FC<AssignmentProps> = ({
   }, []);
 
   return (
-    <div role="assign staff" className="assign-section">
-      <Details
-        applicationIdParam={applicationId}
-        showSiteDetails={false}
-        defaultOpen={false}
-      />
-      <CollapsiblePanel
-        showBorder={false}
-        showPadding={false}
-        smallFont={true}
-        defaultOpen={false}
-        label="Site Information"
-        defaultCloseBtnPosition="left"
-        content={
-          <div className="site-info-content">
-            <div className="site-info-content-div">
-              <div className="site-info-label">Site ID</div>
-              <div>{siteData?.getSiteDetailsBySiteId?.data?.id}</div>
-            </div>
-            <div className="site-info-content-div">
-              <div className="site-info-label">Site Risk Classification</div>
-              <div>{siteData?.getSiteDetailsBySiteId?.data?.siteRiskCode}</div>
-            </div>
-            <div className="site-info-content-div">
-              <div className="site-info-label">Site Address</div>
-              <div>
-                {siteData?.getSiteDetailsBySiteId?.data?.addrLine_1 ||
-                  '' +
-                    ' ' +
-                    siteData?.getSiteDetailsBySiteId?.data?.addrLine_2 ||
-                  '' +
-                    ' ' +
-                    siteData?.getSiteDetailsBySiteId?.data?.addrLine_3 ||
-                  '' +
-                    ' ' +
-                    siteData?.getSiteDetailsBySiteId?.data?.addrLine_4 ||
-                  ''}
+    <div role="assign staff" className="assign-section page-continer">
+      <div className="parent-box">
+        <Details
+          applicationIdParam={applicationId}
+          showSiteDetails={false}
+          defaultOpen={false}
+        />
+      </div>
+      <div className="parent-box">
+        <CollapsiblePanel
+          showBorder={false}
+          showPadding={false}
+          smallFont={true}
+          defaultOpen={false}
+          label="Site Information"
+          defaultCloseBtnPosition="left"
+          content={
+            <div className="site-info-content">
+              <div className="site-info-content-div">
+                <div className="site-info-label">Site ID</div>
+                <div>{siteData?.getSiteDetailsBySiteId?.data?.id}</div>
+              </div>
+              <div className="site-info-content-div">
+                <div className="site-info-label">Site Risk Classification</div>
+                <div>
+                  {siteData?.getSiteDetailsBySiteId?.data?.siteRiskCode}
+                </div>
+              </div>
+              <div className="site-info-content-div">
+                <div className="site-info-label">Site Address</div>
+                <div>
+                  {siteData?.getSiteDetailsBySiteId?.data?.addrLine_1 ||
+                    '' +
+                      ' ' +
+                      siteData?.getSiteDetailsBySiteId?.data?.addrLine_2 ||
+                    '' +
+                      ' ' +
+                      siteData?.getSiteDetailsBySiteId?.data?.addrLine_3 ||
+                    '' +
+                      ' ' +
+                      siteData?.getSiteDetailsBySiteId?.data?.addrLine_4 ||
+                    ''}
+                </div>
               </div>
             </div>
-          </div>
-        }
-      />
-      <div>
+          }
+        />
+      </div>
+      <div className="parent-box">
         <div className="assignment-options">
-          <span className="panelLabel">Assignment Options </span>
+          <span className="panelLabel">Manage Staff</span>
           <DropdownInput
             label={'Application Service Type'}
             customLabelCss={''}
@@ -293,6 +317,71 @@ const Assignment: React.FC<AssignmentProps> = ({
           />
         </div>
         <div>
+          {assignmentServiceType &&
+            staffGroupedByRole?.getStaffGroupedByRoleForServiceType?.data && (
+              <div className="staff-by-role-section">
+                {staffGroupedByRole.getStaffGroupedByRoleForServiceType.data.map(
+                  (roleGroup) => {
+                    const availableStaff = roleGroup.staff
+                      .filter(
+                        (staff) =>
+                          !staffRecords.some(
+                            (record) =>
+                              record.personId.toString() ===
+                                staff.personId.toString() &&
+                              record.action !== 'remove',
+                          ),
+                      )
+                      .sort(
+                        (a, b) =>
+                          (a.currentCapacity || 0) - (b.currentCapacity || 0),
+                      );
+
+                    return (
+                      <div key={roleGroup.roleId} className="role-group">
+                        <h3 className="role-heading">{roleGroup.roleName}</h3>
+                        <div className="staff-pills-container">
+                          {availableStaff.length > 0 ? (
+                            availableStaff.map((staff) => (
+                              <button
+                                key={staff.personId}
+                                className="staff-pill"
+                                onClick={() => {
+                                  const newRecord = {
+                                    id: 'new_' + new Date().getTime(),
+                                    personId: staff.personId.toString(),
+                                    roleId: roleGroup.roleId.toString(),
+                                    startDate: null,
+                                    endDate: null,
+                                    applicationId: id && parseInt(id),
+                                  };
+                                  setStaffRecords([...staffRecords, newRecord]);
+                                }}
+                              >
+                                {cleanStaffName(staff.personFullName) + ' - '}
+                                &nbsp;
+                                <span>
+                                  {' '}
+                                  {(
+                                    ((staff.currentCapacity || 0) / 160) *
+                                    100
+                                  ).toFixed(2)}
+                                  %
+                                </span>
+                              </button>
+                            ))
+                          ) : (
+                            <span className="no-staff-message">
+                              No eligible staff available for this role
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  },
+                )}
+              </div>
+            )}
           <StaffTable
             handleTableChange={(event: any) => {
               if (event.property === 'remove') {
@@ -366,22 +455,26 @@ const Assignment: React.FC<AssignmentProps> = ({
             handleRemoveParticipant={() => {}}
             handleItemClick={() => {}}
           />
-          <div className={`custom-modal-actions-footer`}>
-            <CancelButton
-              variant={'tertiary'}
-              clickHandler={modalCloseHandler}
-              label={'Cancel'}
-              isDisabled={false}
-            />
-            <SaveButton
-              clickHandler={handleSave}
-              label={'Confirm'}
-              variant={'primary'}
-              isDisabled={false}
-              showTickIcon={true}
-            />
-          </div>
         </div>
+      </div>
+      <div className={`custom-modal-actions-footer`}>
+        <CancelButton
+          variant={'tertiary'}
+          clickHandler={() => {
+            navigate(-1);
+          }}
+          label={'Cancel'}
+          isDisabled={false}
+        />
+        <SaveButton
+          clickHandler={() => {
+            handleSave();
+          }}
+          label={'Confirm'}
+          variant={'primary'}
+          isDisabled={false}
+          showTickIcon={true}
+        />
       </div>
       {isMessageModalOpen && (
         <ModalDialog

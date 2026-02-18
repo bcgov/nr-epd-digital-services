@@ -648,6 +648,7 @@ export type Query = {
   getRecentViewedApplications: DashboardResponse;
   getSiteDetailsBySiteId: SiteDetailsResponse;
   getStaffAssignedByAppId: ViewStaffAssignedResponse;
+  getStaffGroupedByRoleForServiceType: StaffGroupedByRoleResponse;
   getStaffs: StaffResponse;
   getTimesheetDaysForAssignedStaff: PersonWithTimesheetDaysResponse;
   getUserColumnPreferences: ColumnPreferencesResponse;
@@ -741,6 +742,11 @@ export type QueryGetSiteDetailsBySiteIdArgs = {
 
 export type QueryGetStaffAssignedByAppIdArgs = {
   applicationId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetStaffGroupedByRoleForServiceTypeArgs = {
+  applicationServiceTypeId: Scalars['Int']['input'];
 };
 
 
@@ -869,6 +875,23 @@ export type StaffAssignedDto = {
   __typename?: 'StaffAssignedDto';
   applicationServiceTypeId?: Maybe<Scalars['Float']['output']>;
   staffList: Array<ViewStaffAssignedDto>;
+};
+
+export type StaffGroupedByRoleDto = {
+  __typename?: 'StaffGroupedByRoleDTO';
+  roleAbbrev: Scalars['String']['output'];
+  roleId: Scalars['Float']['output'];
+  roleName: Scalars['String']['output'];
+  staff: Array<ViewStaffWithCapacityDto>;
+};
+
+export type StaffGroupedByRoleResponse = {
+  __typename?: 'StaffGroupedByRoleResponse';
+  data?: Maybe<Array<StaffGroupedByRoleDto>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
 };
 
 export type StaffResponse = {

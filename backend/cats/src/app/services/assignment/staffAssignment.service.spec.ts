@@ -405,4 +405,148 @@ describe('StaffAssignmentService', () => {
     );
     expect(result).toBe(true);
   });
+
+  it('should return staff grouped by role for service type', async () => {
+    const applicationServiceTypeId = 1;
+    const caseWorkerRole = new ParticipantRole();
+    caseWorkerRole.id = 1;
+    caseWorkerRole.abbrev = StaffRoles.CASE_WORKER;
+    caseWorkerRole.description = 'Caseworker';
+
+    const sdmRole = new ParticipantRole();
+    sdmRole.id = 2;
+    sdmRole.abbrev = StaffRoles.SDM;
+    sdmRole.description = 'Statutory Decision Maker';
+
+    const mentorRole = new ParticipantRole();
+    mentorRole.id = 3;
+    mentorRole.abbrev = StaffRoles.MENTOR;
+    mentorRole.description = 'Mentor';
+
+    (participantRoleRepository.find as jest.Mock).mockResolvedValue([
+      caseWorkerRole,
+      sdmRole,
+      mentorRole,
+    ]);
+
+    (personRepository.query as jest.Mock)
+      .mockResolvedValueOnce([
+        {
+          id: 1,
+          first_name: 'John',
+          last_name: 'Doe',
+          middle_name: '',
+          roles: 'Caseworker',
+          current_factors: 5,
+        },
+      ])
+      .mockResolvedValueOnce([
+        {
+          id: 2,
+          first_name: 'Jane',
+          last_name: 'Smith',
+          middle_name: '',
+          roles: 'Statutory Decision Maker',
+          current_factors: 3,
+        },
+      ])
+      .mockResolvedValueOnce([
+        {
+          id: 3,
+          first_name: 'Bob',
+          last_name: 'Johnson',
+          middle_name: '',
+          roles: 'Mentor',
+          current_factors: 2,
+        },
+      ]);
+
+    const result = await service.getStaffGroupedByRoleForServiceType(
+      applicationServiceTypeId,
+    );
+
+    expect(result).toHaveLength(3);
+    expect(result[0]).toEqual({
+      roleId: 1,
+      roleName: 'Caseworker',
+      roleAbbrev: StaffRoles.CASE_WORKER,
+      staff: [
+        {
+          personId: 1,
+          personFirstName: 'John',
+          personMiddleName: '',
+          personLastName: 'Doe',
+          personFullName: 'John  Doe - (Caseworker)',
+          currentCapacity: 5,
+        },
+      ],
+    });
+    expect(result[1]).toEqual({
+      roleId: 2,
+      roleName: 'Statutory Decision Maker',
+      roleAbbrev: StaffRoles.SDM,
+      staff: [
+        {
+          personId: 2,
+          personFirstName: 'Jane',
+          personMiddleName: '',
+          personLastName: 'Smith',
+          personFullName: 'Jane  Smith - (Statutory Decision Maker)',
+          currentCapacity: 3,
+        },
+      ],
+    });
+    expect(result[2]).toEqual({
+      roleId: 3,
+      roleName: 'Mentor',
+      roleAbbrev: StaffRoles.MENTOR,
+      staff: [
+        {
+          personId: 3,
+          personFirstName: 'Bob',
+          personMiddleName: '',
+          personLastName: 'Johnson',
+          personFullName: 'Bob  Johnson - (Mentor)',
+          currentCapacity: 2,
+        },
+      ],
+    });
+  });
+
+  it('should return empty staff arrays when no staff found for roles', async () => {
+    const applicationServiceTypeId = 1;
+    const caseWorkerRole = new ParticipantRole();
+    caseWorkerRole.id = 1;
+    caseWorkerRole.abbrev = StaffRoles.CASE_WORKER;
+    caseWorkerRole.description = 'Caseworker';
+
+    (participantRoleRepository.find as jest.Mock).mockResolvedValue([
+      caseWorkerRole,
+    ]);
+
+    (personRepository.query as jest.Mock).mockResolvedValue([]);
+
+    const result = await service.getStaffGroupedByRoleForServiceType(
+      applicationServiceTypeId,
+    );
+
+    expect(result).toHaveLength(1);
+    expect(result[0]).toEqual({
+      roleId: 1,
+      roleName: 'Caseworker',
+      roleAbbrev: StaffRoles.CASE_WORKER,
+      staff: [],
+    });
+  });
+
+  it('should throw HttpException when getStaffGroupedByRoleForServiceType fails', async () => {
+    const applicationServiceTypeId = 1;
+    (participantRoleRepository.find as jest.Mock).mockRejectedValue(
+      new Error('Database error'),
+    );
+
+    await expect(
+      service.getStaffGroupedByRoleForServiceType(applicationServiceTypeId),
+    ).rejects.toThrow(HttpException);
+  });
 });

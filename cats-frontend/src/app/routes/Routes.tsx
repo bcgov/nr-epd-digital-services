@@ -17,6 +17,7 @@ import Dashboard from '@cats/features/dashboard/Dashboard';
 import Invoice from '@cats/features/applications/application/applicationTabs/appInvoices/invoice/Invoice';
 import ApplicationTabsRouter from '../features/applications/application/ApplicationTabsRouter';
 import MyTasks from '../features/mytasks/mytasks';
+import Assignment from '@cats/features/assignment/Assignment';
 
 const roleBasedRoutes: any = {
   [UserRoleType.INTERNAL]: [
@@ -32,6 +33,10 @@ const roleBasedRoutes: any = {
       path: '/applications/:id',
       element: <ApplicationDetails />,
       children: [{ path: '*', element: <ApplicationTabsRouter /> }],
+    },
+    {
+      path: '/assignment/:id',
+      element: <Assignment />,
     },
     { path: '/applications/:applicationId/invoice', element: <Invoice /> },
     { path: '/applications/:applicationId/invoice/:id', element: <Invoice /> },

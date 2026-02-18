@@ -530,6 +530,21 @@ type ViewStaffWithCapacityResponse {
   data: [ViewStaffWithCapacityDTO!]
 }
 
+type StaffGroupedByRoleDTO {
+  roleId: Float!
+  roleName: String!
+  roleAbbrev: String!
+  staff: [ViewStaffWithCapacityDTO!]!
+}
+
+type StaffGroupedByRoleResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [StaffGroupedByRoleDTO!]
+}
+
 type TimesheetDayDto {
   id: Int!
   applicationId: Int!
@@ -654,6 +669,7 @@ type Query {
   getStaffAssignedByAppId(applicationId: Int!): ViewStaffAssignedResponse!
   getAllActiveStaffMembers: ViewStaffWithCapacityResponse!
   getAllActiveStaffMembersForApplicationServiceType(applicationServiceTypeId: Int!): ViewStaffWithCapacityResponse!
+  getStaffGroupedByRoleForServiceType(applicationServiceTypeId: Int!): StaffGroupedByRoleResponse!
   getApplicationServiceTypes: DropdownResponse!
   getPermissions: PermissionsResponse!
   getTimesheetDaysForAssignedStaff(applicationId: Int!, startDate: String!, endDate: String!): PersonWithTimesheetDaysResponse!

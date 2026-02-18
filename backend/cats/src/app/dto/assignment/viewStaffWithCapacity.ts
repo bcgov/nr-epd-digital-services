@@ -18,3 +18,24 @@ export class ViewStaffWithCapacityResponse extends ResponseDto {
   @Field(() => [ViewStaffWithCapacityDTO], { nullable: true })
   data: ViewStaffWithCapacityDTO[] | null;
 }
+
+@ObjectType()
+export class StaffGroupedByRoleDTO {
+  @Field()
+  roleId: number;
+
+  @Field()
+  roleName: string;
+
+  @Field()
+  roleAbbrev: string;
+
+  @Field(() => [ViewStaffWithCapacityDTO])
+  staff: ViewStaffWithCapacityDTO[];
+}
+
+@ObjectType()
+export class StaffGroupedByRoleResponse extends ResponseDto {
+  @Field(() => [StaffGroupedByRoleDTO], { nullable: true })
+  data: StaffGroupedByRoleDTO[] | null;
+}

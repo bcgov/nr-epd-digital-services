@@ -51,6 +51,21 @@ query getAllActiveStaffMembersForApplicationServiceType($applicationServiceTypeI
   }
 }
 
+query getStaffGroupedByRoleForServiceType($applicationServiceTypeId: Int!) {
+  getStaffGroupedByRoleForServiceType(applicationServiceTypeId: $applicationServiceTypeId) {
+    data {
+      roleId
+      roleName
+      roleAbbrev
+      staff {
+        personId
+        personFullName
+        currentCapacity
+      }
+    }
+  }
+}
+
 query getApplicationServiceTypes {
   getApplicationServiceTypes {
     data {
