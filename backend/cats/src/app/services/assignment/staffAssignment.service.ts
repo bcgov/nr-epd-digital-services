@@ -131,8 +131,13 @@ p.id, p.first_name, p.middle_name, p.last_name
     serviceTypeId: number,
     personId?: number,
     roleId?: number,
+    siteId?: number,
   ) => {
-    const innerWhereClause = roleId ? `and prl.id = ${roleId}` : '';
+    const innerWhereClause = `${roleId ? `and prl.id = ${roleId}` : ''}${
+      siteId
+        ? ` and per.id in (select person_id from cats.app_participant where participant_role_id = ${roleId} and application_id in (select id from cats.application where site_id = ${siteId}))`
+        : ''
+    }`;
     const personFilter = personId ? 'WHERE AllowedPersons.id = $1' : '';
 
     return `
@@ -158,7 +163,7 @@ GROUP BY per.id, per.first_name, per.middle_name, per.last_name)) AllowedPersons
 LEFT JOIN cats.app_participant a ON a.person_id = AllowedPersons.id AND (
 (CURRENT_DATE BETWEEN a.effective_start_date AND a.effective_end_date)
 OR (CURRENT_DATE >= a.effective_start_date AND a.effective_end_date IS NULL))
-LEFT JOIN cats.application app ON app.id = a.application_id 
+LEFT JOIN cats.application app ON app.id = a.application_id
 LEFT JOIN cats.application_service_type ast ON ast.id = app.application_service_type_id
 LEFT JOIN cats.participant_role pr ON pr.id = a.participant_role_id
 LEFT JOIN cats.service_assignment_factor af on af.service_type_id = ast.id and af.role_id = pr.id
@@ -261,6 +266,7 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
 
   async getStaffGroupedByRoleForServiceType(
     applicationServiceTypeId: number,
+    siteId?: number,
   ): Promise<
     Array<{
       roleId: number;
@@ -287,11 +293,26 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
 
       const result = await Promise.all(
         roles.map(async (role) => {
-          const staff = await this.getActiveStaffWithCapacityByServiceType(
-            applicationServiceTypeId,
-            undefined,
-            role.id,
-          );
+          const query =
+            this.getStaffWithCurrentFactorsQueryForApplicationServiceType(
+              applicationServiceTypeId,
+              undefined,
+              role.id,
+              siteId,
+            );
+
+          const persons = await this.personRepository.query(query, []);
+
+          const staff = persons.map((person: any) => ({
+            personId: person.id,
+            personFirstName: person.first_name,
+            personMiddleName: person.middle_name,
+            personLastName: person.last_name,
+            personFullName: `${person.first_name} ${person.middle_name ?? ''} ${
+              person.last_name
+            } - (${person.roles})`,
+            currentCapacity: person.current_factors,
+          }));
 
           return {
             roleId: role.id,

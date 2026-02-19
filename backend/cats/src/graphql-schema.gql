@@ -669,7 +669,7 @@ type Query {
   getStaffAssignedByAppId(applicationId: Int!): ViewStaffAssignedResponse!
   getAllActiveStaffMembers: ViewStaffWithCapacityResponse!
   getAllActiveStaffMembersForApplicationServiceType(applicationServiceTypeId: Int!): ViewStaffWithCapacityResponse!
-  getStaffGroupedByRoleForServiceType(applicationServiceTypeId: Int!): StaffGroupedByRoleResponse!
+  getStaffGroupedByRoleForServiceType(applicationServiceTypeId: Int!, siteId: Int): StaffGroupedByRoleResponse!
   getApplicationServiceTypes: DropdownResponse!
   getPermissions: PermissionsResponse!
   getTimesheetDaysForAssignedStaff(applicationId: Int!, startDate: String!, endDate: String!): PersonWithTimesheetDaysResponse!

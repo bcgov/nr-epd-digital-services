@@ -197,10 +197,13 @@ export class StaffAssignmentResolver {
   async getStaffGroupedByRoleForServiceType(
     @Args('applicationServiceTypeId', { type: () => Int })
     applicationServiceTypeId: number,
+    @Args('siteId', { type: () => Int, nullable: true })
+    siteId?: number,
   ) {
     try {
       const result = await this.service.getStaffGroupedByRoleForServiceType(
         applicationServiceTypeId,
+        siteId,
       );
 
       if (result?.length > 0) {

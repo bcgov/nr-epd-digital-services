@@ -330,10 +330,14 @@ export class ApplicationService {
         `Application details fetched successfully for ID: ${id}`,
       );
 
-      await this.dashboardService.createRecentViewedApplication(
-        application,
-        userInfo,
-      );
+      await this.dashboardService
+        .createRecentViewedApplication(application, userInfo)
+        .catch((err) => {
+          this.loggerService.error(
+            'Exception occurred in createRecentViewedApplication',
+            JSON.stringify(err),
+          );
+        });
       return {
         id: application.id,
         siteId: application.siteId,

@@ -52,6 +52,16 @@ const Assignment: React.FC<AssignmentProps> = () => {
   const { data: staffMemebersList, refetch: staffMemebersRefetch } =
     useGetAllActiveStaffMembersQuery();
 
+  const { data: applicationData, loading: applicationDataLoading } =
+    useGetApplicationDetailsByIdQuery({
+      variables: {
+        applicationId,
+      },
+      skip: !applicationId,
+    });
+
+  const application = applicationData?.getApplicationDetailsById.data;
+
   const {
     data: staffMemebersListForServiceType,
     refetch: staffMemebersRefetchForServiceType,
@@ -69,22 +79,13 @@ const Assignment: React.FC<AssignmentProps> = () => {
         applicationServiceTypeId: assignmentServiceType
           ? Number(assignmentServiceType)
           : 0,
+        siteId: application?.siteId || undefined,
       },
       skip: !assignmentServiceType,
     });
 
   const { data: serviceTypesList } = useGetApplicationServiceTypesQuery();
   const [updateStaffAssigned] = useUpdateStaffAssignedMutation();
-
-  const { data: applicationData, loading: applicationDataLoading } =
-    useGetApplicationDetailsByIdQuery({
-      variables: {
-        applicationId,
-      },
-      skip: !applicationId,
-    });
-
-  const application = applicationData?.getApplicationDetailsById.data;
 
   const {
     data: siteData,
@@ -153,6 +154,7 @@ const Assignment: React.FC<AssignmentProps> = () => {
       });
       staffGroupedByRoleRefetch({
         applicationServiceTypeId: Number(assignmentServiceType),
+        siteId: application?.siteId || undefined,
       });
     }
   }, [assignmentServiceType]);
@@ -339,7 +341,9 @@ const Assignment: React.FC<AssignmentProps> = () => {
 
                     return (
                       <div key={roleGroup.roleId} className="role-group">
-                        <h3 className="role-heading">{roleGroup.roleName}</h3>
+                        <h3 className="role-heading">
+                          Previously Assinged {roleGroup.roleName}
+                        </h3>
                         <div className="staff-pills-container">
                           {availableStaff.length > 0 ? (
                             availableStaff.map((staff) => (

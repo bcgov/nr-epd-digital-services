@@ -747,6 +747,7 @@ export type QueryGetStaffAssignedByAppIdArgs = {
 
 export type QueryGetStaffGroupedByRoleForServiceTypeArgs = {
   applicationServiceTypeId: Scalars['Int']['input'];
+  siteId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
