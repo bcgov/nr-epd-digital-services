@@ -97,7 +97,18 @@ jobs:
         package: ${{ fromJson(needs.vars.outputs.packages) }}
     timeout-minutes: 1
     steps:
+      - name: Check if target image tag exists
+        run: |
+          IMAGE="ghcr.io/${{ inputs.organization }}/${{ inputs.repository }}/${{ matrix.package }}:${{ inputs.target }}"
+          if docker manifest inspect "$IMAGE" >/dev/null 2>&1; then
+            echo "IMAGE_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "IMAGE_EXISTS=false" >> $GITHUB_ENV
+            echo "Skipping retag; not found: $IMAGE"
+          fi
+
       - uses: shrink/actions-docker-registry-tag@v4
+        if: env.IMAGE_EXISTS == 'true'
         with:
           registry: ghcr.io
           repository: ${{ inputs.organization }}/${{ inputs.repository }}/${{ matrix.package }}
@@ -118,16 +129,17 @@ jobs:
             echo "ERROR: Tagging success!"
             echo "RETRY=false" >> $GITHUB_ENV
           fi
+        if: env.IMAGE_EXISTS == 'true'
 
       - uses: shrink/actions-docker-registry-tag@v4
-        if: env.RETRY == 'true'
+        if: env.IMAGE_EXISTS == 'true' && env.RETRY == 'true'
         with:
           registry: ghcr.io
           repository: ${{ inputs.organization }}/${{ inputs.repository }}/${{ matrix.package }}
           target: ${{ inputs.target }}
           tags: ${{ inputs.tag_promote }}
 
-      - if: env.RETRY == 'true'
+      - if: env.IMAGE_EXISTS == 'true' && env.RETRY == 'true'
         run: |
           # Verify tagging after retry
           INSPECT="docker manifest inspect ghcr.io/${{ inputs.organization }}/${{ inputs.repository }}/${{ matrix.package }}"
@@ -137,6 +149,7 @@ jobs:
             echo "ERROR: Tagging failed!"
             exit 1
           fi
+
 
   # Clean up OpenShift when PR closed, no conditions
   cleanup:
