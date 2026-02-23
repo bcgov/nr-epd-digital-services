@@ -53,6 +53,8 @@ export class UserController {
     }
   })
   @ApiResponse({ status: 400, description: 'Bad request - Invalid input' })
+  @ApiResponse({ status: 401, description: 'Unauthorized - Invalid or missing JWT token' })
+  @ApiResponse({ status: 403, description: 'Forbidden - Requires user-admin role' })
   @ApiResponse({ status: 404, description: 'Group not found' })
   @ApiResponse({ status: 500, description: 'Internal server error' })
   async addUserToGroup(
@@ -106,6 +108,8 @@ export class UserController {
     }
   })
   @ApiResponse({ status: 400, description: 'Bad request - Invalid input' })
+  @ApiResponse({ status: 401, description: 'Unauthorized - Invalid or missing JWT token' })
+  @ApiResponse({ status: 403, description: 'Forbidden - Requires user-admin role' })
   @ApiResponse({ status: 404, description: 'Group not found' })
   @ApiResponse({ status: 500, description: 'Internal server error' })
   async addUserToGroupForMuncipalUsers(
@@ -159,6 +163,8 @@ export class UserController {
     }
   })
   @ApiResponse({ status: 400, description: 'Bad request - Invalid input' })
+  @ApiResponse({ status: 401, description: 'Unauthorized - Invalid or missing JWT token' })
+  @ApiResponse({ status: 403, description: 'Forbidden - Requires user-admin role' })
   @ApiResponse({ status: 404, description: 'Group not found' })
   @ApiResponse({ status: 500, description: 'Internal server error' })
   async addUserToGroupForSiteOwners(

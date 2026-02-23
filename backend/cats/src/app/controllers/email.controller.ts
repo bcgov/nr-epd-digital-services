@@ -68,11 +68,33 @@ export class EmailController {
         schema: {
             type: 'object',
             properties: {
-                message: { type: 'string', example: 'Email sent successfully with attachments' },
+                message: { 
+                    type: 'string', 
+                    example: 'Email sent successfully with attachments',
+                    description: 'Success message - varies based on whether attachments were included'
+                },
                 statusCode: { type: 'number', example: 200 },
                 success: { type: 'boolean', example: true }
             }
         }
+    })
+    @ApiResponse({
+        status: 400,
+        description: 'Bad request - Invalid input data or validation failed',
+        schema: {
+            type: 'object',
+            properties: {
+                message: { 
+                    type: 'string', 
+                    example: 'Validation failed'
+                },
+                statusCode: { type: 'number', example: 400 }
+            }
+        }
+    })
+    @ApiResponse({
+        status: 401,
+        description: 'Unauthorized - Invalid or missing JWT token'
     })
     @ApiResponse({
         status: 500,

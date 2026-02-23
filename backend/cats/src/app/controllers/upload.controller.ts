@@ -133,6 +133,10 @@ export class UploadController {
         }
     })
     @ApiResponse({
+        status: 401,
+        description: 'Unauthorized - Invalid or missing JWT token'
+    })
+    @ApiResponse({
         status: 409,
         description: 'Conflict - All files already exist',
     })
