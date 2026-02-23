@@ -110,6 +110,7 @@ export class EmailController {
     })
     async sendEmail(@UploadedFile() file: Express.Multer.File, @Body() invoiceEmail: InvoiceEmail) {
         try {
+            // Add comment for testing purpose only please do not merge this branch
             let attachments = null;
             this.loggerService.log('Email controller: sendEmail() start');
             this.loggerService.log('Email controller: sendEmail() generateInvoicePdf start');
