@@ -73,7 +73,7 @@
   margin: 0;
   padding-bottom: var(--layout-padding-small);
 
-  border-bottom: 1px solid var(--surface-color-border-light, #D8D8D8);
+  border-bottom: 1px solid var(--surface-color-border-light, #d8d8d8);
 }
 
 .staff-pills-container {
@@ -87,7 +87,7 @@
   align-items: center;
   padding: var(--layout-padding-small) var(--layout-padding-medium);
   background-color: white;
-  color: #255A90;
+  color: #255a90;
   border: none;
   border-radius: 20px;
   font-size: 14px;
@@ -95,7 +95,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
 
-  border: 1px solid var(--typography-color-link, #255A90);
+  border: 1px solid var(--typography-color-link, #255a90);
   display: flex;
   flex-direction: row;
   gap: 5px;
@@ -108,7 +108,6 @@
 
 .staff-pill-info {
   font-size: 12px;
-
 }
 
 .staff-capacity {
@@ -131,6 +130,6 @@
   flex-direction: column;
   border-radius: 8px;
   border-width: 1px;
-  border: 1px solid var(--typography-color-secondaryInvert, #ECEAE8);
-  background: #FFFFFF;
+  border: 1px solid var(--typography-color-secondaryInvert, #eceae8);
+  background: #ffffff;
 }

@@ -331,6 +331,8 @@ const Assignment: React.FC<AssignmentProps> = () => {
                           (record) =>
                             record.personId.toString() ===
                               staff.personId.toString() &&
+                            record.roleId.toString() ===
+                              roleGroup.roleId.toString() &&
                             record.action !== 'remove',
                         ),
                     )
@@ -347,7 +349,7 @@ const Assignment: React.FC<AssignmentProps> = () => {
                         {availableStaff.length > 0 ? (
                           availableStaff.map((staff) => (
                             <button
-                              key={staff.personId}
+                              key={`${staff.personId}-${staff.applicationId}`}
                               className="staff-pill"
                               onClick={() => {
                                 if (staff.hasPermission) {
