@@ -621,6 +621,17 @@ export type PersonWithTimesheetDaysResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type PreviousStaffInformation = {
+  __typename?: 'PreviousStaffInformation';
+  appType?: Maybe<Scalars['String']['output']>;
+  applicationId?: Maybe<Scalars['Float']['output']>;
+  currentCapacity?: Maybe<Scalars['Float']['output']>;
+  endDate?: Maybe<Scalars['DateTime']['output']>;
+  hasPermission: Scalars['Boolean']['output'];
+  personFullName: Scalars['String']['output'];
+  personId: Scalars['Float']['output'];
+};
+
 export type Query = {
   __typename?: 'Query';
   _service: _Service;
@@ -883,7 +894,7 @@ export type StaffGroupedByRoleDto = {
   roleAbbrev: Scalars['String']['output'];
   roleId: Scalars['Float']['output'];
   roleName: Scalars['String']['output'];
-  staff: Array<ViewStaffWithCapacityDto>;
+  staff: Array<PreviousStaffInformation>;
 };
 
 export type StaffGroupedByRoleResponse = {

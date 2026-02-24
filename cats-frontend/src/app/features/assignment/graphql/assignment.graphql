@@ -61,6 +61,10 @@ query getStaffGroupedByRoleForServiceType($applicationServiceTypeId: Int!, $site
         personId
         personFullName
         currentCapacity
+        appType
+        endDate
+        applicationId
+        hasPermission
       }
     }
   }

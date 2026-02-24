@@ -95,16 +95,21 @@
   cursor: pointer;
   transition: all 0.2s ease;
 
-  border: 1px solid var(--typography-color-link, #255A90)
+  border: 1px solid var(--typography-color-link, #255A90);
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
 }
 
 .staff-pill:hover {
-
-
+  transform: translateY(-2px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+.staff-pill-info {
+  font-size: 12px;
 
+}
 
 .staff-capacity {
   font-size: 12px;

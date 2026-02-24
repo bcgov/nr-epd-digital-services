@@ -14,6 +14,30 @@ export class ViewStaffWithCapacityDTO {
 }
 
 @ObjectType()
+export class PreviousStaffInformation {
+  @Field()
+  personId: number;
+
+  @Field()
+  personFullName: string;
+
+  @Field({ nullable: true })
+  currentCapacity: number | null;
+
+  @Field({ nullable: true })
+  appType: string;
+
+  @Field({ nullable: true })
+  endDate: Date;
+
+  @Field({ nullable: true })
+  applicationId: number;
+
+  @Field()
+  hasPermission: boolean;
+}
+
+@ObjectType()
 export class ViewStaffWithCapacityResponse extends ResponseDto {
   @Field(() => [ViewStaffWithCapacityDTO], { nullable: true })
   data: ViewStaffWithCapacityDTO[] | null;
@@ -30,8 +54,8 @@ export class StaffGroupedByRoleDTO {
   @Field()
   roleAbbrev: string;
 
-  @Field(() => [ViewStaffWithCapacityDTO])
-  staff: ViewStaffWithCapacityDTO[];
+  @Field(() => [PreviousStaffInformation])
+  staff: PreviousStaffInformation[];
 }
 
 @ObjectType()

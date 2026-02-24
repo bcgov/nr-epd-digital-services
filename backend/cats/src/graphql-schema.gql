@@ -522,6 +522,16 @@ type ViewStaffWithCapacityDTO {
   currentCapacity: Float
 }
 
+type PreviousStaffInformation {
+  personId: Float!
+  personFullName: String!
+  currentCapacity: Float
+  appType: String
+  endDate: DateTime
+  applicationId: Float
+  hasPermission: Boolean!
+}
+
 type ViewStaffWithCapacityResponse {
   message: String
   httpStatusCode: Int
@@ -534,7 +544,7 @@ type StaffGroupedByRoleDTO {
   roleId: Float!
   roleName: String!
   roleAbbrev: String!
-  staff: [ViewStaffWithCapacityDTO!]!
+  staff: [PreviousStaffInformation!]!
 }
 
 type StaffGroupedByRoleResponse {

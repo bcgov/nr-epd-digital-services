@@ -193,7 +193,6 @@ export class StaffAssignmentResolver {
   @Query(() => StaffGroupedByRoleResponse, {
     name: 'getStaffGroupedByRoleForServiceType',
   })
-  @UsePipes(new GenericValidationPipe())
   async getStaffGroupedByRoleForServiceType(
     @Args('applicationServiceTypeId', { type: () => Int })
     applicationServiceTypeId: number,

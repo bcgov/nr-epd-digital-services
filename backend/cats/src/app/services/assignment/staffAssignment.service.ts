@@ -16,7 +16,10 @@ import { Application } from '../../entities/application.entity';
 import { AppParticipant } from '../../entities/appParticipant.entity';
 import { AppParticipantService } from '../application/appParticipants.service';
 import { ApplicationServiceType } from '../../entities/applicationServiceType.entity';
-import { ViewStaffWithCapacityDTO } from '../../dto/assignment/viewStaffWithCapacity';
+import {
+  PreviousStaffInformation,
+  ViewStaffWithCapacityDTO,
+} from '../../dto/assignment/viewStaffWithCapacity';
 import { ChesEmailService } from '../email/chesEmail.service';
 import { Site } from 'src/app/entities/site.entity';
 import * as path from 'path';
@@ -121,11 +124,60 @@ LEFT JOIN cats.application_service_type ast ON ast.id = app.application_service_
 LEFT JOIN cats.participant_role pr ON pr.id = a.participant_role_id
 LEFT JOIN cats.service_assignment_factor af on af.service_type_id = ast.id and af.role_id = pr.id
 WHERE 
-p.login_user_name is not null and p.is_active = true
+(p.login_user_name is not null)
+or
+p.id in (select distinct(person_id) from cats.app_participant where participant_role_id in 
+(select id from cats.participant_role where lower(description) in ('mentor','caseworker','statutory decision maker') )
+)
+and p.is_active = true
 ${personId ? 'AND p.id = $1' : ''}
 GROUP BY 
 p.id, p.first_name, p.middle_name, p.last_name
 `;
+
+  getPreviousStaffForCurrentSite = (
+    serviceTypeId: number,
+    siteId: number,
+    roleId: number,
+  ) => {
+    return `
+ SELECT DISTINCT 
+    p.id AS personid,
+    p.first_name,
+    p.middle_name,
+    p.last_name,
+    at.description,
+	apt.effective_end_date,
+	app.id as appid,
+    CASE 
+        WHEN EXISTS (
+            SELECT 1
+            FROM cats.application_service_type ast
+            JOIN cats.permission_service_type pstm 
+                ON pstm.service_type_id = ast.id
+            JOIN cats.permissions ps 
+                ON ps.id = pstm.permission_id
+            JOIN cats.person_permissions pp 
+                ON pp.permission_id = ps.id
+            JOIN cats.participant_role prl 
+                ON prl.id = ps.role_id
+            WHERE ast.id = ${serviceTypeId}
+              AND pp.person_id = p.id
+              AND prl.id = ${roleId}
+        ) 
+        THEN 1
+        ELSE 0
+    END AS has_permission
+FROM CATS.application app
+INNER JOIN CATS.app_participant apt 
+    ON apt.application_id = app.id
+INNER JOIN CATS.person p 
+    ON p.id = apt.person_id
+INNER JOIN CATS.app_type at 
+    ON at.id = app.app_type_id
+WHERE app.site_id = ${siteId}
+  AND apt.participant_role_id =  ${roleId};`;
+  };
 
   getStaffWithCurrentFactorsQueryForApplicationServiceType = (
     serviceTypeId: number,
@@ -135,7 +187,7 @@ p.id, p.first_name, p.middle_name, p.last_name
   ) => {
     const innerWhereClause = `${roleId ? `and prl.id = ${roleId}` : ''}${
       siteId
-        ? ` and per.id in (select person_id from cats.app_participant where participant_role_id = ${roleId} and application_id in (select id from cats.application where site_id = ${siteId}))`
+        ? ` and per.id in (select person_id from cats.app_participant where    = ${roleId} and application_id in (select id from cats.application where site_id = ${siteId}))`
         : ''
     }`;
     const personFilter = personId ? 'WHERE AllowedPersons.id = $1' : '';
@@ -272,7 +324,7 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
       roleId: number;
       roleName: string;
       roleAbbrev: string;
-      staff: ViewStaffWithCapacityDTO[];
+      staff: PreviousStaffInformation[];
     }>
   > {
     try {
@@ -293,25 +345,33 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
 
       const result = await Promise.all(
         roles.map(async (role) => {
-          const query =
-            this.getStaffWithCurrentFactorsQueryForApplicationServiceType(
-              applicationServiceTypeId,
-              undefined,
-              role.id,
-              siteId,
-            );
+          const query = this.getPreviousStaffForCurrentSite(
+            applicationServiceTypeId,
+            siteId,
+            role.id,
+          );
+          // this.getStaffWithCurrentFactorsQueryForApplicationServiceType(
+          //   applicationServiceTypeId,
+          //   undefined,
+          //   role.id,
+          //   siteId,
+          // );
 
           const persons = await this.personRepository.query(query, []);
 
-          const staff = persons.map((person: any) => ({
-            personId: person.id,
-            personFirstName: person.first_name,
-            personMiddleName: person.middle_name,
-            personLastName: person.last_name,
-            personFullName: `${person.first_name} ${person.middle_name ?? ''} ${
-              person.last_name
-            } - (${person.roles})`,
-            currentCapacity: person.current_factors,
+          const staff = persons.map((record: any) => ({
+            personId: record.personid,
+            personFirstName: record.first_name,
+            personMiddleName: record.middle_name,
+            personLastName: record.last_name,
+            personFullName: `${record.first_name} ${record.middle_name ?? ''} ${
+              record.last_name
+            }`,
+            appType: record.description,
+            endDate: record.effective_end_date,
+            applicationId: record.appid,
+            currentCapacity: 0,
+            hasPermission: record.has_permission === 0 ? false : true,
           }));
 
           return {

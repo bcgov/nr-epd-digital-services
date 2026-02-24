@@ -26,6 +26,7 @@ import {
 } from '../applications/application/applicationTabs/appDetails/Details.generated';
 import ModalDialog from '../../components/modaldialog/ModalDialog';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Plus, PlusCircle } from '@cats/components/common/icon';
 
 interface AssignmentProps {}
 
@@ -81,7 +82,7 @@ const Assignment: React.FC<AssignmentProps> = () => {
           : 0,
         siteId: application?.siteId || undefined,
       },
-      skip: !assignmentServiceType,
+      skip: !application?.siteId,
     });
 
   const { data: serviceTypesList } = useGetApplicationServiceTypesQuery();
@@ -148,7 +149,7 @@ const Assignment: React.FC<AssignmentProps> = () => {
   });
 
   useEffect(() => {
-    if (assignmentServiceType) {
+    if (assignmentServiceType && application?.siteId) {
       staffMemebersRefetchForServiceType({
         applicationServiceTypeId: Number(assignmentServiceType),
       });
@@ -157,7 +158,7 @@ const Assignment: React.FC<AssignmentProps> = () => {
         siteId: application?.siteId || undefined,
       });
     }
-  }, [assignmentServiceType]);
+  }, [assignmentServiceType, application?.siteId]);
 
   useEffect(() => {
     setStaffRecords(staffData?.getStaffAssignedByAppId?.data?.staffList || []);
@@ -319,38 +320,37 @@ const Assignment: React.FC<AssignmentProps> = () => {
           />
         </div>
         <div>
-          {assignmentServiceType &&
-            staffGroupedByRole?.getStaffGroupedByRoleForServiceType?.data && (
-              <div className="staff-by-role-section">
-                {staffGroupedByRole.getStaffGroupedByRoleForServiceType.data.map(
-                  (roleGroup) => {
-                    const availableStaff = roleGroup.staff
-                      .filter(
-                        (staff) =>
-                          !staffRecords.some(
-                            (record) =>
-                              record.personId.toString() ===
-                                staff.personId.toString() &&
-                              record.action !== 'remove',
-                          ),
-                      )
-                      .sort(
-                        (a, b) =>
-                          (a.currentCapacity || 0) - (b.currentCapacity || 0),
-                      );
-
-                    return (
-                      <div key={roleGroup.roleId} className="role-group">
-                        <h3 className="role-heading">
-                          Previously Assinged {roleGroup.roleName}
-                        </h3>
-                        <div className="staff-pills-container">
-                          {availableStaff.length > 0 ? (
-                            availableStaff.map((staff) => (
-                              <button
-                                key={staff.personId}
-                                className="staff-pill"
-                                onClick={() => {
+          {staffGroupedByRole?.getStaffGroupedByRoleForServiceType?.data && (
+            <div className="staff-by-role-section">
+              {staffGroupedByRole.getStaffGroupedByRoleForServiceType.data.map(
+                (roleGroup) => {
+                  const availableStaff = roleGroup.staff
+                    .filter(
+                      (staff) =>
+                        !staffRecords.some(
+                          (record) =>
+                            record.personId.toString() ===
+                              staff.personId.toString() &&
+                            record.action !== 'remove',
+                        ),
+                    )
+                    .sort(
+                      (a, b) =>
+                        (a.currentCapacity || 0) - (b.currentCapacity || 0),
+                    );
+                  return (
+                    <div key={roleGroup.roleId} className="role-group">
+                      <h3 className="role-heading">
+                        Previously Assinged {roleGroup.roleName}
+                      </h3>
+                      <div className="staff-pills-container">
+                        {availableStaff.length > 0 ? (
+                          availableStaff.map((staff) => (
+                            <button
+                              key={staff.personId}
+                              className="staff-pill"
+                              onClick={() => {
+                                if (staff.hasPermission) {
                                   const newRecord = {
                                     id: 'new_' + new Date().getTime(),
                                     personId: staff.personId.toString(),
@@ -360,32 +360,45 @@ const Assignment: React.FC<AssignmentProps> = () => {
                                     applicationId: id && parseInt(id),
                                   };
                                   setStaffRecords([...staffRecords, newRecord]);
-                                }}
-                              >
-                                {cleanStaffName(staff.personFullName) + ' - '}
-                                &nbsp;
-                                <span>
+                                } else {
+                                  setMessageContent(
+                                    'No permission for the selected service type',
+                                  );
+                                  setIsMessageModalOpen(true);
+                                }
+                              }}
+                              title={`App Type: ${staff.appType || 'N/A'} | End Date: ${staff.endDate ? new Date(staff.endDate).toLocaleDateString() : 'N/A'} | App ID: ${staff.applicationId || 'N/A'}`}
+                            >
+                              {cleanStaffName(staff.personFullName)}
+                              {staff.appType && (
+                                <span className="staff-pill-info">
                                   {' '}
-                                  {(
-                                    ((staff.currentCapacity || 0) / 160) *
-                                    100
-                                  ).toFixed(2)}
-                                  %
+                                  - {staff.appType}
                                 </span>
-                              </button>
-                            ))
-                          ) : (
-                            <span className="no-staff-message">
-                              No eligible staff available for this role
-                            </span>
-                          )}
-                        </div>
+                              )}
+                              {staff.endDate && (
+                                <span className="staff-pill-info">
+                                  {' '}
+                                  (Ended:{' '}
+                                  {new Date(staff.endDate).toLocaleDateString()}
+                                  )
+                                </span>
+                              )}
+                              <PlusCircle className="fa-regular fa-circle-plus"></PlusCircle>
+                            </button>
+                          ))
+                        ) : (
+                          <span className="no-staff-message">
+                            No eligible staff available for this role
+                          </span>
+                        )}
                       </div>
-                    );
-                  },
-                )}
-              </div>
-            )}
+                    </div>
+                  );
+                },
+              )}
+            </div>
+          )}
           <StaffTable
             handleTableChange={(event: any) => {
               if (event.property === 'remove') {
