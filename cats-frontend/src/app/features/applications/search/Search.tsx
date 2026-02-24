@@ -424,7 +424,6 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
   const handleChangeEventHandler = (eventRecord: any) => {
     if (eventRecord.property === 'assignStaff') {
       setAssignmentAppId(eventRecord.row.id);
-      //setAssignStaffModalOpen(true);
       navigate(`/assignment/${eventRecord.row.id}`);
     }
   };
@@ -587,28 +586,6 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
           />
         )}
       </Widget>
-
-      {/* {assignStaffModalOpen && (
-        <ModalDialog
-          headerLabel="Assign Application to Staff"
-          closeHandler={() => {
-            setAssignStaffModalOpen(false);
-          }}
-          noFooterOptions={true}
-        >
-          <Assignment
-            id={assignmentAppId}
-            modalCloseHandler={() => {
-              setAssignStaffModalOpen(false);
-              searchRefresh();
-            }}
-            modalSaveHandler={() => {
-              setAssignStaffModalOpen(false);
-              searchRefresh();
-            }}
-          />
-        </ModalDialog>
-      )} */}
     </PageContainer>
   );
 };

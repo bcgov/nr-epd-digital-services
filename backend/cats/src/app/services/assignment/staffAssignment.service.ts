@@ -350,12 +350,6 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
             siteId,
             role.id,
           );
-          // this.getStaffWithCurrentFactorsQueryForApplicationServiceType(
-          //   applicationServiceTypeId,
-          //   undefined,
-          //   role.id,
-          //   siteId,
-          // );
 
           const persons = await this.personRepository.query(query, []);
 
