@@ -685,7 +685,7 @@ type Query {
   getTimesheetDaysForAssignedStaff(applicationId: Int!, startDate: String!, endDate: String!): PersonWithTimesheetDaysResponse!
   getRecentViewedApplications: DashboardResponse!
   getApplications: DashboardResponse!
-  getObject(objectId: String!, downloadType: DownloadType! = URL): ComsResponse!
+  getObject(objectId: String!, downloadType: DownloadType): ComsResponse!
   getUserColumnPreferences(page: String!): ColumnPreferencesResponse!
 }
 
