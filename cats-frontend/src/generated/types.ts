@@ -726,7 +726,7 @@ export type QueryGetInvoicesArgs = {
 
 
 export type QueryGetObjectArgs = {
-  downloadType?: DownloadType;
+  downloadType?: InputMaybe<DownloadType>;
   objectId: Scalars['String']['input'];
 };
 

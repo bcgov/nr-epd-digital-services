@@ -17,24 +17,11 @@ const UserAccount = (props: any) => {
     auth.signinRedirect({ extraQueryParams: { kc_idp_hint: 'idir' } });
   }
 
-  const userObj = {
-    firstname: auth.user?.profile.given_name,
-    lastName: auth.user?.profile.family_name,
-  };
-
-  const [user, setUser] = useState(userObj);
   const [dropdownArrow, setDropdownArrow] = useState(false);
   const toggleButton = (event: any) => {
     event.stopPropagation();
     setDropdownArrow(!dropdownArrow);
   };
-
-  useEffect(() => {
-    setUser({
-      firstname: auth.user?.profile.given_name,
-      lastName: auth.user?.profile.family_name,
-    });
-  }, []);
 
   const signOut = () => {
     auth.removeUser();
@@ -43,6 +30,10 @@ const UserAccount = (props: any) => {
     });
     auth.clearStaleState();
   };
+
+  // Access user data directly from auth.user
+  const firstName = auth.user?.profile?.given_name;
+  const lastName = auth.user?.profile?.family_name;
 
   if (props.mobileView) {
     return (
@@ -64,10 +55,10 @@ const UserAccount = (props: any) => {
               onClick={toggleButton}
             >
               {/* Profile image */}
-              <Avatar firstName={user.firstname} lastName={user.lastName} />
+              <Avatar firstName={firstName} lastName={lastName} />
               {/* User name */}
               <div id="user-name" className="p-3">
-                {user.firstname}
+                {firstName}
               </div>
               <div
                 id="account-dropdown"
@@ -85,15 +76,6 @@ const UserAccount = (props: any) => {
               aria-labelledby="account-dropdown"
               className="p-0"
             >
-              {/* Account settings */}
-              <div
-                role="menuitem"
-                aria-label="Account Settings"
-                tabIndex={0} // Make focusable with keyboard
-                className="account-custom-item-mobile"
-              >
-                Account Settings
-              </div>
               {/* Logout */}
               <div
                 role="menuitem"
@@ -130,7 +112,7 @@ const UserAccount = (props: any) => {
                 className="d-flex align-items-center "
                 onClick={() => setDropdownArrow(!dropdownArrow)}
               >
-                <Avatar firstName={user.firstname} lastName={user.lastName} />
+                <Avatar firstName={firstName} lastName={lastName} />
                 <div
                   id="account-dropdown"
                   className="ps-2"
@@ -157,21 +139,12 @@ const UserAccount = (props: any) => {
               <div className="account-custom-label">Logged in as:</div>
               <div className="d-flex align-items-center account-username py-3 ">
                 {/* Profile image */}
-                <Avatar firstName={user.firstname} lastName={user.lastName} />
+                <Avatar firstName={firstName} lastName={lastName} />
                 {/* User name */}
-                <span className="px-2">{user.firstname}</span>
+                <span className="px-2">{firstName}</span>
               </div>
             </Dropdown.Item>
             <div className="pt-3">
-              {/* Account settings */}
-              <Dropdown.Item
-                role="menuitem"
-                className="account-custom-item"
-                aria-label="Account Settings"
-              >
-                Account Settings
-              </Dropdown.Item>
-
               {/* Logout */}
               <Dropdown.Item
                 role="menuitem"
