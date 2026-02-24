@@ -432,37 +432,44 @@ describe('StaffAssignmentService', () => {
     (personRepository.query as jest.Mock)
       .mockResolvedValueOnce([
         {
-          id: 1,
+          personid: 1,
           first_name: 'John',
           last_name: 'Doe',
           middle_name: '',
-          roles: 'Caseworker',
-          current_factors: 5,
+          description: 'Test App Type',
+          effective_end_date: '2024-01-01',
+          appid: 100,
+          has_permission: 1,
         },
       ])
       .mockResolvedValueOnce([
         {
-          id: 2,
+          personid: 2,
           first_name: 'Jane',
           last_name: 'Smith',
           middle_name: '',
-          roles: 'Statutory Decision Maker',
-          current_factors: 3,
+          description: 'Another App Type',
+          effective_end_date: '2024-02-01',
+          appid: 101,
+          has_permission: 1,
         },
       ])
       .mockResolvedValueOnce([
         {
-          id: 3,
+          personid: 3,
           first_name: 'Bob',
           last_name: 'Johnson',
           middle_name: '',
-          roles: 'Mentor',
-          current_factors: 2,
+          description: 'Third App Type',
+          effective_end_date: '2024-03-01',
+          appid: 102,
+          has_permission: 1,
         },
       ]);
 
     const result = await service.getStaffGroupedByRoleForServiceType(
       applicationServiceTypeId,
+      104,
     );
 
     expect(result).toHaveLength(3);
@@ -476,8 +483,12 @@ describe('StaffAssignmentService', () => {
           personFirstName: 'John',
           personMiddleName: '',
           personLastName: 'Doe',
-          personFullName: 'John  Doe - (Caseworker)',
-          currentCapacity: 5,
+          personFullName: 'John  Doe',
+          currentCapacity: 0,
+          appType: 'Test App Type',
+          endDate: '2024-01-01',
+          applicationId: 100,
+          hasPermission: true,
         },
       ],
     });
@@ -491,8 +502,12 @@ describe('StaffAssignmentService', () => {
           personFirstName: 'Jane',
           personMiddleName: '',
           personLastName: 'Smith',
-          personFullName: 'Jane  Smith - (Statutory Decision Maker)',
-          currentCapacity: 3,
+          personFullName: 'Jane  Smith',
+          currentCapacity: 0,
+          appType: 'Another App Type',
+          endDate: '2024-02-01',
+          applicationId: 101,
+          hasPermission: true,
         },
       ],
     });
@@ -506,8 +521,12 @@ describe('StaffAssignmentService', () => {
           personFirstName: 'Bob',
           personMiddleName: '',
           personLastName: 'Johnson',
-          personFullName: 'Bob  Johnson - (Mentor)',
-          currentCapacity: 2,
+          personFullName: 'Bob  Johnson',
+          currentCapacity: 0,
+          appType: 'Third App Type',
+          endDate: '2024-03-01',
+          applicationId: 102,
+          hasPermission: true,
         },
       ],
     });
