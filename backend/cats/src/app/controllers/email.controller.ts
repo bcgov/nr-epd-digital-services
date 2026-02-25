@@ -6,6 +6,10 @@ import { InvoiceEmail } from '../dto/invoice/invoiceEmail/invoiceEmail.dto';
 import { InvoiceService } from '../services/invoice/invoice.service';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
 
+/**
+ * Controller for handling email-related operations.
+ * This controller manages sending emails, including invoice emails with PDF attachments.
+ */
 @ApiTags('cats')
 @ApiBearerAuth('JWT-auth')
 @Controller('cats')
