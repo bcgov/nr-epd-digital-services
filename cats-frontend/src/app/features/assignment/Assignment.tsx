@@ -83,7 +83,7 @@ const Assignment: React.FC<AssignmentProps> = () => {
     applicationServiceTypeId: assignmentServiceType
       ? Number(assignmentServiceType)
       : 0,
-    siteId: application?.siteId || undefined,
+    siteId: application?.siteId ?? undefined,
   });
 
   const { data: staffGroupedByRole, refetch: staffGroupedByRoleRefetch } =
@@ -92,9 +92,9 @@ const Assignment: React.FC<AssignmentProps> = () => {
         applicationServiceTypeId: assignmentServiceType
           ? Number(assignmentServiceType)
           : 0,
-        siteId: application?.siteId || undefined,
+        siteId: application?.siteId ?? undefined,
       },
-      skip: !application?.siteId,
+      skip: !application?.siteId && application?.siteId !== 0,
     });
 
   const { data: serviceTypesList } = useGetApplicationServiceTypesQuery();
