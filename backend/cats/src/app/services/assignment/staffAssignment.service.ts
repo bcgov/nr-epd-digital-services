@@ -332,13 +332,34 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
         'at service layer getStaffGroupedByRoleForServiceType start',
       );
 
+      if (!siteId) {
+        this.loggerService.warn(
+          'siteId is required for getStaffGroupedByRoleForServiceType',
+        );
+        const roles = await this.participantRoleRepository.find({
+          where: {
+            abbrev: In([
+              StaffRoles.CASE_WORKER,
+              StaffRoles.SDM,
+              StaffRoles.MENTOR,
+            ]),
+          },
+        });
+
+        return roles.map((role) => ({
+          roleId: role.id,
+          roleName: role.description,
+          roleAbbrev: role.abbrev,
+          staff: [],
+        }));
+      }
+
       const roles = await this.participantRoleRepository.find({
         where: {
           abbrev: In([
             StaffRoles.CASE_WORKER,
             StaffRoles.SDM,
             StaffRoles.MENTOR,
-            'MENTOR',
           ]),
         },
       });

@@ -63,6 +63,11 @@ const Assignment: React.FC<AssignmentProps> = () => {
 
   const application = applicationData?.getApplicationDetailsById.data;
 
+  console.log('Application data loaded:', {
+    application,
+    siteId: application?.siteId,
+  });
+
   const {
     data: staffMemebersListForServiceType,
     refetch: staffMemebersRefetchForServiceType,
@@ -72,6 +77,13 @@ const Assignment: React.FC<AssignmentProps> = () => {
         ? Number(assignmentServiceType)
         : 0,
     },
+  });
+
+  console.log('Before useGetStaffGroupedByRoleForServiceTypeQuery:', {
+    applicationServiceTypeId: assignmentServiceType
+      ? Number(assignmentServiceType)
+      : 0,
+    siteId: application?.siteId || undefined,
   });
 
   const { data: staffGroupedByRole, refetch: staffGroupedByRoleRefetch } =
