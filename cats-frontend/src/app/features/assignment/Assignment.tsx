@@ -13,6 +13,7 @@ import {
   useGetApplicationServiceTypesQuery,
   useGetStaffAssignedByAppIdQuery,
   useUpdateStaffAssignedMutation,
+  useGetStaffGroupedByRoleForServiceTypeQuery,
 } from './graphql/assignment.generated';
 import {
   CancelButton,
@@ -24,28 +25,48 @@ import {
   useGetSiteDetailsBySiteIdQuery,
 } from '../applications/application/applicationTabs/appDetails/Details.generated';
 import ModalDialog from '../../components/modaldialog/ModalDialog';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Plus, PlusCircle } from '@cats/components/common/icon';
 
-interface AssignmentProps {
-  id?: string;
-  modalCloseHandler: () => void;
-  modalSaveHandler: () => void;
-}
+interface AssignmentProps {}
 
-const Assignment: React.FC<AssignmentProps> = ({
-  id,
-  modalCloseHandler,
-  modalSaveHandler,
-}) => {
+const Assignment: React.FC<AssignmentProps> = () => {
+  const { id } = useParams(); // or useSearchParams()
+  const navigate = useNavigate();
+
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [messageContent, setMessageContent] = useState('');
   const [assignmentServiceType, setAssignmentServiceType] =
     useState<string>('');
   const [staffRecords, setStaffRecords] = useState<any[]>([]);
 
+  const cleanStaffName = (fullName: string): string => {
+    return fullName
+      .replace(/\s*-\s*\(Caseworker\)\s*$/i, '')
+      .replace(/\s*-\s*\(Statutory Decision Maker\)\s*$/i, '')
+      .replace(/\s*-\s*\(Mentor\)\s*$/i, '')
+      .trim();
+  };
+
   const applicationId = id ? Number(id) : 0;
   const { data: rolesData } = useGetParticipantRolesQuery();
   const { data: staffMemebersList, refetch: staffMemebersRefetch } =
     useGetAllActiveStaffMembersQuery();
+
+  const { data: applicationData, loading: applicationDataLoading } =
+    useGetApplicationDetailsByIdQuery({
+      variables: {
+        applicationId,
+      },
+      skip: !applicationId,
+    });
+
+  const application = applicationData?.getApplicationDetailsById.data;
+
+  console.log('Application data loaded:', {
+    application,
+    siteId: application?.siteId,
+  });
 
   const {
     data: staffMemebersListForServiceType,
@@ -58,18 +79,26 @@ const Assignment: React.FC<AssignmentProps> = ({
     },
   });
 
-  const { data: serviceTypesList } = useGetApplicationServiceTypesQuery();
-  const [updateStaffAssigned] = useUpdateStaffAssignedMutation();
+  console.log('Before useGetStaffGroupedByRoleForServiceTypeQuery:', {
+    applicationServiceTypeId: assignmentServiceType
+      ? Number(assignmentServiceType)
+      : 0,
+    siteId: application?.siteId ?? undefined,
+  });
 
-  const { data: applicationData, loading: applicationDataLoading } =
-    useGetApplicationDetailsByIdQuery({
+  const { data: staffGroupedByRole, refetch: staffGroupedByRoleRefetch } =
+    useGetStaffGroupedByRoleForServiceTypeQuery({
       variables: {
-        applicationId,
+        applicationServiceTypeId: assignmentServiceType
+          ? Number(assignmentServiceType)
+          : 0,
+        siteId: application?.siteId ?? undefined,
       },
-      skip: !applicationId,
+      skip: !application?.siteId && application?.siteId !== 0,
     });
 
-  const application = applicationData?.getApplicationDetailsById.data;
+  const { data: serviceTypesList } = useGetApplicationServiceTypesQuery();
+  const [updateStaffAssigned] = useUpdateStaffAssignedMutation();
 
   const {
     data: siteData,
@@ -132,12 +161,16 @@ const Assignment: React.FC<AssignmentProps> = ({
   });
 
   useEffect(() => {
-    if (assignmentServiceType) {
+    if (assignmentServiceType && application?.siteId) {
       staffMemebersRefetchForServiceType({
         applicationServiceTypeId: Number(assignmentServiceType),
       });
+      staffGroupedByRoleRefetch({
+        applicationServiceTypeId: Number(assignmentServiceType),
+        siteId: application?.siteId || undefined,
+      });
     }
-  }, [assignmentServiceType]);
+  }, [assignmentServiceType, application?.siteId]);
 
   useEffect(() => {
     setStaffRecords(staffData?.getStaffAssignedByAppId?.data?.staffList || []);
@@ -214,7 +247,7 @@ const Assignment: React.FC<AssignmentProps> = ({
         applicationServiceTypeId: parseInt(assignmentServiceType),
       },
       onCompleted: () => {
-        modalSaveHandler();
+        navigate(-1);
       },
       onError: (err) => {
         console.error('Error adding participant:', err);
@@ -228,51 +261,57 @@ const Assignment: React.FC<AssignmentProps> = ({
   }, []);
 
   return (
-    <div role="assign staff" className="assign-section">
-      <Details
-        applicationIdParam={applicationId}
-        showSiteDetails={false}
-        defaultOpen={false}
-      />
-      <CollapsiblePanel
-        showBorder={false}
-        showPadding={false}
-        smallFont={true}
-        defaultOpen={false}
-        label="Site Information"
-        defaultCloseBtnPosition="left"
-        content={
-          <div className="site-info-content">
-            <div className="site-info-content-div">
-              <div className="site-info-label">Site ID</div>
-              <div>{siteData?.getSiteDetailsBySiteId?.data?.id}</div>
-            </div>
-            <div className="site-info-content-div">
-              <div className="site-info-label">Site Risk Classification</div>
-              <div>{siteData?.getSiteDetailsBySiteId?.data?.siteRiskCode}</div>
-            </div>
-            <div className="site-info-content-div">
-              <div className="site-info-label">Site Address</div>
-              <div>
-                {siteData?.getSiteDetailsBySiteId?.data?.addrLine_1 ||
-                  '' +
-                    ' ' +
-                    siteData?.getSiteDetailsBySiteId?.data?.addrLine_2 ||
-                  '' +
-                    ' ' +
-                    siteData?.getSiteDetailsBySiteId?.data?.addrLine_3 ||
-                  '' +
-                    ' ' +
-                    siteData?.getSiteDetailsBySiteId?.data?.addrLine_4 ||
-                  ''}
+    <div role="assign staff" className="assign-section page-continer">
+      <div className="parent-box">
+        <Details
+          applicationIdParam={applicationId}
+          showSiteDetails={false}
+          defaultOpen={false}
+        />
+      </div>
+      <div className="parent-box">
+        <CollapsiblePanel
+          showBorder={false}
+          showPadding={false}
+          smallFont={true}
+          defaultOpen={false}
+          label="Site Information"
+          defaultCloseBtnPosition="left"
+          content={
+            <div className="site-info-content">
+              <div className="site-info-content-div">
+                <div className="site-info-label">Site ID</div>
+                <div>{siteData?.getSiteDetailsBySiteId?.data?.id}</div>
+              </div>
+              <div className="site-info-content-div">
+                <div className="site-info-label">Site Risk Classification</div>
+                <div>
+                  {siteData?.getSiteDetailsBySiteId?.data?.siteRiskCode}
+                </div>
+              </div>
+              <div className="site-info-content-div">
+                <div className="site-info-label">Site Address</div>
+                <div>
+                  {siteData?.getSiteDetailsBySiteId?.data?.addrLine_1 ||
+                    '' +
+                      ' ' +
+                      siteData?.getSiteDetailsBySiteId?.data?.addrLine_2 ||
+                    '' +
+                      ' ' +
+                      siteData?.getSiteDetailsBySiteId?.data?.addrLine_3 ||
+                    '' +
+                      ' ' +
+                      siteData?.getSiteDetailsBySiteId?.data?.addrLine_4 ||
+                    ''}
+                </div>
               </div>
             </div>
-          </div>
-        }
-      />
-      <div>
+          }
+        />
+      </div>
+      <div className="parent-box">
         <div className="assignment-options">
-          <span className="panelLabel">Assignment Options </span>
+          <span className="panelLabel">Manage Staff</span>
           <DropdownInput
             label={'Application Service Type'}
             customLabelCss={''}
@@ -293,6 +332,87 @@ const Assignment: React.FC<AssignmentProps> = ({
           />
         </div>
         <div>
+          {staffGroupedByRole?.getStaffGroupedByRoleForServiceType?.data && (
+            <div className="staff-by-role-section">
+              {staffGroupedByRole.getStaffGroupedByRoleForServiceType.data.map(
+                (roleGroup) => {
+                  const availableStaff = roleGroup.staff
+                    .filter(
+                      (staff) =>
+                        !staffRecords.some(
+                          (record) =>
+                            record.personId.toString() ===
+                              staff.personId.toString() &&
+                            record.roleId.toString() ===
+                              roleGroup.roleId.toString() &&
+                            record.action !== 'remove',
+                        ),
+                    )
+                    .sort(
+                      (a, b) =>
+                        (a.currentCapacity || 0) - (b.currentCapacity || 0),
+                    );
+                  return (
+                    <div key={roleGroup.roleId} className="role-group">
+                      <h3 className="role-heading">
+                        Previously Assinged {roleGroup.roleName}
+                      </h3>
+                      <div className="staff-pills-container">
+                        {availableStaff.length > 0 ? (
+                          availableStaff.map((staff) => (
+                            <button
+                              key={`${staff.personId}-${staff.applicationId}`}
+                              className="staff-pill"
+                              onClick={() => {
+                                if (staff.hasPermission) {
+                                  const newRecord = {
+                                    id: 'new_' + new Date().getTime(),
+                                    personId: staff.personId.toString(),
+                                    roleId: roleGroup.roleId.toString(),
+                                    startDate: null,
+                                    endDate: null,
+                                    applicationId: id && parseInt(id),
+                                  };
+                                  setStaffRecords([...staffRecords, newRecord]);
+                                } else {
+                                  setMessageContent(
+                                    'No permission for the selected service type',
+                                  );
+                                  setIsMessageModalOpen(true);
+                                }
+                              }}
+                              title={`App Type: ${staff.appType || 'N/A'} | End Date: ${staff.endDate ? new Date(staff.endDate).toLocaleDateString() : 'N/A'} | App ID: ${staff.applicationId || 'N/A'}`}
+                            >
+                              {cleanStaffName(staff.personFullName)}
+                              {staff.appType && (
+                                <span className="staff-pill-info">
+                                  {' '}
+                                  - {staff.appType}
+                                </span>
+                              )}
+                              {staff.endDate && (
+                                <span className="staff-pill-info">
+                                  {' '}
+                                  (Ended:{' '}
+                                  {new Date(staff.endDate).toLocaleDateString()}
+                                  )
+                                </span>
+                              )}
+                              <PlusCircle className="fa-regular fa-circle-plus"></PlusCircle>
+                            </button>
+                          ))
+                        ) : (
+                          <span className="no-staff-message">
+                            No eligible staff available for this role
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  );
+                },
+              )}
+            </div>
+          )}
           <StaffTable
             handleTableChange={(event: any) => {
               if (event.property === 'remove') {
@@ -366,22 +486,26 @@ const Assignment: React.FC<AssignmentProps> = ({
             handleRemoveParticipant={() => {}}
             handleItemClick={() => {}}
           />
-          <div className={`custom-modal-actions-footer`}>
-            <CancelButton
-              variant={'tertiary'}
-              clickHandler={modalCloseHandler}
-              label={'Cancel'}
-              isDisabled={false}
-            />
-            <SaveButton
-              clickHandler={handleSave}
-              label={'Confirm'}
-              variant={'primary'}
-              isDisabled={false}
-              showTickIcon={true}
-            />
-          </div>
         </div>
+      </div>
+      <div className={`custom-modal-actions-footer`}>
+        <CancelButton
+          variant={'tertiary'}
+          clickHandler={() => {
+            navigate(-1);
+          }}
+          label={'Cancel'}
+          isDisabled={false}
+        />
+        <SaveButton
+          clickHandler={() => {
+            handleSave();
+          }}
+          label={'Confirm'}
+          variant={'primary'}
+          isDisabled={false}
+          showTickIcon={true}
+        />
       </div>
       {isMessageModalOpen && (
         <ModalDialog

@@ -226,7 +226,10 @@ export const formRows: IFormField[][] = [
 export const updateStaffOptions = (
   staffOptions: Array<{ key: string; value: string }>,
 ) => {
-  formRowsMap['staffAssigned'].options = staffOptions;
+  const sortedStaffOptions = [...staffOptions].sort((a, b) =>
+    a.value.localeCompare(b.value),
+  );
+  formRowsMap['staffAssigned'].options = sortedStaffOptions;
 };
 
 // Function to update status options dynamically
