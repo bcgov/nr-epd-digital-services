@@ -33,10 +33,11 @@ export type GetAllActiveStaffMembersForApplicationServiceTypeQuery = { __typenam
 
 export type GetStaffGroupedByRoleForServiceTypeQueryVariables = Types.Exact<{
   applicationServiceTypeId: Types.Scalars['Int']['input'];
+  siteId?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
-export type GetStaffGroupedByRoleForServiceTypeQuery = { __typename?: 'Query', getStaffGroupedByRoleForServiceType: { __typename?: 'StaffGroupedByRoleResponse', data?: Array<{ __typename?: 'StaffGroupedByRoleDTO', roleId: number, roleName: string, roleAbbrev: string, staff: Array<{ __typename?: 'ViewStaffWithCapacityDTO', personId: number, personFullName: string, currentCapacity?: number | null }> }> | null } };
+export type GetStaffGroupedByRoleForServiceTypeQuery = { __typename?: 'Query', getStaffGroupedByRoleForServiceType: { __typename?: 'StaffGroupedByRoleResponse', data?: Array<{ __typename?: 'StaffGroupedByRoleDTO', roleId: number, roleName: string, roleAbbrev: string, staff: Array<{ __typename?: 'PreviousStaffInformation', personId: number, personFullName: string, currentCapacity?: number | null, appType?: string | null, endDate?: any | null, applicationId?: number | null, hasPermission: boolean }> }> | null } };
 
 export type GetApplicationServiceTypesQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
@@ -226,9 +227,10 @@ export type GetAllActiveStaffMembersForApplicationServiceTypeLazyQueryHookResult
 export type GetAllActiveStaffMembersForApplicationServiceTypeSuspenseQueryHookResult = ReturnType<typeof useGetAllActiveStaffMembersForApplicationServiceTypeSuspenseQuery>;
 export type GetAllActiveStaffMembersForApplicationServiceTypeQueryResult = Apollo.QueryResult<GetAllActiveStaffMembersForApplicationServiceTypeQuery, GetAllActiveStaffMembersForApplicationServiceTypeQueryVariables>;
 export const GetStaffGroupedByRoleForServiceTypeDocument = gql`
-    query getStaffGroupedByRoleForServiceType($applicationServiceTypeId: Int!) {
+    query getStaffGroupedByRoleForServiceType($applicationServiceTypeId: Int!, $siteId: Int) {
   getStaffGroupedByRoleForServiceType(
     applicationServiceTypeId: $applicationServiceTypeId
+    siteId: $siteId
   ) {
     data {
       roleId
@@ -238,6 +240,10 @@ export const GetStaffGroupedByRoleForServiceTypeDocument = gql`
         personId
         personFullName
         currentCapacity
+        appType
+        endDate
+        applicationId
+        hasPermission
       }
     }
   }
@@ -257,6 +263,7 @@ export const GetStaffGroupedByRoleForServiceTypeDocument = gql`
  * const { data, loading, error } = useGetStaffGroupedByRoleForServiceTypeQuery({
  *   variables: {
  *      applicationServiceTypeId: // value for 'applicationServiceTypeId'
+ *      siteId: // value for 'siteId'
  *   },
  * });
  */
