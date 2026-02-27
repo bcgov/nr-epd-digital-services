@@ -1,8 +1,15 @@
-.table-controls__button--selected {
-  font-weight: bold;
-  color: var(--surface-color-primary-default) !important;
+.SITE-Button.table-controls__button--selected {
+  padding: var(--layout-padding-small) var(--layout-padding-medium)
+    var(--layout-padding-small) var(--layout-padding-medium) !important;
+  gap: 8px;
+  border-radius: var(--layout-border-radius-medium)
+    var(--layout-border-radius-medium) 0px 0px !important;
+  background: var(--surface-color-primary-default) !important;
+  border-bottom: 1px solid var(--surface-color-border-default) !important;
+  color: white !important;
 }
 
-.table-controls__button--selected:hover {
-  color: var(--surface-color-primary-default) !important;
+.SITE-Button.table-controls__button--selected:hover {
+  background: var(--surface-color-primary-hover, #042a4f) !important;
+  color: white !important;
 }

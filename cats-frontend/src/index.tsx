@@ -22,7 +22,17 @@ const root = ReactDOM.createRoot(
 // "You must provide an implementation of onSigninCallback to oidcConfig to remove the payload from the URL upon successful login.
 // Otherwise if you refresh the page and the payload is still there, signinSilent - which handles renewing your token - won't work.""
 const onSigninCallback = () => {
+  // Get the original URL that was stored before redirect
+  const returnUrl = sessionStorage.getItem('returnUrl');
+
+  // Clear the auth params from URL
   window.history.replaceState({}, document.title, window.location.pathname);
+
+  // Redirect to the original URL if it exists
+  if (returnUrl) {
+    sessionStorage.removeItem('returnUrl');
+    window.location.href = returnUrl;
+  }
 };
 
 const authOptions: UserManagerSettings = getClientSettings();

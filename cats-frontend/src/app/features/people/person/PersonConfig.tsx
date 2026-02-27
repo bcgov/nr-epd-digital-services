@@ -37,6 +37,10 @@ const personForm: { [key: string]: IFormField } = {
     customEditLabelCss: 'custom-people-edit-lbl',
     customInputTextCss: 'custom-people-txt',
     customEditInputTextCss: 'custom-people-edit-txt',
+    validation: {
+      required: true,
+      customMessage: 'First name is required',
+    },
   },
   middleName: {
     type: FormFieldType.Text,
@@ -59,6 +63,10 @@ const personForm: { [key: string]: IFormField } = {
     customEditLabelCss: 'custom-people-edit-lbl',
     customInputTextCss: 'custom-people-txt',
     customEditInputTextCss: 'custom-people-edit-txt',
+    validation: {
+      required: true,
+      customMessage: 'Last name is required',
+    },
   },
   phone: {
     type: FormFieldType.Text,
