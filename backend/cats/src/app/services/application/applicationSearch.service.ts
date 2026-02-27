@@ -174,8 +174,12 @@ export class ApplicationSearchService {
 
     if (filters) {
       if (filters.id) {
-        query.andWhere('CAST(application.id AS TEXT) LIKE :filterId', {
-          filterId: `%${filters.id}%`,
+        const ids = filters.id
+          .split(',')
+          .map((id) => id.trim())
+          .filter(Boolean);
+        query.andWhere('application.id IN (:...filterIds)', {
+          filterIds: ids,
         });
       }
 
