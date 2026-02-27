@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import debounce from 'lodash/debounce';
 import PageContainer from '../../../components/simple/PageContainer';
 import SearchInput from '../../../components/search/SearchInput';
@@ -46,6 +46,7 @@ interface SearchProps {
 
 const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
   const [urlParams, setUrlParams] = useSearchParams();
+  const navigate = useNavigate();
 
   // Read values from URL
   const searchTerm = urlParams.get('search') || '';
@@ -423,7 +424,7 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
   const handleChangeEventHandler = (eventRecord: any) => {
     if (eventRecord.property === 'assignStaff') {
       setAssignmentAppId(eventRecord.row.id);
-      setAssignStaffModalOpen(true);
+      navigate(`/assignment/${eventRecord.row.id}`);
     }
   };
 
@@ -585,28 +586,6 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
           />
         )}
       </Widget>
-
-      {assignStaffModalOpen && (
-        <ModalDialog
-          headerLabel="Assign Application to Staff"
-          closeHandler={() => {
-            setAssignStaffModalOpen(false);
-          }}
-          noFooterOptions={true}
-        >
-          <Assignment
-            id={assignmentAppId}
-            modalCloseHandler={() => {
-              setAssignStaffModalOpen(false);
-              searchRefresh();
-            }}
-            modalSaveHandler={() => {
-              setAssignStaffModalOpen(false);
-              searchRefresh();
-            }}
-          />
-        </ModalDialog>
-      )}
     </PageContainer>
   );
 };

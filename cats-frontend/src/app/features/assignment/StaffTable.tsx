@@ -64,14 +64,13 @@ const StaffTable: React.FC<IParticipantTableProps> = ({
         hideWidgetCheckbox={true}
         primaryKeycolumnName="particRoleId"
         sortHandler={(row: any, ascDir: any) => {}}
-      >
-        <div className="d-flex gap-2 flex-wrap">
-          <Button variant="secondary" onClick={handleAddParticipant}>
-            <UserPlus />
-            Add Staff
-          </Button>
-        </div>
-      </Widget>
+      ></Widget>
+      <div className="d-flex gap-2 flex-wrap">
+        <Button variant="secondary" onClick={handleAddParticipant}>
+          <UserPlus />
+          Add Staff
+        </Button>
+      </div>
     </div>
   );
 };

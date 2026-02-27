@@ -11,7 +11,7 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
   console.log('ApplicationServiceTypeSeeder start');
   try {
     const mentorResult = await manager.findOne(ParticipantRole, {
-      where: { abbrev: StaffRoles.MENTOR },
+      where: { description: 'Mentor' },
     });
 
     if (!mentorResult || Object.keys(mentorResult).length === 0) {
@@ -32,8 +32,8 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
     } else {
       await manager.update(
         ParticipantRole,
-        { abbrev: StaffRoles.MENTOR },
-        { roleType: 'STAFF' },
+        { description: 'Mentor' },
+        { roleType: 'STAFF', abbrev: StaffRoles.MENTOR },
       );
     }
 

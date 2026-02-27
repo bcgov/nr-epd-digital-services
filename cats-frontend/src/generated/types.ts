@@ -7,7 +7,7 @@ export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> =
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
+  ID: { input: string; output: string; } 
   String: { input: string; output: string; }
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
@@ -621,6 +621,17 @@ export type PersonWithTimesheetDaysResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type PreviousStaffInformation = {
+  __typename?: 'PreviousStaffInformation';
+  appType?: Maybe<Scalars['String']['output']>;
+  applicationId?: Maybe<Scalars['Float']['output']>;
+  currentCapacity?: Maybe<Scalars['Float']['output']>;
+  endDate?: Maybe<Scalars['DateTime']['output']>;
+  hasPermission: Scalars['Boolean']['output'];
+  personFullName: Scalars['String']['output'];
+  personId: Scalars['Float']['output'];
+};
+
 export type Query = {
   __typename?: 'Query';
   _service: _Service;
@@ -648,6 +659,7 @@ export type Query = {
   getRecentViewedApplications: DashboardResponse;
   getSiteDetailsBySiteId: SiteDetailsResponse;
   getStaffAssignedByAppId: ViewStaffAssignedResponse;
+  getStaffGroupedByRoleForServiceType: StaffGroupedByRoleResponse;
   getStaffs: StaffResponse;
   getTimesheetDaysForAssignedStaff: PersonWithTimesheetDaysResponse;
   getUserColumnPreferences: ColumnPreferencesResponse;
@@ -741,6 +753,12 @@ export type QueryGetSiteDetailsBySiteIdArgs = {
 
 export type QueryGetStaffAssignedByAppIdArgs = {
   applicationId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetStaffGroupedByRoleForServiceTypeArgs = {
+  applicationServiceTypeId: Scalars['Int']['input'];
+  siteId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -869,6 +887,23 @@ export type StaffAssignedDto = {
   __typename?: 'StaffAssignedDto';
   applicationServiceTypeId?: Maybe<Scalars['Float']['output']>;
   staffList: Array<ViewStaffAssignedDto>;
+};
+
+export type StaffGroupedByRoleDto = {
+  __typename?: 'StaffGroupedByRoleDTO';
+  roleAbbrev: Scalars['String']['output'];
+  roleId: Scalars['Float']['output'];
+  roleName: Scalars['String']['output'];
+  staff: Array<PreviousStaffInformation>;
+};
+
+export type StaffGroupedByRoleResponse = {
+  __typename?: 'StaffGroupedByRoleResponse';
+  data?: Maybe<Array<StaffGroupedByRoleDto>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
 };
 
 export type StaffResponse = {

@@ -48,6 +48,7 @@ import {
   FaFileContract,
   FaSquareCheck,
   FaSquare,
+  FaCirclePlus,
 } from 'react-icons/fa6';
 
 import {
@@ -62,7 +63,7 @@ import {
   BsCurrencyDollar,
 } from 'react-icons/bs';
 
-import { FaExternalLinkAlt } from 'react-icons/fa';
+import { FaExternalLinkAlt, FaPlusCircle } from 'react-icons/fa';
 
 export const ShoppingCartIcon = FaCartShopping;
 export const FileExportIcon = FaFileExport;
@@ -123,3 +124,4 @@ export const PaperclipIcon = FaPaperclip;
 export const FileContractIcon = FaFileContract;
 export const SquareCheck = FaSquareCheck;
 export const Square = FaSquare;
+export const PlusCircle = FaPlusCircle;
