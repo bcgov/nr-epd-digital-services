@@ -39,12 +39,51 @@ There are two parallel approaches currently co-existing:
 - Frontend runtime config points to platform services aligned with that ecosystem (Keycloak/COMS endpoints).
 - FormsFlowAI services are initially deployed manually with Helm (outside the always-on Site API GitHub Actions deploy path), then co-exist with Site API runtime integration.
 
+
+
+## Image Streams and Tagging
+Image delivery follows two patterns aligned with the two co-existing architectures.
+
+### 1) FormsFlowAI pattern (OpenShift BuildConfig + ImageStream tags)
+- Builds run in the `*-tools` project using OpenShift builds (`oc start-build <app>-build`).
+- Build output lands in the tools namespace `ImageStream` as `:latest`.
+- Promotion is done by tagging ImageStreamTags (`oc tag`), typically across `:dev`, `:test`, and `:prod`.
+- Runtime environments consume those promoted IST tags instead of pulling directly from GHCR at deploy time.
+
+Repo examples:
+- `cd-forms-flow-*.yaml` workflows: build in tools and tag `:latest` -> env tag.
+- `cd-openshift-test.yaml`: promotes microfrontend tags (for example `:dev` -> `:test`) in tools.
+
+### 2) NR quickstart pattern (GitHub build -> GHCR -> Helm deploy)
+- Builds run in GitHub Actions (`action-builder-ghcr` or this repo's reusable `_build.yml`).
+- Images are pushed to GHCR (`ghcr.io/<org>/<repo>/<package>:<tag>`).
+- Deployment is direct to target namespaces via Helm (`helm upgrade --install` in `.deployer.yml`).
+- Charts reference `global.registry`, `global.repository`, and `global.tag`, so promotion is primarily by deploying a selected tag, not by `oc tag` IST promotion.
+
+Repo examples:
+- `cats-pr-open.yml`, `merge-dev-cats.yml`, `merge-dev-cats-deploy-prod.yml`: GHCR build + Helm deploy.
+- `charts/app/templates/*/deployment.yaml`: container image references resolve from Helm values.
+
 ```mermaid
-flowchart TB
-  A[Site API via GitHub Actions -> Helm] --> D[OpenShift Runtime]
-  B[FormsFlowAI manual Helm bootstrap] --> D
-  A --> C[SiteAPI app/db releases]
-  B --> E[FormsFlowAI services]
+flowchart LR
+  subgraph F[FormsFlowAI ImageStream Promotion]
+    F1[Git push dev/main] --> F2[GitHub Action logs into OpenShift]
+    F2 --> F3[BuildConfig build in tools]
+    F3 --> F4[ImageStream app:latest in tools]
+    F4 --> F5[oc tag app:latest -> app:dev]
+    F5 --> F6[oc tag app:dev -> app:test]
+    F6 --> F7[oc tag app:test -> app:prod]
+    F5 --> F8[Deployments consume app:dev]
+    F6 --> F9[Deployments consume app:test]
+    F7 --> F10[Deployments consume app:prod]
+  end
+
+  subgraph Q[NR Quickstart GHCR + Helm]
+    Q1[Git push or PR] --> Q2[action-builder-ghcr or _build.yml]
+    Q2 --> Q3[Push image to ghcr.io]
+    Q3 --> Q4[.deployer.yml helm upgrade --install]
+    Q4 --> Q5[Direct deploy to dev/test/tools/prod namespace]
+  end
 ```
 
 ## Environment and Promotion Flow
@@ -85,6 +124,7 @@ Site API database deployment (`.github/workflows/.dbdeployer.yml`):
 Cleanup (`.github/workflows/.pr-close.yml`):
 - Removes Helm release for closed PR environments.
 - Removes PR-specific DB users/databases in Crunchy.
+- Note: There have been small issues with this in the past, like this failing on deleting non-existant tags. So we've had to 'fork' it from upstream a tiny bit to add some more safeguarding.
 
 ## Secrets and Configuration Flow
 Primary path:
@@ -122,21 +162,10 @@ Snapshot basis:
 - Rule used: anything clearly active/running is not listed as a deletion candidate.
 
 ### e38158-dev
-High-confidence candidates for deletion:
 
-*The "analytics" services were used at one time, but no longer. They're for analytic report generation*
-- `deployment.apps/forms-flow-analytics-adhoc-worker` (`0/0`, ~2y296d)
-- `deployment.apps/forms-flow-analytics-scheduled-worker` (`0/0`, ~2y296d)
-- `deployment.apps/forms-flow-analytics-scheduler` (`0/0`, ~2y296d)
-- `deployment.apps/forms-flow-analytics-server` (`0/0`, ~2y296d)
-- `deployment.apps/forms-flow-analytics-worker` (`0/0`, ~2y296d)
-- `deployment.apps/forms-flow-data-analysis` (`0/0`, ~3y44d)
+Note: Already cleaned up dev namespace a lot, just left some unsure resources.
 
-*Unsure whose these are, what they are*
-- `deployment.apps/workspace0e76c47881db42cb` (`0/0`, ~98d)
-- `deployment.apps/workspace804471b24af54aaa` (`0/0`, ~185d)
-
-*Moved to forms-flow-ai-postgresql*
+*Potential candidates for deletion, but left in case any dependant types of PVCs, hadn't properly mapped out:*
 - `deployment.apps/postgres-crunchy-pgbouncer` (`0/0`, ~100d)
 - `statefulset.apps/postgres-crunchy-db-2tdx` (`0/0`, ~100d)
 - `statefulset.apps/postgres-crunchy-db-v52q` (`0/0`, ~100d)
