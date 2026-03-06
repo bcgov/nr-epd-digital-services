@@ -31,6 +31,14 @@ export type GetAllActiveStaffMembersForApplicationServiceTypeQueryVariables = Ty
 
 export type GetAllActiveStaffMembersForApplicationServiceTypeQuery = { __typename?: 'Query', getAllActiveStaffMembersForApplicationServiceType: { __typename?: 'ViewStaffWithCapacityResponse', data?: Array<{ __typename?: 'ViewStaffWithCapacityDTO', personId: number, personFullName: string, currentCapacity?: number | null }> | null } };
 
+export type GetStaffGroupedByRoleForServiceTypeQueryVariables = Types.Exact<{
+  applicationServiceTypeId: Types.Scalars['Int']['input'];
+  siteId?: Types.InputMaybe<Types.Scalars['Int']['input']>;
+}>;
+
+
+export type GetStaffGroupedByRoleForServiceTypeQuery = { __typename?: 'Query', getStaffGroupedByRoleForServiceType: { __typename?: 'StaffGroupedByRoleResponse', data?: Array<{ __typename?: 'StaffGroupedByRoleDTO', roleId: number, roleName: string, roleAbbrev: string, staff: Array<{ __typename?: 'PreviousStaffInformation', personId: number, personFullName: string, currentCapacity?: number | null, appType?: string | null, endDate?: any | null, applicationId?: number | null, hasPermission: boolean }> }> | null } };
+
 export type GetApplicationServiceTypesQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
@@ -218,6 +226,63 @@ export type GetAllActiveStaffMembersForApplicationServiceTypeQueryHookResult = R
 export type GetAllActiveStaffMembersForApplicationServiceTypeLazyQueryHookResult = ReturnType<typeof useGetAllActiveStaffMembersForApplicationServiceTypeLazyQuery>;
 export type GetAllActiveStaffMembersForApplicationServiceTypeSuspenseQueryHookResult = ReturnType<typeof useGetAllActiveStaffMembersForApplicationServiceTypeSuspenseQuery>;
 export type GetAllActiveStaffMembersForApplicationServiceTypeQueryResult = Apollo.QueryResult<GetAllActiveStaffMembersForApplicationServiceTypeQuery, GetAllActiveStaffMembersForApplicationServiceTypeQueryVariables>;
+export const GetStaffGroupedByRoleForServiceTypeDocument = gql`
+    query getStaffGroupedByRoleForServiceType($applicationServiceTypeId: Int!, $siteId: Int) {
+  getStaffGroupedByRoleForServiceType(
+    applicationServiceTypeId: $applicationServiceTypeId
+    siteId: $siteId
+  ) {
+    data {
+      roleId
+      roleName
+      roleAbbrev
+      staff {
+        personId
+        personFullName
+        currentCapacity
+        appType
+        endDate
+        applicationId
+        hasPermission
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetStaffGroupedByRoleForServiceTypeQuery__
+ *
+ * To run a query within a React component, call `useGetStaffGroupedByRoleForServiceTypeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetStaffGroupedByRoleForServiceTypeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetStaffGroupedByRoleForServiceTypeQuery({
+ *   variables: {
+ *      applicationServiceTypeId: // value for 'applicationServiceTypeId'
+ *      siteId: // value for 'siteId'
+ *   },
+ * });
+ */
+export function useGetStaffGroupedByRoleForServiceTypeQuery(baseOptions: Apollo.QueryHookOptions<GetStaffGroupedByRoleForServiceTypeQuery, GetStaffGroupedByRoleForServiceTypeQueryVariables> & ({ variables: GetStaffGroupedByRoleForServiceTypeQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetStaffGroupedByRoleForServiceTypeQuery, GetStaffGroupedByRoleForServiceTypeQueryVariables>(GetStaffGroupedByRoleForServiceTypeDocument, options);
+      }
+export function useGetStaffGroupedByRoleForServiceTypeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetStaffGroupedByRoleForServiceTypeQuery, GetStaffGroupedByRoleForServiceTypeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetStaffGroupedByRoleForServiceTypeQuery, GetStaffGroupedByRoleForServiceTypeQueryVariables>(GetStaffGroupedByRoleForServiceTypeDocument, options);
+        }
+export function useGetStaffGroupedByRoleForServiceTypeSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetStaffGroupedByRoleForServiceTypeQuery, GetStaffGroupedByRoleForServiceTypeQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetStaffGroupedByRoleForServiceTypeQuery, GetStaffGroupedByRoleForServiceTypeQueryVariables>(GetStaffGroupedByRoleForServiceTypeDocument, options);
+        }
+export type GetStaffGroupedByRoleForServiceTypeQueryHookResult = ReturnType<typeof useGetStaffGroupedByRoleForServiceTypeQuery>;
+export type GetStaffGroupedByRoleForServiceTypeLazyQueryHookResult = ReturnType<typeof useGetStaffGroupedByRoleForServiceTypeLazyQuery>;
+export type GetStaffGroupedByRoleForServiceTypeSuspenseQueryHookResult = ReturnType<typeof useGetStaffGroupedByRoleForServiceTypeSuspenseQuery>;
+export type GetStaffGroupedByRoleForServiceTypeQueryResult = Apollo.QueryResult<GetStaffGroupedByRoleForServiceTypeQuery, GetStaffGroupedByRoleForServiceTypeQueryVariables>;
 export const GetApplicationServiceTypesDocument = gql`
     query getApplicationServiceTypes {
   getApplicationServiceTypes {

@@ -63,12 +63,23 @@ export const PermissionsSeeder = async (manager: EntityManager) => {
         permission.updatedDatetime = new Date();
         await manager.save(Permissions, permission);
         console.log('permission created', permission.description);
+      }
 
-        if (perm.serviceTypesDetails && perm.serviceTypesDetails.length > 0) {
-          for (const serviceTypeDetail of perm.serviceTypesDetails) {
-            const permissionServiceTypeMapping = new PermissionServiceType();
+      const allPermissionsForRole = await manager.find(Permissions, {
+        where: { roleId: role.id },
+      });
 
-            let serviceTypeItem = await manager.findOne(
+      for (const permission of allPermissionsForRole) {
+        const permissionDef = permissions.find(
+          (p) => p.description === permission.description,
+        );
+
+        if (
+          permissionDef?.serviceTypesDetails &&
+          permissionDef.serviceTypesDetails.length > 0
+        ) {
+          for (const serviceTypeDetail of permissionDef.serviceTypesDetails) {
+            const serviceTypeItem = await manager.findOne(
               ApplicationServiceType,
               {
                 where: {
@@ -79,30 +90,22 @@ export const PermissionsSeeder = async (manager: EntityManager) => {
             );
 
             if (serviceTypeItem) {
-              permissionServiceTypeMapping.serviceTypeId = parseInt(
-                serviceTypeItem.id,
-              );
-
-              permissionServiceTypeMapping.permissionId = permission.id;
-
-              let existingServiceTypeItem = await manager.findOne(
+              const existingMapping = await manager.findOne(
                 PermissionServiceType,
                 {
                   where: {
-                    serviceTypeId: permissionServiceTypeMapping.serviceTypeId,
-                    permissionId: permissionServiceTypeMapping.permissionId,
+                    serviceTypeId: parseInt(serviceTypeItem.id),
+                    permissionId: permission.id,
                   },
                 },
               );
-              if (!existingServiceTypeItem) {
-                await manager.save(
-                  PermissionServiceType,
-                  permissionServiceTypeMapping,
-                );
-                console.log(
-                  'permissionServiceTypeMapping created',
-                  permissionServiceTypeMapping,
-                );
+
+              if (!existingMapping) {
+                const newMapping = new PermissionServiceType();
+                newMapping.serviceTypeId = parseInt(serviceTypeItem.id);
+                newMapping.permissionId = permission.id;
+                await manager.save(PermissionServiceType, newMapping);
+                console.log('permissionServiceTypeMapping ensured', newMapping);
               }
             }
           }

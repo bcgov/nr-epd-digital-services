@@ -405,4 +405,167 @@ describe('StaffAssignmentService', () => {
     );
     expect(result).toBe(true);
   });
+
+  it('should return staff grouped by role for service type', async () => {
+    const applicationServiceTypeId = 1;
+    const caseWorkerRole = new ParticipantRole();
+    caseWorkerRole.id = 1;
+    caseWorkerRole.abbrev = StaffRoles.CASE_WORKER;
+    caseWorkerRole.description = 'Caseworker';
+
+    const sdmRole = new ParticipantRole();
+    sdmRole.id = 2;
+    sdmRole.abbrev = StaffRoles.SDM;
+    sdmRole.description = 'Statutory Decision Maker';
+
+    const mentorRole = new ParticipantRole();
+    mentorRole.id = 3;
+    mentorRole.abbrev = StaffRoles.MENTOR;
+    mentorRole.description = 'Mentor';
+
+    (participantRoleRepository.find as jest.Mock).mockResolvedValue([
+      caseWorkerRole,
+      sdmRole,
+      mentorRole,
+    ]);
+
+    (personRepository.query as jest.Mock)
+      .mockResolvedValueOnce([
+        {
+          personid: 1,
+          first_name: 'John',
+          last_name: 'Doe',
+          middle_name: '',
+          description: 'Test App Type',
+          effective_end_date: '2024-01-01',
+          appid: 100,
+          has_permission: 1,
+        },
+      ])
+      .mockResolvedValueOnce([
+        {
+          personid: 2,
+          first_name: 'Jane',
+          last_name: 'Smith',
+          middle_name: '',
+          description: 'Another App Type',
+          effective_end_date: '2024-02-01',
+          appid: 101,
+          has_permission: 1,
+        },
+      ])
+      .mockResolvedValueOnce([
+        {
+          personid: 3,
+          first_name: 'Bob',
+          last_name: 'Johnson',
+          middle_name: '',
+          description: 'Third App Type',
+          effective_end_date: '2024-03-01',
+          appid: 102,
+          has_permission: 1,
+        },
+      ]);
+
+    const result = await service.getStaffGroupedByRoleForServiceType(
+      applicationServiceTypeId,
+      104,
+    );
+
+    expect(result).toHaveLength(3);
+    expect(result[0]).toEqual({
+      roleId: 1,
+      roleName: 'Caseworker',
+      roleAbbrev: StaffRoles.CASE_WORKER,
+      staff: [
+        {
+          personId: 1,
+          personFirstName: 'John',
+          personMiddleName: '',
+          personLastName: 'Doe',
+          personFullName: 'John  Doe',
+          currentCapacity: 0,
+          appType: 'Test App Type',
+          endDate: '2024-01-01',
+          applicationId: 100,
+          hasPermission: true,
+        },
+      ],
+    });
+    expect(result[1]).toEqual({
+      roleId: 2,
+      roleName: 'Statutory Decision Maker',
+      roleAbbrev: StaffRoles.SDM,
+      staff: [
+        {
+          personId: 2,
+          personFirstName: 'Jane',
+          personMiddleName: '',
+          personLastName: 'Smith',
+          personFullName: 'Jane  Smith',
+          currentCapacity: 0,
+          appType: 'Another App Type',
+          endDate: '2024-02-01',
+          applicationId: 101,
+          hasPermission: true,
+        },
+      ],
+    });
+    expect(result[2]).toEqual({
+      roleId: 3,
+      roleName: 'Mentor',
+      roleAbbrev: StaffRoles.MENTOR,
+      staff: [
+        {
+          personId: 3,
+          personFirstName: 'Bob',
+          personMiddleName: '',
+          personLastName: 'Johnson',
+          personFullName: 'Bob  Johnson',
+          currentCapacity: 0,
+          appType: 'Third App Type',
+          endDate: '2024-03-01',
+          applicationId: 102,
+          hasPermission: true,
+        },
+      ],
+    });
+  });
+
+  it('should return empty staff arrays when no staff found for roles', async () => {
+    const applicationServiceTypeId = 1;
+    const caseWorkerRole = new ParticipantRole();
+    caseWorkerRole.id = 1;
+    caseWorkerRole.abbrev = StaffRoles.CASE_WORKER;
+    caseWorkerRole.description = 'Caseworker';
+
+    (participantRoleRepository.find as jest.Mock).mockResolvedValue([
+      caseWorkerRole,
+    ]);
+
+    (personRepository.query as jest.Mock).mockResolvedValue([]);
+
+    const result = await service.getStaffGroupedByRoleForServiceType(
+      applicationServiceTypeId,
+    );
+
+    expect(result).toHaveLength(1);
+    expect(result[0]).toEqual({
+      roleId: 1,
+      roleName: 'Caseworker',
+      roleAbbrev: StaffRoles.CASE_WORKER,
+      staff: [],
+    });
+  });
+
+  it('should throw HttpException when getStaffGroupedByRoleForServiceType fails', async () => {
+    const applicationServiceTypeId = 1;
+    (participantRoleRepository.find as jest.Mock).mockRejectedValue(
+      new Error('Database error'),
+    );
+
+    await expect(
+      service.getStaffGroupedByRoleForServiceType(applicationServiceTypeId),
+    ).rejects.toThrow(HttpException);
+  });
 });
