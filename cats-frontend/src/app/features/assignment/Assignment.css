@@ -110,6 +110,22 @@
   font-size: 12px;
 }
 
+.staff-pill-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  margin-left: 8px;
+  background-color: var(--typography-color-link);
+  color: white;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+
 .staff-capacity {
   font-size: 12px;
   opacity: 0.9;
@@ -132,4 +148,5 @@
   border-width: 1px;
   border: 1px solid var(--typography-color-secondaryInvert, #eceae8);
   background: #ffffff;
+  gap: 10px;
 }

@@ -66,3 +66,29 @@
   padding-bottom: var(--layout-padding-xsmall);
   border-bottom: 1px solid var(--surface-color-border-default);
 }
+
+.multiSelectContainer {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--surface-color-border-default);
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.multiSelectItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.multiSelectLabel {
+  margin: 0;
+  cursor: pointer;
+}
+
+.clickableText {
+  cursor: pointer;
+  text-decoration: underline;
+  color: var(--typography-color-primary);
+}

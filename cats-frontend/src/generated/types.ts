@@ -7,7 +7,7 @@ export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> =
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; } 
+  ID: { input: string; output: string; }
   String: { input: string; output: string; }
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
@@ -165,6 +165,14 @@ export type ApplicationStatusDto = {
 export type ApplicationStatusResponse = {
   __typename?: 'ApplicationStatusResponse';
   data?: Maybe<Array<ViewApplicationStatus>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type BaseHttpResponse = {
+  __typename?: 'BaseHttpResponse';
   httpStatusCode?: Maybe<Scalars['Int']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
@@ -431,10 +439,12 @@ export type Mutation = {
   updateAppParticipant: UpdateAppParticipantsResponse;
   updateApplicationHousing: ApplicationHousingResponse;
   updateApplicationNote: ApplicationNotesResponse;
+  updateApplicationServiceType: BaseHttpResponse;
   updateFormsflowAppId: ApplicationStatusResponse;
   updateInvoice: InvoiceResponse;
   updatePerson: PersonResponse;
   updatePersonNote: PersonNoteResponse;
+  updateSecondaryServiceTypes: BaseHttpResponse;
   updateStaffAssigned: ResponseDto;
   upsertTimesheetDays: TimesheetDayResponse;
 };
@@ -531,6 +541,12 @@ export type MutationUpdateApplicationNoteArgs = {
 };
 
 
+export type MutationUpdateApplicationServiceTypeArgs = {
+  applicationId: Scalars['Int']['input'];
+  serviceTypeId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type MutationUpdateFormsflowAppIdArgs = {
   appStatusInput: UpdateApplicationStatusDto;
 };
@@ -549,6 +565,12 @@ export type MutationUpdatePersonArgs = {
 export type MutationUpdatePersonNoteArgs = {
   id: Scalars['String']['input'];
   note: UpdatePersonNote;
+};
+
+
+export type MutationUpdateSecondaryServiceTypesArgs = {
+  applicationId: Scalars['Int']['input'];
+  serviceTypeIds: Array<Scalars['Int']['input']>;
 };
 
 
@@ -1138,6 +1160,8 @@ export type ViewApplicationDetails = {
   queuedDate?: Maybe<Scalars['DateTime']['output']>;
   receivedDate: Scalars['DateTime']['output'];
   reviewProcess?: Maybe<DetailField>;
+  secondaryServiceTypeIds?: Maybe<Array<Scalars['Int']['output']>>;
+  serviceTypeId?: Maybe<Scalars['Float']['output']>;
   siteAddress?: Maybe<Scalars['String']['output']>;
   siteCity?: Maybe<Scalars['String']['output']>;
   siteId?: Maybe<Scalars['Float']['output']>;

@@ -147,7 +147,7 @@ p.id, p.first_name, p.middle_name, p.last_name
     p.middle_name,
     p.last_name,
     at.description,
-	apt.effective_end_date,
+	app.end_date,
 	app.id as appid,
     CASE 
         WHEN EXISTS (
@@ -383,7 +383,7 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
               record.last_name
             }`,
             appType: record.description,
-            endDate: record.effective_end_date,
+            endDate: record.end_date,
             applicationId: record.appid,
             currentCapacity: 0,
             hasPermission: record.has_permission === 0 ? false : true,

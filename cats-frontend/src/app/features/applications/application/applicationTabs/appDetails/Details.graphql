@@ -27,6 +27,8 @@ query getApplicationDetailsById($applicationId: Int!) {
       reviewProcess {
         description
       }
+      serviceTypeId
+      secondaryServiceTypeIds
     }
   }
 }

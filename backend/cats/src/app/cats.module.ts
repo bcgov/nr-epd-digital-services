@@ -103,6 +103,7 @@ import { UploadController } from './controllers/upload.controller';
 import { ColumnPreferencesResolver } from './resolvers/application/columnPreferences.resolver';
 import { ColumnPreferencesService } from './services/application/columnPreferences.service';
 import { UserColumnPreferences } from './entities/userColumnPreferences.entity';
+import { ApplicationSecondaryServiceType } from './entities/applicationSecondaryServiceType.entity';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -169,6 +170,7 @@ import { UserColumnPreferences } from './entities/userColumnPreferences.entity';
       PermissionServiceType,
       ApplicationSite,
       UserColumnPreferences,
+      ApplicationSecondaryServiceType,
     ]),
     HttpModule,
   ],

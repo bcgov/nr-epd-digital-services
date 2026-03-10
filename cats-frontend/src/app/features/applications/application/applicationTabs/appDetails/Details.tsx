@@ -1,14 +1,26 @@
 import cx from 'classnames';
 import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import CollapsiblePanel from '../../../../../components/simple/CollapsiblePanel';
 import { TickIcon } from '../../../../../components/common/icon';
 import { formatDateUTC } from '../../../../../helpers/utility';
+import { DropdownInput } from '../../../../../components/input-controls/InputControls';
+import { FormFieldType } from '../../../../../components/input-controls/IFormField';
+import {
+  SaveButton,
+  CancelButton,
+} from '../../../../../components/simple/CustomButtons';
 
 import { SiteDetails } from './components/SiteDetails';
 import {
   useGetApplicationDetailsByIdQuery,
   useGetSiteDetailsBySiteIdQuery,
 } from './Details.generated';
+import {
+  useGetApplicationServiceTypesQuery,
+  useUpdateApplicationServiceTypeMutation,
+  useUpdateSecondaryServiceTypesMutation,
+} from '../../../../assignment/graphql/assignment.generated';
 import styles from './Details.module.css';
 
 interface IDetailsProps {
@@ -26,6 +38,13 @@ export const Details: React.FC<IDetailsProps> = ({
   const applicationId =
     id === '' ? (applicationIdParam ?? NaN) : parseInt(id, 10);
 
+  const [serviceTypeId, setServiceTypeId] = useState<string>('');
+  const [isEditingServiceType, setIsEditingServiceType] = useState(false);
+  const [secondaryServiceTypeIds, setSecondaryServiceTypeIds] = useState<
+    number[]
+  >([]);
+  const [isEditingSecondary, setIsEditingSecondary] = useState(false);
+
   const { data, loading: applicationDataLoading } =
     useGetApplicationDetailsByIdQuery({
       variables: {
@@ -35,6 +54,111 @@ export const Details: React.FC<IDetailsProps> = ({
     });
 
   const application = data?.getApplicationDetailsById.data;
+
+  const { data: serviceTypesList } = useGetApplicationServiceTypesQuery();
+  const [updateServiceType, { loading: updating }] =
+    useUpdateApplicationServiceTypeMutation();
+  const [updateSecondaryServiceTypes, { loading: updatingSecondary }] =
+    useUpdateSecondaryServiceTypesMutation();
+
+  useEffect(() => {
+    if (application?.serviceTypeId) {
+      setServiceTypeId(application.serviceTypeId.toString());
+    }
+  }, [application?.serviceTypeId]);
+
+  useEffect(() => {
+    if (application?.secondaryServiceTypeIds) {
+      setSecondaryServiceTypeIds(application.secondaryServiceTypeIds);
+    }
+  }, [application?.secondaryServiceTypeIds]);
+
+  const handleSaveServiceType = async () => {
+    try {
+      await updateServiceType({
+        variables: {
+          applicationId: application?.id,
+          serviceTypeId: Number(serviceTypeId),
+        },
+        refetchQueries: ['getApplicationDetailsById'],
+      });
+      setIsEditingServiceType(false);
+    } catch (error) {
+      console.error('Error updating service type:', error);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setServiceTypeId(application?.serviceTypeId?.toString() || '');
+    setIsEditingServiceType(false);
+  };
+
+  const handleClearServiceType = async () => {
+    try {
+      await updateServiceType({
+        variables: {
+          applicationId: application?.id,
+          serviceTypeId: null,
+        },
+        refetchQueries: ['getApplicationDetailsById'],
+      });
+      setServiceTypeId('');
+      setIsEditingServiceType(false);
+    } catch (error) {
+      console.error('Error clearing service type:', error);
+    }
+  };
+
+  const handleSaveSecondary = async () => {
+    try {
+      await updateSecondaryServiceTypes({
+        variables: {
+          applicationId: application?.id,
+          serviceTypeIds: secondaryServiceTypeIds,
+        },
+        refetchQueries: ['getApplicationDetailsById'],
+      });
+      setIsEditingSecondary(false);
+    } catch (error) {
+      console.error('Error updating secondary service types:', error);
+    }
+  };
+
+  const handleCancelSecondary = () => {
+    setSecondaryServiceTypeIds(application?.secondaryServiceTypeIds || []);
+    setIsEditingSecondary(false);
+  };
+
+  const handleClearSecondary = async () => {
+    try {
+      await updateSecondaryServiceTypes({
+        variables: {
+          applicationId: application?.id,
+          serviceTypeIds: [],
+        },
+        refetchQueries: ['getApplicationDetailsById'],
+      });
+      setSecondaryServiceTypeIds([]);
+      setIsEditingSecondary(false);
+    } catch (error) {
+      console.error('Error clearing secondary service types:', error);
+    }
+  };
+
+  const handleSecondaryCheckboxChange = (typeId: number, checked: boolean) => {
+    if (checked) {
+      setSecondaryServiceTypeIds([...secondaryServiceTypeIds, typeId]);
+    } else {
+      setSecondaryServiceTypeIds(
+        secondaryServiceTypeIds.filter((id) => id !== typeId),
+      );
+    }
+  };
+
+  const availableSecondaryOptions =
+    serviceTypesList?.getApplicationServiceTypes?.data?.filter(
+      (item) => item.key !== serviceTypeId,
+    ) || [];
 
   const {
     data: siteData,
@@ -134,6 +258,137 @@ export const Details: React.FC<IDetailsProps> = ({
               <div className={styles.cell}>
                 <label>Review Process</label>
                 <div>{application?.reviewProcess?.description}</div>
+              </div>
+            </div>
+
+            <div className={cx(styles.row, styles.rowGrid2)}>
+              <div className={styles.cell}>
+                <label>Primary Application Service Type</label>
+                {isEditingServiceType ? (
+                  <div className="d-flex gap-2 align-items-center">
+                    <DropdownInput
+                      label={''}
+                      placeholder={'Select Service Type'}
+                      options={serviceTypesList?.getApplicationServiceTypes?.data?.map(
+                        (item) => ({
+                          key: item.key,
+                          value: item.value,
+                        }),
+                      )}
+                      value={serviceTypeId}
+                      onChange={setServiceTypeId}
+                      type={FormFieldType.DropDown}
+                      isEditing={true}
+                    />
+                    <SaveButton
+                      clickHandler={handleSaveServiceType}
+                      label={'Save'}
+                      variant={'primary'}
+                      isDisabled={updating || !serviceTypeId}
+                    />
+                    <CancelButton
+                      clickHandler={handleCancelEdit}
+                      label={'Cancel'}
+                      variant={'tertiary'}
+                      isDisabled={false}
+                    />
+                  </div>
+                ) : (
+                  <div className="d-flex gap-2 align-items-center">
+                    <div
+                      onClick={() => setIsEditingServiceType(true)}
+                      className={styles.clickableText}
+                    >
+                      {serviceTypesList?.getApplicationServiceTypes?.data?.find(
+                        (item) => item.key === serviceTypeId,
+                      )?.value || 'Click to set CSSA service type'}
+                    </div>
+                    {application?.serviceTypeId && (
+                      <CancelButton
+                        clickHandler={handleClearServiceType}
+                        label={'Clear'}
+                        variant={'secondary'}
+                        isDisabled={false}
+                      />
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className={cx(styles.row, styles.rowGrid2)}>
+              <div className={styles.cell}>
+                <label>Secondary Application Service Types</label>
+                {isEditingSecondary ? (
+                  <div>
+                    <div className={styles.multiSelectContainer}>
+                      {availableSecondaryOptions.map((item) => (
+                        <div key={item.key} className={styles.multiSelectItem}>
+                          <input
+                            type="checkbox"
+                            id={`secondary-${item.key}`}
+                            checked={secondaryServiceTypeIds.includes(
+                              Number(item.key),
+                            )}
+                            onChange={(e) =>
+                              handleSecondaryCheckboxChange(
+                                Number(item.key),
+                                e.target.checked,
+                              )
+                            }
+                          />
+                          <label
+                            htmlFor={`secondary-${item.key}`}
+                            className={styles.multiSelectLabel}
+                          >
+                            {item.value}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="d-flex gap-2 align-items-center mt-2">
+                      <SaveButton
+                        clickHandler={handleSaveSecondary}
+                        label={'Save'}
+                        variant={'primary'}
+                        isDisabled={updatingSecondary}
+                      />
+                      <CancelButton
+                        clickHandler={handleCancelSecondary}
+                        label={'Cancel'}
+                        variant={'tertiary'}
+                        isDisabled={false}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="d-flex gap-2 align-items-center">
+                    <div
+                      onClick={() => setIsEditingSecondary(true)}
+                      className={styles.clickableText}
+                    >
+                      {secondaryServiceTypeIds.length > 0
+                        ? secondaryServiceTypeIds
+                            .map(
+                              (id) =>
+                                serviceTypesList?.getApplicationServiceTypes?.data?.find(
+                                  (item) => item.key === id.toString(),
+                                )?.value,
+                            )
+                            .filter(Boolean)
+                            .join(', ')
+                        : 'Click to set secondary service types'}
+                    </div>
+                    {secondaryServiceTypeIds.length > 0 && (
+                      <CancelButton
+                        clickHandler={handleClearSecondary}
+                        label={'Clear'}
+                        variant={'secondary'}
+                        isDisabled={false}
+                      />
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
