@@ -363,29 +363,42 @@ export const Details: React.FC<IDetailsProps> = ({
                   </div>
                 ) : (
                   <div className="d-flex gap-2 align-items-center">
-                    <div
-                      onClick={() => setIsEditingSecondary(true)}
-                      className={styles.clickableText}
-                    >
-                      {secondaryServiceTypeIds.length > 0
-                        ? secondaryServiceTypeIds
-                            .map(
-                              (id) =>
-                                serviceTypesList?.getApplicationServiceTypes?.data?.find(
-                                  (item) => item.key === id.toString(),
-                                )?.value,
-                            )
-                            .filter(Boolean)
-                            .join(', ')
-                        : 'Click to set secondary service types'}
-                    </div>
+                    {secondaryServiceTypeIds.length > 0 ? (
+                      <ul className={styles.secondaryServiceTypeList}>
+                        {secondaryServiceTypeIds
+                          .map((id) =>
+                            serviceTypesList?.getApplicationServiceTypes?.data?.find(
+                              (item) => item.key === id.toString(),
+                            ),
+                          )
+                          .filter(Boolean)
+                          .map((item) => (
+                            <li key={item.key}>{item.value}</li>
+                          ))}
+                      </ul>
+                    ) : (
+                      <div
+                        onClick={() => setIsEditingSecondary(true)}
+                        className={styles.clickableText}
+                      >
+                        Click to set secondary service types
+                      </div>
+                    )}
                     {secondaryServiceTypeIds.length > 0 && (
-                      <CancelButton
-                        clickHandler={handleClearSecondary}
-                        label={'Clear'}
-                        variant={'secondary'}
-                        isDisabled={false}
-                      />
+                      <>
+                        <div
+                          onClick={() => setIsEditingSecondary(true)}
+                          className={styles.clickableTextSmall}
+                        >
+                          Edit
+                        </div>
+                        <CancelButton
+                          clickHandler={handleClearSecondary}
+                          label={'Clear'}
+                          variant={'secondary'}
+                          isDisabled={false}
+                        />
+                      </>
                     )}
                   </div>
                 )}
