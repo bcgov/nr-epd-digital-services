@@ -169,7 +169,6 @@
   color: white;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .column-select-grid {
     grid-template-columns: repeat(2, 1fr);
