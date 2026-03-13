@@ -160,6 +160,9 @@ export const Details: React.FC<IDetailsProps> = ({
       (item) => item.key !== serviceTypeId,
     ) || [];
 
+  const isCSRApplication =
+    application?.appType?.description === 'Contaminated Site Request';
+
   const {
     data: siteData,
     loading: siteDataLoading,
@@ -261,149 +264,156 @@ export const Details: React.FC<IDetailsProps> = ({
               </div>
             </div>
 
-            <div className={cx(styles.row, styles.rowGrid2)}>
-              <div className={styles.cell}>
-                <label>Primary Application Service Type</label>
-                {isEditingServiceType ? (
-                  <div className="d-flex gap-2 align-items-center">
-                    <DropdownInput
-                      label={''}
-                      placeholder={'Select Service Type'}
-                      options={serviceTypesList?.getApplicationServiceTypes?.data?.map(
-                        (item) => ({
-                          key: item.key,
-                          value: item.value,
-                        }),
-                      )}
-                      value={serviceTypeId}
-                      onChange={setServiceTypeId}
-                      type={FormFieldType.DropDown}
-                      isEditing={true}
-                    />
-                    <SaveButton
-                      clickHandler={handleSaveServiceType}
-                      label={'Save'}
-                      variant={'primary'}
-                      isDisabled={updating || !serviceTypeId}
-                    />
-                    <CancelButton
-                      clickHandler={handleCancelEdit}
-                      label={'Cancel'}
-                      variant={'tertiary'}
-                      isDisabled={false}
-                    />
-                  </div>
-                ) : (
-                  <div className="d-flex gap-2 align-items-center">
-                    <div
-                      onClick={() => setIsEditingServiceType(true)}
-                      className={styles.clickableText}
-                    >
-                      {serviceTypesList?.getApplicationServiceTypes?.data?.find(
-                        (item) => item.key === serviceTypeId,
-                      )?.value || 'Click to set CSSA service type'}
-                    </div>
-                    {application?.serviceTypeId && (
-                      <CancelButton
-                        clickHandler={handleClearServiceType}
-                        label={'Clear'}
-                        variant={'secondary'}
-                        isDisabled={false}
-                      />
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className={cx(styles.row, styles.rowGrid2)}>
-              <div className={styles.cell}>
-                <label>Secondary Application Service Types</label>
-                {isEditingSecondary ? (
-                  <div>
-                    <div className={styles.multiSelectContainer}>
-                      {availableSecondaryOptions.map((item) => (
-                        <div key={item.key} className={styles.multiSelectItem}>
-                          <input
-                            type="checkbox"
-                            id={`secondary-${item.key}`}
-                            checked={secondaryServiceTypeIds.includes(
-                              Number(item.key),
-                            )}
-                            onChange={(e) =>
-                              handleSecondaryCheckboxChange(
-                                Number(item.key),
-                                e.target.checked,
-                              )
-                            }
-                          />
-                          <label
-                            htmlFor={`secondary-${item.key}`}
-                            className={styles.multiSelectLabel}
-                          >
-                            {item.value}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="d-flex gap-2 align-items-center mt-2">
-                      <SaveButton
-                        clickHandler={handleSaveSecondary}
-                        label={'Save'}
-                        variant={'primary'}
-                        isDisabled={updatingSecondary}
-                      />
-                      <CancelButton
-                        clickHandler={handleCancelSecondary}
-                        label={'Cancel'}
-                        variant={'tertiary'}
-                        isDisabled={false}
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="d-flex gap-2 align-items-center">
-                    {secondaryServiceTypeIds.length > 0 ? (
-                      <ul className={styles.secondaryServiceTypeList}>
-                        {secondaryServiceTypeIds
-                          .map((id) =>
-                            serviceTypesList?.getApplicationServiceTypes?.data?.find(
-                              (item) => item.key === id.toString(),
-                            ),
-                          )
-                          .filter(Boolean)
-                          .map((item) => (
-                            <li key={item.key}>{item.value}</li>
-                          ))}
-                      </ul>
-                    ) : (
-                      <div
-                        onClick={() => setIsEditingSecondary(true)}
-                        className={styles.clickableText}
-                      >
-                        Click to set secondary service types
-                      </div>
-                    )}
-                    {secondaryServiceTypeIds.length > 0 && (
-                      <>
-                        <div
-                          onClick={() => setIsEditingSecondary(true)}
-                          className={styles.clickableTextSmall}
-                        >
-                          Edit
-                        </div>
+            {isCSRApplication && (
+              <>
+                <div className={cx(styles.row, styles.rowGrid2)}>
+                  <div className={styles.cell}>
+                    <label>Primary Application Service Type</label>
+                    {isEditingServiceType ? (
+                      <div className="d-flex gap-2 align-items-center">
+                        <DropdownInput
+                          label={''}
+                          placeholder={'Select Service Type'}
+                          options={serviceTypesList?.getApplicationServiceTypes?.data?.map(
+                            (item) => ({
+                              key: item.key,
+                              value: item.value,
+                            }),
+                          )}
+                          value={serviceTypeId}
+                          onChange={setServiceTypeId}
+                          type={FormFieldType.DropDown}
+                          isEditing={true}
+                        />
+                        <SaveButton
+                          clickHandler={handleSaveServiceType}
+                          label={'Save'}
+                          variant={'primary'}
+                          isDisabled={updating || !serviceTypeId}
+                        />
                         <CancelButton
-                          clickHandler={handleClearSecondary}
-                          label={'Clear'}
-                          variant={'secondary'}
+                          clickHandler={handleCancelEdit}
+                          label={'Cancel'}
+                          variant={'tertiary'}
                           isDisabled={false}
                         />
-                      </>
+                      </div>
+                    ) : (
+                      <div className="d-flex gap-2 align-items-center">
+                        <div
+                          onClick={() => setIsEditingServiceType(true)}
+                          className={styles.clickableText}
+                        >
+                          {serviceTypesList?.getApplicationServiceTypes?.data?.find(
+                            (item) => item.key === serviceTypeId,
+                          )?.value || 'Click to set CSSA service type'}
+                        </div>
+                        {application?.serviceTypeId && (
+                          <CancelButton
+                            clickHandler={handleClearServiceType}
+                            label={'Clear'}
+                            variant={'secondary'}
+                            isDisabled={false}
+                          />
+                        )}
+                      </div>
                     )}
                   </div>
-                )}
-              </div>
-            </div>
+                </div>
+
+                <div className={cx(styles.row, styles.rowGrid2)}>
+                  <div className={styles.cell}>
+                    <label>Secondary Application Service Types</label>
+                    {isEditingSecondary ? (
+                      <div>
+                        <div className={styles.multiSelectContainer}>
+                          {availableSecondaryOptions.map((item) => (
+                            <div
+                              key={item.key}
+                              className={styles.multiSelectItem}
+                            >
+                              <input
+                                type="checkbox"
+                                id={`secondary-${item.key}`}
+                                checked={secondaryServiceTypeIds.includes(
+                                  Number(item.key),
+                                )}
+                                onChange={(e) =>
+                                  handleSecondaryCheckboxChange(
+                                    Number(item.key),
+                                    e.target.checked,
+                                  )
+                                }
+                              />
+                              <label
+                                htmlFor={`secondary-${item.key}`}
+                                className={styles.multiSelectLabel}
+                              >
+                                {item.value}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="d-flex gap-2 align-items-center mt-2">
+                          <SaveButton
+                            clickHandler={handleSaveSecondary}
+                            label={'Save'}
+                            variant={'primary'}
+                            isDisabled={updatingSecondary}
+                          />
+                          <CancelButton
+                            clickHandler={handleCancelSecondary}
+                            label={'Cancel'}
+                            variant={'tertiary'}
+                            isDisabled={false}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="d-flex gap-2 align-items-center">
+                        {secondaryServiceTypeIds.length > 0 ? (
+                          <ul className={styles.secondaryServiceTypeList}>
+                            {secondaryServiceTypeIds
+                              .map((id) =>
+                                serviceTypesList?.getApplicationServiceTypes?.data?.find(
+                                  (item) => item.key === id.toString(),
+                                ),
+                              )
+                              .filter(Boolean)
+                              .map((item) => (
+                                <li key={item.key}>{item.value}</li>
+                              ))}
+                          </ul>
+                        ) : (
+                          <div
+                            onClick={() => setIsEditingSecondary(true)}
+                            className={styles.clickableText}
+                          >
+                            Click to set secondary service types
+                          </div>
+                        )}
+                        {secondaryServiceTypeIds.length > 0 && (
+                          <>
+                            <div
+                              onClick={() => setIsEditingSecondary(true)}
+                              className={styles.clickableTextSmall}
+                            >
+                              Edit
+                            </div>
+                            <CancelButton
+                              clickHandler={handleClearSecondary}
+                              label={'Clear'}
+                              variant={'secondary'}
+                              isDisabled={false}
+                            />
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         }
       />
