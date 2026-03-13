@@ -71,7 +71,7 @@ export const GetConfig = ({
       displayName: 'Role',
       active: true,
       graphQLPropertyName: 'roleId',
-      columnSize: ColumnSize.Small,
+      columnSize: ColumnSize.Double,
       displayType: {
         type: FormFieldType.DropDown,
         label: '',
