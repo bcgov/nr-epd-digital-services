@@ -178,7 +178,7 @@ INNER JOIN CATS.app_service aps
 INNER JOIN CATS.service sv 
 ON sv.id = aps.service_id
 WHERE app.site_id = ${siteId}
-  AND apt.participant_role_id =  ${roleId};`;
+  AND apt.participant_role_id =  ${roleId} AND SV.abbrev not in ('IR', 'FCR') ;`;
   };
 
   getStaffWithCurrentFactorsQueryForApplicationServiceType = (
