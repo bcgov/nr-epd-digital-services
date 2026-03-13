@@ -31,7 +31,7 @@ const mockApplicationData = {
           queuedDate: '2024-01-02',
           endDate: null,
           outcome: { description: 'Pending' },
-          appType: { description: 'CSR' },
+          appType: { description: 'Contaminated Site Request' },
           currentStatus: { description: 'In Review' },
           siteType: { description: 'Residential' },
           reviewProcess: { description: 'Standard' },
@@ -179,6 +179,7 @@ describe('Details Component - Service Type Functionality', () => {
             data: {
               ...mockApplicationData.result.data.getApplicationDetailsById.data,
               serviceTypeId: null,
+              appType: { description: 'Contaminated Site Request' },
             },
           },
         },
@@ -255,6 +256,7 @@ describe('Details Component - Service Type Functionality', () => {
             data: {
               ...mockApplicationData.result.data.getApplicationDetailsById.data,
               serviceTypeId: null,
+              appType: { description: 'Contaminated Site Request' },
             },
           },
         },
@@ -391,6 +393,7 @@ describe('Details Component - Service Type Functionality', () => {
             data: {
               ...mockApplicationData.result.data.getApplicationDetailsById.data,
               serviceTypeId: null,
+              appType: { description: 'Contaminated Site Request' },
             },
           },
         },
