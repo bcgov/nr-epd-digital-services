@@ -12,6 +12,22 @@ export type UpdateStaffAssignedMutationVariables = Types.Exact<{
 
 export type UpdateStaffAssignedMutation = { __typename?: 'Mutation', updateStaffAssigned: { __typename?: 'ResponseDto', message?: string | null, httpStatusCode?: number | null, success?: boolean | null } };
 
+export type UpdateApplicationServiceTypeMutationVariables = Types.Exact<{
+  applicationId: Types.Scalars['Int']['input'];
+  serviceTypeId?: Types.InputMaybe<Types.Scalars['Int']['input']>;
+}>;
+
+
+export type UpdateApplicationServiceTypeMutation = { __typename?: 'Mutation', updateApplicationServiceType: { __typename?: 'BaseHttpResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null } };
+
+export type UpdateSecondaryServiceTypesMutationVariables = Types.Exact<{
+  applicationId: Types.Scalars['Int']['input'];
+  serviceTypeIds: Array<Types.Scalars['Int']['input']> | Types.Scalars['Int']['input'];
+}>;
+
+
+export type UpdateSecondaryServiceTypesMutation = { __typename?: 'Mutation', updateSecondaryServiceTypes: { __typename?: 'BaseHttpResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null } };
+
 export type GetStaffAssignedByAppIdQueryVariables = Types.Exact<{
   applicationId: Types.Scalars['Int']['input'];
 }>;
@@ -86,6 +102,84 @@ export function useUpdateStaffAssignedMutation(baseOptions?: Apollo.MutationHook
 export type UpdateStaffAssignedMutationHookResult = ReturnType<typeof useUpdateStaffAssignedMutation>;
 export type UpdateStaffAssignedMutationResult = Apollo.MutationResult<UpdateStaffAssignedMutation>;
 export type UpdateStaffAssignedMutationOptions = Apollo.BaseMutationOptions<UpdateStaffAssignedMutation, UpdateStaffAssignedMutationVariables>;
+export const UpdateApplicationServiceTypeDocument = gql`
+    mutation updateApplicationServiceType($applicationId: Int!, $serviceTypeId: Int) {
+  updateApplicationServiceType(
+    applicationId: $applicationId
+    serviceTypeId: $serviceTypeId
+  ) {
+    message
+    httpStatusCode
+    success
+  }
+}
+    `;
+export type UpdateApplicationServiceTypeMutationFn = Apollo.MutationFunction<UpdateApplicationServiceTypeMutation, UpdateApplicationServiceTypeMutationVariables>;
+
+/**
+ * __useUpdateApplicationServiceTypeMutation__
+ *
+ * To run a mutation, you first call `useUpdateApplicationServiceTypeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateApplicationServiceTypeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateApplicationServiceTypeMutation, { data, loading, error }] = useUpdateApplicationServiceTypeMutation({
+ *   variables: {
+ *      applicationId: // value for 'applicationId'
+ *      serviceTypeId: // value for 'serviceTypeId'
+ *   },
+ * });
+ */
+export function useUpdateApplicationServiceTypeMutation(baseOptions?: Apollo.MutationHookOptions<UpdateApplicationServiceTypeMutation, UpdateApplicationServiceTypeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateApplicationServiceTypeMutation, UpdateApplicationServiceTypeMutationVariables>(UpdateApplicationServiceTypeDocument, options);
+      }
+export type UpdateApplicationServiceTypeMutationHookResult = ReturnType<typeof useUpdateApplicationServiceTypeMutation>;
+export type UpdateApplicationServiceTypeMutationResult = Apollo.MutationResult<UpdateApplicationServiceTypeMutation>;
+export type UpdateApplicationServiceTypeMutationOptions = Apollo.BaseMutationOptions<UpdateApplicationServiceTypeMutation, UpdateApplicationServiceTypeMutationVariables>;
+export const UpdateSecondaryServiceTypesDocument = gql`
+    mutation updateSecondaryServiceTypes($applicationId: Int!, $serviceTypeIds: [Int!]!) {
+  updateSecondaryServiceTypes(
+    applicationId: $applicationId
+    serviceTypeIds: $serviceTypeIds
+  ) {
+    message
+    httpStatusCode
+    success
+  }
+}
+    `;
+export type UpdateSecondaryServiceTypesMutationFn = Apollo.MutationFunction<UpdateSecondaryServiceTypesMutation, UpdateSecondaryServiceTypesMutationVariables>;
+
+/**
+ * __useUpdateSecondaryServiceTypesMutation__
+ *
+ * To run a mutation, you first call `useUpdateSecondaryServiceTypesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSecondaryServiceTypesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSecondaryServiceTypesMutation, { data, loading, error }] = useUpdateSecondaryServiceTypesMutation({
+ *   variables: {
+ *      applicationId: // value for 'applicationId'
+ *      serviceTypeIds: // value for 'serviceTypeIds'
+ *   },
+ * });
+ */
+export function useUpdateSecondaryServiceTypesMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSecondaryServiceTypesMutation, UpdateSecondaryServiceTypesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSecondaryServiceTypesMutation, UpdateSecondaryServiceTypesMutationVariables>(UpdateSecondaryServiceTypesDocument, options);
+      }
+export type UpdateSecondaryServiceTypesMutationHookResult = ReturnType<typeof useUpdateSecondaryServiceTypesMutation>;
+export type UpdateSecondaryServiceTypesMutationResult = Apollo.MutationResult<UpdateSecondaryServiceTypesMutation>;
+export type UpdateSecondaryServiceTypesMutationOptions = Apollo.BaseMutationOptions<UpdateSecondaryServiceTypesMutation, UpdateSecondaryServiceTypesMutationVariables>;
 export const GetStaffAssignedByAppIdDocument = gql`
     query getStaffAssignedByAppId($applicationId: Int!) {
   getStaffAssignedByAppId(applicationId: $applicationId) {

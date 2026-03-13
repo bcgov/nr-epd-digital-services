@@ -1,4 +1,4 @@
-import { Args, Int, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { LoggerService } from '../../logger/logger.service';
 import { ApplicationService } from '../../services/application/application.service';
 import { ApplicationDetailsResponse } from '../../dto/response/application/applicationResponse';
@@ -6,6 +6,7 @@ import { GenericResponseProvider } from '../../dto/response/genericResponseProvi
 import { HttpStatus } from '@nestjs/common';
 import { ViewApplicationDetails } from '../../dto/application/viewApplicationDetails.dto';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
+import { BaseHttpResponse } from '../../dto/response/baseHttpResponse';
 
 @Resolver()
 export class ApplicationDetailsResolver {
@@ -20,7 +21,7 @@ export class ApplicationDetailsResolver {
   })
   async getApplicationDetailsById(
     @Args('id', { type: () => Int }) id: number,
-    @AuthenticatedUser() user: any
+    @AuthenticatedUser() user: any,
   ) {
     this.loggerService.log(
       'ApplicationDetailsResolver.getApplicationDetailsById() start',
@@ -29,7 +30,7 @@ export class ApplicationDetailsResolver {
     try {
       const result = await this.applicationService.findApplicationDetailsById(
         id,
-        user
+        user,
       );
 
       if (result) {
@@ -63,6 +64,91 @@ export class ApplicationDetailsResolver {
         HttpStatus.INTERNAL_SERVER_ERROR,
         false,
         null,
+      );
+    }
+  }
+
+  @Mutation(() => BaseHttpResponse, {
+    name: 'updateApplicationServiceType',
+  })
+  async updateApplicationServiceType(
+    @Args('applicationId', { type: () => Int }) applicationId: number,
+    @Args('serviceTypeId', { type: () => Int, nullable: true })
+    serviceTypeId: number | null,
+    @AuthenticatedUser() user: any,
+  ): Promise<BaseHttpResponse> {
+    this.loggerService.log(
+      'ApplicationDetailsResolver.updateApplicationServiceType() start',
+    );
+
+    try {
+      await this.applicationService.updateApplicationServiceType(
+        applicationId,
+        serviceTypeId,
+        user,
+      );
+
+      this.loggerService.log(
+        'ApplicationDetailsResolver.updateApplicationServiceType() RES:200 end',
+      );
+
+      return new BaseHttpResponse(
+        'Application service type updated successfully',
+        HttpStatus.OK,
+        true,
+      );
+    } catch (error) {
+      this.loggerService.error(
+        'ApplicationDetailsResolver.updateApplicationServiceType() error',
+        error,
+      );
+
+      return new BaseHttpResponse(
+        error.message || 'Failed to update application service type',
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+        false,
+      );
+    }
+  }
+
+  @Mutation(() => BaseHttpResponse, {
+    name: 'updateSecondaryServiceTypes',
+  })
+  async updateSecondaryServiceTypes(
+    @Args('applicationId', { type: () => Int }) applicationId: number,
+    @Args('serviceTypeIds', { type: () => [Int] }) serviceTypeIds: number[],
+    @AuthenticatedUser() user: any,
+  ): Promise<BaseHttpResponse> {
+    this.loggerService.log(
+      'ApplicationDetailsResolver.updateSecondaryServiceTypes() start',
+    );
+
+    try {
+      await this.applicationService.updateSecondaryServiceTypes(
+        applicationId,
+        serviceTypeIds,
+        user,
+      );
+
+      this.loggerService.log(
+        'ApplicationDetailsResolver.updateSecondaryServiceTypes() RES:200 end',
+      );
+
+      return new BaseHttpResponse(
+        'Secondary service types updated successfully',
+        HttpStatus.OK,
+        true,
+      );
+    } catch (error) {
+      this.loggerService.error(
+        'ApplicationDetailsResolver.updateSecondaryServiceTypes() error',
+        error,
+      );
+
+      return new BaseHttpResponse(
+        error.message || 'Failed to update secondary service types',
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+        false,
       );
     }
   }

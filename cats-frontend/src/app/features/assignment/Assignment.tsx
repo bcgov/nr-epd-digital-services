@@ -36,8 +36,7 @@ const Assignment: React.FC<AssignmentProps> = () => {
 
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [messageContent, setMessageContent] = useState('');
-  const [assignmentServiceType, setAssignmentServiceType] =
-    useState<string>('');
+
   const [staffRecords, setStaffRecords] = useState<any[]>([]);
 
   const cleanStaffName = (fullName: string): string => {
@@ -46,6 +45,34 @@ const Assignment: React.FC<AssignmentProps> = () => {
       .replace(/\s*-\s*\(Statutory Decision Maker\)\s*$/i, '')
       .replace(/\s*-\s*\(Mentor\)\s*$/i, '')
       .trim();
+  };
+
+  const processStaffByRole = (staff: any[]) => {
+    const staffMap = new Map<number, { records: any[]; latest: any }>();
+
+    staff.forEach((record) => {
+      const personId = record.personId;
+      if (!staffMap.has(personId)) {
+        staffMap.set(personId, { records: [], latest: record });
+      }
+      const entry = staffMap.get(personId)!;
+      entry.records.push(record);
+
+      if (
+        !entry.latest.endDate ||
+        (record.endDate &&
+          new Date(record.endDate) > new Date(entry.latest.endDate)) ||
+        (!record.endDate && entry.latest.endDate) ||
+        record.applicationId > entry.latest.applicationId
+      ) {
+        entry.latest = record;
+      }
+    });
+
+    return Array.from(staffMap.values()).map(({ records, latest }) => ({
+      ...latest,
+      recordCount: records.length,
+    }));
   };
 
   const applicationId = id ? Number(id) : 0;
@@ -73,31 +100,24 @@ const Assignment: React.FC<AssignmentProps> = () => {
     refetch: staffMemebersRefetchForServiceType,
   } = useGetAllActiveStaffMembersForApplicationServiceTypeQuery({
     variables: {
-      applicationServiceTypeId: assignmentServiceType
-        ? Number(assignmentServiceType)
-        : 0,
+      applicationServiceTypeId: application?.serviceTypeId || 0,
     },
   });
 
   console.log('Before useGetStaffGroupedByRoleForServiceTypeQuery:', {
-    applicationServiceTypeId: assignmentServiceType
-      ? Number(assignmentServiceType)
-      : 0,
+    applicationServiceTypeId: application?.serviceTypeId || 0,
     siteId: application?.siteId ?? undefined,
   });
 
   const { data: staffGroupedByRole, refetch: staffGroupedByRoleRefetch } =
     useGetStaffGroupedByRoleForServiceTypeQuery({
       variables: {
-        applicationServiceTypeId: assignmentServiceType
-          ? Number(assignmentServiceType)
-          : 0,
+        applicationServiceTypeId: application?.serviceTypeId || 0,
         siteId: application?.siteId ?? undefined,
       },
       skip: !application?.siteId && application?.siteId !== 0,
     });
 
-  const { data: serviceTypesList } = useGetApplicationServiceTypesQuery();
   const [updateStaffAssigned] = useUpdateStaffAssignedMutation();
 
   const {
@@ -160,37 +180,11 @@ const Assignment: React.FC<AssignmentProps> = () => {
       })) as [{ key: string; value: string }],
   });
 
-  useEffect(() => {
-    if (assignmentServiceType && application?.siteId) {
-      staffMemebersRefetchForServiceType({
-        applicationServiceTypeId: Number(assignmentServiceType),
-      });
-      staffGroupedByRoleRefetch({
-        applicationServiceTypeId: Number(assignmentServiceType),
-        siteId: application?.siteId || undefined,
-      });
-    }
-  }, [assignmentServiceType, application?.siteId]);
-
-  useEffect(() => {
-    setStaffRecords(staffData?.getStaffAssignedByAppId?.data?.staffList || []);
-    let tempServiceType =
-      staffData?.getStaffAssignedByAppId?.data?.applicationServiceTypeId;
-
-    if (tempServiceType === undefined || tempServiceType === null) {
-      setAssignmentServiceType('');
-    } else {
-      setAssignmentServiceType(tempServiceType.toString());
-    }
-  }, [staffData]);
-
   const handleSave = () => {
-    if (
-      assignmentServiceType === undefined ||
-      assignmentServiceType === null ||
-      assignmentServiceType === ''
-    ) {
-      setMessageContent('Please select an Application Service Type.');
+    if (!application?.serviceTypeId) {
+      setMessageContent(
+        'Primary Application Service Type must be set before continuing.',
+      );
       setIsMessageModalOpen(true);
       return;
     }
@@ -208,7 +202,9 @@ const Assignment: React.FC<AssignmentProps> = () => {
         item.startDate === '',
     );
     if (inCompleteRecords.length > 0) {
-      setMessageContent('Please fill all the required fields.');
+      setMessageContent(
+        'Please ensure that staff, role, and start date are provided.',
+      );
       setIsMessageModalOpen(true);
     }
     if (id === undefined || id === null || id === '') {
@@ -244,7 +240,7 @@ const Assignment: React.FC<AssignmentProps> = () => {
       variables: {
         staffInput: tempStaffRecords,
         applicationId: parseInt(id || '0'),
-        applicationServiceTypeId: parseInt(assignmentServiceType),
+        applicationServiceTypeId: application?.serviceTypeId,
       },
       onCompleted: () => {
         navigate(-1);
@@ -259,6 +255,22 @@ const Assignment: React.FC<AssignmentProps> = () => {
     staffMemebersRefetch();
     staffRefetch({ applicationId: applicationId });
   }, []);
+
+  useEffect(() => {
+    if (staffData?.getStaffAssignedByAppId?.data?.staffList) {
+      const existingStaff =
+        staffData.getStaffAssignedByAppId.data.staffList.map((staff) => ({
+          id: staff.id,
+          personId: staff.personId.toString(),
+          roleId: staff.roleId.toString(),
+          startDate: staff.startDate,
+          endDate: staff.endDate,
+          applicationId: staff.applicationId,
+          currentCapacity: staff.currentCapacity,
+        }));
+      setStaffRecords(existingStaff);
+    }
+  }, [staffData]);
 
   return (
     <div role="assign staff" className="assign-section page-continer">
@@ -312,32 +324,14 @@ const Assignment: React.FC<AssignmentProps> = () => {
       <div className="parent-box">
         <div className="assignment-options">
           <span className="panelLabel">Manage Staff</span>
-          <DropdownInput
-            label={'Application Service Type'}
-            customLabelCss={''}
-            placeholder={'Select Service Type'}
-            options={serviceTypesList?.getApplicationServiceTypes?.data?.map(
-              (item) => ({
-                key: item.key,
-                value: item.value,
-              }),
-            )}
-            customInputTextCss="panelLabel"
-            value={assignmentServiceType}
-            onChange={(value) => {
-              setAssignmentServiceType(value);
-            }}
-            type={FormFieldType.DropDown}
-            isEditing={true}
-          />
         </div>
         <div>
           {staffGroupedByRole?.getStaffGroupedByRoleForServiceType?.data && (
             <div className="staff-by-role-section">
               {staffGroupedByRole.getStaffGroupedByRoleForServiceType.data.map(
                 (roleGroup) => {
-                  const availableStaff = roleGroup.staff
-                    .filter(
+                  const availableStaff = processStaffByRole(
+                    roleGroup.staff.filter(
                       (staff) =>
                         !staffRecords.some(
                           (record) =>
@@ -347,11 +341,11 @@ const Assignment: React.FC<AssignmentProps> = () => {
                               roleGroup.roleId.toString() &&
                             record.action !== 'remove',
                         ),
-                    )
-                    .sort(
-                      (a, b) =>
-                        (a.currentCapacity || 0) - (b.currentCapacity || 0),
-                    );
+                    ),
+                  ).sort(
+                    (a, b) =>
+                      (a.currentCapacity || 0) - (b.currentCapacity || 0),
+                  );
                   return (
                     <div key={roleGroup.roleId} className="role-group">
                       <h3 className="role-heading">
@@ -376,12 +370,12 @@ const Assignment: React.FC<AssignmentProps> = () => {
                                   setStaffRecords([...staffRecords, newRecord]);
                                 } else {
                                   setMessageContent(
-                                    'No permission for the selected service type',
+                                    'The staff member does not have permission for the selected service type',
                                   );
                                   setIsMessageModalOpen(true);
                                 }
                               }}
-                              title={`App Type: ${staff.appType || 'N/A'} | End Date: ${staff.endDate ? new Date(staff.endDate).toLocaleDateString() : 'N/A'} | App ID: ${staff.applicationId || 'N/A'}`}
+                              title={`App Type: ${staff.appType || 'N/A'} | Application End Date: ${staff.endDate ? new Date(staff.endDate).toLocaleDateString() : 'N/A'} | App ID: ${staff.applicationId || 'N/A'} | Total assignments: ${staff.recordCount}`}
                             >
                               {cleanStaffName(staff.personFullName)}
                               {staff.appType && (
@@ -393,9 +387,14 @@ const Assignment: React.FC<AssignmentProps> = () => {
                               {staff.endDate && (
                                 <span className="staff-pill-info">
                                   {' '}
-                                  (Ended:{' '}
+                                  (App Ended:{' '}
                                   {new Date(staff.endDate).toLocaleDateString()}
                                   )
+                                </span>
+                              )}
+                              {staff.recordCount > 1 && (
+                                <span className="staff-pill-count">
+                                  +{staff.recordCount}
                                 </span>
                               )}
                               <PlusCircle className="fa-regular fa-circle-plus"></PlusCircle>
@@ -403,7 +402,7 @@ const Assignment: React.FC<AssignmentProps> = () => {
                           ))
                         ) : (
                           <span className="no-staff-message">
-                            No eligible staff available for this role
+                            No staff assinged.
                           </span>
                         )}
                       </div>

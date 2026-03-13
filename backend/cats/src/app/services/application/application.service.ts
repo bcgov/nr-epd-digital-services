@@ -11,6 +11,7 @@ import { AppStatus } from '../../entities/appStatus.entity';
 import { StatusTypeService } from '../statusType/statusType.service';
 import { UpdateApplicationStatusDto } from '../../dto/application/updateApplicationStatus.dto';
 import { ApplicationSite } from '../../entities/applicationSite.entity';
+import { ApplicationSecondaryServiceType } from '../../entities/applicationSecondaryServiceType.entity';
 
 @Injectable()
 export class ApplicationService {
@@ -21,6 +22,8 @@ export class ApplicationService {
     private readonly appStatusRepository: Repository<AppStatus>,
     @InjectRepository(ApplicationSite)
     private readonly applicationSiteRepository: Repository<ApplicationSite>,
+    @InjectRepository(ApplicationSecondaryServiceType)
+    private readonly secondaryServiceTypeRepository: Repository<ApplicationSecondaryServiceType>,
     private readonly loggerService: LoggerService,
     private readonly appTypeService: AppTypeService,
     private readonly dashboardService: DashboardService,
@@ -299,6 +302,7 @@ export class ApplicationService {
           'housingApplicationXrefs',
           'appParticipants',
           'appParticipants.organization',
+          'secondaryServiceTypes',
         ],
       });
 
@@ -362,6 +366,9 @@ export class ApplicationService {
         priority: currentPriority || null,
         isHousing: application.housingApplicationXrefs?.length > 0,
         isTaxExempt: isTaxExempt,
+        serviceTypeId: application.serviceTypeId,
+        secondaryServiceTypeIds:
+          application.secondaryServiceTypes?.map((s) => s.serviceTypeId) || [],
       };
     } catch (err) {
       this.loggerService.error(
@@ -375,6 +382,103 @@ export class ApplicationService {
     } finally {
       this.loggerService.log(
         'ApplicationService.findApplicationDetailsById() end',
+      );
+    }
+  }
+
+  async updateApplicationServiceType(
+    applicationId: number,
+    serviceTypeId: number | null,
+    user: any,
+  ): Promise<void> {
+    this.loggerService.log(
+      'ApplicationService.updateApplicationServiceType() start',
+    );
+
+    try {
+      const application = await this.applicationRepository.findOne({
+        where: { id: applicationId },
+      });
+
+      if (!application) {
+        this.loggerService.warn(
+          `Application not found with ID: ${applicationId}`,
+        );
+        throw new HttpException('Application not found', HttpStatus.NOT_FOUND);
+      }
+
+      application.serviceTypeId = serviceTypeId;
+      application.updatedBy = user?.given_name + ' ' + user?.family_name;
+      application.updatedDateTime = new Date();
+
+      await this.applicationRepository.save(application);
+
+      this.loggerService.log(
+        `Application service type updated successfully for ID: ${applicationId}`,
+      );
+    } catch (err) {
+      this.loggerService.error(
+        'Exception occurred in ApplicationService.updateApplicationServiceType()',
+        JSON.stringify(err),
+      );
+      throw new HttpException(
+        'Failed to update application service type',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    } finally {
+      this.loggerService.log(
+        'ApplicationService.updateApplicationServiceType() end',
+      );
+    }
+  }
+
+  async updateSecondaryServiceTypes(
+    applicationId: number,
+    serviceTypeIds: number[],
+    user: any,
+  ): Promise<void> {
+    this.loggerService.log(
+      'ApplicationService.updateSecondaryServiceTypes() start',
+    );
+
+    try {
+      await this.secondaryServiceTypeRepository.manager.transaction(
+        async (transactionalEntityManager) => {
+          await transactionalEntityManager.delete(
+            ApplicationSecondaryServiceType,
+            { applicationId },
+          );
+
+          if (serviceTypeIds?.length > 0) {
+            const records = serviceTypeIds.map((serviceTypeId) => ({
+              applicationId,
+              serviceTypeId,
+              createdBy: user?.given_name + ' ' + user?.family_name,
+              createdDateTime: new Date(),
+            }));
+            await transactionalEntityManager.save(
+              ApplicationSecondaryServiceType,
+              records,
+            );
+          }
+        },
+      );
+
+      this.loggerService.log(
+        `Secondary service types updated successfully for application ID: ${applicationId}`,
+      );
+    } catch (err) {
+      this.loggerService.error(
+        'Exception occurred in ApplicationService.updateSecondaryServiceTypes()',
+        JSON.stringify(err),
+      );
+      throw new HttpException(
+        'Failed to update secondary service types',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    } finally {
+      this.loggerService.log(
+        'ApplicationService.updateSecondaryServiceTypes() end',
       );
     }
   }

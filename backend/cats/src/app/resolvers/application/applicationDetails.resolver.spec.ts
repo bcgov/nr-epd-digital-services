@@ -17,6 +17,8 @@ describe('ApplicationDetailsResolver', () => {
           provide: ApplicationService,
           useValue: {
             findApplicationDetailsById: jest.fn(),
+            updateApplicationServiceType: jest.fn(),
+            updateSecondaryServiceTypes: jest.fn(),
           },
         },
         {
@@ -79,7 +81,10 @@ describe('ApplicationDetailsResolver', () => {
       const user = { givenName: 'John', identity_provider: UserTypeEum.IDIR };
       const result = await resolver.getApplicationDetailsById(999, user);
 
-      expect(service.findApplicationDetailsById).toHaveBeenCalledWith(999, user);
+      expect(service.findApplicationDetailsById).toHaveBeenCalledWith(
+        999,
+        user,
+      );
       expect(result).toMatchObject({
         message: 'Application not found',
         httpStatusCode: 404,
@@ -101,6 +106,143 @@ describe('ApplicationDetailsResolver', () => {
         httpStatusCode: 500,
         success: false,
         data: null,
+      });
+    });
+  });
+
+  describe('updateApplicationServiceType', () => {
+    it('should update application service type successfully', async () => {
+      service.updateApplicationServiceType = jest
+        .fn()
+        .mockResolvedValue(undefined);
+      const user = { given_name: 'John', family_name: 'Doe' };
+
+      const result = await resolver.updateApplicationServiceType(1, 5, user);
+
+      expect(service.updateApplicationServiceType).toHaveBeenCalledWith(
+        1,
+        5,
+        user,
+      );
+      expect(result).toMatchObject({
+        message: 'Application service type updated successfully',
+        httpStatusCode: 200,
+        success: true,
+      });
+    });
+
+    it('should handle null service type id', async () => {
+      service.updateApplicationServiceType = jest
+        .fn()
+        .mockResolvedValue(undefined);
+      const user = { given_name: 'John', family_name: 'Doe' };
+
+      const result = await resolver.updateApplicationServiceType(1, null, user);
+
+      expect(service.updateApplicationServiceType).toHaveBeenCalledWith(
+        1,
+        null,
+        user,
+      );
+      expect(result).toMatchObject({
+        message: 'Application service type updated successfully',
+        httpStatusCode: 200,
+        success: true,
+      });
+    });
+
+    it('should handle errors when updating service type', async () => {
+      const error = new Error('Update failed');
+      service.updateApplicationServiceType = jest.fn().mockRejectedValue(error);
+      const user = { given_name: 'John', family_name: 'Doe' };
+
+      const result = await resolver.updateApplicationServiceType(1, 5, user);
+
+      expect(service.updateApplicationServiceType).toHaveBeenCalledWith(
+        1,
+        5,
+        user,
+      );
+      expect(result).toMatchObject({
+        message: 'Update failed',
+        httpStatusCode: 500,
+        success: false,
+      });
+    });
+  });
+
+  describe('updateSecondaryServiceTypes', () => {
+    it('should update secondary service types successfully', async () => {
+      service.updateSecondaryServiceTypes = jest
+        .fn()
+        .mockResolvedValue(undefined);
+      const user = { given_name: 'John', family_name: 'Doe' };
+      const serviceTypeIds = [2, 3, 4];
+
+      const result = await resolver.updateSecondaryServiceTypes(
+        1,
+        serviceTypeIds,
+        user,
+      );
+
+      expect(service.updateSecondaryServiceTypes).toHaveBeenCalledWith(
+        1,
+        serviceTypeIds,
+        user,
+      );
+      expect(result).toMatchObject({
+        message: 'Secondary service types updated successfully',
+        httpStatusCode: 200,
+        success: true,
+      });
+    });
+
+    it('should handle empty array to clear secondary service types', async () => {
+      service.updateSecondaryServiceTypes = jest
+        .fn()
+        .mockResolvedValue(undefined);
+      const user = { given_name: 'John', family_name: 'Doe' };
+      const serviceTypeIds = [];
+
+      const result = await resolver.updateSecondaryServiceTypes(
+        1,
+        serviceTypeIds,
+        user,
+      );
+
+      expect(service.updateSecondaryServiceTypes).toHaveBeenCalledWith(
+        1,
+        serviceTypeIds,
+        user,
+      );
+      expect(result).toMatchObject({
+        message: 'Secondary service types updated successfully',
+        httpStatusCode: 200,
+        success: true,
+      });
+    });
+
+    it('should handle errors when updating secondary service types', async () => {
+      const error = new Error('Update failed');
+      service.updateSecondaryServiceTypes = jest.fn().mockRejectedValue(error);
+      const user = { given_name: 'John', family_name: 'Doe' };
+      const serviceTypeIds = [2, 3];
+
+      const result = await resolver.updateSecondaryServiceTypes(
+        1,
+        serviceTypeIds,
+        user,
+      );
+
+      expect(service.updateSecondaryServiceTypes).toHaveBeenCalledWith(
+        1,
+        serviceTypeIds,
+        user,
+      );
+      expect(result).toMatchObject({
+        message: 'Update failed',
+        httpStatusCode: 500,
+        success: false,
       });
     });
   });

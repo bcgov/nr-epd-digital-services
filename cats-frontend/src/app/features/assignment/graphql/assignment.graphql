@@ -14,6 +14,34 @@ mutation updateStaffAssigned(
   }
 }
 
+mutation updateApplicationServiceType(
+  $applicationId: Int!
+  $serviceTypeId: Int
+) {
+  updateApplicationServiceType(
+    applicationId: $applicationId
+    serviceTypeId: $serviceTypeId
+  ) {
+    message
+    httpStatusCode
+    success
+  }
+}
+
+mutation updateSecondaryServiceTypes(
+  $applicationId: Int!
+  $serviceTypeIds: [Int!]!
+) {
+  updateSecondaryServiceTypes(
+    applicationId: $applicationId
+    serviceTypeIds: $serviceTypeIds
+  ) {
+    message
+    httpStatusCode
+    success
+  }
+}
+
 query getStaffAssignedByAppId($applicationId: Int!) {
   getStaffAssignedByAppId(applicationId: $applicationId) {
     data {

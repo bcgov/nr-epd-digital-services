@@ -59,6 +59,13 @@ type SearchPersonResponse {
   persons: [ViewPerson!]!
 }
 
+type BaseHttpResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+}
+
 type PersonResponse {
   message: String
   httpStatusCode: Int
@@ -295,6 +302,8 @@ type ViewApplicationDetails {
   isTaxExempt: Boolean!
   formId: String
   submissionId: String
+  serviceTypeId: Float
+  secondaryServiceTypeIds: [Int!]
 }
 
 type ApplicationResponse {
@@ -747,6 +756,8 @@ type Mutation {
   updateApplicationHousing(input: UpdateHousingInputDto!): ApplicationHousingResponse!
   createApplication(application: CreateApplication!): ApplicationResponse!
   updateFormsflowAppId(appStatusInput: UpdateApplicationStatusDto!): ApplicationStatusResponse!
+  updateApplicationServiceType(applicationId: Int!, serviceTypeId: Int): BaseHttpResponse!
+  updateSecondaryServiceTypes(applicationId: Int!, serviceTypeIds: [Int!]!): BaseHttpResponse!
   createInvoice(invoice: CreateInvoice!): InvoiceResponse!
   deleteInvoice(invoiceId: Int!): InvoiceResponse!
   updateInvoice(invoice: UpdateInvoice!): InvoiceResponse!
