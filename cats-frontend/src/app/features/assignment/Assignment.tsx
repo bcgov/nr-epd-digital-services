@@ -349,7 +349,7 @@ const Assignment: React.FC<AssignmentProps> = () => {
                   return (
                     <div key={roleGroup.roleId} className="role-group">
                       <h3 className="role-heading">
-                        Previously Assinged {roleGroup.roleName}
+                        Previously Assigned {roleGroup.roleName}
                       </h3>
                       <div className="staff-pills-container">
                         {availableStaff.length > 0 ? (
@@ -402,7 +402,7 @@ const Assignment: React.FC<AssignmentProps> = () => {
                           ))
                         ) : (
                           <span className="no-staff-message">
-                            No staff assinged.
+                            No staff Assigned.
                           </span>
                         )}
                       </div>
