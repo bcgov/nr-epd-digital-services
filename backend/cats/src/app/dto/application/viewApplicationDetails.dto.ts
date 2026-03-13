@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 class DetailField {
@@ -67,4 +67,10 @@ export class ViewApplicationDetails {
 
   @Field({ nullable: true })
   submissionId: string | null;
+
+  @Field({ nullable: true })
+  serviceTypeId: number | null;
+
+  @Field(() => [Int], { nullable: true })
+  secondaryServiceTypeIds: number[];
 }

@@ -31,6 +31,7 @@ import { Invoice } from './invoice.entity';
 import { Timesheet } from './timesheet.entity';
 import { ApplicationServiceType } from './applicationServiceType.entity';
 import { RecentViewedApplication } from './recentViewedApplication.entity';
+import { ApplicationSecondaryServiceType } from './applicationSecondaryServiceType.entity';
 
 @Index('idx_application_app_type_id', ['appTypeId'], {})
 @Index('pk_application', ['id'], { unique: true })
@@ -202,4 +203,10 @@ export class Application {
     (recentViewedApplications) => recentViewedApplications.application,
   )
   recentViewedApplications: RecentViewedApplication[];
+
+  @OneToMany(
+    () => ApplicationSecondaryServiceType,
+    (secondaryServiceType) => secondaryServiceType.application,
+  )
+  secondaryServiceTypes: ApplicationSecondaryServiceType[];
 }

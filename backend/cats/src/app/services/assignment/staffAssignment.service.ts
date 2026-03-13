@@ -146,8 +146,8 @@ p.id, p.first_name, p.middle_name, p.last_name
     p.first_name,
     p.middle_name,
     p.last_name,
-    at.description,
-	apt.effective_end_date,
+    sv.description,
+	app.end_date,
 	app.id as appid,
     CASE 
         WHEN EXISTS (
@@ -173,8 +173,10 @@ INNER JOIN CATS.app_participant apt
     ON apt.application_id = app.id
 INNER JOIN CATS.person p 
     ON p.id = apt.person_id
-INNER JOIN CATS.app_type at 
-    ON at.id = app.app_type_id
+INNER JOIN CATS.app_service aps 
+    ON aps.application_id = app.id
+INNER JOIN CATS.service sv 
+ON sv.id = aps.service_id
 WHERE app.site_id = ${siteId}
   AND apt.participant_role_id =  ${roleId};`;
   };
@@ -383,7 +385,7 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
               record.last_name
             }`,
             appType: record.description,
-            endDate: record.effective_end_date,
+            endDate: record.end_date,
             applicationId: record.appid,
             currentCapacity: 0,
             hasPermission: record.has_permission === 0 ? false : true,
