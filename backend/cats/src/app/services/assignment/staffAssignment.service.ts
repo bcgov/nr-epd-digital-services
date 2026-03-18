@@ -146,7 +146,7 @@ p.id, p.first_name, p.middle_name, p.last_name
     p.first_name,
     p.middle_name,
     p.last_name,
-    sv.description,
+    COALESCE(sv.description, appast.service_name) AS description,
 	app.end_date,
 	app.id as appid,
     CASE 
@@ -173,12 +173,14 @@ INNER JOIN CATS.app_participant apt
     ON apt.application_id = app.id
 INNER JOIN CATS.person p 
     ON p.id = apt.person_id
-INNER JOIN CATS.app_service aps 
+LEFT OUTER JOIN CATS.app_service aps 
     ON aps.application_id = app.id
-INNER JOIN CATS.service sv 
+LEFT OUTER JOIN CATS.service sv 
 ON sv.id = aps.service_id
+LEFT OUTER JOIN cats.application_service_type appast
+ON appast.id = app.application_service_type_id
 WHERE app.site_id = ${siteId}
-  AND apt.participant_role_id =  ${roleId} AND SV.abbrev not in ('IR', 'FCR');`;
+  AND apt.participant_role_id =  ${roleId} AND (SV.abbrev not in ('IR', 'FCR') OR SV.abbrev is null );`;
   };
 
   getStaffWithCurrentFactorsQueryForApplicationServiceType = (
