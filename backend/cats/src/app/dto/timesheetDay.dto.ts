@@ -111,6 +111,12 @@ export class PersonWithTimesheetDaysDto {
 
   @Field(() => [TimesheetDayDto])
   timesheetDays: TimesheetDayDto[];
+
+  @Field(() => Float)
+  weekHours: number;
+
+  @Field(() => Float)
+  allTimeHours: number;
 }
 
 @ObjectType()

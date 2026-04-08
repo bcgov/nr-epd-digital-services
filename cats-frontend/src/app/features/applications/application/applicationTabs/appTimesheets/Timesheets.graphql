@@ -16,6 +16,8 @@ query getTimesheetDaysForAssignedStaff(
       roleDescription
       startDate
       endDate
+      weekHours
+      allTimeHours
       timesheetDays {
         id
         date

@@ -145,6 +145,7 @@ export const Timesheets = () => {
       endDate: endDateStr,
     },
     notifyOnNetworkStatusChange: true,
+    fetchPolicy:'cache-and-network',
     onCompleted: () => {
       // We want to clear the edits only when refetching the existing data, not when making new queries.
       // This makes sure the changes are not lost when navigation between dates and the entered values don't flicker after mutation
