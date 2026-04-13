@@ -129,6 +129,24 @@ jobs:
           oc login --token=$OC_TEMP_TOKEN --server=${{ inputs.oc_server }}
           oc project ${{ secrets.oc_namespace }} # Safeguard!
 
+      # Drop stuck Helm revision secrets (e.g. after cancelled CI during atomic rollback).
+      # Scoped to this release only; does not remove deployed/superseded revisions.
+      - if: steps.triggers.outputs.triggered == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          RELEASE="${{ steps.vars.outputs.release }}"
+          NS="${{ secrets.oc_namespace }}"
+          LABEL="owner=helm,name=${RELEASE},status in (pending-install,pending-upgrade,pending-rollback)"
+          echo "Checking for pending Helm release secrets for ${RELEASE} in ${NS}"
+          COUNT=$(oc get secret -n "$NS" -l "$LABEL" --no-headers -o name | wc -l | tr -d ' \t')
+          if [[ "${COUNT}" -eq 0 ]]; then
+            echo "None found; continuing."
+            exit 0
+          fi
+          echo "Deleting ${COUNT} pending Helm release secret(s)"
+          oc delete secret -n "$NS" -l "$LABEL"
+
       # Only stop pre-existing deployments on PRs (status = pending-upgrade)
       - if: steps.triggers.outputs.triggered == 'true' && github.event_name == 'pull_request'
         run: |
