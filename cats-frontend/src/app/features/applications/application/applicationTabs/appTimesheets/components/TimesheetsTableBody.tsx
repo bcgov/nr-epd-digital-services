@@ -44,8 +44,14 @@ export const TimesheetsTableBody = ({
     }
   };
 
-  const totalWeekHours = staffRows.reduce((sum, p) => sum + (p.weekHours ?? 0), 0);
-  const totalAllTimeHours = staffRows.reduce((sum, p) => sum + (p.allTimeHours ?? 0), 0);
+  const totalWeekHours = staffRows.reduce(
+    (sum, p) => sum + (p.weekHours ?? 0),
+    0,
+  );
+  const totalAllTimeHours = staffRows.reduce(
+    (sum, p) => sum + (p.allTimeHours ?? 0),
+    0,
+  );
 
   return (
     <div>
@@ -54,7 +60,7 @@ export const TimesheetsTableBody = ({
           styles.timesheetBaseHeader,
           styles.timesheetsSectionHeader,
           'fw-bold',
-          'd-flex flex-row align-items-center justify-content-between px-3'
+          'd-flex flex-row align-items-center justify-content-between px-3',
         )}
       >
         <span>Assigned Staff</span>
@@ -73,14 +79,17 @@ export const TimesheetsTableBody = ({
             panelContainerClassName={styles.personPanel}
             panelLabelClassName={styles.personPanelLabel}
             label={
-              <div className='d-flex w-100 align-items-center justify-content-between'>
+              <div className="d-flex w-100 align-items-center justify-content-between">
                 <span>
-                  {person.firstName} {person.lastName} | {person.roleDescription}
+                  {person.firstName} {person.lastName} |{' '}
+                  {person.roleDescription}
                 </span>
                 <span className={styles.personPanelHours}>
-                  Week Total: <strong>{(person.weekHours ?? 0).toFixed(2)} h</strong>
+                  Week Total:{' '}
+                  <strong>{(person.weekHours ?? 0).toFixed(2)} h</strong>
                   <span> | </span>
-                  All Time: <strong>{(person.allTimeHours ?? 0).toFixed(2)} h</strong>
+                  All Time:{' '}
+                  <strong>{(person.allTimeHours ?? 0).toFixed(2)} h</strong>
                 </span>
               </div>
             }
