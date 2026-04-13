@@ -64,30 +64,34 @@ export class PersonService {
       query.andWhere('is_deleted is not true');
       query.andWhere(
         new Brackets((qb) => {
-          qb.where(
-            'LOWER(person.first_name) = LOWER(:firstName) AND LOWER(person.last_name) = LOWER(:lastName)',
-            {
-              firstName: input.firstName,
-              lastName: input.lastName,
-            },
-          );
-
           if (input.email) {
-            qb.andWhere('LOWER(person.email) = LOWER(:email)', {
+            qb.where('LOWER(person.email) = LOWER(:email)', {
               email: input.email,
             });
           }
 
           if (input.loginUserName) {
-            qb.andWhere(
-              'LOWER(person.login_user_name) = LOWER(:loginUserName)',
-              {
-                loginUserName: input.loginUserName,
-              },
-            );
+            if (input.email) {
+              qb.orWhere(
+                'LOWER(person.login_user_name) = LOWER(:loginUserName)',
+                { loginUserName: input.loginUserName },
+              );
+            } else {
+              qb.where(
+                'LOWER(person.login_user_name) = LOWER(:loginUserName)',
+                { loginUserName: input.loginUserName },
+              );
+            }
           }
         }),
       );
+
+      if (!input.email && !input.loginUserName) {
+        this.loggerSerivce.log(
+          'at service layer checkForDuplicate end - no email or loginUserName to check',
+        );
+        return null;
+      }
 
       const existingPerson = await query.getOne();
 
