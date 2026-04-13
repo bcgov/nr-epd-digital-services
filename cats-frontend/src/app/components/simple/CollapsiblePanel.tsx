@@ -56,10 +56,15 @@ const CollapsiblePanel: FC<CollapsiblePanelProps> = ({
           })}
         >
           <div
-            className={cx('panel-label', styles.panelLabel, {
-              [styles.panelLabelSmall]: smallFont,
-              [panelLabelClassName]: panelLabelClassName,
-            })}
+            className={cx(
+              'panel-label',
+              styles.panelLabel,
+              {
+                [styles.panelLabelSmall]: smallFont,
+                [panelLabelClassName]: panelLabelClassName,
+              },
+              'w-100',
+            )}
           >
             {label}
           </div>

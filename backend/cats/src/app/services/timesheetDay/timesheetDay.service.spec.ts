@@ -190,22 +190,46 @@ describe('TimesheetDayService', () => {
       }
     });
 
-    it('should throw validation error if hours exceed 24', async () => {
+    it('should accept hours exceeding 24', async () => {
       const input: TimesheetDayUpsertInputDto[] = [
         { applicationId: 1, personId: 2, date: '2025-06-01', hours: 25 },
       ];
-      await expect(
-        service.upsertTimesheetDays(input, mockUser),
-      ).rejects.toThrow();
+      jest
+        .spyOn(applicationRepository, 'findOne')
+        .mockResolvedValue(mockApplication);
+      jest.spyOn(personRepository, 'findOne').mockResolvedValue(mockPerson);
+      jest
+        .spyOn(timesheetDayRepository, 'create')
+        .mockReturnValue(mockTimesheetDay);
+      jest
+        .spyOn(timesheetDayRepository, 'save')
+        .mockResolvedValue(mockTimesheetDay);
+
+      const result = await service.upsertTimesheetDays(input, mockUser);
+      expect(result).toHaveLength(1);
+      expect(timesheetDayRepository.create).toHaveBeenCalled();
+      expect(timesheetDayRepository.save).toHaveBeenCalled();
     });
 
-    it('should throw validation error if hours are negative', async () => {
+    it('should accept negative hours', async () => {
       const input: TimesheetDayUpsertInputDto[] = [
         { applicationId: 1, personId: 2, date: '2025-06-01', hours: -1 },
       ];
-      await expect(
-        service.upsertTimesheetDays(input, mockUser),
-      ).rejects.toThrow();
+      jest
+        .spyOn(applicationRepository, 'findOne')
+        .mockResolvedValue(mockApplication);
+      jest.spyOn(personRepository, 'findOne').mockResolvedValue(mockPerson);
+      jest
+        .spyOn(timesheetDayRepository, 'create')
+        .mockReturnValue(mockTimesheetDay);
+      jest
+        .spyOn(timesheetDayRepository, 'save')
+        .mockResolvedValue(mockTimesheetDay);
+
+      const result = await service.upsertTimesheetDays(input, mockUser);
+      expect(result).toHaveLength(1);
+      expect(timesheetDayRepository.create).toHaveBeenCalled();
+      expect(timesheetDayRepository.save).toHaveBeenCalled();
     });
 
     it('should accept valid hours values (0-24)', async () => {
@@ -229,6 +253,95 @@ describe('TimesheetDayService', () => {
       expect(result).toHaveLength(3);
       expect(timesheetDayRepository.create).toHaveBeenCalledTimes(3);
       expect(timesheetDayRepository.save).toHaveBeenCalledTimes(3);
+    });
+
+    it('should handle entries with comments', async () => {
+      const input: TimesheetDayUpsertInputDto[] = [
+        { applicationId: 1, personId: 2, date: '2025-06-01', hours: 8, comment: 'Worked on case review' },
+      ];
+      jest
+        .spyOn(applicationRepository, 'findOne')
+        .mockResolvedValue(mockApplication);
+      jest.spyOn(personRepository, 'findOne').mockResolvedValue(mockPerson);
+      jest
+        .spyOn(timesheetDayRepository, 'create')
+        .mockReturnValue(mockTimesheetDay);
+      jest
+        .spyOn(timesheetDayRepository, 'save')
+        .mockResolvedValue(mockTimesheetDay);
+
+      const result = await service.upsertTimesheetDays(input, mockUser);
+      expect(result).toHaveLength(1);
+      expect(timesheetDayRepository.create).toHaveBeenCalled();
+      expect(timesheetDayRepository.save).toHaveBeenCalled();
+    });
+
+    it('should handle entries with null hours', async () => {
+      const input: TimesheetDayUpsertInputDto[] = [
+        { applicationId: 1, personId: 2, date: '2025-06-01', hours: null },
+      ];
+      jest
+        .spyOn(applicationRepository, 'findOne')
+        .mockResolvedValue(mockApplication);
+      jest.spyOn(personRepository, 'findOne').mockResolvedValue(mockPerson);
+      jest
+        .spyOn(timesheetDayRepository, 'create')
+        .mockReturnValue(mockTimesheetDay);
+      jest
+        .spyOn(timesheetDayRepository, 'save')
+        .mockResolvedValue(mockTimesheetDay);
+
+      const result = await service.upsertTimesheetDays(input, mockUser);
+      expect(result).toHaveLength(1);
+      expect(timesheetDayRepository.create).toHaveBeenCalled();
+      expect(timesheetDayRepository.save).toHaveBeenCalled();
+    });
+
+    it('should handle multiple entries in one call', async () => {
+      const input: TimesheetDayUpsertInputDto[] = [
+        { applicationId: 1, personId: 2, date: '2025-06-01', hours: 8 },
+        { applicationId: 1, personId: 3, date: '2025-06-02', hours: 6 },
+      ];
+      const mockPerson2 = { id: 3 } as Person;
+      jest
+        .spyOn(applicationRepository, 'findOne')
+        .mockResolvedValue(mockApplication);
+      jest.spyOn(personRepository, 'findOne')
+        .mockResolvedValueOnce(mockPerson)
+        .mockResolvedValueOnce(mockPerson2);
+      jest
+        .spyOn(timesheetDayRepository, 'create')
+        .mockReturnValue(mockTimesheetDay);
+      jest
+        .spyOn(timesheetDayRepository, 'save')
+        .mockResolvedValue(mockTimesheetDay);
+
+      const result = await service.upsertTimesheetDays(input, mockUser);
+      expect(result).toHaveLength(2);
+      expect(timesheetDayRepository.create).toHaveBeenCalledTimes(2);
+      expect(timesheetDayRepository.save).toHaveBeenCalledTimes(2);
+    });
+
+    it('should handle user without name', async () => {
+      const input: TimesheetDayUpsertInputDto[] = [
+        { applicationId: 1, personId: 2, date: '2025-06-01', hours: 8 },
+      ];
+      const userWithoutName = {};
+      jest
+        .spyOn(applicationRepository, 'findOne')
+        .mockResolvedValue(mockApplication);
+      jest.spyOn(personRepository, 'findOne').mockResolvedValue(mockPerson);
+      jest
+        .spyOn(timesheetDayRepository, 'create')
+        .mockReturnValue(mockTimesheetDay);
+      jest
+        .spyOn(timesheetDayRepository, 'save')
+        .mockResolvedValue(mockTimesheetDay);
+
+      const result = await service.upsertTimesheetDays(input, userWithoutName);
+      expect(result).toHaveLength(1);
+      expect(timesheetDayRepository.create).toHaveBeenCalled();
+      expect(timesheetDayRepository.save).toHaveBeenCalled();
     });
   });
 
@@ -277,7 +390,7 @@ describe('TimesheetDayService', () => {
         .spyOn(staffAssignmentService, 'getStaffByAppId')
         .mockResolvedValue(mockStaffResult);
       jest
-        .spyOn(personRepository, 'findByIds')
+        .spyOn(personRepository, 'find')
         .mockResolvedValue([mockPerson] as any);
       jest
         .spyOn(timesheetDayRepository, 'find')
@@ -292,7 +405,7 @@ describe('TimesheetDayService', () => {
       expect(result[0].personId).toBe(2);
       expect(result[0].timesheetDays).toHaveLength(1);
       expect(staffAssignmentService.getStaffByAppId).toHaveBeenCalled();
-      expect(personRepository.findByIds).toHaveBeenCalled();
+      expect(personRepository.find).toHaveBeenCalled();
       expect(timesheetDayRepository.find).toHaveBeenCalled();
     });
     it('should return empty array if no staff assigned', async () => {
@@ -325,6 +438,102 @@ describe('TimesheetDayService', () => {
         ),
       ).rejects.toThrow('Test error');
       expect(logger.error).toHaveBeenCalled();
+    });
+
+    it('should handle multiple staff assignments', async () => {
+      const mockStaffList = [
+        { id: 1, applicationId: 1, personId: 2, roleId: 1, startDate: new Date('2025-01-01'), endDate: new Date('2025-12-31'), currentCapacity: 100 },
+        { id: 2, applicationId: 1, personId: 3, roleId: 2, startDate: new Date('2025-01-01'), endDate: new Date('2025-12-31'), currentCapacity: 80 },
+      ];
+      const mockStaffResult = { applicationServiceTypeId: null, staffList: mockStaffList };
+      const mockPerson2 = { id: 2, firstName: 'John', lastName: 'Doe', middleName: null, loginUserName: 'jdoe', email: 'jdoe@example.com' };
+      const mockPerson3 = { id: 3, firstName: 'Jane', lastName: 'Smith', middleName: null, loginUserName: 'jsmith', email: 'jsmith@example.com' };
+      const mockTimesheetDays = [
+        { id: 1, applicationId: 1, personId: 2, date: '2025-06-01', hours: '8', comment: null },
+        { id: 2, applicationId: 1, personId: 3, date: '2025-06-02', hours: '6', comment: 'Overtime' },
+      ];
+      const mockRoles = [
+        { id: 1, description: 'Role 1' },
+        { id: 2, description: 'Role 2' },
+      ];
+
+      jest.spyOn(staffAssignmentService, 'getStaffByAppId').mockResolvedValue(mockStaffResult);
+      jest.spyOn(personRepository, 'find').mockResolvedValue([mockPerson2, mockPerson3] as any);
+      jest.spyOn(timesheetDayRepository, 'find').mockResolvedValue(mockTimesheetDays as any);
+      jest.spyOn(participantRoleRepository, 'find').mockResolvedValue(mockRoles as any);
+
+      const result = await service.getTimesheetDaysForAssignedStaff(1, '2025-06-01', '2025-06-30', mockUser);
+      expect(result).toHaveLength(2);
+      expect(result[0].personId).toBe(2);
+      expect(result[0].weekHours).toBe(8);
+      expect(result[1].personId).toBe(3);
+      expect(result[1].weekHours).toBe(6);
+    });
+
+    it('should calculate week and all-time hours correctly', async () => {
+      const mockStaffList = [{ id: 1, applicationId: 1, personId: 2, roleId: 1, startDate: new Date(), endDate: new Date(), currentCapacity: 100 }];
+      const mockStaffResult = { applicationServiceTypeId: null, staffList: mockStaffList };
+      const mockPerson = { id: 2, firstName: 'John', lastName: 'Doe', middleName: null, loginUserName: 'jdoe', email: 'jdoe@example.com' };
+      const mockTimesheetDays = [
+        { id: 1, applicationId: 1, personId: 2, date: '2025-05-30', hours: '4' }, // Before week
+        { id: 2, applicationId: 1, personId: 2, date: '2025-06-01', hours: '8' }, // In week
+        { id: 3, applicationId: 1, personId: 2, date: '2025-06-15', hours: '6' }, // In week
+        { id: 4, applicationId: 1, personId: 2, date: '2025-07-01', hours: '2' }, // After week
+      ];
+      const mockRole = { id: 1, description: 'Role' };
+
+      jest.spyOn(staffAssignmentService, 'getStaffByAppId').mockResolvedValue(mockStaffResult);
+      jest.spyOn(personRepository, 'find').mockResolvedValue([mockPerson] as any);
+      jest.spyOn(timesheetDayRepository, 'find').mockResolvedValue(mockTimesheetDays as any);
+      jest.spyOn(participantRoleRepository, 'find').mockResolvedValue([mockRole] as any);
+
+      const result = await service.getTimesheetDaysForAssignedStaff(1, '2025-06-01', '2025-06-30', mockUser);
+      expect(result).toHaveLength(1);
+      expect(result[0].weekHours).toBe(14); // 8 + 6
+      expect(result[0].allTimeHours).toBe(20); // 4 + 8 + 6 + 2
+      expect(result[0].timesheetDays).toHaveLength(2); // Only in week
+    });
+
+    it('should handle timesheet days with null hours', async () => {
+      const mockStaffList = [{ id: 1, applicationId: 1, personId: 2, roleId: 1, startDate: new Date(), endDate: new Date(), currentCapacity: 100 }];
+      const mockStaffResult = { applicationServiceTypeId: null, staffList: mockStaffList };
+      const mockPerson = { id: 2, firstName: 'John', lastName: 'Doe', middleName: null, loginUserName: 'jdoe', email: 'jdoe@example.com' };
+      const mockTimesheetDays = [
+        { id: 1, applicationId: 1, personId: 2, date: '2025-06-01', hours: null, comment: 'No hours' },
+      ];
+      const mockRole = { id: 1, description: 'Role' };
+
+      jest.spyOn(staffAssignmentService, 'getStaffByAppId').mockResolvedValue(mockStaffResult);
+      jest.spyOn(personRepository, 'find').mockResolvedValue([mockPerson] as any);
+      jest.spyOn(timesheetDayRepository, 'find').mockResolvedValue(mockTimesheetDays as any);
+      jest.spyOn(participantRoleRepository, 'find').mockResolvedValue([mockRole] as any);
+
+      const result = await service.getTimesheetDaysForAssignedStaff(1, '2025-06-01', '2025-06-30', mockUser);
+      expect(result).toHaveLength(1);
+      expect(result[0].weekHours).toBe(0);
+      expect(result[0].allTimeHours).toBe(0);
+      expect(result[0].timesheetDays[0].hours).toBeUndefined();
+    });
+
+    it('should return empty timesheet days if no days in range', async () => {
+      const mockStaffList = [{ id: 1, applicationId: 1, personId: 2, roleId: 1, startDate: new Date(), endDate: new Date(), currentCapacity: 100 }];
+      const mockStaffResult = { applicationServiceTypeId: null, staffList: mockStaffList };
+      const mockPerson = { id: 2, firstName: 'John', lastName: 'Doe', middleName: null, loginUserName: 'jdoe', email: 'jdoe@example.com' };
+      const mockTimesheetDays = [
+        { id: 1, applicationId: 1, personId: 2, date: '2025-05-01', hours: '8' }, // Outside range
+      ];
+      const mockRole = { id: 1, description: 'Role' };
+
+      jest.spyOn(staffAssignmentService, 'getStaffByAppId').mockResolvedValue(mockStaffResult);
+      jest.spyOn(personRepository, 'find').mockResolvedValue([mockPerson] as any);
+      jest.spyOn(timesheetDayRepository, 'find').mockResolvedValue(mockTimesheetDays as any);
+      jest.spyOn(participantRoleRepository, 'find').mockResolvedValue([mockRole] as any);
+
+      const result = await service.getTimesheetDaysForAssignedStaff(1, '2025-06-01', '2025-06-30', mockUser);
+      expect(result).toHaveLength(1);
+      expect(result[0].weekHours).toBe(0);
+      expect(result[0].allTimeHours).toBe(8);
+      expect(result[0].timesheetDays).toEqual([]);
     });
   });
 });

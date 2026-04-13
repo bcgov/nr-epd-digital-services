@@ -10,7 +10,7 @@ import {
 } from '../../dto/timesheetDay.dto';
 import { LoggerService } from '../../logger/logger.service';
 import { format, parseISO } from 'date-fns';
-import { In, Between } from 'typeorm';
+import { In } from 'typeorm';
 import { StaffAssignmentService } from '../assignment/staffAssignment.service';
 import { ParticipantRole } from '../../entities/participantRole.entity';
 
@@ -158,6 +158,8 @@ export class TimesheetDayService {
       `Fetching timesheet days for applicationId=${applicationId}, startDate=${startDate}, endDate=${endDate}`,
     );
     try {
+      // Step 1: Get all staff assignments for this application.
+      // e.g. App 42 has: [{ personId: 1, roleId: 10 }, { personId: 1, roleId: 11 }, { personId: 2, roleId: 10 }]
       const staffResult = await this.staffAssignmentService.getStaffByAppId(
         applicationId,
         user,
@@ -170,49 +172,109 @@ export class TimesheetDayService {
         return [];
       }
 
-      // Get all possible roles to associate with staff
-      const allRoles = await this.participantRoleRepository.find();
-      const rolesMap = new Map(allRoles.map((role) => [role.id, role]));
+      // Step 2: Collect unique personIds and roleIds from the staff list.
+      // e.g. personIds = [1, 2], roleIds = [10, 11]
+      // Using Set removes duplicates — person 1 appears twice above but we only want to fetch them once.
+      const personIds = [...new Set(staffList.map((s) => s.personId))];
+      const roleIds = [...new Set(staffList.map((s) => s.roleId))];
 
-      const personIds = staffList.map((s) => s.personId);
-      const people = await this.personRepository.findByIds(personIds);
-      const timesheetDays = await this.timesheetDayRepository.find({
-        where: {
-          applicationId,
-          personId: In(personIds),
-          date: Between(startDate, endDate),
-        },
-      });
+      // Step 3: Fire all three DB queries at the same time using Promise.all.
+      // Previously these ran one after another (sequential), wasting time.
+      // e.g. if each query takes 50ms, sequential = 150ms, parallel = ~50ms.
+      //
+      // - roles: only fetch roles 10 and 11, not every role in the table
+      // - people: only fetch persons 1 and 2
+      // - allTimesheetDays: fetch ALL timesheet days for these persons on this application
+      //   (no date filter here — we split into week vs all-time in memory below,
+      //    which avoids making two separate DB round-trips)
+      const [roles, people, allTimesheetDays] = await Promise.all([
+        this.participantRoleRepository.find({ where: { id: In(roleIds) } }),
+        this.personRepository.find({ where: { id: In(personIds) } }),
+        this.timesheetDayRepository.find({
+          where: { applicationId, personId: In(personIds) },
+        }),
+      ]);
+
+      // Step 4: Convert arrays to Maps for O(1) lookup by id.
+      // e.g. rolesMap.get(10) → { id: 10, description: 'Caseworker' }
+      // Without a Map we'd have to .find() through the array every time — O(n) per lookup.
+      const rolesMap = new Map(roles.map((r) => [r.id, r]));
+      const peopleMap = new Map(people.map((p) => [p.id, p]));
+
+      // Step 5: Group all timesheet days by personId up front.
+      // e.g. daysByPerson = { 1: [day1, day2, day3], 2: [day4] }
+      // Without this, for each assignment we'd scan the entire allTimesheetDays array
+      // to find that person's days — O(assignments × days).
+      // With this Map, each assignment just does daysByPerson.get(personId) — O(1).
+      const daysByPerson = new Map<number, typeof allTimesheetDays>();
+      for (const day of allTimesheetDays) {
+        if (!daysByPerson.has(day.personId)) daysByPerson.set(day.personId, []);
+        daysByPerson.get(day.personId).push(day);
+      }
+
       this.loggerService.log(
-        `Fetched timesheet days for ${people.length} staff.`,
+        `Fetched data for ${people.length} staff across ${staffList.length} assignments.`,
       );
 
-      return people.map((person) => {
-        const staffAssignment = staffList.find((s) => s.personId === person.id);
-        const role = staffAssignment
-          ? rolesMap.get(staffAssignment.roleId)
-          : null;
+      // Step 6: Build one result row per (personId, roleId) assignment.
+      // e.g. person 1 with roles 10 and 11 produces two rows, each showing
+      // the same person's hours (because TimesheetDay has no roleId column —
+      // a logged hour belongs to the person on the application, not to a role).
+      return staffList.map((assignment) => {
+        const person = peopleMap.get(assignment.personId);
+        const role = rolesMap.get(assignment.roleId);
+
+        // Get only this person's days (already grouped in Step 5).
+        // e.g. for personId=1 we get [day1, day2, day3] directly, no scanning needed.
+        const personDays = daysByPerson.get(assignment.personId) ?? [];
+
+        // Step 7: Single pass over this person's days to compute both totals
+        // and collect the week's entries at the same time.
+        // Previously this was done with two separate .filter() + two .reduce() calls = 4 passes.
+        // Now it's one loop that does everything at once.
+        //
+        // e.g. person 1 has days: [Jan-1: 4h, Jan-2: 3h, Feb-5: 6h]
+        // requested week: Jan-1 to Jan-7
+        // → weekHours = 7, allTimeHours = 13, weekDays = [Jan-1, Jan-2]
+        let weekHours = 0;
+        let allTimeHours = 0;
+        const weekDays: typeof allTimesheetDays = [];
+
+        for (const t of personDays) {
+          const h = t.hours ? parseFloat(t.hours) : 0;
+
+          // Every day counts toward all-time regardless of the selected week.
+          allTimeHours += h;
+
+          // Only days within the requested week range go into weekHours and weekDays.
+          if (t.date >= startDate && t.date <= endDate) {
+            weekHours += h;
+            weekDays.push(t);
+          }
+        }
 
         return {
-          personId: person.id,
-          firstName: person.firstName,
-          middleName: person.middleName,
-          lastName: person.lastName,
-          loginUserName: person.loginUserName,
-          email: person.email,
+          personId: assignment.personId,
+          roleId: assignment.roleId,
+          firstName: person?.firstName ?? '',
+          middleName: person?.middleName ?? null,
+          lastName: person?.lastName ?? '',
+          loginUserName: person?.loginUserName ?? null,
+          email: person?.email ?? null,
           roleDescription: role?.description,
-          startDate: staffAssignment?.startDate,
-          endDate: staffAssignment?.endDate,
-          timesheetDays: timesheetDays
-            .filter((t) => t.personId === person.id)
-            .map((t) => ({
-              id: t.id,
-              applicationId: t.applicationId,
-              personId: t.personId,
-              date: new Date(t.date),
-              hours: t.hours ? parseFloat(t.hours) : undefined,
-              comment: t.comment,
-            })),
+          startDate: assignment.startDate,
+          endDate: assignment.endDate,
+          // Round to 2 decimal places. e.g. 7.999999 → 8.00
+          weekHours: Math.round(weekHours * 100) / 100,
+          allTimeHours: Math.round(allTimeHours * 100) / 100,
+          timesheetDays: weekDays.map((t) => ({
+            id: t.id,
+            applicationId: t.applicationId,
+            personId: t.personId,
+            date: new Date(t.date),
+            hours: t.hours ? parseFloat(t.hours) : undefined,
+            comment: t.comment,
+          })),
         };
       });
     } catch (error) {
