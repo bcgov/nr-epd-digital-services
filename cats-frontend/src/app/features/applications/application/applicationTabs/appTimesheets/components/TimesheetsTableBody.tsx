@@ -44,6 +44,15 @@ export const TimesheetsTableBody = ({
     }
   };
 
+  const totalWeekHours = staffRows.reduce(
+    (sum, p) => sum + (p.weekHours ?? 0),
+    0,
+  );
+  const totalAllTimeHours = staffRows.reduce(
+    (sum, p) => sum + (p.allTimeHours ?? 0),
+    0,
+  );
+
   return (
     <div>
       <div
@@ -51,19 +60,39 @@ export const TimesheetsTableBody = ({
           styles.timesheetBaseHeader,
           styles.timesheetsSectionHeader,
           'fw-bold',
+          'd-flex flex-row align-items-center justify-content-between px-3',
         )}
       >
-        Firstname Lastname | Assigned Role
+        <span>Assigned Staff</span>
+        <span>
+          Week Total: <strong>{totalWeekHours.toFixed(2)} h</strong>
+          <span> | </span>
+          All-Time: <strong>{totalAllTimeHours.toFixed(2)} h</strong>
+        </span>
       </div>
       <div>
         {staffRows.map((person) => (
           <CollapsiblePanel
             defaultOpen={expandedPersonIds.has(person.personId)}
             onToggle={(open) => onPersonToggle(person.personId, open)}
-            key={person.personId}
+            key={`${person.personId}-${person.roleId}`}
             panelContainerClassName={styles.personPanel}
             panelLabelClassName={styles.personPanelLabel}
-            label={`${person.firstName} ${person.lastName} | ${person.roleDescription}`}
+            label={
+              <div className="d-flex w-100 align-items-center justify-content-between">
+                <span>
+                  {person.firstName} {person.lastName} |{' '}
+                  {person.roleDescription}
+                </span>
+                <span className={styles.personPanelHours}>
+                  Week Total:{' '}
+                  <strong>{(person.weekHours ?? 0).toFixed(2)} h</strong>
+                  <span> | </span>
+                  All Time:{' '}
+                  <strong>{(person.allTimeHours ?? 0).toFixed(2)} h</strong>
+                </span>
+              </div>
+            }
             content={
               <div className={styles.timesheetsSectionContent}>
                 {weekDays.map((day) => {
