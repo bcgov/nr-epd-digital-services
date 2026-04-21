@@ -7,13 +7,12 @@ ENV APP_PORT=8080 \
 WORKDIR ${APP_ROOT}
 
 # NPM Permission Fix
-RUN mkdir -p /.npm /tmp/.npm
-RUN chown -R 1001:0 /.npm /tmp/.npm
-RUN chmod -R g+rwX /.npm /tmp/.npm
+RUN mkdir -p /tmp/.npm
+RUN chown -R 1001:0 /tmp/.npm
+RUN chmod -R g+rwX /tmp/.npm
 
 # Install Application
-COPY . ${APP_ROOT}
-RUN chown -R 1001:0 ${APP_ROOT}
+COPY --chown=1001:0 . ${APP_ROOT}
 USER 1001
 WORKDIR ${APP_ROOT}/app
 RUN npm ci --omit=dev
