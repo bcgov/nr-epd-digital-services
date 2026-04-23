@@ -4,7 +4,7 @@ ARG BASE_IMAGE=docker.io/node:20.9.0-alpine
 #
 # Build the frontend
 #
-FROM ${BASE_IMAGE} as frontend
+FROM ${BASE_IMAGE} AS frontend
 
 ARG APP_ROOT
 ENV NO_UPDATE_NOTIFIER=true
@@ -14,8 +14,7 @@ RUN mkdir -p /.npm
 RUN chown -R 1001:0 /.npm
 
 # Build Frontend
-COPY frontend ${APP_ROOT}
-RUN chown -R 1001:0 ${APP_ROOT}
+COPY --chown=1001:0 frontend ${APP_ROOT}
 USER 1001
 WORKDIR ${APP_ROOT}
 RUN npm ci && npm run build
@@ -27,20 +26,21 @@ FROM ${BASE_IMAGE}
 
 ARG APP_ROOT
 ENV APP_PORT=8080 \
-    NO_UPDATE_NOTIFIER=true
+    NO_UPDATE_NOTIFIER=true \
+    NPM_CONFIG_CACHE=/tmp/.npm
 
 # NPM Permission Fix
-RUN mkdir -p /.npm
-RUN chown -R 1001:0 /.npm
+RUN mkdir -p /tmp/.npm
+RUN chown -R 1001:0 /tmp/.npm
+RUN chmod -R g+rwX /tmp/.npm
 
 # Install File Structure
-COPY --from=frontend ${APP_ROOT}/dist ${APP_ROOT}/dist
+COPY --from=frontend --chown=1001:0 ${APP_ROOT}/dist ${APP_ROOT}/dist
 # COPY .git ${APP_ROOT}/.git # Temporarily commented out line due to OCP build failure. Unsure why it is necessary in the first place.
-COPY app ${APP_ROOT}
+COPY --chown=1001:0 app ${APP_ROOT}
 WORKDIR ${APP_ROOT}
 
 # Install Application
-RUN chown -R 1001:0 ${APP_ROOT}
 USER 1001
 WORKDIR ${APP_ROOT}/app
 RUN npm ci --omit=dev
