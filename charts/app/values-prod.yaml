@@ -30,7 +30,7 @@ global:
 
 backend:
   pdb:
-    enabled: true
+    enabled: false
   autoscaling:
     # Temporarily set to 1 to avoid issues with duplicate migrations run at once.
     #-- enable or disable autoscaling.
@@ -44,7 +44,7 @@ backend:
 
 frontend:
   pdb:
-    enabled: true # enable it in PRODUCTION for having pod disruption budget.
+    enabled: false
 
 global:
   config:
