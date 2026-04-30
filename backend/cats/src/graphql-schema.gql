@@ -591,6 +591,8 @@ type PersonWithTimesheetDaysDto {
   startDate: DateTime
   endDate: DateTime
   timesheetDays: [TimesheetDayDto!]!
+  weekHours: Float!
+  allTimeHours: Float!
 }
 
 type PersonWithTimesheetDaysResponse {
