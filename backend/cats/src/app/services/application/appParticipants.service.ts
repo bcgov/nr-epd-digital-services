@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToInstance } from 'class-transformer';
 
-import { Repository } from 'typeorm';
+import { Brackets, Repository } from 'typeorm';
 
 import { AppParticipant } from '../../entities/appParticipant.entity';
 import { ViewAppParticipantsDto } from '../../dto/appParticipants/viewAppParticipants.dto';
@@ -32,7 +32,7 @@ export class AppParticipantService {
 
     @InjectRepository(Organization)
     private readonly organizationRepository: Repository<Organization>,
-  ) { }
+  ) {}
 
   /**
    * Retrieves app participants for a given app ID and transforms the data into DTOs.
@@ -53,7 +53,7 @@ export class AppParticipantService {
       let result = [];
       if (user?.identity_provider === 'idir') {
         result = await this.appParticsRepository.find({
-          where: { applicationId },
+          where: { applicationId, isDeleted: false },
           relations: ['organization', 'participantRole', 'person'],
         });
       }
@@ -112,7 +112,9 @@ export class AppParticipantService {
    * Retrieves all participant roles and transforms the data into DTOs.
    * @returns An array of ParticipantRole objects containing participant roles.
    */
-  async getAllParticipantRoles(roleType?: string | null): Promise<ViewParticipantsRolesDto[]> {
+  async getAllParticipantRoles(
+    roleType?: string | null,
+  ): Promise<ViewParticipantsRolesDto[]> {
     try {
       this.loggerService.log('at service layer getAllParticipantRoles start');
       const condition = roleType ? { roleType } : {};
@@ -140,15 +142,20 @@ export class AppParticipantService {
 
       const persons = await this.personRepository
         .createQueryBuilder('person')
-        .where('person.firstName ILIKE :searchParam', {
-          searchParam: `${searchParam}%`,
-        })
-        .orWhere('person.middleName ILIKE :searchParam', {
-          searchParam: `${searchParam}%`,
-        })
-        .orWhere('person.lastName ILIKE :searchParam', {
-          searchParam: `${searchParam}%`,
-        })
+        .where('(person.isDeleted = false OR person.isDeleted IS NULL)')
+        .andWhere(
+          new Brackets((qb) => {
+            qb.where('person.firstName ILIKE :searchParam', {
+              searchParam: `${searchParam}%`,
+            })
+              .orWhere('person.middleName ILIKE :searchParam', {
+                searchParam: `${searchParam}%`,
+              })
+              .orWhere('person.lastName ILIKE :searchParam', {
+                searchParam: `${searchParam}%`,
+              });
+          }),
+        )
         .getMany();
 
       if (!persons?.length) {
@@ -156,7 +163,9 @@ export class AppParticipantService {
       } else {
         const transformedObjects = persons.map((person) => ({
           key: person.id.toString(),
-          value: [person.firstName, person.middleName, person.lastName].filter(Boolean).join(' '),
+          value: [person.firstName, person.middleName, person.lastName]
+            .filter(Boolean)
+            .join(' '),
           metaData: person?.email || '', // Assuming email is the metadata you want to include
         }));
 
@@ -231,6 +240,7 @@ export class AppParticipantService {
             personId: newAppParticipant.personId,
             participantRoleId: newAppParticipant.participantRoleId,
             organizationId: newAppParticipant.organizationId,
+            isDeleted: false,
           },
         });
 
@@ -312,7 +322,8 @@ export class AppParticipantService {
     try {
       // Log the input parameters for better traceability
       this.loggerService.debug(
-        `updateAppParticipant: participantId=${updateParticipant.applicationId
+        `updateAppParticipant: participantId=${
+          updateParticipant.applicationId
         }, updateData=${JSON.stringify(updateParticipant)}`,
       );
 
@@ -366,6 +377,41 @@ export class AppParticipantService {
       );
       throw new HttpException(
         'Failed to update App Participant',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async softDeleteAppParticipant(id: number, user: any): Promise<void> {
+    this.loggerService.log('at service layer softDeleteAppParticipant start');
+
+    try {
+      const participant = await this.appParticsRepository.findOne({
+        where: { id },
+      });
+
+      if (!participant) {
+        throw new HttpException('Participant not found', HttpStatus.NOT_FOUND);
+      }
+
+      participant.isDeleted = true;
+      participant.deletedBy = user?.givenName;
+      participant.deletedDateTime = new Date();
+      participant.updatedBy = user?.givenName;
+      participant.updatedDateTime = new Date();
+
+      await this.appParticsRepository.save(participant);
+
+      this.loggerService.log(
+        `App Participant soft deleted successfully with ID: ${id}`,
+      );
+    } catch (error) {
+      this.loggerService.error(
+        'Error occurred while soft deleting App Participant',
+        error.stack,
+      );
+      throw new HttpException(
+        'Failed to delete App Participant',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

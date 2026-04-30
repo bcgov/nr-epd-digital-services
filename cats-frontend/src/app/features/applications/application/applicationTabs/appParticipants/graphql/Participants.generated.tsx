@@ -44,6 +44,13 @@ export type UpdateAppParticipantMutationVariables = Types.Exact<{
 
 export type UpdateAppParticipantMutation = { __typename?: 'Mutation', updateAppParticipant: { __typename?: 'UpdateAppParticipantsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null, data?: Array<{ __typename?: 'ViewAppParticipantEntityDto', id: number, applicationId: number, personId: number, participantRoleId: number, organizationId?: number | null, effectiveStartDate: any, effectiveEndDate?: any | null, createdBy: string, createdDateTime: any, rowVersionCount?: number | null, updatedBy?: string | null, updatedDateTime?: any | null }> | null } };
 
+export type DeleteAppParticipantMutationVariables = Types.Exact<{
+  id: Types.Scalars['Int']['input'];
+}>;
+
+
+export type DeleteAppParticipantMutation = { __typename?: 'Mutation', deleteAppParticipant: { __typename?: 'BaseHttpResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null } };
+
 
 export const GetAppParticipantsByAppIdDocument = gql`
     query getAppParticipantsByAppId($applicationId: Int!, $filter: AppParticipantFilter!) {
@@ -349,3 +356,38 @@ export function useUpdateAppParticipantMutation(baseOptions?: Apollo.MutationHoo
 export type UpdateAppParticipantMutationHookResult = ReturnType<typeof useUpdateAppParticipantMutation>;
 export type UpdateAppParticipantMutationResult = Apollo.MutationResult<UpdateAppParticipantMutation>;
 export type UpdateAppParticipantMutationOptions = Apollo.BaseMutationOptions<UpdateAppParticipantMutation, UpdateAppParticipantMutationVariables>;
+export const DeleteAppParticipantDocument = gql`
+    mutation deleteAppParticipant($id: Int!) {
+  deleteAppParticipant(id: $id) {
+    message
+    httpStatusCode
+    success
+  }
+}
+    `;
+export type DeleteAppParticipantMutationFn = Apollo.MutationFunction<DeleteAppParticipantMutation, DeleteAppParticipantMutationVariables>;
+
+/**
+ * __useDeleteAppParticipantMutation__
+ *
+ * To run a mutation, you first call `useDeleteAppParticipantMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteAppParticipantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteAppParticipantMutation, { data, loading, error }] = useDeleteAppParticipantMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteAppParticipantMutation(baseOptions?: Apollo.MutationHookOptions<DeleteAppParticipantMutation, DeleteAppParticipantMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteAppParticipantMutation, DeleteAppParticipantMutationVariables>(DeleteAppParticipantDocument, options);
+      }
+export type DeleteAppParticipantMutationHookResult = ReturnType<typeof useDeleteAppParticipantMutation>;
+export type DeleteAppParticipantMutationResult = Apollo.MutationResult<DeleteAppParticipantMutation>;
+export type DeleteAppParticipantMutationOptions = Apollo.BaseMutationOptions<DeleteAppParticipantMutation, DeleteAppParticipantMutationVariables>;

@@ -51,14 +51,37 @@ export class AppParticipant {
   @Column('timestamp without time zone', { name: 'created_date_time' })
   createdDateTime: Date;
 
-  @Column('character varying', { name: 'updated_by', length: 20, nullable: true })
+  @Column('character varying', {
+    name: 'updated_by',
+    length: 20,
+    nullable: true,
+  })
   updatedBy: string;
 
-  @Column('timestamp without time zone', { name: 'updated_date_time', nullable: true })
+  @Column('timestamp without time zone', {
+    name: 'updated_date_time',
+    nullable: true,
+  })
   updatedDateTime: Date;
 
   @Column('bytea', { name: 'ts', nullable: true })
   ts: Buffer;
+
+  @Column('boolean', { name: 'is_deleted', default: false })
+  isDeleted: boolean;
+
+  @Column('character varying', {
+    name: 'deleted_by',
+    length: 20,
+    nullable: true,
+  })
+  deletedBy: string | null;
+
+  @Column('timestamp without time zone', {
+    name: 'deleted_date_time',
+    nullable: true,
+  })
+  deletedDateTime: Date | null;
 
   @ManyToOne(() => Application, (application) => application.appParticipants)
   @JoinColumn([{ name: 'application_id', referencedColumnName: 'id' }])

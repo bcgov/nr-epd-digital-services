@@ -749,6 +749,7 @@ type Mutation {
   updatePerson(input: [UpdatePerson!]!): PersonResponse!
   createAppParticipant(newAppParticipant: CreateAppParticipantDto!): CreateAppParticipantsResponse!
   updateAppParticipant(updateAppParticipant: UpdateAppParticipantDto!): UpdateAppParticipantsResponse!
+  deleteAppParticipant(id: Int!): BaseHttpResponse!
   createPersonNote(note: CreatePersonNote!): PersonNoteResponse!
   updatePersonNote(id: String!, note: UpdatePersonNote!): PersonNoteResponse!
   deletePersonNote(notes: [DeletePersonNote!]!): PersonNoteResponse!

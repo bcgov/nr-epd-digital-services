@@ -111,7 +111,11 @@ export class ApplicationSearchService {
 
     const query = this.applicationRepository.createQueryBuilder('application');
     query
-      .leftJoinAndSelect('application.appParticipants', 'appParticipant')
+      .leftJoinAndSelect(
+        'application.appParticipants',
+        'appParticipant',
+        '(appParticipant.is_deleted = false OR appParticipant.is_deleted IS NULL)',
+      )
       .leftJoinAndSelect('appParticipant.person', 'person')
       .leftJoinAndSelect('appParticipant.participantRole', 'participantRole')
       .leftJoinAndSelect('application.site', 'site')
@@ -401,8 +405,13 @@ export class ApplicationSearchService {
 
     const query = this.applicationRepository.createQueryBuilder('application');
     query
-      .leftJoinAndSelect('application.appParticipants', 'appParticipant')
+      .leftJoinAndSelect(
+        'application.appParticipants',
+        'appParticipant',
+        '(appParticipant.is_deleted = false OR appParticipant.is_deleted IS NULL)',
+      )
       .leftJoinAndSelect('appParticipant.person', 'person')
+      .leftJoinAndSelect('appParticipant.participantRole', 'participantRole')
       .leftJoinAndSelect('application.site', 'site')
       .leftJoinAndSelect('application.appType', 'appType')
       .leftJoinAndSelect('application.appStatus', 'appStatus')
@@ -424,9 +433,14 @@ export class ApplicationSearchService {
       applicationType: app.appType?.description || '',
       lastUpdated: app.updatedDateTime.toISOString(),
       status: app.appStatus?.statusType?.abbrev || '',
-      staffAssigned: app.appParticipants.map(
-        (participant) => participant.person,
-      ),
+      staffAssigned: app.appParticipants
+        .filter(
+          (participant) =>
+            participant.participantRole?.abbrev === StaffRoles.CASE_WORKER ||
+            participant.participantRole?.abbrev === StaffRoles.MENTOR ||
+            participant.participantRole?.abbrev === StaffRoles.SDM,
+        )
+        .map((participant) => participant.person),
       priority: app.appPriorities?.[0]?.priority?.abbrev || '',
       url: app.id.toString(),
       siteRiskClassification: this.extractStringValue(

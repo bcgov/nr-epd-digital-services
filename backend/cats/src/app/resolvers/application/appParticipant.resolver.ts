@@ -17,6 +17,7 @@ import { CreateAppParticipantsResponse } from '../../dto/response/applicationPar
 import { ViewAppParticipantEntityDto } from '../../dto/appParticipants/viewAppParticipantEntity.dto';
 import { UpdateAppParticipantsResponse } from '../../dto/response/applicationParticipant/updateAppParticipantResponse';
 import { UpdateAppParticipantDto } from '../../dto/appParticipants/updateAppParticipant.dto';
+import { BaseHttpResponse } from '../../dto/response/baseHttpResponse';
 
 @Resolver(() => ViewAppParticipantsDto)
 @Resource('cats-service')
@@ -95,9 +96,13 @@ export class AppParticipantResolver {
 
   @Query(() => ParticipantsRolesResponse, { name: 'getAllParticipantRoles' })
   async getAllParticipantRoles(
-    @Args('roleType', { type: () => String, nullable: true }) roleType?: string | null) {
+    @Args('roleType', { type: () => String, nullable: true })
+    roleType?: string | null,
+  ) {
     try {
-      const result = await this.appParticipantService.getAllParticipantRoles(roleType);
+      const result = await this.appParticipantService.getAllParticipantRoles(
+        roleType,
+      );
       if (result?.length > 0) {
         this.loggerService.log(
           'AppParticipantResolver.getAllParticipantRoles() RES:200 end',
@@ -207,7 +212,7 @@ export class AppParticipantResolver {
           false,
           result,
         );
-      } 
+      }
     } catch (error) {
       this.loggerService.log(
         `AppParticipantResolver.getOrganizations() Error: ${error.message}`,
@@ -313,6 +318,43 @@ export class AppParticipantResolver {
         HttpStatus.INTERNAL_SERVER_ERROR,
         false,
         null,
+      );
+    }
+  }
+
+  @Mutation(() => BaseHttpResponse, {
+    name: 'deleteAppParticipant',
+  })
+  async deleteAppParticipant(
+    @Args('id', { type: () => Int }) id: number,
+    @AuthenticatedUser() user: any,
+  ): Promise<BaseHttpResponse> {
+    this.loggerService.log(
+      'AppParticipantResolver.deleteAppParticipant() start',
+    );
+
+    try {
+      await this.appParticipantService.softDeleteAppParticipant(id, user);
+
+      this.loggerService.log(
+        'AppParticipantResolver.deleteAppParticipant() RES:200 end',
+      );
+
+      return new BaseHttpResponse(
+        'Participant deleted successfully',
+        HttpStatus.OK,
+        true,
+      );
+    } catch (error) {
+      this.loggerService.error(
+        'AppParticipantResolver.deleteAppParticipant() error',
+        error,
+      );
+
+      return new BaseHttpResponse(
+        error.message || 'Failed to delete participant',
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+        false,
       );
     }
   }

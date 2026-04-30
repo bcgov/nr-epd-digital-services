@@ -19,6 +19,7 @@ import {
 import {
   GetAppParticipantsByAppIdQuery,
   useCreateAppParticipantMutation,
+  useDeleteAppParticipantMutation,
   useGetOrganizationsQuery,
   useGetParticipantNamesQuery,
   useGetParticipantRolesQuery,
@@ -84,6 +85,11 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
     id: 0,
     name: '',
   } as AppParticipantOrganization);
+
+  const [deleteParticipantId, setDeleteParticipantId] = useState<number | null>(
+    null,
+  );
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const [filterOption, setFilterOption] = useState<AppParticipantFilter>(
     AppParticipantFilter.All,
@@ -245,6 +251,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   };
 
   const [updateAppParticiant] = useUpdateAppParticipantMutation();
+  const [deleteAppParticipant] = useDeleteAppParticipantMutation();
   const handleUpdateAppParticipant = async (
     updateParticipant: UpdateAppParticipantDto,
   ) => {
@@ -262,6 +269,12 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   };
 
   const handleTableChange = (event: any) => {
+    if (event.property.includes('delete')) {
+      setDeleteParticipantId(event.row.id);
+      setShowDeleteModal(true);
+      return;
+    }
+
     setActionType(AppParticipantsActionTypes.EditParticipant);
     const appParticipantEditDetails = event.row;
     const appParticipantName = event.row.person as AppParticipantName;
@@ -391,6 +404,31 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
           </ModalDialog>
         )}
       </Widget>
+      {showDeleteModal && deleteParticipantId && (
+        <ModalDialog
+          headerLabel="Confirm Participant Delete"
+          cancelBtnLabel="Cancel"
+          saveBtnLabel="Delete"
+          closeHandler={(confirmed) => {
+            if (confirmed) {
+              deleteAppParticipant({
+                variables: { id: deleteParticipantId },
+                onCompleted: () => {
+                  handleRefreshParticipants();
+                },
+                onError: (err) => {
+                  console.error('Error deleting participant:', err);
+                  notifyError('Failed to delete participant');
+                },
+              });
+            }
+            setShowDeleteModal(false);
+            setDeleteParticipantId(null);
+          }}
+        >
+          <div>Participant will be removed from the participant list</div>
+        </ModalDialog>
+      )}
     </div>
   );
 };
