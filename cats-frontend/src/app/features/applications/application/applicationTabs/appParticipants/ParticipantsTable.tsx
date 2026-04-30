@@ -408,7 +408,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
         <ModalDialog
           headerLabel="Confirm Participant Delete"
           cancelBtnLabel="Cancel"
-          saveBtnLabel="Delete"
+          saveBtnLabel="Confirm"
           closeHandler={(confirmed) => {
             if (confirmed) {
               deleteAppParticipant({
