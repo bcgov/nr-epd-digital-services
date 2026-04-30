@@ -406,6 +406,9 @@ export class AppParticipantService {
         `App Participant soft deleted successfully with ID: ${id}`,
       );
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       this.loggerService.error(
         'Error occurred while soft deleting App Participant',
         error.stack,

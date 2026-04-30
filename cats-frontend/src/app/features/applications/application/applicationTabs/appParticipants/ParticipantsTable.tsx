@@ -269,7 +269,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
   };
 
   const handleTableChange = (event: any) => {
-    if (event.property.includes('delete')) {
+    if (event.property === 'delete') {
       setDeleteParticipantId(event.row.id);
       setShowDeleteModal(true);
       return;
@@ -404,7 +404,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
           </ModalDialog>
         )}
       </Widget>
-      {showDeleteModal && deleteParticipantId && (
+      {showDeleteModal && deleteParticipantId !== null && (
         <ModalDialog
           headerLabel="Confirm Participant Delete"
           cancelBtnLabel="Cancel"
@@ -426,7 +426,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
             setDeleteParticipantId(null);
           }}
         >
-          <div>Participant will be removed from the participant list</div>
+          <div>Are you sure you want to remove this participant ?</div>
         </ModalDialog>
       )}
     </div>
