@@ -119,17 +119,19 @@ cats.person p
 LEFT JOIN cats.app_participant a ON a.person_id = p.id AND (
 (CURRENT_DATE BETWEEN a.effective_start_date AND a.effective_end_date)
 OR (CURRENT_DATE >= a.effective_start_date AND a.effective_end_date IS NULL))
+AND (a.is_deleted = false OR a.is_deleted IS NULL)
 LEFT JOIN cats.application app ON app.id = a.application_id 
 LEFT JOIN cats.application_service_type ast ON ast.id = app.application_service_type_id
 LEFT JOIN cats.participant_role pr ON pr.id = a.participant_role_id
 LEFT JOIN cats.service_assignment_factor af on af.service_type_id = ast.id and af.role_id = pr.id
 WHERE 
-(p.login_user_name is not null)
+((p.login_user_name is not null)
 or
 p.id in (select distinct(person_id) from cats.app_participant where participant_role_id in 
 (select id from cats.participant_role where lower(description) in ('mentor','caseworker','statutory decision maker') )
-)
+))
 and p.is_active = true
+and (p.is_deleted = false OR p.is_deleted IS NULL)
 ${personId ? 'AND p.id = $1' : ''}
 GROUP BY 
 p.id, p.first_name, p.middle_name, p.last_name
@@ -180,7 +182,9 @@ ON sv.id = aps.service_id
 LEFT OUTER JOIN cats.application_service_type appast
 ON appast.id = app.application_service_type_id
 WHERE app.site_id = ${siteId}
-  AND apt.participant_role_id =  ${roleId} AND (SV.abbrev not in ('IR', 'FCR') OR SV.abbrev is null );`;
+  AND apt.participant_role_id =  ${roleId} AND (SV.abbrev not in ('IR', 'FCR') OR SV.abbrev is null )
+  AND (apt.is_deleted = false OR apt.is_deleted IS NULL)
+  AND (p.is_deleted = false OR p.is_deleted IS NULL);`;
   };
 
   getStaffWithCurrentFactorsQueryForApplicationServiceType = (
@@ -214,11 +218,12 @@ join cats.permissions ps on ps.id = pstm.permission_id
 join cats.person_permissions pp on pp.permission_id  = ps.id
 join cats.person per on per.id = pp.person_id
 join cats.participant_role prl on prl.id = ps.role_id
-where ast.id = ${serviceTypeId} and per.is_active = true ${innerWhereClause}
+where ast.id = ${serviceTypeId} and per.is_active = true and (per.is_deleted = false OR per.is_deleted IS NULL) ${innerWhereClause}
 GROUP BY per.id, per.first_name, per.middle_name, per.last_name)) AllowedPersons
 LEFT JOIN cats.app_participant a ON a.person_id = AllowedPersons.id AND (
 (CURRENT_DATE BETWEEN a.effective_start_date AND a.effective_end_date)
 OR (CURRENT_DATE >= a.effective_start_date AND a.effective_end_date IS NULL))
+AND (a.is_deleted = false OR a.is_deleted IS NULL)
 LEFT JOIN cats.application app ON app.id = a.application_id
 LEFT JOIN cats.application_service_type ast ON ast.id = app.application_service_type_id
 LEFT JOIN cats.participant_role pr ON pr.id = a.participant_role_id
@@ -461,6 +466,7 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
         where: {
           applicationId,
           participantRoleId: In(roleIds),
+          isDeleted: false,
         },
         relations: ['organization', 'participantRole', 'person'],
       });
@@ -568,7 +574,12 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
 
               if (existingStaff) {
                 if (staff.action === 'delete') {
-                  await this.staffAssignmentRepository.delete(existingStaff.id);
+                  existingStaff.isDeleted = true;
+                  existingStaff.deletedBy = user?.givenName;
+                  existingStaff.deletedDateTime = new Date();
+                  existingStaff.updatedBy = user?.givenName;
+                  existingStaff.updatedDateTime = new Date();
+                  await this.staffAssignmentRepository.save(existingStaff);
                 } else {
                   existingStaff.applicationId = staff.applicationId;
                   existingStaff.personId = staff.personId;
@@ -587,7 +598,7 @@ AllowedPersons.id, AllowedPersons.first_name, AllowedPersons.middle_name, Allowe
           const newStaffArr = staffInput.filter((staff) => staff.id === 0);
           if (newStaffArr.length > 0) {
             let staffList = await this.staffAssignmentRepository.find({
-              where: { applicationId: applicationId },
+              where: { applicationId: applicationId, isDeleted: false },
               relations: ['person', 'participantRole'],
             });
 

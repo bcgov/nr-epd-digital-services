@@ -430,6 +430,7 @@ export type Mutation = {
   createInvoice: InvoiceResponse;
   createPerson: PersonResponse;
   createPersonNote: PersonNoteResponse;
+  deleteAppParticipant: BaseHttpResponse;
   deleteApplicationNotes: ApplicationNotesResponse;
   deleteBucket: ComsResponse;
   deleteInvoice: InvoiceResponse;
@@ -490,6 +491,11 @@ export type MutationCreatePersonArgs = {
 
 export type MutationCreatePersonNoteArgs = {
   note: CreatePersonNote;
+};
+
+
+export type MutationDeleteAppParticipantArgs = {
+  id: Scalars['Int']['input'];
 };
 
 

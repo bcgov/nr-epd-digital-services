@@ -1,5 +1,9 @@
 import { is } from 'date-fns/locale';
-import { PencilIcon, TickIcon } from '../../../../../components/common/icon';
+import {
+  PencilIcon,
+  TickIcon,
+  TrashCanIcon,
+} from '../../../../../components/common/icon';
 import {
   FormFieldType,
   IFormField,
@@ -359,6 +363,24 @@ export const GetConfig = () => {
       columnSize: ColumnSize.XtraSmall,
       dynamicColumn: true,
       customHeaderCss: 'custom-note-tbl-header',
+    },
+    {
+      id: 9,
+      displayName: '',
+      active: true,
+      graphQLPropertyName: 'delete',
+      displayType: {
+        type: FormFieldType.Link,
+        label: 'Delete',
+        graphQLPropertyName: 'delete',
+        value: '',
+        customLinkValue: 'Remove',
+        tableMode: true,
+        href: '#',
+        customIcon: <TrashCanIcon />,
+      },
+      columnSize: ColumnSize.XtraSmall,
+      dynamicColumn: true,
     },
   ];
 

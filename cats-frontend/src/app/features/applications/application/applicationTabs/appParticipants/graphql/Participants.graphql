@@ -113,3 +113,11 @@ mutation updateAppParticipant($updateAppParticipant: UpdateAppParticipantDto!) {
   }
 }
 
+mutation deleteAppParticipant($id: Int!) {
+  deleteAppParticipant(id: $id) {
+    message
+    httpStatusCode
+    success
+  }
+}
+

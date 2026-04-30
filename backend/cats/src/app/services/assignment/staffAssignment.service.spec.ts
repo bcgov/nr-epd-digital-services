@@ -568,4 +568,49 @@ describe('StaffAssignmentService', () => {
       service.getStaffGroupedByRoleForServiceType(applicationServiceTypeId),
     ).rejects.toThrow(HttpException);
   });
+
+  it('should filter out deleted staff from getStaffByAppId results', async () => {
+    const applicationId = 1;
+    const application = new Application();
+    application.id = applicationId;
+    application.serviceTypeId = 1;
+
+    const participantRole = new ParticipantRole();
+    participantRole.id = 1;
+    participantRole.abbrev = StaffRoles.CASE_WORKER;
+
+    (applicationRepository.findOne as jest.Mock).mockResolvedValue(application);
+    (participantRoleRepository.find as jest.Mock).mockResolvedValue([
+      participantRole,
+    ]);
+
+    const activeStaff = new AppParticipant();
+    activeStaff.id = 1;
+    activeStaff.applicationId = applicationId;
+    activeStaff.participantRoleId = 1;
+    activeStaff.personId = 1;
+    activeStaff.isDeleted = false;
+    activeStaff.effectiveStartDate = new Date('2024-01-01');
+    activeStaff.effectiveEndDate = new Date('2024-12-31');
+
+    (staffAssignmentRepository.find as jest.Mock).mockResolvedValue([
+      activeStaff,
+    ]);
+    (personRepository.query as jest.Mock).mockResolvedValue([
+      { id: 1, current_factors: 0.5 },
+    ]);
+
+    const result = await service.getStaffByAppId(applicationId, {});
+
+    expect(staffAssignmentRepository.find).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          applicationId,
+          isDeleted: false,
+        }),
+      }),
+    );
+    expect(result.staffList).toHaveLength(1);
+    expect(result.staffList[0].id).toBe(1);
+  });
 });
