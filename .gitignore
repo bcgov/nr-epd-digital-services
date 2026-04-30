@@ -133,3 +133,6 @@ forms-flow-ai/forms-flow-ai-ee/forms-flow-bpm/id_rsa_epd.pub
 .vscode/settings.json
 .vscode/launch.json
 backups/
+
+# Kiro steering files
+.kiro
