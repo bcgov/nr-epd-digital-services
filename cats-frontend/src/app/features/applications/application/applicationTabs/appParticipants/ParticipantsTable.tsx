@@ -426,6 +426,7 @@ const ParticipantTable: React.FC<IParticipantTableProps> = ({
             setDeleteParticipantId(null);
           }}
         >
+          <div>Are you sure you want to remove this participant ?</div>
           <div>
             This action should only be used to correct errors. For valid
             participation history, use an end date.
