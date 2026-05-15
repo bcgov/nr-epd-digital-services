@@ -13,6 +13,17 @@ import { format, parseISO } from 'date-fns';
 import { In } from 'typeorm';
 import { StaffAssignmentService } from '../assignment/staffAssignment.service';
 import { ParticipantRole } from '../../entities/participantRole.entity';
+import { ConfigService } from '@nestjs/config';
+import { AppParticipant } from '../../entities/appParticipant.entity';
+import { StaffRoles } from '../assignment/staffRoles.enum';
+
+const ODM_STATUS_ABBREVS = new Set([
+  'ODM - Satisfactory',
+  'ODM - Unatisfactory',
+]);
+
+const normalizeRole = (role: unknown): string =>
+  String(role).replace(/^\/formsflow\//, '');
 
 @Injectable()
 export class TimesheetDayService {
@@ -27,7 +38,145 @@ export class TimesheetDayService {
     private readonly staffAssignmentService: StaffAssignmentService,
     @InjectRepository(ParticipantRole)
     private readonly participantRoleRepository: Repository<ParticipantRole>,
+    @InjectRepository(AppParticipant)
+    private readonly appParticipantRepository: Repository<AppParticipant>,
+    private readonly configService: ConfigService,
   ) {}
+
+  private getUserRoles(user: any): string[] {
+    const roles = [user?.role, user?.roles];
+
+    return [
+      ...new Set(
+        roles
+          .flatMap((roleValue) =>
+            Array.isArray(roleValue) ? roleValue : roleValue ? [roleValue] : [],
+          )
+          .filter(Boolean)
+          .map(normalizeRole),
+      ),
+    ];
+  }
+
+  private isCssaManager(user: any): boolean {
+    const managerRole = this.configService.get<string>(
+      'CATS_CSSA_MANAGER_ROLE',
+    );
+    if (!managerRole) return false;
+    return this.getUserRoles(user).includes(normalizeRole(managerRole));
+  }
+
+  private getUserIdentifiers(user: any): string[] {
+    return [
+      user?.preferred_username,
+      user?.idir_username,
+      user?.username,
+      user?.name,
+      user?.email,
+      user?.givenName,
+    ]
+      .filter(Boolean)
+      .map((value) => String(value).toLowerCase());
+  }
+
+  private async isAssignedSdm(
+    applicationId: number,
+    user: any,
+  ): Promise<boolean> {
+    const identifiers = this.getUserIdentifiers(user);
+    if (!identifiers.length) return false;
+
+    const assignments = await this.appParticipantRepository.find({
+      where: { applicationId, isDeleted: false },
+      relations: ['participantRole', 'person'],
+    });
+
+    return assignments.some((assignment) => {
+      const roleMatches = assignment.participantRole?.abbrev === StaffRoles.SDM;
+      const personIdentifiers = [
+        assignment.person?.loginUserName,
+        assignment.person?.email,
+        assignment.person?.firstName,
+      ]
+        .filter(Boolean)
+        .map((value) => String(value).toLowerCase());
+
+      return (
+        roleMatches &&
+        personIdentifiers.some((identifier) => identifiers.includes(identifier))
+      );
+    });
+  }
+
+  private isTimesheetLockedForApplication(application: Application): boolean {
+    const currentStatus = application.appStatuses?.find(
+      (status) => status.isCurrent,
+    );
+    return ODM_STATUS_ABBREVS.has(currentStatus?.statusType?.abbrev);
+  }
+
+  async canOverrideTimesheetLock(
+    applicationId: number,
+    user: any,
+  ): Promise<boolean> {
+    return this.isCssaManager(user) || this.isAssignedSdm(applicationId, user);
+  }
+
+  async getTimesheetLockStatus(
+    applicationId: number,
+    user: any,
+  ): Promise<{ isLocked: boolean; canOverride: boolean }> {
+    const application = await this.applicationRepository.findOne({
+      where: { id: applicationId },
+      relations: ['appStatuses', 'appStatuses.statusType'],
+    });
+
+    if (!application) {
+      throw new HttpException(
+        `Application with ID ${applicationId} not found`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    const isLocked = this.isTimesheetLockedForApplication(application);
+    return {
+      isLocked,
+      canOverride: isLocked
+        ? await this.canOverrideTimesheetLock(applicationId, user)
+        : false,
+    };
+  }
+
+  private async validateEntryAllowed(
+    entry: TimesheetDayUpsertInputDto,
+    application: Application,
+    user: any,
+  ) {
+    const staffResult = await this.staffAssignmentService.getStaffByAppId(
+      entry.applicationId,
+      user,
+    );
+    const assignedPersonIds = new Set(
+      (staffResult.staffList ?? []).map((staff) => staff.personId),
+    );
+
+    if (!assignedPersonIds.has(entry.personId)) {
+      throw new HttpException(
+        'Time can only be entered for staff assigned to the application',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    if (
+      this.isTimesheetLockedForApplication(application) &&
+      !(await this.canOverrideTimesheetLock(entry.applicationId, user))
+    ) {
+      throw new HttpException(
+        'Timesheets are locked as this application has reached invoice determination (ODM).',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+  }
 
   async upsertTimesheetDays(entries: TimesheetDayUpsertInputDto[], user: any) {
     this.loggerService.log(
@@ -64,6 +213,7 @@ export class TimesheetDayService {
         }
         const application = await this.applicationRepository.findOne({
           where: { id: applicationId },
+          relations: ['appStatuses', 'appStatuses.statusType'],
         });
         if (!application) {
           this.loggerService.error(
@@ -88,6 +238,7 @@ export class TimesheetDayService {
             HttpStatus.NOT_FOUND,
           );
         }
+        await this.validateEntryAllowed(entry, application, user);
         let timesheetDay: TimesheetDay;
         if (timesheetDayId) {
           // Update existing

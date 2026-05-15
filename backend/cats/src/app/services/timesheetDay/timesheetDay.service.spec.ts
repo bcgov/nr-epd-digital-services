@@ -10,6 +10,8 @@ import { TimesheetDayUpsertInputDto } from '../../dto/timesheetDay.dto';
 import { HttpException } from '@nestjs/common';
 import { StaffAssignmentService } from '../assignment/staffAssignment.service';
 import { ParticipantRole } from '../../entities/participantRole.entity';
+import { AppParticipant } from '../../entities/appParticipant.entity';
+import { ConfigService } from '@nestjs/config';
 
 describe('TimesheetDayService', () => {
   let service: TimesheetDayService;
@@ -19,6 +21,8 @@ describe('TimesheetDayService', () => {
   let participantRoleRepository: Repository<ParticipantRole>;
   let logger: LoggerService;
   let staffAssignmentService: StaffAssignmentService;
+  let appParticipantRepository: Repository<AppParticipant>;
+  let configService: ConfigService;
 
   const mockUser = { name: 'Test User' };
   const mockApplication = { id: 1 } as Application;
@@ -49,6 +53,14 @@ describe('TimesheetDayService', () => {
           useClass: Repository,
         },
         {
+          provide: getRepositoryToken(AppParticipant),
+          useClass: Repository,
+        },
+        {
+          provide: ConfigService,
+          useValue: { get: jest.fn() },
+        },
+        {
           provide: LoggerService,
           useValue: { log: jest.fn(), error: jest.fn() },
         },
@@ -72,10 +84,24 @@ describe('TimesheetDayService', () => {
     participantRoleRepository = module.get<Repository<ParticipantRole>>(
       getRepositoryToken(ParticipantRole),
     );
+    appParticipantRepository = module.get<Repository<AppParticipant>>(
+      getRepositoryToken(AppParticipant),
+    );
+    configService = module.get<ConfigService>(ConfigService);
     logger = module.get<LoggerService>(LoggerService);
     staffAssignmentService = module.get<StaffAssignmentService>(
       StaffAssignmentService,
     );
+
+    jest.spyOn(staffAssignmentService, 'getStaffByAppId').mockResolvedValue({
+      applicationServiceTypeId: null,
+      staffList: [
+        { personId: 2, roleId: 1 },
+        { personId: 3, roleId: 2 },
+      ],
+    } as any);
+    jest.spyOn(configService, 'get').mockReturnValue(undefined);
+    jest.spyOn(appParticipantRepository, 'find').mockResolvedValue([]);
   });
 
   it('should be defined', () => {
@@ -343,6 +369,128 @@ describe('TimesheetDayService', () => {
       expect(timesheetDayRepository.create).toHaveBeenCalled();
       expect(timesheetDayRepository.save).toHaveBeenCalled();
     });
+
+    it('should reject standard user edits when the application is ODM locked', async () => {
+      const input: TimesheetDayUpsertInputDto[] = [
+        { applicationId: 1, personId: 2, date: '2025-06-01', hours: 8 },
+      ];
+      const lockedApplication = {
+        id: 1,
+        appStatuses: [
+          {
+            isCurrent: true,
+            statusType: {
+              abbrev: 'ODM - Satisfactory',
+            },
+          },
+        ],
+      } as Application;
+      jest
+        .spyOn(applicationRepository, 'findOne')
+        .mockResolvedValue(lockedApplication);
+      jest.spyOn(personRepository, 'findOne').mockResolvedValue(mockPerson);
+
+      await expect(
+        service.upsertTimesheetDays(input, mockUser),
+      ).rejects.toThrow('Timesheets are locked');
+    });
+
+    it('should allow CSSA manager edits when the application is ODM locked', async () => {
+      const input: TimesheetDayUpsertInputDto[] = [
+        { applicationId: 1, personId: 2, date: '2025-06-01', hours: 8 },
+      ];
+      const lockedApplication = {
+        id: 1,
+        appStatuses: [
+          {
+            isCurrent: true,
+            statusType: {
+              abbrev: 'ODM - Unatisfactory',
+            },
+          },
+        ],
+      } as Application;
+      jest
+        .spyOn(applicationRepository, 'findOne')
+        .mockResolvedValue(lockedApplication);
+      jest
+        .spyOn(configService, 'get')
+        .mockReturnValue('formsflow-reviewer/cssa-manager');
+      jest.spyOn(personRepository, 'findOne').mockResolvedValue(mockPerson);
+      jest
+        .spyOn(timesheetDayRepository, 'create')
+        .mockReturnValue(mockTimesheetDay);
+      jest
+        .spyOn(timesheetDayRepository, 'save')
+        .mockResolvedValue(mockTimesheetDay);
+
+      const result = await service.upsertTimesheetDays(input, {
+        ...mockUser,
+        role: [
+          'formsflow-reviewer',
+          'formsflow-reviewer/cssa-manager',
+          'site-internal-user',
+        ],
+      });
+
+      expect(result).toHaveLength(1);
+      expect(timesheetDayRepository.save).toHaveBeenCalled();
+    });
+
+    it('should allow assigned SDM edits when the application is ODM locked', async () => {
+      const input: TimesheetDayUpsertInputDto[] = [
+        { applicationId: 1, personId: 2, date: '2025-06-01', hours: 8 },
+      ];
+      const lockedApplication = {
+        id: 1,
+        appStatuses: [
+          {
+            isCurrent: true,
+            statusType: {
+              abbrev: 'ODM - Satisfactory',
+            },
+          },
+        ],
+      } as Application;
+      jest
+        .spyOn(applicationRepository, 'findOne')
+        .mockResolvedValue(lockedApplication);
+      jest.spyOn(appParticipantRepository, 'find').mockResolvedValue([
+        {
+          participantRole: { abbrev: 'SDM' },
+          person: { loginUserName: 'sdm.user' },
+        },
+      ] as any);
+      jest.spyOn(personRepository, 'findOne').mockResolvedValue(mockPerson);
+      jest
+        .spyOn(timesheetDayRepository, 'create')
+        .mockReturnValue(mockTimesheetDay);
+      jest
+        .spyOn(timesheetDayRepository, 'save')
+        .mockResolvedValue(mockTimesheetDay);
+
+      const result = await service.upsertTimesheetDays(input, {
+        ...mockUser,
+        preferred_username: 'sdm.user',
+      });
+
+      expect(result).toHaveLength(1);
+      expect(timesheetDayRepository.save).toHaveBeenCalled();
+    });
+
+    it('should reject edits for people not assigned to the application', async () => {
+      const input: TimesheetDayUpsertInputDto[] = [
+        { applicationId: 1, personId: 999, date: '2025-06-01', hours: 8 },
+      ];
+      jest
+        .spyOn(applicationRepository, 'findOne')
+        .mockResolvedValue(mockApplication);
+      jest.spyOn(personRepository, 'findOne').mockResolvedValue(mockPerson);
+
+      await expect(
+        service.upsertTimesheetDays(input, mockUser),
+      ).rejects.toThrow('Time can only be entered for staff assigned');
+    });
   });
 
   describe('getTimesheetDaysForAssignedStaff', () => {
@@ -535,5 +683,6 @@ describe('TimesheetDayService', () => {
       expect(result[0].allTimeHours).toBe(8);
       expect(result[0].timesheetDays).toEqual([]);
     });
+
   });
 });

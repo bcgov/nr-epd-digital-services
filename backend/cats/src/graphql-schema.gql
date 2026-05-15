@@ -601,6 +601,8 @@ type PersonWithTimesheetDaysResponse {
   success: Boolean
   timestamp: String
   data: [PersonWithTimesheetDaysDto!]
+  isTimesheetLocked: Boolean
+  canOverrideTimesheetLock: Boolean
 }
 
 type ViewDashboard {

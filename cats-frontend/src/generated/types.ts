@@ -629,6 +629,7 @@ export type PersonResponse = {
 
 export type PersonWithTimesheetDaysDto = {
   __typename?: 'PersonWithTimesheetDaysDto';
+  allTimeHours: Scalars['Float']['output'];
   email?: Maybe<Scalars['String']['output']>;
   endDate?: Maybe<Scalars['DateTime']['output']>;
   firstName: Scalars['String']['output'];
@@ -638,12 +639,15 @@ export type PersonWithTimesheetDaysDto = {
   roleId?: Maybe<Scalars['Int']['output']>;
   startDate?: Maybe<Scalars['DateTime']['output']>;
   timesheetDays: Array<TimesheetDayDto>;
+  weekHours: Scalars['Float']['output'];
 };
 
 export type PersonWithTimesheetDaysResponse = {
   __typename?: 'PersonWithTimesheetDaysResponse';
+  canOverrideTimesheetLock?: Maybe<Scalars['Boolean']['output']>;
   data?: Maybe<Array<PersonWithTimesheetDaysDto>>;
   httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  isTimesheetLocked?: Maybe<Scalars['Boolean']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
