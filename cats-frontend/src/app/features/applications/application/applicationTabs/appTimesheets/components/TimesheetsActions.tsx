@@ -18,7 +18,11 @@ export const TimesheetsActions = ({
   return (
     <div className="d-flex gap-2 mt-4">
       {isOverrideEditing && (
-        <Button variant="tertiary" disabled={disabled} onClick={onCancelOverride}>
+        <Button
+          variant="tertiary"
+          disabled={disabled}
+          onClick={onCancelOverride}
+        >
           Cancel
         </Button>
       )}
