@@ -195,6 +195,19 @@ services:
       - /app/node_modules
     working_dir: "/app"
 
+  digital-intake:
+    container_name: digital-intake
+    build:
+      context: ./digital-intake/frontend
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./digital-intake/frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    stdin_open: true
+    tty: true
+
   userapi_doc:
     container_name: userapi_doc
     build:
