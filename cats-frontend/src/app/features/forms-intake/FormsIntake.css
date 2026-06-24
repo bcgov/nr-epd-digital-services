@@ -1,0 +1,59 @@
+.forms-intake h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.forms-intake .forms-intake-h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.forms-intake .forms-intake-step-header {
+  margin-top: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #dee2e6;
+  margin-bottom: 0.5rem;
+}
+
+.forms-intake .forms-intake-step-header .forms-intake-h2 {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.forms-intake .forms-intake-toggle-btn {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.forms-intake .forms-intake-dev-only-divider {
+  border-top: 2px dashed #dee2e6;
+  opacity: 1;
+}
+
+.forms-intake .forms-intake-dev-only-banner {
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.forms-intake .forms-intake-dev-accordion .accordion-item {
+  border-color: #ffc107;
+}
+
+.forms-intake .forms-intake-dev-accordion .accordion-button {
+  background-color: #fff8e1;
+  color: #664d03;
+  font-weight: 600;
+}
+
+.forms-intake .forms-intake-dev-accordion .accordion-button:not(.collapsed) {
+  background-color: #fff3cd;
+  color: #664d03;
+  box-shadow: inset 0 -1px 0 #ffc107;
+}

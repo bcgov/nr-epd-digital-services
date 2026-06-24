@@ -5,6 +5,7 @@ import { SubmissionResponse } from '../dto/submissionResponse.dto';
 import { Form } from '../entities/form.entity';
 import { FormService } from '../services/form.service';
 import { CatsService } from '../services/cats.service';
+import { IntakeService } from '../services/intake.service';
 
 /**
  * Form Controller
@@ -21,7 +22,8 @@ import { CatsService } from '../services/cats.service';
 export class FormController {
   constructor(
     private formService: FormService,
-    private catsService: CatsService
+    private catsService: CatsService,
+    private intakeService: IntakeService,
   ) { }
 
   /**
@@ -187,23 +189,10 @@ export class FormController {
   })
   async save(
     @Param('formId') formId,
-    @Body() content, @Req() request,
+    @Body() content,
   ): Promise<SubmissionResponse> {
-    // Get the origin header to determine if CATS integration should be triggered
-    const origin = request.headers.origin;
-
-    // Save the form submission to the database
-    const savedSubmission = await this.formService.create(formId, content.data);
-
-    // Transform the entity to the expected response format
-    const submissionResponse: SubmissionResponse =
-      this.transformResult(savedSubmission);
-
-    // If CATS integration is enabled and request has origin, submit to CATS
-    if (origin && process.env.CATS_INTEGRATION_ENABLED === 'true')
-      await this.catsService.submitToCats(content.data, savedSubmission.id, savedSubmission.formId);
-
-    return submissionResponse;
+    const result = await this.intakeService.submitToIntake(formId, content.data);
+    return result.submission;
   }
 
   /**
@@ -215,13 +204,7 @@ export class FormController {
    * @private
    */
   transformResult(savedSubmission: Form) {
-    const submissionResponse: SubmissionResponse = new SubmissionResponse();
-    submissionResponse._id = savedSubmission.id;
-    submissionResponse.form = savedSubmission.formId;
-    submissionResponse.data = savedSubmission.formData;
-    submissionResponse.created = savedSubmission.createdDate;
-    submissionResponse.modified = savedSubmission.modifiedDate;
-    return submissionResponse;
+    return this.intakeService.transformResult(savedSubmission);
   }
 
   /**

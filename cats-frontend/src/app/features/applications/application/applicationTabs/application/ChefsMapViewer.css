@@ -1,0 +1,29 @@
+.chefs-map-viewer {
+  position: relative;
+  width: 100%;
+  min-height: 320px;
+}
+
+.chefs-map-viewer__map {
+  height: 320px;
+  width: 100%;
+  z-index: 0;
+}
+
+.chefs-map-empty {
+  margin: 0;
+  padding: 0.75rem 0;
+  color: var(--typography-color-secondary, #6c757d);
+  font-size: 0.95rem;
+}
+
+.chefs-map-empty--overlay {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 4px;
+  pointer-events: none;
+}

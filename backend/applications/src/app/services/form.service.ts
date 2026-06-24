@@ -45,6 +45,71 @@ export class FormService {
    * @param formId formId
    * @returns form
    */
+  async findByChefsSubmissionId(chefsSubmissionId: string): Promise<Form | null> {
+    const rows = await this.formRepository
+      .createQueryBuilder('form')
+      .where(`form.form_data->'_intake'->>'chefsSubmissionId' = :id`, {
+        id: chefsSubmissionId,
+      })
+      .getMany();
+
+    return rows[0] ?? null;
+  }
+
+  /**
+   * Finds a CATS application already linked to this adapter mirror (form_id + submission_id on app_status).
+   * Used when _intake.catsApplicationId was lost but CATS create succeeded earlier.
+   */
+  async findCatsApplicationIdByFormSubmission(
+    formId: string,
+    adapterSubmissionId: string,
+  ): Promise<number | null> {
+    try {
+      const rows = await this.formRepository.manager.query(
+        `SELECT application_id AS "applicationId"
+         FROM cats.app_status
+         WHERE form_id = $1 AND submission_id = $2
+         ORDER BY id DESC
+         LIMIT 1`,
+        [formId, adapterSubmissionId],
+      );
+      const id = rows[0]?.applicationId;
+      return id != null && !Number.isNaN(Number(id)) ? Number(id) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Current CATS status for an adapter mirror (used when syncing site IDs on re-ingest).
+   */
+  async findCatsApplicationCurrentStatus(
+    formId: string,
+    adapterSubmissionId: string,
+  ): Promise<{ applicationId: number; statusTypeAbbrev: string } | null> {
+    try {
+      const rows = await this.formRepository.manager.query(
+        `SELECT a.application_id AS "applicationId", st.abbrev AS "statusTypeAbbrev"
+         FROM cats.app_status a
+         JOIN cats.status_type st ON st.id = a.status_type_id
+         WHERE a.form_id = $1 AND a.submission_id = $2 AND a.is_current = true
+         ORDER BY a.id DESC
+         LIMIT 1`,
+        [formId, adapterSubmissionId],
+      );
+      const row = rows[0];
+      if (!row?.applicationId) {
+        return null;
+      }
+      return {
+        applicationId: Number(row.applicationId),
+        statusTypeAbbrev: String(row.statusTypeAbbrev),
+      };
+    } catch {
+      return null;
+    }
+  }
+
   async findOne(submissionId: string, formId: string): Promise<Form> {
     // First try to find with exact form_id match
     let submission = await this.formRepository.findOne({

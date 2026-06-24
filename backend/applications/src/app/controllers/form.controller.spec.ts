@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { FormController } from './form.controller';
 import { FormService } from '../services/form.service';
 import { CatsService } from '../services/cats.service';
+import { IntakeService } from '../services/intake.service';
 import { SubmissionResponse } from '../dto/submissionResponse.dto';
 
 const mockFormService = {
@@ -17,6 +18,19 @@ const mockCatsService = {
   updateCatsApplication: jest.fn(),
 };
 
+const mockIntakeService = {
+  submitToIntake: jest.fn(),
+  transformResult: jest.fn((saved) => {
+    const r = new SubmissionResponse();
+    r._id = saved.id;
+    r.form = saved.formId;
+    r.data = saved.formData;
+    r.created = saved.createdDate;
+    r.modified = saved.modifiedDate;
+    return r;
+  }),
+};
+
 describe('FormController', () => {
   let controller: FormController;
 
@@ -26,6 +40,7 @@ describe('FormController', () => {
       providers: [
         { provide: FormService, useValue: mockFormService },
         { provide: CatsService, useValue: mockCatsService },
+        { provide: IntakeService, useValue: mockIntakeService },
       ],
     }).compile();
 
@@ -72,32 +87,25 @@ describe('FormController', () => {
     });
   });
 
-  it('should save a form submission and call catsService', async () => {
-    process.env.CATS_INTEGRATION_ENABLED = 'true';
+  it('should save a form submission via intake service', async () => {
     const formId = 'abc';
     const formData = { name: 'Jane' };
     const content = { data: formData };
-    const savedSubmission = {
-      id: '123',
-      formId: 'abc',
-      formData,
-      createdDate: new Date(),
-      modifiedDate: new Date(),
-    };
-    const mockRequest = {
-      headers: { origin: 'https://example.com' },
-    } as unknown as Request;
+    const submissionResponse = new SubmissionResponse();
+    submissionResponse._id = '123';
+    submissionResponse.form = formId;
 
-    mockFormService.create.mockResolvedValue(savedSubmission);
-    const result = await controller.save(formId, content, mockRequest);
+    mockIntakeService.submitToIntake.mockResolvedValue({
+      submission: submissionResponse,
+      catsApplicationId: 1,
+      catsIntegrated: true,
+      message: 'ok',
+    });
 
-    expect(mockFormService.create).toHaveBeenCalledWith(formId, formData);
-    expect(mockCatsService.submitToCats).toHaveBeenCalledWith(
-      formData,
-      savedSubmission.id,
-      savedSubmission.formId,
-    );
-    expect(result).toBeInstanceOf(SubmissionResponse);
+    const result = await controller.save(formId, content);
+
+    expect(mockIntakeService.submitToIntake).toHaveBeenCalledWith(formId, formData);
+    expect(result).toBe(submissionResponse);
   });
 
   it('should update form submission', async () => {
@@ -113,6 +121,7 @@ describe('FormController', () => {
   });
 
   it('should call catsService.updateCatsApplication when partially updating', async () => {
+    process.env.CATS_INTEGRATION_ENABLED = 'true';
     const response = { patched: true };
     const formId = 'abc';
     const submissionId = '123';

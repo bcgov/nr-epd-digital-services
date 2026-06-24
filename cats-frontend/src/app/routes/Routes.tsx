@@ -18,6 +18,7 @@ import Invoice from '@cats/features/applications/application/applicationTabs/app
 import ApplicationTabsRouter from '../features/applications/application/ApplicationTabsRouter';
 import MyTasks from '../features/mytasks/mytasks';
 import Assignment from '@cats/features/assignment/Assignment';
+import FormsIntake from '@cats/features/forms-intake/FormsIntake';
 
 const roleBasedRoutes: any = {
   [UserRoleType.INTERNAL]: [
@@ -28,6 +29,7 @@ const roleBasedRoutes: any = {
     { path: '/person/:id', element: <Person /> },
     { path: '/person', element: <Person /> },
     { path: '/applications', element: <ApplicationSearch /> },
+    { path: '/forms', element: <FormsIntake /> },
     // { path: '/mytasks', element: <MyTasks /> },
     {
       path: '/applications/:id',

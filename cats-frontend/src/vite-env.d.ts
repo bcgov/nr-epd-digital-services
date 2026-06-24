@@ -2,6 +2,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_BACKEND_API: string;
+  readonly VITE_INTAKE_API: string;
   readonly VITE_GEOCODER_API: string;
   readonly VITE_AUTH_AUTHORITY: string;
   readonly VITE_AUTH_CLIENT_ID: string;

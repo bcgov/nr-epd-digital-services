@@ -1,9 +1,68 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Form } from '../entities/form.entity';
 import axios from 'axios';
 import ApplicationType from '../constants/applicationType';
+
+/** Parse comma-separated numeric site IDs from form field values. */
+export function parseNumericSiteIds(...values: unknown[]): number[] {
+  const seen = new Set<number>();
+  const result: number[] = [];
+
+  for (const value of values) {
+    if (value == null) {
+      continue;
+    }
+    for (const part of String(value).split(',')) {
+      const trimmed = part.trim();
+      if (trimmed === '' || Number.isNaN(Number(trimmed))) {
+        continue;
+      }
+      const num = Number(trimmed);
+      if (!seen.has(num)) {
+        seen.add(num);
+        result.push(num);
+      }
+    }
+  }
+
+  return result;
+}
+
+/** NOM dataGrid may be a JSON string or array from CHEFS / Form.io. */
+export function normalizeFormDataGrid(dataGrid: unknown): Record<string, unknown>[] {
+  if (Array.isArray(dataGrid)) {
+    return dataGrid.filter((row) => row && typeof row === 'object') as Record<
+      string,
+      unknown
+    >[];
+  }
+  if (typeof dataGrid === 'string' && dataGrid.trim() !== '') {
+    try {
+      const parsed = JSON.parse(dataGrid);
+      return Array.isArray(parsed)
+        ? parsed.filter((row) => row && typeof row === 'object')
+        : [];
+    } catch {
+      return [];
+    }
+  }
+  return [];
+}
+
+/** Site IDs from live NOM CHEFS form fields (incl. S2-siteIdNumber + contact grid). */
+export function getNomSiteIdsFromFormData(formData: Record<string, unknown>): number[] {
+  const values: unknown[] = [
+    formData.siteIdNumber,
+    formData['S2-siteIdNumber'],
+    formData['s2-siteIdNumber'],
+  ];
+
+  for (const row of normalizeFormDataGrid(formData.dataGrid)) {
+    values.push(row.contactParcelSiteIdNumber);
+    values.push(row['contact-parcelSiteIdNumber']);
+  }
+
+  return parseNumericSiteIds(...values);
+}
 
 @Injectable()
 export class CatsService {
@@ -34,27 +93,7 @@ export class CatsService {
           []
         );
       case ApplicationType.NOM:
-        let dataGrid = [];
-        if (typeof formData.dataGrid === 'string') {
-          try {
-            dataGrid = JSON.parse(formData.dataGrid);
-          } catch {
-            dataGrid = [];
-          }
-        }
-        const nomSiteIds = [
-          ...(dataGrid?.flatMap((item: any) =>
-            item['contactParcelSiteIdNumber']?.toString().split(','),
-          ) || []),
-          ...(formData.siteIdNumber?.toString().split(',') || []),
-        ];
-
-        return nomSiteIds
-          .filter(
-            (id: any) =>
-              typeof id === 'string' && id.trim() !== '' && !isNaN(Number(id)),
-          ) // keep only non-empty strings
-          .map((id: string) => Number(id.trim()));
+        return getNomSiteIdsFromFormData(formData);
 
       case ApplicationType.SRCR:
         return (
@@ -130,8 +169,17 @@ export class CatsService {
    * @param formId
    * @returns application id in CATS
    */
-  async submitToCats(formData: any, submissionId: string, formId: string) {
+  async submitToCats(
+    formData: any,
+    submissionId: string,
+    formId: string,
+  ): Promise<number | null> {
     const GRAPHQL_URL = process.env.CATS_API;
+
+    if (!GRAPHQL_URL) {
+      console.error('CATS_API is not configured');
+      return null;
+    }
 
     // Parse and split comma-separated site IDs
     const siteIds = this.getSiteIdsFromFormData(formData);
@@ -168,7 +216,7 @@ export class CatsService {
               applicationId: 0, // Will be overwritten by the backend
               formId: formId,
               submissionId: submissionId,
-              formsflowAppId: Number(formData.applicationId), // Float!
+              formsflowAppId: Number(formData.applicationId) || 0,
             },
           ],
         },
@@ -185,8 +233,42 @@ export class CatsService {
           },
         },
       );
+
+      const created = response.data?.data?.createApplication?.data;
+      const appId = Array.isArray(created)
+        ? created[0]?.id ?? null
+        : created?.id ?? null;
+      return appId;
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error creating CATS application:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Links site ID(s) from form data to an existing CATS application (e.g. on re-ingest).
+   */
+  async syncApplicationSites(
+    formData: Record<string, unknown>,
+    submissionId: string,
+    formId: string,
+    statusTypeAbbrev = 'New',
+  ): Promise<boolean> {
+    const siteIds = this.getSiteIdsFromFormData(formData);
+    if (siteIds.length === 0) {
+      return false;
+    }
+
+    try {
+      await this.updateCatsApplication(submissionId, formId, {
+        ...formData,
+        applicationStatus: statusTypeAbbrev,
+        applicationId: Number(formData.applicationId) || 0,
+      });
+      return true;
+    } catch (error) {
+      console.error('Failed to sync site IDs to CATS application:', error);
+      return false;
     }
   }
 
@@ -234,7 +316,7 @@ export class CatsService {
         appStatusInput: {
           submissionId: submissionId,
           formId: formId,
-          formsflowAppId: Number(formData.applicationId),
+          formsflowAppId: Number(formData.applicationId) || 0,
           statusTypeAbbrev: formData.applicationStatus,
           siteIds: siteIds, // array of site id's
         },

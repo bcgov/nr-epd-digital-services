@@ -1,0 +1,61 @@
+{
+  "forms": [
+    {
+      "name": "Site Information Request Application (SIR)",
+      "copy": "Site Information Request — CHEFS link to be configured",
+      "url": "",
+      "formId": "",
+      "appType": "IR"
+    },
+    {
+      "name": "Contaminated Sites Services Application (CSSA)",
+      "copy": "CSSA bundle — CHEFS link to be configured",
+      "url": "",
+      "formId": "",
+      "appType": "CSR"
+    },
+    {
+      "name": "Site Disclosure Statements (SDS)",
+      "copy": "Multi-party review — future phase",
+      "url": "",
+      "formId": "",
+      "appType": ""
+    },
+    {
+      "name": "Site Risk Classification Report (SRCR)",
+      "copy": "SRCR — CHEFS link to be configured",
+      "url": "",
+      "formId": "",
+      "appType": "SRCR"
+    },
+    {
+      "name": "Notification of Independent Remediation (NIR)",
+      "copy": "NIR — CHEFS link to be configured",
+      "url": "",
+      "formId": "",
+      "appType": "NIR"
+    },
+    {
+      "name": "Notification of Likely or Actual Migration (NOM)",
+      "copy": "Demo form — CHEFS → Intake Adapter → CATS",
+      "url": "https://submit.digital.gov.bc.ca/app/form/submit?f=94fa90d0-645f-42ca-bf07-2d7b6184d472",
+      "formId": "94fa90d0-645f-42ca-bf07-2d7b6184d472",
+      "appType": "NOM",
+      "pilot": true
+    },
+    {
+      "name": "Detailed Ecological Risk Assessment Checklist (DERA)",
+      "copy": "DERA — CHEFS link to be configured",
+      "url": "",
+      "formId": "",
+      "appType": "DERA"
+    },
+    {
+      "name": "Protocol 6 Pre-Approval Application",
+      "copy": "CHEFS link to be configured",
+      "url": "",
+      "formId": "",
+      "appType": ""
+    }
+  ]
+}

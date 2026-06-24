@@ -28,6 +28,7 @@ declare global {
       VITE_FORM_FLOW_API: string;
       VITE_GEOCODER_API: string;
       VITE_BACKEND_API: string;
+      VITE_INTAKE_API: string;
       VITE_BCBOX_APP_URL: string;
       VITE_BCBOX_BUCKET_URL: string;
       VITE_COMS_ACCESS_KEY_ID: string;

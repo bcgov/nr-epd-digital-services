@@ -6,7 +6,17 @@ import {
   getBundleForms,
   getExecuteRules,
   getFormDetails,
+  getIntakeFormSchema,
+  isChefsIntakeFormId,
+  parseAdapterSubmissionFields,
 } from './FormioEndpoints';
+import {
+  normalizeChefsFormSchema,
+  normalizeChefsSubmissionData,
+} from './chefsFormSchema';
+import { registerChefsMapComponent } from './registerChefsMapComponent';
+
+registerChefsMapComponent();
 import { getUser } from '../../../../../helpers/utility';
 import './Application.css';
 import {
@@ -16,7 +26,6 @@ import {
 import LoadingOverlay from '../../../../../components/loader/LoadingOverlay';
 import { Form } from '@formio/react';
 import '@formio/js/dist/formio.full.min.css';
-import { set } from 'date-fns';
 
 type ApplicationDetails =
   GetApplicationByIdQuery['getApplicationDetailsById']['data'];
@@ -142,13 +151,35 @@ export const Application: React.FC<ApplicationProps> = () => {
       try {
         setError(null);
         setIsLoading(true);
+
+        if (isChefsIntakeFormId(formId)) {
+          const [schemaRes, submissionRes] = await Promise.all([
+            getIntakeFormSchema(formId),
+            getApplicationFormData(formId, submissionId),
+          ]);
+          setFormType('form');
+          setFormJson(
+            normalizeChefsFormSchema(schemaRes.data as FormJson),
+          );
+          setFormData((prev) => ({
+            ...prev,
+            data: normalizeChefsSubmissionData(
+              parseAdapterSubmissionFields(submissionRes),
+            ),
+          }));
+          return;
+        }
+
         const res = await getFormDetails(formId);
         if (res) {
           const { formType, id } = res?.data;
           setFormType(formType);
 
           const formData = await getApplicationFormData(formId, submissionId);
-          setFormData((prev) => ({ ...prev, data: formData?.data?.data }));
+          setFormData((prev) => ({
+            ...prev,
+            data: parseAdapterSubmissionFields(formData),
+          }));
 
           if (formType === 'bundle') {
             const bundleForms = await getBundleForms(id);

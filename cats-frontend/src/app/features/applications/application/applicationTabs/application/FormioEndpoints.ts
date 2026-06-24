@@ -14,6 +14,42 @@ const COMS_ENDPOINTS = {
   ROLES: '/roles',
 };
 
+/** CHEFS form IDs are UUIDs; legacy FormsFlow form IDs are Mongo ObjectIds. */
+const CHEFS_FORM_ID_REGEX =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+export const isChefsIntakeFormId = (formId?: string): boolean =>
+  Boolean(formId && CHEFS_FORM_ID_REGEX.test(formId));
+
+/** Strip adapter-only metadata before Form.io render. */
+export const parseAdapterSubmissionFields = (
+  response: { data?: { data?: unknown } } | undefined,
+): Record<string, unknown> => {
+  const raw = response?.data?.data;
+  if (!raw || typeof raw !== 'object' || raw === null) {
+    return {};
+  }
+  const { _intake: _ignored, ...fields } = raw as Record<string, unknown>;
+  return fields;
+};
+
+/**
+ * Published Form.io schema for CHEFS-ingested applications (no FormsFlow).
+ */
+export const getIntakeFormSchema = async (formId: string) => {
+  try {
+    const response = await getAxiosInstance(FORM_BACKEND_API).get(
+      `/intake/chefs/forms/${formId}/schema`,
+    );
+    if (response?.data) {
+      return response;
+    }
+  } catch (error) {
+    console.error('Error fetching CHEFS form schema from intake adapter:', error);
+    throw error;
+  }
+};
+
 /**
  * @description Fetches the details of a form based on the form ID from the Forms API.
  * @param {string} [formId] - The ID of the form to retrieve the details of
