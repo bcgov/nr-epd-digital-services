@@ -26,19 +26,25 @@ export const sendInvoice = async (
     formData.append('invoiceId', emailPayload.invoiceId.toString());
     formData.append('subject', emailPayload.subject || '');
     formData.append('body', emailPayload.body || '');
-    formData.append('to', JSON.stringify(
-      emailPayload.to.map((r) => ({
-        email: r.email,
-        personId: r.personId || null,
-      }))
-    ));
-    if (emailPayload.cc?.length) {
-      formData.append('cc', JSON.stringify(
-        emailPayload.cc.map((r) => ({
+    formData.append(
+      'to',
+      JSON.stringify(
+        emailPayload.to.map((r) => ({
           email: r.email,
           personId: r.personId || null,
-        }))
-      ));
+        })),
+      ),
+    );
+    if (emailPayload.cc?.length) {
+      formData.append(
+        'cc',
+        JSON.stringify(
+          emailPayload.cc.map((r) => ({
+            email: r.email,
+            personId: r.personId || null,
+          })),
+        ),
+      );
     }
 
     const response = await getAxiosInstance(CATS_API).post(

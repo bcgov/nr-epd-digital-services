@@ -13,7 +13,7 @@ export class InvoiceEmail {
 
   @IsNotEmpty()
   @IsString()
-  @Transform(({ value }) => value) // Keep as raw JSON string, parse in controller
+  @Transform(({ value }) => value)
   to: string; // JSON string of EmailRecipientPayload[]
 
   @IsOptional()

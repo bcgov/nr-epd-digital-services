@@ -1,194 +1,197 @@
 .mri-container {
-    display: flex;
-    flex-direction: column;
-    gap: var(--layout-margin-xsmall, 4px);
-    position: relative;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-margin-xsmall, 4px);
+  position: relative;
+  width: 100%;
 }
 
 .mri-label {
-    font-size: var(--typography-font-size-small-body, 0.85rem);
-    font-weight: var(--typography-font-weights-bold, 600);
-    color: var(--typography-color-primary, #2d2d2d);
+  font-size: var(--typography-font-size-small-body, 0.85rem);
+  font-weight: var(--typography-font-weights-bold, 600);
+  color: var(--typography-color-primary, #2d2d2d);
 }
 
 .mri-input-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--layout-margin-xsmall, 4px);
-    padding: var(--layout-padding-small, 6px) var(--layout-padding-medium, 10px);
-    border: 1px solid var(--surface-color-border-default, #d8d8d8);
-    border-radius: var(--layout-border-radius-medium, 4px);
-    background: var(--surface-color-background-white, #ffffff);
-    min-height: 40px;
-    cursor: text;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--layout-margin-xsmall, 4px);
+  padding: var(--layout-padding-small, 6px) var(--layout-padding-medium, 10px);
+  border: 1px solid var(--surface-color-border-default, #d8d8d8);
+  border-radius: var(--layout-border-radius-medium, 4px);
+  background: var(--surface-color-background-white, #ffffff);
+  min-height: 40px;
+  cursor: text;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
 }
 
 .mri-input-wrapper:focus-within {
-    border-color: var(--surface-color-primary-default, #053662);
-    box-shadow: 0 0 0 0.2rem rgba(5, 54, 98, 0.15);
+  border-color: var(--surface-color-primary-default, #053662);
+  box-shadow: 0 0 0 0.2rem rgba(5, 54, 98, 0.15);
 }
 
 .mri-input-wrapper--error {
-    border-color: var(--support-color-danger, #dc3545);
+  border-color: var(--support-color-danger, #dc3545);
 }
 
 .mri-input-wrapper--error:focus-within {
-    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.15);
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.15);
 }
 
 .mri-input-wrapper--disabled {
-    background: var(--surface-color-background-light-gray, #faf9f8);
-    cursor: not-allowed;
-    opacity: 0.7;
+  background: var(--surface-color-background-light-gray, #faf9f8);
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .mri-chip-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--layout-margin-xsmall, 4px);
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--layout-margin-xsmall, 4px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .mri-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--layout-margin-xsmall, 4px);
-    padding: var(--layout-padding-xsmall, 2px) var(--layout-padding-small, 8px);
-    background: var(--surface-color-primary-button-default, #053662);
-    border: 1px solid var(--surface-color-primary-default, #053662);
-    border-radius: 16px;
-    font-size: var(--typography-font-size-small-body, 0.8rem);
-    color: var(--typography-color-primary-invert, #ffffff);
-    max-width: 240px;
-    transition: background 0.1s;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--layout-margin-xsmall, 4px);
+  padding: var(--layout-padding-xsmall, 2px) var(--layout-padding-small, 8px);
+  background: var(--surface-color-primary-button-default, #053662);
+  border: 1px solid var(--surface-color-primary-default, #053662);
+  border-radius: 16px;
+  font-size: var(--typography-font-size-small-body, 0.8rem);
+  color: var(--typography-color-primary-invert, #ffffff);
+  max-width: 240px;
+  transition: background 0.1s;
 }
 
 .mri-chip:focus {
-    outline: 2px solid var(--surface-color-primary-default, #053662);
-    outline-offset: 1px;
-    background: var(--surface-color-primary-hover, #0a4b8c);
+  outline: 2px solid var(--surface-color-primary-default, #053662);
+  outline-offset: 1px;
+  background: var(--surface-color-primary-hover, #0a4b8c);
 }
 
 .mri-chip-text {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mri-chip-remove {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    background: none;
-    font-size: 1rem;
-    line-height: 1;
-    color: var(--typography-color-primary-invert, #ffffff);
-    cursor: pointer;
-    padding: 0 2px;
-    border-radius: 50%;
-    transition: background 0.1s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--typography-color-primary-invert, #ffffff);
+  cursor: pointer;
+  padding: 0 2px;
+  border-radius: 50%;
+  transition: background 0.1s;
 }
 
 .mri-chip-remove:hover {
-    background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .mri-chip-remove:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .mri-input {
-    flex: 1;
-    min-width: 150px;
-    border: none;
-    outline: none;
-    font-size: var(--typography-font-size-small-body, 0.85rem);
-    padding: 2px 0;
-    background: transparent;
-    color: var(--typography-color-primary, #2d2d2d);
+  flex: 1;
+  min-width: 150px;
+  border: none;
+  outline: none;
+  font-size: var(--typography-font-size-small-body, 0.85rem);
+  padding: 2px 0;
+  background: transparent;
+  color: var(--typography-color-primary, #2d2d2d);
 }
 
 .mri-input:disabled {
-    cursor: not-allowed;
+  cursor: not-allowed;
 }
 
 .mri-input::placeholder {
-    color: var(--typography-color-secondary, #474543);
+  color: var(--typography-color-secondary, #474543);
 }
 
 .mri-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 1050;
-    background: var(--surface-color-background-white, #ffffff);
-    border: 1px solid var(--surface-color-border-default, #d8d8d8);
-    border-top: none;
-    border-radius: 0 0 var(--layout-border-radius-medium, 4px) var(--layout-border-radius-medium, 4px);
-    max-height: 200px;
-    overflow-y: auto;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    box-shadow: var(--surface-shadow-medium, 0 4px 8px rgba(0, 0, 0, 0.1));
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  background: var(--surface-color-background-white, #ffffff);
+  border: 1px solid var(--surface-color-border-default, #d8d8d8);
+  border-top: none;
+  border-radius: 0 0 var(--layout-border-radius-medium, 4px)
+    var(--layout-border-radius-medium, 4px);
+  max-height: 200px;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  box-shadow: var(--surface-shadow-medium, 0 4px 8px rgba(0, 0, 0, 0.1));
 }
 
 .mri-dropdown-item {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: var(--layout-padding-small, 8px) var(--layout-padding-medium, 12px);
-    cursor: pointer;
-    transition: background 0.1s;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--layout-padding-small, 8px) var(--layout-padding-medium, 12px);
+  cursor: pointer;
+  transition: background 0.1s;
 }
 
 .mri-dropdown-item:hover,
 .mri-dropdown-item:focus {
-    background: var(--surface-color-secondary-button-hover, #edebe9);
+  background: var(--surface-color-secondary-button-hover, #edebe9);
 }
 
 .mri-dropdown-item--loading {
-    color: var(--typography-color-secondary, #474543);
-    font-style: italic;
-    cursor: default;
+  color: var(--typography-color-secondary, #474543);
+  font-style: italic;
+  cursor: default;
 }
 
 .mri-dropdown-name {
-    font-size: var(--typography-font-size-small-body, 0.85rem);
-    font-weight: var(--typography-font-weights-medium, 500);
-    color: var(--typography-color-primary, #2d2d2d);
+  font-size: var(--typography-font-size-small-body, 0.85rem);
+  font-weight: var(--typography-font-weights-medium, 500);
+  color: var(--typography-color-primary, #2d2d2d);
 }
 
 .mri-dropdown-email {
-    font-size: var(--typography-font-size-label, 0.75rem);
-    color: var(--typography-color-secondary, #474543);
+  font-size: var(--typography-font-size-label, 0.75rem);
+  color: var(--typography-color-secondary, #474543);
 }
 
 .mri-error {
-    font-size: var(--typography-font-size-small-body, 0.8rem);
-    color: var(--support-color-danger, #dc3545);
-    margin-top: 2px;
+  font-size: var(--typography-font-size-small-body, 0.8rem);
+  color: var(--support-color-danger, #dc3545);
+  margin-top: 2px;
 }
 
 .mri-hint {
-    font-size: var(--typography-font-size-small-body, 0.8rem);
-    color: var(--typography-color-secondary, #474543);
-    margin-top: var(--layout-margin-xsmall, 4px);
-    padding: var(--layout-padding-xsmall, 4px) var(--layout-padding-small, 8px);
+  font-size: var(--typography-font-size-small-body, 0.8rem);
+  color: var(--typography-color-secondary, #474543);
+  margin-top: var(--layout-margin-xsmall, 4px);
+  padding: var(--layout-padding-xsmall, 4px) var(--layout-padding-small, 8px);
 }
 
 .mri-hint kbd {
-    background: var(--surface-color-background-light-gray, #faf9f8);
-    border: 1px solid var(--surface-color-border-default, #d8d8d8);
-    border-radius: var(--layout-border-radius-small, 3px);
-    padding: 1px 4px;
-    font-size: var(--typography-font-size-label, 0.75rem);
+  background: var(--surface-color-background-light-gray, #faf9f8);
+  border: 1px solid var(--surface-color-border-default, #d8d8d8);
+  border-radius: var(--layout-border-radius-small, 3px);
+  padding: 1px 4px;
+  font-size: var(--typography-font-size-label, 0.75rem);
 }
