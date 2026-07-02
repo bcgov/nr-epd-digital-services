@@ -51,7 +51,15 @@ import { HttpStatusCode } from 'axios';
 import { InvoiceItemTypes } from '../enums/invoiceItemTypes';
 import { InvoiceActions } from '../enums/invoiceActions';
 import { InvoiceEmailTemplate } from './InvoiceEmailTemplate';
-import { createObject, sendInvoice } from './services/cats.service';
+import {
+  createObject,
+  sendInvoice,
+  SendInvoicePayload,
+} from './services/cats.service';
+import {
+  MultiRecipientInput,
+  EmailRecipient,
+} from '@cats/components/multi-recipient-input';
 
 interface DeletedAttachment {
   bucketId: string;
@@ -129,10 +137,11 @@ const Invoice: React.FC = () => {
   const [invoiceEmailDetails, setInvoiceEmailDetails] = useState<any>({
     emailSubject: '',
     emailBody: '',
-    emailAddress: '',
-    personId: '',
-    emailRecipient: { key: '0', value: '' },
   });
+
+  // Recipients state for the invoice (To/CC fields on Invoice Details)
+  const [toRecipients, setToRecipients] = useState<EmailRecipient[]>([]);
+  const [ccRecipients, setCcRecipients] = useState<EmailRecipient[]>([]);
 
   const [invoiceDetails, setInvoiceDetails] = useState(initialInvoice);
   const [applicationDetails, setApplicationDetails] = useState<
@@ -221,16 +230,53 @@ const Invoice: React.FC = () => {
           invoiceData?.getInvoiceById?.data,
           applicationData?.getApplicationDetailsById?.data,
         );
+        const invoiceRecord = invoiceData?.getInvoiceById?.data as any;
+
+        // Populate To/CC recipients from saved invoice data
+        if (invoiceRecord?.emailTo?.length && toRecipients.length === 0) {
+          setToRecipients(
+            invoiceRecord.emailTo.map((r: any) => ({
+              id: r.personId?.toString() || r.email,
+              email: r.email,
+              displayName: r.displayName || r.email,
+              personId: r.personId || undefined,
+              isCustom: !r.personId,
+            })),
+          );
+        } else if (toRecipients.length === 0) {
+          // Fallback: use the invoice recipient if no emailTo saved yet
+          const recipientData = invoiceRecord?.recipient;
+          const recipientEmail = recipientData?.metaData || '';
+          if (recipientEmail) {
+            setToRecipients([
+              {
+                id: recipientData?.key || 'default-to',
+                email: recipientEmail,
+                displayName: recipientData?.value || recipientEmail,
+                personId: recipientData?.key
+                  ? parseInt(recipientData.key, 10)
+                  : undefined,
+                isCustom: false,
+              },
+            ]);
+          }
+        }
+
+        if (invoiceRecord?.emailCc?.length && ccRecipients.length === 0) {
+          setCcRecipients(
+            invoiceRecord.emailCc.map((r: any) => ({
+              id: r.personId?.toString() || r.email,
+              email: r.email,
+              displayName: r.displayName || r.email,
+              personId: r.personId || undefined,
+              isCustom: !r.personId,
+            })),
+          );
+        }
+
         setInvoiceEmailDetails((prev: any) => ({
           ...prev,
           emailBody: emailBody.trim(),
-          personId: invoiceData?.getInvoiceById?.data?.personId,
-          emailRecipient: invoiceData?.getInvoiceById?.data?.recipient || {
-            key: '0',
-            value: '',
-          },
-          emailAddress:
-            invoiceData?.getInvoiceById?.data?.recipient?.metaData || '',
         }));
       }
     } else {
@@ -409,6 +455,16 @@ const Invoice: React.FC = () => {
       });
     const invoiceToUpdate: UpdateInvoice = {
       ...cleanInvoice,
+      emailTo: toRecipients.map((r) => ({
+        email: r.email,
+        personId: r.personId || null,
+        displayName: r.displayName || r.email,
+      })),
+      emailCc: ccRecipients.map((r) => ({
+        email: r.email,
+        personId: r.personId || null,
+        displayName: r.displayName || r.email,
+      })),
       invoiceItems: updatedInvoiceItems,
     };
 
@@ -478,6 +534,16 @@ const Invoice: React.FC = () => {
                   invoice: {
                     ...cleanInvoice,
                     applicationId: numericAppId,
+                    emailTo: toRecipients.map((r) => ({
+                      email: r.email,
+                      personId: r.personId || null,
+                      displayName: r.displayName || r.email,
+                    })),
+                    emailCc: ccRecipients.map((r) => ({
+                      email: r.email,
+                      personId: r.personId || null,
+                      displayName: r.displayName || r.email,
+                    })),
                     invoiceItems: invoiceDetails?.invoiceItems?.map(
                       (item: any) => {
                         const quantity = toDecimal(item.quantity);
@@ -617,20 +683,41 @@ const Invoice: React.FC = () => {
         setIsRecordPaymentOpen(!isRecordPaymentOpen);
         break;
       case InvoiceActions.SEND_INVOICE:
-        if (!invoiceDetails && !invoiceEmailDetails) return;
+        if (!invoiceDetails) return;
+        const recipientEmail = invoiceDetails?.recipient?.metaData || '';
+        const allToRecipients: EmailRecipient[] = [...toRecipients];
+
+        // Include the invoice recipient email in To if not already present
+        if (
+          recipientEmail &&
+          !allToRecipients.some(
+            (r) => r.email.toLowerCase() === recipientEmail.toLowerCase(),
+          )
+        ) {
+          allToRecipients.unshift({
+            id: invoiceDetails?.recipient?.key || 'invoice-recipient',
+            email: recipientEmail,
+            displayName: invoiceDetails?.recipient?.value || recipientEmail,
+            personId: invoiceDetails?.recipient?.key
+              ? parseInt(invoiceDetails.recipient.key, 10)
+              : undefined,
+            isCustom: false,
+          });
+        }
+
+        if (allToRecipients.length === 0) return;
         const pdf = await generateFile();
         const file = new File([pdf], `Invoice-${invoiceDetails.id}.pdf`, {
           type: 'application/pdf',
         });
-        await sendInvoice(
-          {
-            invoiceId: invoiceDetails?.id,
-            to: invoiceEmailDetails?.emailAddress,
-            subject: invoiceEmailDetails?.emailSubject,
-            body: invoiceEmailDetails?.emailBody,
-          },
-          file,
-        )
+        const sendPayload: SendInvoicePayload = {
+          invoiceId: invoiceDetails?.id,
+          to: allToRecipients,
+          cc: ccRecipients,
+          subject: invoiceEmailDetails?.emailSubject,
+          body: invoiceEmailDetails?.emailBody,
+        };
+        await sendInvoice(sendPayload, file)
           .then((res: any) => {
             if (res?.success) {
               setIsSendInvoiceOpen(false);
@@ -763,7 +850,6 @@ const Invoice: React.FC = () => {
     invoiceItemsTableConfigs,
     invoiceAttachmentsTableConfigs,
     invoiceRecordPaymentForm,
-    invoiceEmailForm,
   } = GetInvoiceConfig({
     viewMode: viewMode,
     isDisabled: taxExempt,
@@ -773,25 +859,32 @@ const Invoice: React.FC = () => {
     getObject: getObject,
     recipient: {
       setSearchParam: setSearchParam,
-      options: isSendInvoiceOpen
-        ? invoiceEmailDetails?.emailRecipient
-          ? [
-              {
-                key: invoiceEmailDetails?.emailRecipient?.key,
-                value: invoiceEmailDetails?.emailRecipient?.value,
-              },
-            ]
-          : []
-        : invoiceDetails?.recipient
-          ? [
-              {
-                key: invoiceDetails?.recipient?.key,
-                value: invoiceDetails?.recipient?.value,
-              },
-            ]
-          : [],
+      options: invoiceDetails?.recipient
+        ? [
+            {
+              key: invoiceDetails?.recipient?.key,
+              value: invoiceDetails?.recipient?.value,
+            },
+          ]
+        : [],
       filteredOptions: recipients?.getParticipantNames?.data ?? [],
       loading: loading,
+    },
+    recipientsField: {
+      toRecipients,
+      ccRecipients,
+      onAddToRecipient: (recipient: EmailRecipient) => {
+        setToRecipients((prev) => [...prev, recipient]);
+      },
+      onRemoveToRecipient: (id: string) => {
+        setToRecipients((prev) => prev.filter((r) => r.id !== id));
+      },
+      onAddCcRecipient: (recipient: EmailRecipient) => {
+        setCcRecipients((prev) => [...prev, recipient]);
+      },
+      onRemoveCcRecipient: (id: string) => {
+        setCcRecipients((prev) => prev.filter((r) => r.id !== id));
+      },
     },
   });
 
@@ -862,19 +955,49 @@ const Invoice: React.FC = () => {
     try {
       setErrors([]);
       setHasErrors(false);
-      const errors = validateForm(invoiceEmailForm, invoiceEmailDetails, '');
-      if (errors?.length > 0) {
-        setErrors(errors);
-        setHasErrors(true);
-        return false;
+      const validationErrors: any[] = [];
+
+      // Validate invoice recipient has an email address
+      const recipientEmail = invoiceDetails?.recipient?.metaData || '';
+      if (!recipientEmail.trim()) {
+        validationErrors.push({
+          errorMessage:
+            'The Invoice Recipient does not have an email address. Please update their profile or add recipients to the "Email To" field.',
+        });
       }
-      if (!invoiceEmailDetails?.emailAddress) {
-        setErrors([
-          {
-            errorMessage:
-              'There is no email address to send the invoice. Please add a valid email address to send the invoice.',
-          },
-        ]);
+
+      // Validate at least one To recipient or invoice recipient has email
+      if (!toRecipients?.length && !recipientEmail.trim()) {
+        validationErrors.push({
+          errorMessage: 'At least one "To" recipient is required.',
+        });
+      }
+
+      // Validate subject
+      if (!invoiceEmailDetails?.emailSubject?.trim()) {
+        validationErrors.push({
+          errorMessage: 'Please enter an e-mail subject.',
+        });
+      }
+
+      // Check for duplicates across To and CC
+      const allEmails = [
+        ...toRecipients.map((r: EmailRecipient) => r.email.toLowerCase()),
+        ...ccRecipients.map((r: EmailRecipient) => r.email.toLowerCase()),
+      ];
+      const seen = new Set<string>();
+      for (const email of allEmails) {
+        if (seen.has(email)) {
+          validationErrors.push({
+            errorMessage: `Duplicate email address across To and CC: ${email}`,
+          });
+          break;
+        }
+        seen.add(email);
+      }
+
+      if (validationErrors.length > 0) {
+        setErrors(validationErrors);
         setHasErrors(true);
         return false;
       }
@@ -1292,28 +1415,110 @@ const Invoice: React.FC = () => {
               setIsSendInvoiceOpen(false);
             }}
           >
-            <Form
-              editMode={true}
-              formRows={invoiceEmailForm}
-              formData={invoiceEmailDetails ?? {}}
-              handleInputChange={(invoicePropertyName: string, value: any) => {
-                let isRecipient =
-                  typeof value === 'object' &&
-                  invoicePropertyName === 'personId';
-                setInvoiceEmailDetails((prev: any) => ({
-                  ...prev,
-                  [invoicePropertyName]: isRecipient
-                    ? value?.key.trim()
-                    : value,
-                  emailAddress: isRecipient
-                    ? value?.metaData
-                    : prev?.emailAddress,
-                  emailRecipient: isRecipient
-                    ? { key: value?.key.trim(), value: value?.value?.trim() }
-                    : prev?.emailRecipient,
-                }));
-              }}
-            />
+            <div className="d-flex flex-column gap-3">
+              <div className="d-flex flex-column gap-1">
+                <label className="custom-invoice-lbl">Recipients</label>
+                <div className="d-flex flex-column gap-1 p-2 border rounded bg-light">
+                  <div className="d-flex flex-wrap gap-1 align-items-center">
+                    <strong className="me-1" style={{ fontSize: '0.85rem' }}>
+                      To:
+                    </strong>
+                    {invoiceDetails?.recipient?.metaData && (
+                      <span
+                        className="badge bg-primary-subtle text-dark border"
+                        style={{ fontSize: '0.8rem' }}
+                      >
+                        {invoiceDetails?.recipient?.value &&
+                        invoiceDetails.recipient.value !==
+                          invoiceDetails.recipient.metaData
+                          ? `${invoiceDetails.recipient.value} <${invoiceDetails.recipient.metaData}>`
+                          : invoiceDetails.recipient.metaData}
+                      </span>
+                    )}
+                    {toRecipients
+                      .filter(
+                        (r) => r.email !== invoiceDetails?.recipient?.metaData,
+                      )
+                      .map((r) => (
+                        <span
+                          key={r.id}
+                          className="badge bg-primary-subtle text-dark border"
+                          style={{ fontSize: '0.8rem' }}
+                        >
+                          {r.displayName && r.displayName !== r.email
+                            ? `${r.displayName} <${r.email}>`
+                            : r.email}
+                        </span>
+                      ))}
+                    {!invoiceDetails?.recipient?.metaData &&
+                      toRecipients.length === 0 && (
+                        <span
+                          className="text-danger"
+                          style={{ fontSize: '0.8rem' }}
+                        >
+                          No recipients selected.
+                        </span>
+                      )}
+                  </div>
+                  {ccRecipients.length > 0 && (
+                    <div className="d-flex flex-wrap gap-1 align-items-center">
+                      <strong className="me-1" style={{ fontSize: '0.85rem' }}>
+                        CC:
+                      </strong>
+                      {ccRecipients.map((r) => (
+                        <span
+                          key={r.id}
+                          className="badge bg-light text-dark border"
+                          style={{ fontSize: '0.8rem' }}
+                        >
+                          {r.displayName && r.displayName !== r.email
+                            ? `${r.displayName} <${r.email}>`
+                            : r.email}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="d-flex flex-column gap-1">
+                <label className="custom-invoice-lbl" htmlFor="email-subject">
+                  E-mail Subject
+                </label>
+                <input
+                  id="email-subject"
+                  type="text"
+                  className="form-control custom-invoice-edit-txt"
+                  placeholder="Please enter e-mail subject..."
+                  value={invoiceEmailDetails?.emailSubject || ''}
+                  onChange={(e) =>
+                    setInvoiceEmailDetails((prev: any) => ({
+                      ...prev,
+                      emailSubject: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+
+              <div className="d-flex flex-column gap-1">
+                <label className="custom-invoice-lbl" htmlFor="email-body">
+                  E-mail Body
+                </label>
+                <textarea
+                  id="email-body"
+                  className="form-control custom-invoice-edit-txt"
+                  rows={10}
+                  placeholder="Please enter e-mail body..."
+                  value={invoiceEmailDetails?.emailBody || ''}
+                  onChange={(e) =>
+                    setInvoiceEmailDetails((prev: any) => ({
+                      ...prev,
+                      emailBody: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+            </div>
           </ModalDialog>
         )}
         {hasErrors && (
