@@ -13,12 +13,10 @@ export class InvoiceEmail {
 
   @IsNotEmpty()
   @IsString()
-  @Transform(({ value }) => value)
   to: string; // JSON string of EmailRecipientPayload[]
 
   @IsOptional()
   @IsString()
-  @Transform(({ value }) => value)
   cc?: string | null; // JSON string of EmailRecipientPayload[]
 
   @IsString()
