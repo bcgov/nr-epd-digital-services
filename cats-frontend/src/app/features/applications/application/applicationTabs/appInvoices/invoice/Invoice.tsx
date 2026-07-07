@@ -32,6 +32,7 @@ import {
   useDeleteObjectMutation,
   useGetInvoiceByIdQuery,
   useGetInvoiceRecipientNamesQuery,
+  useGetInvoiceServiceTypesQuery,
   useGetObjectLazyQuery,
   useUpdateInvoiceMutation,
 } from '../graphql/Invoice.generated';
@@ -124,6 +125,8 @@ const Invoice: React.FC = () => {
   const [createBucket] = useCreateBucketMutation();
   const [deleteBucket] = useDeleteBucketMutation();
   const [deleteObject] = useDeleteObjectMutation();
+
+  const { data: serviceTypesData } = useGetInvoiceServiceTypesQuery();
 
   // State to store invoice and application details
   const [invoiceEmailDetails, setInvoiceEmailDetails] = useState<any>({
@@ -757,6 +760,21 @@ const Invoice: React.FC = () => {
     });
   };
 
+  const serviceTypes = serviceTypesData?.getApplicationServiceTypes?.data;
+  const primaryServiceTypeName = (() => {
+    const primaryId = applicationDetails?.serviceTypeId;
+    if (!serviceTypes || !primaryId) return '';
+    return serviceTypes.find((st) => st.key === String(primaryId))?.value || '';
+  })();
+  const secondaryServiceTypeNames = (() => {
+    const secondaryIds = applicationDetails?.secondaryServiceTypeIds;
+    if (!serviceTypes || !secondaryIds?.length) return '';
+    return secondaryIds
+      .map((id) => serviceTypes.find((st) => st.key === String(id))?.value)
+      .filter(Boolean)
+      .join(', ');
+  })();
+
   const {
     applicationDetailsForm,
     invoiceDetailsForm,
@@ -771,6 +789,8 @@ const Invoice: React.FC = () => {
     invoiceDetails: invoiceDetails,
     createMode: !id,
     getObject: getObject,
+    primaryServiceTypeName,
+    secondaryServiceTypeNames,
     recipient: {
       setSearchParam: setSearchParam,
       options: isSendInvoiceOpen
@@ -1110,6 +1130,8 @@ const Invoice: React.FC = () => {
                 {
                   ...applicationDetails,
                   applicationType: applicationDetails?.appType?.description,
+                  primaryServiceTypeName,
+                  secondaryServiceTypeNames,
                 } as ViewApplicationDetails
               }
             />

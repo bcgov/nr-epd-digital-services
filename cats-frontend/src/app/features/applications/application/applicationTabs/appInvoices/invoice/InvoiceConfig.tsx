@@ -32,6 +32,8 @@ interface GetInvoiceConfigParams {
   createMode?: boolean;
   recipient?: RecipientConfig;
   getObject: any;
+  primaryServiceTypeName?: string;
+  secondaryServiceTypeNames?: string;
 }
 
 export const GetInvoiceConfig = ({
@@ -42,6 +44,8 @@ export const GetInvoiceConfig = ({
   invoiceDetails = {},
   createMode = false,
   recipient,
+  primaryServiceTypeName = '',
+  secondaryServiceTypeNames = '',
 }: GetInvoiceConfigParams) => {
   const viewFileHandler = async (objectId: any) => {
     if (!!objectId?.trim()) {
@@ -114,6 +118,42 @@ export const GetInvoiceConfig = ({
       graphQLPropertyName: 'siteAddress',
       value: '',
       colSize: 'col-lg-4 col-md-6 col-sm-12',
+      customLabelCss: 'custom-invoice-lbl',
+      customEditLabelCss: 'custom-invoice-edit-lbl',
+      customInputTextCss: 'custom-invoice-txt',
+      customEditInputTextCss: 'custom-invoice-edit-txt',
+    },
+    siteId: {
+      type: FormFieldType.Text,
+      label: 'Site ID',
+      placeholder: 'Site ID',
+      graphQLPropertyName: 'siteId',
+      value: '',
+      colSize: 'col-lg-4 col-md-6 col-sm-12',
+      customLabelCss: 'custom-invoice-lbl',
+      customEditLabelCss: 'custom-invoice-edit-lbl',
+      customInputTextCss: 'custom-invoice-txt',
+      customEditInputTextCss: 'custom-invoice-edit-txt',
+    },
+    primaryServiceType: {
+      type: FormFieldType.Text,
+      label: 'Primary Service Type',
+      placeholder: 'Primary Service Type',
+      graphQLPropertyName: 'primaryServiceTypeName',
+      value: '',
+      colSize: 'col-lg-6 col-md-6 col-sm-12',
+      customLabelCss: 'custom-invoice-lbl',
+      customEditLabelCss: 'custom-invoice-edit-lbl',
+      customInputTextCss: 'custom-invoice-txt',
+      customEditInputTextCss: 'custom-invoice-edit-txt',
+    },
+    secondaryServiceTypes: {
+      type: FormFieldType.Text,
+      label: 'Secondary Service Type(s)',
+      placeholder: 'Secondary Service Type(s)',
+      graphQLPropertyName: 'secondaryServiceTypeNames',
+      value: '',
+      colSize: 'col-lg-6 col-md-6 col-sm-12',
       customLabelCss: 'custom-invoice-lbl',
       customEditLabelCss: 'custom-invoice-edit-lbl',
       customInputTextCss: 'custom-invoice-txt',
@@ -382,10 +422,11 @@ export const GetInvoiceConfig = ({
   ];
 
   const applicationDetailsForm: IFormField[][] = [
+    [invoiceForm.applicationId, invoiceForm.siteId, invoiceForm.siteAddress],
     [
-      invoiceForm.applicationId,
-      invoiceForm.siteAddress,
       invoiceForm.applicationType,
+      invoiceForm.primaryServiceType,
+      invoiceForm.secondaryServiceTypes,
     ],
   ];
 

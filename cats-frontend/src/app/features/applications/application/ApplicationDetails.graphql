@@ -5,6 +5,8 @@ query getHeaderDetailsByApplicationId($applicationId: Int!) {
       siteId
       siteAddress
       siteCity
+      serviceTypeId
+      secondaryServiceTypeIds
       appType {
         description
       }

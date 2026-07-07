@@ -181,3 +181,12 @@ mutation deleteObject($objectId: String!, $versionId: String) {
     timestamp
   }
 }
+
+query getInvoiceServiceTypes {
+  getApplicationServiceTypes {
+    data {
+      key
+      value
+    }
+  }
+}

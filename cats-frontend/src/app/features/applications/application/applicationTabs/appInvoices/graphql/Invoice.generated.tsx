@@ -76,6 +76,11 @@ export type DeleteObjectMutationVariables = Types.Exact<{
 
 export type DeleteObjectMutation = { __typename?: 'Mutation', deleteObject: { __typename?: 'ComsResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, timestamp?: string | null } };
 
+export type GetInvoiceServiceTypesQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type GetInvoiceServiceTypesQuery = { __typename?: 'Query', getApplicationServiceTypes: { __typename?: 'DropdownResponse', data?: Array<{ __typename?: 'DropdownDto', key: string, value: string }> | null } };
+
 
 export const GetInvoicesDocument = gql`
     query GetInvoices($applicationId: Int!) {
@@ -561,3 +566,45 @@ export function useDeleteObjectMutation(baseOptions?: Apollo.MutationHookOptions
 export type DeleteObjectMutationHookResult = ReturnType<typeof useDeleteObjectMutation>;
 export type DeleteObjectMutationResult = Apollo.MutationResult<DeleteObjectMutation>;
 export type DeleteObjectMutationOptions = Apollo.BaseMutationOptions<DeleteObjectMutation, DeleteObjectMutationVariables>;
+export const GetInvoiceServiceTypesDocument = gql`
+    query getInvoiceServiceTypes {
+  getApplicationServiceTypes {
+    data {
+      key
+      value
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetInvoiceServiceTypesQuery__
+ *
+ * To run a query within a React component, call `useGetInvoiceServiceTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInvoiceServiceTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetInvoiceServiceTypesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetInvoiceServiceTypesQuery(baseOptions?: Apollo.QueryHookOptions<GetInvoiceServiceTypesQuery, GetInvoiceServiceTypesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetInvoiceServiceTypesQuery, GetInvoiceServiceTypesQueryVariables>(GetInvoiceServiceTypesDocument, options);
+      }
+export function useGetInvoiceServiceTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetInvoiceServiceTypesQuery, GetInvoiceServiceTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetInvoiceServiceTypesQuery, GetInvoiceServiceTypesQueryVariables>(GetInvoiceServiceTypesDocument, options);
+        }
+export function useGetInvoiceServiceTypesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetInvoiceServiceTypesQuery, GetInvoiceServiceTypesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetInvoiceServiceTypesQuery, GetInvoiceServiceTypesQueryVariables>(GetInvoiceServiceTypesDocument, options);
+        }
+export type GetInvoiceServiceTypesQueryHookResult = ReturnType<typeof useGetInvoiceServiceTypesQuery>;
+export type GetInvoiceServiceTypesLazyQueryHookResult = ReturnType<typeof useGetInvoiceServiceTypesLazyQuery>;
+export type GetInvoiceServiceTypesSuspenseQueryHookResult = ReturnType<typeof useGetInvoiceServiceTypesSuspenseQuery>;
+export type GetInvoiceServiceTypesQueryResult = Apollo.QueryResult<GetInvoiceServiceTypesQuery, GetInvoiceServiceTypesQueryVariables>;

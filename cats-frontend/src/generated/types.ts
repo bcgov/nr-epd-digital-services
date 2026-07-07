@@ -629,6 +629,7 @@ export type PersonResponse = {
 
 export type PersonWithTimesheetDaysDto = {
   __typename?: 'PersonWithTimesheetDaysDto';
+  allTimeHours: Scalars['Float']['output'];
   email?: Maybe<Scalars['String']['output']>;
   endDate?: Maybe<Scalars['DateTime']['output']>;
   firstName: Scalars['String']['output'];
@@ -638,6 +639,7 @@ export type PersonWithTimesheetDaysDto = {
   roleId?: Maybe<Scalars['Int']['output']>;
   startDate?: Maybe<Scalars['DateTime']['output']>;
   timesheetDays: Array<TimesheetDayDto>;
+  weekHours: Scalars['Float']['output'];
 };
 
 export type PersonWithTimesheetDaysResponse = {
