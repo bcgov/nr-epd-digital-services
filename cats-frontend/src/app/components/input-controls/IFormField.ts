@@ -58,8 +58,7 @@ export interface IFormField {
   graphQLPropertyName?: string;
   allowNumbersOnly?: boolean;
   options?:
-    | { key: string | number; value: string | number; imageUrl?: any }[]
-    | null;
+    { key: string | number; value: string | number; imageUrl?: any }[] | null;
   filteredOptions?: { key: string; value: string }[];
   value?: any;
   customLinkValue?: any;
