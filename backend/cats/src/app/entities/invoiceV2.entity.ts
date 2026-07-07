@@ -73,10 +73,10 @@ export class InvoiceV2 {
   @Column({ type: 'text', nullable: true, name: 'invoice_notes' })
   invoiceNotes: string;
 
-  @Column('jsonb', { name: 'email_to', default: '[]' })
+  @Column('jsonb', { name: 'email_to', default: '[]', nullable: false })
   emailTo: InvoiceEmailRecipient[];
 
-  @Column('jsonb', { name: 'email_cc', default: '[]' })
+  @Column('jsonb', { name: 'email_cc', default: '[]', nullable: false })
   emailCc: InvoiceEmailRecipient[];
 
   @Column('character varying', { name: 'who_created', length: 30 })
