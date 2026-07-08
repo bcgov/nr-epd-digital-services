@@ -1,11 +1,20 @@
 import { getAxiosInstance } from '@cats/helpers/utility';
+import { EmailRecipient } from '@cats/components/multi-recipient-input';
 
 const CATS_API: string =
   import.meta.env.VITE_BACKEND_API ||
   ((window as any)._env_ && (window as any)._env_.VITE_BACKEND_API);
 
+export interface SendInvoicePayload {
+  invoiceId: number;
+  to: EmailRecipient[];
+  cc?: EmailRecipient[];
+  subject: string;
+  body: string;
+}
+
 export const sendInvoice = async (
-  emailPayload: any,
+  emailPayload: SendInvoicePayload,
   file: File,
 ): Promise<any> => {
   try {
@@ -14,8 +23,28 @@ export const sendInvoice = async (
       formData.append('file', file);
     }
 
-    for (const key in emailPayload) {
-      formData.append(key, emailPayload[key]);
+    formData.append('invoiceId', emailPayload.invoiceId.toString());
+    formData.append('subject', emailPayload.subject || '');
+    formData.append('body', emailPayload.body || '');
+    formData.append(
+      'to',
+      JSON.stringify(
+        emailPayload.to.map((r) => ({
+          email: r.email,
+          personId: r.personId || null,
+        })),
+      ),
+    );
+    if (emailPayload.cc?.length) {
+      formData.append(
+        'cc',
+        JSON.stringify(
+          emailPayload.cc.map((r) => ({
+            email: r.email,
+            personId: r.personId || null,
+          })),
+        ),
+      );
     }
 
     const response = await getAxiosInstance(CATS_API).post(

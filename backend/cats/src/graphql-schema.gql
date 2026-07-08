@@ -358,6 +358,12 @@ type SiteDetailsResponse {
   data: SiteDetailsDTO
 }
 
+type EmailRecipientType {
+  email: String!
+  personId: Int
+  displayName: String
+}
+
 type ViewInvoiceItem {
   description: String!
   quantity: Int!
@@ -392,6 +398,8 @@ type ViewInvoice {
   pstInCents: Int!
   totalInCents: Int!
   invoiceNotes: String
+  emailTo: [EmailRecipientType!]
+  emailCc: [EmailRecipientType!]
   applicationId: Int!
   id: Int!
   whoUpdated: String!
@@ -658,6 +666,12 @@ type ColumnPreferencesResponse {
   data: ViewColumnPreferences
 }
 
+input EmailRecipientInput {
+  email: String!
+  personId: Int
+  displayName: String
+}
+
 input ColumnConfigInput {
   id: Int!
   displayName: String!
@@ -918,6 +932,8 @@ input CreateInvoice {
   pstInCents: Int!
   totalInCents: Int!
   invoiceNotes: String
+  emailTo: [EmailRecipientInput!]
+  emailCc: [EmailRecipientInput!]
   applicationId: Int!
   invoiceItems: [CreateInvoiceItem!]!
   invoiceAttachments: [CreateInvoiceAttachment!]
@@ -951,6 +967,8 @@ input UpdateInvoice {
   pstInCents: Int!
   totalInCents: Int!
   invoiceNotes: String
+  emailTo: [EmailRecipientInput!]
+  emailCc: [EmailRecipientInput!]
   applicationId: Int!
   id: Int!
   invoiceItems: [UpdateInvoiceItem!]!
