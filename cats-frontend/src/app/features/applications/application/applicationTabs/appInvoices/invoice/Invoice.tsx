@@ -126,7 +126,8 @@ const Invoice: React.FC = () => {
   const [deleteBucket] = useDeleteBucketMutation();
   const [deleteObject] = useDeleteObjectMutation();
 
-  const { data: serviceTypesData } = useGetInvoiceServiceTypesQuery();
+  const { data: serviceTypesData, error: serviceTypesError } =
+    useGetInvoiceServiceTypesQuery();
 
   // State to store invoice and application details
   const [invoiceEmailDetails, setInvoiceEmailDetails] = useState<any>({
@@ -739,19 +740,29 @@ const Invoice: React.FC = () => {
         (item: any) => item.id !== row.id,
       );
     } else {
-      invoiceItems = invoiceDetails?.invoiceItems?.map((item: any) =>
-        item.id === row.id
-          ? property === 'quantity' || property === 'unitPriceInCents'
-            ? {
-                ...item,
-                [property]: value,
-              }
-            : {
-                ...item,
-                [property]: value,
-              }
-          : item,
-      );
+      invoiceItems = invoiceDetails?.invoiceItems?.map((item: any) => {
+        if (item.id !== row.id) return item;
+
+        const updatedItem = { ...item, [property]: value };
+
+        if (property === 'itemType' && value !== InvoiceItemTypes.SERVICE) {
+          updatedItem.serviceTypeId = '';
+          updatedItem.unitPriceInCents = '0';
+        }
+
+        if (property === 'serviceTypeId') {
+          const selectedServiceType =
+            serviceTypesData?.getApplicationServiceTypes?.data?.find(
+              (st) => st.key === value,
+            );
+          const fee = (selectedServiceType as any)?.fees;
+          if (fee != null) {
+            updatedItem.unitPriceInCents = (Number(fee) / 100).toFixed(2);
+          }
+        }
+
+        return updatedItem;
+      });
     }
 
     setInvoiceDetails((prev: any) => {
@@ -791,6 +802,12 @@ const Invoice: React.FC = () => {
     getObject: getObject,
     primaryServiceTypeName,
     secondaryServiceTypeNames,
+    serviceTypeOptions:
+      serviceTypesData?.getApplicationServiceTypes?.data?.map((st) => ({
+        key: st.key,
+        value: st.value,
+        fees: (st as any).fees ?? null,
+      })) || [],
     recipient: {
       setSearchParam: setSearchParam,
       options: isSendInvoiceOpen

@@ -90,6 +90,10 @@ export class StaffAssignmentService {
             ' (' +
             applicationServiceType.serviceType +
             ')',
+          metaData:
+            applicationServiceType.serviceFeeInCents != null
+              ? String(applicationServiceType.serviceFeeInCents)
+              : null,
         }),
       );
 

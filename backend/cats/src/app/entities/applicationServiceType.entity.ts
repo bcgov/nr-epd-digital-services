@@ -29,6 +29,11 @@ export class ApplicationServiceType {
   @Column('character varying', { name: 'service_type' })
   serviceType: string;
 
+  // Needs to be saved in cents, similar to invoice entity
+  @Field({ nullable: true })
+  @Column('integer', { name: 'service_fee_in_cents', nullable: true })
+  serviceFeeInCents: number | null;
+
   @OneToMany(() => Application, (application) => application.serviceType)
   applications: Application[];
 
