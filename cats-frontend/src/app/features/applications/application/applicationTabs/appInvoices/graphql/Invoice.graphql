@@ -37,6 +37,16 @@ query GetInvoiceById($invoiceId: Int!) {
       pstInCents
       totalInCents
       whoUpdated
+      emailTo {
+        email
+        personId
+        displayName
+      }
+      emailCc {
+        email
+        personId
+        displayName
+      }
       invoiceItems {
         id
         itemType
@@ -83,6 +93,16 @@ mutation CreateInvoice($invoice: CreateInvoice!) {
       pstInCents
       totalInCents
       whoUpdated
+      emailTo {
+        email
+        personId
+        displayName
+      }
+      emailCc {
+        email
+        personId
+        displayName
+      }
       invoiceItems {
         id
         itemType

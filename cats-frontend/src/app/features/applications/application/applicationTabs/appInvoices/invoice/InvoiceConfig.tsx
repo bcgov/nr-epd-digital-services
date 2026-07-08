@@ -16,12 +16,26 @@ import {
 import { RequestStatus } from '@cats/helpers/requests/status';
 import { InvoiceItemTypes } from '../enums/invoiceItemTypes';
 import { GetInvoiceRecipientNamesQuery } from '../graphql/Invoice.generated';
+import {
+  MultiRecipientInput,
+  EmailRecipient,
+} from '@cats/components/multi-recipient-input';
+import React from 'react';
 
 interface RecipientConfig {
   setSearchParam: (searchParam: string) => void;
   options: GetInvoiceRecipientNamesQuery['getParticipantNames']['data'];
   filteredOptions: GetInvoiceRecipientNamesQuery['getParticipantNames']['data'];
   loading: boolean;
+}
+
+interface RecipientsFieldConfig {
+  toRecipients: EmailRecipient[];
+  ccRecipients: EmailRecipient[];
+  onAddToRecipient: (recipient: EmailRecipient) => void;
+  onRemoveToRecipient: (id: string) => void;
+  onAddCcRecipient: (recipient: EmailRecipient) => void;
+  onRemoveCcRecipient: (id: string) => void;
 }
 
 interface GetInvoiceConfigParams {
@@ -31,6 +45,7 @@ interface GetInvoiceConfigParams {
   invoiceDetails?: any;
   createMode?: boolean;
   recipient?: RecipientConfig;
+  recipientsField?: RecipientsFieldConfig;
   getObject: any;
   primaryServiceTypeName?: string;
   secondaryServiceTypeNames?: string;
@@ -45,6 +60,7 @@ export const GetInvoiceConfig = ({
   invoiceDetails = {},
   createMode = false,
   recipient,
+  recipientsField,
   primaryServiceTypeName = '',
   secondaryServiceTypeNames = '',
   serviceTypeOptions = [],
@@ -221,6 +237,82 @@ export const GetInvoiceConfig = ({
         </>
       ),
     },
+    emailRecipients: {
+      type: FormFieldType.Custom,
+      colSize: 'col-lg-12 col-md-12 col-sm-12',
+      graphQLPropertyName: 'emailRecipients',
+      renderField: (
+        <>
+          {viewMode === UserMode.EditMode && recipientsField && (
+            <div className="d-flex flex-column gap-3 mb-3">
+              <MultiRecipientInput
+                label="Email To"
+                recipients={recipientsField.toRecipients}
+                onAddRecipient={recipientsField.onAddToRecipient}
+                onRemoveRecipient={recipientsField.onRemoveToRecipient}
+                contactOptions={recipient?.options || []}
+                filteredContactOptions={recipient?.filteredOptions || []}
+                onSearchContacts={recipient?.setSearchParam}
+                isLoading={recipient?.loading || false}
+                placeholder="Search contacts or type an email address..."
+                ariaLabel="Email To recipients"
+              />
+              <MultiRecipientInput
+                label="Email CC"
+                recipients={recipientsField.ccRecipients}
+                onAddRecipient={recipientsField.onAddCcRecipient}
+                onRemoveRecipient={recipientsField.onRemoveCcRecipient}
+                contactOptions={[]}
+                filteredContactOptions={recipient?.filteredOptions || []}
+                onSearchContacts={recipient?.setSearchParam}
+                isLoading={recipient?.loading || false}
+                placeholder="Add CC recipients..."
+                ariaLabel="Email CC recipients"
+              />
+            </div>
+          )}
+          {viewMode === UserMode.Default && recipientsField && (
+            <div className="mb-3">
+              <label className="custom-invoice-lbl">Email Recipients</label>
+              <div className="d-flex flex-column gap-1 custom-invoice-txt">
+                {recipientsField?.toRecipients?.length > 0 && (
+                  <div className="d-flex flex-wrap gap-1 align-items-center">
+                    <strong className="me-1">To:</strong>
+                    {recipientsField.toRecipients.map((r) => (
+                      <span
+                        key={r.id}
+                        className="badge bg-light text-dark border me-1"
+                      >
+                        {r.displayName || r.email}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {recipientsField?.ccRecipients?.length > 0 && (
+                  <div className="d-flex flex-wrap gap-1 align-items-center">
+                    <strong className="me-1">CC:</strong>
+                    {recipientsField.ccRecipients.map((r) => (
+                      <span
+                        key={r.id}
+                        className="badge bg-light text-dark border me-1"
+                      >
+                        {r.displayName || r.email}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {!recipientsField?.toRecipients?.length &&
+                  !recipientsField?.ccRecipients?.length && (
+                    <span className="text-muted">
+                      No email recipients added
+                    </span>
+                  )}
+              </div>
+            </div>
+          )}
+        </>
+      ),
+    },
     issueDate: {
       type: FormFieldType.Date,
       label: 'Issue Date',
@@ -367,61 +459,7 @@ export const GetInvoiceConfig = ({
         customMessage: 'Please enter record payment amount.',
       },
     },
-    invoiceEmailSubject: {
-      type: FormFieldType.Text,
-      label: 'E-mail Subject',
-      placeholder: 'Please enter e-mail subject....',
-      graphQLPropertyName: 'emailSubject',
-      value: '',
-      colSize: 'col-lg-12 col-md-12 col-sm-12',
-      customLabelCss: 'custom-invoice-lbl',
-      customEditLabelCss: 'custom-invoice-edit-lbl',
-      customInputTextCss: 'custom-invoice-txt',
-      customEditInputTextCss: 'custom-invoice-edit-txt',
-      validation: {
-        required: true,
-        customMessage: 'Please enter e-mail subject.',
-      },
-    },
-    invoiceEmailBody: {
-      type: FormFieldType.TextArea,
-      textAreaRow: 15,
-      label: 'E-mail Body',
-      placeholder: 'Please enter e-mail body....',
-      graphQLPropertyName: 'emailBody',
-      value: '',
-      colSize: 'col-lg-12 col-md-12 col-sm-12',
-      customLabelCss: 'custom-invoice-lbl',
-      customEditLabelCss: 'custom-invoice-edit-lbl',
-      customInputTextCss: 'custom-invoice-txt',
-      customEditInputTextCss: 'custom-invoice-edit-txt',
-    },
-    invoiceEmailRecipient: {
-      type: FormFieldType.DropDownWithSearch,
-      label: 'E-mail Recipient',
-      placeholder: 'Please select e-mail recipient...',
-      graphQLPropertyName: 'personId',
-      value: '',
-      colSize: 'col-lg-12 col-md-12 col-sm-12',
-      customLabelCss: 'custom-invoice-lbl',
-      customEditLabelCss: 'custom-invoice-edit-lbl',
-      customInputTextCss: 'custom-invoice-txt',
-      customEditInputTextCss: 'custom-invoice-edit-txt',
-      options: recipient?.options || [],
-      handleSearch: recipient?.setSearchParam,
-      filteredOptions: recipient?.filteredOptions || [],
-      validation: {
-        required: true,
-        customMessage: 'Please select e-mail recipient.',
-      },
-    },
   };
-
-  const invoiceEmailForm: IFormField[][] = [
-    [invoiceForm.invoiceEmailRecipient],
-    [invoiceForm.invoiceEmailSubject],
-    [invoiceForm.invoiceEmailBody],
-  ];
 
   const applicationDetailsForm: IFormField[][] = [
     [invoiceForm.applicationId, invoiceForm.siteId, invoiceForm.siteAddress],
@@ -437,6 +475,7 @@ export const GetInvoiceConfig = ({
       ...(createMode ? [invoiceForm.invoiceSubject] : [invoiceForm.invoiceId]),
       invoiceForm.invoiceRecipient,
     ],
+    [invoiceForm.emailRecipients],
     [
       invoiceForm.issueDate,
       invoiceForm.dueDate,
@@ -671,6 +710,5 @@ export const GetInvoiceConfig = ({
     invoiceItemsTableConfigs,
     invoiceAttachmentsTableConfigs,
     invoiceRecordPaymentForm,
-    invoiceEmailForm,
   };
 };

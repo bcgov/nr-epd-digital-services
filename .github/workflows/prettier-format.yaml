@@ -20,7 +20,7 @@ jobs:
           persist-credentials: false
 
       - name: CATS-Frontend Prettify code
-        uses: creyD/prettier_action@v4.3
+        uses: creyD/prettier_action@v4.6
         with:
           prettier_options: --check ./cats-frontend/src/**/*.{js,ts,jsx,tsx,json,css} --ignore-path ./cats-frontend/.prettierignore --config ./cats-frontend/.prettierrc
           only_changed: True

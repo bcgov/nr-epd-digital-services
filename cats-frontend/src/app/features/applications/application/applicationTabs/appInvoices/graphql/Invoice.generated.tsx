@@ -156,6 +156,16 @@ export const GetInvoiceByIdDocument = gql`
       pstInCents
       totalInCents
       whoUpdated
+      emailTo {
+        email
+        personId
+        displayName
+      }
+      emailCc {
+        email
+        personId
+        displayName
+      }
       invoiceItems {
         id
         itemType
@@ -236,6 +246,16 @@ export const CreateInvoiceDocument = gql`
       pstInCents
       totalInCents
       whoUpdated
+      emailTo {
+        email
+        personId
+        displayName
+      }
+      emailCc {
+        email
+        personId
+        displayName
+      }
       invoiceItems {
         id
         itemType
