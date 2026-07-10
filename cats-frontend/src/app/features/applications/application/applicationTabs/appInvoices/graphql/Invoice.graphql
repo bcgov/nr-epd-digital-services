@@ -54,6 +54,7 @@ query GetInvoiceById($invoiceId: Int!) {
         quantity
         unitPriceInCents
         totalInCents
+        serviceTypeId
       }
       invoiceAttachments {
         id
@@ -110,6 +111,7 @@ mutation CreateInvoice($invoice: CreateInvoice!) {
         quantity
         unitPriceInCents
         totalInCents
+        serviceTypeId
       }
       invoiceAttachments {
         id

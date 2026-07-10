@@ -370,6 +370,7 @@ type ViewInvoiceItem {
   unitPriceInCents: Int!
   totalInCents: Int!
   itemType: String!
+  serviceTypeId: Int
   id: Int!
   whenCreated: DateTime!
   whenUpdated: DateTime!
@@ -945,6 +946,7 @@ input CreateInvoiceItem {
   unitPriceInCents: Int!
   totalInCents: Int!
   itemType: String!
+  serviceTypeId: Int
 }
 
 input CreateInvoiceAttachment {
@@ -981,6 +983,7 @@ input UpdateInvoiceItem {
   unitPriceInCents: Int!
   totalInCents: Int!
   itemType: String!
+  serviceTypeId: Int
   id: Int
 }
 

@@ -251,6 +251,8 @@ export type CreateApplication = {
 export type CreateInvoice = {
   applicationId: Scalars['Int']['input'];
   dueDate: Scalars['DateTime']['input'];
+  emailCc?: InputMaybe<Array<EmailRecipientInput>>;
+  emailTo?: InputMaybe<Array<EmailRecipientInput>>;
   gstInCents: Scalars['Int']['input'];
   invoiceAttachments?: InputMaybe<Array<CreateInvoiceAttachment>>;
   invoiceItems: Array<CreateInvoiceItem>;
@@ -277,6 +279,7 @@ export type CreateInvoiceItem = {
   description: Scalars['String']['input'];
   itemType: Scalars['String']['input'];
   quantity: Scalars['Int']['input'];
+  serviceTypeId?: InputMaybe<Scalars['Int']['input']>;
   totalInCents: Scalars['Int']['input'];
   unitPriceInCents: Scalars['Int']['input'];
 };
@@ -349,6 +352,19 @@ export type DropdownResponse = {
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type EmailRecipientInput = {
+  displayName?: InputMaybe<Scalars['String']['input']>;
+  email: Scalars['String']['input'];
+  personId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type EmailRecipientType = {
+  __typename?: 'EmailRecipientType';
+  displayName?: Maybe<Scalars['String']['output']>;
+  email: Scalars['String']['output'];
+  personId?: Maybe<Scalars['Int']['output']>;
 };
 
 export enum Filter {
@@ -1032,6 +1048,8 @@ export type UpdateHousingInputDto = {
 export type UpdateInvoice = {
   applicationId: Scalars['Int']['input'];
   dueDate: Scalars['DateTime']['input'];
+  emailCc?: InputMaybe<Array<EmailRecipientInput>>;
+  emailTo?: InputMaybe<Array<EmailRecipientInput>>;
   gstInCents: Scalars['Int']['input'];
   id: Scalars['Int']['input'];
   invoiceAttachments?: InputMaybe<Array<UpdateInvoiceAttachment>>;
@@ -1061,6 +1079,7 @@ export type UpdateInvoiceItem = {
   id?: InputMaybe<Scalars['Int']['input']>;
   itemType: Scalars['String']['input'];
   quantity: Scalars['Int']['input'];
+  serviceTypeId?: InputMaybe<Scalars['Int']['input']>;
   totalInCents: Scalars['Int']['input'];
   unitPriceInCents: Scalars['Int']['input'];
 };
@@ -1229,6 +1248,8 @@ export type ViewInvoice = {
   __typename?: 'ViewInvoice';
   applicationId: Scalars['Int']['output'];
   dueDate: Scalars['DateTime']['output'];
+  emailCc?: Maybe<Array<EmailRecipientType>>;
+  emailTo?: Maybe<Array<EmailRecipientType>>;
   gstInCents: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
   invoiceAttachments: Array<ViewInvoiceAttachment>;
@@ -1262,6 +1283,7 @@ export type ViewInvoiceItem = {
   id: Scalars['Int']['output'];
   itemType: Scalars['String']['output'];
   quantity: Scalars['Int']['output'];
+  serviceTypeId?: Maybe<Scalars['Int']['output']>;
   totalInCents: Scalars['Int']['output'];
   unitPriceInCents: Scalars['Int']['output'];
   whenCreated: Scalars['DateTime']['output'];

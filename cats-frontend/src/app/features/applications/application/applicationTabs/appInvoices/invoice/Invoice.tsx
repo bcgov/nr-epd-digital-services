@@ -331,6 +331,16 @@ const Invoice: React.FC = () => {
       // 2. Create bucket if needed
       let currentBucketId = bucketId?.trim();
 
+      // 3. Filter attachments that need upload
+      const filesToUpload = invoice.invoiceAttachments?.filter(
+        (att: any) => att.file && !att.objectId && att.previewUrl,
+      );
+
+      if (!filesToUpload?.length) {
+        // Nothing to upload, return original invoice unmodified
+        return invoice;
+      }
+
       if (!currentBucketId) {
         const bucketName = `application/${applicationId}/invoice/${invoice.id}`;
         const bucketKey = bucketName;
@@ -353,16 +363,6 @@ const Invoice: React.FC = () => {
           console.error('Bucket creation failed:', bucketErr);
           return;
         }
-      }
-
-      // 3. Filter attachments that need upload
-      const filesToUpload = invoice.invoiceAttachments?.filter(
-        (att: any) => att.file && !att.objectId && att.previewUrl,
-      );
-
-      if (!filesToUpload?.length) {
-        // Nothing to upload, return original invoice unmodified
-        return invoice;
       }
 
       // Filter out attachments that are NOT uploaded (no file or no previewUrl)
@@ -455,6 +455,7 @@ const Invoice: React.FC = () => {
           quantity: quantity.toNumber(),
           unitPriceInCents: unitPrice.times(100).toDecimalPlaces(0).toNumber(),
           totalInCents: total.times(100).toDecimalPlaces(0).toNumber(),
+          serviceTypeId: item.serviceTypeId ? Number(item.serviceTypeId) : null,
         };
       });
     const invoiceToUpdate: UpdateInvoice = {
@@ -1255,7 +1256,7 @@ const Invoice: React.FC = () => {
             </div>
           </div>
         )}
-        {hasValidAppData && !!id && !!applicationId && (
+        {hasValidAppData && !!applicationId && (
           // Application Information
           <Widget
             hideTable={true}
