@@ -5,7 +5,10 @@ import { ServiceAssignmentFactor } from '../app/entities/serviceAssignmentFactor
 import { StaffRoles } from '../app/services/assignment/staffRoles.enum';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const serviceTypeJSON = require('./applicationServiceType.json');
+const legacyServiceTypes = require('./applicationServiceType.json');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const serviceTypes2026 = require('./applicationServiceType2026.json');
+const serviceTypes = [...legacyServiceTypes, ...serviceTypes2026];
 
 export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
   console.log('ApplicationServiceTypeSeeder start');
@@ -52,7 +55,7 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
     console.log('roles found', caseWorkerRole, sdmRole, mentorRole);
 
     if (caseWorkerRole && sdmRole && mentorRole) {
-      for (const item of serviceTypeJSON) {
+      for (const item of serviceTypes) {
         let serviceTypeItem = await manager.findOne(ApplicationServiceType, {
           where: {
             serviceName: item.description,
