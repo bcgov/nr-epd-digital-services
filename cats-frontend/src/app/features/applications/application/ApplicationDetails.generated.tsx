@@ -8,7 +8,7 @@ export type GetHeaderDetailsByApplicationIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetHeaderDetailsByApplicationIdQuery = { __typename?: 'Query', getApplicationDetailsById: { __typename?: 'ApplicationDetailsResponse', data?: { __typename?: 'ViewApplicationDetails', id: number, siteId?: number | null, siteAddress?: string | null, siteCity?: string | null, appType?: { __typename?: 'DetailField', description: string } | null } | null } };
+export type GetHeaderDetailsByApplicationIdQuery = { __typename?: 'Query', getApplicationDetailsById: { __typename?: 'ApplicationDetailsResponse', data?: { __typename?: 'ViewApplicationDetails', id: number, siteId?: number | null, siteAddress?: string | null, siteCity?: string | null, serviceTypeId?: number | null, secondaryServiceTypeIds?: Array<number> | null, appType?: { __typename?: 'DetailField', description: string } | null } | null } };
 
 
 export const GetHeaderDetailsByApplicationIdDocument = gql`
@@ -19,6 +19,8 @@ export const GetHeaderDetailsByApplicationIdDocument = gql`
       siteId
       siteAddress
       siteCity
+      serviceTypeId
+      secondaryServiceTypeIds
       appType {
         description
       }

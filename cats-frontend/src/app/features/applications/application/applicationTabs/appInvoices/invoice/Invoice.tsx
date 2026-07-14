@@ -32,6 +32,7 @@ import {
   useDeleteObjectMutation,
   useGetInvoiceByIdQuery,
   useGetInvoiceRecipientNamesQuery,
+  useGetInvoiceServiceTypesQuery,
   useGetObjectLazyQuery,
   useUpdateInvoiceMutation,
 } from '../graphql/Invoice.generated';
@@ -132,6 +133,9 @@ const Invoice: React.FC = () => {
   const [createBucket] = useCreateBucketMutation();
   const [deleteBucket] = useDeleteBucketMutation();
   const [deleteObject] = useDeleteObjectMutation();
+
+  const { data: serviceTypesData, error: serviceTypesError } =
+    useGetInvoiceServiceTypesQuery();
 
   // State to store invoice and application details
   const [invoiceEmailDetails, setInvoiceEmailDetails] = useState<any>({
@@ -327,6 +331,16 @@ const Invoice: React.FC = () => {
       // 2. Create bucket if needed
       let currentBucketId = bucketId?.trim();
 
+      // 3. Filter attachments that need upload
+      const filesToUpload = invoice.invoiceAttachments?.filter(
+        (att: any) => att.file && !att.objectId && att.previewUrl,
+      );
+
+      if (!filesToUpload?.length) {
+        // Nothing to upload, return original invoice unmodified
+        return invoice;
+      }
+
       if (!currentBucketId) {
         const bucketName = `application/${applicationId}/invoice/${invoice.id}`;
         const bucketKey = bucketName;
@@ -349,16 +363,6 @@ const Invoice: React.FC = () => {
           console.error('Bucket creation failed:', bucketErr);
           return;
         }
-      }
-
-      // 3. Filter attachments that need upload
-      const filesToUpload = invoice.invoiceAttachments?.filter(
-        (att: any) => att.file && !att.objectId && att.previewUrl,
-      );
-
-      if (!filesToUpload?.length) {
-        // Nothing to upload, return original invoice unmodified
-        return invoice;
       }
 
       // Filter out attachments that are NOT uploaded (no file or no previewUrl)
@@ -451,6 +455,7 @@ const Invoice: React.FC = () => {
           quantity: quantity.toNumber(),
           unitPriceInCents: unitPrice.times(100).toDecimalPlaces(0).toNumber(),
           totalInCents: total.times(100).toDecimalPlaces(0).toNumber(),
+          serviceTypeId: item.serviceTypeId ? Number(item.serviceTypeId) : null,
         };
       });
     const invoiceToUpdate: UpdateInvoice = {
@@ -823,19 +828,29 @@ const Invoice: React.FC = () => {
         (item: any) => item.id !== row.id,
       );
     } else {
-      invoiceItems = invoiceDetails?.invoiceItems?.map((item: any) =>
-        item.id === row.id
-          ? property === 'quantity' || property === 'unitPriceInCents'
-            ? {
-                ...item,
-                [property]: value,
-              }
-            : {
-                ...item,
-                [property]: value,
-              }
-          : item,
-      );
+      invoiceItems = invoiceDetails?.invoiceItems?.map((item: any) => {
+        if (item.id !== row.id) return item;
+
+        const updatedItem = { ...item, [property]: value };
+
+        if (property === 'itemType' && value !== InvoiceItemTypes.SERVICE) {
+          updatedItem.serviceTypeId = '';
+          updatedItem.unitPriceInCents = '0';
+        }
+
+        if (property === 'serviceTypeId') {
+          const selectedServiceType =
+            serviceTypesData?.getApplicationServiceTypes?.data?.find(
+              (st) => st.key === value,
+            );
+          const fee = (selectedServiceType as any)?.fees;
+          if (fee != null) {
+            updatedItem.unitPriceInCents = (Number(fee) / 100).toFixed(2);
+          }
+        }
+
+        return updatedItem;
+      });
     }
 
     setInvoiceDetails((prev: any) => {
@@ -843,6 +858,21 @@ const Invoice: React.FC = () => {
       return calculateInvoice({ ...prev, invoiceItems });
     });
   };
+
+  const serviceTypes = serviceTypesData?.getApplicationServiceTypes?.data;
+  const primaryServiceTypeName = (() => {
+    const primaryId = applicationDetails?.serviceTypeId;
+    if (!serviceTypes || !primaryId) return '';
+    return serviceTypes.find((st) => st.key === String(primaryId))?.value || '';
+  })();
+  const secondaryServiceTypeNames = (() => {
+    const secondaryIds = applicationDetails?.secondaryServiceTypeIds;
+    if (!serviceTypes || !secondaryIds?.length) return '';
+    return secondaryIds
+      .map((id) => serviceTypes.find((st) => st.key === String(id))?.value)
+      .filter(Boolean)
+      .join(', ');
+  })();
 
   const {
     applicationDetailsForm,
@@ -857,6 +887,14 @@ const Invoice: React.FC = () => {
     invoiceDetails: invoiceDetails,
     createMode: !id,
     getObject: getObject,
+    primaryServiceTypeName,
+    secondaryServiceTypeNames,
+    serviceTypeOptions:
+      serviceTypesData?.getApplicationServiceTypes?.data?.map((st) => ({
+        key: st.key,
+        value: st.value,
+        fees: (st as any).fees ?? null,
+      })) || [],
     recipient: {
       setSearchParam: setSearchParam,
       options: invoiceDetails?.recipient
@@ -1218,7 +1256,7 @@ const Invoice: React.FC = () => {
             </div>
           </div>
         )}
-        {hasValidAppData && !!id && !!applicationId && (
+        {hasValidAppData && !!applicationId && (
           // Application Information
           <Widget
             hideTable={true}
@@ -1233,6 +1271,8 @@ const Invoice: React.FC = () => {
                 {
                   ...applicationDetails,
                   applicationType: applicationDetails?.appType?.description,
+                  primaryServiceTypeName,
+                  secondaryServiceTypeNames,
                 } as ViewApplicationDetails
               }
             />
