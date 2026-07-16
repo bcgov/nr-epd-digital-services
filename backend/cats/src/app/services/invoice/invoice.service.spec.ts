@@ -231,4 +231,112 @@ describe('InvoiceService', () => {
       expect(result).toBeNull();
     });
   });
+
+  describe('createInvoice with serviceTypeId', () => {
+    it('should create an invoice item with serviceTypeId', async () => {
+      const user = { givenName: 'TestUser' };
+      const createInvoiceDto = {
+        applicationId: 1,
+        personId: '10',
+        subject: 'Test Invoice',
+        issuedDate: new Date(),
+        dueDate: new Date(),
+        invoiceStatus: InvoiceStatus.DRAFT,
+        taxExempt: false,
+        pstExempt: false,
+        subtotalInCents: 10000,
+        gstInCents: 500,
+        pstInCents: 700,
+        totalInCents: 11200,
+        invoiceNotes: '',
+        emailTo: [],
+        emailCc: [],
+        invoiceItems: [
+          {
+            description: 'Flat Fee Service',
+            quantity: 1,
+            unitPriceInCents: 50000,
+            totalInCents: 50000,
+            itemType: 'service',
+            serviceTypeId: 5,
+          },
+        ],
+      } as any;
+
+      const savedInvoice = {
+        id: 1,
+        ...createInvoiceDto,
+        personId: 10,
+        whoCreated: 'TestUser',
+        whoUpdated: 'TestUser',
+      };
+
+      mockInvoiceRepository.create.mockReturnValue(savedInvoice);
+      mockInvoiceRepository.save.mockResolvedValue(savedInvoice);
+
+      const result = await service.createInvoice(createInvoiceDto, user);
+
+      expect(mockInvoiceRepository.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          invoiceItems: expect.arrayContaining([
+            expect.objectContaining({ serviceTypeId: 5 }),
+          ]),
+        }),
+      );
+      expect(result).toBeDefined();
+    });
+
+    it('should create an invoice item with null serviceTypeId', async () => {
+      const user = { givenName: 'TestUser' };
+      const createInvoiceDto = {
+        applicationId: 1,
+        personId: '10',
+        subject: 'Test Invoice',
+        issuedDate: new Date(),
+        dueDate: new Date(),
+        invoiceStatus: InvoiceStatus.DRAFT,
+        taxExempt: false,
+        pstExempt: false,
+        subtotalInCents: 10000,
+        gstInCents: 500,
+        pstInCents: 700,
+        totalInCents: 11200,
+        invoiceNotes: '',
+        emailTo: [],
+        emailCc: [],
+        invoiceItems: [
+          {
+            description: 'Expense item',
+            quantity: 1,
+            unitPriceInCents: 2000,
+            totalInCents: 2000,
+            itemType: 'expense',
+            serviceTypeId: null,
+          },
+        ],
+      } as any;
+
+      const savedInvoice = {
+        id: 2,
+        ...createInvoiceDto,
+        personId: 10,
+        whoCreated: 'TestUser',
+        whoUpdated: 'TestUser',
+      };
+
+      mockInvoiceRepository.create.mockReturnValue(savedInvoice);
+      mockInvoiceRepository.save.mockResolvedValue(savedInvoice);
+
+      const result = await service.createInvoice(createInvoiceDto, user);
+
+      expect(mockInvoiceRepository.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          invoiceItems: expect.arrayContaining([
+            expect.objectContaining({ serviceTypeId: null }),
+          ]),
+        }),
+      );
+      expect(result).toBeDefined();
+    });
+  });
 });

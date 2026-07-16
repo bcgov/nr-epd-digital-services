@@ -47,6 +47,9 @@ interface GetInvoiceConfigParams {
   recipient?: RecipientConfig;
   recipientsField?: RecipientsFieldConfig;
   getObject: any;
+  primaryServiceTypeName?: string;
+  secondaryServiceTypeNames?: string;
+  serviceTypeOptions?: { key: string; value: string; fees?: string | null }[];
 }
 
 export const GetInvoiceConfig = ({
@@ -58,6 +61,9 @@ export const GetInvoiceConfig = ({
   createMode = false,
   recipient,
   recipientsField,
+  primaryServiceTypeName = '',
+  secondaryServiceTypeNames = '',
+  serviceTypeOptions = [],
 }: GetInvoiceConfigParams) => {
   const viewFileHandler = async (objectId: any) => {
     if (!!objectId?.trim()) {
@@ -130,6 +136,42 @@ export const GetInvoiceConfig = ({
       graphQLPropertyName: 'siteAddress',
       value: '',
       colSize: 'col-lg-4 col-md-6 col-sm-12',
+      customLabelCss: 'custom-invoice-lbl',
+      customEditLabelCss: 'custom-invoice-edit-lbl',
+      customInputTextCss: 'custom-invoice-txt',
+      customEditInputTextCss: 'custom-invoice-edit-txt',
+    },
+    siteId: {
+      type: FormFieldType.Text,
+      label: 'Site ID',
+      placeholder: 'Site ID',
+      graphQLPropertyName: 'siteId',
+      value: '',
+      colSize: 'col-lg-4 col-md-6 col-sm-12',
+      customLabelCss: 'custom-invoice-lbl',
+      customEditLabelCss: 'custom-invoice-edit-lbl',
+      customInputTextCss: 'custom-invoice-txt',
+      customEditInputTextCss: 'custom-invoice-edit-txt',
+    },
+    primaryServiceType: {
+      type: FormFieldType.Text,
+      label: 'Primary Service Type',
+      placeholder: 'Primary Service Type',
+      graphQLPropertyName: 'primaryServiceTypeName',
+      value: '',
+      colSize: 'col-lg-6 col-md-6 col-sm-12',
+      customLabelCss: 'custom-invoice-lbl',
+      customEditLabelCss: 'custom-invoice-edit-lbl',
+      customInputTextCss: 'custom-invoice-txt',
+      customEditInputTextCss: 'custom-invoice-edit-txt',
+    },
+    secondaryServiceTypes: {
+      type: FormFieldType.Text,
+      label: 'Secondary Service Type(s)',
+      placeholder: 'Secondary Service Type(s)',
+      graphQLPropertyName: 'secondaryServiceTypeNames',
+      value: '',
+      colSize: 'col-lg-6 col-md-6 col-sm-12',
       customLabelCss: 'custom-invoice-lbl',
       customEditLabelCss: 'custom-invoice-edit-lbl',
       customInputTextCss: 'custom-invoice-txt',
@@ -420,10 +462,11 @@ export const GetInvoiceConfig = ({
   };
 
   const applicationDetailsForm: IFormField[][] = [
+    [invoiceForm.applicationId, invoiceForm.siteId, invoiceForm.siteAddress],
     [
-      invoiceForm.applicationId,
-      invoiceForm.siteAddress,
       invoiceForm.applicationType,
+      invoiceForm.primaryServiceType,
+      invoiceForm.secondaryServiceTypes,
     ],
   ];
 
@@ -449,7 +492,7 @@ export const GetInvoiceConfig = ({
   ];
 
   const actionsColumn: TableColumn = {
-    id: 6,
+    id: 7,
     displayName: 'Actions',
     active: true,
     graphQLPropertyName: 'remove',
@@ -500,6 +543,30 @@ export const GetInvoiceConfig = ({
     },
     {
       id: 2,
+      displayName: 'Service Type',
+      active: true,
+      graphQLPropertyName: 'serviceTypeId',
+      displayType: {
+        type: FormFieldType.DropDown,
+        label: 'Service Type',
+        tableMode: true,
+        graphQLPropertyName: 'serviceTypeId',
+        placeholder: 'Select Service Type',
+        options: serviceTypeOptions.map((st) => ({
+          key: st.key,
+          value: st.value,
+        })),
+        value: '',
+        customInputTextCss: 'custom-invoice-items-txt',
+        customEditInputTextCss: 'custom-invoice-items-txt',
+        isDisabled: (rowData: any) =>
+          rowData?.itemType !== InvoiceItemTypes.SERVICE,
+      },
+      dynamicColumn: true,
+      columnSize: ColumnSize.Default,
+    },
+    {
+      id: 3,
       displayName: 'Description',
       active: true,
       graphQLPropertyName: 'description',
@@ -520,7 +587,7 @@ export const GetInvoiceConfig = ({
       columnSize: ColumnSize.Default,
     },
     {
-      id: 3,
+      id: 4,
       displayName: 'Quantity',
       active: true,
       graphQLPropertyName: 'quantity',
@@ -543,7 +610,7 @@ export const GetInvoiceConfig = ({
       customHeaderCss: 'text-end align-middle',
     },
     {
-      id: 4,
+      id: 5,
       displayName: 'Unit Price',
       active: true,
       graphQLPropertyName: 'unitPriceInCents',
@@ -566,7 +633,7 @@ export const GetInvoiceConfig = ({
       customHeaderCss: 'text-end align-middle',
     },
     {
-      id: 5,
+      id: 6,
       displayName: 'Amount',
       active: true,
       graphQLPropertyName: 'totalInCents',

@@ -169,6 +169,12 @@ const TableBody: FC<TableBodyProps> = ({
     editMode: boolean,
     columnIndex: number,
   ) => {
+    const rowData = data[rowKey];
+    const resolvedIsDisabled =
+      typeof field.isDisabled === 'function'
+        ? !!field.isDisabled(rowData)
+        : field.isDisabled;
+
     if (field.type === FormFieldType.Text) {
       return (
         <TextInput
@@ -189,7 +195,7 @@ const TableBody: FC<TableBodyProps> = ({
           allowNumbersOnly={field.allowNumbersOnly}
           isEditing={editMode ?? true}
           tableMode={field.tableMode ?? false}
-          isDisabled={field.isDisabled}
+          isDisabled={resolvedIsDisabled}
           customContainerCss={field.customContainerCss}
         />
       );
@@ -291,6 +297,7 @@ const TableBody: FC<TableBodyProps> = ({
           customContainerCss={field.customContainerCss}
           href={field.href}
           options={field.options}
+          isDisabled={resolvedIsDisabled}
         />
       );
     } else if (field.type === FormFieldType.Checkbox) {

@@ -68,7 +68,7 @@ export interface IFormField {
   dateFormat?: string;
   children?: IFormField[];
   isChildLabel?: boolean;
-  isDisabled?: boolean;
+  isDisabled?: boolean | ((rowData: any) => boolean);
   suffix?: string;
   isImage?: boolean;
   isLoading?: RequestStatus;
