@@ -14,6 +14,7 @@ import {
 import {
   useSearchApplicationsQuery,
   useGetAllStatusTypesQuery,
+  useGetAllAppTypesQuery,
 } from './hooks/SearchApplications.generated';
 import { useGetUserColumnPreferencesQuery } from '../../../graphql/columnPreferences.generated';
 import ModalDialog from '../../../components/modaldialog/ModalDialog';
@@ -31,8 +32,13 @@ import {
   formRowsMap,
   updateStaffOptions,
   updateStatusOptions,
+  updateServiceTypeOptions,
+  updateApplicationTypeOptions,
 } from './filter/ApplicationFilterConfig';
-import { useGetAllActiveStaffMembersQuery } from '../../assignment/graphql/assignment.generated';
+import {
+  useGetAllActiveStaffMembersQuery,
+  useGetApplicationServiceTypesQuery,
+} from '../../assignment/graphql/assignment.generated';
 
 interface FilterPill {
   key: string;
@@ -182,6 +188,10 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
 
   const { data: statusData } = useGetAllStatusTypesQuery();
 
+  const { data: serviceTypeData } = useGetApplicationServiceTypesQuery();
+
+  const { data: appTypeData } = useGetAllAppTypesQuery();
+
   useEffect(() => {
     if (staffData?.getAllActiveStaffMembers?.data) {
       const staffOptions = staffData.getAllActiveStaffMembers.data.map(
@@ -208,6 +218,27 @@ const Search: React.FC<SearchProps> = ({ filterMyTasks = false }) => {
       updateStatusOptions(uniqueStatusOptions);
     }
   }, [statusData]);
+
+  useEffect(() => {
+    if (serviceTypeData?.getApplicationServiceTypes?.data) {
+      const serviceTypeOptions =
+        serviceTypeData.getApplicationServiceTypes.data.map((st) => ({
+          key: st.key,
+          value: st.value,
+        }));
+      updateServiceTypeOptions(serviceTypeOptions);
+    }
+  }, [serviceTypeData]);
+
+  useEffect(() => {
+    if (appTypeData?.getAllAppTypes) {
+      const appTypeOptions = appTypeData.getAllAppTypes.map((appType) => ({
+        key: appType.id.toString(),
+        value: appType.description,
+      }));
+      updateApplicationTypeOptions(appTypeOptions);
+    }
+  }, [appTypeData]);
 
   const {
     data,

@@ -213,6 +213,102 @@ describe('ApplicationSearchService', () => {
     expect(result.error).toBe('Test error');
   });
 
+  it('should filter applications by serviceType using application_service_type_id', async () => {
+    const mockApplication = new Application();
+    mockApplication.id = 1;
+    mockApplication.siteId = 1;
+    mockApplication.updatedDateTime = new Date();
+    mockApplication.appParticipants = [];
+    mockApplication.appPriorities = [];
+    mockApplication.applicationSpecificData = {};
+    mockApplication.site = {
+      address: '123 Test St',
+      commonName: 'Test Site',
+    } as any;
+    mockApplication.appType = { description: 'Test Type' } as any;
+    mockApplication.appStatus = {
+      statusType: { description: 'Active', abbrev: 'ACT' },
+    } as any;
+
+    const queryBuilderMock = {
+      leftJoinAndSelect: jest.fn().mockReturnThis(),
+      andWhere: jest.fn().mockReturnThis(),
+      orWhere: jest.fn().mockReturnThis(),
+      skip: jest.fn().mockReturnThis(),
+      take: jest.fn().mockReturnThis(),
+      orderBy: jest.fn().mockReturnThis(),
+      getManyAndCount: jest.fn().mockResolvedValue([[mockApplication], 1]),
+    };
+
+    jest
+      .spyOn(repository, 'createQueryBuilder')
+      .mockReturnValue(queryBuilderMock as any);
+
+    await service.searchApplications(
+      '',
+      1,
+      10,
+      Filter.ALL,
+      { serviceType: '5' },
+      SortByField.ID,
+      SortByDirection.ASC,
+      null,
+    );
+
+    expect(queryBuilderMock.andWhere).toHaveBeenCalledWith(
+      'application.application_service_type_id = :filterServiceType',
+      { filterServiceType: 5 },
+    );
+  });
+
+  it('should filter applications by applicationType using app_type_id', async () => {
+    const mockApplication = new Application();
+    mockApplication.id = 1;
+    mockApplication.siteId = 1;
+    mockApplication.updatedDateTime = new Date();
+    mockApplication.appParticipants = [];
+    mockApplication.appPriorities = [];
+    mockApplication.applicationSpecificData = {};
+    mockApplication.site = {
+      address: '123 Test St',
+      commonName: 'Test Site',
+    } as any;
+    mockApplication.appType = { description: 'Test Type' } as any;
+    mockApplication.appStatus = {
+      statusType: { description: 'Active', abbrev: 'ACT' },
+    } as any;
+
+    const queryBuilderMock = {
+      leftJoinAndSelect: jest.fn().mockReturnThis(),
+      andWhere: jest.fn().mockReturnThis(),
+      orWhere: jest.fn().mockReturnThis(),
+      skip: jest.fn().mockReturnThis(),
+      take: jest.fn().mockReturnThis(),
+      orderBy: jest.fn().mockReturnThis(),
+      getManyAndCount: jest.fn().mockResolvedValue([[mockApplication], 1]),
+    };
+
+    jest
+      .spyOn(repository, 'createQueryBuilder')
+      .mockReturnValue(queryBuilderMock as any);
+
+    await service.searchApplications(
+      '',
+      1,
+      10,
+      Filter.ALL,
+      { applicationType: '3' },
+      SortByField.ID,
+      SortByDirection.ASC,
+      null,
+    );
+
+    expect(queryBuilderMock.andWhere).toHaveBeenCalledWith(
+      'application.app_type_id = :filterApplicationType',
+      { filterApplicationType: 3 },
+    );
+  });
+
   describe('searchApplicationsById', () => {
     it('should search applications by ID with default pagination', async () => {
       const applicationId = '123';
