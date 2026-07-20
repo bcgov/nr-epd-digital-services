@@ -104,6 +104,7 @@ import { ColumnPreferencesResolver } from './resolvers/application/columnPrefere
 import { ColumnPreferencesService } from './services/application/columnPreferences.service';
 import { UserColumnPreferences } from './entities/userColumnPreferences.entity';
 import { ApplicationSecondaryServiceType } from './entities/applicationSecondaryServiceType.entity';
+import { ApplicationSubmission } from './entities/applicationSubmission.entity';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -171,6 +172,7 @@ import { ApplicationSecondaryServiceType } from './entities/applicationSecondary
       ApplicationSite,
       UserColumnPreferences,
       ApplicationSecondaryServiceType,
+      ApplicationSubmission,
     ]),
     HttpModule,
   ],
