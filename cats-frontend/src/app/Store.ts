@@ -1,17 +1,35 @@
 import { configureStore } from '@reduxjs/toolkit';
+import createSagaMiddleware from 'redux-saga';
 import commonDataReducer from './features/common/CommonDataSlice';
 import peopleReducer from './features/people/dto/PeopleSlice';
+import { rootSaga } from './rootSaga';
 
-export const store = configureStore({
-  reducer: {
-    commonData: commonDataReducer,
-    peoples: peopleReducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }),
-});
+const rootReducer = {
+  commonData: commonDataReducer,
+  peoples: peopleReducer,
+};
+
+/**
+ * Reusable store factory. Registers Redux Saga middleware, starts the root
+ * saga, and supports isolated test stores.
+ */
+export const createAppStore = () => {
+  const sagaMiddleware = createSagaMiddleware();
+
+  const appStore = configureStore({
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }).concat(sagaMiddleware),
+  });
+
+  sagaMiddleware.run(rootSaga);
+
+  return appStore;
+};
+
+export const store = createAppStore();
 
 store.subscribe(() => {
   // TODO

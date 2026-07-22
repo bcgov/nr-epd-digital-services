@@ -72,4 +72,61 @@ describe('Search Component', () => {
 
     expect(screen.getByRole('Search')).toBeInTheDocument();
   });
+
+  test('dispatches a typed search request when the user types 3 or more characters', () => {
+    render(
+      <Provider store={store}>
+        <ApolloProvider client={client}>
+          <Search />
+        </ApolloProvider>
+      </Provider>,
+    );
+
+    const input = screen.getByPlaceholderText('Search People');
+    fireEvent.change(input, { target: { value: 'sam' } });
+
+    const actions = store.getActions();
+    expect(actions).toContainEqual(
+      expect.objectContaining({
+        type: 'peoples/searchPeopleRequested',
+        payload: expect.objectContaining({ searchParam: 'sam' }),
+      }),
+    );
+  });
+
+  test('dispatches a typed search request when the match mode changes', () => {
+    store = mockStore({
+      sites: { sites: [] },
+      peoples: {
+        peoples: [],
+        searchQuery: 'sam',
+        currentPage: 1,
+        pageSize: 10,
+        error: '',
+        fetchStatus: RequestStatus.idle,
+        deleteStatus: RequestStatus.idle,
+        addedStatus: RequestStatus.idle,
+        updateStatus: RequestStatus.idle,
+      },
+    });
+
+    render(
+      <Provider store={store}>
+        <ApolloProvider client={client}>
+          <Search />
+        </ApolloProvider>
+      </Provider>,
+    );
+    store.clearActions();
+
+    fireEvent.click(screen.getByLabelText('Match All (AND)'));
+
+    const actions = store.getActions();
+    expect(actions).toContainEqual(
+      expect.objectContaining({
+        type: 'peoples/searchPeopleRequested',
+        payload: expect.objectContaining({ searchMode: 'AND' }),
+      }),
+    );
+  });
 });

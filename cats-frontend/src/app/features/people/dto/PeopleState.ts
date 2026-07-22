@@ -3,6 +3,7 @@ import { RequestStatus } from '../../../helpers/requests/status';
 import { UserType } from '../../../helpers/requests/userType';
 // import { PeopleDetailsMode } from '../../details/dto/PeopleDetailsMode';
 import { PeopleResultDto, Peoples } from './People';
+import { PeopleSearchCriteria } from './PeopleSearchTypes';
 
 export class PeopleState {
   peoples: Peoples[] = [];
@@ -15,6 +16,10 @@ export class PeopleState {
   pageSize: number = 10;
   currentPage: number = 1;
   resultsCount: number = 0;
+  // Latest People search criteria dispatched to the Saga, recorded so future
+  // workflows (e.g. a post-update refresh) can reuse it without component
+  // orchestration.
+  lastSearchCriteria: PeopleSearchCriteria | null = null;
   peopleDetails?: Peoples | null = null;
   peopleDetailsFetchStatus: string = RequestStatus.idle;
   peopleDetailsDeleteStatus: string = RequestStatus.idle;

@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import './Search.css';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  fetchPeoples,
+  searchPeopleRequested,
   resetPeoples,
-  setFetchLoadingState,
   updateSearchQuery,
   updatePageSizeSetting,
   resultsCount,
   updatePeopleStatus,
 } from './dto/PeopleSlice';
+import { PeopleSearchCriteria } from './dto/PeopleSearchTypes';
 
 import { AppDispatch } from '../../Store';
 import {
@@ -88,29 +88,29 @@ const Search = () => {
 
   useEffect(() => {}, [selectedRows]);
 
-  useEffect(() => {
-    if (currSearchVal.searchQuery !== '') {
-      dispatch(
-        fetchPeoples({
-          searchParam: currSearchVal.searchQuery ?? searchText,
-          searchMode,
-          activeFilter,
-        }),
-      );
-    }
-  }, [currentPageInState, updatePeopleStatusInState, searchMode, activeFilter]);
+  // Builds the typed search criteria from the latest component/redux state.
+  // Callers pass overrides for the value(s) that changed so the Saga request
+  // path always receives an explicit, complete criteria object.
+  const buildSearchCriteria = (
+    overrides: Partial<PeopleSearchCriteria> = {},
+  ): PeopleSearchCriteria => ({
+    searchParam: currSearchVal.searchQuery ?? searchText,
+    page: currentPageInState,
+    pageSize: currentPageSizeInState,
+    searchMode,
+    activeFilter,
+    ...overrides,
+  });
 
+  // Bulk People updates still run through the pre-existing thunk in this
+  // slice. Until that workflow is migrated to Saga, a refresh after it
+  // completes is preserved here using the latest recorded search criteria.
   useEffect(() => {
     if (currSearchVal.searchQuery !== '') {
-      dispatch(
-        fetchPeoples({
-          searchParam: currSearchVal.searchQuery ?? searchText,
-          searchMode,
-          activeFilter,
-        }),
-      );
+      dispatch(searchPeopleRequested(buildSearchCriteria()));
     }
-  }, [currentPageSizeInState]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updatePeopleStatusInState]);
 
   const resetDefaultColums = () => {
     setColumnsToDisplay(columns);
@@ -123,6 +123,13 @@ const Search = () => {
         pageSize: resultsCount,
       }),
     );
+    if (currSearchVal.searchQuery !== '') {
+      dispatch(
+        searchPeopleRequested(
+          buildSearchCriteria({ page: pageRequested, pageSize: resultsCount }),
+        ),
+      );
+    }
   };
 
   useEffect(() => {
@@ -142,11 +149,9 @@ const Search = () => {
       setUserAction(false);
       setSearchText(currSearchVal.searchQuery);
       dispatch(
-        fetchPeoples({
-          searchParam: currSearchVal.searchQuery,
-          searchMode,
-          activeFilter,
-        }),
+        searchPeopleRequested(
+          buildSearchCriteria({ searchParam: currSearchVal.searchQuery }),
+        ),
       );
     }
   }, []);
@@ -166,27 +171,24 @@ const Search = () => {
     setUserAction(false);
     setSearchText(event.target.value);
     if (event.target.value.length >= 3) {
-      dispatch(setFetchLoadingState(null));
       if (selectedFilters) {
         const filterData: any = {};
         selectedFilters.forEach((filter: any) => {
           filterData[filter.key] = filter.value;
         });
         dispatch(
-          fetchPeoples({
-            searchParam: event.target.value,
-            filter: filterData,
-            searchMode,
-            activeFilter,
-          }),
+          searchPeopleRequested(
+            buildSearchCriteria({
+              searchParam: event.target.value,
+              filter: filterData,
+            }),
+          ),
         );
       } else {
         dispatch(
-          fetchPeoples({
-            searchParam: event.target.value,
-            searchMode,
-            activeFilter,
-          }),
+          searchPeopleRequested(
+            buildSearchCriteria({ searchParam: event.target.value }),
+          ),
         );
       }
       dispatch(updateSearchQuery(event.target.value));
@@ -268,12 +270,9 @@ const Search = () => {
     // show and format pill.
     if (filters.length !== 0) {
       dispatch(
-        fetchPeoples({
-          searchParam: currSearchVal.searchQuery,
-          filter: filteredFormData,
-          searchMode,
-          activeFilter,
-        }),
+        searchPeopleRequested(
+          buildSearchCriteria({ filter: filteredFormData }),
+        ),
       );
       setSelectedFilters(filters);
 
@@ -305,14 +304,7 @@ const Search = () => {
     setFormData((prevData) => {
       const newData = { ...prevData };
       delete newData[filter.key]; // Remove the filter key from the form data
-      dispatch(
-        fetchPeoples({
-          searchParam: currSearchVal.searchQuery,
-          filter: newData,
-          searchMode,
-          activeFilter,
-        }),
-      );
+      dispatch(searchPeopleRequested(buildSearchCriteria({ filter: newData })));
       return newData;
     });
     let currFilter = selectedFilters.filter((item) => item.key !== filter.key);
@@ -375,7 +367,17 @@ const Search = () => {
                 type="radio"
                 value="OR"
                 checked={searchMode === 'OR'}
-                onChange={(e) => setSearchMode(e.target.value as 'OR')}
+                onChange={(e) => {
+                  const newSearchMode = e.target.value as 'OR';
+                  setSearchMode(newSearchMode);
+                  if (currSearchVal.searchQuery !== '') {
+                    dispatch(
+                      searchPeopleRequested(
+                        buildSearchCriteria({ searchMode: newSearchMode }),
+                      ),
+                    );
+                  }
+                }}
               />
               Match Any (OR)
             </label>
@@ -384,7 +386,17 @@ const Search = () => {
                 type="radio"
                 value="AND"
                 checked={searchMode === 'AND'}
-                onChange={(e) => setSearchMode(e.target.value as 'AND')}
+                onChange={(e) => {
+                  const newSearchMode = e.target.value as 'AND';
+                  setSearchMode(newSearchMode);
+                  if (currSearchVal.searchQuery !== '') {
+                    dispatch(
+                      searchPeopleRequested(
+                        buildSearchCriteria({ searchMode: newSearchMode }),
+                      ),
+                    );
+                  }
+                }}
               />
               Match All (AND)
             </label>
@@ -393,9 +405,18 @@ const Search = () => {
             <label>Status:</label>
             <select
               value={activeFilter}
-              onChange={(e) =>
-                setActiveFilter(e.target.value as 'active' | 'inactive' | 'all')
-              }
+              onChange={(e) => {
+                const newActiveFilter = e.target.value as
+                  'active' | 'inactive' | 'all';
+                setActiveFilter(newActiveFilter);
+                if (currSearchVal.searchQuery !== '') {
+                  dispatch(
+                    searchPeopleRequested(
+                      buildSearchCriteria({ activeFilter: newActiveFilter }),
+                    ),
+                  );
+                }
+              }}
             >
               <option value="all">All</option>
               <option value="active">Active Only</option>

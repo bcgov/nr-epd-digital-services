@@ -1,8 +1,7 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { getAxiosInstance, getUser } from '../../../helpers/utility';
 import { print } from 'graphql';
 import {
-  graphQlPeopleQuery,
   graphqlPeopleDetailsQuery,
   graphqlPeopleDetailsQueryForLoggedIn,
   graphQlPeopleQueryForAuthenticatedUsers,
@@ -14,8 +13,11 @@ import { PeopleResultDto, Peoples } from './People';
 import { GRAPHQL } from '../../../helpers/endpoints';
 //import { PeopleDetailsMode } from '../../details/dto/PeopleDetailsMode';
 import { UserType } from '../../../helpers/requests/userType';
-import Search from '../Search';
-import { error } from 'console';
+import {
+  PeopleSearchCriteria,
+  PeopleSearchFailure,
+  PeopleSearchResult,
+} from './PeopleSearchTypes';
 
 const initialState: PeopleState = {
   peoples: [],
@@ -28,6 +30,7 @@ const initialState: PeopleState = {
   currentPage: 1,
   pageSize: 10,
   resultsCount: 0,
+  lastSearchCriteria: null,
   peopleDetails: null,
   peopleDetailsFetchStatus: RequestStatus.idle,
   peopleDetailsDeleteStatus: RequestStatus.idle,
@@ -75,37 +78,6 @@ export const updatePeople = createAsyncThunk(
       },
     });
     return request.data;
-  },
-);
-
-export const fetchPeoples = createAsyncThunk(
-  'peoples/fetchPeoples',
-  async (
-    args: {
-      searchParam?: string;
-      page?: number;
-      pageSize?: number;
-      filter?: {};
-      searchMode?: 'AND' | 'OR';
-      activeFilter?: 'active' | 'inactive' | 'all';
-    },
-    { getState },
-  ) => {
-    const state: any = getState();
-    const response = await getAxiosInstance().post(GRAPHQL, {
-      query: print(graphQlPeopleQuery()),
-      variables: {
-        searchParam: args.searchParam,
-        page: state.peoples.currentPage ?? 1,
-        pageSize: state.peoples.pageSize ?? 5,
-        searchMode: args.searchMode ?? 'OR',
-        activeFilter: args.activeFilter ?? 'all',
-      },
-    });
-
-    if (response.data?.errors?.length > 0) {
-      throw response.data?.errors[0];
-    } else return response.data?.data?.searchPerson;
   },
 );
 
@@ -232,25 +204,37 @@ const peopleSlice = createSlice({
       newState.userType = action.payload;
       return newState;
     },
+    // Saga-driven People search lifecycle actions. These replace the former
+    // fetchPeoples thunk with a typed request/success/failure convention.
+    searchPeopleRequested: (
+      state,
+      action: PayloadAction<PeopleSearchCriteria>,
+    ) => {
+      const newState = { ...state };
+      newState.lastSearchCriteria = action.payload;
+      newState.fetchStatus = RequestStatus.loading;
+      newState.error = '';
+      return newState;
+    },
+    searchPeopleSucceeded: (
+      state,
+      action: PayloadAction<PeopleSearchResult>,
+    ) => {
+      const newState = { ...state };
+      newState.fetchStatus = RequestStatus.success;
+      newState.peoples = action.payload.persons;
+      newState.resultsCount = action.payload.count;
+      return newState;
+    },
+    searchPeopleFailed: (state, action: PayloadAction<PeopleSearchFailure>) => {
+      const newState = { ...state };
+      newState.fetchStatus = RequestStatus.failed;
+      newState.error = action.payload.message;
+      return newState;
+    },
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchPeoples.pending, (state, action) => {
-        const newState = { ...state };
-        newState.fetchStatus = RequestStatus.loading;
-        return newState;
-      })
-      .addCase(fetchPeoples.fulfilled, (state, action) => {
-        const newState = { ...state };
-        newState.fetchStatus = RequestStatus.success;
-        newState.peoples = action.payload.persons;
-        newState.resultsCount = action.payload.count;
-        return newState;
-      })
-      .addCase(fetchPeoples.rejected, (state, action) => {
-        const newState = { ...state };
-        return newState;
-      })
       .addCase(fetchPeoplesDetails.pending, (state, action) => {
         const newState = { ...state };
         newState.peopleDetailsFetchStatus = RequestStatus.loading;
@@ -302,6 +286,9 @@ export const peopleDetailsMode = (state: any) =>
 export const resetPeopleDetails = (state: any) =>
   state.peoples.resetPeopleDetails;
 export const userTypeOnlyForDemo = (state: any) => state.peoples.userType;
+export const searchError = (state: any) => state.peoples.error;
+export const lastSearchCriteria = (state: any) =>
+  state.peoples.lastSearchCriteria;
 
 export const {
   peopleAdded,
@@ -313,6 +300,9 @@ export const {
   clearTrackChanges,
   updatePeopleDetailsMode,
   updateUserType,
+  searchPeopleRequested,
+  searchPeopleSucceeded,
+  searchPeopleFailed,
 } = peopleSlice.actions;
 
 export default peopleSlice.reducer;
