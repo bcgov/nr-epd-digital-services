@@ -4,293 +4,335 @@
     "description": "26-Approval in Principle",
     "CW": 7.69,
     "SDM": 6.96,
-    "MNTR": 3.48
+    "MNTR": 3.48,
+    "fee": 5000
   },
   {
     "type": "CSAP",
     "description": "26-Certificate of Compliance - Detailed Risk Assessment",
     "CW": 4.75,
     "SDM": 8.57,
-    "MNTR": 4.29
+    "MNTR": 4.29,
+    "fee": 10000
   },
   {
     "type": "CSAP",
     "description": "26-Certificate of Compliance - Numerical",
     "CW": 23,
     "SDM": 6.45,
-    "MNTR": 3.23
+    "MNTR": 3.23,
+    "fee": 10000
   },
   {
     "type": "CSAP",
     "description": "26-Certificate of Compliance - Screening Level Risk Assessment",
     "CW": 0.25,
     "SDM": 7.94,
-    "MNTR": 3.97
+    "MNTR": 3.97,
+    "fee": 10000
   },
   {
     "type": "CSAP",
     "description": "26-Final Determination under CSR 15(3)",
     "CW": 2.13,
     "SDM": 2.39,
-    "MNTR": 1.19
+    "MNTR": 1.19,
+    "fee": 5000
   },
   {
     "type": "CSAP",
     "description": "26-Preliminary Determination under CSR 15(3)",
     "CW": 4.33,
     "SDM": 5.69,
-    "MNTR": 2.84
+    "MNTR": 2.84,
+    "fee": 5000
   },
   {
     "type": "CSAP",
     "description": "26-CSAP - AP Statement or Report",
     "CW": 5.27,
     "SDM": 3.25,
-    "MNTR": 1.63
+    "MNTR": 1.63,
+    "fee": 0
   },
   {
     "type": "Non-CSAP",
     "description": "26-Protocol 21 Water Use",
     "CW": 8.74,
     "SDM": 3.56,
-    "MNTR": 1.78
+    "MNTR": 1.78,
+    "fee": 5000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Approval in Principle",
     "CW": 19.63,
     "SDM": 5.59,
-    "MNTR": 2.79
+    "MNTR": 2.79,
+    "fee": 5000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Background Substance Concentrations: Protocol 4 Background Soil",
     "CW": 13.34,
     "SDM": 2.8,
-    "MNTR": 1.4
+    "MNTR": 1.4,
+    "fee": 5000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Background Substance Concentrations: Protocol 9 Background Groundwater",
     "CW": 9.83,
     "SDM": 2.58,
-    "MNTR": 1.29
+    "MNTR": 1.29,
+    "fee": 5000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Certificate of Compliance - Detailed Risk Assessment",
     "CW": 48.38,
     "SDM": 6.92,
-    "MNTR": 3.46
+    "MNTR": 3.46,
+    "fee": 10000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Certificate of Compliance - Numerical",
     "CW": 63.33,
     "SDM": 7.27,
-    "MNTR": 3.63
+    "MNTR": 3.63,
+    "fee": 10000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Certificate of Compliance - Screening Level Risk Assessment",
     "CW": 0,
     "SDM": 10,
-    "MNTR": 5
+    "MNTR": 5,
+    "fee": 10000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Confirmation of Remediation",
     "CW": 60.5,
     "SDM": 2,
-    "MNTR": 1
+    "MNTR": 1,
+    "fee": 15000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Review of a Covenant Prior to Registering",
     "CW": 14.5,
     "SDM": 0.5,
-    "MNTR": 0.25
+    "MNTR": 0.25,
+    "fee": 10000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Detailed Site Condition Report",
     "CW": 19.63,
     "SDM": 5.59,
-    "MNTR": 2.79
+    "MNTR": 2.79,
+    "fee": 5000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Detailed Site Investigation",
     "CW": 70.25,
     "SDM": 7,
-    "MNTR": 3.5
+    "MNTR": 3.5,
+    "fee": 30000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Determination of a Contaminated Site - Preliminary",
     "CW": 7.25,
     "SDM": 4.97,
-    "MNTR": 2.49
+    "MNTR": 2.49,
+    "fee": 5000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Determination of a Contaminated Site - Final",
     "CW": 0,
     "SDM": 1.29,
-    "MNTR": 0.64
+    "MNTR": 0.64,
+    "fee": 0
   },
   {
     "type": "Non-CSAP",
     "description": "26-Indemnification",
     "CW": 60.5,
     "SDM": 2,
-    "MNTR": 1
+    "MNTR": 1,
+    "fee": 15000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Minor Contribution Status",
     "CW": 7.25,
     "SDM": 4.97,
-    "MNTR": 2.49
+    "MNTR": 2.49,
+    "fee": 5000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Preliminary Site Investigation",
     "CW": 22,
     "SDM": 1.8,
-    "MNTR": 0.9
+    "MNTR": 0.9,
+    "fee": 10000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Remediation Plan",
     "CW": 70,
     "SDM": 7,
-    "MNTR": 3.5
+    "MNTR": 3.5,
+    "fee": 20000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Risk Assessment Not Included in a Remediation Plan",
     "CW": 70.25,
     "SDM": 7,
-    "MNTR": 3.5
+    "MNTR": 3.5,
+    "fee": 20000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Site Specific Standards",
     "CW": 7,
     "SDM": 5,
-    "MNTR": 2.5
+    "MNTR": 2.5,
+    "fee": 10000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Summary of Site Condition Report",
     "CW": 3,
     "SDM": 0.6,
-    "MNTR": 0.3
+    "MNTR": 0.3,
+    "fee": 5000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Transfer Agreement",
     "CW": 22,
     "SDM": 1.8,
-    "MNTR": 0.9
+    "MNTR": 0.9,
+    "fee": 10000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Voluntary Remediation Agreement",
     "CW": 7,
     "SDM": 5,
-    "MNTR": 2.5
+    "MNTR": 2.5,
+    "fee": 10000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Person Requests a Notice from a Director Stating the Director Does Not Require Site Investigation (Release under Scenario 1)",
     "CW": 3.18,
     "SDM": 0.59,
-    "MNTR": 0.29
+    "MNTR": 0.29,
+    "fee": 5000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Person Requests a Notice from a Director Stating That the Site Would Not Present a Significant Threat or Risk If the Application Were Approved (Release under Scenario 2)",
     "CW": 12.62,
     "SDM": 1.19,
-    "MNTR": 0.59
+    "MNTR": 0.59,
+    "fee": 5000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Person Requests a Notice from a Director Stating the Director Has Received a Remediation Plan Supporting Independent Remediation of the Site (Release under Scenario 3)",
     "CW": 22.06,
     "SDM": 1.79,
-    "MNTR": 0.89
+    "MNTR": 0.89,
+    "fee": 10000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Person Requests the Appointment of an Allocation Panel",
     "CW": 7.25,
     "SDM": 4.97,
-    "MNTR": 2.49
+    "MNTR": 2.49,
+    "fee": 5000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Protocol 12 High Risk Reporting (Review of an Interim Report per Protocol 12 - Site Risk Classification)",
     "CW": 7,
     "SDM": 5,
-    "MNTR": 2.5
+    "MNTR": 2.5,
+    "fee": 5000
   },
   {
     "type": "Non-CSAP",
     "description": "26-P12 - Reclassification",
     "CW": 24.65,
     "SDM": 1.85,
-    "MNTR": 0.93
+    "MNTR": 0.93,
+    "fee": 10000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Person Requests Designation of an Area as an Environmental Management Area",
     "CW": 48,
     "SDM": 7,
-    "MNTR": 3.5
+    "MNTR": 3.5,
+    "fee": 20000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Protocol 6 Pre-approval",
     "CW": 7,
     "SDM": 5,
-    "MNTR": 2.5
+    "MNTR": 2.5,
+    "fee": 5000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Review of Interim Report for the Remediation of a Contaminated Site in Accordance with an Applicable Director's Protocol Made under Section 64(1)(d) of the Act",
     "CW": 7,
     "SDM": 5,
-    "MNTR": 2.5
+    "MNTR": 2.5,
+    "fee": 5000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Request to Director: Review of Background Substance Concentrations for a Site under CSR s. 11, 17 or 18",
     "CW": 7,
     "SDM": 5,
-    "MNTR": 2.5
+    "MNTR": 2.5,
+    "fee": 5000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Annual Update - Site ID",
     "CW": 2.64,
     "SDM": 0.46,
-    "MNTR": 0.23
+    "MNTR": 0.23,
+    "fee": 0
   },
   {
     "type": "Non-CSAP",
     "description": "26-Annual Update - AiP Reporting",
     "CW": 7.25,
     "SDM": 4.97,
-    "MNTR": 2.49
+    "MNTR": 2.49,
+    "fee": 0
   },
   {
     "type": "Non-CSAP",
     "description": "26-Annual Update - CoC Reporting",
     "CW": 7.25,
     "SDM": 4.97,
-    "MNTR": 2.49
+    "MNTR": 2.49,
+    "fee": 0
   }
 ]
