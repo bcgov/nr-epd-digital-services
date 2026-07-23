@@ -1,12 +1,16 @@
 import { print } from 'graphql';
 import { getAxiosInstance } from '../../../helpers/utility';
-import { graphQlPeopleQuery } from '../graphql/People';
+import { graphQlPeopleQuery, updatePerson } from '../graphql/People';
 import {
   searchPeople,
+  updatePeople,
   PeopleSearchApiError,
+  PeopleUpdateApiError,
   PEOPLE_SEARCH_SAFE_ERROR_MESSAGE,
+  PEOPLE_UPDATE_SAFE_ERROR_MESSAGE,
 } from './PeopleApi';
 import { PeopleSearchCriteria } from '../dto/PeopleSearchTypes';
+import { PeopleUpdateInput } from '../dto/PeopleUpdateTypes';
 
 vi.mock('../../../helpers/utility', () => ({
   getAxiosInstance: vi.fn(),
@@ -23,6 +27,16 @@ const criteria: PeopleSearchCriteria = {
   searchMode: 'OR',
   activeFilter: 'all',
 };
+
+const updateInput: PeopleUpdateInput[] = [
+  {
+    id: 1,
+    firstName: 'Jane',
+    lastName: 'Smith',
+    isActive: true,
+    updatedDatetime: '2026-07-22T12:00:00.000Z',
+  },
+];
 
 describe('PeopleApi searchPeople', () => {
   afterEach(() => {
@@ -166,6 +180,91 @@ describe('PeopleApi searchPeople', () => {
     await expect(searchPeople(criteria)).rejects.toMatchObject({
       message: PEOPLE_SEARCH_SAFE_ERROR_MESSAGE,
       retryable: false,
+    });
+  });
+});
+
+describe('PeopleApi updatePeople', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('sends the expected GraphQL mutation with serializable ISO timestamps', async () => {
+    const post = vi.fn().mockResolvedValue({
+      data: {
+        data: {
+          updatePerson: {
+            success: true,
+            httpStatusCode: 200,
+            message: 'ok',
+            timestamp: '2026-07-22T12:00:00.000Z',
+          },
+        },
+      },
+    });
+    mockedGetAxiosInstance.mockReturnValue({ post });
+
+    await updatePeople(updateInput);
+
+    expect(post).toHaveBeenCalledWith('/graphql', {
+      query: print(updatePerson()),
+      variables: { input: updateInput },
+    });
+    expect(typeof updateInput[0].updatedDatetime).toBe('string');
+  });
+
+  it('resolves when mutation-level success is true', async () => {
+    const post = vi.fn().mockResolvedValue({
+      data: {
+        data: {
+          updatePerson: { success: true, httpStatusCode: 200 },
+        },
+      },
+    });
+    mockedGetAxiosInstance.mockReturnValue({ post });
+
+    await expect(updatePeople(updateInput)).resolves.toBeUndefined();
+  });
+
+  it('throws a safe error when GraphQL transport errors are present', async () => {
+    const post = vi.fn().mockResolvedValue({
+      data: { errors: [{ message: 'raw graphql internal detail' }] },
+    });
+    mockedGetAxiosInstance.mockReturnValue({ post });
+
+    await expect(updatePeople(updateInput)).rejects.toMatchObject({
+      message: PEOPLE_UPDATE_SAFE_ERROR_MESSAGE,
+    });
+  });
+
+  it('throws a safe error when mutation-level success is false on HTTP 200', async () => {
+    const post = vi.fn().mockResolvedValue({
+      data: {
+        data: {
+          updatePerson: {
+            success: false,
+            httpStatusCode: 200,
+            message: 'raw mutation failure detail',
+          },
+        },
+      },
+    });
+    mockedGetAxiosInstance.mockReturnValue({ post });
+
+    await expect(updatePeople(updateInput)).rejects.toBeInstanceOf(
+      PeopleUpdateApiError,
+    );
+    await expect(updatePeople(updateInput)).rejects.toMatchObject({
+      message: PEOPLE_UPDATE_SAFE_ERROR_MESSAGE,
+    });
+  });
+
+  it('throws a safe error and hides raw transport errors on network failure', async () => {
+    const post = vi.fn().mockRejectedValue(new Error('ECONNRESET'));
+    mockedGetAxiosInstance.mockReturnValue({ post });
+
+    await expect(updatePeople(updateInput)).rejects.toMatchObject({
+      message: PEOPLE_UPDATE_SAFE_ERROR_MESSAGE,
     });
   });
 });

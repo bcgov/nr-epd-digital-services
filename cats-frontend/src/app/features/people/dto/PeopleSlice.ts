@@ -4,8 +4,6 @@ import { print } from 'graphql';
 import {
   graphqlPeopleDetailsQuery,
   graphqlPeopleDetailsQueryForLoggedIn,
-  graphQlPeopleQueryForAuthenticatedUsers,
-  updatePerson,
 } from '../graphql/People';
 import { PeopleState } from './PeopleState';
 import { RequestStatus } from '../../../helpers/requests/status';
@@ -18,6 +16,10 @@ import {
   PeopleSearchFailure,
   PeopleSearchResult,
 } from './PeopleSearchTypes';
+import {
+  PeopleUpdateFailure,
+  PeopleUpdateInput,
+} from './PeopleUpdateTypes';
 
 const initialState: PeopleState = {
   peoples: [],
@@ -65,19 +67,6 @@ export const fetchPeoplesDetails = createAsyncThunk(
     } catch (error) {
       throw error;
     }
-  },
-);
-
-export const updatePeople = createAsyncThunk(
-  'updatePeople',
-  async (input: any[]) => {
-    const request = await getAxiosInstance().post(GRAPHQL, {
-      query: print(updatePerson()),
-      variables: {
-        input: input,
-      },
-    });
-    return request.data;
   },
 );
 
@@ -232,6 +221,31 @@ const peopleSlice = createSlice({
       newState.error = action.payload.message;
       return newState;
     },
+    // Saga-driven bulk People update lifecycle. Replaces the former
+    // updatePeople thunk with typed request/success/failure actions.
+    updatePeopleRequested: (
+      state,
+      _action: PayloadAction<PeopleUpdateInput[]>,
+    ) => {
+      const newState = { ...state };
+      newState.updateStatus = RequestStatus.loading;
+      newState.error = '';
+      return newState;
+    },
+    updatePeopleSucceeded: (state) => {
+      const newState = { ...state };
+      newState.updateStatus = RequestStatus.success;
+      return newState;
+    },
+    updatePeopleFailed: (
+      state,
+      action: PayloadAction<PeopleUpdateFailure>,
+    ) => {
+      const newState = { ...state };
+      newState.updateStatus = RequestStatus.failed;
+      newState.error = action.payload.message;
+      return newState;
+    },
   },
   extraReducers(builder) {
     builder
@@ -249,21 +263,6 @@ const peopleSlice = createSlice({
       .addCase(fetchPeoplesDetails.rejected, (state, action) => {
         const newState = { ...state };
         newState.peopleDetailsFetchStatus = RequestStatus.failed;
-        return newState;
-      })
-      .addCase(updatePeople.pending, (state, action) => {
-        const newState = { ...state };
-        newState.updateStatus = RequestStatus.loading;
-        return newState;
-      })
-      .addCase(updatePeople.fulfilled, (state, action) => {
-        const newState = { ...state };
-        newState.updateStatus = RequestStatus.success;
-        return newState;
-      })
-      .addCase(updatePeople.rejected, (state, action) => {
-        const newState = { ...state };
-        newState.updateStatus = RequestStatus.failed;
         return newState;
       });
   },
@@ -303,6 +302,9 @@ export const {
   searchPeopleRequested,
   searchPeopleSucceeded,
   searchPeopleFailed,
+  updatePeopleRequested,
+  updatePeopleSucceeded,
+  updatePeopleFailed,
 } = peopleSlice.actions;
 
 export default peopleSlice.reducer;

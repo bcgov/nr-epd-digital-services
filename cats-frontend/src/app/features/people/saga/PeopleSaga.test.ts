@@ -2,19 +2,27 @@ import { runSaga, stdChannel, Task } from 'redux-saga';
 import {
   PEOPLE_SEARCH_RETRY_BASE_DELAY_MS,
   watchPeopleSearch,
+  watchPeopleUpdates,
 } from './PeopleSaga';
 import {
   searchPeople,
+  updatePeople,
   PeopleSearchApiError,
+  PeopleUpdateApiError,
   PEOPLE_SEARCH_SAFE_ERROR_MESSAGE,
+  PEOPLE_UPDATE_SAFE_ERROR_MESSAGE,
 } from '../api/PeopleApi';
 import {
   searchPeopleFailed,
   searchPeopleRequested,
   searchPeopleSucceeded,
+  updatePeopleFailed,
+  updatePeopleRequested,
+  updatePeopleSucceeded,
 } from '../dto/PeopleSlice';
 import { PeopleSearchCriteria } from '../dto/PeopleSearchTypes';
-import { notifyError } from '../../../components/alert/Alert';
+import { PeopleUpdateInput } from '../dto/PeopleUpdateTypes';
+import { notifyError, notifySuccess } from '../../../components/alert/Alert';
 
 vi.mock('../api/PeopleApi', async () => {
   const actual = await vi.importActual<typeof import('../api/PeopleApi')>(
@@ -23,14 +31,17 @@ vi.mock('../api/PeopleApi', async () => {
   return {
     ...actual,
     searchPeople: vi.fn(),
+    updatePeople: vi.fn(),
   };
 });
 
 vi.mock('../../../components/alert/Alert', () => ({
   notifyError: vi.fn(),
+  notifySuccess: vi.fn(),
 }));
 
 const mockedSearchPeople = searchPeople as unknown as ReturnType<typeof vi.fn>;
+const mockedUpdatePeople = updatePeople as unknown as ReturnType<typeof vi.fn>;
 
 const criteria: PeopleSearchCriteria = {
   searchParam: 'smith',
@@ -46,6 +57,16 @@ const successResult = {
   page: 1,
   pageSize: 10,
 };
+
+const updateInput: PeopleUpdateInput[] = [
+  {
+    id: 1,
+    firstName: 'Jane',
+    lastName: 'Smith',
+    isActive: true,
+    updatedDatetime: '2026-07-22T12:00:00.000Z',
+  },
+];
 
 const flushMicrotasks = async () => {
   await Promise.resolve();
@@ -257,5 +278,107 @@ describe('People search saga', () => {
     expect(notifyError).not.toHaveBeenCalledWith(
       expect.stringMatching(/raw|internal|GraphQL|ECONN/i),
     );
+  });
+});
+
+describe('People update saga', () => {
+  let channel: ReturnType<typeof stdChannel>;
+  let dispatched: unknown[];
+  let task: Task;
+  let state: { peoples: { lastSearchCriteria: PeopleSearchCriteria | null } };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    dispatched = [];
+    channel = stdChannel();
+    state = { peoples: { lastSearchCriteria: criteria } };
+    task = runSaga(
+      {
+        channel,
+        dispatch: (action) => {
+          dispatched.push(action);
+        },
+        getState: () => state,
+      },
+      watchPeopleUpdates,
+    );
+  });
+
+  afterEach(() => {
+    task.cancel();
+  });
+
+  it('ignores duplicate update requests while one mutation is running', async () => {
+    let resolveUpdate!: () => void;
+    mockedUpdatePeople.mockImplementation(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveUpdate = resolve;
+        }),
+    );
+
+    channel.put(updatePeopleRequested(updateInput));
+    channel.put(
+      updatePeopleRequested([{ ...updateInput[0], id: 2, isActive: false }]),
+    );
+    await flushMicrotasks();
+
+    expect(mockedUpdatePeople).toHaveBeenCalledTimes(1);
+    expect(mockedUpdatePeople).toHaveBeenCalledWith(updateInput);
+
+    resolveUpdate();
+    await flushMicrotasks();
+
+    expect(mockedUpdatePeople).toHaveBeenCalledTimes(1);
+  });
+
+  it('succeeds once, shows the success toast, and refreshes with latest criteria', async () => {
+    mockedUpdatePeople.mockResolvedValue(undefined);
+
+    channel.put(updatePeopleRequested(updateInput));
+    await flushMicrotasks();
+
+    expect(mockedUpdatePeople).toHaveBeenCalledTimes(1);
+    expect(dispatched).toContainEqual(updatePeopleSucceeded());
+    expect(notifySuccess).toHaveBeenCalledTimes(1);
+    expect(dispatched).toContainEqual(searchPeopleRequested(criteria));
+    expect(
+      dispatched.filter(
+        (action: any) => action.type === searchPeopleRequested.type,
+      ),
+    ).toHaveLength(1);
+  });
+
+  it('does not refresh search results when lastSearchCriteria is missing', async () => {
+    state.peoples.lastSearchCriteria = null;
+    mockedUpdatePeople.mockResolvedValue(undefined);
+
+    channel.put(updatePeopleRequested(updateInput));
+    await flushMicrotasks();
+
+    expect(dispatched).toContainEqual(updatePeopleSucceeded());
+    expect(dispatched).not.toContainEqual(
+      expect.objectContaining({ type: searchPeopleRequested.type }),
+    );
+  });
+
+  it('fails once, shows a safe error toast, and does not refresh or retry', async () => {
+    mockedUpdatePeople.mockRejectedValue(
+      new PeopleUpdateApiError(PEOPLE_UPDATE_SAFE_ERROR_MESSAGE),
+    );
+
+    channel.put(updatePeopleRequested(updateInput));
+    await flushMicrotasks();
+
+    expect(mockedUpdatePeople).toHaveBeenCalledTimes(1);
+    expect(dispatched).toContainEqual(
+      updatePeopleFailed({ message: PEOPLE_UPDATE_SAFE_ERROR_MESSAGE }),
+    );
+    expect(notifyError).toHaveBeenCalledWith(PEOPLE_UPDATE_SAFE_ERROR_MESSAGE);
+    expect(notifySuccess).not.toHaveBeenCalled();
+    expect(dispatched).not.toContainEqual(
+      expect.objectContaining({ type: searchPeopleRequested.type }),
+    );
+    expect(dispatched).not.toContainEqual(updatePeopleSucceeded());
   });
 });

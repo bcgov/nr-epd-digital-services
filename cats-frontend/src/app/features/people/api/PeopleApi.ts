@@ -1,11 +1,12 @@
 import { print } from 'graphql';
 import { getAxiosInstance } from '../../../helpers/utility';
 import { GRAPHQL } from '../../../helpers/endpoints';
-import { graphQlPeopleQuery } from '../graphql/People';
+import { graphQlPeopleQuery, updatePerson } from '../graphql/People';
 import {
   PeopleSearchCriteria,
   PeopleSearchResult,
 } from '../dto/PeopleSearchTypes';
+import { PeopleUpdateInput } from '../dto/PeopleUpdateTypes';
 
 /**
  * Safe, user-facing message for People search failures. Raw Axios/GraphQL
@@ -13,6 +14,13 @@ import {
  */
 export const PEOPLE_SEARCH_SAFE_ERROR_MESSAGE =
   'We were unable to search People right now. Please try again.';
+
+/**
+ * Safe, user-facing message for bulk People update failures. Raw Axios/GraphQL
+ * error details must never reach Redux state or the UI.
+ */
+export const PEOPLE_UPDATE_SAFE_ERROR_MESSAGE =
+  'We were unable to update People right now. Please try again.';
 
 export class PeopleSearchApiError extends Error {
   readonly retryable: boolean;
@@ -24,6 +32,18 @@ export class PeopleSearchApiError extends Error {
     super(message);
     this.name = 'PeopleSearchApiError';
     this.retryable = retryable;
+  }
+}
+
+/**
+ * Domain error for bulk People mutations. Mutations are never retried
+ * automatically because a mutation may have completed even when the response
+ * is ambiguous.
+ */
+export class PeopleUpdateApiError extends Error {
+  constructor(message: string = PEOPLE_UPDATE_SAFE_ERROR_MESSAGE) {
+    super(message);
+    this.name = 'PeopleUpdateApiError';
   }
 }
 
@@ -115,4 +135,48 @@ export const searchPeople = async (
     page: result.page ?? criteria.page,
     pageSize: result.pageSize ?? criteria.pageSize,
   };
+};
+
+interface UpdatePersonGraphQlResponse {
+  data?: {
+    data?: {
+      updatePerson?: {
+        message?: string | null;
+        httpStatusCode?: number | null;
+        success?: boolean | null;
+        timestamp?: string | null;
+      };
+    };
+    errors?: Array<{ message?: string }>;
+  };
+}
+
+/**
+ * Typed bulk People update API boundary. Validates GraphQL transport errors
+ * and mutation-level success so HTTP 200 responses cannot hide failed
+ * operations. Never retries — callers must decide deliberate retries.
+ */
+export const updatePeople = async (
+  input: PeopleUpdateInput[],
+): Promise<void> => {
+  let response: UpdatePersonGraphQlResponse;
+
+  try {
+    response = await getAxiosInstance().post(GRAPHQL, {
+      query: print(updatePerson()),
+      variables: { input },
+    });
+  } catch {
+    throw new PeopleUpdateApiError();
+  }
+
+  const graphQlErrors = response.data?.errors;
+  if (graphQlErrors && graphQlErrors.length > 0) {
+    throw new PeopleUpdateApiError();
+  }
+
+  const result = response.data?.data?.updatePerson;
+  if (!result || result.success !== true) {
+    throw new PeopleUpdateApiError();
+  }
 };

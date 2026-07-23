@@ -1,5 +1,8 @@
 import { all, fork } from 'redux-saga/effects';
-import { watchPeopleSearch } from './features/people/saga/PeopleSaga';
+import {
+  watchPeopleSearch,
+  watchPeopleUpdates,
+} from './features/people/saga/PeopleSaga';
 
 /**
  * Single root saga for the CATS store. Feature watchers stay colocated with
@@ -7,5 +10,5 @@ import { watchPeopleSearch } from './features/people/saga/PeopleSaga';
  * point for all Saga-driven side effects.
  */
 export function* rootSaga() {
-  yield all([fork(watchPeopleSearch)]);
+  yield all([fork(watchPeopleSearch), fork(watchPeopleUpdates)]);
 }

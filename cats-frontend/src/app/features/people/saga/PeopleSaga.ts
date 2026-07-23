@@ -1,17 +1,33 @@
-import { call, cancelled, delay, put, takeLatest } from 'redux-saga/effects';
+import {
+  call,
+  cancelled,
+  delay,
+  put,
+  select,
+  takeLatest,
+  takeLeading,
+} from 'redux-saga/effects';
 import { PayloadAction } from '@reduxjs/toolkit';
 import {
   searchPeople,
+  updatePeople,
   PeopleSearchApiError,
+  PeopleUpdateApiError,
   PEOPLE_SEARCH_SAFE_ERROR_MESSAGE,
+  PEOPLE_UPDATE_SAFE_ERROR_MESSAGE,
 } from '../api/PeopleApi';
 import {
+  lastSearchCriteria,
   searchPeopleRequested,
   searchPeopleSucceeded,
   searchPeopleFailed,
+  updatePeopleRequested,
+  updatePeopleSucceeded,
+  updatePeopleFailed,
 } from '../dto/PeopleSlice';
 import { PeopleSearchCriteria } from '../dto/PeopleSearchTypes';
-import { notifyError } from '../../../components/alert/Alert';
+import { PeopleUpdateInput } from '../dto/PeopleUpdateTypes';
+import { notifyError, notifySuccess } from '../../../components/alert/Alert';
 
 /** Quiet period before a People search hits the API. */
 export const PEOPLE_SEARCH_DEBOUNCE_MS = 300;
@@ -71,10 +87,47 @@ export function* searchPeopleWorker(
 }
 
 /**
+ * Bulk People update worker. Never retries mutations automatically. On
+ * success, shows the existing success toast and dispatches exactly one search
+ * refresh using the latest criteria retained by the search workflow.
+ */
+export function* updatePeopleWorker(
+  action: PayloadAction<PeopleUpdateInput[]>,
+) {
+  try {
+    yield call(updatePeople, action.payload);
+    yield put(updatePeopleSucceeded());
+    yield call(notifySuccess);
+
+    const criteria: PeopleSearchCriteria | null = yield select(
+      lastSearchCriteria,
+    );
+    if (criteria) {
+      yield put(searchPeopleRequested(criteria));
+    }
+  } catch (err) {
+    const message =
+      err instanceof PeopleUpdateApiError
+        ? err.message
+        : PEOPLE_UPDATE_SAFE_ERROR_MESSAGE;
+    yield put(updatePeopleFailed({ message }));
+    yield call(notifyError, message);
+  }
+}
+
+/**
  * People feature watcher, colocated with the People feature and composed by
  * the centralized root saga. Debounced and latest-only: only the newest
  * search after a quiet period is honored, and superseded workers abort HTTP.
  */
 export function* watchPeopleSearch() {
   yield takeLatest(searchPeopleRequested.type, searchPeopleWorker);
+}
+
+/**
+ * Leading-only bulk update watcher: requests arriving while a mutation is
+ * already running are ignored so repeated clicks cannot duplicate work.
+ */
+export function* watchPeopleUpdates() {
+  yield takeLeading(updatePeopleRequested.type, updatePeopleWorker);
 }

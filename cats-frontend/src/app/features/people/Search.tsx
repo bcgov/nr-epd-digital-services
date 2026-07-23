@@ -7,7 +7,6 @@ import {
   updateSearchQuery,
   updatePageSizeSetting,
   resultsCount,
-  updatePeopleStatus,
 } from './dto/PeopleSlice';
 import { PeopleSearchCriteria } from './dto/PeopleSearchTypes';
 
@@ -51,7 +50,6 @@ const Search = () => {
   const currSearchVal = useSelector((state: any) => state.peoples);
   const currentPageInState = useSelector(currentPageSelection);
   const currentPageSizeInState = useSelector(currentPageSize);
-  const updatePeopleStatusInState = useSelector(updatePeopleStatus);
   const totalRecords = useSelector(resultsCount);
   const [noUserAction, setUserAction] = useState(true);
 
@@ -101,16 +99,6 @@ const Search = () => {
     activeFilter,
     ...overrides,
   });
-
-  // Bulk People updates still run through the pre-existing thunk in this
-  // slice. Until that workflow is migrated to Saga, a refresh after it
-  // completes is preserved here using the latest recorded search criteria.
-  useEffect(() => {
-    if (currSearchVal.searchQuery !== '') {
-      dispatch(searchPeopleRequested(buildSearchCriteria()));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updatePeopleStatusInState]);
 
   const resetDefaultColums = () => {
     setColumnsToDisplay(columns);
