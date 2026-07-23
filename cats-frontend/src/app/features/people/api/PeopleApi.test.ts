@@ -97,4 +97,75 @@ describe('PeopleApi searchPeople', () => {
       message: PEOPLE_SEARCH_SAFE_ERROR_MESSAGE,
     });
   });
+
+  it('forwards an AbortSignal to Axios so cancelled searches abort HTTP', async () => {
+    const post = vi.fn().mockResolvedValue({
+      data: {
+        data: {
+          searchPerson: { persons: [], count: 0, page: 1, pageSize: 10 },
+        },
+      },
+    });
+    mockedGetAxiosInstance.mockReturnValue({ post });
+    const controller = new AbortController();
+
+    await searchPeople(criteria, { signal: controller.signal });
+
+    expect(post).toHaveBeenCalledWith(
+      '/graphql',
+      expect.any(Object),
+      { signal: controller.signal },
+    );
+  });
+
+  it('marks network errors as retryable', async () => {
+    const post = vi.fn().mockRejectedValue(new Error('Network Error'));
+    mockedGetAxiosInstance.mockReturnValue({ post });
+
+    await expect(searchPeople(criteria)).rejects.toMatchObject({
+      message: PEOPLE_SEARCH_SAFE_ERROR_MESSAGE,
+      retryable: true,
+    });
+  });
+
+  it.each([408, 429, 500, 502, 503])(
+    'marks HTTP %s as a retryable transient failure',
+    async (status) => {
+      const post = vi.fn().mockRejectedValue({
+        response: { status, data: { message: 'raw server detail' } },
+        isAxiosError: true,
+      });
+      mockedGetAxiosInstance.mockReturnValue({ post });
+
+      await expect(searchPeople(criteria)).rejects.toMatchObject({
+        message: PEOPLE_SEARCH_SAFE_ERROR_MESSAGE,
+        retryable: true,
+      });
+    },
+  );
+
+  it('marks permanent HTTP failures as not retryable', async () => {
+    const post = vi.fn().mockRejectedValue({
+      response: { status: 400, data: { message: 'bad request detail' } },
+      isAxiosError: true,
+    });
+    mockedGetAxiosInstance.mockReturnValue({ post });
+
+    await expect(searchPeople(criteria)).rejects.toMatchObject({
+      message: PEOPLE_SEARCH_SAFE_ERROR_MESSAGE,
+      retryable: false,
+    });
+  });
+
+  it('marks GraphQL validation failures as not retryable', async () => {
+    const post = vi.fn().mockResolvedValue({
+      data: { errors: [{ message: 'Field X is required' }] },
+    });
+    mockedGetAxiosInstance.mockReturnValue({ post });
+
+    await expect(searchPeople(criteria)).rejects.toMatchObject({
+      message: PEOPLE_SEARCH_SAFE_ERROR_MESSAGE,
+      retryable: false,
+    });
+  });
 });

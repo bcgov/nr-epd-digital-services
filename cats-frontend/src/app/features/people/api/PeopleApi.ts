@@ -15,10 +15,20 @@ export const PEOPLE_SEARCH_SAFE_ERROR_MESSAGE =
   'We were unable to search People right now. Please try again.';
 
 export class PeopleSearchApiError extends Error {
-  constructor(message: string = PEOPLE_SEARCH_SAFE_ERROR_MESSAGE) {
+  readonly retryable: boolean;
+
+  constructor(
+    message: string = PEOPLE_SEARCH_SAFE_ERROR_MESSAGE,
+    retryable: boolean = false,
+  ) {
     super(message);
     this.name = 'PeopleSearchApiError';
+    this.retryable = retryable;
   }
+}
+
+export interface SearchPeopleOptions {
+  signal?: AbortSignal;
 }
 
 interface SearchPersonGraphQlResponse {
@@ -35,6 +45,25 @@ interface SearchPersonGraphQlResponse {
   };
 }
 
+const TRANSIENT_HTTP_STATUSES = new Set([408, 429]);
+
+/**
+ * Network errors and HTTP 408/429/5xx are transient; other HTTP failures are not.
+ */
+const isTransientTransportError = (error: unknown): boolean => {
+  if (!error || typeof error !== 'object') {
+    return true;
+  }
+
+  const status = (error as { response?: { status?: number } }).response?.status;
+  if (status === undefined) {
+    // No HTTP response — treat as a network / connectivity failure.
+    return true;
+  }
+
+  return TRANSIENT_HTTP_STATUSES.has(status) || status >= 500;
+};
+
 /**
  * Typed People search API boundary. Encapsulates GraphQL transport and
  * response validation so Saga workers stay focused on orchestration and
@@ -42,11 +71,12 @@ interface SearchPersonGraphQlResponse {
  */
 export const searchPeople = async (
   criteria: PeopleSearchCriteria,
+  options: SearchPeopleOptions = {},
 ): Promise<PeopleSearchResult> => {
   let response: SearchPersonGraphQlResponse;
 
   try {
-    response = await getAxiosInstance().post(GRAPHQL, {
+    const requestBody = {
       query: print(graphQlPeopleQuery()),
       variables: {
         searchParam: criteria.searchParam,
@@ -55,9 +85,18 @@ export const searchPeople = async (
         searchMode: criteria.searchMode,
         activeFilter: criteria.activeFilter,
       },
-    });
+    };
+
+    response = options.signal
+      ? await getAxiosInstance().post(GRAPHQL, requestBody, {
+          signal: options.signal,
+        })
+      : await getAxiosInstance().post(GRAPHQL, requestBody);
   } catch (transportError) {
-    throw new PeopleSearchApiError();
+    throw new PeopleSearchApiError(
+      PEOPLE_SEARCH_SAFE_ERROR_MESSAGE,
+      isTransientTransportError(transportError),
+    );
   }
 
   const graphQlErrors = response.data?.errors;

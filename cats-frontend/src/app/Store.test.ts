@@ -16,6 +16,14 @@ vi.mock('./features/people/api/PeopleApi', () => ({
 // Store startup smoke test: verifies the root saga is registered and can
 // process a request action without Redux thunk middleware being involved.
 describe('Store', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('starts the root saga so a search request reaches success state', async () => {
     const store = createAppStore();
 
@@ -31,10 +39,10 @@ describe('Store', () => {
 
     expect(store.getState().peoples.fetchStatus).toBe(RequestStatus.loading);
 
-    await vi.waitFor(() => {
-      expect(store.getState().peoples.fetchStatus).toBe(RequestStatus.success);
-    });
+    await vi.advanceTimersByTimeAsync(300);
+    await Promise.resolve();
 
+    expect(store.getState().peoples.fetchStatus).toBe(RequestStatus.success);
     expect(store.getState().peoples.peoples).toEqual([{ id: '1' }]);
   });
 });
