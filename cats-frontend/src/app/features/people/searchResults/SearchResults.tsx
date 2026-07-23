@@ -1,10 +1,6 @@
-import React, { FC, useEffect, useState } from 'react';
-import { SpinnerIcon, SortIcon } from '../../../components/common/icon';
-import { loadingState } from '../dto/PeopleSlice';
+import React, { FC } from 'react';
 import { RequestStatus } from '../../../helpers/requests/status';
-import { useSelector } from 'react-redux';
 import { TableColumn } from '../../../components/table/TableColumn';
-import Pagination from '../../../components/table/pagination/Pagination';
 import Table from '../../../components/table/Table';
 
 interface ColumnProps {
@@ -13,6 +9,9 @@ interface ColumnProps {
   pageChange: (pageRequested: number, resultsCount: number) => void;
   totalRecords: number;
   changeHandler: (event: any) => void;
+  isLoading: RequestStatus;
+  currentPage: number;
+  resultsPerPage: number;
 }
 
 const SearchResults: FC<ColumnProps> = ({
@@ -21,32 +20,26 @@ const SearchResults: FC<ColumnProps> = ({
   columns,
   totalRecords,
   changeHandler,
+  isLoading,
+  currentPage,
+  resultsPerPage,
 }) => {
-  const requestStatus = useSelector(loadingState);
-  let [currentPage, SetCurrentPage] = useState(1);
-  let [resultsPerPage, SetResultsPerPage] = useState(5);
-
-  const totalResults = totalRecords;
   const selectPage = (pageNumber: number): void => {
-    SetCurrentPage(pageNumber);
+    pageChange(pageNumber, resultsPerPage);
   };
 
-  const changeResultsPerPage = (pageNumber: number): void => {
-    SetResultsPerPage(pageNumber);
+  const changeResultsPerPage = (pageSize: number): void => {
+    pageChange(1, pageSize);
   };
-
-  useEffect(() => {
-    pageChange(currentPage, resultsPerPage);
-  }, [currentPage, resultsPerPage]);
 
   return (
     <Table
       showPageOptions={true}
       label="Search Results"
-      isLoading={requestStatus}
+      isLoading={isLoading}
       columns={columns}
       data={data}
-      totalResults={totalResults}
+      totalResults={totalRecords}
       selectPage={selectPage}
       changeResultsPerPage={changeResultsPerPage}
       currentPage={currentPage}

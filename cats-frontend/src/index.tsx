@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ApolloProvider } from '@apollo/client';
+import { QueryClientProvider } from '@tanstack/react-query';
 
 import './index.css';
 import reportWebVitals from './reportWebVitals';
@@ -13,6 +14,7 @@ import { getClientSettings } from './app/auth/UserManagerSetting';
 import { RouterProvider } from 'react-router-dom';
 import siteRouter from './app/routes/Routes';
 import { apolloClientInstance } from './apollo';
+import { queryClient } from './app/query/queryClient';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLDivElement,
@@ -40,9 +42,11 @@ root.render(
   <React.StrictMode>
     <AuthProvider {...authOptions} onSigninCallback={onSigninCallback}>
       <ApolloProvider client={apolloClientInstance}>
-        <Provider store={store}>
-          <RouterProvider router={siteRouter} />
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store}>
+            <RouterProvider router={siteRouter} />
+          </Provider>
+        </QueryClientProvider>
       </ApolloProvider>
     </AuthProvider>
   </React.StrictMode>,

@@ -1,0 +1,42 @@
+query SearchPerson(
+  $searchParam: String!
+  $page: Int!
+  $pageSize: Int!
+  $searchMode: String
+  $activeFilter: String
+) {
+  searchPerson(
+    searchParam: $searchParam
+    page: $page
+    pageSize: $pageSize
+    searchMode: $searchMode
+    activeFilter: $activeFilter
+  ) {
+    persons {
+      id
+      firstName
+      lastName
+      isTaxExempt
+      isEnvConsultant
+      loginUserName
+      address_1
+      address_2
+      city
+      prov
+      email
+      country
+      postal
+      phone
+      mobile
+      fax
+      isActive
+      createdBy
+      createdDatetime
+      updatedBy
+      updatedDatetime
+    }
+    count
+    page
+    pageSize
+  }
+}

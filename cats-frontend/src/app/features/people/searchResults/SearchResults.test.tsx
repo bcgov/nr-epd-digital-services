@@ -2,40 +2,23 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import SearchResults from './SearchResults';
-import { Provider } from 'react-redux';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import configureStore, { MockStoreEnhanced } from 'redux-mock-store';
 import { RequestStatus } from '../../../helpers/requests/status';
 import { getPeopleSearchResultsColumns } from '../dto/Columns';
 
-const mockStore = configureStore([]);
-
 describe('SearchResults Component', () => {
-  let store: MockStoreEnhanced<unknown, {}>;
-
-  beforeEach(() => {
-    store = mockStore({
-      peoples: [],
-      error: '',
-      fetchStatus: RequestStatus.loading,
-      deleteStatus: RequestStatus.idle,
-      addedStatus: RequestStatus.idle,
-      updateStatus: RequestStatus.idle,
-    });
-  });
-
   test('renders no results found when data is empty', () => {
-    const emptyData: any[] = [];
-    const { container } = render(
-      <Provider store={store}>
-        <SearchResults
-          data={emptyData}
-          pageChange={() => {}}
-          columns={[]}
-          totalRecords={0}
-          changeHandler={vi.fn}
-        />
-      </Provider>,
+    render(
+      <SearchResults
+        data={[]}
+        pageChange={() => {}}
+        columns={[]}
+        totalRecords={0}
+        changeHandler={vi.fn}
+        isLoading={RequestStatus.idle}
+        currentPage={1}
+        resultsPerPage={5}
+      />,
     );
     const noResultsText = screen.getByText('No Results Found');
     expect(noResultsText).toBeInTheDocument();
@@ -62,17 +45,16 @@ describe('SearchResults Component', () => {
             columns={getPeopleSearchResultsColumns()}
             totalRecords={0}
             changeHandler={vi.fn}
+            isLoading={RequestStatus.success}
+            currentPage={1}
+            resultsPerPage={5}
           />
         ),
         path: '/',
       },
     ]);
 
-    const { container } = render(
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>,
-    );
+    render(<RouterProvider router={router} />);
     const peopleIdLink = screen.getByText('View');
     expect(peopleIdLink).toBeInTheDocument();
   });
@@ -97,16 +79,15 @@ describe('SearchResults Component', () => {
             pageChange={vi.fn()}
             totalRecords={0}
             changeHandler={vi.fn()}
+            isLoading={RequestStatus.success}
+            currentPage={1}
+            resultsPerPage={5}
           />
         ),
         path: '/',
       },
     ]);
-    render(
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>,
-    );
+    render(<RouterProvider router={router} />);
     const checkbox = screen.getByLabelText('Select Row');
 
     expect(checkbox).toBeInTheDocument();
@@ -114,40 +95,21 @@ describe('SearchResults Component', () => {
     expect(checkbox).toBeChecked();
   });
 
-  test('renders with no columns provided', () => {
-    const columns = getPeopleSearchResultsColumns();
-
-    const mockData = [
-      {
-        peopleId: 1,
-        id: 'people1',
-        address: '123 Main St',
-        city: 'Cityville',
-        provState: 'State',
-        whenCreated: '2024-04-04',
-      },
-    ];
-
-    const router = createBrowserRouter([
-      {
-        element: (
-          <SearchResults
-            data={mockData}
-            columns={columns}
-            pageChange={vi.fn()}
-            totalRecords={0}
-            changeHandler={vi.fn}
-          />
-        ),
-        path: '/',
-      },
-    ]);
+  test('receives loading state as a prop', () => {
     render(
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>,
+      <SearchResults
+        data={[]}
+        pageChange={vi.fn()}
+        columns={[]}
+        totalRecords={0}
+        changeHandler={vi.fn()}
+        isLoading={RequestStatus.loading}
+        currentPage={1}
+        resultsPerPage={5}
+      />,
     );
-    const peopleIdLink = screen.getByText('View');
-    expect(peopleIdLink).toBeInTheDocument();
+
+    expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+    expect(screen.getByText('Searching')).toBeInTheDocument();
   });
 });

@@ -1,22 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './Search.css';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  fetchPeoples,
-  resetPeoples,
-  setFetchLoadingState,
-  updateSearchQuery,
-  updatePageSizeSetting,
-  resultsCount,
-  updatePeopleStatus,
-} from './dto/PeopleSlice';
+import { useSelector } from 'react-redux';
+import { updatePeopleStatus } from './dto/PeopleSlice';
 
-import { AppDispatch } from '../../Store';
-import {
-  selectAllPeoples,
-  currentPageSelection,
-  currentPageSize,
-} from './dto/PeopleSlice';
 import SearchResults from './searchResults/SearchResults';
 import {
   CircleXMarkIcon,
@@ -30,7 +16,6 @@ import PageContainer from '../../components/simple/PageContainer';
 import {
   flattenFormRows,
   formatDateRange,
-  getUser,
   isBCEIDUserType,
 } from '../../helpers/utility';
 import FilterPills from './filters/FilterPills';
@@ -38,22 +23,30 @@ import { formRows } from './dto/PeopleFilterConfig';
 import { SearchResultsFilters } from './searchResults/SearchResultsFilters';
 import { SearchResultsActions } from './searchResults/SearchResultsActions';
 import { Button } from '../../components/button/Button';
-import Actions from '../../components/action/Actions';
 import { useAuth } from 'react-oidc-context';
-import { useNavigate } from 'react-router-dom';
-import { from } from '@apollo/client';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import useDebouncedValue from '../../helpers/useDebouncedValue';
+import { RequestStatus } from '../../helpers/requests/status';
+import {
+  DEFAULT_PEOPLE_PAGE_SIZE,
+  PeopleActiveFilter,
+  PeopleSearchMode,
+  usePeopleSearch,
+} from './hooks/usePeopleSearch';
 
 const Search = () => {
   const auth = useAuth();
-  const [searchText, setSearchText] = useState('');
-  const dispatch = useDispatch<AppDispatch>();
-  const peoples = useSelector(selectAllPeoples);
-  const currSearchVal = useSelector((state: any) => state.peoples);
-  const currentPageInState = useSelector(currentPageSelection);
-  const currentPageSizeInState = useSelector(currentPageSize);
+  const [urlParams, setUrlParams] = useSearchParams();
+  const { data, isLoading, isFetching, isError, isSuccess, criteria, refetch } =
+    usePeopleSearch();
   const updatePeopleStatusInState = useSelector(updatePeopleStatus);
-  const totalRecords = useSelector(resultsCount);
-  const [noUserAction, setUserAction] = useState(true);
+
+  const [searchText, setSearchText] = useState(criteria.searchParam);
+  const debouncedSearchText = useDebouncedValue(searchText);
+  const [noUserAction, setUserAction] = useState(!criteria.searchParam);
+
+  const peoples = data?.persons ?? [];
+  const totalRecords = data?.count ?? 0;
 
   const columns = getPeopleSearchResultsColumns();
   const [columnsToDisplay, setColumnsToDisplay] = useState<TableColumn[]>([
@@ -67,12 +60,29 @@ const Search = () => {
     [key: string]: any | [Date, Date];
   }>({});
 
-  const [searchMode, setSearchMode] = useState<'AND' | 'OR'>('OR');
-  const [activeFilter, setActiveFilter] = useState<
-    'active' | 'inactive' | 'all'
-  >('all');
-
   const navigate = useNavigate();
+
+  const requestStatus =
+    isLoading || isFetching
+      ? RequestStatus.loading
+      : isError
+        ? RequestStatus.failed
+        : isSuccess
+          ? RequestStatus.success
+          : RequestStatus.idle;
+
+  const updateUrlParams = (updates: Record<string, string | null>) => {
+    const newParams = new URLSearchParams(urlParams);
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value === null || value === '') {
+        newParams.delete(key);
+      } else {
+        newParams.set(key, value);
+      }
+    });
+    setUrlParams(newParams);
+  };
+
   const toggleColumnSelectionForDisplay = (column: TableColumn) => {
     const index = columnsToDisplay.findIndex((item) => item.id === column.id);
 
@@ -89,40 +99,39 @@ const Search = () => {
   useEffect(() => {}, [selectedRows]);
 
   useEffect(() => {
-    if (currSearchVal.searchQuery !== '') {
-      dispatch(
-        fetchPeoples({
-          searchParam: currSearchVal.searchQuery ?? searchText,
-          searchMode,
-          activeFilter,
-        }),
-      );
+    const currentSearch = urlParams.get('search') || '';
+    if (debouncedSearchText === currentSearch) {
+      return;
     }
-  }, [currentPageInState, updatePeopleStatusInState, searchMode, activeFilter]);
+
+    const newParams = new URLSearchParams(urlParams);
+    if (debouncedSearchText.trim()) {
+      newParams.set('search', debouncedSearchText);
+      newParams.set('page', '1');
+    } else {
+      newParams.delete('search');
+    }
+    setUrlParams(newParams);
+  }, [debouncedSearchText]);
 
   useEffect(() => {
-    if (currSearchVal.searchQuery !== '') {
-      dispatch(
-        fetchPeoples({
-          searchParam: currSearchVal.searchQuery ?? searchText,
-          searchMode,
-          activeFilter,
-        }),
-      );
+    if (
+      updatePeopleStatusInState === RequestStatus.success &&
+      criteria.searchParam.trim()
+    ) {
+      void refetch();
     }
-  }, [currentPageSizeInState]);
+  }, [updatePeopleStatusInState]);
 
   const resetDefaultColums = () => {
     setColumnsToDisplay(columns);
   };
 
   const pageChange = (pageRequested: number, resultsCount: number) => {
-    dispatch(
-      updatePageSizeSetting({
-        currentPage: pageRequested,
-        pageSize: resultsCount,
-      }),
-    );
+    updateUrlParams({
+      page: String(pageRequested),
+      pageSize: String(resultsCount),
+    });
   };
 
   useEffect(() => {
@@ -137,62 +146,33 @@ const Search = () => {
     if (loggedInUserBCEID) {
       auth.signinRedirect({ extraQueryParams: { kc_idp_hint: 'idir' } });
     }
-
-    if (currSearchVal.searchQuery !== '') {
-      setUserAction(false);
-      setSearchText(currSearchVal.searchQuery);
-      dispatch(
-        fetchPeoples({
-          searchParam: currSearchVal.searchQuery,
-          searchMode,
-          activeFilter,
-        }),
-      );
-    }
   }, []);
-
-  // useEffect(() => {
-  //   fetchPeoples(searchText);
-  // }, [dispatch,  searchText]);
 
   const handleClearSearch = () => {
     setSearchText('');
     setUserAction(true);
-    dispatch(resetPeoples(null));
-    dispatch(updateSearchQuery(''));
+    const newParams = new URLSearchParams(urlParams);
+    newParams.delete('search');
+    setUrlParams(newParams);
   };
 
-  const handleTextChange = (event: any) => {
+  const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserAction(false);
     setSearchText(event.target.value);
-    if (event.target.value.length >= 3) {
-      dispatch(setFetchLoadingState(null));
-      if (selectedFilters) {
-        const filterData: any = {};
-        selectedFilters.forEach((filter: any) => {
-          filterData[filter.key] = filter.value;
-        });
-        dispatch(
-          fetchPeoples({
-            searchParam: event.target.value,
-            filter: filterData,
-            searchMode,
-            activeFilter,
-          }),
-        );
-      } else {
-        dispatch(
-          fetchPeoples({
-            searchParam: event.target.value,
-            searchMode,
-            activeFilter,
-          }),
-        );
-      }
-      dispatch(updateSearchQuery(event.target.value));
-    } else {
-      dispatch(resetPeoples(null));
-    }
+  };
+
+  const handleSearchModeChange = (mode: PeopleSearchMode) => {
+    updateUrlParams({
+      searchMode: mode,
+      page: '1',
+    });
+  };
+
+  const handleActiveFilterChange = (filter: PeopleActiveFilter) => {
+    updateUrlParams({
+      activeFilter: filter,
+      page: '1',
+    });
   };
 
   const changeHandler = (event: any) => {
@@ -201,21 +181,10 @@ const Search = () => {
         const index = selectedRows.findIndex((r: any) => r.id === event.row.id);
         if (index === -1) {
           SetSelectedRows([...selectedRows, event.row]);
-        } else {
-          // do nothing
         }
       } else {
         SetSelectedRows(selectedRows.filter((r: any) => r.id !== event.row.id));
       }
-
-      //const index = selectedRows.findIndex((r: any) => r.id === event.row.id);
-      // if (index > -1 && !event.value) {
-      //   // If row is already selected, remove it
-      //   SetSelectedRows(selectedRows.filter((r: any) => r.id !== event.row.id));
-      // } else {
-      //   // If row is not selected, add it
-      //   SetSelectedRows([...selectedRows, event.row]);
-      // }
     } else if (event && event.property === 'select_all') {
       const newRows = event.value;
       if (event.selected) {
@@ -247,7 +216,6 @@ const Search = () => {
     const filteredFormData: { [key: string]: string } = {};
     const filters: { key: string; value: string; label: string }[] = [];
     const flattedArr = flattenFormRows(formRows);
-    // Filter out form data with non-empty values and construct filteredFormData and filters
     for (const [key, value] of Object.entries(formData)) {
       let currLabel =
         flattedArr && flattedArr.find((row) => row.graphQLPropertyName === key);
@@ -265,19 +233,8 @@ const Search = () => {
       }
     }
 
-    // show and format pill.
     if (filters.length !== 0) {
-      dispatch(
-        fetchPeoples({
-          searchParam: currSearchVal.searchQuery,
-          filter: filteredFormData,
-          searchMode,
-          activeFilter,
-        }),
-      );
       setSelectedFilters(filters);
-
-      // Save filter selections to local storage
       localStorage.setItem('peopleFilterPills', JSON.stringify(filters));
     }
   };
@@ -304,15 +261,7 @@ const Search = () => {
   const handleRemoveFilter = (filter: any) => {
     setFormData((prevData) => {
       const newData = { ...prevData };
-      delete newData[filter.key]; // Remove the filter key from the form data
-      dispatch(
-        fetchPeoples({
-          searchParam: currSearchVal.searchQuery,
-          filter: newData,
-          searchMode,
-          activeFilter,
-        }),
-      );
+      delete newData[filter.key];
       return newData;
     });
     let currFilter = selectedFilters.filter((item) => item.key !== filter.key);
@@ -374,8 +323,8 @@ const Search = () => {
               <input
                 type="radio"
                 value="OR"
-                checked={searchMode === 'OR'}
-                onChange={(e) => setSearchMode(e.target.value as 'OR')}
+                checked={criteria.searchMode === 'OR'}
+                onChange={() => handleSearchModeChange('OR')}
               />
               Match Any (OR)
             </label>
@@ -383,8 +332,8 @@ const Search = () => {
               <input
                 type="radio"
                 value="AND"
-                checked={searchMode === 'AND'}
-                onChange={(e) => setSearchMode(e.target.value as 'AND')}
+                checked={criteria.searchMode === 'AND'}
+                onChange={() => handleSearchModeChange('AND')}
               />
               Match All (AND)
             </label>
@@ -392,9 +341,9 @@ const Search = () => {
           <div className="active-filter-dropdown">
             <label>Status:</label>
             <select
-              value={activeFilter}
+              value={criteria.activeFilter}
               onChange={(e) =>
-                setActiveFilter(e.target.value as 'active' | 'inactive' | 'all')
+                handleActiveFilterChange(e.target.value as PeopleActiveFilter)
               }
             >
               <option value="all">All</option>
@@ -435,6 +384,9 @@ const Search = () => {
               columns={columnsToDisplay.filter((x) => x.isChecked === true)}
               totalRecords={totalRecords}
               changeHandler={changeHandler}
+              isLoading={requestStatus}
+              currentPage={criteria.page}
+              resultsPerPage={criteria.pageSize || DEFAULT_PEOPLE_PAGE_SIZE}
             />
           </div>
         </div>
