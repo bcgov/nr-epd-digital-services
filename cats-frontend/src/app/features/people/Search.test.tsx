@@ -1,15 +1,10 @@
 import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
 import Search from './Search';
-import { RequestStatus } from '../../helpers/requests/status';
 import { renderWithQueryRouter } from '../../../utilities/test/QueryTestUtils';
 import * as PeopleApi from './api/PeopleApi';
 
-const mockStore = configureStore([thunk]);
 const mockNavigate = vi.fn();
 
 vi.mock('react-router-dom', async () => {
@@ -59,34 +54,13 @@ Object.defineProperty(window, 'matchMedia', {
 const searchPeopleMock = vi.mocked(PeopleApi.searchPeople);
 
 describe('Search Component', () => {
-  let store: ReturnType<typeof mockStore>;
-
   beforeEach(() => {
-    store = mockStore({
-      peoples: {
-        peoples: [],
-        error: '',
-        fetchStatus: RequestStatus.idle,
-        deleteStatus: RequestStatus.idle,
-        addedStatus: RequestStatus.idle,
-        updateStatus: RequestStatus.idle,
-        searchQuery: '',
-        currentPage: 1,
-        pageSize: 5,
-        resultsCount: 0,
-      },
-    });
     searchPeopleMock.mockReset();
     mockNavigate.mockReset();
   });
 
   const renderSearch = (initialEntries = ['/people']) =>
-    renderWithQueryRouter(
-      <Provider store={store}>
-        <Search />
-      </Provider>,
-      { initialEntries },
-    );
+    renderWithQueryRouter(<Search />, { initialEntries });
 
   test('renders search input', () => {
     renderSearch();
