@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './Search.css';
-import { useSelector } from 'react-redux';
-import { updatePeopleStatus } from './dto/PeopleSlice';
 
 import SearchResults from './searchResults/SearchResults';
 import {
@@ -37,9 +35,8 @@ import {
 const Search = () => {
   const auth = useAuth();
   const [urlParams, setUrlParams] = useSearchParams();
-  const { data, isLoading, isFetching, isError, isSuccess, criteria, refetch } =
+  const { data, isLoading, isFetching, isError, isSuccess, criteria } =
     usePeopleSearch();
-  const updatePeopleStatusInState = useSelector(updatePeopleStatus);
 
   const [searchText, setSearchText] = useState(criteria.searchParam);
   const debouncedSearchText = useDebouncedValue(searchText);
@@ -113,15 +110,6 @@ const Search = () => {
     }
     setUrlParams(newParams);
   }, [debouncedSearchText]);
-
-  useEffect(() => {
-    if (
-      updatePeopleStatusInState === RequestStatus.success &&
-      criteria.searchParam.trim()
-    ) {
-      void refetch();
-    }
-  }, [updatePeopleStatusInState]);
 
   const resetDefaultColums = () => {
     setColumnsToDisplay(columns);

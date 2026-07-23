@@ -1,0 +1,8 @@
+mutation UpdatePerson($input: [UpdatePerson!]!) {
+  updatePerson(input: $input) {
+    message
+    httpStatusCode
+    success
+    timestamp
+  }
+}
