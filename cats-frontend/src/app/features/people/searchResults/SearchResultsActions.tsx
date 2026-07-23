@@ -9,10 +9,7 @@ import { RequestStatus } from '../../../helpers/requests/status';
 
 import { PlainTrashIcon } from '../../../components/common/icon';
 import Actions from '../../../components/action/Actions';
-import {
-  updatePeopleRequested,
-  updatePeopleStatus,
-} from '../dto/PeopleSlice';
+import { updatePeopleRequested, updatePeopleStatus } from '../dto/PeopleSlice';
 import { PeopleUpdateInput } from '../dto/PeopleUpdateTypes';
 
 interface SearchResultsActionsProps {

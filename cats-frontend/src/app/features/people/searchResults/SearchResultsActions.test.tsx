@@ -80,7 +80,9 @@ describe('SearchResultsActions', () => {
     const user = userEvent.setup();
     const store = renderActions(RequestStatus.idle);
 
-    await user.click(screen.getByRole('button', { name: /Set Active Status/i }));
+    await user.click(
+      screen.getByRole('button', { name: /Set Active Status/i }),
+    );
     await user.click(screen.getByText('Active'));
 
     const actions = store.getActions();

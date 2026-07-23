@@ -242,8 +242,10 @@ const Search = () => {
       let currLabel =
         flattedArr && flattedArr.find((row) => row.graphQLPropertyName === key);
       if (key === 'whenCreated' || key === 'whenUpdated') {
-        let dateRangeValue = formatDateRange(value);
-        filteredFormData[key] = value;
+        // Store a formatted string so Redux search criteria stay serializable
+        // (Date tuples must not cross the Redux boundary).
+        const dateRangeValue = formatDateRange(value);
+        filteredFormData[key] = dateRangeValue;
         filters.push({
           key,
           value: dateRangeValue,

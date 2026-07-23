@@ -99,9 +99,8 @@ export function* updatePeopleWorker(
     yield put(updatePeopleSucceeded());
     yield call(notifySuccess);
 
-    const criteria: PeopleSearchCriteria | null = yield select(
-      lastSearchCriteria,
-    );
+    const criteria: PeopleSearchCriteria | null =
+      yield select(lastSearchCriteria);
     if (criteria) {
       yield put(searchPeopleRequested(criteria));
     }

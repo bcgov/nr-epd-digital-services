@@ -11,7 +11,8 @@ const rootReducer = {
 
 /**
  * Reusable store factory. Registers Redux Saga middleware, starts the root
- * saga, and supports isolated test stores.
+ * saga, and supports isolated test stores. Thunk middleware is disabled —
+ * Saga is the only Redux side-effect mechanism.
  */
 export const createAppStore = () => {
   const sagaMiddleware = createSagaMiddleware();
@@ -20,7 +21,7 @@ export const createAppStore = () => {
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
-        serializableCheck: false,
+        thunk: false,
       }).concat(sagaMiddleware),
   });
 

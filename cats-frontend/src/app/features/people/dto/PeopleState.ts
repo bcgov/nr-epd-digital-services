@@ -1,8 +1,7 @@
 import { ChangeTracker } from '../../../components/common/IChangeType';
 import { RequestStatus } from '../../../helpers/requests/status';
 import { UserType } from '../../../helpers/requests/userType';
-// import { PeopleDetailsMode } from '../../details/dto/PeopleDetailsMode';
-import { PeopleResultDto, Peoples } from './People';
+import { Peoples } from './People';
 import { PeopleSearchCriteria } from './PeopleSearchTypes';
 
 export class PeopleState {
@@ -20,11 +19,6 @@ export class PeopleState {
   // workflows (e.g. a post-update refresh) can reuse it without component
   // orchestration.
   lastSearchCriteria: PeopleSearchCriteria | null = null;
-  peopleDetails?: Peoples | null = null;
-  peopleDetailsFetchStatus: string = RequestStatus.idle;
-  peopleDetailsDeleteStatus: string = RequestStatus.idle;
-  peopleDetailsAddedStatus: string = RequestStatus.idle;
-  peopleDetailsUpdateStatus: string = RequestStatus.idle;
   changeTracker: ChangeTracker[] = [];
   // peopleDetailsMode: PeopleDetailsMode = PeopleDetailsMode.ViewOnlyMode;
   resetPeopleDetails: boolean = false;

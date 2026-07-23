@@ -1,25 +1,14 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { getAxiosInstance, getUser } from '../../../helpers/utility';
-import { print } from 'graphql';
-import {
-  graphqlPeopleDetailsQuery,
-  graphqlPeopleDetailsQueryForLoggedIn,
-} from '../graphql/People';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PeopleState } from './PeopleState';
 import { RequestStatus } from '../../../helpers/requests/status';
-import { PeopleResultDto, Peoples } from './People';
-import { GRAPHQL } from '../../../helpers/endpoints';
-//import { PeopleDetailsMode } from '../../details/dto/PeopleDetailsMode';
+import { Peoples } from './People';
 import { UserType } from '../../../helpers/requests/userType';
 import {
   PeopleSearchCriteria,
   PeopleSearchFailure,
   PeopleSearchResult,
 } from './PeopleSearchTypes';
-import {
-  PeopleUpdateFailure,
-  PeopleUpdateInput,
-} from './PeopleUpdateTypes';
+import { PeopleUpdateFailure, PeopleUpdateInput } from './PeopleUpdateTypes';
 
 const initialState: PeopleState = {
   peoples: [],
@@ -33,42 +22,11 @@ const initialState: PeopleState = {
   pageSize: 10,
   resultsCount: 0,
   lastSearchCriteria: null,
-  peopleDetails: null,
-  peopleDetailsFetchStatus: RequestStatus.idle,
-  peopleDetailsDeleteStatus: RequestStatus.idle,
-  peopleDetailsAddedStatus: RequestStatus.idle,
-  peopleDetailsUpdateStatus: RequestStatus.idle,
   changeTracker: [],
   //peopleDetailsMode: PeopleDetailsMode.ViewOnlyMode,
   resetPeopleDetails: false,
   userType: UserType.External,
 };
-
-export const fetchPeoplesDetails = createAsyncThunk(
-  'peoples/fetchPeoplesDetails',
-  async (args: { peopleId: string; showPending: Boolean }) => {
-    try {
-      const { peopleId } = args;
-      const user = getUser();
-      const response = await getAxiosInstance().post(GRAPHQL, {
-        query: print(
-          user
-            ? graphqlPeopleDetailsQueryForLoggedIn()
-            : graphqlPeopleDetailsQuery(),
-        ),
-        variables: {
-          peopleId: args.peopleId,
-          pending: args.showPending,
-        },
-      });
-      return user
-        ? response.data?.data?.findPeopleByPeopleIdLoggedInUser?.data
-        : response.data?.data?.findPeopleByPeopleId?.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-);
 
 const peopleSlice = createSlice({
   name: 'peoples',
@@ -237,34 +195,12 @@ const peopleSlice = createSlice({
       newState.updateStatus = RequestStatus.success;
       return newState;
     },
-    updatePeopleFailed: (
-      state,
-      action: PayloadAction<PeopleUpdateFailure>,
-    ) => {
+    updatePeopleFailed: (state, action: PayloadAction<PeopleUpdateFailure>) => {
       const newState = { ...state };
       newState.updateStatus = RequestStatus.failed;
       newState.error = action.payload.message;
       return newState;
     },
-  },
-  extraReducers(builder) {
-    builder
-      .addCase(fetchPeoplesDetails.pending, (state, action) => {
-        const newState = { ...state };
-        newState.peopleDetailsFetchStatus = RequestStatus.loading;
-        return newState;
-      })
-      .addCase(fetchPeoplesDetails.fulfilled, (state, action) => {
-        const newState = { ...state };
-        newState.peopleDetails = action.payload;
-        newState.peopleDetailsFetchStatus = RequestStatus.success;
-        return newState;
-      })
-      .addCase(fetchPeoplesDetails.rejected, (state, action) => {
-        const newState = { ...state };
-        newState.peopleDetailsFetchStatus = RequestStatus.failed;
-        return newState;
-      });
   },
 });
 
@@ -276,9 +212,6 @@ export const updatePeopleStatus = (state: any) => state.peoples.updateStatus;
 export const currentPageSelection = (state: any) => state.peoples.currentPage;
 export const currentPageSize = (state: any) => state.peoples.pageSize;
 export const resultsCount = (state: any) => state.peoples.resultsCount;
-export const peopleDetailsLoadingState = (state: any) =>
-  state.peoples.fetchPeoplesDetails;
-export const selectPeopleDetails = (state: any) => state.peoples.peopleDetails;
 export const trackedChanges = (state: any) => state.peoples.changeTracker;
 export const peopleDetailsMode = (state: any) =>
   state.peoples.peopleDetailsMode;

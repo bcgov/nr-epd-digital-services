@@ -25,9 +25,10 @@ import { PeopleUpdateInput } from '../dto/PeopleUpdateTypes';
 import { notifyError, notifySuccess } from '../../../components/alert/Alert';
 
 vi.mock('../api/PeopleApi', async () => {
-  const actual = await vi.importActual<typeof import('../api/PeopleApi')>(
-    '../api/PeopleApi',
-  );
+  const actual =
+    await vi.importActual<typeof import('../api/PeopleApi')>(
+      '../api/PeopleApi',
+    );
   return {
     ...actual,
     searchPeople: vi.fn(),
@@ -147,9 +148,7 @@ describe('People search saga', () => {
       expect.objectContaining({ signal: expect.any(AbortSignal) }),
     );
     expect(dispatched).toContainEqual(searchPeopleSucceeded(latestResult));
-    expect(dispatched).not.toContainEqual(
-      searchPeopleSucceeded(successResult),
-    );
+    expect(dispatched).not.toContainEqual(searchPeopleSucceeded(successResult));
   });
 
   it('aborts the in-flight Axios request when a newer search supersedes it', async () => {
@@ -187,9 +186,7 @@ describe('People search saga', () => {
     await flushMicrotasks();
 
     expect(mockedSearchPeople).toHaveBeenCalledTimes(1);
-    expect(dispatched).not.toContainEqual(
-      searchPeopleSucceeded(successResult),
-    );
+    expect(dispatched).not.toContainEqual(searchPeopleSucceeded(successResult));
 
     await vi.advanceTimersByTimeAsync(PEOPLE_SEARCH_RETRY_BASE_DELAY_MS);
     await flushMicrotasks();

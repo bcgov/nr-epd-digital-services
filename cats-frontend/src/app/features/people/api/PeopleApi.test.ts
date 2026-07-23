@@ -125,11 +125,9 @@ describe('PeopleApi searchPeople', () => {
 
     await searchPeople(criteria, { signal: controller.signal });
 
-    expect(post).toHaveBeenCalledWith(
-      '/graphql',
-      expect.any(Object),
-      { signal: controller.signal },
-    );
+    expect(post).toHaveBeenCalledWith('/graphql', expect.any(Object), {
+      signal: controller.signal,
+    });
   });
 
   it('marks network errors as retryable', async () => {

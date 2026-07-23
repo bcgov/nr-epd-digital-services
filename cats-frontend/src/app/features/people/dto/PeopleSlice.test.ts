@@ -82,10 +82,7 @@ describe('PeopleSlice update lifecycle reducers', () => {
   };
 
   it('updatePeopleRequested clears prior errors and sets loading', () => {
-    const state = peopleReducer(
-      baseState,
-      updatePeopleRequested(updateInput),
-    );
+    const state = peopleReducer(baseState, updatePeopleRequested(updateInput));
 
     expect(state.error).toBe('');
     expect(state.updateStatus).toBe(RequestStatus.loading);
