@@ -32,6 +32,7 @@ import { Timesheet } from './timesheet.entity';
 import { ApplicationServiceType } from './applicationServiceType.entity';
 import { RecentViewedApplication } from './recentViewedApplication.entity';
 import { ApplicationSecondaryServiceType } from './applicationSecondaryServiceType.entity';
+import { ApplicationSubmission } from './applicationSubmission.entity';
 
 @Index('idx_application_app_type_id', ['appTypeId'], {})
 @Index('pk_application', ['id'], { unique: true })
@@ -209,4 +210,10 @@ export class Application {
     (secondaryServiceType) => secondaryServiceType.application,
   )
   secondaryServiceTypes: ApplicationSecondaryServiceType[];
+
+  @OneToMany(
+    () => ApplicationSubmission,
+    (applicationSubmission) => applicationSubmission.application,
+  )
+  applicationSubmissions: ApplicationSubmission[];
 }
