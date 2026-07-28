@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cats-backend
+  namespace: e38158-dev
+  labels:
+    app.kubernetes.io/name: cats-backend
+  annotations:
+    route.openshift.io/termination: "edge"
+spec:
+  ingressClassName: openshift-default
+  rules:
+    - host: nr-epd-digital-services-dev-backend.apps.silver.devops.gov.bc.ca
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: cats-backend
+                port:
+                  number: 80
