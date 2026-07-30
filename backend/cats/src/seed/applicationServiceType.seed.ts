@@ -67,7 +67,18 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
           const serviceTypeCW = new ApplicationServiceType();
           serviceTypeCW.serviceName = item.description;
           serviceTypeCW.serviceType = item.type;
+          serviceTypeCW.serviceFeeInCents =
+            item.fee != null ? Math.round(item.fee * 100) : null;
           await manager.save(serviceTypeCW);
+        } else if (
+          item.fee != null &&
+          serviceTypeItem.serviceFeeInCents !== Math.round(item.fee * 100)
+        ) {
+          await manager.update(
+            ApplicationServiceType,
+            { id: serviceTypeItem.id },
+            { serviceFeeInCents: Math.round(item.fee * 100) },
+          );
         }
 
         serviceTypeItem = await manager.findOne(ApplicationServiceType, {
