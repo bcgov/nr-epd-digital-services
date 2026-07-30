@@ -41,8 +41,8 @@ import { GraphQLAuthExceptionFilter } from './app/filters/graphql-exception.filt
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
-        host: config.get('POSTGRESQL_HOST') || 'gldatabase',
-        port: parseInt(config.get('POSTGRESQL_PORT')) || 5432,
+        host: config.get('POSTGRES_HOST') || 'gldatabase',
+        port: parseInt(config.get('POSTGRES_PORT')) || 5432,
         database: config.get('POSTGRES_DATABASE') || 'xyz',
         username: config.get('POSTGRES_DB_USERNAME') || 'xyzuser',
         password: config.get('POSTGRES_DB_PASSWORD') || 'xyzuser',
