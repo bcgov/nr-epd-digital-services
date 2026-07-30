@@ -49,7 +49,7 @@
   },
   {
     "type": "CSAP",
-    "description": "26-CSAP - AP Statement or Report",
+    "description": "26-CSAP - AP Statement or report - no ministry fee",
     "CW": 5.27,
     "SDM": 3.25,
     "MNTR": 1.63,
@@ -65,11 +65,27 @@
   },
   {
     "type": "Non-CSAP",
+    "description": "26-Additional fee for an AIP, CoC with order",
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
+    "fee": 20000
+  },
+  {
+    "type": "Non-CSAP",
     "description": "26-Approval in Principle",
     "CW": 19.63,
     "SDM": 5.59,
     "MNTR": 2.79,
     "fee": 5000
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-Approval in principle additional fee (under director's order)",
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
+    "fee": 20000
   },
   {
     "type": "Non-CSAP",
@@ -153,7 +169,7 @@
   },
   {
     "type": "Non-CSAP",
-    "description": "26-Determination of a Contaminated Site - Final",
+    "description": "26-Determination of a contaminated site - Final - no ministry fees",
     "CW": 0,
     "SDM": 1.29,
     "MNTR": 0.64,
@@ -193,11 +209,19 @@
   },
   {
     "type": "Non-CSAP",
-    "description": "26-Risk Assessment Not Included in a Remediation Plan",
+    "description": "26-Risk Assessment (Human health or Environmental risk assessment)",
     "CW": 70.25,
     "SDM": 7,
     "MNTR": 3.5,
     "fee": 20000
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-Screening level risk assessment (direct to ministry)",
+    "CW": 35,
+    "SDM": 3.5,
+    "MNTR": 1.5,
+    "fee": 10000
   },
   {
     "type": "Non-CSAP",
@@ -233,7 +257,7 @@
   },
   {
     "type": "Non-CSAP",
-    "description": "26-Person Requests a Notice from a Director Stating the Director Does Not Require Site Investigation (Release under Scenario 1)",
+    "description": "26-Release under scenario 1",
     "CW": 3.18,
     "SDM": 0.59,
     "MNTR": 0.29,
@@ -241,7 +265,7 @@
   },
   {
     "type": "Non-CSAP",
-    "description": "26-Person Requests a Notice from a Director Stating That the Site Would Not Present a Significant Threat or Risk If the Application Were Approved (Release under Scenario 2)",
+    "description": "26-Release under scenario 2",
     "CW": 12.62,
     "SDM": 1.19,
     "MNTR": 0.59,
@@ -249,7 +273,7 @@
   },
   {
     "type": "Non-CSAP",
-    "description": "26-Person Requests a Notice from a Director Stating the Director Has Received a Remediation Plan Supporting Independent Remediation of the Site (Release under Scenario 3)",
+    "description": "26-Release under scenario 3",
     "CW": 22.06,
     "SDM": 1.79,
     "MNTR": 0.89,
@@ -258,10 +282,18 @@
   {
     "type": "Non-CSAP",
     "description": "26-Person Requests the Appointment of an Allocation Panel",
-    "CW": 7.25,
-    "SDM": 4.97,
-    "MNTR": 2.49,
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
     "fee": 5000
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-Person requests an allocation panel and an allocation panel carries out work and provides an opinion",
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
+    "fee": 1000
   },
   {
     "type": "Non-CSAP",
@@ -313,26 +345,186 @@
   },
   {
     "type": "Non-CSAP",
-    "description": "26-Annual Update - Site ID",
+    "description": "26-Annual Update - Site ID  (Table 2.16)",
     "CW": 2.64,
     "SDM": 0.46,
-    "MNTR": 0.23,
+    "MNTR": 0,
+    "fee": 0
+  }, 
+  {
+    "type": "Non-CSAP",
+    "description": "26-Review of Director's requirement - Order (Table 2.16)",
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
     "fee": 0
   },
   {
     "type": "Non-CSAP",
-    "description": "26-Annual Update - AiP Reporting",
-    "CW": 7.25,
-    "SDM": 4.97,
-    "MNTR": 2.49,
+    "description": "Compliance verification activity - reports and other (Table 2.16)",
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
     "fee": 0
   },
   {
     "type": "Non-CSAP",
-    "description": "26-Annual Update - CoC Reporting",
-    "CW": 7.25,
-    "SDM": 4.97,
-    "MNTR": 2.49,
+    "description": "Compliance verification P12 reporting (Table 2.16)",
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
     "fee": 0
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "Compliance verification P12 other (Table 2.16)",
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
+    "fee": 0
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "Confirmation of remediation - release request (Table 2.16)",
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
+    "fee": 0
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "Detailed site investigation - release request (Table 2.16)",
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
+    "fee": 0
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-Request to director  (Table 2 16.)",
+    "CW": 0,
+    "SDM": 9.44,
+    "MNTR": 2.84,
+    "fee": 0
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-Additional ministry service  (Table 2 16.)",
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
+    "fee": 0
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-Meeting request (Table 2 16.)",
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
+    "fee": 0
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-Activities taking 0 to 4 hours",
+    "CW": 2,
+    "SDM": 1,
+    "MNTR": 0,
+    "fee": 1000
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-Activities taking 4+ to 9 hours",
+    "CW": 7,
+    "SDM": 2,
+    "MNTR": 0,
+    "fee": 2500
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-Activities taking 9+ to 19 hours",
+    "CW": 14,
+    "SDM": 3,
+    "MNTR": 0,
+    "fee": 5000
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-Activities taking 19+ to 29 hours",
+    "CW": 24,
+    "SDM": 0,
+    "MNTR": 0,
+    "fee": 7500
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-Activities taking 29+ to 39 hours",
+    "CW": 34,
+    "SDM": 0,
+    "MNTR": 0,
+    "fee": 10000
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-Activities taking 39+ to 54 hours",
+    "CW": 46,
+    "SDM": 0,
+    "MNTR": 0,
+    "fee": 15000
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-Activities taking 54+ to 75 hours",
+    "CW": 64,
+    "SDM": 0,
+    "MNTR": 0,
+    "fee": 20000
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-over 75 hour Table 3 Compliance verification or additional ministry activity",
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
+    "fee": 300
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-Amendment to  Certificate (Table 3 hourly)",
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
+    "fee": 300
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-Site information request statement or form",
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
+    "fee": 50
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-Site information request detailed technical reports",
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
+    "fee": 150
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-Information obtained by manual retrieval of non-digitized records",
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
+    "fee": 50
+  },
+  {
+    "type": "Non-CSAP",
+    "description": "26-Site information obtained by manual retrieval of non-digitized records",
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
+    "fee": 100
   }
 ]

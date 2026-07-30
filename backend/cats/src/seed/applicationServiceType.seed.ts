@@ -2,6 +2,7 @@ import { EntityManager } from 'typeorm';
 import { ApplicationServiceType } from '../app/entities/applicationServiceType.entity';
 import { ParticipantRole } from '../app/entities/participantRole.entity';
 import { ServiceAssignmentFactor } from '../app/entities/serviceAssignmentFactor';
+import { PermissionServiceType } from '../app/entities/permissionServiceType';
 import { StaffRoles } from '../app/services/assignment/staffRoles.enum';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -54,8 +55,127 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
 
     console.log('roles found', caseWorkerRole, sdmRole, mentorRole);
 
+    // One-time deletions.
+    const serviceTypeDeletions: { type: string; name: string }[] = [
+      { type: 'Non-CSAP', name: '26-Annual Update - AiP Reporting' },
+      { type: 'Non-CSAP', name: '26-Annual Update - CoC Reporting' },
+    ];
+
+    for (const deletion of serviceTypeDeletions) {
+      const existing = await manager.findOne(ApplicationServiceType, {
+        where: { serviceName: deletion.name, serviceType: deletion.type },
+      });
+      if (existing) {
+        await manager.delete(ServiceAssignmentFactor, {
+          applicationServiceType: { id: existing.id },
+        });
+        await manager.delete(PermissionServiceType, {
+          serviceTypeId: Number(existing.id),
+        });
+        await manager.delete(ApplicationServiceType, { id: existing.id });
+        console.log(
+          `Deleted service type: ${deletion.type} - ${deletion.name}`,
+        );
+      }
+    }
+
+    // One-time description renames.
+    const descriptionRenames: {
+      type: string;
+      oldName: string;
+      newName: string;
+    }[] = [
+      {
+        type: 'CSAP',
+        oldName: '26-CSAP - AP Statement or Report',
+        newName: '26-CSAP - AP Statement or report - no ministry fee',
+      },
+      {
+        type: 'Non-CSAP',
+        oldName: '26-Determination of a Contaminated Site - Final',
+        newName:
+          '26-Determination of a contaminated site - Final - no ministry fees',
+      },
+      {
+        type: 'Non-CSAP',
+        oldName: '26-Risk Assessment Not Included in a Remediation Plan',
+        newName:
+          '26-Risk Assessment (Human health or Environmental risk assessment)',
+      },
+      {
+        type: 'Non-CSAP',
+        oldName:
+          '26-Person Requests a Notice from a Director Stating the Director Does Not Require Site Investigation (Release under Scenario 1)',
+        newName: '26-Release under scenario 1',
+      },
+      {
+        type: 'Non-CSAP',
+        oldName:
+          '26-Person Requests a Notice from a Director Stating That the Site Would Not Present a Significant Threat or Risk If the Application Were Approved (Release under Scenario 2)',
+        newName: '26-Release under scenario 2',
+      },
+      {
+        type: 'Non-CSAP',
+        oldName:
+          '26-Person Requests a Notice from a Director Stating the Director Has Received a Remediation Plan Supporting Independent Remediation of the Site (Release under Scenario 3)',
+        newName: '26-Release under scenario 3',
+      },
+      {
+        type: 'Non-CSAP',
+        oldName: '26-Annual Update - Site ID',
+        newName: '26-Annual Update - Site ID  (Table 2.16)',
+      },
+      {
+        type: 'CSAP',
+        oldName: 'Approval in Principle with or without additional services',
+        newName: 'Approval in Principle',
+      },
+      {
+        type: 'CSAP',
+        oldName:
+          'Certificate of Compliance - detailed risk assessment with or without other reports',
+        newName: 'Certificate of Compliance - detailed risk assessment',
+      },
+      {
+        type: 'CSAP',
+        oldName:
+          'Certificate of Compliance - numerical withor without other reports',
+        newName: 'Certificate of Compliance - numerical',
+      },
+      {
+        type: 'CSAP',
+        oldName:
+          'Preliminary Determination under CSR 15(3), with other reports',
+        newName: 'Preliminary Determination under CSR 15(3)',
+      },
+      {
+        type: 'CSAP',
+        oldName: 'Reporting',
+        newName: 'CSAP - AP Statement or report',
+      },
+      {
+        type: 'Non-CSAP',
+        oldName:
+          'Detailed site investigation, Risk assessment with other services',
+        newName: 'Detailed site investigation',
+      },
+    ];
+
+    for (const rename of descriptionRenames) {
+      await manager.update(
+        ApplicationServiceType,
+        { serviceName: rename.oldName, serviceType: rename.type },
+        { serviceName: rename.newName },
+      );
+    }
+
     if (caseWorkerRole && sdmRole && mentorRole) {
+      console.log(`Processing ${serviceTypes.length} service types`);
       for (const item of serviceTypes) {
+        console.log(
+          `Processing: ${item.type} - ${item.description} (fee: ${item.fee})`,
+        );
+
         let serviceTypeItem = await manager.findOne(ApplicationServiceType, {
           where: {
             serviceName: item.description,
@@ -64,6 +184,7 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
         });
 
         if (!serviceTypeItem) {
+          console.log(`  -> INSERTING new record`);
           const serviceTypeCW = new ApplicationServiceType();
           serviceTypeCW.serviceName = item.description;
           serviceTypeCW.serviceType = item.type;
@@ -74,11 +195,18 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
           item.fee != null &&
           serviceTypeItem.serviceFeeInCents !== Math.round(item.fee * 100)
         ) {
+          console.log(
+            `  -> UPDATING fee: ${
+              serviceTypeItem.serviceFeeInCents
+            } -> ${Math.round(item.fee * 100)}`,
+          );
           await manager.update(
             ApplicationServiceType,
             { id: serviceTypeItem.id },
             { serviceFeeInCents: Math.round(item.fee * 100) },
           );
+        } else {
+          console.log(`  -> SKIPPED (already exists, fee matches)`);
         }
 
         serviceTypeItem = await manager.findOne(ApplicationServiceType, {
