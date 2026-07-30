@@ -5,18 +5,23 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { AppTypeDefaultService } from './appTypeDefaultService.entity';
 import { Application } from './application.entity';
 
+@ObjectType()
 @Index('pk_app_type', ['id'], { unique: true })
 @Entity('app_type')
 export class AppType {
+  @Field(() => Int)
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
 
+  @Field({ nullable: true })
   @Column('character varying', { name: 'abbrev', nullable: true, length: 20 })
   abbrev: string | null;
 
+  @Field()
   @Column('character varying', { name: 'description', length: 250 })
   description: string;
 
