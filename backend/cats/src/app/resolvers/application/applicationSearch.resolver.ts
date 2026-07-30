@@ -10,13 +10,21 @@ import { LoggerService } from '../../logger/logger.service';
 import { SortByDirection } from '../../utilities/enums/application/sortByDirection.enum';
 import { SortByField } from '../../utilities/enums/application/sortByField.enum';
 import { AuthenticatedUser } from 'nest-keycloak-connect';
+import { AppTypeService } from '../../services/appType/appType.service';
+import { AppType } from '../../entities/appType.entity';
 
 @Resolver()
 export class ApplicationSearchResolver {
   constructor(
     private readonly applicationSearchService: ApplicationSearchService,
     private readonly loggerService: LoggerService,
+    private readonly appTypeService: AppTypeService,
   ) {}
+
+  @Query(() => [AppType], { name: 'getAllAppTypes' })
+  async getAllAppTypes() {
+    return this.appTypeService.getAllAppTypes();
+  }
 
   @Query(() => ApplicationSearchResponse)
   async searchApplications(

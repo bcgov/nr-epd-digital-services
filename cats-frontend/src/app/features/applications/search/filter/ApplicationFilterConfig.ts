@@ -19,36 +19,9 @@ export const formRowsMap: { [key: string]: IFormField } = {
   serviceType: {
     type: FormFieldType.DropDown,
     label: 'Service Type',
-    placeholder: 'Select Type',
+    placeholder: 'Select Service Type',
     graphQLPropertyName: 'serviceType',
-    options: [
-      {
-        value:
-          'Relating to site identification, site disclosure statements or site releases',
-        key: 'relatingtositeID',
-      },
-      { value: 'Report reviews', key: 'ReportReviews' },
-      {
-        value: 'Approved professional statements',
-        key: 'ApprovedProfessionalStatements',
-      },
-      {
-        value: 'Certification Documents',
-        key: 'CertificationDocuments',
-      },
-      {
-        value: 'Protocols',
-        key: 'Protocols',
-      },
-      {
-        value: 'Environmental management area',
-        key: 'EnvironmentalManagementArea',
-      },
-      {
-        value: 'Other services and functions',
-        key: 'OtherServicesAndFunctions',
-      },
-    ],
+    options: [],
     value: '',
     colSize: 'col-lg-3 col-md-6 col-sm-12',
   },
@@ -116,11 +89,7 @@ export const formRowsMap: { [key: string]: IFormField } = {
     label: 'Application Type',
     placeholder: 'Select Type',
     graphQLPropertyName: 'applicationType',
-    options: [
-      { key: 'Type1', value: 'Type1' },
-      { key: 'Type2', value: 'Type2' },
-      { key: 'Type3', value: 'Type3' },
-    ],
+    options: [],
     value: '',
     colSize: 'col-lg-3 col-md-6 col-sm-12',
   },
@@ -207,6 +176,7 @@ export const formRows: IFormField[][] = [
   [
     formRowsMap['id'],
     formRowsMap['serviceType'],
+    formRowsMap['applicationType'],
     formRowsMap['csapReference'],
     formRowsMap['staffAssigned'],
     formRowsMap['siteId'],
@@ -222,19 +192,41 @@ export const formRows: IFormField[][] = [
   ],
 ];
 
+// Generic function to update dropdown options for a given field
+const updateDropdownOptions = (
+  fieldKey: string,
+  options: Array<{ key: string; value: string }>,
+  sort = true,
+) => {
+  formRowsMap[fieldKey].options = sort
+    ? [...options].sort((a, b) => a.value.localeCompare(b.value))
+    : options;
+};
+
 // Function to update staff options dynamically
 export const updateStaffOptions = (
   staffOptions: Array<{ key: string; value: string }>,
 ) => {
-  const sortedStaffOptions = [...staffOptions].sort((a, b) =>
-    a.value.localeCompare(b.value),
-  );
-  formRowsMap['staffAssigned'].options = sortedStaffOptions;
+  updateDropdownOptions('staffAssigned', staffOptions);
 };
 
 // Function to update status options dynamically
 export const updateStatusOptions = (
   statusOptions: Array<{ key: string; value: string }>,
 ) => {
-  formRowsMap['status'].options = statusOptions;
+  updateDropdownOptions('status', statusOptions, false);
+};
+
+// Function to update service type options dynamically
+export const updateServiceTypeOptions = (
+  serviceTypeOptions: Array<{ key: string; value: string }>,
+) => {
+  updateDropdownOptions('serviceType', serviceTypeOptions);
+};
+
+// Function to update application type options dynamically
+export const updateApplicationTypeOptions = (
+  appTypeOptions: Array<{ key: string; value: string }>,
+) => {
+  updateDropdownOptions('applicationType', appTypeOptions);
 };
