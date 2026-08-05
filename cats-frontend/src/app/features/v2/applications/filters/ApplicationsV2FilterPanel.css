@@ -1,0 +1,67 @@
+.applications-v2-filter-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-margin-medium);
+  padding: var(--layout-padding-medium);
+  border: 1px solid var(--surface-color-border-default, #d8d8d8);
+  border-radius: 4px;
+  background: var(--surface-color-background-light, #fff);
+}
+
+.applications-v2-filter-panel__fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--layout-margin-medium);
+}
+
+.applications-v2-filter-panel__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-margin-xsmall);
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.applications-v2-filter-panel__field input,
+.applications-v2-filter-panel__field select {
+  min-height: 2.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--surface-color-border-default, #d8d8d8);
+  border-radius: 4px;
+  font: inherit;
+  font-weight: 400;
+}
+
+.applications-v2-filter-panel__field--range {
+  border: none;
+  padding: 0;
+}
+
+.applications-v2-filter-panel__field--range legend {
+  margin-bottom: var(--layout-margin-xsmall);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.applications-v2-filter-panel__sublabel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: var(--layout-margin-xsmall);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.applications-v2-filter-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--layout-margin-small);
+}
+
+.applications-v2-filter-panel__actions-end {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--layout-margin-small);
+}

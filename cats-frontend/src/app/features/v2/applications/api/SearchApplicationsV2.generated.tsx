@@ -10,6 +10,20 @@ export type SearchApplicationsV2QueryVariables = Types.Exact<{
   filter: Types.Filter;
   sortBy: Types.ApplicationSortByField;
   sortByDir: Types.ApplicationSortByDirection;
+  filterId?: Types.InputMaybe<Types.Scalars['String']['input']>;
+  filterCommonName?: Types.InputMaybe<Types.Scalars['String']['input']>;
+  filterCsapReference?: Types.InputMaybe<Types.Scalars['String']['input']>;
+  filterSiteId?: Types.InputMaybe<Types.Scalars['String']['input']>;
+  filterSiteAddress?: Types.InputMaybe<Types.Scalars['String']['input']>;
+  filterSiteRiskClassification?: Types.InputMaybe<Types.Scalars['String']['input']>;
+  filterPriority?: Types.InputMaybe<Types.Scalars['String']['input']>;
+  filterDateReceivedFrom?: Types.InputMaybe<Types.Scalars['DateTime']['input']>;
+  filterDateReceivedTo?: Types.InputMaybe<Types.Scalars['DateTime']['input']>;
+  filterLastUpdatedFrom?: Types.InputMaybe<Types.Scalars['DateTime']['input']>;
+  filterLastUpdatedTo?: Types.InputMaybe<Types.Scalars['DateTime']['input']>;
+  filterDateCompletedFrom?: Types.InputMaybe<Types.Scalars['DateTime']['input']>;
+  filterDateCompletedTo?: Types.InputMaybe<Types.Scalars['DateTime']['input']>;
+  filterInvoiceStatus?: Types.InputMaybe<Types.Scalars['String']['input']>;
 }>;
 
 
@@ -17,7 +31,7 @@ export type SearchApplicationsV2Query = { __typename?: 'Query', searchApplicatio
 
 
 export const SearchApplicationsV2Document = gql`
-    query SearchApplicationsV2($searchParam: String!, $page: Int!, $pageSize: Int!, $filter: Filter!, $sortBy: ApplicationSortByField!, $sortByDir: ApplicationSortByDirection!) {
+    query SearchApplicationsV2($searchParam: String!, $page: Int!, $pageSize: Int!, $filter: Filter!, $sortBy: ApplicationSortByField!, $sortByDir: ApplicationSortByDirection!, $filterId: String, $filterCommonName: String, $filterCsapReference: String, $filterSiteId: String, $filterSiteAddress: String, $filterSiteRiskClassification: String, $filterPriority: String, $filterDateReceivedFrom: DateTime, $filterDateReceivedTo: DateTime, $filterLastUpdatedFrom: DateTime, $filterLastUpdatedTo: DateTime, $filterDateCompletedFrom: DateTime, $filterDateCompletedTo: DateTime, $filterInvoiceStatus: String) {
   searchApplications(
     searchParam: $searchParam
     page: $page
@@ -25,6 +39,20 @@ export const SearchApplicationsV2Document = gql`
     filter: $filter
     sortBy: $sortBy
     sortByDir: $sortByDir
+    filterId: $filterId
+    filterCommonName: $filterCommonName
+    filterCsapReference: $filterCsapReference
+    filterSiteId: $filterSiteId
+    filterSiteAddress: $filterSiteAddress
+    filterSiteRiskClassification: $filterSiteRiskClassification
+    filterPriority: $filterPriority
+    filterDateReceivedFrom: $filterDateReceivedFrom
+    filterDateReceivedTo: $filterDateReceivedTo
+    filterLastUpdatedFrom: $filterLastUpdatedFrom
+    filterLastUpdatedTo: $filterLastUpdatedTo
+    filterDateCompletedFrom: $filterDateCompletedFrom
+    filterDateCompletedTo: $filterDateCompletedTo
+    filterInvoiceStatus: $filterInvoiceStatus
   ) {
     applications {
       id

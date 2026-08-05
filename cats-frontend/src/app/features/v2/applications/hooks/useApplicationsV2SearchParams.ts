@@ -9,6 +9,7 @@ import {
   ApplicationSortByDirection,
   ApplicationSortByField,
 } from '../../../../../generated/types';
+import type { FilterPill } from '../../../../components/filter/filterPill';
 import {
   DEFAULT_APPLICATIONS_SEARCH_VARIABLES,
   type SearchApplicationsV2QueryVariables,
@@ -17,6 +18,16 @@ import {
   sortParamsToSortingState,
   sortingStateToSortParams,
 } from '../applicationsV2Sort';
+import {
+  advancedFiltersToGraphqlVariables,
+  advancedFiltersToPills,
+  ADVANCED_FILTER_URL_KEYS,
+  clearedAdvancedFilterUrlUpdates,
+  parseAdvancedFiltersFromUrl,
+  urlKeysForPill,
+  urlUpdatesFromAdvancedFilters,
+  type ApplicationsV2AdvancedFilters,
+} from '../filters/applicationsV2Filters';
 
 const isSortByField = (value: string): value is ApplicationSortByField =>
   Object.values(ApplicationSortByField).includes(
@@ -29,6 +40,10 @@ const isSortByDirection = (
   Object.values(ApplicationSortByDirection).includes(
     value as ApplicationSortByDirection,
   );
+
+const advancedFilterParamConfig = Object.fromEntries(
+  ADVANCED_FILTER_URL_KEYS.map((key) => [key, StringParam]),
+) as Record<(typeof ADVANCED_FILTER_URL_KEYS)[number], typeof StringParam>;
 
 export const useApplicationsV2SearchParams = () => {
   const [params, setParams] = useQueryParams({
@@ -49,6 +64,7 @@ export const useApplicationsV2SearchParams = () => {
       StringParam,
       DEFAULT_APPLICATIONS_SEARCH_VARIABLES.sortByDir,
     ),
+    ...advancedFilterParamConfig,
   });
 
   const sortBy = isSortByField(params.sortBy)
@@ -57,6 +73,9 @@ export const useApplicationsV2SearchParams = () => {
   const sortByDir = isSortByDirection(params.sortByDir)
     ? params.sortByDir
     : DEFAULT_APPLICATIONS_SEARCH_VARIABLES.sortByDir;
+
+  const advancedFilters = parseAdvancedFiltersFromUrl(params);
+  const filterPills = advancedFiltersToPills(advancedFilters);
 
   const sorting = sortParamsToSortingState(sortBy, sortByDir);
 
@@ -93,6 +112,30 @@ export const useApplicationsV2SearchParams = () => {
     setParams({ search, page: 1 });
   };
 
+  const applyAdvancedFilters = (nextFilters: ApplicationsV2AdvancedFilters) => {
+    setParams({
+      ...urlUpdatesFromAdvancedFilters(nextFilters),
+      page: 1,
+    });
+  };
+
+  const resetAdvancedFilters = () => {
+    setParams({
+      ...clearedAdvancedFilterUrlUpdates(),
+      page: 1,
+    });
+  };
+
+  const removeFilterPill = (pill: FilterPill) => {
+    const updates = Object.fromEntries(
+      urlKeysForPill(pill.key).map((key) => [key, undefined]),
+    );
+    setParams({
+      ...updates,
+      page: 1,
+    });
+  };
+
   const variables: SearchApplicationsV2QueryVariables = {
     ...DEFAULT_APPLICATIONS_SEARCH_VARIABLES,
     page: params.page,
@@ -100,15 +143,21 @@ export const useApplicationsV2SearchParams = () => {
     searchParam: params.search,
     sortBy,
     sortByDir,
+    ...advancedFiltersToGraphqlVariables(advancedFilters),
   };
 
   return {
     page: params.page,
     pageSize: params.pageSize,
     search: params.search,
+    advancedFilters,
+    filterPills,
     setPage,
     setPageSize,
     setSearch,
+    applyAdvancedFilters,
+    resetAdvancedFilters,
+    removeFilterPill,
     sorting,
     setSorting,
     variables,
