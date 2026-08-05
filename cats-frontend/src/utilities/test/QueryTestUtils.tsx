@@ -1,6 +1,8 @@
 import React, { ReactElement, ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
+import { QueryParamProvider } from 'use-query-params';
+import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import { render, RenderOptions } from '@testing-library/react';
 import { renderHook, RenderHookOptions } from '@testing-library/react';
 
@@ -28,7 +30,11 @@ export const createQueryRouterWrapper = ({
 }: WrapperOptions = {}) => {
   const Wrapper = ({ children }: { children: ReactNode }) => (
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
+      <MemoryRouter initialEntries={initialEntries}>
+        <QueryParamProvider adapter={ReactRouter6Adapter}>
+          {children}
+        </QueryParamProvider>
+      </MemoryRouter>
     </QueryClientProvider>
   );
 

@@ -58,6 +58,33 @@ describe('useApplicationsV2', () => {
     expect(result.current.data).toEqual(searchResult);
   });
 
+  it('searches with the provided page and pageSize variables', async () => {
+    searchApplicationsMock.mockResolvedValue({
+      applications: [],
+      count: 0,
+      page: 2,
+      pageSize: 25,
+    } as any);
+
+    const variables = {
+      ...DEFAULT_APPLICATIONS_SEARCH_VARIABLES,
+      page: 2,
+      pageSize: 25,
+    };
+
+    const { result } = renderHookWithQueryRouter(
+      () => useApplicationsV2(variables),
+      { initialEntries: ['/applications-v2?page=2&pageSize=25'] },
+    );
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(searchApplicationsMock).toHaveBeenCalledWith(
+      variables,
+      expect.any(AbortSignal),
+    );
+  });
+
   it('notifies when the search fails', async () => {
     searchApplicationsMock.mockRejectedValue(
       new ApplicationsApi.ApplicationsApiError(),
