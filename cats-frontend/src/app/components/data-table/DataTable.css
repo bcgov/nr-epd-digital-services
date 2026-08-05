@@ -121,7 +121,10 @@
 }
 
 .data-table__sort-icon {
+  display: inline-flex;
+  align-items: center;
   font-size: var(--typography-font-size-label);
+  line-height: var(--typography-font-size-body);
   color: var(--icons-color-disabled);
 }
 

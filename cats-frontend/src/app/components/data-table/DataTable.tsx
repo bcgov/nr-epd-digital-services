@@ -9,6 +9,11 @@ import {
   type SortingState,
   type VisibilityState,
 } from '@tanstack/react-table';
+import {
+  DropdownIcon,
+  DropdownUpIcon,
+  SortIcon,
+} from '../common/icon';
 import { ColumnVisibilityMenu } from './ColumnVisibilityMenu';
 import { MemoizedTableRow } from './MemoizedTableRow';
 import './DataTable.css';
@@ -149,11 +154,13 @@ export function DataTable<TData>({
                             aria-hidden="true"
                             className="data-table__sort-icon"
                           >
-                            {sorted === 'asc'
-                              ? '▲'
-                              : sorted === 'desc'
-                                ? '▼'
-                                : '↕'}
+                            {sorted === 'asc' ? (
+                              <DropdownUpIcon />
+                            ) : sorted === 'desc' ? (
+                              <DropdownIcon />
+                            ) : (
+                              <SortIcon />
+                            )}
                           </span>
                         </button>
                       ) : (

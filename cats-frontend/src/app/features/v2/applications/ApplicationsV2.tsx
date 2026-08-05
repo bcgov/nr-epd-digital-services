@@ -9,8 +9,15 @@ import { APPLICATIONS_SEARCH_ERROR_MESSAGE } from './api/ApplicationsApi';
 import './ApplicationsV2.css';
 
 const ApplicationsV2: React.FC = () => {
-  const { page, pageSize, setPage, setPageSize, variables } =
-    useApplicationsV2SearchParams();
+  const {
+    page,
+    pageSize,
+    setPage,
+    setPageSize,
+    sorting,
+    setSorting,
+    variables,
+  } = useApplicationsV2SearchParams();
   const { data, isPending, isFetching, isError } = useApplicationsV2(variables);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
@@ -31,6 +38,8 @@ const ApplicationsV2: React.FC = () => {
           ariaLabel="Applications"
           isLoading={showInitialLoading}
           isFetching={!showInitialLoading && isFetching}
+          sorting={sorting}
+          onSortingChange={setSorting}
           columnVisibility={columnVisibility}
           onColumnVisibilityChange={setColumnVisibility}
           getRowId={(row) => row.id}
