@@ -215,12 +215,12 @@ describe('useApplicationsV2SearchParams', () => {
     });
     expect(result.current.filterPills).toEqual([
       { key: 'id', label: 'Application ID', value: '7' },
+      { key: 'priority', label: 'Priority', value: 'High' },
       {
         key: 'dateReceived',
         label: 'Date Received',
         value: '2024-01-01 - 2024-01-31',
       },
-      { key: 'priority', label: 'Priority', value: 'High' },
     ]);
   });
 

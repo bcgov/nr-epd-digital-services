@@ -48,6 +48,33 @@ describe('DataTable', () => {
     expect(screen.getByRole('button', { name: 'Columns' })).toBeInTheDocument();
   });
 
+  it('renders belowHeader content between the toolbar and the table', () => {
+    render(
+      <DataTable
+        title="Applications"
+        data={rows}
+        columns={columns}
+        ariaLabel="Applications"
+        getRowId={(row) => row.id}
+        belowHeader={<div>Filter panel slot</div>}
+      />,
+    );
+
+    const heading = screen.getByRole('heading', {
+      level: 1,
+      name: 'Applications',
+    });
+    const slot = screen.getByText('Filter panel slot');
+    const table = screen.getByRole('table', { name: 'Applications' });
+
+    expect(heading.compareDocumentPosition(slot)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    expect(slot.compareDocumentPosition(table)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+  });
+
   it('renders rows and a loading state with colSpan matching visible columns', () => {
     const { rerender } = render(
       <DataTable

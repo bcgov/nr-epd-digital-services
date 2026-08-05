@@ -55,7 +55,10 @@ export const INVOICE_STATUS_OPTIONS: ApplicationsV2FilterOption[] = [
   { value: 'paid', label: 'Paid' },
 ];
 
-/** Issue-4 fields only; backend-backed dropdowns arrive in Issue 5. */
+/**
+ * Issue-4 fields only, ordered to match legacy relative placement.
+ * Backend-backed dropdowns arrive in Issue 5.
+ */
 export const APPLICATIONS_V2_FILTER_FIELDS: ApplicationsV2FilterField[] = [
   {
     kind: 'text',
@@ -64,12 +67,6 @@ export const APPLICATIONS_V2_FILTER_FIELDS: ApplicationsV2FilterField[] = [
     placeholder: 'Separate IDs by a comma (",")',
     pattern: /^[0-9,\s]*$/,
     patternMessage: 'Application ID can only contain numbers and commas',
-  },
-  {
-    kind: 'text',
-    key: 'commonName',
-    label: 'Common Name',
-    placeholder: 'Type keywords',
   },
   {
     kind: 'text',
@@ -86,10 +83,30 @@ export const APPLICATIONS_V2_FILTER_FIELDS: ApplicationsV2FilterField[] = [
     patternMessage: 'Site ID can only contain numbers and commas',
   },
   {
+    kind: 'select',
+    key: 'siteRiskClassification',
+    label: 'Site Risk Classification',
+    placeholder: 'Select Type',
+    options: SITE_RISK_OPTIONS,
+  },
+  {
     kind: 'text',
     key: 'siteAddress',
     label: 'Site Address',
     placeholder: 'Type keywords',
+  },
+  {
+    kind: 'text',
+    key: 'commonName',
+    label: 'Common Name',
+    placeholder: 'Type keywords',
+  },
+  {
+    kind: 'select',
+    key: 'priority',
+    label: 'Priority',
+    placeholder: 'Select Priority',
+    options: PRIORITY_OPTIONS,
   },
   {
     kind: 'dateRange',
@@ -111,20 +128,6 @@ export const APPLICATIONS_V2_FILTER_FIELDS: ApplicationsV2FilterField[] = [
     fromKey: 'dateCompletedFrom',
     toKey: 'dateCompletedTo',
     label: 'Date Completed',
-  },
-  {
-    kind: 'select',
-    key: 'priority',
-    label: 'Priority',
-    placeholder: 'Select Priority',
-    options: PRIORITY_OPTIONS,
-  },
-  {
-    kind: 'select',
-    key: 'siteRiskClassification',
-    label: 'Site Risk Classification',
-    placeholder: 'Select Type',
-    options: SITE_RISK_OPTIONS,
   },
   {
     kind: 'select',

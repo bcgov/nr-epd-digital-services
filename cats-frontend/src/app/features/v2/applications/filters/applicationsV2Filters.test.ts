@@ -96,15 +96,15 @@ describe('applicationsV2Filters', () => {
       expect(pills).toEqual([
         { key: 'id', label: 'Application ID', value: '1,2' },
         {
-          key: 'dateReceived',
-          label: 'Date Received',
-          value: '2024-01-01 - 2024-01-31',
-        },
-        { key: 'priority', label: 'Priority', value: 'High' },
-        {
           key: 'siteRiskClassification',
           label: 'Site Risk Classification',
           value: 'High Risk',
+        },
+        { key: 'priority', label: 'Priority', value: 'High' },
+        {
+          key: 'dateReceived',
+          label: 'Date Received',
+          value: '2024-01-01 - 2024-01-31',
         },
         { key: 'invoiceStatus', label: 'Invoice Status', value: 'Draft' },
       ]);

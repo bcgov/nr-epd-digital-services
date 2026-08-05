@@ -22,6 +22,8 @@ export interface DataTableProps<TData> {
   title?: ReactNode;
   /** Extra controls rendered to the left of the Columns menu. */
   toolbarActions?: ReactNode;
+  /** Content rendered between the toolbar header and the table (e.g. filter panel). */
+  belowHeader?: ReactNode;
   sorting?: SortingState;
   onSortingChange?: OnChangeFn<SortingState>;
   columnVisibility?: VisibilityState;
@@ -57,6 +59,7 @@ export function DataTable<TData>({
   ariaLabel,
   title,
   toolbarActions,
+  belowHeader,
   sorting: controlledSorting,
   onSortingChange: controlledOnSortingChange,
   columnVisibility: controlledColumnVisibility,
@@ -117,6 +120,10 @@ export function DataTable<TData>({
           </div>
         </div>
       )}
+
+      {belowHeader ? (
+        <div className="data-table__below-header">{belowHeader}</div>
+      ) : null}
 
       <div
         className={`data-table__scroll${isFetching ? ' data-table__scroll--fetching' : ''}`}

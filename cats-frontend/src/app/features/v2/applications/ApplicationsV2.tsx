@@ -5,6 +5,7 @@ import { DataTable, DataTablePagination } from '../../../components/data-table';
 import { Button } from '../../../components/button/Button';
 import FilterPills from '../../../components/filter/FilterPills';
 import { FilterIcon } from '../../../components/common/icon';
+import '../../../components/filter/FilterControls.css';
 import { useApplicationsV2 } from './hooks/useApplicationsV2';
 import { useApplicationsV2SearchParams } from './hooks/useApplicationsV2SearchParams';
 import { ApplicationsV2SearchInput } from './ApplicationsV2SearchInput';
@@ -44,31 +45,6 @@ const ApplicationsV2: React.FC = () => {
     <PageContainer role="ApplicationsV2">
       {isError && <p>{APPLICATIONS_SEARCH_ERROR_MESSAGE}</p>}
       <div className="applications-v2__table">
-        {showFilterPanel && (
-          <div id="applications-v2-filter-panel">
-            <ApplicationsV2FilterPanel
-              appliedFilters={advancedFilters}
-              onApply={(nextFilters) => {
-                applyAdvancedFilters(nextFilters);
-                setShowFilterPanel(false);
-              }}
-              onReset={() => {
-                resetAdvancedFilters();
-              }}
-              onCancel={() => {
-                setShowFilterPanel(false);
-              }}
-            />
-          </div>
-        )}
-
-        {filterPills.length > 0 && (
-          <FilterPills
-            filters={filterPills}
-            onRemoveFilter={removeFilterPill}
-          />
-        )}
-
         <DataTable
           title="Applications"
           data={applications}
@@ -93,11 +69,43 @@ const ApplicationsV2: React.FC = () => {
                 variant="tertiary"
                 aria-expanded={showFilterPanel}
                 aria-controls="applications-v2-filter-panel"
+                className={
+                  showFilterPanel ? 'table-controls__button--selected' : undefined
+                }
                 onClick={() => setShowFilterPanel((open) => !open)}
               >
-                <FilterIcon aria-hidden />
-                Filter
+                <span className="d-flex align-items-center gap-2">
+                  <FilterIcon aria-hidden />
+                  Filter
+                </span>
               </Button>
+            </>
+          }
+          belowHeader={
+            <>
+              {showFilterPanel && (
+                <div id="applications-v2-filter-panel">
+                  <ApplicationsV2FilterPanel
+                    appliedFilters={advancedFilters}
+                    onApply={(nextFilters) => {
+                      applyAdvancedFilters(nextFilters);
+                      setShowFilterPanel(false);
+                    }}
+                    onReset={() => {
+                      resetAdvancedFilters();
+                    }}
+                    onCancel={() => {
+                      setShowFilterPanel(false);
+                    }}
+                  />
+                </div>
+              )}
+              {filterPills.length > 0 && (
+                <FilterPills
+                  filters={filterPills}
+                  onRemoveFilter={removeFilterPill}
+                />
+              )}
             </>
           }
         />
