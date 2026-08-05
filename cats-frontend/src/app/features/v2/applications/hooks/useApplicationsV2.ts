@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { notifyError } from '../../../../components/alert/Alert';
 import {
   APPLICATIONS_SEARCH_ERROR_MESSAGE,
@@ -20,6 +20,9 @@ export const useApplicationsV2 = (
   const query = useQuery({
     queryKey: applicationsV2Keys.list(variables),
     queryFn: ({ signal }) => searchApplications(variables, signal),
+    // Keep the previous page visible while the next page loads — avoids the
+    // empty-table flicker that happens when the query key (page/pageSize) changes.
+    placeholderData: keepPreviousData,
   });
 
   useEffect(() => {

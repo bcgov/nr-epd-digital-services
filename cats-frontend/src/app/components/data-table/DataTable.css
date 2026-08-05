@@ -39,6 +39,12 @@
   background: var(--surface-color-background-white);
 }
 
+.data-table__scroll--fetching {
+  opacity: 0.6;
+  transition: opacity 120ms ease-in-out;
+  pointer-events: none;
+}
+
 .data-table__scroll::-webkit-scrollbar {
   width: var(--icons-size-xsmall);
   height: var(--icons-size-xsmall);

@@ -57,9 +57,9 @@ export const renderWithQueryRouter = (
   };
 };
 
-export const renderHookWithQueryRouter = <TResult,>(
-  hook: () => TResult,
-  options: WrapperOptions & Omit<RenderHookOptions<unknown>, 'wrapper'> = {},
+export const renderHookWithQueryRouter = <TResult, TProps>(
+  hook: (props: TProps) => TResult,
+  options: WrapperOptions & Omit<RenderHookOptions<TProps>, 'wrapper'> = {},
 ) => {
   const { initialEntries, queryClient, ...hookOptions } = options;
   const { Wrapper, queryClient: client } = createQueryRouterWrapper({

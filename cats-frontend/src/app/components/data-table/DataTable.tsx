@@ -32,6 +32,8 @@ export interface DataTableProps<TData> {
   /** Called when a data row is clicked (excluding header). */
   onRowClick?: (row: TData) => void;
   isLoading?: boolean;
+  /** Subtle in-place fetching state (keeps rows visible). */
+  isFetching?: boolean;
   loadingMessage?: string;
   emptyMessage?: string;
 }
@@ -63,6 +65,7 @@ export function DataTable<TData>({
   manualSorting = false,
   onRowClick,
   isLoading = false,
+  isFetching = false,
   loadingMessage = 'Loading...',
   emptyMessage = 'No results found.',
 }: DataTableProps<TData>) {
@@ -116,7 +119,10 @@ export function DataTable<TData>({
         </div>
       )}
 
-      <div className="data-table__scroll">
+      <div
+        className={`data-table__scroll${isFetching ? ' data-table__scroll--fetching' : ''}`}
+        aria-busy={isLoading || isFetching || undefined}
+      >
         <table className="data-table__table" aria-label={ariaLabel}>
           <thead>
             {headerGroups.map((headerGroup) => (

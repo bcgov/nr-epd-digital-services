@@ -11,11 +11,14 @@ import './ApplicationsV2.css';
 const ApplicationsV2: React.FC = () => {
   const { page, pageSize, setPage, setPageSize, variables } =
     useApplicationsV2SearchParams();
-  const { data, isPending, isError } = useApplicationsV2(variables);
+  const { data, isPending, isFetching, isError } = useApplicationsV2(variables);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
   const applications = data?.applications ?? [];
   const totalCount = data?.count ?? 0;
+  // Full loading row only on the first fetch; subsequent page changes keep
+  // previous rows and use a subtler in-place fetching affordance.
+  const showInitialLoading = isPending && !data;
 
   return (
     <PageContainer role="ApplicationsV2">
@@ -26,7 +29,8 @@ const ApplicationsV2: React.FC = () => {
           data={applications}
           columns={applicationsV2Columns}
           ariaLabel="Applications"
-          isLoading={isPending}
+          isLoading={showInitialLoading}
+          isFetching={!showInitialLoading && isFetching}
           columnVisibility={columnVisibility}
           onColumnVisibilityChange={setColumnVisibility}
           getRowId={(row) => row.id}
