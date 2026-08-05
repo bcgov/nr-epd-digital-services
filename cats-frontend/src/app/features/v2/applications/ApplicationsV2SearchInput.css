@@ -1,0 +1,16 @@
+.applications-v2-search-input {
+  min-width: 16rem;
+  padding: var(--layout-padding-xsmall) var(--layout-padding-small);
+  border: var(--layout-border-width-small) solid
+    var(--surface-color-border-default);
+  border-radius: var(--layout-margin-xsmall);
+  font-size: var(--typography-font-size-body);
+  color: var(--typography-color-primary);
+  background: var(--surface-color-background-white);
+}
+
+.applications-v2-search-input:focus {
+  outline: var(--layout-border-width-medium) solid
+    var(--surface-color-primary-default);
+  outline-offset: 1px;
+}
