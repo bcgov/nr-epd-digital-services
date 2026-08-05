@@ -159,6 +159,7 @@ export const applicationsV2Columns: ColumnDef<ApplicationV2Row, unknown>[] = [
     id: 'actions',
     accessorKey: 'id',
     header: 'Actions',
+    meta: { sticky: 'right' },
     cell: ({ row }) => (
       <Link
         to={`/assignment/${row.original.id}`}

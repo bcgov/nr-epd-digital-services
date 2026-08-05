@@ -11,6 +11,7 @@ import {
 } from '@tanstack/react-table';
 import { DropdownIcon, DropdownUpIcon, SortIcon } from '../common/icon';
 import { ColumnVisibilityMenu } from './ColumnVisibilityMenu';
+import { stickyColumnClassName } from './columnMeta';
 import { MemoizedTableRow } from './MemoizedTableRow';
 import './DataTable.css';
 
@@ -154,6 +155,7 @@ export function DataTable<TData>({
                     <th
                       key={header.id}
                       scope="col"
+                      className={stickyColumnClassName(header.column)}
                       aria-sort={canSort ? sortAriaValue(sorted) : undefined}
                     >
                       {header.isPlaceholder ? null : canSort ? (

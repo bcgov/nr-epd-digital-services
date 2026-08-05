@@ -304,4 +304,38 @@ describe('DataTable', () => {
       screen.getByRole('columnheader', { name: 'Application ID' }),
     ).not.toHaveAttribute('aria-sort');
   });
+
+  it('applies sticky-right classes from column meta', () => {
+    const stickyColumns: ColumnDef<Row, unknown>[] = [
+      ...columns,
+      {
+        id: 'actions',
+        accessorKey: 'id',
+        header: 'Actions',
+        enableSorting: false,
+        meta: { sticky: 'right' },
+        cell: () => 'Manage',
+      },
+    ];
+
+    render(
+      <DataTable
+        data={rows}
+        columns={stickyColumns}
+        ariaLabel="Applications"
+        getRowId={(row) => row.id}
+      />,
+    );
+
+    expect(
+      screen.getByRole('columnheader', { name: 'Actions' }),
+    ).toHaveClass('data-table__cell--sticky-right');
+
+    const table = screen.getByRole('table', { name: 'Applications' });
+    const actionCells = within(table)
+      .getAllByRole('cell')
+      .filter((cell) => cell.classList.contains('data-table__cell--sticky-right'));
+    expect(actionCells).toHaveLength(2);
+    expect(actionCells[0]).toHaveTextContent('Manage');
+  });
 });

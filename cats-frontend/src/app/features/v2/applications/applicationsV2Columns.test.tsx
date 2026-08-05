@@ -160,6 +160,21 @@ describe('applicationsV2Columns', () => {
     ).toHaveAttribute('href', '/assignment/42');
   });
 
+  it('keeps the Actions column sticky on the right', () => {
+    renderColumnsTable();
+
+    expect(
+      screen.getByRole('columnheader', { name: 'Actions' }),
+    ).toHaveClass('data-table__cell--sticky-right');
+
+    const manageStaffCell = screen
+      .getByRole('link', {
+        name: 'Manage staff for application 42',
+      })
+      .closest('td');
+    expect(manageStaffCell).toHaveClass('data-table__cell--sticky-right');
+  });
+
   it('formats date columns with consistent UTC formatting', () => {
     renderColumnsTable(sampleRow, {
       dateReceived: true,
