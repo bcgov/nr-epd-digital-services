@@ -36,7 +36,7 @@ describe('useApplicationsV2ColumnPreferences', () => {
 
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2ColumnPreferences(),
-      { initialEntries: ['/applications-v2'] },
+      { initialEntries: ['/applications'] },
     );
 
     await waitFor(() =>
@@ -57,7 +57,7 @@ describe('useApplicationsV2ColumnPreferences', () => {
 
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2ColumnPreferences(),
-      { initialEntries: ['/applications-v2'] },
+      { initialEntries: ['/applications'] },
     );
 
     await waitFor(() =>
@@ -77,7 +77,7 @@ describe('useApplicationsV2ColumnPreferences', () => {
 
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2ColumnPreferences(),
-      { initialEntries: ['/applications-v2'] },
+      { initialEntries: ['/applications'] },
     );
 
     await waitFor(() =>
@@ -108,7 +108,7 @@ describe('useApplicationsV2ColumnPreferences', () => {
 
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2ColumnPreferences(),
-      { initialEntries: ['/applications-v2'] },
+      { initialEntries: ['/applications'] },
     );
 
     await waitFor(() =>

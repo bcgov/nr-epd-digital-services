@@ -24,7 +24,7 @@ describe('Applications V2 search flow', () => {
     vi.useFakeTimers();
 
     renderWithQueryRouter(<SearchFlow />, {
-      initialEntries: ['/applications-v2?page=3'],
+      initialEntries: ['/applications?page=3'],
     });
 
     const input = screen.getByRole('searchbox', {
@@ -49,7 +49,7 @@ describe('Applications V2 search flow', () => {
 
   it('hydrates the input from a shared search URL', () => {
     renderWithQueryRouter(<SearchFlow />, {
-      initialEntries: ['/applications-v2?search=shared-link'],
+      initialEntries: ['/applications?search=shared-link'],
     });
 
     expect(

@@ -46,7 +46,7 @@ const FiltersFlow = () => {
 describe('Applications V2 filters flow', () => {
   it('applies draft panel filters to URL variables and pills, resetting page', async () => {
     renderWithQueryRouter(<FiltersFlow />, {
-      initialEntries: ['/applications-v2?page=3'],
+      initialEntries: ['/applications?page=3'],
     });
 
     fireEvent.change(screen.getByLabelText('Application ID'), {
@@ -73,7 +73,7 @@ describe('Applications V2 filters flow', () => {
 
   it('removes a pill from the URL and resets page', async () => {
     renderWithQueryRouter(<FiltersFlow />, {
-      initialEntries: ['/applications-v2?page=2&id=9&priority=Low'],
+      initialEntries: ['/applications?page=2&id=9&priority=Low'],
     });
 
     expect(screen.getByText('Application ID : 9')).toBeInTheDocument();
@@ -91,7 +91,7 @@ describe('Applications V2 filters flow', () => {
 
   it('hydrates filters and pills from a shared URL', () => {
     renderWithQueryRouter(<FiltersFlow />, {
-      initialEntries: ['/applications-v2?id=5&siteRiskClassification=pending'],
+      initialEntries: ['/applications?id=5&siteRiskClassification=pending'],
     });
 
     expect(screen.getByLabelText('Application ID')).toHaveValue('5');
@@ -106,7 +106,7 @@ describe('Applications V2 filters flow', () => {
 
   it('applies a backend-backed dropdown filter to URL variables and pills', async () => {
     renderWithQueryRouter(<FiltersFlow />, {
-      initialEntries: ['/applications-v2?page=2'],
+      initialEntries: ['/applications?page=2'],
     });
 
     fireEvent.change(screen.getByLabelText('Service Type'), {
