@@ -1,0 +1,27 @@
+query SearchApplicationsV2(
+  $searchParam: String!
+  $page: Int!
+  $pageSize: Int!
+  $filter: Filter!
+  $sortBy: ApplicationSortByField!
+  $sortByDir: ApplicationSortByDirection!
+) {
+  searchApplications(
+    searchParam: $searchParam
+    page: $page
+    pageSize: $pageSize
+    filter: $filter
+    sortBy: $sortBy
+    sortByDir: $sortByDir
+  ) {
+    applications {
+      id
+      siteId
+      applicationType
+      status
+    }
+    count
+    page
+    pageSize
+  }
+}
