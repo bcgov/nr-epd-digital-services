@@ -4,6 +4,13 @@ import { renderWithQueryRouter } from '../../../../utilities/test/QueryTestUtils
 import { ApplicationsV2FilterPanel } from './filters/ApplicationsV2FilterPanel';
 import { useApplicationsV2SearchParams } from './hooks/useApplicationsV2SearchParams';
 
+const lookupOptions = {
+  serviceType: [{ value: 'svc-1', label: 'Service One' }],
+  applicationType: [{ value: '3', label: 'Type Three' }],
+  status: [{ value: 'Open', label: 'Open' }],
+  staffAssigned: [{ value: '12', label: 'Ann Baker' }],
+};
+
 const FiltersFlow = () => {
   const {
     advancedFilters,
@@ -12,12 +19,13 @@ const FiltersFlow = () => {
     resetAdvancedFilters,
     removeFilterPill,
     variables,
-  } = useApplicationsV2SearchParams();
+  } = useApplicationsV2SearchParams(lookupOptions);
 
   return (
     <div>
       <ApplicationsV2FilterPanel
         appliedFilters={advancedFilters}
+        lookupOptions={lookupOptions}
         onApply={applyAdvancedFilters}
         onReset={resetAdvancedFilters}
         onCancel={() => undefined}
@@ -26,6 +34,9 @@ const FiltersFlow = () => {
       <output data-testid="filter-id">{variables.filterId ?? ''}</output>
       <output data-testid="filter-priority">
         {variables.filterPriority ?? ''}
+      </output>
+      <output data-testid="filter-service-type">
+        {variables.filterServiceType ?? ''}
       </output>
       <output data-testid="page">{variables.page}</output>
     </div>
@@ -91,5 +102,24 @@ describe('Applications V2 filters flow', () => {
     expect(
       screen.getByText('Site Risk Classification : Pending'),
     ).toBeInTheDocument();
+  });
+
+  it('applies a backend-backed dropdown filter to URL variables and pills', async () => {
+    renderWithQueryRouter(<FiltersFlow />, {
+      initialEntries: ['/applications-v2?page=2'],
+    });
+
+    fireEvent.change(screen.getByLabelText('Service Type'), {
+      target: { value: 'svc-1' },
+    });
+    fireEvent.click(screen.getByTestId('Apply Filters'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('filter-service-type')).toHaveTextContent(
+        'svc-1',
+      );
+      expect(screen.getByTestId('page')).toHaveTextContent('1');
+    });
+    expect(screen.getByText('Service Type : Service One')).toBeInTheDocument();
   });
 });

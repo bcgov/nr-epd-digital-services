@@ -3,6 +3,20 @@ export type ApplicationsV2FilterOption = {
   label: string;
 };
 
+export type ApplicationsV2LookupOptions = {
+  serviceType: ApplicationsV2FilterOption[];
+  applicationType: ApplicationsV2FilterOption[];
+  status: ApplicationsV2FilterOption[];
+  staffAssigned: ApplicationsV2FilterOption[];
+};
+
+export const EMPTY_LOOKUP_OPTIONS: ApplicationsV2LookupOptions = {
+  serviceType: [],
+  applicationType: [],
+  status: [],
+  staffAssigned: [],
+};
+
 export type ApplicationsV2FilterField =
   | {
       kind: 'text';
@@ -21,10 +35,18 @@ export type ApplicationsV2FilterField =
     }
   | {
       kind: 'select';
-      key: 'priority' | 'siteRiskClassification' | 'invoiceStatus';
+      key:
+        | 'priority'
+        | 'siteRiskClassification'
+        | 'invoiceStatus'
+        | 'serviceType'
+        | 'applicationType'
+        | 'status'
+        | 'staffAssigned';
       label: string;
       placeholder: string;
       options: ApplicationsV2FilterOption[];
+      lookup?: keyof ApplicationsV2LookupOptions;
     };
 
 export const PRIORITY_OPTIONS: ApplicationsV2FilterOption[] = [
@@ -48,8 +70,9 @@ export const INVOICE_STATUS_OPTIONS: ApplicationsV2FilterOption[] = [
 ];
 
 /**
- * Issue-4 fields only, ordered to match legacy relative placement.
- * Backend-backed dropdowns arrive in Issue 5.
+ * Field order matches legacy ApplicationFilterConfig formRows placement.
+ * Lookup-backed selects start with empty options; resolve via
+ * resolveApplicationsV2FilterFields so options stay in React state.
  */
 export const APPLICATIONS_V2_FILTER_FIELDS: ApplicationsV2FilterField[] = [
   {
@@ -61,10 +84,34 @@ export const APPLICATIONS_V2_FILTER_FIELDS: ApplicationsV2FilterField[] = [
     patternMessage: 'Application ID can only contain numbers and commas',
   },
   {
+    kind: 'select',
+    key: 'serviceType',
+    label: 'Service Type',
+    placeholder: 'Select Type',
+    options: [],
+    lookup: 'serviceType',
+  },
+  {
+    kind: 'select',
+    key: 'applicationType',
+    label: 'Application Type',
+    placeholder: 'Select Type',
+    options: [],
+    lookup: 'applicationType',
+  },
+  {
     kind: 'text',
     key: 'csapReference',
     label: 'CSAP #',
     placeholder: 'Separate IDs by a comma (",")',
+  },
+  {
+    kind: 'select',
+    key: 'staffAssigned',
+    label: 'Staff Assigned',
+    placeholder: 'Select Staff',
+    options: [],
+    lookup: 'staffAssigned',
   },
   {
     kind: 'text',
@@ -123,9 +170,31 @@ export const APPLICATIONS_V2_FILTER_FIELDS: ApplicationsV2FilterField[] = [
   },
   {
     kind: 'select',
+    key: 'status',
+    label: 'Status',
+    placeholder: 'Select Status',
+    options: [],
+    lookup: 'status',
+  },
+  {
+    kind: 'select',
     key: 'invoiceStatus',
     label: 'Invoice Status',
     placeholder: 'Select Status',
     options: INVOICE_STATUS_OPTIONS,
   },
 ];
+
+export const resolveApplicationsV2FilterFields = (
+  lookupOptions: ApplicationsV2LookupOptions = EMPTY_LOOKUP_OPTIONS,
+): ApplicationsV2FilterField[] =>
+  APPLICATIONS_V2_FILTER_FIELDS.map((field) => {
+    if (field.kind !== 'select' || !field.lookup) {
+      return field;
+    }
+
+    return {
+      ...field,
+      options: lookupOptions[field.lookup],
+    };
+  });

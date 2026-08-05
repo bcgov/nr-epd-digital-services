@@ -19,6 +19,10 @@ query SearchApplicationsV2(
   $filterDateCompletedFrom: DateTime
   $filterDateCompletedTo: DateTime
   $filterInvoiceStatus: String
+  $filterServiceType: String
+  $filterApplicationType: String
+  $filterStatus: String
+  $filterStaffAssigned: String
 ) {
   searchApplications(
     searchParam: $searchParam
@@ -41,6 +45,10 @@ query SearchApplicationsV2(
     filterDateCompletedFrom: $filterDateCompletedFrom
     filterDateCompletedTo: $filterDateCompletedTo
     filterInvoiceStatus: $filterInvoiceStatus
+    filterServiceType: $filterServiceType
+    filterApplicationType: $filterApplicationType
+    filterStatus: $filterStatus
+    filterStaffAssigned: $filterStaffAssigned
   ) {
     applications {
       id

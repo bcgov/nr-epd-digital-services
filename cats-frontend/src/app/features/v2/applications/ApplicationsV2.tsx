@@ -7,6 +7,7 @@ import FilterPills from '../../../components/filter/FilterPills';
 import { FilterIcon } from '../../../components/common/icon';
 import '../../../components/filter/FilterControls.css';
 import { useApplicationsV2 } from './hooks/useApplicationsV2';
+import { useApplicationsV2FilterLookups } from './hooks/useApplicationsV2FilterLookups';
 import { useApplicationsV2SearchParams } from './hooks/useApplicationsV2SearchParams';
 import { ApplicationsV2SearchInput } from './ApplicationsV2SearchInput';
 import { ApplicationsV2FilterPanel } from './filters/ApplicationsV2FilterPanel';
@@ -15,6 +16,11 @@ import { APPLICATIONS_SEARCH_ERROR_MESSAGE } from './api/ApplicationsApi';
 import './ApplicationsV2.css';
 
 const ApplicationsV2: React.FC = () => {
+  const {
+    options: lookupOptions,
+    isLoading: lookupsLoading,
+    isError: lookupsError,
+  } = useApplicationsV2FilterLookups();
   const {
     page,
     pageSize,
@@ -30,7 +36,7 @@ const ApplicationsV2: React.FC = () => {
     sorting,
     setSorting,
     variables,
-  } = useApplicationsV2SearchParams();
+  } = useApplicationsV2SearchParams(lookupOptions);
   const { data, isPending, isFetching, isError } = useApplicationsV2(variables);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [showFilterPanel, setShowFilterPanel] = useState(false);
@@ -89,6 +95,9 @@ const ApplicationsV2: React.FC = () => {
                 <div id="applications-v2-filter-panel">
                   <ApplicationsV2FilterPanel
                     appliedFilters={advancedFilters}
+                    lookupOptions={lookupOptions}
+                    lookupsLoading={lookupsLoading}
+                    lookupsError={lookupsError}
                     onApply={(nextFilters) => {
                       applyAdvancedFilters(nextFilters);
                       setShowFilterPanel(false);

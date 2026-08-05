@@ -1,0 +1,25 @@
+query getApplicationsV2FilterLookups {
+  getAllActiveStaffMembers {
+    data {
+      personId
+      personFullName
+      currentCapacity
+    }
+  }
+  getAllStatusTypes {
+    id
+    abbrev
+    description
+  }
+  getApplicationServiceTypes {
+    data {
+      key
+      value
+    }
+  }
+  getAllAppTypes {
+    id
+    abbrev
+    description
+  }
+}

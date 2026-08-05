@@ -6,7 +6,11 @@ import {
 } from '../../../../components/input-controls/InputControls';
 import { FormFieldType } from '../../../../components/input-controls/IFormField';
 import '../../../../components/form/Form.css';
-import { APPLICATIONS_V2_FILTER_FIELDS } from './applicationsV2FilterConfig';
+import {
+  EMPTY_LOOKUP_OPTIONS,
+  resolveApplicationsV2FilterFields,
+  type ApplicationsV2LookupOptions,
+} from './applicationsV2FilterConfig';
 import {
   EMPTY_ADVANCED_FILTERS,
   type ApplicationsV2AdvancedFilters,
@@ -17,6 +21,9 @@ const FIELD_COL = 'col-lg-3 col-md-6 col-sm-12';
 
 export type ApplicationsV2FilterPanelProps = {
   appliedFilters: ApplicationsV2AdvancedFilters;
+  lookupOptions?: ApplicationsV2LookupOptions;
+  lookupsLoading?: boolean;
+  lookupsError?: boolean;
   onApply: (filters: ApplicationsV2AdvancedFilters) => void;
   onReset: () => void;
   onCancel: () => void;
@@ -24,12 +31,17 @@ export type ApplicationsV2FilterPanelProps = {
 
 export function ApplicationsV2FilterPanel({
   appliedFilters,
+  lookupOptions = EMPTY_LOOKUP_OPTIONS,
+  lookupsLoading = false,
+  lookupsError = false,
   onApply,
   onReset,
   onCancel,
 }: ApplicationsV2FilterPanelProps) {
   const [draft, setDraft] =
     useState<ApplicationsV2AdvancedFilters>(appliedFilters);
+  const fields = resolveApplicationsV2FilterFields(lookupOptions);
+  const lookupControlsDisabled = lookupsLoading || lookupsError;
 
   useEffect(() => {
     setDraft(appliedFilters);
@@ -64,8 +76,18 @@ export function ApplicationsV2FilterPanel({
       data-testid="applications-v2-filter-panel"
       aria-label="Application filters"
     >
+      {lookupsError && (
+        <p
+          className="applications-v2-filter-panel__lookup-error"
+          role="alert"
+          data-testid="applications-v2-filter-lookups-error"
+        >
+          Some filter options could not be loaded. You can still use the other
+          filters.
+        </p>
+      )}
       <div className="row">
-        {APPLICATIONS_V2_FILTER_FIELDS.map((field) => {
+        {fields.map((field) => {
           if (field.kind === 'dateRange') {
             return (
               <div key={field.key} className={FIELD_COL}>
@@ -103,14 +125,20 @@ export function ApplicationsV2FilterPanel({
           }
 
           if (field.kind === 'select') {
+            const isLookupField = Boolean(field.lookup);
             return (
               <div key={field.key} className={FIELD_COL}>
                 <DropdownInput
                   type={FormFieldType.DropDown}
                   label={field.label}
-                  placeholder={field.placeholder}
+                  placeholder={
+                    isLookupField && lookupsLoading
+                      ? 'Loading…'
+                      : field.placeholder
+                  }
                   value={draft[field.key]}
                   isEditing
+                  isDisabled={isLookupField && lookupControlsDisabled}
                   options={field.options.map((option) => ({
                     key: option.value,
                     value: option.label,
