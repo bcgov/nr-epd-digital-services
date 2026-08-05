@@ -53,8 +53,22 @@ query SearchApplicationsV2(
     applications {
       id
       siteId
+      siteAddress
       applicationType
+      lastUpdated
       status
+      staffAssigned {
+        firstName
+        lastName
+      }
+      priority
+      url
+      siteRiskClassification
+      csapReference
+      serviceType
+      commonName
+      receivedDate
+      dateCompleted
     }
     count
     page

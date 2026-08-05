@@ -4,10 +4,16 @@ import { TableColumnsIcon } from '../common/icon';
 
 interface ColumnVisibilityMenuProps<TData> {
   table: Table<TData>;
+  onSaveDefault?: () => void | Promise<void>;
+  onReset?: () => void;
+  isSavingDefault?: boolean;
 }
 
 export function ColumnVisibilityMenu<TData>({
   table,
+  onSaveDefault,
+  onReset,
+  isSavingDefault = false,
 }: ColumnVisibilityMenuProps<TData>) {
   const menuId = useId();
   const [open, setOpen] = useState(false);
@@ -16,6 +22,7 @@ export function ColumnVisibilityMenu<TData>({
   const hideableColumns = table
     .getAllLeafColumns()
     .filter((column) => column.getCanHide());
+  const showPersistenceActions = Boolean(onSaveDefault || onReset);
 
   useEffect(() => {
     if (!open) {
@@ -92,6 +99,32 @@ export function ColumnVisibilityMenu<TData>({
               </label>
             );
           })}
+
+          {showPersistenceActions && (
+            <div className="data-table__columns-actions">
+              {onReset && (
+                <button
+                  type="button"
+                  className="data-table__columns-action"
+                  onClick={onReset}
+                >
+                  Reset Columns
+                </button>
+              )}
+              {onSaveDefault && (
+                <button
+                  type="button"
+                  className="data-table__columns-action data-table__columns-action--primary"
+                  onClick={() => {
+                    void onSaveDefault();
+                  }}
+                  disabled={isSavingDefault}
+                >
+                  {isSavingDefault ? 'Saving...' : 'Save Default'}
+                </button>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import type { VisibilityState } from '@tanstack/react-table';
 import PageContainer from '../../../components/simple/PageContainer';
 import { DataTable, DataTablePagination } from '../../../components/data-table';
 import { Button } from '../../../components/button/Button';
@@ -7,6 +6,7 @@ import FilterPills from '../../../components/filter/FilterPills';
 import { FilterIcon } from '../../../components/common/icon';
 import '../../../components/filter/FilterControls.css';
 import { useApplicationsV2 } from './hooks/useApplicationsV2';
+import { useApplicationsV2ColumnPreferences } from './hooks/useApplicationsV2ColumnPreferences';
 import { useApplicationsV2FilterLookups } from './hooks/useApplicationsV2FilterLookups';
 import { useApplicationsV2SearchParams } from './hooks/useApplicationsV2SearchParams';
 import { ApplicationsV2SearchInput } from './ApplicationsV2SearchInput';
@@ -38,7 +38,13 @@ const ApplicationsV2: React.FC = () => {
     variables,
   } = useApplicationsV2SearchParams(lookupOptions);
   const { data, isPending, isFetching, isError } = useApplicationsV2(variables);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const {
+    columnVisibility,
+    setColumnVisibility,
+    resetColumnVisibility,
+    saveColumnDefaults,
+    isSavingColumnDefaults,
+  } = useApplicationsV2ColumnPreferences();
   const [showFilterPanel, setShowFilterPanel] = useState(false);
 
   const applications = data?.applications ?? [];
@@ -62,6 +68,9 @@ const ApplicationsV2: React.FC = () => {
           onSortingChange={setSorting}
           columnVisibility={columnVisibility}
           onColumnVisibilityChange={setColumnVisibility}
+          onSaveColumnDefaults={saveColumnDefaults}
+          onResetColumnVisibility={resetColumnVisibility}
+          isSavingColumnDefaults={isSavingColumnDefaults}
           getRowId={(row) => row.id}
           manualSorting
           toolbarActions={

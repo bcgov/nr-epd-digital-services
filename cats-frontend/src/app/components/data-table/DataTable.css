@@ -215,3 +215,40 @@
 .data-table__columns-item:hover {
   background: var(--surface-color-menus-hover);
 }
+
+.data-table__columns-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-margin-xsmall);
+  margin-top: var(--layout-margin-small);
+  padding: var(--layout-padding-small) var(--layout-padding-medium) 0;
+  border-top: var(--layout-border-width-small) solid
+    var(--surface-color-border-default);
+}
+
+.data-table__columns-action {
+  padding: var(--layout-padding-small) var(--layout-padding-medium);
+  border: var(--layout-border-width-small) solid
+    var(--surface-color-border-default);
+  border-radius: var(--layout-border-radius-small);
+  background: transparent;
+  color: var(--typography-color-primary);
+  font: var(--typography-regular-label);
+  cursor: pointer;
+  text-align: left;
+}
+
+.data-table__columns-action:hover,
+.data-table__columns-action:focus-visible {
+  background: var(--surface-color-menus-hover);
+}
+
+.data-table__columns-action--primary {
+  border-color: var(--surface-color-primary-default);
+  color: var(--surface-color-primary-default);
+}
+
+.data-table__columns-action:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

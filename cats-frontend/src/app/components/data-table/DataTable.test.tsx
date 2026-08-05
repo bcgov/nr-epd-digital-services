@@ -175,6 +175,40 @@ describe('DataTable', () => {
     ).toBeInTheDocument();
   });
 
+  it('invokes Save Default and Reset from the Columns menu without toggling network on checkbox changes', () => {
+    const onSaveColumnDefaults = vi.fn();
+    const onResetColumnVisibility = vi.fn();
+    const onColumnVisibilityChange = vi.fn();
+
+    render(
+      <DataTable
+        data={rows}
+        columns={columns}
+        ariaLabel="Applications"
+        columnVisibility={{}}
+        onColumnVisibilityChange={onColumnVisibilityChange}
+        onSaveColumnDefaults={onSaveColumnDefaults}
+        onResetColumnVisibility={onResetColumnVisibility}
+        getRowId={(row) => row.id}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Columns' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Reset Columns' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Save Default' }));
+
+    expect(onResetColumnVisibility).toHaveBeenCalledTimes(1);
+    expect(onSaveColumnDefaults).toHaveBeenCalledTimes(1);
+
+    const statusCheckbox = within(
+      screen.getByRole('menuitemcheckbox', { name: /Status/i }),
+    ).getByRole('checkbox');
+    fireEvent.click(statusCheckbox);
+
+    expect(onColumnVisibilityChange).toHaveBeenCalled();
+    expect(onSaveColumnDefaults).toHaveBeenCalledTimes(1);
+  });
+
   it('closes the Columns menu on Escape and outside click', () => {
     render(
       <DataTable

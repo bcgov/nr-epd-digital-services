@@ -28,6 +28,9 @@ export interface DataTableProps<TData> {
   onSortingChange?: OnChangeFn<SortingState>;
   columnVisibility?: VisibilityState;
   onColumnVisibilityChange?: OnChangeFn<VisibilityState>;
+  onSaveColumnDefaults?: () => void | Promise<void>;
+  onResetColumnVisibility?: () => void;
+  isSavingColumnDefaults?: boolean;
   getRowId?: (row: TData) => string;
   showColumnVisibilityMenu?: boolean;
   /** When true, sorting is controlled externally (e.g. server-side). */
@@ -64,6 +67,9 @@ export function DataTable<TData>({
   onSortingChange: controlledOnSortingChange,
   columnVisibility: controlledColumnVisibility,
   onColumnVisibilityChange: controlledOnColumnVisibilityChange,
+  onSaveColumnDefaults,
+  onResetColumnVisibility,
+  isSavingColumnDefaults = false,
   getRowId,
   showColumnVisibilityMenu = true,
   manualSorting = false,
@@ -116,7 +122,14 @@ export function DataTable<TData>({
           {title ? <h1 className="data-table__title">{title}</h1> : null}
           <div className="data-table__toolbar">
             {toolbarActions}
-            {showColumnVisibilityMenu && <ColumnVisibilityMenu table={table} />}
+            {showColumnVisibilityMenu && (
+              <ColumnVisibilityMenu
+                table={table}
+                onSaveDefault={onSaveColumnDefaults}
+                onReset={onResetColumnVisibility}
+                isSavingDefault={isSavingColumnDefaults}
+              />
+            )}
           </div>
         </div>
       )}
