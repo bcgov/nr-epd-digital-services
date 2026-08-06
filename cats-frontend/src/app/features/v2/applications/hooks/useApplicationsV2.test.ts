@@ -222,11 +222,8 @@ describe('useApplicationsV2', () => {
     );
 
     const { rerender } = renderHookWithQueryRouter(
-      ({
-        variables,
-      }: {
-        variables: SearchApplicationsV2QueryVariables;
-      }) => useApplicationsV2(variables),
+      ({ variables }: { variables: SearchApplicationsV2QueryVariables }) =>
+        useApplicationsV2(variables),
       {
         initialEntries: ['/applications-v2'],
         initialProps: {
