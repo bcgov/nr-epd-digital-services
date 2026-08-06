@@ -13,7 +13,6 @@ import { ApplicationsV2SearchInput } from './ApplicationsV2SearchInput';
 import { ApplicationsV2ColumnPanel } from './ApplicationsV2ColumnPanel';
 import { ApplicationsV2FilterPanel } from './filters/ApplicationsV2FilterPanel';
 import { applicationsV2Columns } from './applicationsV2Columns';
-import { APPLICATIONS_SEARCH_ERROR_MESSAGE } from './api/ApplicationsApi';
 import './ApplicationsV2.css';
 
 type ApplicationsV2Panel = 'none' | 'filters' | 'columns';
@@ -47,6 +46,7 @@ const ApplicationsV2: React.FC = () => {
     resetColumnVisibility,
     saveColumnDefaults,
     isSavingColumnDefaults,
+    isLoadingPreferences,
   } = useApplicationsV2ColumnPreferences();
   const [openPanel, setOpenPanel] = useState<ApplicationsV2Panel>('none');
 
@@ -54,7 +54,8 @@ const ApplicationsV2: React.FC = () => {
   const totalCount = data?.count ?? 0;
   // Full loading row only on the first fetch; subsequent page changes keep
   // previous rows and use a subtler in-place fetching affordance.
-  const showInitialLoading = isPending && !data;
+  const showInitialLoading =
+    isLoadingPreferences || (isPending && !data);
   const showFilterPanel = openPanel === 'filters';
   const showColumnPanel = openPanel === 'columns';
 
@@ -64,7 +65,6 @@ const ApplicationsV2: React.FC = () => {
 
   return (
     <PageContainer role="ApplicationsV2">
-      {isError && <p>{APPLICATIONS_SEARCH_ERROR_MESSAGE}</p>}
       <div className="applications-v2__table">
         <DataTable
           title="Applications"
@@ -77,7 +77,6 @@ const ApplicationsV2: React.FC = () => {
           onSortingChange={setSorting}
           columnVisibility={columnVisibility}
           onColumnVisibilityChange={setColumnVisibility}
-          showColumnVisibilityMenu={false}
           getRowId={(row) => row.id}
           manualSorting
           toolbarActions={

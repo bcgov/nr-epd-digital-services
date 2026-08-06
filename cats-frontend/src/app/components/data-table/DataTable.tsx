@@ -10,7 +10,6 @@ import {
   type VisibilityState,
 } from '@tanstack/react-table';
 import { DropdownIcon, DropdownUpIcon, SortIcon } from '../common/icon';
-import { ColumnVisibilityMenu } from './ColumnVisibilityMenu';
 import { stickyColumnClassName } from './columnMeta';
 import { MemoizedTableRow } from './MemoizedTableRow';
 import './DataTable.css';
@@ -21,7 +20,7 @@ export interface DataTableProps<TData> {
   ariaLabel: string;
   /** Optional page/section title rendered inline with toolbar controls. */
   title?: ReactNode;
-  /** Extra controls rendered to the left of the Columns menu. */
+  /** Extra controls rendered in the table toolbar. */
   toolbarActions?: ReactNode;
   /** Content rendered between the toolbar header and the table (e.g. filter panel). */
   belowHeader?: ReactNode;
@@ -29,11 +28,7 @@ export interface DataTableProps<TData> {
   onSortingChange?: OnChangeFn<SortingState>;
   columnVisibility?: VisibilityState;
   onColumnVisibilityChange?: OnChangeFn<VisibilityState>;
-  onSaveColumnDefaults?: () => void | Promise<void>;
-  onResetColumnVisibility?: () => void;
-  isSavingColumnDefaults?: boolean;
   getRowId?: (row: TData) => string;
-  showColumnVisibilityMenu?: boolean;
   /** When true, sorting is controlled externally (e.g. server-side). */
   manualSorting?: boolean;
   /** Called when a data row is clicked (excluding header). */
@@ -68,11 +63,7 @@ export function DataTable<TData>({
   onSortingChange: controlledOnSortingChange,
   columnVisibility: controlledColumnVisibility,
   onColumnVisibilityChange: controlledOnColumnVisibilityChange,
-  onSaveColumnDefaults,
-  onResetColumnVisibility,
-  isSavingColumnDefaults = false,
   getRowId,
-  showColumnVisibilityMenu = true,
   manualSorting = false,
   onRowClick,
   isLoading = false,
@@ -108,30 +99,20 @@ export function DataTable<TData>({
 
   const headerGroups = useMemo(
     () => table.getHeaderGroups(),
-    // table identity is stable; refresh headers when visual state changes
+    // TanStack Table's instance is referentially stable; recompute headers when
+    // sort/visibility/column defs change (see react-hooks/exhaustive-deps).
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [table, sorting, columnVisibility, columns],
   );
 
-  const showHeader =
-    Boolean(title) || Boolean(toolbarActions) || showColumnVisibilityMenu;
+  const showHeader = Boolean(title) || Boolean(toolbarActions);
 
   return (
     <div className="data-table">
       {showHeader && (
         <div className="data-table__header">
           {title ? <h1 className="data-table__title">{title}</h1> : null}
-          <div className="data-table__toolbar">
-            {toolbarActions}
-            {showColumnVisibilityMenu && (
-              <ColumnVisibilityMenu
-                table={table}
-                onSaveDefault={onSaveColumnDefaults}
-                onReset={onResetColumnVisibility}
-                isSavingDefault={isSavingColumnDefaults}
-              />
-            )}
-          </div>
+          <div className="data-table__toolbar">{toolbarActions}</div>
         </div>
       )}
 
