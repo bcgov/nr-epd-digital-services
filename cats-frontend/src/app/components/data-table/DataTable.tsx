@@ -9,11 +9,7 @@ import {
   type SortingState,
   type VisibilityState,
 } from '@tanstack/react-table';
-import {
-  DropdownIcon,
-  DropdownUpIcon,
-  SortIcon,
-} from '../common/icon';
+import { DropdownIcon, DropdownUpIcon, SortIcon } from '../common/icon';
 import { ColumnVisibilityMenu } from './ColumnVisibilityMenu';
 import { MemoizedTableRow } from './MemoizedTableRow';
 import './DataTable.css';

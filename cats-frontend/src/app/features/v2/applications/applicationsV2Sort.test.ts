@@ -48,7 +48,9 @@ describe('applicationsV2Sort', () => {
   it('does not map unknown columns (no fall-through to ID)', () => {
     expect(columnIdToSortBy('staffAssigned')).toBeUndefined();
     expect(columnIdToSortBy('view')).toBeUndefined();
-    expect(sortingStateToSortParams([{ id: 'staffAssigned', desc: false }])).toBeNull();
+    expect(
+      sortingStateToSortParams([{ id: 'staffAssigned', desc: false }]),
+    ).toBeNull();
   });
 
   it('round-trips sort params through SortingState', () => {
