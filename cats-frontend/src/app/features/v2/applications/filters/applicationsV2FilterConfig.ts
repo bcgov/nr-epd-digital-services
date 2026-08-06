@@ -6,12 +6,7 @@ export type ApplicationsV2FilterOption = {
 export type ApplicationsV2FilterField =
   | {
       kind: 'text';
-      key:
-        | 'id'
-        | 'commonName'
-        | 'csapReference'
-        | 'siteId'
-        | 'siteAddress';
+      key: 'id' | 'commonName' | 'csapReference' | 'siteId' | 'siteAddress';
       label: string;
       placeholder: string;
       pattern?: RegExp;
@@ -20,10 +15,7 @@ export type ApplicationsV2FilterField =
   | {
       kind: 'dateRange';
       key: 'dateReceived' | 'lastUpdated' | 'dateCompleted';
-      fromKey:
-        | 'dateReceivedFrom'
-        | 'lastUpdatedFrom'
-        | 'dateCompletedFrom';
+      fromKey: 'dateReceivedFrom' | 'lastUpdatedFrom' | 'dateCompletedFrom';
       toKey: 'dateReceivedTo' | 'lastUpdatedTo' | 'dateCompletedTo';
       label: string;
     }

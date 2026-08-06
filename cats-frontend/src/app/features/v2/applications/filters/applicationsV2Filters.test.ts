@@ -10,9 +10,9 @@ import {
 describe('applicationsV2Filters', () => {
   describe('URL ↔ GraphQL mapping', () => {
     it('maps empty advanced filters to no GraphQL filter variables', () => {
-      expect(
-        advancedFiltersToGraphqlVariables(EMPTY_ADVANCED_FILTERS),
-      ).toEqual({});
+      expect(advancedFiltersToGraphqlVariables(EMPTY_ADVANCED_FILTERS)).toEqual(
+        {},
+      );
     });
 
     it('maps each applied advanced field to its GraphQL filter variable(s)', () => {

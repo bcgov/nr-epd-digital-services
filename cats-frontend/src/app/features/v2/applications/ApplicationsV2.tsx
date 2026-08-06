@@ -70,7 +70,9 @@ const ApplicationsV2: React.FC = () => {
                 aria-expanded={showFilterPanel}
                 aria-controls="applications-v2-filter-panel"
                 className={
-                  showFilterPanel ? 'table-controls__button--selected' : undefined
+                  showFilterPanel
+                    ? 'table-controls__button--selected'
+                    : undefined
                 }
                 onClick={() => setShowFilterPanel((open) => !open)}
               >

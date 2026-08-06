@@ -80,9 +80,7 @@ describe('Applications V2 filters flow', () => {
 
   it('hydrates filters and pills from a shared URL', () => {
     renderWithQueryRouter(<FiltersFlow />, {
-      initialEntries: [
-        '/applications-v2?id=5&siteRiskClassification=pending',
-      ],
+      initialEntries: ['/applications-v2?id=5&siteRiskClassification=pending'],
     });
 
     expect(screen.getByLabelText('Application ID')).toHaveValue('5');
