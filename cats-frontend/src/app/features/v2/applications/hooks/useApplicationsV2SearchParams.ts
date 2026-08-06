@@ -6,10 +6,7 @@ import {
 
 export const useApplicationsV2SearchParams = () => {
   const [params, setParams] = useQueryParams({
-    page: withDefault(
-      NumberParam,
-      DEFAULT_APPLICATIONS_SEARCH_VARIABLES.page,
-    ),
+    page: withDefault(NumberParam, DEFAULT_APPLICATIONS_SEARCH_VARIABLES.page),
     pageSize: withDefault(
       NumberParam,
       DEFAULT_APPLICATIONS_SEARCH_VARIABLES.pageSize,

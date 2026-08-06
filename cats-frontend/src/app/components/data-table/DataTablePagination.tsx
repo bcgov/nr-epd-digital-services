@@ -21,7 +21,8 @@ export function DataTablePagination({
   pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
 }: DataTablePaginationProps) {
   const totalPages = Math.max(Math.ceil(totalCount / pageSize), 0);
-  const currentPage = totalPages === 0 ? 1 : Math.min(Math.max(page, 1), totalPages);
+  const currentPage =
+    totalPages === 0 ? 1 : Math.min(Math.max(page, 1), totalPages);
   const pageWindow = getPageWindow(currentPage, totalPages);
 
   const canGoPrevious = currentPage > 1 && totalPages > 0;
@@ -29,7 +30,11 @@ export function DataTablePagination({
 
   return (
     <div className="data-table-pagination">
-      <div className="data-table-pagination__pages" role="navigation" aria-label="Pagination">
+      <div
+        className="data-table-pagination__pages"
+        role="navigation"
+        aria-label="Pagination"
+      >
         <button
           type="button"
           className="data-table-pagination__button"

@@ -59,7 +59,9 @@ describe('DataTable', () => {
       />,
     );
 
-    expect(screen.getByRole('table', { name: 'Applications' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('table', { name: 'Applications' }),
+    ).toBeInTheDocument();
     expect(screen.getByText('Alpha')).toBeInTheDocument();
 
     rerender(
@@ -206,6 +208,8 @@ describe('DataTable', () => {
     expect(
       screen.queryByRole('button', { name: /Application ID/i }),
     ).not.toBeInTheDocument();
-    expect(screen.getByRole('columnheader', { name: 'Application ID' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('columnheader', { name: 'Application ID' }),
+    ).toBeInTheDocument();
   });
 });

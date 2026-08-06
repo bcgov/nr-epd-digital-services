@@ -112,9 +112,7 @@ export function DataTable<TData>({
           {title ? <h1 className="data-table__title">{title}</h1> : null}
           <div className="data-table__toolbar">
             {toolbarActions}
-            {showColumnVisibilityMenu && (
-              <ColumnVisibilityMenu table={table} />
-            )}
+            {showColumnVisibilityMenu && <ColumnVisibilityMenu table={table} />}
           </div>
         </div>
       )}

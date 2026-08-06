@@ -43,7 +43,9 @@ describe('DataTablePagination', () => {
     );
 
     expect(screen.getByRole('button', { name: 'First page' })).toBeDisabled();
-    expect(screen.getByRole('button', { name: 'Previous page' })).toBeDisabled();
+    expect(
+      screen.getByRole('button', { name: 'Previous page' }),
+    ).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Next page' })).toBeEnabled();
 
     rerender(
@@ -91,7 +93,9 @@ describe('DataTablePagination', () => {
       />,
     );
 
-    expect(screen.queryByRole('button', { name: /Page / })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /Page / }),
+    ).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'First page' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Next page' })).toBeDisabled();
   });
