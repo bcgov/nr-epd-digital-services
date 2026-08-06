@@ -667,6 +667,23 @@ type ColumnPreferencesResponse {
   data: ViewColumnPreferences
 }
 
+type FinancialSummaryDto {
+  totalHoursWorked: Float!
+  totalHoursInvoiced: Int!
+  totalCostOfServicesInCents: Int!
+  totalAmountInvoicedInCents: Int!
+  totalAmountPaidInCents: Int!
+  outstandingBalanceInCents: Int!
+}
+
+type FinancialSummaryResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: FinancialSummaryDto
+}
+
 input EmailRecipientInput {
   email: String!
   personId: Int
@@ -713,6 +730,7 @@ type Query {
   getApplications: DashboardResponse!
   getObject(objectId: String!, downloadType: DownloadType): ComsResponse!
   getUserColumnPreferences(page: String!): ColumnPreferencesResponse!
+  getFinancialSummary(applicationId: Int!): FinancialSummaryResponse!
 }
 
 enum Filter {

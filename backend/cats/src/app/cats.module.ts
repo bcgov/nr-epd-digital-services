@@ -105,6 +105,8 @@ import { ColumnPreferencesService } from './services/application/columnPreferenc
 import { UserColumnPreferences } from './entities/userColumnPreferences.entity';
 import { ApplicationSecondaryServiceType } from './entities/applicationSecondaryServiceType.entity';
 import { ApplicationSubmission } from './entities/applicationSubmission.entity';
+import { FinancialSummaryService } from './services/financialSummary/financialSummary.service';
+import { FinancialSummaryResolver } from './resolvers/financialSummary/financialSummary.resolver';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -217,6 +219,8 @@ import { ApplicationSubmission } from './entities/applicationSubmission.entity';
     ComsResolver,
     ColumnPreferencesResolver,
     ColumnPreferencesService,
+    FinancialSummaryService,
+    FinancialSummaryResolver,
   ],
   controllers: [UserController, EmailController, UploadController],
 })
