@@ -1,23 +1,16 @@
-import { useEffect, useState, useRef } from 'react';
-import { useAuth } from 'react-oidc-context';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import { useLocation, useNavigate, useParams, Outlet } from 'react-router-dom';
-import Actions from '../../../components/action/Actions';
 import PageContainer from '../../../components/simple/PageContainer';
 import NavigationPills from '../../../components/navigation/navigationpills/NavigationPills';
 import CustomLabel from '../../../components/simple/CustomLabel';
-import { ActionItems } from '../../../components/action/ActionsConfig';
-import {
-  CancelButton,
-  SaveButton,
-} from '../../../components/simple/CustomButtons';
-import { UserMode } from '../../../helpers/requests/userMode';
-import { UserAction } from '../../../helpers/requests/UserAction';
 import NavigationBar from '../../../components/navigation-bar/NavigationBar';
-import { UserType } from '../../../helpers/requests/userType';
 import { useGetHeaderDetailsByApplicationIdQuery } from './ApplicationDetails.generated';
 import styles from './ApplicationDetails.module.css';
 import LoadingOverlay from '../../../components/loader/LoadingOverlay';
 import cx from 'classnames';
+import {
+  getApplicationNavigationItems,
+} from '../../navigation/NavigationPillsConfig';
 
 const ApplicationDetails = () => {
   const location = useLocation();
@@ -36,6 +29,11 @@ const ApplicationDetails = () => {
   });
 
   const application = data?.getApplicationDetailsById.data;
+
+  const tabItems = useMemo(
+    () => getApplicationNavigationItems(application?.appType),
+    [application?.appType],
+  );
 
   const onClickBackButton = () => {
     navigate(`/${fromScreenRef.current.replace(/\s+/g, '').toLowerCase()}`);
@@ -166,7 +164,7 @@ const ApplicationDetails = () => {
             )}
           </div>
         )}
-        <NavigationPills />
+        <NavigationPills items={tabItems} />
         <div className="mt-4">
           <Outlet />
         </div>

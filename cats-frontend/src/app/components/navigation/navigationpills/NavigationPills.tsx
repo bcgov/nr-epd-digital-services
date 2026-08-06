@@ -5,12 +5,21 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Actions from '../../action/Actions';
 import { Button } from '../../button/Button';
 
-import { navigationItems } from '../../../features/navigation/NavigationPillsConfig';
+import {
+  DEFAULT_APPLICATION_TAB_PATH,
+  navigationItems as defaultNavigationItems,
+} from '../../../features/navigation/NavigationPillsConfig';
 
-const NavigationPills: React.FC<INavigationPills> = ({ disabled = false }) => {
+const NavigationPills: React.FC<INavigationPills> = ({
+  disabled = false,
+  items,
+}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+  const navigationItems = items ?? defaultNavigationItems;
+  const defaultPath =
+    navigationItems[0]?.path ?? DEFAULT_APPLICATION_TAB_PATH;
 
   const currentPath = useMemo(() => {
     const pathSegments = location.pathname.split('/');
@@ -19,36 +28,58 @@ const NavigationPills: React.FC<INavigationPills> = ({ disabled = false }) => {
     const currentComponent = navigationItems.find(
       (item) => item.path === lastSegment,
     );
-    return currentComponent?.path || navigationItems[0].path;
-  }, [location.pathname]);
+    return currentComponent?.path || defaultPath;
+  }, [location.pathname, navigationItems, defaultPath]);
 
+  // Keep the URL on a tab that is visible for this app type (CSSA vs non-CSSA).
+  // `navigationItems` = filtered pills; `defaultNavigationItems` = full tab set.
   useEffect(() => {
-    if (
-      id &&
-      !navigationItems.some((item) => location.pathname.endsWith(item.path))
-    ) {
-      const newPath = `${location.pathname}/${navigationItems[0].path}`;
-      navigate(newPath, { replace: true });
+    if (!id || navigationItems.length === 0) {
+      return;
     }
-  }, [location.pathname, navigate, id]);
+
+    // e.g. /applications/123/details → ['applications', '123', 'details']
+    const segments = location.pathname.split('/').filter(Boolean);
+    const lastSegment = segments[segments.length - 1];
+
+    // Already on a visible tab (e.g. /notes when Notes is in the filtered list)
+    const onKnownTab = navigationItems.some(
+      (item) => item.path === lastSegment,
+    );
+
+    if (!onKnownTab) {
+      // Last segment may be a hidden tab (e.g. non-CSSA on /details) or the app id
+      // (/applications/123). Only pop real tab paths so we don't drop the id.
+      const allTabPaths = new Set(
+        defaultNavigationItems.map((item) => item.path),
+      );
+      if (allTabPaths.has(lastSegment)) {
+        segments.pop();
+      }
+      // Land on default tab (Application) without creating .../details/application
+      navigate(`/${[...segments, defaultPath].join('/')}`, { replace: true });
+    }
+  }, [location.pathname, navigate, id, navigationItems, defaultPath]);
 
   const handlePillClick = (tabKey: string) => {
     const component = navigationItems.find((item) => item.value === tabKey);
     if (component) {
-      const currentPathSegments = location.pathname.split('/');
-      currentPathSegments.pop();
-      const newPath = `${currentPathSegments.join('/')}/${component.path}`;
-      navigate(newPath);
+      // Replace the current tab segment (if any) with the clicked tab's path
+      const segments = location.pathname.split('/').filter(Boolean);
+      const lastSegment = segments[segments.length - 1];
+      const allTabPaths = new Set(
+        defaultNavigationItems.map((item) => item.path),
+      );
+      if (allTabPaths.has(lastSegment)) {
+        segments.pop();
+      }
+      navigate(`/${[...segments, component.path].join('/')}`);
     }
   };
 
   const getCurrentElementIndex = useCallback(() => {
-    const currentComponentIndex = navigationItems.findIndex(
-      (tab: any) => tab.path === currentPath,
-    );
-
-    return currentComponentIndex;
-  }, [currentPath]);
+    return navigationItems.findIndex((tab) => tab.path === currentPath);
+  }, [currentPath, navigationItems]);
 
   const isActiveTabFirstPosition = () => {
     return getCurrentElementIndex() === 0;
