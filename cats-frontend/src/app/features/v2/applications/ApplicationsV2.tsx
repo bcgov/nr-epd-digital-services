@@ -54,8 +54,7 @@ const ApplicationsV2: React.FC = () => {
   const totalCount = data?.count ?? 0;
   // Full loading row only on the first fetch; subsequent page changes keep
   // previous rows and use a subtler in-place fetching affordance.
-  const showInitialLoading =
-    isLoadingPreferences || (isPending && !data);
+  const showInitialLoading = isLoadingPreferences || (isPending && !data);
   const showFilterPanel = openPanel === 'filters';
   const showColumnPanel = openPanel === 'columns';
 

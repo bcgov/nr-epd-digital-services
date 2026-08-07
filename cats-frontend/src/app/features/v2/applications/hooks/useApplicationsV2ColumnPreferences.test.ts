@@ -132,14 +132,10 @@ describe('useApplicationsV2ColumnPreferences', () => {
     expect(result.current.columnVisibility.status).toBe(false);
 
     await act(async () => {
-      resolvePreferences([
-        { id: 6, displayName: 'Status', active: true },
-      ]);
+      resolvePreferences([{ id: 6, displayName: 'Status', active: true }]);
     });
 
-    await waitFor(() =>
-      expect(getPreferencesMock).toHaveBeenCalled(),
-    );
+    await waitFor(() => expect(getPreferencesMock).toHaveBeenCalled());
 
     expect(result.current.columnVisibility.status).toBe(false);
   });
