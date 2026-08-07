@@ -43,7 +43,9 @@ describe('applicationsV2Sort', () => {
       .map((column) => column.id);
 
     expect(sortableIds).toHaveLength(SORTABLE_COLUMN_IDS.length);
-    expect(sortableIds).toEqual(expect.arrayContaining([...SORTABLE_COLUMN_IDS]));
+    expect(sortableIds).toEqual(
+      expect.arrayContaining([...SORTABLE_COLUMN_IDS]),
+    );
   });
 
   it('does not map unknown columns (no fall-through to ID)', () => {

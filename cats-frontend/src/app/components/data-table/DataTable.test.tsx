@@ -327,14 +327,16 @@ describe('DataTable', () => {
       />,
     );
 
-    expect(
-      screen.getByRole('columnheader', { name: 'Actions' }),
-    ).toHaveClass('data-table__cell--sticky-right');
+    expect(screen.getByRole('columnheader', { name: 'Actions' })).toHaveClass(
+      'data-table__cell--sticky-right',
+    );
 
     const table = screen.getByRole('table', { name: 'Applications' });
     const actionCells = within(table)
       .getAllByRole('cell')
-      .filter((cell) => cell.classList.contains('data-table__cell--sticky-right'));
+      .filter((cell) =>
+        cell.classList.contains('data-table__cell--sticky-right'),
+      );
     expect(actionCells).toHaveLength(2);
     expect(actionCells[0]).toHaveTextContent('Manage');
   });

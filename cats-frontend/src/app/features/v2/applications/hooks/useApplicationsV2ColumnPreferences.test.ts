@@ -5,10 +5,9 @@ import { DEFAULT_APPLICATIONS_V2_COLUMN_VISIBILITY } from '../applicationsV2Colu
 import { useApplicationsV2ColumnPreferences } from './useApplicationsV2ColumnPreferences';
 
 vi.mock('../api/ColumnPreferencesApi', async () => {
-  const actual =
-    await vi.importActual<typeof import('../api/ColumnPreferencesApi')>(
-      '../api/ColumnPreferencesApi',
-    );
+  const actual = await vi.importActual<
+    typeof import('../api/ColumnPreferencesApi')
+  >('../api/ColumnPreferencesApi');
   return {
     ...actual,
     getApplicationsColumnPreferences: vi.fn(),
@@ -40,7 +39,9 @@ describe('useApplicationsV2ColumnPreferences', () => {
       { initialEntries: ['/applications-v2'] },
     );
 
-    await waitFor(() => expect(result.current.isLoadingPreferences).toBe(false));
+    await waitFor(() =>
+      expect(result.current.isLoadingPreferences).toBe(false),
+    );
 
     expect(result.current.columnVisibility).toMatchObject({
       ...DEFAULT_APPLICATIONS_V2_COLUMN_VISIBILITY,
@@ -59,7 +60,9 @@ describe('useApplicationsV2ColumnPreferences', () => {
       { initialEntries: ['/applications-v2'] },
     );
 
-    await waitFor(() => expect(result.current.isLoadingPreferences).toBe(false));
+    await waitFor(() =>
+      expect(result.current.isLoadingPreferences).toBe(false),
+    );
 
     expect(result.current.columnVisibility).toEqual(
       DEFAULT_APPLICATIONS_V2_COLUMN_VISIBILITY,
@@ -108,7 +111,9 @@ describe('useApplicationsV2ColumnPreferences', () => {
       { initialEntries: ['/applications-v2'] },
     );
 
-    await waitFor(() => expect(result.current.isLoadingPreferences).toBe(false));
+    await waitFor(() =>
+      expect(result.current.isLoadingPreferences).toBe(false),
+    );
 
     act(() => {
       result.current.setColumnVisibility({

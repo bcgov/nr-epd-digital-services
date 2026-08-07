@@ -112,7 +112,9 @@ describe('applicationsV2Columns', () => {
       .map((column) => column.id);
 
     expect(sortableIds).toHaveLength(SORTABLE_COLUMN_IDS.length);
-    expect(sortableIds).toEqual(expect.arrayContaining([...SORTABLE_COLUMN_IDS]));
+    expect(sortableIds).toEqual(
+      expect.arrayContaining([...SORTABLE_COLUMN_IDS]),
+    );
   });
 
   it('does not allow hiding the View column', () => {
@@ -163,9 +165,9 @@ describe('applicationsV2Columns', () => {
   it('keeps the Actions column sticky on the right', () => {
     renderColumnsTable();
 
-    expect(
-      screen.getByRole('columnheader', { name: 'Actions' }),
-    ).toHaveClass('data-table__cell--sticky-right');
+    expect(screen.getByRole('columnheader', { name: 'Actions' })).toHaveClass(
+      'data-table__cell--sticky-right',
+    );
 
     const manageStaffCell = screen
       .getByRole('link', {

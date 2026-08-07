@@ -1,4 +1,8 @@
-import type { ColumnDef, OnChangeFn, VisibilityState } from '@tanstack/react-table';
+import type {
+  ColumnDef,
+  OnChangeFn,
+  VisibilityState,
+} from '@tanstack/react-table';
 import { Button } from '../../../components/button/Button';
 import './ApplicationsV2ColumnPanel.css';
 
@@ -27,8 +31,7 @@ const hideableColumnOptions = <TData,>(
     return [
       {
         id: column.id,
-        label:
-          typeof column.header === 'string' ? column.header : column.id,
+        label: typeof column.header === 'string' ? column.header : column.id,
       },
     ];
   });

@@ -40,7 +40,11 @@ const COLUMN_PREFERENCE_DEFS = [
     columnId: 'siteRiskClassification',
     displayName: 'Site Risk Classification',
   },
-  { preferenceId: 12, columnId: 'csapReference', displayName: 'CSAP Reference' },
+  {
+    preferenceId: 12,
+    columnId: 'csapReference',
+    displayName: 'CSAP Reference',
+  },
   { preferenceId: 13, columnId: 'serviceType', displayName: 'Service Type' },
   { preferenceId: 14, columnId: 'commonName', displayName: 'Common Name' },
   { preferenceId: 9, columnId: 'view', displayName: 'View' },

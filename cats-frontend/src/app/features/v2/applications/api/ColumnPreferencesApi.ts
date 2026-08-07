@@ -88,12 +88,16 @@ export const saveApplicationsColumnPreferences = async (
     );
 
     if (response.data?.errors?.length > 0) {
-      throw new ColumnPreferencesApiError(COLUMN_PREFERENCES_SAVE_ERROR_MESSAGE);
+      throw new ColumnPreferencesApiError(
+        COLUMN_PREFERENCES_SAVE_ERROR_MESSAGE,
+      );
     }
 
     const payload = response.data?.data?.saveUserColumnPreferences;
     if (!payload?.success) {
-      throw new ColumnPreferencesApiError(COLUMN_PREFERENCES_SAVE_ERROR_MESSAGE);
+      throw new ColumnPreferencesApiError(
+        COLUMN_PREFERENCES_SAVE_ERROR_MESSAGE,
+      );
     }
   } catch (error) {
     if (signal?.aborted) {
