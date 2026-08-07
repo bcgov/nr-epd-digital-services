@@ -278,7 +278,6 @@ describe('useApplicationsV2SearchParams', () => {
     });
   });
 
-
   it('applies advanced filters to the URL and resets to page 1', async () => {
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2SearchParams(),

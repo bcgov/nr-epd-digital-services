@@ -4,10 +4,9 @@ import * as ApplicationsLookupsApi from '../api/ApplicationsLookupsApi';
 import { useApplicationsV2FilterLookups } from './useApplicationsV2FilterLookups';
 
 vi.mock('../api/ApplicationsLookupsApi', async () => {
-  const actual =
-    await vi.importActual<typeof import('../api/ApplicationsLookupsApi')>(
-      '../api/ApplicationsLookupsApi',
-    );
+  const actual = await vi.importActual<
+    typeof import('../api/ApplicationsLookupsApi')
+  >('../api/ApplicationsLookupsApi');
   return {
     ...actual,
     getApplicationsV2FilterLookupOptions: vi.fn(),

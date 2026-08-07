@@ -25,9 +25,7 @@ const sortByLabel = (
 const dedupeByValue = (
   options: ApplicationsV2FilterOption[],
 ): ApplicationsV2FilterOption[] =>
-  Array.from(
-    new Map(options.map((option) => [option.value, option])).values(),
-  );
+  Array.from(new Map(options.map((option) => [option.value, option])).values());
 
 export const getApplicationsV2FilterLookupOptions = async (
   signal?: AbortSignal,
@@ -76,12 +74,10 @@ export const getApplicationsV2FilterLookupOptions = async (
         })),
       ),
       staffAssigned: sortByLabel(
-        staff.map(
-          (member: { personId: number; personFullName: string }) => ({
-            value: member.personId.toString(),
-            label: member.personFullName,
-          }),
-        ),
+        staff.map((member: { personId: number; personFullName: string }) => ({
+          value: member.personId.toString(),
+          label: member.personFullName,
+        })),
       ),
     };
   } catch (error) {

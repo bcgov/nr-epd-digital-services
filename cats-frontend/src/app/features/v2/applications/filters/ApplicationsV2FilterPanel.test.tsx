@@ -88,9 +88,7 @@ describe('ApplicationsV2FilterPanel', () => {
     expect(screen.getByRole('option', { name: 'Service One' })).toHaveValue(
       'svc-1',
     );
-    expect(screen.getByRole('option', { name: 'Ann Baker' })).toHaveValue(
-      '12',
-    );
+    expect(screen.getByRole('option', { name: 'Ann Baker' })).toHaveValue('12');
   });
 
   it('disables lookup dropdowns while options are loading', () => {
