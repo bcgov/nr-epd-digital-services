@@ -1,4 +1,5 @@
 import { useMemo, useState, type ReactNode } from 'react';
+import clsx from 'clsx';
 import {
   flexRender,
   getCoreRowModel,
@@ -121,7 +122,10 @@ export function DataTable<TData>({
       ) : null}
 
       <div
-        className={`data-table__scroll${isFetching ? ' data-table__scroll--fetching' : ''}`}
+        className={clsx(
+          'data-table__scroll',
+          isFetching && 'data-table__scroll--fetching',
+        )}
         aria-busy={isLoading || isFetching || undefined}
       >
         <table className="data-table__table" aria-label={ariaLabel}>
