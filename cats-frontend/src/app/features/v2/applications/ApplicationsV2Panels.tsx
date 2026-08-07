@@ -75,7 +75,10 @@ export function ApplicationsV2Panels({
         </div>
       )}
       {filterPills.length > 0 && (
-        <FilterPills filters={filterPills} onRemoveFilter={onRemoveFilterPill} />
+        <FilterPills
+          filters={filterPills}
+          onRemoveFilter={onRemoveFilterPill}
+        />
       )}
     </>
   );
