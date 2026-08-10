@@ -103,26 +103,16 @@ objects:
             imagePullPolicy: Always
             name: ${NAME}-${COMPONENT}
             env:
-            - name: POSTGRESQL_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRESQL_HOST
             - name: POSTGRES_HOST
               valueFrom:
                 configMapKeyRef:
                   name: ${NAME}-database
                   key: POSTGRES_HOST
-            - name: POSTGRESQL_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRESQL_PORT
             - name: POSTGRES_PORT
               valueFrom:
                 configMapKeyRef:
                   name: ${NAME}-database
-                  key: POSTGRESQL_PORT
+                  key: POSTGRES_PORT
             - name: POSTGRES_DATABASE
               valueFrom:
                 configMapKeyRef:
@@ -268,26 +258,16 @@ objects:
             env:
             - name: Typeorm-migration
               value: "jdbc:postgresql://${COMPONENT}-postgres:5432/${COMPONENT}"
-            - name: POSTGRESQL_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRESQL_HOST
             - name: POSTGRES_HOST
               valueFrom:
                 configMapKeyRef:
                   name: ${NAME}-database
                   key: POSTGRES_HOST
-            - name: POSTGRESQL_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: ${NAME}-database
-                  key: POSTGRESQL_PORT
             - name: POSTGRES_PORT
               valueFrom:
                 configMapKeyRef:
                   name: ${NAME}-database
-                  key: POSTGRESQL_PORT
+                  key: POSTGRES_PORT
             - name: POSTGRES_DATABASE
               valueFrom:
                 configMapKeyRef:

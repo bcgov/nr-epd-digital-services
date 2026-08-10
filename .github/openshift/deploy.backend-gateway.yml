@@ -81,12 +81,12 @@ objects:
               imagePullPolicy: Always
               name: ${NAME}-${COMPONENT}
               env:
-                - name: POSTGRESQL_HOST
+                - name: POSTGRES_HOST
                   valueFrom:
                     configMapKeyRef:
                       name: ${NAME}-database
-                      key: POSTGRESQL_HOST
-                - name: POSTGRESQL_DATABASE
+                      key: POSTGRES_HOST
+                - name: POSTGRES_DATABASE
                   valueFrom:
                     configMapKeyRef:
                       name: ${NAME}-database
