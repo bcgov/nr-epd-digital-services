@@ -118,6 +118,11 @@ objects:
                 configMapKeyRef:
                   name: ${NAME}-database
                   key: POSTGRESQL_PORT
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: ${NAME}-database
+                  key: POSTGRESQL_PORT
             - name: POSTGRES_DATABASE
               valueFrom:
                 configMapKeyRef:
@@ -274,6 +279,11 @@ objects:
                   name: ${NAME}-database
                   key: POSTGRES_HOST
             - name: POSTGRESQL_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: ${NAME}-database
+                  key: POSTGRESQL_PORT
+            - name: POSTGRES_PORT
               valueFrom:
                 configMapKeyRef:
                   name: ${NAME}-database

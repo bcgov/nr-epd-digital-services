@@ -53,7 +53,9 @@ objects:
       name: ${NAME}-${COMPONENT}
     data:
       POSTGRESQL_HOST: epd-database
+      POSTGRES_HOST: epd-database
       POSTGRESQL_PORT: "5432"
+      POSTGRES_PORT: "5432"
       POSTGRES_DATABASE: epd_dev
       POSTGRES_DB_SCHEMA: epd_users
 
