@@ -19,6 +19,11 @@ import {
   sortingStateToSortParams,
 } from '../applicationsV2Sort';
 import {
+  EMPTY_LOOKUP_OPTIONS,
+  resolveApplicationsV2FilterFields,
+  type ApplicationsV2LookupOptions,
+} from '../filters/applicationsV2FilterConfig';
+import {
   advancedFiltersToGraphqlVariables,
   advancedFiltersToPills,
   ADVANCED_FILTER_URL_KEYS,
@@ -45,7 +50,9 @@ const advancedFilterParamConfig = Object.fromEntries(
   ADVANCED_FILTER_URL_KEYS.map((key) => [key, StringParam]),
 ) as Record<(typeof ADVANCED_FILTER_URL_KEYS)[number], typeof StringParam>;
 
-export const useApplicationsV2SearchParams = () => {
+export const useApplicationsV2SearchParams = (
+  lookupOptions: ApplicationsV2LookupOptions = EMPTY_LOOKUP_OPTIONS,
+) => {
   const [params, setParams] = useQueryParams({
     page: withDefault(NumberParam, DEFAULT_APPLICATIONS_SEARCH_VARIABLES.page),
     pageSize: withDefault(
@@ -75,7 +82,8 @@ export const useApplicationsV2SearchParams = () => {
     : DEFAULT_APPLICATIONS_SEARCH_VARIABLES.sortByDir;
 
   const advancedFilters = parseAdvancedFiltersFromUrl(params);
-  const filterPills = advancedFiltersToPills(advancedFilters);
+  const filterFields = resolveApplicationsV2FilterFields(lookupOptions);
+  const filterPills = advancedFiltersToPills(advancedFilters, filterFields);
 
   const sorting = sortParamsToSortingState(sortBy, sortByDir);
 

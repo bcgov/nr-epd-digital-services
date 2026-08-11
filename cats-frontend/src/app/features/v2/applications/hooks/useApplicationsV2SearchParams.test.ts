@@ -224,6 +224,60 @@ describe('useApplicationsV2SearchParams', () => {
     ]);
   });
 
+  it('maps backend-backed dropdown filters from the URL into GraphQL variables and labeled pills', () => {
+    const lookupOptions = {
+      serviceType: [{ value: 'svc-1', label: 'Service One' }],
+      applicationType: [{ value: '3', label: 'Type Three' }],
+      status: [{ value: 'Open', label: 'Open' }],
+      staffAssigned: [{ value: '12', label: 'Ann Baker' }],
+    };
+
+    const { result } = renderHookWithQueryRouter(
+      () => useApplicationsV2SearchParams(lookupOptions),
+      {
+        initialEntries: [
+          '/applications-v2?serviceType=svc-1&applicationType=3&status=Open&staffAssigned=12',
+        ],
+      },
+    );
+
+    expect(result.current.variables.filterServiceType).toBe('svc-1');
+    expect(result.current.variables.filterApplicationType).toBe('3');
+    expect(result.current.variables.filterStatus).toBe('Open');
+    expect(result.current.variables.filterStaffAssigned).toBe('12');
+    expect(result.current.filterPills).toEqual([
+      { key: 'serviceType', label: 'Service Type', value: 'Service One' },
+      {
+        key: 'applicationType',
+        label: 'Application Type',
+        value: 'Type Three',
+      },
+      { key: 'staffAssigned', label: 'Staff Assigned', value: 'Ann Baker' },
+      { key: 'status', label: 'Status', value: 'Open' },
+    ]);
+  });
+
+  it('applies backend-backed dropdown filters and resets to page 1', async () => {
+    const { result } = renderHookWithQueryRouter(
+      () => useApplicationsV2SearchParams(),
+      { initialEntries: ['/applications-v2?page=3'] },
+    );
+
+    act(() => {
+      result.current.applyAdvancedFilters({
+        ...EMPTY_ADVANCED_FILTERS,
+        serviceType: 'svc-1',
+        staffAssigned: '12',
+      });
+    });
+
+    await waitFor(() => {
+      expect(result.current.variables.filterServiceType).toBe('svc-1');
+      expect(result.current.variables.filterStaffAssigned).toBe('12');
+      expect(result.current.page).toBe(1);
+    });
+  });
+
   it('applies advanced filters to the URL and resets to page 1', async () => {
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2SearchParams(),

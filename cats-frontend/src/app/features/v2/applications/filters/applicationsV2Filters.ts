@@ -6,11 +6,15 @@ import {
 
 export type ApplicationsV2AdvancedFilters = {
   id: string;
+  serviceType: string;
+  applicationType: string;
   commonName: string;
   csapReference: string;
   siteId: string;
   siteAddress: string;
   siteRiskClassification: string;
+  status: string;
+  staffAssigned: string;
   priority: string;
   invoiceStatus: string;
   dateReceivedFrom: string;
@@ -26,11 +30,15 @@ export type ApplicationsV2AdvancedFilterUrlKey =
 
 export const EMPTY_ADVANCED_FILTERS: ApplicationsV2AdvancedFilters = {
   id: '',
+  serviceType: '',
+  applicationType: '',
   commonName: '',
   csapReference: '',
   siteId: '',
   siteAddress: '',
   siteRiskClassification: '',
+  status: '',
+  staffAssigned: '',
   priority: '',
   invoiceStatus: '',
   dateReceivedFrom: '',
@@ -52,11 +60,15 @@ export const parseAdvancedFiltersFromUrl = (
   params: Partial<Record<ApplicationsV2AdvancedFilterUrlKey, string | null>>,
 ): ApplicationsV2AdvancedFilters => ({
   id: asString(params.id),
+  serviceType: asString(params.serviceType),
+  applicationType: asString(params.applicationType),
   commonName: asString(params.commonName),
   csapReference: asString(params.csapReference),
   siteId: asString(params.siteId),
   siteAddress: asString(params.siteAddress),
   siteRiskClassification: asString(params.siteRiskClassification),
+  status: asString(params.status),
+  staffAssigned: asString(params.staffAssigned),
   priority: asString(params.priority),
   invoiceStatus: asString(params.invoiceStatus),
   dateReceivedFrom: asString(params.dateReceivedFrom),
@@ -73,6 +85,9 @@ export const advancedFiltersToGraphqlVariables = (
   const variables: Record<string, string> = {};
 
   if (filters.id) variables.filterId = filters.id;
+  if (filters.serviceType) variables.filterServiceType = filters.serviceType;
+  if (filters.applicationType)
+    variables.filterApplicationType = filters.applicationType;
   if (filters.commonName) variables.filterCommonName = filters.commonName;
   if (filters.csapReference)
     variables.filterCsapReference = filters.csapReference;
@@ -80,6 +95,9 @@ export const advancedFiltersToGraphqlVariables = (
   if (filters.siteAddress) variables.filterSiteAddress = filters.siteAddress;
   if (filters.siteRiskClassification)
     variables.filterSiteRiskClassification = filters.siteRiskClassification;
+  if (filters.status) variables.filterStatus = filters.status;
+  if (filters.staffAssigned)
+    variables.filterStaffAssigned = filters.staffAssigned;
   if (filters.priority) variables.filterPriority = filters.priority;
   if (filters.invoiceStatus)
     variables.filterInvoiceStatus = filters.invoiceStatus;
@@ -139,10 +157,11 @@ const formatDateRange = (from: string, to: string): string => {
 
 export const advancedFiltersToPills = (
   filters: ApplicationsV2AdvancedFilters,
+  fields: ApplicationsV2FilterField[] = APPLICATIONS_V2_FILTER_FIELDS,
 ): FilterPill[] => {
   const pills: FilterPill[] = [];
 
-  for (const field of APPLICATIONS_V2_FILTER_FIELDS) {
+  for (const field of fields) {
     if (field.kind === 'dateRange') {
       const from = filters[field.fromKey];
       const to = filters[field.toKey];

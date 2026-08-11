@@ -65,6 +65,64 @@ describe('ApplicationsV2FilterPanel', () => {
     expect(onApply).not.toHaveBeenCalled();
   });
 
+  it('renders backend-backed dropdowns from lookup options props', () => {
+    render(
+      <ApplicationsV2FilterPanel
+        appliedFilters={EMPTY_ADVANCED_FILTERS}
+        lookupOptions={{
+          serviceType: [{ value: 'svc-1', label: 'Service One' }],
+          applicationType: [{ value: '3', label: 'Type Three' }],
+          status: [{ value: 'Open', label: 'Open' }],
+          staffAssigned: [{ value: '12', label: 'Ann Baker' }],
+        }}
+        onApply={vi.fn()}
+        onReset={vi.fn()}
+        onCancel={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByLabelText('Service Type')).toBeInTheDocument();
+    expect(screen.getByLabelText('Application Type')).toBeInTheDocument();
+    expect(screen.getByLabelText('Status')).toBeInTheDocument();
+    expect(screen.getByLabelText('Staff Assigned')).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'Service One' })).toHaveValue(
+      'svc-1',
+    );
+    expect(screen.getByRole('option', { name: 'Ann Baker' })).toHaveValue('12');
+  });
+
+  it('disables lookup dropdowns while options are loading', () => {
+    render(
+      <ApplicationsV2FilterPanel
+        appliedFilters={EMPTY_ADVANCED_FILTERS}
+        lookupsLoading
+        onApply={vi.fn()}
+        onReset={vi.fn()}
+        onCancel={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByLabelText('Service Type')).toBeDisabled();
+    expect(screen.getByLabelText('Priority')).not.toBeDisabled();
+  });
+
+  it('shows a soft error and disables lookup dropdowns when lookups fail', () => {
+    render(
+      <ApplicationsV2FilterPanel
+        appliedFilters={EMPTY_ADVANCED_FILTERS}
+        lookupsError
+        onApply={vi.fn()}
+        onReset={vi.fn()}
+        onCancel={vi.fn()}
+      />,
+    );
+
+    expect(
+      screen.getByTestId('applications-v2-filter-lookups-error'),
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText('Staff Assigned')).toBeDisabled();
+  });
+
   it('abandons draft edits on Cancel', () => {
     const onApply = vi.fn();
     const onReset = vi.fn();
