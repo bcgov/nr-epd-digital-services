@@ -19,6 +19,10 @@ RUN npm ci --silent
 
 # add app files
 COPY . ./
+
+# Allocate extra build memory to avoid a heap allocation error I encountered.
+ENV NODE_OPTIONS=--max-old-space-size=4096
+
 RUN npm run build
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
 FROM nginx:alpine AS deploy
