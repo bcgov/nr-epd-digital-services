@@ -1,4 +1,4 @@
-query SearchApplications(
+query SearchApplicationsV2(
   $searchParam: String!
   $page: Int!
   $pageSize: Int!
@@ -6,15 +6,11 @@ query SearchApplications(
   $sortBy: ApplicationSortByField!
   $sortByDir: ApplicationSortByDirection!
   $filterId: String
-  $filterServiceType: String
   $filterCommonName: String
   $filterCsapReference: String
   $filterSiteId: String
-  $filterSiteRiskClassification: String
   $filterSiteAddress: String
-  $filterApplicationType: String
-  $filterStatus: String
-  $filterStaffAssigned: String
+  $filterSiteRiskClassification: String
   $filterPriority: String
   $filterDateReceivedFrom: DateTime
   $filterDateReceivedTo: DateTime
@@ -23,6 +19,10 @@ query SearchApplications(
   $filterDateCompletedFrom: DateTime
   $filterDateCompletedTo: DateTime
   $filterInvoiceStatus: String
+  $filterServiceType: String
+  $filterApplicationType: String
+  $filterStatus: String
+  $filterStaffAssigned: String
 ) {
   searchApplications(
     searchParam: $searchParam
@@ -32,15 +32,11 @@ query SearchApplications(
     sortBy: $sortBy
     sortByDir: $sortByDir
     filterId: $filterId
-    filterServiceType: $filterServiceType
     filterCommonName: $filterCommonName
     filterCsapReference: $filterCsapReference
     filterSiteId: $filterSiteId
-    filterSiteRiskClassification: $filterSiteRiskClassification
     filterSiteAddress: $filterSiteAddress
-    filterApplicationType: $filterApplicationType
-    filterStatus: $filterStatus
-    filterStaffAssigned: $filterStaffAssigned
+    filterSiteRiskClassification: $filterSiteRiskClassification
     filterPriority: $filterPriority
     filterDateReceivedFrom: $filterDateReceivedFrom
     filterDateReceivedTo: $filterDateReceivedTo
@@ -49,45 +45,19 @@ query SearchApplications(
     filterDateCompletedFrom: $filterDateCompletedFrom
     filterDateCompletedTo: $filterDateCompletedTo
     filterInvoiceStatus: $filterInvoiceStatus
+    filterServiceType: $filterServiceType
+    filterApplicationType: $filterApplicationType
+    filterStatus: $filterStatus
+    filterStaffAssigned: $filterStaffAssigned
   ) {
     applications {
       id
       siteId
-      siteAddress
       applicationType
-      lastUpdated
       status
-      staffAssigned {
-        firstName
-        lastName
-      }
-      priority
-      url
-      siteRiskClassification
-      csapReference         
-      serviceType           
-      commonName
-      receivedDate
-      dateCompleted
     }
     count
     page
     pageSize
-  }
-}
-
-query getAllStatusTypes {
-  getAllStatusTypes {
-    id
-    abbrev
-    description
-  }
-}
-
-query getAllAppTypes {
-  getAllAppTypes {
-    id
-    abbrev
-    description
   }
 }
