@@ -25,6 +25,8 @@ export class ApplicationsApiError extends Error {
 export type ApplicationsSearchResult =
   SearchApplicationsV2Query['searchApplications'];
 
+export type { SearchApplicationsV2QueryVariables };
+
 export const DEFAULT_APPLICATIONS_SEARCH_VARIABLES: SearchApplicationsV2QueryVariables =
   {
     searchParam: '',
