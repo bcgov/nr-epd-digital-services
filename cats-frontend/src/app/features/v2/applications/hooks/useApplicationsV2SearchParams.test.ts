@@ -40,6 +40,16 @@ describe('useApplicationsV2SearchParams', () => {
     expect(result.current.variables.pageSize).toBe(25);
   });
 
+  it('reads search from the URL into variables.searchParam', () => {
+    const { result } = renderHookWithQueryRouter(
+      () => useApplicationsV2SearchParams(),
+      { initialEntries: ['/applications-v2?search=site-42'] },
+    );
+
+    expect(result.current.search).toBe('site-42');
+    expect(result.current.variables.searchParam).toBe('site-42');
+  });
+
   it('reads sortBy and sortByDir from the URL into variables and sorting', () => {
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2SearchParams(),
@@ -141,6 +151,40 @@ describe('useApplicationsV2SearchParams', () => {
         ApplicationSortByDirection.Desc,
       );
       expect(result.current.sorting).toEqual([{ id: 'priority', desc: true }]);
+      expect(result.current.page).toBe(1);
+    });
+  });
+
+  it('updates search in the URL and resets to page 1', async () => {
+    const { result } = renderHookWithQueryRouter(
+      () => useApplicationsV2SearchParams(),
+      { initialEntries: ['/applications-v2?page=3'] },
+    );
+
+    act(() => {
+      result.current.setSearch('acme');
+    });
+
+    await waitFor(() => {
+      expect(result.current.search).toBe('acme');
+      expect(result.current.variables.searchParam).toBe('acme');
+      expect(result.current.page).toBe(1);
+    });
+  });
+
+  it('clears search in the URL and resets to page 1', async () => {
+    const { result } = renderHookWithQueryRouter(
+      () => useApplicationsV2SearchParams(),
+      { initialEntries: ['/applications-v2?page=2&search=acme'] },
+    );
+
+    act(() => {
+      result.current.setSearch('');
+    });
+
+    await waitFor(() => {
+      expect(result.current.search).toBe('');
+      expect(result.current.variables.searchParam).toBe('');
       expect(result.current.page).toBe(1);
     });
   });

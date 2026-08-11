@@ -203,4 +203,55 @@ describe('useApplicationsV2', () => {
 
     await waitFor(() => expect(signals[0].aborted).toBe(true));
   });
+
+  it('cancels the in-flight request when a newer search supersedes it', async () => {
+    const signals: AbortSignal[] = [];
+    searchApplicationsMock.mockImplementation(
+      (_variables, signal) =>
+        new Promise((resolve, reject) => {
+          if (!signal) {
+            return;
+          }
+          signals.push(signal);
+          signal.addEventListener('abort', () => {
+            reject(
+              Object.assign(new Error('Aborted'), { name: 'CanceledError' }),
+            );
+          });
+        }),
+    );
+
+    const { rerender } = renderHookWithQueryRouter(
+      ({ variables }: { variables: SearchApplicationsV2QueryVariables }) =>
+        useApplicationsV2(variables),
+      {
+        initialEntries: ['/applications-v2'],
+        initialProps: {
+          variables: {
+            ...DEFAULT_APPLICATIONS_SEARCH_VARIABLES,
+            searchParam: 'ac',
+          },
+        },
+      },
+    );
+
+    await waitFor(() =>
+      expect(searchApplicationsMock).toHaveBeenCalledTimes(1),
+    );
+    expect(signals).toHaveLength(1);
+    expect(signals[0].aborted).toBe(false);
+
+    rerender({
+      variables: {
+        ...DEFAULT_APPLICATIONS_SEARCH_VARIABLES,
+        searchParam: 'acme',
+      },
+    });
+
+    await waitFor(() =>
+      expect(searchApplicationsMock).toHaveBeenCalledTimes(2),
+    );
+    await waitFor(() => expect(signals[0].aborted).toBe(true));
+    expect(signals[1].aborted).toBe(false);
+  });
 });

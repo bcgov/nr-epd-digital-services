@@ -37,6 +37,10 @@ export const useApplicationsV2SearchParams = () => {
       NumberParam,
       DEFAULT_APPLICATIONS_SEARCH_VARIABLES.pageSize,
     ),
+    search: withDefault(
+      StringParam,
+      DEFAULT_APPLICATIONS_SEARCH_VARIABLES.searchParam,
+    ),
     sortBy: withDefault(
       StringParam,
       DEFAULT_APPLICATIONS_SEARCH_VARIABLES.sortBy,
@@ -85,10 +89,15 @@ export const useApplicationsV2SearchParams = () => {
     });
   };
 
+  const setSearch = (search: string) => {
+    setParams({ search, page: 1 });
+  };
+
   const variables: SearchApplicationsV2QueryVariables = {
     ...DEFAULT_APPLICATIONS_SEARCH_VARIABLES,
     page: params.page,
     pageSize: params.pageSize,
+    searchParam: params.search,
     sortBy,
     sortByDir,
   };
@@ -96,8 +105,10 @@ export const useApplicationsV2SearchParams = () => {
   return {
     page: params.page,
     pageSize: params.pageSize,
+    search: params.search,
     setPage,
     setPageSize,
+    setSearch,
     sorting,
     setSorting,
     variables,

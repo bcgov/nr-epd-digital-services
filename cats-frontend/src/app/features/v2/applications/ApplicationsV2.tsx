@@ -4,6 +4,7 @@ import PageContainer from '../../../components/simple/PageContainer';
 import { DataTable, DataTablePagination } from '../../../components/data-table';
 import { useApplicationsV2 } from './hooks/useApplicationsV2';
 import { useApplicationsV2SearchParams } from './hooks/useApplicationsV2SearchParams';
+import { ApplicationsV2SearchInput } from './ApplicationsV2SearchInput';
 import { applicationsV2Columns } from './applicationsV2Columns';
 import { APPLICATIONS_SEARCH_ERROR_MESSAGE } from './api/ApplicationsApi';
 import './ApplicationsV2.css';
@@ -12,8 +13,10 @@ const ApplicationsV2: React.FC = () => {
   const {
     page,
     pageSize,
+    search,
     setPage,
     setPageSize,
+    setSearch,
     sorting,
     setSorting,
     variables,
@@ -44,6 +47,12 @@ const ApplicationsV2: React.FC = () => {
           onColumnVisibilityChange={setColumnVisibility}
           getRowId={(row) => row.id}
           manualSorting
+          toolbarActions={
+            <ApplicationsV2SearchInput
+              search={search}
+              onSearchChange={setSearch}
+            />
+          }
         />
         {!isError && (
           <DataTablePagination
