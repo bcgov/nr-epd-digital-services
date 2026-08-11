@@ -11,6 +11,7 @@ import Search from '../features/people/Search';
 import Person from '../features/people/person/Person';
 import ApplicationDetails from '../features/applications/application/ApplicationDetails';
 import ApplicationSearch from '../features/applications/search/Search';
+import ApplicationsV2 from '../features/v2/applications/ApplicationsV2';
 import StaffDashboard from '../features/staff/Staff';
 import ProtectedRoute from './ProtectedRoute';
 import Dashboard from '@cats/features/dashboard/Dashboard';
@@ -28,6 +29,7 @@ const roleBasedRoutes: any = {
     { path: '/person/:id', element: <Person /> },
     { path: '/person', element: <Person /> },
     { path: '/applications', element: <ApplicationSearch /> },
+    { path: '/applications-v2', element: <ApplicationsV2 /> },
     // { path: '/mytasks', element: <MyTasks /> },
     {
       path: '/applications/:id',

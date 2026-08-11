@@ -56,6 +56,13 @@ export type AppParticipantsResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type AppType = {
+  __typename?: 'AppType';
+  abbrev?: Maybe<Scalars['String']['output']>;
+  description: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+};
+
 export type ApplicationDetailsResponse = {
   __typename?: 'ApplicationDetailsResponse';
   data?: Maybe<ViewApplicationDetails>;
@@ -685,6 +692,7 @@ export type Query = {
   findPersonById: PersonResponse;
   getAllActiveStaffMembers: ViewStaffWithCapacityResponse;
   getAllActiveStaffMembersForApplicationServiceType: ViewStaffWithCapacityResponse;
+  getAllAppTypes: Array<AppType>;
   getAllParticipantRoles: ParticipantsRolesResponse;
   getAllStatusTypes: Array<StatusType>;
   getAppParticipantsByAppId: AppParticipantsResponse;
