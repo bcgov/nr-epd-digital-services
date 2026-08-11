@@ -16,7 +16,6 @@ const columns: ColumnDef<Row, unknown>[] = [
     id: 'name',
     accessorKey: 'name',
     header: 'Name',
-    enableSorting: true,
   },
   {
     id: 'status',
@@ -195,6 +194,35 @@ describe('DataTable', () => {
     expect(onSortingChange).toHaveBeenCalled();
   });
 
+  it('exposes aria-sort and a single toggle button on sortable headers', () => {
+    const Harness = () => {
+      const [sorting, setSorting] = useState([{ id: 'name', desc: false }]);
+
+      return (
+        <DataTable
+          data={rows}
+          columns={columns}
+          ariaLabel="Applications"
+          sorting={sorting}
+          onSortingChange={setSorting}
+          manualSorting
+          getRowId={(row) => row.id}
+        />
+      );
+    };
+
+    render(<Harness />);
+
+    const nameHeader = screen.getByRole('columnheader', { name: /Name/i });
+    expect(nameHeader).toHaveAttribute('aria-sort', 'ascending');
+    expect(
+      within(nameHeader).getAllByRole('button', { name: /Name/i }),
+    ).toHaveLength(1);
+
+    fireEvent.click(within(nameHeader).getByRole('button', { name: /Name/i }));
+    expect(nameHeader).toHaveAttribute('aria-sort', 'descending');
+  });
+
   it('does not render a sort control for non-sortable columns', () => {
     render(
       <DataTable
@@ -211,5 +239,8 @@ describe('DataTable', () => {
     expect(
       screen.getByRole('columnheader', { name: 'Application ID' }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('columnheader', { name: 'Application ID' }),
+    ).not.toHaveAttribute('aria-sort');
   });
 });
