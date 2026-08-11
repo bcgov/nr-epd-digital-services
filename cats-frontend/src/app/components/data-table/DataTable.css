@@ -32,6 +32,12 @@
   margin-left: auto;
 }
 
+.data-table__below-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-margin-small);
+}
+
 .data-table__scroll {
   width: 100%;
   max-height: 50vh;

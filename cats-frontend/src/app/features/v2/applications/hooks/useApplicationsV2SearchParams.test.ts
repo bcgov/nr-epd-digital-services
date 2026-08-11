@@ -2,10 +2,12 @@ import { act, waitFor } from '@testing-library/react';
 import {
   ApplicationSortByDirection,
   ApplicationSortByField,
+  Filter,
 } from '../../../../../generated/types';
 import { useApplicationsV2SearchParams } from './useApplicationsV2SearchParams';
 import { renderHookWithQueryRouter } from '../../../../../utilities/test/QueryTestUtils';
 import { DEFAULT_APPLICATIONS_SEARCH_VARIABLES } from '../api/ApplicationsApi';
+import { EMPTY_ADVANCED_FILTERS } from '../filters/applicationsV2Filters';
 
 describe('useApplicationsV2SearchParams', () => {
   it('defaults page, pageSize, and sort when params are absent', () => {
@@ -186,6 +188,115 @@ describe('useApplicationsV2SearchParams', () => {
       expect(result.current.search).toBe('');
       expect(result.current.variables.searchParam).toBe('');
       expect(result.current.page).toBe(1);
+    });
+  });
+
+  it('keeps GraphQL filter as All and maps advanced filters from the URL', () => {
+    const { result } = renderHookWithQueryRouter(
+      () => useApplicationsV2SearchParams(),
+      {
+        initialEntries: [
+          '/applications-v2?id=7&priority=High&dateReceivedFrom=2024-01-01&dateReceivedTo=2024-01-31',
+        ],
+      },
+    );
+
+    expect(result.current.variables.filter).toBe(Filter.All);
+    expect(result.current.variables.filterId).toBe('7');
+    expect(result.current.variables.filterPriority).toBe('High');
+    expect(result.current.variables.filterDateReceivedFrom).toBe('2024-01-01');
+    expect(result.current.variables.filterDateReceivedTo).toBe('2024-01-31');
+    expect(result.current.advancedFilters).toEqual({
+      ...EMPTY_ADVANCED_FILTERS,
+      id: '7',
+      priority: 'High',
+      dateReceivedFrom: '2024-01-01',
+      dateReceivedTo: '2024-01-31',
+    });
+    expect(result.current.filterPills).toEqual([
+      { key: 'id', label: 'Application ID', value: '7' },
+      { key: 'priority', label: 'Priority', value: 'High' },
+      {
+        key: 'dateReceived',
+        label: 'Date Received',
+        value: '2024-01-01 - 2024-01-31',
+      },
+    ]);
+  });
+
+  it('applies advanced filters to the URL and resets to page 1', async () => {
+    const { result } = renderHookWithQueryRouter(
+      () => useApplicationsV2SearchParams(),
+      { initialEntries: ['/applications-v2?page=4'] },
+    );
+
+    act(() => {
+      result.current.applyAdvancedFilters({
+        ...EMPTY_ADVANCED_FILTERS,
+        siteId: '99',
+        invoiceStatus: 'paid',
+      });
+    });
+
+    await waitFor(() => {
+      expect(result.current.variables.filterSiteId).toBe('99');
+      expect(result.current.variables.filterInvoiceStatus).toBe('paid');
+      expect(result.current.page).toBe(1);
+      expect(result.current.filterPills).toEqual([
+        { key: 'siteId', label: 'Site ID', value: '99' },
+        { key: 'invoiceStatus', label: 'Invoice Status', value: 'Paid' },
+      ]);
+    });
+  });
+
+  it('resets advanced filters in the URL and resets to page 1', async () => {
+    const { result } = renderHookWithQueryRouter(
+      () => useApplicationsV2SearchParams(),
+      {
+        initialEntries: ['/applications-v2?page=2&id=1&priority=Low'],
+      },
+    );
+
+    act(() => {
+      result.current.resetAdvancedFilters();
+    });
+
+    await waitFor(() => {
+      expect(result.current.advancedFilters).toEqual(EMPTY_ADVANCED_FILTERS);
+      expect(result.current.variables.filterId).toBeUndefined();
+      expect(result.current.variables.filterPriority).toBeUndefined();
+      expect(result.current.variables.filter).toBe(Filter.All);
+      expect(result.current.filterPills).toEqual([]);
+      expect(result.current.page).toBe(1);
+    });
+  });
+
+  it('removes a filter pill URL keys and resets to page 1', async () => {
+    const { result } = renderHookWithQueryRouter(
+      () => useApplicationsV2SearchParams(),
+      {
+        initialEntries: [
+          '/applications-v2?page=2&priority=High&dateReceivedFrom=2024-01-01&dateReceivedTo=2024-01-31',
+        ],
+      },
+    );
+
+    act(() => {
+      result.current.removeFilterPill({
+        key: 'dateReceived',
+        label: 'Date Received',
+        value: '2024-01-01 - 2024-01-31',
+      });
+    });
+
+    await waitFor(() => {
+      expect(result.current.variables.filterDateReceivedFrom).toBeUndefined();
+      expect(result.current.variables.filterDateReceivedTo).toBeUndefined();
+      expect(result.current.variables.filterPriority).toBe('High');
+      expect(result.current.page).toBe(1);
+      expect(result.current.filterPills).toEqual([
+        { key: 'priority', label: 'Priority', value: 'High' },
+      ]);
     });
   });
 });
