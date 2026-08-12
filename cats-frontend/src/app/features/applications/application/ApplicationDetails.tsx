@@ -8,9 +8,7 @@ import { useGetHeaderDetailsByApplicationIdQuery } from './ApplicationDetails.ge
 import styles from './ApplicationDetails.module.css';
 import LoadingOverlay from '../../../components/loader/LoadingOverlay';
 import cx from 'classnames';
-import {
-  getApplicationNavigationItems,
-} from '../../navigation/NavigationPillsConfig';
+import { getApplicationNavigationItems } from '../../navigation/NavigationPillsConfig';
 
 const ApplicationDetails = () => {
   const location = useLocation();

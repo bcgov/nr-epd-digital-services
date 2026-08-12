@@ -1,10 +1,5 @@
 import React, { useMemo } from 'react';
-import {
-  Routes,
-  Route,
-  Navigate,
-  useParams,
-} from 'react-router-dom';
+import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { AssociatedFiles } from './applicationTabs/appAssociatedFiles/AssociatedFiles';
 import { Details } from './applicationTabs/appDetails/Details';
 import { Housing } from './applicationTabs/appHousing/Housing';
@@ -49,10 +44,7 @@ const ApplicationTabsRouter: React.FC = () => {
   const appType = data?.getApplicationDetailsById.data?.appType;
 
   const isCssa = useMemo(() => isCssaAppType(appType), [appType]);
-  const allowInvoices = useMemo(
-    () => canAccessInvoicesTab(appType),
-    [appType],
-  );
+  const allowInvoices = useMemo(() => canAccessInvoicesTab(appType), [appType]);
 
   return (
     <Routes>

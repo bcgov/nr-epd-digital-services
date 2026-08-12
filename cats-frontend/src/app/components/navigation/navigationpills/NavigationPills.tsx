@@ -18,8 +18,7 @@ const NavigationPills: React.FC<INavigationPills> = ({
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const navigationItems = items ?? defaultNavigationItems;
-  const defaultPath =
-    navigationItems[0]?.path ?? DEFAULT_APPLICATION_TAB_PATH;
+  const defaultPath = navigationItems[0]?.path ?? DEFAULT_APPLICATION_TAB_PATH;
 
   const currentPath = useMemo(() => {
     const pathSegments = location.pathname.split('/');
