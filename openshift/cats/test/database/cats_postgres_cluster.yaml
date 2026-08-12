@@ -26,10 +26,10 @@ spec:
         - postgres
         - site
 
-    - name: site
+    - name: cats
       options: SUPERUSER CREATEDB CREATEROLE
       databases:
-        - site
+        - cats
 
   instances:
     - name: db
