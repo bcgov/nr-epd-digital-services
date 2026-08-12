@@ -14,10 +14,8 @@ import { Participants } from './applicationTabs/appParticipants/Participants';
 import { Timesheets } from './applicationTabs/appTimesheets/Timesheets';
 import { Application } from './applicationTabs/application/Application';
 import { LinkedApplications } from './applicationTabs/appLinkedApplications/LinkedApplications';
-import { Expenses } from './applicationTabs/appExpenses/Expenses';
 import {
   DEFAULT_APPLICATION_TAB_PATH,
-  canAccessExpensesTab,
   canAccessInvoicesTab,
   isCssaAppType,
 } from '../../navigation/NavigationPillsConfig';
@@ -55,10 +53,6 @@ const ApplicationTabsRouter: React.FC = () => {
     () => canAccessInvoicesTab(appType),
     [appType],
   );
-  const allowExpenses = useMemo(
-    () => canAccessExpensesTab(appType),
-    [appType],
-  );
 
   return (
     <Routes>
@@ -85,14 +79,6 @@ const ApplicationTabsRouter: React.FC = () => {
         element={
           <GuardedRoute allowed={isCssa} loading={loading}>
             <Timesheets />
-          </GuardedRoute>
-        }
-      />
-      <Route
-        path="expenses"
-        element={
-          <GuardedRoute allowed={allowExpenses} loading={loading}>
-            <Expenses />
           </GuardedRoute>
         }
       />

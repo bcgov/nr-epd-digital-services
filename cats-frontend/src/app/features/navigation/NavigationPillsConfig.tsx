@@ -19,7 +19,7 @@ const SHARED_TAB_PATHS = new Set([
 
 /**
  * Master tab list (order matters for CSSA).
- * Linked Applications / Expenses are placeholders until implemented.
+ * Linked Applications is a placeholder until implemented.
  * Navigation configuration for the pills - used by NavigationPills component
  */
 export const navigationItems: ApplicationNavItem[] = [
@@ -32,7 +32,6 @@ export const navigationItems: ApplicationNavItem[] = [
   },
   { label: 'Participants', value: 'participants', path: 'participants' },
   { label: 'Timesheets', value: 'timesheets', path: 'timesheets' },
-  { label: 'Expenses', value: 'expenses', path: 'expenses' },
   { label: 'Invoices', value: 'invoices', path: 'invoices' },
   { label: 'Notes', value: 'notes', path: 'notes' },
   {
@@ -43,11 +42,10 @@ export const navigationItems: ApplicationNavItem[] = [
   { label: 'Housing', value: 'housing', path: 'housing' },
 ];
 
-/** SIR tab order: Application, Participants, Expenses, Invoices, Notes, Associated Files */
+/** SIR tab order: Application, Participants, Invoices, Notes, Associated Files */
 const SIR_TAB_ORDER = [
   'application',
   'participants',
-  'expenses',
   'invoices',
   'notes',
   'associated-files',
@@ -111,7 +109,6 @@ export function getApplicationNavigationItems(
   appType?: AppTypeFields | null,
 ): ApplicationNavItem[] {
   if (isCssaAppType(appType)) {
-    // Full CSSA set including Expenses (between Timesheets and Invoices)
     return navigationItems;
   }
 
@@ -127,11 +124,6 @@ export function getApplicationNavigationItems(
 
 /** True when Invoices tab is allowed (CSSA or SIR) */
 export function canAccessInvoicesTab(appType?: AppTypeFields | null): boolean {
-  return isCssaAppType(appType) || isSirAppType(appType);
-}
-
-/** True when Expenses tab is allowed (CSSA or SIR) */
-export function canAccessExpensesTab(appType?: AppTypeFields | null): boolean {
   return isCssaAppType(appType) || isSirAppType(appType);
 }
 
