@@ -63,9 +63,8 @@ Repo examples:
 Repo examples:
 - `charts/app/templates/*/deployment.yaml`: container image references resolve from Helm values.
 
-Current policy:
-- CATS frontend/backend GitHub Actions auto-deploy workflows have been removed.
-- There are no automatic CATS deployments for PRs to `dev`, or for `test`/`prod` promotions.
+deployment policy:
+- For the current CATS deployment procedure, follow `openshift/README.md`.
 
 ```mermaid
 flowchart LR
