@@ -1,0 +1,171 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"cats-backend:prod","namespace":"e38158-tools"},"fieldPath":"spec.template.spec.containers[?(@.name==\"cats-backend\")].image","paused":false}]'
+  name: cats-backend
+  namespace: e38158-prod
+  labels:
+    app.kubernetes.io/name: cats-backend
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cats-backend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cats-backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: '4005'
+        prometheus.io/path: "/metrics"
+    spec:
+      initContainers: # The container that will do the initial migrations.
+        - name: cats-backend-init
+          image: "image-registry.openshift-image-registry.svc:5000/e38158-tools/cats-backend-init:prod"
+          imagePullPolicy: Always
+          env:
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: host
+                  name: cats-postgres-cluster-pguser-cats
+            - name: POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: port
+                  name: cats-postgres-cluster-pguser-cats
+            - name: POSTGRES_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: user
+                  name: cats-postgres-cluster-pguser-cats
+            - name: POSTGRES_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: cats-postgres-cluster-pguser-cats
+            - name: POSTGRES_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  key: dbname
+                  name: cats-postgres-cluster-pguser-cats
+            - name: POSTGRES_DB_SCHEMA
+              valueFrom:
+                secretKeyRef:
+                  key: postgres_db_schema
+                  name: cats-postgres-cluster
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+      containers:
+        - name: cats-backend
+          image: "image-registry.openshift-image-registry.svc:5000/e38158-tools/cats-backend:prod"
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: cats-backend
+          env:
+            - name: PORT
+              value: "4005"
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: host
+                  name: cats-postgres-cluster-pguser-cats
+            - name: POSTGRES_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: user
+                  name: cats-postgres-cluster-pguser-cats
+            - name: POSTGRES_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: cats-postgres-cluster-pguser-cats
+            - name: POSTGRES_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  key: dbname
+                  name: cats-postgres-cluster-pguser-cats
+            - name: POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: port
+                  name: cats-postgres-cluster-pguser-cats
+            - name: POSTGRES_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: cats-postgres-cluster-pguser-postgres
+            - name: POSTGRES_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: user
+                  name: cats-postgres-cluster-pguser-postgres
+            - name: POSTGRES_DB_SCHEMA
+              valueFrom:
+                secretKeyRef:
+                  key: postgres_db_schema
+                  name: cats-postgres-cluster
+            - name: LOG_LEVEL
+              value: "info"
+            - name: LOG_FILE_LOCATION
+              value: "/logs/sites-%DATE%.log"
+            - name: LOG_FILE_MAX_SIZE
+              value: "25m"
+            - name: LOG_FILE_MAX_FILES
+              value: "7d"
+            - name: GRAPHQL_SCHEMA_FILE_PATH
+              value: "/graphql/schema.graphql"
+          ports:
+            - name: http
+              containerPort: 4005
+              protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: 4005
+            initialDelaySeconds: 5
+            periodSeconds: 2
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 30
+          livenessProbe:
+            successThreshold: 1
+            failureThreshold: 3
+            tcpSocket:
+              port: 4005
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+          volumeMounts:
+            - mountPath: /logs
+              name: log-storage
+            - mountPath: /graphql
+              name: graphql-storage
+      volumes:
+        - name: log-storage
+          emptyDir: {}
+        - name: graphql-storage
+          emptyDir: {}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values:
+                      - cats-backend
