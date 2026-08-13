@@ -61,8 +61,11 @@ Repo examples:
 - Charts reference `global.registry`, `global.repository`, and `global.tag`, so promotion is primarily by deploying a selected tag, not by `oc tag` IST promotion.
 
 Repo examples:
-- `cats-pr-open.yml`, `merge-dev-cats.yml`, `merge-dev-cats-deploy-prod.yml`: GHCR build + Helm deploy.
 - `charts/app/templates/*/deployment.yaml`: container image references resolve from Helm values.
+
+Current policy:
+- CATS frontend/backend GitHub Actions auto-deploy workflows have been removed.
+- There are no automatic CATS deployments for PRs to `dev`, or for `test`/`prod` promotions.
 
 ```mermaid
 flowchart LR
