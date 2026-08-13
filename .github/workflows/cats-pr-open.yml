@@ -1,0 +1,52 @@
+name: CATS PR
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+concurrency:
+  # Cancel in progress for PR open and close
+  # group: ${{ github.event.number }}
+  group: ${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  # https://github.com/bcgov-nr/action-builder-ghcr
+  builds:
+    name: Builds
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        package: [backend, backend-migration, cats-frontend]
+        include:
+          - package: backend
+            build_file: ./backend/cats/Dockerfile
+            build_context: backend/cats
+          - package: backend-migration
+            build_file: ./backend/cats/Dockerfile-migrations-openshift
+            build_context: backend/cats
+          - package: cats-frontend
+            build_file: ./cats-frontend/Dockerfile
+            build_context: cats-frontend
+    timeout-minutes: 10
+    steps:
+      - uses: bcgov-nr/action-builder-ghcr@v2.2.0
+        with:
+          package: ${{ matrix.package }}
+          # tag: ${{ github.event.number }}
+          tag: ${{ github.event.pull_request.number || github.run_id }}
+          tag_fallback: latest
+          triggers: ('${{ matrix.package }}/')
+          build_file: ${{ matrix.build_file }}
+          build_context: ${{ matrix.build_context }}
+  
+  results:
+    name: PR Results
+    needs: [builds]
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - if: contains(needs.*.result, 'failure')
+        run: echo "At least one job has failed." && exit 1
+      - run: echo "Success!"
