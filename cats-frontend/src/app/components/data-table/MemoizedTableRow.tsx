@@ -4,6 +4,7 @@ import {
   type Row,
   type VisibilityState,
 } from '@tanstack/react-table';
+import { stickyColumnClassName } from './columnMeta';
 
 interface MemoizedTableRowProps<TData> {
   row: Row<TData>;
@@ -22,7 +23,7 @@ function TableRowInner<TData>({
       className={onClick ? 'data-table__row--clickable' : undefined}
     >
       {row.getVisibleCells().map((cell) => (
-        <td key={cell.id}>
+        <td key={cell.id} className={stickyColumnClassName(cell.column)}>
           {flexRender(cell.column.columnDef.cell, cell.getContext())}
         </td>
       ))}
