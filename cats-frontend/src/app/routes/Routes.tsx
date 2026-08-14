@@ -19,6 +19,7 @@ import Invoice from '@cats/features/applications/application/applicationTabs/app
 import ApplicationTabsRouter from '../features/applications/application/ApplicationTabsRouter';
 import MyTasks from '../features/mytasks/mytasks';
 import Assignment from '@cats/features/assignment/Assignment';
+import SiteServiceTest from '../features/siteServiceTest/SiteServiceTest';
 
 const roleBasedRoutes: any = {
   [UserRoleType.INTERNAL]: [
@@ -40,6 +41,7 @@ const roleBasedRoutes: any = {
       path: '/assignment/:id',
       element: <Assignment />,
     },
+    { path: '/site-service-test', element: <SiteServiceTest /> },
     { path: '/applications/:applicationId/invoice', element: <Invoice /> },
     { path: '/applications/:applicationId/invoice/:id', element: <Invoice /> },
     {

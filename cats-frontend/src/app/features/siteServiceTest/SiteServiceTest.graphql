@@ -1,0 +1,34 @@
+fragment SiteServiceTestResult on SiteDetailsResponse {
+  message
+  httpStatusCode
+  success
+  data {
+    ...SiteDetails
+    associatedSites {
+      associatedSite {
+        ...SiteDetails
+      }
+    }
+    landHistories {
+      lutCode
+      note
+      srAction
+      landUse {
+        code
+        description
+      }
+    }
+  }
+}
+
+query getSiteByIdForService($siteId: String!) {
+  getSiteByIdForService(siteId: $siteId) {
+    ...SiteServiceTestResult
+  }
+}
+
+query getSiteByIdForServiceAsUser($siteId: String!) {
+  getSiteByIdForServiceAsUser(siteId: $siteId) {
+    ...SiteServiceTestResult
+  }
+}

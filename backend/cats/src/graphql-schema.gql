@@ -340,6 +340,18 @@ type ApplicationStatusResponse {
   data: [ViewApplicationStatus!]
 }
 
+type LandUseDTO {
+  code: String!
+  description: String!
+}
+
+type LandHistoryDTO {
+  lutCode: String!
+  note: String
+  srAction: String
+  landUse: LandUseDTO
+}
+
 type SiteDetailsDTO {
   id: String!
   longdeg: Float
@@ -352,6 +364,7 @@ type SiteDetailsDTO {
   commonName: String
   siteRiskCode: String
   associatedSites: [SiteAssocs!]!
+  landHistories: [LandHistoryDTO!]
   whenCreated: String!
   whenUpdated: String
 }
@@ -361,6 +374,10 @@ type SiteAssocs {
 }
 
 type SiteDetailsResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
   data: SiteDetailsDTO
 }
 
@@ -704,6 +721,8 @@ type Query {
   getApplicationDetailsById(id: Int!): ApplicationDetailsResponse!
   getAllStatusTypes: [StatusType!]!
   getSiteDetailsBySiteId(siteId: String!): SiteDetailsResponse!
+  getSiteByIdForService(siteId: String!): SiteDetailsResponse!
+  getSiteByIdForServiceAsUser(siteId: String!): SiteDetailsResponse!
   getInvoices(applicationId: Int!): InvoicesResponse!
   getInvoiceById(invoiceId: Int!): InvoiceResponse!
   getApplicationNotesByApplicationId(applicationId: Int!): ApplicationNotesResponse!

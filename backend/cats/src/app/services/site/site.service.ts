@@ -7,7 +7,6 @@ import { LoggerService } from '../../logger/logger.service';
 
 @Injectable()
 export class SiteService implements OnModuleInit {
-  private graphqlClient: GraphQLClient;
   private siteSdk: Sdk;
 
   private accessToken: string;
@@ -78,12 +77,16 @@ export class SiteService implements OnModuleInit {
 
   private async getSiteSdk(): Promise<Sdk> {
     const token = await this.getAccessToken();
-    this.graphqlClient = new GraphQLClient(process.env.SITE_SERVICE_URL, {
+    return this.buildSiteSdk(token);
+  }
+
+  private buildSiteSdk(token: string): Sdk {
+    const graphqlClient = new GraphQLClient(process.env.SITE_SERVICE_URL, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    return getSdk(this.graphqlClient);
+    return getSdk(graphqlClient);
   }
 
   async getSiteById(siteId: string) {
@@ -100,6 +103,54 @@ export class SiteService implements OnModuleInit {
     } catch (error: unknown) {
       this.loggerService.error(
         `Error in getSiteById: ${
+          error instanceof Error ? error.message : 'Unknown error'
+        }`,
+        error.toString(),
+      );
+      throw error;
+    }
+  }
+
+  async getSiteByIdForService(siteId: string) {
+    this.loggerService.log('SiteService.getSiteByIdForService() start');
+
+    try {
+      this.siteSdk = await this.getSiteSdk();
+      const siteData = await this.siteSdk.findSiteBySiteIdForService({
+        siteId,
+      });
+
+      this.loggerService.log('SiteService.getSiteByIdForService() end');
+      return siteData;
+    } catch (error: unknown) {
+      this.loggerService.error(
+        `Error in getSiteByIdForService: ${
+          error instanceof Error ? error.message : 'Unknown error'
+        }`,
+        error.toString(),
+      );
+      throw error;
+    }
+  }
+
+  async getSiteByIdForServiceWithUserToken(siteId: string, userToken: string) {
+    this.loggerService.log(
+      'SiteService.getSiteByIdForServiceWithUserToken() start',
+    );
+
+    try {
+      const siteSdk = this.buildSiteSdk(userToken);
+      const siteData = await siteSdk.findSiteBySiteIdForService({
+        siteId,
+      });
+
+      this.loggerService.log(
+        'SiteService.getSiteByIdForServiceWithUserToken() end',
+      );
+      return siteData;
+    } catch (error: unknown) {
+      this.loggerService.error(
+        `Error in getSiteByIdForServiceWithUserToken: ${
           error instanceof Error ? error.message : 'Unknown error'
         }`,
         error.toString(),
