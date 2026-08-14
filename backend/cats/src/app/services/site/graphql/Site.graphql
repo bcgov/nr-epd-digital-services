@@ -11,6 +11,31 @@ query findSiteBySiteIdLoggedInUser($siteId: String!) {
   }
 }
 
+query findSiteBySiteIdForService($siteId: String!) {
+  findSiteBySiteIdForService(siteId: $siteId) {
+    message
+    httpStatusCode
+    success
+    data {
+      ...SiteDetails
+      siteAssocs {
+        siteIdAssociatedWith2 {
+          ...SiteDetails
+        }
+      }
+      landHistories {
+        lutCode
+        note
+        srAction
+        landUse {
+          code
+          description
+        }
+      }
+    }
+  }
+}
+
 fragment SiteDetails on Sites {
   id
   longdeg

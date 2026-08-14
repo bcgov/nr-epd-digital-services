@@ -443,6 +443,20 @@ export type InvoicesResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type LandHistoryDto = {
+  __typename?: 'LandHistoryDTO';
+  landUse?: Maybe<LandUseDto>;
+  lutCode: Scalars['String']['output'];
+  note?: Maybe<Scalars['String']['output']>;
+  srAction?: Maybe<Scalars['String']['output']>;
+};
+
+export type LandUseDto = {
+  __typename?: 'LandUseDTO';
+  code: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addHousingToApplication: ApplicationHousingResponse;
@@ -711,6 +725,8 @@ export type Query = {
   getPermissions: PermissionsResponse;
   getPersonNotesByPersonId: PersonNoteResponse;
   getRecentViewedApplications: DashboardResponse;
+  getSiteByIdForService: SiteDetailsResponse;
+  getSiteByIdForServiceAsUser: SiteDetailsResponse;
   getSiteDetailsBySiteId: SiteDetailsResponse;
   getStaffAssignedByAppId: ViewStaffAssignedResponse;
   getStaffGroupedByRoleForServiceType: StaffGroupedByRoleResponse;
@@ -797,6 +813,16 @@ export type QueryGetParticipantNamesArgs = {
 
 export type QueryGetPersonNotesByPersonIdArgs = {
   id: Scalars['Float']['input'];
+};
+
+
+export type QueryGetSiteByIdForServiceArgs = {
+  siteId: Scalars['String']['input'];
+};
+
+
+export type QueryGetSiteByIdForServiceAsUserArgs = {
+  siteId: Scalars['String']['input'];
 };
 
 
@@ -925,6 +951,7 @@ export type SiteDetailsDto = {
   city?: Maybe<Scalars['String']['output']>;
   commonName?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
+  landHistories?: Maybe<Array<LandHistoryDto>>;
   latdeg?: Maybe<Scalars['Float']['output']>;
   longdeg?: Maybe<Scalars['Float']['output']>;
   siteRiskCode?: Maybe<Scalars['String']['output']>;
@@ -935,6 +962,10 @@ export type SiteDetailsDto = {
 export type SiteDetailsResponse = {
   __typename?: 'SiteDetailsResponse';
   data?: Maybe<SiteDetailsDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
 };
 
 export type StaffAssignedDto = {

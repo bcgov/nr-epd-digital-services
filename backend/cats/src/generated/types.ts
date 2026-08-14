@@ -717,6 +717,7 @@ export type Query = {
   _service: _Service;
   findSiteBySiteId: FetchSiteDetail;
   findSiteBySiteIdLoggedInUser: FetchSiteDetail;
+  findSiteBySiteIdForService: FetchSiteDetail;
   findSitesAndPlaces: FindSitesAndPlacesResponse;
   getAssociatedSitesBySiteId: AssociatedSiteResponse;
   getBannerType: BannerTypeResponse;
@@ -757,6 +758,11 @@ export type QueryFindSiteBySiteIdArgs = {
 
 export type QueryFindSiteBySiteIdLoggedInUserArgs = {
   pending?: InputMaybe<Scalars['Boolean']['input']>;
+  siteId: Scalars['String']['input'];
+};
+
+
+export type QueryFindSiteBySiteIdForServiceArgs = {
   siteId: Scalars['String']['input'];
 };
 
