@@ -66,7 +66,10 @@ export const SiteServiceTest = () => {
             value={siteId}
             onChange={(event) => setSiteId(event.target.value)}
           />
-          <Button type="submit" disabled={serviceResult.loading || !trimmedSiteId}>
+          <Button
+            type="submit"
+            disabled={serviceResult.loading || !trimmedSiteId}
+          >
             {serviceResult.loading ? 'Fetching…' : 'Fetch as service'}
           </Button>
           <Button
