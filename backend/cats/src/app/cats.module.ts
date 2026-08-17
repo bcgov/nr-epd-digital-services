@@ -105,6 +105,8 @@ import { ColumnPreferencesService } from './services/application/columnPreferenc
 import { UserColumnPreferences } from './entities/userColumnPreferences.entity';
 import { ApplicationSecondaryServiceType } from './entities/applicationSecondaryServiceType.entity';
 import { ApplicationSubmission } from './entities/applicationSubmission.entity';
+import { ApplicationSubmissionService } from './services/applicationSubmission/applicationSubmission.service';
+import { FormIntakeService } from './services/formIntake/formIntake.service';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -217,6 +219,8 @@ import { ApplicationSubmission } from './entities/applicationSubmission.entity';
     ComsResolver,
     ColumnPreferencesResolver,
     ColumnPreferencesService,
+    ApplicationSubmissionService,
+    FormIntakeService,
   ],
   controllers: [UserController, EmailController, UploadController],
 })
