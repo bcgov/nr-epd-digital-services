@@ -340,6 +340,31 @@ type ApplicationStatusResponse {
   data: [ViewApplicationStatus!]
 }
 
+type ApplicationSubmissionDto {
+  id: String!
+  applicationId: Int
+  chefsFormId: String!
+  chefsSubmissionId: String!
+  chefsFormVersionId: String
+  chefsConfirmationId: String
+  linkedConfirmationIds: [String!]
+  formData: String
+  formSchema: String
+  receivedAt: DateTime
+  createdBy: String!
+  createdDateTime: DateTime!
+  updatedBy: String!
+  updatedDateTime: DateTime!
+}
+
+type ApplicationSubmissionResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: ApplicationSubmissionDto
+}
+
 type SiteDetailsDTO {
   id: String!
   longdeg: Float
@@ -702,6 +727,7 @@ type Query {
   getApplicationHousingByApplicationId(applicationId: Int!): ApplicationHousingResponse!
   getHousingTypes: HousingTypeResponse!
   getApplicationDetailsById(id: Int!): ApplicationDetailsResponse!
+  getSubmissionByApplicationId(applicationId: Int!): ApplicationSubmissionResponse!
   getAllStatusTypes: [StatusType!]!
   getSiteDetailsBySiteId(siteId: String!): SiteDetailsResponse!
   getInvoices(applicationId: Int!): InvoicesResponse!
