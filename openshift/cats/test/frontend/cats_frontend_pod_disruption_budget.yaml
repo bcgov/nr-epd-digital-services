@@ -1,0 +1,12 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: cats-frontend
+  namespace: e38158-test
+  labels:
+    app.kubernetes.io/name: cats-frontend
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cats-frontend
+  minAvailable: 2
