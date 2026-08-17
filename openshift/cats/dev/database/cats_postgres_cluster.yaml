@@ -1,0 +1,166 @@
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
+metadata:
+  name: cats-postgres-cluster
+  namespace: e38158-dev
+spec:
+  openshift: true
+  postgresVersion: 17
+  postGISVersion: '3.5'
+  port: 5432
+  imagePullPolicy: IfNotPresent
+
+  metadata:
+    labels:
+      app.kubernetes.io/instance: postgres
+      app.kubernetes.io/name: crunchy
+      app.kubernetes.io/version: "5.5.1"
+
+  databaseInitSQL:
+    name: cats-postgres-cluster-bootstrap
+    key: bootstrap.sql
+
+  users:
+    - name: postgres
+      databases:
+        - postgres
+        - cats
+
+    - name: cats
+      options: SUPERUSER CREATEDB CREATEROLE
+      databases:
+        - cats
+
+  instances:
+    - name: db
+      replicas: 2
+
+      metadata:
+        annotations:
+          prometheus.io/port: "9187"
+          prometheus.io/scrape: "true"
+
+      resources:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+
+      sidecars:
+        replicaCertCopy:
+          resources:
+            requests:
+              cpu: 1m
+              memory: 32Mi
+
+      dataVolumeClaimSpec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: 2Gi
+        storageClassName: netapp-block-standard
+
+      walVolumeClaimSpec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: 1Gi
+        storageClassName: netapp-block-standard
+
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchLabels:
+                    postgres-operator.crunchydata.com/cluster: cats-postgres-cluster
+                    postgres-operator.crunchydata.com/instance-set: db
+  proxy:
+    pgBouncer:
+      port: 5432
+      replicas: 1
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchLabels:
+                    postgres-operator.crunchydata.com/cluster: cats-postgres-cluster
+                    postgres-operator.crunchydata.com/role: pgbouncer
+
+      config:
+        global:
+          client_tls_sslmode: disable
+          max_db_connections: '10'
+          pool_mode: session
+
+      resources:
+        requests:
+          cpu: 5m
+          memory: 32Mi
+
+  backups:
+    pgbackrest:
+      global:
+        repo1-retention-full: '1'
+        repo1-retention-full-type: count
+
+      jobs:
+        resources:
+          requests:
+            cpu: 20m
+            memory: 256Mi
+
+      repoHost:
+        resources:
+          requests:
+            cpu: 20m
+            memory: 128Mi
+
+      repos:
+        - name: repo1
+          schedules:
+            full: "0 8 * * *"
+            incremental: "0 0,12 * * *"
+          volume:
+            volumeClaimSpec:
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 2Gi
+              storageClassName: netapp-file-backup
+      sidecars:
+        pgbackrest:
+          resources:
+            requests:
+              cpu: 25m
+              memory: 128Mi
+        pgbackrestConfig:
+          resources:
+            requests:
+              cpu: 5m
+              memory: 16Mi
+  patroni:
+    port: 8008
+    leaderLeaseDurationSeconds: 30
+    syncPeriodSeconds: 10
+    dynamicConfiguration:
+      postgresql:
+        parameters:
+          effective_io_concurrency: 20
+          log_min_duration_statement: 1000ms
+          max_slot_wal_keep_size: 128MB
+          max_wal_size: 64MB
+          min_wal_size: 32MB
+          shared_buffers: 16MB
+          wal_buffers: 64kB
+          work_mem: 2MB
+        pg_hba:
+          - 'host all all 0.0.0.0/0 md5'
+          - 'host all all ::1/128 md5'

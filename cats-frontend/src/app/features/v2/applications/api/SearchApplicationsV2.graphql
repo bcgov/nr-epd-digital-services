@@ -1,0 +1,77 @@
+query SearchApplicationsV2(
+  $searchParam: String!
+  $page: Int!
+  $pageSize: Int!
+  $filter: Filter!
+  $sortBy: ApplicationSortByField!
+  $sortByDir: ApplicationSortByDirection!
+  $filterId: String
+  $filterCommonName: String
+  $filterCsapReference: String
+  $filterSiteId: String
+  $filterSiteAddress: String
+  $filterSiteRiskClassification: String
+  $filterPriority: String
+  $filterDateReceivedFrom: DateTime
+  $filterDateReceivedTo: DateTime
+  $filterLastUpdatedFrom: DateTime
+  $filterLastUpdatedTo: DateTime
+  $filterDateCompletedFrom: DateTime
+  $filterDateCompletedTo: DateTime
+  $filterInvoiceStatus: String
+  $filterServiceType: String
+  $filterApplicationType: String
+  $filterStatus: String
+  $filterStaffAssigned: String
+) {
+  searchApplications(
+    searchParam: $searchParam
+    page: $page
+    pageSize: $pageSize
+    filter: $filter
+    sortBy: $sortBy
+    sortByDir: $sortByDir
+    filterId: $filterId
+    filterCommonName: $filterCommonName
+    filterCsapReference: $filterCsapReference
+    filterSiteId: $filterSiteId
+    filterSiteAddress: $filterSiteAddress
+    filterSiteRiskClassification: $filterSiteRiskClassification
+    filterPriority: $filterPriority
+    filterDateReceivedFrom: $filterDateReceivedFrom
+    filterDateReceivedTo: $filterDateReceivedTo
+    filterLastUpdatedFrom: $filterLastUpdatedFrom
+    filterLastUpdatedTo: $filterLastUpdatedTo
+    filterDateCompletedFrom: $filterDateCompletedFrom
+    filterDateCompletedTo: $filterDateCompletedTo
+    filterInvoiceStatus: $filterInvoiceStatus
+    filterServiceType: $filterServiceType
+    filterApplicationType: $filterApplicationType
+    filterStatus: $filterStatus
+    filterStaffAssigned: $filterStaffAssigned
+  ) {
+    applications {
+      id
+      siteId
+      siteAddress
+      applicationType
+      lastUpdated
+      status
+      staffAssigned {
+        firstName
+        lastName
+      }
+      priority
+      url
+      siteRiskClassification
+      csapReference
+      serviceType
+      commonName
+      receivedDate
+      dateCompleted
+    }
+    count
+    page
+    pageSize
+  }
+}

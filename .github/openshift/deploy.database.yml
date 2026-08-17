@@ -52,8 +52,8 @@ objects:
     metadata:
       name: ${NAME}-${COMPONENT}
     data:
-      POSTGRESQL_HOST: epd-database
-      POSTGRESQL_PORT: "5432"
+      POSTGRES_HOST: epd-database
+      POSTGRES_PORT: "5432"
       POSTGRES_DATABASE: epd_dev
       POSTGRES_DB_SCHEMA: epd_users
 
@@ -148,7 +148,7 @@ objects:
                   valueFrom:
                     configMapKeyRef:
                       name: ${NAME}-${COMPONENT}
-                      key: POSTGRESQL_PORT
+                      key: POSTGRES_PORT
                 - name: PG_MODE
                   valueFrom:
                     configMapKeyRef:
@@ -158,7 +158,7 @@ objects:
                   valueFrom:
                     configMapKeyRef:
                       name: ${NAME}-${COMPONENT}
-                      key: POSTGRESQL_HOST
+                      key: POSTGRES_HOST
                 - name: PG_PASSWORD
                   valueFrom:
                     secretKeyRef:

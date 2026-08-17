@@ -1,0 +1,79 @@
+.data-table-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--layout-margin-medium);
+}
+
+.data-table-pagination__pages {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--layout-margin-small);
+}
+
+.data-table-pagination__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--icons-size-xlarge);
+  height: var(--icons-size-xlarge);
+  padding: var(--layout-padding-small);
+  border: none;
+  border-radius: var(--layout-border-radius-medium);
+  background: transparent;
+  color: var(--surface-color-primary-default);
+  font: var(--typography-regular-body);
+  cursor: pointer;
+}
+
+.data-table-pagination__button:hover:not(:disabled),
+.data-table-pagination__button:focus-visible:not(:disabled) {
+  background: var(--surface-color-menus-hover);
+}
+
+.data-table-pagination__button:disabled {
+  color: var(--typography-color-disabled);
+  cursor: not-allowed;
+}
+
+.data-table-pagination__button--active {
+  background: var(--surface-color-primary-default);
+  color: var(--surface-color-background-white);
+}
+
+.data-table-pagination__button--active:hover:not(:disabled),
+.data-table-pagination__button--active:focus-visible:not(:disabled) {
+  background: var(--surface-color-primary-hover);
+  color: var(--surface-color-background-white);
+}
+
+.data-table-pagination__ellipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--icons-size-xlarge);
+  height: var(--icons-size-xlarge);
+  color: var(--typography-color-disabled);
+  font: var(--typography-regular-body);
+}
+
+.data-table-pagination__size {
+  display: flex;
+  align-items: center;
+  gap: var(--layout-margin-small);
+  color: var(--typography-color-primary);
+  font: var(--typography-regular-body);
+}
+
+.data-table-pagination__select {
+  padding: var(--layout-padding-small) var(--layout-padding-medium);
+  border: var(--layout-border-width-small) solid
+    var(--surface-color-border-default);
+  border-radius: var(--layout-border-radius-small);
+  background: var(--surface-color-background-white);
+  color: var(--typography-color-primary);
+  font: inherit;
+}

@@ -38,6 +38,11 @@ export type GetAllStatusTypesQueryVariables = Types.Exact<{ [key: string]: never
 
 export type GetAllStatusTypesQuery = { __typename?: 'Query', getAllStatusTypes: Array<{ __typename?: 'StatusType', id: number, abbrev?: string | null, description: string }> };
 
+export type GetAllAppTypesQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type GetAllAppTypesQuery = { __typename?: 'Query', getAllAppTypes: Array<{ __typename?: 'AppType', id: number, abbrev?: string | null, description: string }> };
+
 
 export const SearchApplicationsDocument = gql`
     query SearchApplications($searchParam: String!, $page: Int!, $pageSize: Int!, $filter: Filter!, $sortBy: ApplicationSortByField!, $sortByDir: ApplicationSortByDirection!, $filterId: String, $filterServiceType: String, $filterCommonName: String, $filterCsapReference: String, $filterSiteId: String, $filterSiteRiskClassification: String, $filterSiteAddress: String, $filterApplicationType: String, $filterStatus: String, $filterStaffAssigned: String, $filterPriority: String, $filterDateReceivedFrom: DateTime, $filterDateReceivedTo: DateTime, $filterLastUpdatedFrom: DateTime, $filterLastUpdatedTo: DateTime, $filterDateCompletedFrom: DateTime, $filterDateCompletedTo: DateTime, $filterInvoiceStatus: String) {
@@ -190,13 +195,6 @@ export type GetAllStatusTypesQueryHookResult = ReturnType<typeof useGetAllStatus
 export type GetAllStatusTypesLazyQueryHookResult = ReturnType<typeof useGetAllStatusTypesLazyQuery>;
 export type GetAllStatusTypesSuspenseQueryHookResult = ReturnType<typeof useGetAllStatusTypesSuspenseQuery>;
 export type GetAllStatusTypesQueryResult = Apollo.QueryResult<GetAllStatusTypesQuery, GetAllStatusTypesQueryVariables>;
-
-export type GetAllAppTypesQueryVariables = Types.Exact<{ [key: string]: never; }>;
-
-
-export type GetAllAppTypesQuery = { __typename?: 'Query', getAllAppTypes: Array<{ __typename?: 'AppType', id: number, abbrev?: string | null, description: string }> };
-
-
 export const GetAllAppTypesDocument = gql`
     query getAllAppTypes {
   getAllAppTypes {
@@ -230,6 +228,11 @@ export function useGetAllAppTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllAppTypesQuery, GetAllAppTypesQueryVariables>(GetAllAppTypesDocument, options);
         }
+export function useGetAllAppTypesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAllAppTypesQuery, GetAllAppTypesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllAppTypesQuery, GetAllAppTypesQueryVariables>(GetAllAppTypesDocument, options);
+        }
 export type GetAllAppTypesQueryHookResult = ReturnType<typeof useGetAllAppTypesQuery>;
 export type GetAllAppTypesLazyQueryHookResult = ReturnType<typeof useGetAllAppTypesLazyQuery>;
+export type GetAllAppTypesSuspenseQueryHookResult = ReturnType<typeof useGetAllAppTypesSuspenseQuery>;
 export type GetAllAppTypesQueryResult = Apollo.QueryResult<GetAllAppTypesQuery, GetAllAppTypesQueryVariables>;

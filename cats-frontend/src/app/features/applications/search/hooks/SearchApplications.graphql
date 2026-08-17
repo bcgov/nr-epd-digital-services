@@ -83,3 +83,11 @@ query getAllStatusTypes {
     description
   }
 }
+
+query getAllAppTypes {
+  getAllAppTypes {
+    id
+    abbrev
+    description
+  }
+}

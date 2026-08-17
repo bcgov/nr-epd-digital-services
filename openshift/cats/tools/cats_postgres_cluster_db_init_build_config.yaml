@@ -1,0 +1,24 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: cats-postgres-cluster-db-init
+  namespace: e38158-tools
+spec:
+  runPolicy: Serial
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/bcgov/nr-epd-digital-services.git'
+      ref: 'dev'
+    contextDir: backend/cats
+  strategy:
+    type: Docker
+    dockerStrategy:
+      env:
+      dockerfilePath: Dockerfile.db_init
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'cats-postgres-cluster-db-init:latest'
+  successfulBuildsHistoryLimit: 5
+  failedBuildsHistoryLimit: 5

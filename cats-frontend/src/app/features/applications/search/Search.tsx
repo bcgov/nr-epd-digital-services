@@ -27,7 +27,9 @@ import { applicationResultColumns } from './SearchConfig';
 import ColumnSelect from '../../../components/column-select';
 import './Search.css';
 import ApplicationFilterForm from './filter/ApplicationFilterForm';
-import FilterPills from '../../people/filters/FilterPills';
+import FilterPills, {
+  type FilterPill,
+} from '../../../components/filter/FilterPills';
 import {
   formRowsMap,
   updateStaffOptions,
@@ -39,12 +41,6 @@ import {
   useGetAllActiveStaffMembersQuery,
   useGetApplicationServiceTypesQuery,
 } from '../../assignment/graphql/assignment.generated';
-
-interface FilterPill {
-  key: string;
-  value: string;
-  label: string;
-}
 
 interface SearchProps {
   filterMyTasks?: boolean;

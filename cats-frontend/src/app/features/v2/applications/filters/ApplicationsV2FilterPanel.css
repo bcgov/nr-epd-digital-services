@@ -1,0 +1,23 @@
+/* Layout-only leftovers; field chrome comes from Form.css via InputControls. */
+
+.applications-v2-filter-panel__range-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.applications-v2-filter-panel__range-inputs input {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.applications-v2-filter-panel__range-separator {
+  flex: 0 0 auto;
+  color: var(--typography-color-secondary, #474747);
+}
+
+.applications-v2-filter-panel__lookup-error {
+  margin: 0 0 var(--layout-margin-medium, 1rem);
+  color: var(--surface-color-primary-danger-default, #d8292f);
+}
