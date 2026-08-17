@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
-import type { VisibilityState } from '@tanstack/react-table';
 import PageContainer from '../../../components/simple/PageContainer';
 import { DataTable, DataTablePagination } from '../../../components/data-table';
 import { Button } from '../../../components/button/Button';
 import FilterPills from '../../../components/filter/FilterPills';
-import { FilterIcon } from '../../../components/common/icon';
+import { FilterIcon, TableColumnsIcon } from '../../../components/common/icon';
 import '../../../components/filter/FilterControls.css';
 import { useApplicationsV2 } from './hooks/useApplicationsV2';
+import { useApplicationsV2ColumnPreferences } from './hooks/useApplicationsV2ColumnPreferences';
 import { useApplicationsV2FilterLookups } from './hooks/useApplicationsV2FilterLookups';
 import { useApplicationsV2SearchParams } from './hooks/useApplicationsV2SearchParams';
 import { ApplicationsV2SearchInput } from './ApplicationsV2SearchInput';
+import { ApplicationsV2ColumnPanel } from './ApplicationsV2ColumnPanel';
 import { ApplicationsV2FilterPanel } from './filters/ApplicationsV2FilterPanel';
 import { applicationsV2Columns } from './applicationsV2Columns';
 import { APPLICATIONS_SEARCH_ERROR_MESSAGE } from './api/ApplicationsApi';
 import './ApplicationsV2.css';
+
+type ApplicationsV2Panel = 'none' | 'filters' | 'columns';
 
 const ApplicationsV2: React.FC = () => {
   const {
@@ -38,14 +41,26 @@ const ApplicationsV2: React.FC = () => {
     variables,
   } = useApplicationsV2SearchParams(lookupOptions);
   const { data, isPending, isFetching, isError } = useApplicationsV2(variables);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [showFilterPanel, setShowFilterPanel] = useState(false);
+  const {
+    columnVisibility,
+    setColumnVisibility,
+    resetColumnVisibility,
+    saveColumnDefaults,
+    isSavingColumnDefaults,
+  } = useApplicationsV2ColumnPreferences();
+  const [openPanel, setOpenPanel] = useState<ApplicationsV2Panel>('none');
 
   const applications = data?.applications ?? [];
   const totalCount = data?.count ?? 0;
   // Full loading row only on the first fetch; subsequent page changes keep
   // previous rows and use a subtler in-place fetching affordance.
   const showInitialLoading = isPending && !data;
+  const showFilterPanel = openPanel === 'filters';
+  const showColumnPanel = openPanel === 'columns';
+
+  const togglePanel = (panel: Exclude<ApplicationsV2Panel, 'none'>) => {
+    setOpenPanel((current) => (current === panel ? 'none' : panel));
+  };
 
   return (
     <PageContainer role="ApplicationsV2">
@@ -62,6 +77,7 @@ const ApplicationsV2: React.FC = () => {
           onSortingChange={setSorting}
           columnVisibility={columnVisibility}
           onColumnVisibilityChange={setColumnVisibility}
+          showColumnVisibilityMenu={false}
           getRowId={(row) => row.id}
           manualSorting
           toolbarActions={
@@ -70,6 +86,24 @@ const ApplicationsV2: React.FC = () => {
                 search={search}
                 onSearchChange={setSearch}
               />
+
+              <Button
+                type="button"
+                variant="tertiary"
+                aria-expanded={showColumnPanel}
+                aria-controls="applications-v2-column-panel"
+                className={
+                  showColumnPanel
+                    ? 'table-controls__button--selected'
+                    : undefined
+                }
+                onClick={() => togglePanel('columns')}
+              >
+                <span className="d-flex align-items-center gap-2">
+                  <TableColumnsIcon aria-hidden />
+                  Columns
+                </span>
+              </Button>
               <Button
                 type="button"
                 variant="tertiary"
@@ -80,7 +114,7 @@ const ApplicationsV2: React.FC = () => {
                     ? 'table-controls__button--selected'
                     : undefined
                 }
-                onClick={() => setShowFilterPanel((open) => !open)}
+                onClick={() => togglePanel('filters')}
               >
                 <span className="d-flex align-items-center gap-2">
                   <FilterIcon aria-hidden />
@@ -100,13 +134,28 @@ const ApplicationsV2: React.FC = () => {
                     lookupsError={lookupsError}
                     onApply={(nextFilters) => {
                       applyAdvancedFilters(nextFilters);
-                      setShowFilterPanel(false);
+                      setOpenPanel('none');
                     }}
                     onReset={() => {
                       resetAdvancedFilters();
                     }}
                     onCancel={() => {
-                      setShowFilterPanel(false);
+                      setOpenPanel('none');
+                    }}
+                  />
+                </div>
+              )}
+              {showColumnPanel && (
+                <div id="applications-v2-column-panel">
+                  <ApplicationsV2ColumnPanel
+                    columns={applicationsV2Columns}
+                    columnVisibility={columnVisibility}
+                    onColumnVisibilityChange={setColumnVisibility}
+                    onReset={resetColumnVisibility}
+                    onSaveDefault={saveColumnDefaults}
+                    isSavingDefault={isSavingColumnDefaults}
+                    onCancel={() => {
+                      setOpenPanel('none');
                     }}
                   />
                 </div>

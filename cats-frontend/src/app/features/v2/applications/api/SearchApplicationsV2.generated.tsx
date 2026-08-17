@@ -31,7 +31,7 @@ export type SearchApplicationsV2QueryVariables = Types.Exact<{
 }>;
 
 
-export type SearchApplicationsV2Query = { __typename?: 'Query', searchApplications: { __typename?: 'ApplicationSearchResponse', count?: number | null, page?: number | null, pageSize?: number | null, applications: Array<{ __typename?: 'ApplicationResultDto', id: string, siteId: string, applicationType: string, status: string }> } };
+export type SearchApplicationsV2Query = { __typename?: 'Query', searchApplications: { __typename?: 'ApplicationSearchResponse', count?: number | null, page?: number | null, pageSize?: number | null, applications: Array<{ __typename?: 'ApplicationResultDto', id: string, siteId: string, siteAddress: string, applicationType: string, lastUpdated: string, status: string, priority: string, url: string, siteRiskClassification: string, csapReference: string, serviceType: string, commonName: string, receivedDate?: string | null, dateCompleted?: string | null, staffAssigned: Array<{ __typename?: 'ApplicationResultPersonDto', firstName: string, lastName: string }> }> } };
 
 
 export const SearchApplicationsV2Document = gql`
@@ -65,8 +65,22 @@ export const SearchApplicationsV2Document = gql`
     applications {
       id
       siteId
+      siteAddress
       applicationType
+      lastUpdated
       status
+      staffAssigned {
+        firstName
+        lastName
+      }
+      priority
+      url
+      siteRiskClassification
+      csapReference
+      serviceType
+      commonName
+      receivedDate
+      dateCompleted
     }
     count
     page

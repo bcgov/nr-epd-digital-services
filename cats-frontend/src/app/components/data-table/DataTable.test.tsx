@@ -175,6 +175,40 @@ describe('DataTable', () => {
     ).toBeInTheDocument();
   });
 
+  it('invokes Save Default and Reset from the Columns menu without toggling network on checkbox changes', () => {
+    const onSaveColumnDefaults = vi.fn();
+    const onResetColumnVisibility = vi.fn();
+    const onColumnVisibilityChange = vi.fn();
+
+    render(
+      <DataTable
+        data={rows}
+        columns={columns}
+        ariaLabel="Applications"
+        columnVisibility={{}}
+        onColumnVisibilityChange={onColumnVisibilityChange}
+        onSaveColumnDefaults={onSaveColumnDefaults}
+        onResetColumnVisibility={onResetColumnVisibility}
+        getRowId={(row) => row.id}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Columns' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Reset Columns' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Save Default' }));
+
+    expect(onResetColumnVisibility).toHaveBeenCalledTimes(1);
+    expect(onSaveColumnDefaults).toHaveBeenCalledTimes(1);
+
+    const statusCheckbox = within(
+      screen.getByRole('menuitemcheckbox', { name: /Status/i }),
+    ).getByRole('checkbox');
+    fireEvent.click(statusCheckbox);
+
+    expect(onColumnVisibilityChange).toHaveBeenCalled();
+    expect(onSaveColumnDefaults).toHaveBeenCalledTimes(1);
+  });
+
   it('closes the Columns menu on Escape and outside click', () => {
     render(
       <DataTable
@@ -269,5 +303,41 @@ describe('DataTable', () => {
     expect(
       screen.getByRole('columnheader', { name: 'Application ID' }),
     ).not.toHaveAttribute('aria-sort');
+  });
+
+  it('applies sticky-right classes from column meta', () => {
+    const stickyColumns: ColumnDef<Row, unknown>[] = [
+      ...columns,
+      {
+        id: 'actions',
+        accessorKey: 'id',
+        header: 'Actions',
+        enableSorting: false,
+        meta: { sticky: 'right' },
+        cell: () => 'Manage',
+      },
+    ];
+
+    render(
+      <DataTable
+        data={rows}
+        columns={stickyColumns}
+        ariaLabel="Applications"
+        getRowId={(row) => row.id}
+      />,
+    );
+
+    expect(screen.getByRole('columnheader', { name: 'Actions' })).toHaveClass(
+      'data-table__cell--sticky-right',
+    );
+
+    const table = screen.getByRole('table', { name: 'Applications' });
+    const actionCells = within(table)
+      .getAllByRole('cell')
+      .filter((cell) =>
+        cell.classList.contains('data-table__cell--sticky-right'),
+      );
+    expect(actionCells).toHaveLength(2);
+    expect(actionCells[0]).toHaveTextContent('Manage');
   });
 });
