@@ -3,6 +3,7 @@ import { ApplicationDetailsResolver } from './applicationDetails.resolver';
 import { LoggerService } from '../../logger/logger.service';
 import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
 import { ApplicationService } from '../../services/application/application.service';
+import { ApplicationSubmissionService } from '../../services/applicationSubmission/applicationSubmission.service';
 import { UserTypeEum } from '../../utilities/enums/userType';
 
 describe('ApplicationDetailsResolver', () => {
@@ -19,6 +20,13 @@ describe('ApplicationDetailsResolver', () => {
             findApplicationDetailsById: jest.fn(),
             updateApplicationServiceType: jest.fn(),
             updateSecondaryServiceTypes: jest.fn(),
+          },
+        },
+        {
+          provide: ApplicationSubmissionService,
+          useValue: {
+            getSubmissionByApplicationId: jest.fn(),
+            getFormSchemaByAppType: jest.fn(),
           },
         },
         {
